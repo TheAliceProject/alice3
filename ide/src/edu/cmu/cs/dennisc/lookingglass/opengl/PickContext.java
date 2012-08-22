@@ -64,6 +64,12 @@ public class PickContext extends Context {
 			return m_pickNameMap.get( name );
 		}
 	}
+	@Override
+	protected void enableNormalize() {
+	}
+	@Override
+	protected void disableNormalize() {
+	}
 
 	protected void pickVertex( edu.cmu.cs.dennisc.scenegraph.Vertex vertex ) {
 		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );

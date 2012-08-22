@@ -48,6 +48,6 @@ package org.alice.ide.openprojectpane.models;
  */
 public abstract class UriSelectionState extends ArrayBasedListSelectionState< java.net.URI > {
 	public UriSelectionState( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, id, org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
 	}
 }

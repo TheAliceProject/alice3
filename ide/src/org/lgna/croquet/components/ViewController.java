@@ -79,11 +79,11 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 		if( this.popupPrepModel != null ) {
 			this.getAwtComponent().removeMouseListener( this.lenientMouseClickAdapter );
 			this.getAwtComponent().removeMouseMotionListener( this.lenientMouseClickAdapter );
-			this.popupPrepModel.removeComponent( this );
+			org.lgna.croquet.components.ComponentManager.removeComponent( this.popupPrepModel, this );
 		}
 		this.popupPrepModel = popupMenuPrepModel;
 		if( this.popupPrepModel != null ) {
-			this.popupPrepModel.addComponent( this );
+			org.lgna.croquet.components.ComponentManager.addComponent( this.popupPrepModel, this );
 			this.getAwtComponent().addMouseListener( this.lenientMouseClickAdapter );
 			this.getAwtComponent().addMouseMotionListener( this.lenientMouseClickAdapter );
 		}
@@ -95,7 +95,7 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 			if( quoteClickCountUnquote == 1 ) {
 				if( ViewController.this.popupPrepModel != null ) {
 					if( ViewController.this.isPopupMenuOperationLimitedToRightMouseButton==false || edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-						ViewController.this.popupPrepModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( ViewController.this, e ) );
+						ViewController.this.popupPrepModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( ViewController.this, e ) );
 					}
 				}
 			}
@@ -123,14 +123,14 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 		super.handleAddedTo( parent );
 		M model = this.getModel();
 		if( model != null ) {
-			model.addComponent( this );
+			org.lgna.croquet.components.ComponentManager.addComponent( model, this );
 		}
 	}
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
 		M model = this.getModel();
 		if( model != null ) {
-			model.removeComponent( this );
+			org.lgna.croquet.components.ComponentManager.removeComponent( model, this );
 		}
 		super.handleRemovedFrom( parent );
 	}

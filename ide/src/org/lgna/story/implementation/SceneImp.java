@@ -43,6 +43,9 @@
 
 package org.lgna.story.implementation;
 
+import edu.cmu.cs.dennisc.matt.EventManager;
+import edu.cmu.cs.dennisc.matt.EventRecorder;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -77,9 +80,14 @@ public class SceneImp extends EntityImp {
 	private final java.util.List< Capsule > capsules = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private ProgramImp program;
-	private final org.lgna.story.Scene abstraction;
+	private final org.lgna.story.SScene abstraction;
 	private float fogDensityValue = 0;
+	private final EventManager eventManager;
 	
+	public EventManager getEventManager() {
+		return this.eventManager;
+	}
+
 	public final ColorProperty atmosphereColor = new ColorProperty( SceneImp.this ) {
 		@Override
 		public org.lgna.story.Color getValue() {
@@ -138,7 +146,6 @@ public class SceneImp extends EntityImp {
 			SceneImp.this.setFogDensity(value);
 		}
 	};
-
 	private static final edu.cmu.cs.dennisc.scenegraph.Transformable createDirectionalLightTransformable( edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgDirectionalLight, edu.cmu.cs.dennisc.math.Angle yaw, edu.cmu.cs.dennisc.math.Angle pitch, float brightness ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable rv = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 		rv.applyRotationAboutYAxis( yaw );
@@ -148,7 +155,7 @@ public class SceneImp extends EntityImp {
 		return rv;
 	}
 	
-	public SceneImp( org.lgna.story.Scene abstraction ) {
+	public SceneImp( org.lgna.story.SScene abstraction ) {
 		this.abstraction = abstraction;
 		this.sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1.0f, 1.0f ) );
 		this.sgFog.color.setValue(this.sgBackground.color.getValue());
@@ -157,9 +164,11 @@ public class SceneImp extends EntityImp {
 		this.sgScene.addComponent( this.sgAmbientLight );
 		this.setFogDensity(0);
 		this.putInstance( this.sgScene );
-		
+
+		this.eventManager = new EventManager( this );
+
 		final edu.cmu.cs.dennisc.math.Angle fromAbovePitch = new edu.cmu.cs.dennisc.math.AngleInDegrees( -60.0 );
-		final float fromAboveBrightness = 0.333f;
+		final float fromAboveBrightness = 0.533f;
 		createDirectionalLightTransformable( this.sgFromAboveDirectionalLightA, new edu.cmu.cs.dennisc.math.AngleInDegrees( 0 ), fromAbovePitch, fromAboveBrightness ).setParent( this.sgScene );
 		createDirectionalLightTransformable( this.sgFromAboveDirectionalLightB, new edu.cmu.cs.dennisc.math.AngleInDegrees( 120 ), fromAbovePitch, fromAboveBrightness ).setParent( this.sgScene );
 		createDirectionalLightTransformable( this.sgFromAboveDirectionalLightC, new edu.cmu.cs.dennisc.math.AngleInDegrees( 240 ), fromAbovePitch, fromAboveBrightness ).setParent( this.sgScene );
@@ -170,6 +179,7 @@ public class SceneImp extends EntityImp {
 		this.sgFromBelowDirectionalLight.color.setValue( edu.cmu.cs.dennisc.color.Color4f.BLACK );
 	}
 	
+
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
 		this.sceneActivationListeners.add( sceneActivationListener );
 	}
@@ -187,6 +197,7 @@ public class SceneImp extends EntityImp {
 	
 	private void fireSceneActivationListeners() {
 		final org.lgna.story.event.SceneActivationEvent e = new org.lgna.story.event.SceneActivationEvent();
+		EventRecorder.getSingleton().recordEvent(e);
 		for( final org.lgna.story.event.SceneActivationListener sceneActivationListener : this.sceneActivationListeners ) {
 			new org.lgna.common.ComponentThread( new Runnable() {
 				public void run() {
@@ -249,7 +260,7 @@ public class SceneImp extends EntityImp {
 		return this.sgScene;
 	}
 	@Override
-	public org.lgna.story.Scene getAbstraction() {
+	public org.lgna.story.SScene getAbstraction() {
 		return this.abstraction;
 	}
 
@@ -258,14 +269,26 @@ public class SceneImp extends EntityImp {
 		return this;
 	}
 	@Override
-	protected org.lgna.story.implementation.ProgramImp getProgram() {
+	public org.lgna.story.implementation.ProgramImp getProgram() {
 		return this.program;
 	}
 	public void setProgram( ProgramImp program ) {
+		if( this.program != program ) {
+			if( program != null ) {
+				this.eventManager.removeListenersFrom( program.getOnscreenLookingGlass() );
+			}
+			//handleOwnerChange( null );
+			this.program = program;
+//			handleOwnerChange( program );
+			if( program != null ) {
+				this.eventManager.addListenersTo( program.getOnscreenLookingGlass() );
+			}
+		}
 		this.program = program;
 	}
 
 	public void preserveStateAndEventListeners() {
+		this.eventManager.silenceAllListeners();
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}
@@ -274,34 +297,30 @@ public class SceneImp extends EntityImp {
 //		for( Entity entity : this.entities ) {
 //			this.pointOfViewMap.put( entity, null );
 //		}
+		this.eventManager.restoreAllListeners();
 	}
 	public void addCamerasTo( ProgramImp program ) {
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImp ) {
-				CameraImp cameraImplementation = (CameraImp)entityImplementation;
-				program.getOnscreenLookingGlass().addCamera( cameraImplementation.getSgCamera() );
+		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class ) ) {
+			EntityImp entityImp = EntityImp.getInstance( sgCamera );
+			if( entityImp instanceof CameraImp ) {
+				CameraImp cameraImp = (CameraImp)entityImp;
+				program.getOnscreenLookingGlass().addCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}
 	public void removeCamerasFrom( ProgramImp program ) {
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImp ) {
-				CameraImp cameraImplementation = (CameraImp)entityImplementation;
-				program.getOnscreenLookingGlass().removeCamera( cameraImplementation.getSgCamera() );
+		for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class ) ) {
+			EntityImp entityImp = EntityImp.getInstance( sgCamera );
+			if( entityImp instanceof CameraImp ) {
+				CameraImp cameraImp = (CameraImp)entityImp;
+				program.getOnscreenLookingGlass().removeCamera( cameraImp.getSgCamera() );
 			}
 		}
 	}
 	
 	public CameraImp findFirstCamera() {
-		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : this.sgScene.getComponents() ) {
-			EntityImp entityImplementation = EntityImp.getInstance( sgComponent );
-			if( entityImplementation instanceof CameraImp ) {
-				return (CameraImp)entityImplementation;
-			}
-		}
-		return null;
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = edu.cmu.cs.dennisc.pattern.VisitUtilities.getFirst( this.sgScene, edu.cmu.cs.dennisc.scenegraph.AbstractCamera.class );
+		return (CameraImp)EntityImp.getInstance( sgCamera );
 	}
 	
 	public float getGlobalBrightness() {

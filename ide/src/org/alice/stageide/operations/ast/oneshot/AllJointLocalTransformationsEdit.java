@@ -69,8 +69,8 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 	}
 	@Override
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.JointedModel ) {
-			org.lgna.story.JointedModel jointedModel = (org.lgna.story.JointedModel)instance;
+		if( instance instanceof org.lgna.story.SJointedModel ) {
+			org.lgna.story.SJointedModel jointedModel = (org.lgna.story.SJointedModel)instance;
 			org.lgna.story.implementation.JointedModelImp< ?, ? > jointedModelImp = org.lgna.story.ImplementationAccessor.getImplementation( jointedModel );
 			Iterable< org.lgna.story.implementation.JointImp > joints = jointedModelImp.getJoints();
 			java.util.List< JointUndoRunnable > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -97,7 +97,7 @@ public class AllJointLocalTransformationsEdit extends MethodInvocationEdit {
 			new Thread() {
 				@Override
 				public void run() {
-					org.lgna.common.DoTogether.invokeAndWait( jointUndoRunnables );
+					org.lgna.common.ThreadUtilities.doTogether( jointUndoRunnables );
 				}
 			}.start();
 		}

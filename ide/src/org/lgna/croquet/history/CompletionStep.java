@@ -45,18 +45,23 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel > extends Step< M > {
+public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > extends Step< M > {
+
 	private final TransactionHistory transactionHistory;
 	private org.lgna.croquet.edits.Edit<M> edit;
 	private boolean isSuccessfullyCompleted;
 	private boolean isPending = true;
+
+	public static <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
+		return new CompletionStep<M>( parent, model, trigger, transactionHistory );
+	}
+	
 	public CompletionStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		super( parent, model, trigger );
 		parent.setCompletionStep( this );
 		this.transactionHistory = transactionHistory;
 		if( this.transactionHistory != null ) {
-			this.transactionHistory.setParent( this );
-			TransactionManager.pushTransactionHistory( this.transactionHistory );
+			this.transactionHistory.setOwner( this );
 		}
 	}
 	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -66,7 +71,7 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable( this );
 		this.transactionHistory = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		if( this.transactionHistory != null ) {
-			this.transactionHistory.setParent( this );
+			this.transactionHistory.setOwner( this );
 		}
 	}
 	@Override
@@ -98,16 +103,7 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	public TransactionHistory getTransactionHistory() {
 		return this.transactionHistory;
 	}
-	protected void popTransactionHistoryIfNecessary() {
-		if( this.transactionHistory != null ) {
-			TransactionHistory pop = TransactionManager.popTransactionHistory();
-			if( pop == this.transactionHistory ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( pop, this.transactionHistory );
-			}
-		}
-	}
+
 	public boolean isPending() {
 		return this.isPending;
 	}
@@ -128,43 +124,39 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 	public org.lgna.croquet.edits.Edit< ? > getEdit() {
 		return this.edit;
 	}
-	/*package-private*/ void setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
+	public void setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
 		this.isPending = false;
 	}
 	public void commitAndInvokeDo( org.lgna.croquet.edits.Edit edit ) {
-//		this.getParent().reifyIfNecessary();
 		org.lgna.croquet.history.event.EditCommittedEvent e = new org.lgna.croquet.history.event.EditCommittedEvent( this, edit );
 		this.fireChanging( e );
 		this.setEdit( edit );
 		edit.doOrRedo( true );
 		this.fireChanged( e );
-		this.popTransactionHistoryIfNecessary();
 	}
 	public void finish() {
-//		this.getParent().reifyIfNecessary();
 		this.isSuccessfullyCompleted = true;
 		org.lgna.croquet.history.event.FinishedEvent e = new org.lgna.croquet.history.event.FinishedEvent( this );
 		this.fireChanging( e );
 		this.edit = null;
 		this.isPending = false;
 		this.fireChanged( e );
-		this.popTransactionHistoryIfNecessary();
 	}
 	public void cancel() {
-//		this.getParent().reifyIfNecessary();
 		this.isSuccessfullyCompleted = false;
+		org.lgna.croquet.history.event.CancelEvent e = new org.lgna.croquet.history.event.CancelEvent( this );
+		this.fireChanging( e );
 		this.edit = null;
 		this.isPending = false;
-		this.popTransactionHistoryIfNecessary();
+		this.fireChanged( e );
 	}
-	
 
-	public String getTutorialTransactionTitle( org.lgna.croquet.UserInformation userInformation ) {
+	public String getTutorialTransactionTitle() {
 		org.lgna.croquet.CompletionModel model = this.getModel();
 		if( model != null ) {
-			return model.getTutorialTransactionTitle( this, userInformation );
+			return model.getTutorialTransactionTitle( this );
 		} else {
 			return null;
 		}
@@ -174,8 +166,6 @@ public abstract class CompletionStep< M extends org.lgna.croquet.CompletionModel
 		rv = super.updateRepr( rv );
 		rv.append( ";edit=" );
 		rv.append( this.edit );
-//		rv.append( ";isActive=" );
-//		rv.append( this.isActive );
 		return rv;
 	}
 }

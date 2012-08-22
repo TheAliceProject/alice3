@@ -48,7 +48,7 @@ package test.ik.croquet.codecs;
  */
 public enum BoneCodec implements org.lgna.croquet.ItemCodec< org.lgna.ik.solver.Bone > {
 	SINGLETON;
-	public java.lang.StringBuilder appendRepresentation( java.lang.StringBuilder rv, org.lgna.ik.solver.Bone value, java.util.Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.ik.solver.Bone value ) {
 		return rv;
 	}
 	public org.lgna.ik.solver.Bone decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

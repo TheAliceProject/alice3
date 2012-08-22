@@ -64,6 +64,9 @@ import org.alice.stageide.properties.ModelSizeAdapter;
 import org.alice.stageide.properties.MoveableTurnableTranslationAdapter;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.alice.stageide.properties.PaintPropertyAdapter;
+import org.alice.stageide.properties.RoomCeilingPaintPropertyAdapter;
+import org.alice.stageide.properties.RoomFloorPaintPropertyAdapter;
+import org.alice.stageide.properties.RoomWallPaintPropertyAdapter;
 import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.alice.stageide.properties.TextFontPropertyAdapter;
 import org.alice.stageide.properties.TextValuePropertyAdapter;
@@ -74,11 +77,11 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.ToolPalette;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.JointedModel;
-import org.lgna.story.Model;
-import org.lgna.story.MovableTurnable;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SModel;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MutableRider;
 import org.lgna.story.implementation.BillboardImp;
 import org.lgna.story.implementation.ConeImp;
@@ -86,16 +89,19 @@ import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.GroundImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.implementation.ModelImp;
+import org.lgna.story.implementation.RoomImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.SphereImp;
 import org.lgna.story.implementation.TextModelImp;
+import org.lgna.story.implementation.CylinderImp;
+import org.lgna.story.implementation.DiscImp;
 import org.lgna.story.resources.JointedModelResource;
 
 
 public class SceneObjectPropertyManagerPanel extends GridBagPanel
 {
 	private org.alice.ide.instancefactory.InstanceFactory selectedInstance;
-	private Entity selectedEntity;
+	private SThing selectedEntity;
 	private EntityImp selectedImp;
 	
 	private org.lgna.project.virtualmachine.UserInstance sceneInstance;
@@ -137,7 +143,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	}
 	
 	private void setShowJointsOfField(org.lgna.project.ast.AbstractField field, boolean showJoints) {
-		JointedModelImp<? extends JointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation( field );
+		JointedModelImp<? extends SJointedModel, ? extends JointedModelResource> imp = IDE.getActiveInstance().getSceneEditor().getImplementation( field );
 		if (imp != null) {
 			imp.setAllJointPivotsVisibile(showJoints);
 		}
@@ -294,6 +300,27 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 					return new BillboardFrontPaintPropertyAdapter((BillboardImp)entityImp, state);
 				}
 			}
+			else if (setter.getName().equalsIgnoreCase("setWallPaint"))
+			{
+				if (entityImp instanceof RoomImp)
+				{
+					return new RoomWallPaintPropertyAdapter((RoomImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setFloorPaint"))
+			{
+				if (entityImp instanceof RoomImp)
+				{
+					return new RoomFloorPaintPropertyAdapter((RoomImp)entityImp, state);
+				}
+			}
+			else if (setter.getName().equalsIgnoreCase("setCeilingPaint"))
+			{
+				if (entityImp instanceof RoomImp)
+				{
+					return new RoomCeilingPaintPropertyAdapter((RoomImp)entityImp, state);
+				}
+			}
 			else if (setter.getName().equalsIgnoreCase("setFont"))
 			{
 				if (entityImp instanceof TextModelImp)
@@ -310,21 +337,30 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			}
 			else if (setter.getName().equalsIgnoreCase("setRadius"))
 			{
-				if (entityImp instanceof SphereImp)
+				if (entityImp instanceof CylinderImp) {
+					return new DoublePropertyAdapter<CylinderImp>("Radius", (CylinderImp)entityImp, ((CylinderImp)entityImp).radius, state);
+				}
+				else if (entityImp instanceof SphereImp)
 				{
-					return new DoublePropertyAdapter<SphereImp>("Opacity", (SphereImp)entityImp, ((SphereImp)entityImp).radius, state);
+					return new DoublePropertyAdapter<SphereImp>("Radius", (SphereImp)entityImp, ((SphereImp)entityImp).radius, state);
+				}
+				else if (entityImp instanceof DiscImp) {
+					return new DoublePropertyAdapter<DiscImp>("Radius", (DiscImp)entityImp, ((DiscImp)entityImp).outerRadius, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setBaseRadius"))
 			{
 				if (entityImp instanceof ConeImp)
 				{
-					return new DoublePropertyAdapter<ConeImp>("Base Radius", (ConeImp)entityImp, ((ConeImp)entityImp).baseRadius, state);
+					return new DoublePropertyAdapter<ConeImp>("Radius", (ConeImp)entityImp, ((ConeImp)entityImp).baseRadius, state);
 				}
 			}
 			else if (setter.getName().equalsIgnoreCase("setLength"))
 			{
-				if (entityImp instanceof ConeImp)
+				if (entityImp instanceof CylinderImp) {
+					return new DoublePropertyAdapter<CylinderImp>("Length", (CylinderImp)entityImp, ((CylinderImp)entityImp).length, state);
+				}
+				else if (entityImp instanceof ConeImp)
 				{
 					return new DoublePropertyAdapter<ConeImp>("Length", (ConeImp)entityImp, ((ConeImp)entityImp).length, state);
 				}
@@ -360,11 +396,11 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 				}
 			}
 			
-			if (this.selectedEntity instanceof MovableTurnable)
+			if (this.selectedEntity instanceof SMovableTurnable)
 			{
-				propertyAdapters.add( new MoveableTurnableTranslationAdapter((MovableTurnable)this.selectedEntity, null));
+				propertyAdapters.add( new MoveableTurnableTranslationAdapter((SMovableTurnable)this.selectedEntity, null));
 			}
-			if (this.selectedEntity instanceof Model && this.selectedImp instanceof ModelImp)
+			if (this.selectedEntity instanceof SModel && this.selectedImp instanceof ModelImp)
 			{
 				propertyAdapters.add( new ModelSizeAdapter((ModelImp)this.selectedImp, null));
 			}
@@ -469,8 +505,8 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		
 		if (instance != null) {
 			Object instanceInJava = IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForExpression( this.selectedInstance.createExpression() );
-			if( instanceInJava instanceof org.lgna.story.Entity ) {
-				this.selectedEntity = (org.lgna.story.Entity)instanceInJava;
+			if( instanceInJava instanceof org.lgna.story.SThing ) {
+				this.selectedEntity = (org.lgna.story.SThing)instanceInJava;
 				this.selectedImp = ImplementationAccessor.getImplementation(this.selectedEntity);
 			}
 			else if (instanceInJava instanceof org.lgna.story.implementation.EntityImp)

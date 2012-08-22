@@ -74,7 +74,7 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
 	}
 	@Override
 	protected org.lgna.croquet.resolvers.Resolver< LocalAccessFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAccessFactory >( this, this.local, org.lgna.project.ast.UserLocal.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAccessFactory >( this, org.lgna.project.ast.UserLocal.class, this.local );
 	}
 	public org.lgna.project.ast.UserLocal getLocal() {
 		return this.local;
@@ -92,13 +92,6 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
 		return this.local.getValueType();
 	}
 	public String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "this." );
-//		sb.append( "<strong>" );
-		sb.append( this.local.getName() );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		return sb.toString();
+		return this.local.getValidName();
 	}
 }

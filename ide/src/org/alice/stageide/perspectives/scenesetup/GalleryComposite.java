@@ -57,13 +57,6 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite< org.alic
 		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
 	protected org.alice.stageide.gallerybrowser.GalleryBrowser createView() {
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser();
 	}

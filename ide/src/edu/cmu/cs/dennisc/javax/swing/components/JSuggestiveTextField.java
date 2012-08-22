@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 public class JSuggestiveTextField extends javax.swing.JTextField {
 	private String textForBlankCondition;
 	public JSuggestiveTextField( String text, String textForBlankCondition ) {
-		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
+		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
 		if( text != null ) {
 			this.setText( text );
@@ -56,8 +56,6 @@ public class JSuggestiveTextField extends javax.swing.JTextField {
 		if( textForBlankCondition != null ) {
 			this.setTextForBlankCondition( textForBlankCondition );
 		}
-		//this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
-		//setToolTipText( this.textForBlankCondition );
 	}
 	public JSuggestiveTextField( String text ) {
 		this( text, null );

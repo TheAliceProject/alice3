@@ -53,7 +53,7 @@ public class BackwardOperation extends org.lgna.croquet.ActionOperation {
 		return SingletonHolder.instance;
 	}
 	private BackwardOperation() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
 	}
 	@Override
 	protected void localize() {
@@ -61,7 +61,8 @@ public class BackwardOperation extends org.lgna.croquet.ActionOperation {
 		this.setSmallIcon( org.alice.ide.icons.Icons.PREVIOUS_SMALL );
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		DeclarationCompositeHistory.getInstance().goBackward();
 		step.finish();
 	}

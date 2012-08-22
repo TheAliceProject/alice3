@@ -43,6 +43,7 @@
 
 package org.alice.stageide.person;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,7 +52,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		super( new edu.cmu.cs.dennisc.scenegraph.Visual() );
 	}
 	@Override
-	public org.lgna.story.Entity getAbstraction() {
+	public org.lgna.story.SThing getAbstraction() {
 		return null;
 	}
 	private final java.util.Map< org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person > mapLifeStageToNebPerson = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -89,12 +90,21 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		double obesityLevel = PersonResourceManager.SINGLETON.getObesityLevel();
 		org.lgna.story.resources.sims2.Hair hair = PersonResourceManager.SINGLETON.getHair();
 		org.lgna.story.resources.sims2.Outfit outfit = PersonResourceManager.SINGLETON.getOutfit();
-		
-		nebPerson.setAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair );
+		if (gender == null || outfit == null || skinTone == null || eyeColor == null || hair == null) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe("NOT SETTNG ATTRIBUTES ON PERSON: gender="+gender+", outfit="+outfit+", skintTone="+skinTone+", eyeColor="+eyeColor+", obesityLevel="+obesityLevel+", hair="+hair);
+		}
+		else {
+			nebPerson.setAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair );
+		}
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
 		if( nebPerson != sgGeometry ) {
 //			Thread.dumpStack();
 			this.setSgGeometry( nebPerson );
 		}
+	}
+	
+	@Override
+	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+		this.setScale(getScaleForSize(size));
 	}
 }

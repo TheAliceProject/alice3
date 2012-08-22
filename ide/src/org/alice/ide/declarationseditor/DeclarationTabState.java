@@ -43,6 +43,8 @@
 
 package org.alice.ide.declarationseditor;
 
+import org.alice.stageide.StageIDE;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -91,20 +93,36 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		}
 	};
 	
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.Project > projectListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.Project >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener< org.alice.ide.ProjectDocument > projectListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.ProjectDocument >() {
+		public void changing( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.Project > state, org.lgna.project.Project prevValue, org.lgna.project.Project nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State< org.alice.ide.ProjectDocument > state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
 			DeclarationTabState.this.clear();
 		}
 	};
 	
 	private org.lgna.project.ast.NamedUserType type;
 	private DeclarationTabState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
 		TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueListener( this.isEmphasizingClassesListener );
-		org.alice.ide.project.ProjectState.getInstance().addValueListener( this.projectListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectListener );
+	}
+
+	@Override
+	protected void fireChanged( org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		super.fireChanged( prevValue, nextValue, isAdjusting );
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			//pass
+		} else {
+			if( nextValue != null ) {
+				org.lgna.project.ast.AbstractType< ?,?,? > type = nextValue.getType();
+				if( type instanceof org.lgna.project.ast.NamedUserType ) {
+					org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+					TypeState.getInstance().setValueTransactionlessly( namedUserType );
+				}
+			}
+		}
 	}
 	@Override
 	protected void handleMissingItem( org.alice.ide.declarationseditor.DeclarationComposite missingItem ) {
@@ -125,8 +143,9 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 				java.util.List< DeclarationComposite > items = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				if( this.type != null ) {
 					items.add( DeclarationComposite.getInstance( this.type ) );
+					final boolean isInitializeEventListenersDesired = false;
 					for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
-						if( method.isPublicAccess() ) {
+						if( method.isPublicAccess() || ( isInitializeEventListenersDesired && StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( method.getName() ) ) ) {
 							if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
 								items.add( DeclarationComposite.getInstance( method ) );
 							}
@@ -193,4 +212,18 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState< Dec
 		}
 		return rv;
 	}	
+	public void handleAstChangeThatCouldBeOfInterest() {
+		org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = this.getValue();
+		if( declarationComposite != null ) {
+			org.lgna.croquet.components.View view = declarationComposite.getView();
+			if( view instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
+				org.alice.ide.declarationseditor.code.components.CodeDeclarationView codeDeclarationView = (org.alice.ide.declarationseditor.code.components.CodeDeclarationView)view;
+				org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor = codeDeclarationView.getCodePanelWithDropReceptor();
+				if( codePanelWithDropReceptor instanceof org.alice.ide.codeeditor.CodeEditor ) {
+					org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)codePanelWithDropReceptor;
+					codeEditor.handleAstChangeThatCouldBeOfInterest();
+				}
+			}
+		}
+	}
 }

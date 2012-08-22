@@ -46,7 +46,7 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class BodyHeadTabSelectionModel extends org.lgna.croquet.TabSelectionState< org.lgna.croquet.TabComposite >{
+public class BodyHeadTabSelectionModel extends org.lgna.croquet.SimpleTabSelectionState<ContentTab> {
 	private static class SingletonHolder {
 		private static BodyHeadTabSelectionModel instance = new BodyHeadTabSelectionModel();
 	}
@@ -57,9 +57,9 @@ public class BodyHeadTabSelectionModel extends org.lgna.croquet.TabSelectionStat
 		super( 
 				org.lgna.croquet.Application.INHERIT_GROUP, 
 				java.util.UUID.fromString( "d525f0c5-9f39-4807-a9d3-f66775f9eb2d" ), 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.lgna.croquet.TabComposite.class ), 
-				0, 
-				BodyTab.getInstance(), HeadTab.getInstance() 
+				ContentTab.class,
+				0,
+				BodyTab.getInstance(), HeadTab.getInstance()
 		);
 	}
 }

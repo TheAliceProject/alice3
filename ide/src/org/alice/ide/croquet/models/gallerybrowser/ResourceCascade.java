@@ -66,7 +66,7 @@ public class ResourceCascade extends org.lgna.croquet.Cascade< org.lgna.project.
 		this.dropSite = dropSite;
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > completionStep, org.lgna.project.ast.Expression[] values ) {
+	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> completionStep, org.lgna.project.ast.Expression[] values ) {
 		if (values[0] instanceof org.lgna.project.ast.FieldAccess) {
 			org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess) values[0];
 			org.lgna.project.ast.AbstractField argumentField = fieldAccess.field.getValue();

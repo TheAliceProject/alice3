@@ -48,6 +48,7 @@ package org.alice.ide.croquet.models.ast.cascade;
  */
 public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
+	private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
 	public ExpressionPropertyCascade( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.croquet.CascadeBlank< org.lgna.project.ast.Expression >... blanks ) {
 		super( group, id, org.lgna.project.ast.Expression.class, blanks );
 		this.expressionProperty = expressionProperty;
@@ -55,39 +56,21 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 	public final org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
-	private org.lgna.project.ast.Expression getPreviousExpression() {
-		return this.expressionProperty.getValue();
-	}
-	protected org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
-		edu.cmu.cs.dennisc.property.PropertyOwner owner = this.expressionProperty.getOwner();
-		if( owner instanceof org.lgna.project.ast.Node ) {
-			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)owner;
-			org.lgna.project.ast.Statement statement = node.getFirstAncestorAssignableTo( org.lgna.project.ast.Statement.class, true );
-			if( statement != null ) {
-				org.lgna.project.ast.Node parent = statement.getParent();
-				if( parent instanceof org.lgna.project.ast.BlockStatement ) {
-					org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
-					int index = blockStatement.statements.indexOf( statement );
-					return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
-				}
-			}
-		}
-		return null;
-	}
-
 	@Override
 	protected void prologue() {
-		org.alice.ide.IDE.getActiveInstance().getCascadeManager().pushContext( this.getPreviousExpression(), this.getBlockStatementIndexPair() );
+		this.pushedContext = new org.alice.ide.cascade.ExpressionPropertyContext( this.expressionProperty );
+		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
 		super.prologue();
 	}
 	@Override
 	protected void epilogue() {
 		super.epilogue();
-		org.alice.ide.IDE.getActiveInstance().getCascadeManager().popContext();
+		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
+		this.pushedContext = null;
 	}
 	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions );
 	@Override
-	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > step, org.lgna.project.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.getPreviousExpression(), this.createExpression( values ) );
+	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> step, org.lgna.project.ast.Expression[] values ) {
+		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression( values ) );
 	}
 }

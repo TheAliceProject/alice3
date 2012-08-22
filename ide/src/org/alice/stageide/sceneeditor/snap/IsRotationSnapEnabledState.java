@@ -53,6 +53,6 @@ public class IsRotationSnapEnabledState extends BooleanState {
 		return SingletonHolder.instance;
 	}
 	private IsRotationSnapEnabledState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "6933d462-d5c5-4ff6-9918-240511d2c731" ), true );
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6933d462-d5c5-4ff6-9918-240511d2c731" ), true );
 	}
 }

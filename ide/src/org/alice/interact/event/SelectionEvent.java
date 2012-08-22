@@ -58,7 +58,7 @@ public class SelectionEvent extends Event< AbstractDragAdapter >{
 		this.transformable = transformable;
 	}
 	
-	public SelectionEvent( AbstractDragAdapter source, org.lgna.story.Turnable mtTransformable ) {
+	public SelectionEvent( AbstractDragAdapter source, org.lgna.story.STurnable mtTransformable ) {
 		super( source );
 		if (mtTransformable != null)
 		{

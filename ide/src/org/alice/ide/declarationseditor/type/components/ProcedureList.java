@@ -50,7 +50,7 @@ import org.alice.ide.declarationseditor.type.ProcedureState;
  */
 public class ProcedureList extends MethodList {
 	public ProcedureList( org.lgna.project.ast.NamedUserType type ) {
-		super( ProcedureState.getInstance( type ), org.alice.ide.croquet.models.declaration.ProcedureDeclarationOperation.getInstance( type ) );
+		super( ProcedureState.getInstance( type ), org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( type ).getOperation() );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );
 	}
 }

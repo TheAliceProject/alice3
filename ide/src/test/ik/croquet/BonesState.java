@@ -54,7 +54,7 @@ public class BonesState extends org.lgna.croquet.DefaultListSelectionState< org.
 		return SingletonHolder.instance;
 	}
 	private BonesState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "32660ce0-bf86-4472-8f12-6aa2bc0a39b5" ), test.ik.croquet.codecs.BoneCodec.SINGLETON, -1 );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "32660ce0-bf86-4472-8f12-6aa2bc0a39b5" ), test.ik.croquet.codecs.BoneCodec.SINGLETON, -1 );
 	}
 	public void setChain( org.lgna.ik.solver.Chain chain ) {
 		if(chain == null) {

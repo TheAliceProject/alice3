@@ -64,7 +64,7 @@ public class GalleryResourceMenu extends org.lgna.croquet.CascadeMenuModel< org.
 		this.type = type;
 	}
 	@Override
-	protected String getDefaultLocalizedText() {
+	protected String findDefaultLocalizedText() {
 		return this.type.getName();
 	}
 	@Override

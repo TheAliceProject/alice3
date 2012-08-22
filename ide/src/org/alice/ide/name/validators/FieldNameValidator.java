@@ -51,23 +51,13 @@ public class FieldNameValidator extends MemberNameValidator {
 		super( null, type );
 	}
 	@Override
-	protected boolean isNameAvailable( String name ) {
+	public boolean isNameAvailable( String name ) {
 		org.lgna.project.ast.Node node = this.getNode();
-		org.lgna.project.ast.UserType<?> type = this.getType();
-		if( type != null ) {
-			for( org.lgna.project.ast.UserField field : type.fields ) {
-				assert field != null;
-				if( field == node ) {
-					//pass
-				} else {
-					if( name.equals( field.name.getValue() ) ) {
-						return false;
-					}
-				}
-			}
+		if( node != null ) {
+			return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, (org.lgna.project.ast.UserField)node );
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "type == null" );
+			org.lgna.project.ast.UserType<?> type = this.getType();
+			return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, type );
 		}
-		return true;
 	}
 }

@@ -81,6 +81,11 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	private static void addPrimitiveToWrapper( Class<?> primitiveCls, Class<?> wrapperCls ) {
 		mapPrimitiveToWrapper.put( JavaType.getInstance( primitiveCls ), JavaType.getInstance( wrapperCls ) );
 	}
+	
+	public static boolean isWrapperType( AbstractType<?,?,?> type ) {
+		return mapPrimitiveToWrapper.containsValue( type );
+	}
+	
 	/*package-private*/ static AbstractType< ?,?,? > getWrapperTypeIfNecessary( AbstractType< ?,?,? > type ) {
 		if( type instanceof JavaType ) {
 			JavaType javaType = (JavaType)type;
@@ -99,6 +104,24 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			return type;
 		}
 	}
+	
+	@Override
+	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType< ?, ?, ? > other ) {
+		if( other != null ) {
+			//todo: handle arrays
+			JavaType otherTypeDeclaredInJava = other.getFirstEncounteredJavaType();
+			if( otherTypeDeclaredInJava != null ) {
+				Class<?> cls = this.getClassReflectionProxy().getReification();
+				Class<?> otherCls = otherTypeDeclaredInJava.getClassReflectionProxy().getReification();
+				return cls.isAssignableFrom( otherCls );
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
 
 	public static JavaType getInstance( ClassReflectionProxy classReflectionProxy ) {
 		if( classReflectionProxy != null ) {

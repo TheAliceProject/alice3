@@ -57,15 +57,7 @@ public class SceneComposite extends org.lgna.croquet.SimpleComposite< test.ik.cr
 		super( java.util.UUID.fromString( "d34e5678-1cf9-41bd-9031-10e16cde2dd6" ) );
 	}
 	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
-	@Override
 	protected test.ik.croquet.views.ScenePanel createView() {
 		return new test.ik.croquet.views.ScenePanel( this );
-	}
-	@Override
-	protected void localize() {
 	}
 }

@@ -69,7 +69,7 @@ public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec< org
 			binaryEncoder.encode( value.getDeclaration().getId() );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.declarationseditor.DeclarationComposite value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.declarationseditor.DeclarationComposite value) {
 		rv.append( value != null ? value.getDeclaration().getName() : value );
 		return rv;
 	}

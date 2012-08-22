@@ -46,27 +46,5 @@ package gallery;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryApplication extends org.lgna.croquet.Application {
-	@Override
-	protected org.lgna.croquet.Operation getAboutOperation() {
-		return null;
-	}
-	@Override
-	protected org.lgna.croquet.Operation getPreferencesOperation() {
-		return null;
-	}
-	@Override
-	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-	}
-	@Override
-	protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
-	}
-	@Override
-	public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-		return null;
-	}
-	@Override
-	protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
-		System.exit( 0 );
-	}
+public class GalleryApplication extends org.lgna.croquet.simple.SimpleApplication {
 }

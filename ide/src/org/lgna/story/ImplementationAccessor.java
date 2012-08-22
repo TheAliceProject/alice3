@@ -43,6 +43,7 @@
 
 package org.lgna.story;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,10 +51,10 @@ public class ImplementationAccessor {
 	private ImplementationAccessor() {
 		throw new AssertionError();
 	}
-	public static <T extends org.lgna.story.implementation.EntityImp> T getImplementation( Entity entity ) {
+	public static <T extends org.lgna.story.implementation.EntityImp> T getImplementation( SThing entity ) {
 		return (T)entity.getImplementation();
 	}
-	public static org.lgna.story.implementation.ProgramImp getImplementation( Program program ) {
+	public static org.lgna.story.implementation.ProgramImp getImplementation( SProgram program ) {
 		return program.getImplementation();
 	}
 	public static edu.cmu.cs.dennisc.math.Point3 getPoint3( Position position ) {
@@ -87,6 +88,17 @@ public class ImplementationAccessor {
 	}
 	public static VantagePoint createVantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 		return VantagePoint.createInstance( m );
+	}
+	
+	public static Key getKeyFromKeyCode( int keyCode ) {
+		return Key.getInstanceFromKeyCode( keyCode );
+	}
+	public static int getKeyCodeFromKey( Key key ) {
+		if( key != null ) {
+			return key.getInternal();
+		} else {
+			return -1;
+		}
 	}
 
 	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Paint paint, edu.cmu.cs.dennisc.color.Color4f defaultValue ) {
@@ -122,8 +134,30 @@ public class ImplementationAccessor {
 				mapImagePaintToTexture.put( imagePaint, rv );
 			}
 			return rv;
-		} else {
+		} else if (paint instanceof edu.cmu.cs.dennisc.nebulous.NebulousPaint) {
+			edu.cmu.cs.dennisc.nebulous.NebulousPaint nPaint = (edu.cmu.cs.dennisc.nebulous.NebulousPaint)paint;
+			edu.cmu.cs.dennisc.nebulous.NebulousTexture nTexture = nPaint.getTexture();
+			nTexture.setMipMappingDesired(true);
+			return nTexture;
+		}
+		else {
 			return defaultValue;
+		}
+	}
+	
+	public static Object getKeyedArgumentValue( Object argumentValue ) {
+		try {
+			if( argumentValue != null ) {
+				Class<?> cls = argumentValue.getClass();
+				java.lang.reflect.Method mthd = cls.getDeclaredMethod( "getValue", Object[].class );
+				Object array = new Object[] { argumentValue };
+				return mthd.invoke( null, array );
+			} else {
+				return null;
+			}
+		} catch( Throwable t ) {
+			//t.printStackTrace();
+			return argumentValue;
 		}
 	}
 }

@@ -47,8 +47,14 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.event.TreeSelectionEvent> {
-	public TreeSelectionEventTrigger( javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
-		super( null, treeSelectionEvent );
+	public static TreeSelectionEventTrigger createUserInstance( javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
+		return new TreeSelectionEventTrigger( Origin.USER, null, treeSelectionEvent );
+	}
+	public static TreeSelectionEventTrigger createGeneratorInstance() {
+		return new TreeSelectionEventTrigger( Origin.GENERATOR, null, null );
+	}
+	private TreeSelectionEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
+		super( origin, viewController, treeSelectionEvent );
 	}
 	public TreeSelectionEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -57,7 +63,8 @@ public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.ev
 	protected java.awt.Point getPoint() {
 		return null;
 	}
-	public String getNoteText( java.util.Locale locale ) {
+	@Override
+	public String getNoteText() {
 		return "Select";
 	}
 }

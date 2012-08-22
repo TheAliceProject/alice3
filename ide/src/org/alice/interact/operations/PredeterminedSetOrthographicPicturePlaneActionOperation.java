@@ -94,7 +94,8 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org
 	}
 	
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected void doOrRedoInternal(boolean isDo) {
@@ -109,7 +110,7 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org
 				setPicturePlaneHeight( previousPicturePlaneHeight );
 			}
 			@Override
-			protected StringBuilder updatePresentation(StringBuilder rv, java.util.Locale locale) {
+			protected StringBuilder updatePresentation( StringBuilder rv ) {
 				rv.append( editPresentationKey );
 				return rv;
 			}

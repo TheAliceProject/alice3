@@ -48,7 +48,7 @@ package test.ik.croquet.codecs;
  */
 public enum JointIdCodec implements org.lgna.croquet.ItemCodec< org.lgna.story.resources.JointId > {
 	SINGLETON;
-	public java.lang.StringBuilder appendRepresentation( java.lang.StringBuilder rv, org.lgna.story.resources.JointId value, java.util.Locale locale ) {
+	public java.lang.StringBuilder appendRepresentation( java.lang.StringBuilder rv, org.lgna.story.resources.JointId value ) {
 		return rv;
 	}
 	public org.lgna.story.resources.JointId decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

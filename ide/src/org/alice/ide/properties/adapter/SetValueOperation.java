@@ -62,8 +62,8 @@ public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation
 	}
 	
 	@Override
-	protected void perform(org.lgna.croquet.history.OperationStep step) 
-	{
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		this.originalValue = this.propertyAdapter.getValueCopyIfMutable();
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
@@ -77,8 +77,8 @@ public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation
 				SetValueOperation.this.propertyAdapter.setValue( SetValueOperation.this.originalValue );
 			}
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
-				rv.append( SetValueOperation.this.propertyAdapter.getUndoRedoDescription( locale ) );
+			protected StringBuilder updatePresentation( StringBuilder rv ) {
+				rv.append( SetValueOperation.this.propertyAdapter.getUndoRedoDescription() );
 				return rv;
 			}
 		} );	

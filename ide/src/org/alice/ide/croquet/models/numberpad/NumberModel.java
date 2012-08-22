@@ -48,23 +48,12 @@ package org.alice.ide.croquet.models.numberpad;
 public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /* extends edu.cmu.cs.dennisc.croquet.StringState */ {
 	@Deprecated
 	/*package-private*/ final static org.lgna.croquet.Group NUMBER_PAD_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "afe9fee0-e91f-4344-9b80-6fa84f3458d3" ), "NUMBER_PAD_GROUP" );
-	
-	private static String getInitialText() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		if( ide != null ) {
-			org.lgna.project.ast.Expression previousExpression = ide.getCascadeManager().createCopyOfPreviousExpression();
-			if( previousExpression instanceof org.lgna.project.ast.AbstractValueLiteral ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle previous expression; replace selected text later." );
-//				org.lgna.project.ast.AbstractValueLiteral valueLiteral = (org.lgna.project.ast.AbstractValueLiteral)previousExpression;
-//				return valueLiteral.getValueProperty().getValue().toString();
-			}
-		}
-		return "";
-	}
-	private javax.swing.text.Document document;
-	private javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
+
+	private final javax.swing.text.PlainDocument document = new javax.swing.text.PlainDocument();
+	private final javax.swing.JTextField textField = new javax.swing.JTextField();
+	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
 		private void update( javax.swing.event.DocumentEvent e ) {
-			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( new org.lgna.croquet.triggers.DocumentEventTrigger( e ) );
+			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
 		}
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 			this.update( e );
@@ -77,46 +66,23 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 		}
 	};
 	public NumberModel( org.lgna.croquet.Group group, java.util.UUID id ) {
-		//super( group, id, getInitialText() );
-		this.document = new javax.swing.text.PlainDocument();
-		try {
-			this.document.insertString(0, getInitialText(), null);
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
+		this.textField.setDocument( this.document );
+		this.document.addDocumentListener( this.documentListener );
 	}
-	private javax.swing.text.Document getDocument() {
-		return this.document;
+	
+	public javax.swing.JTextField getTextField() {
+		return this.textField;
 	}
-	public org.lgna.croquet.components.JComponent< javax.swing.JTextField > createTextField() {
-		org.lgna.croquet.components.JComponent< javax.swing.JTextField > rv = new org.lgna.croquet.components.JComponent< javax.swing.JTextField >() {
-			@Override
-			protected javax.swing.JTextField createAwtComponent() {
-				javax.swing.JTextField jTextField = new javax.swing.JTextField();
-				jTextField.setDocument( NumberModel.this.document );
-				return jTextField;
-			}
-		};
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "convert numpad text field to StringState" );
-		rv.getAwtComponent().getDocument().addDocumentListener( this.documentListener );
-		return rv;
+	private void replaceSelection( String s ) {
+		this.textField.replaceSelection( s );
 	}
-	private void append( String s ) {
-		javax.swing.text.Document document = this.getDocument();
-		try {
-			document.insertString( document.getLength(), s, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
+	public void replaceSelection( short numeral ) {
+		this.replaceSelection( Short.toString( numeral ) );
 	}
-	public void append( short numeral ) {
-		this.append( Short.toString( numeral ) );
-	}
-	public void appendDecimalPoint() {
-		this.append( "." );
+	public void replaceSelectionWithDecimalPoint() {
+		this.replaceSelection( DecimalPointOperation.getInstance( this ).getName() );
 	}
 	public void negate() {
-		javax.swing.text.Document document = this.getDocument();
 		final int N = document.getLength();
 		try {
 			boolean isNegative;
@@ -135,35 +101,50 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 			throw new RuntimeException( ble );
 		}
 	}
-	public void deleteLastCharacter() {
-		javax.swing.text.Document document = this.getDocument();
-		final int N = document.getLength();
-		if( document.getLength() > 0 ) {
-			try {
-				document.remove( N-1, 1 );
-			} catch( javax.swing.text.BadLocationException ble ) {
-				throw new RuntimeException( ble );
+	public void delete() {
+		javax.swing.text.Caret caret = this.textField.getCaret();
+		int dot = caret.getDot();
+		int mark = caret.getMark();
+		if( dot != mark ) {
+			this.replaceSelection( "" );
+		} else {
+			if( dot > 0 ) {
+				try {
+					document.remove( dot-1, 1 );
+				} catch( javax.swing.text.BadLocationException ble ) {
+					throw new RuntimeException( ble );
+				}
 			}
 		}
-
 	}
+	public void setText( String text ) {
+		try {
+			this.document.replace( 0, this.document.getLength(), text, null );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
+		}
+	}
+	public void selectAll() {
+		this.textField.selectAll();
+	}
+	
 	public abstract boolean isDecimalPointSupported();
 	protected abstract N valueOf( String s );
 //	protected abstract String getEmptyTextExplanation();
 	public String getExplanationIfOkButtonShouldBeDisabled() {
 		try {
-			javax.swing.text.Document document = this.getDocument();
 			final int N = document.getLength();
 			if( N > 0 ) {
+				String text = document.getText( 0, N );
 				try {
-					org.lgna.project.ast.Expression rv = this.valueOf( document.getText( 0, N ) );
+					org.lgna.project.ast.Expression rv = this.valueOf( text );
 					if( rv != null ) {
 						return null;
 					} else {
-						return document.getText( 0, document.getLength() ) + " is not valid.";
+						return text + " is not valid.";
 					}
 				} catch( NumberFormatException nfe ) {
-					return document.getText( 0, document.getLength() ) + " is not valid.";
+					return text + " is not valid.";
 				}
 			} else {
 				return "Enter a number.";
@@ -174,9 +155,10 @@ public abstract class NumberModel< N extends org.lgna.project.ast.Expression > /
 	}
 	public N getExpressionValue() {
 		try {
-			javax.swing.text.Document document = this.getDocument();
+			final int N = document.getLength();
+			String text = document.getText( 0, N );
 			try {
-				N rv = this.valueOf( document.getText( 0, document.getLength() ) );
+				N rv = this.valueOf( text );
 				return rv;
 			} catch( NumberFormatException nfe ) {
 				return null;

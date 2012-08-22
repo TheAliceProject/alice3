@@ -84,10 +84,9 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 			org.alice.ide.croquet.models.gallerybrowser.GalleryNode root = org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().getTreeModel().getRoot();
 			java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			String lcFilter = filter.toLowerCase();
-			
-			for( boolean isTag : new boolean[] { false, true } ) {
+			for( boolean isTag : new boolean[] { false, true } ) { 
 				this.update( rv, root, lcFilter, Criterion.STARTS_WITH, isTag );
-				if( lcFilter.length() > 1 ) {
+				if( lcFilter.length() > 3 ) {
 					this.update( rv, root, lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH, isTag );
 				}
 			}
@@ -95,28 +94,29 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 		} else {
 			return super.getChildren();
 		}
-		
 	}
 	
 	private java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > update( java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode, String lcFilter, Criterion criterion, boolean isTag, String text ) {
-		String lcName = text.toLowerCase();
-		if( criterion.accept( lcName, lcFilter ) ) {
-			rv.add( treeNode );
+		if( rv.contains( treeNode ) ) {
+			//pass
+		} else {
+			String lcName = text.toLowerCase();
+			if( criterion.accept( lcName, lcFilter ) ) {
+				rv.add( treeNode );
+			}
 		}
 		return rv;
 	}
 	private java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > update( java.util.LinkedList< org.alice.ide.croquet.models.gallerybrowser.GalleryNode > rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode, String lcFilter, Criterion criterion, boolean isTag ) {
 		if( isTag ) {
-			this.update( rv, treeNode, lcFilter, criterion, isTag, treeNode.getText() );
-		} else {
 			String[] tags = treeNode.getTags();
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( treeNode );
 			if( tags != null ) {
 				for( String tag : tags ) {
-					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "\t" + tag );
 					this.update( rv, treeNode, lcFilter, criterion, isTag, tag );
 				}
 			}
+		} else {
+			this.update( rv, treeNode, lcFilter, criterion, isTag, treeNode.getSearchText() );
 		}
 		for( org.alice.ide.croquet.models.gallerybrowser.GalleryNode child : treeNode ) {
 			update( rv, child, lcFilter, criterion, isTag );
@@ -159,7 +159,9 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 					//note: we need to invoke later or transaction history is ignored due to being in the midst of redo
 					javax.swing.SwingUtilities.invokeLater( new Runnable() {
 						public void run() {
-							nextValue.getDropModel( null, null ).fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
+							//todo
+							javax.swing.event.TreeSelectionEvent treeSelectionEvent = null;
+							nextValue.getDropModel( null, null ).fire( org.lgna.croquet.triggers.TreeSelectionEventTrigger.createUserInstance( treeSelectionEvent ) );
 							org.alice.ide.croquet.models.gallerybrowser.GalleryNode followUpValue = nextValue.getParent();
 							if( followUpValue != null ) {
 								if( followUpValue.getChildCount() == 1 ) {

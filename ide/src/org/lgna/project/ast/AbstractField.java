@@ -47,6 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractField extends AbstractMember implements Accessible {
+	public abstract boolean isValid();
 	public abstract AbstractType<?,?,?> getValueType();
 	public abstract boolean isStatic();
 	//cannot be final and volatile

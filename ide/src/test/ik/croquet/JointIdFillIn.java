@@ -71,7 +71,7 @@ public class JointIdFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.stor
 		}
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > node ) {
 		StringBuilder sb = new StringBuilder();
 		final int N = getDepth( jointId );
 		for( int i=0; i<N; i++ ) {
@@ -81,11 +81,11 @@ public class JointIdFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.stor
 		return new javax.swing.JLabel( sb.toString() );
 	}
 	@Override
-	public org.lgna.story.resources.JointId createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > step ) {
+	public org.lgna.story.resources.JointId createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.jointId;
 	}
 	@Override
-	public org.lgna.story.resources.JointId getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > step ) {
+	public org.lgna.story.resources.JointId getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.story.resources.JointId, java.lang.Void > node ) {
 		return this.jointId;
 	}
 }

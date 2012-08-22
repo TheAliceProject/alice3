@@ -45,26 +45,16 @@ package org.lgna.story.event;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyEvent extends edu.cmu.cs.dennisc.pattern.event.Event< java.awt.Component > {
-	private java.awt.event.KeyEvent e;
+public class KeyEvent extends AbstractKeyEvent {
 	public KeyEvent( java.awt.event.KeyEvent e ) {
-		super( e.getComponent() );
-		this.e = e;
-	}
-	
-	public org.lgna.story.Key getKey() {
-		return org.lgna.story.Key.get( e );
-	}
-	
-	public Boolean isKey( org.lgna.story.Key key ) {
-		return this.getKey() == key;
+		super( e );
 	}
 	public Boolean isLetter() {
-		char ch = this.e.getKeyChar();
+		char ch = this.getKeyChar();
 		return Character.isLetter( ch );
 	}
 	public Boolean isDigit() {
-		char ch = this.e.getKeyChar();
+		char ch = this.getKeyChar();
 		return Character.isDigit( ch );
 	}
 }

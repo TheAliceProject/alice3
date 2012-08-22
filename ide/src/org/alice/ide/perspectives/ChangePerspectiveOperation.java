@@ -47,8 +47,8 @@ package org.alice.ide.perspectives;
  * @author Dennis Cosgrove
  */
 public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.alice.ide.perspectives.IdePerspective, ChangePerspectiveOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized ChangePerspectiveOperation getInstance( org.alice.ide.perspectives.IdePerspective perspective ) {
+	private static java.util.Map< org.alice.ide.perspectives.ProjectPerspective, ChangePerspectiveOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	public static synchronized ChangePerspectiveOperation getInstance( org.alice.ide.perspectives.ProjectPerspective perspective ) {
 		ChangePerspectiveOperation rv = map.get( perspective );
 		if( rv != null ) {
 			//pass
@@ -59,9 +59,9 @@ public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation
 		return rv;
 	}
 
-	private final org.alice.ide.perspectives.IdePerspective perspective;
-	private ChangePerspectiveOperation( org.alice.ide.perspectives.IdePerspective perspective ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "2fc3846a-f943-4384-8af9-2292a3c405cd" ) );
+	private final org.alice.ide.perspectives.ProjectPerspective perspective;
+	private ChangePerspectiveOperation( org.alice.ide.perspectives.ProjectPerspective perspective ) {
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2fc3846a-f943-4384-8af9-2292a3c405cd" ) );
 		this.perspective = perspective;
 	}
 	@Override
@@ -69,7 +69,8 @@ public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation
 		return this.perspective.getClass();
 	}
 	@Override
-	protected void perform( org.lgna.croquet.history.OperationStep step ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( this.perspective );
 		step.finish();
 	}

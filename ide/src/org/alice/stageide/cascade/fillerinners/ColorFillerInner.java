@@ -51,15 +51,14 @@ public class ColorFillerInner extends org.alice.ide.cascade.fillerinners.Express
 		super( org.lgna.story.Color.class );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		org.lgna.project.ast.AbstractType<?,?,?> type = this.getType();
 		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
  			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
- 	 			rv.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
+ 	 			items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
  			}
  		}
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.stageide.croquet.models.custom.CustomColorInputDialogOperation.getInstance().getFillIn() );
- 		return rv;
+		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		items.add( org.alice.stageide.custom.ColorCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 	}
 }

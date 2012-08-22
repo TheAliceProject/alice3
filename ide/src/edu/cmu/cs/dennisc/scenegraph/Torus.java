@@ -113,6 +113,7 @@ public class Torus extends Shape {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, CoordinatePlane value ) {
 			//todo: check isEqual
+			Torus.this.boundsChanging();
 			super.setValue( owner, value );
 			Torus.this.fireBoundChange();
 		};

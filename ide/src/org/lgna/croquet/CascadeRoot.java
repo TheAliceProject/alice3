@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> extends CascadeBlankOwner< T[], T > {
+public abstract class CascadeRoot<T,CM extends CompletionModel> extends CascadeBlankOwner< T[], T > {
 	public static final class InternalPopupPrepModelResolver<T> extends IndirectResolver< InternalPopupPrepModel<T>, CascadeRoot<T,?> > {
 		private InternalPopupPrepModelResolver( CascadeRoot<T,?> indirect ) {
 			super( indirect );
@@ -92,8 +92,8 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			this.root.prologue();
 			final org.lgna.croquet.cascade.RtRoot< T,? > rtRoot = new org.lgna.croquet.cascade.RtRoot( this.root );
 			org.lgna.croquet.history.Step< ? > rv;
-			if( rtRoot.isGoodToGo() ) {
-				rv = rtRoot.complete( new org.lgna.croquet.triggers.AutomaticCompletionTrigger( trigger ) );
+			if( rtRoot.isAutomaticallyDetermined() ) {
+				rv = rtRoot.complete( new org.lgna.croquet.triggers.CascadeAutomaticDeterminationTrigger( trigger ) );
 				this.handleFinally();
 			} else {
 				final org.lgna.croquet.history.PopupPrepStep prepStep = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );			
@@ -115,9 +115,24 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			}
 			return rv;
 		}
+		@Override
+		protected void appendRepr( StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( this.root );
+		}
+		@Override
+		protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+			super.updateTutorialStepText( rv, step, edit );
+			rv.append( "<strong>" );
+			CompletionModel completionModel = this.root.getCompletionModel();
+			completionModel.appendUserRepr( rv );
+			rv.append( "</strong>" );
+			return rv;
+		}
 	}
 	private final InternalPopupPrepModel< T > popupPrepModel = new InternalPopupPrepModel< T >( this );
-
+	private final java.util.List<CascadeRejector> cascadeRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private String text;
 	public CascadeRoot( java.util.UUID id, CascadeBlank< T >[] blanks ) {
 		super( id );
 		if( blanks != null ) {
@@ -127,6 +142,30 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			}
 		}
 	}
+	
+	@Override
+	protected void localize() {
+		super.localize();
+		this.text = this.findDefaultLocalizedText();
+	}
+	
+	public final int getCascadeRejectorCount() {
+		return this.cascadeRejectors.size();
+	}
+	public void addCascadeRejector( CascadeRejector cascadeRejector ) {
+		this.cascadeRejectors.add( cascadeRejector );
+	}
+	public void removeCascadeRejector( CascadeRejector cascadeRejector ) {
+		this.cascadeRejectors.remove( cascadeRejector );
+	}
+	public void clearCascadeRejectors() {
+		this.cascadeRejectors.clear();
+	}
+	public java.util.List<org.lgna.croquet.CascadeRejector> getCascadeRejectors() {
+		return java.util.Collections.unmodifiableList( this.cascadeRejectors );
+	}
+	
+	
 	public InternalPopupPrepModel< T > getPopupPrepModel() {
 		return this.popupPrepModel;
 	}
@@ -139,7 +178,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 		return null;
 	}
 	@Override
-	public final T[] createValue( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
+	public final T[] createValue( org.lgna.croquet.cascade.ItemNode< ? super T[], T > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		//todo
 		//this.cascade.getComponentType();
 		//handled elsewhere for now
@@ -154,7 +193,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 	}
 	@Override
 	public final String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
-		return this.getDefaultLocalizedText();
+		return this.text;
 	}
 	@Override
 	public final javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T[], T > step ) {
@@ -163,12 +202,12 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 
 	public abstract CompletionModel getCompletionModel();
 	public abstract Class< T > getComponentType();
-	public abstract CS createCompletionStep( org.lgna.croquet.triggers.Trigger trigger );
-	protected abstract org.lgna.croquet.edits.Edit createEdit( CS completionStep, T[] values );
+	public abstract org.lgna.croquet.history.CompletionStep< CM > createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< CM > completionStep, T[] values );
 
 	public abstract void prologue();
 	public abstract void epilogue();
-	public final void handleCompletion( CS completionStep, T[] values ) {
+	public final void handleCompletion( org.lgna.croquet.history.CompletionStep< CM > completionStep, T[] values ) {
 		try {
 			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep, values );
 			if( edit != null ) {
@@ -180,7 +219,7 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 			this.getPopupPrepModel().handleFinally();
 		}
 	}
-	public final void handleCancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+	public final void handleCancel( org.lgna.croquet.history.CompletionStep< CM > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		try {
 			if( completionStep != null ) {
 				completionStep.cancel();
@@ -190,6 +229,11 @@ public abstract class CascadeRoot<T, CS extends org.lgna.croquet.history.Complet
 		} finally {
 			this.getPopupPrepModel().handleFinally();
 		}
+	}
+	@Override
+	protected void appendRepr( StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( this.getCompletionModel() );
 	}
 	//
 	//	public abstract void handleCompletion( CS completionStep, T[] values );

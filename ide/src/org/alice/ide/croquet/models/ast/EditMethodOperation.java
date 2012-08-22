@@ -90,6 +90,6 @@ public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation >( this, this.getCode(), org.lgna.project.ast.UserMethod.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation >( this, org.lgna.project.ast.UserMethod.class, this.getCode() );
 	}
 }

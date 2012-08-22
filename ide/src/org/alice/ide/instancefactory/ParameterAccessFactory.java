@@ -74,7 +74,7 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
 	}
 	@Override
 	protected org.lgna.croquet.resolvers.Resolver< ParameterAccessFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterAccessFactory >( this, this.parameter, org.lgna.project.ast.UserParameter.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterAccessFactory >( this, org.lgna.project.ast.UserParameter.class, this.parameter );
 	}
 	public org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
@@ -92,13 +92,6 @@ public class ParameterAccessFactory extends AbstractInstanceFactory {
 		return this.parameter.getValueType();
 	}
 	public String getRepr() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "this." );
-//		sb.append( "<strong>" );
-		sb.append( this.parameter.getName() );
-//		sb.append( "</strong>" );
-		sb.append( "</html>" );
-		return sb.toString();
+		return this.parameter.getName();
 	}
 }

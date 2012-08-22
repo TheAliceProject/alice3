@@ -46,28 +46,29 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EventObjectTrigger< E extends java.util.EventObject > extends AbstractTrigger {
+public abstract class EventObjectTrigger< E extends java.util.EventObject > extends Trigger {
 	private final transient org.lgna.croquet.components.ViewController< ?, ? > viewController;
 	private final transient E event;
-	public EventObjectTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, E event ) {
+	public EventObjectTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, E event ) {
+		super( origin );
 		this.viewController = viewController;
 		this.event = event;
 	}
 	public EventObjectTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 		this.viewController = null;
 		this.event = null;
-	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	public E getEvent() {
 		return this.event;
 	}
 	protected abstract java.awt.Point getPoint();
+	@Override
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
 		if( this.viewController != null ) {
 			return this.viewController;
 		} else {
-			Object source = this.event.getSource();
+			Object source = this.event != null ? this.event.getSource() : null;
 			if( source instanceof java.awt.Component ) {
 				java.awt.Component awtComponent = (java.awt.Component)source;
 				org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( awtComponent );
@@ -93,6 +94,7 @@ public abstract class EventObjectTrigger< E extends java.util.EventObject > exte
 			}
 //		}
 	}
+	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		java.awt.Point pt = this.getPoint();
 		java.awt.Component invoker = this.getComponent();

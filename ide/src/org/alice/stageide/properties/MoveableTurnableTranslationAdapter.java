@@ -52,11 +52,11 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
-public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<Point3, org.lgna.story.MovableTurnable> 
+public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<Point3, org.lgna.story.SMovableTurnable> 
 {
 	private AbsoluteTransformationListener absoluteTransformationListener;
 	
-	public MoveableTurnableTranslationAdapter(org.lgna.story.MovableTurnable instance, StandardExpressionState expressionState) {
+	public MoveableTurnableTranslationAdapter(org.lgna.story.SMovableTurnable instance, StandardExpressionState expressionState) {
 		super("Position", instance, expressionState);
 	}
 	
@@ -129,13 +129,13 @@ public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<
 			{
 				duration = 0;
 			}
-			else if (dist < .1)
+			else if (dist < .5)
 			{
-				duration = (dist - .02) / (.1 - .02);
+				duration = (dist - .02) / (.5 - .02);
 			}
 			
 			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().setTranslationOnly(newValue, implementation.getSgComposite().getRoot());
+			implementation.animatePositionOnly( org.lgna.story.implementation.AsSeenBy.SCENE.getActualEntityImplementation(implementation), newValue, false, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY);
 		}
 	}
 

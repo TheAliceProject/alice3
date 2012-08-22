@@ -62,15 +62,15 @@ public class IntegerLiteralFillIn extends org.alice.ide.croquet.models.cascade.E
 	}
 	private final org.lgna.project.ast.IntegerLiteral transientValue;
 	private IntegerLiteralFillIn( int value ) {
-		super( java.util.UUID.fromString( "db052fcb-b0e3-482a-aad9-13b9a2efc370" ) );
+		super( java.util.UUID.fromString( "edc6ae8d-6fb9-4678-b144-71b3e5c65300" ) );
 		this.transientValue = new org.lgna.project.ast.IntegerLiteral( value );
 	}
 	@Override
-	public org.lgna.project.ast.IntegerLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > step ) {
+	public org.lgna.project.ast.IntegerLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node ) {
 		return this.transientValue;
 	}
 	@Override
-	public org.lgna.project.ast.IntegerLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > step ) {
+	public org.lgna.project.ast.IntegerLiteral createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.IntegerLiteral,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return new org.lgna.project.ast.IntegerLiteral( this.transientValue.value.getValue() );
 	}
 	@Override

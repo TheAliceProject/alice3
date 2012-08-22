@@ -49,9 +49,7 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 	private String textForBlankCondition;
 
 	public JSuggestiveTextArea( String text, String textForBlankCondition ) {
-		this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
-		//this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
-		//this.setToolTipText( this.textForBlankCondition );
+		//this.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.TextComponentBorder() );
 		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
 		this.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {
@@ -94,15 +92,8 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 		return false;
 	}
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 64 );
-	}
-	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
-		int xDelta = this.getInsets().left;
-		g.translate( xDelta, 0 );
 		SuggestiveTextUtilities.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
-		g.translate( -xDelta, 0 );
 	}
 }

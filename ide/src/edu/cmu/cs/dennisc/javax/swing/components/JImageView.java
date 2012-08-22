@@ -44,11 +44,6 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 
 public class JImageView extends javax.swing.JComponent {
 	private java.awt.image.BufferedImage bufferedImage;
-	private int desiredSize;
-	public JImageView( int desiredSize ) {
-		this.desiredSize = desiredSize;
-	}
-	
 	public java.awt.image.BufferedImage getBufferedImage() {
 		return this.bufferedImage;
 	}
@@ -57,67 +52,20 @@ public class JImageView extends javax.swing.JComponent {
 		this.repaint();
 	}
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		if( this.bufferedImage != null ) {
-			double aspectRatio = this.bufferedImage.getWidth() / (double)this.bufferedImage.getHeight();
-			int width;
-			int height;
-			if( this.bufferedImage.getWidth() > (double)this.bufferedImage.getHeight() ) {
-				width = this.desiredSize;
-				height = (int)(width / aspectRatio);
-			} else {
-				height = this.desiredSize;
-				width = (int)(height * aspectRatio);
-			}
-			return new java.awt.Dimension( width, height );
-		} else {
-			return super.getPreferredSize();
-		}
-	}
-//	@Override
-//	public java.awt.Dimension getMaximumSize() {
-//		return this.getPreferredSize();
-//	}
-
-	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		//super.paintComponent( g );
 		if( this.bufferedImage != null ) {
-			java.awt.Dimension preferredSize = this.getPreferredSize();
+			int imageWidth = this.bufferedImage.getWidth();
+			int imageHeight = this.bufferedImage.getHeight();
+			double widthToHeightImageAspectRatio = imageWidth / (double)imageHeight;
 
-//			int w;
-//			int h;
-//			double componentAspectRatio = this.getWidth() / (double)this.getHeight();
-//			double imageAspectRatio = this.bufferedImage.getWidth() / (double)this.bufferedImage.getHeight();
-//			if( componentAspectRatio > imageAspectRatio ) {
-//				if( this.getWidth() > this.getHeight() ) {
-//					w = this.getWidth();
-//					h = (int)(w / imageAspectRatio);
-//				} else {
-//					h = this.getHeight();
-//					w = (int)(h * imageAspectRatio);
-//				}
-//			} else {
-//				if( this.getWidth() > this.getHeight() ) {
-//					h = this.getHeight();
-//					w = (int)(h * imageAspectRatio);
-//				} else {
-//					w = this.getWidth();
-//					h = (int)(w / imageAspectRatio);
-//				}
-//			}
-			int w = (int)preferredSize.getWidth();
-			int h = (int)preferredSize.getHeight();
-//			int x = (this.getWidth() - w)/2;
-//			int y = (this.getHeight() - h)/2;
+			java.awt.Dimension componentSize = this.getSize();
+			java.awt.Dimension drawSize = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.calculateBestFittingSize( componentSize, widthToHeightImageAspectRatio );
 			
-			int x = 0;
-			int y = 0;
+			int x = (componentSize.width - drawSize.width)/2;
+			int y = (componentSize.height - drawSize.height)/2;
 			
-//			g.setColor( java.awt.Color.BLACK );
-//			g.drawRect( x, y, w-1, h-1 );
-//			g.drawRect( 0, 0, this.getWidth()-1, this.getHeight()-1 );
-			g.drawImage( this.bufferedImage, x, y, x+w, y+h, 0, 0, this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this );
+			g.drawImage( this.bufferedImage, x, y, x+drawSize.width, y+drawSize.height, 0, 0, imageWidth, imageHeight, this );
 		}
 	}
 }

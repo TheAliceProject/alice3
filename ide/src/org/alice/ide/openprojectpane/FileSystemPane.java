@@ -79,7 +79,8 @@ public class FileSystemPane extends TabContentPanel {
 			}
 
 			@Override
-			protected final void perform( org.lgna.croquet.history.OperationStep step ) {
+			protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+				org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 				java.io.File file = org.lgna.croquet.Application.getActiveInstance().showOpenFileDialog(org.alice.ide.ProjectApplication.getActiveInstance().getMyProjectsDirectory(), null, org.lgna.project.io.IoUtilities.PROJECT_EXTENSION, true);
 				if (file != null) {
 					FileSystemPane.this.textState.setValueTransactionlessly(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
@@ -89,12 +90,13 @@ public class FileSystemPane extends TabContentPanel {
 		}
 
 		BrowseOperation browseOperation = new BrowseOperation();
-		org.lgna.croquet.components.BorderPanel pane = new org.lgna.croquet.components.BorderPanel();
-		pane.addComponent( new org.lgna.croquet.components.Label("file:"), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		pane.addComponent( this.textState.createTextField(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
-		pane.addComponent( browseOperation.createButton(), org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
+		org.lgna.croquet.components.BorderPanel pane = new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineStart( new org.lgna.croquet.components.Label("file:") )
+				.center( this.textState.createTextField() )
+				.lineEnd( browseOperation.createButton() )
+		.build();
 
-		this.addComponent(pane, Constraint.PAGE_START);
+		this.addPageStartComponent( pane );
 	}
 
 	@Override

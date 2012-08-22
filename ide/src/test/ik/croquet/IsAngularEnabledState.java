@@ -54,6 +54,6 @@ public class IsAngularEnabledState extends org.lgna.croquet.BooleanState {
 		return SingletonHolder.instance;
 	}
 	private IsAngularEnabledState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "28638745-6de7-4d92-b72f-82b15643f65e" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "28638745-6de7-4d92-b72f-82b15643f65e" ), true );
 	}
 }

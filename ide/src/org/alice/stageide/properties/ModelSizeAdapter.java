@@ -47,6 +47,7 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractInstancePropertyAdapter;
 
 import edu.cmu.cs.dennisc.math.Dimension3;
+import edu.cmu.cs.dennisc.math.Point3;
 
 public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3, org.lgna.story.implementation.ModelImp>
 {
@@ -60,7 +61,9 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
 	{
 		if (this.instance != null)
 		{
-			return this.instance.getSize();
+			Dimension3 size = this.instance.getSize();
+			size = this.instance.getSize();
+			return size;
 		}
 		return null;
 	}
@@ -68,9 +71,22 @@ public class ModelSizeAdapter extends AbstractInstancePropertyAdapter<Dimension3
 	@Override
 	public void setValue(Dimension3 value) 
 	{
+		Dimension3 currentValue = getValue();
 		super.setValue(value);
 		if (this.instance != null){
-			this.instance.setSize(value);
+			double dist = Point3.calculateDistanceBetween(currentValue, value);
+			double duration = 1;
+			if (dist < .02)
+			{
+				duration = 0;
+			}
+			else if (dist < .5)
+			{
+				duration = (dist - .02) / (.5 - .02);
+			}
+			
+			
+			this.instance.animateSetSize(value, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
 		}
 	}
 

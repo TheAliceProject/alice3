@@ -57,24 +57,17 @@ public class SceneLayoutComposite extends org.lgna.croquet.SimpleComposite< org.
 		super( java.util.UUID.fromString( "c1bb78a0-814c-4658-93b5-2a00c058b756" ) );
 	}
 	@Override
-	protected void localize() {
-	}
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		return false;
-	}
-	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		return new org.lgna.croquet.components.BorderPanel();
 	}
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.getView().addComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance(), org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		this.getView().addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
 	}
 	@Override
-	public void handlePostDectivation() {
+	public void handlePostDeactivation() {
 		this.getView().removeAllComponents();
-		super.handlePostDectivation();
+		super.handlePostDeactivation();
 	}
 }

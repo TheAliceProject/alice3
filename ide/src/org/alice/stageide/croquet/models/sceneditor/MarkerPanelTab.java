@@ -43,7 +43,7 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-public class MarkerPanelTab extends org.lgna.croquet.TabComposite< org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel >
+public class MarkerPanelTab extends org.lgna.croquet.SimpleTabComposite< org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel >
 {
     private static class SingletonHolder {
         private static MarkerPanelTab instance = new MarkerPanelTab();
@@ -62,9 +62,4 @@ public class MarkerPanelTab extends org.lgna.croquet.TabComposite< org.alice.sta
     public boolean isCloseable() {
     	return false;
     }
-	@Override
-	public boolean contains( org.lgna.croquet.Model model ) {
-		//todo
-		return false;
-	}
 }

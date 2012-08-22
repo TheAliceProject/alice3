@@ -165,7 +165,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
 			} else if( this.width == 0 || this.height == 0 ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "width", this.width, "height", this.height );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, this.lookingGlass.getSize() );
 			} else {
 				try {
 					//todo: separate clearing and rendering
@@ -364,10 +364,10 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
-			if( this.width != this.drawable.getWidth() || this.height != this.drawable.getHeight() ) {
+			if( this.width != LookingGlassFactory.getGLPbufferWidth( this.drawable ) || this.height != LookingGlassFactory.getGLPbufferHeight( this.drawable ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
-				this.width = this.drawable.getWidth();
-				this.height = this.drawable.getHeight();
+				this.width = LookingGlassFactory.getGLPbufferWidth( this.drawable );
+				this.height = LookingGlassFactory.getGLPbufferHeight( this.drawable );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
@@ -467,19 +467,23 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
 		
-//		final boolean USE_DEBUG_GL = false;
-//		if( USE_DEBUG_GL ) {
-//			if( gl instanceof javax.media.opengl.DebugGL2 ) {
-//				// pass
-//			} else {
-//				gl = new javax.media.opengl.DebugGL2( gl );
-//				System.out.println( "using debug gl: " + gl );
-//				drawable.setGL( gl );
-//			}
-//		}
+		final boolean USE_DEBUG_GL = false;
+		if( USE_DEBUG_GL ) {
+			if( gl instanceof javax.media.opengl.DebugGL ) {
+				// pass
+			} else {
+				gl = new javax.media.opengl.DebugGL( gl );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.info( "using debug gl: ", gl );
+				drawable.setGL( gl );
+			}
+		}
+		
+		this.width = drawable.getWidth();
+		this.height = drawable.getHeight();
+
 		this.renderContext.setGL( gl );
 		this.pickContext.setGL( gl );
-		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, this.drawable.getWidth(), this.drawable.getHeight() ) );
+		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, LookingGlassFactory.getGLPbufferWidth( this.drawable ), LookingGlassFactory.getGLPbufferHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
@@ -498,13 +502,19 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			//pass
 		} else {
 			initialize( drawable );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: initialize necessary from display" );
 		}
-//		if( this.width > 0 && this.height > 0 ) {
-//			//pass
-//		} else {
-//			this.width = drawable.getWidth();
-//			this.height = drawable.getHeight();
-//		}
+		if( this.width > 0 && this.height > 0 ) {
+			//pass
+		} else {
+			int nextWidth = drawable.getWidth();
+			int nextHeight = drawable.getHeight();
+			if( this.width != nextWidth || this.height != nextHeight ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, nextWidth, nextHeight );
+				this.width = nextWidth;
+				this.height = nextHeight;
+			}
+		}
 		if( this.pickParameters != null ) {
 			//todo?
 			this.pickContext.setGL( gl );
@@ -521,7 +531,6 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		assert drawable == this.drawable;
 		this.width = width;
 		this.height = height;
-		
 		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent( this.lookingGlass, width, height ) );
 	}
 	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {

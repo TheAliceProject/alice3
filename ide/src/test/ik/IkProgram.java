@@ -53,16 +53,16 @@ import org.lgna.ik.enforcer.TightPositionalIkEnforcer.Constraint;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer.OrientationConstraint;
 import org.lgna.ik.enforcer.TightPositionalIkEnforcer.PositionConstraint;
 import org.lgna.ik.solver.Chain;
-import org.lgna.story.Biped;
-import org.lgna.story.Camera;
+import org.lgna.story.SBiped;
+import org.lgna.story.SCamera;
 import org.lgna.story.Color;
-import org.lgna.story.Cone;
+import org.lgna.story.SCone;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Model;
+import org.lgna.story.SModel;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.Position;
-import org.lgna.story.Program;
-import org.lgna.story.Sphere;
+import org.lgna.story.SProgram;
+import org.lgna.story.SSphere;
 import org.lgna.story.Turn;
 import org.lgna.story.TurnDirection;
 import org.lgna.story.implementation.AsSeenBy;
@@ -75,11 +75,10 @@ import edu.cmu.cs.dennisc.math.Vector3;
 /**
  * @author Dennis Cosgrove
  */
-class IkProgram extends Program {
-	
-	private final Camera camera = new Camera();
-	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	private final Model target = createDragProp();;
+class IkProgram extends SProgram {
+	private final SCamera camera = new SCamera();
+	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
+	private final SSphere target = new SSphere();
 	private final IkScene scene = new IkScene( camera, ogre, target );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final NiceDragAdapter modelManipulationDragAdapter = new NiceDragAdapter();
@@ -132,8 +131,8 @@ class IkProgram extends Program {
 	private org.lgna.story.implementation.SphereImp getTargetImp() {
 		return ImplementationAccessor.getImplementation( this.target );
 	}
-	private Model createDragProp() {
-		Sphere mainSphere = new Sphere();
+	private SModel createDragProp() {
+		SSphere mainSphere = new SSphere();
 		
 		mainSphere.setRadius( 0.13 );
 		mainSphere.setPaint( Color.RED );
@@ -142,7 +141,7 @@ class IkProgram extends Program {
 		mainSphere.resizeHeight(.7);
 		mainSphere.resizeWidth(.5);
 		
-		Cone cone = new Cone();
+		SCone cone = new SCone();
 		cone.setBaseRadius(.07);
 		cone.setLength(.2);
 		cone.setPaint(Color.ORANGE);
@@ -481,7 +480,7 @@ class IkProgram extends Program {
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();
 		app.initialize( args );
-		app.setPerspective( new test.ik.croquet.IkPerspective() );
+		app.getFrame().setMainComposite( new test.ik.croquet.IkSplitComposite() );
 
 		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE; 
 		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.RIGHT_WRIST; 

@@ -73,7 +73,7 @@ public class AddExpressionCascade extends org.lgna.croquet.Cascade< org.lgna.pro
 		);
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CascadeCompletionStep< org.lgna.project.ast.Expression > completionStep, org.lgna.project.ast.Expression[] values ) {
+	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > > completionStep, org.lgna.project.ast.Expression[] values ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( values[ 0 ] );
 		ExpressionListSelectionState.getInstance().addItem( values[ 0 ] );
 		return null;

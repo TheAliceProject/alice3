@@ -46,7 +46,7 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeNode< P extends CascadeNode<?,?>, E extends org.lgna.croquet.Element > extends org.lgna.croquet.history.Node< P > {
+public abstract class CascadeNode< P extends CascadeNode<?,?>, E extends org.lgna.croquet.Element > extends org.lgna.croquet.history.TransactionNode< P > {
 	private final org.lgna.croquet.resolvers.Resolver< E > elementResolver;
 	public CascadeNode( P parent, E element ) {
 		super( parent );

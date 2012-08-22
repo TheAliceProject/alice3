@@ -101,7 +101,7 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 		this.refresh();
 	}
 	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type );
-	private static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
+	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
 		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
 			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
 			if( method.isStatic() ) {

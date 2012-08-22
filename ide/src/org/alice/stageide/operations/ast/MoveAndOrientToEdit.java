@@ -49,11 +49,11 @@ import org.lgna.croquet.edits.Edit;
  *
  */
 public class MoveAndOrientToEdit extends Edit {
-	private final org.lgna.story.MovableTurnable toMove;
-	private final org.lgna.story.Entity target;
+	private final org.lgna.story.SMovableTurnable toMove;
+	private final org.lgna.story.SThing target;
 	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
 	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
-	public MoveAndOrientToEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.story.MovableTurnable toMove, org.lgna.story.Entity target) {
+	public MoveAndOrientToEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.story.SMovableTurnable toMove, org.lgna.story.SThing target) {
 		super( completionStep );
 		this.toMove = toMove;
 		this.target = target;
@@ -89,7 +89,7 @@ public class MoveAndOrientToEdit extends Edit {
 		}
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		return null;
 	}
 

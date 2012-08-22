@@ -46,9 +46,9 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ class PreviewPanel extends org.lgna.croquet.components.BorderPanel {
-	private final PanelWithPreview<?> panelWithPreview;
-	public PreviewPanel( PanelWithPreview<?> panelWithPreview ) {
+public class PreviewPanel extends org.lgna.croquet.components.BorderPanel {
+	private final org.alice.ide.preview.components.PanelWithPreview panelWithPreview;
+	public PreviewPanel( org.alice.ide.preview.components.PanelWithPreview panelWithPreview ) {
 		this.panelWithPreview = panelWithPreview;
 	}
 	@Override
@@ -67,6 +67,6 @@ package org.alice.ide.croquet.components;
 	protected void internalRefresh() {
 		super.internalRefresh();
 		this.internalForgetAndRemoveAllComponents();
-		this.addComponent( this.panelWithPreview.createPreviewSubComponent(), Constraint.CENTER );
+		this.addCenterComponent( this.panelWithPreview.createPreviewSubComponent() );
 	}
 }

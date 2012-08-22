@@ -48,13 +48,13 @@ package org.alice.ide.croquet.components;
 public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.components.BorderPanel implements java.awt.print.Printable {
 	public PrintableBorderPanelWithCenterScrollPane( org.lgna.croquet.Composite< ? > composite ) {
 		super( composite );
-		this.addComponent( new org.lgna.croquet.components.ScrollPane(), Constraint.CENTER );
+		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane() );
 	}
 	public PrintableBorderPanelWithCenterScrollPane() {
 		this( null );
 	}
 	public org.lgna.croquet.components.ScrollPane getScrollPane() {
-		return (org.lgna.croquet.components.ScrollPane)this.getComponent( Constraint.CENTER );
+		return (org.lgna.croquet.components.ScrollPane)this.getCenterComponent();
 	}
 	@Override
 	public void addComponent( org.lgna.croquet.components.Component< ? > child, org.lgna.croquet.components.BorderPanel.Constraint constraint ) {
@@ -68,10 +68,10 @@ public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.c
 			return NO_SUCH_PAGE;
 		} else {
 			org.lgna.croquet.components.ScrollPane scrollPane = this.getScrollPane();
-			org.lgna.croquet.components.Component<?> lineStart = this.getComponent( Constraint.LINE_START );
-			org.lgna.croquet.components.Component<?> lineEnd = this.getComponent( Constraint.LINE_END );
-			org.lgna.croquet.components.Component<?> pageStart = this.getComponent( Constraint.PAGE_START );
-			org.lgna.croquet.components.Component<?> pageEnd = this.getComponent( Constraint.PAGE_END );
+			org.lgna.croquet.components.Component<?> lineStart = this.getLineStartComponent();
+			org.lgna.croquet.components.Component<?> lineEnd = this.getLineEndComponent();
+			org.lgna.croquet.components.Component<?> pageStart = this.getPageStartComponent();
+			org.lgna.croquet.components.Component<?> pageEnd = this.getPageEndComponent();
 			
 			
 			//todo: this code will not suffice in the limit

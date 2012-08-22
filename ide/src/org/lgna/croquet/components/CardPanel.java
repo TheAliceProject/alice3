@@ -48,19 +48,22 @@ package org.lgna.croquet.components;
  */
 public class CardPanel extends Panel {
 	private final java.awt.CardLayout cardLayout;
-	public CardPanel( org.lgna.croquet.CardComposite composite, int hgap, int vgap ) {
+	public CardPanel( org.lgna.croquet.CardOwnerComposite composite, int hgap, int vgap ) {
 		super( composite );
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
+		java.awt.Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
 		if( composite != null ) {
-			for( org.lgna.croquet.Composite< ? > card : composite.getCards() ) {
+			java.util.List<org.lgna.croquet.Composite<?>> cards = composite.getCards();
+			for( org.lgna.croquet.Composite< ? > card : cards ) {
 				this.addComposite( card );
 			}
+			if( cards.size() > 0 ) {
+				color = cards.get( 0 ).getView().getBackgroundColor();
+			}
 		}
-		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		//this.setBackgroundColor( null );
-		//this.showComposite( null );
+		this.setBackgroundColor( color );
 	}
-	public CardPanel( org.lgna.croquet.CardComposite composite ) {
+	public CardPanel( org.lgna.croquet.CardOwnerComposite composite ) {
 		this( composite, 0, 0 );
 	}
 	@Deprecated
@@ -136,7 +139,7 @@ public class CardPanel extends Panel {
 
 	private Key getKey( org.lgna.croquet.Composite< ? > composite ) {
 		if( composite != null ) {
-			java.util.UUID id = composite.getMigrationId();
+			java.util.UUID id = composite.getCardId();
 			Key key = this.getKey( id );
 			if( key != null ) {
 				//pass

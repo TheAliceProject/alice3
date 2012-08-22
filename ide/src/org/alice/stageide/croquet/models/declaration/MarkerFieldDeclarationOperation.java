@@ -69,7 +69,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		}
 	};
 
-	public MarkerFieldDeclarationOperation(java.util.UUID id, Class<? extends org.lgna.story.Marker> markerCls) {
+	public MarkerFieldDeclarationOperation(java.util.UUID id, Class<? extends org.lgna.story.SMarker> markerCls) {
 		super( 
 				id, 
 				org.lgna.project.ast.JavaType.getInstance( markerCls ), false, 
@@ -116,20 +116,20 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 	@Override
 	protected void localize() {
 		super.localize();
-		this.colorFieldLabel = this.findLocalizedText( "colorFieldLabel", MarkerFieldDeclarationOperation.class );
+		this.colorFieldLabel = this.findLocalizedText( "colorFieldLabel" );
 	}
 	
 	
 	protected abstract org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > createMainComponent();
 	
 	@Override
-	protected org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > createMainComponent( org.lgna.croquet.history.OperationStep step ) {
+	protected org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.initializeState();
 		return createMainComponent();
 	}
 
 	public org.alice.ide.croquet.models.ast.PropertyState getColorIdState() {
-		return this.getStateForGetter( org.lgna.story.Marker.class, "getColorId" );
+		return this.getStateForGetter( org.lgna.story.SMarker.class, "getColorId" );
 	}
 	
 	public String getColorFieldLabel() {
@@ -137,7 +137,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 	}
 	
 	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.OperationStep step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		super.customize( step, declaringType, field, rv );
 		org.alice.ide.croquet.models.ast.PropertyState colorState = this.getColorIdState();
 		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 

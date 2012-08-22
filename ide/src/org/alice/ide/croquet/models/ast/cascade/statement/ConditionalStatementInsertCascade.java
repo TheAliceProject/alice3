@@ -63,6 +63,12 @@ public class ConditionalStatementInsertCascade extends StatementInsertCascade {
 		super( java.util.UUID.fromString( "52743dfb-d19c-455a-a723-0bd3d59b2326" ), blockStatementIndexPair, ConditionBlank.getInstance() );
 	}
 	@Override
+	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
+		assert statement instanceof org.lgna.project.ast.ConditionalStatement : statement;
+		org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)statement;
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( conditionalStatement.booleanExpressionBodyPairs.get( 0 ).expression.getValue() );
+	}
+	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createConditionalStatement( expressions[ 0 ] );
 	}

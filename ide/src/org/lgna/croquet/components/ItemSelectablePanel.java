@@ -46,18 +46,10 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > extends ItemSelectable<javax.swing.JPanel, E> {
-	private static final org.lgna.croquet.Group ITEM_SELECTABLE_IMPLEMENTATION_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "40759574-7892-469f-93c7-730ed6617d3e" ), "ITEM_SELECTABLE_IMPLEMENTATION_GROUP" );
-	private static class ImplementationBooleanState extends org.lgna.croquet.BooleanState {
-		public ImplementationBooleanState() {
-			super( ITEM_SELECTABLE_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "f0faf391-1b41-417d-98a9-ab9ba1a20335" ), false );
-			this.pushIgnore();  //note: we do not pop
-		}
-	}
+public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extends ItemSelectable<javax.swing.JPanel, E, org.lgna.croquet.ListSelectionState<E>> {
 	public ItemSelectablePanel( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
-	
 	private boolean isInitialized = false;
 	@Override
 	protected void handleDisplayable() {
@@ -78,7 +70,20 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel();
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+			}
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				java.awt.Dimension rv = super.getMaximumSize();
+				if( ItemSelectablePanel.this.isMaximumSizeClampedToPreferredSize() ) {
+					rv.setSize( this.getPreferredSize() );
+				}
+				return rv;
+			}
+		};
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 		rv.setOpaque( false );
@@ -87,7 +92,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 		return rv;
 	}
 
-	private java.util.Map<E, D > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<E, ID> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	private javax.swing.ComboBoxModel comboBoxModel;
 	private javax.swing.ListSelectionModel listSelectionModel;
@@ -108,27 +113,19 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 		}
 	};
 
-	protected D getItemDetails( E item ) {
+	protected ID getItemDetails( E item ) {
 		return this.map.get( item );
 	}
-	protected Iterable<D> getAllItemDetails() {
+	protected java.util.Collection<ID> getAllItemDetails() {
 		return this.map.values();
 	}
-//	public D getSelectedItemDetails() {
-//		for( D details : this.getAllItemDetails() ) {
-//			AbstractButton<?> button = details.getButton();
-//			if( button.getAwtComponent().getModel().isSelected() ) {
-//				return details;
-//			}
-//		}
-//		return null;
-//	}
-	
-	protected abstract D createItemDetails( E item, org.lgna.croquet.BooleanState booleanState );
+
 	protected abstract void removeAllDetails();
 	protected abstract void addPrologue( int count );
-	protected abstract void addItem( D itemDetails );
+	protected abstract void addItem( ID itemDetails );
 	protected abstract void addEpilogue();
+	
+	protected abstract BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState );
 	
 	private java.util.ArrayList<E> prevItems = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 	
@@ -160,12 +157,11 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 					this.addPrologue( N );
 					for( int i=0; i<N; i++ ) {
 						E item = (E)this.comboBoxModel.getElementAt( i );
-						D itemDetails = this.map.get( item );
+						ID itemDetails = this.map.get( item );
 						if( itemDetails != null ) {
 							//pass
 						} else {
-							org.lgna.croquet.BooleanState booleanState = new ImplementationBooleanState();
-							itemDetails = this.createItemDetails( item, booleanState );
+							itemDetails = this.createItemDetails( item );
 							this.map.put( item, itemDetails );
 						}
 						itemDetails.add( this.buttonGroup );
@@ -187,15 +183,23 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 		}
 		this.revalidateAndRepaint();
 	}
+	protected abstract ID createItemDetails( E item );
 	protected void handleItemSelected( E item ) {
 		if( item != null ) {
-			D itemDetails = this.map.get( item );
+			ItemDetails<E> itemDetails = this.map.get( item );
 			assert itemDetails != null : item;
 			itemDetails.setSelected( true );
 		} else {
-			javax.swing.ButtonModel model = this.buttonGroup.getSelection();
-			if( model != null ) {
-				this.buttonGroup.setSelected(model, false);
+			//todo: use buttonGroup.clearSelection() when 1.6
+			java.util.Enumeration<javax.swing.AbstractButton> buttonEnum = this.buttonGroup.getElements();
+			while( buttonEnum.hasMoreElements() ) {
+				javax.swing.AbstractButton button = buttonEnum.nextElement();
+				javax.swing.ButtonModel model = button.getModel();
+				if( model.isSelected() ) {
+					this.buttonGroup.remove( button );
+					model.setSelected( false );
+					this.buttonGroup.add( button );
+				}
 			}
 		}
 	}
@@ -205,7 +209,7 @@ public abstract class ItemSelectablePanel< E, D extends ItemDetails<E,D,?> > ext
 
 	@Override
 	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( E item ) {
-		D itemDetails = this.getItemDetails( item );
+		ItemDetails<E> itemDetails = this.getItemDetails( item );
 		if( itemDetails != null ) {
 			return itemDetails.getTrackableShape();
 		} else {

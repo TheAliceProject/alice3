@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import org.lgna.croquet.components.ComponentManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,12 +58,13 @@ public class Manager {
 	public static Model findFirstAppropriateModel( java.util.UUID id ) {
 		java.util.Set< Model > models = lookupModels( id );
 		for( Model model : models ) {
-			for( org.lgna.croquet.components.JComponent<?> component : model.getComponents() ) {
+			java.util.Queue< org.lgna.croquet.components.JComponent<?> > components = ComponentManager.getComponents( model );
+			for( org.lgna.croquet.components.JComponent<?> component : components ) {
 				if( component.getAwtComponent().isShowing() ) {
 					return model;
 				}
 			}
-			for( org.lgna.croquet.components.JComponent<?> component : model.getComponents() ) {
+			for( org.lgna.croquet.components.JComponent<?> component : components ) {
 				if( component.getAwtComponent().isVisible() ) {
 					return model;
 				}
@@ -81,7 +84,7 @@ public class Manager {
 		return composites;
 	}
 	
-	/*package-private*/ static void registerModel( Model model ) {
+	public static void registerModel( Model model ) {
 		java.util.UUID id = model.getMigrationId();
 		synchronized ( mapIdToModels ) {
 			java.util.Set< Model > set = mapIdToModels.get( id );
@@ -94,7 +97,7 @@ public class Manager {
 			set.add( model );
 		}
 	}
-	/*package-private*/ static void unregisterModel( Model model ) {
+	public static void unregisterModel( Model model ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "unregister:", model );
 		java.util.UUID id = model.getMigrationId();
 		synchronized ( mapIdToModels ) {
@@ -124,12 +127,12 @@ public class Manager {
 		return rv;
 	}
 
-	/*package-private*/ static void localizeAllModels() {
+	/*package-private*/ static void relocalizeAllElements() {
 		synchronized ( mapIdToModels ) {
 			java.util.Collection< java.util.Set< Model > > sets = mapIdToModels.values();
 			for( java.util.Set< Model > set : sets ) {
 				for( Model model : set ) {
-					model.localize();
+					model.relocalize();
 //					for( JComponent<?> component : model.getComponents() ) {
 //					}
 				}

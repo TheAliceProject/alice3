@@ -127,21 +127,36 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		this.renderContext.gl.glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 	}
 
+	private boolean isInTheMidstOfFinalization = false;
+	@Override
+	public void finalize() {
+		this.isInTheMidstOfFinalization = true;
+		try {
+			super.finalize();
+		} finally {
+			this.isInTheMidstOfFinalization = false;
+		}
+	}
+
 	// java.awt.Graphics
 
 	@Override
 	public void dispose() {
-		this.renderContext.gl.glFlush();
-		if( isValid() ) {
-			this.renderContext.gl.glMatrixMode( GL_MODELVIEW );
-			this.renderContext.gl.glPopMatrix();
-			this.renderContext.gl.glMatrixMode( GL_PROJECTION );
-			this.renderContext.gl.glPopMatrix();
-			this.width = -1;
-			this.height = -1;
+		if( this.isInTheMidstOfFinalization ) {
+			//pass
+		} else {
+			this.renderContext.gl.glFlush();
+			if( isValid() ) {
+				this.renderContext.gl.glMatrixMode( GL_MODELVIEW );
+				this.renderContext.gl.glPopMatrix();
+				this.renderContext.gl.glMatrixMode( GL_PROJECTION );
+				this.renderContext.gl.glPopMatrix();
+				this.width = -1;
+				this.height = -1;
+			}
 		}
 	}
-
+	
 	@Override
 	public boolean isValid() {
 		return this.width != -1 && this.height != -1;

@@ -43,24 +43,24 @@
 
 package test;
 
-import org.lgna.story.Camera;
-import org.lgna.story.Ground;
-import org.lgna.story.Program;
-import org.lgna.story.Scene;
-import org.lgna.story.Sun;
+import org.lgna.story.SCamera;
+import org.lgna.story.SGround;
+import org.lgna.story.SProgram;
+import org.lgna.story.SScene;
+import org.lgna.story.SSun;
 import org.lgna.story.TurnDirection;
 
-class MyScene extends Scene {
-	private final Camera camera = new Camera();
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
+class MyScene extends SScene {
+	private final SCamera camera = new SCamera();
+	private final SSun sun = new SSun();
+	private final SGround snow = new SGround();
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
 		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
-		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
+		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 	}
 	private void performCustomSetup() {
 	}
@@ -85,7 +85,7 @@ class MyScene extends Scene {
 /**
  * @author Dennis Cosgrove
  */
-public class BootStrapStory extends Program {
+public class BootStrapStory extends SProgram {
 	private final MyScene myScene = new MyScene();
 	public void playOutStory() {
 		this.setActiveScene( this.myScene );

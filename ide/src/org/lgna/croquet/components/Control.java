@@ -115,7 +115,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 		return this.leftButtonPressedEvent;
 	}
 
-	public void handleMousePressed( java.awt.event.MouseEvent e ) {
+	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
 //		java.awt.event.MouseEvent prevMousePressedEvent = this.mousePressedEvent;
 		this.isWithinClickThreshold = true;
 		this.mousePressedEvent = e;
@@ -124,7 +124,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 			this.leftButtonPressedEvent = e;
 			if( this.leftButtonPressModel != null ) {
-				this.leftButtonPressModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( this, e ) );
+				this.leftButtonPressModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
 //		} else if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
 //			if( Application.getSingleton().isDragInProgress() ) {
@@ -136,31 +136,31 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 //			}
 		}
 	}
-	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
+	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		this.setPressed( false );
 	}
-	public void handleMouseClicked( java.awt.event.MouseEvent e ) {
+	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
 		switch( e.getClickCount() ) {
 		case 1:
 			if( this.leftButtonClickModel != null ) {
-				this.leftButtonClickModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( this, e ) );
+				this.leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
 			break;
 		case 2:
 			if( this.leftButtonDoubleClickModel != null ) {
-				this.leftButtonDoubleClickModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( this, e ) );
+				this.leftButtonDoubleClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
 			break;
 		}
 	}
-	public void handleMouseEntered( java.awt.event.MouseEvent e ) {
+	protected void handleMouseEntered( java.awt.event.MouseEvent e ) {
 		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
 			//pass
 		} else {
 			this.setActive( true );
 		}
 	}
-	public void handleMouseExited( java.awt.event.MouseEvent e ) {
+	protected void handleMouseExited( java.awt.event.MouseEvent e ) {
 		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
 			//pass
 		} else {
@@ -168,7 +168,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 		}
 	}
 
-	public void handleMouseMoved( java.awt.event.MouseEvent e ) {
+	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
 	}
 
 	private float clickThreshold = 5.0f;
@@ -185,7 +185,7 @@ public abstract class Control< J extends javax.swing.AbstractButton, M extends o
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		this.isWithinClickThreshold = false;
 	}
-	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
+	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		if( this.isWithinClickThreshold ) {
 			int dx = e.getX() - this.mousePressedEvent.getX();
 			int dy = e.getY() - this.mousePressedEvent.getY();

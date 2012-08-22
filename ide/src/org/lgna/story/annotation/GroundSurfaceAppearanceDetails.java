@@ -52,6 +52,6 @@ public enum GroundSurfaceAppearanceDetails implements org.lgna.project.annotatio
 		return org.lgna.story.ImagePaint.class;
 	}
 	public java.lang.reflect.Field[] getFlds() {
-		return org.lgna.story.Ground.SurfaceAppearance.class.getFields();
+		return org.lgna.story.SGround.SurfaceAppearance.class.getFields();
 	}
 }

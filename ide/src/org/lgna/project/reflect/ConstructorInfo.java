@@ -63,4 +63,7 @@ public class ConstructorInfo extends MemberWithParametersInfo {
 		}
 		return this.cnstrctr;
 	}
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+	}
 }

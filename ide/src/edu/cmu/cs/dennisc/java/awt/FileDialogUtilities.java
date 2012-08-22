@@ -231,4 +231,36 @@ public class FileDialogUtilities {
 	public static java.io.File showSaveFileDialog( java.awt.Component component, String directoryPath, String filename, String extension, boolean isSharingDesired ) {
 		return showFileDialog( component, "Save...", java.awt.FileDialog.SAVE, directoryPath, filename, extension, isSharingDesired ); 
 	}
+	
+	private static java.io.File showFileDialog( int mode, java.util.UUID sharingId, java.awt.Component component, String title, java.io.File directory, String filename, String extensionToAddIfMissing ) {
+		java.awt.Component root = javax.swing.SwingUtilities.getRoot( component );
+		FileDialog fileDialog = createFileDialog( root, title, mode );
+		fileDialog.show();
+		String fileName = fileDialog.getFile();
+		java.io.File rv;
+		if( fileName != null ) {
+			String requestedDirectoryPath = fileDialog.getDirectory();
+//			if( isSharingDesired ) {
+//				FileDialogUtilities.mapSecondaryKeyToPath.put( secondaryKey, requestedDirectoryPath );
+//			}
+			java.io.File rvDirectory = new java.io.File( requestedDirectoryPath );
+			if( mode == java.awt.FileDialog.SAVE ) {
+				if( fileName.endsWith( "." + extensionToAddIfMissing ) ) {
+					//pass
+				} else {
+					fileName += "." + extensionToAddIfMissing;
+				}
+			}
+			rv = new java.io.File( rvDirectory, fileName );
+		} else {
+			rv = null;
+		}
+		return rv;
+	}
+	public static java.io.File showOpenFileDialog( java.util.UUID sharingId, java.awt.Component component, String title, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter ) {
+		return showFileDialog( java.awt.FileDialog.LOAD, sharingId, component, title, initialDirectory, initialFilename, null );
+	}
+	public static java.io.File showSaveFileDialog( java.util.UUID sharingId, java.awt.Component component, String title, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter, String extensionToAddIfMissing ) {
+		return showFileDialog( java.awt.FileDialog.SAVE, sharingId, component, title, initialDirectory, initialFilename, extensionToAddIfMissing );
+	}
 }

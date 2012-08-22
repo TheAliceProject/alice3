@@ -46,9 +46,7 @@ package edu.cmu.cs.dennisc.ui.lookingglass;
  * @author Dennis Cosgrove
  */
 public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter {
-	private edu.cmu.cs.dennisc.math.Plane m_bufferPlaneInAbsolute = new edu.cmu.cs.dennisc.math.Plane();
-
-	protected abstract edu.cmu.cs.dennisc.math.Plane getPlaneInAbsolute( edu.cmu.cs.dennisc.math.Plane rv );
+	protected abstract edu.cmu.cs.dennisc.math.Plane getPlaneInAbsolute();
 	protected abstract void handlePointInAbsolute( edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute );
 	
 	@Override
@@ -62,8 +60,8 @@ public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.
 			edu.cmu.cs.dennisc.math.Ray ray = getOnscreenLookingGlass().getRayAtPixel( p.x, p.y, sgCamera );
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgCamera.getAbsoluteTransformation();
 			ray.transform( m );
-			getPlaneInAbsolute( m_bufferPlaneInAbsolute );
-			double t = m_bufferPlaneInAbsolute.intersect( ray );
+			edu.cmu.cs.dennisc.math.Plane planeInAbsolute = this.getPlaneInAbsolute();
+			double t = planeInAbsolute.intersect( ray );
 			rv = ray.getPointAlong( t );
 		} else {
 			rv = null;

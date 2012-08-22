@@ -65,7 +65,7 @@ public class LocalAssignmentTemplateDragModel extends StatementTemplateDragModel
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAssignmentTemplateDragModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAssignmentTemplateDragModel >( this, this.local, org.lgna.project.ast.UserLocal.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAssignmentTemplateDragModel >( this, org.lgna.project.ast.UserLocal.class, this.local );
 	}
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

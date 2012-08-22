@@ -247,7 +247,12 @@ public class CameraMarkerTracker implements PropertyListener, org.lgna.croquet.L
 		if (this.markerToUpdate != null)
 		{
 			Transformable cameraParent = (Transformable)camera.getParent();
-			cameraParent.setTransformation( this.markerToUpdate.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ), camera.getRoot() );
+			edu.cmu.cs.dennisc.scenegraph.Composite root = cameraParent.getRoot();
+			if( root != null ) {
+				cameraParent.setTransformation( this.markerToUpdate.getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE ), root );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cameraParent );
+			}
 			this.markerToUpdate.setShowing(false);
 			this.markerToUpdate.setLocalTransformation(AffineMatrix4x4.accessIdentity());
 			this.markerToUpdate.getSgComposite().setParent(cameraParent);

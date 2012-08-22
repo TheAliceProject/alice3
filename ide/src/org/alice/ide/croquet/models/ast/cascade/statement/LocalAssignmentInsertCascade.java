@@ -53,6 +53,18 @@ public class LocalAssignmentInsertCascade extends ExpressionStatementInsertCasca
 		this.local = local;
 	}
 	@Override
+	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
+		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
+		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
+		
+		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
+		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
+		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
+		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+				assignmentExpression.rightHandSide.getValue() 
+		);
+	}
+	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createLocalAssignment( this.local, expressions[ 0 ] );
 	}

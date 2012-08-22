@@ -65,7 +65,7 @@ public abstract class MarkerFieldList extends FieldList {
 	}
 	@Override
 	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserField item ) {
-		org.lgna.croquet.components.Button renameButton = org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( item ).createButton();
+		org.lgna.croquet.components.Button renameButton = org.alice.ide.ast.rename.RenameFieldComposite.getInstance( item ).getOperation().createButton();
 		if( item.isDeletionAllowed.getValue() ) {
 			return new org.lgna.croquet.components.LineAxisPanel(
 					renameButton,

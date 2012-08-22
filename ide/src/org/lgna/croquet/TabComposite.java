@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabComposite< V extends org.lgna.croquet.components.View<?,?> > extends Composite< V > {
+public abstract class TabComposite< V extends org.lgna.croquet.components.View<?,?> > extends AbstractComposite< V > {
 	private String titleText;
 	private javax.swing.Icon titleIcon;
 
@@ -69,12 +69,13 @@ public abstract class TabComposite< V extends org.lgna.croquet.components.View<?
 	}
 	@Override
 	protected void localize() {
-		this.setTitleText( this.getDefaultLocalizedText() );
+		super.localize();
+		this.setTitleText( this.findDefaultLocalizedText() );
 	}
 	public String getTitleText() {
 		return this.titleText;
 	}
-	private void setTitleText( String titleText ) {
+	protected void setTitleText( String titleText ) {
 		this.titleText = titleText;
 		this.updateTitleText();
 	}
@@ -97,9 +98,18 @@ public abstract class TabComposite< V extends org.lgna.croquet.components.View<?
 	}
 	
 	@Override
-	protected final StringBuilder appendRepr( StringBuilder rv ) {
-		rv.append( this.getTitleText() );
-		return rv;
+	public void appendUserRepr( StringBuilder userRepr ) {
+		userRepr.append( this.getTitleText() );
+	}
+	@Override
+	protected final void appendRepr( StringBuilder repr ) {
+		this.appendUserRepr( repr );
+	}
+	@Override
+	protected String createRepr() {
+		StringBuilder sb = new StringBuilder();
+		this.appendRepr( sb );
+		return sb.toString();
 	}
 	
 	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {

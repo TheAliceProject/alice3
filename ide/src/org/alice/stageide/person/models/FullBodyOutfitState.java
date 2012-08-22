@@ -63,7 +63,7 @@ public class FullBodyOutfitState extends AbstractListSelectionState<org.lgna.sto
 			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.FullBodyOutfit t ) {
 				throw new RuntimeException( "todo" );
 			}
-			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.FullBodyOutfit value, java.util.Locale locale ) {
+			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
 				rv.append( value );
 				return rv;
 			}

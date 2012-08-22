@@ -53,7 +53,7 @@ public class IsSnapEnabledState extends BooleanState {
 		return SingletonHolder.instance;
 	}
 	private IsSnapEnabledState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "c4db1a3d-9d27-4c21-971d-78059b37abed" ), false );
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c4db1a3d-9d27-4c21-971d-78059b37abed" ), false );
 	}
 
 }

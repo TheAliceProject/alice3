@@ -48,11 +48,126 @@ package org.lgna.croquet;
  */
 public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 	public static class Details {
+		private static int toInt( double d, double minimum, double maximum, double stepSize ) {
+			double total = maximum - minimum;
+			double portion = d - minimum;
+			double numberOfSteps = Math.ceil( total / stepSize );
+			return (int)( ( portion / total ) * numberOfSteps );
+		}
+		private static double toDouble( int i, double minimum, double stepSize ) {
+			return minimum + i*stepSize;
+		}
+		
+		
+		private static final int MINIMUM = 0;
+		private static final int EXTENT = 0;
+		private static class DoubleSwingModel implements SwingModel< Double > {
+			private boolean isInTheMidstOfStateChanged = false;
+			private class CustomSpinnerNumberModel extends javax.swing.SpinnerNumberModel {
+				public CustomSpinnerNumberModel( Details details ) {
+					super( details.initialValue, details.minimum, details.maximum, details.stepSize );
+				}
+				@Override
+				protected void fireStateChanged() {
+					super.fireStateChanged();
+					if( isInTheMidstOfStateChanged ) {
+						//pass
+					} else {
+						isInTheMidstOfStateChanged = true;
+						try {
+							boolean isAdjusting = false;
+							double value = (Double)this.getValue();
+							double minimum = (Double)this.getMinimum();
+							double maximum = (Double)this.getMaximum();
+							double stepSize = this.getStepSize().doubleValue();
+							int v = toInt( value, minimum, maximum, stepSize );
+							int max = toInt( maximum, minimum, maximum, stepSize );
+							
+							boundedRangeModel.setRangeProperties( v, EXTENT, MINIMUM, max, isAdjusting );
+						} finally {
+							isInTheMidstOfStateChanged = false;
+						}
+					}
+				}
+			}
+			private class CustomBoundedRangeModel extends javax.swing.DefaultBoundedRangeModel {
+				public CustomBoundedRangeModel( Details details ) {
+					super( details.toIntInitialValue(), EXTENT, MINIMUM, details.toIntMaximum() );
+				}
+				@Override
+				protected void fireStateChanged() {
+					super.fireStateChanged();
+					if( isInTheMidstOfStateChanged ) {
+						//pass
+					} else {
+						isInTheMidstOfStateChanged = true;
+						try {
+							int v = this.getValue();
+							//spinnerModel.setMaximum( this.getMaximum() );
+							spinnerModel.setValue( toDouble( v, ((Number)spinnerModel.getMinimum()).doubleValue(), spinnerModel.getStepSize().doubleValue() ) );
+						} finally {
+							isInTheMidstOfStateChanged = false;
+						}
+					}
+				}
+			}
+			private final CustomBoundedRangeModel boundedRangeModel;
+			private final CustomSpinnerNumberModel spinnerModel;
+
+			public DoubleSwingModel( Details details ) {
+				this.spinnerModel = new CustomSpinnerNumberModel( details );
+				this.boundedRangeModel = new CustomBoundedRangeModel( details );
+			}
+			public javax.swing.BoundedRangeModel getBoundedRangeModel() {
+				return this.boundedRangeModel;
+			}
+			public javax.swing.SpinnerNumberModel getSpinnerModel() {
+				return this.spinnerModel;
+			}
+			public void setValue( Double value ) {
+				this.spinnerModel.setValue( value );
+			}			
+			public void setAll( Double value, Double minimum, Double maximum, Double stepSize, Double extent, boolean isAdjusting ) {
+				if( minimum != null ) {
+					Number prevMinimum = (Number)this.spinnerModel.getMinimum();
+					if( minimum.doubleValue() == prevMinimum.doubleValue() ) {
+						//pass
+					} else {
+						this.spinnerModel.setMinimum( minimum );
+					}
+				}
+				if( maximum != null ) {
+					Number prevMaximum = (Number)this.spinnerModel.getMaximum();
+					if( maximum.doubleValue() == prevMaximum.doubleValue() ) {
+						//pass
+					} else {
+						this.spinnerModel.setMaximum( maximum );
+					}
+				}
+				if( stepSize != null ) {
+					Number prevStepSize = this.spinnerModel.getStepSize();
+					if( stepSize.doubleValue() == prevStepSize.doubleValue() ) {
+						//pass
+					} else {
+						this.spinnerModel.setStepSize( stepSize );
+					}
+				}
+				if( value != null ) {
+					Number prevValue = (Number)this.spinnerModel.getValue();
+					if( value.doubleValue() == prevValue.doubleValue() ) {
+						//pass
+					} else {
+						this.spinnerModel.setValue( stepSize );
+					}
+				}
+			}
+		}
+
 		private final Group group;
 		private final java.util.UUID id;
 		private double minimum = 0.0;
 		private double maximum = 1.0;
-		private double delta = 0.01;
+		private double stepSize = 0.01;
 		private double initialValue = 0.5;
 		public Details( Group group, java.util.UUID id ) {
 			this.group = group;
@@ -66,54 +181,28 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 			this.maximum = maximum;
 			return this;
 		}
-		public Details delta( double delta ) {
-			this.delta = delta;
+		public Details stepSize( double stepSize ) {
+			this.stepSize = stepSize;
 			return this;
 		}
 		public Details initialValue( double initialValue ) {
 			this.initialValue = initialValue;
 			return this;
 		}
-		private javax.swing.BoundedRangeModel boundedRangeModel;
-		private javax.swing.SpinnerModel spinnerModel;
-		private synchronized javax.swing.BoundedRangeModel getBoundedRangeModel() {
-			if( this.boundedRangeModel != null ) {
-				//pass
-			} else {
-				this.boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-				int min = 0;
-				int max = (int)((this.maximum-this.minimum)/this.delta);
-				int ext = 0;
-				int val = (int)((this.initialValue-this.minimum)/this.delta);
-				this.boundedRangeModel.setRangeProperties( val, ext, min, max, false );
-			}
-			return this.boundedRangeModel;
+		private synchronized DoubleSwingModel createSwingModel() {
+			return new DoubleSwingModel( this );
 		}
-		private synchronized javax.swing.SpinnerModel getSpinnerModel() {
-			if( this.spinnerModel != null ) {
-				//pass
-			} else {
-				this.spinnerModel = new javax.swing.AbstractSpinnerModel() {
-					public Double getNextValue() {
-						return this.getValue() + Details.this.boundedRangeModel.getExtent();
-					}
-					public Double getPreviousValue() {
-						return this.getValue() - Details.this.boundedRangeModel.getExtent();
-					}
-					public Double getValue() {
-						return (double)Details.this.boundedRangeModel.getValue();
-					}
-					public void setValue( Object value ) {
-						Details.this.boundedRangeModel.setValue( (Integer)value );
-					}
-				};
-			}
-			return this.spinnerModel;
+		private int toIntInitialValue() {
+			return toInt( this.initialValue, this.minimum, this.maximum, this.stepSize );
+		}
+		private int toIntMaximum() {
+			return toInt( this.maximum, this.minimum, this.maximum, this.stepSize );
 		}
 	}
 	public BoundedDoubleState( Details details ) {
-		super( details.group, details.id, details.getBoundedRangeModel().getValue()/100.0, details.getBoundedRangeModel(), details.getSpinnerModel() );
+		super( details.group, details.id, details.initialValue, details.createSwingModel() );
 	}
+
 	@Override
 	public Class< Double > getItemClass() {
 		return Double.class;
@@ -126,19 +215,26 @@ public abstract class BoundedDoubleState extends BoundedNumberState< Double > {
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Double value ) {
 		binaryEncoder.encode( value );
 	}
-//	@Override
-//	protected void commitStateEdit( Double prevValue, Double nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-//		org.lgna.croquet.history.TransactionManager.handleStateChanged( BoundedDoubleState.this, prevValue, nextValue, isAdjusting, trigger );
-//	}
+	
 	@Override
-	protected Double fromInt( int value ) {
-//		java.math.BigDecimal bigDecimal = new java.math.BigDecimal( value );
-//		bigDecimal = bigDecimal.movePointLeft( 2 );
-		return value/100.0;
+	public Double getMinimum() {
+		return (Double)this.getSwingModel().getSpinnerModel().getMinimum();
 	}
 	@Override
-	protected int toInt( Double value ) {
-
-		return (int)(value*100);
+	public void setMinimum( Double minimum ) {
+		this.getSwingModel().getSpinnerModel().setMinimum( minimum );
+	}
+	@Override
+	public Double getMaximum() {
+		return (Double)this.getSwingModel().getSpinnerModel().getMaximum();
+	}
+	@Override
+	public void setMaximum( Double maximum ) {
+		this.getSwingModel().getSpinnerModel().setMaximum( maximum );
+	}
+	@Override
+	protected Double getActualValue() {
+		Number value = (Number)this.getSwingModel().getSpinnerModel().getValue();
+		return value.doubleValue();
 	}
 }

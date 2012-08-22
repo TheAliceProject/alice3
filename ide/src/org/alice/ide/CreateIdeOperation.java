@@ -59,7 +59,7 @@ public class CreateIdeOperation extends org.lgna.croquet.ActionOperation {
 	}
 	private Class<? extends IDE> cls;
 	private CreateIdeOperation( Class<? extends IDE> cls ) {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "3780661e-0bfe-4bc3-b8c8-a27f81b65632" ) );
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "3780661e-0bfe-4bc3-b8c8-a27f81b65632" ) );
 		this.cls = cls;
 	}
 	@Override
@@ -67,7 +67,8 @@ public class CreateIdeOperation extends org.lgna.croquet.ActionOperation {
 		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation >( this, this.cls );
 	}
 	@Override
-	protected final void perform(org.lgna.croquet.history.OperationStep step) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.cls );
 		step.finish();
 	}

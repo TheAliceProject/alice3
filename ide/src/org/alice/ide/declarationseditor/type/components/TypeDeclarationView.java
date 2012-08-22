@@ -96,8 +96,9 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,14,0,0 ) );
 		pageAxisPanel.setBackgroundColor( this.getBackgroundColor() );
 
-		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel();
-		borderPanel.addComponent( pageAxisPanel, Constraint.PAGE_START );
+		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+			.pageStart( pageAxisPanel )
+		.build();
 		borderPanel.setBackgroundColor( this.getBackgroundColor() );
 		
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( borderPanel );
@@ -105,9 +106,19 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
         scrollPane.setBothScrollBarIncrements( 12, 24 );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 		
-		org.alice.ide.ast.declaration.components.TypeHeader typeHeader = new org.alice.ide.ast.declaration.components.TypeHeader( type );
+		org.alice.ide.ast.declaration.views.TypeHeader typeHeader = new org.alice.ide.ast.declaration.views.TypeHeader( type );
+		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-		this.addComponent( typeHeader, Constraint.PAGE_START );
+		if( org.alice.ide.croquet.models.ast.ExportTypeOperation.IS_READY_FOR_PRIME_TIME ) {
+			org.lgna.croquet.components.LineAxisPanel header = new org.lgna.croquet.components.LineAxisPanel( 
+					typeHeader,
+					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+					org.alice.ide.croquet.models.ast.ExportTypeOperation.getInstance( type ).createButton()
+			);
+			this.addComponent( header, Constraint.PAGE_START );
+		} else {
+			this.addComponent( typeHeader, Constraint.PAGE_START );
+		}
 		this.addComponent( scrollPane, Constraint.CENTER );
 
 		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( typeHeader.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {

@@ -47,21 +47,11 @@ package org.alice.ide.croquet.resolvers;
  * @author Dennis Cosgrove
  */
 public class PrimitiveBooleanStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
-	private static final Class<?>[] PARAMETER_TYPES = new Class[] { Boolean.TYPE };
-	private boolean value;
 	public PrimitiveBooleanStaticGetInstanceKeyedResolver( T instance, boolean value ) {
-		super( instance );
-		this.value = value;
+		super( instance, new Class[] { Boolean.TYPE }, new Object[] { value } );
 	}
 	public PrimitiveBooleanStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
-	}
-	@Override
-	protected Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		return PARAMETER_TYPES;
-	}
-	@Override
-	protected void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -69,7 +59,8 @@ public class PrimitiveBooleanStaticGetInstanceKeyedResolver<T> extends org.lgna.
 		return new Object[] { value };
 	}
 	@Override
-	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.value );
+	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
+		boolean value = (Boolean)arguments[ 0 ];
+		binaryEncoder.encode( value );
 	}
 }

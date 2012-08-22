@@ -50,11 +50,11 @@ public class StringFillerInner extends ConcatenationFillerInner {
 		super( String.class );
 	}
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		rv.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
-		this.addConcatenationItems( rv, details, isTop, prevExpression );
-		return rv;
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		items.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
+		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		//rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
+		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
+		this.addConcatenationItems( items, details, isTop, prevExpression );
 	}
 }

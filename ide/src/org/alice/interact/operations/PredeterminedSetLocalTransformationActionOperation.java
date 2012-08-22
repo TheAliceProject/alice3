@@ -70,7 +70,7 @@ public class PredeterminedSetLocalTransformationActionOperation extends Abstract
 		return this.prevLT;
 	}
 	@Override
-	protected String getEditPresentationName( java.util.Locale locale ) {
+	protected String getEditPresentationName() {
 		return this.editPresentationKey;
 	}
 	

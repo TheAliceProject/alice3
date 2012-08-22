@@ -50,14 +50,4 @@ public class HorizontalSplitPane extends SplitPane {
 	public HorizontalSplitPane( org.lgna.croquet.SplitComposite splitComposite ) {
 		super( splitComposite, javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	}
-	@Deprecated
-	public HorizontalSplitPane() {
-		this( null );
-	}
-	@Deprecated
-	public HorizontalSplitPane( JComponent<?> leftComponent, JComponent<?> rightComponent ) {
-		this();
-		this.setLeadingComponent( leftComponent );
-		this.setTrailingComponent( rightComponent );
-	}
 }

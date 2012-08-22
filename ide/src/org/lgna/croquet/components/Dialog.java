@@ -86,7 +86,7 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 			}
 		}
 	}
-	
+
 	private static javax.swing.JDialog createJDialog( ScreenElement owner ) {
 		javax.swing.JDialog rv;
 		if( owner != null ) {
@@ -132,7 +132,7 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 		public void windowDeiconified( java.awt.event.WindowEvent e ) {
 		}
 	};
-	
+
 	public Dialog() {
 		this( null );
 	}
@@ -145,7 +145,7 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 		this.getAwtComponent().setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
 		this.addWindowListener( this.windowListener );
 	}
-	
+
 	protected boolean isClearedToClose() {
 		return true;
 	}
@@ -162,26 +162,26 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 			}
 		}
 	}
-	
+
 	@Override
 	protected javax.swing.JRootPane getRootPane() {
 		return this.getAwtComponent().getRootPane();
 	}
-	
+
 	public DefaultCloseOperation getDefaultCloseOperation() {
 		return this.defaultCloseOperation;
 	}
 	public void setDefaultCloseOperation( DefaultCloseOperation defaultCloseOperation ) {
 		this.defaultCloseOperation = defaultCloseOperation;
 	}
-	
+
 	public String getTitle() {
 		return this.getAwtComponent().getTitle();
 	}
 	public void setTitle( String title ) {
 		this.getAwtComponent().setTitle( title );
 	}
-	
+
 	@Override
 	public void setVisible( boolean isVisible ) {
 		if( isVisible != this.isVisible() ) {
@@ -198,7 +198,7 @@ public class Dialog extends AbstractWindow< javax.swing.JDialog > {
 	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
 		this.getAwtComponent().setJMenuBar( jMenuBar );
 	}
-	
+
 	public void dispose() {
 		this.removeWindowListener( this.windowListener );
 		this.getAwtComponent().dispose();

@@ -81,23 +81,23 @@ class TreeNodeFillIn<T> extends CascadeFillIn< T, Void > {
 		this.node = node;
 	}
 	@Override
-	public T getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public T getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		return this.node;
 	}
 	@Override
-	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.node;
 	}
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		return this.model.getTextForNode( this.node );
 	}
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		return this.model.getIconForNode( this.node );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
 		throw new AssertionError();
 	}
 	@Override
@@ -129,7 +129,7 @@ class TreeNodeMenu<T> extends CascadeMenuModel< T > {
 		this.node = node;
 	}
 	@Override
-	protected String getDefaultLocalizedText() {
+	protected String findDefaultLocalizedText() {
 		return null;
 	}
 	@Override
@@ -179,7 +179,7 @@ class TreeNodeCascade<T> extends Cascade< T > {
 		this.node = node;
 	}
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CascadeCompletionStep< T > completionStep, T[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< T >> completionStep, T[] values ) {
 		assert values.length == 1;
 		this.model.setValue( values[ 0 ] );
 		return null;
@@ -220,7 +220,8 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 			this.setSmallIcon( this.treeSelectionState.getIconForNode( this.treeNode ) );
 		}
 		@Override
-		protected final void perform(org.lgna.croquet.history.OperationStep step) {
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			//todo: create edit
 			this.treeSelectionState.setSelectedNode( this.treeNode );
 			step.finish();
@@ -242,7 +243,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 			T nextValue = getSelectedNode();
 			boolean isAdjusting = false;
-			TreeSelectionState.this.changeValueFromSwing( nextValue, isAdjusting, new org.lgna.croquet.triggers.TreeSelectionEventTrigger( e ) );
+			TreeSelectionState.this.changeValueFromSwing( nextValue, isAdjusting, org.lgna.croquet.triggers.TreeSelectionEventTrigger.createUserInstance( e ) );
 			T prevValue = getValue();
 			fireChanged( prevValue, nextValue, false );
 		}
@@ -268,6 +269,10 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 	protected abstract String getTextForNode( T node );
 	protected abstract javax.swing.Icon getIconForNode( T node );
 	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > getTreeModel();
+	public abstract void refresh( T node ); 
+	public final void refreshAll() { 
+		this.refresh( this.getTreeModel().getRoot() );
+	}
 	public T getSelectedNode() {
 		javax.swing.tree.TreePath path = this.swingModel.treeSelectionModel.getSelectionPath();
 		if( path != null ) {

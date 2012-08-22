@@ -45,26 +45,26 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementEdit< M extends org.lgna.croquet.CompletionModel > extends org.lgna.croquet.edits.Edit< M > {
+public class InsertStatementEdit< M extends org.alice.ide.croquet.models.ast.InsertStatementCompletionModel > extends org.lgna.croquet.edits.Edit< M > {
 	public static final int AT_END = Short.MAX_VALUE;
 	private org.lgna.project.ast.BlockStatement blockStatement;
 	private org.lgna.project.ast.Statement statement;
 	private int specifiedIndex;
 	private org.lgna.project.ast.Expression[] initialExpressions;
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
 		super( completionStep );
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromHistoryBlockStatementIndexPair = this.findFirstDropSite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class );
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( blockStatementIndexPair, fromHistoryBlockStatementIndexPair ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( blockStatementIndexPair, fromHistoryBlockStatementIndexPair );
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( blockStatementIndexPair, fromHistoryBlockStatementIndexPair );
 		}
 		this.blockStatement = blockStatementIndexPair.getBlockStatement();
 		this.specifiedIndex = blockStatementIndexPair.getIndex();
 		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
-	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement ) {
+	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement ) {
 		this( completionStep, blockStatementIndexPair, statement, new org.lgna.project.ast.Expression[] {} );
 	}
 	public InsertStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
@@ -136,14 +136,14 @@ public class InsertStatementEdit< M extends org.lgna.croquet.CompletionModel > e
 //	}
 	
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		//super.updatePresentation( rv, locale );
 		rv.append( "drop: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, locale );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate, org.lgna.croquet.UserInformation userInformation ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit replacementCandidate ) {
 		if( replacementCandidate instanceof InsertStatementEdit ) {
 			InsertStatementEdit insertStatementEdit = (InsertStatementEdit)replacementCandidate;
 			final int N = this.initialExpressions.length;
@@ -175,7 +175,7 @@ public class InsertStatementEdit< M extends org.lgna.croquet.CompletionModel > e
 				}
 				return rv;
 			} else {
-				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "expressions count not the same" ); 
+				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "initial expressions count not the same" );
 			}
 		} else {
 			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of InsertStatementEdit" ); 
@@ -183,9 +183,9 @@ public class InsertStatementEdit< M extends org.lgna.croquet.CompletionModel > e
 	}
 	
 	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
 		rv.append( "insert " );
-		rv.append( this.statement.getRepr( userInformation.getLocale() ) );
+		rv.append( this.statement.getRepr( org.lgna.croquet.Application.getLocale() ) );
 		return rv;
 	}
 
@@ -217,13 +217,9 @@ public class InsertStatementEdit< M extends org.lgna.croquet.CompletionModel > e
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
-		retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: investigate blockStatement" );
+		//retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
-
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "recursive retarget" );
-		if( this.statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
-			retargeter.addKeyValuePair( ((org.lgna.project.ast.AbstractStatementWithBody)this.statement).body.getValue(), ((org.lgna.project.ast.AbstractStatementWithBody)replacementEdit.statement).body.getValue() );
-		}
 		final int N = this.initialExpressions.length;
 		assert N == replacementEdit.initialExpressions.length;
 		for( int i=0; i<N; i++ ) {

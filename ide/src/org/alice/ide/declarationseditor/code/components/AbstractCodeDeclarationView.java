@@ -50,13 +50,13 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 		super( composite );
 	}
 	@Deprecated
-	public abstract org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptor();
+	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor();
 	@Override
 	public boolean isPrintSupported() {
 		return true;
 	}
 	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-		return this.getCodeDropReceptor().print( g, pageFormat, pageIndex );
+		return this.getCodePanelWithDropReceptor().print( g, pageFormat, pageIndex );
 	}
 	
 	@Override
@@ -65,7 +65,7 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 			org.alice.ide.ast.draganddrop.CodeDragModel codeDragModel = (org.alice.ide.ast.draganddrop.CodeDragModel)dragModel;
 			final org.lgna.project.ast.AbstractType< ?,?,? > type = codeDragModel.getType();
 			if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
-				out.add( this.getCodeDropReceptor() );
+				//pass
 			} else {
 				java.util.List< org.alice.ide.codeeditor.ExpressionPropertyDropDownPane > list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.codeeditor.ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< org.alice.ide.codeeditor.ExpressionPropertyDropDownPane >() {
 					public boolean accept( org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
@@ -89,7 +89,14 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 						return false;
 					}
 				} );
-				out.addAll( list );
+				for( org.alice.ide.codeeditor.ExpressionPropertyDropDownPane pane : list ) {
+					out.add( pane.getDropReceptor() );
+				}
+			}
+			org.alice.ide.codedrop.CodePanelWithDropReceptor codePanelWithDropReceptor = this.getCodePanelWithDropReceptor();
+			org.lgna.croquet.DropReceptor dropReceptor = codePanelWithDropReceptor.getDropReceptor();
+			if( dropReceptor.isPotentiallyAcceptingOf( codeDragModel ) ) {
+				out.add( dropReceptor );
 			}
 		}
 	}

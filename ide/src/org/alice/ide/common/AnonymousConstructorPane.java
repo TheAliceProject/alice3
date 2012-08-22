@@ -45,9 +45,9 @@ package org.alice.ide.common;
 class MethodPane extends org.lgna.croquet.components.BorderPanel {
 	public MethodPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserMethod method ) {
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
-		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ), org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ), Constraint.LINE_START );
-		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), Constraint.CENTER );
+		this.addPageStartComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane, false ) );
+		this.addLineStartComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ) );
+		this.addCenterComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ) );
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor() );

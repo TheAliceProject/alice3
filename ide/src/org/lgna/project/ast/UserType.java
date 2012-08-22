@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UserType<C extends AbstractConstructor> extends AbstractType<C, UserMethod, UserField> {
+public abstract class UserType<C extends UserConstructor> extends AbstractType<C, UserMethod, UserField> {
 	public DeclarationProperty< AbstractType<?,?,?> > superType = new DeclarationProperty< AbstractType<?,?,?> >( this ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType<?,?,?> value) {
@@ -62,6 +62,32 @@ public abstract class UserType<C extends AbstractConstructor> extends AbstractTy
 		this.superType.setValue( superType );
 		this.methods.add( methods );
 		this.fields.add( fields );
+	}
+	private boolean isEqualToOrSubTypeOf( UserType<?> candidate ) {
+		if( this == candidate ) {
+			return true;
+		} else {
+			AbstractType<?,?,?> superType = this.superType.getValue();
+			if( superType instanceof UserType<?> ) {
+				UserType<?> superUserType = (UserType<?>)superType;
+				return superUserType.isEqualToOrSubTypeOf( candidate );
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType< ?, ?, ? > other ) {
+		if( other.isArray() ) {
+			return false;
+		} else {
+			if( other instanceof UserType<?> ) {
+				UserType<?> otherUserType = (UserType<?>)other;
+				return otherUserType.isEqualToOrSubTypeOf( this );
+			} else {
+				return false;
+			}
+		}
 	}
 	@Override
 	public AbstractType< ?, ?, ? > getKeywordFactoryType() {

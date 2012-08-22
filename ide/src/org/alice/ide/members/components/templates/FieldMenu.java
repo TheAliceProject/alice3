@@ -49,7 +49,7 @@ package org.alice.ide.members.components.templates;
 	public FieldMenu( org.lgna.project.ast.UserField field ) {
 		super( 
 			java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
-			org.alice.ide.croquet.models.ast.rename.RenameFieldOperation.getInstance( field ).getMenuItemPrepModel(),
+			org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel(),
 			org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel()
 		);
 	}

@@ -45,255 +45,138 @@ package org.lgna.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Note extends org.lgna.croquet.components.JComponent< javax.swing.JComponent > {
-	public class JNote extends javax.swing.JPanel {
-		public boolean isActive() {
-			return Note.this.isActive();
+public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPanel> {
+	private static java.awt.Color BASE_COLOR = new java.awt.Color( 255, 255, 100 );
+	private static java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 180 );
+
+	private final java.util.List<Feature> features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final javax.swing.text.html.HTMLDocument document = new javax.swing.text.html.HTMLDocument();
+
+	public String getText() {
+		try {
+			return this.document.getText( 0, this.document.getLength() );
+		} catch( javax.swing.text.BadLocationException ble ) {			
+			throw new RuntimeException( ble );
 		}
 	}
-	private static java.awt.Composite INACTIVE_COMPOSITE = java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 0.3f );
-	private static java.awt.Color BASE_COLOR = new java.awt.Color( 255, 255, 100 ); 
-	private static java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 180 );
-	
-	private static int X_PAD = 16;
-	private static int Y_PAD = 16;
-	private final java.util.List< Feature > features = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private String label = null;
-	
-
-	protected abstract String getText();
-	protected abstract org.lgna.croquet.Operation getNextOperation();
-	public String getLabel() {
-		return this.label;
+	public void setText( String text ) {
+		try {
+			this.document.replace( 0, this.document.getLength(), text, null );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( text, ble );
+		}
 	}
-	public void setLabel(String label) {
-		this.label = label;
-	}
-	protected void addFeature( Feature feature ) {
+	public void addFeature( Feature feature ) {
 		if( feature != null ) {
 			this.features.add( feature );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	}
-	public java.util.List< Feature > getFeatures() {
+	public void removeAllFeatures() {
+		this.features.clear();
+	}
+	public java.util.List<Feature> getFeatures() {
 		return this.features;
 	}
-	public java.awt.Point calculateLocation( org.lgna.croquet.components.Container< ? > container ) {
-		java.awt.Point rv = new java.awt.Point( 20, 20 );
+	public java.awt.Point calculateLocation( org.lgna.croquet.components.Container<?> container ) {
+		java.awt.Point rv;
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
 			rv = feature.calculateNoteLocation( container, this );
 		} else {
-			rv.x = (container.getWidth()-this.getWidth())/2;
-			rv.y = 320;
-		}
-
-		System.err.println( "todo: remove text calculateLocation special case" );
-		if( this.getText().contains( "Drag..." ) ) {
-			rv.y = 400;
+			rv = new java.awt.Point( (container.getWidth() - this.getWidth()) / 2, 320 );
 		}
 		return rv;
 	}
-
-//	private boolean prevFeatureInView = false;
-//	private boolean isRepaintRequiredForFeatureViewChanged = false;
-//
-//	private boolean isFeatureInView() {
-//		for( Feature feature : this.features ) {
-//			edu.cmu.cs.dennisc.croquet.TrackableShape trackableShape = feature.getTrackableShape();
-//			if( trackableShape != null ) {
-//				if( trackableShape.isInView() ) {
-//					return true;
-//				}
-//			}
-//		}
-//		return false;
-//	}
-//
-//	/*package-private*/ boolean isRepaintAllRequired() {
-//		boolean nextFeatureInView = isFeatureInView();
-//		if( nextFeatureInView != prevFeatureInView ) {
-//			prevFeatureInView = nextFeatureInView;
-//			if( isRepaintRequiredForFeatureViewChanged ) {
-//				return true;
-//			}
-//		}
-//		isRepaintRequiredForFeatureViewChanged = true;
-//		return false;
-//	}
-		
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability() {
-		return null;
-	}
-
 	@Override
-	protected javax.swing.JComponent createAwtComponent() {
-		javax.swing.JEditorPane textComponent = new javax.swing.JEditorPane() {
-			@Override
-			public boolean contains(int x, int y) {
-				return false;
-			}
+	protected javax.swing.JPanel createAwtComponent() {
+		javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane() {
 			@Override
 			public void updateUI() {
 				this.setUI( new javax.swing.plaf.basic.BasicEditorPaneUI() );
 			}
+			@Override
+			public boolean contains( int x, int y ) {
+				return false;
+			}
 		};
-		textComponent.setContentType( "text/html" );
-		textComponent.setOpaque( false );
-		textComponent.setEditable( false );
+		final int X_BORDER_PAD = 16;
+		final int Y_BORDER_PAD = 12;
+		int top = Y_BORDER_PAD;
+		int bottom = Y_BORDER_PAD;
+		int left = X_BORDER_PAD;
+		int right = X_BORDER_PAD;
+		editorPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( top, left, bottom, right ) );
+		editorPane.setOpaque( false );
+		editorPane.setContentType( "text/html" );
+		editorPane.setEditable( false );
+		editorPane.setDocument( this.document );
 
-		String text = this.getText();
-		//does not appear to be necessary
-		final String PREFIX = "<html>";
-		final String POSTFIX = "</html>";
-		StringBuilder sb = new StringBuilder();
-		if( text.startsWith( PREFIX ) ) {
-			//pass
-		} else {
-			sb.append( PREFIX );
-		}
-		sb.append( text );
-		if( text.endsWith( POSTFIX ) ) {
-			//pass
-		} else {
-			sb.append( POSTFIX );
-		}
-		textComponent.setText( sb.toString() );
-
-		//textPane.setEnabled( false );
-
-		JNote rv = new JNote() {
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
-				int x = X_PAD;
-				int y = Y_PAD;
-				
-				int w = this.getWidth()-x;
-				int h = this.getHeight()-y;
+				int w = this.getWidth();
+				int h = this.getHeight();
 
-				String label = Note.this.getLabel();
-				java.awt.Shape shape = new java.awt.geom.Rectangle2D.Float( x, y, w-4, h-4 );
-				
-				if( label != null ) {
-					java.awt.geom.Area area = new java.awt.geom.Area( shape );
-					area.add( new java.awt.geom.Area( new java.awt.geom.Ellipse2D.Float( 0, 0, X_PAD*3, Y_PAD*3 ) ) );
-					shape = area;
-				}
-				
-				int x1 = w-20;
-				int y1 = h-20;
-				java.awt.Paint paint = new java.awt.GradientPaint( x1, y1, HIGHLIGHT_COLOR, x1-200, y1-200, BASE_COLOR );
+				java.awt.Shape shape = new java.awt.geom.Rectangle2D.Float( 0, 0, w-4, h-4 );
+
+				int x1 = w - 20;
+				int y1 = h - 20;
+				java.awt.Paint paint = new java.awt.GradientPaint( x1, y1, HIGHLIGHT_COLOR, x1 - 160, y1 - 160, BASE_COLOR );
 				g2.setPaint( paint );
-				
+
 				g2.fill( shape );
 
-				if( label != null ) {
-					java.awt.Font prevFont = g2.getFont();
-					g2.setPaint( java.awt.Color.BLUE.darker().darker() );
-					g2.fillOval( 3, 3, X_PAD*3-6, Y_PAD*3-6 );
-					g2.setPaint( java.awt.Color.YELLOW );
-					
-					java.awt.Font font = edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont(prevFont, 2.5f);
-					g2.setFont( font );
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText(g2, label, 0, 0, X_PAD*3, Y_PAD*3 );
-					g2.setFont( prevFont );
-				}
-
 				if( Note.this.isActive() ) {
-					g2.translate(x, y);
 					g2.setPaint( java.awt.Color.GRAY );
 					java.awt.geom.GeneralPath pathShadow = new java.awt.geom.GeneralPath();
-					pathShadow.moveTo( w-4, 0 );
+					pathShadow.moveTo( w - 4, 0 );
 					pathShadow.lineTo( w, h );
-					pathShadow.lineTo( 0, h-4 );
-					pathShadow.lineTo( w-4, h-4 );
+					pathShadow.lineTo( 0, h - 4 );
+					pathShadow.lineTo( w - 4, h - 4 );
 					pathShadow.closePath();
 					g2.fill( pathShadow );
-					g2.translate(-x, -y);
 				}
 				super.paintComponent( g );
 			}
 			@Override
-			protected void paintChildren(java.awt.Graphics g) {
-				if( Page.IS_NOTE_OVERLAPPING_DESIRED==false || Note.this.isActive() ) {
-					super.paintChildren(g);
+			public void paint( java.awt.Graphics g ) {
+				if( Note.this.getText().length() > 0 ) {
+					super.paint( g );
 				}
-			}
-			@Override
-			public void paint(java.awt.Graphics g) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Composite composite = g2.getComposite();
-				if( Note.this.isActive() ) {
-					//pass
-				} else {
-					g2.setComposite( INACTIVE_COMPOSITE );
-				}
-				super.paint(g);
-				g2.setComposite( composite );
 			}
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				java.awt.Dimension rv = super.getPreferredSize();
-				rv.width = 270;
+				rv.width = 240;
 				rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, rv.width );
 				return rv;
 			}
 		};
 		rv.setLayout( new java.awt.BorderLayout() );
-		rv.add( textComponent, java.awt.BorderLayout.NORTH );
-		rv.setCursor( java.awt.Cursor.getDefaultCursor() );
-		
-		//rv.setBackground( BASE_COLOR );
-		org.lgna.croquet.components.BorderPanel southPanel = new org.lgna.croquet.components.BorderPanel();
-
-		org.lgna.croquet.components.Hyperlink hyperlink = getNextOperation().createHyperlink();
-		hyperlink.scaleFont( 1.4f );
-		southPanel.addComponent( hyperlink, org.lgna.croquet.components.BorderPanel.Constraint.LINE_END );
-
-		rv.add( southPanel.getAwtComponent(), java.awt.BorderLayout.SOUTH );
-		final int X_BORDER_PAD = 16;
-		final int Y_BORDER_PAD = 12;
-		int top = Y_PAD+Y_BORDER_PAD;
-		int bottom = Y_BORDER_PAD;
-		int left = Y_PAD+X_BORDER_PAD;
-		int right = X_BORDER_PAD;
-		
-		if( this.label != null ) {
-			top += 8;
-			left += 8;
-		}
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( top, left, bottom, right ) );
-		rv.setBackground( BASE_COLOR );
+		rv.add( editorPane, java.awt.BorderLayout.PAGE_START );
 		rv.setOpaque( false );
 		return rv;
 	}
 	private javax.swing.event.MouseInputListener mouseInputListener = new javax.swing.event.MouseInputListener() {
-
 		private java.awt.event.MouseEvent ePressed;
 		private java.awt.Point ptPressed;
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
-			if( e.getClickCount() == 2 ) {
-				getNextOperation().fire(e);
-			}
-		}
 
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
-
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
-
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			this.ePressed = javax.swing.SwingUtilities.convertMouseEvent( e.getComponent(), e, e.getComponent().getParent() );
 			this.ptPressed = Note.this.getAwtComponent().getLocation();
 		}
-
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 		}
-
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		}
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			java.awt.event.MouseEvent eDragged = javax.swing.SwingUtilities.convertMouseEvent( e.getComponent(), e, e.getComponent().getParent() );
 			int xDelta = eDragged.getX() - this.ePressed.getX();
@@ -303,12 +186,10 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 			Note.this.getAwtComponent().setLocation( x, y );
 			Note.this.getAwtComponent().getParent().repaint();
 		}
-
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 		}
-		
 	};
-		
+
 	private boolean isActive = true;
 	public boolean isActive() {
 		return this.isActive;
@@ -319,13 +200,13 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 			for( Feature feature : this.features ) {
 				feature.updateTrackableShapeIfNecessary();
 			}
-			org.lgna.croquet.components.Container< ? > container = this.getParent();
+			org.lgna.croquet.components.Container<?> container = this.getParent();
 			if( container != null ) {
 				container.repaint();
 			}
 		}
 	}
-	
+
 	private void bind() {
 		for( Feature feature : this.features ) {
 			feature.bind();
@@ -339,16 +220,17 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 
 	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
 		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
-			if( ( e.getChangeFlags() & java.awt.event.HierarchyEvent.SHOWING_CHANGED ) != 0 ) {
+			if( (e.getChangeFlags() & java.awt.event.HierarchyEvent.SHOWING_CHANGED) != 0 ) {
 				Note.this.handleShowingChanged( e.getChanged().isShowing() );
 			}
 		}
 	};
-	
+
 	private void handleShowingChanged( boolean isShowing ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleShowingChanged", isShowing );
+		this.reset();
+		this.revalidateAndRepaint();
 	}
-	
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -365,7 +247,7 @@ public abstract class Note extends org.lgna.croquet.components.JComponent< javax
 		this.removeHierarchyListener( this.hierarchyListener );
 		super.handleUndisplayable();
 	}
-	
+
 	public void reset() {
 		unbind();
 		bind();
