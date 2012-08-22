@@ -46,18 +46,27 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class MouseEventTrigger extends ComponentEventTrigger<java.awt.event.MouseEvent> {
-	public MouseEventTrigger( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
-		super( viewController, mouseEvent );
+public class MouseEventTrigger extends AbstractMouseEventTrigger {
+	public static MouseEventTrigger createUserInstance( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
+		return new MouseEventTrigger( Origin.USER, viewController, mouseEvent );
+	}
+	public static MouseEventTrigger createUserInstance( java.awt.event.MouseEvent mouseEvent ) {
+		return createUserInstance( null, mouseEvent );
+	}
+	public static MouseEventTrigger createGeneratorInstance() {
+		return new MouseEventTrigger( Origin.GENERATOR, null, null );
+	}
+	public static MouseEventTrigger createRecoveryInstance() {
+		return new MouseEventTrigger( Origin.RECOVERY, null, null );
+	}
+	private MouseEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
+		super( origin, viewController, mouseEvent );
 	}
 	public MouseEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	@Override
-	protected java.awt.Point getPoint() {
-		return this.getEvent().getPoint();
-	}
-	public String getNoteText( java.util.Locale locale ) {
+	public String getNoteText( ) {
 		return "Click";
 	}
 }

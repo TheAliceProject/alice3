@@ -53,6 +53,6 @@ public class IsAccessToRecursionPreferenceAllowedState extends org.lgna.croquet.
 		return SingletonHolder.instance;
 	}
 	private IsAccessToRecursionPreferenceAllowedState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "feb28c71-be9f-46a4-84db-57e9205bc220" ), false );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "feb28c71-be9f-46a4-84db-57e9205bc220" ), false );
 	}
 }

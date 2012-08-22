@@ -51,7 +51,7 @@ import java.awt.Component;
 public class VideoEncodingProgramContext extends ProgramContext {
 	public static class FrameBasedProgramImp extends org.lgna.story.implementation.ProgramImp {
 		private edu.cmu.cs.dennisc.animation.FrameBasedAnimator animator = new edu.cmu.cs.dennisc.animation.FrameBasedAnimator();
-		public FrameBasedProgramImp( org.lgna.story.Program abstraction ) {
+		public FrameBasedProgramImp( org.lgna.story.SProgram abstraction ) {
 			super( abstraction, edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createHeavyweightOnscreenLookingGlass() );
 		}
 		@Override

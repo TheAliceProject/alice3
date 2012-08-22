@@ -69,7 +69,7 @@ public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapt
 	}
 	
 	@Override
-	public String getUndoRedoDescription(Locale locale) 
+	public String getUndoRedoDescription() 
 	{
 		return "Color";
 	}

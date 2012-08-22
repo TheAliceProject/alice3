@@ -45,35 +45,54 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class TransactionHistory extends Node< CompletionStep<?> > implements Iterable< Transaction > {
+public class TransactionHistory extends TransactionNode< CompletionStep<?> > implements Iterable< Transaction > {
+
+	// Project property for transaction history
+	public static final org.lgna.project.properties.CodablePropertyKey< org.lgna.croquet.history.TransactionHistory > INTERACTION_HISTORY_PROPERTY_KEY = org.lgna.project.properties.CodablePropertyKey.createInstance( java.util.UUID.fromString( "5c12ebea-6f6c-42b6-b1b3-e1fb96733fa5" ), "INTERACTION_HISTORY_PROPERTY_KEY" );
+
 	private final java.util.List< Transaction > transactions;
+
 	public TransactionHistory() {
 		super( (CompletionStep<?>)null );
 		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	}
+
 	public TransactionHistory( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( binaryDecoder.decodeBinaryEncodableAndDecodableArray( Transaction.class ) );
 		for( Transaction transaction : this.transactions ) {
-			transaction.setParent( this );
+			transaction.setOwner( this );
 		}
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.transactions, Transaction.class ) );
 	}
 
-	@Deprecated
-	public void EPIC_HACK_clear() {
-		this.transactions.clear();
+	public TransactionHistory getActiveTransactionHistory() {
+		Transaction transaction = getLastTransaction();
+		if ( (transaction != null) && transaction.isPending() ) {
+			CompletionStep<?> completionStep = transaction.getCompletionStep();
+			if (completionStep == null) {
+				return this;
+			}
+			TransactionHistory history = completionStep.getTransactionHistory();
+			if ( history == null ) {
+				return this;
+			}
+			return history.getActiveTransactionHistory();
+		} else {
+			return this;
+		}
 	}
-	
+
 	@Override
 	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
 		for( Transaction transaction : this.transactions ) {
 			transaction.appendContexts( out );
 		}
 	}
-	
+
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		for( Transaction transaction : this.transactions ) {
 			transaction.retarget( retargeter );
@@ -81,13 +100,21 @@ public class TransactionHistory extends Node< CompletionStep<?> > implements Ite
 	}
 
 	public void addTransaction( Transaction transaction ) {
+		assert transaction != null;
+		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddTransactionEvent( transaction, this.transactions.size() );
+		this.fireChanging( e );
+		transaction.setOwner( this );
 		this.transactions.add( transaction );
+		this.fireChanged( e );
 	}
 	public void addTransaction( int index, Transaction transaction ) {
+		assert transaction != null;
+		assert index >= 0;
+		org.lgna.croquet.history.event.Event<?> e = new org.lgna.croquet.history.event.AddTransactionEvent( transaction, index );
+		this.fireChanging( e );
+		transaction.setOwner( this );
 		this.transactions.add( index, transaction );
-	}
-	public void removeTransaction( Transaction transaction ) {
-		this.transactions.add( transaction );
+		this.fireChanged( e );
 	}
 
 	public java.util.Iterator< Transaction > iterator() {
@@ -105,30 +132,28 @@ public class TransactionHistory extends Node< CompletionStep<?> > implements Ite
 	public int getTransactionCount() {
 		return this.transactions.size();
 	}
-	
+
 	/*package-private*/ Transaction getLastTransaction() {
-		final int N = this.transactions.size();
-		if( N > 0 ) {
-			return this.transactions.get( N-1 );
+		final int n = this.transactions.size();
+		if( n > 0 ) {
+			return this.transactions.get( n-1 );
 		} else {
 			return null;
 		}
 	}
-	public Transaction getActiveTransaction() {
+
+	public Transaction acquireActiveTransaction() {
 		Transaction lastTransaction = this.getLastTransaction();
-		Transaction rv = null;
+		Transaction transaction = null;
 		if( lastTransaction != null ) {
-//			lastTransaction.reifyIfNecessary();
 			if( lastTransaction.isPending() ) {
-				rv = lastTransaction;
+				transaction = lastTransaction;
 			}
 		}
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new Transaction( this );
-			this.transactions.add( rv );
+		if( transaction == null ) {
+			transaction = new Transaction( this );
+			this.transactions.add( transaction );
 		}
-		return rv;
+		return transaction;
 	}
 }

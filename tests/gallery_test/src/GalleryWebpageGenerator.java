@@ -1,11 +1,5 @@
-import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.

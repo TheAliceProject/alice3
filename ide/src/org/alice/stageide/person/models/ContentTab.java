@@ -46,7 +46,7 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ContentTab< V extends org.lgna.croquet.components.View<?,?> > extends org.lgna.croquet.TabComposite< V > {
+public abstract class ContentTab< V extends org.lgna.croquet.components.View<?,?> > extends org.lgna.croquet.SimpleTabComposite< V > {
 	public ContentTab(java.util.UUID id) {
 		super(id);
 	}

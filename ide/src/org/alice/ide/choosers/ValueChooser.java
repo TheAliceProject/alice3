@@ -49,7 +49,7 @@ public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> ex
 	protected org.lgna.project.ast.Expression getPreviousExpression() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			return ide.getCascadeManager().getPreviousExpression();
+			return ide.getExpressionCascadeManager().getPreviousExpression();
 		} else {
 			return null;
 		}
@@ -63,9 +63,9 @@ public abstract class ValueChooser<E extends org.lgna.project.ast.Expression> ex
 			//re.printStackTrace();
 			expression = new org.lgna.project.ast.NullLiteral();
 		}
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-		rv.addComponent( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ), org.lgna.croquet.components.BorderPanel.Constraint.LINE_START );
-		return rv;
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+			.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
+		.build();
 	}
 	public abstract E getValue();
 	public abstract String getExplanationIfOkButtonShouldBeDisabled();

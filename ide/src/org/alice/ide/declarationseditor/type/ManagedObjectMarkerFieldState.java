@@ -42,7 +42,7 @@
  */
 package org.alice.ide.declarationseditor.type;
 
-import org.lgna.story.ObjectMarker;
+import org.lgna.story.SThingMarker;
 
 /**
  * @author dculyba
@@ -66,6 +66,6 @@ public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
 	
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableTo(ObjectMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+		return value.valueType.getValue().isAssignableTo(SThingMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
 }

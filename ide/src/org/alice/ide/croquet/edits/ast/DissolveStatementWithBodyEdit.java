@@ -103,9 +103,9 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit< org.alice
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv, java.util.Locale locale ) {
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "dissolve:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getModel().getStatementWithBody(), locale);
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.getModel().getStatementWithBody(), org.lgna.croquet.Application.getLocale());
 		return rv;
 	}
 }

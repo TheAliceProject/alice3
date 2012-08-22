@@ -68,7 +68,7 @@ public enum KeyCodec implements org.lgna.croquet.ItemCodec< org.lgna.story.Key >
 			binaryEncoder.encode( false );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.lgna.story.Key value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, org.lgna.story.Key value) {
 		rv.append( value );
 		return rv;
 	}

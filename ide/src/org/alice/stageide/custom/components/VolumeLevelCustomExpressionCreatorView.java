@@ -51,37 +51,8 @@ public class VolumeLevelCustomExpressionCreatorView extends org.alice.ide.custom
 		super( composite );
 	}
 	@Override
-	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
+	protected void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows ) {
 		org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite)this.getComposite();
-
-		return new org.lgna.croquet.components.Component<?>[] {
-				new VolumeLevelSlider( composite.getValueState() )
-		};
-//		
-//		java.text.NumberFormat format = java.text.NumberFormat.getNumberInstance();
-//		format.setMinimumFractionDigits( 1 );
-//		String silentText = composite.getSilentLabel().getText() + " (" + format.format( 0.0 ) + ")";
-//		String normalText = composite.getNormalLabel().getText() + " (" + format.format( 1.0 ) + ")";
-//		String louderText = composite.getLouderLabel().getText() + " (" + format.format( 2.0 ) + ")";
-//		
-//		org.lgna.croquet.components.Slider slider = composite.getValueState().createSlider();
-//
-//		slider.setOrientation( org.lgna.croquet.components.Slider.Orientation.VERTICAL );
-//
-//		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
-//		labels.put( 0, new javax.swing.JLabel( silentText ) );
-//		labels.put( 100, new javax.swing.JLabel( normalText ) );
-//		labels.put( 200, new javax.swing.JLabel( louderText ) );
-//		slider.setLabelTable( labels );
-//		slider.setPaintLabels( true );
-//
-//		slider.setSnapToTicks( false );
-//		slider.setMinorTickSpacing( 10 );
-//		slider.setMajorTickSpacing( 100 );
-//		slider.setPaintTicks( true );
-//
-//		return new org.lgna.croquet.components.Component<?>[] {
-//				slider
-//		};
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getValueLabel(), new VolumeLevelSlider( composite.getValueState() ) ) );
 	}
 }

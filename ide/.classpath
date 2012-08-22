@@ -14,10 +14,6 @@
 	<classpathentry kind="lib" path="lib/swingworker/swing-worker-1.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
-	<classpathentry kind="lib" path="lib/jogl/lib/gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="lib/jogl/lib/jogl.jar" sourcepath="dev/jogl/src"/>
-	<classpathentry kind="lib" path="lib/alice/aliceModelSource.jar"/>
-	<classpathentry kind="lib" path="lib/alice/nebulousModelSource.jar"/>
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
 	<classpathentry kind="lib" path="lib/quicktime/QuickTimeDemo2.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/gdata-youtube-2.0.jar"/>
@@ -25,5 +21,9 @@
 	<classpathentry kind="lib" path="lib/youtube/gdata-client-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/gdata-core-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/gdata-media-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/lib/jogl.jar"/>
+	<classpathentry kind="lib" path="lib/alice/aliceModelSource.jar"/>
+	<classpathentry kind="lib" path="lib/alice/nebulousModelSource.jar"/>
+	<classpathentry kind="lib" path="lib/jogl/lib/gluegen-rt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -281,7 +281,7 @@ abstract class RtItem<F, B, M extends CascadeItem< F, B >, C extends org.lgna.cr
 		org.lgna.croquet.components.ViewController< ?, ? > rv;
 		javax.swing.JMenuItem jMenuItem;
 		if( isLast ) {
-			org.lgna.croquet.components.CascadeMenuItem menuItem = new org.lgna.croquet.components.CascadeMenuItem( item );
+			org.lgna.croquet.components.CascadeMenuItem menuItem = new org.lgna.croquet.components.CascadeMenuItem( item, this.getRtRoot() );
 			menuItem.getAwtComponent().addActionListener( this.actionListener );
 			jMenuItem = menuItem.getAwtComponent();
 			rv = menuItem;

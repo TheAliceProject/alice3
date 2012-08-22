@@ -58,7 +58,7 @@ public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice
 	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
 		binaryEncoder.encode( value.getResolver() );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.ProjectPerspective value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.ProjectPerspective value) {
 		rv.append( value );
 		return rv;
 	}

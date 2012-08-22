@@ -88,4 +88,25 @@ public class DimensionUtilities {
 		rv.height = height;
 		return rv;
 	}
+	private static java.awt.Dimension calculateWidthBasedSize( java.awt.Dimension size, double widthToHeightAspectRatio ) {
+		return new java.awt.Dimension( size.width, (int)(size.width/widthToHeightAspectRatio) );
+	}
+	private static java.awt.Dimension calculateHeightBasedSize( java.awt.Dimension size, double widthToHeightAspectRatio ) {
+		return new java.awt.Dimension( (int)(size.height*widthToHeightAspectRatio), size.height );
+	}
+	public static java.awt.Dimension calculateBestFittingSize( java.awt.Dimension size, double widthToHeightAspectRatio ) {
+		java.awt.Dimension widthBasedSize = calculateWidthBasedSize( size, widthToHeightAspectRatio );
+		java.awt.Dimension heightBasedSize = calculateHeightBasedSize( size, widthToHeightAspectRatio );
+		if( widthBasedSize.height > size.height ) {
+			return heightBasedSize;
+		} else if( heightBasedSize.width > size.width ) {
+			return widthBasedSize;
+		} else {
+			if( widthBasedSize.width*widthBasedSize.height > heightBasedSize.width*heightBasedSize.height ) {
+				return widthBasedSize;
+			} else {
+				return heightBasedSize;
+			}
+		}
+	}
 }

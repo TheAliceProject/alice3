@@ -47,25 +47,41 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public abstract class ProgramImp {
-	private final org.lgna.story.Program abstraction;
+	private final org.lgna.story.SProgram abstraction;
 	private final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 	
 	private static Object ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock = new Object();
 	private static Class<? extends ProgramImp> ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
-	public static void ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( Class<? extends ProgramImp> classForNextInstance ) {
+	private static Class<?>[] ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes;
+	private static Object[] ACCEPTABLE_HACK_FOR_NOW_bonusArguments;
+	public static void ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( Class<? extends ProgramImp> classForNextInstance, Class<?>[] bonusParameterTypes, Object[] bonusArguments ) {
 		synchronized( ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock ) {
 			assert ACCEPTABLE_HACK_FOR_NOW_classForNextInstance == null: ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
 			ACCEPTABLE_HACK_FOR_NOW_classForNextInstance = classForNextInstance;
+			ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes = bonusParameterTypes;
+			ACCEPTABLE_HACK_FOR_NOW_bonusArguments = bonusArguments;
 		}
 	}
+	public static void ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( Class<? extends ProgramImp> classForNextInstance ) {
+		ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( classForNextInstance, new Class<?>[] {}, new Object[] {} );
+	}
 	
-	public static ProgramImp createInstance( org.lgna.story.Program abstraction ) {
+	public static ProgramImp createInstance( org.lgna.story.SProgram abstraction ) {
 		ProgramImp rv;
 		synchronized( ACCEPTABLE_HACK_FOR_NOW_classForNextInstanceLock ) {
 			if( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance != null ) {
-				java.lang.reflect.Constructor< ? extends ProgramImp > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance, org.lgna.story.Program.class );
+				
+				Class<?>[] parameterTypes = new Class<?>[ ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes.length + 1 ];
+				parameterTypes[ 0 ] = org.lgna.story.SProgram.class;
+				System.arraycopy( ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes, 0, parameterTypes, 1, ACCEPTABLE_HACK_FOR_NOW_bonusParameterTypes.length );
+				
+				Object[] arguments = new Object[ ACCEPTABLE_HACK_FOR_NOW_bonusArguments.length + 1 ];
+				arguments[ 0 ] = abstraction;
+				System.arraycopy( ACCEPTABLE_HACK_FOR_NOW_bonusArguments, 0, arguments, 1, ACCEPTABLE_HACK_FOR_NOW_bonusArguments.length );
+
+				java.lang.reflect.Constructor< ? extends ProgramImp > cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( ACCEPTABLE_HACK_FOR_NOW_classForNextInstance, parameterTypes );
 				assert cnstrctr != null : ACCEPTABLE_HACK_FOR_NOW_classForNextInstance;
-				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, abstraction );
+				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, arguments );
 				ACCEPTABLE_HACK_FOR_NOW_classForNextInstance = null;
 			} else {
 				rv = new DefaultProgramImp( abstraction );
@@ -75,7 +91,7 @@ public abstract class ProgramImp {
 	}
 	
 	private double simulationSpeedFactor = 1.0; 
-	protected ProgramImp( org.lgna.story.Program abstraction, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+	protected ProgramImp( org.lgna.story.SProgram abstraction, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		this.abstraction = abstraction;
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
@@ -201,7 +217,7 @@ public abstract class ProgramImp {
 		this.isControlPanelDesired = isControlPanelDesired;
 	}
 
-	public org.lgna.story.Program getAbstraction() {
+	public org.lgna.story.SProgram getAbstraction() {
 		return this.abstraction;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {

@@ -76,6 +76,8 @@ import javax.swing.filechooser.FileFilter;
 import org.alice.media.encoder.EncoderListener;
 import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.jdesktop.swingworker.SwingWorker;
+import org.lgna.project.Project;
+import org.lgna.story.SProgram;
 
 import edu.cmu.cs.dennisc.inputpane.FileSelectionPane;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
@@ -155,7 +157,9 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	private final org.alice.stageide.program.VideoEncodingProgramContext programContext;
 
 	private MovieFileSelectionPane fileSelectionPane = new MovieFileSelectionPane();
-	private OwnerPane worldPane = new OwnerPane( worldSize );
+	private OwnerPane worldPane = new OwnerPane(worldSize);
+	private Project project;
+	private SProgram rtProgram;
 	private boolean isRestart = false;
 	private UploadToYouTubePane youTubeUploaderPane;
 	private File recordedMovieFile;
@@ -232,10 +236,9 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		this.recordIcon = new ImageIcon( VideoCapturePane.class.getResource( "images/rec_button.png" ) );
 		this.stopIcon = new ImageIcon( VideoCapturePane.class.getResource( "images/stop_button.png" ) );
 		this.recordButton.setIcon( this.recordIcon );
-
-		this.pathLabel = new JLabel( getDefaultDirectory() );
-		this.pathLabel.setFont( this.getFont().deriveFont( Font.ITALIC ) );
-		this.fileNameField = new JTextField( 16 );
+		this.pathLabel = new JLabel(getDefaultDirectory().getAbsolutePath());
+		this.pathLabel.setFont(  this.getFont().deriveFont(Font.ITALIC) );
+		this.fileNameField = new JTextField(16);
 		this.fileNameField.setForeground( NEUTRAL_TEXT_COLOR );
 		this.fileNameField.setText( getDefaultFilename() );
 		this.browseButton = new JButton( "Browse..." );
@@ -706,9 +709,9 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		};
 		worker.execute();
 	}
-
-	private String getDefaultDirectory() {
-		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath();
+	private File getDefaultDirectory()
+	{
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
 	}
 
 	private String getDefaultFilename() {

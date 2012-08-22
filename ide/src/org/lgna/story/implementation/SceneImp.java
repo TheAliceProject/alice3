@@ -77,7 +77,7 @@ public class SceneImp extends EntityImp {
 	private final java.util.List< Capsule > capsules = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private ProgramImp program;
-	private final org.lgna.story.Scene abstraction;
+	private final org.lgna.story.SScene abstraction;
 	private float fogDensityValue = 0;
 	private final edu.cmu.cs.dennisc.matt.EventManager eventManager;
 	
@@ -152,7 +152,7 @@ public class SceneImp extends EntityImp {
 		return rv;
 	}
 	
-	public SceneImp( org.lgna.story.Scene abstraction ) {
+	public SceneImp( org.lgna.story.SScene abstraction ) {
 		eventManager = new edu.cmu.cs.dennisc.matt.EventManager( this );
 		eventManager.setScene();
 		this.abstraction = abstraction;
@@ -260,7 +260,7 @@ public class SceneImp extends EntityImp {
 		return this.sgScene;
 	}
 	@Override
-	public org.lgna.story.Scene getAbstraction() {
+	public org.lgna.story.SScene getAbstraction() {
 		return this.abstraction;
 	}
 

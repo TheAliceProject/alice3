@@ -43,8 +43,6 @@
 
 package org.lgna.croquet.components;
 
-import javax.swing.tree.TreePath;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -73,14 +71,31 @@ public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.T
 		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
 
+	public void expandEachRowOnce() {
+		java.util.Set<E> alreadyExpanded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		javax.swing.JTree jTree = this.getAwtComponent();
+		for( int i = 0; i < jTree.getRowCount(); i++ ) {
+			javax.swing.tree.TreePath treePath = jTree.getPathForRow( i );
+			Object item = treePath.getLastPathComponent();
+			if( alreadyExpanded.contains( item ) ) {
+				jTree.collapsePath( treePath );
+			} else {
+				alreadyExpanded.add( (E)item );
+				jTree.expandRow( i );
+			}
+		}
+	}
+	
 	public void expandAllRows() {
-		for( int i = 0; i < this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().expandRow( i );
+		javax.swing.JTree jTree = this.getAwtComponent();
+		for( int i = 0; i < jTree.getRowCount(); i++ ) {
+			jTree.expandRow( i );
 		}
 	}
 	public void collapseAllRows() {
-		for( int i = 0; i < this.getAwtComponent().getRowCount(); i++ ) {
-			this.getAwtComponent().collapseRow( i );
+		javax.swing.JTree jTree = this.getAwtComponent();
+		for( int i = 0; i < jTree.getRowCount(); i++ ) {
+			jTree.collapseRow( i );
 		}
 	}
 
@@ -89,12 +104,12 @@ public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.T
 	}
 
 	public void collapseNode( E node ) {
-		TreePath path = this.getModel().getTreeModel().getTreePath( node );
+		javax.swing.tree.TreePath path = this.getModel().getTreeModel().getTreePath( node );
 		this.getAwtComponent().collapsePath( path );
 	}
 
 	public void expandNode( E node ) {
-		TreePath path = this.getModel().getTreeModel().getTreePath( node );
+		javax.swing.tree.TreePath path = this.getModel().getTreeModel().getTreePath( node );
 		this.getAwtComponent().expandPath( path );
 	}
 }

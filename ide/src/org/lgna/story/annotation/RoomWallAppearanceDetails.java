@@ -52,6 +52,6 @@ public enum RoomWallAppearanceDetails implements org.lgna.project.annotations.Pu
 		return org.lgna.story.ImagePaint.class;
 	}
 	public java.lang.reflect.Field[] getFlds() {
-		return org.lgna.story.Room.WallAppearance.class.getFields();
+		return org.lgna.story.SRoom.WallAppearance.class.getFields();
 	}
 }

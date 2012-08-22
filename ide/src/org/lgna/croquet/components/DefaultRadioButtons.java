@@ -69,15 +69,16 @@ public class DefaultRadioButtons<E> extends AbstractRadioButtons< E > {
 	public DefaultRadioButtons( ListSelectionState< E > model, boolean isVertical ) {
 		super( model );
 		this.isVertical = isVertical;
+		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridBagLayout();
 	}
 	@Override
-	protected org.lgna.croquet.components.BooleanStateButton< ? > createBooleanStateButton( E item, BooleanState booleanState ) {
-		booleanState.setTextForBothTrueAndFalse( item.toString() );
-		return booleanState.createRadioButton();
+	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState ) {
+		//booleanState.setTextForBothTrueAndFalse( item.toString() );
+		return itemSelectedState.createRadioButton();
 	}
 	@Override
 	protected void removeAllDetails() {
@@ -95,7 +96,7 @@ public class DefaultRadioButtons<E> extends AbstractRadioButtons< E > {
 	protected void addPrologue( int count ) {
 	}
 	@Override
-	protected void addItem( RadioButtonItemDetails< E > itemDetails ) {
+	protected void addItem( ItemDetails< E > itemDetails ) {
 		this.internalAddComponent( itemDetails.getButton(), this.getGridBagConstraints() );
 	}
 	@Override

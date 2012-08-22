@@ -70,6 +70,6 @@ public class MethodTemplateMenuModel extends org.lgna.croquet.PredeterminedMenuM
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel >( this, this.method, org.lgna.project.ast.UserMethod.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< MethodTemplateMenuModel >( this, org.lgna.project.ast.UserMethod.class, this.method );
 	}
 }

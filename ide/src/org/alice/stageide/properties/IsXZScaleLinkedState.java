@@ -57,6 +57,6 @@ public class IsXZScaleLinkedState extends BooleanState
 		return SingletonHolder.instance;
 	}
 	private IsXZScaleLinkedState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "14e9d2d1-50a4-4d49-85b3-52d6f457b288" ), true );
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "14e9d2d1-50a4-4d49-85b3-52d6f457b288" ), true );
 	}
 }

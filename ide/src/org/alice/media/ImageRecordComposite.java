@@ -57,7 +57,7 @@ import org.lgna.croquet.WizardPageComposite;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Scene;
+import org.lgna.story.SScene;
 import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
@@ -188,7 +188,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 				UserInstance programInstance = programContext.getProgramInstance();
 				UserField sceneField = programInstance.getType().fields.get( 0 );
-				Scene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, Scene.class );
+				SScene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, SScene.class );
 				SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
 				EventManager manager = sceneImp.getEventManager();
 				programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( script, manager ) );

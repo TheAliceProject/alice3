@@ -57,7 +57,7 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.StringValue;
+import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.project.Project;
 
@@ -82,17 +82,17 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 	private final YouTubeUploader uploader = new YouTubeUploader();
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private final StringState idState = this.createStringState( this.createKey( "id" ), "" );
-	private final StringValue username = this.createStringValue( this.createKey( "username" ) );
+	private final PlainStringValue username = this.createStringValue( this.createKey( "username" ) );
 	private final StringState passwordState = this.createStringState( this.createKey( "password" ), "" );
-	private final StringValue passwordLabelValue = this.createStringValue( this.createKey( "passwordLabel" ) );
-	private final StringValue titleLabelValue = this.createStringValue( this.createKey( "titleLabel" ) );
+	private final PlainStringValue passwordLabelValue = this.createStringValue( this.createKey( "passwordLabel" ) );
+	private final PlainStringValue titleLabelValue = this.createStringValue( this.createKey( "titleLabel" ) );
 	private final StringState titleState = this.createStringState( this.createKey( "title" ), "Alice Video" );
 	private final BooleanState isPrivateState = this.createBooleanState( this.createKey( "isPrivate" ), false );
-	private final StringValue categoryValue = this.createStringValue( this.createKey( "category" ) );
+	private final PlainStringValue categoryValue = this.createStringValue( this.createKey( "category" ) );
 	private final ListSelectionState<String> videoCategoryState;
-	private final StringValue descriptionValue = this.createStringValue( this.createKey( "descriptionValue" ) );
+	private final PlainStringValue descriptionValue = this.createStringValue( this.createKey( "descriptionValue" ) );
 	private final StringState descriptionState = this.createStringState( this.createKey( "description" ), "" );
-	private final StringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
+	private final PlainStringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
 	private final StringState tagState = this.createStringState( this.createKey( "tag" ), "Alice3" );
 	private final ActionOperation loginOperation = this.createActionOperation( this.createKey( "login" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
@@ -151,45 +151,24 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		this.owner = owner;
 		UploadComposite.initializeCategories();
 		uploader.addYouTubeListener( this );
-		ItemCodec<String> codec = new ItemCodec<String>() {
-
-			public Class<String> getValueClass() {
-				return String.class;
-			}
-
-			public String decodeValue( BinaryDecoder binaryDecoder ) {
-				String str = binaryDecoder.decodeString();
-				return str;
-			}
-
-			public void encodeValue( BinaryEncoder binaryEncoder, String value ) {
-				binaryEncoder.encode( value );
-			}
-
-			public StringBuilder appendRepresentation( StringBuilder rv, String value, Locale locale ) {
-				rv.append( value );
-				return rv;
-			}
-
-		};
-		videoCategoryState = this.createListSelectionState( this.createKey( "videoCategory" ), String.class, codec, 0, categoryStrings.toArray( new String[ 0 ] ) );
+		videoCategoryState = this.createListSelectionState( this.createKey( "videoCategory" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, categoryStrings.toArray( new String[ 0 ] ) );
 	}
 	public StringState getIdState() {
 		return this.idState;
 	}
-	public StringValue getUsername() {
+	public PlainStringValue getUsername() {
 		return this.username;
 	}
 	public StringState getPasswordState() {
 		return this.passwordState;
 	}
-	public StringValue getPasswordLabelValue() {
+	public PlainStringValue getPasswordLabelValue() {
 		return this.passwordLabelValue;
 	}
 	public ActionOperation getLoginOperation() {
 		return this.loginOperation;
 	}
-	public StringValue getTitleLabelValue() {
+	public PlainStringValue getTitleLabelValue() {
 		return this.titleLabelValue;
 	}
 	public StringState getTitleState() {
@@ -198,19 +177,19 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 	public BooleanState getIsPrivateState() {
 		return this.isPrivateState;
 	}
-	public StringValue getCategoryValue() {
+	public PlainStringValue getCategoryValue() {
 		return this.categoryValue;
 	}
 	public ListSelectionState<String> getVideoCategoryState() {
 		return this.videoCategoryState;
 	}
-	public StringValue getDescriptionValue() {
+	public PlainStringValue getDescriptionValue() {
 		return this.descriptionValue;
 	}
 	public StringState getDescriptionState() {
 		return this.descriptionState;
 	}
-	public StringValue getTagLabel() {
+	public PlainStringValue getTagLabel() {
 		return this.tagLabel;
 	}
 	public StringState getTagState() {

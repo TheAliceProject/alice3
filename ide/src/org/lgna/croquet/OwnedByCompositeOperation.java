@@ -46,19 +46,30 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public final class OwnedByCompositeOperation extends ActionOperation {
+	public static final class Resolver extends IndirectResolver< OwnedByCompositeOperation, OperationOwningComposite<?> > {
+		private Resolver( OperationOwningComposite<?> indirect ) {
+			super( indirect );
+		}
+		public Resolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+		@Override
+		protected OwnedByCompositeOperation getDirect( OperationOwningComposite<?> indirect ) {
+			return indirect.getOperation();
+		}
+	}
+
 	private final OperationOwningComposite composite;
+
 	public OwnedByCompositeOperation( Group group, OperationOwningComposite composite ) {
 		super( group, java.util.UUID.fromString( "c5afd59b-dd75-4ad5-b2ad-59bc9bd5c8ce" ) );
 		this.composite = composite;
 	}
-	@Override
-	protected void localize() {
-		//todo
-		//note: do not call super
-		this.setName( this.findLocalizedText( null, Composite.class ) );
+	public OperationOwningComposite getComposite() {
+		return this.composite;
 	}
 	@Override
-	protected java.lang.Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
+	protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		return this.composite.getClass();
 	}
 	@Override
@@ -66,53 +77,33 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		this.composite.perform( completionStep );
 	}
-}
 
-//public static final class InternalOperationResolver extends IndirectResolver<InternalOperation,DialogCoreComposite> {
-//	private InternalOperationResolver( DialogCoreComposite indirect ) {
-//		super( indirect );
-//	}
-//	public InternalOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//		super( binaryDecoder );
-//	}
-//	@Override
-//	protected InternalOperation getDirect( DialogCoreComposite indirect ) {
-//		return (InternalOperation)indirect.getModel();
-//	}
-//}
-//protected static final class InternalOperation extends ActionOperation {
-//	private final DialogCoreComposite composite;
-//
-//	public InternalOperation( Group group, DialogCoreComposite composite ) {
-//		super( group, java.util.UUID.fromString( "996e6478-a443-4f81-8976-61074d5c63b4" ) );
-//		this.composite = composite;
-//	}
-//	@Override
-//	protected void localize() {
-//		//todo
-//		//note: do not call super
-//		this.setName( this.findLocalizedText( null, Composite.class ) );
-//	}
-//	@Override
-//	protected Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
-//		return this.composite.getClassUsedForLocalization();
-//	}
-//	@Override
-//	protected void initialize() {
-//		super.initialize();
-//		this.composite.initializeIfNecessary();
-//	}
-//	public DialogCoreComposite getComposite() {
-//		return this.composite;
-//	}
-//	@Override
-//	protected InternalOperationResolver createResolver() {
-//		return new InternalOperationResolver( this.composite );
-//	}
-//	
-//	@Override
-//	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-//		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-//		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this.composite ), step );
-//	}
-//}
+	@Override
+	protected boolean isSubTransactionHistoryRequired() {
+		return this.composite.isSubTransactionHistoryRequired();
+	}
+	@Override
+	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+		super.pushGeneratedContexts( edit );
+		this.composite.pushGeneratedContexts( edit );
+	}
+	@Override
+	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
+		this.composite.popGeneratedContexts( edit );
+		super.popGeneratedContexts( edit );
+	}
+	@Override
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
+		this.composite.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
+	}
+	@Override
+	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+		this.composite.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+	}
+	@Override
+	protected Resolver createResolver() {
+		return new Resolver( this.composite );
+	}
+}

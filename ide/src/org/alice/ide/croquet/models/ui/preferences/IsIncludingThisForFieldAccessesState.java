@@ -53,6 +53,6 @@ public class IsIncludingThisForFieldAccessesState extends org.lgna.croquet.prefe
 		return SingletonHolder.instance;
 	}
 	private IsIncludingThisForFieldAccessesState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), true );
 	}
 }

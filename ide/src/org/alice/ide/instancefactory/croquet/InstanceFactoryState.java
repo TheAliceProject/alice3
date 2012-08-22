@@ -76,7 +76,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private InstanceFactory value;
 	private InstanceFactoryState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
 		org.alice.ide.MetaDeclarationFauxState.getInstance().addValueListener( declarationListener );
 	}
 	private void fallBackToDefaultFactory() {
@@ -132,6 +132,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		} else {
 			this.fallBackToDefaultFactory();
 		}
+		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
 
 	private static org.lgna.croquet.CascadeBlankChild< InstanceFactory > createFillInMenuComboIfNecessary( org.lgna.croquet.CascadeFillIn< InstanceFactory, Void > item, org.lgna.croquet.CascadeMenuModel< InstanceFactory > subMenu ) {
@@ -170,17 +171,17 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 					filteredFields.add( field );
 				}
 			}
-			if( filteredFields.size() > 10 ) {
+			if( filteredFields.size() > 16 ) {
 				org.alice.ide.ast.fieldtree.RootNode root = org.alice.ide.ast.fieldtree.FieldTree.createTreeFor( 
 						filteredFields, 
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Biped.class ), 
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Quadruped.class ), 
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Swimmer.class ), 
-						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.Flyer.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SBiped.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SQuadruped.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SSwimmer.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createFirstClassThreshold( org.lgna.story.SFlyer.class ), 
 						
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.Prop.class ), 
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.Shape.class ),
-						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.Entity.class ),
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SProp.class ), 
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SShape.class ),
+						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( org.lgna.story.SThing.class ),
 						org.alice.ide.ast.fieldtree.FieldTree.createSecondClassThreshold( Object.class )
 				);
 				for( org.alice.ide.ast.fieldtree.FieldNode fieldNode : root.getFieldNodes() ) {

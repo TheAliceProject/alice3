@@ -58,7 +58,7 @@ public abstract class BooleanState extends State< Boolean > {
 			return indirect.getMenuItemPrepModel();
 		}
 	}
-	private static final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
+	public static final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
 		private final BooleanState booleanState;
 		private InternalMenuItemPrepModel( BooleanState booleanState ) {
 			super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
@@ -93,8 +93,8 @@ public abstract class BooleanState extends State< Boolean > {
 			return rv;
 		}
 		@Override
-		protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit, UserInformation userInformation) {
-			return this.booleanState.updateTutorialStepText( rv, step, edit, userInformation );
+		protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit) {
+			return this.booleanState.updateTutorialStepText( rv, step, edit );
 		}
 	}
 	private InternalMenuItemPrepModel menuPrepModel;
@@ -186,7 +186,7 @@ public abstract class BooleanState extends State< Boolean > {
 		binaryEncoder.encode( value );
 	}
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, Boolean value, java.util.Locale locale ) {
+	public StringBuilder appendRepresentation( StringBuilder rv, Boolean value ) {
 		rv.append( value );
 		return rv;
 	}
@@ -205,18 +205,18 @@ public abstract class BooleanState extends State< Boolean > {
 	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
 		if( this.isAppropriateToComplete() ) {
 			boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-			this.commitStateEdit( !nextValue, nextValue, false, new org.lgna.croquet.triggers.ItemEventTrigger( e ) );
+			this.commitStateEdit( !nextValue, nextValue, false, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
 		}
 	}
 	@Override
 	protected void localize() {
-		String text = this.getDefaultLocalizedText();
+		String text = this.findDefaultLocalizedText();
 		if( text != null ) {
 			this.setTextForBothTrueAndFalse( text );
 		} else {
-			String trueText = this.getLocalizedText( "true" );
+			String trueText = this.findLocalizedText( "true" );
 			if( trueText != null ) {
-				String falseText = this.getLocalizedText( "false" );
+				String falseText = this.findLocalizedText( "false" );
 				if( falseText != null ) {
 					this.setTextForTrueAndTextForFalse( trueText, falseText );
 				} else {
@@ -224,35 +224,21 @@ public abstract class BooleanState extends State< Boolean > {
 				}
 			}
 		}
+		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
+		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 	}
-	
-//	@Override
-//	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
-//		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
-//			org.lgna.croquet.edits.StateEdit<?,Boolean> stateEdit = (org.lgna.croquet.edits.StateEdit<?,Boolean>)edit;
-//			rv.append( " " );
-//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.trueText, this.falseText ) ) {
-////				if( booleanStateEdit.getNextValue() ) {
-////					rv.append( "Select " );
-////				} else {
-////					rv.append( "Unselect " );
-////				}
-//				rv.append( "<strong>" );
-//				rv.append( this.trueText );
-//				rv.append( "</strong>" );
-//			} else {
-////				rv.append( "Press " );
-//				rv.append( "<strong>" );
-//				if( stateEdit.getNextValue() ) {
-//					rv.append( this.falseText );
-//				} else {
-//					rv.append( this.trueText );
-//				}
-//				rv.append( "</strong>" );
-//			}
-//		}
-//		return rv;
-//	}
+	//	public int getMnemonicKey() {
+	//	return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
+	//}
+	private void setMnemonicKey( int mnemonicKey ) {
+		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+	}
+	//public javax.swing.KeyStroke getAcceleratorKey() {
+	//	return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+	//}
+	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+	}
 
 	@Override
 	protected Boolean getActualValue() {
@@ -268,23 +254,6 @@ public abstract class BooleanState extends State< Boolean > {
 			this.swingModel.buttonModel.addItemListener( this.itemListener );
 		}
 	}
-//	@Override
-//	protected void handleValueChange( Boolean nextValue ) {
-//		if( nextValue != this.value ) {
-//			//this.buttonModel.removeItemListener(itemListener);
-//
-//			boolean isAdjusting = false;
-//			
-//			Boolean prevValue = this.value;
-//			this.fireChanging( prevValue, nextValue, isAdjusting );
-//			this.swingModel.buttonModel.setSelected( value );
-//			this.value = nextValue;
-//			this.fireChanged( prevValue, nextValue, isAdjusting );
-//
-//			//this.buttonModel.addItemListener(itemListener);
-//			this.updateNameAndIcon();
-//		}
-//	}
 
 	private boolean isTextVariable() {
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.getTrueText(), this.getFalseText() );
@@ -340,6 +309,14 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+		if( this.trueOperation != null ) {
+			this.trueOperation.setName( this.trueText );
+			this.trueOperation.setSmallIcon( this.trueIcon );
+		}
+		if( this.falseOperation != null ) {
+			this.falseOperation.setName( this.falseText );
+			this.falseOperation.setSmallIcon( this.falseIcon );
+		}
 	}
 	
 	public org.lgna.croquet.components.RadioButton createRadioButton() {
@@ -360,4 +337,51 @@ public abstract class BooleanState extends State< Boolean > {
 	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.JComponent< ? > component ) {
 		return new org.lgna.croquet.components.ToolPalette( this, component );
 	}
+	
+	private static class InternalSelectValueOperation extends ActionOperation {
+		private final BooleanState state;
+		private final boolean value;
+		private InternalSelectValueOperation( BooleanState state, boolean value ) {
+			super( state.getGroup(), java.util.UUID.fromString( "ca23dcf0-e00d-439b-b8a2-6c691be8ab5f" ) );
+			assert state != null;
+			this.state = state;
+			this.value = value;
+		}
+		@Override
+		protected void initialize() {
+			this.state.initializeIfNecessary();
+			super.initialize();
+		}
+		@Override
+		protected void localize() {
+			super.localize();
+			this.setName( this.value ? this.state.getTrueText() : this.state.getFalseText() );
+			this.setSmallIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
+		}
+		@Override
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			this.state.setValueTransactionlessly( this.value );
+			step.finish();
+		}
+	}
+	private InternalSelectValueOperation trueOperation;
+	private InternalSelectValueOperation falseOperation;
+	public synchronized Operation getSetToTrueOperation() {
+		if( this.trueOperation != null ) {
+			//pass
+		} else {
+			this.trueOperation = new InternalSelectValueOperation( this, true );
+		}
+		return this.trueOperation;
+	}
+	public synchronized Operation getSetToFalseOperation() {
+		if( this.falseOperation != null ) {
+			//pass
+		} else {
+			this.falseOperation = new InternalSelectValueOperation( this, false );
+		}
+		return this.falseOperation;
+	}
+	
 }

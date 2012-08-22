@@ -49,7 +49,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	public class SwingModel {
 		private javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				Operation.this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
+				Operation.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 			}
 		};
 		public javax.swing.Action getAction() {
@@ -73,13 +73,12 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	public SwingModel getSwingModel() {
-		this.initializeIfNecessary();
 		return this.swingModel;
 	}
 	
 	@Override
 	protected void localize() {
-		String name = this.getDefaultLocalizedText();
+		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
 			this.setName( name );
 			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
@@ -91,9 +90,15 @@ public abstract class Operation extends AbstractCompletionModel {
 //	}
 //
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+		this.initializeIfNecessary();
 		rv.append( " <strong>" );
-		rv.append( this.getName() );
+		String name = this.getName();
+		if( name != null ) {
+			rv.append( name );
+		} else {
+			rv.append( this.getClass().getSimpleName() );
+		}
 		rv.append( "</strong>" );
 		return rv;
 	}
@@ -136,10 +141,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 	}
 	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
-		return this.fire( new org.lgna.croquet.triggers.ActionEventTrigger( viewController, e ) );
+		return this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( viewController, e ) );
 	}
 	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
-		return this.fire( new org.lgna.croquet.triggers.MouseEventTrigger( viewController, e ) );
+		return this.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( viewController, e ) );
 	}
 	@Deprecated
 	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e ) {
@@ -151,23 +156,27 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 	@Deprecated
 	public final org.lgna.croquet.history.CompletionStep<?> fire() {
-		return fire( new org.lgna.croquet.triggers.SimulatedTrigger() );
+		return fire( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
 	}
 	
 	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
-	/*package-private*/ final org.lgna.croquet.history.CompletionStep<?> handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
-		//todo: move up to Model
-		this.initializeIfNecessary();
-		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
+	protected org.lgna.croquet.history.CompletionStep<?> perform( org.lgna.croquet.history.TransactionHistory history, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
 		this.perform( transaction, trigger );
 		return transaction.getCompletionStep();
 	}
+	/*package-private*/ final org.lgna.croquet.history.CompletionStep<?> handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
+		//todo: move up to Model
+		this.initializeIfNecessary();
+		org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+		return this.perform( history, trigger );
+	}
 
-	public String getName() {
+	public final String getName() {
 		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
 	}
-	public void setName( String name ) {
+	public final void setName( String name ) {
 		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 	}
 //	public String getShortDescription() {
@@ -259,8 +268,8 @@ public abstract class Operation extends AbstractCompletionModel {
 			sb.append( this.getOperation() );
 		}
 		@Override
-		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
-			return this.operation.updateTutorialStepText( rv, step, edit, userInformation );
+		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+			return this.operation.updateTutorialStepText( rv, step, edit );
 		}
 	}
 
@@ -278,7 +287,9 @@ public abstract class Operation extends AbstractCompletionModel {
 		return new org.lgna.croquet.components.Button( this );
 	}
 	public org.lgna.croquet.components.Hyperlink createHyperlink() {
-		return new org.lgna.croquet.components.Hyperlink( this );
+		org.lgna.croquet.components.Hyperlink rv = new org.lgna.croquet.components.Hyperlink( this );
+		rv.scaleFont( 1.2f );
+		return rv;
 	}
 
 	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade< ? > cascade ) {

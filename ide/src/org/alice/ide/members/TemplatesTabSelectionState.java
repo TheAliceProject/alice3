@@ -134,17 +134,17 @@ package org.alice.ide.members;
 //	}
 //}
 
-public abstract class TemplatesTabSelectionState extends org.lgna.croquet.TabSelectionState< TemplateComposite > {
+public abstract class TemplatesTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState< TemplateComposite > {
 	public TemplatesTabSelectionState( java.util.UUID id, TemplateComposite... composites ) {
 		super( 
-				org.alice.ide.IDE.UI_STATE_GROUP, 
+				org.alice.ide.IDE.DOCUMENT_UI_GROUP, 
 				id, 
-				org.alice.ide.croquet.codecs.SingletonCodec.getInstance( org.alice.ide.members.TemplateComposite.class ), 
+				TemplateComposite.class, 
 				0,
 				composites
 		);
 	}
-	public abstract org.lgna.croquet.components.AbstractTabbedPane< ?,?,? > createTabbedPane();
+	public abstract org.lgna.croquet.components.AbstractTabbedPane<?,?> createTabbedPane();
 //	public final org.lgna.croquet.components.AbstractTabbedPane< ?,?,? > createTabbedPane() {
 //		return this.createTabbedPane( new TabCreator< TemplateComposite >() {
 //			public org.lgna.croquet.components.JComponent< ? > createMainComponent( org.alice.ide.croquet.models.templates.TemplateComposite item ) {

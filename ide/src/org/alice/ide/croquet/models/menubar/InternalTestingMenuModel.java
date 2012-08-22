@@ -64,7 +64,9 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.video.ProofOfConceptRecordVideoOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation.getInstance().getMenuItemPrepModel()
+				org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation.getInstance().getMenuItemPrepModel(),
+				new org.lgna.cheshire.test.IsShowingHackTutorialState().getMenuItemPrepModel(),
+				new org.alice.ide.highlight.ShowMeOperation().getMenuItemPrepModel()
 		);
 	}
 }

@@ -8,18 +8,18 @@ import org.lgna.project.ast.JavaMethod;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.story.AddKeyPressListener;
 import org.lgna.story.AddObjectMoverFor;
-import org.lgna.story.MovableTurnable;
-import org.lgna.story.Scene;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SScene;
 import org.lgna.story.event.ArrowKeyPressListener;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.NumberKeyPressListener;
 
 public class KeyboardEventListenerMenu extends EventListenerMenuModel {	
 
-	public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addKeyPressListener", KeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance( Scene.class, "addObjectMoverFor", MovableTurnable.class, AddObjectMoverFor.Detail[].class );
-	public static final JavaMethod ADD_ARROW_KEY_PRESS_LISTENER = JavaMethod.getInstance( Scene.class, "addArrowKeyPressListener", ArrowKeyPressListener.class, AddKeyPressListener.Detail[].class );
-	public static final JavaMethod ADD_NUNBER_KEY_LISTENER_METHOD = JavaMethod.getInstance( Scene.class, "addNumberKeyPressListener", NumberKeyPressListener.class, AddKeyPressListener.Detail[].class );
+	public static final JavaMethod ADD_KEY_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addKeyPressListener", KeyPressListener.class, AddKeyPressListener.Detail[].class );
+	public static final JavaMethod MOVE_WITH_ARROWS = JavaMethod.getInstance( SScene.class, "addObjectMoverFor", SMovableTurnable.class, AddObjectMoverFor.Detail[].class );
+	public static final JavaMethod ADD_ARROW_KEY_PRESS_LISTENER = JavaMethod.getInstance( SScene.class, "addArrowKeyPressListener", ArrowKeyPressListener.class, AddKeyPressListener.Detail[].class );
+	public static final JavaMethod ADD_NUNBER_KEY_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addNumberKeyPressListener", NumberKeyPressListener.class, AddKeyPressListener.Detail[].class );
 
 	private static class SingletonHolder {
 		private static KeyboardEventListenerMenu instance = new KeyboardEventListenerMenu();

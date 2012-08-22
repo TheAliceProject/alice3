@@ -56,12 +56,17 @@ package org.lgna.croquet;
 		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
 		gbc.weightx = 1.0;
 		gbc.weighty = 0.0;
-		pageEndPanel.addComponent( this.getStatusLabel(), gbc );
+		GatedCommitDialogCoreComposite coreComposite = (GatedCommitDialogCoreComposite)composite.getCoreComposite();
+		if( coreComposite.isStatusLineDesired() ) {
+			pageEndPanel.addComponent( this.getStatusLabel(), gbc );
+		}
 		pageEndPanel.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), gbc );
 		pageEndPanel.addComponent( controlLine, gbc );
 		controlLine.setBackgroundColor( null );
 		
-		this.addComponent( pageEndPanel, Constraint.PAGE_END );
+		this.addPageEndComponent( pageEndPanel );
+		
+		this.statusLabel.setForegroundColor( java.awt.Color.RED.darker().darker() );
 	}
 	protected org.lgna.croquet.components.LineAxisPanel getControlLine() {
 		return this.controlLine;
@@ -81,51 +86,36 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.components.View<?,?>, CC extends GatedCommitDialogContentComposite<? extends GatedCommitDialogContentPanel<?>>> extends DialogCoreComposite<V,CC> {
+	private final java.util.List< CommitRejector > commitRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList(); 
 	public GatedCommitDialogCoreComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
-	protected abstract Status getStatus( org.lgna.croquet.history.CompletionStep<?> step );
 
-	protected abstract String getDefaultCommitText();
-	protected abstract String getCommitUiKey();
-	protected String getCancelUiKey() {
-		return "OptionPane.cancelButtonText";
+	public void addCommitRejector( CommitRejector commitRejector ) {
+		this.commitRejectors.add( commitRejector );
 	}
-	@Override
-	protected void localize() {
-		super.localize();
-
-		java.util.Locale locale = javax.swing.JComboBox.getDefaultLocale();
-
-		String commitText = this.findLocalizedText( "commit", GatedCommitDialogCoreComposite.class );
-		if( commitText != null ) {
-			//pass
-		} else {
-			String commitUiKey = this.getCommitUiKey();
-			if( commitUiKey != null ) {
-				commitText = javax.swing.UIManager.getString( commitUiKey, locale );
-			}
-			if( commitText != null ) {
-				//pass
-			} else {
-				commitText = this.getDefaultCommitText();
+	public void removeCommitRejector( CommitRejector commitRejector ) {
+		this.commitRejectors.remove( commitRejector );
+	}
+	public void clearCommitRejectors() {
+		this.commitRejectors.clear();
+	}
+	protected abstract Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step );
+	public final Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		Status status = this.getStatusPreRejectorCheck( step );
+		if( status == IS_GOOD_TO_GO_STATUS ) {
+			for( CommitRejector rejector : this.commitRejectors ) {
+				status = rejector.getRejectionStatus( step );
+				if( status == IS_GOOD_TO_GO_STATUS ) {
+					//pass
+				} else {
+					return status;
+				}
 			}
 		}
-		this.getCommitOperation().setName( commitText );
-		String cancelText = this.findLocalizedText( "cancel", GatedCommitDialogCoreComposite.class );
-		if( cancelText != null ) {
-			//pass
-		} else {
-			cancelText = javax.swing.UIManager.getString( "OptionPane.cancelButtonText", locale );
-			if( commitText != null ) {
-				//pass
-			} else {
-				commitText = "Cancel";
-			}
-		}
-		this.getCancelOperation().setName( cancelText );
+		return status;
 	}
-
+	
 	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
@@ -134,10 +124,13 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		}
 	};
 
+	public boolean isStatusLineDesired() {
+		return true;
+	}
 	protected abstract void updateIsGoodToGo( boolean isGoodToGo );
 	private void updateStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		boolean isGoodToGo;
-		PotentiallyGatedComposite.Status status = this.getStatus( step );
+		AbstractSeverityStatusComposite.Status status = this.getStatus( step );
 		if( status != null ) {
 			isGoodToGo = status.isGoodToGo();
 		} else {
@@ -150,7 +143,7 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		org.lgna.croquet.history.CompletionStep<?> s = null;
 		if( event != null ) {
-			org.lgna.croquet.history.Node<?> node = event.getNode();
+			org.lgna.croquet.history.TransactionNode<?> node = event.getNode();
 			if( node != null ) {
 				s = node.getFirstStepOfModelAssignableTo( GatedCommitDialogOperation.class, org.lgna.croquet.history.CompletionStep.class );
 			}
@@ -167,5 +160,12 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		completionStep.removeListener( this.listener );
 		super.handlePostHideDialog( completionStep );
+	}
+	
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+		org.lgna.croquet.edits.Edit<?> commitEdit = null;
+		this.getCommitOperation().addGeneratedTransaction( subTransactionHistory, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), commitEdit );
+	}
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 }

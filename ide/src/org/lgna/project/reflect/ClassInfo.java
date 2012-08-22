@@ -142,4 +142,17 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		}
 		return null;
 	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[name=" );
+		sb.append( this.getClsName() );
+		sb.append( "]" );
+		for( MethodInfo methodInfo : this.methodInfos ) {
+			sb.append( "\n\t" );
+			sb.append( methodInfo );
+		}
+		return sb.toString();
+	}
 }

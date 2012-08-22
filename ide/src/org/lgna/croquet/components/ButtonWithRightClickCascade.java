@@ -52,7 +52,7 @@ public class ButtonWithRightClickCascade extends Button {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( e.getButton() == java.awt.event.MouseEvent.BUTTON3 ) {
-				cascade.fire( new org.lgna.croquet.triggers.MouseEventTrigger( ButtonWithRightClickCascade.this, e ) );
+				cascade.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( ButtonWithRightClickCascade.this, e ) );
 			}
 		}
 	};

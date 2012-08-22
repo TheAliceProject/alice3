@@ -50,11 +50,11 @@ public class ImageResourceFillerInner extends ResourceFillerInner< org.lgna.comm
 		super( org.lgna.common.resources.ImageResource.class );
 	}
 	@Override
-	protected org.alice.ide.croquet.models.ast.cascade.resource.ImageResourceExpressionFillIn getResourceExpressionFillIn( org.lgna.common.resources.ImageResource resource ) {
+	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getResourceExpressionFillIn( org.lgna.common.resources.ImageResource resource ) {
 		return org.alice.ide.croquet.models.ast.cascade.resource.ImageResourceExpressionFillIn.getInstance( resource );
 	}
 	@Override
-	protected org.lgna.croquet.CascadeFillIn getImportNewResourceFillIn() {
-		return org.alice.ide.croquet.models.ast.cascade.resource.ImportNewImageResourceFillIn.getInstance();
+	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.ResourceExpression,? > getImportNewResourceFillIn() {
+		return org.alice.ide.ast.resource.ImageResourceImportValueCreator.getInstance().getFillIn();
 	}
 }

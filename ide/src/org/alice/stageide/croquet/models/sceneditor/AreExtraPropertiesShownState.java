@@ -52,6 +52,6 @@ public class AreExtraPropertiesShownState extends org.lgna.croquet.BooleanState
         return SingletonHolder.instance;
     }
     private AreExtraPropertiesShownState() {
-        super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "10e11734-71f3-4e0e-8469-72bfa7ff575d" ), true );
+        super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "10e11734-71f3-4e0e-8469-72bfa7ff575d" ), true );
     }
 }

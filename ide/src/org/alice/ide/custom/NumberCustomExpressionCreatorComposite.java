@@ -70,7 +70,7 @@ public abstract class NumberCustomExpressionCreatorComposite extends CustomExpre
 		return this.numberModel.getExpressionValue();
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String text = this.numberModel.getExplanationIfOkButtonShouldBeDisabled();
 		if( text != null ) {
 			this.errorStatus.setText( text );

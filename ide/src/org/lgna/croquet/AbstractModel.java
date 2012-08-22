@@ -60,9 +60,11 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		return this.contextFactories;
 	}
 	public void addContextFactory( ContextFactory<?> contextFactory ) {
+		assert contextFactory != null : this;
 		this.contextFactories.add( contextFactory );
 	}
 	public void removeContextFactory( ContextFactory<?> contextFactory ) {
+		assert contextFactory != null : this;
 		this.contextFactories.remove( contextFactory );
 	}
 
@@ -90,12 +92,22 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 	
 //	public abstract boolean isEnabled();
 //	public abstract void setEnabled( boolean isEnabled );
+	private boolean isEnabled = true;
 	public boolean isEnabled() {
-		throw new RuntimeException( "todo" );
+		return this.isEnabled;
 	}
 	public void setEnabled( boolean isEnabled ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+		if( this.isEnabled != isEnabled ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: override setEnabled", this, isEnabled );
+			this.isEnabled = isEnabled;
+		}
 	}
+//	public boolean isEnabled() {
+//		throw new RuntimeException( "todo" );
+//	}
+//	public void setEnabled( boolean isEnabled ) {
+//		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+//	}
 	
 	
 	private String toolTipText = null;
@@ -113,16 +125,16 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation );
-//	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, Edit< ? > edit, UserInformation userInformation ) {
-//		rv.append( "TODO: override updateTutorialStepText " );
-//		rv.append( this );
-//		return rv;
-//	}
-	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit, UserInformation userInformation ) {
+	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit );
+	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( triggerText );
-		this.updateTutorialStepText( sb, step, edit, userInformation );
+		sb.append( " " );
+		if( step.getTrigger() instanceof org.lgna.croquet.triggers.DropTrigger ) {
+			sb.append( "<strong>here</strong>." );
+		} else {
+			this.updateTutorialStepText( sb, step, edit );
+		}
 		return sb.toString();
 	}
 }

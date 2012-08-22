@@ -95,7 +95,7 @@ public abstract class ViewController< J extends javax.swing.JComponent, M extend
 			if( quoteClickCountUnquote == 1 ) {
 				if( ViewController.this.popupPrepModel != null ) {
 					if( ViewController.this.isPopupMenuOperationLimitedToRightMouseButton==false || edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-						ViewController.this.popupPrepModel.fire( new org.lgna.croquet.triggers.MouseEventTrigger( ViewController.this, e ) );
+						ViewController.this.popupPrepModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( ViewController.this, e ) );
 					}
 				}
 			}

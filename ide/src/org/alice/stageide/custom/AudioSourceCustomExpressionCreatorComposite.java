@@ -54,35 +54,113 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 		return SingletonHolder.instance;
 	}
 	
-	private final org.lgna.croquet.StringValue resourceLabel = this.createStringValue( this.createKey( "resourceLabel" ) ); 
-	private final org.lgna.croquet.StringValue volumeLabel = this.createStringValue( this.createKey( "volumeLabel" ) ); 
-	private final org.lgna.croquet.StringValue startMarkerLabel = this.createStringValue( this.createKey( "startMarkerLabel" ) );
-	private final org.lgna.croquet.StringValue stopMarkerLabel = this.createStringValue( this.createKey( "stopMarkerLabel" ) );
-	
-	
 	private static final int MARKER_MAX = 1000;
+
+	private final org.lgna.croquet.PlainStringValue resourceSidekickLabel = this.createStringValue( this.createKey( "resourceState.sidekickLabel" ) ); 
+	private final org.lgna.croquet.BoundedIntegerState volumeState = this.createBoundedIntegerState( this.createKey( "volumeState" ), VolumeLevelUtilities.createDetails() );
+	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( this.createKey( "startMarkerState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
+	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( this.createKey( "stopMarkerState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
+
+	private org.lgna.croquet.State.ValueListener<Integer> startValueListiner = new org.lgna.croquet.State.ValueListener<Integer>() {
+		public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+			updateStopValueIfNecessary();
+		}
+	};
+	private org.lgna.croquet.State.ValueListener<Integer> stopValueListiner = new org.lgna.croquet.State.ValueListener<Integer>() {
+		public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+		}
+		public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+			updateStartValueIfNecessary();
+		}
+	};
+	private double toDouble( int markerValue, double defaultValue ) {
+		org.lgna.common.resources.AudioResource audioResource = this.getAudioResourceExpressionState().getAudioResource();
+		double duration;
+		if( audioResource != null ) {
+			duration = audioResource.getDuration();
+		} else {
+			duration = Double.NaN;
+		}
+		if( Double.isNaN( duration ) ) {
+			return defaultValue;
+		} else {
+			double value = markerValue * 0.001 * duration;
+			value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.round( value, 3 );
+			return value;
+		}
+	}
 	
-	private final org.lgna.croquet.BoundedIntegerState volumeState = this.createBoundedIntegerState( this.createKey( "volume" ), VolumeLevelUtilities.createDetails() );
-	private final org.lgna.croquet.BoundedIntegerState startMarkerState = this.createBoundedIntegerState( this.createKey( "startMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( 0 ) );
-	private final org.lgna.croquet.BoundedIntegerState stopMarkerState = this.createBoundedIntegerState( this.createKey( "stopMarker" ), new BoundedIntegerDetails().minimum( 0 ).maximum( MARKER_MAX ).initialValue( MARKER_MAX ) );
+	private boolean isIgnoringValueChanges;
+	private void updateStartValueIfNecessary() {
+		if( this.isIgnoringValueChanges ) {
+			//pass
+		} else {
+			int start = this.startMarkerState.getValue();
+			int stop = this.stopMarkerState.getValue();
+			if( start > stop ) {
+				this.isIgnoringValueChanges = true;
+				try {
+					this.startMarkerState.setValueTransactionlessly( stop );
+				} finally {
+					this.isIgnoringValueChanges = false;
+				}
+				this.getView().updatePreview();
+			}
+		}
+	}
+	private void updateStopValueIfNecessary() {
+		if( this.isIgnoringValueChanges ) {
+			//pass
+		} else {
+			int start = this.startMarkerState.getValue();
+			int stop = this.stopMarkerState.getValue();
+			if( start > stop ) {
+				this.isIgnoringValueChanges = true;
+				try {
+					this.stopMarkerState.setValueTransactionlessly( start );
+				} finally {
+					this.isIgnoringValueChanges = false;
+				}
+				this.getView().updatePreview();
+			}
+		}
+	}
+	
+	private double getStartMarkerTime() {
+		int value = this.startMarkerState.getValue();
+		return toDouble( value, 0.0 );
+	}
+	private double getStopMarkerTime() {
+		int value = this.stopMarkerState.getValue();
+		if( value == MARKER_MAX ) {
+			return Double.NaN;
+		} else {
+			return toDouble( value, Double.NaN );
+		}
+	}
+		
+	private final org.lgna.croquet.Operation testOperation = this.createActionOperation( this.createKey( "test" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			org.lgna.common.resources.AudioResource audioResource = getAudioResourceExpressionState().getAudioResource();
+			double volume = VolumeLevelUtilities.toDouble( getVolumeState().getValue() );
+			double startTime = getStartMarkerTime();
+			double stopTime = getStopMarkerTime();
+			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
+			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioResource, volume, startTime, stopTime );
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			player.test( trigger.getViewController().getAwtComponent() );
+			return null;
+		}
+	} );
 	
 	private AudioSourceCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "786280be-fdba-4135-bcc4-b0548ded2e50" ) ); 
+		this.startMarkerState.addValueListener( this.startValueListiner );
+		this.stopMarkerState.addValueListener( this.stopValueListiner );
 	}
 	
-	public org.lgna.croquet.StringValue getResourceLabel() {
-		return this.resourceLabel;
-	}
-	public org.lgna.croquet.StringValue getVolumeLabel() {
-		return this.volumeLabel;
-	}
-	public org.lgna.croquet.StringValue getStartMarkerLabel() {
-		return this.startMarkerLabel;
-	}
-	public org.lgna.croquet.StringValue getStopMarkerLabel() {
-		return this.stopMarkerLabel;
-	}
-
 	public AudioResourceExpressionState getAudioResourceExpressionState() {
 		return AudioResourceExpressionState.getInstance();
 	}
@@ -94,6 +172,14 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 	}
 	public org.lgna.croquet.BoundedIntegerState getStopMarkerState() {
 		return this.stopMarkerState;
+	}
+	
+	public org.lgna.croquet.Operation getTestOperation() {
+		return this.testOperation;
+	}
+	
+	public org.lgna.croquet.PlainStringValue getResourceSidekickLabel() {
+		return this.resourceSidekickLabel;
 	}
 	
 	@Override
@@ -109,8 +195,8 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 			}
 
 			double volume = VolumeLevelUtilities.toDouble( this.getVolumeState().getValue() );
-			double startTime = 0.0; //todo
-			double stopTime = Double.NaN; //todo
+			double startTime = this.getStartMarkerTime();
+			double stopTime = this.getStopMarkerTime();
 
 			// apologies for the negative logic
 			boolean isNotDefaultVolume = org.lgna.story.AudioSource.isWithinReasonableEpsilonOfDefaultVolume( volume ) == false;
@@ -157,7 +243,7 @@ public final class AudioSourceCustomExpressionCreatorComposite extends org.alice
 		}
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
 	}
 	

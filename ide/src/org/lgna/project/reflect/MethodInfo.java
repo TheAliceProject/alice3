@@ -73,15 +73,9 @@ public class MethodInfo extends MemberWithParametersInfo {
 		}
 		return this.mthd;
 	}
-
-
 	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( getClass().getName() );
-		sb.append( "[name=" );
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		sb.append( "name=" );
 		sb.append( this.name );
-		sb.append( "]" );
-		return sb.toString();
 	}
 }

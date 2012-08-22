@@ -56,7 +56,7 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( this.createKey( "valueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
 	
 	private PortionCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
+		super( java.util.UUID.fromString( "f1d64eb4-38fd-4c43-856f-e8aa2b1708d1" ) );
 	}
 	@Override
 	protected org.alice.ide.custom.components.PortionCustomExpressionCreatorView createView() {
@@ -72,7 +72,7 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 

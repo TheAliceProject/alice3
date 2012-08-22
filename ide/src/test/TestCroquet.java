@@ -46,31 +46,46 @@ package test;
  * @author Dennis Cosgrove
  */
 public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
-	public static void main( String[] args ) {
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+
 		TestCroquet testCroquet = new TestCroquet();
 		testCroquet.initialize( args );
 		
 		class IntegerState extends org.lgna.croquet.BoundedIntegerState {
 			public IntegerState() {
-				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ) );
+				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ) );
 			}
 		}
 		class DoubleState extends org.lgna.croquet.BoundedDoubleState {
 			public DoubleState() {
-				super( new Details( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ).stepSize( 10 ).minimum( 20 ) );
+				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ).stepSize( 10 ).minimum( 20 ) );
 			}
 		}
 		
 		IntegerState integerState = new IntegerState();
 		DoubleState doubleState = new DoubleState();
 		
+		integerState.addValueListener( new org.lgna.croquet.State.ValueListener<Integer>() {
+			public void changing( org.lgna.croquet.State<java.lang.Integer> state, java.lang.Integer prevValue, java.lang.Integer nextValue, boolean isAdjusting ) {
+			}
+			public void changed( org.lgna.croquet.State<java.lang.Integer> state, java.lang.Integer prevValue, java.lang.Integer nextValue, boolean isAdjusting ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue, isAdjusting );
+			}
+		} );
+		
 		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 
 				4,  1, 
 				integerState.createSlider(), integerState.createSpinner(),
-				doubleState.createSlider(), doubleState.createSpinner()
+				doubleState.createSlider(), doubleState.createSpinner(),
+				
+				new org.lgna.croquet.components.SwingAdapter( new javax.swing.JComboBox() )
 		);
 		
-		testCroquet.getFrame().getContentPanel().addComponent( gridPanel, org.lgna.croquet.components.BorderPanel.Constraint.CENTER );
+		testCroquet.getFrame().getContentPanel().addCenterComponent( gridPanel );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );

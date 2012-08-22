@@ -45,30 +45,30 @@ package org.alice.ide.preferences.recursion;
 /**
  * @author Dennis Cosgrove
  */
-public class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.PlainDialogComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
+public final class IsRecursionAllowedPreferenceDialogComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView> {
 	private static class SingletonHolder {
 		private static IsRecursionAllowedPreferenceDialogComposite instance = new IsRecursionAllowedPreferenceDialogComposite( 0 );
 	}
 	public static IsRecursionAllowedPreferenceDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final org.lgna.croquet.StringValue descriptionValue = this.createStringValue( this.createKey( "description" ) );
-	private final org.lgna.croquet.StringValue recursiveButtonLabelValue = this.createStringValue( this.createKey( "recursiveButtonLabel" ) );
+	private final org.lgna.croquet.PlainStringValue descriptionText = this.createStringValue( this.createKey( "descriptionText" ) );
+	private final org.lgna.croquet.PlainStringValue recursiveButtonText = this.createStringValue( this.createKey( "recursiveButtonText" ) );
 	private final int depth;
 	private IsRecursionAllowedPreferenceDialogComposite next;
 	private IsRecursionAllowedPreferenceDialogComposite( int index ) {
-		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ), org.lgna.croquet.Application.UI_STATE_GROUP );
+		super( java.util.UUID.fromString( "877a3f9a-40c0-4100-90a3-6fb736ed5305" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 		this.depth = index;
 	}
 	@Override
 	protected org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView createView() {
 		return new org.alice.ide.preferences.recursion.components.IsRecursionAllowedPreferenceView( this );
 	}
-	public org.lgna.croquet.StringValue getDescriptionValue() {
-		return this.descriptionValue;
+	public org.lgna.croquet.PlainStringValue getDescriptionText() {
+		return this.descriptionText;
 	}
-	public org.lgna.croquet.StringValue getRecursiveButtonLabelValue() {
-		return this.recursiveButtonLabelValue;
+	public org.lgna.croquet.PlainStringValue getRecursiveButtonText() {
+		return this.recursiveButtonText;
 	}
 	public IsRecursionAllowedPreferenceDialogComposite getNext() {
 		if( this.next != null ) {

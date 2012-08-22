@@ -46,6 +46,7 @@ package org.lgna.project.migration;
  * @author Dennis Cosgrove
  */
 public class TextMigration implements Migration {
+	private static final boolean IS_SANITY_CHECKING_DESIRED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.lgna.project.migration.TextMigration.isSanityCheckingDesired", false );
 	private static class Pair {
 		private final java.util.regex.Pattern pattern;
 		private final String replacement;
@@ -57,11 +58,32 @@ public class TextMigration implements Migration {
 			java.util.regex.Matcher matcher = this.pattern.matcher( source );
 			if( matcher.find() ) {
 				//todo?
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "replace all", this.pattern, this.replacement );
 				matcher.reset();
-				return matcher.replaceAll( this.replacement );
+				String rv = matcher.replaceAll( this.replacement );
+//				java.util.regex.Matcher postMatcher = this.pattern.matcher( rv );
+//				assert postMatcher.find() == false : rv;
+//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
+				return rv;
 			} else {
 				return source;
 			}
+		}
+		public boolean isPatternEqual( Pair other ) {
+			return this.pattern.toString().equals( other.pattern.toString() );
+		}
+		public boolean isReplacementEqual( Pair other ) {
+			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.replacement, other.replacement );
+		}
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "Pair[pattern=" );
+			sb.append( this.pattern );
+			sb.append( ";replacement=" );
+			sb.append( this.replacement );
+			sb.append( "]" );
+			return sb.toString();
 		}
 	}
 	
@@ -74,8 +96,22 @@ public class TextMigration implements Migration {
 		this.resultVersion = resultVersion;
 		assert values.length % 2 == 0 : values.length;
 		this.pairs = new Pair[ values.length / 2 ];
-		for( int i=0; i< this.pairs.length; i++ ) {
+		for( int i=0; i<this.pairs.length; i++ ) {
 			this.pairs[ i ] = new Pair( values[ i*2 ], values[ i*2 + 1 ] );
+		}
+		if( IS_SANITY_CHECKING_DESIRED ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "sanity checking " + this.pairs.length );
+			for( int i=0; i<this.pairs.length; i++ ) {
+				for( int j=i+1; j<this.pairs.length; j++ ) {
+					if( this.pairs[ i ].isPatternEqual( this.pairs[ j ] ) ) {
+						if( this.pairs[ i ].isReplacementEqual( this.pairs[ j ] ) ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "duplicate", i, j, this.pairs[ i ] );
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "severe problem", i, j, this.pairs[ i ], this.pairs[ j ] );
+						}
+					}
+				}
+			}
 		}
 	}
 	public org.lgna.project.Version getResultVersion() {
@@ -86,7 +122,7 @@ public class TextMigration implements Migration {
 			return 
 					this.minimumVersion.compareTo( version ) <= 0
 						&&
-					this.resultVersion.compareTo( version ) >= 0;
+					this.resultVersion.compareTo( version ) > 0;
 		} else {
 			//todo?
 			return false;

@@ -55,14 +55,14 @@ public abstract class FromClipboardOperation extends org.alice.ide.croquet.model
 
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement() {
-		org.lgna.project.ast.AbstractNode node = Clipboard.getInstance().peek();
+		org.lgna.project.ast.AbstractNode node = Clipboard.SINGLETON.peek();
 		//todo: recast if necessary
 		if( node instanceof org.lgna.project.ast.Statement ) {
 			org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
 			if( isCopy ) {
 				return org.alice.ide.IDE.getActiveInstance().createCopy( statement );
 			} else {
-				Clipboard.getInstance().pop();
+				Clipboard.SINGLETON.pop();
 				return statement;
 			}
 		} else {

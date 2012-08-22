@@ -57,7 +57,7 @@ public class UndoOperation extends HistoryOperation {
 		this.setSmallIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/undo.png" ) ) );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.history.HistoryManager historyManager) {
+	protected void performInternal(org.lgna.croquet.undo.UndoHistory historyManager) {
 		historyManager.performUndo();
 	}
 }

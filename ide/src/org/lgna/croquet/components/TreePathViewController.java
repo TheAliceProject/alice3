@@ -66,19 +66,9 @@ public class TreePathViewController<T> extends PanelViewController< TreeSelectio
 			//initializer.configure( operation, treeNode );
 			Button button = operation.createButton();
 //			selectChildButton.getAwtComponent().putClientProperty("JComponent.sizeVariant", "small");
-			this.addComponent( button, Constraint.CENTER );
-			this.addComponent( selectChildButton, Constraint.LINE_END );
-			
-		}
-
-		@Override
-		protected javax.swing.JPanel createJPanel() {
-			return new DefaultJPanel() {
-				@Override
-				public java.awt.Dimension getMaximumSize() {
-					return super.getPreferredSize();
-				}
-			};
+			this.addCenterComponent( button );
+			this.addLineEndComponent( selectChildButton );
+			this.setMaximumSizeClampedToPreferredSize( true );
 		}
 	}
 	private static class InternalPanel<T> extends LineAxisPanel {

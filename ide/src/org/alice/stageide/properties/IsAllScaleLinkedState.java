@@ -54,6 +54,6 @@ public class IsAllScaleLinkedState extends BooleanState
 		return SingletonHolder.instance;
 	}
 	private IsAllScaleLinkedState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2667c9ff-fc8a-4675-aa4d-0ae317dbcf51" ), true );
 	}
 }

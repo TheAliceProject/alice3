@@ -54,7 +54,7 @@ public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.toolkit.cr
 	}
 	private HandleStyleListSelectionState() {
 		super( 
-				org.alice.ide.ProjectApplication.UI_STATE_GROUP, 
+				org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, 
 				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ), 
 				0, 
 				org.alice.stageide.sceneeditor.HandleStyle.class

@@ -52,24 +52,12 @@ public class AudioSourceCustomExpressionCreatorView extends org.alice.ide.custom
 	}
 	
 	@Override
-	protected org.lgna.croquet.StringValue[] getLabelStringValues() {
+	protected void appendRows( java.util.List< org.lgna.croquet.components.SpringRow > rows ) {
 		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		return new org.lgna.croquet.StringValue[] {
-				composite.getResourceLabel(),
-				composite.getVolumeLabel(),
-				composite.getStartMarkerLabel(),
-				composite.getStopMarkerLabel()
-		};
-	}
-	
-	@Override
-	protected org.lgna.croquet.components.Component<?>[] getRowComponents() {
-		org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite)this.getComposite();
-		return new org.lgna.croquet.components.Component<?>[] {
-				new org.alice.ide.croquet.components.ExpressionDropDown( composite.getAudioResourceExpressionState(), org.alice.ide.x.DialogAstI18nFactory.getInstance() ),
-				new VolumeLevelSlider( composite.getVolumeState() ),
-				composite.getStartMarkerState().createSlider(),
-				composite.getStopMarkerState().createSlider()
-		};
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getResourceSidekickLabel(), composite.getAudioResourceExpressionState().createEditor( org.alice.ide.x.DialogAstI18nFactory.getInstance() ), false ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getVolumeState().getSidekickLabel(), new VolumeLevelSlider( composite.getVolumeState() ), false ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getStartMarkerState().getSidekickLabel(), composite.getStartMarkerState().createSlider() ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getStopMarkerState().getSidekickLabel(), composite.getStopMarkerState().createSlider() ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( null, composite.getTestOperation().createButton(), false ) );
 	}
 }

@@ -68,12 +68,12 @@ public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSepa
 	@Override
 	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( this.type.getRepr( locale ) );
+		sb.append( this.type.getRepr( org.lgna.croquet.Application.getLocale() ) );
 		sb.append( " Joints" );
 		return sb.toString();
 	}
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator >( this, this.type, org.lgna.project.ast.AbstractType.class );
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator >( this, org.lgna.project.ast.AbstractType.class, this.type );
 	}
 }

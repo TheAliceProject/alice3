@@ -47,8 +47,8 @@ package org.lgna.story.implementation;
  * @author dculyba
  *
  */
-public final class FlyerImp extends JointedModelImp< org.lgna.story.Flyer, org.lgna.story.resources.FlyerResource > {
-	public FlyerImp( org.lgna.story.Flyer abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.FlyerResource > factory ) {
+public final class FlyerImp extends JointedModelImp< org.lgna.story.SFlyer, org.lgna.story.resources.FlyerResource > {
+	public FlyerImp( org.lgna.story.SFlyer abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.FlyerResource > factory ) {
 		super( abstraction, factory );
 	}
 

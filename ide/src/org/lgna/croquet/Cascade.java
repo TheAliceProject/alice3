@@ -60,7 +60,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 		}
 	}
 
-	public static final class InternalRoot<T> extends CascadeRoot<T,org.lgna.croquet.history.CompletionStep<Cascade<T>>> {
+	public static final class InternalRoot<T> extends CascadeRoot<T,Cascade<T>> {
 		private final Cascade< T > cascade;
 		private InternalRoot( Cascade< T > cascade, CascadeBlank< T >[] blanks ) {
 			super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ), blanks );
@@ -99,6 +99,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 
 	private final Class< T > componentType;
 	private final InternalRoot< T > root;
+	
 
 	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T >[] blanks ) {
 		super( group, id );
@@ -112,7 +113,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.root.getPopupPrepModel() );
 	}
-
+	
 	public InternalRoot< T > getRoot() {
 		return this.root;
 	}
@@ -213,7 +214,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 			javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
 			//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
 			//org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
-			final org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CompletionStep<Cascade<T>>> rtRoot = new org.lgna.croquet.cascade.RtRoot< T,org.lgna.croquet.history.CompletionStep<Cascade<T>> >( this.getCascade().getRoot() );
+			final org.lgna.croquet.cascade.RtRoot< T,Cascade<T>> rtRoot = new org.lgna.croquet.cascade.RtRoot< T,Cascade<T> >( this.getCascade().getRoot() );
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
@@ -259,7 +260,18 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 		return this.menuModel;
 	}
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit, org.lgna.croquet.UserInformation userInformation ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+		//todo:
+		org.lgna.croquet.history.Transaction ownerTransaction = step.getOwner();
+		final int N = ownerTransaction.getPrepStepCount();
+		if( N > 0 ) {
+			org.lgna.croquet.history.PrepStep prepStep = ownerTransaction.getPrepStepAt( N-1 );
+			((AbstractModel)prepStep.getModel()).updateTutorialStepText( rv, prepStep, edit );
+		}
 		return rv;
+	}
+	@Override
+	public void appendUserRepr( java.lang.StringBuilder sb ) {
+		sb.append( this.getRoot().getPopupPrepModel().getName() );
 	}
 }

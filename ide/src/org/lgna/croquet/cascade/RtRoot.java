@@ -47,12 +47,12 @@ import org.lgna.croquet.*;
 /**
  * @author Dennis Cosgrove
  */
-public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> extends RtBlankOwner< T[], T, CascadeRoot< T, CS >, RootNode< T, CS > > {
-	public RtRoot( CascadeRoot< T, CS > element ) {
+public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner< T[], T, CascadeRoot< T, CM >, RootNode< T, CM > > {
+	public RtRoot( CascadeRoot< T, CM > element ) {
 		super( element, RootNode.createInstance( element ), null, -1 );
 	}
 	@Override
-	public RtRoot< T, CS > getRtRoot() {
+	public RtRoot< T, CM > getRtRoot() {
 		return this;
 	}
 	@Override
@@ -72,14 +72,14 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 		return rv;
 	}
 
-	public void cancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
+	public void cancel( org.lgna.croquet.history.CompletionStep< CM > completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		this.getElement().handleCancel( completionStep, trigger, ce );
 	}
 
-	public CS complete( org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.TransactionManager.getActiveTransaction();
-		CascadeRoot< T, CS > root = this.getElement();
-		CS completionStep = root.createCompletionStep( transaction, trigger );
+	public org.lgna.croquet.history.CompletionStep< CM > complete( org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.Transaction transaction = Application.getActiveInstance().getDocument().getRootTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		CascadeRoot< T, CM > root = this.getElement();
+		org.lgna.croquet.history.CompletionStep< CM > completionStep = root.createCompletionStep( transaction, trigger );
 		try {
 			T[] values = this.createValues( completionStep.getTransactionHistory(), root.getComponentType() );
 			root.handleCompletion( completionStep, values );
@@ -89,7 +89,7 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 		return completionStep;
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		this.complete( new org.lgna.croquet.triggers.ActionEventTrigger( e ) );
+		this.complete( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 	}
 
 	public javax.swing.event.PopupMenuListener createPopupMenuListener( final org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
@@ -101,7 +101,7 @@ public class RtRoot<T, CS extends org.lgna.croquet.history.CompletionStep< ? >> 
 				RtRoot.this.removeAll( menuItemContainer );
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-				RtRoot.this.cancel( null, new org.lgna.croquet.triggers.PopupMenuEventTrigger( e ), null );
+				RtRoot.this.cancel( null, org.lgna.croquet.triggers.PopupMenuEventTrigger.createUserInstance( e ), null );
 			}
 		};
 	}

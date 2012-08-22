@@ -43,7 +43,7 @@
 
 package org.alice.ide.name.validators;
 
-import org.lgna.story.Marker;
+import org.lgna.story.SMarker;
 
 public class MarkerColorValidator extends MemberNameValidator {
 
@@ -72,7 +72,7 @@ public class MarkerColorValidator extends MemberNameValidator {
 	}
 	
 	@Override
-	protected boolean isNameAvailable( String name ) {
+	public boolean isNameAvailable( String name ) {
 		String suffix = getColorAndNumberSuffix(name);
 		
 		org.lgna.project.ast.Node node = this.getNode();
@@ -82,7 +82,7 @@ public class MarkerColorValidator extends MemberNameValidator {
 				assert field != null;
 				if( field == node) {
 					//pass
-				} else if (field.getValueType().isAssignableTo(Marker.class)){
+				} else if (field.getValueType().isAssignableTo(SMarker.class)){
 					String fieldSuffix = getColorAndNumberSuffix(field.name.getValue());
 					if( suffix.equals( fieldSuffix ) ) {
 						return false;

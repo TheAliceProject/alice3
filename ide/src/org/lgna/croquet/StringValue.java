@@ -46,11 +46,16 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class StringValue extends AbstractElement {
-	private final javax.swing.text.PlainDocument document = new javax.swing.text.PlainDocument();
-	public StringValue( java.util.UUID id ) {
+	private final javax.swing.text.AbstractDocument document;
+	public StringValue( java.util.UUID id, javax.swing.text.AbstractDocument document ) {
 		super( id );
+		this.document = document;
 	}
-	public javax.swing.text.PlainDocument getDocument() {
+	@Override
+	protected void localize() {
+		this.setText( this.findDefaultLocalizedText() );
+	}
+	public javax.swing.text.AbstractDocument getDocument() {
 		return this.document;
 	}
 	public String getText() {
@@ -60,17 +65,11 @@ public abstract class StringValue extends AbstractElement {
 			throw new RuntimeException( ble );
 		}
 	}
-	public void setText( String text ) {
+	public final void setText( java.lang.String text ) {
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( text, ble );
 		}
-	}
-	public org.lgna.croquet.components.ImmutableTextArea createImmutableTextArea() {
-		return new org.lgna.croquet.components.ImmutableTextArea( this );
-	}
-	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField() {
-		return new org.lgna.croquet.components.ImmutableTextField( this );
 	}
 }

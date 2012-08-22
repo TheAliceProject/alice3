@@ -68,7 +68,7 @@ public class HeadTab extends ContentTab<org.lgna.croquet.components.RowsSpringPa
 				return rv;
 			}
 		};
-		rv.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		rv.setBackgroundColor( org.alice.stageide.person.components.MainPanel.BACKGROUND_COLOR );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
 		return rv;
 	}

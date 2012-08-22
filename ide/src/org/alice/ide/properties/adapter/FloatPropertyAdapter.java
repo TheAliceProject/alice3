@@ -66,7 +66,7 @@ public class FloatPropertyAdapter<O> extends AbstractImplementationPropertyAdapt
 	}
 	
 	@Override
-	public String getUndoRedoDescription(Locale locale) 
+	public String getUndoRedoDescription() 
 	{
 		return "Float";
 	}

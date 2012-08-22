@@ -3,9 +3,9 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.lgna.story.Model;
+import org.lgna.story.SModel;
 import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.Scene;
+import org.lgna.story.SScene;
 import org.lgna.story.Visual;
 import org.lgna.story.event.MouseClickEvent;
 import org.lgna.story.event.MouseClickOnObjectEvent;
@@ -51,10 +51,10 @@ public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickE
 	public MouseClickedHandler() {
 		map.put( empty, new LinkedList<Object>() );
 	}
-	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, /*int quoteClickCountUnquote,*/ Scene scene ) {
+	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, /*int quoteClickCountUnquote,*/ SScene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
 			final org.lgna.story.event.MouseClickEvent mbe = new org.lgna.story.event.MouseClickEvent( e, scene );
-			Model model = mbe.getModelAtMouseLocation();
+			SModel model = mbe.getModelAtMouseLocation();
 			//todo
 			//			if( model != null ) {
 			this.fireAllTargeted( mbe );
@@ -93,7 +93,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickE
 			if( event != null ) {
 				LinkedList<Object> listeners = new LinkedList<Object>();
 				listeners.addAll( map.get( empty ) );
-				Model modelAtMouseLocation = event.getModelAtMouseLocation();
+				SModel modelAtMouseLocation = event.getModelAtMouseLocation();
 				if( modelAtMouseLocation != null ) {
 					if( map.get( modelAtMouseLocation ) != null ) {
 						listeners.addAll( map.get( modelAtMouseLocation ) );

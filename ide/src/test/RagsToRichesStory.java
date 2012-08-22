@@ -45,26 +45,29 @@ package test;
 import java.awt.Component;
 
 import org.lgna.story.AddKeyPressListener;
-import org.lgna.story.Biped;
-import org.lgna.story.Camera;
+import org.lgna.story.SBiped;
+import org.lgna.story.SCamera;
 import org.lgna.story.Color;
-import org.lgna.story.Cone;
+import org.lgna.story.SCone;
 import org.lgna.story.Duration;
-import org.lgna.story.Ground;
+import org.lgna.story.SGround;
 import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
-import org.lgna.story.Program;
+import org.lgna.story.SProgram;
 import org.lgna.story.RollDirection;
-import org.lgna.story.Scene;
-import org.lgna.story.Sphere;
-import org.lgna.story.Sun;
+import org.lgna.story.SScene;
+import org.lgna.story.SSphere;
+import org.lgna.story.SSun;
+import org.lgna.story.SThing;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
+import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -76,14 +79,14 @@ import org.lgna.story.resources.sims2.Gender;
 import edu.cmu.cs.dennisc.java.lang.ThreadUtilities;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
-class MyBiped extends Biped {
+class MyBiped extends SBiped {
 	public MyBiped( BipedResource resource ) {
 		super( resource );
 	}
 }
 
 class MyOgre extends MyBiped {
-	public MyOgre( org.lgna.story.resources.biped.Ogre resource ) {
+	public MyOgre( org.lgna.story.resources.biped.OgreResource resource ) {
 		super( resource );
 	}
 }
@@ -100,16 +103,16 @@ class MyOgre extends MyBiped {
 //	}
 //}
 
-class DesertScene extends Scene {
-	private final Sun sun = new Sun();
-	private final Ground desert = new Ground();
-	private final Sphere sphere = new Sphere();
-	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	private final org.lgna.story.Billboard billboard = new org.lgna.story.Billboard();
-	private final Camera camera;
+class DesertScene extends SScene {
+	private final SSun sun = new SSun();
+	private final SGround desert = new SGround();
+	private final SSphere sphere = new SSphere();
+	private final MyBiped fellowLaborer = new MyBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
+	private final org.lgna.story.SBillboard billboard = new org.lgna.story.SBillboard();
+	private final SCamera camera;
 	private final MyOgre ogre;
 
-	public DesertScene( Camera camera, MyOgre ogre ) {
+	public DesertScene( SCamera camera, MyOgre ogre ) {
 		this.camera = camera;
 		this.ogre = ogre;
 	}
@@ -130,7 +133,7 @@ class DesertScene extends Scene {
 		this.ogre.move( MoveDirection.LEFT, 1.0 );
 		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
 
-		this.desert.setPaint( Ground.SurfaceAppearance.SAND );
+		this.desert.setPaint( SGround.SurfaceAppearance.SAND );
 		this.sphere.setRadius( 0.1 );
 		this.sphere.setPaint( Color.RED );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.sphere );
@@ -157,18 +160,18 @@ class DesertScene extends Scene {
 	}
 }
 
-class SnowScene extends Scene {
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
-	private final Cone redCone = new Cone();
-	private final Cone greenCone = new Cone();
-	private final Cone blueCone = new Cone();
+class SnowScene extends SScene {
+	private final SSun sun = new SSun();
+	private final SGround snow = new SGround();
+	private final SCone redCone = new SCone();
+	private final SCone greenCone = new SCone();
+	private final SCone blueCone = new SCone();
 	//	private final MyArmoire armoire = new MyArmoire();
-	private final Camera camera;
+	private final SCamera camera;
 	private final MyOgre ogre;
 	private final MyBiped susan;
 
-	public SnowScene( Camera camera, MyOgre ogre, MyBiped susan ) {
+	public SnowScene( SCamera camera, MyOgre ogre, MyBiped susan ) {
 		this.camera = camera;
 		this.susan = susan;
 		this.ogre = ogre;
@@ -205,7 +208,7 @@ class SnowScene extends Scene {
 
 		this.ogre.move( MoveDirection.LEFT, 2.0 );
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
-		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
+		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
 	}
 	private void performCustomSetup() {
@@ -231,12 +234,22 @@ class SnowScene extends Scene {
 			public void sceneActivated( SceneActivationEvent e ) {
 			}
 		} );
+		SThing[] groupOne = {ogre};
+		SThing[] groupTwo = {susan};
+		this.addCollisionStartListener( new CollisionStartListener() {
+			
+			public void collisionStarted( StartCollisionEvent e ) {
+				System.out.println(e.getModels()[0]);
+				System.out.println(e.getModels()[1]);
+			}
+		}, groupOne , groupTwo );
 		this.addKeyPressListener( new KeyPressListener() {
 
 			public void keyPressed( KeyEvent e ) {
 				susan.turn( TurnDirection.RIGHT, .1, new Duration( .1 ) );
 			}
 		}, AddKeyPressListener.heldKeyPolicy( HeldKeyPolicy.FIRE_MULTIPLE ) );
+		addObjectMoverFor( ogre );
 	}
 	public void chillInSkiChalet() {
 		while( true ) {
@@ -269,13 +282,13 @@ class SnowScene extends Scene {
 /**
  * @author Dennis Cosgrove
  */
-class RagsToRichesStory extends Program {
+class RagsToRichesStory extends SProgram {
 
-	private final Camera camera = new Camera();
+	private final SCamera camera = new SCamera();
 	private final MyBiped susan = new MyBiped( new AdultPersonResource( Gender.FEMALE, BaseSkinTone.getRandom(),
 
 	BaseEyeColor.getRandom(), FemaleAdultHairBraids.BLACK, 0.5, FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE ) );
-	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.Ogre.GREEN_OGRE );
+	private final MyOgre ogre = new MyOgre( org.lgna.story.resources.biped.OgreResource.GREEN );
 	private final DesertScene desertScene = new DesertScene( camera, ogre );
 	private final SnowScene snowScene = new SnowScene( camera, ogre, susan );
 

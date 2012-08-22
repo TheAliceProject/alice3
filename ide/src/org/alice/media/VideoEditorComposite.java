@@ -62,7 +62,7 @@ public class VideoEditorComposite extends WizardPageComposite<VideoEditorView> {
 	}
 
 	@Override
-	public org.lgna.croquet.PotentiallyGatedComposite.Status getPageStatus( CompletionStep<?> step ) {
+	public Status getPageStatus( CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 

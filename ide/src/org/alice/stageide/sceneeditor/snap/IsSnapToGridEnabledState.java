@@ -53,6 +53,6 @@ public class IsSnapToGridEnabledState extends BooleanState {
 		return SingletonHolder.instance;
 	}
 	private IsSnapToGridEnabledState() {
-		super( org.alice.ide.IDE.UI_STATE_GROUP, java.util.UUID.fromString( "60d5a5be-e1ec-4932-be62-f90e9bad22c7" ), true );
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "60d5a5be-e1ec-4932-be62-f90e9bad22c7" ), true );
 	}
 }

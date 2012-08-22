@@ -53,6 +53,6 @@ public class IsPromptIncludingPreviewState extends org.lgna.croquet.preferences.
 		return SingletonHolder.instance;
 	}
 	private IsPromptIncludingPreviewState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "292ccba4-7de7-4385-9b93-2723c2ddb745" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "292ccba4-7de7-4385-9b93-2723c2ddb745" ), true );
 	}
 }

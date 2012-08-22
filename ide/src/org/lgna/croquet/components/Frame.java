@@ -68,11 +68,12 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 			return null;
 		}
 	}
-	
+
 	public Frame() {
 		super( new javax.swing.JFrame() );
-		
+
 	}
+
 	@Override
 	protected javax.swing.JRootPane getRootPane() {
 		return this.getAwtComponent().getRootPane();
@@ -93,7 +94,7 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 	public void maximize() {
 		this.getAwtComponent().setExtendedState( this.getAwtComponent().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
 	}
-	
+
 	@Override
 	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
 		this.getAwtComponent().setJMenuBar( jMenuBar );

@@ -46,13 +46,16 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractStatementWithBody extends Statement {
+public abstract class AbstractStatementWithBody extends Statement implements StatementWithBody {
 	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
 
 	public AbstractStatementWithBody() {
 	}
 	public AbstractStatementWithBody( BlockStatement body ) {
 		this.body.setValue( body );
+	}
+	public org.lgna.project.ast.NodeProperty<org.lgna.project.ast.BlockStatement> getBodyProperty() {
+		return this.body;
 	}
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {

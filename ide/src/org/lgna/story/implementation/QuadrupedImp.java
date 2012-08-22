@@ -46,8 +46,8 @@ package org.lgna.story.implementation;
  * @author dculyba
  *
  */
-public final class QuadrupedImp extends JointedModelImp< org.lgna.story.Quadruped, org.lgna.story.resources.QuadrupedResource > {
-	public QuadrupedImp( org.lgna.story.Quadruped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.QuadrupedResource > factory ) {
+public final class QuadrupedImp extends JointedModelImp< org.lgna.story.SQuadruped, org.lgna.story.resources.QuadrupedResource > {
+	public QuadrupedImp( org.lgna.story.SQuadruped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.QuadrupedResource > factory ) {
 		super( abstraction, factory );
 	}
 

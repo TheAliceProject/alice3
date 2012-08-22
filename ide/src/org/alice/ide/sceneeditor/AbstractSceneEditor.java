@@ -188,7 +188,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		if (field == null) {
 			return null;
 		}
-		org.lgna.story.Entity entity = getInstanceInJavaVMForField(field, org.lgna.story.Entity.class);
+		org.lgna.story.SThing entity = getInstanceInJavaVMForField(field, org.lgna.story.SThing.class);
 		if (entity != null)
 		{
 			return org.lgna.story.ImplementationAccessor.getImplementation(entity);
@@ -221,7 +221,14 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	public void addField( org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ){
 		assert declaringType == this.getActiveSceneType() : declaringType;
 		this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField(this.getActiveSceneInstance(), field);
-		this.executeStatements(statements);
+		org.lgna.story.SProgram program = this.getProgramInstanceInJava();
+		double prevSimulationSpeedFactor = program.getSimulationSpeedFactor();
+		program.setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
+		try {
+			this.executeStatements(statements);
+		} finally {
+			program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
+		}
 		this.getActiveSceneType().fields.add(field);
 		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
 		this.setSelectedField(declaringType, field);
@@ -283,7 +290,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 	
 	public  <T extends org.lgna.story.implementation.EntityImp> T getActiveSceneImplementation() {
-		org.lgna.story.Entity entity = getInstanceInJavaVMForField(getActiveSceneField(), org.lgna.story.Entity.class);
+		org.lgna.story.SThing entity = getInstanceInJavaVMForField(getActiveSceneField(), org.lgna.story.SThing.class);
 		if (entity != null)
 		{
 			return org.lgna.story.ImplementationAccessor.getImplementation(entity);
@@ -341,9 +348,9 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		return this.programInstance;
 	}
 	
-	protected org.lgna.story.Program getProgramInstanceInJava()
+	protected org.lgna.story.SProgram getProgramInstanceInJava()
 	{
-		return  (org.lgna.story.Program)this.programInstance.getJavaInstance();
+		return  (org.lgna.story.SProgram)this.programInstance.getJavaInstance();
 	}
 	
 	protected void setProgramInstance(org.lgna.project.virtualmachine.UserInstance programInstance)
@@ -368,7 +375,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 				setProgramInstance(this.createProgramInstance());
 				for (org.lgna.project.ast.AbstractField programField : this.programType.getDeclaredFields())
 				{
-					if( programField.getValueType().isAssignableTo(org.lgna.story.Scene.class)) 
+					if( programField.getValueType().isAssignableTo(org.lgna.story.SScene.class)) 
 					{
 						this.addScene((org.lgna.project.ast.UserField)programField);
 					}

@@ -74,6 +74,10 @@ public class ColorIcon implements Icon
 			this.outlineColor = null;
 		}
 	}
+
+	public ColorIcon( java.awt.Color color, java.awt.Dimension size ) {
+		this( color, size.width, size.height );
+	}
 	
 	public int getIconWidth() {
 		return this.width + 3 + 2;

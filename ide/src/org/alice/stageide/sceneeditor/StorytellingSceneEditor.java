@@ -89,9 +89,9 @@ import org.lgna.project.ast.StatementListProperty;
 import org.lgna.project.ast.ThisExpression;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
-import org.lgna.story.Entity;
+import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Marker;
+import org.lgna.story.SMarker;
 import org.lgna.story.OrthographicCameraMarker;
 import org.lgna.story.PerspectiveCameraMarker;
 import org.lgna.story.implementation.AbstractTransformableImp;
@@ -128,9 +128,74 @@ import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
  * @author dculyba
  * 
  */
-public class StorytellingSceneEditor extends AbstractSceneEditor implements
-		org.lgna.croquet.DropReceptor,
-		edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener {
+public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener {
+
+	private class SceneEditorDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
+		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+			return dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
+		}
+
+		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
+			org.lgna.croquet.DragModel model = step.getModel();
+			DragComponent dragSource = step.getDragSource();
+			dragSource.showDragProxy();
+			if( model instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryNode ) {
+				org.alice.ide.croquet.models.gallerybrowser.GalleryNode galleryNode = (org.alice.ide.croquet.models.gallerybrowser.GalleryNode)model;
+				System.err.println( "galleryNode.setDesiredTransformation(null);" );
+				//galleryNode.setDesiredTransformation(null);
+			}
+		}
+
+		public void dragEntered( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+		}
+
+		private boolean isDropLocationOverLookingGlass( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+			java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
+			java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), lookingGlassPanel.getAwtComponent() );
+			return lookingGlassPanel.getAwtComponent().contains( pointInLookingGlass );
+		}
+
+		private boolean overLookingGlass = false;
+
+		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep dragStep ) {
+			if( isDropLocationOverLookingGlass( dragStep ) ) {
+				if( !overLookingGlass ) {
+					overLookingGlass = true;
+					globalDragAdapter.dragEntered( dragStep );
+				}
+				globalDragAdapter.dragUpdated( dragStep );
+			} else {
+				if( overLookingGlass ) {
+					overLookingGlass = false;
+					globalDragAdapter.dragExited( dragStep );
+				}
+			}
+			return null;
+		}
+
+		@Override
+		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep dragStep ) {
+			if( isDropLocationOverLookingGlass( dragStep ) ) {
+				org.lgna.croquet.DropSite dropSite = new SceneDropSite( globalDragAdapter.getDropTargetTransformation() );
+				org.lgna.croquet.Model model = dragStep.getModel().getDropModel( dragStep, dropSite );
+				return model;
+			}
+			return null;
+		}
+
+		public void dragExited( org.lgna.croquet.history.DragStep dragAndDropContext, boolean isDropRecipient ) {
+		}
+
+		public void dragStopped( org.lgna.croquet.history.DragStep dragStep ) {
+			globalDragAdapter.dragExited( dragStep );
+		}
+		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+			return StorytellingSceneEditor.this;
+		}
+		public org.lgna.croquet.components.JComponent< ? > getViewController() {
+			return StorytellingSceneEditor.this;
+		}
+	}
 
 	private static final String SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY = StorytellingSceneEditor.class.getName() + ".showJointedModelVisualizations";
 	
@@ -140,7 +205,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	public static StorytellingSceneEditor getInstance() {
 		return SingletonHolder.instance;
 	}
+
+	private final SceneEditorDropReceptor dropReceptor = new SceneEditorDropReceptor();
 	private StorytellingSceneEditor() {
+	}
+	
+	public org.lgna.croquet.DropReceptor getDropReceptor() {
+		return this.dropReceptor;
 	}
 
 	private static javax.swing.Icon EXPAND_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( StorytellingSceneEditor.class.getResource( "images/24/expand.png" ) );
@@ -224,7 +295,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
 	private SidePane sidePanel = new SidePane();
-	private org.lgna.croquet.components.HorizontalSplitPane propertiesSplitPane = new HorizontalSplitPane();
+	private javax.swing.JSplitPane propertiesSplitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
@@ -263,7 +334,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	
 	public static class SceneEditorProgramImp extends ProgramImp {
-		public SceneEditorProgramImp( org.lgna.story.Program abstraction ) {
+		public SceneEditorProgramImp( org.lgna.story.SProgram abstraction ) {
 			super( abstraction, StorytellingSceneEditor.getInstance().onscreenLookingGlass );
 		}
 		@Override
@@ -282,7 +353,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	{
 		if (this.globalDragAdapter != null)
 		{
-			Entity selectedEntity = this.getInstanceInJavaVMForField(field, Entity.class);
+			SThing selectedEntity = this.getInstanceInJavaVMForField(field, SThing.class);
 			TransformableImp transImp = null;
 			if (selectedEntity != null)
 			{
@@ -300,7 +371,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	{
 		if (this.globalDragAdapter != null)
 		{
-			Entity selectedEntity = this.getInstanceInJavaVMForExpression(method, Entity.class);
+			SThing selectedEntity = this.getInstanceInJavaVMForExpression(method, SThing.class);
 			AbstractTransformableImp transImp = null;
 			if (selectedEntity != null)
 			{
@@ -478,7 +549,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	
 	private void showLookingGlassPanel()
 	{
-		this.addComponent( this.mainPanel, Constraint.CENTER );
+		this.addCenterComponent( this.mainPanel );
 	}
 	
 	private void hideLookingGlassPanel()
@@ -496,9 +567,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			if (isExpanded)
 			{
 				this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
-				this.propertiesSplitPane.setLeadingComponent(this.lookingGlassPanel);
-				this.propertiesSplitPane.setTrailingComponent(this.sidePanel);
-				this.mainPanel.addComponent(this.propertiesSplitPane, Constraint.CENTER);
+				this.propertiesSplitPane.setLeftComponent(this.lookingGlassPanel.getAwtComponent());
+				this.propertiesSplitPane.setRightComponent(this.sidePanel.getAwtComponent());
+				this.mainPanel.getAwtComponent().add(this.propertiesSplitPane, java.awt.BorderLayout.CENTER);
 				this.lookingGlassPanel.setSouthEastComponent(this.contractButton);
 
 				this.lookingGlassPanel.setSouthComponent(this.mainCameraNavigatorWidget);
@@ -509,7 +580,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			}
 			else
 			{
-				this.mainPanel.addComponent(this.lookingGlassPanel, Constraint.CENTER);
+				this.mainPanel.addCenterComponent(this.lookingGlassPanel);
 				this.lookingGlassPanel.setNorthWestComponent( null );
 				this.lookingGlassPanel.setSouthEastComponent(this.expandButton);
 				this.lookingGlassPanel.setSouthComponent(null);
@@ -566,7 +637,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 				if (field.getValueType().isAssignableFrom(org.lgna.story.CameraMarker.class)) {
 					this.setSelectedCameraMarker(field);
 				}
-				else if (field.getValueType().isAssignableFrom(org.lgna.story.ObjectMarker.class)) {
+				else if (field.getValueType().isAssignableFrom(org.lgna.story.SThingMarker.class)) {
 					this.setSelectedObjectMarker(field);
 				}
 				else {
@@ -590,10 +661,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		if (element != null)
 		{
 			EntityImp entityImp = EntityImp.getInstance(element);
-			Entity entity = entityImp.getAbstraction();
+			SThing entity = entityImp.getAbstraction();
 			UserField field = this.getFieldForInstanceInJavaVM(entity);
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
-			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.InputEventTrigger( clickInput.getInputEvent() ) );
+			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
 		}
 	}
 	
@@ -701,7 +772,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			
 			this.mainCameraViewTracker = new CameraMarkerTracker(this, animator);
 			
-			this.mainCameraViewSelector = this.mainCameraMarkerList.createComboBox();
+			this.mainCameraViewSelector = this.mainCameraMarkerList.getPrepModel().createComboBox();
 			this.mainCameraViewSelector.setFontSize(15);
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.STARTING_CAMERA_VIEW, this.openingSceneMarkerImp );
 			this.mainCameraViewTracker.mapViewToMarkerAndViceVersa( View.LAYOUT_SCENE_VIEW, this.sceneViewMarkerImp );
@@ -730,8 +801,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	@Override
 	public void addField(UserType<?> declaringType, UserField field, Statement... statements) {
 		super.addField(declaringType, field, statements);
-		if (field.getValueType().isAssignableTo(org.lgna.story.Marker.class)) {
-			org.lgna.story.Marker marker = this.getInstanceInJavaVMForField(field, org.lgna.story.Marker.class);
+		if (field.getValueType().isAssignableTo(org.lgna.story.SMarker.class)) {
+			org.lgna.story.SMarker marker = this.getInstanceInJavaVMForField(field, org.lgna.story.SMarker.class);
 			MarkerImp markerImp = ImplementationAccessor.getImplementation(marker);
 			markerImp.setDisplayVisuals(true);
 			markerImp.setShowing(true);
@@ -739,14 +810,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 			if (field.getValueType().isAssignableTo(org.lgna.story.CameraMarker.class)) {
 				this.setSelectedCameraMarker(field);
 			}
-			else if (field.getValueType().isAssignableTo(org.lgna.story.ObjectMarker.class)) {
+			else if (field.getValueType().isAssignableTo(org.lgna.story.SThingMarker.class)) {
 				this.setSelectedObjectMarker(field);
 			}
 		}
 		setInitialCodeStateForField(field, getCurrentStateCodeForField(field));
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( SHOW_JOINTED_MODEL_VISUALIZATIONS_KEY ) ) {
-			if( field.getValueType().isAssignableTo( org.lgna.story.JointedModel.class ) ) {
-				org.lgna.story.JointedModel jointedModel = this.getInstanceInJavaVMForField( field, org.lgna.story.JointedModel.class );
+			if( field.getValueType().isAssignableTo( org.lgna.story.SJointedModel.class ) ) {
+				org.lgna.story.SJointedModel jointedModel = this.getInstanceInJavaVMForField( field, org.lgna.story.SJointedModel.class );
 				org.lgna.story.implementation.JointedModelImp jointedModelImp = ImplementationAccessor.getImplementation( jointedModel );
 				jointedModelImp.opacity.setValue( 0.25f );
 				jointedModelImp.showVisualization();
@@ -762,10 +833,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		ImplementationAccessor.getImplementation(getProgramInstanceInJava()).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 
 		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
-		org.lgna.story.Scene sceneJavaInstance = (org.lgna.story.Scene)sceneAliceInstance.getJavaInstance();
+		org.lgna.story.SScene sceneJavaInstance = (org.lgna.story.SScene)sceneAliceInstance.getJavaInstance();
 
-		org.lgna.story.Program program = getProgramInstanceInJava();
-		org.lgna.story.Scene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.Scene.class );
+		org.lgna.story.SProgram program = getProgramInstanceInJava();
+		org.lgna.story.SScene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.SScene.class );
 		SceneImp ACCEPTABLE_HACK_sceneImp = ImplementationAccessor.getImplementation( scene );
 		ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization();
 		try {
@@ -781,7 +852,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		this.instanceFactorySelectionPanel.setType( sceneAliceInstance.getType() );
 		for (org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields())
 		{
-			if( field.getValueType().isAssignableTo(org.lgna.story.Camera.class)) 
+			if( field.getValueType().isAssignableTo(org.lgna.story.SCamera.class)) 
 			{
 				this.sceneCameraImp = getImplementation(field);
 				break;
@@ -898,9 +969,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 		org.lgna.project.ast.BlockStatement bs = new org.lgna.project.ast.BlockStatement();
 		
 		AffineMatrix4x4 currentCameraTransformable = this.sceneCameraImp.getLocalTransformation();
-		this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
+		if( this.sceneCameraImp.getVehicle() != null ) {
+			this.sceneCameraImp.setTransformation(this.openingSceneMarkerImp);
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.sceneCameraImp );
+		}
 		this.fillInAutomaticSetUpMethod( bs.statements, false, field, true );
-		this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
+		if( this.sceneCameraImp.getVehicle() != null ) {
+			this.sceneCameraImp.setLocalTransformation(currentCameraTransformable);
+		}
 		Statement setVehicleStatement = null;
 		for (Statement statement : bs.statements.getValue()) {
 			if (statement instanceof org.lgna.project.ast.ExpressionStatement) {
@@ -957,7 +1034,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	
 	public org.lgna.project.ast.Statement[] getDoStatementsForAddField(org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform, org.lgna.story.Paint initialPaint) {
-		if (initialTransform == null && field.getValueType().isAssignableTo(org.lgna.story.Model.class))
+		if (initialTransform == null && field.getValueType().isAssignableTo(org.lgna.story.SModel.class))
 		{
 			org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
 			JavaType javaType = type.getFirstEncounteredJavaType();
@@ -1072,88 +1149,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 // ######### End implementation of edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter
 
 	
-// ######### Begin implementation of org.lgna.croquet.DropReceptor
-	public org.lgna.croquet.resolvers.Resolver<StorytellingSceneEditor> getResolver() {
-		return new org.lgna.croquet.resolvers.SingletonResolver<StorytellingSceneEditor>(this);
-	}
-
-	public org.lgna.croquet.components.TrackableShape getTrackableShape(
-			org.lgna.croquet.DropSite potentialDropSite) {
-		return this;
-	}
-
-	public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
-		return dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
-	}
-
-	public org.lgna.croquet.components.JComponent<?> getViewController() {
-		return this;
-	}
-
-	public void dragStarted(org.lgna.croquet.history.DragStep step) {
-		org.lgna.croquet.DragModel model = step.getModel();
-		DragComponent dragSource = step.getDragSource();
-		dragSource.showDragProxy();
-		if (model instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryNode) {
-			org.alice.ide.croquet.models.gallerybrowser.GalleryNode galleryNode = (org.alice.ide.croquet.models.gallerybrowser.GalleryNode)model;
-			System.err.println( "galleryNode.setDesiredTransformation(null);" );
-			//galleryNode.setDesiredTransformation(null);
-		}
-	}
-
-	public void dragEntered(org.lgna.croquet.history.DragStep dragAndDropContext) {
-	}
-
-	private boolean isDropLocationOverLookingGlass(org.lgna.croquet.history.DragStep dragAndDropContext) {
-		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint(eSource.getComponent(), eSource.getPoint(), this.lookingGlassPanel.getAwtComponent());
-		return this.lookingGlassPanel.getAwtComponent().contains(pointInLookingGlass);
-	}
-
-	private boolean overLookingGlass = false;
-
-	public org.lgna.croquet.DropSite dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
-		if (isDropLocationOverLookingGlass(dragAndDropContext)) {
-			if (!overLookingGlass) {
-				overLookingGlass = true;
-				this.globalDragAdapter.dragEntered(dragAndDropContext);
-			}
-			this.globalDragAdapter.dragUpdated(dragAndDropContext);
-		} else {
-			if (overLookingGlass) {
-				overLookingGlass = false;
-				this.globalDragAdapter.dragExited(dragAndDropContext);
-			}
-		}
-		return null;
-	}
-
-	public org.lgna.croquet.Model dragDropped( org.lgna.croquet.history.DragStep dragStep ) {
-		if (isDropLocationOverLookingGlass(dragStep)) {
-			org.lgna.croquet.DropSite dropSite = new SceneDropSite(this.globalDragAdapter.getDropTargetTransformation());
-			org.lgna.croquet.Model model = dragStep.getModel().getDropModel( dragStep, dropSite );
-			return model;
-		}
-		return null;
-	}
-
-	public void dragExited(
-			org.lgna.croquet.history.DragStep dragAndDropContext,
-			boolean isDropRecipient) {
-	}
-
-	public void dragStopped(org.lgna.croquet.history.DragStep dragAndDropContext) {
-		 this.globalDragAdapter.dragExited(dragAndDropContext);
-	}
-
-	public String getTutorialNoteText(org.lgna.croquet.Model model,
-			org.lgna.croquet.edits.Edit<?> edit,
-			org.lgna.croquet.UserInformation userInformation) {
-		return "Drop...";
-	}
-// ######### End implementation of org.lgna.croquet.DropReceptor
-
-	
 	public void setHandleVisibilityForObject( TransformableImp imp, boolean b ) {
 		this.globalDragAdapter.setHandleShowingForSelectedImplementation(imp, b);
 	}
@@ -1198,9 +1193,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements
 	}
 	public MarkerImp getMarkerForField( UserField field ) {
 		Object obj = this.getInstanceInJavaVMForField(field);
-		if (obj instanceof Marker)
+		if (obj instanceof SMarker)
 		{
-			return ImplementationAccessor.getImplementation((Marker)obj);
+			return ImplementationAccessor.getImplementation((SMarker)obj);
 		}
 		return null;
 	}

@@ -52,6 +52,6 @@ public enum RoomCeilingAppearanceDetails implements org.lgna.project.annotations
 		return org.lgna.story.ImagePaint.class;
 	}
 	public java.lang.reflect.Field[] getFlds() {
-		return org.lgna.story.Room.CeilingAppearance.class.getFields();
+		return org.lgna.story.SRoom.CeilingAppearance.class.getFields();
 	}
 }

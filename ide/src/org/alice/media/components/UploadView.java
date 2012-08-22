@@ -108,7 +108,7 @@ public class UploadView extends BorderPanel {
 			this.addComponent( titlePanel, Constraint.PAGE_START );
 			GridPanel detailPanel = GridPanel.createGridPane( 3, 1 );
 			detailPanel.addComponent( composite.getCategoryValue().createImmutableTextArea() );
-			ComboBox<String> categories = composite.getVideoCategoryState().createComboBox();
+			ComboBox<String> categories = composite.getVideoCategoryState().getPrepModel().createComboBox();
 			detailPanel.addComponent( categories );
 			disableable.add(categories);
 			CheckBox isPrivateBox = composite.getIsPrivateState().createCheckBox();

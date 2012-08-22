@@ -128,7 +128,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 		}
 		
 		protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
-			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( new org.lgna.croquet.triggers.MouseEventTrigger( null, e ) );
+			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
 		}
 		@Override
 		protected void handleDisplayable() {

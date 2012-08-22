@@ -86,7 +86,7 @@ public class SingletonCodec< T > implements org.lgna.croquet.ItemCodec< T > {
 			binaryEncoder.encode( false );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, T value, java.util.Locale locale) {
+	public StringBuilder appendRepresentation(StringBuilder rv, T value) {
 		rv.append( value );
 		return rv;
 	}

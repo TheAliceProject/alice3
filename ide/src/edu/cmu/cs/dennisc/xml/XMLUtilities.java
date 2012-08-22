@@ -125,6 +125,9 @@ public class XMLUtilities {
 			javax.xml.parsers.DocumentBuilder documentBuilder = getDocumentBuilder();
 			synchronized( documentBuilder ) {
 				org.w3c.dom.Document rv = documentBuilder.parse( is );
+				// TODO: we should validate this document with a schema and call DocumentBuilderFactory.setIgnoringElementContentWhitespace() instead.
+				// but this work-around will at least allow us to load files that have empty white space.
+				removeWhitespaceNodes( rv.getDocumentElement() );
 				return rv;
 			}
 		} catch( java.io.IOException ioe ) {
@@ -155,7 +158,24 @@ public class XMLUtilities {
 	public static org.w3c.dom.Document read( String path ) {
 		return read( new java.io.File( path ) );
 	}
-	
+
+	// TODO: This removes the indent whitespace from the xml. This is a hack. We should define
+	// an xml schema for project files and validate the document. This is the right way to do this 
+	// anyway... not just because of whitespace.
+	@Deprecated
+	private static void removeWhitespaceNodes(org.w3c.dom.Element e) {
+		org.w3c.dom.NodeList children = e.getChildNodes();
+		for (int i = children.getLength() - 1; i >= 0; i--) {
+			org.w3c.dom.Node child = children.item(i);
+			if (child instanceof org.w3c.dom.Text && ((org.w3c.dom.Text) child).getData().trim().length() == 0) {
+				e.removeChild(child);
+			}
+			else if (child instanceof org.w3c.dom.Element) {
+				removeWhitespaceNodes((org.w3c.dom.Element) child);
+			}
+		}
+	}
+
 //	//WARNING: this method returns all decendants.  remove.
 //	@Deprecated
 //	public static org.w3c.dom.Element[] getDescendantElementsByTagNameAsArray( org.w3c.dom.Element xmlParent, String tagName ) {

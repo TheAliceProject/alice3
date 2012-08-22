@@ -59,7 +59,7 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 	private final org.lgna.croquet.StringValue louderLabel = this.createStringValue( this.createKey( "louderLabel" ) ); 
 	
 	private VolumeLevelCustomExpressionCreatorComposite() {
-		super( java.util.UUID.fromString( "2aa19a19-4270-4278-879c-c08206ea6f16" ) );
+		super( java.util.UUID.fromString( "1c80a46b-6ff8-4fbd-8003-5bbab71a3fca" ) );
 	}
 	@Override
 	protected org.alice.stageide.custom.components.VolumeLevelCustomExpressionCreatorView createView() {
@@ -83,7 +83,7 @@ public class VolumeLevelCustomExpressionCreatorComposite extends org.alice.ide.c
 		return new org.lgna.project.ast.DoubleLiteral( actualVolume );
 	}
 	@Override
-	protected Status getStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
 

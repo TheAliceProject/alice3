@@ -54,6 +54,6 @@ public class IsAlwaysShowingBlocksState extends org.lgna.croquet.preferences.Pre
 		return SingletonHolder.instance;
 	}
 	private IsAlwaysShowingBlocksState() {
-		super( org.lgna.croquet.Application.UI_STATE_GROUP, java.util.UUID.fromString( "addf0a81-5fc1-4ee6-8ab5-cbb07051a154" ), true );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "addf0a81-5fc1-4ee6-8ab5-cbb07051a154" ), true );
 	}
 }

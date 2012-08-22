@@ -51,8 +51,12 @@ public abstract class AbstractCodePerspective extends org.alice.ide.perspectives
 		super( id, mainComposite );
 	}
 	@Override
-	public org.alice.ide.codedrop.CodeDropReceptor getCodeDropReceptorInFocus() {
+	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
 		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance().getCodeDropReceptorInFocus();
+	}
+	@Override
+	public org.lgna.croquet.components.TrackableShape getRenderWindow() {
+		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 	}
 	@Override
 	protected void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {

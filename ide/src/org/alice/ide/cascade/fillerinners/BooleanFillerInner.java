@@ -55,7 +55,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 	}
 
 	@Override
-	public java.util.List< org.lgna.croquet.CascadeBlankChild > addItems( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		if( isTop && prevExpression instanceof org.lgna.project.ast.ConditionalInfixExpression ) {
 			// previous conditional
 			org.lgna.project.ast.ConditionalInfixExpression conditionalInfixExpression = (org.lgna.project.ast.ConditionalInfixExpression)prevExpression;
@@ -63,55 +63,54 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 				if( operator == conditionalInfixExpression.operator.getValue() ) {
 					//pass
 				} else {
-					rv.add( org.alice.ide.croquet.models.cascade.conditional.ReplaceOperatorInPreviousConditionalExpressionFillIn.getInstance( operator ) );
+					items.add( org.alice.ide.croquet.models.cascade.conditional.ReplaceOperatorInPreviousConditionalExpressionFillIn.getInstance( operator ) );
 				}
 			}
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-			rv.add( org.alice.ide.croquet.models.cascade.conditional.ReduceToLeftOperandInPreviousConditionalExpressionFillIn.getInstance() );
-			rv.add( org.alice.ide.croquet.models.cascade.conditional.ReduceToRightOperandInPreviousConditionalExpressionFillIn.getInstance() );
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.conditional.ReduceToLeftOperandInPreviousConditionalExpressionFillIn.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.conditional.ReduceToRightOperandInPreviousConditionalExpressionFillIn.getInstance() );
+			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
 
 		if( isTop && prevExpression instanceof org.lgna.project.ast.LogicalComplement ) {
 			// previous logical complement
-			rv.add( org.alice.ide.croquet.models.cascade.logicalcomplement.ReduceToInnerOperandInPreviousLogicalComplementFillIn.getInstance() );
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.logicalcomplement.ReduceToInnerOperandInPreviousLogicalComplementFillIn.getInstance() );
+			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
 
-		rv.add( org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn.getInstance( true ) );
-		rv.add( org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn.getInstance( false ) );
-		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+		items.add( org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn.getInstance( true ) );
+		items.add( org.alice.ide.croquet.models.cascade.literals.BooleanLiteralFillIn.getInstance( false ) );
+		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 
 
 		if( isTop && prevExpression != null ) {
-			rv.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.RandomUtilities.class, "nextBoolean" ) );
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.StaticMethodInvocationFillIn.getInstance( org.lgna.common.RandomUtilities.class, "nextBoolean" ) );
+			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
 			
 		if( isTop && prevExpression != null ) {
-			rv.add( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOfPreviousExpressionFillIn.getInstance() );
-			rv.add( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOperandFillIn.getInstance() );
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOfPreviousExpressionFillIn.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.logicalcomplement.LogicalComplementOperandFillIn.getInstance() );
+			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
 
 		if( isTop && prevExpression != null ) {
 			for( org.lgna.project.ast.ConditionalInfixExpression.Operator operator : org.lgna.project.ast.ConditionalInfixExpression.Operator.values() ) {
-				rv.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionRightOperandOnlyFillIn.getInstance( operator ) );
+				items.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 			}
 			for( org.lgna.project.ast.ConditionalInfixExpression.Operator operator : org.lgna.project.ast.ConditionalInfixExpression.Operator.values() ) {
-				rv.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
+				items.add( org.alice.ide.croquet.models.cascade.conditional.ConditionalExpressionLeftAndRightOperandsFillIn.getInstance( operator ) );
 			}
-			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		}
 
 		if( isTop && prevExpression != null ) {
-			rv.add( org.alice.ide.croquet.models.cascade.RelationalNumberCascadeMenu.getInstance() );
-			rv.add( org.alice.ide.croquet.models.cascade.RelationalIntegerCascadeMenu.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.RelationalNumberCascadeMenu.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.RelationalIntegerCascadeMenu.getInstance() );
 			for( org.lgna.project.ast.AbstractType< ?,?,? > type : this.relationalTypes ) {
-				rv.add( new org.alice.ide.croquet.models.cascade.RelationalObjectCascadeMenu( type ) );
+				items.add( new org.alice.ide.croquet.models.cascade.RelationalObjectCascadeMenu( type ) );
 			}
-			rv.add( org.alice.ide.croquet.models.cascade.string.StringComparisonCascadeMenu.getInstance() );
+			items.add( org.alice.ide.croquet.models.cascade.string.StringComparisonCascadeMenu.getInstance() );
 		}
- 		return rv;
 	}
 }

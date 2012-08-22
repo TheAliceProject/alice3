@@ -43,8 +43,6 @@
 
 package org.lgna.croquet.edits;
 
-import org.lgna.croquet.UserInformation;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -60,7 +58,7 @@ public abstract class ReplacementAcceptability {
 		private DeviationSeverity( String repr ) {
 			this.repr = repr;
 		}
-		public String getRepr( UserInformation userInformation ) {
+		public String getRepr() {
 			return this.repr;
 		}
 	}

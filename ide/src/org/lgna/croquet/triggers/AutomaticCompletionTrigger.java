@@ -40,29 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AutomaticCompletionTrigger extends AbstractTrigger {
-	private final transient org.lgna.croquet.triggers.Trigger previousTrigger;
-	public AutomaticCompletionTrigger( org.lgna.croquet.triggers.Trigger previousTrigger ) {
-		this.previousTrigger = previousTrigger;
+public class AutomaticCompletionTrigger extends Trigger {
+	public AutomaticCompletionTrigger() {
+		super( Origin.USER ); //todo?
 	}
 	public AutomaticCompletionTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.previousTrigger = null;
+		super( binaryDecoder );
 	}
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
+	@Override
 	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
-		return this.previousTrigger.getViewController();
+		return null;
 	}
+	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
-		this.previousTrigger.showPopupMenu( popupMenu );
+		throw new RuntimeException( "todo" );
 	}
-	public String getNoteText( java.util.Locale locale ) {
+	@Override
+	public String getNoteText( ) {
 		//todo
 		return "COMPLETE";
 	}

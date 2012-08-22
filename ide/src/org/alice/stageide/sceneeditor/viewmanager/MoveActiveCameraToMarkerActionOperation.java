@@ -67,9 +67,15 @@ public class MoveActiveCameraToMarkerActionOperation extends CameraMoveActionOpe
 	protected void updateMoveFields(UserField markerField, CameraMarkerImp cameraMarkerImp) {
 		TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation(markerField);
 		String markerName = markerField != null ? markerField.getName() : "";
-		this.setToMoveToImp(markerImp, MarkerUtilities.getIconForCameraMarker(markerField), markerName);
-		this.setToMoveImp(this.getCamera(), MarkerUtilities.getIconForCameraImp(cameraMarkerImp), MarkerUtilities.getNameForCameraImp(cameraMarkerImp));
+
+		org.lgna.croquet.icon.IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForObjectMarker(markerField);
+		javax.swing.Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
 		
+		org.lgna.croquet.icon.IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp(cameraMarkerImp);
+		javax.swing.Icon toMoveIcon = toMoveIconFactory != null ? toMoveIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
+		
+		this.setToMoveToImp(markerImp, moveToIcon, markerName);
+		this.setToMoveImp(this.getCamera(), toMoveIcon, MarkerUtilities.getNameForCameraImp(cameraMarkerImp));
 	}
 
 }
