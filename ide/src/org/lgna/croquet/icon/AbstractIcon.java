@@ -60,7 +60,7 @@ public abstract class AbstractIcon implements javax.swing.Icon {
 		return this.size.height;
 	}
 
-	protected abstract void paintIcon( java.awt.Graphics2D g2 );
+	protected abstract void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 );
 
 	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -68,7 +68,7 @@ public abstract class AbstractIcon implements javax.swing.Icon {
 		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		g2.translate( x, y );
-		this.paintIcon( g2 );
+		this.paintIcon( c, g2 );
 		g2.translate( -x, -y );
 		g2.setPaint( prevPaint );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );

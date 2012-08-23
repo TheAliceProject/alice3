@@ -77,7 +77,7 @@ public class TorusIcon extends ShapeIcon {
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		paint( g2, 1.0f, 0.5f, width, height, fillPaint, drawPaint, java.awt.Color.GRAY );
 		if( height > 64 ) {
 			paint( g2, 0.825f, 0.675f, width, height, new java.awt.Color( 255, 255, 255, 63 ), null, null );

@@ -60,10 +60,10 @@ public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
 		super( size );
 	}
 
-	protected abstract void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
+	protected abstract void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
 
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2 ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		int xOffset = PAD;
 		int yOffset = PAD;
 		int width = this.getIconWidth() - PAD - PAD;
@@ -72,7 +72,7 @@ public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
 
 		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		this.paintIcon( g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
+		this.paintIcon( c, g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 		g2.translate( -xOffset, -yOffset );
 	}
