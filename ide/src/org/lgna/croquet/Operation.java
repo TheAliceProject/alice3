@@ -272,9 +272,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	public org.lgna.croquet.components.Hyperlink createHyperlink() {
-		org.lgna.croquet.components.Hyperlink rv = new org.lgna.croquet.components.Hyperlink( this );
-		rv.scaleFont( 1.2f );
-		return rv;
+		return new org.lgna.croquet.components.Hyperlink( this );
 	}
 
 	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {

@@ -46,11 +46,27 @@ package edu.cmu.cs.dennisc.javax.swing.plaf;
  * @author Dennis Cosgrove
  */
 public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
-	private static java.awt.Color DISABLED_COLOR = java.awt.Color.LIGHT_GRAY;
-	private static HyperlinkUI hyperlinkUI = new HyperlinkUI();
+	private java.awt.Color disabledColor = java.awt.Color.LIGHT_GRAY;
+	private boolean isUnderlinedWhenDisabled = true;
 
 	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) {
-		return hyperlinkUI;
+		return new HyperlinkUI();
+	}
+
+	public java.awt.Color getDisabledColor() {
+		return this.disabledColor;
+	}
+
+	public void setDisabledColor( java.awt.Color disabledColor ) {
+		this.disabledColor = disabledColor;
+	}
+
+	public boolean isUnderlinedWhenDisabled() {
+		return this.isUnderlinedWhenDisabled;
+	}
+
+	public void setUnderlinedWhenDisabled( boolean isUnderlinedWhenDisabled ) {
+		this.isUnderlinedWhenDisabled = isUnderlinedWhenDisabled;
 	}
 
 	@Override
@@ -79,13 +95,15 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 			}
 			//			}
 		} else {
-			color = DISABLED_COLOR;
+			color = this.disabledColor;
 		}
 		g.setColor( color );
 		java.awt.FontMetrics fm = g.getFontMetrics();
 		int x = textRect.x + this.getTextShiftOffset();
 		int y = textRect.y + fm.getAscent() + this.getTextShiftOffset();
 		g.drawString( text, x, y );
-		g.fillRect( x, y, textRect.width, 1 );
+		if( b.isEnabled() || this.isUnderlinedWhenDisabled ) {
+			g.fillRect( x, y, textRect.width, 1 );
+		}
 	}
 }
