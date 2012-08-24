@@ -107,7 +107,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 
 		@Override
 		public final F createValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-			org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER );
+			org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.NullTrigger.createUserInstance();
 			org.lgna.croquet.history.Step<?> step = this.valueCreator.fire( trigger );
 			if( step != null ) {
 				return (F)step.getEphemeralDataFor( VALUE_KEY );

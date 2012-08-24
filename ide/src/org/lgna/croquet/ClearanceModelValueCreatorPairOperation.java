@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,30 +45,19 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IteratingOperation extends SingleThreadOperation {
-	public IteratingOperation( Group group, java.util.UUID id ) {
-		super( group, id );
+public abstract class ClearanceModelValueCreatorPairOperation<T> extends SingleThreadOperation {
+	private final CompletionModel clearanceModel;
+	private final ValueCreator<T> valueCreator;
+
+	public ClearanceModelValueCreatorPairOperation( Group group, java.util.UUID migrationId, CompletionModel clearanceModel, ValueCreator<T> valueCreator ) {
+		super( group, migrationId );
+		this.clearanceModel = clearanceModel;
+		this.valueCreator = valueCreator;
 	}
-
-	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
-		return new org.lgna.croquet.history.TransactionHistory();
-	}
-
-	protected abstract boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step );
-
-	protected abstract Model getNext( org.lgna.croquet.history.CompletionStep<?> step );
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );
-		while( this.hasNext( step ) ) {
-			Model model = this.getNext( step );
-			if( model != null ) {
-				model.fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-				//throw new CancelException();
-			}
-		}
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		org.lgna.croquet.history.Step<?> subStep = this.clearanceModel.fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
 	}
 }

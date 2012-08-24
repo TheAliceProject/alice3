@@ -60,7 +60,7 @@ public class ImportTypeOperation extends org.lgna.croquet.ActionOperation { //to
 
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep step = TypeFromUriProducer.getInstance().fire( new org.lgna.croquet.triggers.IterationTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
+		org.lgna.croquet.history.CompletionStep step = TypeFromUriProducer.getInstance().fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
 		org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType> valueProducer = (org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType>)step.getModel();
 		org.lgna.project.ast.NamedUserType userType = valueProducer.getValue( step );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userType );

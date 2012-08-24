@@ -109,7 +109,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 
 	@Deprecated
 	public final org.lgna.croquet.history.CompletionStep<?> fire() {
-		return fire( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
+		return fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 	}
 
 	public synchronized PlainStringValue getSidekickLabel() {
