@@ -581,7 +581,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 					{
 						SetValueOperation<Dimension3> operation = new SetSizeOperation( this.propertyAdapter, newScale );
 						operation.setName( newScale.toString() );
-						operation.fire( e );
+						operation.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 					}
 				}
 			}

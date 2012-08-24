@@ -93,7 +93,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 
 		@Override
 		public final F createValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-			org.lgna.croquet.history.CompletionStep<?> inputDialogStep = this.valueInputDialogOperation.fire();
+			org.lgna.croquet.history.Step<?> inputDialogStep = this.valueInputDialogOperation.fire();
 			if( inputDialogStep.containsEphemeralDataFor( VALUE_KEY ) ) {
 				return (F)inputDialogStep.getEphemeralDataFor( VALUE_KEY );
 			} else {

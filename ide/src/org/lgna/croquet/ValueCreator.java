@@ -155,14 +155,23 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	protected abstract T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
 	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		this.initializeIfNecessary();
-		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		T value = this.createValue( transaction, trigger );
-		org.lgna.croquet.history.CompletionStep<?> rv = transaction.getCompletionStep();
-		if( rv != null ) {
-			rv.putEphemeralDataFor( VALUE_KEY, value );
+		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
+		if( completionStep != null ) {
+			completionStep.putEphemeralDataFor( VALUE_KEY, value );
 		}
-		return rv;
 	}
+
+	//	@Override
+	//	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+	//		this.initializeIfNecessary();
+	//		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+	//		T value = this.createValue( transaction, trigger );
+	//		org.lgna.croquet.history.CompletionStep<?> rv = transaction.getCompletionStep();
+	//		if( rv != null ) {
+	//			rv.putEphemeralDataFor( VALUE_KEY, value );
+	//		}
+	//		return rv;
+	//	}
 }

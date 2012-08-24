@@ -58,12 +58,11 @@ public abstract class ValueProducer<T> extends AbstractCompletionModel { //todo:
 	protected abstract T internalGetValue( org.lgna.croquet.history.CompletionStep step ) throws CancelException;
 
 	@Override
-	public org.lgna.croquet.history.CompletionStep fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, this.createTransactionHistoryIfNecessary() );
 		T value = this.internalGetValue( step );
 		step.putEphemeralDataFor( VALUE_KEY, value );
-		return step;
+		step.finish();
 	}
 
 	public T getValue( org.lgna.croquet.history.CompletionStep step ) {

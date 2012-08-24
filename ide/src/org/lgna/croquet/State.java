@@ -132,7 +132,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		throw new UnsupportedOperationException();
 	}
 

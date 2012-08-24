@@ -133,8 +133,14 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 	}
 
 	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		return this.root.getPopupPrepModel().fire( trigger );
+	@java.lang.Deprecated
+	protected org.lgna.croquet.Model getSurrogateModel() {
+		return this.root.getPopupPrepModel();
+	}
+
+	@Override
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

@@ -132,7 +132,7 @@ public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
 			if( quoteClickUnquoteCount == 2 ) {
 				if( org.alice.ide.resource.manager.ResourceTableRowSelectionState.getInstance().getValue() != null ) {
-					org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getOperation().fire( e );
+					org.alice.ide.resource.manager.RenameResourceComposite.getInstance().getOperation().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
 				}
 			}
 		}

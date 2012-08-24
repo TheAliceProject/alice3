@@ -59,7 +59,7 @@ public abstract class IteratingOperation extends Operation {
 	protected abstract Model getNext( org.lgna.croquet.history.CompletionStep<?> step );
 
 	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );
 		while( this.hasNext( step ) ) {
 			Model model = this.getNext( step );

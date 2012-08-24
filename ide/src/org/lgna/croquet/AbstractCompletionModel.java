@@ -80,6 +80,38 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return this.group;
 	}
 
+	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
+
+	@Deprecated
+	protected Model getSurrogateModel() {
+		return null;
+	}
+
+	@Override
+	public final org.lgna.croquet.history.CompletionStep<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+		Model surrogateModel = this.getSurrogateModel();
+		if( surrogateModel != null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: end use of surrogate", this );
+			org.lgna.croquet.history.Step<?> step = surrogateModel.fire( trigger );
+			return step.getOwnerTransaction().getCompletionStep();
+		} else {
+			if( this.isEnabled() ) {
+				this.initializeIfNecessary();
+				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+				this.perform( transaction, trigger );
+				return transaction.getCompletionStep();
+			} else {
+				return null;
+			}
+		}
+	}
+
+	@Deprecated
+	public final org.lgna.croquet.history.CompletionStep<?> fire() {
+		return fire( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
+	}
+
 	public synchronized PlainStringValue getSidekickLabel() {
 		if( this.sidekickLabel != null ) {
 			//pass

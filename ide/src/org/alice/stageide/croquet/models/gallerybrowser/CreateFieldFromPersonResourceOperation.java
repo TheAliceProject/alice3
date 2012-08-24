@@ -63,7 +63,7 @@ public class CreateFieldFromPersonResourceOperation extends org.alice.ide.croque
 
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel<?> prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.history.CompletionStep<?> subStep = CreatePersonResourceOperation.getInstance().fire();
+		org.lgna.croquet.history.Step<?> subStep = CreatePersonResourceOperation.getInstance().fire();
 		if( subStep.containsEphemeralDataFor( PersonResourceOperation.VALUE_KEY ) ) {
 			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getEphemeralDataFor( PersonResourceOperation.VALUE_KEY );
 			try {
