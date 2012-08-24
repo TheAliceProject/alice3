@@ -46,22 +46,8 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class LoadProjectOperation extends org.lgna.croquet.ActionOperation {
-	private java.net.URI uri;
-
-	public LoadProjectOperation( java.net.URI uri ) {
-		super( org.alice.ide.ProjectApplication.URI_GROUP, java.util.UUID.fromString( "1fcc7ee4-06da-4554-ad13-ef7b4d92b66c" ) );
-		this.uri = uri;
-	}
-
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		if( this.uri != null ) {
-			org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( this.uri );
-			step.finish();
-		} else {
-			step.cancel();
-		}
+public class SelectTemplateProjectComposite extends SelectProjectUriComposite {
+	public SelectTemplateProjectComposite() {
+		super( java.util.UUID.fromString( "0f98d378-be39-4e4a-8b69-95361b56995e" ), true );
 	}
 }

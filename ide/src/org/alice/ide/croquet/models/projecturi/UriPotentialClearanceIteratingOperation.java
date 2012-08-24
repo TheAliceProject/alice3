@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,22 +45,31 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class SystemExitOperation extends UriActionOperation {
-	private static class SingletonHolder {
-		private static SystemExitOperation instance = new SystemExitOperation();
+public abstract class UriPotentialClearanceIteratingOperation extends PotentialClearanceIteratingOperation {
+	public UriPotentialClearanceIteratingOperation( java.util.UUID migrationId, org.lgna.croquet.Model postClearanceModel ) {
+		super( org.alice.ide.ProjectApplication.URI_GROUP, migrationId, postClearanceModel );
 	}
 
-	public static SystemExitOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SystemExitOperation() {
-		super( java.util.UUID.fromString( "ea33dc98-e41d-4a7a-850e-cc4e612efbe8" ) );
-	}
+	protected abstract java.net.URI getURI( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps );
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		System.exit( 0 );
+	protected final void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+		java.net.URI uri = this.getURI( step, subSteps );
+		if( uri != null ) {
+			org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( uri );
+			step.finish();
+		} else {
+			step.cancel();
+		}
+		if( subSteps.size() > 0 ) {
+			java.net.URI value = (java.net.URI)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( value );
+
+			step.finish();
+		} else {
+			step.cancel();
+		}
 	}
+
 }

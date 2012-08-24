@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class OpenProjectOperation extends ClearanceRequiringUriSerialOperation {
+public class OpenProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
 	private static class SingletonHolder {
 		private static OpenProjectOperation instance = new OpenProjectOperation();
 	}
@@ -55,6 +55,6 @@ public class OpenProjectOperation extends ClearanceRequiringUriSerialOperation {
 	}
 
 	private OpenProjectOperation() {
-		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), new org.alice.ide.croquet.models.projecturi.SelectAndLoadExistingProjectOperation() );
+		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), new org.alice.ide.croquet.models.projecturi.SelectExistingProjectComposite().getValueCreator() );
 	}
 }

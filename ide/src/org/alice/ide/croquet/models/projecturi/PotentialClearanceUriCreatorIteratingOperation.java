@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,12 +45,17 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriSerialOperation extends org.lgna.croquet.SerialOperation {
-	public UriSerialOperation( java.util.UUID individualUUID ) {
-		super( org.alice.ide.ProjectApplication.URI_GROUP, individualUUID );
+public abstract class PotentialClearanceUriCreatorIteratingOperation extends UriPotentialClearanceIteratingOperation {
+	public PotentialClearanceUriCreatorIteratingOperation( java.util.UUID migrationId, org.lgna.croquet.ValueCreator<java.net.URI> uriCreator ) {
+		super( migrationId, uriCreator );
 	}
 
-	protected org.alice.ide.ProjectApplication getProjectApplication() {
-		return org.alice.ide.ProjectApplication.getActiveInstance();
+	@Override
+	protected java.net.URI getURI( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+		if( subSteps.size() > 0 ) {
+			return (java.net.URI)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+		} else {
+			return null;
+		}
 	}
 }

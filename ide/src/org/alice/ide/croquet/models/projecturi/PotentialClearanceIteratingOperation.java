@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,65 +45,50 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ClearanceRequiringUriSerialOperation extends UriSerialOperation {
-	private final org.lgna.croquet.SingleThreadOperation otherOperation;
+public abstract class PotentialClearanceIteratingOperation extends org.lgna.croquet.IteratingOperation {
+	private final org.lgna.croquet.Model postClearanceModel;
 
-	public ClearanceRequiringUriSerialOperation( java.util.UUID individualUUID, org.lgna.croquet.SingleThreadOperation otherOperation ) {
-		super( individualUUID );
-		this.otherOperation = otherOperation;
+	public PotentialClearanceIteratingOperation( org.lgna.croquet.Group group, java.util.UUID migrationId, org.lgna.croquet.Model postClearanceModel ) {
+		super( group, migrationId );
+		this.postClearanceModel = postClearanceModel;
+	}
+
+	protected org.lgna.croquet.Model getPostClearanceModel() {
+		return this.postClearanceModel;
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.SingleThreadOperation> getOperations() {
-		java.util.List<org.lgna.croquet.SingleThreadOperation> operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.alice.ide.ProjectApplication application = this.getProjectApplication();
+	protected java.util.Iterator<org.lgna.croquet.Model> createIteratingData() {
+		java.util.List<org.lgna.croquet.Model> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.alice.ide.ProjectApplication application = org.alice.ide.ProjectApplication.getActiveInstance();
+		boolean isPostClearanceModelDesired = this.postClearanceModel != null;
 		if( application.isProjectUpToDateWithFile() ) {
-			operations.add( this.otherOperation );
+			//pass
 		} else {
 			org.lgna.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
 			if( option == org.lgna.croquet.YesNoCancelOption.YES ) {
-				operations.add( SaveProjectOperation.getInstance() );
-				operations.add( this.otherOperation );
-				//				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
-				//				if( saveContext.isCommitted() ) {
-				//					//pass;
-				//				} else {
-				//					compositeContext.cancel();
-				//				}
+				models.add( SaveProjectOperation.getInstance() );
 			} else if( option == org.lgna.croquet.YesNoCancelOption.NO ) {
-				operations.add( this.otherOperation );
-			} else {
 				//pass
+			} else {
+				isPostClearanceModelDesired = false;
 			}
 		}
-		return operations;
+		if( isPostClearanceModelDesired ) {
+			models.add( this.postClearanceModel );
+		}
+		return models.iterator();
 	}
-	//	protected abstract void performPostCleared( edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext );
-	//	@Override
-	//	public final void perform(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
-	//		org.alice.app.ProjectApplication application = this.getProjectApplication();
-	//		if( application.isProjectUpToDateWithFile() ) {
-	//			//pass
-	//		} else {
-	//			edu.cmu.cs.dennisc.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
-	//			if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
-	//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ClearToProcedeWithChangedProjectOperation event" );
-	//				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
-	//				if( saveContext.isCommitted() ) {
-	//					//pass;
-	//				} else {
-	//					compositeContext.cancel();
-	//				}
-	//			} else if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.NO ) {
-	//				//pass
-	//			} else {
-	//				compositeContext.cancel();
-	//			}
-	//		}
-	//		if( compositeContext.isCanceled() ) {
-	//			//pass
-	//		} else {
-	//			this.performPostCleared( compositeContext );
-	//		}
-	//	}
+
+	@Override
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+		java.util.Iterator<org.lgna.croquet.Model> iterator = (java.util.Iterator<org.lgna.croquet.Model>)iteratingData;
+		return iterator.hasNext();
+	}
+
+	@Override
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
+		java.util.Iterator<org.lgna.croquet.Model> iterator = (java.util.Iterator<org.lgna.croquet.Model>)iteratingData;
+		return iterator.next();
+	}
 }

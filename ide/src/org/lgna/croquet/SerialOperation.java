@@ -45,6 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public abstract class SerialOperation extends SingleThreadOperation {
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {

@@ -54,21 +54,35 @@ public abstract class IteratingOperation extends SingleThreadOperation {
 		return new org.lgna.croquet.history.TransactionHistory();
 	}
 
-	protected abstract boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step );
+	protected Object createIteratingData() {
+		return null;
+	}
 
-	protected abstract Model getNext( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData );
+
+	protected abstract Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData );
+
+	protected abstract void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps );
 
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );
-		while( this.hasNext( step ) ) {
-			Model model = this.getNext( step );
-			if( model != null ) {
-				model.fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-				//throw new CancelException();
+		try {
+			java.util.List<org.lgna.croquet.history.Step<?>> subSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			Object iteratingData = this.createIteratingData();
+			while( this.hasNext( step, subSteps, iteratingData ) ) {
+				Model model = this.getNext( step, subSteps, iteratingData );
+				org.lgna.croquet.history.Step<?> subStep = model.fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
+				if( subStep.getOwnerTransaction().isSuccessfullyCompleted() ) {
+					subSteps.add( subStep );
+				} else {
+					step.cancel();
+					return;
+				}
 			}
+			this.handleSuccessfulCompletionOfSubModels( step, subSteps );
+		} catch( CancelException ce ) {
+			step.cancel();
 		}
 	}
 }

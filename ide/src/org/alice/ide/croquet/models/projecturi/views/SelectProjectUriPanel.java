@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.projecturi;
+package org.alice.ide.croquet.models.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectAndLoadExistingProjectOperation extends SelectAndLoadProjectOperation {
-	public SelectAndLoadExistingProjectOperation() {
-		super( java.util.UUID.fromString( "ef47cf71-0dc3-4ff6-9fe3-756abfd524de" ) );
-	}
+public class SelectProjectUriPanel extends org.lgna.croquet.components.BorderPanel {
 
-	@Override
-	public boolean isNew() {
-		return false;
-	}
 }

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+
+package org.alice.ide.croquet.models.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ClearanceModelValueCreatorPairOperation<T> extends SingleThreadOperation {
-	private final CompletionModel clearanceModel;
-	private final ValueCreator<T> valueCreator;
-
-	public ClearanceModelValueCreatorPairOperation( Group group, java.util.UUID migrationId, CompletionModel clearanceModel, ValueCreator<T> valueCreator ) {
-		super( group, migrationId );
-		this.clearanceModel = clearanceModel;
-		this.valueCreator = valueCreator;
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, new org.lgna.croquet.history.TransactionHistory() );
-		org.lgna.croquet.history.Step<?> subStep = this.clearanceModel.fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
+public class SelectExistingProjectComposite extends SelectProjectUriComposite {
+	public SelectExistingProjectComposite() {
+		super( java.util.UUID.fromString( "ef47cf71-0dc3-4ff6-9fe3-756abfd524de" ), false );
 	}
 }
