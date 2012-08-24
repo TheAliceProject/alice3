@@ -41,51 +41,31 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.openproject;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<ContentTab> {
+public class RecentProjectsTab extends ContentTab<org.alice.ide.projecturi.views.RecentPane> {
 	private static class SingletonHolder {
-		private static ProjectTabSelectionState instance = new ProjectTabSelectionState();
+		private static RecentProjectsTab instance = new RecentProjectsTab();
 	}
 
-	public static ProjectTabSelectionState getInstance() {
+	public static RecentProjectsTab getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private ProjectTabSelectionState() {
-		super(
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ),
-				ContentTab.class,
-				-1,
-				TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance() );
+	private RecentProjectsTab() {
+		super( java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ) );
 	}
 
-	public void refresh() {
-		//todo
-		org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().refresh();
+	@Override
+	protected void refresh() {
+		org.alice.ide.projecturi.RecentProjectsUriSelectionState.getInstance().refresh();
 	}
 
-	public java.net.URI getSelectedURI() {
-		ContentTab contentTab = org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().getSelectedItem();
-		if( contentTab != null ) {
-			return contentTab.getSelectedUri();
-		} else {
-			return null;
-		}
-	}
-
-	public void selectAppropriateTab( boolean isNew ) {
-		ContentTab tab;
-		if( isNew ) {
-			tab = TemplatesTab.getInstance();
-		} else {
-			tab = MyProjectsTab.getInstance(); //todo: recentPane?
-		}
-		this.setSelectedItem( tab );
-		org.lgna.croquet.components.ComponentManager.revalidateAndRepaintAllComponents( this );
+	@Override
+	protected org.alice.ide.projecturi.views.RecentPane createView() {
+		return new org.alice.ide.projecturi.views.RecentPane( this );
 	}
 }

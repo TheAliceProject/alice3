@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.ide.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
@@ -50,7 +50,7 @@ public class FileSystemPane extends TabContentPanel {
 	private org.lgna.croquet.StringState textState = new org.lgna.croquet.StringState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "a0051988-1f98-4401-a054-f87547d3faf3" ), "" ) {
 	};
 
-	public FileSystemPane( org.alice.ide.croquet.models.openproject.FileSystemTab composite ) {
+	public FileSystemPane( org.alice.ide.projecturi.FileSystemTab composite ) {
 		super( composite );
 		//		this.textField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 		//			private void handleUpdate(javax.swing.event.DocumentEvent e) {

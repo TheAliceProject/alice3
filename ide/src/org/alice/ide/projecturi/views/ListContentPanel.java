@@ -41,12 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.ide.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel<M extends org.alice.ide.openprojectpane.models.UriSelectionState> extends TabContentPanel {
+public abstract class ListContentPanel<M extends org.alice.ide.projecturi.UriSelectionState> extends TabContentPanel {
 	private final M state;
 	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {

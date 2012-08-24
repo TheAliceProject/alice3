@@ -41,26 +41,37 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.openproject;
+package org.alice.ide.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TemplatesTab extends ContentTab<org.alice.stageide.openprojectpane.components.TemplatesTabContentPane> {
-	private static class SingletonHolder {
-		private static TemplatesTab instance = new TemplatesTab();
+public abstract class TabContentPanel extends org.lgna.croquet.components.BorderPanel {
+	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 191, 191, 255 );
+
+	//	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
+	public TabContentPanel( org.lgna.croquet.TabComposite<?> composite ) {
+		super( composite );
+		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		final int INSET = 8;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
 
-	public static TemplatesTab getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private TemplatesTab() {
-		super( java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ) );
-	}
-
-	@Override
-	protected org.alice.stageide.openprojectpane.components.TemplatesTabContentPane createView() {
-		return new org.alice.stageide.openprojectpane.components.TemplatesTabContentPane( this );
-	}
+	public abstract java.net.URI getSelectedUri();
+	//	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel ) {
+	//		this.inputPanel = inputPanel;
+	//	}
+	//	public javax.swing.Icon getTabTitleIcon() {
+	//		return null;
+	//	}
+	//	protected void updateOKButton() {
+	//		if( this.inputPanel != null ) {
+	//			this.inputPanel.updateOKButton();
+	//		}
+	//	}
+	//	protected void fireOKButtonIfPossible() {
+	//		if( this.inputPanel != null ) {
+	//			this.inputPanel.fireOKButtonIfPossible();
+	//		}
+	//	}
 }

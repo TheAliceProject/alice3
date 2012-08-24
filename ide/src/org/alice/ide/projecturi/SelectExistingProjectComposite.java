@@ -41,37 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabContentPanel extends org.lgna.croquet.components.BorderPanel {
-	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 191, 191, 255 );
-
-	//	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
-	public TabContentPanel( org.lgna.croquet.TabComposite<?> composite ) {
-		super( composite );
-		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
-		final int INSET = 8;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+public class SelectExistingProjectComposite extends SelectProjectUriComposite {
+	public SelectExistingProjectComposite() {
+		super( java.util.UUID.fromString( "ef47cf71-0dc3-4ff6-9fe3-756abfd524de" ), false );
 	}
-
-	public abstract java.net.URI getSelectedUri();
-	//	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel ) {
-	//		this.inputPanel = inputPanel;
-	//	}
-	//	public javax.swing.Icon getTabTitleIcon() {
-	//		return null;
-	//	}
-	//	protected void updateOKButton() {
-	//		if( this.inputPanel != null ) {
-	//			this.inputPanel.updateOKButton();
-	//		}
-	//	}
-	//	protected void fireOKButtonIfPossible() {
-	//		if( this.inputPanel != null ) {
-	//			this.inputPanel.fireOKButtonIfPossible();
-	//		}
-	//	}
 }

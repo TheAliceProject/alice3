@@ -55,6 +55,6 @@ public class NewProjectOperation extends PotentialClearanceUriCreatorIteratingOp
 	}
 
 	private NewProjectOperation() {
-		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), new org.alice.ide.croquet.models.projecturi.SelectTemplateProjectComposite().getValueCreator() );
+		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), new org.alice.ide.projecturi.SelectTemplateProjectComposite().getValueCreator() );
 	}
 }

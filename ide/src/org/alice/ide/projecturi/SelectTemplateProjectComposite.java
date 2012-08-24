@@ -41,31 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.openproject;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ContentTab<V extends org.alice.ide.openprojectpane.TabContentPanel> extends org.lgna.croquet.SimpleTabComposite<V> {
-	public ContentTab( java.util.UUID id ) {
-		super( id );
-	}
-
-	public final java.net.URI getSelectedUri() {
-		return getView().getSelectedUri();
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-
-	@Override
-	public org.lgna.croquet.components.ScrollPane createScrollPane() {
-		org.lgna.croquet.components.ScrollPane rv = super.createScrollPane();
-		rv.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		rv.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
-		rv.setBothScrollBarIncrements( 12, 24 );
-		return rv;
+public class SelectTemplateProjectComposite extends SelectProjectUriComposite {
+	public SelectTemplateProjectComposite() {
+		super( java.util.UUID.fromString( "0f98d378-be39-4e4a-8b69-95361b56995e" ), true );
 	}
 }

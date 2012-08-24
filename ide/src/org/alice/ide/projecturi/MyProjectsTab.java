@@ -41,19 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryListContentPanel extends ListContentPanel<org.alice.ide.openprojectpane.models.DirectoryUriSelectionState> {
-	public DirectoryListContentPanel( org.alice.ide.croquet.models.openproject.ContentTab<?> composite, org.alice.ide.openprojectpane.models.DirectoryUriSelectionState state ) {
-		super( composite, state );
+public class MyProjectsTab extends ContentTab<org.alice.ide.projecturi.views.DirectoryListContentPanel> {
+	private static class SingletonHolder {
+		private static MyProjectsTab instance = new MyProjectsTab();
+	}
+
+	public static MyProjectsTab getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private MyProjectsTab() {
+		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ) );
 	}
 
 	@Override
-	protected String getTextForZeroProjects() {
-		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.getState().getDirectory() );
-		return "there are no projects in " + path;
+	protected void refresh() {
+	}
+
+	@Override
+	protected org.alice.ide.projecturi.views.DirectoryListContentPanel createView() {
+		return new org.alice.ide.projecturi.views.DirectoryListContentPanel( this, org.alice.ide.projecturi.MyProjectsUriSelectionState.getInstance() );
 	}
 }

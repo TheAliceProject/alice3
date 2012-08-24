@@ -41,73 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane.models;
+package org.alice.ide.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.ListSelectionState<E> {
-	private boolean isRefreshNecessary = true;
-	private E[] array;
-
-	public ArrayBasedListSelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<E> itemCodec, int selectionIndex ) {
-		super( group, id, itemCodec, selectionIndex );
-	}
-
-	protected abstract E[] createArray();
-
-	private void refreshIfNecessary() {
-		if( this.isRefreshNecessary ) {
-			this.array = this.createArray();
-			this.fireContentsChanged( 0, this.array.length - 1 );
-			this.isRefreshNecessary = false;
-		}
-	}
-
-	public final void refresh() {
-		this.isRefreshNecessary = true;
-		this.refreshIfNecessary();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
+public final class DirectoryListContentPanel extends ListContentPanel<org.alice.ide.projecturi.DirectoryUriSelectionState> {
+	public DirectoryListContentPanel( org.alice.ide.projecturi.ContentTab<?> composite, org.alice.ide.projecturi.DirectoryUriSelectionState state ) {
+		super( composite, state );
 	}
 
 	@Override
-	public final E getItemAt( int index ) {
-		return this.array[ index ];
-	}
-
-	@Override
-	public final int getItemCount() {
-		this.refreshIfNecessary();
-		return this.array.length;
-	}
-
-	@Override
-	public final int indexOf( E item ) {
-		return java.util.Arrays.asList( this.array ).indexOf( item );
-	}
-
-	@Override
-	protected final void internalAddItem( E item ) {
-		throw new AssertionError();
-	}
-
-	@Override
-	protected final void internalRemoveItem( E item ) {
-		throw new AssertionError();
-	}
-
-	@Override
-	protected final void internalSetItems( java.util.Collection<E> items ) {
-	}
-
-	public final java.util.Iterator<E> iterator() {
-		this.refreshIfNecessary();
-		return java.util.Arrays.asList( this.array ).iterator();
-	}
-
-	@Override
-	public final E[] toArray( Class<E> componentType ) {
-		this.refreshIfNecessary();
-		return this.array;
+	protected String getTextForZeroProjects() {
+		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.getState().getDirectory() );
+		return "there are no projects in " + path;
 	}
 }

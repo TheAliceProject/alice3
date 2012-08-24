@@ -41,21 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.openproject;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectCountState extends org.lgna.croquet.BoundedIntegerState {
-	private static class SingletonHolder {
-		private static RecentProjectCountState instance = new RecentProjectCountState();
-	}
-
-	public static RecentProjectCountState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RecentProjectCountState() {
-		super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "15c030d1-d6c7-4415-ac20-e1b5bc6993de" ) ).minimum( 0 ).maximum( 100 ).initialValue( 10 ) );
+public abstract class UriSelectionState extends ArrayBasedListSelectionState<java.net.URI> {
+	public UriSelectionState( java.util.UUID id ) {
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
 	}
 }

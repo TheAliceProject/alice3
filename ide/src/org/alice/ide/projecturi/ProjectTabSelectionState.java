@@ -41,22 +41,52 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectProjectToOpenPanel extends org.lgna.croquet.components.BorderPanel {
+public class ProjectTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<ContentTab> {
 	private static class SingletonHolder {
-		private static SelectProjectToOpenPanel instance = new SelectProjectToOpenPanel();
+		private static ProjectTabSelectionState instance = new ProjectTabSelectionState();
 	}
 
-	public static SelectProjectToOpenPanel getInstance() {
+	public static ProjectTabSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private SelectProjectToOpenPanel() {
-		this.addCenterComponent( org.alice.ide.croquet.models.openproject.ProjectTabSelectionState.getInstance().createFolderTabbedPane() );
-		this.setBackgroundColor( TabContentPanel.DEFAULT_BACKGROUND_COLOR );
+	private ProjectTabSelectionState() {
+		super(
+				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
+				java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ),
+				ContentTab.class,
+				-1,
+				TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance() );
+	}
+
+	public void refresh() {
+		for( ContentTab contentTab : this.toArray() ) {
+			contentTab.refresh();
+		}
+	}
+
+	public java.net.URI getSelectedURI() {
+		ContentTab contentTab = org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().getSelectedItem();
+		if( contentTab != null ) {
+			return contentTab.getSelectedUri();
+		} else {
+			return null;
+		}
+	}
+
+	public void selectAppropriateTab( boolean isNew ) {
+		ContentTab tab;
+		if( isNew ) {
+			tab = TemplatesTab.getInstance();
+		} else {
+			tab = MyProjectsTab.getInstance(); //todo: recentPane?
+		}
+		this.setSelectedItem( tab );
+		org.lgna.croquet.components.ComponentManager.revalidateAndRepaintAllComponents( this );
 	}
 }

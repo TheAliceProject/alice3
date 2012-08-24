@@ -41,15 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.ide.projecturi.views;
 
-public class RecentPane extends ListContentPanel<org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState> {
-	public RecentPane( org.alice.ide.croquet.models.openproject.RecentProjectsTab composite ) {
-		super( composite, org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance() );
+/**
+ * @author Dennis Cosgrove
+ */
+public class SelectProjectToOpenPanel extends org.lgna.croquet.components.BorderPanel {
+	private static class SingletonHolder {
+		private static SelectProjectToOpenPanel instance = new SelectProjectToOpenPanel();
 	}
 
-	@Override
-	protected String getTextForZeroProjects() {
-		return "there are no recent projects";
+	public static SelectProjectToOpenPanel getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private SelectProjectToOpenPanel() {
+		this.addCenterComponent( org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().createFolderTabbedPane() );
+		this.setBackgroundColor( TabContentPanel.DEFAULT_BACKGROUND_COLOR );
 	}
 }

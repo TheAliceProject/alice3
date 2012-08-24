@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane.models;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove

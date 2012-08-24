@@ -41,13 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane.models;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriSelectionState extends ArrayBasedListSelectionState<java.net.URI> {
-	public UriSelectionState( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
+public class FileSystemTab extends ContentTab<org.alice.ide.projecturi.views.FileSystemPane> {
+	private static class SingletonHolder {
+		private static FileSystemTab instance = new FileSystemTab();
+	}
+
+	public static FileSystemTab getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private FileSystemTab() {
+		super( java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
+	}
+
+	@Override
+	protected void refresh() {
+	}
+
+	@Override
+	protected org.alice.ide.projecturi.views.FileSystemPane createView() {
+		return new org.alice.ide.projecturi.views.FileSystemPane( this );
 	}
 }

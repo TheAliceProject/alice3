@@ -46,7 +46,7 @@ package org.alice.stageide.openprojectpane.models;
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateUriSelectionState extends org.alice.ide.openprojectpane.models.UriSelectionState {
+public class TemplateUriSelectionState extends org.alice.ide.projecturi.UriSelectionState {
 	public static Template getSurfaceAppearance( java.net.URI uri ) {
 		return Template.valueOf( uri.getFragment() );
 	}

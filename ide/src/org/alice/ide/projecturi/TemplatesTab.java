@@ -41,13 +41,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.croquet.models.projecturi;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectTemplateProjectComposite extends SelectProjectUriComposite {
-	public SelectTemplateProjectComposite() {
-		super( java.util.UUID.fromString( "0f98d378-be39-4e4a-8b69-95361b56995e" ), true );
+public class TemplatesTab extends ContentTab<org.alice.stageide.openprojectpane.components.TemplatesTabContentPane> {
+	private static class SingletonHolder {
+		private static TemplatesTab instance = new TemplatesTab();
+	}
+
+	public static TemplatesTab getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private TemplatesTab() {
+		super( java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ) );
+	}
+
+	@Override
+	protected void refresh() {
+	}
+
+	@Override
+	protected org.alice.stageide.openprojectpane.components.TemplatesTabContentPane createView() {
+		return new org.alice.stageide.openprojectpane.components.TemplatesTabContentPane( this );
 	}
 }
