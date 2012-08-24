@@ -141,7 +141,9 @@ public abstract class Operation extends AbstractCompletionModel {
 		if( this.isEnabled() ) {
 			this.initializeIfNecessary();
 			org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-			return this.perform( history, trigger );
+			org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+			this.perform( transaction, trigger );
+			return transaction.getCompletionStep();
 		} else {
 			return null;
 		}
@@ -171,12 +173,6 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
-
-	protected org.lgna.croquet.history.CompletionStep<?> perform( org.lgna.croquet.history.TransactionHistory history, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-		this.perform( transaction, trigger );
-		return transaction.getCompletionStep();
-	}
 
 	public final String getName() {
 		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
