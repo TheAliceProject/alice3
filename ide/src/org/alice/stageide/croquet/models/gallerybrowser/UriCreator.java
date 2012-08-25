@@ -1,4 +1,5 @@
 /*
+
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -45,31 +46,31 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriProducer<T> extends org.lgna.croquet.ValueProducer<T> {
-	public UriProducer( org.lgna.croquet.Group group, java.util.UUID id ) {
-		super( group, id );
+public abstract class UriCreator<T> extends org.lgna.croquet.ValueCreator<T> {
+	public UriCreator( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
 	protected abstract java.io.File getInitialDirectory();
 
 	protected abstract String getExtension();
 
-	@Override
-	protected org.lgna.croquet.history.TransactionHistory createTransactionHistoryIfNecessary() {
-		return new org.lgna.croquet.history.TransactionHistory();
-	}
-
 	protected abstract T internalGetValueFrom( java.io.File file );
 
 	@Override
-	protected T internalGetValue( org.lgna.croquet.history.CompletionStep step ) throws org.lgna.croquet.CancelException {
+	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		java.io.File directory = this.getInitialDirectory();
 		String extension = this.getExtension();
+		org.lgna.croquet.history.TransactionHistory subtTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
+		org.lgna.croquet.history.CompletionStep<?> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, subtTransactionHistory );
 		java.io.File file = application.showOpenFileDialog( directory, null, extension, true );
 		if( file != null ) {
-			return this.internalGetValueFrom( file );
+			T rv = this.internalGetValueFrom( file );
+			step.finish();
+			return rv;
 		} else {
+			step.cancel();
 			//throw new org.lgna.croquet.CancelException();
 			return null;
 		}

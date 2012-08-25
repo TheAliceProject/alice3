@@ -72,9 +72,14 @@ public abstract class IteratingOperation extends SingleThreadOperation {
 			Object iteratingData = this.createIteratingData();
 			while( this.hasNext( step, subSteps, iteratingData ) ) {
 				Model model = this.getNext( step, subSteps, iteratingData );
-				org.lgna.croquet.history.Step<?> subStep = model.fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
-				if( subStep.getOwnerTransaction().isSuccessfullyCompleted() ) {
-					subSteps.add( subStep );
+				if( model != null ) {
+					org.lgna.croquet.history.Step<?> subStep = model.fire( org.lgna.croquet.triggers.IterationTrigger.createUserInstance() );
+					if( ( subStep != null ) && subStep.getOwnerTransaction().isSuccessfullyCompleted() ) {
+						subSteps.add( subStep );
+					} else {
+						step.cancel();
+						return;
+					}
 				} else {
 					step.cancel();
 					return;

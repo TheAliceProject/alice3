@@ -69,9 +69,8 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 		case 0:
 			return TypeFromUriProducer.getInstance();
 		case 1:
-			org.lgna.croquet.history.CompletionStep<?> valueProducerStep = (org.lgna.croquet.history.CompletionStep<?>)subSteps.get( 0 );
-			org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType> valueProducer = (org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType>)valueProducerStep.getModel();
-			org.lgna.project.ast.NamedUserType type = valueProducer.getValue( valueProducerStep );
+			org.lgna.croquet.history.CompletionStep<?> valueCreatorStep = (org.lgna.croquet.history.CompletionStep<?>)subSteps.get( 0 );
+			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)valueCreatorStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
 			if( type != null ) {
 				org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
 				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
