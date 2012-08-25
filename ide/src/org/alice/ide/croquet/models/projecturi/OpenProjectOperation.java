@@ -55,6 +55,6 @@ public class OpenProjectOperation extends PotentialClearanceUriCreatorIteratingO
 	}
 
 	private OpenProjectOperation() {
-		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), new org.alice.ide.projecturi.SelectExistingProjectComposite().getValueCreator() );
+		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), new org.alice.ide.projecturi.SelectExistingProjectWithPreviewComposite().getValueCreator() );
 	}
 }

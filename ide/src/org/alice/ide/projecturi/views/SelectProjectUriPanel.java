@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.alice.ide.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectTemplateProjectComposite extends SelectProjectUriComposite {
-	public SelectTemplateProjectComposite() {
-		super( java.util.UUID.fromString( "0f98d378-be39-4e4a-8b69-95361b56995e" ), true );
+public class SelectProjectUriPanel extends org.lgna.croquet.components.BorderPanel {
+	public SelectProjectUriPanel() {
+		this.addCenterComponent( org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().createFolderTabbedPane() );
 	}
 }

@@ -46,45 +46,8 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectProjectUriComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, java.net.URI> {
-	private final boolean isNew;
-
-	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
-
-	public SelectProjectUriComposite( java.util.UUID individualUUID, boolean isNew ) {
-		super( individualUUID );
-		this.isNew = isNew;
-	}
-
-	@Override
-	protected java.net.URI createValue() {
-		return org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().getSelectedURI();
-	}
-
-	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		//return new org.alice.ide.croquet.models.projecturi.views.SelectProjectUriPanel();
-		return org.alice.ide.projecturi.views.SelectProjectToOpenPanel.getInstance();
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().getSelectedURI() != null ) {
-			return IS_GOOD_TO_GO_STATUS;
-		} else {
-			return this.noSelectionError;
-		}
-	}
-
-	@Override
-	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
-		window.setSize( 620, 480 );
-	}
-
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew );
-		org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().refresh();
-		super.handlePreShowDialog( completionStep );
+public class SelectTemplateProjectWithPreviewComposite extends SelectProjectUriWithPreviewComposite {
+	public SelectTemplateProjectWithPreviewComposite() {
+		super( java.util.UUID.fromString( "0f98d378-be39-4e4a-8b69-95361b56995e" ), true );
 	}
 }

@@ -40,21 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+
+package org.alice.ide.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NewProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
+public class SelectProjectUriWithPreviewPanel extends org.lgna.croquet.components.BorderPanel {
 	private static class SingletonHolder {
-		private static NewProjectOperation instance = new NewProjectOperation();
+		private static SelectProjectUriWithPreviewPanel instance = new SelectProjectUriWithPreviewPanel();
 	}
 
-	public static NewProjectOperation getInstance() {
+	public static SelectProjectUriWithPreviewPanel getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private NewProjectOperation() {
-		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), new org.alice.ide.projecturi.SelectTemplateProjectWithPreviewComposite().getValueCreator() );
+	private SelectProjectUriWithPreviewPanel() {
+		this.addCenterComponent( new SelectProjectUriPanel() );
+		if( PreviewProjectPanel.IS_READY_FOR_PRIME_TIME ) {
+			this.addLineEndComponent( new PreviewProjectPanel() );
+		}
+		this.setBackgroundColor( TabContentPanel.DEFAULT_BACKGROUND_COLOR );
 	}
 }

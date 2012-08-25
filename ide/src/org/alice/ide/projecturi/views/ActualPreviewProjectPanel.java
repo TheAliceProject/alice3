@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package org.alice.ide.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NewProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
-	private static class SingletonHolder {
-		private static NewProjectOperation instance = new NewProjectOperation();
-	}
+public class ActualPreviewProjectPanel extends org.lgna.croquet.components.BorderPanel {
+	private static final int DEFAULT_WIDTH = 320;
+	private static final int DEFAULT_HEIGHT = (int)( DEFAULT_WIDTH / org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
 
-	public static NewProjectOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private NewProjectOperation() {
-		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), new org.alice.ide.projecturi.SelectTemplateProjectWithPreviewComposite().getValueCreator() );
+	public ActualPreviewProjectPanel() {
+		this.setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
+		this.setMaximumSizeClampedToPreferredSize( true );
+		this.setBackgroundColor( java.awt.Color.BLACK );
 	}
 }

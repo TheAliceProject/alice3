@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,23 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectProjectToOpenPanel extends org.lgna.croquet.components.BorderPanel {
-	private static class SingletonHolder {
-		private static SelectProjectToOpenPanel instance = new SelectProjectToOpenPanel();
-	}
+public class PreviewProjectPanel extends org.lgna.croquet.components.PageAxisPanel {
+	public static final boolean IS_READY_FOR_PRIME_TIME = false;
 
-	public static SelectProjectToOpenPanel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SelectProjectToOpenPanel() {
-		this.addCenterComponent( org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().createFolderTabbedPane() );
-		this.setBackgroundColor( TabContentPanel.DEFAULT_BACKGROUND_COLOR );
+	public PreviewProjectPanel() {
+		this.addComponent( new org.lgna.croquet.components.Label( "preview", 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+		this.addComponent( new ActualPreviewProjectPanel() );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
+		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 8, 0, 8 ) );
 	}
 }

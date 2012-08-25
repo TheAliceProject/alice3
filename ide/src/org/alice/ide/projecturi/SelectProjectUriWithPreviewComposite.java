@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,11 +40,55 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi.views;
+
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectProjectUriPanel extends org.lgna.croquet.components.BorderPanel {
+public abstract class SelectProjectUriWithPreviewComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, java.net.URI> {
+	private final boolean isNew;
 
+	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
+
+	public SelectProjectUriWithPreviewComposite( java.util.UUID individualUUID, boolean isNew ) {
+		super( individualUUID );
+		this.isNew = isNew;
+	}
+
+	@Override
+	protected java.net.URI createValue() {
+		return org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().getSelectedURI();
+	}
+
+	@Override
+	protected org.lgna.croquet.components.Panel createView() {
+		return org.alice.ide.projecturi.views.SelectProjectUriWithPreviewPanel.getInstance();
+	}
+
+	@Override
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().getSelectedURI() != null ) {
+			return IS_GOOD_TO_GO_STATUS;
+		} else {
+			return this.noSelectionError;
+		}
+	}
+
+	@Override
+	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		if( org.alice.ide.projecturi.views.PreviewProjectPanel.IS_READY_FOR_PRIME_TIME ) {
+			final int width = 960;
+			window.setSize( width, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( width ) );
+		} else {
+			window.setSize( 620, 480 );
+		}
+	}
+
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew );
+		org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().refresh();
+		super.handlePreShowDialog( completionStep );
+	}
 }

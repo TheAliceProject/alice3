@@ -46,8 +46,8 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class SelectExistingProjectComposite extends SelectProjectUriComposite {
-	public SelectExistingProjectComposite() {
+public class SelectExistingProjectWithPreviewComposite extends SelectProjectUriWithPreviewComposite {
+	public SelectExistingProjectWithPreviewComposite() {
 		super( java.util.UUID.fromString( "ef47cf71-0dc3-4ff6-9fe3-756abfd524de" ), false );
 	}
 }
