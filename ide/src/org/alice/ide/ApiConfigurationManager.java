@@ -202,7 +202,7 @@ public abstract class ApiConfigurationManager {
 
 	public abstract java.util.List<org.lgna.project.ast.JavaType> getTopLevelGalleryTypes();
 
-	public abstract org.lgna.project.ast.AbstractType<?, ?, ?> getGalleryResourceParentFor( org.lgna.project.ast.AbstractType<?, ?, ?> type );
+	public abstract org.lgna.project.ast.JavaType getGalleryResourceParentFor( org.lgna.project.ast.JavaType type );
 
 	public abstract java.util.List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type );
 

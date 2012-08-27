@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,34 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.ide.resourcegallery;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RootGalleryNode extends GalleryNode {
+public class RootResourceGalleryNode extends org.alice.ide.croquet.models.gallerybrowser.GalleryNode {
 	private static class SingletonHolder {
-		private static RootGalleryNode instance = new RootGalleryNode();
+		private static RootResourceGalleryNode instance = new RootResourceGalleryNode();
 	}
 
-	public static RootGalleryNode getInstance() {
+	public static RootResourceGalleryNode getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private RootGalleryNode() {
-		super( java.util.UUID.fromString( "9c1a9783-f865-446d-b1ef-268e266d6230" ) );
-	}
+	private final java.util.List<ResourceClassGalleryNode> children;
 
-	public org.lgna.project.ast.AbstractConstructor getConstructorForArgumentType( org.lgna.project.ast.AbstractType<?, ?, ?> argumentType ) {
-		for( org.lgna.project.ast.NamedUserType userType : this.getDeclarationChildren() ) {
-			org.lgna.project.ast.AbstractConstructor constructor = userType.getDeclaredConstructors().get( 0 );
-			org.lgna.project.ast.AbstractParameter parameter = constructor.getRequiredParameters().get( 0 );
-			if( parameter.getValueType().isAssignableFrom( argumentType ) ) {
-				return constructor;
-			}
+	private RootResourceGalleryNode() {
+		super( java.util.UUID.fromString( "2187b93f-3f9b-49d6-aee6-58f73e082653" ) );
+
+		//note: when there are multiple apis we will need to have a root for each of them
+		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
+		java.util.List<org.lgna.project.ast.JavaType> topLevelGalleryResourceTypes = apiConfigurationManager.getTopLevelGalleryTypes();
+		java.util.List<ResourceClassGalleryNode> list = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( topLevelGalleryResourceTypes.size() );
+		for( org.lgna.project.ast.JavaType resourceType : topLevelGalleryResourceTypes ) {
+			list.add( ResourceClassGalleryNode.getInstance( resourceType ) );
 		}
-		return null;
+		this.children = java.util.Collections.unmodifiableList( list );
 	}
 
 	@Override
@@ -75,32 +74,24 @@ public class RootGalleryNode extends GalleryNode {
 		return "";
 	}
 
-	private java.util.List<org.lgna.project.ast.NamedUserType> getDeclarationChildren() {
-		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
-		return org.alice.ide.typemanager.TypeManager.getNamedUserTypesFromSuperTypes( apiConfigurationManager.getTopLevelGalleryTypes() );
-	}
-
 	@Override
-	public GalleryNode getParent() {
+	public org.alice.ide.croquet.models.gallerybrowser.GalleryNode getParent() {
 		return null;
 	}
 
 	@Override
 	public int getChildCount() {
-		return this.getDeclarationChildren().size();
+		return this.children.size();
 	}
 
 	@Override
-	public GalleryNode getChild( int index ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getDeclarationChildren().get( index );
-		org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-		org.lgna.project.ast.AbstractParameter parameter = constructor.getRequiredParameters().get( 0 );
-		return ArgumentTypeGalleryNode.getInstance( (org.lgna.project.ast.JavaType)parameter.getValueType() );
+	public org.alice.ide.croquet.models.gallerybrowser.GalleryNode getChild( int index ) {
+		return this.children.get( index );
 	}
 
 	@Override
-	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ( (TypeGalleryNode)child ).getDeclaration() );
+	public int getIndexOfChild( org.alice.ide.croquet.models.gallerybrowser.GalleryNode child ) {
+		return this.children.indexOf( child );
 	}
 
 	@Override

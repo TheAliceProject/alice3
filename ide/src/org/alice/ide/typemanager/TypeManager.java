@@ -238,6 +238,16 @@ public class TypeManager {
 		} else {
 			criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, argumentTypes[ i ] );
 		}
+
+		//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		//		if( ide != null ) {
+		//			org.alice.ide.ProjectDocument projectDocument = ide.getDocument();
+		//			if( projectDocument != null ) {
+		//				org.alice.ide.type.TypeCache typeCache = projectDocument.getTypeCache();
+		//				typeCache.getNamedUserTypeFor( ancestorType, argumentTypes, i, argumentField );
+		//			}
+		//		}
+
 		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
 		if( project != null ) {
 			java.util.Set<org.lgna.project.ast.NamedUserType> existingTypes = project.getNamedUserTypes();
@@ -314,42 +324,4 @@ public class TypeManager {
 		}
 		return rv;
 	}
-
-	//	private static void printlns( edu.cmu.cs.dennisc.tree.Node<?> node, int indent ) {
-	//		for( int i=0; i<indent; i++ ) {
-	//			System.out.print( "*" );
-	//		}
-	//		Object value = node.getValue();
-	//		if( value != null ) {
-	//			System.out.println( value.toString() + " " + value.hashCode() );
-	//		}
-	//		for( edu.cmu.cs.dennisc.tree.Node< ? > child : node.getChildren() ) {
-	//			printlns( child, indent+1 );
-	//		}
-	//	}
-	//	public static void main( String[] args ) {
-	//		org.alice.stageide.StageIDE ide = new org.alice.stageide.StageIDE();
-	//		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p" ) );
-	//
-	//		org.lgna.project.Project project = ide.getProject();
-	//		edu.cmu.cs.dennisc.tree.Node< org.lgna.project.ast.NamedUserType > root = org.lgna.project.project.ProjectUtilities.getNamedUserTypesAsTree( project );
-	//		printlns( root, 0 );
-	//
-	//		
-	//		org.lgna.project.ast.JavaType rootType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Biped.class );
-	//		//org.lgna.project.ast.NamedUserType a = getNamedUserTypeFor( rootType, org.lgna.project.ast.JavaField.getInstance( org.lgna.story.resources.character.BigBadWolf.class, "BIGBADWOLF_DIFFUSE" ) );
-	//		org.lgna.project.ast.NamedUserType b = getNamedUserTypeFor( rootType, org.lgna.project.ast.JavaField.getInstance( org.lgna.story.resources.character.Bunny.class, "BUNNY_DIFFUSE" ) );
-	//		//System.err.println( a + " " + a.getSuperType().hashCode() );
-	//		System.out.println();
-	//		System.out.println();
-	//		System.out.println();
-	//		System.out.println();
-	//		org.lgna.project.ast.AbstractType< ?,?,? > t = b;
-	//		while( t instanceof org.lgna.project.ast.NamedUserType ) {
-	//			System.out.println( t + " " + t.hashCode() );
-	//			t = t.getSuperType();
-	//		}
-	//		System.out.println( t + " " + t.hashCode() );
-	//		
-	//	}
 }

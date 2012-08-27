@@ -49,7 +49,7 @@ package org.alice.ide.croquet.models.gallerybrowser;
 public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ArgumentTypeGalleryNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static ArgumentTypeGalleryNode getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public static ArgumentTypeGalleryNode getInstance( org.lgna.project.ast.JavaType type ) {
 		ArgumentTypeGalleryNode rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -60,17 +60,17 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 		return rv;
 	}
 
-	private ArgumentTypeGalleryNode( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	private ArgumentTypeGalleryNode( org.lgna.project.ast.JavaType type ) {
 		super( java.util.UUID.fromString( "22829f96-159f-49c7-805e-80e9587a174f" ), type );
 	}
 
-	private org.lgna.project.ast.AbstractType<?, ?, ?> getParentDeclaration( org.alice.ide.ApiConfigurationManager api ) {
-		return api.getGalleryResourceParentFor( this.getDeclaration() );
+	private org.lgna.project.ast.JavaType getParentDeclaration( org.alice.ide.ApiConfigurationManager api ) {
+		return api.getGalleryResourceParentFor( (org.lgna.project.ast.JavaType)this.getDeclaration() );
 	}
 
 	@Override
 	public final GalleryNode getParent() {
-		org.lgna.project.ast.AbstractType<?, ?, ?> parentType = this.getParentDeclaration( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
+		org.lgna.project.ast.JavaType parentType = this.getParentDeclaration( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
 		if( parentType != null ) {
 			return ArgumentTypeGalleryNode.getInstance( parentType );
 		} else {

@@ -176,7 +176,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getGalleryResourceParentFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public org.lgna.project.ast.JavaType getGalleryResourceParentFor( org.lgna.project.ast.JavaType type ) {
 		if( type == PERSON_RESOURCE_TYPE ) {
 			return BIPED_RESOURCE_TYPE;
 		} else {

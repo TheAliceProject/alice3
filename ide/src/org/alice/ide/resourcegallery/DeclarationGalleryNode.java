@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.gallerybrowser;
+package org.alice.ide.resourcegallery;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationGalleryNode<D extends org.lgna.project.ast.AbstractDeclaration> extends GalleryNode {
+public abstract class DeclarationGalleryNode<D extends org.lgna.project.ast.AbstractDeclaration> extends org.alice.ide.croquet.models.gallerybrowser.GalleryNode {
 	public static DeclarationGalleryNode<?> getDeclarationNodeInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if( declaration instanceof org.lgna.project.ast.JavaType ) {
 			org.lgna.project.ast.JavaType type = (org.lgna.project.ast.JavaType)declaration;
-			return ArgumentTypeGalleryNode.getInstance( type );
-		} else if( declaration instanceof org.lgna.project.ast.AbstractField ) {
-			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)declaration;
-			return FieldGalleryNode.getInstance( field );
+			return ResourceClassGalleryNode.getInstance( type );
+		} else if( declaration instanceof org.lgna.project.ast.JavaField ) {
+			org.lgna.project.ast.JavaField field = (org.lgna.project.ast.JavaField)declaration;
+			return ResourceEnumConstantNode.getInstance( field );
 		} else if( declaration == null ) {
 			return null;
 		} else {
-			throw new AssertionError();
+			throw new AssertionError( declaration );
 		}
 	}
 
