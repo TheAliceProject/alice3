@@ -52,19 +52,19 @@ public class TranslateTransformable {
 	protected static double MOVEMENT_RATE = 5.0d;
 	protected static double CLICK_TIME = .1d;
 	protected static double CLICK_MOVE_AMOUNT = .2d;
-	
+
 	protected Transformable transformable = null;
-	
+
 	protected Point3 initialPoint = new Point3();
-	
+
 	public TranslateTransformable( Transformable transformable )
 	{
 		this.transformable = transformable;
 	}
-	
+
 	public void setInitialPoint( Point3 point )
 	{
 		this.initialPoint.set( point );
 	}
-	
+
 }

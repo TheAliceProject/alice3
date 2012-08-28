@@ -48,9 +48,11 @@ package edu.cmu.cs.dennisc.pattern;
 
 public class DefaultNameableAndClassOwnerTrackable extends DefaultNameable implements ClassOwnerTrackable {
 	private Class<?> m_clsOwner = null;
+
 	public Class<?> getClassOwner() {
 		return m_clsOwner;
 	}
+
 	public void setClassOwner( Class<?> clsOwner ) {
 		m_clsOwner = clsOwner;
 	}
@@ -72,7 +74,7 @@ public class DefaultNameableAndClassOwnerTrackable extends DefaultNameable imple
 			return super.toString();
 		}
 	}
-	
+
 	public static void setNamesAndClassOwnersForPublicStaticFinalInstancesOwnedBy( Class<?> clsOwner ) {
 		for( java.lang.reflect.Field field : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( clsOwner, DefaultNameableAndClassOwnerTrackable.class ) ) {
 			DefaultNameableAndClassOwnerTrackable instance = (DefaultNameableAndClassOwnerTrackable)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, null );

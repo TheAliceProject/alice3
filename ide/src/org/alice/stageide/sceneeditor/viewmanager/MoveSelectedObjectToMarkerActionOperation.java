@@ -50,23 +50,23 @@ public class MoveSelectedObjectToMarkerActionOperation extends ObjectMarkerMoveA
 	private static class SingletonHolder {
 		private static MoveSelectedObjectToMarkerActionOperation instance = new MoveSelectedObjectToMarkerActionOperation();
 	}
-	
+
 	public static MoveSelectedObjectToMarkerActionOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	
+
 	private MoveSelectedObjectToMarkerActionOperation() {
-		super(java.util.UUID.fromString( "f7f7c4f7-4b12-472a-9fac-77bed71a7de2" ));
+		super( java.util.UUID.fromString( "f7f7c4f7-4b12-472a-9fac-77bed71a7de2" ) );
 	}
-	
+
 	@Override
-	protected void updateMoveFields(UserField markerField, UserField selectedField) {
+	protected void updateMoveFields( UserField markerField, UserField selectedField ) {
 		org.lgna.croquet.icon.IconFactory selectedFieldIconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( selectedField );
 		javax.swing.Icon selectedFieldIcon = selectedFieldIconFactory != null ? selectedFieldIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
-		org.lgna.croquet.icon.IconFactory markerIconFactory = MarkerUtilities.getIconFactoryForObjectMarker(markerField);
+		org.lgna.croquet.icon.IconFactory markerIconFactory = MarkerUtilities.getIconFactoryForObjectMarker( markerField );
 		javax.swing.Icon markerIcon = markerIconFactory != null ? markerIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
-		this.setToMoveField(selectedField, selectedFieldIcon);
-		this.setToMoveToField(markerField, markerIcon);
+		this.setToMoveField( selectedField, selectedFieldIcon );
+		this.setToMoveToField( markerField, markerIcon );
 	}
-	
+
 }

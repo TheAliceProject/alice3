@@ -47,19 +47,20 @@ package edu.cmu.cs.dennisc.inputpane;
  * @author Dennis Cosgrove
  */
 public abstract class InputPane<E> extends javax.swing.JPanel {
-	private java.util.List< edu.cmu.cs.dennisc.pattern.Validator > m_validators = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.Validator >();
+	private java.util.List<edu.cmu.cs.dennisc.pattern.Validator> m_validators = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.Validator>();
 	private javax.swing.JButton m_okButton;
-	
+
 	private javax.swing.JDialog m_dialog;
 
 	public InputPane() {
 	}
+
 	public InputPane( edu.cmu.cs.dennisc.pattern.Validator... validators ) {
 		for( edu.cmu.cs.dennisc.pattern.Validator validator : validators ) {
 			m_validators.add( validator );
 		}
 	}
-	
+
 	public void updateSizeIfNecessary() {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -83,16 +84,19 @@ public abstract class InputPane<E> extends javax.swing.JPanel {
 			m_validators.add( validator );
 		}
 	}
+
 	public void removeOKButtonValidator( edu.cmu.cs.dennisc.pattern.Validator validator ) {
 		synchronized( m_validators ) {
 			m_validators.remove( validator );
 		}
 	}
-	public Iterable< edu.cmu.cs.dennisc.pattern.Validator > getOKButtonValidators() {
+
+	public Iterable<edu.cmu.cs.dennisc.pattern.Validator> getOKButtonValidators() {
 		synchronized( m_validators ) {
 			return m_validators;
 		}
 	}
+
 	public boolean isOKButtonValid() {
 		synchronized( m_validators ) {
 			for( edu.cmu.cs.dennisc.pattern.Validator validator : m_validators ) {
@@ -130,7 +134,7 @@ public abstract class InputPane<E> extends javax.swing.JPanel {
 	protected void setOK( boolean isOK ) {
 		m_isOK = isOK;
 	}
-	
+
 	protected abstract E getActualInputValue();
 
 	public final E getInputValue() {
@@ -140,19 +144,19 @@ public abstract class InputPane<E> extends javax.swing.JPanel {
 			return null;
 		}
 	}
-	
-//	private static java.awt.Frame defaultOwnerFrame;
-//	public static java.awt.Frame getDefaultOwnerFrame() {
-//		return InputPane.defaultOwnerFrame;
-//	}
-//	public static void setDefaultOwnerFrame( java.awt.Frame defaultOwnerFrame ) {
-//		if( InputPane.defaultOwnerFrame != null ) {
-//		} else {
-//			InputPane.defaultOwnerFrame = new javax.swing.JFrame();
-//			//InputPane.defaultOwnerFrame.show();
-//		}
-//		InputPane.defaultOwnerFrame = defaultOwnerFrame;
-//	}
+
+	//	private static java.awt.Frame defaultOwnerFrame;
+	//	public static java.awt.Frame getDefaultOwnerFrame() {
+	//		return InputPane.defaultOwnerFrame;
+	//	}
+	//	public static void setDefaultOwnerFrame( java.awt.Frame defaultOwnerFrame ) {
+	//		if( InputPane.defaultOwnerFrame != null ) {
+	//		} else {
+	//			InputPane.defaultOwnerFrame = new javax.swing.JFrame();
+	//			//InputPane.defaultOwnerFrame.show();
+	//		}
+	//		InputPane.defaultOwnerFrame = defaultOwnerFrame;
+	//	}
 
 	public E showInJDialog( java.awt.Component ownerComponent, String title, boolean isModal ) {
 		final javax.swing.JDialog dialog;
@@ -163,18 +167,18 @@ public abstract class InputPane<E> extends javax.swing.JPanel {
 			dialog = new javax.swing.JDialog( (java.awt.Dialog)root );
 		} else {
 			dialog = new javax.swing.JDialog();
-//			java.awt.Frame owner = getDefaultOwnerFrame();
-//			if( owner != null ) {
-//				dialog = new javax.swing.JDialog( owner, title, isModal );
-//			} else {
-//			}
+			//			java.awt.Frame owner = getDefaultOwnerFrame();
+			//			if( owner != null ) {
+			//				dialog = new javax.swing.JDialog( owner, title, isModal );
+			//			} else {
+			//			}
 		}
-//		java.awt.Frame ownerFrame = SwingUtilities.getRootFrame( ownerComponent );
-//		if( ownerFrame != null ) {
-//			dialog = new javax.swing.JDialog( ownerFrame, title, isModal );
-//		} else {
-//			dialog = new javax.swing.JDialog( SwingUtilities.getRootDialog( ownerComponent ), title, isModal );
-//		}
+		//		java.awt.Frame ownerFrame = SwingUtilities.getRootFrame( ownerComponent );
+		//		if( ownerFrame != null ) {
+		//			dialog = new javax.swing.JDialog( ownerFrame, title, isModal );
+		//		} else {
+		//			dialog = new javax.swing.JDialog( SwingUtilities.getRootDialog( ownerComponent ), title, isModal );
+		//		}
 		dialog.setTitle( title );
 		dialog.setModal( isModal );
 
@@ -228,9 +232,11 @@ public abstract class InputPane<E> extends javax.swing.JPanel {
 			//this.m_isOK = false;
 		}
 	}
+
 	public E showInJDialog( java.awt.Component ownerComponent, String title ) {
 		return showInJDialog( ownerComponent, title, true );
 	}
+
 	public E showInJDialog( java.awt.Component ownerComponent ) {
 		return showInJDialog( ownerComponent, null );
 	}

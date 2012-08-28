@@ -50,39 +50,42 @@ public class TypeTab extends GalleryTab {
 	private static class SingletonHolder {
 		private static TypeTab instance = new TypeTab();
 	}
+
 	public static TypeTab getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TypeTab() {
 		super( java.util.UUID.fromString( "86ebb5e5-8cae-4f3b-ae46-35f3a7f4a00c" ) );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.View<?,?> createView() {
+	protected org.lgna.croquet.components.View<?, ?> createView() {
 
 		MyTypesView myTypesView = new MyTypesView();
-		
+
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
 		scrollPane.setBorder( null );
-        scrollPane.setBothScrollBarIncrements( 16, 160 );
+		scrollPane.setBothScrollBarIncrements( 16, 160 );
 
-
-		org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-			.pageEnd( org.alice.stageide.croquet.models.gallerybrowser.CreateMyInstanceOperation.getInstance().createButton() )
-		.build();
-
-		
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
-			.center( scrollPane )
-			.lineEnd( lineEndPanel )
-		.build();
+				.center( scrollPane )
+				.build();
 
+		if( org.alice.ide.croquet.models.ast.ExportTypeOperation.IS_READY_FOR_PRIME_TIME ) {
+			org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+					.pageEnd( org.alice.stageide.croquet.models.gallerybrowser.ImportTypeOperation.getInstance().createButton() )
+					.build();
+			rv.addLineEndComponent( lineEndPanel );
+		}
 		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 		return rv;
 	}
+
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
 		super.customizeTitleComponent( booleanState, button );
 		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.BOOKMARK_ICON_SMALL );
 		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );

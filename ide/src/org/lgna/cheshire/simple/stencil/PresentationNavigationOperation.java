@@ -47,7 +47,7 @@ import org.lgna.cheshire.simple.Presentation;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/abstract class PresentationNavigationOperation extends org.lgna.croquet.ActionOperation {
+/* package-private */abstract class PresentationNavigationOperation extends org.lgna.croquet.ActionOperation {
 	public PresentationNavigationOperation( java.util.UUID individualId, String name ) {
 		super( Presentation.PRESENTATION_GROUP, individualId );
 		this.setName( name );

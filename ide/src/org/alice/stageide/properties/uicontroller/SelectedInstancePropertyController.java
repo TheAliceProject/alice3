@@ -57,92 +57,89 @@ import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 
-
 public class SelectedInstancePropertyController extends BasicPropertyController<org.alice.ide.instancefactory.InstanceFactory>
 {
 
-    private Label label;
-    
-    public SelectedInstancePropertyController(SelectedInstanceAdapter propertyAdapter)
-    {
-        super(propertyAdapter);
-    }
+	private Label label;
 
-    
-    @Override
-    protected Component<?> createPropertyComponent()
-    {
-        this.label = new Label("", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD)
-        {
-           
-            @Override
-            protected JLabel createAwtComponent()
-            {
-                return new javax.swing.JLabel() {
-                    @Override
-                    protected void paintComponent(java.awt.Graphics g) {
-                        g.setColor( this.getBackground() );
-                        if (g instanceof Graphics2D)
-                        {
-                           ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                        }
-                        g.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), 12, 12 );
-                        super.paintComponent(g);
-                    }
-                };
-            }
-        };
-        this.label.setBackgroundColor(org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor());
-        this.label.setBorder(BorderFactory.createEmptyBorder(4,4,4,4));
-        
-        Component itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
-        GridBagPanel componentPanel = new GridBagPanel();
-        int xIndex = 0;
-        componentPanel.addComponent(itemSelector, new GridBagConstraints(
-                xIndex++, // gridX
-                0, // gridY
-                1, // gridWidth
-                1, // gridHeight
-                0.0, // weightX
-                0.0, // weightY
-                GridBagConstraints.WEST, // anchor
-                GridBagConstraints.HORIZONTAL, // fill
-                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
-                0, // ipadX
-                0) // ipadY
-        );
-        
-        org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-        org.lgna.croquet.components.JComponent< ? > oneShotComponent = org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
-        componentPanel.addComponent(oneShotComponent, new GridBagConstraints(
-                xIndex++, // gridX
-                0, // gridY
-                0, // gridWidth
-                1, // gridHeight
-                0.0, // weightX
-                0.0, // weightY
-                GridBagConstraints.WEST, // anchor
-                GridBagConstraints.HORIZONTAL, // fill
-                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
-                0, // ipadX
-                0) // ipadY
-        );
-        
-        
-        return componentPanel;
-    }
+	public SelectedInstancePropertyController( SelectedInstanceAdapter propertyAdapter )
+	{
+		super( propertyAdapter );
+	}
 
-    @Override
-    public Class<?> getPropertyType()
-    {
-        return org.alice.ide.instancefactory.InstanceFactory.class;
-    }
- 
-    @Override
-    protected void setValueOnUI(org.alice.ide.instancefactory.InstanceFactory value)
-    {
-        edu.cmu.cs.dennisc.java.util.logging.Logger.warning("NOT SUPPORTED");
-        
-    }
-    
+	@Override
+	protected Component<?> createPropertyComponent()
+	{
+		this.label = new Label( "", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD )
+		{
+
+			@Override
+			protected JLabel createAwtComponent()
+			{
+				return new javax.swing.JLabel() {
+					@Override
+					protected void paintComponent( java.awt.Graphics g ) {
+						g.setColor( this.getBackground() );
+						if( g instanceof Graphics2D )
+						{
+							( (Graphics2D)g ).setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
+						}
+						g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), 12, 12 );
+						super.paintComponent( g );
+					}
+				};
+			}
+		};
+		this.label.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor() );
+		this.label.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+
+		Component itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+		GridBagPanel componentPanel = new GridBagPanel();
+		int xIndex = 0;
+		componentPanel.addComponent( itemSelector, new GridBagConstraints(
+				xIndex++, // gridX
+				0, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				0.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.WEST, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
+				0, // ipadX
+				0 ) // ipadY
+		);
+
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.lgna.croquet.components.JComponent<?> oneShotComponent = org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
+		componentPanel.addComponent( oneShotComponent, new GridBagConstraints(
+				xIndex++, // gridX
+				0, // gridY
+				0, // gridWidth
+				1, // gridHeight
+				0.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.WEST, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
+				0, // ipadX
+				0 ) // ipadY
+		);
+
+		return componentPanel;
+	}
+
+	@Override
+	public Class<?> getPropertyType()
+	{
+		return org.alice.ide.instancefactory.InstanceFactory.class;
+	}
+
+	@Override
+	protected void setValueOnUI( org.alice.ide.instancefactory.InstanceFactory value )
+	{
+		edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "NOT SUPPORTED" );
+
+	}
+
 }

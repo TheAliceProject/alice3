@@ -4,15 +4,16 @@ import java.nio.DoubleBuffer;
 
 import edu.cmu.cs.dennisc.lookingglass.opengl.AbstractTransformableAdapter;
 
-public class NebulousJointAdapter extends AbstractTransformableAdapter< edu.cmu.cs.dennisc.nebulous.NebulousJoint > {
+public class NebulousJointAdapter extends AbstractTransformableAdapter<edu.cmu.cs.dennisc.nebulous.NebulousJoint> {
 	private double[] m_localTransformation = new double[ 16 ];
 	private java.nio.DoubleBuffer m_localTransformationBuffer = java.nio.DoubleBuffer.wrap( m_localTransformation );
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_localTransformationMatrix = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
-	
+
 	private void updateLocalTransformation() {
-		m_element.getLocalTransformation(m_localTransformationMatrix);
+		m_element.getLocalTransformation( m_localTransformationMatrix );
 		this.m_localTransformationMatrix.getAsColumnMajorArray16( m_localTransformation );
 	}
+
 	@Override
 	public double[] accessLocalTransformation() {
 		this.updateLocalTransformation();
@@ -24,16 +25,16 @@ public class NebulousJointAdapter extends AbstractTransformableAdapter< edu.cmu.
 		this.updateLocalTransformation();
 		return this.m_localTransformationBuffer;
 	}
-//	@Override
-//	public void renderOpaque( RenderContext rc ) {
-//		//todo
-//	}
-//	@Override
-//	public void renderGhost( RenderContext rc, GhostAdapter root ) {
-//		//todo
-//	}
-//	@Override
-//	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
-//		//todo
-//	}
+	//	@Override
+	//	public void renderOpaque( RenderContext rc ) {
+	//		//todo
+	//	}
+	//	@Override
+	//	public void renderGhost( RenderContext rc, GhostAdapter root ) {
+	//		//todo
+	//	}
+	//	@Override
+	//	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+	//		//todo
+	//	}
 }

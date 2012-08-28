@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.javax.swing.renderers;
 //todo: move
 public class LocaleDisplayNameListCellRenderer extends LocaleListCellRenderer {
 	@Override
-	protected String getText(java.util.Locale value) {
+	protected String getText( java.util.Locale value ) {
 		return value.getDisplayName();
 	}
 }

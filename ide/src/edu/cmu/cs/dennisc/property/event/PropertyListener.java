@@ -48,5 +48,6 @@ package edu.cmu.cs.dennisc.property.event;
  */
 public interface PropertyListener {
 	public void propertyChanging( PropertyEvent e );
+
 	public void propertyChanged( PropertyEvent e );
 }

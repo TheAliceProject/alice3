@@ -45,8 +45,9 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeComposite extends DeclarationComposite< org.lgna.project.ast.AbstractCode, org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView > {
-	private static java.util.Map< org.lgna.project.ast.AbstractCode, CodeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.AbstractCode, org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView> {
+	private static java.util.Map<org.lgna.project.ast.AbstractCode, CodeComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized CodeComposite getInstance( org.lgna.project.ast.AbstractCode code ) {
 		if( code != null ) {
 			CodeComposite rv = map.get( code );
@@ -61,17 +62,21 @@ public class CodeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 			return null;
 		}
 	}
+
 	private CodeComposite( org.lgna.project.ast.AbstractCode code ) {
 		super( java.util.UUID.fromString( "b8043e06-495b-4f24-9cfb-0e447d97cc7c" ), code, org.lgna.project.ast.AbstractCode.class );
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return this.getDeclaration().getDeclaringType();
 	}
+
 	@Override
 	public boolean isValid() {
 		return this.getDeclaration().isValid();
 	}
+
 	@Override
 	public boolean isCloseable() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -81,11 +86,13 @@ public class CodeComposite extends DeclarationComposite< org.lgna.project.ast.Ab
 			return false;
 		}
 	}
+
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
 		super.customizeTitleComponent( booleanState, button );
 		button.scaleFont( 1.2f );
 	}
+
 	@Override
 	protected org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView createView() {
 		if( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( this.getDeclaration().getName() ) ) {

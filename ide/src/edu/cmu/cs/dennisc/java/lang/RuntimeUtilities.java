@@ -54,6 +54,7 @@ class StreamHandler extends Thread {
 		m_is = is;
 		m_ps = ps;
 	}
+
 	@Override
 	public void run() {
 		java.io.InputStreamReader isr = new java.io.InputStreamReader( m_is );
@@ -79,13 +80,13 @@ class StreamHandler extends Thread {
  * @author Dennis Cosgrove
  */
 public class RuntimeUtilities {
-	public static int exec( java.io.File workingDirectory, java.util.Map< String, String > environment, String[] cmds, java.io.PrintStream out, java.io.PrintStream err ) {
+	public static int exec( java.io.File workingDirectory, java.util.Map<String, String> environment, String[] cmds, java.io.PrintStream out, java.io.PrintStream err ) {
 		ProcessBuilder processBuilder = new ProcessBuilder( cmds );
 		if( workingDirectory != null ) {
 			processBuilder.directory( workingDirectory );
 		}
 		if( environment != null ) {
-			java.util.Map< String, String > map = processBuilder.environment();
+			java.util.Map<String, String> map = processBuilder.environment();
 			for( String key : environment.keySet() ) {
 				map.put( key, environment.get( key ) );
 			}
@@ -103,15 +104,19 @@ public class RuntimeUtilities {
 			throw new RuntimeException( ie );
 		}
 	}
-	public static int exec( java.io.File workingDirectory, java.util.Map< String, String > environment, String[] cmds, java.io.PrintStream out ) {
+
+	public static int exec( java.io.File workingDirectory, java.util.Map<String, String> environment, String[] cmds, java.io.PrintStream out ) {
 		return exec( workingDirectory, environment, cmds, out, System.err );
 	}
-	public static int exec( java.io.File workingDirectory, java.util.Map< String, String > environment, String... cmds ) {
+
+	public static int exec( java.io.File workingDirectory, java.util.Map<String, String> environment, String... cmds ) {
 		return exec( workingDirectory, environment, cmds, System.out );
 	}
+
 	public static int exec( java.io.File workingDirectory, String... cmds ) {
 		return exec( workingDirectory, null, cmds );
 	}
+
 	public static int exec( String... cmds ) {
 		return exec( null, cmds );
 	}

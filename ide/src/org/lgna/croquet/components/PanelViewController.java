@@ -46,12 +46,14 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PanelViewController< M extends org.lgna.croquet.Model > extends ViewController< javax.swing.JPanel, M > {
+public abstract class PanelViewController<M extends org.lgna.croquet.Model> extends ViewController<javax.swing.JPanel, M> {
 	private final Panel internalPanel;
+
 	public PanelViewController( M model, Panel internalPanel ) {
 		super( model );
 		this.internalPanel = internalPanel;
 	}
+
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = new javax.swing.JPanel();
@@ -59,6 +61,7 @@ public abstract class PanelViewController< M extends org.lgna.croquet.Model > ex
 		rv.add( this.internalPanel.getAwtComponent() );
 		return rv;
 	}
+
 	public Panel getInternalPanel() {
 		return this.internalPanel;
 	}

@@ -47,12 +47,14 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class MoveAndOrientTo extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=MoveAndOrientTo.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = MoveAndOrientTo.class )
 	public static interface Detail {
 	}
+
 	private MoveAndOrientTo() {
 		super();
 	}
+
 	public static PathStyle pathStyle( PathStyle pathStyle ) {
 		return pathStyle;
 	}

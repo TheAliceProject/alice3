@@ -49,9 +49,11 @@ package org.lgna.project.ast;
 public class DoTogether extends AbstractStatementWithBody {
 	public DoTogether() {
 	}
+
 	public DoTogether( BlockStatement body ) {
 		super( body );
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "do together" );

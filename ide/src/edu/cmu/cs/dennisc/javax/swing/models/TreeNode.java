@@ -46,7 +46,9 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public interface TreeNode<E> extends javax.swing.tree.TreeNode, Iterable<TreeNode<E>> {
-	public TreeNode<E> getChildAt(int childIndex);
+	public TreeNode<E> getChildAt( int childIndex );
+
 	public TreeNode<E> getParent();
+
 	public E getValue();
 }

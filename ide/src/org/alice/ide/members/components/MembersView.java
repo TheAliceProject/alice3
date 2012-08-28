@@ -46,10 +46,11 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 public class MembersView extends org.lgna.croquet.components.BorderPanel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, org.lgna.project.ast.AbstractType<?,?,?>, org.lgna.croquet.components.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<Class<?>, org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.croquet.components.Component<?>> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static final byte PROTOTYPE = 0;
-	public static org.lgna.croquet.components.Component< ? > getComponentFor( Class< ? > cls, org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		org.lgna.croquet.components.Component< ? > rv = map.get( cls, type );
+
+	public static org.lgna.croquet.components.Component<?> getComponentFor( Class<?> cls, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		org.lgna.croquet.components.Component<?> rv = map.get( cls, type );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -58,19 +59,20 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		}
 		return rv;
 	}
+
 	public MembersView( org.alice.ide.members.MembersComposite composite ) {
 		super( composite );
-//		final float FONT_SCALAR = 1.4f;
-//		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
-//		instanceLabel.scaleFont( FONT_SCALAR );
+		//		final float FONT_SCALAR = 1.4f;
+		//		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
+		//		instanceLabel.scaleFont( FONT_SCALAR );
 		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
-//		instancePanel.addComponent( instanceLabel );
+		//		instancePanel.addComponent( instanceLabel );
 		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
 		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,0,4 ) );
+		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
 
 		this.addPageStartComponent( instancePanel );
-		org.lgna.croquet.components.AbstractTabbedPane<?,?> tabbedPane;
+		org.lgna.croquet.components.AbstractTabbedPane<?, ?> tabbedPane;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			if( false && org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				tabbedPane = org.alice.ide.member.MemberTabSelectionState.getInstance().createFolderTabbedPane();

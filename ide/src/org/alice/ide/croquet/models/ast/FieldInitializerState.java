@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class FieldInitializerState extends org.lgna.croquet.CustomItemStateWithInternalBlank<org.lgna.project.ast.Expression> {
-	private static java.util.Map< org.lgna.project.ast.UserField, FieldInitializerState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserField, FieldInitializerState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized FieldInitializerState getInstance( org.lgna.project.ast.UserField field ) {
 		FieldInitializerState rv = map.get( field );
 		if( rv != null ) {
@@ -58,21 +59,26 @@ public class FieldInitializerState extends org.lgna.croquet.CustomItemStateWithI
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserField field;
+
 	private FieldInitializerState( org.lgna.project.ast.UserField field ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "7df7024e-5eef-4ed0-b463-da3719955e7a" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ) );
 		this.field = field;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression getActualValue() {
 		return this.field.initializer.getValue();
 	}
+
 	@Override
 	protected void updateSwingModel( org.lgna.project.ast.Expression nextValue ) {
 		this.field.initializer.setValue( nextValue );
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > blankNode ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( rv, blankNode, this.field.getValueType(), null );
 		return rv;
 	}

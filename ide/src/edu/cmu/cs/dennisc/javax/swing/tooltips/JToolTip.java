@@ -42,12 +42,13 @@
  */
 package edu.cmu.cs.dennisc.javax.swing.tooltips;
 
-
 class ToolTipUI extends javax.swing.plaf.basic.BasicToolTipUI {
 	private static ToolTipUI singleton = new ToolTipUI();
+
 	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent c ) {
 		return ToolTipUI.singleton;
 	}
+
 	@Override
 	public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
 		JToolTip toolTip = (JToolTip)c;
@@ -61,16 +62,16 @@ class ToolTipUI extends javax.swing.plaf.basic.BasicToolTipUI {
 			return super.getPreferredSize( c );
 		}
 	}
-//	@Override
-//	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
-//		ZToolTip toolTip = (ZToolTip)c;
-//		java.awt.Component subject = toolTip.getSubject();
-//		if( subject != null ) {
-//			subject.print( g );
-//		} else {
-//			super.paint( g, c );
-//		}
-//	}
+	//	@Override
+	//	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
+	//		ZToolTip toolTip = (ZToolTip)c;
+	//		java.awt.Component subject = toolTip.getSubject();
+	//		if( subject != null ) {
+	//			subject.print( g );
+	//		} else {
+	//			super.paint( g, c );
+	//		}
+	//	}
 }
 
 /**
@@ -78,15 +79,17 @@ class ToolTipUI extends javax.swing.plaf.basic.BasicToolTipUI {
  */
 public class JToolTip extends javax.swing.JToolTip {
 	private java.awt.Component subject;
-	
+
 	public JToolTip( java.awt.Component subject ) {
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.setSubject( subject );
 		this.setOpaque( false );
 	}
+
 	public java.awt.Component getSubject() {
 		return this.subject;
 	}
+
 	public void setSubject( java.awt.Component subject ) {
 		if( this.subject != null ) {
 			this.remove( this.subject );
@@ -96,10 +99,12 @@ public class JToolTip extends javax.swing.JToolTip {
 			this.add( this.subject );
 		}
 	}
+
 	@Override
 	public boolean contains( int x, int y ) {
 		return false;
 	}
+
 	@Override
 	public void updateUI() {
 		setUI( ToolTipUI.createUI( this ) );

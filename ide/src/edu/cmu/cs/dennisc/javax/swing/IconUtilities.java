@@ -44,12 +44,13 @@ package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
- *
+ * 
  */
 public class IconUtilities {
 	private IconUtilities() {
 		throw new AssertionError();
 	}
+
 	public static javax.swing.ImageIcon createImageIcon( java.net.URL url ) {
 		if( url != null ) {
 			return new javax.swing.ImageIcon( url );
@@ -57,6 +58,7 @@ public class IconUtilities {
 			return null;
 		}
 	}
+
 	public static javax.swing.ImageIcon createImageIcon( java.awt.Image image ) {
 		if( image != null ) {
 			return new javax.swing.ImageIcon( image );
@@ -64,17 +66,19 @@ public class IconUtilities {
 			return null;
 		}
 	}
+
 	public static boolean areSizesEqual( javax.swing.Icon prevIcon, javax.swing.Icon nextIcon ) {
 		int prevWidth = prevIcon != null ? prevIcon.getIconWidth() : 0;
 		int prevHeight = prevIcon != null ? prevIcon.getIconHeight() : 0;
 		int nextWidth = nextIcon != null ? nextIcon.getIconWidth() : 0;
 		int nextHeight = nextIcon != null ? nextIcon.getIconHeight() : 0;
-		return prevWidth == nextWidth && prevHeight == nextHeight;
+		return ( prevWidth == nextWidth ) && ( prevHeight == nextHeight );
 	}
-	
+
 	public static javax.swing.Icon getWarningIcon() {
 		return javax.swing.UIManager.getIcon( "OptionPane.warningIcon" );
 	}
+
 	public static javax.swing.Icon getErrorIcon() {
 		return javax.swing.UIManager.getIcon( "OptionPane.errorIcon" );
 	}

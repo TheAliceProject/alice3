@@ -49,6 +49,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	public ArgumentListPropertyPane( org.alice.ide.x.ImmutableAstI18nFactory factory, org.lgna.project.ast.SimpleArgumentListProperty property ) {
 		super( factory, property );
 	}
+
 	@Override
 	protected boolean isComponentDesiredFor( org.lgna.project.ast.SimpleArgument argument, int i, int N ) {
 		if( i == 0 ) {
@@ -59,7 +60,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 					if( code instanceof org.lgna.project.ast.JavaMethod ) {
 						org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)code;
 						if( javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class ) ) {
-							org.lgna.project.ast.AbstractType<?,?,?> parameterType = parameter.getValueType();
+							org.lgna.project.ast.AbstractType<?, ?, ?> parameterType = parameter.getValueType();
 							if( parameterType != null ) {
 								if( parameterType.isInterface() ) {
 									//assume it is going to be a lambda
@@ -73,14 +74,15 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		}
 		return super.isComponentDesiredFor( argument, i, N );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.SimpleArgument argument ) {
-		org.lgna.croquet.components.Component< ? > expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
+	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.SimpleArgument argument ) {
+		org.lgna.croquet.components.Component<?> expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
 		org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
 		final boolean IS_PARAMETER_NAME_DESIRED = parameter.getParent() instanceof org.lgna.project.ast.AbstractMethod;
 		if( IS_PARAMETER_NAME_DESIRED ) {
 			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( parameter );
-			if( parameterName != null && parameterName.length() > 0 ) {
+			if( ( parameterName != null ) && ( parameterName.length() > 0 ) ) {
 				org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
 				rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": " ) );
 				rv.addComponent( expressionComponent );

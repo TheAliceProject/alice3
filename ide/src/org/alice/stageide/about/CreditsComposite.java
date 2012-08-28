@@ -50,10 +50,13 @@ public class CreditsComposite extends org.lgna.croquet.PlainDialogOperationCompo
 	private static class SingletonHolder {
 		private static CreditsComposite instance = new CreditsComposite();
 	}
+
 	public static CreditsComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.lgna.croquet.HtmlStringValue creditsLabel;
+
 	private CreditsComposite() {
 		super( java.util.UUID.fromString( "05cb2e31-928a-461a-9695-9e2783b651a4" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 		StringBuilder sb = new StringBuilder();
@@ -66,6 +69,7 @@ public class CreditsComposite extends org.lgna.croquet.PlainDialogOperationCompo
 		sb.append( "A special thank you to <strong>Steve Seabolt</strong> and <strong>JoAnn Covington</strong> for faciliating the donation of The Sims <sup>TM</sup> 2 Art Assets.<p>" );
 		this.creditsLabel = this.createUnlocalizedHtmlStringValue( sb.toString() );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
 		org.lgna.croquet.components.ImmutableEditorPane creditsLabel = this.creditsLabel.createImmutableEditorPane();

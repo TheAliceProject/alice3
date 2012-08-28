@@ -48,5 +48,6 @@ package edu.cmu.cs.dennisc.preference.event;
  */
 public interface PreferenceListener<E> {
 	public void valueChanging( PreferenceEvent<E> e );
+
 	public void valueChanged( PreferenceEvent<E> e );
 }

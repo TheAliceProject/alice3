@@ -49,20 +49,22 @@ import org.lgna.croquet.components.ComponentManager;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractModel extends AbstractElement implements Model {
-	private final java.util.List< ContextFactory<?> > contextFactories = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
+	private final java.util.List<ContextFactory<?>> contextFactories = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	//TODO: contemplate passing context factories on construction
-	public AbstractModel( java.util.UUID id/*, ContextFactory<?>... contextFactories*/ ) {
+	public AbstractModel( java.util.UUID id/* , ContextFactory<?>... contextFactories */) {
 		super( id );
 	}
 
-	public Iterable< ContextFactory<?> > getContextFactories() {
+	public Iterable<ContextFactory<?>> getContextFactories() {
 		return this.contextFactories;
 	}
+
 	public void addContextFactory( ContextFactory<?> contextFactory ) {
 		assert contextFactory != null : this;
 		this.contextFactories.add( contextFactory );
 	}
+
 	public void removeContextFactory( ContextFactory<?> contextFactory ) {
 		assert contextFactory != null : this;
 		this.contextFactories.remove( contextFactory );
@@ -71,49 +73,52 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 	public final Model getResolved() {
 		return this;
 	}
-	
+
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
-	
-//	private boolean isEnabled = true;
-//	public boolean isEnabled() {
-//		return this.isEnabled;
-//	}
-//	public void setEnabled( boolean isEnabled ) {
-//		if( this.isEnabled != isEnabled ) {
-//			this.isEnabled = isEnabled;
-//			synchronized( this.components ) {
-//				for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
-//					component.getAwtComponent().setEnabled( this.isEnabled );
-//				}
-//			}
-//		}
-//	}
-	
-	
-//	public abstract boolean isEnabled();
-//	public abstract void setEnabled( boolean isEnabled );
+
+	//	private boolean isEnabled = true;
+	//	public boolean isEnabled() {
+	//		return this.isEnabled;
+	//	}
+	//	public void setEnabled( boolean isEnabled ) {
+	//		if( this.isEnabled != isEnabled ) {
+	//			this.isEnabled = isEnabled;
+	//			synchronized( this.components ) {
+	//				for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
+	//					component.getAwtComponent().setEnabled( this.isEnabled );
+	//				}
+	//			}
+	//		}
+	//	}
+
+	//	public abstract boolean isEnabled();
+	//	public abstract void setEnabled( boolean isEnabled );
 	private boolean isEnabled = true;
+
 	public boolean isEnabled() {
 		return this.isEnabled;
 	}
+
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: override setEnabled", this, isEnabled );
 			this.isEnabled = isEnabled;
 		}
 	}
-//	public boolean isEnabled() {
-//		throw new RuntimeException( "todo" );
-//	}
-//	public void setEnabled( boolean isEnabled ) {
-//		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
-//	}
-	
-	
+
+	//	public boolean isEnabled() {
+	//		throw new RuntimeException( "todo" );
+	//	}
+	//	public void setEnabled( boolean isEnabled ) {
+	//		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+	//	}
+
 	private String toolTipText = null;
+
 	public String getToolTipText() {
 		return this.toolTipText;
 	}
+
 	public void setToolTipText( String toolTipText ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.toolTipText, toolTipText ) ) {
 			//pass
@@ -125,8 +130,9 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 		}
 	}
 
-	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit );
-	public final String getTutorialNoteText( org.lgna.croquet.history.Step< ? > step, String triggerText, org.lgna.croquet.edits.Edit< ? > edit ) {
+	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
+
+	public final String getTutorialNoteText( org.lgna.croquet.history.Step<?> step, String triggerText, org.lgna.croquet.edits.Edit<?> edit ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( triggerText );
 		sb.append( " " );

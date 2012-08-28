@@ -48,10 +48,12 @@ package edu.cmu.cs.dennisc.animation.affine;
 public abstract class AbstractApplyRotationAnimation extends AffineAnimation {
 	private double m_angleInRadians;
 	private double m_sumInRadians;
+
 	public AbstractApplyRotationAnimation() {
 		m_angleInRadians = Double.NaN;
 		m_sumInRadians = Double.NaN;
 	}
+
 	public AbstractApplyRotationAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle ) {
 		super( sgSubject, sgAsSeenBy );
 		setAngle( angle );
@@ -61,15 +63,18 @@ public abstract class AbstractApplyRotationAnimation extends AffineAnimation {
 	public edu.cmu.cs.dennisc.math.Angle getAngle() {
 		return new edu.cmu.cs.dennisc.math.AngleInRadians( m_angleInRadians );
 	}
+
 	public void setAngle( edu.cmu.cs.dennisc.math.Angle angle ) {
 		m_angleInRadians = angle.getAsRadians();
 	}
 
 	protected abstract void applyRotationInRadians( double angle );
+
 	@Override
 	public void prologue() {
 		m_sumInRadians = 0.0;
 	}
+
 	@Override
 	public void setPortion( double portion ) {
 		double interpInRadians = m_angleInRadians * portion;
@@ -77,6 +82,7 @@ public abstract class AbstractApplyRotationAnimation extends AffineAnimation {
 		applyRotationInRadians( deltaInRadians );
 		m_sumInRadians = interpInRadians;
 	}
+
 	@Override
 	public void epilogue() {
 		m_sumInRadians = Double.NaN;

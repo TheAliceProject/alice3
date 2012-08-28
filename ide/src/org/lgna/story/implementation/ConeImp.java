@@ -53,28 +53,32 @@ public class ConeImp extends AbstractCylinderImp {
 		public Double getValue() {
 			return ConeImp.this.getSgCylinder().bottomRadius.getValue();
 		}
+
 		@Override
 		protected void handleSetValue( Double value ) {
 			ConeImp.this.getSgCylinder().bottomRadius.setValue( value );
 		}
 	};
+
 	public ConeImp( org.lgna.story.SCone abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgCylinder().topRadius.setValue( 0.0 );
 		this.getSgCylinder().hasTopCap.setValue( false );
 	}
+
 	@Override
 	public org.lgna.story.SCone getAbstraction() {
 		return this.abstraction;
 	}
+
 	@Override
 	protected void setXZ( double xz ) {
 		this.baseRadius.setValue( xz );
 	}
-	
+
 	@Override
 	protected double getXZ() {
 		return this.baseRadius.getValue();
 	}
-	
+
 }

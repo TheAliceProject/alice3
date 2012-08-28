@@ -46,20 +46,23 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ParameterEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.CompletionModel > {
+public abstract class ParameterEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.CompletionModel> {
 	private final org.lgna.project.ast.UserCode code;
 	private final org.lgna.project.ast.UserParameter parameter;
-	private transient java.util.Map< org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private transient java.util.Map<org.lgna.project.ast.SimpleArgumentListProperty, org.lgna.project.ast.SimpleArgument> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public ParameterEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserCode code, org.lgna.project.ast.UserParameter parameter ) {
 		super( completionStep );
 		this.code = code;
 		this.parameter = parameter;
 	}
+
 	public ParameterEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.code = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserCode.class ).decodeValue( binaryDecoder );
 		this.parameter = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserParameter.class ).decodeValue( binaryDecoder );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -70,30 +73,36 @@ public abstract class ParameterEdit extends org.lgna.croquet.edits.Edit< org.lgn
 	public org.lgna.project.ast.UserCode getCode() {
 		return this.code;
 	}
+
 	public org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}
-	protected final org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > getParametersProperty() {
+
+	protected final org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserParameter> getParametersProperty() {
 		return this.code.getRequiredParamtersProperty();
 	}
+
 	protected void addParameter( int index ) {
-		org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty = this.getParametersProperty();
+		org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserParameter> parametersProperty = this.getParametersProperty();
 		//todo
 		org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)parametersProperty.getOwner();
 		org.lgna.project.ast.AstUtilities.addParameter( this.map, parametersProperty, this.parameter, index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
+
 	protected void removeParameter( int index ) {
-		org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserParameter > parametersProperty = this.getParametersProperty();
+		org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserParameter> parametersProperty = this.getParametersProperty();
 		//todo
 		org.lgna.project.ast.UserCode code = (org.lgna.project.ast.UserCode)parametersProperty.getOwner();
 		org.lgna.project.ast.AstUtilities.removeParameter( this.map, parametersProperty, this.parameter, index, org.alice.ide.IDE.getActiveInstance().getArgumentLists( code ) );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
 	}
+
 	@Override
 	public boolean canUndo() {
 		return true;
 	}
+
 	@Override
 	public boolean canRedo() {
 		return true;

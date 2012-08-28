@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleChildFullBodyOutfitBlazerPleats implements FemaleChildFullBodyOutfit {
 	PVTSCHOOLBLUE,
- 	PVTSCHOOLRED,
- 	PVTSCHOOLGREEN,
- 	PVTSCHOOLBLUEREBEL;
+	PVTSCHOOLRED,
+	PVTSCHOOLGREEN,
+	PVTSCHOOLBLUEREBEL;
 }

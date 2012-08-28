@@ -48,25 +48,27 @@ import edu.cmu.cs.dennisc.lookingglass.opengl.TextureAdapter;
 
 /**
  * @author alice
- *
+ * 
  */
-public class NebulousTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.nebulous.NebulousTexture > {
-	
+public class NebulousTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.nebulous.NebulousTexture> {
+
 	private final NebulousTextureBinding nebulousBinding = new NebulousTextureBinding();
-	
+
 	@Override
 	public java.awt.Graphics2D createGraphics() {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
+
 	@Override
 	public void commitGraphics( java.awt.Graphics2D g, int x, int y, int width, int height ) {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
+
 	@Override
 	public java.awt.Image getImage() {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
-	
+
 	@Override
 	protected com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTextureData ) {
 		throw new RuntimeException( "NOT SUPPORTED" );
@@ -74,25 +76,24 @@ public class NebulousTextureAdapter extends TextureAdapter< edu.cmu.cs.dennisc.n
 
 	@Override
 	public ForgettableBinding bindTexture( RenderContext rc ) {
-		this.nebulousBinding.bind(rc, this.m_element);
+		this.nebulousBinding.bind( rc, this.m_element );
 		return this.nebulousBinding;
 	}
-	
+
 	@Override
-	public void initialize(NebulousTexture element) {
+	public void initialize( NebulousTexture element ) {
 		// TODO Auto-generated method stub
-		super.initialize(element);
-//		if (m_element != null) {
-//			m_element.addReference();
-//		}
+		super.initialize( element );
+		//		if (m_element != null) {
+		//			m_element.addReference();
+		//		}
 	}
 
 	@Override
 	public void handleReleased() {
 		super.handleReleased();
-//		if (m_element != null) {
-//			m_element.removeReference();
-//		}
+		//		if (m_element != null) {
+		//			m_element.removeReference();
+		//		}
 	}
 }
-

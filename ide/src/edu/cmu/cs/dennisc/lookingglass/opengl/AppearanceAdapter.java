@@ -46,9 +46,12 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AppearanceAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Appearance > extends ElementAdapter< E > {    
-    public abstract boolean isActuallyShowing();
-    public abstract boolean isAlphaBlended();
-    public abstract void setPipelineState( RenderContext rc, int face );
+public abstract class AppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Appearance> extends ElementAdapter<E> {
+	public abstract boolean isActuallyShowing();
+
+	public abstract boolean isAlphaBlended();
+
+	public abstract void setPipelineState( RenderContext rc, int face );
+
 	public abstract boolean isEthereal();
 }

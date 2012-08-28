@@ -45,24 +45,27 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSourceFillerInner extends SourceFillerInner< org.lgna.common.resources.AudioResource > {
+public class AudioSourceFillerInner extends SourceFillerInner<org.lgna.common.resources.AudioResource> {
 	public AudioSourceFillerInner() {
 		super( org.lgna.story.AudioSource.class, org.lgna.common.resources.AudioResource.class );
 	}
+
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getImportFillIn() {
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.InstanceCreation, ?> getImportFillIn() {
 		return org.alice.stageide.ast.source.AudioSourceImportValueCreator.getInstance().getFillIn();
 	}
+
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation, ? > getResourceFillIn( org.lgna.common.resources.AudioResource resource ) {
+	protected org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.InstanceCreation, ?> getResourceFillIn( org.lgna.common.resources.AudioResource resource ) {
 		return new org.alice.stageide.croquet.models.cascade.source.AudioSourceFillIn( resource );
 	}
+
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		super.appendItems( items, details, isTop, prevExpression );
 		if( prevExpression != null ) {
 			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-//			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
+			//			rv.add( org.alice.stageide.croquet.models.custom.CustomAudioSourceInputDialogOperation.getInstance().getFillIn() );
 			items.add( org.alice.stageide.custom.AudioSourceCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
 		}
 	}

@@ -46,16 +46,11 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.AbstractDeclaration > extends GalleryNode {
+public abstract class DeclarationGalleryNode<D extends org.lgna.project.ast.AbstractDeclaration> extends GalleryNode {
 	public static DeclarationGalleryNode<?> getDeclarationNodeInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if( declaration instanceof org.lgna.project.ast.AbstractType<?,?,?> ) {
-			org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)declaration;
-//			org.lgna.project.ast.JavaField enumConstantField = org.alice.ide.typemanager.TypeManager.getEnumConstantFieldIfOneAndOnly( type );
-//			if( enumConstantField != null ) {
-//				return FieldGalleryNode.getInstance( enumConstantField );
-//			} else {
-				return ArgumentTypeGalleryNode.getInstance( type );
-//			}
+		if( declaration instanceof org.lgna.project.ast.JavaType ) {
+			org.lgna.project.ast.JavaType type = (org.lgna.project.ast.JavaType)declaration;
+			return ArgumentTypeGalleryNode.getInstance( type );
 		} else if( declaration instanceof org.lgna.project.ast.AbstractField ) {
 			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)declaration;
 			return FieldGalleryNode.getInstance( field );
@@ -65,15 +60,20 @@ public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.Abs
 			throw new AssertionError();
 		}
 	}
+
 	private final D declaration;
+
 	public DeclarationGalleryNode( java.util.UUID id, D declaration ) {
 		super( id );
 		this.declaration = declaration;
 	}
+
 	public D getDeclaration() {
 		return this.declaration;
 	}
+
 	protected abstract void appendClassName( StringBuilder sb );
+
 	@Override
 	public final String getText() {
 		StringBuilder sb = new StringBuilder();
@@ -82,6 +82,7 @@ public abstract class DeclarationGalleryNode< D extends org.lgna.project.ast.Abs
 		sb.append( "</strong></html>" );
 		return sb.toString();
 	}
+
 	@Override
 	public String getSearchText() {
 		return this.declaration.getName();

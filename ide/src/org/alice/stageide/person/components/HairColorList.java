@@ -46,7 +46,7 @@ package org.alice.stageide.person.components;
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorList extends HorizontalWrapList< String > {
+public class HairColorList extends HorizontalWrapList<String> {
 	public HairColorList() {
 		super( org.alice.stageide.person.models.HairColorNameState.getInstance(), 1 );
 		this.setCellRenderer( org.alice.stageide.person.components.renderers.SimpleListCellRenderer.SINGLETON );

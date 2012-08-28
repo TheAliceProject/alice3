@@ -52,7 +52,8 @@ public class Disc extends Shape {
 		Y,
 		Z
 	}
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< Axis > axis = new edu.cmu.cs.dennisc.property.InstanceProperty< Axis >( this, Axis.Y ) {
+
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Axis> axis = new edu.cmu.cs.dennisc.property.InstanceProperty<Axis>( this, Axis.Y ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Axis value ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
@@ -64,14 +65,14 @@ public class Disc extends Shape {
 	};
 	public final edu.cmu.cs.dennisc.property.DoubleProperty innerRadius = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty outerRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}

@@ -50,9 +50,11 @@ public class ImageResourceImportValueCreator extends ResourceImportValueCreator<
 	private static class SingletonHolder {
 		private static ImageResourceImportValueCreator instance = new ImageResourceImportValueCreator();
 	}
+
 	public static ImageResourceImportValueCreator getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ImageResourceImportValueCreator() {
 		super( java.util.UUID.fromString( "644eb790-404f-40a0-b581-f05690b15f17" ), org.alice.ide.ast.importers.ImageResourceImporter.getInstance(), org.lgna.common.resources.ImageResource.class );
 	}

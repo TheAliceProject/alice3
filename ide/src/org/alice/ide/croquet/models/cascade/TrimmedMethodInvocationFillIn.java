@@ -47,8 +47,9 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > {
+public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> {
 	private final org.lgna.project.ast.MethodInvocation transientValue;
+
 	public TrimmedMethodInvocationFillIn( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "4efeb642-4a7c-4de7-a736-9f8950f2836a" ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( expression, method );
@@ -57,39 +58,45 @@ public class TrimmedMethodInvocationFillIn extends org.lgna.croquet.CascadeFillI
 			this.addBlank( parameterBlank );
 		}
 	}
+
 	private static final String MAC_LOOK_AND_FEEL_DESCRIPTION = "Aqua Look and Feel for Mac OS X";
+
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> node ) {
 		if( MAC_LOOK_AND_FEEL_DESCRIPTION.equals( javax.swing.UIManager.getLookAndFeel().getDescription() ) ) {
 			return this.transientValue.method.getValue().getName();
 		} else {
 			return null;
 		}
 	}
+
 	@Override
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode node ) {
 		return null;
 	}
+
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> node ) {
 		throw new AssertionError();
-//		javax.swing.JLabel label = new javax.swing.JLabel( this.transientValue.method.getValue().getName() );
-//		javax.swing.JPanel panel = new javax.swing.JPanel();
-//		panel.setLayout( new java.awt.BorderLayout() );
-//		panel.add( label, java.awt.BorderLayout.LINE_END );
-//		return label;
-//		return null;
+		//		javax.swing.JLabel label = new javax.swing.JLabel( this.transientValue.method.getValue().getName() );
+		//		javax.swing.JPanel panel = new javax.swing.JPanel();
+		//		panel.setLayout( new java.awt.BorderLayout() );
+		//		panel.add( label, java.awt.BorderLayout.LINE_END );
+		//		return label;
+		//		return null;
 	}
-	
+
 	private org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( this.transientValue.expression.getValue(), this.transientValue.method.getValue(), expressions );
 	}
+
 	@Override
-	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.MethodInvocation createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.createFromBlanks( node, transactionHistory, org.lgna.project.ast.Expression.class ) );
 	}
+
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > node ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> node ) {
 		return this.transientValue;
 	}
 }

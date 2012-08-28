@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.MethodInvocation > {
+public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
 	private final org.lgna.project.ast.MethodInvocation transientValue;
+
 	public MethodInvocationFillIn( java.util.UUID id, org.lgna.project.ast.Expression transientValueExpression, org.lgna.project.ast.AbstractMethod method ) {
 		super( id );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( transientValueExpression, method );
@@ -56,13 +57,16 @@ public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpress
 			this.addBlank( parameterBlank );
 		}
 	}
+
 	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression transientValueExpression );
+
 	@Override
 	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( this.createExpression( this.transientValue.expression.getValue() ), this.transientValue.method.getValue(), expressions );
 	}
+
 	@Override
-	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression > step ) {
+	public org.lgna.project.ast.MethodInvocation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.MethodInvocation, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
 }

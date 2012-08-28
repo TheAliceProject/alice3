@@ -50,8 +50,8 @@ import org.lgna.project.virtualmachine.UserInstance;
  * @author Dennis Cosgrove
  */
 public class KeyAdapter extends AbstractAdapter implements org.lgna.story.event.KeyPressListener {
-	public KeyAdapter(LambdaContext context, Lambda lambda, UserInstance userInstance) {
-		super(context, lambda, userInstance);
+	public KeyAdapter( LambdaContext context, Lambda lambda, UserInstance userInstance ) {
+		super( context, lambda, userInstance );
 	}
 
 	public void keyPressed( org.lgna.story.event.KeyEvent e ) {

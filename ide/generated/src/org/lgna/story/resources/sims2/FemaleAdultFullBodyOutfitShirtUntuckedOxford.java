@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitShirtUntuckedOxford implements FemaleAdultFullBodyOutfit {
-	IVORY ,
- 	RED ,
- 	BLUE ,
- 	DARKGREY ,
- 	PINK ,
- 	LIME ;
+	IVORY,
+	RED,
+	BLUE,
+	DARKGREY,
+	PINK,
+	LIME;
 }

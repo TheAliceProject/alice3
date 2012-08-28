@@ -50,96 +50,95 @@ import java.awt.Insets;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.GridBagPanel;
 
-
 public class MarkerManagerPanel extends GridBagPanel
 {
-    private SceneCameraMarkerManagerPanel cameraMarkerManagerPanel = null;
-    private SceneObjectMarkerManagerPanel objectMarkerManagerPanel = null;
-    
-    public MarkerManagerPanel( org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab tab )
-    {
-    	super( tab );
-        this.cameraMarkerManagerPanel = new SceneCameraMarkerManagerPanel();
-        this.objectMarkerManagerPanel = new SceneObjectMarkerManagerPanel();
-        
-        int index = 0;
-        
-        this.addComponent(this.cameraMarkerManagerPanel, new GridBagConstraints(
-                0, // gridX
-                index++, // gridY
-                1, // gridWidth
-                1, // gridHeight
-                1.0, // weightX
-                0.0, // weightY
-                GridBagConstraints.NORTH, // anchor
-                GridBagConstraints.BOTH, // fill
-                new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
-                0, // ipadX
-                0) // ipadY
-                );
-        this.addComponent(new org.lgna.croquet.components.HorizontalSeparator(), new GridBagConstraints(
-                0, // gridX
-                index++, // gridY
-                1, // gridWidth
-                1, // gridHeight
-                1.0, // weightX
-                0.0, // weightY
-                GridBagConstraints.CENTER, // anchor
-                GridBagConstraints.HORIZONTAL, // fill
-                new Insets(4, 0, 4, 0), // insets (top, left, bottom, right)
-                0, // ipadX
-                0) // ipadY
-                );
-        this.addComponent(this.objectMarkerManagerPanel, new GridBagConstraints(
-                0, // gridX
-                index++, // gridY
-                1, // gridWidth
-                1, // gridHeight
-                1.0, // weightX
-                0.0, // weightY
-                GridBagConstraints.NORTH, // anchor
-                GridBagConstraints.BOTH, // fill
-                new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
-                0, // ipadX
-                0) // ipadY
-                );
-        this.addComponent(BoxUtilities.createVerticalGlue(), new GridBagConstraints(
-                0, // gridX
-                index++, // gridY
-                1, // gridWidth
-                1, // gridHeight
-                1.0, // weightX
-                1.0, // weightY
-                GridBagConstraints.CENTER, // anchor
-                GridBagConstraints.VERTICAL, // fill
-                new Insets(0, 0, 0, 0), // insets (top, left, bottom, right)
-                0, // ipadX
-                0) // ipadY
-                );
-        this.setBackgroundColor(Color.RED);
-    }
-    
-    @Override
-    public void setBackgroundColor(Color color)
-    {
-        super.setBackgroundColor(color);
-        this.cameraMarkerManagerPanel.setBackgroundColor(color);
-        this.objectMarkerManagerPanel.setBackgroundColor(color);
-    }
-    
-    public void setSelectedItemColor(Color color)
-    {
-        this.cameraMarkerManagerPanel.setSelectedItemBackgroundColor(color);
-        this.objectMarkerManagerPanel.setSelectedItemBackgroundColor(color);
-    }
-    
-    public SceneObjectMarkerManagerPanel getObjectMarkerPanel()
-    {
-        return this.objectMarkerManagerPanel;
-    }
-    
-    public SceneCameraMarkerManagerPanel getCameraMarkerPanel()
-    {
-        return this.cameraMarkerManagerPanel;
-    }
+	private SceneCameraMarkerManagerPanel cameraMarkerManagerPanel = null;
+	private SceneObjectMarkerManagerPanel objectMarkerManagerPanel = null;
+
+	public MarkerManagerPanel( org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab tab )
+	{
+		super( tab );
+		this.cameraMarkerManagerPanel = new SceneCameraMarkerManagerPanel();
+		this.objectMarkerManagerPanel = new SceneObjectMarkerManagerPanel();
+
+		int index = 0;
+
+		this.addComponent( this.cameraMarkerManagerPanel, new GridBagConstraints(
+				0, // gridX
+				index++, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.BOTH, // fill
+				new Insets( 2, 0, 2, 0 ), // insets (top, left, bottom, right)
+				0, // ipadX
+				0 ) // ipadY
+		);
+		this.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), new GridBagConstraints(
+				0, // gridX
+				index++, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.CENTER, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets( 4, 0, 4, 0 ), // insets (top, left, bottom, right)
+				0, // ipadX
+				0 ) // ipadY
+		);
+		this.addComponent( this.objectMarkerManagerPanel, new GridBagConstraints(
+				0, // gridX
+				index++, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.BOTH, // fill
+				new Insets( 2, 0, 2, 0 ), // insets (top, left, bottom, right)
+				0, // ipadX
+				0 ) // ipadY
+		);
+		this.addComponent( BoxUtilities.createVerticalGlue(), new GridBagConstraints(
+				0, // gridX
+				index++, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				1.0, // weightY
+				GridBagConstraints.CENTER, // anchor
+				GridBagConstraints.VERTICAL, // fill
+				new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
+				0, // ipadX
+				0 ) // ipadY
+		);
+		this.setBackgroundColor( Color.RED );
+	}
+
+	@Override
+	public void setBackgroundColor( Color color )
+	{
+		super.setBackgroundColor( color );
+		this.cameraMarkerManagerPanel.setBackgroundColor( color );
+		this.objectMarkerManagerPanel.setBackgroundColor( color );
+	}
+
+	public void setSelectedItemColor( Color color )
+	{
+		this.cameraMarkerManagerPanel.setSelectedItemBackgroundColor( color );
+		this.objectMarkerManagerPanel.setSelectedItemBackgroundColor( color );
+	}
+
+	public SceneObjectMarkerManagerPanel getObjectMarkerPanel()
+	{
+		return this.objectMarkerManagerPanel;
+	}
+
+	public SceneCameraMarkerManagerPanel getCameraMarkerPanel()
+	{
+		return this.cameraMarkerManagerPanel;
+	}
 }

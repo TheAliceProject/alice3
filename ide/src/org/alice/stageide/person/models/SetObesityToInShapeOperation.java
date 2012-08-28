@@ -50,9 +50,11 @@ public class SetObesityToInShapeOperation extends SetObesityOperation {
 	private static class SingletonHolder {
 		private static SetObesityToInShapeOperation instance = new SetObesityToInShapeOperation();
 	}
+
 	public static SetObesityToInShapeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SetObesityToInShapeOperation() {
 		super( java.util.UUID.fromString( "692a245e-41b0-4639-992e-7016f4631d9b" ), ObesityLevelState.getInstance().getMinimum() );
 	}

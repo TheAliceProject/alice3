@@ -48,14 +48,17 @@ import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
  * @author Dennis Cosgrove
  */
 public class ConstructorInfo extends MemberWithParametersInfo {
-	private transient java.lang.reflect.Constructor< ? > cnstrctr = null;
+	private transient java.lang.reflect.Constructor<?> cnstrctr = null;
+
 	public ConstructorInfo( ClassInfo classInfo, String[] parameterClassNames, String[] parameterNames ) {
 		super( classInfo, parameterClassNames, parameterNames );
 	}
+
 	public ConstructorInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public java.lang.reflect.Constructor< ? > getCnstrctr() {
+
+	public java.lang.reflect.Constructor<?> getCnstrctr() {
 		if( this.cnstrctr != null ) {
 			//pass
 		} else {
@@ -63,6 +66,7 @@ public class ConstructorInfo extends MemberWithParametersInfo {
 		}
 		return this.cnstrctr;
 	}
+
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 	}

@@ -46,14 +46,16 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Menu extends AbstractMenu< org.lgna.croquet.AbstractMenuModel > {
+public class Menu extends AbstractMenu<org.lgna.croquet.AbstractMenuModel> {
 	public Menu( org.lgna.croquet.AbstractMenuModel model ) {
 		super( model );
 	}
+
 	@Override
 	protected boolean areIconsDisplayedInMenus() {
 		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus();
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -65,14 +67,15 @@ public class Menu extends AbstractMenu< org.lgna.croquet.AbstractMenuModel > {
 		this.getModel().removePopupMenuListener( this );
 		super.handleUndisplayable();
 	}
-	
+
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
 		this.getAwtComponent().setAction( this.getModel().getAction() );
 		super.handleAddedTo( parent );
 	}
+
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
 		super.handleRemovedFrom( parent );
 		this.getAwtComponent().setAction( null );
 	}

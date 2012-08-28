@@ -43,7 +43,6 @@
 
 package edu.cmu.cs.dennisc.issue;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -72,21 +71,25 @@ public class ProgressPane extends javax.swing.JPanel {
 		this.add( new javax.swing.JScrollPane( this.console ), java.awt.BorderLayout.CENTER );
 		this.add( new javax.swing.JScrollPane( buttonPane ), java.awt.BorderLayout.SOUTH );
 	}
+
 	public void initializeAndExecuteWorker( ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
 		this.issueReportWorker = new IssueReportWorker( this, issueReportGenerator, reportSubmissionConfiguration );
 		this.issueReportWorker.execute();
 	}
+
 	private void hideRoot() {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
 		if( root != null ) {
 			root.setVisible( false );
 		}
 	}
+
 	private void handleRunInBackground( java.awt.event.ActionEvent e ) {
 		this.isBackgrounded = true;
 		this.hideRoot();
 	}
-	public void handleProcess( java.util.List< String > chunks ) {
+
+	public void handleProcess( java.util.List<String> chunks ) {
 		for( String chunk : chunks ) {
 			javax.swing.text.Document document = ProgressPane.this.console.getDocument();
 			try {
@@ -97,21 +100,26 @@ public class ProgressPane extends javax.swing.JPanel {
 			System.out.print( chunk );
 		}
 	}
+
 	public void handleDone( boolean isSuccessful, java.net.URL urlResult ) {
 		this.isDone = true;
 		this.isSuccessful = isSuccessful;
 		this.urlResult = urlResult;
 		this.hideRoot();
 	}
+
 	public boolean isDone() {
 		return this.isDone;
 	}
+
 	public boolean isBackgrounded() {
 		return this.isBackgrounded;
 	}
+
 	public boolean isSuccessful() {
 		return this.isSuccessful;
 	}
+
 	public java.net.URL getURLResult() {
 		return this.urlResult;
 	}

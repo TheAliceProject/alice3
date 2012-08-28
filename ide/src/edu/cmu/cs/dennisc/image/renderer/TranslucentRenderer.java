@@ -50,6 +50,7 @@ public abstract class TranslucentRenderer extends Renderer {
 	protected int getTransparency() {
 		return java.awt.Transparency.TRANSLUCENT;
 	}
+
 	protected void clear( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		g2.setComposite( java.awt.AlphaComposite.Clear );
 		g2.fillRect( x, y, width, height );

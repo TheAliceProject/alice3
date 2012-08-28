@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class MoveAwayFrom extends DurationAnimationStyleAsSeenByArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=MoveAwayFrom.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = MoveAwayFrom.class )
 	public static interface Detail {
 	}
+
 	private MoveAwayFrom() {
 		super();
 	}

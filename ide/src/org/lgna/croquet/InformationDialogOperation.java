@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class InformationDialogOperation extends DialogOperation {
-	public InformationDialogOperation(java.util.UUID individualId) {
-		super(Application.INFORMATION_GROUP, individualId);
+	public InformationDialogOperation( java.util.UUID individualId ) {
+		super( Application.INFORMATION_GROUP, individualId );
 	}
 }

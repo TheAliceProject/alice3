@@ -50,18 +50,22 @@ public class CreatePersonResourceOperation extends PersonResourceOperation {
 	private static class SingletonHolder {
 		private static CreatePersonResourceOperation instance = new CreatePersonResourceOperation();
 	}
+
 	public static CreatePersonResourceOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private CreatePersonResourceOperation() {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
 	}
+
 	@Override
 	protected org.alice.stageide.person.PersonComposite getPersonComposite() {
 		return org.alice.stageide.person.CreatePersonComposite.getInstance();
 	}
+
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.story.resources.sims2.PersonResource personResource ) {
+	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		return null;
 	}
 }

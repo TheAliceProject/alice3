@@ -47,6 +47,8 @@ package edu.cmu.cs.dennisc.animation;
  */
 public interface Animation {
 	public void reset();
+
 	public double update( double tCurrent, AnimationObserver animationObserver );
+
 	public void complete( AnimationObserver animationObserver );
 }

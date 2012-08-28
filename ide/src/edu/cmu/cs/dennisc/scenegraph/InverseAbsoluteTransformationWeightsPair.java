@@ -50,60 +50,60 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 public abstract class InverseAbsoluteTransformationWeightsPair implements BinaryEncodableAndDecodable
 {
-    protected AffineMatrix4x4 inverseAbsoluteTransformation;
-    protected float[] weights;
-    protected int index = 0;
-    
-    public void setWeights(float[] weightsIn) 
-    {
-        this.weights = weightsIn;
-    }
+	protected AffineMatrix4x4 inverseAbsoluteTransformation;
+	protected float[] weights;
+	protected int index = 0;
 
-    public float getWeight()
-    {
-        return this.weights[this.index];
-    }
+	public void setWeights( float[] weightsIn )
+	{
+		this.weights = weightsIn;
+	}
 
-    public int getIndex()
-    {
-        return this.index;
-    }
+	public float getWeight()
+	{
+		return this.weights[ this.index ];
+	}
 
-    public boolean isDone()
-    {
-        return this.index == this.weights.length;
-    }
+	public int getIndex()
+	{
+		return this.index;
+	}
 
-    public void advance()
-    {
-        this.index++;
-    }
+	public boolean isDone()
+	{
+		return this.index == this.weights.length;
+	}
 
-    public void reset()
-    {
-        this.index = 0;
-    }
-    
-    public void setInverseAbsoluteTransformation(AffineMatrix4x4 transform)
-    {
-        this.inverseAbsoluteTransformation = transform;
-    }
-    
-    public AffineMatrix4x4 getInverseAbsoluteTransformation()
-    {
-        return this.inverseAbsoluteTransformation;
-    }
-    
-    public void decode(BinaryDecoder binaryDecoder)
-    {
-        this.inverseAbsoluteTransformation = binaryDecoder.decodeBinaryEncodableAndDecodable();
-        this.weights = binaryDecoder.decodeFloatArray();
-    }
+	public void advance()
+	{
+		this.index++;
+	}
 
-    public void encode(BinaryEncoder binaryEncoder)
-    {
-        binaryEncoder.encode(this.inverseAbsoluteTransformation);
-        binaryEncoder.encode(this.weights);
-    }
-    
+	public void reset()
+	{
+		this.index = 0;
+	}
+
+	public void setInverseAbsoluteTransformation( AffineMatrix4x4 transform )
+	{
+		this.inverseAbsoluteTransformation = transform;
+	}
+
+	public AffineMatrix4x4 getInverseAbsoluteTransformation()
+	{
+		return this.inverseAbsoluteTransformation;
+	}
+
+	public void decode( BinaryDecoder binaryDecoder )
+	{
+		this.inverseAbsoluteTransformation = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		this.weights = binaryDecoder.decodeFloatArray();
+	}
+
+	public void encode( BinaryEncoder binaryEncoder )
+	{
+		binaryEncoder.encode( this.inverseAbsoluteTransformation );
+		binaryEncoder.encode( this.weights );
+	}
+
 }

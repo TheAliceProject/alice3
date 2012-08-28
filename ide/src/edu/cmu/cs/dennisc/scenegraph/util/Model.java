@@ -42,7 +42,9 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.TexturedAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
  * @author Dennis Cosgrove
@@ -51,6 +53,7 @@ import edu.cmu.cs.dennisc.scenegraph.*;
 public class Model extends Transformable {
 	private Visual m_sgVisual = new Visual();
 	private TexturedAppearance m_sgFrontFacingAppearance = new TexturedAppearance();
+
 	public Model() {
 		m_sgVisual.frontFacingAppearance.setValue( m_sgFrontFacingAppearance );
 		m_sgVisual.setParent( this );
@@ -59,10 +62,11 @@ public class Model extends Transformable {
 	public Visual getSGVisual() {
 		return m_sgVisual;
 	}
+
 	public TexturedAppearance getSGFrontFacingAppearance() {
 		return m_sgFrontFacingAppearance;
 	}
-	
+
 	@Override
 	public void setName( String name ) {
 		super.setName( name );

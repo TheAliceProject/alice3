@@ -58,19 +58,21 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 	private static class SingletonHolder {
 		private static RecentProjectsMenuModel instance = new RecentProjectsMenuModel();
 	}
+
 	public static RecentProjectsMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RecentProjectsMenuModel() {
 		super( java.util.UUID.fromString( "0a39a07c-d23f-4cf8-a195-5d114b903505" ) );
 	}
-	
+
 	private void setChildren( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.net.URI currentUri = ide.getUri();
 		java.net.URI[] uris = RecentProjectsListData.getInstance().createArray();
-		java.util.List< org.lgna.croquet.StandardMenuItemPrepModel > models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		for( java.net.URI uri : uris  ) {
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( java.net.URI uri : uris ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( uri, currentUri ) ) {
 				//pass
 			} else {
@@ -83,26 +85,27 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 		menuItemContainer.forgetAndRemoveAllMenuItems();
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( menuItemContainer, models );
 	}
-//	@Override
-//	public org.lgna.croquet.components.Menu createMenu() {
-//		org.lgna.croquet.components.Menu rv = super.createMenu();
-//		this.addChildren( rv );
-//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( rv );
-//		return rv;
-//	}
-//	@Override
-//	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
-//		super.handlePopupMenuPrologue( popupMenu, step );
-//		this.addChildren( popupMenu );
-//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( popupMenu );
-//	}
+
+	//	@Override
+	//	public org.lgna.croquet.components.Menu createMenu() {
+	//		org.lgna.croquet.components.Menu rv = super.createMenu();
+	//		this.addChildren( rv );
+	//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( rv );
+	//		return rv;
+	//	}
+	//	@Override
+	//	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.StandardPopupPrepStep step ) {
+	//		super.handlePopupMenuPrologue( popupMenu, step );
+	//		this.addChildren( popupMenu );
+	//		edu.cmu.cs.dennisc.java.util.logging.Logger.testing( popupMenu );
+	//	}
 	@Override
 	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		Object src = e.getSource();
 		if( src instanceof javax.swing.JPopupMenu ) {
 			final javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
 			this.setChildren( new org.lgna.croquet.components.MenuItemContainer() {
-				public ViewController< ?, ? > getViewController() {
+				public ViewController<?, ?> getViewController() {
 					return null;
 				}
 
@@ -112,7 +115,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 				public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 				}
 
-				public Container< ? > getParent() {
+				public Container<?> getParent() {
 					return null;
 				}
 
@@ -149,7 +152,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 				public void removeAllMenuItems() {
 					jPopupMenu.removeAll();
 				}
-				
+
 			} );
 		}
 		super.handleShowing( menuItemContainer, e );

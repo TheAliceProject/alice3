@@ -45,11 +45,12 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NodeLikeSubstance extends org.alice.ide.croquet.components.KnurlDragComponent< org.lgna.croquet.DragModel > {
+public abstract class NodeLikeSubstance extends org.alice.ide.croquet.components.KnurlDragComponent<org.lgna.croquet.DragModel> {
 	public NodeLikeSubstance( org.lgna.croquet.DragModel model ) {
 		super( model );
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
+
 	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
 		if( this.isActive() ) {
 			if( this.isPressed() ) {

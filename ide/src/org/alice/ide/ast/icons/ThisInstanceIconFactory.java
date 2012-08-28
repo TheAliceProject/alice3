@@ -52,11 +52,13 @@ public enum ThisInstanceIconFactory implements org.lgna.croquet.icon.IconFactory
 			public int getIconWidth() {
 				return size.width;
 			}
+
 			public int getIconHeight() {
 				return size.height;
 			}
+
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				org.lgna.project.ast.AbstractType<?,?,?> type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
+				org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 				if( type != null ) {
 					org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( type );
 					if( iconFactory != null ) {
@@ -69,6 +71,7 @@ public enum ThisInstanceIconFactory implements org.lgna.croquet.icon.IconFactory
 			}
 		};
 	}
+
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		return sizeIfResolutionIndependent;
 	}

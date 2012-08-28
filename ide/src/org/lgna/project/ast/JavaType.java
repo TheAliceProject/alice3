@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaField> {
-	private static java.util.Map< ClassReflectionProxy, JavaType > s_mapReflectionProxyToJava = new java.util.HashMap< ClassReflectionProxy, JavaType >();
+	private static java.util.Map<ClassReflectionProxy, JavaType> s_mapReflectionProxyToJava = new java.util.HashMap<ClassReflectionProxy, JavaType>();
 	public static final JavaType VOID_TYPE = getInstance( Void.TYPE );
 
 	public static final JavaType BOOLEAN_PRIMITIVE_TYPE = getInstance( Boolean.TYPE );
@@ -63,10 +63,10 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	public static final JavaType[] BOOLEAN_TYPES = { BOOLEAN_PRIMITIVE_TYPE, BOOLEAN_OBJECT_TYPE };
 	public static final JavaType[] INTEGER_TYPES = { INTEGER_PRIMITIVE_TYPE, INTEGER_OBJECT_TYPE };
 	public static final JavaType[] DOUBLE_TYPES = { DOUBLE_PRIMITIVE_TYPE, DOUBLE_OBJECT_TYPE };
-	
+
 	public static final JavaType OBJECT_TYPE = getInstance( Object.class );
 
-	private static java.util.Map< JavaType, JavaType > mapPrimitiveToWrapper = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();;
+	private static java.util.Map<JavaType, JavaType> mapPrimitiveToWrapper = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();;
 	static {
 		addPrimitiveToWrapper( Void.TYPE, Void.class );
 		addPrimitiveToWrapper( Boolean.TYPE, Boolean.class );
@@ -78,15 +78,16 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		addPrimitiveToWrapper( Float.TYPE, Float.class );
 		addPrimitiveToWrapper( Double.TYPE, Double.class );
 	}
+
 	private static void addPrimitiveToWrapper( Class<?> primitiveCls, Class<?> wrapperCls ) {
 		mapPrimitiveToWrapper.put( JavaType.getInstance( primitiveCls ), JavaType.getInstance( wrapperCls ) );
 	}
-	
-	public static boolean isWrapperType( AbstractType<?,?,?> type ) {
+
+	public static boolean isWrapperType( AbstractType<?, ?, ?> type ) {
 		return mapPrimitiveToWrapper.containsValue( type );
 	}
-	
-	/*package-private*/ static AbstractType< ?,?,? > getWrapperTypeIfNecessary( AbstractType< ?,?,? > type ) {
+
+	/* package-private */static AbstractType<?, ?, ?> getWrapperTypeIfNecessary( AbstractType<?, ?, ?> type ) {
 		if( type instanceof JavaType ) {
 			JavaType javaType = (JavaType)type;
 			if( javaType.isPrimitive() ) {
@@ -104,9 +105,9 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			return type;
 		}
 	}
-	
+
 	@Override
-	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType< ?, ?, ? > other ) {
+	protected boolean isAssignableFromType( org.lgna.project.ast.AbstractType<?, ?, ?> other ) {
 		if( other != null ) {
 			//todo: handle arrays
 			JavaType otherTypeDeclaredInJava = other.getFirstEncounteredJavaType();
@@ -121,7 +122,6 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			return false;
 		}
 	}
-	
 
 	public static JavaType getInstance( ClassReflectionProxy classReflectionProxy ) {
 		if( classReflectionProxy != null ) {
@@ -131,21 +131,21 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			} else {
 				rv = new JavaType( classReflectionProxy );
 				s_mapReflectionProxyToJava.put( classReflectionProxy, rv );
-				Class< ? > cls = classReflectionProxy.getReification();
+				Class<?> cls = classReflectionProxy.getReification();
 				if( cls != null ) {
 					//todo: handle constructors as methods are (set up chains...)
-					for( java.lang.reflect.Constructor< ? > cnstrctr : cls.getDeclaredConstructors() ) {
+					for( java.lang.reflect.Constructor<?> cnstrctr : cls.getDeclaredConstructors() ) {
 						rv.constructors.add( JavaConstructor.getInstance( cnstrctr ) );
 					}
-					
+
 					for( java.lang.reflect.Field fld : cls.getDeclaredFields() ) {
 						rv.fields.add( JavaField.getInstance( fld ) );
 					}
 
-					java.util.Set< java.lang.reflect.Method > methodSet = null;
-					Iterable< org.lgna.project.reflect.MethodInfo > methodInfos = org.lgna.project.reflect.ClassInfoManager.getMethodInfos( cls );
+					java.util.Set<java.lang.reflect.Method> methodSet = null;
+					Iterable<org.lgna.project.reflect.MethodInfo> methodInfos = org.lgna.project.reflect.ClassInfoManager.getMethodInfos( cls );
 					if( methodInfos != null ) {
-						methodSet = new java.util.HashSet< java.lang.reflect.Method >();
+						methodSet = new java.util.HashSet<java.lang.reflect.Method>();
 						for( org.lgna.project.reflect.MethodInfo methodInfo : methodInfos ) {
 							try {
 								java.lang.reflect.Method mthd = methodInfo.getMthd();
@@ -160,7 +160,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 						}
 					}
 					for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
-						if( methodSet != null && methodSet.contains( mthd ) ) {
+						if( ( methodSet != null ) && methodSet.contains( mthd ) ) {
 							//pass
 						} else {
 							rv.handleMthd( mthd );
@@ -198,20 +198,23 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			return null;
 		}
 	}
-	public static JavaType getInstance( Class< ? > cls ) {
+
+	public static JavaType getInstance( Class<?> cls ) {
 		if( cls != null ) {
 			return getInstance( new ClassReflectionProxy( cls ) );
 		} else {
 			return null;
 		}
 	}
-	public static JavaType[] getInstances( Class< ? >[] clses ) {
+
+	public static JavaType[] getInstances( Class<?>[] clses ) {
 		JavaType[] rv = new JavaType[ clses.length ];
 		for( int i = 0; i < clses.length; i++ ) {
 			rv[ i ] = getInstance( clses[ i ] );
 		}
 		return rv;
 	}
+
 	public static JavaType[] getInstances( ClassReflectionProxy[] classReflectionProxies ) {
 		JavaType[] rv = new JavaType[ classReflectionProxies.length ];
 		for( int i = 0; i < classReflectionProxies.length; i++ ) {
@@ -221,24 +224,26 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	}
 
 	private static boolean isMask( int modifiers, int required ) {
-		return (modifiers & required) != 0;
+		return ( modifiers & required ) != 0;
 	}
-//	private static boolean isNotMask( int modifiers, int prohibited ) {
-//		return (modifiers & prohibited) == 0;
-//	}
+
+	//	private static boolean isNotMask( int modifiers, int prohibited ) {
+	//		return (modifiers & prohibited) == 0;
+	//	}
 
 	private final ClassReflectionProxy classReflectionProxy;
-	private final java.util.ArrayList< JavaConstructor > constructors = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-	private final java.util.ArrayList< JavaMethod > methods = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-	private final java.util.ArrayList< JavaField > fields = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-	private final java.util.ArrayList< JavaGetterSetterPair > getterSetterPairs = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-	
+	private final java.util.ArrayList<JavaConstructor> constructors = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+	private final java.util.ArrayList<JavaMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+	private final java.util.ArrayList<JavaField> fields = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+	private final java.util.ArrayList<JavaGetterSetterPair> getterSetterPairs = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+
 	private JavaType( ClassReflectionProxy classReflectionProxy ) {
 		this.classReflectionProxy = classReflectionProxy;
 	}
+
 	@Override
-	public AbstractType< ?, ?, ? > getKeywordFactoryType() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+	public AbstractType<?, ?, ?> getKeywordFactoryType() {
+		Class<?> cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
 			if( cls.isAnnotationPresent( org.lgna.project.annotations.ClassTemplate.class ) ) {
 				org.lgna.project.annotations.ClassTemplate classTemplate = cls.getAnnotation( org.lgna.project.annotations.ClassTemplate.class );
@@ -255,9 +260,10 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			return null;
 		}
 	}
+
 	@Override
 	public boolean isFollowToSuperClassDesired() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
 			if( cls.isAnnotationPresent( org.lgna.project.annotations.ClassTemplate.class ) ) {
 				org.lgna.project.annotations.ClassTemplate classTemplate = cls.getAnnotation( org.lgna.project.annotations.ClassTemplate.class );
@@ -269,9 +275,10 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			return false;
 		}
 	}
+
 	@Override
 	public boolean isConsumptionBySubClassDesired() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
 			if( cls.isAnnotationPresent( org.lgna.project.annotations.ClassTemplate.class ) ) {
 				org.lgna.project.annotations.ClassTemplate classTemplate = cls.getAnnotation( org.lgna.project.annotations.ClassTemplate.class );
@@ -288,68 +295,75 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	public String getName() {
 		return this.classReflectionProxy.getSimpleName();
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
+
 	@Override
 	public JavaPackage getPackage() {
 		return JavaPackage.getInstance( this.classReflectionProxy.getPackageReflectionProxy() );
 	}
+
 	@Override
 	public JavaType getSuperType() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
-//			if( cls.isInterface() ) {
-//				Class<?>[] superInterfaces = cls.getInterfaces();
-//				if( superInterfaces.length == 1 ) {
-//					return JavaType.getInstance( superInterfaces[ 0 ] );
-//				} else {
-//					return null;
-//				}
-//			} else {
-				return JavaType.getInstance( cls.getSuperclass() );
-//			}
+			//			if( cls.isInterface() ) {
+			//				Class<?>[] superInterfaces = cls.getInterfaces();
+			//				if( superInterfaces.length == 1 ) {
+			//					return JavaType.getInstance( superInterfaces[ 0 ] );
+			//				} else {
+			//					return null;
+			//				}
+			//			} else {
+			return JavaType.getInstance( cls.getSuperclass() );
+			//			}
 		} else {
 			return null;
 		}
 	}
+
 	@Override
 	public JavaType[] getInterfaces() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return JavaType.getInstances( cls.getInterfaces() );
 	}
 
 	@Override
-	public java.util.ArrayList< JavaConstructor > getDeclaredConstructors() {
+	public java.util.ArrayList<JavaConstructor> getDeclaredConstructors() {
 		return this.constructors;
 	}
+
 	@Override
-	public java.util.ArrayList< JavaMethod > getDeclaredMethods() {
+	public java.util.ArrayList<JavaMethod> getDeclaredMethods() {
 		return this.methods;
 	}
+
 	@Override
-	public java.util.ArrayList< JavaField > getDeclaredFields() {
+	public java.util.ArrayList<JavaField> getDeclaredFields() {
 		return this.fields;
 	}
-	
-	public java.util.ArrayList< JavaGetterSetterPair > getGetterSetterPairs() {
+
+	public java.util.ArrayList<JavaGetterSetterPair> getGetterSetterPairs() {
 		return this.getterSetterPairs;
 	}
 
-	private static Class< ? >[] trimLast( Class< ? >[] src ) {
-		Class< ? >[] rv = new Class< ? >[ src.length - 1 ];
+	private static Class<?>[] trimLast( Class<?>[] src ) {
+		Class<?>[] rv = new Class<?>[ src.length - 1 ];
 		System.arraycopy( src, 0, rv, 0, rv.length );
 		return rv;
 	}
+
 	private static java.lang.reflect.Method getNextShorterInChain( java.lang.reflect.Method src ) {
 		java.lang.reflect.Method rv;
-		Class< ? > srcReturnCls = src.getReturnType();
+		Class<?> srcReturnCls = src.getReturnType();
 		String name = src.getName();
-		Class< ? >[] srcParameterClses = src.getParameterTypes();
+		Class<?>[] srcParameterClses = src.getParameterTypes();
 		if( srcParameterClses.length > 0 ) {
-			Class< ? >[] dstParameterClses = trimLast( srcParameterClses );
+			Class<?>[] dstParameterClses = trimLast( srcParameterClses );
 			try {
 				rv = src.getDeclaringClass().getMethod( name, dstParameterClses );
 				if( rv.getReturnType() == srcReturnCls ) {
@@ -365,13 +379,14 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		}
 		return rv;
 	}
+
 	private void handleMthd( java.lang.reflect.Method mthd ) {
 		int modifiers = mthd.getModifiers();
-		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) /*&& isNotMask( modifiers, java.lang.reflect.Modifier.STATIC )*/) {
+		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) /* && isNotMask( modifiers, java.lang.reflect.Modifier.STATIC ) */) {
 			JavaMethod methodDeclaredInJava = JavaMethod.getInstance( mthd );
 			if( mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
 				org.lgna.project.annotations.MethodTemplate methodTemplate = mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
-				if( methodTemplate.visibility() == org.lgna.project.annotations.Visibility.PRIME_TIME && methodTemplate.isFollowedByLongerMethod() == false ) {
+				if( ( methodTemplate.visibility() == org.lgna.project.annotations.Visibility.PRIME_TIME ) && ( methodTemplate.isFollowedByLongerMethod() == false ) ) {
 					JavaMethod longer = methodDeclaredInJava;
 					java.lang.reflect.Method _mthd = mthd;
 					while( true ) {
@@ -379,7 +394,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 						if( _mthd != null ) {
 							JavaMethod shorter = JavaMethod.getInstance( _mthd );
 							if( _mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
-								org.lgna.project.annotations.MethodTemplate shorterMethodTemplate =_mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
+								org.lgna.project.annotations.MethodTemplate shorterMethodTemplate = _mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
 								if( shorterMethodTemplate.isFollowedByLongerMethod() ) {
 									longer.setNextShorterInChain( shorter );
 									shorter.setNextLongerInChain( longer );
@@ -397,7 +412,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			this.methods.add( methodDeclaredInJava );
 		}
 	}
-	
+
 	public ClassReflectionProxy getClassReflectionProxy() {
 		return this.classReflectionProxy;
 	}
@@ -409,45 +424,49 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
 	@Override
 	public AccessLevel getAccessLevel() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return AccessLevel.get( cls.getModifiers() );
 	}
 
 	@Override
 	public boolean isPrimitive() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return cls.isPrimitive();
 	}
+
 	@Override
 	public boolean isInterface() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return cls.isInterface();
 	}
 
 	@Override
 	public boolean isStatic() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return java.lang.reflect.Modifier.isStatic( cls.getModifiers() );
 	}
+
 	@Override
 	public boolean isAbstract() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return java.lang.reflect.Modifier.isAbstract( cls.getModifiers() );
 	}
+
 	@Override
 	public boolean isFinal() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return java.lang.reflect.Modifier.isFinal( cls.getModifiers() );
 	}
+
 	@Override
 	public boolean isStrictFloatingPoint() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return java.lang.reflect.Modifier.isStrict( cls.getModifiers() );
 	}
@@ -456,6 +475,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	public boolean isArray() {
 		return this.classReflectionProxy.isArray();
 	}
+
 	@Override
 	public JavaType getComponentType() {
 		return JavaType.getInstance( this.classReflectionProxy.getComponentClassReflectionProxy() );
@@ -463,7 +483,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
 	@Override
 	public JavaType getArrayType() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
+		Class<?> cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return JavaType.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( cls ) );
 	}
@@ -471,7 +491,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	@Override
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaType ) {
-			return classReflectionProxy.equals( ((JavaType)other).classReflectionProxy );
+			return classReflectionProxy.equals( ( (JavaType)other ).classReflectionProxy );
 		} else {
 			return false;
 		}

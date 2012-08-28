@@ -48,13 +48,14 @@ package org.alice.ide;
 public class ProjectHistoryManager {
 
 	private org.lgna.croquet.history.event.Listener listener;
-	private java.util.Map< org.lgna.croquet.Group, org.lgna.croquet.undo.UndoHistory > map;
+	private java.util.Map<org.lgna.croquet.Group, org.lgna.croquet.undo.UndoHistory> map;
 
 	public ProjectHistoryManager( ProjectDocument projectDocument ) {
 		this.listener = new org.lgna.croquet.history.event.Listener() {
-			public void changing(org.lgna.croquet.history.event.Event<?> e) {
+			public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 			}
-			public void changed(org.lgna.croquet.history.event.Event<?> e) {
+
+			public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 				if( e instanceof org.lgna.croquet.history.event.EditCommittedEvent ) {
 					org.lgna.croquet.history.event.EditCommittedEvent editCommittedEvent = (org.lgna.croquet.history.event.EditCommittedEvent)e;
 					ProjectHistoryManager.this.handleEditCommitted( editCommittedEvent.getEdit() );

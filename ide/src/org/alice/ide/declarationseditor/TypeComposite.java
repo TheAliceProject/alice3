@@ -45,8 +45,9 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.NamedUserType, org.alice.ide.declarationseditor.type.components.TypeDeclarationView > {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, TypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.NamedUserType, org.alice.ide.declarationseditor.type.components.TypeDeclarationView> {
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, TypeComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized TypeComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		if( type != null ) {
 			TypeComposite rv = map.get( type );
@@ -61,6 +62,7 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Na
 			return null;
 		}
 	}
+
 	private TypeComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.NamedUserType.class );
 	}
@@ -71,11 +73,9 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Na
 			return true;
 		} else {
 			//todo: this should really leverage Composite.contains and create sub composites and models
-			if( 
-					model == org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.getType() ).getOperation()
-						||
-					model == org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.getType() ).getOperation() 
-			) {
+			if( ( model == org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.getType() ).getOperation() )
+					||
+					( model == org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.getType() ).getOperation() ) ) {
 				return true;
 			} else {
 				//todo
@@ -88,20 +88,24 @@ public class TypeComposite extends DeclarationComposite< org.lgna.project.ast.Na
 	public org.lgna.project.ast.UserType<?> getType() {
 		return this.getDeclaration();
 	}
+
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
 		super.customizeTitleComponent( booleanState, button );
 		button.scaleFont( 1.6f );
 	}
+
 	@Override
 	public boolean isCloseable() {
 		return false;
 	}
+
 	@Override
 	public boolean isValid() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check to see if type is in project" );
 		return true;
 	}
+
 	@Override
 	protected org.alice.ide.declarationseditor.type.components.TypeDeclarationView createView() {
 		return new org.alice.ide.declarationseditor.type.components.TypeDeclarationView( this );

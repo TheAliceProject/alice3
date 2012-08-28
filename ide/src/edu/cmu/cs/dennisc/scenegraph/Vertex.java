@@ -59,22 +59,23 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	public final edu.cmu.cs.dennisc.color.Color4f specularHighlightColor;
 	public final edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0;
 
-	public Vertex( 
-			edu.cmu.cs.dennisc.math.Point3 position, 
-			edu.cmu.cs.dennisc.math.Vector3f normal, 
-			edu.cmu.cs.dennisc.color.Color4f diffuseColor, 
+	public Vertex(
+			edu.cmu.cs.dennisc.math.Point3 position,
+			edu.cmu.cs.dennisc.math.Vector3f normal,
+			edu.cmu.cs.dennisc.color.Color4f diffuseColor,
 			edu.cmu.cs.dennisc.color.Color4f specularHighlightColor,
-			edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0 
-	) {
+			edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate0 ) {
 		this.position = position != null ? position : edu.cmu.cs.dennisc.math.Point3.createNaN();
 		this.normal = normal != null ? normal : edu.cmu.cs.dennisc.math.Vector3f.createNaN();
 		this.diffuseColor = diffuseColor != null ? diffuseColor : edu.cmu.cs.dennisc.color.Color4f.createNaN();
 		this.specularHighlightColor = specularHighlightColor != null ? specularHighlightColor : edu.cmu.cs.dennisc.color.Color4f.createNaN();
 		this.textureCoordinate0 = textureCoordinate0 != null ? textureCoordinate0 : edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN();
 	}
+
 	public Vertex( Vertex other ) {
 		this( other.position, other.normal, other.diffuseColor, other.specularHighlightColor, other.textureCoordinate0 );
 	}
+
 	public Vertex( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		position = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		normal = binaryDecoder.decodeBinaryEncodableAndDecodable();
@@ -82,6 +83,7 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 		specularHighlightColor = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		textureCoordinate0 = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( position );
 		binaryEncoder.encode( normal );
@@ -97,47 +99,50 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 				null,
 				null,
 				null
-//				edu.cmu.cs.dennisc.math.Vector3f.createNaN(),
-//				edu.cmu.cs.dennisc.color.Color4f.createNaN(),
-//				edu.cmu.cs.dennisc.color.Color4f.createNaN(),
-//				edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN()
+		//				edu.cmu.cs.dennisc.math.Vector3f.createNaN(),
+		//				edu.cmu.cs.dennisc.color.Color4f.createNaN(),
+		//				edu.cmu.cs.dennisc.color.Color4f.createNaN(),
+		//				edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN()
 		);
 	}
+
 	public static Vertex createXYZ( double x, double y, double z ) {
 		return createXYZ( new edu.cmu.cs.dennisc.math.Point3( x, y, z ) );
 	}
+
 	public static Vertex createXYZUV( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv ) {
 		return new Vertex(
 				xyz,
-				null, 
 				null,
 				null,
-				uv
-		);
+				null,
+				uv );
 	}
+
 	public static Vertex createXYZUV( double x, double y, double z, float u, float v ) {
 		return createXYZUV( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v ) );
 	}
+
 	public static Vertex createXYZIJKUV( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.math.Vector3f ijk, edu.cmu.cs.dennisc.texture.TextureCoordinate2f uv ) {
 		return new Vertex(
 				xyz,
-				ijk, 
+				ijk,
 				null,
 				null,
-				uv
-		);
+				uv );
 	}
+
 	public static Vertex createXYZIJKUV( double x, double y, double z, float i, float j, float k, float u, float v ) {
 		return createXYZIJKUV( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.math.Vector3f( i, j, k ), new edu.cmu.cs.dennisc.texture.TextureCoordinate2f( u, v ) );
 	}
+
 	public static Vertex createXYZIJK( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.math.Vector3f ijk ) {
 		return new Vertex(
 				xyz,
-				ijk, 
+				ijk,
 				null,
 				null,
-				null
-		);
+				null );
 	}
 
 	public static Vertex createXYZIJK( double x, double y, double z, float i, float j, float k ) {
@@ -147,15 +152,16 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	public static Vertex createXYZRGBA( edu.cmu.cs.dennisc.math.Point3 xyz, edu.cmu.cs.dennisc.color.Color4f rgba ) {
 		return new Vertex(
 				xyz,
-				null, 
+				null,
 				rgba,
 				null,
-				null
-		);
+				null );
 	}
+
 	public static Vertex createXYZRGBA( double x, double y, double z, float r, float g, float b, float a ) {
 		return createXYZRGBA( new edu.cmu.cs.dennisc.math.Point3( x, y, z ), new edu.cmu.cs.dennisc.color.Color4f( r, g, b, a ) );
 	}
+
 	public static Vertex createXYZRGB( double x, double y, double z, float r, float g, float b ) {
 		return createXYZRGBA( x, y, z, r, g, b, 1.0f );
 	}
@@ -230,30 +236,31 @@ public final class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAnd
 	}
 
 	//todo: 
-//	@Override
-//	public int hashCode() {
-//	}
+	//	@Override
+	//	public int hashCode() {
+	//	}
 
 	@Deprecated
 	public int getFormat() {
 		int format = 0;
-		if( position != null && position.isNaN() == false ) {
+		if( ( position != null ) && ( position.isNaN() == false ) ) {
 			format |= FORMAT_POSITION;
 		}
-		if( normal != null && normal.isNaN() == false ) {
+		if( ( normal != null ) && ( normal.isNaN() == false ) ) {
 			format |= FORMAT_NORMAL;
 		}
-		if( diffuseColor != null && diffuseColor.isNaN() == false ) {
+		if( ( diffuseColor != null ) && ( diffuseColor.isNaN() == false ) ) {
 			format |= FORMAT_DIFFUSE_COLOR;
 		}
-		if( specularHighlightColor != null && specularHighlightColor.isNaN() == false ) {
+		if( ( specularHighlightColor != null ) && ( specularHighlightColor.isNaN() == false ) ) {
 			format |= FORMAT_SPECULAR_HIGHLIGHT_COLOR;
 		}
-		if( textureCoordinate0 != null && textureCoordinate0.isNaN() == false ) {
+		if( ( textureCoordinate0 != null ) && ( textureCoordinate0.isNaN() == false ) ) {
 			format |= FORMAT_TEXTURE_COORDINATE_0;
 		}
 		return format;
 	}
+
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 m ) {
 		if( position.isNaN() == false ) {
 			m.transform( position );

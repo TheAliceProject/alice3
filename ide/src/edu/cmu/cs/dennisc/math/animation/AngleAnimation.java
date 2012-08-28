@@ -51,6 +51,7 @@ public abstract class AngleAnimation extends InterpolationAnimation<edu.cmu.cs.d
 	public AngleAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.Angle a0, edu.cmu.cs.dennisc.math.Angle a1 ) {
 		super( duration, style, a0, a1 );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.math.Angle newE( edu.cmu.cs.dennisc.math.Angle other ) {
 		edu.cmu.cs.dennisc.math.Angle rv;
@@ -61,6 +62,7 @@ public abstract class AngleAnimation extends InterpolationAnimation<edu.cmu.cs.d
 		}
 		return rv;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.math.Angle interpolate( edu.cmu.cs.dennisc.math.Angle rv, edu.cmu.cs.dennisc.math.Angle v0, edu.cmu.cs.dennisc.math.Angle v1, double portion ) {
 		assert v0.isNaN() == false;

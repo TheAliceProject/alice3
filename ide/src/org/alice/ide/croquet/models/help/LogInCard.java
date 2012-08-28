@@ -47,15 +47,18 @@ package org.alice.ide.croquet.models.help;
  */
 public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.LineAxisPanel> {
 	private final BugLoginComposite loginDialogComposite = BugLoginComposite.getInstance();
+
 	public LogInCard() {
 		super( java.util.UUID.fromString( "7229bd12-7078-46b6-9bd3-509edd2dc203" ) );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.LineAxisPanel createView() {
 		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
 		rv.addComponent( loginDialogComposite.getOperation().createButton() );
 		return rv;
 	}
+
 	public BugLoginComposite getLoginDialogComposite() {
 		return this.loginDialogComposite;
 	}

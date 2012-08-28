@@ -51,7 +51,7 @@ import org.lgna.croquet.components.BorderPanel;
 public class StatisticsFrameView extends BorderPanel {
 
 	public StatisticsFrameView( StatisticsFrameComposite composite ) {
-		super(composite);
+		super( composite );
 		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
 	}
 }

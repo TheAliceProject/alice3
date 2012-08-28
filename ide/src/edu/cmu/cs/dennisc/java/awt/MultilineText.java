@@ -51,12 +51,14 @@ public class MultilineText {
 		private java.awt.font.TextLayout textLayout;
 		private int startIndex;
 		private int endIndex;
+
 		public Line( String paragraph, java.awt.font.TextLayout textLayout, int startIndex, int endIndex ) {
 			this.paragraph = paragraph;
 			this.textLayout = textLayout;
 			this.startIndex = startIndex;
 			this.endIndex = endIndex;
 		}
+
 		public void draw( java.awt.Graphics2D g2, float x, float y ) {
 			g2.drawString( this.paragraph.substring( this.startIndex, this.endIndex ), x, y );
 		}
@@ -66,29 +68,31 @@ public class MultilineText {
 	private String[] paragraphs;
 	private java.awt.FontMetrics fm;
 	private float wrapWidth;
-	private java.util.List< Line > lines;
+	private java.util.List<Line> lines;
 	private java.awt.geom.Dimension2D aggregateSize;
+
 	public MultilineText( String text ) {
 		assert text != null;
 		this.text = text;
 		this.paragraphs = this.text.split( "\r\n|\r|\n" );
 	}
-	
+
 	public String getText() {
 		return this.text;
 	}
+
 	private void updateBoundsIfNecessary( java.awt.Graphics g, float wrapWidth ) {
 		assert Float.isNaN( wrapWidth ) == false;
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.font.FontRenderContext frc = g2.getFontRenderContext();
 		java.awt.FontMetrics fm = g.getFontMetrics();
-		if( this.lines == null || this.aggregateSize == null || this.fm != fm || this.wrapWidth != wrapWidth ) {
-			this.lines = new java.util.LinkedList< Line >();
+		if( ( this.lines == null ) || ( this.aggregateSize == null ) || ( this.fm != fm ) || ( this.wrapWidth != wrapWidth ) ) {
+			this.lines = new java.util.LinkedList<Line>();
 			for( String paragraph : paragraphs ) {
 				java.text.AttributedString as = new java.text.AttributedString( paragraph );
 				as.addAttribute( java.awt.font.TextAttribute.FONT, g.getFont() );
 				java.text.AttributedCharacterIterator aci = as.getIterator();
-				
+
 				java.awt.font.LineBreakMeasurer lineBreakMeasurer = new java.awt.font.LineBreakMeasurer( aci, frc );
 				while( lineBreakMeasurer.getPosition() < paragraph.length() ) {
 					int start = lineBreakMeasurer.getPosition();
@@ -105,32 +109,34 @@ public class MultilineText {
 				double height = aggregateSize.getHeight() + line.textLayout.getAscent() + line.textLayout.getDescent() + line.textLayout.getLeading();
 				aggregateSize.setSize( width, height );
 			}
-			
+
 			this.fm = fm;
 			this.wrapWidth = wrapWidth;
 		}
 	}
+
 	public java.awt.geom.Dimension2D getDimension( java.awt.Graphics g, float wrapWidth ) {
 		this.updateBoundsIfNecessary( g, wrapWidth );
 		return this.aggregateSize;
 	}
+
 	public void paint( java.awt.Graphics g, float wrapWidth, TextAlignment alignment, double xBound, double yBound, double widthBound, double heightBound ) {
 		this.updateBoundsIfNecessary( g, wrapWidth );
 		java.awt.geom.Dimension2D size = this.getDimension( g, wrapWidth );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		float x = (float)xBound;
-		float y = (float)(yBound + ( heightBound - size.getHeight() ) * 0.5);
+		float y = (float)( yBound + ( ( heightBound - size.getHeight() ) * 0.5 ) );
 		for( Line line : this.lines ) {
 			y += line.textLayout.getAscent();
 
 			java.awt.geom.Rectangle2D rect = line.textLayout.getBounds();
-//			float xPixel = (float)(x - rect.getX());
-//			float yPixel = (float)(y - rect.getY());
+			//			float xPixel = (float)(x - rect.getX());
+			//			float yPixel = (float)(y - rect.getY());
 			float xPixel = x;
 			float yPixel = y;
-			
+
 			if( alignment == TextAlignment.CENTER ) {
-				xPixel += widthBound * 0.5f - (float)rect.getWidth() * 0.5f;
+				xPixel += ( widthBound * 0.5f ) - ( (float)rect.getWidth() * 0.5f );
 			} else if( alignment == TextAlignment.TRAILING ) {
 				xPixel += widthBound - (float)rect.getWidth();
 			}
@@ -139,6 +145,7 @@ public class MultilineText {
 		}
 		assert alignment != null;
 	}
+
 	public void paint( java.awt.Graphics g, float wrapWidth, TextAlignment alignment, java.awt.geom.Rectangle2D bounds ) {
 		double x;
 		double y;

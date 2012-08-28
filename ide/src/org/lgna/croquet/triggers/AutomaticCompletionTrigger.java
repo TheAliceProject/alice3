@@ -46,22 +46,38 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class AutomaticCompletionTrigger extends Trigger {
-	public AutomaticCompletionTrigger() {
-		super( Origin.USER ); //todo?
+	public static AutomaticCompletionTrigger createUserInstance() {
+		return new AutomaticCompletionTrigger( Origin.USER );
 	}
+
+	public static AutomaticCompletionTrigger createGeneratorInstance() {
+		return new AutomaticCompletionTrigger( Origin.GENERATOR );
+	}
+
+	public static AutomaticCompletionTrigger createRecoveryInstance() {
+		return new AutomaticCompletionTrigger( Origin.RECOVERY );
+	}
+
+	private AutomaticCompletionTrigger( Origin origin ) {
+		super( origin );
+	}
+
 	public AutomaticCompletionTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
-	public org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
 		return null;
 	}
+
 	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		throw new RuntimeException( "todo" );
 	}
+
 	@Override
-	public String getNoteText( ) {
+	public String getNoteText() {
 		//todo
 		return "COMPLETE";
 	}

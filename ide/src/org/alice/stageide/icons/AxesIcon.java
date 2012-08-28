@@ -50,17 +50,19 @@ public class AxesIcon extends ShapeIcon {
 		g2.setPaint( paint );
 		drawLine( g2, x0, y0, x1, y1 );
 	}
+
 	public AxesIcon( java.awt.Dimension size ) {
 		super( size );
 	}
+
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		float offsetOriginY = height * 0.2f;
 		float portion = 0.4f;
-		float originX = width*portion;
-		drawLine( g2, java.awt.Color.GREEN, originX, offsetOriginY, originX, height-offsetOriginY );
-		drawLine( g2, java.awt.Color.RED, 0.0f, height, originX, height-offsetOriginY );
-		drawLine( g2, java.awt.Color.BLUE, 0.0f, height-offsetOriginY-offsetOriginY*(portion/(1-portion)), originX, height-offsetOriginY );
-		drawLine( g2, java.awt.Color.GRAY, width, height, originX, height-offsetOriginY );
+		float originX = width * portion;
+		drawLine( g2, java.awt.Color.GREEN, originX, offsetOriginY, originX, height - offsetOriginY );
+		drawLine( g2, java.awt.Color.RED, 0.0f, height, originX, height - offsetOriginY );
+		drawLine( g2, java.awt.Color.BLUE, 0.0f, height - offsetOriginY - ( offsetOriginY * ( portion / ( 1 - portion ) ) ), originX, height - offsetOriginY );
+		drawLine( g2, java.awt.Color.GRAY, width, height, originX, height - offsetOriginY );
 	}
 }

@@ -47,25 +47,40 @@ package edu.cmu.cs.dennisc.math;
  */
 public interface Orientation extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public void setNaN();
+
 	public boolean isNaN();
+
 	public void setIdentity();
+
 	public boolean isIdentity();
 
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3();
+
 	public UnitQuaternion createUnitQuaternion();
+
 	public AxisRotation createAxisRotation();
+
 	public EulerAngles createEulerAngles();
+
 	public ForwardAndUpGuide createForwardAndUpGuide();
 
 	public OrthogonalMatrix3x3 getValue( OrthogonalMatrix3x3 rv );
+
 	public UnitQuaternion getValue( UnitQuaternion rv );
+
 	public AxisRotation getValue( AxisRotation rv );
+
 	public EulerAngles getValue( EulerAngles rv );
+
 	public ForwardAndUpGuide getValue( ForwardAndUpGuide rv );
 
 	public void setValue( OrthogonalMatrix3x3 m );
+
 	public void setValue( UnitQuaternion q );
+
 	public void setValue( AxisRotation aa );
+
 	public void setValue( EulerAngles ea );
+
 	public void setValue( ForwardAndUpGuide faug );
 }

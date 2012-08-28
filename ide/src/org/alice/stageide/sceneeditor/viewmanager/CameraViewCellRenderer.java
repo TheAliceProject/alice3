@@ -51,40 +51,40 @@ import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class CameraViewCellRenderer extends ListCellRenderer< View > {
+public class CameraViewCellRenderer extends ListCellRenderer<View> {
 
 	private final javax.swing.border.Border separatorBelowBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 8, 0 );
 	private final javax.swing.border.Border emptyBorder = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 0 );
-	
+
 	private final CameraMarkerTracker cameraMarkerTracker;
-	
-	public CameraViewCellRenderer(CameraMarkerTracker cameraMarkerTracker) {
+
+	public CameraViewCellRenderer( CameraMarkerTracker cameraMarkerTracker ) {
 		this.cameraMarkerTracker = cameraMarkerTracker;
 	}
-	
+
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, View view, int index, boolean isSelected, boolean cellHasFocus) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, View view, int index, boolean isSelected, boolean cellHasFocus ) {
 		CameraMarkerImp value = this.cameraMarkerTracker.getCameraMarker( view );
-		rv.setText(MarkerUtilities.getNameForView(view));
+		rv.setText( MarkerUtilities.getNameForView( view ) );
 		if( index == 0 ) {
 			rv.setBorder( separatorBelowBorder );
 		} else {
 			rv.setBorder( emptyBorder );
 		}
-		if (isSelected)
+		if( isSelected )
 		{
-			rv.setOpaque(true);
-			rv.setBackground(new Color(57, 105, 138));
-			rv.setForeground(Color.WHITE);
-			rv.setIcon(MarkerUtilities.getHighlightedIconForCameraMarkerImp(value));
+			rv.setOpaque( true );
+			rv.setBackground( new Color( 57, 105, 138 ) );
+			rv.setForeground( Color.WHITE );
+			rv.setIcon( MarkerUtilities.getHighlightedIconForCameraMarkerImp( value ) );
 		}
 		else
 		{
-			rv.setOpaque(false);
-			rv.setForeground(Color.BLACK);
-			rv.setIcon(MarkerUtilities.getIconForCameraMarkerImp(value));
+			rv.setOpaque( false );
+			rv.setForeground( Color.BLACK );
+			rv.setIcon( MarkerUtilities.getIconForCameraMarkerImp( value ) );
 		}
 		return rv;
 	}

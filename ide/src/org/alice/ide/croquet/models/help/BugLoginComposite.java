@@ -61,11 +61,11 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	private BugLoginComposite() {
 		super( java.util.UUID.fromString( "e73910c0-ee70-4e48-899d-52ca96d21c9f" ), ReportIssueComposite.ISSUE_GROUP );
 	}
-	
+
 	private static class SingletonHolder {
 		public static BugLoginComposite instance = new BugLoginComposite();
 	}
-	
+
 	public static BugLoginComposite getInstance() {
 		return SingletonHolder.instance;
 	}
@@ -79,19 +79,23 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	public StringState getUserNameState() {
 		return this.userNameState;
 	}
+
 	public StringState getPasswordState() {
 		return this.passwordState;
 	}
+
 	public BooleanState getDisplayPasswordValue() {
 		return this.displayPasswordValue;
 	}
+
 	public BooleanState getIsLoggedIn() {
 		return this.isLoggedIn;
 	}
+
 	public RemoteUser getRemoteUser() {
 		return this.remoteUser;
 	}
-	
+
 	@Override
 	protected boolean isClearedForCommit() {
 		if( super.isClearedForCommit() ) {
@@ -103,18 +107,18 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 					String password = passwordState.getValue();
 					String token = service.login( username, password );
 					try {
-						remoteUser  = service.getUser( token, username );
+						remoteUser = service.getUser( token, username );
 						edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
 						isLoggedIn.setValue( true );
 					} finally {
 						service.logout( token );
 					}
 					return true;
-//					javax.swing.SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
+					//					javax.swing.SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
 				} catch( com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException rae ) {
 					javax.swing.JOptionPane.showMessageDialog( null, rae );
 					return false;
-//					edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
+					//					edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
 				}
 			} catch( Exception e ) {
 				throw new RuntimeException( e );
@@ -123,7 +127,7 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 			return false;
 		}
 	}
-	
+
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		//note: work is done in isClearedForCommit
@@ -139,7 +143,7 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 	protected BugLoginView createView() {
 		return new BugLoginView( this );
 	}
-	
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {
@@ -152,6 +156,7 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 			//pass
 		}
 	}
+
 	public void logout() {
 		edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 		isLoggedIn.setValue( false );

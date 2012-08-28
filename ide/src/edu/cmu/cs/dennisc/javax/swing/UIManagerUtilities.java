@@ -54,6 +54,7 @@ public class UIManagerUtilities {
 			}
 		}
 	}
+
 	public static void setDefaultFont( java.awt.Font font ) {
 		setDefaultFontResource( new javax.swing.plaf.FontUIResource( font ) );
 	}

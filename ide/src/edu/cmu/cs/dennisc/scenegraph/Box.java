@@ -58,14 +58,17 @@ public class Box extends Shape {
 		rv.set( xMinimum.getValue(), yMinimum.getValue(), zMinimum.getValue() );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getMinimum() {
 		return getMinimum( new edu.cmu.cs.dennisc.math.Point3() );
 	}
+
 	public void setMinimum( double x, double y, double z ) {
 		xMinimum.setValue( x );
 		yMinimum.setValue( y );
 		zMinimum.setValue( z );
 	}
+
 	public void setMinimum( edu.cmu.cs.dennisc.math.Point3 minimum ) {
 		setMinimum( minimum.x, minimum.y, minimum.z );
 	}
@@ -74,14 +77,17 @@ public class Box extends Shape {
 		rv.set( xMaximum.getValue(), yMaximum.getValue(), zMaximum.getValue() );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getMaximum() {
 		return getMaximum( new edu.cmu.cs.dennisc.math.Point3() );
 	}
+
 	public void setMaximum( double x, double y, double z ) {
 		xMaximum.setValue( x );
 		yMaximum.setValue( y );
 		zMaximum.setValue( z );
 	}
+
 	public void setMaximum( edu.cmu.cs.dennisc.math.Point3 maximum ) {
 		setMaximum( maximum.x, maximum.y, maximum.z );
 	}
@@ -90,6 +96,7 @@ public class Box extends Shape {
 		setMinimum( minimum );
 		setMaximum( maximum );
 	}
+
 	public void set( edu.cmu.cs.dennisc.math.AxisAlignedBox box ) {
 		setMinimum( box.getXMinimum(), box.getYMinimum(), box.getZMinimum() );
 		setMaximum( box.getXMaximum(), box.getYMaximum(), box.getZMaximum() );
@@ -103,9 +110,9 @@ public class Box extends Shape {
 
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		double xCenter = (xMinimum.getValue() + xMaximum.getValue()) * 0.5;
-		double yCenter = (yMinimum.getValue() + yMaximum.getValue()) * 0.5;
-		double zCenter = (zMinimum.getValue() + zMaximum.getValue()) * 0.5;
+		double xCenter = ( xMinimum.getValue() + xMaximum.getValue() ) * 0.5;
+		double yCenter = ( yMinimum.getValue() + yMaximum.getValue() ) * 0.5;
+		double zCenter = ( zMinimum.getValue() + zMaximum.getValue() ) * 0.5;
 		boundingSphere.center.set( xCenter, yCenter, zCenter );
 		double width = xMaximum.getValue() - xMinimum.getValue();
 		double height = yMaximum.getValue() - yMinimum.getValue();

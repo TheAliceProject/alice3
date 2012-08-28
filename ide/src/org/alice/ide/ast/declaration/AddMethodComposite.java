@@ -45,12 +45,13 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMethodComposite extends AddDeclarationComposite< org.lgna.project.ast.UserMethod > {
+public abstract class AddMethodComposite extends AddDeclarationComposite<org.lgna.project.ast.UserMethod> {
 	private final org.lgna.project.ast.UserType<?> declaringType;
+
 	public AddMethodComposite( java.util.UUID migrationId, Details details, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( migrationId, details );
 		// <kjh/> Should we use meta-context factories instead?
-		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
 			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
 		} else {
@@ -59,21 +60,26 @@ public abstract class AddMethodComposite extends AddDeclarationComposite< org.lg
 		}
 		this.declaringType = declaringType;
 	}
+
 	private org.lgna.project.ast.UserMethod createMethod() {
 		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
+
 	@Override
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
+
 	@Override
 	public org.lgna.project.ast.UserMethod getPreviewValue() {
 		return this.createMethod();
 	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, this.getDeclaringType(), this.createMethod() );
 	}
+
 	@Override
 	protected boolean isNameAvailable( java.lang.String name ) {
 		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableMethodName( name, this.getDeclaringType() );

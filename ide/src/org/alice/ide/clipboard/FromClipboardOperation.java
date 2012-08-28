@@ -46,8 +46,9 @@ package org.alice.ide.clipboard;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation { 
+public abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation {
 	private final boolean isCopy;
+
 	public FromClipboardOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
 		super( id, blockStatementIndexPair );
 		this.isCopy = isCopy;

@@ -64,20 +64,26 @@ public abstract class FilteredJavaProceduresSubComposite extends ProceduresSubCo
 	}
 
 	private java.util.List<org.lgna.project.ast.JavaMethod> methods = java.util.Collections.emptyList();
+
 	public FilteredJavaProceduresSubComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
-	public abstract java.util.Comparator< org.lgna.project.ast.JavaMethod > getComparator();
+
+	public abstract java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator();
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( this.findDefaultLocalizedText() );
 	}
+
 	protected abstract boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method );
+
 	@Override
 	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
 		return this.methods;
 	}
+
 	public void sortAndSetMethods( java.util.List<org.lgna.project.ast.JavaMethod> unsortedMethods ) {
 		java.util.Collections.sort( unsortedMethods, this.getComparator() );
 		this.methods = java.util.Collections.unmodifiableList( unsortedMethods );

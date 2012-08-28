@@ -49,18 +49,21 @@ public class CompositeEdit extends Edit {
 	private final Edit<?>[] edits;
 	private final boolean isDoToBeIgnored;
 	private final String presentation;
+
 	public CompositeEdit( org.lgna.croquet.history.CompletionStep completionStep, Edit<?>[] edits, boolean isDoToBeIgnored, String presentation ) {
 		super( completionStep );
 		this.edits = edits;
 		this.isDoToBeIgnored = isDoToBeIgnored;
 		this.presentation = presentation;
 	}
+
 	public CompositeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Edit.class );
 		this.isDoToBeIgnored = binaryDecoder.decodeBoolean();
 		this.presentation = binaryDecoder.decodeString();
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -68,6 +71,7 @@ public class CompositeEdit extends Edit {
 		binaryEncoder.encode( this.isDoToBeIgnored );
 		binaryEncoder.encode( this.presentation );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		if( isDo && this.isDoToBeIgnored ) {
@@ -78,13 +82,15 @@ public class CompositeEdit extends Edit {
 			}
 		}
 	}
+
 	@Override
 	protected final void undoInternal() {
 		final int N = this.edits.length;
-		for( int i=0; i<N; i++ ) {
-			this.edits[ N-1-i ].undo();
+		for( int i = 0; i < N; i++ ) {
+			this.edits[ N - 1 - i ].undo();
 		}
 	}
+
 	@Override
 	public boolean canRedo() {
 		for( Edit<?> edit : this.edits ) {
@@ -96,6 +102,7 @@ public class CompositeEdit extends Edit {
 		}
 		return true;
 	}
+
 	@Override
 	public boolean canUndo() {
 		for( Edit<?> edit : this.edits ) {
@@ -107,6 +114,7 @@ public class CompositeEdit extends Edit {
 		}
 		return true;
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( this.presentation );

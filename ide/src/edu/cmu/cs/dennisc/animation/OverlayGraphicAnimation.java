@@ -44,21 +44,21 @@ package edu.cmu.cs.dennisc.animation;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public abstract class OverlayGraphicAnimation extends AbstractAnimation {
 
 	private org.lgna.story.implementation.EntityImp m_entityImp;
 	private edu.cmu.cs.dennisc.scenegraph.Layer m_sgLayer;
 	private edu.cmu.cs.dennisc.scenegraph.Graphic m_sgGraphic;
-	
+
 	public OverlayGraphicAnimation( org.lgna.story.implementation.EntityImp entityImp ) {
 		assert entityImp != null;
 		m_entityImp = entityImp;
 	}
-	
+
 	protected abstract edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic();
-	
+
 	@Override
 	protected void prologue() {
 		org.lgna.story.implementation.SceneImp scene = this.m_entityImp.getScene();
@@ -69,9 +69,11 @@ public abstract class OverlayGraphicAnimation extends AbstractAnimation {
 		assert m_sgGraphic != null;
 		m_sgGraphic.setParent( m_sgLayer );
 	}
+
 	@Override
 	protected void preEpilogue() {
 	}
+
 	@Override
 	protected void epilogue() {
 		m_sgGraphic.setParent( null );

@@ -56,86 +56,86 @@ import org.lgna.story.implementation.TransformableImp;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public abstract class CameraMoveActionOperation extends ActionOperation {
 
 	private UserField markerField;
 	private CameraMarkerImp cameraMarker;
 	private CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> camera;
-	
+
 	private TransformableImp toMoveImp;
 	private TransformableImp toMoveToImp;
 	private String toMoveToName;
 	private String toMoveName;
-	
+
 	private MoveToImageIcon imageIcon;
-	
-	protected CameraMoveActionOperation(java.util.UUID id) {
-		super(org.alice.ide.IDE.PROJECT_GROUP, id);
+
+	protected CameraMoveActionOperation( java.util.UUID id ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 		this.markerField = null;
 		this.cameraMarker = null;
 		this.imageIcon = new MoveToImageIcon();
-		this.setSmallIcon(imageIcon);
+		this.setSmallIcon( imageIcon );
 		this.updateBasedOnSettings();
 	}
-	
-	protected abstract void updateMoveFields(UserField markerField, CameraMarkerImp cameraMarkerImp);
-	
-	protected void setToMoveToImp(TransformableImp toMoveTo, Icon icon, String toMoveToName) {
+
+	protected abstract void updateMoveFields( UserField markerField, CameraMarkerImp cameraMarkerImp );
+
+	protected void setToMoveToImp( TransformableImp toMoveTo, Icon icon, String toMoveToName ) {
 		this.toMoveToImp = toMoveTo;
 		this.toMoveToName = toMoveToName;
-		if (this.toMoveToImp != null) {
-			this.imageIcon.setRightImage(icon);
+		if( this.toMoveToImp != null ) {
+			this.imageIcon.setRightImage( icon );
 		}
 		else {
-			this.imageIcon.setRightImage(null);
+			this.imageIcon.setRightImage( null );
 		}
 	}
-	
-	protected void setToMoveImp(TransformableImp toMove, Icon icon, String toMoveName) {
+
+	protected void setToMoveImp( TransformableImp toMove, Icon icon, String toMoveName ) {
 		this.toMoveImp = toMove;
 		this.toMoveName = toMoveName;
-		if (this.toMoveImp != null ) {
-			this.imageIcon.setLeftImage(icon);
+		if( this.toMoveImp != null ) {
+			this.imageIcon.setLeftImage( icon );
 		}
 		else {
-			this.imageIcon.setLeftImage(null);
+			this.imageIcon.setLeftImage( null );
 		}
 	}
-	
+
 	private void updateBasedOnSettings()
 	{
-		if (this.toMoveImp != null && this.toMoveToImp != null)
+		if( ( this.toMoveImp != null ) && ( this.toMoveToImp != null ) )
 		{
-			String unformattedTooltipText = this.findLocalizedText("tooltip");
-			MessageFormat formatter = new MessageFormat("");
-			formatter.setLocale(javax.swing.JComponent.getDefaultLocale());
-			formatter.applyPattern(unformattedTooltipText);
-			String tooltipText = formatter.format(new Object[]{this.toMoveName, this.toMoveToName});
-			this.setToolTipText(tooltipText);
-			this.setEnabled(true);
+			String unformattedTooltipText = this.findLocalizedText( "tooltip" );
+			MessageFormat formatter = new MessageFormat( "" );
+			formatter.setLocale( javax.swing.JComponent.getDefaultLocale() );
+			formatter.applyPattern( unformattedTooltipText );
+			String tooltipText = formatter.format( new Object[] { this.toMoveName, this.toMoveToName } );
+			this.setToolTipText( tooltipText );
+			this.setEnabled( true );
 		}
 		else
 		{
-			this.setToolTipText(this.findLocalizedText("disabledTooltip"));
-			this.setEnabled(false);
+			this.setToolTipText( this.findLocalizedText( "disabledTooltip" ) );
+			this.setEnabled( false );
 		}
-		this.setSmallIcon(this.imageIcon);
-		
+		this.setSmallIcon( this.imageIcon );
+
 	}
-	
-	public void setCamera(CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> camera) {
+
+	public void setCamera( CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> camera ) {
 		this.camera = camera;
 	}
-	
+
 	protected CameraImp<edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera> getCamera() {
 		return this.camera;
 	}
-	
-	public void setMarkerField(UserField markerField)
+
+	public void setMarkerField( UserField markerField )
 	{
-		if (markerField == null || markerField.getValueType().isAssignableTo(org.lgna.story.CameraMarker.class))
+		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( org.lgna.story.CameraMarker.class ) )
 		{
 			this.markerField = markerField;
 		}
@@ -143,37 +143,36 @@ public abstract class CameraMoveActionOperation extends ActionOperation {
 		{
 			this.markerField = null;
 		}
-		updateMoveFields(this.markerField, this.cameraMarker);
+		updateMoveFields( this.markerField, this.cameraMarker );
 		this.updateBasedOnSettings();
 	}
-	
-	public void setCameraMarker(CameraMarkerImp cameraMarker)
+
+	public void setCameraMarker( CameraMarkerImp cameraMarker )
 	{
-		if (cameraMarker != null && cameraMarker instanceof PerspectiveCameraMarkerImp)
+		if( ( cameraMarker != null ) && ( cameraMarker instanceof PerspectiveCameraMarkerImp ) )
 		{
 			this.cameraMarker = cameraMarker;
 		}
 		else {
 			this.cameraMarker = null;
 		}
-		updateMoveFields(this.markerField, this.cameraMarker);
+		updateMoveFields( this.markerField, this.cameraMarker );
 		this.updateBasedOnSettings();
 	}
-	
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		if (this.toMoveImp != null && this.toMoveToImp != null && 
-			this.toMoveImp.getAbstraction() instanceof org.lgna.story.SMovableTurnable &&
-			this.toMoveToImp.getAbstraction() != null) {
+		if( ( this.toMoveImp != null ) && ( this.toMoveToImp != null ) &&
+				( this.toMoveImp.getAbstraction() instanceof org.lgna.story.SMovableTurnable ) &&
+				( this.toMoveToImp.getAbstraction() != null ) ) {
 
-			MoveAndOrientToEdit edit = new MoveAndOrientToEdit(step, (org.lgna.story.SMovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction());
-			step.commitAndInvokeDo(edit);
+			MoveAndOrientToEdit edit = new MoveAndOrientToEdit( step, (org.lgna.story.SMovableTurnable)this.toMoveImp.getAbstraction(), this.toMoveToImp.getAbstraction() );
+			step.commitAndInvokeDo( edit );
 		} else {
 			step.cancel();
 		}
 
-		
 	}
 
 }

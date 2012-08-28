@@ -48,12 +48,14 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  */
 public class ParameterArrayAtIndexAssignmentInsertCascade extends ArrayAtIndexAssignmentInsertCascade {
 	private final org.lgna.project.ast.UserParameter parameter;
+
 	public ParameterArrayAtIndexAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserParameter parameter ) {
 		super( java.util.UUID.fromString( "bbae8e5b-f6c8-43dc-8ed5-76021479c799" ), blockStatementIndexPair, parameter.getValueType(), parameter.getDetails() );
 		this.parameter = parameter;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.ParameterAccess( this.parameter ); 
+		return new org.lgna.project.ast.ParameterAccess( this.parameter );
 	}
 }

@@ -47,11 +47,15 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractDeclareFieldActionOperation extends org.lgna.croquet.ActionOperation {
 	protected abstract org.lgna.project.ast.NamedUserType getOwnerType();
+
 	protected abstract edu.cmu.cs.dennisc.pattern.Tuple3<org.lgna.project.ast.UserField, org.lgna.project.ast.Statement[], org.lgna.project.ast.Statement[]> createFieldAndStatements( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.NamedUserType ownerType );
+
 	protected abstract boolean isInstanceValid();
+
 	public AbstractDeclareFieldActionOperation( java.util.UUID individualId ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -62,8 +66,8 @@ public abstract class AbstractDeclareFieldActionOperation extends org.lgna.croqu
 				org.lgna.project.ast.UserField field = tuple.getA();
 				if( field != null ) {
 					org.lgna.project.ast.Statement[] doStatements = tuple.getB();
-					org.lgna.project.ast.Statement[] undoStatements = tuple.getC(); 
-					step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( step, ownerType, field, doStatements, undoStatements ));
+					org.lgna.project.ast.Statement[] undoStatements = tuple.getC();
+					step.commitAndInvokeDo( new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( step, ownerType, field, doStatements, undoStatements ) );
 				} else {
 					step.cancel();
 				}

@@ -50,50 +50,51 @@ public class MarkerColorValidator extends MemberNameValidator {
 	public MarkerColorValidator( org.lgna.project.ast.UserField field ) {
 		super( field, field.getDeclaringType() );
 	}
+
 	public MarkerColorValidator( org.lgna.project.ast.UserType<?> type ) {
 		super( null, type );
 	}
-	
-	private static String getColorAndNumberSuffix(String name)
+
+	private static String getColorAndNumberSuffix( String name )
 	{
-		String[] splitName = name.split("_");
-		if (splitName.length == 1)
+		String[] splitName = name.split( "_" );
+		if( splitName.length == 1 )
 		{
 			return name;
 		}
-		if (splitName.length == 2)
+		if( splitName.length == 2 )
 		{
-			return splitName[1];
+			return splitName[ 1 ];
 		}
 		else
 		{
-			return splitName[splitName.length-2] + "_" + splitName[splitName.length-1];
+			return splitName[ splitName.length - 2 ] + "_" + splitName[ splitName.length - 1 ];
 		}
 	}
-	
+
 	@Override
 	public boolean isNameAvailable( String name ) {
-		String suffix = getColorAndNumberSuffix(name);
-		
+		String suffix = getColorAndNumberSuffix( name );
+
 		org.lgna.project.ast.Node node = this.getNode();
 		org.lgna.project.ast.UserType<?> type = this.getType();
 		if( type != null ) {
 			for( org.lgna.project.ast.UserField field : type.fields ) {
 				assert field != null;
-				if( field == node) {
+				if( field == node ) {
 					//pass
-				} else if (field.getValueType().isAssignableTo(SMarker.class)){
-					String fieldSuffix = getColorAndNumberSuffix(field.name.getValue());
+				} else if( field.getValueType().isAssignableTo( SMarker.class ) ) {
+					String fieldSuffix = getColorAndNumberSuffix( field.name.getValue() );
 					if( suffix.equals( fieldSuffix ) ) {
 						return false;
 					}
 				} else
 				{
-					if (name.equals( field.name.getValue()))
+					if( name.equals( field.name.getValue() ) )
 					{
 						return false;
 					}
-					
+
 				}
 			}
 		} else {

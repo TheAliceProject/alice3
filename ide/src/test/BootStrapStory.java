@@ -54,6 +54,7 @@ class MyScene extends SScene {
 	private final SCamera camera = new SCamera();
 	private final SSun sun = new SSun();
 	private final SGround snow = new SGround();
+
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
@@ -62,8 +63,10 @@ class MyScene extends SScene {
 		this.camera.setVehicle( this );
 		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 	}
+
 	private void performCustomSetup() {
 	}
+
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {
@@ -77,6 +80,7 @@ class MyScene extends SScene {
 			this.preserveStateAndEventListeners();
 		}
 	}
+
 	public void act1() {
 		this.camera.turn( TurnDirection.LEFT, 0.25 );
 	}
@@ -87,10 +91,12 @@ class MyScene extends SScene {
  */
 public class BootStrapStory extends SProgram {
 	private final MyScene myScene = new MyScene();
+
 	public void playOutStory() {
 		this.setActiveScene( this.myScene );
 		this.myScene.act1();
 	}
+
 	public static void main( String[] args ) {
 		BootStrapStory story = new BootStrapStory();
 		story.initializeInFrame( args );

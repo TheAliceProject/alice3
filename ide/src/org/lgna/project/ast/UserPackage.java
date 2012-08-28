@@ -51,17 +51,21 @@ public class UserPackage extends AbstractPackage {
 
 	public UserPackage() {
 	}
+
 	public UserPackage( String name ) {
 		this.name.setValue( name );
 	}
+
 	@Override
 	public boolean isUserAuthored() {
 		return true;
 	}
+
 	@Override
 	public String getName() {
 		return name.getValue();
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.name;

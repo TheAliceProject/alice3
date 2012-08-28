@@ -49,12 +49,14 @@ public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JText
 	public ImmutableTextField( org.lgna.croquet.PlainStringValue value ) {
 		super( value );
 	}
-//	public HorizontalAlignment getHorizontalAlignment() {
-//		return HorizontalAlignment.valueOf( this.getAwtComponent().getHorizontalAlignment() );
-//	}
+
+	//	public HorizontalAlignment getHorizontalAlignment() {
+	//		return HorizontalAlignment.valueOf( this.getAwtComponent().getHorizontalAlignment() );
+	//	}
 	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
 		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
 	}
+
 	@Override
 	protected javax.swing.JTextField createAwtComponent() {
 		javax.swing.JTextField rv = new javax.swing.JTextField( this.getValue().getDocument(), null, 0 ) {
@@ -62,10 +64,12 @@ public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JText
 			public java.awt.Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
+
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				return this.getPreferredSize();
 			}
+
 			@Override
 			public void updateUI() {
 				this.setUI( new javax.swing.plaf.basic.BasicTextFieldUI() );

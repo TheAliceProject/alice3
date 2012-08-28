@@ -50,9 +50,11 @@ public class AudioProceduresComposite extends org.alice.ide.member.NameFilteredJ
 	private static class SingletonHolder {
 		private static AudioProceduresComposite instance = new AudioProceduresComposite();
 	}
+
 	public static AudioProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private AudioProceduresComposite() {
 		super( java.util.UUID.fromString( "d3f1026f-4b29-4337-969c-f2deadaa309e" ), "playAudio" );
 	}

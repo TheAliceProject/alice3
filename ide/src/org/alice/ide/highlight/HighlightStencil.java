@@ -49,9 +49,10 @@ package org.alice.ide.highlight;
 public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 	private static final java.awt.Color STENCIL_BASE_COLOR = new java.awt.Color( 181, 140, 140, 150 );
 	private static final java.awt.Color STENCIL_LINE_COLOR = new java.awt.Color( 92, 48, 24, 63 );
-	
-	private static final org.lgna.stencil.Painter GLOW_PAINTER = new org.lgna.stencil.GlowPainter( new java.awt.Color(255, 255, 0, 23) );
+
+	private static final org.lgna.stencil.Painter GLOW_PAINTER = new org.lgna.stencil.GlowPainter( new java.awt.Color( 255, 255, 0, 23 ) );
 	private static final org.lgna.stencil.Painter OUTLINE_PAINTER = new org.lgna.stencil.BasicPainter( new java.awt.BasicStroke( 2.0f ), java.awt.Color.RED );
+
 	private static java.awt.Paint createStencilPaint() {
 		int width = 8;
 		int height = 8;
@@ -66,24 +67,27 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 		g2.dispose();
 		return new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 	}
+
 	private static final java.awt.Paint stencilPaint = createStencilPaint();
 
 	private final java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
-		public void eventDispatched(java.awt.AWTEvent event) {
+		public void eventDispatched( java.awt.AWTEvent event ) {
 			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
 			if( e.getID() == java.awt.event.MouseEvent.MOUSE_PRESSED ) {
 				HighlightStencil.this.hide();
 			}
 		}
 	};
-	
+
 	private final org.lgna.cheshire.simple.ScrollRenderer scrollRenderer = new org.lgna.cheshire.simple.SimpleScrollRenderer();
 	private final org.lgna.stencil.Note note = new org.lgna.stencil.Note();
+
 	public HighlightStencil( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId ) {
 		super( window, layerId );
 		this.note.setActive( true );
 		this.internalAddComponent( this.note );
 	}
+
 	@Override
 	protected boolean contains( int x, int y, boolean superContains ) {
 		if( superContains ) {
@@ -105,6 +109,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 			return false;
 		}
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.FlowLayout() {
@@ -115,7 +120,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 			}
 		};
 	}
-	
+
 	@Override
 	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
 		java.awt.Shape prevClip = g2.getClip();
@@ -137,6 +142,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 		g2.setStroke( prevStroke );
 		g2.setPaint( prevPaint );
 	}
+
 	@Override
 	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
 		if( note.isActive() ) {
@@ -166,27 +172,30 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 			}
 		}
 	}
+
 	private static final javax.swing.KeyStroke HIDE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
 	private java.awt.event.ActionListener hideAction = new java.awt.event.ActionListener() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			hide();
 		}
 	};
+
 	private void show() {
 		this.registerKeyboardAction( this.hideAction, HIDE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
 		this.setStencilShowing( true );
 		java.awt.Toolkit.getDefaultToolkit().addAWTEventListener( this.awtEventListener, java.awt.AWTEvent.MOUSE_EVENT_MASK );
-		
+
 	}
+
 	private void hide() {
 		java.awt.Toolkit.getDefaultToolkit().removeAWTEventListener( this.awtEventListener );
 		this.setStencilShowing( false );
 		this.unregisterKeyboardAction( HIDE_KEY_STROKE );
 	}
 
-	protected void show( org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolverA, org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > trackableShapeResolverB, final String noteText ) {
+	protected void show( org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape> trackableShapeResolverA, org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape> trackableShapeResolverB, final String noteText ) {
 		this.note.removeAllFeatures();
-		
+
 		org.lgna.stencil.Painter painter;
 		if( trackableShapeResolverB != null ) {
 			painter = OUTLINE_PAINTER;
@@ -196,7 +205,7 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 		org.lgna.stencil.Hole hole = new org.lgna.stencil.Hole( trackableShapeResolverA, org.lgna.stencil.Feature.ConnectionPreference.NORTH_SOUTH, painter ) {
 			@Override
 			protected boolean isPathRenderingDesired() {
-				return noteText.length() > 0;
+				return ( noteText != null ) && ( noteText.length() > 0 );
 			}
 		};
 		this.note.addFeature( hole );

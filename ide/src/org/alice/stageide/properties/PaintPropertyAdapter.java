@@ -47,24 +47,24 @@ import org.alice.ide.properties.adapter.AbstractImplementationPropertyAdapter;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class PaintPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<org.lgna.story.Paint, O> 
+public class PaintPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<org.lgna.story.Paint, O>
 {
-	public PaintPropertyAdapter(O instance, org.lgna.story.implementation.Property<org.lgna.story.Paint> property, StandardExpressionState expressionState)
+	public PaintPropertyAdapter( O instance, org.lgna.story.implementation.Property<org.lgna.story.Paint> property, StandardExpressionState expressionState )
 	{
-		this("Paint", instance, property, expressionState);
+		this( "Paint", instance, property, expressionState );
 	}
-	
-	public PaintPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<org.lgna.story.Paint> property, StandardExpressionState expressionState )
+
+	public PaintPropertyAdapter( String repr, O instance, org.lgna.story.implementation.Property<org.lgna.story.Paint> property, StandardExpressionState expressionState )
 	{
-		super(repr, instance, property, expressionState);
+		super( repr, instance, property, expressionState );
 	}
-	
+
 	@Override
-	public org.lgna.story.Paint getValueCopyIfMutable() 
+	public org.lgna.story.Paint getValueCopyIfMutable()
 	{
 		return this.getValue();
 	}
-	
+
 }

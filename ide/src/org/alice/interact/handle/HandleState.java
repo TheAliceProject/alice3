@@ -46,36 +46,35 @@ package org.alice.interact.handle;
  * @author David Culyba
  */
 public class HandleState {
-	
+
 	private boolean isActive = false;
 	private boolean isRollover = false;
 	private boolean isVisible = false;
-	
+
 	public HandleState()
 	{
-		
+
 	}
-	
-	public HandleState(HandleState handleState)
+
+	public HandleState( HandleState handleState )
 	{
 		this.isActive = handleState.isActive;
 		this.isRollover = handleState.isRollover;
 		this.isVisible = handleState.isVisible;
 	}
-	
+
 	//Any of the booleans being true makes the handle visible
 	public boolean shouldRender()
 	{
 		return this.isVisible || this.isActive || this.isRollover;
 	}
-	
-	
+
 	public boolean isVisible()
 	{
 		return this.isVisible;
 	}
-	
-	public boolean setVisible(boolean isVisible)
+
+	public boolean setVisible( boolean isVisible )
 	{
 		return this.isVisible = isVisible;
 	}

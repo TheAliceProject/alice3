@@ -49,15 +49,19 @@ package org.lgna.cheshire.task;
 public class Task {
 	private final java.util.List<org.lgna.croquet.history.Transaction> transactions = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.ListIterator<org.lgna.croquet.history.Transaction> transactionIterator = transactions.listIterator();
+
 	public Task( org.lgna.croquet.history.Transaction transaction ) {
 		this.transactions.add( transaction );
 	}
+
 	public void insertRecoveryTransaction( org.lgna.croquet.history.Transaction transaction ) {
 		this.transactionIterator.add( transaction );
 	}
+
 	public String getTitle() {
 		return this.transactions.get( 0 ).getTitle();
 	}
+
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability() {
 		//todo
 		return null;

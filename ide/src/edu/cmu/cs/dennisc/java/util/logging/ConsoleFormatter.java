@@ -48,13 +48,14 @@ package edu.cmu.cs.dennisc.java.util.logging;
  */
 public class ConsoleFormatter extends java.util.logging.Formatter {
 	private static String CLASS_NAME = edu.cmu.cs.dennisc.java.util.logging.Logger.class.getName();
+
 	private int getStackTraceIndex( StackTraceElement[] stack ) {
 		int index = 0;
 		while( index < stack.length ) {
 			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
 				break;
 			}
-			index ++;
+			index++;
 		}
 		while( index < stack.length ) {
 			if( CLASS_NAME.equals( stack[ index ].getClassName() ) ) {
@@ -62,11 +63,12 @@ public class ConsoleFormatter extends java.util.logging.Formatter {
 			} else {
 				return index;
 			}
-			index ++;
+			index++;
 		}
-		
+
 		return -1;
 	}
+
 	@Override
 	public String format( java.util.logging.LogRecord record ) {
 		java.util.logging.Level level = record.getLevel();
@@ -85,7 +87,7 @@ public class ConsoleFormatter extends java.util.logging.Formatter {
 				N = index + 1;
 			}
 			N = Math.min( N, stack.length );
-			for( int i=index; i<N; i++ ) {
+			for( int i = index; i < N; i++ ) {
 				StackTraceElement stackTraceElement = stack[ i ];
 				sb.append( "\tat " );
 				sb.append( stackTraceElement.getClassName() );
@@ -94,7 +96,7 @@ public class ConsoleFormatter extends java.util.logging.Formatter {
 				sb.append( "(" );
 				sb.append( stackTraceElement.getFileName() );
 				sb.append( ":" );
-				sb.append(  stackTraceElement.getLineNumber() );
+				sb.append( stackTraceElement.getLineNumber() );
 				sb.append( ")" );
 				sb.append( "\n" );
 			}

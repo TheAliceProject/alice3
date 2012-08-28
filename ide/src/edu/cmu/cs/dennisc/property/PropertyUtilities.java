@@ -48,8 +48,9 @@ package edu.cmu.cs.dennisc.property;
 public final class PropertyUtilities {
 	private PropertyUtilities() {
 	}
-	public static java.lang.reflect.Method getGetter( Class< ? > cls, String propertyName ) {
-		Class< ? >[] parameterTypes = {};
+
+	public static java.lang.reflect.Method getGetter( Class<?> cls, String propertyName ) {
+		Class<?>[] parameterTypes = {};
 		String methodName;
 		if( propertyName.startsWith( "Is" ) && Character.isUpperCase( propertyName.charAt( 2 ) ) ) {
 			methodName = "is" + propertyName.substring( 2 );
@@ -58,8 +59,8 @@ public final class PropertyUtilities {
 		}
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
 	}
-	
-	private static java.lang.reflect.Method getSetter( Class< ? > cls, String methodName, Class< ? >[] parameterTypes ) {
+
+	private static java.lang.reflect.Method getSetter( Class<?> cls, String methodName, Class<?>[] parameterTypes ) {
 		java.lang.reflect.Method rv;
 		try {
 			rv = cls.getMethod( methodName, parameterTypes );
@@ -68,10 +69,10 @@ public final class PropertyUtilities {
 			for( java.lang.reflect.Method mthd : cls.getMethods() ) {
 				if( methodName.equals( mthd.getName() ) ) {
 					if( mthd.isVarArgs() ) {
-						Class< ? >[] mthdParameterTypes = mthd.getParameterTypes();
-						if( mthdParameterTypes.length == parameterTypes.length + 1 ) {
+						Class<?>[] mthdParameterTypes = mthd.getParameterTypes();
+						if( mthdParameterTypes.length == ( parameterTypes.length + 1 ) ) {
 							boolean isMatch = true;
-							for( int i=0; i<parameterTypes.length; i++ ) {
+							for( int i = 0; i < parameterTypes.length; i++ ) {
 								if( mthdParameterTypes[ i ] == parameterTypes[ i ] ) {
 									//pass
 								} else {
@@ -90,11 +91,11 @@ public final class PropertyUtilities {
 		}
 		return rv;
 	}
-	
-	public static java.lang.reflect.Method getSetter( Class< ? > cls, String propertyName ) {
+
+	public static java.lang.reflect.Method getSetter( Class<?> cls, String propertyName ) {
 		java.lang.reflect.Method getter = getGetter( cls, propertyName );
-		Class< ? > valueClass = getter.getReturnType();
-		Class< ? >[] parameterTypes = { valueClass };
+		Class<?> valueClass = getter.getReturnType();
+		Class<?>[] parameterTypes = { valueClass };
 		String methodName;
 		if( propertyName.startsWith( "Is" ) && Character.isUpperCase( propertyName.charAt( 2 ) ) ) {
 			methodName = "set" + propertyName.substring( 2 );
@@ -114,22 +115,24 @@ public final class PropertyUtilities {
 		return rv;
 	}
 
-	public static boolean hasGetter( Class< ? > cls, String propertyName ) {
+	public static boolean hasGetter( Class<?> cls, String propertyName ) {
 		try {
 			return getGetter( cls, propertyName ) != null;
 		} catch( RuntimeException re ) {
 			return false;
 		}
 	}
-	public static boolean hasSetter( Class< ? > cls, String propertyName ) {
+
+	public static boolean hasSetter( Class<?> cls, String propertyName ) {
 		try {
 			return getSetter( cls, propertyName ) != null;
 		} catch( RuntimeException re ) {
 			return false;
 		}
 	}
+
 	public static String getPropertyNameForGetter( java.lang.reflect.Method method ) {
-		Class< ? > valueClass = method.getReturnType();
+		Class<?> valueClass = method.getReturnType();
 		boolean isBoolean = valueClass.equals( Boolean.TYPE ) || valueClass.equals( Boolean.class );
 		String prefix;
 		if( isBoolean ) {
@@ -148,13 +151,14 @@ public final class PropertyUtilities {
 			return null;
 		}
 	}
+
 	private static String getPropertyNameForSetter( java.lang.reflect.Method method, boolean isExtraParametersAcceptable ) {
 		String prefix = "set";
 		String name = method.getName();
 		if( name.startsWith( prefix ) ) {
 			Class<?>[] parameterClses = method.getParameterTypes();
-			if( parameterClses.length == 1 || ( isExtraParametersAcceptable && parameterClses.length >= 1 ) ) {
-				Class< ? > valueClass = parameterClses[ 0 ];
+			if( ( parameterClses.length == 1 ) || ( isExtraParametersAcceptable && ( parameterClses.length >= 1 ) ) ) {
+				Class<?> valueClass = parameterClses[ 0 ];
 				boolean isBoolean = valueClass.equals( Boolean.TYPE ) || valueClass.equals( Boolean.class );
 				String rv = name.substring( prefix.length() );
 				if( isBoolean ) {
@@ -168,9 +172,11 @@ public final class PropertyUtilities {
 			return null;
 		}
 	}
+
 	public static String getPropertyNameForSetter( java.lang.reflect.Method method ) {
 		return getPropertyNameForSetter( method, false );
 	}
+
 	public static boolean isGetterAndSetterExists( java.lang.reflect.Method method ) {
 		String propertyName = getPropertyNameForGetter( method );
 		if( propertyName != null ) {
@@ -179,6 +185,7 @@ public final class PropertyUtilities {
 			return false;
 		}
 	}
+
 	public static boolean isSetterAndGetterExists( java.lang.reflect.Method method ) {
 		String propertyName = getPropertyNameForSetter( method, false );
 		if( propertyName != null ) {
@@ -187,6 +194,7 @@ public final class PropertyUtilities {
 			return false;
 		}
 	}
+
 	public static boolean isSetterWithExtraParametersAndGetterExists( java.lang.reflect.Method method ) {
 		String propertyName = getPropertyNameForSetter( method, true );
 		if( propertyName != null ) {
@@ -195,22 +203,25 @@ public final class PropertyUtilities {
 			return false;
 		}
 	}
-		
+
 	public static java.lang.reflect.Method getSetterForGetter( java.lang.reflect.Method method, Class<?> cls ) {
 		return getSetter( cls, getPropertyNameForGetter( method ) );
 	}
+
 	public static java.lang.reflect.Method getSetterForGetter( java.lang.reflect.Method method ) {
 		return getSetterForGetter( method, method.getDeclaringClass() );
 	}
+
 	public static java.lang.reflect.Method getGetterForSetter( java.lang.reflect.Method method ) {
 		return getGetter( method.getDeclaringClass(), getPropertyNameForSetter( method ) );
 	}
-	
+
 	public static Object getPropertyValue( Object o, String propertyName ) {
 		java.lang.reflect.Method getter = getGetter( o.getClass(), propertyName );
 		Object[] args = {};
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( o, getter, args );
 	}
+
 	public static void setPropertyValue( Object o, String propertyName, Object value ) {
 		java.lang.reflect.Method setter = getSetter( o.getClass(), propertyName );
 		Object[] args = { value };

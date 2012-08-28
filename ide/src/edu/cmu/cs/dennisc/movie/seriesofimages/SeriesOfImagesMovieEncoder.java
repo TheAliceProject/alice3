@@ -63,7 +63,7 @@ public class SeriesOfImagesMovieEncoder implements edu.cmu.cs.dennisc.movie.Movi
 		m_extension = extension;
 		m_index = -1;
 	}
-	
+
 	private void getPathForIndex( StringBuffer sb, int index ) {
 		sb.append( m_directoryPath );
 		sb.append( java.io.File.separatorChar );
@@ -72,15 +72,17 @@ public class SeriesOfImagesMovieEncoder implements edu.cmu.cs.dennisc.movie.Movi
 		sb.append( "." );
 		sb.append( m_extension );
 	}
+
 	public String getPathForIndex( int index ) {
 		StringBuffer sb = new StringBuffer();
 		getPathForIndex( sb, index );
 		return sb.toString();
 	}
-	
+
 	public void start() {
 		m_index = 0;
 	}
+
 	public void addBufferedImage( java.awt.image.BufferedImage bufferedImage ) {
 		assert m_index != -1;
 		String path = getPathForIndex( m_index++ );
@@ -88,6 +90,7 @@ public class SeriesOfImagesMovieEncoder implements edu.cmu.cs.dennisc.movie.Movi
 		file.getParentFile().mkdirs();
 		edu.cmu.cs.dennisc.image.ImageUtilities.write( path, bufferedImage );
 	}
+
 	public void stop() {
 		m_index = -1;
 	}

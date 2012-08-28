@@ -46,13 +46,15 @@ package org.alice.stageide.ast.source;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageSourceImportValueCreator extends SourceImportValueCreator<org.lgna.story.ImageSource,org.lgna.common.resources.ImageResource> {
+public class ImageSourceImportValueCreator extends SourceImportValueCreator<org.lgna.story.ImageSource, org.lgna.common.resources.ImageResource> {
 	private static class SingletonHolder {
 		private static ImageSourceImportValueCreator instance = new ImageSourceImportValueCreator();
 	}
+
 	public static ImageSourceImportValueCreator getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ImageSourceImportValueCreator() {
 		super( java.util.UUID.fromString( "cd545fef-0c4a-4e97-affb-dbf9388803cc" ), org.alice.ide.ast.importers.ImageResourceImporter.getInstance(), org.lgna.story.ImageSource.class, org.lgna.common.resources.ImageResource.class );
 	}

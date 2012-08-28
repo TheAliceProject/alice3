@@ -50,6 +50,7 @@ import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 public interface OnScreenLookingGlassInformedManipulator {
 
 	public OnscreenLookingGlass getOnscreenLookingGlass();
+
 	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass );
-	
+
 }

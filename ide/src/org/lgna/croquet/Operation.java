@@ -52,19 +52,20 @@ public abstract class Operation extends AbstractCompletionModel {
 				Operation.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 			}
 		};
+
 		public javax.swing.Action getAction() {
 			return this.action;
 		}
 	}
-	
+
 	private final SwingModel swingModel = new SwingModel();
 
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
-	
+
 	@Override
-	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
 		if( this.menuPrepModel != null ) {
 			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.menuPrepModel );
 		} else {
@@ -75,7 +76,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}
-	
+
 	@Override
 	protected void localize() {
 		String name = this.findDefaultLocalizedText();
@@ -85,12 +86,13 @@ public abstract class Operation extends AbstractCompletionModel {
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
-//	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
-//		return "Press " + this.getTutorialNoteText( step, userInformation );
-//	}
-//
+
+	//	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
+	//		return "Press " + this.getTutorialNoteText( step, userInformation );
+	//	}
+	//
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		this.initializeIfNecessary();
 		rv.append( " <strong>" );
 		String name = this.getName();
@@ -102,178 +104,160 @@ public abstract class Operation extends AbstractCompletionModel {
 		rv.append( "</strong>" );
 		return rv;
 	}
-	
-	protected org.lgna.croquet.edits.Edit< ? > createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+
+	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		return null;
 	}
+
 	@Override
-	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.croquet.edits.Edit< ? > replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
-//		if( replacementEdit != null ) {
-//			final S step = this.createAndPushStep( null, null );
-//			try {
-//				step.commitAndInvokeDo( replacementEdit );
-//			} finally {
-//				ModelContext< ? > popContext = ContextManager.popContext();
-//				assert popContext == step : popContext.getClass() + " " + step.getClass();
-//			}
-//		} else {
-//			System.err.println( "createTutorialCompletionEdit returned null" );
-//		}
+	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+		org.lgna.croquet.edits.Edit<?> replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
+		//		if( replacementEdit != null ) {
+		//			final S step = this.createAndPushStep( null, null );
+		//			try {
+		//				step.commitAndInvokeDo( replacementEdit );
+		//			} finally {
+		//				ModelContext< ? > popContext = ContextManager.popContext();
+		//				assert popContext == step : popContext.getClass() + " " + step.getClass();
+		//			}
+		//		} else {
+		//			System.err.println( "createTutorialCompletionEdit returned null" );
+		//		}
 		return replacementEdit;
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
 		return this.swingModel.action.isEnabled();
 	}
+
 	@Override
 	public void setEnabled( boolean isEnabled ) {
 		this.swingModel.action.setEnabled( isEnabled );
 	}
 
-	@Override
-	public final org.lgna.croquet.history.CompletionStep<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		if( this.isEnabled() ) {
-			return this.handleFire( trigger );
-		} else {
-			return null;
-		}
-	}
-	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
-		return this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( viewController, e ) );
-	}
-	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController< ?, ? > viewController ) {
-		return this.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( viewController, e ) );
-	}
-	@Deprecated
-	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e ) {
-		return fire( e, null );
-	}
-	@Deprecated
-	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.ActionEvent e ) {
-		return fire( e, null );
-	}
-	@Deprecated
-	public final org.lgna.croquet.history.CompletionStep<?> fire() {
-		return fire( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
-	}
-	
-	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
-
-	protected org.lgna.croquet.history.CompletionStep<?> perform( org.lgna.croquet.history.TransactionHistory history, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-		this.perform( transaction, trigger );
-		return transaction.getCompletionStep();
-	}
-	/*package-private*/ final org.lgna.croquet.history.CompletionStep<?> handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
-		//todo: move up to Model
-		this.initializeIfNecessary();
-		org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-		return this.perform( history, trigger );
-	}
-
 	public final String getName() {
 		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
 	}
+
 	public final void setName( String name ) {
 		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 	}
-//	public String getShortDescription() {
-//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
-//	}
+
+	//	public String getShortDescription() {
+	//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
+	//	}
 	public void setShortDescription( String shortDescription ) {
 		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
-//	public String getLongDescription() {
-//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
-//	}
+
+	//	public String getLongDescription() {
+	//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
+	//	}
 	public void setLongDescription( String longDescription ) {
 		this.swingModel.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
 	}
+
 	public javax.swing.Icon getSmallIcon() {
 		return javax.swing.Icon.class.cast( this.swingModel.action.getValue( javax.swing.Action.SMALL_ICON ) );
 	}
+
 	public void setSmallIcon( javax.swing.Icon icon ) {
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
-//	public int getMnemonicKey() {
-//		return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
-//	}
+
+	//	public int getMnemonicKey() {
+	//		return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
+	//	}
 	private void setMnemonicKey( int mnemonicKey ) {
 		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
-//	public javax.swing.KeyStroke getAcceleratorKey() {
-//		return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
-//	}
+
+	//	public javax.swing.KeyStroke getAcceleratorKey() {
+	//		return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+	//	}
 	private void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
 		this.swingModel.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
 	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
 		return false;
 	}
 
-	public static class InternalMenuPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, Operation > {
+	public static class InternalMenuPrepModelResolver extends IndirectResolver<InternalMenuItemPrepModel, Operation> {
 		private InternalMenuPrepModelResolver( Operation indirect ) {
 			super( indirect );
 		}
+
 		public InternalMenuPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
 		protected InternalMenuItemPrepModel getDirect( Operation indirect ) {
 			return indirect.getMenuItemPrepModel();
 		}
 	}
+
 	private final static class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
 		private final Operation operation;
+
 		private InternalMenuItemPrepModel( Operation operation ) {
 			super( java.util.UUID.fromString( "652a76ce-4c05-4c31-901c-ff14548e50aa" ) );
 			assert operation != null;
 			this.operation = operation;
 		}
+
 		@Override
-		public Iterable< ? extends Model > getChildren() {
+		public Iterable<? extends Model> getChildren() {
 			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.operation );
 		}
+
 		@Override
 		protected void localize() {
 		}
+
 		public Operation getOperation() {
 			return this.operation;
 		}
+
 		@Override
 		public boolean isEnabled() {
 			return this.operation.isEnabled();
 		}
+
 		@Override
 		public void setEnabled( boolean isEnabled ) {
 			this.operation.setEnabled( isEnabled );
 		}
+
 		@Override
 		protected InternalMenuPrepModelResolver createResolver() {
 			return new InternalMenuPrepModelResolver( this.operation );
 		}
+
 		@Override
 		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 			rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
 			return rv;
 		}
+
 		@Override
 		protected void appendRepr( StringBuilder sb ) {
 			super.appendRepr( sb );
 			sb.append( "operation=" );
 			sb.append( this.getOperation() );
 		}
+
 		@Override
-		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 			return this.operation.updateTutorialStepText( rv, step, edit );
 		}
 	}
 
 	private InternalMenuItemPrepModel menuPrepModel;
+
 	public synchronized InternalMenuItemPrepModel getMenuItemPrepModel() {
 		if( this.menuPrepModel != null ) {
 			//pass
@@ -282,17 +266,16 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 		return this.menuPrepModel;
 	}
-	
+
 	public org.lgna.croquet.components.Button createButton() {
 		return new org.lgna.croquet.components.Button( this );
 	}
+
 	public org.lgna.croquet.components.Hyperlink createHyperlink() {
-		org.lgna.croquet.components.Hyperlink rv = new org.lgna.croquet.components.Hyperlink( this );
-		rv.scaleFont( 1.2f );
-		return rv;
+		return new org.lgna.croquet.components.Hyperlink( this );
 	}
 
-	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade< ? > cascade ) {
+	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {
 		return new org.lgna.croquet.components.ButtonWithRightClickCascade( this, cascade );
 	}
 }

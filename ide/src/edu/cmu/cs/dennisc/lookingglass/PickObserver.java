@@ -50,5 +50,6 @@ public interface PickObserver {
 	//todo: better names
 	//todo: parameters
 	public void prePick();
+
 	public void postPick();
 }

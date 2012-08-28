@@ -47,11 +47,13 @@ package org.lgna.cheshire.simple;
  * @author Dennis Cosgrove
  */
 public class AstLiveRetargeter implements org.lgna.croquet.Retargeter {
-	private java.util.Map< Object, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Object, Object> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	private void addBody( org.lgna.project.ast.BlockStatement keyBlockStatement, org.lgna.project.ast.BlockStatement valueBlockStatement ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "recursive retarget" );
 		this.addKeyValuePair( keyBlockStatement, valueBlockStatement );
 	}
+
 	public void addKeyValuePair( Object key, Object value ) {
 		this.map.put( key, value );
 		if( key instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
@@ -75,11 +77,12 @@ public class AstLiveRetargeter implements org.lgna.croquet.Retargeter {
 			this.addBody( keyUserCode.getBodyProperty().getValue(), valueUserCode.getBodyProperty().getValue() );
 		}
 	}
-	public <N> N retarget(N original) {
+
+	public <N> N retarget( N original ) {
 		if( original instanceof org.alice.ide.declarationseditor.DeclarationComposite ) {
-			org.alice.ide.declarationseditor.DeclarationComposite< ?, ? > originalDeclarationComposite = (org.alice.ide.declarationseditor.DeclarationComposite< ?, ? >)original;
+			org.alice.ide.declarationseditor.DeclarationComposite<?, ?> originalDeclarationComposite = (org.alice.ide.declarationseditor.DeclarationComposite<?, ?>)original;
 			org.lgna.project.ast.AbstractDeclaration originalDeclaration = originalDeclarationComposite.getDeclaration();
-			org.lgna.project.ast.AbstractDeclaration possiblyRetargettedDeclaration = this.retarget( originalDeclaration ); 
+			org.lgna.project.ast.AbstractDeclaration possiblyRetargettedDeclaration = this.retarget( originalDeclaration );
 			return (N)org.alice.ide.declarationseditor.DeclarationComposite.getInstance( possiblyRetargettedDeclaration );
 		} else if( original instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair ) {
 			org.alice.ide.ast.draganddrop.BlockStatementIndexPair originalBlockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)original;

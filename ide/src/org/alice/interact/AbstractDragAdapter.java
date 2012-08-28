@@ -42,6 +42,7 @@
  */
 
 package org.alice.interact;
+
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -96,7 +97,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
  * @author David Culyba
  */
 public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelListener, java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.KeyListener {
-	
+
 	public enum CameraView
 	{
 		MAIN,
@@ -107,108 +108,111 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		ACTIVE_VIEW,
 		PICK_CAMERA
 	}
-	
+
 	private class CameraPair
 	{
 		public SymmetricPerspectiveCamera perspectiveCamera;
 		public OrthographicCamera orthographicCamera;
-		
+
 		private AbstractCamera activeCamera;
-		
-		public CameraPair(SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera)
+
+		public CameraPair( SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera )
 		{
 			this.perspectiveCamera = perspectiveCamera;
 			this.orthographicCamera = orthographicCamera;
 		}
-		
-		public void setActiveCamera(AbstractCamera camera)
+
+		public void setActiveCamera( AbstractCamera camera )
 		{
 			this.activeCamera = camera;
 		}
-		
+
 		public AbstractCamera getActiveCamera()
 		{
 			return this.activeCamera;
 		}
-		
-		public boolean hasCamera(AbstractCamera camera)
+
+		public boolean hasCamera( AbstractCamera camera )
 		{
-			return this.perspectiveCamera == camera || this.orthographicCamera == camera;
+			return ( this.perspectiveCamera == camera ) || ( this.orthographicCamera == camera );
 		}
 	}
-	
+
 	public ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.HandleStyle> handleStateValueObserver = new ListSelectionState.ValueListener<org.alice.stageide.sceneeditor.HandleStyle>() {
-		public void changing( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State<org.alice.stageide.sceneeditor.HandleStyle> state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.stageide.sceneeditor.HandleStyle > state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.stageide.sceneeditor.HandleStyle> state, org.alice.stageide.sceneeditor.HandleStyle prevValue, org.alice.stageide.sceneeditor.HandleStyle nextValue, boolean isAdjusting ) {
 			AbstractDragAdapter.this.setInteractionState( nextValue );
 		}
 	};
-	
+
 	private AbsoluteTransformationListener cameraTransformationListener = new AbsoluteTransformationListener() {
-		
-		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) 
+
+		public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent )
 		{
-			if (absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera)
+			if( absoluteTransformationEvent.getSource() instanceof SymmetricPerspectiveCamera )
 			{
 				SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)absoluteTransformationEvent.getSource();
-				AbstractDragAdapter.this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+				AbstractDragAdapter.this.handleManager.updateCameraPosition( camera.getAbsoluteTransformation().translation );
 			}
 		}
 	};
-	
+
 	private static double MOUSE_WHEEL_TIMEOUT_TIME = 1.0;
 	private static double CANCEL_MOUSE_WHEEL_DISTANCE = 3;
-	
+
 	protected double mouseWheelTimeoutTime = 0;
 	protected Point mouseWheelStartLocation = null;
-	
+
 	protected AbstractSceneEditor sceneEditor;
-	
+
 	private Map<CameraView, CameraPair> cameraMap = new HashMap<CameraView, CameraPair>();
-	
-	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< edu.cmu.cs.dennisc.math.AxisAlignedBox > BOUNDING_BOX_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "BOUNDING_BOX_KEY" );
-	
-	protected java.util.Vector< ManipulatorConditionSet > manipulators = new java.util.Vector< ManipulatorConditionSet >();
+
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key<edu.cmu.cs.dennisc.math.AxisAlignedBox> BOUNDING_BOX_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "BOUNDING_BOX_KEY" );
+
+	protected java.util.Vector<ManipulatorConditionSet> manipulators = new java.util.Vector<ManipulatorConditionSet>();
 
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 	protected edu.cmu.cs.dennisc.animation.Animator animator;
 	private java.awt.Component lookingGlassComponent = null;
-	
+
 	protected InputState currentInputState = new InputState();
-	protected InputState previousInputState = new InputState(); 
+	protected InputState previousInputState = new InputState();
 	private double timePrev = Double.NaN;
 	private boolean hasSetCameraTransformables = false;
-	
+
 	private boolean isInStageChange = false;
 	private AbstractTransformableImp toBeSelected = null;
 	private boolean hasObjectToBeSelected = false;
-	
+
 	private Component currentRolloverComponent = null;
-	
-	
+
 	protected HandleManager handleManager = new HandleManager();
 	protected InteractionGroup currentInteractionState = null;
 	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
-	
+
 	private AbstractTransformableImp selectedObject = null;
 	private CameraMarkerImp selectedCameraMarker = null;
 	private ObjectMarkerImp selectedObjectMarker = null;
 
-	protected java.util.Map< org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup > mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	protected java.util.Map<org.alice.stageide.sceneeditor.HandleStyle, InteractionGroup> mapHandleStyleToInteractionGroup = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	private List< SelectionListener > selectionListeners = new java.util.LinkedList< SelectionListener >(); 
+	private List<SelectionListener> selectionListeners = new java.util.LinkedList<SelectionListener>();
+
 	public void addPropertyListener( SelectionListener selectionListener ) {
 		synchronized( this.selectionListeners ) {
 			this.selectionListeners.add( selectionListener );
 		}
 	}
+
 	public void removeSelectionListener( SelectionListener selectionListener ) {
 		synchronized( this.selectionListeners ) {
 			this.selectionListeners.remove( selectionListener );
 		}
 	}
-	public Iterable< SelectionListener > getSelectionListeners() {
+
+	public Iterable<SelectionListener> getSelectionListeners() {
 		return this.selectionListeners;
 	}
 
@@ -219,6 +223,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			}
 		}
 	}
+
 	private void fireSelected( SelectionEvent e ) {
 		synchronized( this.selectionListeners ) {
 			for( SelectionListener selectionListener : this.selectionListeners ) {
@@ -226,44 +231,44 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			}
 		}
 	}
-	
+
 	public AbstractDragAdapter()
 	{
-		this(null);
-	}	
-	
+		this( null );
+	}
+
 	public AbstractDragAdapter( AbstractSceneEditor sceneEditor )
 	{
 		this.sceneEditor = sceneEditor;
 		this.setUpControls();
-	}	
-	
+	}
+
 	protected void preUndo()
 	{
 		stopMouseWheel();
 		handleStateChange();
 	}
-	
+
 	protected abstract void setUpControls();
-	
+
 	protected void handleCameraMoved()
 	{
-		
+
 	}
-	
+
 	public boolean hasSceneEditor()
 	{
 		return this.sceneEditor != null;
 	}
-	
-//	public abstract ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getInteractionSelectionStateList();
-	
+
+	//	public abstract ListSelectionState<org.alice.stageide.sceneeditor.HandleStyle> getInteractionSelectionStateList();
+
 	public void triggerManipulationEvent( ManipulationEvent event, boolean isActivate )
 	{
 		event.setInputState( this.currentInputState );
 		this.manipulationEventManager.triggerEvent( event, isActivate );
 	}
-	
+
 	protected java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		if( onscreenLookingGlass != null ) {
 			return onscreenLookingGlass.getAWTComponent();
@@ -271,33 +276,33 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			return null;
 		}
 	}
-	
+
 	public AffineMatrix4x4 getDropTargetTransformation()
 	{
 		return null;
 	}
-	
+
 	public boolean isInStateChange()
 	{
 		return this.isInStageChange;
 	}
-	
-	public void setToBeSelected(AbstractTransformableImp toBeSelected)
+
+	public void setToBeSelected( AbstractTransformableImp toBeSelected )
 	{
 		this.toBeSelected = toBeSelected;
 		this.hasObjectToBeSelected = true;
 	}
-	
+
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
-	
+
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
 			AbstractDragAdapter.this.handleDisplayed();
 		}
 	};
-	
+
 	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		if( this.onscreenLookingGlass != null ) {
 			this.onscreenLookingGlass.getLookingGlassFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
@@ -308,150 +313,151 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.onscreenLookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( this.automaticDisplayAdapter );
 		}
 	}
-	
+
 	protected java.awt.Component getAWTComponent() {
 		return this.lookingGlassComponent;
 	}
+
 	public void setAWTComponent( java.awt.Component awtComponent ) {
 		if( this.lookingGlassComponent != null ) {
-			removeListeners( this.lookingGlassComponent  );
+			removeListeners( this.lookingGlassComponent );
 		}
-		this.lookingGlassComponent  = awtComponent;
-		if( this.lookingGlassComponent  != null ) {
+		this.lookingGlassComponent = awtComponent;
+		if( this.lookingGlassComponent != null ) {
 			addListeners( awtComponent );
 		}
 	}
-	
+
 	public void clearCameraViews()
 	{
-		for (CameraPair cameraPair : this.cameraMap.values())
+		for( CameraPair cameraPair : this.cameraMap.values() )
 		{
-			if (cameraPair.perspectiveCamera != null)
+			if( cameraPair.perspectiveCamera != null )
 			{
-				cameraPair.perspectiveCamera.removeAbsoluteTransformationListener(this.cameraTransformationListener);
+				cameraPair.perspectiveCamera.removeAbsoluteTransformationListener( this.cameraTransformationListener );
 			}
 		}
 		this.cameraMap.clear();
 	}
-	
-	public void addCameraView(CameraView viewType, SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera)
+
+	public void addCameraView( CameraView viewType, SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera )
 	{
-		addCameraView(viewType, new CameraPair(perspectiveCamera, orthographicCamera));
+		addCameraView( viewType, new CameraPair( perspectiveCamera, orthographicCamera ) );
 	}
-	
-	protected void addCameraView(CameraView viewType, CameraPair cameras)
+
+	protected void addCameraView( CameraView viewType, CameraPair cameras )
 	{
-		
-		if (cameras.perspectiveCamera != null)
+
+		if( cameras.perspectiveCamera != null )
 		{
-			cameras.perspectiveCamera.addAbsoluteTransformationListener(this.cameraTransformationListener);
-			AbstractDragAdapter.this.handleManager.updateCameraPosition(cameras.perspectiveCamera.getAbsoluteTransformation().translation);
+			cameras.perspectiveCamera.addAbsoluteTransformationListener( this.cameraTransformationListener );
+			AbstractDragAdapter.this.handleManager.updateCameraPosition( cameras.perspectiveCamera.getAbsoluteTransformation().translation );
 		}
 		this.cameraMap.put( viewType, cameras );
 	}
-	
+
 	public void setAnimator( Animator animator )
 	{
 		this.animator = animator;
-		this.handleManager.setAnimator(animator);
-		for (ManipulatorConditionSet manipulatorSet : this.manipulators)
+		this.handleManager.setAnimator( animator );
+		for( ManipulatorConditionSet manipulatorSet : this.manipulators )
 		{
-			if (manipulatorSet.getManipulator() instanceof AnimatorDependentManipulator)
+			if( manipulatorSet.getManipulator() instanceof AnimatorDependentManipulator )
 			{
-				((AnimatorDependentManipulator)manipulatorSet.getManipulator()).setAnimator(this.animator);
+				( (AnimatorDependentManipulator)manipulatorSet.getManipulator() ).setAnimator( this.animator );
 			}
 		}
 	}
-	
+
 	public Animator getAnimator()
 	{
 		return this.animator;
 	}
-	
+
 	public AbstractTransformableImp getSelectedImplementation()
 	{
 		return this.selectedObject;
 	}
-	
-	public void setHandleShowingForSelectedImplementation( AbstractTransformableImp object, boolean handlesShowing)
+
+	public void setHandleShowingForSelectedImplementation( AbstractTransformableImp object, boolean handlesShowing )
 	{
-		if (this.selectedObject == object)
+		if( this.selectedObject == object )
 		{
-			this.handleManager.setHandlesShowing(handlesShowing);
+			this.handleManager.setHandlesShowing( handlesShowing );
 		}
 	}
-	
-	public void triggerImplementationSelection(AbstractTransformableImp selected)
-	{	
-		if (this.selectedObject != selected)
+
+	public void triggerImplementationSelection( AbstractTransformableImp selected )
+	{
+		if( this.selectedObject != selected )
 		{
-			this.fireSelected( new SelectionEvent(this, selected) );
+			this.fireSelected( new SelectionEvent( this, selected ) );
 		}
 	}
-	
-	public void triggerSgObjectSelection(AbstractTransformable selected)
-	{	
-		triggerImplementationSelection( EntityImp.getInstance(selected, AbstractTransformableImp.class) );
+
+	public void triggerSgObjectSelection( AbstractTransformable selected )
+	{
+		triggerImplementationSelection( EntityImp.getInstance( selected, AbstractTransformableImp.class ) );
 	}
-	
+
 	private static double MARKER_SELECTION_DURATION = .25;
-	
+
 	public void setSelectedCameraMarker( CameraMarkerImp selected )
 	{
-		if (selected != this.selectedCameraMarker)
+		if( selected != this.selectedCameraMarker )
 		{
-			this.fireSelecting( new SelectionEvent(this, selected) );
-			if (this.selectedCameraMarker != null)
+			this.fireSelecting( new SelectionEvent( this, selected ) );
+			if( this.selectedCameraMarker != null )
 			{
-				this.selectedCameraMarker.opacity.animateValue(.3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
-				if (this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp)
+				this.selectedCameraMarker.opacity.animateValue( .3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY );
+				if( this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp )
 				{
-					((PerspectiveCameraMarkerImp)this.selectedCameraMarker).setDetailedViewShowing(false);
+					( (PerspectiveCameraMarkerImp)this.selectedCameraMarker ).setDetailedViewShowing( false );
 				}
 			}
 			this.selectedCameraMarker = selected;
-			if (this.selectedCameraMarker != null)
+			if( this.selectedCameraMarker != null )
 			{
-				this.selectedCameraMarker.opacity.animateValue(1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
-				if (this.sceneEditor != null && this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp)
+				this.selectedCameraMarker.opacity.animateValue( 1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY );
+				if( ( this.sceneEditor != null ) && ( this.selectedCameraMarker instanceof PerspectiveCameraMarkerImp ) )
 				{
 					//TODO: Resolve the issue of showing the selection details of an active camera mark (active meaning it's currently attached to the camera)
-//					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);
-//					if (!isNewSelectedActiveCameraMarker)
+					//					boolean isNewSelectedActiveCameraMarker = this.sceneEditor.isCameraMarkerActive(this.selectedCameraMarker);
+					//					if (!isNewSelectedActiveCameraMarker)
 					{
-						((PerspectiveCameraMarkerImp)this.selectedCameraMarker).setDetailedViewShowing(true);
+						( (PerspectiveCameraMarkerImp)this.selectedCameraMarker ).setDetailedViewShowing( true );
 					}
 				}
 			}
 		}
 	}
-	
+
 	public void setSelectedObjectMarker( ObjectMarkerImp selected )
 	{
-		if (selected != this.selectedObjectMarker)
+		if( selected != this.selectedObjectMarker )
 		{
-			this.fireSelecting( new SelectionEvent(this, selected) );
-			if (this.selectedObjectMarker != null)
+			this.fireSelecting( new SelectionEvent( this, selected ) );
+			if( this.selectedObjectMarker != null )
 			{
-				this.selectedObjectMarker.opacity.animateValue(.3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
+				this.selectedObjectMarker.opacity.animateValue( .3f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY );
 			}
 			this.selectedObjectMarker = selected;
-			if (this.selectedObjectMarker != null)
+			if( this.selectedObjectMarker != null )
 			{
-				this.selectedObjectMarker.opacity.animateValue(1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY);
+				this.selectedObjectMarker.opacity.animateValue( 1f, MARKER_SELECTION_DURATION, TraditionalStyle.BEGIN_AND_END_GENTLY );
 			}
 		}
 	}
-	
+
 	public void setSelectedSceneObjectImplementation( AbstractTransformableImp selected )
 	{
-		if (this.selectedObject != selected) 
+		if( this.selectedObject != selected )
 		{
-			this.fireSelecting( new SelectionEvent(this, selected) );
+			this.fireSelecting( new SelectionEvent( this, selected ) );
 			AbstractTransformable sgTransformable = selected != null ? selected.getSgComposite() : null;
-			if (HandleManager.isSelectable( sgTransformable ))
+			if( HandleManager.isSelectable( sgTransformable ) )
 			{
-				this.handleManager.setHandlesShowing(true);
+				this.handleManager.setHandlesShowing( true );
 				this.handleManager.setSelectedObject( sgTransformable );
 			}
 			else
@@ -464,222 +470,221 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.handleStateChange();
 		}
 	}
-	
-//	public void setSelectedSgTransformable( Transformable selected )
-//	{
-//		if (this.selectedObject != selected) 
-//		{
-//			this.fireSelecting( new SelectionEvent(this, selected) );
-//			if (HandleManager.canHaveHandles(selected))
-//			{
-//				this.handleManager.setHandlesShowing(true);
-//				this.handleManager.setSelectedObject( selected );
-//			}
-//			else
-//			{
-//				this.handleManager.setSelectedObject( null );
-//			}
-//			this.currentInputState.setCurrentlySelectedObject( selected );
-//			this.currentInputState.setTimeCaptured();
-//			selectedObject = selected;
-//			this.handleStateChange();
-//		}
-//	}
-	
-	private void updateHandleSelection(AbstractTransformableImp selected) {
-		PickHint pickHint = PickUtilities.getPickTypeForImp(selected);
+
+	//	public void setSelectedSgTransformable( Transformable selected )
+	//	{
+	//		if (this.selectedObject != selected) 
+	//		{
+	//			this.fireSelecting( new SelectionEvent(this, selected) );
+	//			if (HandleManager.canHaveHandles(selected))
+	//			{
+	//				this.handleManager.setHandlesShowing(true);
+	//				this.handleManager.setSelectedObject( selected );
+	//			}
+	//			else
+	//			{
+	//				this.handleManager.setSelectedObject( null );
+	//			}
+	//			this.currentInputState.setCurrentlySelectedObject( selected );
+	//			this.currentInputState.setTimeCaptured();
+	//			selectedObject = selected;
+	//			this.handleStateChange();
+	//		}
+	//	}
+
+	private void updateHandleSelection( AbstractTransformableImp selected ) {
+		PickHint pickHint = PickUtilities.getPickTypeForImp( selected );
 		org.alice.stageide.sceneeditor.HandleStyle currentHandleStyle = org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().getSelectedItem();
 		InteractionGroup selectedState = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
-		if (selectedState != null) { //Sometimes we don't support handles--like in the create-a-sim editor
-			if (!selectedState.canUseIteractionGroup(pickHint)) {
-				for ( org.alice.stageide.sceneeditor.HandleStyle handleStyle : org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance())
+		if( selectedState != null ) { //Sometimes we don't support handles--like in the create-a-sim editor
+			if( !selectedState.canUseIteractionGroup( pickHint ) ) {
+				for( org.alice.stageide.sceneeditor.HandleStyle handleStyle : org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance() )
 				{
 					InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
-					if (interactionState.canUseIteractionGroup(pickHint))
+					if( interactionState.canUseIteractionGroup( pickHint ) )
 					{
-						org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().setSelectedItem(handleStyle);
+						org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().setSelectedItem( handleStyle );
 						break;
 					}
 				}
 			}
 		}
 	}
-	
-	public void setSelectedImplementation(AbstractTransformableImp selected)
+
+	public void setSelectedImplementation( AbstractTransformableImp selected )
 	{
-		if (this.isInStateChange())
+		if( this.isInStateChange() )
 		{
-			this.setToBeSelected(selected);
+			this.setToBeSelected( selected );
 			return;
 		}
-		if (selected != null)
+		if( selected != null )
 		{
 			Composite c = selected.getSgComposite();
-			if (selected instanceof ObjectMarkerImp)
+			if( selected instanceof ObjectMarkerImp )
 			{
-				setSelectedObjectMarker((ObjectMarkerImp)selected);
+				setSelectedObjectMarker( (ObjectMarkerImp)selected );
 			}
-			else if (selected instanceof CameraMarkerImp)
+			else if( selected instanceof CameraMarkerImp )
 			{
-				setSelectedCameraMarker((CameraMarkerImp)selected);
+				setSelectedCameraMarker( (CameraMarkerImp)selected );
 			}
 			else
 			{
-				setSelectedSceneObjectImplementation(selected);
+				setSelectedSceneObjectImplementation( selected );
 			}
-			updateHandleSelection(selected);
+			updateHandleSelection( selected );
 		}
 		else
 		{
-			setSelectedSceneObjectImplementation(null);
+			setSelectedSceneObjectImplementation( null );
 		}
-		
+
 	}
-	
+
 	public void setInteractionState( org.alice.stageide.sceneeditor.HandleStyle handleStyle )
 	{
-		if (this.currentInteractionState != null)
+		if( this.currentInteractionState != null )
 		{
-			this.currentInteractionState.enabledManipulators(false);
+			this.currentInteractionState.enabledManipulators( false );
 		}
 		InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
 		this.currentInteractionState = interactionState;
 		if( this.currentInteractionState != null ) {
 			this.handleManager.setHandleSet( this.currentInteractionState.getHandleSet() );
-			this.currentInteractionState.enabledManipulators(true);
+			this.currentInteractionState.enabledManipulators( true );
 		}
 	}
-	
+
 	public void pushHandleSet( HandleSet handleSet )
 	{
 		this.handleManager.pushNewHandleSet( handleSet );
 	}
-	
+
 	public HandleSet popHandleSet()
 	{
 		return this.handleManager.popHandleSet();
 	}
-	
-	public void setCameraOnManipulator(CameraInformedManipulator manipulator, InputState startInput)
+
+	public void setCameraOnManipulator( CameraInformedManipulator manipulator, InputState startInput )
 	{
 		//The pick camera can be null if we roll over a 2D handle while we're moving
-		if (manipulator.getDesiredCameraView() == CameraView.PICK_CAMERA && this.currentInputState.getPickCamera() != null)
+		if( ( manipulator.getDesiredCameraView() == CameraView.PICK_CAMERA ) && ( this.currentInputState.getPickCamera() != null ) )
 		{
 			manipulator.setCamera( this.currentInputState.getPickCamera() );
 		}
 		else
 		{
-			manipulator.setCamera( this.getCameraForManipulator(manipulator) );
+			manipulator.setCamera( this.getCameraForManipulator( manipulator ) );
 		}
 	}
-	
-	
+
 	public void setLookingGlassOnManipulator( OnScreenLookingGlassInformedManipulator manipulator )
 	{
-		manipulator.setOnscreenLookingGlass(this.onscreenLookingGlass);
+		manipulator.setOnscreenLookingGlass( this.onscreenLookingGlass );
 	}
-	
+
 	public void addClickAdapter( ManipulatorClickAdapter clickAdapter, InputCondition... conditions )
 	{
-		ManipulatorConditionSet conditionSet = new ManipulatorConditionSet( new ClickAdapterManipulator(clickAdapter) );
-		for (InputCondition condition : conditions)
+		ManipulatorConditionSet conditionSet = new ManipulatorConditionSet( new ClickAdapterManipulator( clickAdapter ) );
+		for( InputCondition condition : conditions )
 		{
-			conditionSet.addCondition(condition);
+			conditionSet.addCondition( condition );
 		}
-		this.manipulators.add(conditionSet);
+		this.manipulators.add( conditionSet );
 	}
-	
-	protected void setManipulatorStartState(AbstractManipulator manipulator, InputState startState)
-	{			
-		if (manipulator instanceof OnScreenLookingGlassInformedManipulator)
+
+	protected void setManipulatorStartState( AbstractManipulator manipulator, InputState startState )
+	{
+		if( manipulator instanceof OnScreenLookingGlassInformedManipulator )
 		{
 			OnScreenLookingGlassInformedManipulator lookingGlassManipulator = (OnScreenLookingGlassInformedManipulator)manipulator;
-			this.setLookingGlassOnManipulator(lookingGlassManipulator);
+			this.setLookingGlassOnManipulator( lookingGlassManipulator );
 		}
-		if (manipulator instanceof CameraInformedManipulator)
+		if( manipulator instanceof CameraInformedManipulator )
 		{
 			CameraInformedManipulator cameraInformed = (CameraInformedManipulator)manipulator;
-			this.setCameraOnManipulator(cameraInformed, startState);
+			this.setCameraOnManipulator( cameraInformed, startState );
 		}
 	}
-	
+
 	protected void handleStateChange()
 	{
 		this.isInStageChange = true;
-		java.util.Vector< AbstractManipulator > toStart = new java.util.Vector< AbstractManipulator >();
-		java.util.Vector< AbstractManipulator > toEnd = new java.util.Vector< AbstractManipulator >();
-		java.util.Vector< AbstractManipulator > toUpdate = new java.util.Vector< AbstractManipulator >();
-		java.util.Vector< AbstractManipulator > toClick = new java.util.Vector< AbstractManipulator >();
-		for (int i=0; i<this.manipulators.size(); i++)
+		java.util.Vector<AbstractManipulator> toStart = new java.util.Vector<AbstractManipulator>();
+		java.util.Vector<AbstractManipulator> toEnd = new java.util.Vector<AbstractManipulator>();
+		java.util.Vector<AbstractManipulator> toUpdate = new java.util.Vector<AbstractManipulator>();
+		java.util.Vector<AbstractManipulator> toClick = new java.util.Vector<AbstractManipulator>();
+		for( int i = 0; i < this.manipulators.size(); i++ )
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
-//			System.out.println(currentManipulatorSet.getManipulator()+": "+currentManipulatorSet.getCondition(0));
-			currentManipulatorSet.update(this.currentInputState, this.previousInputState );
-			if (currentManipulatorSet.isEnabled())
+			//			System.out.println(currentManipulatorSet.getManipulator()+": "+currentManipulatorSet.getCondition(0));
+			currentManipulatorSet.update( this.currentInputState, this.previousInputState );
+			if( currentManipulatorSet.isEnabled() )
 			{
-				if (currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState))
+				if( currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState ) )
 				{
-					if ( currentManipulatorSet.shouldContinue( this.currentInputState, this.previousInputState ))
+					if( currentManipulatorSet.shouldContinue( this.currentInputState, this.previousInputState ) )
 					{
 						toUpdate.add( currentManipulatorSet.getManipulator() );
 					}
-					else if ( currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState ) )
+					else if( currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState ) )
 					{
-//						System.out.println("Just starting "+currentManipulatorSet.getManipulator());
+						//						System.out.println("Just starting "+currentManipulatorSet.getManipulator());
 						toStart.add( currentManipulatorSet.getManipulator() );
 					}
-					else if ( currentManipulatorSet.justEnded( this.currentInputState, this.previousInputState ) )
+					else if( currentManipulatorSet.justEnded( this.currentInputState, this.previousInputState ) )
 					{
 						toEnd.add( currentManipulatorSet.getManipulator() );
 					}
-					else if ( currentManipulatorSet.clicked( this.currentInputState, this.previousInputState ) )
+					else if( currentManipulatorSet.clicked( this.currentInputState, this.previousInputState ) )
 					{
 						toClick.add( currentManipulatorSet.getManipulator() );
 					}
 				}
 				else
 				{
-					boolean whyFailed = currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState);
+					boolean whyFailed = currentManipulatorSet.stateChanged( this.currentInputState, this.previousInputState );
 				}
 			}
 			else //Manipulator is not enabled
 			{
-				if (currentManipulatorSet.getManipulator().hasStarted())
+				if( currentManipulatorSet.getManipulator().hasStarted() )
 				{
 					toEnd.add( currentManipulatorSet.getManipulator() );
 				}
 			}
 		}
-		
-//		if (toStart.size() > 0)
-//		{
-//			PrintUtilities.println("STATE CHANGE: ");
-//			Thread.dumpStack();
-//		}
-//		
+
+		//		if (toStart.size() > 0)
+		//		{
+		//			PrintUtilities.println("STATE CHANGE: ");
+		//			Thread.dumpStack();
+		//		}
+		//		
 		//End manipulators first
-		for (int i=0; i<toEnd.size(); i++)
+		for( int i = 0; i < toEnd.size(); i++ )
 		{
-//			PrintUtilities.println("Ending: "+toEnd.get(i) + " because of "+this.currentInputState);
+			//			PrintUtilities.println("Ending: "+toEnd.get(i) + " because of "+this.currentInputState);
 			toEnd.get( i ).endManipulator( this.currentInputState, this.previousInputState );
 		}
-		for (int i=0; i<toClick.size(); i++)
+		for( int i = 0; i < toClick.size(); i++ )
 		{
-//			PrintUtilities.println("Clicking: "+toClick.get(i) + " because of "+this.currentInputState);
-			setManipulatorStartState(toClick.get( i ), this.currentInputState);
+			//			PrintUtilities.println("Clicking: "+toClick.get(i) + " because of "+this.currentInputState);
+			setManipulatorStartState( toClick.get( i ), this.currentInputState );
 			toClick.get( i ).clickManipulator( this.currentInputState, this.previousInputState );
 		}
-		for (int i=0; i<toStart.size(); i++)
+		for( int i = 0; i < toStart.size(); i++ )
 		{
-//			PrintUtilities.println(i+": Beginning: "+toStart.get(i) + " at "+System.currentTimeMillis());
-			setManipulatorStartState(toStart.get( i ), this.currentInputState);
+			//			PrintUtilities.println(i+": Beginning: "+toStart.get(i) + " at "+System.currentTimeMillis());
+			setManipulatorStartState( toStart.get( i ), this.currentInputState );
 			toStart.get( i ).startManipulator( this.currentInputState );
 		}
-		for (int i=0; i<toUpdate.size(); i++)
+		for( int i = 0; i < toUpdate.size(); i++ )
 		{
-//			PrintUtilities.println("Updating: "+toUpdate.get(i) + " at "+System.currentTimeMillis());
+			//			PrintUtilities.println("Updating: "+toUpdate.get(i) + " at "+System.currentTimeMillis());
 			//If the manipulator we're updating was just started, don't update it with previous data (it's out of scope for the manipulator)
-			if (toStart.contains( toUpdate.get( i ) ))
+			if( toStart.contains( toUpdate.get( i ) ) )
 			{
 				toUpdate.get( i ).dataUpdateManipulator( this.currentInputState, this.currentInputState );
 			}
@@ -688,97 +693,95 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				toUpdate.get( i ).dataUpdateManipulator( this.currentInputState, this.previousInputState );
 			}
 		}
-		
-		
-		if (this.currentInputState.getRolloverHandle() != this.previousInputState.getRolloverHandle())
+
+		if( this.currentInputState.getRolloverHandle() != this.previousInputState.getRolloverHandle() )
 		{
-			if (this.currentInputState.getRolloverHandle() != null){
+			if( this.currentInputState.getRolloverHandle() != null ) {
 				this.handleManager.setHandleRollover( this.currentInputState.getRolloverHandle(), true );
 			}
-			if (this.previousInputState.getRolloverHandle() != null){
+			if( this.previousInputState.getRolloverHandle() != null ) {
 				this.handleManager.setHandleRollover( this.previousInputState.getRolloverHandle(), false );
 			}
 		}
-		
-		
-		if (!this.hasObjectToBeSelected && this.currentInputState.getCurrentlySelectedObject() != this.previousInputState.getCurrentlySelectedObject())
+
+		if( !this.hasObjectToBeSelected && ( this.currentInputState.getCurrentlySelectedObject() != this.previousInputState.getCurrentlySelectedObject() ) )
 		{
-			this.triggerImplementationSelection( EntityImp.getInstance( this.currentInputState.getCurrentlySelectedObject(), AbstractTransformableImp.class) );
+			this.triggerImplementationSelection( EntityImp.getInstance( this.currentInputState.getCurrentlySelectedObject(), AbstractTransformableImp.class ) );
 		}
-		
-		this.previousInputState.copyState(this.currentInputState);
+
+		this.previousInputState.copyState( this.currentInputState );
 		this.isInStageChange = false;
-		if (this.hasObjectToBeSelected)
+		if( this.hasObjectToBeSelected )
 		{
 			this.hasObjectToBeSelected = false;
 			this.setSelectedImplementation( this.toBeSelected );
 		}
 	}
-	
+
 	protected boolean isMouseWheelActive()
 	{
-		return (this.mouseWheelTimeoutTime > 0);
+		return ( this.mouseWheelTimeoutTime > 0 );
 	}
-	
+
 	protected void stopMouseWheel()
 	{
 		this.mouseWheelTimeoutTime = 0;
-		this.currentInputState.setMouseWheelState(0);
+		this.currentInputState.setMouseWheelState( 0 );
 		this.mouseWheelStartLocation = null;
 	}
-	
-	protected boolean shouldStopMouseWheel(Point currentMouse)
+
+	protected boolean shouldStopMouseWheel( Point currentMouse )
 	{
-		if (this.mouseWheelStartLocation != null)
+		if( this.mouseWheelStartLocation != null )
 		{
-			double distance = currentMouse.distance(this.mouseWheelStartLocation);
-			if (distance > CANCEL_MOUSE_WHEEL_DISTANCE)
+			double distance = currentMouse.distance( this.mouseWheelStartLocation );
+			if( distance > CANCEL_MOUSE_WHEEL_DISTANCE )
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	protected void update( double timeDelta )
 	{
-		if (isMouseWheelActive())
+		if( isMouseWheelActive() )
 		{
 			mouseWheelTimeoutTime -= timeDelta;
-			if (!isMouseWheelActive())
+			if( !isMouseWheelActive() )
 			{
 				stopMouseWheel();
 				handleStateChange();
 			}
 		}
-		for (int i=0; i<this.manipulators.size(); i++)
+		for( int i = 0; i < this.manipulators.size(); i++ )
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
-			if ( currentManipulatorSet.getManipulator().hasStarted() && currentManipulatorSet.shouldContinue( this.currentInputState, this.previousInputState ))
+			if( currentManipulatorSet.getManipulator().hasStarted() && currentManipulatorSet.shouldContinue( this.currentInputState, this.previousInputState ) )
 			{
 				currentManipulatorSet.getManipulator().timeUpdateManipulator( timeDelta, this.currentInputState );
 			}
 		}
 	}
-	
-	public void makeCameraActive(AbstractCamera camera)
+
+	public void makeCameraActive( AbstractCamera camera )
 	{
 		boolean activated = false;
-		for (Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet())
+		for( Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet() )
 		{
-			if (cameras.getValue().hasCamera( camera ))
+			if( cameras.getValue().hasCamera( camera ) )
 			{
 				cameras.getValue().setActiveCamera( camera );
 				activated = true;
 			}
 		}
-		if (camera instanceof SymmetricPerspectiveCamera)
+		if( camera instanceof SymmetricPerspectiveCamera )
 		{
-			this.handleManager.updateCameraPosition(camera.getAbsoluteTransformation().translation);
+			this.handleManager.updateCameraPosition( camera.getAbsoluteTransformation().translation );
 		}
 		else
 		{
-			this.handleManager.updateCameraPosition(null);
+			this.handleManager.updateCameraPosition( null );
 		}
 	}
 
@@ -786,7 +789,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	{
 		//TODO: introduce a true sense of "active"
 		CameraPair activeCameraPair = this.cameraMap.get( CameraView.MAIN );
-		if ( activeCameraPair != null && activeCameraPair.getActiveCamera() != null )
+		if( ( activeCameraPair != null ) && ( activeCameraPair.getActiveCamera() != null ) )
 		{
 			return activeCameraPair.getActiveCamera();
 		}
@@ -795,19 +798,19 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			return null;
 		}
 	}
-	
-	public AbstractCamera getCameraForManipulator(CameraInformedManipulator cameraManipulator)
+
+	public AbstractCamera getCameraForManipulator( CameraInformedManipulator cameraManipulator )
 	{
 		CameraView cameraView = cameraManipulator.getDesiredCameraView();
 		AbstractCamera cameraToReturn;
-		if (cameraView == CameraView.ACTIVE_VIEW || cameraView == CameraView.PICK_CAMERA)
+		if( ( cameraView == CameraView.ACTIVE_VIEW ) || ( cameraView == CameraView.PICK_CAMERA ) )
 		{
 			cameraToReturn = getActiveCamera();
 		}
 		else
 		{
 			CameraPair cameras = this.cameraMap.get( cameraView );
-			if (cameras != null)
+			if( cameras != null )
 			{
 				cameraToReturn = cameras.getActiveCamera();
 			}
@@ -818,32 +821,32 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 		return cameraToReturn;
 	}
-	
+
 	public void setSGCamera( AbstractCamera camera )
 	{
-//		assert camera != null;
-//		System.out.println("Setting Camera from DragAdapter: ");
-//		Thread.dumpStack();
-//		for (int i=0; i<this.manipulators.size(); i++)
-//		{
-//			if (this.manipulators.get( i ).getManipulator() instanceof CameraInformedManipulator)
-//			{
-//				CameraInformedManipulator cameraManipulator = ((CameraInformedManipulator)this.manipulators.get( i ).getManipulator());
-//				cameraManipulator.setCamera( getCameraForManipulator( cameraManipulator ) );
-//			}
-//			if (this.manipulators.get( i ).getManipulator() instanceof OnScreenLookingGlassInformedManipulator)
-//			{
-//				((OnScreenLookingGlassInformedManipulator)this.manipulators.get( i ).getManipulator()).setOnscreenLookingGlass( getOnscreenLookingGlass() );
-//			}
-//		}
+		//		assert camera != null;
+		//		System.out.println("Setting Camera from DragAdapter: ");
+		//		Thread.dumpStack();
+		//		for (int i=0; i<this.manipulators.size(); i++)
+		//		{
+		//			if (this.manipulators.get( i ).getManipulator() instanceof CameraInformedManipulator)
+		//			{
+		//				CameraInformedManipulator cameraManipulator = ((CameraInformedManipulator)this.manipulators.get( i ).getManipulator());
+		//				cameraManipulator.setCamera( getCameraForManipulator( cameraManipulator ) );
+		//			}
+		//			if (this.manipulators.get( i ).getManipulator() instanceof OnScreenLookingGlassInformedManipulator)
+		//			{
+		//				((OnScreenLookingGlassInformedManipulator)this.manipulators.get( i ).getManipulator()).setOnscreenLookingGlass( getOnscreenLookingGlass() );
+		//			}
+		//		}
 	}
-	
+
 	protected void handleDisplayed() {
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
-			if (!hasSetCameraTransformables)
+			if( !hasSetCameraTransformables )
 			{
-				setSGCamera(sgCamera);
+				setSGCamera( sgCamera );
 				hasSetCameraTransformables = true;
 			}
 			double timeCurr = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
@@ -855,8 +858,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.timePrev = timeCurr;
 		}
 	}
-	
+
 	private int cameraIndex = 0;
+
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
 		if( onscreenLookingGlass != null ) {
@@ -869,6 +873,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			return null;
 		}
 	}
+
 	public edu.cmu.cs.dennisc.scenegraph.Transformable getSGCameraTransformable() {
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getSGCamera();
 		if( sgCamera != null ) {
@@ -878,46 +883,46 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 
-	protected boolean isComponentListener(java.awt.Component component)
+	protected boolean isComponentListener( java.awt.Component component )
 	{
-		for (MouseListener listener : component.getMouseListeners())
+		for( MouseListener listener : component.getMouseListeners() )
 		{
-			if (listener == this)
+			if( listener == this )
 			{
 				return true;
 			}
 		}
-		for (MouseMotionListener listener : component.getMouseMotionListeners())
+		for( MouseMotionListener listener : component.getMouseMotionListeners() )
 		{
-			if (listener == this)
+			if( listener == this )
 			{
 				return true;
 			}
 		}
-		for (KeyListener listener : component.getKeyListeners())
+		for( KeyListener listener : component.getKeyListeners() )
 		{
-			if (listener == this)
+			if( listener == this )
 			{
 				return true;
 			}
 		}
-		for (MouseWheelListener listener : component.getMouseWheelListeners())
+		for( MouseWheelListener listener : component.getMouseWheelListeners() )
 		{
-			if (listener == this)
+			if( listener == this )
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public void addManipulator( ManipulatorConditionSet manipulator )
 	{
-		this.manipulators.add(manipulator);
+		this.manipulators.add( manipulator );
 	}
-	
+
 	public void addListeners( java.awt.Component component ) {
-		if (!this.isComponentListener(component))
+		if( !this.isComponentListener( component ) )
 		{
 			component.addMouseListener( this );
 			component.addMouseMotionListener( this );
@@ -925,9 +930,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			component.addMouseWheelListener( this );
 		}
 	}
-	
+
 	public void removeListeners( java.awt.Component component ) {
-		if (this.isComponentListener(component))
+		if( this.isComponentListener( component ) )
 		{
 			component.removeMouseListener( this );
 			component.removeMouseMotionListener( this );
@@ -935,49 +940,48 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			component.removeMouseWheelListener( this );
 		}
 	}
-	
+
 	public void addManipulationListener( ManipulationListener listener )
 	{
 		this.manipulationEventManager.addManipulationListener( listener );
 	}
-	
+
 	public void removeManipulationListener( ManipulationListener listener )
 	{
 		this.manipulationEventManager.removeManipulationListener( listener );
 	}
-	
-	public void addHandle(ManipulationHandle handle)
+
+	public void addHandle( ManipulationHandle handle )
 	{
 		this.handleManager.addHandle( handle );
 	}
 
-	private ManipulationHandle getHandleForComponent( Component c)
+	private ManipulationHandle getHandleForComponent( Component c )
 	{
-		if (c == null)
+		if( c == null )
 		{
 			return null;
 		}
-		org.lgna.croquet.components.Component lgc = org.lgna.croquet.components.Component.lookup(c);
-		if (lgc instanceof ManipulationHandle)
+		org.lgna.croquet.components.Component lgc = org.lgna.croquet.components.Component.lookup( c );
+		if( lgc instanceof ManipulationHandle )
 		{
 			return (ManipulationHandle)lgc;
 		}
 		else
 		{
-			return getHandleForComponent(c.getParent());
+			return getHandleForComponent( c.getParent() );
 		}
 	}
-	
-	public void mousePressed( java.awt.event.MouseEvent e ) 
+
+	public void mousePressed( java.awt.event.MouseEvent e )
 	{
 		this.currentInputState.setMouseState( e.getButton(), true );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DOWN );
-		this.currentInputState.setInputEvent(e);
+		this.currentInputState.setInputEvent( e );
 		e.getComponent().requestFocus();
-		
-		
-		if (e.getComponent() == this.lookingGlassComponent)
+
+		if( e.getComponent() == this.lookingGlassComponent )
 		{
 			this.currentInputState.setClickPickResult( pickIntoScene( e.getPoint() ) );
 		}
@@ -989,177 +993,177 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.stopMouseWheel();
 		this.handleStateChange();
 	}
-	
-	public void mouseReleased( java.awt.event.MouseEvent e) {
+
+	public void mouseReleased( java.awt.event.MouseEvent e ) {
 		this.currentInputState.setMouseState( e.getButton(), false );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_UP );
-		this.currentInputState.setInputEvent(e);
-		if (this.currentRolloverComponent == this.lookingGlassComponent)
+		this.currentInputState.setInputEvent( e );
+		if( this.currentRolloverComponent == this.lookingGlassComponent )
 		{
 			this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
 		}
 		else
 		{
-			this.currentInputState.setRolloverHandle( this.getHandleForComponent( this.currentRolloverComponent ));
+			this.currentInputState.setRolloverHandle( this.getHandleForComponent( this.currentRolloverComponent ) );
 		}
 		this.currentInputState.setTimeCaptured();
 		this.handleStateChange();
 	}
-	
+
 	private PickResult pickIntoScene( Point mouseLocation )
 	{
-//		PrintUtilities.println(System.currentTimeMillis()+": Picking object");
+		//		PrintUtilities.println(System.currentTimeMillis()+": Picking object");
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
 		assert onscreenLookingGlass != null;
 		edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = onscreenLookingGlass.getPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.NOT_REQUIRED );
-//		PrintUtilities.println(System.currentTimeMillis()+": Done picking object");
+		//		PrintUtilities.println(System.currentTimeMillis()+": Done picking object");
 		return pickResult;
 	}
-	
+
 	public void mouseDragged( java.awt.event.MouseEvent e ) {
 		try {
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DRAGGED );
 			this.currentInputState.setTimeCaptured();
-			this.currentInputState.setInputEvent(e);
+			this.currentInputState.setInputEvent( e );
 			this.handleStateChange();
 		} catch( RuntimeException re ) {
 			re.printStackTrace();
 		}
 	}
-	
+
 	public void mouseMoved( java.awt.event.MouseEvent e ) {
-		if (!this.currentInputState.getIsDragEvent()) //If we haven't already handled it through dragAndDrop
+		if( !this.currentInputState.getIsDragEvent() ) //If we haven't already handled it through dragAndDrop
 		{
 			Component c = e.getComponent();
 			this.currentInputState.setMouseLocation( e.getPoint() );
-			if (e.getComponent() == this.lookingGlassComponent)
+			if( e.getComponent() == this.lookingGlassComponent )
 			{
 				//Don't pick into the scene if a mouse button is already down 
-				if (!this.currentInputState.isAnyMouseButtonDown())
-				{			
+				if( !this.currentInputState.isAnyMouseButtonDown() )
+				{
 					this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
 				}
 			}
 			else
 			{
-				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
+				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ) );
 			}
 			this.currentInputState.setTimeCaptured();
-			this.currentInputState.setInputEvent(e);
-			if (shouldStopMouseWheel(e.getPoint()))
+			this.currentInputState.setInputEvent( e );
+			if( shouldStopMouseWheel( e.getPoint() ) )
 			{
 				this.stopMouseWheel();
 			}
 			this.handleStateChange();
 		}
 	}
-	
-	private Point getDragAndDropPoint(org.lgna.croquet.history.DragStep dragAndDropContext)
+
+	private Point getDragAndDropPoint( org.lgna.croquet.history.DragStep dragAndDropContext )
 	{
 		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.Point pointInLookingGlass = javax.swing.SwingUtilities.convertPoint( eSource.getComponent(), eSource.getPoint(), this.getAWTComponent() );
 		return pointInLookingGlass;
 	}
-	
-	public void dragUpdated(org.lgna.croquet.history.DragStep dragAndDropContext) {
-		this.currentInputState.setDragAndDropContext(dragAndDropContext);
-		this.currentInputState.setIsDragEvent(true);
-		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
+
+	public void dragUpdated( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+		this.currentInputState.setDragAndDropContext( dragAndDropContext );
+		this.currentInputState.setIsDragEvent( true );
+		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
 		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent(dragAndDropContext.getLatestMouseEvent());
+		this.currentInputState.setInputEvent( dragAndDropContext.getLatestMouseEvent() );
 		handleStateChange();
 	}
-	
-	public void dragEntered(org.lgna.croquet.history.DragStep dragAndDropContext) {
-		this.currentInputState.setDragAndDropContext(dragAndDropContext);
-		this.currentInputState.setIsDragEvent(true);
-		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
+
+	public void dragEntered( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+		this.currentInputState.setDragAndDropContext( dragAndDropContext );
+		this.currentInputState.setIsDragEvent( true );
+		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
 		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent(dragAndDropContext.getLatestMouseEvent());
+		this.currentInputState.setInputEvent( dragAndDropContext.getLatestMouseEvent() );
 		handleStateChange();
 	}
-	
-	public void dragExited(org.lgna.croquet.history.DragStep dragAndDropContext) {		
-		this.currentInputState.setDragAndDropContext(dragAndDropContext); //We need a valid dragAndDropContext when we handle the update
-		this.currentInputState.setIsDragEvent(false);
-		this.currentInputState.setMouseLocation( getDragAndDropPoint(dragAndDropContext) );
+
+	public void dragExited( org.lgna.croquet.history.DragStep dragAndDropContext ) {
+		this.currentInputState.setDragAndDropContext( dragAndDropContext ); //We need a valid dragAndDropContext when we handle the update
+		this.currentInputState.setIsDragEvent( false );
+		this.currentInputState.setMouseLocation( getDragAndDropPoint( dragAndDropContext ) );
 		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent(dragAndDropContext.getLatestMouseEvent());
+		this.currentInputState.setInputEvent( dragAndDropContext.getLatestMouseEvent() );
 		handleStateChange();
-		this.currentInputState.setDragAndDropContext(null);
+		this.currentInputState.setDragAndDropContext( null );
 	}
-	
+
 	public void mouseWheelMoved( MouseWheelEvent e ) {
 		this.currentInputState.setMouseWheelState( e.getWheelRotation() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_WHEEL );
 		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent(e);
-		if (this.mouseWheelStartLocation == null)
+		this.currentInputState.setInputEvent( e );
+		if( this.mouseWheelStartLocation == null )
 		{
-			this.mouseWheelStartLocation = new Point(e.getPoint());
+			this.mouseWheelStartLocation = new Point( e.getPoint() );
 		}
 		this.mouseWheelTimeoutTime = MOUSE_WHEEL_TIMEOUT_TIME;
 		this.handleStateChange();
 	}
-	
+
 	public void keyPressed( java.awt.event.KeyEvent e ) {
 		this.currentInputState.setKeyState( e.getKeyCode(), true );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_DOWN );
 		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent(e);
+		this.currentInputState.setInputEvent( e );
 		handleStateChange();
-		
+
 	}
-	
+
 	public void keyReleased( java.awt.event.KeyEvent e ) {
 		this.currentInputState.setKeyState( e.getKeyCode(), false );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_UP );
 		this.currentInputState.setTimeCaptured();
-		this.currentInputState.setInputEvent(e);
+		this.currentInputState.setInputEvent( e );
 		handleStateChange();
 
 	}
 
 	public void mouseClicked( MouseEvent e ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void mouseEntered( MouseEvent e ) {
 		this.currentRolloverComponent = e.getComponent();
-		if (!this.currentInputState.isAnyMouseButtonDown())
+		if( !this.currentInputState.isAnyMouseButtonDown() )
 		{
 			this.currentInputState.setMouseLocation( e.getPoint() );
-			if (e.getComponent() == this.lookingGlassComponent)
+			if( e.getComponent() == this.lookingGlassComponent )
 			{
 				this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
 			}
 			else
 			{
-				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
+				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ) );
 			}
 			this.currentInputState.setTimeCaptured();
-			this.currentInputState.setInputEvent(e);
+			this.currentInputState.setInputEvent( e );
 			this.handleStateChange();
 		}
 	}
 
 	public void mouseExited( MouseEvent e ) {
 		this.currentRolloverComponent = null;
-		if (!this.currentInputState.isAnyMouseButtonDown())
+		if( !this.currentInputState.isAnyMouseButtonDown() )
 		{
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			this.currentInputState.setRolloverHandle( null );
 			this.currentInputState.setRolloverPickResult( null );
 			this.currentInputState.setTimeCaptured();
-			this.currentInputState.setInputEvent(e);
+			this.currentInputState.setInputEvent( e );
 			this.handleStateChange();
 		}
-		
+
 	}
-	
+
 	public HandleManager getHandleManager()
 	{
 		return this.handleManager;
@@ -1167,7 +1171,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 
 	public void keyTyped( KeyEvent e ) {
 		//System.out.println("Key typed!");
-		
+
 	}
-	
+
 }

@@ -47,20 +47,24 @@ package edu.cmu.cs.dennisc.property.event;
  */
 public class AddListPropertyEvent<E> extends ListPropertyEvent<E> {
 	private int m_startIndex;
-	private java.util.Collection<? extends E> m_collection; 
+	private java.util.Collection<? extends E> m_collection;
+
 	public AddListPropertyEvent( edu.cmu.cs.dennisc.property.ListProperty<E> source, int startIndex, E... elements ) {
 		super( source );
 		m_startIndex = startIndex;
 		m_collection = java.util.Arrays.asList( elements );
 	}
+
 	public AddListPropertyEvent( edu.cmu.cs.dennisc.property.ListProperty<E> source, int startIndex, java.util.Collection<? extends E> elements ) {
 		super( source );
 		m_startIndex = startIndex;
 		m_collection = elements;
 	}
+
 	public int getStartIndex() {
 		return m_startIndex;
 	}
+
 	public java.util.Collection<? extends E> getElements() {
 		return m_collection;
 	}

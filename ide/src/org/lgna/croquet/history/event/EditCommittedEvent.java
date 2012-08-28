@@ -46,13 +46,15 @@ package org.lgna.croquet.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class EditCommittedEvent extends Event< org.lgna.croquet.history.CompletionStep > {
-	private final org.lgna.croquet.edits.Edit< ? > edit;
-	public EditCommittedEvent( org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+public class EditCommittedEvent extends Event<org.lgna.croquet.history.CompletionStep> {
+	private final org.lgna.croquet.edits.Edit<?> edit;
+
+	public EditCommittedEvent( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		super( step );
 		this.edit = edit;
 	}
-	public org.lgna.croquet.edits.Edit< ? > getEdit() {
+
+	public org.lgna.croquet.edits.Edit<?> getEdit() {
 		return this.edit;
 	}
 }

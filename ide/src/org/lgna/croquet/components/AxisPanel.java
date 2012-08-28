@@ -48,6 +48,7 @@ package org.lgna.croquet.components;
  */
 public abstract class AxisPanel extends Panel {
 	private final int axis;
+
 	protected AxisPanel( org.lgna.croquet.Composite composite, int axis, Component<?>... components ) {
 		super( composite );
 		this.axis = axis;
@@ -55,9 +56,11 @@ public abstract class AxisPanel extends Panel {
 			this.addComponent( component );
 		}
 	}
+
 	protected int getBoxLayoutPad() {
 		return 0;
 	}
+
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		int pad = this.getBoxLayoutPad();
@@ -67,6 +70,7 @@ public abstract class AxisPanel extends Panel {
 			return new javax.swing.BoxLayout( jPanel, this.axis );
 		}
 	}
+
 	public void addComponent( Component<?> component ) {
 		this.internalAddComponent( component );
 	}

@@ -23,25 +23,25 @@ public class EventRecorder {
 		return instance;
 	}
 
-	public void recordEvent(AbstractEvent e) {
-		synchronized ( startTime ) {
-			if (e instanceof SceneActivationEvent) {
-				if( startTime == -1 ){
+	public void recordEvent( AbstractEvent e ) {
+		synchronized( startTime ) {
+			if( e instanceof SceneActivationEvent ) {
+				if( startTime == -1 ) {
 					startTime = System.currentTimeMillis();
 					eventMap.put( startTime - startTime, e );
 				}
-			} else if ( startTime != -1 ) {
+			} else if( startTime != -1 ) {
 				eventMap.put( System.currentTimeMillis() - startTime, e );
 			} else {
-				System.out.println( "WARNING EVENTS NOT BEING PROPERLY RECORDED " + e.getClass());
+				System.out.println( "WARNING EVENTS NOT BEING PROPERLY RECORDED " + e.getClass() );
 				Thread.dumpStack();
 			}
 		}
 	}
 
-	public AbstractEvent eventToFire(Long time) {
-		if (remainingEvents.get(0) < time) {
-			return eventMap.get(remainingEvents.remove(0));
+	public AbstractEvent eventToFire( Long time ) {
+		if( remainingEvents.get( 0 ) < time ) {
+			return eventMap.get( remainingEvents.remove( 0 ) );
 		}
 		return null;
 	}

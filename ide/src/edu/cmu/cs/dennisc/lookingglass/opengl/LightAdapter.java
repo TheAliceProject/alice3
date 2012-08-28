@@ -43,12 +43,19 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_AMBIENT;
+import static javax.media.opengl.GL.GL_CONSTANT_ATTENUATION;
+import static javax.media.opengl.GL.GL_LINEAR_ATTENUATION;
+import static javax.media.opengl.GL.GL_POSITION;
+import static javax.media.opengl.GL.GL_QUADRATIC_ATTENUATION;
+import static javax.media.opengl.GL.GL_SPOT_CUTOFF;
+import static javax.media.opengl.GL.GL_SPOT_DIRECTION;
+import static javax.media.opengl.GL.GL_SPOT_EXPONENT;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Light > extends AffectorAdapter< E > {
+public abstract class LightAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Light> extends AffectorAdapter<E> {
 	private static java.nio.FloatBuffer s_ambientBlackBuffer = null;
 
 	private static float[] s_position = new float[ 4 ];
@@ -58,7 +65,7 @@ public abstract class LightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Ligh
 
 	private float[] m_color = { Float.NaN, Float.NaN, Float.NaN, Float.NaN };
 	private float m_brightness = Float.NaN;
-	
+
 	protected float[] getPosition( float[] rv ) {
 		rv[ 0 ] = 0;
 		rv[ 1 ] = 0;
@@ -66,24 +73,30 @@ public abstract class LightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Ligh
 		rv[ 3 ] = 0;
 		return rv;
 	}
+
 	protected float[] getSpotDirection( float[] rv ) {
 		rv[ 0 ] = 0;
 		rv[ 1 ] = 0;
 		rv[ 2 ] = -1;
 		return rv;
 	}
+
 	protected float getSpotExponent() {
 		return 0;
 	}
+
 	protected float getSpotCutoff() {
 		return 180;
 	}
+
 	protected float getConstantAttenuation() {
 		return 1;
 	}
+
 	protected float getLinearAttenuation() {
 		return 0;
 	}
+
 	protected float getQuadraticAttenuation() {
 		return 0;
 	}
@@ -101,7 +114,6 @@ public abstract class LightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Ligh
 			s_ambientBlackBuffer.rewind();
 		}
 		rc.gl.glLightfv( id, GL_AMBIENT, s_ambientBlackBuffer );
-		
 
 		//todo: should lights' diffuse and specular colors be separated in the scenegraph?
 		rc.setLightColor( id, m_color, m_brightness );
@@ -123,6 +135,7 @@ public abstract class LightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Ligh
 		rc.gl.glLightf( id, GL_LINEAR_ATTENUATION, getLinearAttenuation() );
 		rc.gl.glLightf( id, GL_QUADRATIC_ATTENUATION, getQuadraticAttenuation() );
 	}
+
 	@Override
 	public void setup( RenderContext rc ) {
 		if( this instanceof AmbientLightAdapter ) {
@@ -132,6 +145,7 @@ public abstract class LightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Ligh
 			setup( rc, id );
 		}
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.color ) {

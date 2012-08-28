@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.Composite<?> > {
+public abstract class Panel extends View<javax.swing.JPanel, org.lgna.croquet.Composite<?>> {
 	protected class DefaultJPanel extends javax.swing.JPanel {
 		public DefaultJPanel() {
 			this.setOpaque( false );
@@ -54,15 +54,18 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		}
+
 		@Override
 		public void invalidate() {
 			super.invalidate();
 			Panel.this.refreshIfNecessary();
 		}
+
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 		}
+
 		@Override
 		public java.awt.Dimension getMaximumSize() {
 			java.awt.Dimension rv = super.getMaximumSize();
@@ -76,13 +79,17 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 	public Panel() {
 		this( null );
 	}
+
 	public Panel( org.lgna.croquet.Composite<?> composite ) {
 		super( composite );
 	}
+
 	protected javax.swing.JPanel createJPanel() {
 		return new DefaultJPanel();
 	}
+
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
+
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = this.createJPanel();
@@ -90,22 +97,29 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 		rv.setLayout( layoutManager );
 		return rv;
 	}
-	public void removeComponent( Component< ? > component ) {
+
+	public void removeComponent( Component<?> component ) {
 		this.internalRemoveComponent( component );
 	}
-	public void forgetAndRemoveComponent( Component< ? > component ) {
+
+	public void forgetAndRemoveComponent( Component<?> component ) {
 		this.internalForgetAndRemoveComponent( component );
 	}
+
 	public void removeAllComponents() {
 		this.internalRemoveAllComponents();
 	}
+
 	public void forgetAndRemoveAllComponents() {
 		this.internalForgetAndRemoveAllComponents();
 	}
+
 	private boolean isInTheMidstOfRefreshing = false;
 	private boolean isRefreshNecessary = true;
+
 	protected void internalRefresh() {
 	}
+
 	private void refreshIfNecessary() {
 		if( this.isRefreshNecessary ) {
 			if( this.isInTheMidstOfRefreshing ) {
@@ -124,15 +138,18 @@ public abstract class Panel extends View< javax.swing.JPanel, org.lgna.croquet.C
 			}
 		}
 	}
+
 	public final void refreshLater() {
 		Panel.this.isRefreshNecessary = true;
 		Panel.this.revalidateAndRepaint();
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		this.refreshIfNecessary();
 		super.handleDisplayable();
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();

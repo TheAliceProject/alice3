@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class TurnToFace extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=TurnToFace.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = TurnToFace.class )
 	public static interface Detail {
 	}
+
 	private TurnToFace() {
 		super();
 	}

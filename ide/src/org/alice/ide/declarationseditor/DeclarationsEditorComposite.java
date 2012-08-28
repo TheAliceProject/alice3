@@ -46,16 +46,19 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposite< org.alice.ide.declarationseditor.components.TypeEditor > {
+public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.declarationseditor.components.TypeEditor> {
 	private static class SingletonHolder {
 		private static DeclarationsEditorComposite instance = new DeclarationsEditorComposite();
 	}
+
 	public static DeclarationsEditorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private DeclarationsEditorComposite() {
 		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
 	}
+
 	@Override
 	protected org.alice.ide.declarationseditor.components.TypeEditor createView() {
 		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance();

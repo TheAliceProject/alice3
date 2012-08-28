@@ -53,11 +53,12 @@ import edu.cmu.cs.dennisc.scenegraph.StandIn;
  * @author David Culyba
  */
 public enum MovementType {
-	STOOD_UP(0),
-	LOCAL(1),
-	ABSOLUTE(2);
+	STOOD_UP( 0 ),
+	LOCAL( 1 ),
+	ABSOLUTE( 2 );
 
 	private int index;
+
 	private MovementType( int index ) {
 		this.index = index;
 	}
@@ -68,73 +69,67 @@ public enum MovementType {
 	public int getIndex() {
 		return this.index;
 	}
-	
-	public boolean isIndex(int index)
+
+	public boolean isIndex( int index )
 	{
-		return (this.index == index);
+		return ( this.index == index );
 	}
-	
-	public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount)
+
+	public void applyTranslation( AbstractTransformable transformable, Point3 translateAmount )
 	{
-		switch (this)
+		switch( this )
 		{
-			case STOOD_UP:
-			{
-				StandIn standIn = new StandIn();
-				standIn.setVehicle( transformable );
-				standIn.setAxesOnlyToStandUp();
-				transformable.applyTranslation( translateAmount, standIn );
-				break;
-			}
-			case LOCAL:
-			{
-				transformable.applyTranslation( translateAmount, transformable );
-				break;
-			}
-			case ABSOLUTE:
-			{
-				transformable.applyTranslation( translateAmount, AsSeenBy.SCENE );
-				break;
-			}
+		case STOOD_UP: {
+			StandIn standIn = new StandIn();
+			standIn.setVehicle( transformable );
+			standIn.setAxesOnlyToStandUp();
+			transformable.applyTranslation( translateAmount, standIn );
+			break;
+		}
+		case LOCAL: {
+			transformable.applyTranslation( translateAmount, transformable );
+			break;
+		}
+		case ABSOLUTE: {
+			transformable.applyTranslation( translateAmount, AsSeenBy.SCENE );
+			break;
+		}
 		}
 	}
-	
-	public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation)
+
+	public void applyRotation( AbstractTransformable transformable, Vector3 rotationAxis, Angle rotation )
 	{
-		switch (this)
+		switch( this )
 		{
-			case STOOD_UP:
-			{
-				StandIn standIn = new StandIn();
-				standIn.setVehicle( transformable );
-				standIn.setAxesOnlyToStandUp();
-				transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, standIn );
-				break;
-			}
-			case LOCAL:
-			{
-				transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, transformable );
-				break;
-			}
-			case ABSOLUTE:
-			{
-				transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, AsSeenBy.SCENE );
-				break;
-			}
+		case STOOD_UP: {
+			StandIn standIn = new StandIn();
+			standIn.setVehicle( transformable );
+			standIn.setAxesOnlyToStandUp();
+			transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, standIn );
+			break;
+		}
+		case LOCAL: {
+			transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, transformable );
+			break;
+		}
+		case ABSOLUTE: {
+			transformable.applyRotationAboutArbitraryAxis( rotationAxis, rotation, AsSeenBy.SCENE );
+			break;
+		}
 		}
 	}
-	
+
 	public static MovementType getMovementTypeForIndex( int index )
 	{
 		MovementType[] types = MovementType.values();
-		for ( MovementType currentType : types )
+		for( MovementType currentType : types )
 		{
-			if (currentType.isIndex( index ))
+			if( currentType.isIndex( index ) )
 			{
 				return currentType;
 			}
 		}
 		return null;
 	}
-	
+
 }

@@ -62,7 +62,7 @@ public class RoomIcon extends ShapeIcon {
 	private static final java.awt.geom.Point2D.Float b0 = new java.awt.geom.Point2D.Float( x0, yC );
 	private static final java.awt.geom.Point2D.Float c0 = new java.awt.geom.Point2D.Float( x0, yA );
 	private static final java.awt.geom.Point2D.Float d0 = new java.awt.geom.Point2D.Float( xA, yB );
-	
+
 	private static final java.awt.geom.Point2D.Float a1 = c0;
 	private static final java.awt.geom.Point2D.Float b1 = d0;
 	private static final java.awt.geom.Point2D.Float c1 = new java.awt.geom.Point2D.Float( x1, yA );
@@ -75,22 +75,25 @@ public class RoomIcon extends ShapeIcon {
 
 	private final java.awt.Stroke STROKE = new java.awt.BasicStroke( 0.0f );
 
-	private static final java.awt.Color SHADOW_COLOR = FILL_PAINT.darker(); 
-	private static final java.awt.Color FLOOR_COLOR = java.awt.Color.GRAY; 
+	private static final java.awt.Color SHADOW_COLOR = FILL_PAINT.darker();
+	private static final java.awt.Color FLOOR_COLOR = java.awt.Color.GRAY;
+
 	private static java.awt.Shape createFace( java.awt.geom.Point2D.Float a, java.awt.geom.Point2D.Float b, java.awt.geom.Point2D.Float c, java.awt.geom.Point2D.Float d, int width, int height ) {
 		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-		path.moveTo( a.x*width, a.y*height );
-		path.lineTo( b.x*width, b.y*height );
-		path.lineTo( c.x*width, c.y*height );
-		path.lineTo( d.x*width, d.y*height );
+		path.moveTo( a.x * width, a.y * height );
+		path.lineTo( b.x * width, b.y * height );
+		path.lineTo( c.x * width, c.y * height );
+		path.lineTo( d.x * width, d.y * height );
 		path.closePath();
 		return path;
 	}
+
 	public RoomIcon( java.awt.Dimension size ) {
 		super( size );
 	}
+
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		java.awt.Stroke prevStroke = g2.getStroke();
 		try {
 			g2.setStroke( STROKE );
@@ -98,20 +101,20 @@ public class RoomIcon extends ShapeIcon {
 			java.awt.Shape face1 = createFace( a1, b1, c1, d1, width, height );
 			java.awt.Shape face2 = createFace( a2, b2, c2, d2, width, height );
 
-			g2.setPaint( new java.awt.GradientPaint( width, height/2, FLOOR_COLOR.darker(),  0, height, FLOOR_COLOR.brighter() ) );
+			g2.setPaint( new java.awt.GradientPaint( width, height / 2, FLOOR_COLOR.darker(), 0, height, FLOOR_COLOR.brighter() ) );
 			g2.fill( face1 );
 			g2.setPaint( SHADOW_COLOR );
 			g2.fill( face0 );
 			g2.setPaint( fillPaint );
 			g2.fill( face2 );
-			
+
 			g2.setPaint( drawPaint );
-//			drawLine( g2, x0*width, yA*height, xA*width, yB*height );
-//			drawLine( g2, x1*width, yA*height, xA*width, yB*height );
+			//			drawLine( g2, x0*width, yA*height, xA*width, yB*height );
+			//			drawLine( g2, x1*width, yA*height, xA*width, yB*height );
 			g2.draw( face1 );
-			
+
 			g2.setPaint( java.awt.Color.GRAY );
-			drawLine( g2, xA*width, y1*height, xA*width, yB*height );
+			drawLine( g2, xA * width, y1 * height, xA * width, yB * height );
 		} finally {
 			g2.setStroke( prevStroke );
 		}

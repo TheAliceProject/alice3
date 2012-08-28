@@ -48,38 +48,46 @@ package org.lgna.croquet;
 public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel {
 	private javax.swing.Icon icon;
 	private String name;
+
 	public LabelMenuSeparatorModel( java.util.UUID id ) {
 		super( id );
 	}
+
 	@Override
-	public Iterable< ? extends Model > getChildren() {
+	public Iterable<? extends Model> getChildren() {
 		return java.util.Collections.emptyList();
 	}
+
 	@Override
 	protected void localize() {
 		this.name = this.findDefaultLocalizedText();
 	}
+
 	public String getName() {
 		return this.name;
 	}
+
 	public javax.swing.Icon getIcon() {
 		return this.icon;
 	}
+
 	public void setIcon( javax.swing.Icon icon ) {
 		this.icon = icon;
 	}
+
 	@Override
 	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 		String name = this.getName();
-		if( name != null || this.icon != null ) {
+		if( ( name != null ) || ( this.icon != null ) ) {
 			rv.addSeparator( new org.lgna.croquet.components.MenuTextSeparator( this ) );
 		} else {
 			rv.addSeparator();
 		}
 		return rv;
 	}
+
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		return rv;
 	}
 }

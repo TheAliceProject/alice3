@@ -47,12 +47,15 @@ package org.alice.ide.cascade;
  */
 public class BlockStatementIndexPairContext implements ExpressionCascadeContext {
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+
 	public BlockStatementIndexPairContext( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
+
 	public org.lgna.project.ast.Expression getPreviousExpression() {
 		return null;
 	}
+
 	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 		return this.blockStatementIndexPair;
 	}

@@ -51,9 +51,10 @@ public class ConstructorArgumentUtilities {
 	private ConstructorArgumentUtilities() {
 		throw new AssertionError();
 	}
-	public static org.lgna.project.ast.AbstractConstructor getContructor0( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	public static org.lgna.project.ast.AbstractConstructor getContructor0( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
-			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractConstructor > constructors = type.getDeclaredConstructors();
+			java.util.ArrayList<? extends org.lgna.project.ast.AbstractConstructor> constructors = type.getDeclaredConstructors();
 			if( constructors.size() > 0 ) {
 				org.lgna.project.ast.AbstractConstructor constructor0 = constructors.get( 0 );
 				return constructor0;
@@ -62,9 +63,9 @@ public class ConstructorArgumentUtilities {
 		return null;
 	}
 
-	public static org.lgna.project.ast.AbstractType<?,?,?> getParameter0Type( org.lgna.project.ast.AbstractConstructor constructor ) {
+	public static org.lgna.project.ast.AbstractType<?, ?, ?> getParameter0Type( org.lgna.project.ast.AbstractConstructor constructor ) {
 		if( constructor != null ) {
-			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor.getRequiredParameters();
+			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
 			if( requiredParameters.size() > 0 ) {
 				org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
 				return parameter0.getValueType();
@@ -72,7 +73,8 @@ public class ConstructorArgumentUtilities {
 		}
 		return null;
 	}
-	public static org.lgna.project.ast.AbstractType<?,?,?> getContructor0Parameter0Type( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	public static org.lgna.project.ast.AbstractType<?, ?, ?> getContructor0Parameter0Type( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return getParameter0Type( getContructor0( type ) );
 	}
 
@@ -86,6 +88,7 @@ public class ConstructorArgumentUtilities {
 		}
 		return null;
 	}
+
 	public static org.lgna.project.ast.JavaField getArgumentField( org.lgna.project.ast.AbstractConstructor constructor ) {
 		if( constructor instanceof org.lgna.project.ast.NamedUserConstructor ) {
 			org.lgna.project.ast.NamedUserConstructor namedUserConstructor = (org.lgna.project.ast.NamedUserConstructor)constructor;
@@ -94,6 +97,7 @@ public class ConstructorArgumentUtilities {
 		}
 		return null;
 	}
+
 	public static org.lgna.project.ast.JavaField getArgumentField( org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		if( instanceCreation != null ) {
 			org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();

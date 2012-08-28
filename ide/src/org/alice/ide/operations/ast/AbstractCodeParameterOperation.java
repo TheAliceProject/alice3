@@ -50,24 +50,30 @@ import org.lgna.project.ast.UserParameter;
  */
 public abstract class AbstractCodeParameterOperation extends AbstractCodeActionOperation {
 	private UserParameter parameter;
-	private NodeListProperty< UserParameter > parametersProperty;
-	public AbstractCodeParameterOperation( java.util.UUID individualId, NodeListProperty< UserParameter > parametersProperty, UserParameter parameter ) {
+	private NodeListProperty<UserParameter> parametersProperty;
+
+	public AbstractCodeParameterOperation( java.util.UUID individualId, NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
 		super( individualId );
 		this.parametersProperty = parametersProperty;
 		this.parameter = parameter;
 	}
-	public NodeListProperty< UserParameter > getParametersProperty() {
+
+	public NodeListProperty<UserParameter> getParametersProperty() {
 		return this.parametersProperty;
 	}
+
 	protected org.lgna.project.ast.UserParameter getParameter() {
 		return this.parameter;
 	}
+
 	protected int getIndex() {
 		return this.parametersProperty.indexOf( this.parameter );
 	}
+
 	protected int getParameterCount() {
 		return this.parametersProperty.size();
 	}
+
 	@Override
 	protected org.lgna.project.ast.UserCode getCode() {
 		return (org.lgna.project.ast.UserCode)this.parameter.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class );

@@ -63,11 +63,12 @@ public class VolumeLevelControl extends javax.swing.JSlider {
 		this.setMajorTickSpacing( 100 );
 		this.setPaintTicks( true );
 	}
-	
+
 	public double getVolumeLevel() {
 		return this.getValue() / 100.0;
 	}
+
 	public void setVolumeLevel( double volumeLevel ) {
-		this.setValue( (int)(volumeLevel*100+0.5) );
+		this.setValue( (int)( ( volumeLevel * 100 ) + 0.5 ) );
 	}
 }

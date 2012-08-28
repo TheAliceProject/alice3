@@ -48,11 +48,13 @@ package org.alice.stageide.aboutpane;
 class ViewEULAAction extends javax.swing.AbstractAction {
 	private String text;
 	private String title;
+
 	public ViewEULAAction( String text, String title ) {
 		this.putValue( javax.swing.Action.NAME, "View EULA..." );
 		this.text = text;
 		this.title = title;
 	}
+
 	public void actionPerformed( java.awt.event.ActionEvent e ) {
 		javax.swing.JTextArea textArea = new javax.swing.JTextArea();
 		textArea.setText( text );
@@ -80,20 +82,23 @@ class ViewEULAsPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSprin
 		super( 8, 4 );
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 	}
+
 	@Override
 	public java.awt.Dimension getMaximumSize() {
 		return this.getPreferredSize();
 	}
+
 	private static java.awt.Component createLabel( String text ) {
 		return new javax.swing.JLabel( text, javax.swing.SwingConstants.TRAILING );
 	}
+
 	@Override
-	protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
+	protected java.util.List<java.awt.Component[]> addComponentRows( java.util.List<java.awt.Component[]> rv ) {
 		java.awt.Component aliceLabel = createLabel( "<html>Alice 3:</html>" );
-//		java.awt.Component lookingGlassLabel = createLabel( "<html>Looking Glass Walk & Touch API:</html>" );
+		//		java.awt.Component lookingGlassLabel = createLabel( "<html>Looking Glass Walk & Touch API:</html>" );
 		java.awt.Component simsLabel = createLabel( "<html>The Sims <sup>TM</sup> 2 Art Assets:</html>" );
 		rv.add( new java.awt.Component[] { aliceLabel, new javax.swing.JButton( new ViewEULAAction( org.lgna.project.License.TEXT, "License Agreement: Alice 3" ) ) } );
-//		rv.add( new java.awt.Component[] { lookingGlassLabel, new javax.swing.JButton( new ViewEULAAction( edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "License Agreement: Looking Glass Walk & Touch API" ) ) } );
+		//		rv.add( new java.awt.Component[] { lookingGlassLabel, new javax.swing.JButton( new ViewEULAAction( edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "License Agreement: Looking Glass Walk & Touch API" ) ) } );
 		rv.add( new java.awt.Component[] { simsLabel, new javax.swing.JButton( new ViewEULAAction( edu.cmu.cs.dennisc.nebulous.License.TEXT, "License Agreement: The Sims (TM) 2 Art Assets" ) ) } );
 		return rv;
 	}
@@ -108,7 +113,7 @@ public class AboutPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAx
 		this.add( javax.swing.Box.createVerticalStrut( 24 ) );
 		this.add( this.createViewEULAsPane() );
 		this.add( javax.swing.Box.createVerticalStrut( 24 ) );
-		
+
 		String[] sponsors = { "Sun Foundation", "Electonic Arts Foundation", "National Science Foundation", "Hearst Foundations", "Heinz Endowments", "Google", "Defense Advanced Research Projects Agency", "Disney and Hyperion" };
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Alice 3 is supported by:<br><ul>" );
@@ -130,7 +135,7 @@ public class AboutPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAx
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
 		this.add( this.createLabel( "Alice 3 is dedicated to Randy." ) );
 	}
-	
+
 	private java.awt.Component createLabel( String text ) {
 		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", "<html><body>" + text + "</body></html>" );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
@@ -139,10 +144,11 @@ public class AboutPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAx
 		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		return rv;
 	}
+
 	private java.awt.Component createViewEULAsPane() {
 		return new ViewEULAsPane();
 	}
-	
+
 	public static void main( String[] args ) {
 		AboutPane aboutPane = new AboutPane();
 		javax.swing.JOptionPane.showMessageDialog( null, aboutPane, "About Alice 3", javax.swing.JOptionPane.PLAIN_MESSAGE );

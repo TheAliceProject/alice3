@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparator {
-	private static java.util.Map< org.lgna.project.ast.AbstractParameter, ParameterNameSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractParameter, ParameterNameSeparator> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ParameterNameSeparator getInstance( org.lgna.project.ast.AbstractParameter parameter ) {
 		assert parameter != null;
 		ParameterNameSeparator rv = map.get( parameter );
@@ -59,24 +60,27 @@ public class ParameterNameSeparator extends org.lgna.croquet.CascadeLabelSeparat
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.AbstractParameter parameter;
+
 	private ParameterNameSeparator( org.lgna.project.ast.AbstractParameter parameter ) {
 		super( java.util.UUID.fromString( "39d27239-d4c8-4c98-9194-fdafc189da72" ) );
 		this.parameter = parameter;
 	}
-	
+
 	@Override
 	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
 		String rv = this.parameter.getRepr( org.lgna.croquet.Application.getLocale() );
-//		if( rv != null && rv.length() > 0 && "null".equals( rv )==false ) {
-//			//pass
-//		} else {
-//			rv = "part";
-//		}
+		//		if( rv != null && rv.length() > 0 && "null".equals( rv )==false ) {
+		//			//pass
+		//		} else {
+		//			rv = "part";
+		//		}
 		return rv;
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ParameterNameSeparator >( this, org.lgna.project.ast.AbstractParameter.class, this.parameter );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterNameSeparator> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ParameterNameSeparator>( this, org.lgna.project.ast.AbstractParameter.class, this.parameter );
 	}
 }

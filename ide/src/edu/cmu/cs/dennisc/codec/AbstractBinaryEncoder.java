@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.codec;
 
+import java.util.UUID;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,8 +62,8 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 
 	public final void encode( boolean[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( boolean element : array ) {
+			this.encode( element );
 		}
 	}
 
@@ -69,77 +71,87 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 		this.encodeArrayLength( array );
 		this.write( array );
 	}
+
 	public final void encode( char[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( char element : array ) {
+			this.encode( element );
 		}
 	}
+
 	public final void encode( double[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( double element : array ) {
+			this.encode( element );
 		}
 	}
+
 	public final void encode( float[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( float element : array ) {
+			this.encode( element );
 		}
 	}
+
 	public final void encode( int[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( int element : array ) {
+			this.encode( element );
 		}
 	}
+
 	public final void encode( long[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( long element : array ) {
+			this.encode( element );
 		}
 	}
+
 	public final void encode( short[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( short element : array ) {
+			this.encode( element );
 		}
 	}
+
 	public final void encode( String[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( String element : array ) {
+			this.encode( element );
 		}
 	}
-	public final void encode( Enum< ? >[] array ) {
+
+	public final void encode( Enum<?>[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( Enum<?> element : array ) {
+			this.encode( element );
 		}
 	}
+
 	public final void encode( java.util.UUID[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( UUID element : array ) {
+			this.encode( element );
 		}
 	}
+
 	public final void encode( BinaryEncodableAndDecodable[] array ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ] );
+		for( BinaryEncodableAndDecodable element : array ) {
+			this.encode( element );
 			//array[ i ].encode( this );
 		}
 	}
 
-	public final void encode( ReferenceableBinaryEncodableAndDecodable[] array, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map ) {
+	public final void encode( ReferenceableBinaryEncodableAndDecodable[] array, java.util.Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
 		this.encodeArrayLength( array );
-		for( int i=0; i<array.length; i++ ) {
-			this.encode( array[ i ], map );
+		for( ReferenceableBinaryEncodableAndDecodable element : array ) {
+			this.encode( element, map );
 			//array[ i ].encode( this, map );
 		}
 	}
-	
-	public final void encode( Enum< ? > value ) {
+
+	public final void encode( Enum<?> value ) {
 		boolean isNotNull = value != null;
 		this.encode( isNotNull );
 		if( isNotNull ) {
@@ -166,7 +178,7 @@ public abstract class AbstractBinaryEncoder implements BinaryEncoder {
 		}
 	}
 
-	public final void encode( ReferenceableBinaryEncodableAndDecodable value, java.util.Map< ReferenceableBinaryEncodableAndDecodable, Integer > map ) {
+	public final void encode( ReferenceableBinaryEncodableAndDecodable value, java.util.Map<ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
 		if( value != null ) {
 			this.encode( value.getClass().getName() );
 			this.encode( value.hashCode() );

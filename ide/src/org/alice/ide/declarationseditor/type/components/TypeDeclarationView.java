@@ -62,7 +62,7 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		org.lgna.croquet.components.ToolPalette functionsToolPalette = org.alice.ide.declarationseditor.type.FunctionsOpenState.getInstance( type ).createToolPalette( new FunctionList( type ) );
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
-		org.lgna.croquet.components.JComponent< ? > fieldPanel;
+		org.lgna.croquet.components.JComponent<?> fieldPanel;
 		if( ide.getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
 			fieldPanel = new org.lgna.croquet.components.PageAxisPanel(
 					new org.lgna.croquet.components.Label( "managed", 1.2f ),
@@ -72,7 +72,7 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 					new org.lgna.croquet.components.Label( "unmanaged", 1.2f ),
 					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ),
 					new UnmanagedFieldList( type )
-			);
+					);
 		} else {
 			fieldPanel = new UnmanagedFieldList( type );
 		}
@@ -84,7 +84,7 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 			toolPalette.getTitle().scaleFont( 1.5f );
 			toolPalette.getMainComponent().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
 		}
-		
+
 		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 		pageAxisPanel.addComponent( constructorsToolPalette );
 		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
@@ -93,35 +93,48 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		pageAxisPanel.addComponent( functionsToolPalette );
 		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 		pageAxisPanel.addComponent( fieldsToolPalette );
-		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,14,0,0 ) );
+		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 0, 0 ) );
 		pageAxisPanel.setBackgroundColor( this.getBackgroundColor() );
 
 		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-			.pageStart( pageAxisPanel )
-		.build();
+				.pageStart( pageAxisPanel )
+				.build();
 		borderPanel.setBackgroundColor( this.getBackgroundColor() );
-		
+
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( borderPanel );
 		scrollPane.setBorder( null );
-        scrollPane.setBothScrollBarIncrements( 12, 24 );
+		scrollPane.setBothScrollBarIncrements( 12, 24 );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
-		
+
 		org.alice.ide.ast.declaration.views.TypeHeader typeHeader = new org.alice.ide.ast.declaration.views.TypeHeader( type );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
-		this.addPageStartComponent( typeHeader );
-		this.addCenterComponent( scrollPane );
+
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		if( org.alice.ide.croquet.models.ast.ExportTypeOperation.IS_READY_FOR_PRIME_TIME ) {
+			org.lgna.croquet.components.LineAxisPanel header = new org.lgna.croquet.components.LineAxisPanel(
+					typeHeader,
+					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+					org.alice.ide.croquet.models.ast.ExportTypeOperation.getInstance( type ).createButton()
+					);
+			this.addComponent( header, Constraint.PAGE_START );
+		} else {
+			this.addComponent( typeHeader, Constraint.PAGE_START );
+		}
+		this.addComponent( scrollPane, Constraint.CENTER );
 
 		for( javax.swing.JComponent component : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( typeHeader.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.DESCENDANTS_ONLY, javax.swing.JComponent.class ) ) {
 			edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( component, 1.2f );
 		}
 	}
+
 	@Override
-	public void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+	public void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
 	}
+
 	@Override
 	public boolean isPrintSupported() {
 		return false;
 	}
+
 	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
 		throw new RuntimeException( "todo" );
 	}

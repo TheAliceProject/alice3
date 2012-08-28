@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TextComponent<J extends javax.swing.text.JTextComponent> extends ViewController< J, org.lgna.croquet.StringState > {
+public abstract class TextComponent<J extends javax.swing.text.JTextComponent> extends ViewController<J, org.lgna.croquet.StringState> {
 	private javax.swing.border.BevelBorder outsideBorder = new javax.swing.border.BevelBorder( javax.swing.border.BevelBorder.LOWERED );
 	private edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder insideBorder = new edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder();
 	private javax.swing.border.CompoundBorder border = new javax.swing.border.CompoundBorder( outsideBorder, insideBorder );
@@ -61,16 +61,20 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 		this.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
 		this.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
 	}
+
 	public java.awt.Insets getMargin() {
 		//return this.getAwtComponent().getMargin();
 		return this.insideBorder.getBorderInsets();
 	}
+
 	public void setMargin( java.awt.Insets margin ) {
 		//this.getAwtComponent().setMargin( margin );
 		this.insideBorder.setBorderInsets( margin );
 	}
+
 	public void selectAll() {
 		this.getAwtComponent().selectAll();
 	}
+
 	public abstract void updateTextForBlankCondition( String textForBlankCondition );
 }

@@ -44,25 +44,25 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * @author alice
- *
+ * 
  */
 public abstract class TexturedVisual extends edu.cmu.cs.dennisc.scenegraph.Visual {
 	private org.lgna.story.Paint paint;
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance();
-	
+
 	public TexturedVisual() {
 		this.sgAppearance.setDiffuseColorTextureClamped( true );
 		this.frontFacingAppearance.setValue( this.sgAppearance );
 	}
-	
+
 	public edu.cmu.cs.dennisc.scenegraph.TexturedAppearance getAppearance() {
 		return sgAppearance;
 	}
-	
+
 	public edu.cmu.cs.dennisc.texture.Texture getTexture() {
 		return this.sgAppearance.diffuseColorTexture.getValue();
 	}
-	
+
 	public void setTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
 		this.sgAppearance.diffuseColorTexture.setValue( texture );
 		boolean isDiffuseColorTextureAlphaBlended;
@@ -73,11 +73,13 @@ public abstract class TexturedVisual extends edu.cmu.cs.dennisc.scenegraph.Visua
 		}
 		this.sgAppearance.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
 	}
+
 	public org.lgna.story.Paint getPaint() {
 		return this.paint;
 	}
+
 	public void setPaint( org.lgna.story.Paint paint ) {
-		if (this.paint != paint) {
+		if( this.paint != paint ) {
 			this.paint = paint;
 			this.sgAppearance.setDiffuseColor( org.lgna.story.ImplementationAccessor.getColor4f( paint, edu.cmu.cs.dennisc.color.Color4f.WHITE ) );
 			this.setTexture( org.lgna.story.ImplementationAccessor.getTexture( paint, null ) );

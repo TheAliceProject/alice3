@@ -49,19 +49,20 @@ package org.lgna.project.ast;
 public class AssertStatement extends Statement {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			throw new RuntimeException( "todo" );
 		}
 	};
 	public ExpressionProperty message = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			throw new RuntimeException( "todo" );
 		}
 	};
 
 	public AssertStatement() {
 	}
+
 	public AssertStatement( Expression expression, Expression message ) {
 		this.expression.setValue( expression );
 		this.message.setValue( message );

@@ -43,107 +43,124 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.ValueTemplate;
+import org.lgna.project.annotations.Visibility;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class SModel extends SMovableTurnable implements MutableRider, Resizable, Visual {
 	@Override
-	/*package-private*/abstract org.lgna.story.implementation.ModelImp getImplementation();
+	/* package-private */abstract org.lgna.story.implementation.ModelImp getImplementation();
 
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
 
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
 	public Paint getPaint() {
 		return this.getImplementation().paint.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setPaint( Paint paint, SetPaint.Detail... details ) {
 		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
+	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public Scale getScale() {
 		return Scale.createInstance( this.getImplementation().getScale() );
 	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setScale( Scale scale, SetScale.Detail... details ) {
 		this.getImplementation().animateSetScale( Scale.getInternal( scale ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public Size getSize() {
 		return Size.createInstance( this.getImplementation().getSize() );
 	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void setSize( Size size, SetSize.Detail... details ) {
 		this.getImplementation().animateSetSize( Size.getInternal( size ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public Double getWidth() {
 		return this.getImplementation().getSize().x;
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setWidth( Number width, SetWidth.Detail... details ) {
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
 		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public Double getHeight() {
 		return this.getImplementation().getSize().y;
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setHeight( Number height, SetHeight.Detail... details ) {
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
 		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public Double getDepth() {
 		return this.getImplementation().getSize().z;
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setDepth( Number depth, SetDepth.Detail... details ) {
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
 		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void resize( Number factor, Resize.Detail... details ) {
 		this.getImplementation().animateResize( factor.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void resizeWidth( Number factor, ResizeWidth.Detail... details ) {
 		this.getImplementation().animateResizeWidth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void resizeHeight( Number factor, ResizeHeight.Detail... details ) {
 		this.getImplementation().animateResizeHeight( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void resizeDepth( Number factor, ResizeDepth.Detail... details ) {
 		this.getImplementation().animateResizeDepth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	
 
-//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-//		this.getImplementation().addMouseButtonListener( mouseButtonListener );
-//	}
-//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-//		this.getImplementation().removeMouseButtonListener( mouseButtonListener );
-//	}
+	//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+	//		this.getImplementation().addMouseButtonListener( mouseButtonListener );
+	//	}
+	//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
+	//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
+	//		this.getImplementation().removeMouseButtonListener( mouseButtonListener );
+	//	}
 }

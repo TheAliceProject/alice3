@@ -49,6 +49,7 @@ public class BooleanProperty extends InstanceProperty<Boolean> {
 	public BooleanProperty( InstancePropertyOwner owner, Boolean value ) {
 		super( owner, value );
 	}
+
 	@Override
 	public void setValue( PropertyOwner owner, Boolean value ) {
 		assert value != null;
@@ -59,6 +60,6 @@ public class BooleanProperty extends InstanceProperty<Boolean> {
 
 	public void setValueAsInteger( Integer value ) {
 		assert value != null;
-		this.setValue( value!=0 );
+		this.setValue( value != 0 );
 	}
 }

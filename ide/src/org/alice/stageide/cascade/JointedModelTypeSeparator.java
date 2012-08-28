@@ -47,8 +47,9 @@ package org.alice.stageide.cascade;
  * @author Dennis Cosgrove
  */
 public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSeparator {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, JointedModelTypeSeparator > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized JointedModelTypeSeparator getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, JointedModelTypeSeparator> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized JointedModelTypeSeparator getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		assert type != null;
 		JointedModelTypeSeparator rv = map.get( type );
 		if( rv != null ) {
@@ -59,12 +60,14 @@ public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSepa
 		}
 		return rv;
 	}
-	private final org.lgna.project.ast.AbstractType<?,?,?> type;
-	private JointedModelTypeSeparator( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+
+	private JointedModelTypeSeparator( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( java.util.UUID.fromString( "200467b6-6cd7-45c1-850f-b853fa695187" ) );
 		this.type = type;
 	}
-	
+
 	@Override
 	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
 		StringBuilder sb = new StringBuilder();
@@ -72,8 +75,9 @@ public class JointedModelTypeSeparator extends org.lgna.croquet.CascadeLabelSepa
 		sb.append( " Joints" );
 		return sb.toString();
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< JointedModelTypeSeparator >( this, org.lgna.project.ast.AbstractType.class, this.type );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<JointedModelTypeSeparator> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<JointedModelTypeSeparator>( this, org.lgna.project.ast.AbstractType.class, this.type );
 	}
 }

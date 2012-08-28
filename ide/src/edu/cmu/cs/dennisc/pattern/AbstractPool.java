@@ -45,20 +45,23 @@ package edu.cmu.cs.dennisc.pattern;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPool< E extends Reusable > {
-	private java.util.Stack< E > available = new java.util.Stack< E >();
+public abstract class AbstractPool<E extends Reusable> {
+	private java.util.Stack<E> available = new java.util.Stack<E>();
+
 	protected abstract E createInstance();
+
 	public E acquire() {
 		E rv;
 		synchronized( this.available ) {
 			if( this.available.size() > 0 ) {
-				rv = this.available.pop(); 
+				rv = this.available.pop();
 			} else {
 				rv = this.createInstance();
 			}
 		}
 		return rv;
 	}
+
 	public void release( E e ) {
 		synchronized( this.available ) {
 			this.available.push( e );

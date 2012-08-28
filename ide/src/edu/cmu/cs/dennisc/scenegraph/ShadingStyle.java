@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * NONE, FLAT, or SMOOTH.
- *
+ * 
  * @see Visual#setShadingStyle
  * @author Dennis Cosgrove
  */

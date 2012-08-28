@@ -46,12 +46,14 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractMouseEventTrigger extends ComponentEventTrigger<java.awt.event.MouseEvent> {
-	public AbstractMouseEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.MouseEvent mouseEvent ) {
+	public AbstractMouseEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.MouseEvent mouseEvent ) {
 		super( origin, viewController, mouseEvent );
 	}
+
 	public AbstractMouseEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected java.awt.Point getPoint() {
 		return this.getEvent().getPoint();

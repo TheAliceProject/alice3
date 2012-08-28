@@ -51,8 +51,9 @@ public class HeadTabView extends org.lgna.croquet.components.RowSpringPanel {
 		super( composite, 8, 8 );
 		java.awt.Color backgroundColor = org.alice.stageide.person.components.MainPanel.BACKGROUND_COLOR;
 		this.setBackgroundColor( backgroundColor );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
+
 	@Override
 	protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
 		org.alice.stageide.personresource.HeadTabComposite composite = (org.alice.stageide.personresource.HeadTabComposite)this.getComposite();

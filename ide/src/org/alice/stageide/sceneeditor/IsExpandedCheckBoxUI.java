@@ -63,6 +63,7 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 			}
 		}
 	}
+
 	private java.awt.Paint getBackgroundPaint( javax.swing.ButtonModel model ) {
 		if( model.isPressed() ) {
 			return null;
@@ -74,6 +75,7 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 			}
 		}
 	}
+
 	@Override
 	protected void paintText( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle textRect, String text ) {
 		//		super.paintText( g, b, textRect, text )
@@ -94,8 +96,8 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 		g2.setPaint( forePaint );
 		g2.drawString( text, x, y );
 	}
-	
-	private void paintLines( java.awt.Graphics2D g2, boolean isSelected, int width, int height ) { 
+
+	private void paintLines( java.awt.Graphics2D g2, boolean isSelected, int width, int height ) {
 		if( isSelected ) {
 			int x = 0;
 			int y = 0;
@@ -120,7 +122,7 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 			g2.drawLine( x + minor, y + minor, x + MAJOR, y + minor );
 		}
 	}
-	
+
 	@Override
 	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
 		super.paint( g, c );

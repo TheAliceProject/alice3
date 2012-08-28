@@ -46,5 +46,5 @@ package org.lgna.story.font;
 /**
  * @author Dennis Cosgrove
  */
-public interface WeightAttribute extends Attribute< Float > {
+public interface WeightAttribute extends Attribute<Float> {
 }

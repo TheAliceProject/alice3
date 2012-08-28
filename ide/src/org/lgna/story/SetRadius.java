@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class SetRadius extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetRadius.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetRadius.class )
 	public static interface Detail {
 	}
+
 	private SetRadius() {
 		super();
 	}

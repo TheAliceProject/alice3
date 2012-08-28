@@ -72,7 +72,7 @@ public class ImageCache {
 		}
 		return image;
 	}
-	
+
 	//todo:
 	//public static void releaseMap
 	//public static void forgetSet

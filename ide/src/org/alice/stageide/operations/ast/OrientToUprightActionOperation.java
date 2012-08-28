@@ -50,6 +50,7 @@ public class OrientToUprightActionOperation extends TransformableFieldTileAction
 		super( java.util.UUID.fromString( "3d18487c-4e92-40d2-b101-104487a370c0" ), field );
 		this.setName( "Orient to Upright" );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lgna.story.implementation.TransformableImp transformableImp ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = transformableImp.getAbsoluteTransformation();

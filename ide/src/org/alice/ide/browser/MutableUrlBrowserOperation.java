@@ -50,11 +50,14 @@ public class MutableUrlBrowserOperation extends BrowserOperation {
 	public MutableUrlBrowserOperation( java.util.UUID id ) {
 		super( id );
 	}
+
 	private java.net.URL url;
+
 	@Override
 	protected java.net.URL getUrl() {
 		return this.url;
 	}
+
 	public void setUrl( java.net.URL url ) {
 		this.url = url;
 	}

@@ -48,12 +48,15 @@ package edu.cmu.cs.dennisc.java.awt;
 public class BeveledRectangle extends BeveledShape {
 	public BeveledRectangle() {
 	}
+
 	public BeveledRectangle( java.awt.geom.Rectangle2D.Float rect ) {
 		initialize( rect );
 	}
+
 	public BeveledRectangle( float x0, float y0, float width, float height ) {
 		initialize( x0, y0, width, height );
 	}
+
 	public void initialize( float x, float y, float width, float height ) {
 		java.awt.geom.Rectangle2D.Float base = new java.awt.geom.Rectangle2D.Float( x, y, width, height );
 		java.awt.geom.GeneralPath high = new java.awt.geom.GeneralPath();
@@ -62,7 +65,7 @@ public class BeveledRectangle extends BeveledShape {
 
 		float x1 = x + width;
 		float y1 = y + height;
-		
+
 		high.moveTo( x1, y );
 		high.lineTo( x, y );
 		high.lineTo( x, y1 );
@@ -70,9 +73,10 @@ public class BeveledRectangle extends BeveledShape {
 		shad.moveTo( x, y1 );
 		shad.lineTo( x1, y1 );
 		shad.lineTo( x1, y );
-		
+
 		initialize( base, high, neut, shad );
 	}
+
 	public void initialize( java.awt.geom.Rectangle2D.Float rect ) {
 		initialize( rect.x, rect.y, rect.width, rect.height );
 	}

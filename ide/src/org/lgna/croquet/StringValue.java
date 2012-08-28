@@ -47,17 +47,21 @@ package org.lgna.croquet;
  */
 public abstract class StringValue extends AbstractElement {
 	private final javax.swing.text.AbstractDocument document;
+
 	public StringValue( java.util.UUID id, javax.swing.text.AbstractDocument document ) {
 		super( id );
 		this.document = document;
 	}
+
 	@Override
 	protected void localize() {
 		this.setText( this.findDefaultLocalizedText() );
 	}
+
 	public javax.swing.text.AbstractDocument getDocument() {
 		return this.document;
 	}
+
 	public String getText() {
 		try {
 			return this.document.getText( 0, this.document.getLength() );
@@ -65,6 +69,7 @@ public abstract class StringValue extends AbstractElement {
 			throw new RuntimeException( ble );
 		}
 	}
+
 	public final void setText( java.lang.String text ) {
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );

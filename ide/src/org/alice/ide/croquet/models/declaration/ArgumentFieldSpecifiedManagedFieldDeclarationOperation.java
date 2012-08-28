@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class ArgumentFieldSpecifiedManagedFieldDeclarationOperation extends InitializerManagedFieldDeclarationOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractField, org.lgna.croquet.DropSite, ArgumentFieldSpecifiedManagedFieldDeclarationOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.croquet.DropSite, ArgumentFieldSpecifiedManagedFieldDeclarationOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static ArgumentFieldSpecifiedManagedFieldDeclarationOperation getInstance( org.lgna.project.ast.AbstractField field, org.lgna.croquet.DropSite dropSite ) {
 		ArgumentFieldSpecifiedManagedFieldDeclarationOperation rv = mapToMap.get( field, dropSite );
 		if( rv != null ) {
@@ -58,42 +59,43 @@ public class ArgumentFieldSpecifiedManagedFieldDeclarationOperation extends Init
 		}
 		return rv;
 	}
-	
+
 	private static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractField argumentField ) {
-		org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = argumentField.getValueType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = argumentField.getValueType();
 		org.lgna.project.ast.AbstractConstructor bogusConstructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( valueType );
 		org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( bogusConstructor.getDeclaringType().getFirstEncounteredJavaType(), (org.lgna.project.ast.JavaField)argumentField );
 		org.lgna.project.ast.AbstractConstructor constructor = namedUserType.constructors.get( 0 );
 		return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField ) );
 	}
+
 	private final org.lgna.project.ast.AbstractField field;
 	private final org.lgna.croquet.DropSite dropSite;
+
 	private ArgumentFieldSpecifiedManagedFieldDeclarationOperation( org.lgna.project.ast.AbstractField field, org.lgna.croquet.DropSite dropSite ) {
-		super( 
-				java.util.UUID.fromString( "a207504f-0f28-4e18-91ec-b7c3f26078fe" ), 
-				createInstanceCreation( field )
-		);
+		super(
+				java.util.UUID.fromString( "a207504f-0f28-4e18-91ec-b7c3f26078fe" ),
+				createInstanceCreation( field ) );
 		//this.constructor = constructor;
 		this.field = field;
 		this.dropSite = dropSite;
 	}
-	
+
 	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		org.alice.stageide.sceneeditor.draganddrop.SceneDropSite sceneDropSite = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.dropSite, org.alice.stageide.sceneeditor.draganddrop.SceneDropSite.class );
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform = sceneDropSite != null ? sceneDropSite.getTransform() : null;
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
-		org.lgna.project.ast.Statement[] doStatements = sceneEditor.getDoStatementsForAddField(field, initialTransform);
-		for (org.lgna.project.ast.Statement s : doStatements) {
-			rv.addDoStatement(s);
-		}	
-		org.lgna.project.ast.Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField(field);
-		for (org.lgna.project.ast.Statement s : undoStatements) {
-			rv.addUndoStatement(s);
+		org.lgna.project.ast.Statement[] doStatements = sceneEditor.getDoStatementsForAddField( field, initialTransform );
+		for( org.lgna.project.ast.Statement s : doStatements ) {
+			rv.addDoStatement( s );
+		}
+		org.lgna.project.ast.Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField( field );
+		for( org.lgna.project.ast.Statement s : undoStatements ) {
+			rv.addUndoStatement( s );
 		}
 		return rv;
 	}
-	
+
 	@Override
 	protected void localize() {
 		super.localize();

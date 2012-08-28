@@ -49,12 +49,11 @@ import org.alice.interact.event.ManipulationEvent;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 
-
 /**
  * @author David Culyba
  */
 public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHandle2D {
-	
+
 	private enum ControlState implements ImageBasedManipulationHandle2D.ImageState
 	{
 		Inactive( "images/drive.png" ),
@@ -67,71 +66,72 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 		ForwardRight( "images/driveForwardRight.png" ),
 		Left( "images/driveLeft.png" ),
 		Right( "images/driveRight.png" );
-		
+
 		private ImageIcon icon;
-		private ControlState(String resourceString)
+
+		private ControlState( String resourceString )
 		{
-			this.icon = new ImageIcon( this.getClass().getResource( resourceString ));
+			this.icon = new ImageIcon( this.getClass().getResource( resourceString ) );
 		}
-		
+
 		public ImageIcon getIcon()
 		{
 			return this.icon;
 		}
 	}
-	
+
 	private boolean turningLeft = false;
 	private boolean turningRight = false;
 	private boolean movingForward = false;
 	private boolean movingBackward = false;
-	
+
 	@Override
 	public PickHint getPickHint() {
 		return PickHint.PickType.TWO_D_HANDLE.pickHint();
 	}
-	
+
 	@Override
 	protected void setImageMask() {
 		this.imageMask = ImageUtilities.read( this.getClass().getResource( "images/driveMask.png" ) );
 	}
-	
+
 	@Override
 	protected ImageState getStateForManipulationStatus()
 	{
-		if (this.movingBackward && !this.turningLeft && !this.turningRight)
+		if( this.movingBackward && !this.turningLeft && !this.turningRight )
 		{
 			return ControlState.Back;
 		}
-		else if (this.movingBackward && this.turningLeft)
+		else if( this.movingBackward && this.turningLeft )
 		{
 			return ControlState.BackLeft;
 		}
-		else if (this.movingBackward && this.turningRight)
+		else if( this.movingBackward && this.turningRight )
 		{
 			return ControlState.BackRight;
 		}
-		else if (this.movingForward && !this.turningLeft && !this.turningRight)
+		else if( this.movingForward && !this.turningLeft && !this.turningRight )
 		{
 			return ControlState.Forward;
 		}
-		else if (this.movingForward && this.turningLeft)
+		else if( this.movingForward && this.turningLeft )
 		{
 			return ControlState.ForwardLeft;
 		}
-		else if (this.movingForward && this.turningRight)
+		else if( this.movingForward && this.turningRight )
 		{
 			return ControlState.ForwardRight;
 		}
-		else if (this.turningLeft && !this.movingForward && !this.movingBackward)
+		else if( this.turningLeft && !this.movingForward && !this.movingBackward )
 		{
 			return ControlState.Left;
 		}
-		else if (this.turningRight && !this.movingForward && !this.movingBackward)
+		else if( this.turningRight && !this.movingForward && !this.movingBackward )
 		{
 			return ControlState.Right;
 		}
 		//If we're not moving in one of the directions, choose highlighted or inactive
-		else if (this.state.isRollover())
+		else if( this.state.isRollover() )
 		{
 			return ControlState.Highlighted;
 		}
@@ -140,18 +140,25 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 			return ControlState.Inactive;
 		}
 	}
-	
-	
+
 	@Override
-	protected void setManipulationState(ManipulationEvent event, boolean isActive)
+	protected void setManipulationState( ManipulationEvent event, boolean isActive )
 	{
-		switch (event.getMovementDescription().direction)
+		switch( event.getMovementDescription().direction )
 		{
-		case BACKWARD : this.movingBackward = isActive; break;
-		case FORWARD : this.movingForward = isActive; break;
-		case UP : this.turningLeft = isActive; break;
-		case DOWN : this.turningRight = isActive; break;
+		case BACKWARD:
+			this.movingBackward = isActive;
+			break;
+		case FORWARD:
+			this.movingForward = isActive;
+			break;
+		case UP:
+			this.turningLeft = isActive;
+			break;
+		case DOWN:
+			this.turningRight = isActive;
+			break;
 		}
 	}
-	
+
 }

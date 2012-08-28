@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitOveralls implements MaleAdultFullBodyOutfit {
-	PLAIDNBLUE ,
- 	PLAIDNBROWN ,
- 	BLUEPLAIDRED ,
- 	GREENOVERALLS ,
- 	PINKREDBLUE ,
- 	YELLOWBLUE ;
+	PLAIDNBLUE,
+	PLAIDNBROWN,
+	BLUEPLAIDRED,
+	GREENOVERALLS,
+	PINKREDBLUE,
+	YELLOWBLUE;
 }

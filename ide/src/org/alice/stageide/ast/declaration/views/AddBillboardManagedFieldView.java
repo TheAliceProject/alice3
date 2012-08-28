@@ -50,8 +50,9 @@ public class AddBillboardManagedFieldView extends org.alice.ide.ast.declaration.
 	public AddBillboardManagedFieldView( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
 		super( composite );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createPropertiesSidePanel() {
+	protected org.lgna.croquet.components.JComponent<?> createPropertiesSidePanel() {
 		final org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite = (org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite)this.getComposite();
 		class SidePanel extends org.lgna.croquet.components.GridBagPanel {
 			public SidePanel() {

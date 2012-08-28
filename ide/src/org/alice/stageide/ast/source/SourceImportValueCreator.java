@@ -46,14 +46,16 @@ package org.alice.stageide.ast.source;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SourceImportValueCreator<S,R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<org.lgna.project.ast.InstanceCreation,R> {
+public abstract class SourceImportValueCreator<S, R extends org.lgna.common.Resource> extends org.lgna.croquet.ImportValueCreator<org.lgna.project.ast.InstanceCreation, R> {
 	private final Class<S> sourceCls;
 	private final Class<R> resourceCls;
-	public SourceImportValueCreator(java.util.UUID migrationId, org.lgna.croquet.importer.Importer<R> importer, Class<S> sourceCls, Class<R> resourceCls) {
+
+	public SourceImportValueCreator( java.util.UUID migrationId, org.lgna.croquet.importer.Importer<R> importer, Class<S> sourceCls, Class<R> resourceCls ) {
 		super( migrationId, importer );
 		this.sourceCls = sourceCls;
 		this.resourceCls = resourceCls;
 	}
+
 	@Override
 	protected org.lgna.project.ast.InstanceCreation createValueFromImportedValue( R importedValue ) {
 		org.lgna.project.ast.ResourceExpression resourceExpression = new org.lgna.project.ast.ResourceExpression( this.resourceCls, importedValue );

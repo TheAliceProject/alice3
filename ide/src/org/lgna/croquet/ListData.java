@@ -45,14 +45,19 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface ListData< T > {
+public interface ListData<T> {
 	public static interface Listener<T> {
 		//todo
 		public void changed();
 	}
-	public ItemCodec< T > getItemCodec();
+
+	public ItemCodec<T> getItemCodec();
+
 	public int getSize();
+
 	public T get( int index );
+
 	public void addListener( Listener<T> listener );
+
 	public void removeListener( Listener<T> listener );
 }

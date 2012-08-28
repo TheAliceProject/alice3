@@ -46,38 +46,40 @@ package org.alice.stageide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class IngredientFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public IngredientFillerInner( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public IngredientFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( type );
 	}
+
 	protected abstract Class<?>[] getClses( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender );
+
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-//		org.lookingglassandalice.storytelling.LifeStage[] lifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD }; 
-//		for( final org.lookingglassandalice.storytelling.LifeStage lifeStage : lifeStages ) {
-//			for( final org.lookingglassandalice.storytelling.Gender gender : org.lookingglassandalice.storytelling.Gender.values() ) {
-//				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name().toLowerCase() + " " + lifeStage.name().toLowerCase() ) {
-//					@Override
-//					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-//						for( final Class<?> cls : getClses( lifeStage, gender ) ) {
-//							blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( cls.getSimpleName() ) {
-//								@Override
-//								protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-//									org.lgna.project.ast.TypeDeclaredInJava type = org.lgna.project.ast.TypeDeclaredInJava.get( cls );
-//							 		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
-//							 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-//							 				IngredientFillerInner.this.addExpressionFillIn( blank, new org.lgna.project.ast.TypeExpression( type ), field );
-//							 			}
-//							 		}
-//								}
-//								@Override
-//								protected javax.swing.JComponent createMenuProxy() {
-//									return org.alice.ide.common.TypeComponent.createInstance( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) ).getAwtComponent();
-//								}
-//							} );
-//						}
-//					}
-//				} );
-//			}
-//		}
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		//		org.lookingglassandalice.storytelling.LifeStage[] lifeStages = { org.lookingglassandalice.storytelling.LifeStage.ADULT, org.lookingglassandalice.storytelling.LifeStage.CHILD }; 
+		//		for( final org.lookingglassandalice.storytelling.LifeStage lifeStage : lifeStages ) {
+		//			for( final org.lookingglassandalice.storytelling.Gender gender : org.lookingglassandalice.storytelling.Gender.values() ) {
+		//				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name().toLowerCase() + " " + lifeStage.name().toLowerCase() ) {
+		//					@Override
+		//					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+		//						for( final Class<?> cls : getClses( lifeStage, gender ) ) {
+		//							blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( cls.getSimpleName() ) {
+		//								@Override
+		//								protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+		//									org.lgna.project.ast.TypeDeclaredInJava type = org.lgna.project.ast.TypeDeclaredInJava.get( cls );
+		//							 		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
+		//							 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
+		//							 				IngredientFillerInner.this.addExpressionFillIn( blank, new org.lgna.project.ast.TypeExpression( type ), field );
+		//							 			}
+		//							 		}
+		//								}
+		//								@Override
+		//								protected javax.swing.JComponent createMenuProxy() {
+		//									return org.alice.ide.common.TypeComponent.createInstance( org.lgna.project.ast.TypeDeclaredInJava.get( cls ) ).getAwtComponent();
+		//								}
+		//							} );
+		//						}
+		//					}
+		//				} );
+		//			}
+		//		}
 	}
 }

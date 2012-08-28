@@ -47,15 +47,19 @@ package org.lgna.project.ast;
  */
 public class StringLiteral extends AbstractValueLiteral {
 	public edu.cmu.cs.dennisc.property.StringProperty value = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+
 	public StringLiteral() {
 	}
+
 	public StringLiteral( String value ) {
 		this.value.setValue( value );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return JavaType.getInstance( String.class );
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "\"" );
@@ -63,8 +67,9 @@ public class StringLiteral extends AbstractValueLiteral {
 		rv.append( "\"" );
 		return rv;
 	}
+
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty< ? > getValueProperty() {
+	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
 		return this.value;
 	}
 }

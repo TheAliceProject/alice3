@@ -50,11 +50,13 @@ class AbstractCodeHeaderPane extends org.lgna.croquet.components.Panel {
 	private org.lgna.project.ast.UserCode userCode;
 	private ParametersPane parametersPane;
 	private boolean isPreview;
+
 	public AbstractCodeHeaderPane( org.lgna.project.ast.UserCode userCode, ParametersPane parametersPane, boolean isPreview ) {
 		this.userCode = userCode;
 		this.parametersPane = parametersPane;
 		this.isPreview = isPreview;
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		if( this.isPreview ) {
@@ -63,17 +65,19 @@ class AbstractCodeHeaderPane extends org.lgna.croquet.components.Panel {
 			return new wrap.WrappedFlowLayout( java.awt.FlowLayout.LEADING, 0, 0 );
 		}
 	}
+
 	protected void addParametersPaneAndInstanceLineIfDesired() {
 		if( this.parametersPane != null ) {
 			this.addComponent( parametersPane );
 		}
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-//		boolean isInstanceLineDesired = ide.isEmphasizingClasses() && ide.isInstanceLineDesired();
-//		if( isInstanceLineDesired ) {
-//			this.addComponent( new InstanceLine( this.userCode ) );
-//		}
+		//		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		//		boolean isInstanceLineDesired = ide.isEmphasizingClasses() && ide.isInstanceLineDesired();
+		//		if( isInstanceLineDesired ) {
+		//			this.addComponent( new InstanceLine( this.userCode ) );
+		//		}
 	}
-	protected void addComponent( org.lgna.croquet.components.Component< ? > component ) {
+
+	protected void addComponent( org.lgna.croquet.components.Component<?> component ) {
 		this.internalAddComponent( component );
 	}
 }

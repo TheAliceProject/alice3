@@ -57,21 +57,21 @@ public class ProgramClosedException extends RuntimeException {
 				return false;
 			}
 			//unnecessary: getTargetException() is equivalent to getCause() according to docs
-//			boolean rv;
-//			if( cause != null ) {
-//				rv = isProgramClosedException( cause );
-//			} else {
-//				rv = false;
-//			}
-//			if( t instanceof java.lang.reflect.InvocationTargetException ) {
-//				java.lang.reflect.InvocationTargetException ite = (java.lang.reflect.InvocationTargetException)t;
-//				return rv || isProgramClosedException( ite.getTargetException() );
-//			} else {
-//				return rv;
-//			}
+			//			boolean rv;
+			//			if( cause != null ) {
+			//				rv = isProgramClosedException( cause );
+			//			} else {
+			//				rv = false;
+			//			}
+			//			if( t instanceof java.lang.reflect.InvocationTargetException ) {
+			//				java.lang.reflect.InvocationTargetException ite = (java.lang.reflect.InvocationTargetException)t;
+			//				return rv || isProgramClosedException( ite.getTargetException() );
+			//			} else {
+			//				return rv;
+			//			}
 		}
 	}
-	
+
 	public static void invokeAndCatchProgramClosedException( Runnable runnable ) {
 		try {
 			runnable.run();
@@ -84,12 +84,13 @@ public class ProgramClosedException extends RuntimeException {
 		}
 	}
 
-	
 	public ProgramClosedException() {
 	}
+
 	public ProgramClosedException( String message ) {
 		super( message );
 	}
+
 	public ProgramClosedException( String message, Throwable cause ) {
 		super( message, cause );
 	}

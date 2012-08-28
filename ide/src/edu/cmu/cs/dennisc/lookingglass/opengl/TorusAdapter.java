@@ -43,12 +43,12 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_QUAD_STRIP;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Torus > {
+public class TorusAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.Torus> {
 	private void glVertex( Context context, edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled ) {
 		double sinTheta = Math.sin( theta );
 		double cosTheta = Math.cos( theta );
@@ -87,11 +87,11 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 		//todo: add scenegraph hint
 		final int N = 32;
 		final int M = 16;
-		double dTheta = 2 * Math.PI / (N - 1);
-		double dPhi = 2 * Math.PI / (M - 1);
+		double dTheta = ( 2 * Math.PI ) / ( N - 1 );
+		double dPhi = ( 2 * Math.PI ) / ( M - 1 );
 
 		double theta = 0;
-		for( int i = 0; i < N - 1; i++ ) {
+		for( int i = 0; i < ( N - 1 ); i++ ) {
 			double phi = 0;
 			context.gl.glBegin( GL_QUAD_STRIP );
 			for( int j = 0; j < M; j++ ) {
@@ -108,6 +108,7 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 	protected void renderGeometry( RenderContext rc ) {
 		glTorus( rc, true );
 	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		int name;
@@ -120,9 +121,9 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 		glTorus( pc, false );
 		pc.gl.glPopName();
 	}
-	
+
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		//todo: solve for intersection with actual torus as opposed to just the plane
 		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 0 );
 		edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane = this.m_element.coordinatePlane.getValue();
@@ -133,8 +134,9 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 		} else {
 			direction.y = 1;
 		}
-		return GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0, 0, 0, direction.x, direction.y, direction.z);
+		return GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, 0, 0, 0, direction.x, direction.y, direction.z );
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.majorRadius ) {

@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitSloppySuit implements MaleAdultFullBodyOutfit {
-	BROWN ,
- 	BLUE ,
- 	BLUEBROWN ,
- 	BROWNWHITE ;
+	BROWN,
+	BLUE,
+	BLUEBROWN,
+	BROWNWHITE;
 }

@@ -46,30 +46,34 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InvocableReflectionProxy< E > extends MemberReflectionProxy< E > {
+public abstract class InvocableReflectionProxy<E> extends MemberReflectionProxy<E> {
 	protected ClassReflectionProxy[] parameterClassReflectionProxies;
+
 	public InvocableReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies ) {
 		super( declaringClassReflectionProxy );
 		this.parameterClassReflectionProxies = parameterClassReflectionProxies;
 	}
+
 	public InvocableReflectionProxy( E e, Class<?> declaringCls, Class<?>[] parameterClses ) {
 		super( e, declaringCls );
 		this.parameterClassReflectionProxies = ClassReflectionProxy.create( parameterClses );
 	}
+
 	@Override
 	protected int hashCodeNonReifiable() {
 		int rv = super.hashCodeNonReifiable();
 		for( ClassReflectionProxy parameterClassReflectionProxy : parameterClassReflectionProxies ) {
-			rv = 37*rv + parameterClassReflectionProxy.hashCode();
+			rv = ( 37 * rv ) + parameterClassReflectionProxy.hashCode();
 		}
 		return rv;
 	}
+
 	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy< ? > o ) {
+	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
 		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
 			InvocableReflectionProxy<E> other = (InvocableReflectionProxy<E>)o;
 			if( this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length ) {
-				for( int i=0; i<this.parameterClassReflectionProxies.length; i++ ) {
+				for( int i = 0; i < this.parameterClassReflectionProxies.length; i++ ) {
 					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.parameterClassReflectionProxies[ i ], other.parameterClassReflectionProxies[ i ] ) ) {
 						//pass
 					} else {
@@ -84,12 +88,13 @@ public abstract class InvocableReflectionProxy< E > extends MemberReflectionProx
 			return false;
 		}
 	}
-	
+
 	public ClassReflectionProxy[] getParameterClassReflectionProxies() {
 		return this.parameterClassReflectionProxies;
 	}
-	
+
 	protected abstract java.lang.annotation.Annotation[][] getReifiedParameterAnnotations();
+
 	public final java.lang.annotation.Annotation[][] getParameterAnnotations() {
 		java.lang.annotation.Annotation[][] rv = this.getReifiedParameterAnnotations();
 		if( rv != null ) {

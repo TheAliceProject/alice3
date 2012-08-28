@@ -46,22 +46,26 @@ package org.alice.ide.croquet.edits.ast.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class RemoveKeyedArgumentEdit extends org.lgna.croquet.edits.Edit< org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation > {
+public class RemoveKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.croquet.models.ast.keyed.RemoveKeyedArgumentOperation> {
 	public RemoveKeyedArgumentEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
 		super( completionStep );
 	}
+
 	public RemoveKeyedArgumentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		int index = this.getModel().getArgumentListProperty().indexOf( this.getModel().getArgument() );
 		this.getModel().getArgumentListProperty().remove( index );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		this.getModel().getArgumentListProperty().add( this.getModel().getArgument() );
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "add: " );

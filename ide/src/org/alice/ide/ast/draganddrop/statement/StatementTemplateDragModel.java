@@ -47,9 +47,10 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplateDragModel extends AbstractStatementDragModel implements org.lgna.cheshire.ast.StatementGenerator {
-	private final Class<? extends org.lgna.project.ast.Statement > statementCls;
+	private final Class<? extends org.lgna.project.ast.Statement> statementCls;
 	private final org.lgna.project.ast.Statement possiblyIncompleteStatement;
-	public StatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement > statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement ) {
+
+	public StatementTemplateDragModel( java.util.UUID id, Class<? extends org.lgna.project.ast.Statement> statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement ) {
 		super( id );
 		this.statementCls = statementCls;
 		this.possiblyIncompleteStatement = possiblyIncompleteStatement;
@@ -60,24 +61,29 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
 		}
 	}
+
 	public org.lgna.project.ast.Statement getPossiblyIncompleteStatement() {
 		return this.possiblyIncompleteStatement;
 	}
+
 	@Override
 	public boolean isAddEventListenerLikeSubstance() {
 		return false;
 	}
+
 	protected abstract org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair dropSite );
+
 	@Override
 	public final org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		assert dropSite instanceof org.alice.ide.ast.draganddrop.BlockStatementIndexPair;
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)dropSite;
 		return this.getDropModel( step, blockStatementIndexPair );
 	}
-	public Class< ? extends org.lgna.project.ast.Statement > getStatementCls() {
+
+	public Class<? extends org.lgna.project.ast.Statement> getStatementCls() {
 		return this.statementCls;
 	}
-	
+
 	public void generateAndAddStepsToTransaction( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = org.alice.ide.ast.draganddrop.BlockStatementIndexPair.createInstanceFromChildStatement( statement );
 		org.lgna.croquet.triggers.DropTrigger dropTrigger = org.lgna.croquet.triggers.DropTrigger.createGeneratorInstance( blockStatementIndexPair );
@@ -102,7 +108,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, statementInsertOperation, dropTrigger, null );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropModel );
-	//			assert false : dropModel;
+				//			assert false : dropModel;
 			}
 			org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
 			if( completionStep != null ) {

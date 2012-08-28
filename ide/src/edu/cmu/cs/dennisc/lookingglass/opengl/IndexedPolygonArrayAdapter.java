@@ -46,21 +46,25 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.scenegraph.IndexedPolygonArray > extends VertexGeometryAdapter< E > {
+public abstract class IndexedPolygonArrayAdapter<E extends edu.cmu.cs.dennisc.scenegraph.IndexedPolygonArray> extends VertexGeometryAdapter<E> {
 	private float m_uRatio = Float.NaN;
 	private float m_vRatio = Float.NaN;
 
 	protected abstract int getMode();
+
 	protected abstract int getIndicesPerPolygon();
+
 	protected abstract void renderPolygon( RenderContext rc, int[] polygonData, int i );
+
 	protected abstract void pickPolygon( PickContext pc, int[] polygonData, int i );
-	
+
 	@Override
-    protected boolean isDisplayListInNeedOfRefresh( RenderContext rc ) {
+	protected boolean isDisplayListInNeedOfRefresh( RenderContext rc ) {
 		float uRatio = rc.getURatio();
 		float vRatio = rc.getVRatio();
-    	return super.isDisplayListInNeedOfRefresh( rc ) || (Float.compare( uRatio, m_uRatio ) != 0) || (Float.compare( vRatio, m_vRatio ) != 0);
-    }
+		return super.isDisplayListInNeedOfRefresh( rc ) || ( Float.compare( uRatio, m_uRatio ) != 0 ) || ( Float.compare( vRatio, m_vRatio ) != 0 );
+	}
+
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
 		float uRatio = rc.getURatio();
@@ -79,6 +83,7 @@ public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.s
 		m_uRatio = uRatio;
 		m_vRatio = vRatio;
 	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		int mode = getMode();
@@ -98,7 +103,7 @@ public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.s
 				}
 			}
 		} else {
-			pc.gl.glBegin(mode );
+			pc.gl.glBegin( mode );
 			try {
 				for( int i = 0; i < polygonData.length; i += indicesPerPolygon ) {
 					pickPolygon( pc, polygonData, i );
@@ -109,6 +114,7 @@ public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.s
 		}
 		pc.gl.glPopName();
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.polygonData ) {
@@ -117,15 +123,16 @@ public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.s
 			super.propertyChanged( property );
 		}
 	}
+
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		if( subElement != -1 ) {
 			int indicesPerPolygon = getIndicesPerPolygon();
 			int[] polygonData = m_element.polygonData.getValueAsArray();
-			int index = subElement * indicesPerPolygon; 
-			if( 0 <= index && index < polygonData.length ) {
-				edu.cmu.cs.dennisc.scenegraph.Vertex v = accessVertexAt( polygonData[ index ] );				
-				GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, v.position.x, v.position.y, v.position.z, v.normal.x, v.normal.y, v.normal.z );
+			int index = subElement * indicesPerPolygon;
+			if( ( 0 <= index ) && ( index < polygonData.length ) ) {
+				edu.cmu.cs.dennisc.scenegraph.Vertex v = accessVertexAt( polygonData[ index ] );
+				GeometryAdapter.getIntersectionInSourceFromPlaneInLocal( rv, ray, m, v.position.x, v.position.y, v.position.z, v.normal.x, v.normal.y, v.normal.z );
 			} else {
 				rv.setNaN();
 			}

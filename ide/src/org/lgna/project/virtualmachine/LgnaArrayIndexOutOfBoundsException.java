@@ -49,17 +49,21 @@ package org.lgna.project.virtualmachine;
 public class LgnaArrayIndexOutOfBoundsException extends LgnaException {
 	private final int index;
 	private final int length;
+
 	public LgnaArrayIndexOutOfBoundsException( VirtualMachine vm, int index, int length ) {
 		super( vm );
 		this.index = index;
 		this.length = length;
 	}
+
 	public int getIndex() {
 		return this.index;
 	}
+
 	public int getLength() {
 		return this.length;
 	}
+
 	@Override
 	protected void appendDescription( StringBuilder sb ) {
 		sb.append( this.index );

@@ -44,10 +44,9 @@ package edu.cmu.cs.dennisc.nebulous;
 
 import org.lgna.story.resourceutilities.StorytellingResources;
 
-
 /**
  * @author alice
- *
+ * 
  */
 public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 
@@ -55,34 +54,41 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( edu.cmu.cs.dennisc.nebulous.NebulousTexture.class, edu.cmu.cs.dennisc.nebulous.NebulousTextureAdapter.class );
 		StorytellingResources.getInstance().loadSimsBundles();
 	}
-	
+
 	private final String m_textureKey;
 	private boolean m_isMipMappingDesired = true;
 	private boolean m_isPotentiallyAlphaBlended = false;
-	
-	public native void initializeIfNecessary(Object textureKey);
-	public native void setup(javax.media.opengl.GL gl);
-    public native void addReference();
-    public native void removeReference();
 
-	public NebulousTexture(String textureKey) {
+	public native void initializeIfNecessary( Object textureKey );
+
+	public native void setup( javax.media.opengl.GL gl );
+
+	public native void addReference();
+
+	public native void removeReference();
+
+	public NebulousTexture( String textureKey ) {
 		m_textureKey = textureKey;
-		this.initializeIfNecessary(m_textureKey);
+		this.initializeIfNecessary( m_textureKey );
 	}
+
 	public NebulousTexture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		m_textureKey = binaryDecoder.decodeString();
-		this.initializeIfNecessary(m_textureKey);
+		this.initializeIfNecessary( m_textureKey );
 	}
-	public void doSetup(javax.media.opengl.GL gl) {
+
+	public void doSetup( javax.media.opengl.GL gl ) {
 		assert m_textureKey != null;
-		this.initializeIfNecessary(m_textureKey);
-		this.setup(gl);
+		this.initializeIfNecessary( m_textureKey );
+		this.setup( gl );
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		assert m_textureKey != null;
-		binaryEncoder.encode(m_textureKey);
+		binaryEncoder.encode( m_textureKey );
 	}
+
 	public String getTextureKey() {
 		return m_textureKey;
 	}
@@ -91,42 +97,49 @@ public class NebulousTexture extends edu.cmu.cs.dennisc.texture.Texture {
 	public boolean isValid() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isMipMappingDesired() {
 		return m_isMipMappingDesired;
 	}
+
 	public void setMipMappingDesired( boolean isMipMappingDesired ) {
 		if( m_isMipMappingDesired != isMipMappingDesired ) {
 			m_isMipMappingDesired = isMipMappingDesired;
 			fireTextureChanged();
 		}
 	}
+
 	@Override
 	public boolean isPotentiallyAlphaBlended() {
 		return m_isPotentiallyAlphaBlended;
 	}
+
 	public void setPotentiallyAlphaBlended( boolean isPotentiallyAlphaBlended ) {
 		if( m_isPotentiallyAlphaBlended != isPotentiallyAlphaBlended ) {
 			m_isPotentiallyAlphaBlended = isPotentiallyAlphaBlended;
 			fireTextureChanged();
 		}
 	}
-	
+
 	@Override
 	public int getWidth() {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
+
 	@Override
 	public int getHeight() {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
+
 	public boolean isAnimated() {
 		return false;
 	}
+
 	public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy() {
 		return edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
 	}
+
 	public void paint( java.awt.Graphics2D g, int width, int height ) {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}

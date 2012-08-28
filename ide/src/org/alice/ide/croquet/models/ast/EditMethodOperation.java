@@ -58,12 +58,13 @@ package org.alice.ide.croquet.models.ast;
 //	}
 //}
 /**
-* @author Dennis Cosgrove
-*/
-public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast.UserMethod > {
-//	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();
+ * @author Dennis Cosgrove
+ */
+public class EditMethodOperation extends EditCodeOperation<org.lgna.project.ast.UserMethod> {
+	//	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();
 
-	private static java.util.Map< org.lgna.project.ast.UserMethod, EditMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserMethod, EditMethodOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized EditMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
 		EditMethodOperation rv = map.get( method );
 		if( rv != null ) {
@@ -74,22 +75,24 @@ public class EditMethodOperation extends EditCodeOperation< org.lgna.project.ast
 		}
 		return rv;
 	}
+
 	private EditMethodOperation( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ), method );
-//		StringBuilder sb = new StringBuilder();
-//		sb.append( "<html>" );
-//		sb.append( "Edit " );
-//		sb.append( "<strong>" );
-//		sb.append( method.getName() );
-//		if( method == org.alice.ide.IDE.getActiveInstance().getFocusedCode() ) {
-//			sb.append( " <font color=007F00>&#x2713;</font>" );
-//		}
-//		sb.append( "</strong>" );
-//		sb.append( "</html>" );
-//		this.setName( sb.toString() );
+		//		StringBuilder sb = new StringBuilder();
+		//		sb.append( "<html>" );
+		//		sb.append( "Edit " );
+		//		sb.append( "<strong>" );
+		//		sb.append( method.getName() );
+		//		if( method == org.alice.ide.IDE.getActiveInstance().getFocusedCode() ) {
+		//			sb.append( " <font color=007F00>&#x2713;</font>" );
+		//		}
+		//		sb.append( "</strong>" );
+		//		sb.append( "</html>" );
+		//		this.setName( sb.toString() );
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< EditMethodOperation >( this, org.lgna.project.ast.UserMethod.class, this.getCode() );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<EditMethodOperation> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<EditMethodOperation>( this, org.lgna.project.ast.UserMethod.class, this.getCode() );
 	}
 }

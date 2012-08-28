@@ -47,6 +47,7 @@ public class TypeNameValidator extends NodeNameValidator {
 	public TypeNameValidator( org.lgna.project.ast.NamedUserType type ) {
 		super( type );
 	}
+
 	@Override
 	public boolean isNameAvailable( String name ) {
 		//todo

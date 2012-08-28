@@ -51,12 +51,15 @@ public class BrowseReleaseNotesOperation extends org.alice.ide.operations.Incons
 	private static class SingletonHolder {
 		private static BrowseReleaseNotesOperation instance = new BrowseReleaseNotesOperation();
 	}
+
 	public static BrowseReleaseNotesOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private BrowseReleaseNotesOperation() {
 		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		BrowserOperation browserOperation = new BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ) ) {

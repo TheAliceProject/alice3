@@ -2,8 +2,8 @@ package edu.cmu.cs.dennisc.matt;
 
 import java.awt.Point;
 
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SThing;
 import org.lgna.story.implementation.CameraImp;
 import org.lgna.story.implementation.EntityImp;
 
@@ -15,9 +15,9 @@ public class IsInViewDetector {
 		EntityImp implementation = ImplementationAccessor.getImplementation( entity );
 		Point3[] points = implementation.getAxisAlignedMinimumBoundingBox().getHexahedron().getPoints();
 		Point3[] relativeToCamera = implementation.getAxisAlignedMinimumBoundingBox( camera ).getHexahedron().getPoints();
-		Point[] awtPoints = new Point[points.length];
-		for ( int i = 0; i < points.length; ++i ){
-			awtPoints[i] = implementation.transformToAwt( points[i], camera );
+		Point[] awtPoints = new Point[ points.length ];
+		for( int i = 0; i < points.length; ++i ) {
+			awtPoints[ i ] = implementation.transformToAwt( points[ i ], camera );
 		}
 		camera.getScene().getProgram().getOnscreenLookingGlass();
 		return isInView( camera, awtPoints, relativeToCamera );
@@ -31,25 +31,28 @@ public class IsInViewDetector {
 		boolean above = false;
 		boolean below = false;
 		for( int i = 0; i != awtPoints.length; ++i ) {
-			if ( awtPoints[i].x < width && awtPoints[i].x > 0 && awtPoints[i].y < height && awtPoints[i].y > 0 ){
-				if( relativeToCamera[i].z < 0 ) {
+			if( ( awtPoints[ i ].x < width ) && ( awtPoints[ i ].x > 0 ) && ( awtPoints[ i ].y < height ) && ( awtPoints[ i ].y > 0 ) ) {
+				if( relativeToCamera[ i ].z < 0 ) {
 					return true;
 				}
-			}else{
-				if ( awtPoints[i].x > width ) {
-					if( relativeToCamera[i].z < 0 ) {
+			} else {
+				if( awtPoints[ i ].x > width ) {
+					if( relativeToCamera[ i ].z < 0 ) {
 						rightOf = true;
 					}
-				} if ( awtPoints[i].x < 0 ) {
-					if( relativeToCamera[i].z < 0 ) {
+				}
+				if( awtPoints[ i ].x < 0 ) {
+					if( relativeToCamera[ i ].z < 0 ) {
 						leftOf = true;
 					}
-				} if ( awtPoints[i].y > height ) {
-					if( relativeToCamera[i].z < 0 ) {
+				}
+				if( awtPoints[ i ].y > height ) {
+					if( relativeToCamera[ i ].z < 0 ) {
 						above = true;
 					}
-				} if ( awtPoints[i].y < 0) {
-					if( relativeToCamera[i].z < 0 ) {
+				}
+				if( awtPoints[ i ].y < 0 ) {
+					if( relativeToCamera[ i ].z < 0 ) {
 						below = true;
 					}
 				}

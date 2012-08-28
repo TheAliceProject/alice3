@@ -42,32 +42,33 @@
  */
 package org.lgna.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class Proxy extends javax.swing.JPanel {
+/* package-private */abstract class Proxy extends javax.swing.JPanel {
 	private static java.awt.image.BufferedImage image;
+
 	private static java.awt.image.BufferedImage getOffscreenImage( int width, int height ) {
-		if( image == null || image.getWidth() != width || image.getHeight() != height ) {
+		if( ( image == null ) || ( image.getWidth() != width ) || ( image.getHeight() != height ) ) {
 			image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
 			//image = getGraphicsConfiguration().createCompatibleImage( width, height, java.awt.Transparency.TRANSLUCENT );
 		}
 		return image;
 	}
+
 	private DragComponent dragComponent;
 	private boolean isOverDropAcceptor = false;
 	private boolean isCopyDesired = false;
-	
 
 	public Proxy( DragComponent dragComponent ) {
 		this.dragComponent = dragComponent;
 		this.setOpaque( false );
 	}
-	
+
 	protected DragComponent getDragComponent() {
 		return this.dragComponent;
 	}
+
 	protected JComponent<?> getSubject() {
 		return this.dragComponent.getSubject();
 	}
@@ -82,13 +83,14 @@ package org.lgna.croquet.components;
 		}
 		return subject.getSize();
 	}
-//	public int getProxyWidth() {
-//		return this.getSubject().getWidth();
-//	}
-//	public int getProxyHeight() {
-//		return this.getSubject().getHeight();
-//	}
-	
+
+	//	public int getProxyWidth() {
+	//		return this.getSubject().getWidth();
+	//	}
+	//	public int getProxyHeight() {
+	//		return this.getSubject().getHeight();
+	//	}
+
 	protected void fillBounds( java.awt.Graphics2D g2 ) {
 		Component<?> subject = this.getSubject();
 		int x = 0;
@@ -102,14 +104,16 @@ package org.lgna.croquet.components;
 			g2.fillRect( x, y, width, height );
 		}
 	}
-	
+
 	protected abstract void paintProxy( java.awt.Graphics2D g2 );
+
 	protected abstract float getAlpha();
+
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
 		java.awt.Dimension size = this.getProxySize();
-		if( size.width > 0 && size.height > 0 ) {
+		if( ( size.width > 0 ) && ( size.height > 0 ) ) {
 			java.awt.image.BufferedImage image = Proxy.getOffscreenImage( size.width, size.height );
 			//todo: synchronize
 			//if( LayeredPaneProxy.image == null || LayeredPaneProxy.image.getWidth() < width || LayeredPaneProxy.image.getHeight() < height ) {
@@ -119,7 +123,7 @@ package org.lgna.croquet.components;
 			g2Image.dispose();
 
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			
+
 			java.awt.Composite prevComposite = g2.getComposite();
 
 			//g2.setComposite( java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.CLEAR, 0.0f ) );
@@ -131,7 +135,7 @@ package org.lgna.croquet.components;
 			//java.awt.Color bgColor = new java.awt.Color( 0, 0, 0, 0 );
 			//g2.drawImage( LayeredPaneimage, 0, 0, width, height, 0, 0, width, height, bgColor, this );
 			int availableHeight = this.getAvailableHeight();
-			if( availableHeight != -1 && availableHeight < size.height ) {
+			if( ( availableHeight != -1 ) && ( availableHeight < size.height ) ) {
 				g2.drawImage( image, 0, 0, size.width, availableHeight, 0, 0, size.width, size.height, this );
 			} else {
 				g2.drawImage( image, 0, 0, size.width, size.height, this );
@@ -140,7 +144,7 @@ package org.lgna.croquet.components;
 			g2.setComposite( prevComposite );
 		}
 	}
-	
+
 	public int getAvailableHeight() {
 		return this.getProxySize().height;
 	}
@@ -148,24 +152,29 @@ package org.lgna.croquet.components;
 	public boolean isOverDropAcceptor() {
 		return this.isOverDropAcceptor;
 	}
+
 	public void setOverDropAcceptor( boolean isOverDropAcceptor ) {
 		if( this.isOverDropAcceptor != isOverDropAcceptor ) {
 			this.isOverDropAcceptor = isOverDropAcceptor;
 			this.repaint();
 		}
 	}
+
 	public boolean isCopyDesired() {
 		return this.isCopyDesired;
 	}
+
 	public void setCopyDesired( boolean isCopyDesired ) {
 		if( this.isCopyDesired != isCopyDesired ) {
 			this.isCopyDesired = isCopyDesired;
 			this.repaint();
 		}
 	}
+
 	public int getDropWidth() {
 		return this.getWidth();
 	}
+
 	public int getDropHeight() {
 		return this.getHeight();
 	}

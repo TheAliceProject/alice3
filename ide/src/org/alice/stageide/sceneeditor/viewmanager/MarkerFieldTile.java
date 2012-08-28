@@ -55,26 +55,26 @@ public class MarkerFieldTile extends LineAxisPanel
 	private UserField field;
 	private Label iconLabel = new Label();
 	private Label textLabel = new Label();
-	
+
 	public MarkerFieldTile()
 	{
 		super();
-		this.setBackgroundColor(null);
-		this.setBorder(BorderFactory.createEmptyBorder());
+		this.setBackgroundColor( null );
+		this.setBorder( BorderFactory.createEmptyBorder() );
 
-		this.textLabel.changeFont(edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD);
-		this.textLabel.scaleFont(1.4f);
-		this.textLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		this.textLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		this.textLabel.scaleFont( 1.4f );
+		this.textLabel.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
-	
+
 	public MarkerFieldTile( UserField field )
 	{
 		this();
-		setField(field);
+		setField( field );
 	}
-	
+
 	public void setSelected( boolean isSelected ) {
-		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
+		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField( field );
 		java.awt.Color foregroundColor = java.awt.Color.BLACK;
 		if( marker != null ) {
 			foregroundColor = marker.getMarkerColor().getAsAWTColor();
@@ -86,16 +86,16 @@ public class MarkerFieldTile extends LineAxisPanel
 		}
 		this.textLabel.setForegroundColor( foregroundColor );
 	}
-	
+
 	public void setField( UserField field )
 	{
 		this.removeAllComponents();
 		this.field = field;
-		
+
 		this.textLabel.setText( this.field.getName() );
-		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField(field);
-		this.textLabel.setForegroundColor(marker.getMarkerColor().getAsAWTColor());
-		this.iconLabel.setIcon(MarkerUtilities.getIconForMarkerField(field));
+		MarkerImp marker = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getMarkerForField( field );
+		this.textLabel.setForegroundColor( marker.getMarkerColor().getAsAWTColor() );
+		this.iconLabel.setIcon( MarkerUtilities.getIconForMarkerField( field ) );
 		this.addComponent( iconLabel );
 		this.addComponent( this.textLabel );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ) );

@@ -46,7 +46,6 @@ import java.text.MessageFormat;
 
 import javax.swing.Icon;
 
-import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
 import org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Element;
@@ -56,79 +55,79 @@ import org.lgna.project.ast.UserField;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 
 	protected static final java.awt.Dimension ICON_DIMENSION = new java.awt.Dimension( 25, 20 );
-	
+
 	private UserField markerField;
 	private UserField selectedField;
-	
+
 	private UserField toMoveToField;
 	private UserField toMoveField;
-	
+
 	private MoveToImageIcon imageIcon;
 
-	protected ObjectMarkerMoveActionOperation(java.util.UUID id) {
-		super(org.alice.ide.IDE.PROJECT_GROUP, id);
+	protected ObjectMarkerMoveActionOperation( java.util.UUID id ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, id );
 		this.markerField = null;
 		this.selectedField = null;
 		this.imageIcon = new MoveToImageIcon();
-		this.setSmallIcon(imageIcon);
+		this.setSmallIcon( imageIcon );
 		this.updateBasedOnSettings();
 	}
 
-	protected abstract void updateMoveFields(UserField markerField, UserField selectedField);
-	
-	protected void setToMoveToField(UserField toMoveTo, Icon icon) {
+	protected abstract void updateMoveFields( UserField markerField, UserField selectedField );
+
+	protected void setToMoveToField( UserField toMoveTo, Icon icon ) {
 		this.toMoveToField = toMoveTo;
-		if (this.toMoveToField != null) {
-			this.imageIcon.setRightImage(icon);
+		if( this.toMoveToField != null ) {
+			this.imageIcon.setRightImage( icon );
 		}
 		else {
-			this.imageIcon.setRightImage(null);
+			this.imageIcon.setRightImage( null );
 		}
 	}
-	
-	protected void setToMoveField(UserField toMove, Icon icon) {
+
+	protected void setToMoveField( UserField toMove, Icon icon ) {
 		this.toMoveField = toMove;
-		if (this.toMoveField != null ) {
-			this.imageIcon.setLeftImage(icon);
+		if( this.toMoveField != null ) {
+			this.imageIcon.setLeftImage( icon );
 		}
 		else {
-			this.imageIcon.setLeftImage(null);
+			this.imageIcon.setLeftImage( null );
 		}
 	}
-	
+
 	@Override
 	protected Class<? extends Element> getClassUsedForLocalization() {
 		return ObjectMarkerMoveActionOperation.class;
 	}
-	
+
 	private void updateBasedOnSettings()
 	{
-		if (this.toMoveToField != null && this.toMoveField != null)
+		if( ( this.toMoveToField != null ) && ( this.toMoveField != null ) )
 		{
-			String unformattedTooltipText = this.findLocalizedText("tooltip");
-			MessageFormat formatter = new MessageFormat("");
-			formatter.setLocale(javax.swing.JComponent.getDefaultLocale());
-			formatter.applyPattern(unformattedTooltipText);
-			String tooltipText = formatter.format(new Object[]{this.toMoveField.getName(), this.toMoveToField.getName()});
-			this.setToolTipText(tooltipText);
-			this.setEnabled(true);
+			String unformattedTooltipText = this.findLocalizedText( "tooltip" );
+			MessageFormat formatter = new MessageFormat( "" );
+			formatter.setLocale( javax.swing.JComponent.getDefaultLocale() );
+			formatter.applyPattern( unformattedTooltipText );
+			String tooltipText = formatter.format( new Object[] { this.toMoveField.getName(), this.toMoveToField.getName() } );
+			this.setToolTipText( tooltipText );
+			this.setEnabled( true );
 		}
 		else
 		{
-			this.setToolTipText(this.findLocalizedText("disabledTooltip"));
-			this.setEnabled(false);
+			this.setToolTipText( this.findLocalizedText( "disabledTooltip" ) );
+			this.setEnabled( false );
 		}
-		this.setSmallIcon(this.imageIcon);
+		this.setSmallIcon( this.imageIcon );
 	}
-	
-	public void setMarkerField(UserField markerField)
+
+	public void setMarkerField( UserField markerField )
 	{
-		if (markerField == null || markerField.getValueType().isAssignableTo(org.lgna.story.SThingMarker.class))
+		if( ( markerField == null ) || markerField.getValueType().isAssignableTo( org.lgna.story.SThingMarker.class ) )
 		{
 			this.markerField = markerField;
 		}
@@ -136,16 +135,16 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		{
 			this.markerField = null;
 		}
-		if (this.selectedField == this.markerField) {
+		if( this.selectedField == this.markerField ) {
 			this.selectedField = null;
 		}
-		updateMoveFields(this.markerField, this.selectedField);
+		updateMoveFields( this.markerField, this.selectedField );
 		this.updateBasedOnSettings();
 	}
-	
-	public void setSelectedField(AbstractField field)
+
+	public void setSelectedField( AbstractField field )
 	{
-		if (field instanceof UserField && field.getValueType().isAssignableTo(org.lgna.story.SMovableTurnable.class))
+		if( ( field instanceof UserField ) && field.getValueType().isAssignableTo( org.lgna.story.SMovableTurnable.class ) )
 		{
 			this.selectedField = (UserField)field;
 		}
@@ -153,22 +152,21 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		{
 			this.selectedField = null;
 		}
-		if (this.selectedField == this.markerField) {
+		if( this.selectedField == this.markerField ) {
 			this.selectedField = null;
 		}
-		updateMoveFields(this.markerField, this.selectedField);
+		updateMoveFields( this.markerField, this.selectedField );
 		this.updateBasedOnSettings();
 	}
-	
-	
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		if( this.toMoveField != null && this.toMoveToField != null ) {
+		if( ( this.toMoveField != null ) && ( this.toMoveToField != null ) ) {
 			org.lgna.project.ast.Expression toMoveToExpression = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.toMoveToField );
-			AbstractMethod method = org.lgna.project.ast.AstUtilities.lookupMethod( org.lgna.story.SMovableTurnable.class, "moveAndOrientTo", new Class< ? >[] { org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientTo.Detail[].class } );
-			LocalTransformationEdit edit = new LocalTransformationEdit(step, org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( this.toMoveField ), method, new org.lgna.project.ast.Expression[]{toMoveToExpression});
-			step.commitAndInvokeDo(edit);
+			AbstractMethod method = org.lgna.project.ast.AstUtilities.lookupMethod( org.lgna.story.SMovableTurnable.class, "moveAndOrientTo", new Class<?>[] { org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientTo.Detail[].class } );
+			LocalTransformationEdit edit = new LocalTransformationEdit( step, org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( this.toMoveField ), method, new org.lgna.project.ast.Expression[] { toMoveToExpression } );
+			step.commitAndInvokeDo( edit );
 		} else {
 			step.cancel();
 		}

@@ -46,19 +46,22 @@ package edu.cmu.cs.dennisc.java.awt.font;
 /**
  * @author Dennis Cosgrove
  */
-public enum TextWidth implements TextAttribute< Float > {
-	CONDENSED(java.awt.font.TextAttribute.WIDTH_CONDENSED), 
-	SEMI_CONDENSED(java.awt.font.TextAttribute.WIDTH_SEMI_CONDENSED), 
-	REGULAR(java.awt.font.TextAttribute.WIDTH_REGULAR), 
-	SEMI_EXTENDED(java.awt.font.TextAttribute.WIDTH_SEMI_EXTENDED), 
-	EXTENDED(java.awt.font.TextAttribute.WIDTH_EXTENDED); 
+public enum TextWidth implements TextAttribute<Float> {
+	CONDENSED( java.awt.font.TextAttribute.WIDTH_CONDENSED ),
+	SEMI_CONDENSED( java.awt.font.TextAttribute.WIDTH_SEMI_CONDENSED ),
+	REGULAR( java.awt.font.TextAttribute.WIDTH_REGULAR ),
+	SEMI_EXTENDED( java.awt.font.TextAttribute.WIDTH_SEMI_EXTENDED ),
+	EXTENDED( java.awt.font.TextAttribute.WIDTH_EXTENDED );
 	private Float m_value;
+
 	private TextWidth( Float value ) {
 		m_value = value;
 	}
+
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.WIDTH;
 	}
+
 	public Float getValue() {
 		return m_value;
 	}

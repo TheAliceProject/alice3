@@ -48,16 +48,17 @@ import org.lgna.croquet.resolvers.RuntimeResolver;
  * @author Dennis Cosgrove
  */
 public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<org.lgna.croquet.components.TrackableShape> {
-	private final org.lgna.croquet.history.CompletionStep< org.lgna.croquet.State<E> > step;
-	public ItemSelectionStateItemResolver( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.State<E> > step ) {
+	private final org.lgna.croquet.history.CompletionStep<org.lgna.croquet.State<E>> step;
+
+	public ItemSelectionStateItemResolver( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.State<E>> step ) {
 		this.step = step;
 	}
 
 	public org.lgna.croquet.components.TrackableShape getResolved() {
 		org.lgna.croquet.State<E> model = this.step.getModel();
-		if (model instanceof org.lgna.croquet.ListSelectionState ) {
-			org.lgna.croquet.ListSelectionState<E> listSelectionState = (org.lgna.croquet.ListSelectionState< E >)model;
-			org.lgna.croquet.edits.Edit< ? > edit = this.step.getEdit();
+		if( model instanceof org.lgna.croquet.ListSelectionState ) {
+			org.lgna.croquet.ListSelectionState<E> listSelectionState = (org.lgna.croquet.ListSelectionState<E>)model;
+			org.lgna.croquet.edits.Edit<?> edit = this.step.getEdit();
 			E item;
 			if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
 				org.lgna.croquet.edits.StateEdit<E> stateEdit = (org.lgna.croquet.edits.StateEdit<E>)edit;
@@ -66,12 +67,13 @@ public class ItemSelectionStateItemResolver<E> implements RuntimeResolver<org.lg
 				//todo: throw Exception?
 				item = null;
 			}
-			org.lgna.croquet.components.TrackableShape rv = listSelectionState.getTrackableShapeFor(item);
+			org.lgna.croquet.components.TrackableShape rv = listSelectionState.getTrackableShapeFor( item );
 			return rv;
 		} else {
 			return null;
 		}
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

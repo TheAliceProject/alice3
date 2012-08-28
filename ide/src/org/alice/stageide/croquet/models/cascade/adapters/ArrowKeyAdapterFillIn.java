@@ -3,10 +3,11 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 import org.lgna.story.event.ArrowKeyPressListener;
 
 public class ArrowKeyAdapterFillIn extends LambdaExpressionFillIn {
-	
+
 	private static class SingletonHolder {
 		private static ArrowKeyAdapterFillIn instance = new ArrowKeyAdapterFillIn();
 	}
+
 	public static ArrowKeyAdapterFillIn getInstance() {
 		return SingletonHolder.instance;
 	}

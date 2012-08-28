@@ -50,6 +50,7 @@ public class PlainDialogCloseOperationNote extends OperationNote {
 	public PlainDialogCloseOperationNote( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
 	}
+
 	@Override
 	protected void addFeatures( org.lgna.croquet.history.CompletionStep step ) {
 		//note: do not call super

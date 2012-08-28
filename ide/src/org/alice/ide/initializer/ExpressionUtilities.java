@@ -46,7 +46,7 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 public class ExpressionUtilities {
-	public static org.lgna.project.ast.Expression getNextExpression( org.lgna.project.ast.AbstractType<?,?,?> type, org.lgna.project.ast.Expression previousExpression ) {
+	public static org.lgna.project.ast.Expression getNextExpression( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.Expression previousExpression ) {
 		//todo: check to see if acceptable
 		org.lgna.project.ast.Expression rv;
 		if( type == org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) {
@@ -60,7 +60,8 @@ public class ExpressionUtilities {
 		}
 		return rv;
 	}
-	public static org.lgna.project.ast.Expression createDefaultExpression( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	public static org.lgna.project.ast.Expression createDefaultExpression( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return getNextExpression( type, null );
 	}
 }

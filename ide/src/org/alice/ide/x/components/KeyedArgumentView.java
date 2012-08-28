@@ -46,10 +46,11 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedArgumentView extends ArgumentView< org.lgna.project.ast.JavaKeyedArgument > {
+public class KeyedArgumentView extends ArgumentView<org.lgna.project.ast.JavaKeyedArgument> {
 	public KeyedArgumentView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.JavaKeyedArgument keyedArgument ) {
 		super( factory, keyedArgument );
 	}
+
 	@Override
 	protected String getName() {
 		//return this.getArgument().keyMethod.getValue().getName();

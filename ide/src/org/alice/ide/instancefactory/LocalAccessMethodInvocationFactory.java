@@ -47,7 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, org.lgna.project.ast.AbstractMethod, LocalAccessMethodInvocationFactory > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.AbstractMethod, LocalAccessMethodInvocationFactory> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized LocalAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
 		assert local != null;
 		LocalAccessMethodInvocationFactory rv = mapToMap.get( local, method );
@@ -59,15 +60,18 @@ public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory 
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserLocal local;
+
 	private LocalAccessMethodInvocationFactory( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.AbstractMethod method ) {
 		super( method, local.name );
 		this.local = local;
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getValidInstanceType( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
 		if( code != null ) {
-			if( this.local.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code ) { 
+			if( this.local.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code ) {
 				return this.local.getValueType();
 			} else {
 				return null;
@@ -76,26 +80,30 @@ public class LocalAccessMethodInvocationFactory extends MethodInvocationFactory 
 			return null;
 		}
 	}
+
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver< LocalAccessMethodInvocationFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAccessMethodInvocationFactory >( 
+	protected org.lgna.croquet.resolvers.Resolver<LocalAccessMethodInvocationFactory> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAccessMethodInvocationFactory>(
 				this,
-				new Class[] { org.lgna.project.ast.UserParameter.class, org.lgna.project.ast.AbstractMethod.class }, 
-				new Object[] { this.local, this.getMethod() } 
-		);
+				new Class[] { org.lgna.project.ast.UserParameter.class, org.lgna.project.ast.AbstractMethod.class },
+				new Object[] { this.local, this.getMethod() } );
 	}
+
 	public org.lgna.project.ast.UserLocal getLocal() {
 		return this.local;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
 		//todo?
 		return new org.lgna.project.ast.LocalAccess( this.local );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
 		return new org.lgna.project.ast.LocalAccess( this.local );
 	}
+
 	@Override
 	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
 		rv.append( "this." );

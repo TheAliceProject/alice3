@@ -50,8 +50,11 @@ public abstract class ResourceOperation extends org.lgna.croquet.ActionOperation
 	public ResourceOperation( java.util.UUID migrationId ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, migrationId );
 	}
+
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource );
+
 	protected abstract org.lgna.common.Resource getResource();
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

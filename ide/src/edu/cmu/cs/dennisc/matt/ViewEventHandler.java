@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.SModel;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SModel;
+import org.lgna.story.SThing;
 import org.lgna.story.event.ComesIntoViewEvent;
 import org.lgna.story.event.LeavesViewEvent;
 import org.lgna.story.event.ViewEnterListener;
@@ -17,11 +17,11 @@ import org.lgna.story.implementation.CameraImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class ViewEventHandler extends TransformationChangedHandler<Object,ViewEvent> {
+public class ViewEventHandler extends TransformationChangedHandler<Object, ViewEvent> {
 
 	private CameraImp camera;
-	private Map<SModel,List<Object>> map = Collections.newHashMap();
-	private Map<SModel,Boolean> wasInView = Collections.newHashMap();
+	private Map<SModel, List<Object>> map = Collections.newHashMap();
+	private Map<SModel, Boolean> wasInView = Collections.newHashMap();
 
 	@Override
 	protected void check( SThing changedEntity ) {

@@ -43,33 +43,30 @@
 
 package org.alice.ide.properties.adapter;
 
-import java.util.Locale;
-
 import org.alice.ide.croquet.models.StandardExpressionState;
 
-public class FloatPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Float, O> 
+public class FloatPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<Float, O>
 {
-	public FloatPropertyAdapter(O instance, org.lgna.story.implementation.Property<Float> property, StandardExpressionState expressionState)
+	public FloatPropertyAdapter( O instance, org.lgna.story.implementation.Property<Float> property, StandardExpressionState expressionState )
 	{
-		this("Float", instance, property, expressionState);
+		this( "Float", instance, property, expressionState );
 	}
-	
-	public FloatPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<Float> property, StandardExpressionState expressionState )
+
+	public FloatPropertyAdapter( String repr, O instance, org.lgna.story.implementation.Property<Float> property, StandardExpressionState expressionState )
 	{
-		super(repr, instance, property, expressionState);
+		super( repr, instance, property, expressionState );
 	}
-	
+
 	@Override
-	public Float getValueCopyIfMutable() 
+	public Float getValueCopyIfMutable()
 	{
-		return new Float(this.getValue());
+		return new Float( this.getValue() );
 	}
-	
+
 	@Override
-	public String getUndoRedoDescription() 
+	public String getUndoRedoDescription()
 	{
 		return "Float";
 	}
-	
 
 }

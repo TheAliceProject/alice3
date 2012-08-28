@@ -47,71 +47,83 @@ package edu.cmu.cs.dennisc.math;
  */
 public abstract class AbstractMatrix4x4 implements edu.cmu.cs.dennisc.print.Printable {
 	public abstract double[] getAsColumnMajorArray16( double[] rv );
+
 	public final double[] getAsColumnMajorArray16() {
 		return getAsColumnMajorArray16( new double[ 16 ] );
 	}
-	
+
 	public abstract boolean isAffine();
 
 	public abstract void setNaN();
+
 	public abstract boolean isNaN();
 
 	public abstract void setIdentity();
+
 	public abstract boolean isIdentity();
-	
+
 	public abstract Vector4 setReturnValueToTransformed( Vector4 rv, Vector4 b );
+
 	public final Vector4 createTransformed( Vector4 b ) {
 		return setReturnValueToTransformed( new Vector4(), b );
 	}
-	public final void transform( Vector4 b ) { 
+
+	public final void transform( Vector4 b ) {
 		setReturnValueToTransformed( b, b );
 	}
 
-	
 	public abstract Vector3 setReturnValueToTransformed( Vector3 rv, Vector3 b );
+
 	public final Vector3 createTransformed( Vector3 b ) {
 		return setReturnValueToTransformed( new Vector3(), b );
 	}
-	public final void transform( Vector3 b ) { 
+
+	public final void transform( Vector3 b ) {
 		setReturnValueToTransformed( b, b );
 	}
 
 	public abstract Point3 setReturnValueToTransformed( Point3 rv, Point3 b );
+
 	public final Point3 createTransformed( Point3 b ) {
 		return setReturnValueToTransformed( new Point3(), b );
 	}
-	public final void transform( Point3 b ) { 
+
+	public final void transform( Point3 b ) {
 		setReturnValueToTransformed( b, b );
 	}
 
-
-	
 	public abstract Vector4f setReturnValueToTransformed( Vector4f rv, Vector4f b );
+
 	public final Vector4f createTransformed( Vector4f b ) {
 		return setReturnValueToTransformed( new Vector4f(), b );
 	}
-	public final void transform( Vector4f b ) { 
+
+	public final void transform( Vector4f b ) {
 		setReturnValueToTransformed( b, b );
 	}
 
-	
 	public abstract Vector3f setReturnValueToTransformed( Vector3f rv, Vector3f b );
+
 	public final Vector3f createTransformed( Vector3f b ) {
 		return setReturnValueToTransformed( new Vector3f(), b );
 	}
-	public final void transform( Vector3f b ) { 
+
+	public final void transform( Vector3f b ) {
 		setReturnValueToTransformed( b, b );
 	}
 
 	public abstract Point3f setReturnValueToTransformed( Point3f rv, Point3f b );
+
 	public final Point3f createTransformed( Point3f b ) {
 		return setReturnValueToTransformed( new Point3f(), b );
 	}
-	public final void transform( Point3f b ) { 
+
+	public final void transform( Point3f b ) {
 		setReturnValueToTransformed( b, b );
 	}
-	
+
 	public abstract boolean isWithinEpsilonOfIdentity( double epsilon );
+
 	public boolean isWithinReasonableEpsilonOfIdentity() {
 		return this.isWithinEpsilonOfIdentity( EpsilonUtilities.REASONABLE_EPSILON );
 	}

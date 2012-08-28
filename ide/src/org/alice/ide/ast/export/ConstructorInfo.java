@@ -45,7 +45,7 @@ package org.alice.ide.ast.export;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorInfo extends MemberInfo<org.lgna.project.ast.UserConstructor>{
+public class ConstructorInfo extends MemberInfo<org.lgna.project.ast.UserConstructor> {
 	public ConstructorInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserConstructor constructor ) {
 		super( projectInfo, constructor );
 	}

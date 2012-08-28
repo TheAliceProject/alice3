@@ -61,12 +61,14 @@ public enum TransformationAffect {
 	private boolean m_isAffectTranslationXDesired;
 	private boolean m_isAffectTranslationYDesired;
 	private boolean m_isAffectTranslationZDesired;
+
 	TransformationAffect( boolean isAffectOrientationDesired, boolean isAffectTranslationXDesired, boolean isAffectTranslationYDesired, boolean isAffectTranslationZDesired ) {
 		m_isAffectOrientationDesired = isAffectOrientationDesired;
 		m_isAffectTranslationXDesired = isAffectTranslationXDesired;
 		m_isAffectTranslationYDesired = isAffectTranslationYDesired;
 		m_isAffectTranslationZDesired = isAffectTranslationZDesired;
 	}
+
 	public void set( edu.cmu.cs.dennisc.math.AffineMatrix4x4 dst, edu.cmu.cs.dennisc.math.AffineMatrix4x4 src ) {
 		if( m_isAffectOrientationDesired ) {
 			dst.orientation.setValue( src.orientation );
@@ -81,6 +83,7 @@ public enum TransformationAffect {
 			dst.translation.z = src.translation.z;
 		}
 	}
+
 	public static TransformationAffect getTranslationAffect( double x, double y, double z ) {
 		if( Double.isNaN( x ) ) {
 			if( Double.isNaN( y ) ) {

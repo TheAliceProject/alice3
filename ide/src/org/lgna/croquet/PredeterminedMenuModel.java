@@ -47,18 +47,20 @@ package org.lgna.croquet;
  */
 public class PredeterminedMenuModel extends MenuModel {
 	private StandardMenuItemPrepModel[] models;
+
 	public PredeterminedMenuModel( java.util.UUID individualId, StandardMenuItemPrepModel... models ) {
 		super( individualId );
 		this.models = models;
 	}
-	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List< StandardMenuItemPrepModel > models ) {
-		this( individualId, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray(models, StandardMenuItemPrepModel.class) );
+
+	public PredeterminedMenuModel( java.util.UUID individualId, java.util.List<StandardMenuItemPrepModel> models ) {
+		this( individualId, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( models, StandardMenuItemPrepModel.class ) );
 	}
-	
+
 	public Model[] getModels() {
 		return this.models;
 	}
-	
+
 	//todo:
 	@Override
 	public org.lgna.croquet.components.Menu createMenu() {
@@ -67,6 +69,7 @@ public class PredeterminedMenuModel extends MenuModel {
 		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( rv, this.models );
 		return rv;
 	}
+
 	@Override
 	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
 		super.handlePopupMenuPrologue( popupMenu, context );

@@ -46,7 +46,7 @@ package org.lgna.story.resources.sims2;
  * @author Dennis Cosgrove
  */
 public enum Gender {
-	FEMALE, 
+	FEMALE,
 	MALE;
 	public static Gender getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( Gender.class );

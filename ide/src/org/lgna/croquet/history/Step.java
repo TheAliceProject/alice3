@@ -45,10 +45,10 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Step< M extends org.lgna.croquet.Model > extends TransactionNode<Transaction> {
+public abstract class Step<M extends org.lgna.croquet.Model> extends TransactionNode<Transaction> {
 
-	private final java.util.List< org.lgna.croquet.Context > contexts;
-	private final org.lgna.croquet.resolvers.Resolver< M > modelResolver;
+	private final java.util.List<org.lgna.croquet.Context> contexts;
+	private final org.lgna.croquet.resolvers.Resolver<M> modelResolver;
 	private final org.lgna.croquet.triggers.Trigger trigger;
 	private final java.util.UUID id;
 
@@ -57,17 +57,17 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		if( model != null ) {
 			this.modelResolver = model.getResolver();
 		} else {
-			this.modelResolver = new org.lgna.croquet.resolvers.NullResolver< M >();
+			this.modelResolver = new org.lgna.croquet.resolvers.NullResolver<M>();
 		}
 		if( trigger != null ) {
 			this.trigger = trigger;
 		} else {
 			//todo?
-			this.trigger = new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER );
+			this.trigger = org.lgna.croquet.triggers.NullTrigger.createUserInstance();
 		}
 		this.id = java.util.UUID.randomUUID();
 
-		java.util.List< org.lgna.croquet.Context > contexts = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.Context> contexts = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( model != null ) {
 			for( org.lgna.croquet.ContextFactory<?> contextFactory : model.getContextFactories() ) {
 				//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( model );
@@ -76,6 +76,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		}
 		this.contexts = java.util.Collections.unmodifiableList( contexts );
 	}
+
 	public Step( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.modelResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
@@ -84,30 +85,38 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		org.lgna.croquet.Context[] contexts = binaryDecoder.decodeBinaryEncodableAndDecodableArray( org.lgna.croquet.Context.class );
 		this.contexts = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( contexts ) );
 	}
-	
+
 	public static class Key<T> {
 		public static <T> Key<T> createInstance( String repr ) {
 			return new Key<T>( repr );
 		}
+
 		private final String repr;
+
 		private Key( String repr ) {
 			this.repr = repr;
 		}
+
 		@Override
 		public java.lang.String toString() {
 			return this.repr;
 		}
 	}
-	private final java.util.Map/*< Key<T>, T >*/ dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private final java.util.Map/* < Key<T>, T > */dataMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public <T> boolean containsEphemeralDataFor( Key<T> key ) {
 		return this.dataMap.containsKey( key );
 	}
+
 	public <T> T getEphemeralDataFor( Key<T> key ) {
 		return (T)this.dataMap.get( key );
 	}
+
 	public <T> void putEphemeralDataFor( Key<T> key, T value ) {
 		this.dataMap.put( key, value );
 	}
+
 	public <T> void removeEphemeralDataFor( Key<T> key ) {
 		this.dataMap.remove( key );
 	}
@@ -119,13 +128,16 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 		org.lgna.croquet.Context[] contexts = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.contexts, org.lgna.croquet.Context.class );
 		binaryEncoder.encode( contexts );
 	}
+
 	@Override
-	protected void appendContexts( java.util.List< org.lgna.croquet.Context > out ) {
+	protected void appendContexts( java.util.List<org.lgna.croquet.Context> out ) {
 		out.addAll( this.contexts );
 	}
-	/*package-private*/ Iterable<org.lgna.croquet.Context> getContexts() {
+
+	/* package-private */Iterable<org.lgna.croquet.Context> getContexts() {
 		return this.contexts;
 	}
+
 	public <C extends org.lgna.croquet.Context> C findFirstContext( Class<C> cls ) {
 		if( this.getOwnerTransaction() != null ) {
 			return this.getOwnerTransaction().findFirstContext( this, cls );
@@ -134,9 +146,11 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 			return null;
 		}
 	}
+
 	public org.lgna.croquet.triggers.Trigger getTrigger() {
 		return this.trigger;
 	}
+
 	public java.util.UUID getId() {
 		return this.id;
 	}
@@ -144,19 +158,21 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 	public Step<?> getPreviousStep() {
 		int index = this.getOwnerTransaction().getIndexOfChildStep( this );
 		if( index > 0 ) {
-			return this.getOwnerTransaction().getChildStepAt( index-1 );
+			return this.getOwnerTransaction().getChildStepAt( index - 1 );
 		} else {
 			return null;
 		}
 	}
-	protected org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+
+	protected org.lgna.croquet.components.ViewController<?, ?> getViewController() {
 		return this.trigger != null ? this.trigger.getViewController() : null;
 	}
 
 	protected org.lgna.croquet.Model getModelForTutorialNoteText() {
 		return this.getModel();
 	}
-	public String getTutorialNoteText( org.lgna.croquet.edits.Edit< ? > edit ) {
+
+	public String getTutorialNoteText( org.lgna.croquet.edits.Edit<?> edit ) {
 		org.lgna.croquet.Model model = this.getModelForTutorialNoteText();
 		if( model != null ) {
 			String triggerText;
@@ -164,7 +180,7 @@ public abstract class Step< M extends org.lgna.croquet.Model > extends Transacti
 				triggerText = "Type";
 			} else {
 				org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
-				triggerText = trigger != null ? trigger.getNoteText( ) : null;
+				triggerText = trigger != null ? trigger.getNoteText() : null;
 			}
 			return model.getTutorialNoteText( this, triggerText, edit );
 		} else {

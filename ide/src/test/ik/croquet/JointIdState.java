@@ -46,27 +46,32 @@ package test.ik.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointIdState extends org.lgna.croquet.CustomItemStateWithInternalBlank< org.lgna.story.resources.JointId > {
+public abstract class JointIdState extends org.lgna.croquet.CustomItemStateWithInternalBlank<org.lgna.story.resources.JointId> {
 	private org.lgna.story.resources.JointId value;
+
 	public JointIdState( java.util.UUID id ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, test.ik.croquet.codecs.JointIdCodec.SINGLETON );
 	}
+
 	@Override
 	protected org.lgna.story.resources.JointId getActualValue() {
 		return value;
 	}
+
 	@Override
 	protected void updateSwingModel( org.lgna.story.resources.JointId nextValue ) {
 		this.value = nextValue;
 	}
-	private static void fillIn( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.story.resources.JointId id ) {
+
+	private static void fillIn( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.story.resources.JointId id ) {
 		rv.add( JointIdFillIn.getInstance( id ) );
 		for( org.lgna.story.resources.JointId childId : id.getDeclaredChildren() ) {
 			fillIn( rv, childId );
 		}
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.story.resources.JointId > blankNode ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.story.resources.JointId> blankNode ) {
 		org.lgna.story.resources.JointId[] rootIds = org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 		for( org.lgna.story.resources.JointId rootId : rootIds ) {
 			fillIn( rv, rootId );

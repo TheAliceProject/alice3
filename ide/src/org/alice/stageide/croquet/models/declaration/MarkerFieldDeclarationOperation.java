@@ -53,62 +53,62 @@ import edu.cmu.cs.dennisc.property.event.PropertyListener;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclarationOperation {
-	
+
 	private UserField selectedField = null;
 	private AffineMatrix4x4 initialMarkerTransform = null;
 	private String colorFieldLabel = "";
-	
+
 	private PropertyListener nameChangeListener = new PropertyListener() {
-		public void propertyChanging(PropertyEvent e) {
+		public void propertyChanging( PropertyEvent e ) {
 		}
-		public void propertyChanged(PropertyEvent e) {
+
+		public void propertyChanged( PropertyEvent e ) {
 			localize();
 		}
 	};
 
-	public MarkerFieldDeclarationOperation(java.util.UUID id, Class<? extends org.lgna.story.SMarker> markerCls) {
-		super( 
-				id, 
-				org.lgna.project.ast.JavaType.getInstance( markerCls ), false, 
-				false, false, 
-				"", true, 
-				org.lgna.project.ast.AstUtilities.createInstanceCreation( markerCls ), false 
-		);
+	public MarkerFieldDeclarationOperation( java.util.UUID id, Class<? extends org.lgna.story.SMarker> markerCls ) {
+		super(
+				id,
+				org.lgna.project.ast.JavaType.getInstance( markerCls ), false,
+				false, false,
+				"", true,
+				org.lgna.project.ast.AstUtilities.createInstanceCreation( markerCls ), false );
 	}
-	
+
 	protected abstract org.lgna.story.Color getInitialMarkerColor();
-	protected abstract String getInitialMarkerName(org.lgna.story.Color color);
+
+	protected abstract String getInitialMarkerName( org.lgna.story.Color color );
+
 	protected abstract AffineMatrix4x4 getInitialMarkerTransform();
-	
+
 	protected UserField getSelectedField() {
 		return this.selectedField;
 	}
-	
+
 	protected void initializeState() {
 		org.lgna.story.Color initialMarkerColor = getInitialMarkerColor();
-		String initialMarkerName = getInitialMarkerName(initialMarkerColor);
+		String initialMarkerName = getInitialMarkerName( initialMarkerColor );
 		this.initialMarkerTransform = getInitialMarkerTransform();
 		try {
-			org.lgna.project.ast.Expression colorExpresion = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression(initialMarkerColor);
-			this.getColorIdState().setValueTransactionlessly(colorExpresion);
-		}
-		catch (CannotCreateExpressionException ccee) {
+			org.lgna.project.ast.Expression colorExpresion = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( initialMarkerColor );
+			this.getColorIdState().setValueTransactionlessly( colorExpresion );
+		} catch( CannotCreateExpressionException ccee ) {
 			ccee.printStackTrace();
 		}
-		this.getNameState().setValue(initialMarkerName);
+		this.getNameState().setValue( initialMarkerName );
 	}
-	
-	
-	public void setSelectedField(UserField field) {
-		if (this.selectedField != null) {
-			this.selectedField.name.removePropertyListener(this.nameChangeListener);
+
+	public void setSelectedField( UserField field ) {
+		if( this.selectedField != null ) {
+			this.selectedField.name.removePropertyListener( this.nameChangeListener );
 		}
 		this.selectedField = field;
-		if (this.selectedField != null) {
-			this.selectedField.name.addPropertyListener(this.nameChangeListener);
+		if( this.selectedField != null ) {
+			this.selectedField.name.addPropertyListener( this.nameChangeListener );
 		}
 		this.localize();
 	}
@@ -118,12 +118,11 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		super.localize();
 		this.colorFieldLabel = this.findLocalizedText( "colorFieldLabel" );
 	}
-	
-	
-	protected abstract org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > createMainComponent();
-	
+
+	protected abstract org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation> createMainComponent();
+
 	@Override
-	protected org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<? extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation> createMainComponent( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.initializeState();
 		return createMainComponent();
 	}
@@ -131,38 +130,36 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 	public org.alice.ide.croquet.models.ast.PropertyState getColorIdState() {
 		return this.getStateForGetter( org.lgna.story.SMarker.class, "getColorId" );
 	}
-	
+
 	public String getColorFieldLabel() {
 		return this.colorFieldLabel;
 	}
-	
+
 	@Override
-	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
+	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		super.customize( step, declaringType, field, rv );
 		org.alice.ide.croquet.models.ast.PropertyState colorState = this.getColorIdState();
-		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( 
-				false, field, 
-				colorState.getSetter(), 
+		rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement(
+				false, field,
+				colorState.getSetter(),
 				colorState.getValue()
-		) );
+				) );
 		try {
-			org.lgna.project.ast.Statement orientationStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createOrientationStatement( 
-					false, field, 
-					ImplementationAccessor.createOrientation(this.initialMarkerTransform.orientation)
-			);
-			rv.addDoStatement(orientationStatement);
-		}
-		catch ( CannotCreateExpressionException ccee ) {
+			org.lgna.project.ast.Statement orientationStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createOrientationStatement(
+					false, field,
+					ImplementationAccessor.createOrientation( this.initialMarkerTransform.orientation )
+					);
+			rv.addDoStatement( orientationStatement );
+		} catch( CannotCreateExpressionException ccee ) {
 			ccee.printStackTrace();
 		}
 		try {
-			org.lgna.project.ast.Statement positionStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement( 
-					false, field, 
-					ImplementationAccessor.createPosition(this.initialMarkerTransform.translation)
-			);
-			rv.addDoStatement(positionStatement);
-		}
-		catch ( CannotCreateExpressionException ccee ) {
+			org.lgna.project.ast.Statement positionStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement(
+					false, field,
+					ImplementationAccessor.createPosition( this.initialMarkerTransform.translation )
+					);
+			rv.addDoStatement( positionStatement );
+		} catch( CannotCreateExpressionException ccee ) {
 			ccee.printStackTrace();
 		}
 		return rv;

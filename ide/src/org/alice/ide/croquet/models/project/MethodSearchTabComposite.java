@@ -62,7 +62,7 @@ public class MethodSearchTabComposite extends SimpleTabComposite<MethodSearchTab
 	}
 
 	private final ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			searchComposite.refresh();
 			referencesComposite.refresh();
 			referencesComposite.changed( searchComposite.getManager(), searchComposite.getManager().getSelectedNode(), searchComposite.getManager().getSelectedNode(), true );

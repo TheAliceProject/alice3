@@ -48,19 +48,21 @@ package edu.cmu.cs.dennisc.java.awt;
 public class BeveledDownFacingTriangle extends BeveledShape {
 	public BeveledDownFacingTriangle() {
 	}
+
 	public BeveledDownFacingTriangle( float x0, float y0, float width, float height ) {
 		initialize( x0, y0, width, height );
 	}
+
 	public void initialize( float x, float y, float width, float height ) {
 		java.awt.geom.GeneralPath base = new java.awt.geom.GeneralPath();
 		java.awt.geom.GeneralPath high = new java.awt.geom.GeneralPath();
 		java.awt.geom.GeneralPath neut = new java.awt.geom.GeneralPath();
 		java.awt.geom.GeneralPath shad = new java.awt.geom.GeneralPath();
 
-		float xC = x + width*0.5f; 
+		float xC = x + ( width * 0.5f );
 		float x1 = x + width;
 		float y1 = y + height;
-		
+
 		base.moveTo( x1, y );
 		base.lineTo( x, y );
 		base.lineTo( xC, y1 );
@@ -74,7 +76,7 @@ public class BeveledDownFacingTriangle extends BeveledShape {
 
 		shad.moveTo( xC, y1 );
 		shad.lineTo( x1, y );
-		
+
 		initialize( base, high, neut, shad );
 	}
 }

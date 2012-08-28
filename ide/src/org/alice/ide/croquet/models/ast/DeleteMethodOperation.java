@@ -45,12 +45,14 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMethodOperation extends DeleteMemberOperation< org.lgna.project.ast.UserMethod > {
-	private static java.util.Map< org.lgna.project.ast.UserMethod, DeleteMethodOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class DeleteMethodOperation extends DeleteMemberOperation<org.lgna.project.ast.UserMethod> {
+	private static java.util.Map<org.lgna.project.ast.UserMethod, DeleteMethodOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
 		return getInstance( method, method.getDeclaringType() );
 	}
-	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.UserMethod method, org.lgna.project.ast.UserType< ? > declaringType ) {
+
+	public static synchronized DeleteMethodOperation getInstance( org.lgna.project.ast.UserMethod method, org.lgna.project.ast.UserType<?> declaringType ) {
 		DeleteMethodOperation rv = map.get( method );
 		if( rv != null ) {
 			//pass
@@ -61,20 +63,23 @@ public class DeleteMethodOperation extends DeleteMemberOperation< org.lgna.proje
 		return rv;
 	}
 
-	private DeleteMethodOperation( org.lgna.project.ast.UserMethod method, org.lgna.project.ast.UserType< ? > declaringType ) {
+	private DeleteMethodOperation( org.lgna.project.ast.UserMethod method, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "ed56c9b9-3eed-48d0-9bbc-f6e251fdd3b5" ), method, declaringType );
 	}
+
 	@Override
-	public Class< org.lgna.project.ast.UserMethod > getNodeParameterType() {
+	public Class<org.lgna.project.ast.UserMethod> getNodeParameterType() {
 		return org.lgna.project.ast.UserMethod.class;
 	}
+
 	@Override
-	protected org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserMethod > getNodeListProperty( org.lgna.project.ast.UserType< ? > declaringType ) {
+	protected org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserMethod> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType ) {
 		return declaringType.methods;
 	}
+
 	@Override
 	protected boolean isClearToDelete( org.lgna.project.ast.UserMethod method ) {
-		java.util.List< org.lgna.project.ast.MethodInvocation > references = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
+		java.util.List<org.lgna.project.ast.MethodInvocation> references = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
 		final int N = references.size();
 		if( N > 0 ) {
 			StringBuffer sb = new StringBuffer();

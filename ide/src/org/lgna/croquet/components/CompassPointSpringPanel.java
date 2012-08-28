@@ -46,21 +46,24 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class CompassPointSpringPanel extends CornerSpringPanel {
-	private Component< ? > northComponent;
-	private Component< ? > eastComponent;
-	private Component< ? > southComponent;
-	private Component< ? > westComponent;
-	
+	private Component<?> northComponent;
+	private Component<?> eastComponent;
+	private Component<?> southComponent;
+	private Component<?> westComponent;
+
 	public CompassPointSpringPanel() {
 		this( null );
 	}
+
 	public CompassPointSpringPanel( org.lgna.croquet.Composite composite ) {
 		super( composite );
 	}
-	public Component< ? > getNorthComponent() {
+
+	public Component<?> getNorthComponent() {
 		return this.northComponent;
 	}
-	public void setNorthComponent( Component< ? > northComponent ) {
+
+	public void setNorthComponent( Component<?> northComponent ) {
 		if( this.northComponent != northComponent ) {
 			if( this.northComponent != null ) {
 				this.removeComponent( this.northComponent );
@@ -72,10 +75,12 @@ public class CompassPointSpringPanel extends CornerSpringPanel {
 			}
 		}
 	}
-	public Component< ? > getEastComponent() {
+
+	public Component<?> getEastComponent() {
 		return this.eastComponent;
 	}
-	public void setEastComponent( Component< ? > eastComponent ) {
+
+	public void setEastComponent( Component<?> eastComponent ) {
 		if( this.eastComponent != eastComponent ) {
 			if( this.eastComponent != null ) {
 				this.removeComponent( this.eastComponent );
@@ -87,10 +92,12 @@ public class CompassPointSpringPanel extends CornerSpringPanel {
 			}
 		}
 	}
-	public Component< ? > getSouthComponent() {
+
+	public Component<?> getSouthComponent() {
 		return this.southComponent;
 	}
-	public void setSouthComponent( Component< ? > southComponent ) {
+
+	public void setSouthComponent( Component<?> southComponent ) {
 		if( this.southComponent != southComponent ) {
 			if( this.southComponent != null ) {
 				this.removeComponent( this.southComponent );
@@ -102,10 +109,12 @@ public class CompassPointSpringPanel extends CornerSpringPanel {
 			}
 		}
 	}
-	public Component< ? > getWestComponent() {
+
+	public Component<?> getWestComponent() {
 		return this.westComponent;
 	}
-	public void setWestComponent( Component< ? > westComponent ) {
+
+	public void setWestComponent( Component<?> westComponent ) {
 		if( this.westComponent != westComponent ) {
 			if( this.westComponent != null ) {
 				this.removeComponent( this.westComponent );

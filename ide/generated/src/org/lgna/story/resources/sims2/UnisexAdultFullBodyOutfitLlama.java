@@ -41,7 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum UnisexAdultFullBodyOutfitLlama implements FemaleAdultFullBodyOutfit, MaleAdultFullBodyOutfit {
-	BLUE ,
- 	BLACK ;
+	BLUE,
+	BLACK;
 }

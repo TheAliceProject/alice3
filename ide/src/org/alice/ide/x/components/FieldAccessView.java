@@ -46,10 +46,11 @@ package org.alice.ide.x.components;
  * @author Dennis Cosgrove
  */
 public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast.FieldAccess> {
-	private final org.lgna.croquet.components.JComponent< ? > replacement;
+	private final org.lgna.croquet.components.JComponent<?> replacement;
+
 	public FieldAccessView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
 		super( factory, fieldAccess );
-		org.lgna.croquet.components.Component< ? > prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
+		org.lgna.croquet.components.Component<?> prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}
@@ -96,6 +97,7 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 			}
 		}
 	}
+
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		if( this.replacement != null ) {
@@ -117,8 +119,9 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 			}
 		}
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
 		org.lgna.project.ast.FieldAccess fieldAccess = this.getExpression();
 		if( fieldAccess != null ) {
 			return fieldAccess.field.getValue().getValueType();

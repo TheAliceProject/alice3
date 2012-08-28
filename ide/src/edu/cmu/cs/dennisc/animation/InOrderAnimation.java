@@ -47,14 +47,17 @@ package edu.cmu.cs.dennisc.animation;
  */
 public class InOrderAnimation extends CompositeAnimation {
 	private int m_index;
+
 	public InOrderAnimation( Animation... animations ) {
 		super( animations );
 	}
+
 	@Override
 	public void reset() {
 		super.reset();
 		m_index = 0;
 	}
+
 	public double update( double tCurrent, AnimationObserver animationObserver ) {
 		Animation[] animations = getAnimations();
 		double tRemaining;

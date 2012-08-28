@@ -48,13 +48,16 @@ package org.lgna.croquet.components;
 public abstract class MutableSplitPane extends AbstractSplitPane<org.lgna.croquet.MutableSplitComposite> {
 	private final GridPanel leadingPanel = GridPanel.createGridPane( 1, 1 );
 	private final GridPanel trailingPanel = GridPanel.createGridPane( 1, 1 );
+
 	protected MutableSplitPane( org.lgna.croquet.MutableSplitComposite composite, int orientation ) {
 		super( composite, orientation );
 	}
+
 	@Override
 	protected javax.swing.JSplitPane createJSplitPane( int orientation ) {
 		return new javax.swing.JSplitPane( orientation, this.leadingPanel.getAwtComponent(), this.trailingPanel.getAwtComponent() );
 	}
+
 	public void setLeadingComponent( Component<?> component ) {
 		this.leadingPanel.removeAllComponents();
 		if( component != null ) {
@@ -62,6 +65,7 @@ public abstract class MutableSplitPane extends AbstractSplitPane<org.lgna.croque
 		}
 		this.revalidateAndRepaint();
 	}
+
 	public void setTrailingComponent( Component<?> component ) {
 		this.trailingPanel.removeAllComponents();
 		if( component != null ) {

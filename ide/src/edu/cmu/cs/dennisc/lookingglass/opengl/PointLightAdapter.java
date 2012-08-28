@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class PointLightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.PointLight > extends LightAdapter< E > {
+public class PointLightAdapter<E extends edu.cmu.cs.dennisc.scenegraph.PointLight> extends LightAdapter<E> {
 	private float m_constant;
 	private float m_linear;
 	private float m_quadratic;
@@ -65,10 +65,12 @@ public class PointLightAdapter< E extends edu.cmu.cs.dennisc.scenegraph.PointLig
 	protected float getConstantAttenuation() {
 		return m_constant;
 	}
+
 	@Override
 	protected float getLinearAttenuation() {
 		return m_linear;
 	}
+
 	@Override
 	protected float getQuadraticAttenuation() {
 		return m_quadratic;

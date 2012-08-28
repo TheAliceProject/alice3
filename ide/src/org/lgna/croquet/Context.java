@@ -48,6 +48,8 @@ package org.lgna.croquet;
  */
 public interface Context extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public boolean isGoodToGo();
+
 	public org.lgna.croquet.history.Transaction[] createRecoveryTransactions();
+
 	public void retarget( Retargeter retargeter );
 }

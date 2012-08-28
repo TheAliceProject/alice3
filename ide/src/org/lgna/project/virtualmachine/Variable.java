@@ -49,14 +49,18 @@ package org.lgna.project.virtualmachine;
 public class Variable<E> {
 	public Variable() {
 	}
+
 	public Variable( E value ) {
 		this.value = value;
 	}
+
 	//todo: reduce visibility to private?
 	public E value;
+
 	public E retrieve() {
 		return this.value;
 	}
+
 	public void assign( E value ) {
 		this.value = value;
 	}

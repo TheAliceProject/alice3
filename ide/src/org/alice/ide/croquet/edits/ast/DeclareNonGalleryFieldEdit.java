@@ -45,26 +45,28 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit< org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation > {
+public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit<org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation> {
 	private transient int index;
+
 	public DeclareNonGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
 		super( step, declaringType, field );
 	}
+
 	public DeclareNonGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
-	
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.index = this.getDeclaringType().fields.size(); 
-		this.getDeclaringType().fields.add(this.index, this.getField());
+		this.index = this.getDeclaringType().fields.size();
+		this.getDeclaringType().fields.add( this.index, this.getField() );
 		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
 	}
 
 	@Override
 	protected final void undoInternal() {
-		if (this.getDeclaringType().fields.get(this.index) == this.getField()) {
-			this.getDeclaringType().fields.remove(this.index);
+		if( this.getDeclaringType().fields.get( this.index ) == this.getField() ) {
+			this.getDeclaringType().fields.remove( this.index );
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

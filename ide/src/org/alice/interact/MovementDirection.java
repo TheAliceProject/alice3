@@ -50,108 +50,107 @@ import edu.cmu.cs.dennisc.math.Vector3;
  * @author David Culyba
  */
 public enum MovementDirection {
-	
-	FORWARD(0.0d, 0.0d, -1.0d),
-	BACKWARD(0.0d, 0.0d, 1.0d),
-	LEFT(-1.0d, 0.0d, 0.0d),
-	RIGHT(1.0d, 0.0d, 0.0d),
-	UP(0.0d, 1.0d, 0.0d),
-	DOWN(0.0d, -1.0d, 0.0d),
-	UP_RIGHT(1.0d, 1.0d, 0.0d),
-	UP_LEFT(-1.0d, 1.0d, 0.0d),
-	DOWN_RIGHT(1.0d, -1.0d, 0.0d),
-	DOWN_LEFT(-1.0d, -1.0d, 0.0d),
-	UP_BACKWARD(0.0d, 1.0d, 1.0d),
-	UP_FORWARD(0.0d, 1.0d, -1.0d),
-	DOWN_BACKWARD(0.0d, -1.0d, 1.0d),
-	DOWN_FORWARD(0.0d, -1.0d, -1.0d),
-	RIGHT_BACKWARD(1.0d, 0.0d, 1.0d),
-	RIGHT_FORWARD(1.0d, 0.0d, -1.0d),
-	LEFT_BACKWARD(-1.0d, 0.0d, 1.0d),
-	LEFT_FORWARD(-1.0d, 0.0d, -1.0d),
-	RESIZE(-1.0d, 1.0d, 0.0d),
-	;
-	
-	
+
+	FORWARD( 0.0d, 0.0d, -1.0d ),
+	BACKWARD( 0.0d, 0.0d, 1.0d ),
+	LEFT( -1.0d, 0.0d, 0.0d ),
+	RIGHT( 1.0d, 0.0d, 0.0d ),
+	UP( 0.0d, 1.0d, 0.0d ),
+	DOWN( 0.0d, -1.0d, 0.0d ),
+	UP_RIGHT( 1.0d, 1.0d, 0.0d ),
+	UP_LEFT( -1.0d, 1.0d, 0.0d ),
+	DOWN_RIGHT( 1.0d, -1.0d, 0.0d ),
+	DOWN_LEFT( -1.0d, -1.0d, 0.0d ),
+	UP_BACKWARD( 0.0d, 1.0d, 1.0d ),
+	UP_FORWARD( 0.0d, 1.0d, -1.0d ),
+	DOWN_BACKWARD( 0.0d, -1.0d, 1.0d ),
+	DOWN_FORWARD( 0.0d, -1.0d, -1.0d ),
+	RIGHT_BACKWARD( 1.0d, 0.0d, 1.0d ),
+	RIGHT_FORWARD( 1.0d, 0.0d, -1.0d ),
+	LEFT_BACKWARD( -1.0d, 0.0d, 1.0d ),
+	LEFT_FORWARD( -1.0d, 0.0d, -1.0d ),
+	RESIZE( -1.0d, 1.0d, 0.0d ), ;
+
 	private Vector3 directionVector;
-	private MovementDirection(double x, double y, double z)
+
+	private MovementDirection( double x, double y, double z )
 	{
-		this.directionVector = new Vector3(x,y,z);
+		this.directionVector = new Vector3( x, y, z );
 		this.directionVector.normalize();
 	}
-	
+
 	public Vector3 getVector()
 	{
 		return this.directionVector;
 	}
-	
+
 	public HandleSet.HandleGroup getHandleGroup()
 	{
-		if (this == FORWARD || this == BACKWARD)
+		if( ( this == FORWARD ) || ( this == BACKWARD ) )
 		{
 			return HandleSet.HandleGroup.Z_AXIS;
 		}
-		else if (this == UP || this == DOWN)
+		else if( ( this == UP ) || ( this == DOWN ) )
 		{
 			return HandleSet.HandleGroup.Y_AXIS;
 		}
-		else if (this == LEFT || this == RIGHT)
+		else if( ( this == LEFT ) || ( this == RIGHT ) )
 		{
 			return HandleSet.HandleGroup.X_AXIS;
 		}
-		else if (this == UP_BACKWARD || this == UP_FORWARD || this == DOWN_BACKWARD || this == DOWN_FORWARD)
+		else if( ( this == UP_BACKWARD ) || ( this == UP_FORWARD ) || ( this == DOWN_BACKWARD ) || ( this == DOWN_FORWARD ) )
 		{
 			return HandleSet.HandleGroup.Y_AND_Z_AXIS;
 		}
-		else if (this == UP_RIGHT || this == UP_LEFT || this == DOWN_RIGHT || this == DOWN_LEFT)
+		else if( ( this == UP_RIGHT ) || ( this == UP_LEFT ) || ( this == DOWN_RIGHT ) || ( this == DOWN_LEFT ) )
 		{
 			return HandleSet.HandleGroup.X_AND_Y_AXIS;
 		}
-		else if (this == RIGHT_BACKWARD || this == LEFT_BACKWARD || this == RIGHT_FORWARD || this == LEFT_FORWARD)
+		else if( ( this == RIGHT_BACKWARD ) || ( this == LEFT_BACKWARD ) || ( this == RIGHT_FORWARD ) || ( this == LEFT_FORWARD ) )
 		{
 			return HandleSet.HandleGroup.X_AND_Z_AXIS;
 		}
-		else if ( this == RESIZE )
+		else if( this == RESIZE )
 		{
 			return HandleSet.HandleGroup.RESIZE_AXIS;
 		}
-		assert false: "NO HANDLE GROUP DEFINED FOR "+this;
+		assert false : "NO HANDLE GROUP DEFINED FOR " + this;
 		return null;
 	}
-	
+
 	public MovementDirection getOpposite()
 	{
-		if (this == FORWARD)
+		if( this == FORWARD )
 		{
 			return BACKWARD;
 		}
-		else if (this == BACKWARD)
+		else if( this == BACKWARD )
 		{
 			return FORWARD;
 		}
-		else if (this == UP)
+		else if( this == UP )
 		{
 			return DOWN;
 		}
-		else if (this == DOWN)
+		else if( this == DOWN )
 		{
 			return UP;
 		}
-		else if (this == LEFT)
+		else if( this == LEFT )
 		{
 			return RIGHT;
 		}
-		else if (this == RIGHT)
+		else if( this == RIGHT )
 		{
 			return LEFT;
 		}
 		return this;
 	}
-	
+
 	public boolean hasDirection( Vector3 vector )
 	{
 		double dot = Vector3.calculateDotProduct( this.directionVector, vector );
-		if (dot > 0.0d)
+		if( dot > 0.0d )
 		{
 			return true;
 		}

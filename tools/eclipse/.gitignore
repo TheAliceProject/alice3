@@ -1,0 +1,4 @@
+org.lgna.croquet.eclipse.updatesite/features
+org.lgna.croquet.eclipse.updatesite/plugins
+org.lgna.croquet.eclipse.updatesite/*.jar
+

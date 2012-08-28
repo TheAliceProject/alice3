@@ -45,11 +45,13 @@ package edu.cmu.cs.dennisc.pattern;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultPool< E extends Reusable > extends AbstractPool< E > {
+public class DefaultPool<E extends Reusable> extends AbstractPool<E> {
 	private Class<E> cls;
+
 	public DefaultPool( Class<E> cls ) {
 		this.cls = cls;
 	}
+
 	@Override
 	protected E createInstance() {
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.cls );

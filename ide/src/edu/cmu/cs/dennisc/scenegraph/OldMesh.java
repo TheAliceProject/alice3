@@ -47,23 +47,26 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class OldMesh extends Geometry {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< double[] > xyzs = new edu.cmu.cs.dennisc.property.InstanceProperty< double[] >( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< float[] > ijks = new edu.cmu.cs.dennisc.property.InstanceProperty< float[] >( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< float[] > uvs = new edu.cmu.cs.dennisc.property.InstanceProperty< float[] >( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< short[] > xyzTriangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty< short[] >( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< short[] > ijkTriangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty< short[] >( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< short[] > uvTriangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty< short[] >( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< short[] > xyzQuadrangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty< short[] >( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< short[] > ijkQuadrangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty< short[] >( this, null );
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< short[] > uvQuadrangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty< short[] >( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<double[]> xyzs = new edu.cmu.cs.dennisc.property.InstanceProperty<double[]>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<float[]> ijks = new edu.cmu.cs.dennisc.property.InstanceProperty<float[]>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<float[]> uvs = new edu.cmu.cs.dennisc.property.InstanceProperty<float[]>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> xyzTriangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> ijkTriangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> uvTriangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> xyzQuadrangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> ijkQuadrangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<short[]> uvQuadrangleIndices = new edu.cmu.cs.dennisc.property.InstanceProperty<short[]>( this, null );
+
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, xyzs.getValue() );
 	}
+
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
 		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, xyzs.getValue() );
 	}
+
 	@Override
 	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		double[] xyzs = this.xyzs.getValue();
@@ -74,12 +77,13 @@ public class OldMesh extends Geometry {
 		forward.set( ijks[ 0 ], ijks[ 1 ], ijks[ 2 ] );
 		forward.normalize();
 		forward.negate();
-		
+
 		translation.set( xyzs[ 0 ], xyzs[ 1 ], xyzs[ 2 ] );
 		upGuide.set( translation.x - xyzs[ 3 ], translation.y - xyzs[ 4 ], translation.z - xyzs[ 5 ] );
 		upGuide.normalize();
-		
+
 	}
+
 	@Override
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
 		//todo

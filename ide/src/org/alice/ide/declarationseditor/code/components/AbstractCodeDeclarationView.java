@@ -49,42 +49,45 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 	public AbstractCodeDeclarationView( org.alice.ide.declarationseditor.CodeComposite composite ) {
 		super( composite );
 	}
+
 	@Deprecated
 	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor();
+
 	@Override
 	public boolean isPrintSupported() {
 		return true;
 	}
+
 	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
 		return this.getCodePanelWithDropReceptor().print( g, pageFormat, pageIndex );
 	}
-	
+
 	@Override
-	public void addPotentialDropReceptors( java.util.List< org.lgna.croquet.DropReceptor > out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+	public void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
 		if( dragModel instanceof org.alice.ide.ast.draganddrop.CodeDragModel ) {
 			org.alice.ide.ast.draganddrop.CodeDragModel codeDragModel = (org.alice.ide.ast.draganddrop.CodeDragModel)dragModel;
-			final org.lgna.project.ast.AbstractType< ?,?,? > type = codeDragModel.getType();
+			final org.lgna.project.ast.AbstractType<?, ?, ?> type = codeDragModel.getType();
 			if( type == org.lgna.project.ast.JavaType.VOID_TYPE ) {
 				//pass
 			} else {
-				java.util.List< org.alice.ide.codeeditor.ExpressionPropertyDropDownPane > list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.codeeditor.ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< org.alice.ide.codeeditor.ExpressionPropertyDropDownPane >() {
+				java.util.List<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane> list = org.lgna.croquet.components.HierarchyUtilities.findAllMatches( this, org.alice.ide.codeeditor.ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion<org.alice.ide.codeeditor.ExpressionPropertyDropDownPane>() {
 					public boolean accept( org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
-						org.lgna.project.ast.AbstractType<?,?,?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+						org.lgna.project.ast.AbstractType<?, ?, ?> expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 						assert expressionType != null : expressionPropertyDropDownPane.getExpressionProperty();
 						if( expressionType.isAssignableFrom( type ) ) {
 							return true;
-//						} else {
-//							if( type.isArray() ) {
-//								if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
-//									return true;
-//								} else {
-//									for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
-//										if( expressionType == integerType ) {
-//											return true;
-//										}
-//									}
-//								}
-//							}
+							//						} else {
+							//							if( type.isArray() ) {
+							//								if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
+							//									return true;
+							//								} else {
+							//									for( org.lgna.project.ast.JavaType integerType : org.lgna.project.ast.JavaType.INTEGER_TYPES ) {
+							//										if( expressionType == integerType ) {
+							//											return true;
+							//										}
+							//									}
+							//								}
+							//							}
 						}
 						return false;
 					}

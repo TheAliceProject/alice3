@@ -46,17 +46,16 @@ package org.alice.ide.properties.uicontroller;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.components.Panel;
 
-
 public interface PropertyAdapterController<P>
 {
-    public final static int MIN_ADAPTER_HEIGHT = 28;
-    
-	public void setPropertyAdapter(AbstractPropertyAdapter<P, ?> propertyAdapter);
-	
+	public final static int MIN_ADAPTER_HEIGHT = 28;
+
+	public void setPropertyAdapter( AbstractPropertyAdapter<P, ?> propertyAdapter );
+
 	public Class<?> getPropertyType();
-	
+
 	public AbstractPropertyAdapter<P, ?> getPropertyAdapter();
-	
+
 	public Panel getPanel();
-	
+
 }

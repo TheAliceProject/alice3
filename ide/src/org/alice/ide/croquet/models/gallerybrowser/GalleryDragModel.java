@@ -50,12 +50,17 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 	public GalleryDragModel( java.util.UUID id ) {
 		super( id );
 	}
+
 	public abstract String getText();
+
 	public abstract javax.swing.Icon getSmallIcon();
+
 	public abstract javax.swing.Icon getLargeIcon();
+
 	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
+
 	@Override
-	public java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
+	public java.util.List<? extends org.lgna.croquet.DropReceptor> createListOfPotentialDropReceptors() {
 		org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
 		if( ide != null ) {
 			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = ide.getSceneEditor();
@@ -64,15 +69,19 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 			return java.util.Collections.emptyList();
 		}
 	}
+
 	@Override
 	public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
 	}
+
 	@Override
 	public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
 	}
+
 	@Override
 	public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
 	}
+
 	@Override
 	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
 	}

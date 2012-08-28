@@ -48,23 +48,24 @@ package org.lgna.project;
 public class Project {
 
 	private final org.lgna.project.ast.NamedUserType programType;
-	private final java.util.Set< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
-	private final java.util.Map/*< org.lgna.project.properties.PropertyKey< T >, T >*/ propertyMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+	private final java.util.Set<org.lgna.common.Resource> resources = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
+	private final java.util.Map/* < org.lgna.project.properties.PropertyKey< T >, T > */propertyMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArraySet();
 
-	private final java.util.List< org.lgna.project.event.ResourceListener > resourceListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	
+	private final java.util.List<org.lgna.project.event.ResourceListener> resourceListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	private final Object lock = new Object();
-	
-	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes, java.util.Set< org.lgna.common.Resource > resources ) {
+
+	public Project( org.lgna.project.ast.NamedUserType programType, java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes, java.util.Set<org.lgna.common.Resource> resources ) {
 		this( programType );
 		this.namedUserTypes.addAll( namedUserTypes );
 		this.resources.addAll( resources );
 	}
+
 	public Project( org.lgna.project.ast.NamedUserType programType ) {
 		this.programType = programType;
 	}
-	
+
 	public Object getLock() {
 		return this.lock;
 	}
@@ -72,13 +73,15 @@ public class Project {
 	public org.lgna.project.ast.NamedUserType getProgramType() {
 		return this.programType;
 	}
-	
+
 	public void addResourceListener( org.lgna.project.event.ResourceListener resourceListener ) {
 		this.resourceListeners.add( resourceListener );
 	}
+
 	public void removeResourceListener( org.lgna.project.event.ResourceListener resourceListener ) {
 		this.resourceListeners.remove( resourceListener );
 	}
+
 	public void addResource( org.lgna.common.Resource resource ) {
 		if( this.resources.contains( resource ) ) {
 			//todo
@@ -93,6 +96,7 @@ public class Project {
 			}
 		}
 	}
+
 	public void removeResource( org.lgna.common.Resource resource ) {
 		this.resources.remove( resource );
 		if( this.resourceListeners.size() > 0 ) {
@@ -102,22 +106,27 @@ public class Project {
 			}
 		}
 	}
-	public java.util.Set< org.lgna.common.Resource > getResources() {
+
+	public java.util.Set<org.lgna.common.Resource> getResources() {
 		return this.resources;
 	}
 
-	public java.util.Set< org.lgna.project.properties.PropertyKey<Object> > getPropertyKeys() {
+	public java.util.Set<org.lgna.project.properties.PropertyKey<Object>> getPropertyKeys() {
 		return this.propertyMap.keySet();
 	}
+
 	public <T> boolean containsValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
 		return this.propertyMap.containsKey( key );
 	}
+
 	public <T> T getValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
 		return (T)this.propertyMap.get( key );
 	}
+
 	public <T> void putValueFor( org.lgna.project.properties.PropertyKey<T> key, T value ) {
 		this.propertyMap.put( key, value );
 	}
+
 	public <T> void removeValueFor( org.lgna.project.properties.PropertyKey<T> key ) {
 		this.propertyMap.remove( key );
 	}
@@ -130,13 +139,15 @@ public class Project {
 			this.namedUserTypes.add( namedUserType );
 		}
 	}
+
 	public void removeNamedUserType( org.lgna.project.ast.NamedUserType namedUserType ) {
 		this.namedUserTypes.remove( namedUserType );
 	}
-	public java.util.Set< org.lgna.project.ast.NamedUserType > getNamedUserTypes() {
+
+	public java.util.Set<org.lgna.project.ast.NamedUserType> getNamedUserTypes() {
 		synchronized( this.getLock() ) {
 			boolean isReferencedDeclarationPropertyInclusionDesired = true;
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.NamedUserType > crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.NamedUserType> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.NamedUserType.class );
 			this.programType.crawl( crawler, isReferencedDeclarationPropertyInclusionDesired );
 			this.namedUserTypes.addAll( crawler.getList() );
 			return this.namedUserTypes;

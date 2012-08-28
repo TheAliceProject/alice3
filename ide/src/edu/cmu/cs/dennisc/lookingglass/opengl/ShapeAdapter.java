@@ -46,9 +46,9 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShapeAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Shape > extends GeometryAdapter< E > {
+public abstract class ShapeAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Shape> extends GeometryAdapter<E> {
 	@Override
-    public boolean isAlphaBlended() {
-    	return false;
-    }
+	public boolean isAlphaBlended() {
+		return false;
+	}
 }

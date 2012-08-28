@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.TreeSelectionState<E>> {
+public class Tree<E> extends ViewController<javax.swing.JTree, org.lgna.croquet.TreeSelectionState<E>> {
 	public Tree( org.lgna.croquet.TreeSelectionState<E> model ) {
 		super( model );
 		this.setSwingTreeModel( model.getTreeModel() );
@@ -56,9 +56,11 @@ public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.T
 	private void setSwingTreeModel( javax.swing.tree.TreeModel treeModel ) {
 		this.getAwtComponent().setModel( treeModel );
 	}
+
 	private void setSwingTreeSelectionModel( javax.swing.tree.TreeSelectionModel treeSelectionModel ) {
 		this.getAwtComponent().setSelectionModel( treeSelectionModel );
 	}
+
 	@Override
 	protected javax.swing.JTree createAwtComponent() {
 		return new javax.swing.JTree();
@@ -67,6 +69,7 @@ public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.T
 	public javax.swing.tree.TreeCellRenderer getCellRenderer() {
 		return this.getAwtComponent().getCellRenderer();
 	}
+
 	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
 		this.getAwtComponent().setCellRenderer( listCellRenderer );
 	}
@@ -85,13 +88,14 @@ public class Tree<E> extends ViewController<javax.swing.JTree,org.lgna.croquet.T
 			}
 		}
 	}
-	
+
 	public void expandAllRows() {
 		javax.swing.JTree jTree = this.getAwtComponent();
 		for( int i = 0; i < jTree.getRowCount(); i++ ) {
 			jTree.expandRow( i );
 		}
 	}
+
 	public void collapseAllRows() {
 		javax.swing.JTree jTree = this.getAwtComponent();
 		for( int i = 0; i < jTree.getRowCount(); i++ ) {

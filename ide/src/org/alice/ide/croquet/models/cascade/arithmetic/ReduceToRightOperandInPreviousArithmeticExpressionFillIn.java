@@ -50,12 +50,15 @@ public class ReduceToRightOperandInPreviousArithmeticExpressionFillIn extends Re
 	private static class SingletonHolder {
 		private static ReduceToRightOperandInPreviousArithmeticExpressionFillIn instance = new ReduceToRightOperandInPreviousArithmeticExpressionFillIn();
 	}
+
 	public static ReduceToRightOperandInPreviousArithmeticExpressionFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ReduceToRightOperandInPreviousArithmeticExpressionFillIn() {
 		super( java.util.UUID.fromString( "3c5115ea-d67f-4ccb-89b5-c414c87fe3ed" ) );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ArithmeticInfixExpression previousArithmetic ) {
 		return previousArithmetic.rightOperand.getValue();

@@ -46,43 +46,49 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArgumentListPropertyView< N extends org.lgna.project.ast.AbstractArgument > extends org.lgna.croquet.components.LineAxisPanel {
+public abstract class ArgumentListPropertyView<N extends org.lgna.project.ast.AbstractArgument> extends org.lgna.croquet.components.LineAxisPanel {
 	protected final static String SEPARATOR = ",";
 	private final org.alice.ide.x.AstI18nFactory factory;
-	private final org.lgna.project.ast.ArgumentListProperty< N > argumentListProperty;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< N > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< N >() {
+	private final org.lgna.project.ast.ArgumentListProperty<N> argumentListProperty;
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<N> listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<N>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< N > e ) {
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<N> e ) {
 		}
+
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< N > e ) {
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<N> e ) {
 			ArgumentListPropertyView.this.refreshLater();
 		}
 	};
-	public ArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty< N > argumentListProperty ) {
+
+	public ArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty<N> argumentListProperty ) {
 		this.factory = factory;
 		this.argumentListProperty = argumentListProperty;
 		this.refreshLater();
 	}
-	
+
 	public org.alice.ide.x.AstI18nFactory getFactory() {
 		return this.factory;
 	}
-	public org.lgna.project.ast.ArgumentListProperty< N > getArgumentListProperty() {
+
+	public org.lgna.project.ast.ArgumentListProperty<N> getArgumentListProperty() {
 		return this.argumentListProperty;
 	}
-	
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.argumentListProperty.addListPropertyListener( this.listPropertyAdapter );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.argumentListProperty.removeListPropertyListener( this.listPropertyAdapter );
 		super.handleUndisplayable();
 	}
+
 	protected abstract String getInitialPrefix();
+
 	@Override
 	protected void internalRefresh() {
 		this.forgetAndRemoveAllComponents();

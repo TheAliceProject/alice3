@@ -49,12 +49,15 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 	private static class SingletonHolder {
 		private static CopyOperation instance = new CopyOperation();
 	}
+
 	public static CopyOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private CopyOperation() {
 		super( java.util.UUID.fromString( "4caee2f0-7d3c-427c-9816-f277bc2fcecb" ) );
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		String modifierText;

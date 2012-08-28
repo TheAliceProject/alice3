@@ -48,22 +48,27 @@ package org.lgna.story;
 public final class VantagePoint {
 	public static final VantagePoint IDENTITY = new VantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() );
 	private final edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal;
+
 	private VantagePoint( edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal ) {
 		this.internal = internal;
 	}
+
 	public VantagePoint( Orientation orientation, Position position ) {
 		this( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( orientation.getInternal(), position.getInternal() ) );
 	}
-	/*package-private*/ static VantagePoint createInstance( edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal ) {
+
+	/* package-private */static VantagePoint createInstance( edu.cmu.cs.dennisc.math.AffineMatrix4x4 internal ) {
 		return internal != null ? new VantagePoint( internal ) : null;
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal() {
+
+	/* package-private */edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal() {
 		return this.internal;
 	}
-	/*package-private*/ static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal( VantagePoint vantagePoint ) {
+
+	/* package-private */static edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInternal( VantagePoint vantagePoint ) {
 		return vantagePoint != null ? vantagePoint.internal : null;
 	}
-	
+
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj instanceof VantagePoint ) {
@@ -73,14 +78,16 @@ public final class VantagePoint {
 			return false;
 		}
 	}
+
 	@Override
 	public int hashCode() {
 		return this.internal.hashCode();
 	}
-	
+
 	public Orientation getOrientation() {
 		return Orientation.createInstance( this.internal.orientation );
 	}
+
 	public Position getPosition() {
 		return Position.createInstance( this.internal.translation );
 	}

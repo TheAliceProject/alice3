@@ -44,34 +44,34 @@ package org.alice.stageide.sceneeditor;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ShowJointedModelJointAxesState extends org.lgna.croquet.BooleanState {
-	
-	private static java.util.Map< org.lgna.project.ast.AbstractField, ShowJointedModelJointAxesState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private static java.util.Map<org.lgna.project.ast.AbstractField, ShowJointedModelJointAxesState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static ShowJointedModelJointAxesState getInstance( org.lgna.project.ast.AbstractField value ) {
 		synchronized( map ) {
 			ShowJointedModelJointAxesState rv = map.get( value );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new ShowJointedModelJointAxesState(value);
+				rv = new ShowJointedModelJointAxesState( value );
 				map.put( value, rv );
 			}
 			return rv;
 		}
 	}
-	
+
 	private org.lgna.project.ast.AbstractField field;
-	
-	
-	private ShowJointedModelJointAxesState(org.lgna.project.ast.AbstractField field) {
-        super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "3b3bdd30-4f04-4160-ae58-e466732a4c6c" ), false );
-        this.field = field;
-    }
-	
-	public org.lgna.project.ast.AbstractField getField() { 
+
+	private ShowJointedModelJointAxesState( org.lgna.project.ast.AbstractField field ) {
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "3b3bdd30-4f04-4160-ae58-e466732a4c6c" ), false );
+		this.field = field;
+	}
+
+	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;
 	}
-	
+
 }

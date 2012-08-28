@@ -49,6 +49,7 @@ public class PreferenceManager {
 	private PreferenceManager() {
 		throw new AssertionError();
 	}
+
 	public static java.util.prefs.Preferences getUserPreferences() {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		if( application != null ) {
@@ -112,25 +113,28 @@ public class PreferenceManager {
 	//		}
 	//	}
 
-	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > selectionOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private static java.util.List< org.lgna.croquet.ListSelectionState< ? > > dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List<org.lgna.croquet.ListSelectionState<?>> selectionOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List<org.lgna.croquet.ListSelectionState<?>> dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	private static String getKey( org.lgna.croquet.Model model ) {
 		return model.getMigrationId().toString();
 	}
-	private static <T> T decodeItem( byte[] data, org.lgna.croquet.ItemCodec< T > codec ) {
+
+	private static <T> T decodeItem( byte[] data, org.lgna.croquet.ItemCodec<T> codec ) {
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
 		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
 		return codec.decodeValue( decoder );
 	}
-	private static <T> byte[] encodeItem( T value, org.lgna.croquet.ItemCodec< T > codec ) {
+
+	private static <T> byte[] encodeItem( T value, org.lgna.croquet.ItemCodec<T> codec ) {
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
 		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
 		codec.encodeValue( encoder, value );
 		encoder.flush();
 		return baos.toByteArray();
 	}
-	private static <T> T[] decodeArray( byte[] data, org.lgna.croquet.ItemCodec< T > codec ) {
+
+	private static <T> T[] decodeArray( byte[] data, org.lgna.croquet.ItemCodec<T> codec ) {
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
 		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bais );
 		boolean isNotNull = decoder.decodeBoolean();
@@ -138,7 +142,7 @@ public class PreferenceManager {
 			final int N = decoder.decodeInt();
 			Class<T> componentType = codec.getValueClass();
 			T[] rv = (T[])java.lang.reflect.Array.newInstance( componentType, N );
-			for( int i=0; i<rv.length; i++ ) {
+			for( int i = 0; i < rv.length; i++ ) {
 				rv[ i ] = codec.decodeValue( decoder );
 			}
 			return rv;
@@ -146,22 +150,24 @@ public class PreferenceManager {
 			return null;
 		}
 	}
-	private static <T> byte[] encodeArray( T[] value, org.lgna.croquet.ItemCodec< T > codec ) {
+
+	private static <T> byte[] encodeArray( T[] value, org.lgna.croquet.ItemCodec<T> codec ) {
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
 		edu.cmu.cs.dennisc.codec.BinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( baos );
 		boolean isNotNull = value != null;
 		encoder.encode( isNotNull );
 		if( isNotNull ) {
 			encoder.encode( value.length );
-			for( int i=0; i<value.length; i++ ) {
-				codec.encodeValue( encoder, value[ i ] );
+			for( T element : value ) {
+				codec.encodeValue( encoder, element );
 			}
 		}
 		encoder.flush();
 		return baos.toByteArray();
 	}
-	private static <E> org.lgna.croquet.ListSelectionState< E > decodeSelection( org.lgna.croquet.ListSelectionState< E > rv, java.util.prefs.Preferences userPreferences ) {
-		org.lgna.croquet.ItemCodec< E > codec = rv.getItemCodec();
+
+	private static <E> org.lgna.croquet.ListSelectionState<E> decodeSelection( org.lgna.croquet.ListSelectionState<E> rv, java.util.prefs.Preferences userPreferences ) {
+		org.lgna.croquet.ItemCodec<E> codec = rv.getItemCodec();
 		E defaultValue = rv.getSelectedItem();
 		byte[] defaultEncoding = encodeItem( defaultValue, codec );
 		String key = getKey( rv );
@@ -174,8 +180,9 @@ public class PreferenceManager {
 		}
 		return rv;
 	}
-	private static <E> org.lgna.croquet.ListSelectionState< E > decodeData( org.lgna.croquet.ListSelectionState< E > rv, java.util.prefs.Preferences userPreferences ) {
-		org.lgna.croquet.ItemCodec< E > codec = rv.getItemCodec();
+
+	private static <E> org.lgna.croquet.ListSelectionState<E> decodeData( org.lgna.croquet.ListSelectionState<E> rv, java.util.prefs.Preferences userPreferences ) {
+		org.lgna.croquet.ItemCodec<E> codec = rv.getItemCodec();
 		E[] defaultValue = rv.toArray();
 		byte[] defaultEncoding = encodeArray( defaultValue, codec );
 		String key = getKey( rv );
@@ -188,15 +195,17 @@ public class PreferenceManager {
 		}
 		return rv;
 	}
-	private static <E> void encodeSelection( org.lgna.croquet.ListSelectionState< E > listSelectionState, java.util.prefs.Preferences userPreferences ) {
-		org.lgna.croquet.ItemCodec< E > codec = listSelectionState.getItemCodec();
+
+	private static <E> void encodeSelection( org.lgna.croquet.ListSelectionState<E> listSelectionState, java.util.prefs.Preferences userPreferences ) {
+		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getItemCodec();
 		E value = listSelectionState.getSelectedItem();
 		byte[] encoding = encodeItem( value, codec );
 		String key = getKey( listSelectionState );
 		userPreferences.putByteArray( key, encoding );
 	}
-	private static <E> void encodeData( org.lgna.croquet.ListSelectionState< E > listSelectionState, java.util.prefs.Preferences userPreferences ) {
-		org.lgna.croquet.ItemCodec< E > codec = listSelectionState.getItemCodec();
+
+	private static <E> void encodeData( org.lgna.croquet.ListSelectionState<E> listSelectionState, java.util.prefs.Preferences userPreferences ) {
+		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getItemCodec();
 		E[] value = listSelectionState.toArray();
 		byte[] encoding = encodeArray( value, codec );
 		String key = getKey( listSelectionState );
@@ -204,7 +213,7 @@ public class PreferenceManager {
 	}
 
 	//todo:
-	public static void registerAndInitializeSelectionOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
+	public static void registerAndInitializeSelectionOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState<?> listSelectionState ) {
 		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
 			try {
@@ -217,8 +226,9 @@ public class PreferenceManager {
 			System.err.println( "registerAndInitializePreference: " + listSelectionState );
 		}
 	}
+
 	//todo:
-	public static void registerAndInitializeDataOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState< ? > listSelectionState ) {
+	public static void registerAndInitializeDataOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState<?> listSelectionState ) {
 		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
 			try {
@@ -237,14 +247,14 @@ public class PreferenceManager {
 		if( userPreferences != null ) {
 			org.lgna.croquet.preferences.PreferenceBooleanState.preserveAll( userPreferences );
 			org.lgna.croquet.preferences.PreferenceStringState.preserveAll( userPreferences );
-			for( org.lgna.croquet.ListSelectionState< ? > listSelectionState : selectionOfListSelectionStatePreferences ) {
+			for( org.lgna.croquet.ListSelectionState<?> listSelectionState : selectionOfListSelectionStatePreferences ) {
 				try {
 					encodeSelection( listSelectionState, userPreferences );
 				} catch( Throwable t ) {
 					t.printStackTrace();
 				}
 			}
-			for( org.lgna.croquet.ListSelectionState< ? > listSelectionState : dataOfListSelectionStatePreferences ) {
+			for( org.lgna.croquet.ListSelectionState<?> listSelectionState : dataOfListSelectionStatePreferences ) {
 				try {
 					encodeData( listSelectionState, userPreferences );
 				} catch( Throwable t ) {

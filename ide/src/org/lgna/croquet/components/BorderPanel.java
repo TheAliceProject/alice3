@@ -56,51 +56,60 @@ public class BorderPanel extends Panel {
 		private Component<?> lineEnd;
 		private int hgap;
 		private int vgap;
+
 		public Builder composite( org.lgna.croquet.Composite<?> composite ) {
 			assert this.composite == null : this.composite + " " + composite;
 			this.composite = composite;
 			return this;
 		}
+
 		public Builder center( Component<?> center ) {
 			assert center != null;
 			assert this.center == null : this.center + " " + center;
 			this.center = center;
 			return this;
 		}
+
 		public Builder pageStart( Component<?> pageStart ) {
 			assert pageStart != null;
 			assert this.pageStart == null : this.pageStart + " " + pageStart;
 			this.pageStart = pageStart;
 			return this;
 		}
+
 		public Builder pageEnd( Component<?> pageEnd ) {
 			assert pageEnd != null;
 			assert this.pageEnd == null : this.pageEnd + " " + pageEnd;
 			this.pageEnd = pageEnd;
 			return this;
 		}
+
 		public Builder lineStart( Component<?> lineStart ) {
 			assert lineStart != null;
 			assert this.lineStart == null : this.lineStart + " " + lineStart;
 			this.lineStart = lineStart;
 			return this;
 		}
+
 		public Builder lineEnd( Component<?> lineEnd ) {
 			assert lineEnd != null;
 			assert this.lineEnd == null : this.lineEnd + " " + lineEnd;
 			this.lineEnd = lineEnd;
 			return this;
 		}
+
 		public Builder hgap( int hgap ) {
 			assert this.hgap == 0 : this.hgap + " " + hgap;
 			this.hgap = hgap;
 			return this;
 		}
+
 		public Builder vgap( int vgap ) {
 			assert this.vgap == 0 : this.vgap + " " + vgap;
 			this.vgap = vgap;
 			return this;
 		}
+
 		public BorderPanel build() {
 			BorderPanel rv = new BorderPanel( this.composite, this.hgap, this.vgap );
 			if( this.center != null ) {
@@ -121,66 +130,80 @@ public class BorderPanel extends Panel {
 			return rv;
 		}
 	}
-	
+
 	public enum Constraint {
 		CENTER( java.awt.BorderLayout.CENTER ),
 		PAGE_START( java.awt.BorderLayout.PAGE_START ),
 		PAGE_END( java.awt.BorderLayout.PAGE_END ),
 		LINE_START( java.awt.BorderLayout.LINE_START ),
 		LINE_END( java.awt.BorderLayout.LINE_END );
-		
+
 		private String internal;
+
 		private Constraint( String internal ) {
 			this.internal = internal;
 		}
+
 		//todo: reduce visibility? /*package-private*/
 		public String getInternal() {
 			return this.internal;
 		}
 	}
+
 	private final int hgap;
 	private final int vgap;
+
 	public BorderPanel() {
 		this( null );
 	}
+
 	public BorderPanel( int hgap, int vgap ) {
 		this( null, hgap, vgap );
 	}
+
 	public BorderPanel( org.lgna.croquet.Composite<?> composite ) {
 		this( composite, 0, 0 );
 	}
+
 	public BorderPanel( org.lgna.croquet.Composite<?> composite, int hgap, int vgap ) {
 		super( composite );
 		this.hgap = hgap;
 		this.vgap = vgap;
 	}
+
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout( this.hgap, this.vgap );
 	}
+
 	public void addComponent( Component<?> child, Constraint constraint ) {
 		this.internalAddComponent( child, constraint.internal );
 	}
+
 	public void addCenterComponent( Component<?> child ) {
 		this.addComponent( child, Constraint.CENTER );
 	}
+
 	public void addPageStartComponent( Component<?> child ) {
 		this.addComponent( child, Constraint.PAGE_START );
 	}
+
 	public void addPageEndComponent( Component<?> child ) {
 		this.addComponent( child, Constraint.PAGE_END );
 	}
+
 	public void addLineStartComponent( Component<?> child ) {
 		this.addComponent( child, Constraint.LINE_START );
 	}
+
 	public void addLineEndComponent( Component<?> child ) {
 		this.addComponent( child, Constraint.LINE_END );
 	}
-	
-	public Component< ? > getComponent( Constraint constraint ) {
+
+	public Component<?> getComponent( Constraint constraint ) {
 		javax.swing.JPanel jPanel = this.getAwtComponent();
 		java.awt.BorderLayout borderLayout = (java.awt.BorderLayout)jPanel.getLayout();
-		for( Component< ? > component : this.getComponents() ) {
+		for( Component<?> component : this.getComponents() ) {
 			java.awt.Component awtComponent = component.getAwtComponent();
 			if( constraint.internal.equals( borderLayout.getConstraints( awtComponent ) ) ) {
 				return component;
@@ -188,19 +211,24 @@ public class BorderPanel extends Panel {
 		}
 		return null;
 	}
-	public Component< ? > getCenterComponent() {
+
+	public Component<?> getCenterComponent() {
 		return this.getComponent( Constraint.CENTER );
 	}
-	public Component< ? > getPageStartComponent() {
+
+	public Component<?> getPageStartComponent() {
 		return this.getComponent( Constraint.PAGE_START );
 	}
-	public Component< ? > getPageEndComponent() {
+
+	public Component<?> getPageEndComponent() {
 		return this.getComponent( Constraint.PAGE_END );
 	}
-	public Component< ? > getLineStartComponent() {
+
+	public Component<?> getLineStartComponent() {
 		return this.getComponent( Constraint.LINE_START );
 	}
-	public Component< ? > getLineEndComponent() {
+
+	public Component<?> getLineEndComponent() {
 		return this.getComponent( Constraint.LINE_END );
 	}
 }

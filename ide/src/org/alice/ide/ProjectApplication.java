@@ -57,19 +57,25 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private org.lgna.croquet.undo.event.HistoryListener projectHistoryListener;
+
 	public ProjectApplication() {
 		this.projectHistoryListener = new org.lgna.croquet.undo.event.HistoryListener() {
 			public void operationPushing( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 			}
+
 			public void operationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 			}
+
 			public void insertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 			}
+
 			public void insertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 				ProjectApplication.this.handleInsertionIndexChanged( e );
 			}
+
 			public void clearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			}
+
 			public void cleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 			}
 		};
@@ -95,12 +101,15 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	public static final String getApplicationName() {
 		return "Alice";
 	}
+
 	public static final String getVersionText() {
 		return org.lgna.project.Version.getCurrentVersionText();
 	}
+
 	public static final String getVersionAdornment() {
 		return " 3.1";
 	}
+
 	public static final String getApplicationSubPath() {
 		String rv = getApplicationName();
 		if( "Alice".equals( rv ) ) {
@@ -117,6 +126,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		sb.append( message );
 		this.showMessageDialog( sb.toString(), "Cannot read file", org.lgna.croquet.MessageType.ERROR );
 	}
+
 	public void handleVersionNotSupported( java.io.File file, org.lgna.project.VersionNotSupportedException vnse ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( getApplicationName() );
@@ -138,9 +148,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private java.net.URI uri = null;
+
 	public java.net.URI getUri() {
 		return this.uri;
 	}
+
 	public void setUri( java.net.URI uri ) {
 		org.lgna.project.Project project = null;
 		java.io.File file = null;
@@ -188,7 +200,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			} else {
 				org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getSurfaceAppearance( uri );
 				org.lgna.project.ast.NamedUserType programType;
-				if (template.isRoom()) {
+				if( template.isRoom() ) {
 					programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
 				}
 				else {
@@ -199,14 +211,14 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 		if( project != null ) {
 			// Remove the old project history listener, so the old project can be cleaned up
-			if ( (this.getProject() != null) && (this.getProjectHistory() != null) ) {
+			if( ( this.getProject() != null ) && ( this.getProjectHistory() != null ) ) {
 				this.getProjectHistory().removeHistoryListener( this.projectHistoryListener );
 			}
 			this.setProject( project );
 			this.uri = uri;
 			this.getProjectHistory().addHistoryListener( this.projectHistoryListener );
 			try {
-				if( file != null && file.canWrite() ) {
+				if( ( file != null ) && file.canWrite() ) {
 					//org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
 					org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleOpen( file );
 				}
@@ -223,9 +235,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	private final org.lgna.croquet.undo.UndoHistory getProjectHistory() {
 		return this.getProjectHistory( IDE.PROJECT_GROUP );
 	}
+
 	@Deprecated
 	private final org.lgna.croquet.undo.UndoHistory getProjectHistory( org.lgna.croquet.Group group ) {
-		if ( this.getDocument() == null ) {
+		if( this.getDocument() == null ) {
 			return null;
 		} else {
 			return this.getDocument().getUndoHistory( group );
@@ -235,7 +248,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	private int projectHistoryInsertionIndexOfCurrentFile = 0;
 
 	private boolean isProjectChanged() {
-		if ( this.getProjectHistory() == null ) {
+		if( this.getProjectHistory() == null ) {
 			return false;
 		} else {
 			return this.projectHistoryInsertionIndexOfCurrentFile != this.getProjectHistory().getInsertionIndex();
@@ -249,10 +262,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
 		rv.append( getApplicationName() );
 		rv.append( " " );
-		rv.append( getVersionAdornment() ); 
+		rv.append( getVersionAdornment() );
 		rv.append( " " );
 		return rv;
 	}
+
 	protected StringBuffer updateTitle( StringBuffer rv ) {
 		this.updateTitlePrefix( rv );
 		if( this.uri != null ) {
@@ -283,6 +297,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	public ProjectDocument getDocument() {
 		return org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
 	}
+
 	private void setDocument( ProjectDocument document ) {
 		org.alice.ide.project.ProjectDocumentState.getInstance().setValue( document );
 	}
@@ -291,6 +306,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		ProjectDocument document = this.getDocument();
 		return document != null ? document.getProject() : null;
 	}
+
 	public void setProject( org.lgna.project.Project project ) {
 		this.setDocument( new ProjectDocument( project ) );
 	}
@@ -304,15 +320,19 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.updateHistoryLengthAtLastFileOperation();
 		this.updateUndoRedoEnabled();
 	}
+
 	public final void loadProjectFrom( java.io.File file ) {
 		loadProjectFrom( file.toURI() );
 	}
+
 	public final void loadProjectFrom( String path ) {
 		loadProjectFrom( new java.io.File( path ) );
 	}
+
 	public void createProjectFromBootstrap() {
 		throw new RuntimeException( "todo" );
 	}
+
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
 
 	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
@@ -321,7 +341,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		try {
 			final java.awt.image.BufferedImage thumbnailImage = createThumbnail();
 			if( thumbnailImage != null ) {
-				if( thumbnailImage.getWidth() > 0 && thumbnailImage.getHeight() > 0 ) {
+				if( ( thumbnailImage.getWidth() > 0 ) && ( thumbnailImage.getHeight() > 0 ) ) {
 					//pass
 				} else {
 					throw new RuntimeException();
@@ -333,6 +353,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 				public String getName() {
 					return "thumbnail.png";
 				}
+
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, os, thumbnailImage );
 				}
@@ -344,6 +365,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.uri = file.toURI();
 		this.updateHistoryLengthAtLastFileOperation();
 	}
+
 	public void saveProjectTo( String path ) throws java.io.IOException {
 		saveProjectTo( new java.io.File( path ) );
 	}
@@ -356,5 +378,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.ensureProjectCodeUpToDate();
 		return this.getProject();
 	}
+
 	public abstract void ensureProjectCodeUpToDate();
 }

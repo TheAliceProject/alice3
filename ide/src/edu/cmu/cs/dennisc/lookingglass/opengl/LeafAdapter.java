@@ -46,5 +46,5 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LeafAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Leaf > extends ComponentAdapter< E > {
+public abstract class LeafAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Leaf> extends ComponentAdapter<E> {
 }

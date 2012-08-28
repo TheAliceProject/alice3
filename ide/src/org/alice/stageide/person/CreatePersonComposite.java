@@ -50,12 +50,15 @@ public class CreatePersonComposite extends PersonComposite {
 	private static class SingletonHolder {
 		private static CreatePersonComposite instance = new CreatePersonComposite();
 	}
+
 	public static PersonComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private CreatePersonComposite() {
 		super( java.util.UUID.fromString( "38ef6581-b196-4937-88d7-bcc75ec5d4a8" ), RenderComposite.getInstance() );
 	}
+
 	public static void main( String[] args ) {
 		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
 		application.initialize( args );

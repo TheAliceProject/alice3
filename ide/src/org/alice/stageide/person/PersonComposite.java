@@ -48,12 +48,12 @@ package org.alice.stageide.person;
  */
 public abstract class PersonComposite extends org.lgna.croquet.SplitComposite {
 	public PersonComposite( java.util.UUID id, RenderComposite renderComposite ) {
-		super( 
+		super(
 				id,
 				RenderComposite.getInstance(),
-				IngredientsComposite.getInstance()
-		);
+				IngredientsComposite.getInstance() );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.HorizontalSplitPane createView() {
 		org.lgna.croquet.components.HorizontalSplitPane rv = new org.lgna.croquet.components.HorizontalSplitPane( this );

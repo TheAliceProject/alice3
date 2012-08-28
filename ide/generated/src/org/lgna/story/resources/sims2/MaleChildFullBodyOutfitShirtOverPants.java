@@ -41,21 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleChildFullBodyOutfitShirtOverPants implements MaleChildFullBodyOutfit {
 	BLACKSUN,
- 	RED,
- 	BLUE,
- 	BLACK,
- 	ASHLOGO,
- 	BLACKLOGO,
- 	BLUELOGO,
- 	BROWNLOGO,
- 	GRAYLOGO,
- 	GREENLOGO,
- 	MUSTARDLOGO,
- 	PLUMLOGO,
- 	WHITELOGO,
- 	BLACKPLUMBOB,
- 	GRAYPAW,
- 	CAMO;
+	RED,
+	BLUE,
+	BLACK,
+	ASHLOGO,
+	BLACKLOGO,
+	BLUELOGO,
+	BROWNLOGO,
+	GRAYLOGO,
+	GREENLOGO,
+	MUSTARDLOGO,
+	PLUMLOGO,
+	WHITELOGO,
+	BLACKPLUMBOB,
+	GRAYPAW,
+	CAMO;
 }

@@ -24,6 +24,7 @@ public class TimeEventListenerMenu extends EventListenerMenuModel {
 	public static TimeEventListenerMenu getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TimeEventListenerMenu() {
 		super( java.util.UUID.fromString( "19e3e7d5-a2da-4f85-8897-7ef34b268af9" ) );
 	}

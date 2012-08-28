@@ -47,7 +47,8 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaField extends AbstractField {
-	private static java.util.Map< FieldReflectionProxy, JavaField > s_map = new java.util.HashMap< FieldReflectionProxy, JavaField >();
+	private static java.util.Map<FieldReflectionProxy, JavaField> s_map = new java.util.HashMap<FieldReflectionProxy, JavaField>();
+
 	public static JavaField getInstance( FieldReflectionProxy fieldReflectionProxy ) {
 		if( fieldReflectionProxy != null ) {
 			JavaField rv = s_map.get( fieldReflectionProxy );
@@ -62,29 +63,35 @@ public class JavaField extends AbstractField {
 			return null;
 		}
 	}
+
 	public static JavaField getInstance( java.lang.reflect.Field fld ) {
 		return getInstance( new FieldReflectionProxy( fld ) );
 	}
+
 	public static JavaField getInstance( Class<?> declaringCls, String name ) {
-		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField(  declaringCls, name ) );
+		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField( declaringCls, name ) );
 	}
 
 	private FieldReflectionProxy fieldReflectionProxy;
+
 	private JavaField( FieldReflectionProxy fieldReflectionProxy ) {
 		this.fieldReflectionProxy = fieldReflectionProxy;
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
-	
+
 	public FieldReflectionProxy getFieldReflectionProxy() {
 		return this.fieldReflectionProxy;
 	}
+
 	@Override
 	public JavaType getDeclaringType() {
 		return JavaType.getInstance( this.fieldReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
+
 	@Override
 	public org.lgna.project.annotations.Visibility getVisibility() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
@@ -104,11 +111,13 @@ public class JavaField extends AbstractField {
 	public String getName() {
 		return this.fieldReflectionProxy.getName();
 	}
+
 	@Override
 	public boolean isValid() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		return fld != null;
 	}
+
 	@Override
 	public JavaType getValueType() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
@@ -119,7 +128,7 @@ public class JavaField extends AbstractField {
 			return JavaType.OBJECT_TYPE;
 		}
 	}
-	
+
 	@Override
 	public AccessLevel getAccessLevel() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
@@ -129,7 +138,8 @@ public class JavaField extends AbstractField {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.fieldReflectionProxy );
 			return AccessLevel.PRIVATE;
 		}
-	}	
+	}
+
 	@Override
 	public boolean isStatic() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
@@ -140,6 +150,7 @@ public class JavaField extends AbstractField {
 			return false;
 		}
 	}
+
 	@Override
 	public boolean isFinal() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
@@ -150,6 +161,7 @@ public class JavaField extends AbstractField {
 			return false;
 		}
 	}
+
 	@Override
 	public boolean isVolatile() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
@@ -160,6 +172,7 @@ public class JavaField extends AbstractField {
 			return false;
 		}
 	}
+
 	@Override
 	public boolean isTransient() {
 		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
@@ -170,7 +183,7 @@ public class JavaField extends AbstractField {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public boolean isEquivalentTo( Object o ) {
 		JavaField other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaField.class );
@@ -180,5 +193,5 @@ public class JavaField extends AbstractField {
 			return false;
 		}
 	}
-	
+
 }

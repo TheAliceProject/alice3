@@ -50,9 +50,11 @@ public class MenuBarComposite extends org.lgna.croquet.MenuBarComposite {
 	private static class SingletonHolder {
 		private static MenuBarComposite instance = new MenuBarComposite();
 	}
+
 	public static MenuBarComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private MenuBarComposite() {
 		super( java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
 		this.addItem( org.alice.ide.croquet.models.menubar.FileMenuModel.getInstance() );

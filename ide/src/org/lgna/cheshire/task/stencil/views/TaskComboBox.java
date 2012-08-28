@@ -46,14 +46,16 @@ package org.lgna.cheshire.task.stencil.views;
 /**
  * @author Dennis Cosgrove
  */
-public class TaskComboBox extends org.lgna.croquet.components.JComponent< javax.swing.JComboBox > {
-	/*package-private*/static final java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
+public class TaskComboBox extends org.lgna.croquet.components.JComponent<javax.swing.JComboBox> {
+	/* package-private */static final java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 	private final org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel;
 	private final org.lgna.croquet.components.Layer layer;
+
 	public TaskComboBox( org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel, org.lgna.croquet.components.Layer layer ) {
 		this.taskComboBoxModel = taskComboBoxModel;
 		this.layer = layer;
 	}
+
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
 		javax.swing.JComboBox rv = new javax.swing.JComboBox( this.taskComboBoxModel ) {
@@ -84,8 +86,10 @@ public class TaskComboBox extends org.lgna.croquet.components.JComponent< javax.
 					}
 				}
 			}
+
 			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 			}
+
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 			}
 		} );
@@ -97,7 +101,7 @@ public class TaskComboBox extends org.lgna.croquet.components.JComponent< javax.
 			edu.cmu.cs.dennisc.javax.swing.PopupFactoryUtilities.forceHeavyWeightPopups( rv );
 		}
 		rv.setRenderer( new TaskCellRenderer( taskComboBoxModel, CONTROL_COLOR ) );
-//		this.setBackgroundColor( CONTROL_COLOR );
+		//		this.setBackgroundColor( CONTROL_COLOR );
 		return rv;
 	}
 };

@@ -50,12 +50,14 @@ public class DurationAnimationStyleArgumentFactory {
 	protected DurationAnimationStyleArgumentFactory() {
 		throw new AssertionError();
 	}
+
 	public static Duration duration( Number duration ) {
 		return new Duration( duration );
 	}
-//	public static AnimationStyle animationStyle( Boolean isBegunGently, Boolean isEndedGently ) {
-//		return new AnimationStyle( isBegunGently, isEndedGently );
-//	}
+
+	//	public static AnimationStyle animationStyle( Boolean isBegunGently, Boolean isEndedGently ) {
+	//		return new AnimationStyle( isBegunGently, isEndedGently );
+	//	}
 	public static AnimationStyle animationStyle( AnimationStyle animationStyle ) {
 		return animationStyle;
 	}

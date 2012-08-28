@@ -48,59 +48,69 @@ package org.alice.ide.members.components;
 public abstract class AbstractTypeMembersPane extends org.lgna.croquet.components.PageAxisPanel {
 	private static final int INDENT = 16;
 
-	private org.lgna.project.ast.AbstractType<?,?,?> type;
+	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 		}
+
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 			AbstractTypeMembersPane.this.refresh();
 		}
 
 		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
 		}
+
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
 			AbstractTypeMembersPane.this.refresh();
 		}
 
 		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
 		}
+
 		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
 			AbstractTypeMembersPane.this.refresh();
 		}
 
 		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		}
+
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
 	private org.lgna.croquet.State.ValueListener<Boolean> isEmphasizingClassesObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueListener( this.isEmphasizingClassesObserver );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueListener( this.isEmphasizingClassesObserver );
 		super.handleUndisplayable();
 	}
-	public AbstractTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	public AbstractTypeMembersPane( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		this.type = type;
 		if( this.type instanceof org.lgna.project.ast.NamedUserType ) {
-			for( edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember > listProperty : this.getListPropertiesToListenTo( (org.lgna.project.ast.NamedUserType)this.type ) ) {
+			for( edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember> listProperty : this.getListPropertiesToListenTo( (org.lgna.project.ast.NamedUserType)this.type ) ) {
 				listProperty.addListPropertyListener( this.listPropertyAdapter );
 			}
 		}
 		this.refresh();
 	}
-	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type );
+
+	protected abstract edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember>[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type );
+
 	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
 		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
 			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
@@ -115,27 +125,32 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 		}
 		if( member.isPublicAccess() || member.isUserAuthored() ) {
 			org.lgna.project.annotations.Visibility visibility = member.getVisibility();
-			return visibility == null || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
+			return ( visibility == null ) || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
 		} else {
 			return false;
 		}
 	}
+
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getActiveInstance();
 	}
-	protected abstract Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair );
-	protected abstract Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member );
+
+	protected abstract Iterable<org.lgna.croquet.components.Component<?>> createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair );
+
+	protected abstract Iterable<org.lgna.croquet.components.Component<?>> createTemplates( org.lgna.project.ast.AbstractMember member );
 
 	protected abstract org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type );
+
 	protected abstract org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type );
+
 	protected void refresh() {
 		this.removeAllComponents();
 		org.lgna.croquet.components.PageAxisPanel page = new org.lgna.croquet.components.PageAxisPanel();
 		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {
-				Iterable< org.lgna.croquet.components.Component< ? > > templates = this.createTemplates( field );
+				Iterable<org.lgna.croquet.components.Component<?>> templates = this.createTemplates( field );
 				if( templates != null ) {
-					for( org.lgna.croquet.components.Component< ? > template : templates ) {
+					for( org.lgna.croquet.components.Component<?> template : templates ) {
 						page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
 						page.addComponent( template );
 					}
@@ -145,9 +160,9 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 			if( isInclusionDesired( method ) ) {
 				method = (org.lgna.project.ast.AbstractMethod)method.getShortestInChain();
-				Iterable< org.lgna.croquet.components.Component< ? > > templates = this.createTemplates( method );
+				Iterable<org.lgna.croquet.components.Component<?>> templates = this.createTemplates( method );
 				if( templates != null ) {
-					for( org.lgna.croquet.components.Component< ? > template : templates ) {
+					for( org.lgna.croquet.components.Component<?> template : templates ) {
 						page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
 						page.addComponent( template );
 					}
@@ -156,17 +171,17 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 		}
 		if( this.type instanceof org.lgna.project.ast.JavaType ) {
 			org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)this.type;
-			for( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair : javaType.getGetterSetterPairs() ) { 
-				Iterable< org.lgna.croquet.components.Component< ? > > templates = this.createTemplates( getterSetterPair );
+			for( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair : javaType.getGetterSetterPairs() ) {
+				Iterable<org.lgna.croquet.components.Component<?>> templates = this.createTemplates( getterSetterPair );
 				if( templates != null ) {
-					for( org.lgna.croquet.components.Component< ? > template : templates ) {
+					for( org.lgna.croquet.components.Component<?> template : templates ) {
 						page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
 						page.addComponent( template );
 					}
 				}
 			}
 		}
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false && this.type instanceof org.lgna.project.ast.NamedUserType ) {
+		if( ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() == false ) && ( this.type instanceof org.lgna.project.ast.NamedUserType ) ) {
 			org.lgna.project.ast.NamedUserType userType = (org.lgna.project.ast.NamedUserType)type;
 			org.lgna.croquet.components.Button createAndAddMemberButton = this.createDeclareMemberButton( userType );
 			org.lgna.croquet.components.Button editConstructorButton = this.createEditConstructorButton( userType );
@@ -179,10 +194,10 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 		}
 		int pad;
 		if( page.getComponentCount() > 0 ) {
-			this.addComponent( new org.lgna.croquet.components.LineAxisPanel( 
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( INDENT ), 
-					page 
-			) );
+			this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( INDENT ),
+					page
+					) );
 			pad = 8;
 		} else {
 			pad = 2;

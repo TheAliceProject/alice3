@@ -45,14 +45,16 @@ package org.lgna.project.properties;
 /**
  * @author Dennis Cosgrove
  */
-public class StringPropertyKey extends PropertyKey< String > {
+public class StringPropertyKey extends PropertyKey<String> {
 	public StringPropertyKey( java.util.UUID id, String repr ) {
 		super( id, repr );
 	}
+
 	@Override
 	protected String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeString();
 	}
+
 	@Override
 	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
 		binaryEncoder.encode( value );

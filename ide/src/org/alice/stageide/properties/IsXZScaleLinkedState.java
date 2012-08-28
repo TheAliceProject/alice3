@@ -46,16 +46,18 @@ import org.lgna.croquet.BooleanState;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class IsXZScaleLinkedState extends BooleanState 
+public class IsXZScaleLinkedState extends BooleanState
 {
 	private static class SingletonHolder {
 		private static IsXZScaleLinkedState instance = new IsXZScaleLinkedState();
 	}
+
 	public static IsXZScaleLinkedState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsXZScaleLinkedState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "14e9d2d1-50a4-4d49-85b3-52d6f457b288" ), true );
 	}

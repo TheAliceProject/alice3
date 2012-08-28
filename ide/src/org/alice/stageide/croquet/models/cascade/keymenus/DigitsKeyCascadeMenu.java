@@ -52,11 +52,13 @@ public class DigitsKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	private static class SingletonHolder {
 		private static DigitsKeyCascadeMenu instance = new DigitsKeyCascadeMenu();
 	}
+
 	public static DigitsKeyCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private DigitsKeyCascadeMenu() {
-		super( java.util.UUID.fromString( "e9aff3d5-c300-4275-89f5-4800f0fc25c4" ), 
+		super( java.util.UUID.fromString( "e9aff3d5-c300-4275-89f5-4800f0fc25c4" ),
 				Key.DIGIT_0,
 				Key.DIGIT_1,
 				Key.DIGIT_2,
@@ -66,8 +68,7 @@ public class DigitsKeyCascadeMenu extends AbstractKeyCascadeMenu {
 				Key.DIGIT_6,
 				Key.DIGIT_7,
 				Key.DIGIT_8,
-				Key.DIGIT_9
-		);
+				Key.DIGIT_9 );
 	}
 
 }

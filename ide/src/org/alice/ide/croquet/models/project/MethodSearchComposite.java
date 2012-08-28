@@ -80,9 +80,11 @@ public class MethodSearchComposite extends SimpleComposite<MethodSearchView> {
 	public BooleanState getShowGenerated() {
 		return this.showGenerated;
 	}
+
 	public BooleanState getShowProcedure() {
 		return this.showProcedures;
 	}
+
 	public BooleanState getShowFunctions() {
 		return this.showFunctions;
 	}
@@ -143,7 +145,7 @@ public class MethodSearchComposite extends SimpleComposite<MethodSearchView> {
 			public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
 				if( state.getValue() != prevValue ) {
 					SearchTreeNode selection = state.getValue();
-					if( selection != null && isJumpDesired ) {
+					if( ( selection != null ) && isJumpDesired ) {
 						selection.invokeOperation();
 					}
 				}
@@ -175,7 +177,7 @@ public class MethodSearchComposite extends SimpleComposite<MethodSearchView> {
 				for( SearchTreeNode hiddenNode : iterateList ) {
 					Matcher matcher = pattern.matcher( hiddenNode.getContent().getName().toLowerCase() );
 					if( matcher.find() ) {
-						if( check.length() == 0 || hiddenNode.getDepth() <= SHOULD_BE_EXPANDED ) {
+						if( ( check.length() == 0 ) || ( hiddenNode.getDepth() <= SHOULD_BE_EXPANDED ) ) {
 							if( shouldShow( hiddenNode ) ) {
 								show( hiddenNode );
 							}

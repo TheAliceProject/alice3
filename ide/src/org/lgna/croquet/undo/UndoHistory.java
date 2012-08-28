@@ -47,19 +47,22 @@ package org.lgna.croquet.undo;
  */
 public class UndoHistory {
 
-	private java.util.Stack< org.lgna.croquet.edits.Edit<?> > stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private java.util.Stack<org.lgna.croquet.edits.Edit<?>> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private int insertionIndex = 0;
 	private org.lgna.croquet.Group group;
 
 	public UndoHistory( org.lgna.croquet.Group group ) {
 		this.group = group;
 	}
+
 	public org.lgna.croquet.Group getGroup() {
 		return this.group;
 	}
-	public java.util.Stack< org.lgna.croquet.edits.Edit<?> > getStack() {
+
+	public java.util.Stack<org.lgna.croquet.edits.Edit<?>> getStack() {
 		return this.stack;
 	}
+
 	public void push( org.lgna.croquet.edits.Edit<?> edit ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroup(), this.group ) ) {
 			org.lgna.croquet.undo.event.HistoryPushEvent historyPushEvent = new org.lgna.croquet.undo.event.HistoryPushEvent( this, edit );
@@ -74,6 +77,7 @@ public class UndoHistory {
 	private static void beep() {
 		java.awt.Toolkit.getDefaultToolkit().beep();
 	}
+
 	private void undo() {
 		if( this.insertionIndex > 0 ) {
 			org.lgna.croquet.edits.Edit<?> edit = this.stack.get( this.insertionIndex - 1 );
@@ -87,6 +91,7 @@ public class UndoHistory {
 			beep();
 		}
 	}
+
 	private void redo() {
 		if( this.insertionIndex < this.stack.size() ) {
 			org.lgna.croquet.edits.Edit<?> edit = this.stack.get( this.insertionIndex );
@@ -110,16 +115,19 @@ public class UndoHistory {
 		int actualIndex = this.setInsertionIndex( nextIndex );
 		//todo
 	}
+
 	public void performRedo() {
 		int nextIndex = this.insertionIndex + 1;
 		int actualIndex = this.setInsertionIndex( nextIndex );
 		//todo
 	}
+
 	public int getInsertionIndex() {
 		return this.insertionIndex;
 	}
+
 	private int setInsertionIndex( int nextInsertionIndex, boolean isActionDesired ) {
-		if( nextInsertionIndex >= 0 && nextInsertionIndex <= this.stack.size() ) {
+		if( ( nextInsertionIndex >= 0 ) && ( nextInsertionIndex <= this.stack.size() ) ) {
 			if( this.insertionIndex != nextInsertionIndex ) {
 				org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e = new org.lgna.croquet.undo.event.HistoryInsertionIndexEvent( this, this.insertionIndex, nextInsertionIndex );
 				this.fireInsertionIndexChanging( e );
@@ -149,17 +157,19 @@ public class UndoHistory {
 		}
 		return this.insertionIndex;
 	}
+
 	public int setInsertionIndex( int nextInsertionIndex ) {
 		return this.setInsertionIndex( nextInsertionIndex, true );
 	}
 
-	private java.util.List< org.lgna.croquet.undo.event.HistoryListener > historyListeners = new java.util.LinkedList< org.lgna.croquet.undo.event.HistoryListener >();
+	private java.util.List<org.lgna.croquet.undo.event.HistoryListener> historyListeners = new java.util.LinkedList<org.lgna.croquet.undo.event.HistoryListener>();
 
 	public void addHistoryListener( org.lgna.croquet.undo.event.HistoryListener l ) {
 		synchronized( this.historyListeners ) {
 			this.historyListeners.add( l );
 		}
 	}
+
 	public void removeHistoryListener( org.lgna.croquet.undo.event.HistoryListener l ) {
 		synchronized( this.historyListeners ) {
 			this.historyListeners.remove( l );
@@ -173,6 +183,7 @@ public class UndoHistory {
 			}
 		}
 	}
+
 	private void fireOperationPushed( org.lgna.croquet.undo.event.HistoryPushEvent e ) {
 		synchronized( this.historyListeners ) {
 			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
@@ -180,6 +191,7 @@ public class UndoHistory {
 			}
 		}
 	}
+
 	private void fireInsertionIndexChanging( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 		synchronized( this.historyListeners ) {
 			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
@@ -187,6 +199,7 @@ public class UndoHistory {
 			}
 		}
 	}
+
 	private void fireInsertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
 		synchronized( this.historyListeners ) {
 			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
@@ -194,6 +207,7 @@ public class UndoHistory {
 			}
 		}
 	}
+
 	private void fireClearing( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 		synchronized( this.historyListeners ) {
 			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
@@ -201,6 +215,7 @@ public class UndoHistory {
 			}
 		}
 	}
+
 	private void fireCleared( org.lgna.croquet.undo.event.HistoryClearEvent e ) {
 		synchronized( this.historyListeners ) {
 			for( org.lgna.croquet.undo.event.HistoryListener l : this.historyListeners ) {
@@ -208,22 +223,23 @@ public class UndoHistory {
 			}
 		}
 	}
+
 	public org.lgna.croquet.edits.Edit<?> createDoIgnoringCompositeEdit( String presentation ) {
-//		synchronized( this.stack ) {
-//			final int N = this.insertionIndex;
-//			if( N > 0 ) {
-//				edu.cmu.cs.dennisc.croquet.Edit[] edits = new edu.cmu.cs.dennisc.croquet.Edit[ N ];
-//				for( int i=0; i<N; i++ ) {
-//					edits[ i ] = this.stack.get( i );
-//				}
-//				return new edu.cmu.cs.dennisc.croquet.CompositeEdit( edits, true, presentation );
-//			} else {
-//				return null;
-//			}
-//		}
+		//		synchronized( this.stack ) {
+		//			final int N = this.insertionIndex;
+		//			if( N > 0 ) {
+		//				edu.cmu.cs.dennisc.croquet.Edit[] edits = new edu.cmu.cs.dennisc.croquet.Edit[ N ];
+		//				for( int i=0; i<N; i++ ) {
+		//					edits[ i ] = this.stack.get( i );
+		//				}
+		//				return new edu.cmu.cs.dennisc.croquet.CompositeEdit( edits, true, presentation );
+		//			} else {
+		//				return null;
+		//			}
+		//		}
 		throw new RuntimeException( "todo" );
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

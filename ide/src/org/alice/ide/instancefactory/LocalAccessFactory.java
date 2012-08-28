@@ -47,7 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class LocalAccessFactory extends AbstractInstanceFactory {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAccessFactory> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized LocalAccessFactory getInstance( org.lgna.project.ast.UserLocal local ) {
 		assert local != null;
 		LocalAccessFactory rv = map.get( local );
@@ -59,38 +60,48 @@ public class LocalAccessFactory extends AbstractInstanceFactory {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserLocal local;
+
 	private LocalAccessFactory( org.lgna.project.ast.UserLocal local ) {
 		super( local.name );
 		this.local = local;
 	}
+
 	@Override
-	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+	protected boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
 		if( code != null ) {
 			return this.local.getFirstAncestorAssignableTo( org.lgna.project.ast.AbstractCode.class ) == code;
 		} else {
 			return false;
 		}
 	}
+
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver< LocalAccessFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< LocalAccessFactory >( this, org.lgna.project.ast.UserLocal.class, this.local );
+	protected org.lgna.croquet.resolvers.Resolver<LocalAccessFactory> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAccessFactory>( this, org.lgna.project.ast.UserLocal.class, this.local );
 	}
+
 	public org.lgna.project.ast.UserLocal getLocal() {
 		return this.local;
 	}
+
 	private org.lgna.project.ast.LocalAccess createLocalAccess( org.lgna.project.ast.Expression expression ) {
 		return new org.lgna.project.ast.LocalAccess( this.local );
 	}
+
 	public org.lgna.project.ast.LocalAccess createTransientExpression() {
 		return this.createLocalAccess( new org.alice.ide.ast.CurrentThisExpression() );
 	}
+
 	public org.lgna.project.ast.LocalAccess createExpression() {
 		return this.createLocalAccess( new org.lgna.project.ast.ThisExpression() );
 	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return this.local.getValueType();
 	}
+
 	public String getRepr() {
 		return this.local.getValidName();
 	}

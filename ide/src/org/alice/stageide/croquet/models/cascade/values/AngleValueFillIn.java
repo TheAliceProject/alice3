@@ -47,7 +47,8 @@ package org.alice.stageide.croquet.models.cascade.values;
  * @author Dennis Cosgrove
  */
 public class AngleValueFillIn extends org.alice.ide.croquet.models.cascade.literals.AbstractDoubleLiteralFillIn {
-	private static java.util.Map< Double, AngleValueFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Double, AngleValueFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static AngleValueFillIn getInstance( double value ) {
 		synchronized( map ) {
 			AngleValueFillIn rv = map.get( value );
@@ -60,6 +61,7 @@ public class AngleValueFillIn extends org.alice.ide.croquet.models.cascade.liter
 			return rv;
 		}
 	}
+
 	private AngleValueFillIn( double value ) {
 		super( java.util.UUID.fromString( "58ca0a33-f780-453b-9c12-911e17951561" ), value );
 	}

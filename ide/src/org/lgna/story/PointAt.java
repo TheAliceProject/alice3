@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class PointAt extends DurationAnimationStyleUpAsSeenByArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=PointAt.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = PointAt.class )
 	public static interface Detail {
 	}
+
 	private PointAt() {
 		super();
 	}

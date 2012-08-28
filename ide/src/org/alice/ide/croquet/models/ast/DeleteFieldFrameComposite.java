@@ -43,16 +43,11 @@
 package org.alice.ide.croquet.models.ast;
 
 import org.alice.ide.croquet.models.project.FindFieldsFrameComposite;
-import org.lgna.croquet.BooleanState.InternalMenuItemPrepModel;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.StringValue;
-import org.lgna.croquet.components.PopupMenu;
-import org.lgna.croquet.components.ViewController;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.croquet.triggers.Trigger;
-import org.lgna.croquet.triggers.Trigger.Origin;
 import org.lgna.project.ast.UserField;
 
 /**
@@ -85,13 +80,16 @@ public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite
 	public static DeleteFieldFrameComposite getDialog( UserField field ) {
 		return new DeleteFieldFrameComposite( field );
 	}
+
 	@Override
 	protected DeleteFieldFrameView createView() {
 		return new DeleteFieldFrameView( this );
 	}
+
 	public UserField getField() {
 		return this.field;
 	}
+
 	public Integer getRefCount() {
 		return this.refCount;
 	}
@@ -125,6 +123,7 @@ public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite
 	public PlainStringValue getBleh() {
 		return this.bleh;
 	}
+
 	public FindFieldsFrameComposite getSearchFrame() {
 		return this.searchFrame;
 	}
@@ -140,5 +139,5 @@ public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite
 	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
 		return null;
 	}
-	
+
 }

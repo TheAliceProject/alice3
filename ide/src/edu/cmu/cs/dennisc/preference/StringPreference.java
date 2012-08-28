@@ -45,16 +45,18 @@ package edu.cmu.cs.dennisc.preference;
 /**
  * @author Dennis Cosgrove
  */
-public class StringPreference extends Preference< String > {
+public class StringPreference extends Preference<String> {
 	public StringPreference( String defaultValue ) {
 		super( defaultValue );
 	}
+
 	@Override
-	protected String getValue(java.util.prefs.Preferences utilPrefs, String key, String defaultValue) {
-		return utilPrefs.get(key, defaultValue);
+	protected String getValue( java.util.prefs.Preferences utilPrefs, String key, String defaultValue ) {
+		return utilPrefs.get( key, defaultValue );
 	}
+
 	@Override
-	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, String nextValue) {
-		utilPrefs.put(key, nextValue);
+	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, String nextValue ) {
+		utilPrefs.put( key, nextValue );
 	}
 }
