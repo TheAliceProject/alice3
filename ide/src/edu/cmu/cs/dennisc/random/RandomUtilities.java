@@ -53,20 +53,25 @@ public class RandomUtilities {
 	private static int getRandomIndex( int n ) {
 		return s_random.nextInt( n );
 	}
+
 	public static void setSeed( long seed ) {
 		s_random.setSeed( seed );
 	}
+
 	public static Integer nextIntegerFrom0UpToButExcludingN( Integer n ) {
 		return s_random.nextInt( n );
 	}
+
 	public static Integer nextIntFromAUpToButExcludingB( Integer a, Integer b ) {
 		assert a < b;
-		int n = b-a;
+		int n = b - a;
 		return a + nextIntegerFrom0UpToButExcludingN( n );
 	}
+
 	public static Integer nextIntFromAUpToAndIncludingB( Integer a, Integer b ) {
-		return nextIntFromAUpToButExcludingB( a, b+1 );
+		return nextIntFromAUpToButExcludingB( a, b + 1 );
 	}
+
 	public static boolean nextBoolean() {
 		return s_random.nextBoolean();
 	}
@@ -74,8 +79,9 @@ public class RandomUtilities {
 	public static Double nextDouble() {
 		return s_random.nextDouble();
 	}
+
 	public static Double nextDoubleInRange( Number min, Number max ) {
-		return min.doubleValue() + (nextDouble() * (max.doubleValue() - min.doubleValue()));
+		return min.doubleValue() + ( nextDouble() * ( max.doubleValue() - min.doubleValue() ) );
 	}
 
 	public static <E extends Object> E getRandomValueFrom( E[] array ) {
@@ -83,7 +89,8 @@ public class RandomUtilities {
 		assert array.length > 0;
 		return array[ getRandomIndex( array.length ) ];
 	}
-	public static <E extends Object> E getRandomValueFrom( java.util.List< E > list ) {
+
+	public static <E extends Object> E getRandomValueFrom( java.util.List<E> list ) {
 		assert list != null;
 		if( list.size() > 0 ) {
 			return list.get( getRandomIndex( list.size() ) );
@@ -92,7 +99,7 @@ public class RandomUtilities {
 		}
 	}
 
-	public static <E extends Enum< ? >> E getRandomEnumConstant( Class< E > cls ) {
+	public static <E extends Enum<?>> E getRandomEnumConstant( Class<E> cls ) {
 		E[] enumConstants = cls.getEnumConstants();
 		if( enumConstants.length > 0 ) {
 			int index = s_random.nextInt( enumConstants.length );

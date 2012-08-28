@@ -46,24 +46,22 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldDeclarationOperation extends DeclarationOperation< org.lgna.project.ast.UserField > {
-	public FieldDeclarationOperation( 
-			java.util.UUID id, 
+public abstract class FieldDeclarationOperation extends DeclarationOperation<org.lgna.project.ast.UserField> {
+	public FieldDeclarationOperation(
+			java.util.UUID id,
 			org.lgna.project.ast.UserType<?> initialDeclaringType, boolean isDeclaringTypeEditable,
-			org.lgna.project.ast.AbstractType<?,?,?> initialValueComponentType, boolean isValueComponentTypeEditable,
+			org.lgna.project.ast.AbstractType<?, ?, ?> initialValueComponentType, boolean isValueComponentTypeEditable,
 			boolean initialIsArrayValueType, boolean isIsArrayValueTypeEditable,
 			String initialName, boolean isNameEditable,
-			org.lgna.project.ast.Expression initialExpression, boolean isInitializerEditable
-		) {
-		super( 
-				id, 
-				initialDeclaringType, isDeclaringTypeEditable, 
-				initialValueComponentType, isValueComponentTypeEditable, 
-				initialIsArrayValueType, isIsArrayValueTypeEditable, 
-				initialName, isNameEditable, 
+			org.lgna.project.ast.Expression initialExpression, boolean isInitializerEditable ) {
+		super(
+				id,
+				initialDeclaringType, isDeclaringTypeEditable,
+				initialValueComponentType, isValueComponentTypeEditable,
+				initialIsArrayValueType, isIsArrayValueTypeEditable,
+				initialName, isNameEditable,
 				initialExpression, isInitializerEditable,
-				new org.alice.ide.name.validators.FieldNameValidator( initialDeclaringType )
-		);
+				new org.alice.ide.name.validators.FieldNameValidator( initialDeclaringType ) );
 	}
 
 	@Override
@@ -79,11 +77,15 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 	protected boolean isNullAllowedForInitializer() {
 		return org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers.getInstance().getValue();
 	}
+
 	protected abstract org.lgna.project.ast.ManagementLevel getManagementLevel();
+
 	protected abstract boolean isFieldFinal();
-	protected abstract org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field );
+
+	protected abstract org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field );
+
 	@Override
-	protected final org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.AbstractType< ?, ?, ? > valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
+	protected final org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.AbstractType<?, ?, ?> valueType, String declarationName, org.lgna.project.ast.Expression initializer ) {
 		org.lgna.project.ast.UserField field = new org.lgna.project.ast.UserField();
 		if( this.isFieldFinal() ) {
 			field.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
@@ -94,6 +96,6 @@ public abstract class FieldDeclarationOperation extends DeclarationOperation< or
 		field.name.setValue( declarationName );
 		field.initializer.setValue( initializer );
 
-		return this.createEdit( step, declaringType, field ); 
+		return this.createEdit( step, declaringType, field );
 	}
 }

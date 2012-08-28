@@ -49,6 +49,7 @@ public class DoubleUtilities {
 	public static Double toDouble( Number n ) {
 		return n.doubleValue();
 	}
+
 	public static Double divide( Number numerator, Number denominator ) {
 		return numerator.doubleValue() / denominator.doubleValue();
 	}
@@ -56,37 +57,40 @@ public class DoubleUtilities {
 	public static double parseDoubleInCurrentDefaultLocale( String text ) {
 		java.text.ParsePosition parsePosition = new java.text.ParsePosition( 0 );
 		Number number = java.text.NumberFormat.getNumberInstance().parse( text, parsePosition );
-		if( number != null && parsePosition.getIndex() == text.length() ) {
+		if( ( number != null ) && ( parsePosition.getIndex() == text.length() ) ) {
 			return number.doubleValue();
 		} else {
 			return Double.NaN;
 		}
 	}
+
 	public static String format( double d, java.text.NumberFormat format ) {
 		synchronized( format ) {
 			return format.format( d );
 		}
 	}
+
 	public static String formatInCurrentDefaultLocale( double d ) {
 		return format( d, java.text.NumberFormat.getNumberInstance() );
 	}
-//	public static double formatAndParse( double d, java.text.NumberFormat format, double valueInCaseOfThrowable ) {
-//		synchronized( format ) {
-//			try {
-//				String text = format.format( d );
-//				java.text.ParsePosition parsePosition = new java.text.ParsePosition( 0 );
-//				Number number = format.parse( text, parsePosition );
-//				if( number != null && parsePosition.getIndex() == text.length() ) {
-//					return number.doubleValue();
-//				} else {
-//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( text );
-//					return valueInCaseOfThrowable;
-//				}
-//			} catch( Throwable t ) {
-//				return valueInCaseOfThrowable;
-//			}
-//		}
-//	}
+
+	//	public static double formatAndParse( double d, java.text.NumberFormat format, double valueInCaseOfThrowable ) {
+	//		synchronized( format ) {
+	//			try {
+	//				String text = format.format( d );
+	//				java.text.ParsePosition parsePosition = new java.text.ParsePosition( 0 );
+	//				Number number = format.parse( text, parsePosition );
+	//				if( number != null && parsePosition.getIndex() == text.length() ) {
+	//					return number.doubleValue();
+	//				} else {
+	//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( text );
+	//					return valueInCaseOfThrowable;
+	//				}
+	//			} catch( Throwable t ) {
+	//				return valueInCaseOfThrowable;
+	//			}
+	//		}
+	//	}
 	public static double round( double value, int decimalPlaces ) {
 		java.math.BigDecimal bigDecimal = new java.math.BigDecimal( value );
 		bigDecimal = bigDecimal.round( new java.math.MathContext( decimalPlaces, java.math.RoundingMode.HALF_DOWN ) );

@@ -47,14 +47,17 @@ package org.alice.ide.common;
  */
 public class DefaultStatementPane extends AbstractStatementPane {
 	private int maxYForIfBlock = -1;
+
 	public DefaultStatementPane( org.lgna.croquet.DragModel model, org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Statement statement, org.lgna.project.ast.StatementListProperty owner ) {
 		super( model, factory, statement, owner );
 		this.addComponent( factory.createComponent( statement ) );
 	}
+
 	public int getMaxYForIfBlock() {
 		return this.maxYForIfBlock;
 	}
-	public void setMaxYForIfBlock(int maxYForIfBlock) {
+
+	public void setMaxYForIfBlock( int maxYForIfBlock ) {
 		this.maxYForIfBlock = maxYForIfBlock;
 	}
 }

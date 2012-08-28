@@ -43,28 +43,38 @@
 
 package org.lgna.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public interface MenuItemContainer {
-	public ViewController< ?, ? > getViewController();
-//	public void addChangeListener( javax.swing.event.ChangeListener changeListener );
-//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener );
-//	public void addItemListener( java.awt.event.ItemListener listener );
-//	public void removeItemListener( java.awt.event.ItemListener listener );
+	public ViewController<?, ?> getViewController();
+
+	//	public void addChangeListener( javax.swing.event.ChangeListener changeListener );
+	//	public void removeChangeListener( javax.swing.event.ChangeListener changeListener );
+	//	public void addItemListener( java.awt.event.ItemListener listener );
+	//	public void removeItemListener( java.awt.event.ItemListener listener );
 
 	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener );
+
 	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener );
-	
-	public Container< ? > getParent();
+
+	public Container<?> getParent();
+
 	public void addMenu( Menu menu );
+
 	public void addMenuItem( MenuItem menuItem );
+
 	public void addCascadeMenu( CascadeMenu cascadeMenu );
+
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem );
+
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
+
 	public void addSeparator();
+
 	public void addSeparator( MenuTextSeparator menuTextSeparator );
+
 	public void forgetAndRemoveAllMenuItems();
+
 	public void removeAllMenuItems();
 }

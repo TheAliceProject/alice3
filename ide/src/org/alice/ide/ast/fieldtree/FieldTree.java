@@ -47,38 +47,46 @@ package org.alice.ide.ast.fieldtree;
  */
 public class FieldTree {
 	public static class TypeCollapseThresholdData {
-		private final org.lgna.project.ast.AbstractType<?,?,?> type;
+		private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
 		private final int collapseThreshold;
 		private final int collapseThresholdForDescendants;
-		public TypeCollapseThresholdData( org.lgna.project.ast.AbstractType<?,?,?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
+
+		public TypeCollapseThresholdData( org.lgna.project.ast.AbstractType<?, ?, ?> type, int collapseThreshold, int collapseThresholdForDescendants ) {
 			this.type = type;
 			this.collapseThreshold = collapseThreshold;
 			this.collapseThresholdForDescendants = collapseThresholdForDescendants;
 		}
+
 		public TypeCollapseThresholdData( Class<?> cls, int collapseThreshold, int collapseThresholdForDescendants ) {
 			this( org.lgna.project.ast.JavaType.getInstance( cls ), collapseThreshold, collapseThresholdForDescendants );
 		}
-		public org.lgna.project.ast.AbstractType<?,?,?> getType() {
+
+		public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 			return this.type;
 		}
+
 		public int getCollapseThreshold() {
 			return this.collapseThreshold;
 		}
+
 		public int getCollapseThresholdForDescendants() {
 			return this.collapseThresholdForDescendants;
 		}
 	}
+
 	private static class Data {
-		private final java.util.Map< org.lgna.project.ast.AbstractType,TypeNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.lgna.project.ast.AbstractType, TypeNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		private final RootNode root = new RootNode();
+
 		public Data( TypeCollapseThresholdData[] topLevels ) {
 			//map.put( null, this.root );
 			for( TypeCollapseThresholdData typeCollapseThresholdData : topLevels ) {
 				TypeNode typeNode = TypeNode.createAndAddToParent( root, typeCollapseThresholdData.getType(), typeCollapseThresholdData.getCollapseThreshold(), typeCollapseThresholdData.getCollapseThresholdForDescendants() );
-				map.put( typeCollapseThresholdData.getType(),  typeNode );
+				map.put( typeCollapseThresholdData.getType(), typeNode );
 			}
 		}
-		private TypeNode getTypeNode( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+		private TypeNode getTypeNode( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 			if( type != null ) {
 				TypeNode typeNode = map.get( type );
 				if( typeNode != null ) {
@@ -87,25 +95,28 @@ public class FieldTree {
 					TypeNode superTypeNode = getTypeNode( type.getSuperType() );
 					int collapseThreshold = superTypeNode.getCollapseThresholdForDescendants();
 					typeNode = TypeNode.createAndAddToParent( superTypeNode, type, collapseThreshold, collapseThreshold );
-					map.put( type,  typeNode );
+					map.put( type, typeNode );
 				}
 				return typeNode;
 			} else {
 				return null;
 			}
 		}
+
 		public void insertField( org.lgna.project.ast.UserField field ) {
 			FieldNode.createAndAddToParent( getTypeNode( field.getValueType() ), field );
 		}
+
 		public RootNode getRoot() {
 			return this.root;
 		}
 	}
+
 	private FieldTree() {
 		throw new AssertionError();
 	}
-	
-	public static RootNode createTreeFor( Iterable< org.lgna.project.ast.UserField > fields, TypeCollapseThresholdData... topLevels ) {
+
+	public static RootNode createTreeFor( Iterable<org.lgna.project.ast.UserField> fields, TypeCollapseThresholdData... topLevels ) {
 		Data data = new Data( topLevels );
 		for( org.lgna.project.ast.UserField field : fields ) {
 			data.insertField( field );
@@ -114,36 +125,39 @@ public class FieldTree {
 		root.collapseIfAppropriate();
 		root.removeEmptyTypeNodes();
 		root.sort();
-	
+
 		return root;
 	}
-	
+
 	private static final int COLLAPSE_THRESHOLD_FOR_FIRST_CLASS = 10;
 	private static final int COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_FIRST_CLASS = COLLAPSE_THRESHOLD_FOR_FIRST_CLASS;
-	private static final int COLLAPSE_THRESHOLD_FOR_SECOND_CLASS = COLLAPSE_THRESHOLD_FOR_FIRST_CLASS/2;
+	private static final int COLLAPSE_THRESHOLD_FOR_SECOND_CLASS = COLLAPSE_THRESHOLD_FOR_FIRST_CLASS / 2;
 	private static final int COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_SECOND_CLASS = COLLAPSE_THRESHOLD_FOR_SECOND_CLASS;
+
 	public static TypeCollapseThresholdData createFirstClassThreshold( Class<?> cls ) {
 		return new TypeCollapseThresholdData( cls, COLLAPSE_THRESHOLD_FOR_FIRST_CLASS, COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_FIRST_CLASS );
 	}
+
 	public static TypeCollapseThresholdData createSecondClassThreshold( Class<?> cls ) {
 		return new TypeCollapseThresholdData( cls, COLLAPSE_THRESHOLD_FOR_SECOND_CLASS, COLLAPSE_THRESHOLD_FOR_DESCENDANTS_OF_SECOND_CLASS );
 	}
+
 	public static void main( String[] args ) throws Exception {
 		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
 		org.lgna.project.ast.NamedUserType sceneType = (org.lgna.project.ast.NamedUserType)project.getProgramType().fields.get( 0 ).getValueType();
-		
+
 		RootNode root = createTreeFor(
-				sceneType.fields , 
-				createFirstClassThreshold( org.lgna.story.SBiped.class ), 
-				createFirstClassThreshold( org.lgna.story.SQuadruped.class ), 
-				createFirstClassThreshold( org.lgna.story.SSwimmer.class ), 
-				createFirstClassThreshold( org.lgna.story.SFlyer.class ), 
-				
-				createSecondClassThreshold( org.lgna.story.SProp.class ), 
+				sceneType.fields,
+				createFirstClassThreshold( org.lgna.story.SBiped.class ),
+				createFirstClassThreshold( org.lgna.story.SQuadruped.class ),
+				createFirstClassThreshold( org.lgna.story.SSwimmer.class ),
+				createFirstClassThreshold( org.lgna.story.SFlyer.class ),
+
+				createSecondClassThreshold( org.lgna.story.SProp.class ),
 				createSecondClassThreshold( org.lgna.story.SShape.class ),
 				createSecondClassThreshold( org.lgna.story.SThing.class ),
 				createSecondClassThreshold( Object.class )
-		);
+				);
 		StringBuilder sb = new StringBuilder();
 		root.append( sb, 0 );
 		System.out.println( sb.toString() );

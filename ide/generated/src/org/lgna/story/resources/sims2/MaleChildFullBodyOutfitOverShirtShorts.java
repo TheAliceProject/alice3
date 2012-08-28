@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleChildFullBodyOutfitOverShirtShorts implements MaleChildFullBodyOutfit {
 	WHITE,
- 	BLUE,
- 	GREY,
- 	RED;
+	BLUE,
+	GREY,
+	RED;
 }

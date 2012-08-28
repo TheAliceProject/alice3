@@ -48,12 +48,14 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractMember extends AbstractAccessibleDeclaration implements Member {
 	public abstract org.lgna.project.annotations.Visibility getVisibility();
-	public AbstractType<?,?,?> getDeclaringType() {
+
+	public AbstractType<?, ?, ?> getDeclaringType() {
 		return this.getFirstAncestorAssignableTo( AbstractType.class );
 	}
+
 	@Override
 	public boolean isUserAuthored() {
-		AbstractType<?,?,?> declaringType = getDeclaringType();
+		AbstractType<?, ?, ?> declaringType = getDeclaringType();
 		//assert declaringType != null;
 		if( declaringType != null ) {
 			return declaringType.isUserAuthored();

@@ -46,18 +46,19 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class AddPredeterminedValueTypeManagedFieldComposite extends AddManagedFieldComposite {
-	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, org.lgna.project.ast.AbstractType<?,?,?> valueType ) {
+	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, org.lgna.project.ast.AbstractType<?, ?, ?> valueType ) {
 		super( migrationId, new FieldDetailsBuilder()
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, valueType )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
 				.initializer( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.AstUtilities.createInstanceCreation( valueType ) )
-		.build() );
+				.build() );
 		//todo: move to localize
 		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( valueType );
-		if( iconFactory != null && iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) {
+		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) ) {
 			this.getOperation().setSmallIcon( iconFactory.getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
 		}
 	}
+
 	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, Class<?> valueCls ) {
 		this( migrationId, org.lgna.project.ast.JavaType.getInstance( valueCls ) );
 	}

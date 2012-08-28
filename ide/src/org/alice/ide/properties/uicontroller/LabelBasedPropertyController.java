@@ -47,32 +47,31 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.Label;
 
-
 public abstract class LabelBasedPropertyController<P> extends BasicPropertyController<P>
 {
-    protected Label label;
-    
-    public LabelBasedPropertyController(AbstractPropertyAdapter<P, ?>  propertyAdapter)
-    {
-        super(propertyAdapter);
-    }
+	protected Label label;
 
-    @Override
-    protected void initializeComponents()
-    {
-        super.initializeComponents();
-        this.label = (Label)this.propertyComponent;
-    }
-    
-    @Override
-    protected Component<?> createPropertyComponent()
-    {
-        return new Label();
-    }
-    
-    protected void setTextOnPropertyComponent(String text)
-    {
-        this.label.setText(text);
-    }
+	public LabelBasedPropertyController( AbstractPropertyAdapter<P, ?> propertyAdapter )
+	{
+		super( propertyAdapter );
+	}
+
+	@Override
+	protected void initializeComponents()
+	{
+		super.initializeComponents();
+		this.label = (Label)this.propertyComponent;
+	}
+
+	@Override
+	protected Component<?> createPropertyComponent()
+	{
+		return new Label();
+	}
+
+	protected void setTextOnPropertyComponent( String text )
+	{
+		this.label.setText( text );
+	}
 
 }

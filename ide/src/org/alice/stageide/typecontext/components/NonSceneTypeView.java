@@ -43,24 +43,26 @@
 
 package org.alice.stageide.typecontext.components;
 
-
 class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "selected type:" );
 	private final org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.Label snapshotLabel = new org.lgna.croquet.components.Label();
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 			SelectedTypeView.this.handleTypeStateChanged( nextValue );
 		}
 	};
+
 	public SelectedTypeView() {
 		//this.typeLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
 		this.snapshotLabel.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
 		this.addPageStartComponent( new org.lgna.croquet.components.LineAxisPanel( this.label, this.typeLabel ) );
 		this.addCenterComponent( this.snapshotLabel );
 	}
+
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		this.typeLabel.setIcon( org.alice.ide.common.TypeIcon.getInstance( nextValue ) );
 		String snapshotText = null;
@@ -77,12 +79,13 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component< ? > parent ) {
+	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
 		super.handleAddedTo( parent );
 		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 	}
+
 	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component< ? > parent ) {
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
 		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
@@ -90,10 +93,11 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 
 class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 	private static javax.swing.Icon BACK_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( NonSceneTypeView.class.getResource( "images/24/back.png" ) );
-	private final org.lgna.croquet.components.Label thumbnailLabel = new org.lgna.croquet.components.Label( 
+	private final org.lgna.croquet.components.Label thumbnailLabel = new org.lgna.croquet.components.Label(
 			new edu.cmu.cs.dennisc.javax.swing.icons.AlphaIcon( org.alice.stageide.icons.SceneIconFactory.getInstance().getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ), 0.5f )
-	);
+			);
 	private final org.lgna.croquet.components.Label typeIconLabel = new org.lgna.croquet.components.Label();
+
 	public ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation operation ) {
 		super( operation );
 		javax.swing.JButton jButton = this.getAwtComponent();
@@ -104,11 +108,12 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 		this.internalAddComponent( this.thumbnailLabel );
 		this.internalAddComponent( this.typeIconLabel );
 	}
+
 	@Override
 	protected void handleHierarchyChanged( java.awt.event.HierarchyEvent e ) {
 		super.handleHierarchyChanged( e );
 		org.alice.stageide.icons.SceneIconFactory.getInstance().markAllIconsDirty();
-		
+
 		//todo:
 		org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
 		this.typeIconLabel.setIcon( org.alice.ide.common.TypeIcon.getInstance( sceneType ) );
@@ -120,10 +125,11 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
  * @author Dennis Cosgrove
  */
 public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPanel {
-	private final org.lgna.croquet.State.ValueListener< Boolean > isEmphasizingClassesListener = new org.lgna.croquet.State.ValueListener< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			if( isAdjusting ) {
 				//pass
 			} else {
@@ -132,11 +138,13 @@ public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPa
 		}
 	};
 	private final ReturnToSceneTypeButton returnToSceneTypeButton = new ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance() );
+
 	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {
 		super( composite );
 		this.setNorthWestComponent( new SelectedTypeView() );
 		this.setNorthEastComponent( org.alice.stageide.croquet.models.run.RunOperation.getInstance().createButton() );
 	}
+
 	@Override
 	protected javax.swing.JPanel createJPanel() {
 		return new DefaultJPanel() {
@@ -146,14 +154,17 @@ public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPa
 			}
 		};
 	}
+
 	private final void handleEmphasizingClassesChanged( boolean nextValue ) {
 		this.setSouthWestComponent( nextValue ? returnToSceneTypeButton : null );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueListener( this.isEmphasizingClassesListener );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueListener( this.isEmphasizingClassesListener );

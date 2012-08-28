@@ -47,8 +47,9 @@ package org.alice.ide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class ArgumentTypeGalleryNode extends TypeGalleryNode {
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, ArgumentTypeGalleryNode > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static ArgumentTypeGalleryNode getInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ArgumentTypeGalleryNode> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static ArgumentTypeGalleryNode getInstance( org.lgna.project.ast.JavaType type ) {
 		ArgumentTypeGalleryNode rv = map.get( type );
 		if( rv != null ) {
 			//pass
@@ -58,33 +59,38 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 		}
 		return rv;
 	}
-	private ArgumentTypeGalleryNode( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+
+	private ArgumentTypeGalleryNode( org.lgna.project.ast.JavaType type ) {
 		super( java.util.UUID.fromString( "22829f96-159f-49c7-805e-80e9587a174f" ), type );
 	}
-	private org.lgna.project.ast.AbstractType< ?,?,? > getParentDeclaration( org.alice.ide.ApiConfigurationManager api ) {
-		return api.getGalleryResourceParentFor( this.getDeclaration() );
+
+	private org.lgna.project.ast.JavaType getParentDeclaration( org.alice.ide.ApiConfigurationManager api ) {
+		return api.getGalleryResourceParentFor( (org.lgna.project.ast.JavaType)this.getDeclaration() );
 	}
+
 	@Override
 	public final GalleryNode getParent() {
-		org.lgna.project.ast.AbstractType< ?,?,? > parentType = this.getParentDeclaration( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
+		org.lgna.project.ast.JavaType parentType = this.getParentDeclaration( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager() );
 		if( parentType != null ) {
 			return ArgumentTypeGalleryNode.getInstance( parentType );
 		} else {
 			return RootGalleryNode.getInstance();
 		}
 	}
-	
+
 	private final boolean isPerson() {
 		return this.getDeclaration().isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class );
 	}
+
 	@Override
-	protected java.util.List< org.lgna.project.ast.AbstractDeclaration > getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
+	protected java.util.List<org.lgna.project.ast.AbstractDeclaration> getDeclarationChildren( org.alice.ide.ApiConfigurationManager api ) {
 		if( this.isPerson() ) {
 			return java.util.Collections.emptyList();
 		} else {
 			return api.getGalleryResourceChildrenFor( this.getDeclaration() );
 		}
 	}
+
 	@Override
 	public javax.swing.Icon getSmallIcon() {
 		if( this.isPerson() ) {
@@ -93,6 +99,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 			return super.getSmallIcon();
 		}
 	}
+
 	@Override
 	public javax.swing.Icon getLargeIcon() {
 		if( this.isPerson() ) {
@@ -102,6 +109,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 			return super.getLargeIcon();
 		}
 	}
+
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		if( this.isPerson() ) {
@@ -110,6 +118,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 			super.appendClassName( sb );
 		}
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		if( this.getDeclaration().isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
@@ -118,6 +127,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 			return ResourceCascade.getInstance( this.getDeclaration(), dropSite );
 		}
 	}
+
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().getSelectionOperationFor( this );

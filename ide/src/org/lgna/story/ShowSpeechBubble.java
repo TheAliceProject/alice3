@@ -44,7 +44,7 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ShowSpeechBubble implements SayOutLoud.Detail {
 	private final boolean value;
@@ -52,7 +52,8 @@ public class ShowSpeechBubble implements SayOutLoud.Detail {
 	public ShowSpeechBubble( boolean value ) {
 		this.value = value;
 	}
-	/*package-private*/static boolean getValue( Object[] details, boolean defaultValue ) {
+
+	/* package-private */static boolean getValue( Object[] details, boolean defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof ShowSpeechBubble ) {
 				ShowSpeechBubble showSpeechBubble = (ShowSpeechBubble)detail;

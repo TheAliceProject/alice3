@@ -45,8 +45,8 @@ package org.alice.stageide.apis.story.event;
 import org.lgna.project.ast.Lambda;
 import org.lgna.project.virtualmachine.LambdaContext;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.LeavesViewEvent;
+import org.lgna.story.event.ViewExitListener;
 
 /**
  * @author Matt May

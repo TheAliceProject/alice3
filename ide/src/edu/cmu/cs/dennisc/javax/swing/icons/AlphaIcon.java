@@ -54,12 +54,15 @@ public class AlphaIcon implements javax.swing.Icon {
 		this.icon = icon;
 		this.alpha = alpha;
 	}
+
 	public int getIconWidth() {
 		return this.icon.getIconWidth();
 	}
+
 	public int getIconHeight() {
 		return this.icon.getIconHeight();
 	}
+
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.Composite prevComposite = g2.getComposite();

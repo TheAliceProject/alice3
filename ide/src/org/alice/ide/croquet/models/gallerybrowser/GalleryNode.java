@@ -46,32 +46,43 @@ package org.alice.ide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryNode extends GalleryDragModel implements Iterable< GalleryNode > {
+public abstract class GalleryNode extends GalleryDragModel implements Iterable<GalleryNode> {
 	public GalleryNode( java.util.UUID id ) {
 		super( id );
 	}
+
 	public abstract String getSearchText();
+
 	public abstract GalleryNode getParent();
+
 	public abstract GalleryNode getChild( int index );
+
 	public abstract int getChildCount();
+
 	public abstract int getIndexOfChild( GalleryNode child );
-	public java.util.Iterator< GalleryNode > iterator() {
-		return new java.util.Iterator< GalleryNode >() {
+
+	public java.util.Iterator<GalleryNode> iterator() {
+		return new java.util.Iterator<GalleryNode>() {
 			private int index = 0;
+
 			public boolean hasNext() {
 				return this.index < GalleryNode.this.getChildCount();
 			}
+
 			public GalleryNode next() {
 				GalleryNode rv = GalleryNode.this.getChild( this.index );
 				this.index++;
 				return rv;
 			}
+
 			public void remove() {
 				throw new UnsupportedOperationException();
 			}
 		};
 	}
+
 	public abstract String[] getTags();
+
 	public boolean isLeaf() {
 		return this.getChildCount() == 0;
 	}

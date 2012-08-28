@@ -53,9 +53,9 @@ public class Scalable extends Composite {
 			Scalable.this.fireAbsoluteTransformationChange();
 		}
 	};
-	
+
 	@Override
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation(edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv) {
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 		super.getAbsoluteTransformation( rv );
 		edu.cmu.cs.dennisc.math.Dimension3 scale = this.scale.getValue();
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 s = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();

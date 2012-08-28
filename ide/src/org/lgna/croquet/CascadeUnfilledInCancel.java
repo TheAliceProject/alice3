@@ -46,23 +46,26 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeUnfilledInCancel<F> extends CascadeCancel< F > {
+public class CascadeUnfilledInCancel<F> extends CascadeCancel<F> {
 	private static class SingletonHolder {
 		private static CascadeUnfilledInCancel instance = new CascadeUnfilledInCancel();
 	}
 
-	public static <F> CascadeUnfilledInCancel< F > getInstance() {
+	public static <F> CascadeUnfilledInCancel<F> getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private CascadeUnfilledInCancel() {
 		super( null );
 	}
+
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
 		return null;
 	}
+
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
 		return "No suitable fillins were found.  Canceling.";
 	}
 }

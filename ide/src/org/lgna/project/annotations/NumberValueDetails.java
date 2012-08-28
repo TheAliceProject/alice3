@@ -48,6 +48,8 @@ package org.lgna.project.annotations;
  */
 public interface NumberValueDetails extends ValueDetails<Number> {
 	public Double getMinimumValue();
+
 	public Double getMaximumValue();
+
 	public double[] getLiterals();
 }

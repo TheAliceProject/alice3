@@ -50,38 +50,47 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 	private static class SingletonHolder {
 		private static ThisInstanceFactory instance = new ThisInstanceFactory();
 	}
+
 	public static ThisInstanceFactory getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ThisInstanceFactory() {
 	}
+
 	@Override
-	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+	protected boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
 		return type != null;
 	}
+
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver< ThisInstanceFactory > createResolver() {
-		return new org.lgna.croquet.resolvers.SingletonResolver< ThisInstanceFactory >( this );
+	protected org.lgna.croquet.resolvers.Resolver<ThisInstanceFactory> createResolver() {
+		return new org.lgna.croquet.resolvers.SingletonResolver<ThisInstanceFactory>( this );
 	}
+
 	public org.lgna.project.ast.Expression createTransientExpression() {
 		return createTransientThisExpression();
 	}
+
 	public org.lgna.project.ast.Expression createExpression() {
 		return createThisExpression();
 	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 	}
+
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
 		return org.alice.ide.ast.icons.ThisInstanceIconFactory.SINGLETON;
 	}
+
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
-//		sb.append( "<strong>" );
+		//		sb.append( "<strong>" );
 		sb.append( "this" );
-//		sb.append( "</strong>" );
+		//		sb.append( "</strong>" );
 		sb.append( "</html>" );
 		return sb.toString();
 	}

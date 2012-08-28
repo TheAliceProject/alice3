@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectionCameraAdapter extends AbstractCameraAdapter< edu.cmu.cs.dennisc.scenegraph.ProjectionCamera > {
+public class ProjectionCameraAdapter extends AbstractCameraAdapter<edu.cmu.cs.dennisc.scenegraph.ProjectionCamera> {
 	private double[] m_projection = new double[ 16 ];
 	private java.nio.DoubleBuffer m_projectionBuffer = java.nio.DoubleBuffer.wrap( m_projection );
 
@@ -54,6 +54,7 @@ public class ProjectionCameraAdapter extends AbstractCameraAdapter< edu.cmu.cs.d
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
 		throw new RuntimeException( "TODO" );
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
 		throw new RuntimeException( "todo" );
@@ -64,11 +65,12 @@ public class ProjectionCameraAdapter extends AbstractCameraAdapter< edu.cmu.cs.d
 		//todo
 		return rv;
 	}
+
 	@Override
 	protected void setupProjection( Context context, java.awt.Rectangle actualViewport ) {
 		context.gl.glLoadMatrixd( m_projectionBuffer );
 	}
-	
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.projection ) {

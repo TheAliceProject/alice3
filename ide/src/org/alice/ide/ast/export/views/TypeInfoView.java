@@ -48,20 +48,20 @@ package org.alice.ide.ast.export.views;
 public class TypeInfoView extends org.lgna.croquet.components.BorderPanel {
 	public TypeInfoView( org.alice.ide.ast.export.TypeInfo typeInfo ) {
 		this.addPageStartComponent( new InfoCheckBox( typeInfo ) );
-		
+
 		org.lgna.croquet.components.PageAxisPanel centerPanel = new org.lgna.croquet.components.PageAxisPanel();
-//		for( org.alice.ide.ast.export.ConstructorInfo info : typeInfo.getConstructorInfos() ) {
-//			centerPanel.addComponent( new InfoCheckBox( info ) );
-//		}
+		//		for( org.alice.ide.ast.export.ConstructorInfo info : typeInfo.getConstructorInfos() ) {
+		//			centerPanel.addComponent( new InfoCheckBox( info ) );
+		//		}
 		for( org.alice.ide.ast.export.MethodInfo info : typeInfo.getMethodInfos() ) {
 			centerPanel.addComponent( new InfoCheckBox( info ) );
 		}
 		for( org.alice.ide.ast.export.FieldInfo info : typeInfo.getFieldInfos() ) {
 			centerPanel.addComponent( new InfoCheckBox( info ) );
 		}
-		
+
 		this.addLineStartComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ) );
 		this.addCenterComponent( centerPanel );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 }

@@ -44,12 +44,13 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 public class Layer extends Element {
-	private final java.util.List< edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener > graphicsListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();;
-	private final java.util.List< Graphic > graphics = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener> graphicsListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();;
+	private final java.util.List<Graphic> graphics = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public void addGraphic( Graphic graphic ) {
 		graphic.setParent( this );
 	}
+
 	public void removeGraphic( Graphic graphic ) {
 		if( graphic.getParent() == this ) {
 			graphic.setParent( null );
@@ -57,29 +58,32 @@ public class Layer extends Element {
 			throw new RuntimeException();
 		}
 	}
+
 	public Iterable<Graphic> getGraphics() {
 		return this.graphics;
 	}
-	
+
 	public void addGraphicsListener( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l ) {
 		this.graphicsListeners.add( l );
 	}
+
 	public void removeGraphicsListener( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l ) {
 		this.graphicsListeners.remove( l );
 	}
 
-	/*package-private*/ void addGraphicAndFireListeners( Graphic graphic ) {
+	/* package-private */void addGraphicAndFireListeners( Graphic graphic ) {
 		this.graphics.add( graphic );
 		edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent( this, graphic );
 		for( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l : this.graphicsListeners ) {
 			l.graphicAdded( e );
 		}
 	}
-	/*package-private*/ void removeGraphicAndFireListeners( Graphic graphic ) {
+
+	/* package-private */void removeGraphicAndFireListeners( Graphic graphic ) {
 		this.graphics.remove( graphic );
 		edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent( this, graphic );
 		for( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l : this.graphicsListeners ) {
 			l.graphicRemoved( e );
 		}
-	}	
+	}
 }

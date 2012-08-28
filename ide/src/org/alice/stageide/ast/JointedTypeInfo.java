@@ -49,8 +49,9 @@ package org.alice.stageide.ast;
 public class JointedTypeInfo {
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 
-	private static java.util.Map< org.lgna.project.ast.AbstractType< ?,?,? >, JointedTypeInfo > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static JointedTypeInfo getDeclarationInstance( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, JointedTypeInfo> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static JointedTypeInfo getDeclarationInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( JOINTED_MODEL_TYPE.isAssignableFrom( type ) ) {
 			JointedTypeInfo rv = map.get( type );
 			if( rv != null ) {
@@ -68,10 +69,10 @@ public class JointedTypeInfo {
 			return null;
 		}
 	}
-	
-	public static java.util.List< JointedTypeInfo > getInstances( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		java.util.List< JointedTypeInfo > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.lgna.project.ast.AbstractType< ?,?,? > t = type;
+
+	public static java.util.List<JointedTypeInfo> getInstances( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		java.util.List<JointedTypeInfo> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.lgna.project.ast.AbstractType<?, ?, ?> t = type;
 		while( JOINTED_MODEL_TYPE.isAssignableFrom( t ) ) {
 			JointedTypeInfo jointedTypeInfo = getDeclarationInstance( t );
 			if( jointedTypeInfo != null ) {
@@ -81,13 +82,14 @@ public class JointedTypeInfo {
 		}
 		return rv;
 	}
-	
-	public static boolean isDeclarationJointed( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+
+	public static boolean isDeclarationJointed( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		JointedTypeInfo info = getDeclarationInstance( type );
-		return info != null && info.jointGetters.size() > 0;
+		return ( info != null ) && ( info.jointGetters.size() > 0 );
 	}
-	public static boolean isJointed( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > t = type;
+
+	public static boolean isJointed( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		org.lgna.project.ast.AbstractType<?, ?, ?> t = type;
 		while( JOINTED_MODEL_TYPE.isAssignableFrom( t ) ) {
 			if( isDeclarationJointed( t ) ) {
 				return true;
@@ -97,9 +99,10 @@ public class JointedTypeInfo {
 		return false;
 	}
 
-	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
-	private final java.util.List< org.lgna.project.ast.AbstractMethod > jointGetters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(); 
-	private JointedTypeInfo( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final java.util.List<org.lgna.project.ast.AbstractMethod> jointGetters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+	private JointedTypeInfo( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		this.type = type;
 		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 			if( JointMethodUtilities.isJointGetter( method ) ) {
@@ -107,16 +110,20 @@ public class JointedTypeInfo {
 			}
 		}
 	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return this.type;
 	}
-	public java.util.List< org.lgna.project.ast.AbstractMethod > getJointGetters() {
+
+	public java.util.List<org.lgna.project.ast.AbstractMethod> getJointGetters() {
 		return this.jointGetters;
 	}
+
 	public static class Node {
 		private final Node parent;
 		private final org.lgna.project.ast.AbstractMethod method;
-		private final java.util.List< Node > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private final java.util.List<Node> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
 		public static Node createAndAddToParent( Node parent, org.lgna.project.ast.AbstractMethod method ) {
 			Node rv = new Node( parent, method );
 			if( parent != null ) {
@@ -124,6 +131,7 @@ public class JointedTypeInfo {
 			}
 			return rv;
 		}
+
 		private Node( Node parent, org.lgna.project.ast.AbstractMethod method ) {
 			this.parent = parent;
 			this.method = method;

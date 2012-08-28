@@ -50,6 +50,7 @@ public class GraphicsDeviceUtilities {
 	private GraphicsDeviceUtilities() {
 		throw new AssertionError();
 	}
+
 	public static java.awt.Rectangle getGraphicsDeviceConfigurationBoundsFor( java.awt.GraphicsDevice[] graphicsDevices, java.awt.Point p ) {
 		for( java.awt.GraphicsDevice graphicsDevice : graphicsDevices ) {
 			java.awt.GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
@@ -61,7 +62,6 @@ public class GraphicsDeviceUtilities {
 			// slllllllllllllowwwwwwwwwwwww
 			// for( java.awt.GraphicsConfiguration graphicsConfiguration : graphicsDevice.getConfigurations() ) {
 
-		
 			// returns null
 			//java.awt.Window window = graphicsDevice.getFullScreenWindow();
 			//if( window != null ) {
@@ -70,10 +70,12 @@ public class GraphicsDeviceUtilities {
 		}
 		return null;
 	}
+
 	public static java.awt.Rectangle getGraphicsDeviceConfigurationBoundsFor( java.awt.Point p ) {
 		java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
 		return getGraphicsDeviceConfigurationBoundsFor( graphicsEnvironment.getScreenDevices(), p );
 	}
+
 	public static java.awt.Rectangle getScreenDeviceDefaultConfigurationBounds( int screenDeviceIndex ) {
 		java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
 		java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
@@ -85,13 +87,13 @@ public class GraphicsDeviceUtilities {
 			return null;
 		}
 	}
-//	public static void main( String[] args ) {
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-////				new javax.swing.JFrame().setVisible( true );
-//				java.awt.Rectangle bounds = getGraphicsDeviceConfigurationBoundsFor( new java.awt.Point( -1000, 100 ) );
-//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( bounds );
-//			}
-//		} );
-//	}
+	//	public static void main( String[] args ) {
+	//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+	//			public void run() {
+	////				new javax.swing.JFrame().setVisible( true );
+	//				java.awt.Rectangle bounds = getGraphicsDeviceConfigurationBoundsFor( new java.awt.Point( -1000, 100 ) );
+	//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( bounds );
+	//			}
+	//		} );
+	//	}
 }

@@ -49,5 +49,6 @@ public abstract class AbstractCodeActionOperation extends org.lgna.croquet.Actio
 	public AbstractCodeActionOperation( java.util.UUID individualId ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 	}
+
 	protected abstract org.lgna.project.ast.UserCode getCode();
 }

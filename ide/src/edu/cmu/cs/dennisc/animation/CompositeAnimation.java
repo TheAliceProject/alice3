@@ -47,23 +47,26 @@ package edu.cmu.cs.dennisc.animation;
  */
 public abstract class CompositeAnimation implements Animation {
 	private Animation[] m_animations;
+
 	public CompositeAnimation( Animation... animations ) {
 		setAnimations( animations );
 	}
+
 	protected void setAnimations( Animation[] animations ) {
 		m_animations = animations;
 		this.reset();
 	}
-	
+
 	public Animation[] getAnimations() {
 		return m_animations;
 	}
-	
+
 	public void reset() {
 		for( Animation animation : m_animations ) {
 			animation.reset();
 		}
 	}
+
 	public void complete( AnimationObserver animationObserver ) {
 		for( Animation animation : m_animations ) {
 			animation.complete( animationObserver );

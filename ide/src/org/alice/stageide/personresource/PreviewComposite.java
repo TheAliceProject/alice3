@@ -50,6 +50,7 @@ public class PreviewComposite extends org.lgna.croquet.SimpleComposite<org.lgna.
 	public PreviewComposite() {
 		super( java.util.UUID.fromString( "f9cd8c6a-5307-49ca-ae72-5cf4b629758f" ) );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder().center( new org.lgna.croquet.components.Label( "preview" ) ).build();

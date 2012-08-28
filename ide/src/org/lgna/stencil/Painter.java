@@ -47,5 +47,6 @@ package org.lgna.stencil;
  */
 public interface Painter {
 	public void paint( java.awt.Graphics2D g2, java.awt.Shape shape );
+
 	public java.awt.Rectangle getBounds( java.awt.Shape shape );
 }

@@ -58,9 +58,11 @@ public class PickResult {
 	public PickResult() {
 		setNaN();
 	}
+
 	public PickResult( edu.cmu.cs.dennisc.scenegraph.Component sgSource ) {
 		set( sgSource );
 	}
+
 	public PickResult( edu.cmu.cs.dennisc.scenegraph.Component sgSource, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, boolean isFrontFacing, edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry, int subElement, edu.cmu.cs.dennisc.math.Point3 xyzInSource ) {
 		set( sgSource, sgVisual, isFrontFacing, sgGeometry, subElement, xyzInSource );
 	}
@@ -69,6 +71,7 @@ public class PickResult {
 		setNaN();
 		m_sgSource = sgSource;
 	}
+
 	public void set( edu.cmu.cs.dennisc.scenegraph.Component sgSource, edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, boolean isFrontFacing, edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry, int subElement, edu.cmu.cs.dennisc.math.Point3 xyzInSource ) {
 		m_sgSource = sgSource;
 		m_sgVisual = sgVisual;
@@ -82,6 +85,7 @@ public class PickResult {
 		}
 		m_xyzInVisual.setNaN();
 	}
+
 	public void setNaN() {
 		set( null, null, false, null, -1, null );
 	}
@@ -89,29 +93,36 @@ public class PickResult {
 	public edu.cmu.cs.dennisc.scenegraph.Component getSource() {
 		return m_sgSource;
 	}
+
 	public edu.cmu.cs.dennisc.scenegraph.Visual getVisual() {
 		return m_sgVisual;
 	}
+
 	public edu.cmu.cs.dennisc.scenegraph.Geometry getGeometry() {
 		return m_sgGeometry;
 	}
+
 	public boolean isFrontFacing() {
 		return m_isFrontFacing;
 	}
+
 	public int getSubElement() {
 		return m_subElement;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 accessPositionInSource() {
 		return m_xyzInSource;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionInSource( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		rv.set( accessPositionInSource() );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionInSource() {
 		return getPositionInSource( new edu.cmu.cs.dennisc.math.Point3() );
 	}
-	
+
 	public edu.cmu.cs.dennisc.math.Point3 accessPositionInVisual() {
 		if( m_xyzInSource.isNaN() ) {
 			if( m_xyzInVisual.isNaN() ) {
@@ -123,15 +134,16 @@ public class PickResult {
 		}
 		return m_xyzInVisual;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionInVisual( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		rv.set( accessPositionInVisual() );
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getPositionInVisual() {
 		return getPositionInVisual( new edu.cmu.cs.dennisc.math.Point3() );
 	}
 
-	
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

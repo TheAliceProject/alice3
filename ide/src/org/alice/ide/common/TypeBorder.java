@@ -54,6 +54,7 @@ class TypeBorder implements javax.swing.border.Border {
 			return new java.awt.Color( 0xe2ba84 );
 		}
 	}
+
 	private static final int X_INSET = 8;
 	private static final int Y_INSET = 2;
 	private static java.awt.Insets insets = new java.awt.Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
@@ -63,13 +64,13 @@ class TypeBorder implements javax.swing.border.Border {
 
 	//private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
 	//private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
-	
+
 	private static java.awt.Color OUTLINE_COLOR = java.awt.Color.GRAY;
 	private static TypeBorder singletonForUser = new TypeBorder( true );
 	private static TypeBorder singletonForJava = new TypeBorder( false );
 	private static TypeBorder singletonForNull = new TypeBorder( null );
 
-	public static TypeBorder getSingletonFor( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public static TypeBorder getSingletonFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
 			if( type instanceof org.lgna.project.ast.NamedUserType ) {
 				return TypeBorder.singletonForUser;
@@ -80,7 +81,9 @@ class TypeBorder implements javax.swing.border.Border {
 			return TypeBorder.singletonForNull;
 		}
 	}
+
 	private Boolean isDeclaredByUser;
+
 	private TypeBorder( Boolean isDeclaredByUser ) {
 		this.isDeclaredByUser = isDeclaredByUser;
 	}
@@ -88,9 +91,10 @@ class TypeBorder implements javax.swing.border.Border {
 	private int yPrevious = -1;
 	private int heightPrevious = -1;
 	private java.awt.Paint paintPrevious = null;
+
 	private java.awt.Paint getFillPaint( java.awt.Component c, int x, int y, int width, int height ) {
 		if( c.isEnabled() ) {
-			if( y==this.yPrevious && height==this.heightPrevious ) {
+			if( ( y == this.yPrevious ) && ( height == this.heightPrevious ) ) {
 				//pass
 			} else {
 				this.yPrevious = y;
@@ -117,19 +121,21 @@ class TypeBorder implements javax.swing.border.Border {
 	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 		return TypeBorder.insets;
 	}
+
 	public boolean isBorderOpaque() {
 		return false;
 	}
+
 	private static java.awt.Shape createShape( int x, int y, int width, int height ) {
 		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
-		int x0 = x+0;
-		int x1 = x0 + width - 1;
-		int xA = x0 + X_INSET/2;
-		int xB = x1 - X_INSET/2;
+		int x0 = x + 0;
+		int x1 = ( x0 + width ) - 1;
+		int xA = x0 + ( X_INSET / 2 );
+		int xB = x1 - ( X_INSET / 2 );
 
-		int y0 = y+0;
-		int y1 = y0 + height - 1;
-		int yC = (y0 + y1) / 2;
+		int y0 = y + 0;
+		int y1 = ( y0 + height ) - 1;
+		int yC = ( y0 + y1 ) / 2;
 
 		rv.moveTo( xA, y0 );
 		rv.lineTo( xB, y0 );
@@ -140,6 +146,7 @@ class TypeBorder implements javax.swing.border.Border {
 		rv.lineTo( xA, y0 );
 		return rv;
 	}
+
 	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 		java.awt.Shape shape = TypeBorder.createShape( x, y, width, height );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;

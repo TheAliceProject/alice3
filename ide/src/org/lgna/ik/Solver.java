@@ -47,14 +47,16 @@ package org.lgna.ik;
  * @author Dennis Cosgrove
  */
 public class Solver {
-	private final java.util.List< Chain > chains = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Chain> chains = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public void addChain( Chain chain ) {
 		this.chains.add( chain );
 	}
+
 	public void removeChain( Chain chain ) {
 		this.chains.remove( chain );
 	}
-	
+
 	public void solve() {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();
 	}

@@ -54,31 +54,31 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 public class CameraRotateKeyManipulator extends RotateKeyManipulator implements CameraInformedManipulator {
 
 	protected AbstractCamera camera = null;
-	
+
 	public CameraRotateKeyManipulator( MovementKey[] directionKeys )
 	{
-		super(directionKeys);
+		super( directionKeys );
 	}
-	
+
 	public AbstractCamera getCamera()
 	{
 		return this.camera;
 	}
-	
-	public void setCamera( AbstractCamera camera ) 
+
+	public void setCamera( AbstractCamera camera )
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof Transformable ) )
 		{
-			this.setManipulatedTransformable((Transformable)this.camera.getParent());
+			this.setManipulatedTransformable( (Transformable)this.camera.getParent() );
 		}
 	}
-	
+
 	public void setDesiredCameraView( CameraView cameraView )
 	{
 		//this can only be ACTIVE_VIEW
 	}
-	
+
 	public CameraView getDesiredCameraView() {
 		return CameraView.ACTIVE_VIEW;
 	}

@@ -44,6 +44,6 @@
 package edu.cmu.cs.dennisc.scenegraph;
 
 public class PlentifulInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair
-{    
-    
+{
+
 }

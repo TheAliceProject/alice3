@@ -17,12 +17,12 @@ import org.lgna.story.event.NumberKeyPressListener;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
+public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 
-	HashMap<Object,LinkedList<Object>> map = new HashMap<Object,LinkedList<Object>>();
+	HashMap<Object, LinkedList<Object>> map = new HashMap<Object, LinkedList<Object>>();
 	Object empty = new Object();
-	private HashMap<Object,HeldKeyPolicy> heldKeyMap = Collections.newHashMap();
-	private HashMap<Object,HashMap<Key,Boolean>> firePolicyMap = Collections.newHashMap();
+	private HashMap<Object, HeldKeyPolicy> heldKeyMap = Collections.newHashMap();
+	private HashMap<Object, HashMap<Key, Boolean>> firePolicyMap = Collections.newHashMap();
 	private long sleepTime = 500;
 
 	public KeyPressedHandler() {
@@ -31,7 +31,7 @@ public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 
 	private void internalAddListener( Object keyList, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy ) {
 		heldKeyMap.put( keyList, heldKeyPolicy );
-		firePolicyMap.put( keyList, new HashMap<Key,Boolean>() );
+		firePolicyMap.put( keyList, new HashMap<Key, Boolean>() );
 		if( validKeys == null ) {
 			map.get( empty ).add( keyList );
 		} else {
@@ -45,12 +45,15 @@ public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 		registerIsFiringMap( keyList );
 		registerPolicyMap( keyList, policy );
 	}
+
 	public void addListener( KeyPressListener keyList, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy ) {
 		this.internalAddListener( keyList, policy, validKeys, heldKeyPolicy );
 	}
+
 	public void addListener( ArrowKeyPressListener keyList, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy ) {
 		this.internalAddListener( keyList, policy, validKeys, heldKeyPolicy );
 	}
+
 	public void addListener( NumberKeyPressListener keyList, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy ) {
 		this.internalAddListener( keyList, policy, validKeys, heldKeyPolicy );
 	}
@@ -89,14 +92,14 @@ public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 			if( map.get( key ) != null ) {
 				for( final Object listener : map.get( key ) ) {
 					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
-						if( firePolicyMap.get( listener ).get( key ) == null || !firePolicyMap.get( listener ).get( key ) ) {
+						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, true );
 							fireEvent( listener, event );
 						}
 					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
 						//pass
 					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
-						if( firePolicyMap.get( listener ).get( key ) == null || !firePolicyMap.get( listener ).get( key ) ) {
+						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, true );
 							final ComponentThread thread = new ComponentThread( new Runnable() {
 								public void run() {
@@ -117,7 +120,7 @@ public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 			} else {
 				for( final Object listener : map.get( empty ) ) {
 					if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_PRESS ) {
-						if( firePolicyMap.get( listener ).get( key ) == null || !firePolicyMap.get( listener ).get( key ) ) {
+						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							System.out.println( "FIRE_ONCE_ON_PRESS" );
 							firePolicyMap.get( listener ).put( key, true );
 							fireEvent( listener, event );
@@ -125,7 +128,7 @@ public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_ONCE_ON_RELEASE ) {
 						//pass
 					} else if( heldKeyMap.get( listener ) == HeldKeyPolicy.FIRE_MULTIPLE ) {
-						if( firePolicyMap.get( listener ).get( key ) == null || !firePolicyMap.get( listener ).get( key ) ) {
+						if( ( firePolicyMap.get( listener ).get( key ) == null ) || !firePolicyMap.get( listener ).get( key ) ) {
 							firePolicyMap.get( listener ).put( key, true );
 							final ComponentThread thread = new ComponentThread( new Runnable() {
 								public void run() {
@@ -146,6 +149,7 @@ public class KeyPressedHandler extends AbstractEventHandler<Object,KeyEvent> {
 			}
 		}
 	}
+
 	public void handleKeyRelease( KeyEvent event ) {
 		if( shouldFire ) {
 			Key key = event.getKey();

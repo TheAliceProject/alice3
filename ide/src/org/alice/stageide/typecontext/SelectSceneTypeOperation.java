@@ -50,12 +50,15 @@ public class SelectSceneTypeOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static SelectSceneTypeOperation instance = new SelectSceneTypeOperation();
 	}
+
 	public static SelectSceneTypeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SelectSceneTypeOperation() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "53176db0-cfaa-4560-bbb7-2a18244ca97c" ) );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

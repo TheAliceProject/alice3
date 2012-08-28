@@ -45,10 +45,11 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRowsPaneChooser<E extends org.lgna.project.ast.Expression> extends ValueChooser< E > {
+public abstract class AbstractRowsPaneChooser<E extends org.lgna.project.ast.Expression> extends ValueChooser<E> {
 	private static final String[] LABEL_TEXTS = { "value:" };
+
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
 		org.lgna.project.ast.Expression expression;
 		try {
 			expression = this.getValue();
@@ -56,40 +57,45 @@ public abstract class AbstractRowsPaneChooser<E extends org.lgna.project.ast.Exp
 			//re.printStackTrace();
 			expression = new org.lgna.project.ast.NullLiteral();
 		}
-		
+
 		return new org.lgna.croquet.components.BorderPanel.Builder()
 				.lineStart( org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ) )
-		.build();
+				.build();
 	}
+
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
+
 	protected org.lgna.croquet.components.Component<?> createLabel( String text ) {
 		return org.lgna.croquet.components.SpringUtilities.createTrailingLabel( text );
 	}
-	protected abstract org.lgna.croquet.components.Component< ? >[] getRowComponents();
-	public java.util.List< org.lgna.croquet.components.Component< ? >[] > updateRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv ) {
+
+	protected abstract org.lgna.croquet.components.Component<?>[] getRowComponents();
+
+	public java.util.List<org.lgna.croquet.components.Component<?>[]> updateRows( java.util.List<org.lgna.croquet.components.Component<?>[]> rv ) {
 		String[] labelTexts = this.getLabelTexts();
-		org.lgna.croquet.components.Component< ? >[] components = this.getRowComponents();
+		org.lgna.croquet.components.Component<?>[] components = this.getRowComponents();
 		final int N = labelTexts.length;
-		for( int i=0; i<N; i++ ) {
-			rv.add( 
-					org.lgna.croquet.components.SpringUtilities.createRow( 
-						this.createLabel( labelTexts[ i ] ), 
-						new org.lgna.croquet.components.LineAxisPanel( 
-								components[ i ],
-								org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
-						)
-					) 
-			);
+		for( int i = 0; i < N; i++ ) {
+			rv.add(
+					org.lgna.croquet.components.SpringUtilities.createRow(
+							this.createLabel( labelTexts[ i ] ),
+							new org.lgna.croquet.components.LineAxisPanel(
+									components[ i ],
+									org.lgna.croquet.components.BoxUtilities.createHorizontalGlue()
+							)
+							)
+					);
 		}
 		return rv;
 	}
+
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createMainComponent() {
+	public org.lgna.croquet.components.JComponent<?> createMainComponent() {
 		org.lgna.croquet.components.RowsSpringPanel rowsSpringPanel = new org.lgna.croquet.components.RowsSpringPanel() {
 			@Override
-			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows(java.util.List<org.lgna.croquet.components.Component<?>[]> rv) {
+			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows( java.util.List<org.lgna.croquet.components.Component<?>[]> rv ) {
 				return AbstractRowsPaneChooser.this.updateRows( rv );
 			}
 		};

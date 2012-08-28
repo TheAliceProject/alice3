@@ -48,14 +48,18 @@ package org.alice.ide.croquet.models.ast;
  */
 public abstract class ConvertStatementWithBodyOperation extends org.lgna.croquet.ActionOperation {
 	private org.lgna.project.ast.AbstractStatementWithBody original;
+
 	public ConvertStatementWithBodyOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractStatementWithBody original ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		this.original = original;
 	}
+
 	public org.lgna.project.ast.AbstractStatementWithBody getOriginal() {
 		return this.original;
 	}
+
 	protected abstract org.lgna.project.ast.AbstractStatementWithBody createReplacement();
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

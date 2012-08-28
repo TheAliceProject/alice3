@@ -50,28 +50,34 @@ public class IncompleteAstUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.Expression leftOperand, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?,?,?> rightOperandType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
+	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.Expression leftOperand, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?, ?, ?> rightOperandType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType ) {
 		return new org.lgna.project.ast.ArithmeticInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), expressionType );
 	}
+
 	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.Expression leftOperand, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
 		return createIncompleteArithmeticInfixExpression( leftOperand, operator, org.lgna.project.ast.JavaType.getInstance( rightOperandCls ), org.lgna.project.ast.JavaType.getInstance( expressionCls ) );
 	}
-	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.AbstractType<?,?,?> leftOperandType, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?,?,?> rightOperandType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
+
+	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( org.lgna.project.ast.AbstractType<?, ?, ?> leftOperandType, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?, ?, ?> rightOperandType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType ) {
 		return createIncompleteArithmeticInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, rightOperandType, expressionType );
 	}
+
 	public static org.lgna.project.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( Class<?> leftOperandCls, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
 		return createIncompleteArithmeticInfixExpression( org.lgna.project.ast.JavaType.getInstance( leftOperandCls ), operator, org.lgna.project.ast.JavaType.getInstance( rightOperandCls ), org.lgna.project.ast.JavaType.getInstance( expressionCls ) );
 	}
+
 	public static org.lgna.project.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( org.lgna.project.ast.Expression leftOperand, org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		return new org.lgna.project.ast.ConditionalInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) );
 	}
+
 	public static org.lgna.project.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		return createIncompleteConditionalInfixExpression( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ), operator );
 	}
-	
-	public static org.lgna.project.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( org.lgna.project.ast.AbstractType<?,?,?> leftOperandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?,?,?> rightOperandType ) {
+
+	public static org.lgna.project.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( org.lgna.project.ast.AbstractType<?, ?, ?> leftOperandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?, ?, ?> rightOperandType ) {
 		return new org.lgna.project.ast.RelationalInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), leftOperandType, rightOperandType );
 	}
+
 	public static org.lgna.project.ast.RelationalInfixExpression createIncompleteRelationalInfixExpression( Class<?> leftOperandCls, org.lgna.project.ast.RelationalInfixExpression.Operator operator, Class<?> rightOperandCls ) {
 		return createIncompleteRelationalInfixExpression( org.lgna.project.ast.JavaType.getInstance( leftOperandCls ), operator, org.lgna.project.ast.JavaType.getInstance( rightOperandCls ) );
 	}
@@ -79,25 +85,32 @@ public class IncompleteAstUtilities {
 	public static org.lgna.project.ast.LogicalComplement createIncompleteLogicalComplement() {
 		return new org.lgna.project.ast.LogicalComplement( new EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) );
 	}
+
 	public static org.lgna.project.ast.LocalDeclarationStatement createIncompleteLocalDeclarationStatement() {
-		org.lgna.project.ast.AbstractType<?,?,?> type = org.lgna.project.ast.JavaType.OBJECT_TYPE;
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.lgna.project.ast.JavaType.OBJECT_TYPE;
 		return org.lgna.project.ast.AstUtilities.createLocalDeclarationStatement( new org.lgna.project.ast.UserLocal( "???", type, false ), new org.alice.ide.ast.EmptyExpression( type ) );
 	}
+
 	public static org.lgna.project.ast.CountLoop createIncompleteCountLoop() {
 		return org.lgna.project.ast.AstUtilities.createCountLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) );
 	}
+
 	public static org.lgna.project.ast.WhileLoop createIncompleteWhileLoop() {
 		return org.lgna.project.ast.AstUtilities.createWhileLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) );
 	}
+
 	public static org.lgna.project.ast.ConditionalStatement createIncompleteConditionalStatement() {
 		return org.lgna.project.ast.AstUtilities.createConditionalStatement( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE ) );
 	}
+
 	public static org.lgna.project.ast.ForEachInArrayLoop createIncompleteForEachInArrayLoop() {
 		return org.lgna.project.ast.AstUtilities.createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.getInstance( Object[].class ) ) );
 	}
+
 	public static org.lgna.project.ast.EachInArrayTogether createIncompleteEachInArrayTogether() {
 		return org.lgna.project.ast.AstUtilities.createEachInArrayTogether( new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.getInstance( Object[].class ) ) );
 	}
+
 	public static org.lgna.project.ast.MethodInvocation createIncompleteMethodInvocation( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
 		org.lgna.project.ast.MethodInvocation rv = new org.lgna.project.ast.MethodInvocation();
 		rv.expression.setValue( expression );
@@ -108,38 +121,45 @@ public class IncompleteAstUtilities {
 		}
 		return rv;
 	}
+
 	public static org.lgna.project.ast.MethodInvocation createIncompleteMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
 		return IncompleteAstUtilities.createIncompleteMethodInvocation( new SelectedInstanceFactoryExpression( method.getDeclaringType() ), method );
 	}
+
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteMethodInvocationStatement( org.lgna.project.ast.AbstractMethod method ) {
 		return new org.lgna.project.ast.ExpressionStatement( createIncompleteMethodInvocation( method ) );
 	}
+
 	public static org.lgna.project.ast.MethodInvocation createIncompleteStaticMethodInvocation( org.lgna.project.ast.AbstractMethod method ) {
 		return IncompleteAstUtilities.createIncompleteMethodInvocation( new org.lgna.project.ast.TypeExpression( method.getDeclaringType() ), method );
 	}
+
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteStaticMethodInvocationStatement( org.lgna.project.ast.AbstractMethod method ) {
 		return new org.lgna.project.ast.ExpressionStatement( createIncompleteStaticMethodInvocation( method ) );
 	}
-	
+
 	public static org.lgna.project.ast.MethodInvocation completeMethodInvocation( org.lgna.project.ast.MethodInvocation rv, org.lgna.project.ast.Expression... argumentExpressions ) {
 		return org.lgna.project.ast.AstUtilities.completeMethodInvocation( rv, org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), argumentExpressions );
 	}
-	
+
 	public static org.lgna.project.ast.FieldAccess createIncompleteFieldAccess( org.lgna.project.ast.AbstractField field ) {
 		return org.lgna.project.ast.AstUtilities.createFieldAccess( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
 	}
 
 	private static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
 		org.lgna.project.ast.FieldAccess fieldAccess = org.lgna.project.ast.AstUtilities.createFieldAccess( expression, field );
-		org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = field.getValueType();
 		return new org.lgna.project.ast.AssignmentExpression( valueType, fieldAccess, org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
 	}
+
 	public static org.lgna.project.ast.AssignmentExpression createIncompleteAssignmentExpression( org.lgna.project.ast.AbstractField field ) {
 		return IncompleteAstUtilities.createIncompleteAssignmentExpression( new SelectedInstanceFactoryExpression( field.getDeclaringType() ), field );
 	}
+
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteAssignmentExpressionStatement( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractField field ) {
 		return new org.lgna.project.ast.ExpressionStatement( createIncompleteAssignmentExpression( expression, field ) );
 	}
+
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteAssignmentExpressionStatement( org.lgna.project.ast.AbstractField field ) {
 		return new org.lgna.project.ast.ExpressionStatement( createIncompleteAssignmentExpression( field ) );
 	}
@@ -152,12 +172,15 @@ public class IncompleteAstUtilities {
 		}
 		return rv;
 	}
-	public static org.lgna.project.ast.ReturnStatement createIncompleteReturnStatement( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	public static org.lgna.project.ast.ReturnStatement createIncompleteReturnStatement( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return org.lgna.project.ast.AstUtilities.createReturnStatement( type, new EmptyExpression( type ) );
 	}
+
 	public static org.lgna.project.ast.AssignmentExpression createIncompleteLocalAssignment( org.lgna.project.ast.UserLocal local ) {
 		return org.lgna.project.ast.AstUtilities.createLocalAssignment( local, new EmptyExpression( local.valueType.getValue() ) );
 	}
+
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteLocalAssignmentStatement( org.lgna.project.ast.UserLocal local ) {
 		return org.lgna.project.ast.AstUtilities.createLocalAssignmentStatement( local, new EmptyExpression( local.valueType.getValue() ) );
 	}
@@ -165,20 +188,23 @@ public class IncompleteAstUtilities {
 	public static org.lgna.project.ast.AssignmentExpression createIncompleteLocalArrayAssignment( org.lgna.project.ast.UserLocal local ) {
 		return org.lgna.project.ast.AstUtilities.createLocalArrayAssignment( local, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( local.valueType.getValue().getComponentType() ) );
 	}
+
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteLocalArrayAssignmentStatement( org.lgna.project.ast.UserLocal local ) {
 		return org.lgna.project.ast.AstUtilities.createLocalArrayAssignmentStatement( local, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( local.valueType.getValue().getComponentType() ) );
 	}
+
 	public static org.lgna.project.ast.AssignmentExpression createIncompleteParameterArrayAssignment( org.lgna.project.ast.UserParameter parameter ) {
 		return org.lgna.project.ast.AstUtilities.createParameterArrayAssignment( parameter, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
 	}
+
 	public static org.lgna.project.ast.ExpressionStatement createIncompleteParameterArrayAssignmentStatement( org.lgna.project.ast.UserParameter parameter ) {
 		return org.lgna.project.ast.AstUtilities.createParameterArrayAssignmentStatement( parameter, new EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
 	}
 
-	
 	public static org.lgna.project.ast.StringConcatenation createIncompleteStringConcatenation( org.lgna.project.ast.Expression leftOperand ) {
 		return org.lgna.project.ast.AstUtilities.createStringConcatenation( leftOperand, new EmptyExpression( org.lgna.project.ast.JavaType.OBJECT_TYPE ) );
 	}
+
 	public static org.lgna.project.ast.StringConcatenation createIncompleteStringConcatenation() {
 		return createIncompleteStringConcatenation( new EmptyExpression( org.lgna.project.ast.JavaType.OBJECT_TYPE ) );
 	}

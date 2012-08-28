@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class FrustumPerspectiveCameraAdapter extends AbstractPerspectiveCameraAdapter< edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera > {
+public class FrustumPerspectiveCameraAdapter extends AbstractPerspectiveCameraAdapter<edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera> {
 	private static edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = edu.cmu.cs.dennisc.math.ClippedZPlane.createNaN();
 
 	@Override
@@ -61,15 +61,14 @@ public class FrustumPerspectiveCameraAdapter extends AbstractPerspectiveCameraAd
 		double right = actualPicturePlane.getXMaximum();
 		double bottom = actualPicturePlane.getYMinimum();
 		double top = actualPicturePlane.getYMaximum();
-		
-		
+
 		double zNear = m_element.nearClippingPlaneDistance.getValue();
 		double zFar = m_element.farClippingPlaneDistance.getValue();
 
-		rv.right.set      ( 2*zNear,                         0,                               0,                                    0  );
-		rv.up.set         ( 0,                               (2 * zNear) / (top - bottom),    0,                                    0  );
-		rv.backward.set   ( (right + left) / (right - left), (top + bottom) / (top - bottom), -(zFar + zNear) / (zFar + zNear),     -1 );
-		rv.translation.set( 0,                               0,                               -(2 * zFar * zNear) / (zFar - zNear), 0  );
+		rv.right.set( 2 * zNear, 0, 0, 0 );
+		rv.up.set( 0, ( 2 * zNear ) / ( top - bottom ), 0, 0 );
+		rv.backward.set( ( right + left ) / ( right - left ), ( top + bottom ) / ( top - bottom ), -( zFar + zNear ) / ( zFar + zNear ), -1 );
+		rv.translation.set( 0, 0, -( 2 * zFar * zNear ) / ( zFar - zNear ), 0 );
 
 		return rv;
 	}

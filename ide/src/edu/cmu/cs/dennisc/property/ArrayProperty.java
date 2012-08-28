@@ -45,10 +45,11 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayProperty<E> extends InstanceProperty< E[] > {
+public class ArrayProperty<E> extends InstanceProperty<E[]> {
 	public ArrayProperty( InstancePropertyOwner owner, E... value ) {
 		super( owner, value );
 	}
+
 	//todo: 
 	//public int getLength( PropertyOwner owner ) {
 	public int getLength() {
@@ -59,6 +60,7 @@ public class ArrayProperty<E> extends InstanceProperty< E[] > {
 			return 0;
 		}
 	}
+
 	@Override
 	public void setValue( PropertyOwner owner, E[] value ) {
 		assert value != null;

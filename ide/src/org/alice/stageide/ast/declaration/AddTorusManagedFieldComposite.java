@@ -49,17 +49,22 @@ public class AddTorusManagedFieldComposite extends AddModelManagedFieldComposite
 	private static class SingletonHolder {
 		private static AddTorusManagedFieldComposite instance = new AddTorusManagedFieldComposite();
 	}
+
 	public static AddTorusManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> innerRadiusState = this.createInitialPropertyValueExpressionState( this.createKey( "innerRadiusState" ), 0.25, org.lgna.story.STorus.class, "setInnerRadius", Number.class, org.lgna.story.SetInnerRadius.Detail[].class );
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> outerRadiusState = this.createInitialPropertyValueExpressionState( this.createKey( "outerRadiusState" ), 0.5, org.lgna.story.STorus.class, "setOuterRadius", Number.class, org.lgna.story.SetOuterRadius.Detail[].class );
+
 	private AddTorusManagedFieldComposite() {
-		super( java.util.UUID.fromString( "c840fcdc-3a3e-4fd1-b0ad-a66c7e8fb2a8" ),	org.lgna.story.STorus.class );
+		super( java.util.UUID.fromString( "c840fcdc-3a3e-4fd1-b0ad-a66c7e8fb2a8" ), org.lgna.story.STorus.class );
 	}
+
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getInnerRadiusState() {
 		return this.innerRadiusState;
 	}
+
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getOuterRadiusState() {
 		return this.outerRadiusState;
 	}

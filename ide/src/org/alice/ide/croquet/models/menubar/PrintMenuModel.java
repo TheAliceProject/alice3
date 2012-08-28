@@ -49,14 +49,15 @@ public class PrintMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static PrintMenuModel instance = new PrintMenuModel();
 	}
+
 	public static PrintMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private PrintMenuModel() {
-		super( java.util.UUID.fromString( "115844c7-064f-4070-b9c2-3e503a43e271" ), 
-						org.alice.ide.croquet.models.print.PrintAllOperation.getInstance().getMenuItemPrepModel(),
-						org.alice.ide.croquet.models.print.PrintCurrentCodeOperation.getInstance().getMenuItemPrepModel(),
-						org.alice.ide.croquet.models.print.PrintSceneEditorOperation.getInstance().getMenuItemPrepModel()
-		);
+		super( java.util.UUID.fromString( "115844c7-064f-4070-b9c2-3e503a43e271" ),
+				org.alice.ide.croquet.models.print.PrintAllOperation.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.print.PrintCurrentCodeOperation.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.print.PrintSceneEditorOperation.getInstance().getMenuItemPrepModel() );
 	}
 }

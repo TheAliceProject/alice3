@@ -49,26 +49,30 @@ package edu.cmu.cs.dennisc.scenegraph;
 public class Sprite extends Geometry {
 	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0;
 			super.setValue( owner, value );
 		}
 	};
+
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		double d = radius.getValue();
 		boundingBox.setMinimum( -d, -d, 0 );
 		boundingBox.setMaximum( d, d, 0 );
 	}
+
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
 		boundingSphere.center.set( 0, 0, 0 );
 		boundingSphere.radius = radius.getValue();
 	}
+
 	@Override
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
 		throw new RuntimeException( "TODO" );
 	}
+
 	@Override
 	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		throw new RuntimeException( "TODO" );

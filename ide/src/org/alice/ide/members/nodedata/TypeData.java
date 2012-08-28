@@ -47,8 +47,9 @@ package org.alice.ide.members.nodedata;
  * @author Dennis Cosgrove
  */
 public class TypeData extends Data {
-	private final org.lgna.project.ast.AbstractType< ?,?,? > type;
-	public TypeData( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+
+	public TypeData( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		this.type = type;
 	}
 }

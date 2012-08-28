@@ -46,7 +46,8 @@ package org.alice.ide.croquet.models.numberpad;
  * @author Dennis Cosgrove
  */
 public class BackspaceOperation extends NumberPadOperation {
-	private static java.util.Map< NumberModel<?>, BackspaceOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<NumberModel<?>, BackspaceOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized BackspaceOperation getInstance( NumberModel<?> model ) {
 		BackspaceOperation rv = map.get( model );
 		if( rv != null ) {
@@ -62,10 +63,12 @@ public class BackspaceOperation extends NumberPadOperation {
 		super( java.util.UUID.fromString( "16a86a58-7672-4eb7-8138-9853978f2d00" ), model );
 		this.setName( "\u2190" );
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver< NumberPadOperation >( this, this.numberModel );
+	protected org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver<NumberPadOperation> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NumberModelStaticGetInstanceKeyedResolver<NumberPadOperation>( this, this.numberModel );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

@@ -47,7 +47,8 @@ package org.alice.ide.ast.rename;
  * @author Dennis Cosgrove
  */
 public class RenameFieldComposite extends RenameDeclarationComposite<org.lgna.project.ast.UserField> {
-	private static java.util.Map< org.lgna.project.ast.UserField, RenameFieldComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserField, RenameFieldComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized RenameFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
 		assert field != null;
 		RenameFieldComposite rv = map.get( field );
@@ -59,6 +60,7 @@ public class RenameFieldComposite extends RenameDeclarationComposite<org.lgna.pr
 		}
 		return rv;
 	}
+
 	private RenameFieldComposite( org.lgna.project.ast.UserField field ) {
 		super( java.util.UUID.fromString( "20163483-25a2-40b0-b1e5-330cb2d29414" ), new org.alice.ide.name.validators.FieldNameValidator( field ), field );
 	}

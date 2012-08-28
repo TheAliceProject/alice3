@@ -49,50 +49,62 @@ public class Tuple3<A, B, C> {
 	public static <A, B, C> Tuple3<A, B, C> createInstance( A a, B b, C c ) {
 		return new Tuple3<A, B, C>( a, b, c );
 	}
+
 	private A m_a = null;
 	private B m_b = null;
 	private C m_c = null;
+
 	private Tuple3() {
 	}
+
 	private Tuple3( A a, B b, C c ) {
 		set( a, b, c );
 	}
+
 	public A getA() {
 		return m_a;
 	}
+
 	public void setA( A a ) {
 		m_a = a;
 	}
+
 	public B getB() {
 		return m_b;
 	}
+
 	public void setB( B b ) {
 		m_b = b;
 	}
+
 	public C getC() {
 		return m_c;
 	}
+
 	public void setC( C c ) {
 		m_c = c;
 	}
+
 	public void set( A a, B b, C c ) {
 		m_a = a;
 		m_b = b;
 		m_c = c;
 	}
+
 	@Override
 	public boolean equals( Object other ) {
 		if( super.equals( other ) ) {
 			return true;
 		} else {
-			if( other instanceof Tuple3<?,?,?> ) {
-				Tuple3<?,?,?> otherT = (Tuple3<?,?,?>)other;
+			if( other instanceof Tuple3<?, ?, ?> ) {
+				Tuple3<?, ?, ?> otherT = (Tuple3<?, ?, ?>)other;
 				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_a, otherT.m_a ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_b, otherT.m_b ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_c, otherT.m_c );
 			} else {
 				return false;
 			}
 		}
 	}
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

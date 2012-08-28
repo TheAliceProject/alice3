@@ -42,7 +42,8 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.adorn.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_LIGHTING;
+import static javax.media.opengl.GL.GL_LINES;
 
 /**
  * @author Dennis Cosgrove
@@ -51,12 +52,13 @@ public class StickFigureAdapter extends AdornmentAdapter {
 	private static final int TRANSLATION_X_INDEX = 12;
 	private static final int TRANSLATION_Y_INDEX = 13;
 	private static final int TRANSLATION_Z_INDEX = 14;
-	private static final float[] COLOR = { 1.0f, 1.0f, 0.0f, 1.0f }; 
+	private static final float[] COLOR = { 1.0f, 1.0f, 0.0f, 1.0f };
+
 	private static void glStickFigure( javax.media.opengl.GL gl, java.nio.DoubleBuffer ltParent, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter parent ) {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
-			Iterable< edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter > componentAdapters = parent.accessComponentAdapters();
+			Iterable<edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter> componentAdapters = parent.accessComponentAdapters();
 			synchronized( componentAdapters ) {
 				for( edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter componentAdapter : componentAdapters ) {
 					if( componentAdapter instanceof edu.cmu.cs.dennisc.lookingglass.opengl.TransformableAdapter ) {
@@ -77,6 +79,7 @@ public class StickFigureAdapter extends AdornmentAdapter {
 			gl.glPopMatrix();
 		}
 	}
+
 	@Override
 	protected void actuallyRender( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter adornmentRootAdapter ) {
 		rc.gl.glDisable( GL_LIGHTING );

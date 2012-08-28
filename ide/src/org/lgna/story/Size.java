@@ -48,22 +48,27 @@ package org.lgna.story;
  */
 public final class Size {
 	private final edu.cmu.cs.dennisc.math.Dimension3 internal;
+
 	private Size( edu.cmu.cs.dennisc.math.Dimension3 internal ) {
 		this.internal = internal;
 	}
+
 	public Size( Number leftToRight, Number bottomToTop, Number frontToBack ) {
 		this( new edu.cmu.cs.dennisc.math.Dimension3( leftToRight.doubleValue(), bottomToTop.doubleValue(), frontToBack.doubleValue() ) );
 	}
-	/*package-private*/ static Size createInstance( edu.cmu.cs.dennisc.math.Dimension3 internal ) {
+
+	/* package-private */static Size createInstance( edu.cmu.cs.dennisc.math.Dimension3 internal ) {
 		return internal != null ? new Size( internal ) : null;
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.math.Dimension3 getInternal() {
+
+	/* package-private */edu.cmu.cs.dennisc.math.Dimension3 getInternal() {
 		return this.internal;
 	}
-	/*package-private*/ static edu.cmu.cs.dennisc.math.Dimension3 getInternal( Size size ) {
+
+	/* package-private */static edu.cmu.cs.dennisc.math.Dimension3 getInternal( Size size ) {
 		return size != null ? size.internal : null;
 	}
-	
+
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj instanceof Size ) {
@@ -73,16 +78,20 @@ public final class Size {
 			return false;
 		}
 	}
+
 	@Override
 	public int hashCode() {
 		return this.internal.hashCode();
 	}
+
 	public Double getLeftToRight() {
 		return (double)this.internal.x;
 	}
+
 	public Double getBottomToTop() {
 		return (double)this.internal.y;
 	}
+
 	public Double getFrontToBack() {
 		return (double)this.internal.z;
 	}

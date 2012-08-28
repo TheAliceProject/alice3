@@ -53,36 +53,42 @@ public class UserLocal extends AbstractTransient {
 			return true;
 		}
 	};
-	public DeclarationProperty< AbstractType<?,?,?> > valueType = new DeclarationProperty< AbstractType<?,?,?> >( this );
+	public DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isFinal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+
 	public UserLocal() {
 	}
-	public UserLocal( String name, AbstractType<?,?,?> valueType, boolean isFinal ) {
+
+	public UserLocal( String name, AbstractType<?, ?, ?> valueType, boolean isFinal ) {
 		this.name.setValue( name );
 		this.valueType.setValue( valueType );
 		this.isFinal.setValue( isFinal );
 	}
+
 	public UserLocal( String name, Class<?> valueCls, boolean isFinal ) {
 		this( name, JavaType.getInstance( valueCls ), isFinal );
 	}
-	
+
 	@Override
-	public AbstractType<?,?,?> getValueType() {
+	public AbstractType<?, ?, ?> getValueType() {
 		return this.valueType.getValue();
 	}
-	
+
 	@Override
 	public String getName() {
 		return name.getValue();
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
+
 	@Override
 	public boolean isUserAuthored() {
 		return true;
 	}
+
 	protected String generateName( Node context ) {
 		//todo
 		if( this.isFinal.getValue() ) {
@@ -91,6 +97,7 @@ public class UserLocal extends AbstractTransient {
 			return "i";
 		}
 	}
+
 	public final String getValidName( Node context ) {
 		String name = this.name.getValue();
 		if( name != null ) {

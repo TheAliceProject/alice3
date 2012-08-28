@@ -44,35 +44,40 @@ package org.lgna.cheshire.simple.stencil.features;
 
 import org.lgna.cheshire.simple.Feature;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class InputDialogCommitFeature extends Feature {
-	public InputDialogCommitFeature(org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.components.TrackableShape> trackableShapeResolver) {
+	public InputDialogCommitFeature( org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.components.TrackableShape> trackableShapeResolver ) {
 		super( trackableShapeResolver, Feature.ConnectionPreference.EAST_WEST );
 	}
+
 	@Override
 	protected boolean isPathRenderingDesired() {
 		return true;
 	}
+
 	@Override
 	public boolean isPotentiallyScrollable() {
 		return false;
 	}
+
 	@Override
 	protected java.awt.Insets getBoundsInsets() {
 		return null;
 	}
+
 	@Override
 	protected java.awt.Insets getContainsInsets() {
 		return null;
 	}
+
 	@Override
 	protected java.awt.Insets getPaintInsets() {
 		return null;
 	}
+
 	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
+	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection ) {
 	}
 }

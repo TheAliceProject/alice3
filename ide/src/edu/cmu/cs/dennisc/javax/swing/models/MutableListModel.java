@@ -47,13 +47,20 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  */
 public interface MutableListModel<E> extends ReorderableListModel<E> {
 	public void add( E element );
+
 	public void add( E... elements );
+
 	public void insert( int i, E element );
+
 	public void insert( int i, E... elements );
+
 	public void set( E... elements );
 
 	public void remove( int i );
+
 	public void removeExclusive( int fromIndex, int upToButExcludingIndex );
+
 	public void removeInclusive( int fromIndex, int upToAndIncludingIndex );
+
 	public void clear();
 }

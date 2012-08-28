@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomRadioButtons< E > extends AbstractRadioButtons< E > {
+public abstract class CustomRadioButtons<E> extends AbstractRadioButtons<E> {
 	public CustomRadioButtons( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}

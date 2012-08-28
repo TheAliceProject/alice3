@@ -50,6 +50,7 @@ public class InstanceFactoryUtilities {
 	private InstanceFactoryUtilities() {
 		throw new AssertionError();
 	}
+
 	public static InstanceFactory getInstanceFactoryForExpression( org.lgna.project.ast.Expression instanceExpression ) {
 		InstanceFactory rv;
 		if( instanceExpression instanceof org.lgna.project.ast.ThisExpression ) {
@@ -120,6 +121,7 @@ public class InstanceFactoryUtilities {
 		}
 		return rv;
 	}
+
 	public static InstanceFactory retarget( org.lgna.croquet.Retargeter retargeter, InstanceFactory instanceFactory ) {
 		InstanceFactory rv;
 		if( instanceFactory instanceof ThisInstanceFactory ) {

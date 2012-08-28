@@ -50,12 +50,15 @@ public final class AboutComposite extends org.lgna.croquet.PlainDialogOperationC
 	private static class SingletonHolder {
 		private static AboutComposite instance = new AboutComposite();
 	}
+
 	public static AboutComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.lgna.croquet.HtmlStringValue versionLabel = this.createUnlocalizedHtmlStringValue( "current version: " + org.lgna.project.Version.getCurrentVersionText() );
 	private final org.lgna.croquet.HtmlStringValue supportedByLabel;
 	private final org.lgna.croquet.HtmlStringValue dedicationLabel = this.createUnlocalizedHtmlStringValue( "Alice 3 is dedicated to Randy." );
+
 	private AboutComposite() {
 		super( java.util.UUID.fromString( "c3c2bc1a-697e-4934-b605-1019605ce4ea" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 		StringBuilder sb = new StringBuilder();
@@ -73,15 +76,19 @@ public final class AboutComposite extends org.lgna.croquet.PlainDialogOperationC
 		sb.append( "</html>" );
 		this.supportedByLabel = this.createUnlocalizedHtmlStringValue( sb.toString() );
 	}
+
 	public org.lgna.croquet.HtmlStringValue getVersionLabel() {
 		return this.versionLabel;
 	}
+
 	public org.lgna.croquet.HtmlStringValue getSupportedByLabel() {
 		return this.supportedByLabel;
 	}
+
 	public org.lgna.croquet.HtmlStringValue getDedicationLabel() {
 		return this.dedicationLabel;
 	}
+
 	@Override
 	protected org.alice.stageide.about.views.AboutView createView() {
 		return new org.alice.stageide.about.views.AboutView( this );

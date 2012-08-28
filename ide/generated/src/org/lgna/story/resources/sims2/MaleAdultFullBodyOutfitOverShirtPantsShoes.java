@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitOverShirtPantsShoes implements MaleAdultFullBodyOutfit {
-	BLUE ,
- 	GREYBLUE ,
- 	MAROON ,
- 	ORANGE ,
- 	PURPLE ;
+	BLUE,
+	GREYBLUE,
+	MAROON,
+	ORANGE,
+	PURPLE;
 }

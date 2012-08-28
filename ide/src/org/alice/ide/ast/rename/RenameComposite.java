@@ -50,16 +50,20 @@ public abstract class RenameComposite<V extends org.alice.ide.ast.rename.compone
 	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ) );
 
 	private final ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
+
 	public RenameComposite( java.util.UUID migrationId, org.alice.ide.name.NameValidator nameValidator ) {
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 		this.nameValidator = nameValidator;
 	}
+
 	protected org.alice.ide.name.NameValidator getNameValidator() {
 		return this.nameValidator;
 	}
+
 	public org.lgna.croquet.StringState getNameState() {
 		return this.nameState;
 	}
+
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( nameValidator != null ) {
@@ -75,7 +79,9 @@ public abstract class RenameComposite<V extends org.alice.ide.ast.rename.compone
 			return IS_GOOD_TO_GO_STATUS;
 		}
 	}
+
 	protected abstract String getInitialValue();
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.nameState.setValueTransactionlessly( this.getInitialValue() );

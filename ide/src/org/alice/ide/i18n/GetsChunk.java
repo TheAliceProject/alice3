@@ -47,12 +47,15 @@ package org.alice.ide.i18n;
  */
 public class GetsChunk extends Chunk {
 	private boolean isTowardLeading;
+
 	public GetsChunk( boolean isTowardLeading ) {
 		this.isTowardLeading = isTowardLeading;
 	}
+
 	public boolean isTowardLeading() {
 		return this.isTowardLeading;
 	}
+
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv.append( "isTowardLeading=" );

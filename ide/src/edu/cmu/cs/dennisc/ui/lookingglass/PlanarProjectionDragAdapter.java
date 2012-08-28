@@ -47,12 +47,14 @@ package edu.cmu.cs.dennisc.ui.lookingglass;
  */
 public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter {
 	protected abstract edu.cmu.cs.dennisc.math.Plane getPlaneInAbsolute();
+
 	protected abstract void handlePointInAbsolute( edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute );
-	
+
 	@Override
 	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
 		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
 	}
+
 	private edu.cmu.cs.dennisc.math.Point3 getPointInAbsolutePlane( java.awt.Point p ) {
 		edu.cmu.cs.dennisc.math.Point3 rv;
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getOnscreenLookingGlass().getCameraAtPixel( p.x, p.y );
@@ -75,6 +77,7 @@ public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.
 		} else {
 		}
 	}
+
 	@Override
 	protected void handleMouseDrag( java.awt.Point current, int xDeltaSince0, int yDeltaSince0, int xDeltaSincePrevious, int yDeltaSincePrevious, edu.cmu.cs.dennisc.ui.DragStyle dragStyle ) {
 		edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute = getPointInAbsolutePlane( current );
@@ -82,6 +85,7 @@ public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.
 			handlePointInAbsolute( xyzInAbsolute );
 		}
 	}
+
 	@Override
 	protected java.awt.Point handleMouseRelease( java.awt.Point rv, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		return rv;

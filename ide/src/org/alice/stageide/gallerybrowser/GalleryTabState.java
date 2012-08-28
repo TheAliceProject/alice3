@@ -46,20 +46,21 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryTabState extends org.lgna.croquet.SimpleTabSelectionState< GalleryTab > {
+public class GalleryTabState extends org.lgna.croquet.SimpleTabSelectionState<GalleryTab> {
 	private static class SingletonHolder {
 		private static GalleryTabState instance = new GalleryTabState();
 	}
+
 	public static GalleryTabState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private GalleryTabState() {
-		super( 
-				org.alice.ide.IDE.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "46bffcb8-9f19-4328-aae3-550b0fc72f43" ), 
-				GalleryTab.class, 
+		super(
+				org.alice.ide.IDE.DOCUMENT_UI_GROUP,
+				java.util.UUID.fromString( "46bffcb8-9f19-4328-aae3-550b0fc72f43" ),
+				GalleryTab.class,
 				0,
-				ResourceTab.getInstance(), TypeTab.getInstance()
-		);
+				ResourceTab.getInstance(), TypeTab.getInstance() );
 	}
 }

@@ -51,23 +51,26 @@ public abstract class BevelBorder extends javax.swing.border.EmptyBorder {
 	private static final java.awt.Color OUTER_SHADOW = INNER_SHADOW.darker();
 	private static final java.awt.Color OUTER_HIGHLIGHT = INNER_HIGHLIGHT.brighter();
 	private boolean isRaised;
+
 	public BevelBorder( java.awt.Insets insets, boolean isRaised ) {
 		super( insets );
 		this.isRaised = isRaised;
 	}
+
 	public BevelBorder( int top, int left, int bottom, int right, boolean isRaised ) {
 		super( top, left, bottom, right );
 		this.isRaised = isRaised;
 	}
+
 	@Override
 	public final void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 		java.awt.Color prevColor = g.getColor();
-		
+
 		int x0 = x;
-		int x1 = x0 + width - 1;
+		int x1 = ( x0 + width ) - 1;
 		int y0 = y;
-		int y1 = y0 + height - 1;
-		
+		int y1 = ( y0 + height ) - 1;
+
 		java.awt.Color outerA;
 		java.awt.Color outerB;
 		java.awt.Color innerA;
@@ -83,7 +86,7 @@ public abstract class BevelBorder extends javax.swing.border.EmptyBorder {
 			innerA = INNER_HIGHLIGHT;
 			outerA = OUTER_HIGHLIGHT;
 		}
-		
+
 		g.setColor( outerA );
 		g.drawLine( x0, y1, x1, y1 );
 		g.drawLine( x1, y1, x1, y0 );
@@ -95,7 +98,7 @@ public abstract class BevelBorder extends javax.swing.border.EmptyBorder {
 		y0 += 1;
 		x1 -= 1;
 		y1 -= 1;
-		
+
 		g.setColor( innerA );
 		g.drawLine( x0, y1, x1, y1 );
 		g.drawLine( x1, y1, x1, y0 );

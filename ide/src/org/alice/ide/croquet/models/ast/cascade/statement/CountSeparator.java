@@ -50,9 +50,11 @@ public class CountSeparator extends org.lgna.croquet.CascadeLabelSeparator {
 	private static class SingletonHolder {
 		private static CountSeparator instance = new CountSeparator();
 	}
+
 	public static CountSeparator getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private CountSeparator() {
 		super( java.util.UUID.fromString( "c94fadf9-c9ac-4b77-9f6a-84631c7fa605" ) );
 	}

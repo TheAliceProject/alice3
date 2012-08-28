@@ -46,21 +46,25 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BlockStatementEdit< M extends org.lgna.croquet.CompletionModel > extends org.lgna.croquet.edits.Edit< M > {
+public abstract class BlockStatementEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit<M> {
 	private final org.lgna.project.ast.BlockStatement blockStatement;
+
 	public BlockStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.lgna.project.ast.BlockStatement blockStatement ) {
 		super( completionStep );
 		this.blockStatement = blockStatement;
 	}
+
 	public BlockStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.blockStatement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).decodeValue( binaryDecoder );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
 	}
+
 	public org.lgna.project.ast.BlockStatement getBlockStatement() {
 		return this.blockStatement;
 	}

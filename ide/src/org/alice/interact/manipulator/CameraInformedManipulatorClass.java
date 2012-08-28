@@ -42,22 +42,21 @@
  */
 package org.alice.interact.manipulator;
 
-
 /**
  * @author David Culyba
  */
-public abstract class CameraInformedManipulatorClass extends AbstractManipulator{
+public abstract class CameraInformedManipulatorClass extends AbstractManipulator {
 
 	protected edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = null;
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
-	
-	public void setCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera)
+
+	public void setCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera )
 	{
 		this.camera = camera;
 	}
-	
+
 	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
-	
+
 }

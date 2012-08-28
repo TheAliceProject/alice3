@@ -61,36 +61,36 @@ import javax.swing.JPanel;
 
 import org.jdesktop.swingworker.SwingWorker;
 
-
 /**
  * @author David Culyba
  */
 public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListener, ActionListener
 {
-	
+
 	public enum UploadStatus
 	{
-		Uploading("Uploading..."),
-		Cancelling("Cancelling..."),
-		Waiting("Waiting..."),
-		Succeeded("Upload Succeeded"),
-		Failed("Upload Failed"),
-		Cancelled("Cancelled"),
-		FailedCancelled("Cancel Failed");
-		
+		Uploading( "Uploading..." ),
+		Cancelling( "Cancelling..." ),
+		Waiting( "Waiting..." ),
+		Succeeded( "Upload Succeeded" ),
+		Failed( "Upload Failed" ),
+		Cancelled( "Cancelled" ),
+		FailedCancelled( "Cancel Failed" );
+
 		private String status;
-		private UploadStatus(String status)
+
+		private UploadStatus( String status )
 		{
 			this.status = status;
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return this.status;
 		}
 	}
-	
+
 	private JLabel statusLabel;
 	private JButton doneButton;
 	private JButton cancelButton;
@@ -103,136 +103,136 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 	private boolean isUploading = false;
 	private UploadStatus status;
 	private String uploadDetails;
-	
+
 	private static final String UPLOADING_KEY = "UPLOADING";
 	private static final String DONE_UPLOADING_KEY = "UPLOADED";
-	
+
 	private static final String TITLE = "Uploading Status";
-	
+
 	private YouTubeUploader uploader;
-	
-	public UploadToYouTubeStatusPane(Frame owner,  YouTubeUploader uploader)
+
+	public UploadToYouTubeStatusPane( Frame owner, YouTubeUploader uploader )
 	{
-		super(owner);
+		super( owner );
 		this.uploader = uploader;
 		this.status = UploadStatus.Waiting;
-		
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload00.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload01.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload02.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload03.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload04.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload05.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload06.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload07.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload08.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload09.png" )) );
-		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload10.png" )) );
-		
-		this.imageLabel = new JLabel(images.get(0));
-		
+
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload00.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload01.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload02.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload03.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload04.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload05.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload06.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload07.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload08.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload09.png" ) ) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload10.png" ) ) );
+
+		this.imageLabel = new JLabel( images.get( 0 ) );
+
 		this.statusLabel = new JLabel();
 		this.statusLabel.setOpaque( false );
 		this.statusLabel.setFont( this.statusLabel.getFont().deriveFont( 18f ) );
 		this.statusLabel.setText( this.status.toString() );
 		this.statusLabel.setHorizontalAlignment( JLabel.CENTER );
-		
-		this.doneButton = new JButton("Done");
+
+		this.doneButton = new JButton( "Done" );
 		this.doneButton.addActionListener( this );
 		this.doneButtonPanel = new JPanel();
 		this.doneButtonPanel.setOpaque( false );
 		this.doneButtonPanel.add( this.doneButton );
-		
-		this.cancelButton = new JButton("Cancel Upload");
+
+		this.cancelButton = new JButton( "Cancel Upload" );
 		this.cancelButton.addActionListener( this );
 		this.notDoneButtonPanel = new JPanel();
 		this.notDoneButtonPanel.setOpaque( false );
 		//this.notDoneButtonPanel.add( this.cancelButton );
-		
+
 		this.cardLayout = new CardLayout();
-		
+
 		this.buttonPanel = new JPanel();
 		this.buttonPanel.setOpaque( false );
 		this.buttonPanel.setLayout( this.cardLayout );
-		this.buttonPanel.add( this.doneButtonPanel, DONE_UPLOADING_KEY);
-		this.buttonPanel.add( this.notDoneButtonPanel, UPLOADING_KEY);
+		this.buttonPanel.add( this.doneButtonPanel, DONE_UPLOADING_KEY );
+		this.buttonPanel.add( this.notDoneButtonPanel, UPLOADING_KEY );
 		this.cardLayout.show( this.buttonPanel, UPLOADING_KEY );
-		
+
 		this.setLocationRelativeTo( owner );
 		this.setTitle( TITLE );
 		this.setModal( true );
 		this.getContentPane().setBackground( Color.WHITE );
 		this.getContentPane().setLayout( new GridBagLayout() );
-		this.getContentPane().add( this.statusLabel, 
-				new GridBagConstraints( 
-				0, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				1.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 0, 0, 0, 0 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		this.getContentPane().add( this.imageLabel, 
-				new GridBagConstraints( 
-				0, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				1.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 0, 0, 0, 0 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		this.getContentPane().add( this.buttonPanel, 
-				new GridBagConstraints( 
-				0, //gridX
-				2, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				1.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 0, 0, 0, 0 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		
+		this.getContentPane().add( this.statusLabel,
+				new GridBagConstraints(
+						0, //gridX
+						0, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						1.0, //weightX
+						1.0, //weightY
+						GridBagConstraints.CENTER, //anchor 
+						GridBagConstraints.HORIZONTAL, //fill
+						new Insets( 0, 0, 0, 0 ), //insets
+						0, //ipadX
+						0 ) //ipadY
+		);
+		this.getContentPane().add( this.imageLabel,
+				new GridBagConstraints(
+						0, //gridX
+						1, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						1.0, //weightX
+						1.0, //weightY
+						GridBagConstraints.CENTER, //anchor 
+						GridBagConstraints.NONE, //fill
+						new Insets( 0, 0, 0, 0 ), //insets
+						0, //ipadX
+						0 ) //ipadY
+		);
+		this.getContentPane().add( this.buttonPanel,
+				new GridBagConstraints(
+						0, //gridX
+						2, //gridY
+						1, //gridWidth
+						1, //gridHeight
+						1.0, //weightX
+						1.0, //weightY
+						GridBagConstraints.CENTER, //anchor 
+						GridBagConstraints.NONE, //fill
+						new Insets( 0, 0, 0, 0 ), //insets
+						0, //ipadX
+						0 ) //ipadY
+		);
+
 	}
-	
+
 	private void animate()
 	{
-		SwingWorker< Boolean, Void > worker = new SwingWorker< Boolean, Void >(){
+		SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
 			@Override
 			public Boolean doInBackground()
 			{
 				int count = 0;
-				while (UploadToYouTubeStatusPane.this.isUploading)
+				while( UploadToYouTubeStatusPane.this.isUploading )
 				{
-					
+
 					UploadToYouTubeStatusPane.this.imageLabel.setIcon( UploadToYouTubeStatusPane.this.images.get( count ) );
 					try
 					{
 						int sleepTime = 100;
-						if (count == 0 || count == UploadToYouTubeStatusPane.this.images.size() - 1)
+						if( ( count == 0 ) || ( count == ( UploadToYouTubeStatusPane.this.images.size() - 1 ) ) )
 						{
 							sleepTime = 300;
 						}
 						Thread.sleep( sleepTime );
 					}
-					catch (Exception e)
+					catch( Exception e )
 					{
-						
+
 					}
-					count = (count + 1) % UploadToYouTubeStatusPane.this.images.size();
+					count = ( count + 1 ) % UploadToYouTubeStatusPane.this.images.size();
 				}
 				UploadToYouTubeStatusPane.this.imageLabel.setIcon( UploadToYouTubeStatusPane.this.images.get( UploadToYouTubeStatusPane.this.images.size() - 1 ) );
 				return Boolean.TRUE;
@@ -240,22 +240,22 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 		};
 		worker.execute();
 	}
-	
-	private void stopUpload(YouTubeEvent event)
+
+	private void stopUpload( YouTubeEvent event )
 	{
-		if (event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED)
+		if( event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED )
 		{
 			this.status = UploadStatus.Failed;
 		}
-		if (event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS)
+		if( event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS )
 		{
 			this.status = UploadStatus.Succeeded;
 		}
-		if (event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS)
+		if( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS )
 		{
 			this.status = UploadStatus.Cancelled;
 		}
-		if (event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED)
+		if( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED )
 		{
 			this.status = UploadStatus.FailedCancelled;
 		}
@@ -264,20 +264,20 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 		this.statusLabel.setText( event.getType().toString() );
 		this.uploadDetails = (String)event.getMoreInfo();
 	}
-	
+
 	public UploadStatus getStatus()
 	{
 		return this.status;
 	}
-	
+
 	public String getDetails()
 	{
 		return this.uploadDetails;
 	}
-	
+
 	private void startUpload()
 	{
-		if (!this.isUploading)
+		if( !this.isUploading )
 		{
 			this.isUploading = true;
 			this.status = UploadStatus.Uploading;
@@ -288,34 +288,34 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 	}
 
 	public void youTubeEventTriggered( YouTubeEvent event ) {
-		if (event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED ||
-			event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS ||
-			event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS ||
-			event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED)
+		if( ( event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED ) ||
+				( event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS ) ||
+				( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS ) ||
+				( event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED ) )
 		{
-			
-			stopUpload(event);
+
+			stopUpload( event );
 		}
-		else if (event.getType() == YouTubeEvent.EventType.UPLOAD_STARTED )
+		else if( event.getType() == YouTubeEvent.EventType.UPLOAD_STARTED )
 		{
 			startUpload();
 		}
-		
+
 	}
 
 	public void actionPerformed( ActionEvent e ) {
-		if (e.getSource() == this.cancelButton)
+		if( e.getSource() == this.cancelButton )
 		{
 			this.uploader.cancelUpload();
 			this.status = UploadStatus.Cancelling;
 			this.statusLabel.setText( this.status.toString() );
 			this.cancelButton.setEnabled( false );
 		}
-		else if (e.getSource() == this.doneButton)
+		else if( e.getSource() == this.doneButton )
 		{
 			this.setVisible( false );
 		}
-		
+
 	}
 
 }

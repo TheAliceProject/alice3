@@ -46,7 +46,8 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public class CreateIdeOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< Class<?>, CreateIdeOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Class<?>, CreateIdeOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized CreateIdeOperation getInstance( Class<? extends IDE> cls ) {
 		CreateIdeOperation rv = map.get( cls );
 		if( rv != null ) {
@@ -57,15 +58,19 @@ public class CreateIdeOperation extends org.lgna.croquet.ActionOperation {
 		}
 		return rv;
 	}
+
 	private Class<? extends IDE> cls;
+
 	private CreateIdeOperation( Class<? extends IDE> cls ) {
 		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "3780661e-0bfe-4bc3-b8c8-a27f81b65632" ) );
 		this.cls = cls;
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation > createResolver() {
-		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver< CreateIdeOperation >( this, this.cls );
+	protected org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver<CreateIdeOperation> createResolver() {
+		return new org.alice.ide.croquet.resolvers.ClassKeyedStaticGetInstanceKeyedResolver<CreateIdeOperation>( this, this.cls );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

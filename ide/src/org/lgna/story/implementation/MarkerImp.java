@@ -42,7 +42,6 @@
  */
 package org.lgna.story.implementation;
 
-
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
@@ -50,154 +49,156 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public abstract class MarkerImp extends VisualScaleModelImp {
-	
+
 	private final org.lgna.story.SMarker abstraction;
-	
+
 	protected boolean isShowing = true;
 	protected boolean displayEnabled = true;
 	private AxisAlignedBox boundingBox;
-	
-	protected MarkerImp(org.lgna.story.SMarker abstraction){
+
+	protected MarkerImp( org.lgna.story.SMarker abstraction ) {
 		super();
 		this.abstraction = abstraction;
 		createVisuals();
 		this.boundingBox = this.calculateBoundingBox();
-		setMarkerColor(getDefaultMarkerColor());
-		setMarkerOpacity(getDefaultMarkerOpacity());
-		this.setShowing(false);
+		setMarkerColor( getDefaultMarkerColor() );
+		setMarkerOpacity( getDefaultMarkerOpacity() );
+		this.setShowing( false );
 	}
-	
+
 	@Override
 	public org.lgna.story.SMarker getAbstraction() {
 		// TODO Auto-generated method stub
 		return this.abstraction;
 	}
-	
+
 	@Override
 	public Resizer[] getResizers() {
 		return new Resizer[] {};
 	}
+
 	@Override
 	public double getValueForResizer( Resizer resizer ) {
 		assert false : resizer;
 		return Double.NaN;
 	}
+
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
 		assert false : resizer;
 	}
-	
+
 	protected abstract void createVisuals();
-	
+
 	public Boolean isShowing() {
 		return this.isShowing;
 	}
-	
+
 	@Override
-	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
-		setScale(getScaleForSize(size));
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+		setScale( getScaleForSize( size ) );
 	}
-	
-	public void setShowing( Boolean isShowing ) {	
-		if (this.isShowing != isShowing)
+
+	public void setShowing( Boolean isShowing ) {
+		if( this.isShowing != isShowing )
 		{
 			this.isShowing = isShowing;
-			if (this.getDisplayEnabled())
+			if( this.getDisplayEnabled() )
 			{
 				Visual[] visuals = this.getSgVisuals();
-				if (visuals != null && visuals.length > 0) {
-					for (Visual v : visuals)
+				if( ( visuals != null ) && ( visuals.length > 0 ) ) {
+					for( Visual v : visuals )
 					{
-						v.isShowing.setValue(this.isShowing);
+						v.isShowing.setValue( this.isShowing );
 					}
 				}
 			}
 		}
 	}
-	
+
 	public boolean getDisplayEnabled()
 	{
 		return this.displayEnabled;
 	}
-	
-	public void setDisplayVisuals(boolean useDisplay)
+
+	public void setDisplayVisuals( boolean useDisplay )
 	{
 		this.displayEnabled = useDisplay;
-		if (!this.displayEnabled)
+		if( !this.displayEnabled )
 		{
 			Visual[] visuals = this.getSgVisuals();
-			if (visuals != null && visuals.length > 0) {
-				for (Visual v : visuals)
+			if( ( visuals != null ) && ( visuals.length > 0 ) ) {
+				for( Visual v : visuals )
 				{
-					v.isShowing.setValue(false);
+					v.isShowing.setValue( false );
 				}
 			}
 		}
 	}
-	
+
 	protected AxisAlignedBox calculateBoundingBox()
 	{
 		AxisAlignedBox bbox = new AxisAlignedBox();
 		Visual[] visuals = this.getSgVisuals();
-		if (visuals != null && visuals.length > 0) {
-			for (Visual v : this.getSgVisuals())
+		if( ( visuals != null ) && ( visuals.length > 0 ) ) {
+			for( Visual v : this.getSgVisuals() )
 			{
-				for (Geometry g : v.geometries.getValue())
+				for( Geometry g : v.geometries.getValue() )
 				{
-					bbox.union(g.getAxisAlignedMinimumBoundingBox());
+					bbox.union( g.getAxisAlignedMinimumBoundingBox() );
 				}
 			}
 		}
 		return bbox;
 	}
-	
+
 	protected Color4f getDefaultMarkerColor()
 	{
 		return Color4f.CYAN;
 	}
-	
+
 	protected float getDefaultMarkerOpacity()
 	{
 		return 1;
 	}
-	
+
 	public Color4f getMarkerColor()
 	{
 		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgPaintAppearances();
-		if (appearances != null && appearances.length > 0) {
-			return appearances[0].diffuseColor.getValue();
+		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
+			return appearances[ 0 ].diffuseColor.getValue();
 		}
 		return Color4f.WHITE;
 	}
-	
+
 	public void setMarkerColor( Color4f color )
 	{
 		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgPaintAppearances();
-		if (appearances != null && appearances.length > 0) {
+		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
 			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgPaintAppearances() ) {
 				sgAppearance.diffuseColor.setValue( color );
 			}
 		}
 	}
-	
+
 	public float getMarkerOpacity() {
 		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgOpacityAppearances();
-		if (appearances != null && appearances.length > 0) {
-			float actualValue = appearances[0].opacity.getValue();
+		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
+			float actualValue = appearances[ 0 ].opacity.getValue();
 			float scaledValue = actualValue / this.getDefaultMarkerOpacity();
 			return scaledValue;
 		}
 		return 1;
 	}
 
-	protected void setMarkerOpacity(float opacity)
+	protected void setMarkerOpacity( float opacity )
 	{
 		edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] appearances = this.getSgOpacityAppearances();
 		float scaledValue = opacity * this.getDefaultMarkerOpacity();
-		if (appearances != null && appearances.length > 0) {
+		if( ( appearances != null ) && ( appearances.length > 0 ) ) {
 			for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.getSgOpacityAppearances() ) {
 				sgAppearance.opacity.setValue( scaledValue );
 			}

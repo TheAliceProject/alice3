@@ -45,7 +45,7 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > extends Step< M > {
+public final class CompletionStep<M extends org.lgna.croquet.CompletionModel> extends Step<M> {
 
 	private final TransactionHistory transactionHistory;
 	private org.lgna.croquet.edits.Edit<M> edit;
@@ -55,7 +55,7 @@ public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > 
 	public static <M extends org.lgna.croquet.CompletionModel> CompletionStep<M> createAndAddToTransaction( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		return new CompletionStep<M>( parent, model, trigger, transactionHistory );
 	}
-	
+
 	public CompletionStep( Transaction parent, M model, org.lgna.croquet.triggers.Trigger trigger, TransactionHistory transactionHistory ) {
 		super( parent, model, trigger );
 		parent.setCompletionStep( this );
@@ -64,6 +64,7 @@ public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > 
 			this.transactionHistory.setOwner( this );
 		}
 	}
+
 	public CompletionStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.isPending = binaryDecoder.decodeBoolean();
@@ -74,6 +75,7 @@ public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > 
 			this.transactionHistory.setOwner( this );
 		}
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -82,11 +84,12 @@ public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > 
 		binaryEncoder.encode( this.edit );
 		binaryEncoder.encode( this.transactionHistory );
 	}
-	
-	/*package-private*/ void reifyIfNecessary() {
+
+	/* package-private */void reifyIfNecessary() {
 	}
+
 	public boolean isValid() {
-		return this.getModel() != null && ( this.edit == null || this.edit.isValid() );
+		return ( this.getModel() != null ) && ( ( this.edit == null ) || this.edit.isValid() );
 	}
 
 	@Override
@@ -107,28 +110,33 @@ public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > 
 	public boolean isPending() {
 		return this.isPending;
 	}
+
 	public boolean isSuccessfullyCompleted() {
 		return this.isSuccessfullyCompleted;
 	}
+
 	public boolean isCanceled() {
-		return this.isPending() == false && this.isSuccessfullyCompleted() == false;
+		return ( this.isPending() == false ) && ( this.isSuccessfullyCompleted() == false );
 	}
-	
+
 	protected void setPending( boolean isPending ) {
 		this.isPending = isPending;
 	}
+
 	protected void setSuccessfullyCompleted( boolean isSuccessfullyCompleted ) {
 		this.isSuccessfullyCompleted = isSuccessfullyCompleted;
 	}
 
-	public org.lgna.croquet.edits.Edit< ? > getEdit() {
+	public org.lgna.croquet.edits.Edit<?> getEdit() {
 		return this.edit;
 	}
+
 	public void setEdit( org.lgna.croquet.edits.Edit<M> edit ) {
 		this.isSuccessfullyCompleted = true;
 		this.edit = edit;
 		this.isPending = false;
 	}
+
 	public void commitAndInvokeDo( org.lgna.croquet.edits.Edit edit ) {
 		org.lgna.croquet.history.event.EditCommittedEvent e = new org.lgna.croquet.history.event.EditCommittedEvent( this, edit );
 		this.fireChanging( e );
@@ -136,6 +144,7 @@ public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > 
 		edit.doOrRedo( true );
 		this.fireChanged( e );
 	}
+
 	public void finish() {
 		this.isSuccessfullyCompleted = true;
 		org.lgna.croquet.history.event.FinishedEvent e = new org.lgna.croquet.history.event.FinishedEvent( this );
@@ -144,6 +153,7 @@ public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > 
 		this.isPending = false;
 		this.fireChanged( e );
 	}
+
 	public void cancel() {
 		this.isSuccessfullyCompleted = false;
 		org.lgna.croquet.history.event.CancelEvent e = new org.lgna.croquet.history.event.CancelEvent( this );
@@ -161,6 +171,7 @@ public final class CompletionStep< M extends org.lgna.croquet.CompletionModel > 
 			return null;
 		}
 	}
+
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv = super.updateRepr( rv );

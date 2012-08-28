@@ -45,23 +45,26 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeBlank extends org.lgna.croquet.CascadeBlank< org.lgna.project.ast.AbstractType > {
+public class TypeBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.AbstractType> {
 	private static class SingletonHolder {
 		private static TypeBlank instance = new TypeBlank();
 	}
+
 	public static TypeBlank getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TypeBlank() {
 		super( java.util.UUID.fromString( "524081bf-4026-481a-b602-f13eac149ced" ) );
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.AbstractType > blankNode ) {
-		java.util.List< org.lgna.project.ast.JavaType > javaTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableJavaTypes();
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.AbstractType> blankNode ) {
+		java.util.List<org.lgna.project.ast.JavaType> javaTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getPrimeTimeSelectableJavaTypes();
 		for( org.lgna.project.ast.JavaType javaType : javaTypes ) {
 			rv.add( TypeFillIn.getInstance( javaType ) );
 		}
-		
+
 		rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		rv.add( MyTypesMenuModel.getInstance() );
 

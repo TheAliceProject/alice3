@@ -50,12 +50,15 @@ public class UiHistoryComposite extends HistoryComposite {
 	private static class SingletonHolder {
 		private static UiHistoryComposite instance = new UiHistoryComposite();
 	}
+
 	public static UiHistoryComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private UiHistoryComposite() {
 		super( java.util.UUID.fromString( "778fce77-1417-4461-ad89-84a7c139ceff" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();

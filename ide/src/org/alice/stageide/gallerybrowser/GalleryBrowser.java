@@ -48,6 +48,7 @@ package org.alice.stageide.gallerybrowser;
  */
 public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
 	public final static java.awt.Color BACKGROUND_COLOR = org.alice.ide.IDE.getActiveInstance().getTheme().getConstructorColor();
+
 	public GalleryBrowser() {
 		this.addCenterComponent( GalleryTabState.getInstance().createFolderTabbedPane() );
 	}

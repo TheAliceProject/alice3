@@ -41,7 +41,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitLabcoat implements MaleAdultFullBodyOutfit {
-	REDTIEKHAKI ,
- 	BLUETIEGREY ;
+	REDTIEKHAKI,
+	BLUETIEGREY;
 }

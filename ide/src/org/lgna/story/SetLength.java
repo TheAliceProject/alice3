@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class SetLength extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetLength.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetLength.class )
 	public static interface Detail {
 	}
+
 	private SetLength() {
 		super();
 	}

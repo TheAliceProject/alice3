@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.preference;
 public abstract class CollectionOfPreferences {
 	private java.util.prefs.Preferences utilPrefs;
 	private edu.cmu.cs.dennisc.preference.Preference<?>[] preferences;
+
 	public void initialize() {
 		assert this.preferences == null;
 		assert this.utilPrefs == null;
@@ -59,7 +60,7 @@ public abstract class CollectionOfPreferences {
 				throw new RuntimeException( bse );
 			}
 		}
-		java.util.List< java.lang.reflect.Field > fields = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicFinalFields( this.getClass(), Preference.class );
+		java.util.List<java.lang.reflect.Field> fields = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicFinalFields( this.getClass(), Preference.class );
 		this.preferences = new edu.cmu.cs.dennisc.preference.Preference<?>[ fields.size() ];
 		int i = 0;
 		for( java.lang.reflect.Field field : fields ) {
@@ -69,12 +70,15 @@ public abstract class CollectionOfPreferences {
 		}
 		this.setOrder( this.preferences );
 	}
+
 	public java.util.prefs.Preferences getUtilPrefs() {
 		return this.utilPrefs;
 	}
+
 	protected edu.cmu.cs.dennisc.preference.Preference<?>[] setOrder( edu.cmu.cs.dennisc.preference.Preference<?>[] rv ) {
 		return rv;
 	}
+
 	public final edu.cmu.cs.dennisc.preference.Preference<?>[] getPreferences() {
 		assert this.preferences != null;
 		return this.preferences;

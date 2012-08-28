@@ -42,10 +42,11 @@
  */
 package edu.cmu.cs.dennisc.javax.swing.event;
 
-public abstract class DefaultMutableTreeNodeTreeSelectionAdapter<E> extends TreeSelectionAdapter< javax.swing.tree.DefaultMutableTreeNode > {
-	protected abstract void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, E oldLeadValue, E newLeadValue );
+public abstract class DefaultMutableTreeNodeTreeSelectionAdapter<E> extends TreeSelectionAdapter<javax.swing.tree.DefaultMutableTreeNode> {
+	protected abstract void valueChangedUserObject( javax.swing.event.TreeSelectionEvent e, E oldLeadValue, E newLeadValue );
+
 	@Override
-	protected final void valueChanged(javax.swing.event.TreeSelectionEvent e, javax.swing.tree.DefaultMutableTreeNode oldLeadValue, javax.swing.tree.DefaultMutableTreeNode newLeadValue ) {
+	protected final void valueChanged( javax.swing.event.TreeSelectionEvent e, javax.swing.tree.DefaultMutableTreeNode oldLeadValue, javax.swing.tree.DefaultMutableTreeNode newLeadValue ) {
 		E oldUserObject;
 		if( oldLeadValue != null ) {
 			oldUserObject = (E)oldLeadValue.getUserObject();
@@ -58,6 +59,6 @@ public abstract class DefaultMutableTreeNodeTreeSelectionAdapter<E> extends Tree
 		} else {
 			newUserObject = null;
 		}
-		this.valueChangedUserObject(e, oldUserObject, newUserObject);
+		this.valueChangedUserObject( e, oldUserObject, newUserObject );
 	}
 }

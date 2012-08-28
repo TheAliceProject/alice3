@@ -50,9 +50,11 @@ public class TypeUnhandledCancelFillIn extends org.alice.ide.croquet.models.casc
 	private static class SingletonHolder {
 		private static TypeUnhandledCancelFillIn instance = new TypeUnhandledCancelFillIn();
 	}
+
 	public static TypeUnhandledCancelFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TypeUnhandledCancelFillIn() {
 		super( java.util.UUID.fromString( "a8bc4d9f-7099-47ac-b071-10c6676a4be3" ) );
 	}

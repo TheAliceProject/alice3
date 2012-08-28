@@ -47,17 +47,27 @@ package edu.cmu.cs.dennisc.math;
  */
 public interface Angle extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	@Deprecated
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 
 	public boolean isNaN();
+
 	public void setNaN();
+
 	public double getAsRadians();
+
 	public double getAsDegrees();
+
 	public double getAsRevolutions();
+
 	public void setAsRadians( double radians );
+
 	public void setAsDegrees( double degrees );
+
 	public void setAsRevolutions( double revolutions );
+
 	public Angle createCopy();
+
 	public void set( Angle other );
+
 	public void setToInterpolation( Angle v0, Angle v1, double portion );
 }

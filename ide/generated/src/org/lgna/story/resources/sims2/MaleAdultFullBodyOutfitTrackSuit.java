@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitTrackSuit implements MaleAdultFullBodyOutfit {
-	BLACK ,
- 	RED ,
- 	GREEN ,
- 	BLUE ;
+	BLACK,
+	RED,
+	GREEN,
+	BLUE;
 }

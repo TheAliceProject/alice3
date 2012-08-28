@@ -49,12 +49,15 @@ public class MainComposite extends org.lgna.croquet.SimpleComposite {
 	private static class SingletonHolder {
 		private static MainComposite instance = new MainComposite();
 	}
+
 	public static MainComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private MainComposite() {
 		super( java.util.UUID.fromString( "b5c8681f-5ab9-4a40-a2fa-7ddb2f49b712" ) );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.View createView() {
 		return new org.lgna.croquet.components.BorderPanel();

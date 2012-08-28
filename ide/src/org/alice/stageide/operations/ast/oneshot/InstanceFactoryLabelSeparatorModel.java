@@ -47,7 +47,8 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
-	private static java.util.Map< org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryLabelSeparatorModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryLabelSeparatorModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static InstanceFactoryLabelSeparatorModel getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
 		synchronized( map ) {
 			InstanceFactoryLabelSeparatorModel rv = map.get( value );
@@ -60,11 +61,14 @@ public class InstanceFactoryLabelSeparatorModel extends org.lgna.croquet.LabelMe
 			return rv;
 		}
 	}
+
 	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+
 	private InstanceFactoryLabelSeparatorModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
 		this.instanceFactory = instanceFactory;
 	}
+
 	@Override
 	public String getName() {
 		return this.instanceFactory.getRepr();

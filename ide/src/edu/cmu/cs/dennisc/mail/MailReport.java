@@ -51,29 +51,36 @@ public class MailReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	private String replyToPersonal;
 	private String subject;
 	private String body;
-	private java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.issue.Attachment >();
+	private java.util.List<edu.cmu.cs.dennisc.issue.Attachment> attachments = new java.util.LinkedList<edu.cmu.cs.dennisc.issue.Attachment>();
 
 	public String getReplyTo() {
 		return this.replyTo;
 	}
+
 	public void setReplyTo( String replyTo ) {
 		this.replyTo = replyTo;
 	}
+
 	public String getReplyToPersonal() {
 		return this.replyToPersonal;
 	}
+
 	public void setReplyToPersonal( String replyToPersonal ) {
 		this.replyToPersonal = replyToPersonal;
 	}
+
 	public String getSubject() {
 		return this.subject;
 	}
+
 	public void setSubject( String subject ) {
 		this.subject = subject;
 	}
+
 	public String getBody() {
 		return this.body;
 	}
+
 	public void setBody( String body ) {
 		this.body = body;
 	}

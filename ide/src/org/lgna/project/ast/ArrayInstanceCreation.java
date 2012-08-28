@@ -46,29 +46,31 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class ArrayInstanceCreation extends Expression {
-	public DeclarationProperty< AbstractType<?,?,?> > arrayType = new DeclarationProperty< AbstractType<?,?,?> >( this );
-	public edu.cmu.cs.dennisc.property.ListProperty< Integer > lengths = new edu.cmu.cs.dennisc.property.ListProperty< Integer >( this );
+	public DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public edu.cmu.cs.dennisc.property.ListProperty<Integer> lengths = new edu.cmu.cs.dennisc.property.ListProperty<Integer>( this );
 	public ExpressionListProperty expressions = new ExpressionListProperty( this );
 
 	public ArrayInstanceCreation() {
 	}
-	public ArrayInstanceCreation( AbstractType<?,?,?> arrayType, Integer[] lengths, Expression... expressions ) {
+
+	public ArrayInstanceCreation( AbstractType<?, ?, ?> arrayType, Integer[] lengths, Expression... expressions ) {
 		this.arrayType.setValue( arrayType );
 		this.lengths.add( lengths );
 		this.expressions.add( expressions );
 	}
+
 	public ArrayInstanceCreation( Class<?> arrayCls, Integer[] lengths, Expression... expressions ) {
 		this( JavaType.getInstance( arrayCls ), lengths, expressions );
 	}
-	
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return this.arrayType.getValue();
 	}
-	
+
 	@Override
 	public boolean isValid() {
-		AbstractType< ?,?,? > type = this.getType();
+		AbstractType<?, ?, ?> type = this.getType();
 		if( type != null ) {
 			if( type.isArray() ) {
 				//todo: check lengths

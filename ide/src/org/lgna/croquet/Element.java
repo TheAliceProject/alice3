@@ -47,8 +47,12 @@ package org.lgna.croquet;
  */
 public interface Element {
 	public java.util.UUID getMigrationId();
+
 	public void initializeIfNecessary();
+
 	public void relocalize();
-	public <M extends Element> org.lgna.croquet.resolvers.Resolver< M > getResolver();
+
+	public <M extends Element> org.lgna.croquet.resolvers.Resolver<M> getResolver();
+
 	public void appendUserRepr( StringBuilder sb );
 }

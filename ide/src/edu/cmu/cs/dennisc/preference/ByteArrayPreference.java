@@ -45,16 +45,18 @@ package edu.cmu.cs.dennisc.preference;
 /**
  * @author Dennis Cosgrove
  */
-public class ByteArrayPreference extends Preference< byte[] > {
+public class ByteArrayPreference extends Preference<byte[]> {
 	public ByteArrayPreference( byte[] defaultValue ) {
 		super( defaultValue );
 	}
+
 	@Override
-	protected byte[] getValue(java.util.prefs.Preferences utilPrefs, String key, byte[] defaultValue) {
+	protected byte[] getValue( java.util.prefs.Preferences utilPrefs, String key, byte[] defaultValue ) {
 		return utilPrefs.getByteArray( key, defaultValue );
 	}
+
 	@Override
-	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, byte[] nextValue) {
-		utilPrefs.putByteArray(key, nextValue);
+	protected void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, byte[] nextValue ) {
+		utilPrefs.putByteArray( key, nextValue );
 	}
 }

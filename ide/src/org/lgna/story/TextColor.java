@@ -44,7 +44,7 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class TextColor implements Say.Detail, Think.Detail {
 	private final Color value;
@@ -52,7 +52,8 @@ public class TextColor implements Say.Detail, Think.Detail {
 	public TextColor( Color value ) {
 		this.value = value;
 	}
-	/*package-private*/static Color getValue( Object[] details, Color defaultValue ) {
+
+	/* package-private */static Color getValue( Object[] details, Color defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof TextColor ) {
 				TextColor textColor = (TextColor)detail;

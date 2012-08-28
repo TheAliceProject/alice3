@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleChildFullBodyOutfitCowGirlSkirt implements FemaleChildFullBodyOutfit {
 	REDBOOT,
- 	BLACKBOOT,
- 	BROWNBOOT;
+	BLACKBOOT,
+	BROWNBOOT;
 }

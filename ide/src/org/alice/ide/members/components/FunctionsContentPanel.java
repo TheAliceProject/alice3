@@ -50,8 +50,9 @@ public class FunctionsContentPanel extends MethodsContentPanel {
 		super( composite );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
 	}
+
 	@Override
-	protected AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	protected AbstractTypeMembersPane createTypeMembersPane( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return new TypeFunctionsPane( type );
 	}
 }

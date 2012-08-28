@@ -46,17 +46,18 @@ package edu.cmu.cs.dennisc.scenegraph.bound;
  * @author Dennis Cosgrove
  */
 public class CumulativeBound {
-	private java.util.Vector< edu.cmu.cs.dennisc.math.Point3 > m_transformedPoints = new java.util.Vector< edu.cmu.cs.dennisc.math.Point3 >();
-//	public CumulativeBound() {
-//	}
-//	public CumulativeBound( edu.cmu.cs.dennisc.scenegraph.Composite sgRoot, final edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
-//		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( sgRoot, edu.cmu.cs.dennisc.scenegraph.Visual.class ) ) {
-//			if( sgVisual.isShowing.getValue() ) {
-//				add( sgVisual, sgVisual.getTransformation( asSeenBy ) );
-//				//add( sgVisual, asSeenBy.getTransformation( sgVisual ) );
-//			}
-//		}
-//	}
+	private java.util.Vector<edu.cmu.cs.dennisc.math.Point3> m_transformedPoints = new java.util.Vector<edu.cmu.cs.dennisc.math.Point3>();
+
+	//	public CumulativeBound() {
+	//	}
+	//	public CumulativeBound( edu.cmu.cs.dennisc.scenegraph.Composite sgRoot, final edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
+	//		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( sgRoot, edu.cmu.cs.dennisc.scenegraph.Visual.class ) ) {
+	//			if( sgVisual.isShowing.getValue() ) {
+	//				add( sgVisual, sgVisual.getTransformation( asSeenBy ) );
+	//				//add( sgVisual, asSeenBy.getTransformation( sgVisual ) );
+	//			}
+	//		}
+	//	}
 	private void addPoint( edu.cmu.cs.dennisc.math.Point3 p, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		assert p.isNaN() == false;
 		assert trans.isNaN() == false;
@@ -66,33 +67,36 @@ public class CumulativeBound {
 
 	public void add( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		edu.cmu.cs.dennisc.math.AxisAlignedBox box = sgVisual.getAxisAlignedMinimumBoundingBox();
-		this.addBoundingBox(box, trans);
+		this.addBoundingBox( box, trans );
 	}
+
 	public void addOrigin( edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		addPoint( edu.cmu.cs.dennisc.math.Point3.createZero(), trans );
 	}
-	
+
 	public void addBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox box, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		if( box.isNaN() ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.math.Hexahedron hexahedron = box.getHexahedron();
-			for( int i=0; i<8; i++ ) {
+			for( int i = 0; i < 8; i++ ) {
 				addPoint( hexahedron.getPointAt( i ), trans );
 			}
 		}
 	}
 
-	
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
 		return BoundUtilities.getBoundingSphere( rv, m_transformedPoints );
 	}
+
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
 		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
 	}
+
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
 		return BoundUtilities.getBoundingBox( rv, m_transformedPoints );
 	}
+
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
 		return getBoundingBox( new edu.cmu.cs.dennisc.math.AxisAlignedBox() );
 	}

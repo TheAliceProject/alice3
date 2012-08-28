@@ -49,6 +49,7 @@ public class RaisedBorder extends BevelBorder {
 	public RaisedBorder( java.awt.Insets insets ) {
 		super( insets, true );
 	}
+
 	public RaisedBorder( int top, int left, int bottom, int right ) {
 		super( top, left, bottom, right, true );
 	}

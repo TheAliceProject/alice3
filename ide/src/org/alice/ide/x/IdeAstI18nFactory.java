@@ -48,7 +48,7 @@ package org.alice.ide.x;
  */
 public abstract class IdeAstI18nFactory extends AstI18nFactory {
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression ) {
+	protected org.lgna.croquet.components.JComponent<?> createIdeExpressionPane( org.alice.ide.ast.IdeExpression ideExpression ) {
 		if( ideExpression instanceof org.alice.ide.ast.EmptyExpression ) {
 			return new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)ideExpression );
 		} else if( ideExpression instanceof org.alice.ide.ast.PreviousValueExpression ) {
@@ -62,8 +62,9 @@ public abstract class IdeAstI18nFactory extends AstI18nFactory {
 			throw new RuntimeException( ideExpression.toString() );
 		}
 	}
+
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+	public org.lgna.croquet.components.JComponent<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return this.createExpressionPane( expressionProperty.getValue() );
 	}
 }

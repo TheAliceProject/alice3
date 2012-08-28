@@ -47,7 +47,8 @@ package org.alice.ide.ast.draganddrop.statement;
  * @author Dennis Cosgrove
  */
 public class FieldAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldAssignmentTemplateDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, FieldAssignmentTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized FieldAssignmentTemplateDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
 		FieldAssignmentTemplateDragModel rv = map.get( field );
 		if( rv != null ) {
@@ -58,15 +59,19 @@ public class FieldAssignmentTemplateDragModel extends StatementTemplateDragModel
 		}
 		return rv;
 	}
+
 	private org.lgna.project.ast.AbstractField field;
+
 	private FieldAssignmentTemplateDragModel( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "c2116770-a3e7-44cc-ad48-e52d22404d35" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpressionStatement( field ) );
 		this.field = field;
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldAssignmentTemplateDragModel > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< FieldAssignmentTemplateDragModel >( this, org.lgna.project.ast.AbstractField.class, this.field );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<FieldAssignmentTemplateDragModel> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<FieldAssignmentTemplateDragModel>( this, org.lgna.project.ast.AbstractField.class, this.field );
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade.getInstance( blockStatementIndexPair, this.field );

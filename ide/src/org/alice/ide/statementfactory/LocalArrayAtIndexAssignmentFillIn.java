@@ -47,7 +47,8 @@ package org.alice.ide.statementfactory;
  * @author dennisc
  */
 public class LocalArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.AssignmentExpression> {
-	private static java.util.Map< org.lgna.project.ast.UserLocal, LocalArrayAtIndexAssignmentFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalArrayAtIndexAssignmentFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized LocalArrayAtIndexAssignmentFillIn getInstance( org.lgna.project.ast.UserLocal local ) {
 		LocalArrayAtIndexAssignmentFillIn rv = map.get( local );
 		if( rv != null ) {
@@ -58,24 +59,29 @@ public class LocalArrayAtIndexAssignmentFillIn extends org.alice.ide.croquet.mod
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.AssignmentExpression transientValue;
+
 	private LocalArrayAtIndexAssignmentFillIn( org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "dbb38402-a01a-43ff-a2eb-e946f81b5e2b" ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalArrayAssignment( local );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Integer.class, org.lgna.project.annotations.ArrayIndexDetails.SINGLETON ) );
 		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( local.getValueType().getComponentType() ) );
 	}
+
 	private org.lgna.project.ast.UserLocal getLocal() {
 		org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)this.transientValue.leftHandSide.getValue();
 		org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)arrayAccess.array.getValue();
 		return localAccess.local.getValue();
 	}
+
 	@Override
 	protected org.lgna.project.ast.AssignmentExpression createValue( org.lgna.project.ast.Expression[] expressions ) {
 		return org.lgna.project.ast.AstUtilities.createLocalArrayAssignment( this.getLocal(), expressions[ 0 ], expressions[ 1 ] );
 	}
+
 	@Override
-	public org.lgna.project.ast.AssignmentExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AssignmentExpression,org.lgna.project.ast.Expression> node ) {
+	public org.lgna.project.ast.AssignmentExpression getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AssignmentExpression, org.lgna.project.ast.Expression> node ) {
 		return this.transientValue;
 	}
 }

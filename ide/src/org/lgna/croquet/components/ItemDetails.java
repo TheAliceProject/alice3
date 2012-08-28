@@ -56,24 +56,28 @@ public class ItemDetails<E> {
 		}
 	};
 
-	public ItemDetails( org.lgna.croquet.ItemState<E> state, E item, ItemSelectablePanel<E,?> panel ) {
+	public ItemDetails( org.lgna.croquet.ItemState<E> state, E item, ItemSelectablePanel<E, ?> panel ) {
 		this.state = state;
 		this.item = item;
 		this.button = panel.createButtonForItemSelectedState( this.item, this.state.getItemSelectedState( this.item ) );
 	}
+
 	public E getItem() {
 		return this.item;
 	}
+
 	public org.lgna.croquet.ItemState<E> getState() {
 		return this.state;
 	}
+
 	public BooleanStateButton<?> getButton() {
 		return this.button;
 	}
-	
+
 	public TrackableShape getTrackableShape() {
 		return this.button;
 	}
+
 	public void add( javax.swing.ButtonGroup buttonGroup ) {
 		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
 		jButton.addItemListener( this.itemListener );
@@ -88,6 +92,7 @@ public class ItemDetails<E> {
 		jButton.removeItemListener( this.itemListener );
 		buttonGroup.remove( jButton );
 	}
+
 	public void setSelected( boolean isSelected ) {
 		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
 		if( jButton.isSelected() != isSelected ) {

@@ -50,14 +50,17 @@ public final class AddResourceEdit extends AddOrRemoveResourceEdit {
 	public AddResourceEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.common.Resource resource ) {
 		super( completionStep, resource );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.addResource();
 	}
+
 	@Override
 	protected final void undoInternal() {
 		this.removeResource();
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "add resource" );

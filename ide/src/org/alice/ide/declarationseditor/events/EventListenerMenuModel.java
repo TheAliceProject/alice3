@@ -45,10 +45,11 @@ package org.alice.ide.declarationseditor.events;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class EventListenerMenuModel extends org.lgna.croquet.CascadeMenuModel< org.lgna.project.ast.MethodInvocation > {
+public abstract class EventListenerMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.MethodInvocation> {
 	public EventListenerMenuModel( java.util.UUID id ) {
 		super( id );
 	}
+
 	@Override
 	protected boolean isBackedByIconProxy() {
 		return false;

@@ -47,31 +47,38 @@ package edu.cmu.cs.dennisc.texture;
  * @author Dennis Cosgrove
  */
 public abstract class Texture extends edu.cmu.cs.dennisc.pattern.AbstractElement implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.image.ImageGenerator {
-	private java.util.Vector< edu.cmu.cs.dennisc.texture.event.TextureListener > m_textureListeners = new java.util.Vector< edu.cmu.cs.dennisc.texture.event.TextureListener >();
+	private java.util.Vector<edu.cmu.cs.dennisc.texture.event.TextureListener> m_textureListeners = new java.util.Vector<edu.cmu.cs.dennisc.texture.event.TextureListener>();
 
 	public Texture() {
 	}
+
 	public Texture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
+
 	public boolean isValid() {
-		return getWidth() > 0 && getHeight() > 0;
+		return ( getWidth() > 0 ) && ( getHeight() > 0 );
 	}
-	
+
 	public abstract int getWidth();
+
 	public abstract int getHeight();
-	
+
 	public abstract boolean isPotentiallyAlphaBlended();
+
 	public abstract boolean isMipMappingDesired();
 
 	public void addTextureListener( edu.cmu.cs.dennisc.texture.event.TextureListener textureListener ) {
 		m_textureListeners.addElement( textureListener );
 	}
+
 	public void removeTextureListener( edu.cmu.cs.dennisc.texture.event.TextureListener textureListener ) {
 		m_textureListeners.removeElement( textureListener );
 	}
-	public Iterable< edu.cmu.cs.dennisc.texture.event.TextureListener > accessTextureListeners() {
+
+	public Iterable<edu.cmu.cs.dennisc.texture.event.TextureListener> accessTextureListeners() {
 		return m_textureListeners;
 	}
+
 	public void fireTextureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent textureEvent ) {
 		for( edu.cmu.cs.dennisc.texture.event.TextureListener hl : m_textureListeners ) {
 			hl.textureChanged( textureEvent );

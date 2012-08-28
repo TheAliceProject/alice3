@@ -50,6 +50,7 @@ public class DurationAnimationStyleIsVolumePreservedArgumentFactory extends Dura
 	protected DurationAnimationStyleIsVolumePreservedArgumentFactory() {
 		super();
 	}
+
 	public static IsVolumePreserved isVolumePreserved( Boolean isVolumePreserved ) {
 		return new IsVolumePreserved( isVolumePreserved );
 	}

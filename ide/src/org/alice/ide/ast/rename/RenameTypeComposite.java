@@ -47,7 +47,8 @@ package org.alice.ide.ast.rename;
  * @author Dennis Cosgrove
  */
 public class RenameTypeComposite extends RenameDeclarationComposite<org.lgna.project.ast.NamedUserType> {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, RenameTypeComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, RenameTypeComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized RenameTypeComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		assert type != null;
 		RenameTypeComposite rv = map.get( type );
@@ -59,6 +60,7 @@ public class RenameTypeComposite extends RenameDeclarationComposite<org.lgna.pro
 		}
 		return rv;
 	}
+
 	private RenameTypeComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "d4d98a8c-c59d-4949-bc34-ea59d7952c83" ), new org.alice.ide.name.validators.TypeNameValidator( type ), type );
 	}

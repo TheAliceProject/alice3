@@ -52,36 +52,35 @@ import org.alice.ide.properties.uicontroller.LabelBasedPropertyController;
 import org.alice.stageide.properties.MutableRiderVehicleAdapter;
 import org.lgna.story.SThing;
 
-public class CompositePropertyController extends LabelBasedPropertyController<SThing>{
+public class CompositePropertyController extends LabelBasedPropertyController<SThing> {
 
-	public CompositePropertyController(AbstractPropertyAdapter<SThing, ?> propertyAdapter) 
+	public CompositePropertyController( AbstractPropertyAdapter<SThing, ?> propertyAdapter )
 	{
-		super(propertyAdapter);
+		super( propertyAdapter );
 	}
 
 	@Override
-	public Class<?> getPropertyType() 
+	public Class<?> getPropertyType()
 	{
 		return SThing.class;
 	}
 
 	@Override
-	protected void initializeComponents() 
+	protected void initializeComponents()
 	{
 		super.initializeComponents();
-		this.label.setBorder(BorderFactory.createCompoundBorder(
-		        BorderFactory.createLineBorder(org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor(), 2), 
-                BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-		this.label.getAwtComponent().setOpaque(true);
-		this.label.setBackgroundColor(Color.WHITE);
+		this.label.setBorder( BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor(), 2 ),
+				BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) ) );
+		this.label.getAwtComponent().setOpaque( true );
+		this.label.setBackgroundColor( Color.WHITE );
 	}
 
 	@Override
-	protected void setValueOnUI(SThing value) 
+	protected void setValueOnUI( SThing value )
 	{
-		this.label.setIcon(MutableRiderVehicleAdapter.getIconForVehicle(value));
-		this.label.setText(MutableRiderVehicleAdapter.getNameForVehicle(value));
+		this.label.setIcon( MutableRiderVehicleAdapter.getIconForVehicle( value ) );
+		this.label.setText( MutableRiderVehicleAdapter.getNameForVehicle( value ) );
 	}
-	
 
 }

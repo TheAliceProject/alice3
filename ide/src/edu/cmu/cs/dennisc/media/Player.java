@@ -47,15 +47,23 @@ package edu.cmu.cs.dennisc.media;
  */
 public abstract class Player {
 	public abstract void prefetch();
+
 	public abstract void realize();
+
 	public abstract double getDuration();
+
 	public abstract double getTimeRemaining();
+
 	public abstract void start();
+
 	public abstract void playUntilStop();
+
 	public abstract void stop();
 
 	public abstract java.awt.Component getControlPanelComponent();
+
 	public abstract java.awt.Component getVisualComponent();
+
 	//todo: remove
 	public abstract void test( java.awt.Component owner );
 }

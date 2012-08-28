@@ -54,9 +54,11 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite<org.alic
 	public static ProcedureTemplateComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ProcedureTemplateComposite() {
 		super( java.util.UUID.fromString( "724e651f-6b2a-4520-9cac-fe10ee8a4dbf" ) );
 	}
+
 	@Override
 	public boolean contains( org.lgna.croquet.Model model ) {
 		if( super.contains( model ) ) {
@@ -65,6 +67,7 @@ public class ProcedureTemplateComposite extends MemberTemplateComposite<org.alic
 			return model instanceof org.alice.ide.croquet.models.ast.cascade.statement.ProcedureInvocationInsertCascade;
 		}
 	}
+
 	@Override
 	protected org.alice.ide.members.components.ProceduresContentPanel createView() {
 		return new org.alice.ide.members.components.ProceduresContentPanel( this );

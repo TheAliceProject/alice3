@@ -49,5 +49,5 @@ public abstract class AbstractFieldTileActionOperation extends org.alice.ide.ope
 	public AbstractFieldTileActionOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractField field ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId, field );
 	}
-	
+
 }

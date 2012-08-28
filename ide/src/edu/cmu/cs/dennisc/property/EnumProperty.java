@@ -45,10 +45,11 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumProperty< E extends Enum<E> > extends InstanceProperty<E> {
+public class EnumProperty<E extends Enum<E>> extends InstanceProperty<E> {
 	public EnumProperty( InstancePropertyOwner owner, E value ) {
 		super( owner, value );
 	}
+
 	@Override
 	public void setValue( PropertyOwner owner, E value ) {
 		assert value != null;

@@ -45,12 +45,13 @@ package edu.cmu.cs.dennisc.java.awt;
 /**
  * @author Dennis Cosgrove
  */
-public class EventLayerManager extends java.util.LinkedList< EventLayer > implements java.awt.event.ComponentListener, java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.KeyListener {
+public class EventLayerManager extends java.util.LinkedList<EventLayer> implements java.awt.event.ComponentListener, java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.KeyListener {
 	private java.awt.Component m_awtComponent;
 
 	public java.awt.Component getComponent() {
 		return m_awtComponent;
 	}
+
 	public void setComponent( java.awt.Component awtComponent ) {
 		if( m_awtComponent != null ) {
 			m_awtComponent.removeComponentListener( this );
@@ -70,37 +71,40 @@ public class EventLayerManager extends java.util.LinkedList< EventLayer > implem
 	public void componentShown( java.awt.event.ComponentEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.ComponentListener ) {
-				((java.awt.event.ComponentListener)eventInterceptor).componentShown( e );
+				( (java.awt.event.ComponentListener)eventInterceptor ).componentShown( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void componentHidden( java.awt.event.ComponentEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.ComponentListener ) {
-				((java.awt.event.ComponentListener)eventInterceptor).componentHidden( e );
+				( (java.awt.event.ComponentListener)eventInterceptor ).componentHidden( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void componentMoved( java.awt.event.ComponentEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.ComponentListener ) {
-				((java.awt.event.ComponentListener)eventInterceptor).componentMoved( e );
+				( (java.awt.event.ComponentListener)eventInterceptor ).componentMoved( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void componentResized( java.awt.event.ComponentEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.ComponentListener ) {
-				((java.awt.event.ComponentListener)eventInterceptor).componentResized( e );
+				( (java.awt.event.ComponentListener)eventInterceptor ).componentResized( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -111,47 +115,51 @@ public class EventLayerManager extends java.util.LinkedList< EventLayer > implem
 	public void mousePressed( java.awt.event.MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				((java.awt.event.MouseListener)eventInterceptor).mousePressed( e );
+				( (java.awt.event.MouseListener)eventInterceptor ).mousePressed( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void mouseReleased( java.awt.event.MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				((java.awt.event.MouseListener)eventInterceptor).mouseReleased( e );
+				( (java.awt.event.MouseListener)eventInterceptor ).mouseReleased( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void mouseClicked( java.awt.event.MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				((java.awt.event.MouseListener)eventInterceptor).mouseClicked( e );
+				( (java.awt.event.MouseListener)eventInterceptor ).mouseClicked( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void mouseEntered( java.awt.event.MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				((java.awt.event.MouseListener)eventInterceptor).mouseEntered( e );
+				( (java.awt.event.MouseListener)eventInterceptor ).mouseEntered( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void mouseExited( java.awt.event.MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.MouseListener ) {
-				((java.awt.event.MouseListener)eventInterceptor).mouseExited( e );
+				( (java.awt.event.MouseListener)eventInterceptor ).mouseExited( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -162,17 +170,18 @@ public class EventLayerManager extends java.util.LinkedList< EventLayer > implem
 	public void mouseMoved( java.awt.event.MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.MouseMotionListener ) {
-				((java.awt.event.MouseMotionListener)eventInterceptor).mouseMoved( e );
+				( (java.awt.event.MouseMotionListener)eventInterceptor ).mouseMoved( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void mouseDragged( java.awt.event.MouseEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.MouseMotionListener ) {
-				((java.awt.event.MouseMotionListener)eventInterceptor).mouseDragged( e );
+				( (java.awt.event.MouseMotionListener)eventInterceptor ).mouseDragged( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
@@ -183,27 +192,29 @@ public class EventLayerManager extends java.util.LinkedList< EventLayer > implem
 	public void keyPressed( java.awt.event.KeyEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.KeyListener ) {
-				((java.awt.event.KeyListener)eventInterceptor).keyPressed( e );
+				( (java.awt.event.KeyListener)eventInterceptor ).keyPressed( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void keyReleased( java.awt.event.KeyEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.KeyListener ) {
-				((java.awt.event.KeyListener)eventInterceptor).keyReleased( e );
+				( (java.awt.event.KeyListener)eventInterceptor ).keyReleased( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}
 			}
 		}
 	}
+
 	public void keyTyped( java.awt.event.KeyEvent e ) {
 		for( EventLayer eventInterceptor : this ) {
 			if( eventInterceptor instanceof java.awt.event.KeyListener ) {
-				((java.awt.event.KeyListener)eventInterceptor).keyTyped( e );
+				( (java.awt.event.KeyListener)eventInterceptor ).keyTyped( e );
 				if( eventInterceptor.isEventIntercepted( e ) ) {
 					break;
 				}

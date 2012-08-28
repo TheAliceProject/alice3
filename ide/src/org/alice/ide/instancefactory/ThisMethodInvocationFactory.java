@@ -47,7 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisMethodInvocationFactory extends MethodInvocationFactory {
-	private static java.util.Map< org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractMethod, ThisMethodInvocationFactory> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ThisMethodInvocationFactory getInstance( org.lgna.project.ast.AbstractMethod method ) {
 		assert method != null;
 		if( method.getRequiredParameters().size() == 0 ) {
@@ -63,25 +64,31 @@ public class ThisMethodInvocationFactory extends MethodInvocationFactory {
 			return null;
 		}
 	}
+
 	private ThisMethodInvocationFactory( org.lgna.project.ast.AbstractMethod method ) {
 		super( method );
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getValidInstanceType( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValidInstanceType( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
 		return type;
 	}
+
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver< ThisMethodInvocationFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisMethodInvocationFactory >( this, org.lgna.project.ast.AbstractMethod.class, this.getMethod() );
+	protected org.lgna.croquet.resolvers.Resolver<ThisMethodInvocationFactory> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisMethodInvocationFactory>( this, org.lgna.project.ast.AbstractMethod.class, this.getMethod() );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createTransientExpressionForMethodInvocation() {
 		return createTransientThisExpression();
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpressionForMethodInvocation() {
 		return createThisExpression();
 	}
+
 	@Override
 	protected java.lang.StringBuilder addAccessRepr( java.lang.StringBuilder rv ) {
 		rv.append( "this" );

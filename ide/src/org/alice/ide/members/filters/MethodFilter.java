@@ -48,9 +48,10 @@ package org.alice.ide.members.filters;
  */
 public abstract class MethodFilter extends PublicOrUserMemberFilter {
 	protected abstract boolean isAcceptableMethod( org.lgna.project.ast.AbstractMethod method );
+
 	@Override
 	public final boolean isAcceptable( org.lgna.project.ast.AbstractMember member ) {
-		if( super.isAcceptable( member ) )  {
+		if( super.isAcceptable( member ) ) {
 			if( member instanceof org.lgna.project.ast.AbstractMethod ) {
 				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
 				return this.isAcceptableMethod( method );

@@ -46,13 +46,15 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AffectorAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Affector > extends LeafAdapter< E > {
+public abstract class AffectorAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Affector> extends LeafAdapter<E> {
 	@Override
-	public void renderGhost( RenderContext rc, GhostAdapter root  ) {
+	public void renderGhost( RenderContext rc, GhostAdapter root ) {
 	}
+
 	@Override
-	public void renderOpaque( RenderContext rc  ) {
+	public void renderOpaque( RenderContext rc ) {
 	}
+
 	@Override
 	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 	}

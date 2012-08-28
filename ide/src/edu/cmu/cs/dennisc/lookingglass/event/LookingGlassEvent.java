@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.lookingglass.event;
 /**
  * @author Dennis Cosgrove
  */
-public class LookingGlassEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.lookingglass.LookingGlass > {
+public class LookingGlassEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.lookingglass.LookingGlass> {
 	public LookingGlassEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
 		super( lookingGlass );
 	}

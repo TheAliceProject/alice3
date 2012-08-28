@@ -47,17 +47,19 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaKeyedArgument extends AbstractArgument {
-//	public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
-//		@Override
-//		public boolean isReference() {
-//			return true;
-//		}
-//	};
+	//	public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
+	//		@Override
+	//		public boolean isReference() {
+	//			return true;
+	//		}
+	//	};
 	public JavaKeyedArgument() {
 	}
+
 	public JavaKeyedArgument( AbstractParameter parameter, JavaMethod keyMethod, Expression... argumentExpressions ) {
 		super( parameter, org.lgna.project.ast.AstUtilities.createStaticMethodInvocation( keyMethod, argumentExpressions ) );
 	}
+
 	public JavaMethod getKeyMethod() {
 		Expression expression = this.expression.getValue();
 		if( expression != null ) {
@@ -69,10 +71,12 @@ public class JavaKeyedArgument extends AbstractArgument {
 			return null;
 		}
 	}
+
 	@Override
-	protected AbstractType< ?, ?, ? > getExpressionTypeForParameterType( AbstractType< ?, ?, ? > parameterType ) {
+	protected AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType ) {
 		return parameterType.getComponentType();
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );

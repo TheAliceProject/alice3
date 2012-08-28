@@ -50,14 +50,17 @@ public class SetObesityEdit extends org.lgna.croquet.edits.Edit {
 	public SetObesityEdit( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		throw new RuntimeException( "todo" );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		throw new RuntimeException( "todo" );
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "randomize" );

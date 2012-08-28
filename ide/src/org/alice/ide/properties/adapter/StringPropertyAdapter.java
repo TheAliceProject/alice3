@@ -43,35 +43,33 @@
 
 package org.alice.ide.properties.adapter;
 
-import java.util.Locale;
-
 import org.alice.ide.croquet.models.StandardExpressionState;
 
 import edu.cmu.cs.dennisc.property.InstanceProperty;
 
-public class StringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O> 
+public class StringPropertyAdapter<O> extends AbstractInstancePropertyAdapter<String, O>
 {
-	
-	public StringPropertyAdapter(O instance, InstanceProperty<String> property, StandardExpressionState expressionState)
+
+	public StringPropertyAdapter( O instance, InstanceProperty<String> property, StandardExpressionState expressionState )
 	{
-		this("String", instance, property, expressionState);
+		this( "String", instance, property, expressionState );
 	}
-	
-	public StringPropertyAdapter(String repr, O instance, InstanceProperty<String> property, StandardExpressionState expressionState )
+
+	public StringPropertyAdapter( String repr, O instance, InstanceProperty<String> property, StandardExpressionState expressionState )
 	{
-		super(repr, instance, property, expressionState);
+		super( repr, instance, property, expressionState );
 	}
-	
+
 	@Override
-	public String getUndoRedoDescription() 
+	public String getUndoRedoDescription()
 	{
 		return "String";
 	}
-	
+
 	@Override
-	public String getValueCopyIfMutable() 
+	public String getValueCopyIfMutable()
 	{
-		return new String(this.getValue());
+		return new String( this.getValue() );
 	}
 
 	@Override

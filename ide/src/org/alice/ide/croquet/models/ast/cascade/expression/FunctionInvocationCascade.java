@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class FunctionInvocationCascade extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.ExpressionProperty, FunctionInvocationCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.ExpressionProperty, FunctionInvocationCascade> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized FunctionInvocationCascade getInstance( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert method != null;
 		assert expressionProperty != null;
@@ -60,11 +61,14 @@ public class FunctionInvocationCascade extends org.alice.ide.croquet.models.ast.
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.AbstractMethod method;
+
 	private FunctionInvocationCascade( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "a205ee93-2f1a-4dc0-8aaf-60f1f3310643" ), expressionProperty, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 		this.method = method;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue().createExpression(), this.method, expressions );

@@ -48,14 +48,17 @@ package edu.cmu.cs.dennisc.lookingglass.event;
 public class LookingGlassResizeEvent extends LookingGlassEvent {
 	private int m_width;
 	private int m_height;
+
 	public LookingGlassResizeEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, int width, int height ) {
 		super( lookingGlass );
 		m_width = width;
 		m_height = height;
 	}
+
 	public int getWidth() {
 		return m_width;
 	}
+
 	public int getHeight() {
 		return m_height;
 	}

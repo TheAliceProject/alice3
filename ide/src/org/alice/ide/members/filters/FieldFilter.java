@@ -49,7 +49,7 @@ package org.alice.ide.members.filters;
 public class FieldFilter extends PublicOrUserMemberFilter {
 	@Override
 	public final boolean isAcceptable( org.lgna.project.ast.AbstractMember member ) {
-		if( super.isAcceptable( member ) )  {
+		if( super.isAcceptable( member ) ) {
 			return member instanceof org.lgna.project.ast.AbstractField;
 		} else {
 			return false;

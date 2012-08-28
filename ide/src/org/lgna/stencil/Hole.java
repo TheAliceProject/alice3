@@ -52,7 +52,8 @@ public class Hole extends Feature {
 	private static final java.awt.Insets BOUNDS_INSETS = new java.awt.Insets( BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD, BOUNDS_PAD );
 
 	private final Painter painter;
-	public Hole( org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference, Painter painter ) {
+
+	public Hole( org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.components.TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference, Painter painter ) {
 		super( trackableShapeResolver, connectionPreference );
 		this.painter = painter;
 	}
@@ -61,24 +62,28 @@ public class Hole extends Feature {
 	protected boolean isPathRenderingDesired() {
 		return true;
 	}
+
 	protected boolean isHoleRenderingDesired() {
 		return true;
 	}
+
 	@Override
 	protected java.awt.Insets getBoundsInsets() {
 		return BOUNDS_INSETS;
 	}
+
 	@Override
 	protected java.awt.Insets getContainsInsets() {
 		return null;
 	}
+
 	@Override
 	protected java.awt.Insets getPaintInsets() {
 		return PAINT_INSETS;
 	}
 
 	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
+	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection ) {
 		if( this.isHoleRenderingDesired() ) {
 			this.painter.paint( g2, shape );
 		}

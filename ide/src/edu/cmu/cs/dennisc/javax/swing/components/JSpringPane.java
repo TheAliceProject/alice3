@@ -47,53 +47,66 @@ package edu.cmu.cs.dennisc.javax.swing.components;
  */
 public class JSpringPane extends javax.swing.JPanel {
 	public enum Vertical {
-		NORTH(javax.swing.SpringLayout.NORTH), 
-		CENTER(null), 
-		SOUTH(javax.swing.SpringLayout.SOUTH);
+		NORTH( javax.swing.SpringLayout.NORTH ),
+		CENTER( null ),
+		SOUTH( javax.swing.SpringLayout.SOUTH );
 		private String internal;
+
 		private Vertical( String internal ) {
 			this.internal = internal;
 		}
+
 		public String getInternal() {
 			return internal;
 		}
 	}
+
 	public enum Horizontal {
-		WEST(javax.swing.SpringLayout.WEST), 
-		CENTER(null), 
-		EAST(javax.swing.SpringLayout.EAST);
+		WEST( javax.swing.SpringLayout.WEST ),
+		CENTER( null ),
+		EAST( javax.swing.SpringLayout.EAST );
 		private String internal;
+
 		private Horizontal( String internal ) {
 			this.internal = internal;
 		}
+
 		public String getInternal() {
 			return internal;
 		}
 	}
+
 	private javax.swing.SpringLayout springLayout;
+
 	public JSpringPane() {
 		this.springLayout = new javax.swing.SpringLayout();
 		setLayout( this.springLayout );
 	}
+
 	protected javax.swing.SpringLayout getSpringLayout() {
 		return this.springLayout;
 	}
-	
+
 	abstract class CenterSpring extends javax.swing.Spring {
 		private java.awt.Component component;
 		private int offset;
+
 		public CenterSpring( java.awt.Component component, int offset ) {
 			this.component = component;
 			this.offset = offset;
 		}
+
 		@Override
 		public int getValue() {
 			return this.getPreferredValue();
 		}
+
 		@Override
 		public void setValue( int value ) {
 		}
+
 		protected abstract int getValue( java.awt.Dimension dimension );
+
 		@Override
 		public int getPreferredValue() {
 			int macro = getValue( JSpringPane.this.getSize() );
@@ -104,35 +117,42 @@ public class JSpringPane extends javax.swing.JPanel {
 				size = this.component.getPreferredSize();
 			}
 			int micro = getValue( size );
-			return this.offset + (macro - micro) / 2;
+			return this.offset + ( ( macro - micro ) / 2 );
 		}
+
 		@Override
 		public int getMinimumValue() {
 			return this.getPreferredValue();
 		}
+
 		@Override
 		public int getMaximumValue() {
 			return this.getPreferredValue();
 		}
 	}
+
 	class HorizontalCenterSpring extends CenterSpring {
 		public HorizontalCenterSpring( java.awt.Component component, int offset ) {
 			super( component, offset );
 		}
+
 		@Override
 		protected int getValue( java.awt.Dimension dimension ) {
 			return dimension.width;
 		}
 	}
+
 	class VerticalCenterSpring extends CenterSpring {
 		public VerticalCenterSpring( java.awt.Component component, int offset ) {
 			super( component, offset );
 		}
+
 		@Override
 		protected int getValue( java.awt.Dimension dimension ) {
 			return dimension.height;
 		}
 	}
+
 	protected void putConstraint( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
 		String horizontalConstraint = horizontal.getInternal();
 		String verticalConstraint = vertical.getInternal();
@@ -147,17 +167,17 @@ public class JSpringPane extends javax.swing.JPanel {
 			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component, new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, this );
 		}
 	}
-	
+
 	public void add( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
-		this.putConstraint(component, horizontal, x, vertical, y);
+		this.putConstraint( component, horizontal, x, vertical, y );
 		this.add( component );
 	}
 
 	//todo?
-//	@Override
-//	public void remove( java.awt.Component component ) {
-//		super.remove( component );
-//		this.springLayout.removeLayoutComponent( component );
-//	}
-	
+	//	@Override
+	//	public void remove( java.awt.Component component ) {
+	//		super.remove( component );
+	//		this.springLayout.removeLayoutComponent( component );
+	//	}
+
 }

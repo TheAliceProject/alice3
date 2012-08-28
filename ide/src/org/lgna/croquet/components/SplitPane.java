@@ -50,6 +50,7 @@ public abstract class SplitPane extends AbstractSplitPane<org.lgna.croquet.Split
 	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation ) {
 		super( splitComposite, orientation );
 	}
+
 	@Override
 	protected javax.swing.JSplitPane createJSplitPane( int orientation ) {
 		org.lgna.croquet.SplitComposite composite = this.getComposite();

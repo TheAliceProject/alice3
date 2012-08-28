@@ -60,61 +60,61 @@ public class ResizeDragManipulator extends AbstractManipulator
 	public static final double MIN_SCALE = .1;
 	private final org.lgna.story.implementation.ModelImp.Resizer[] resizers;
 	private org.lgna.story.implementation.ModelImp.Resizer activeResizer;
-	
-	public ResizeDragManipulator(org.lgna.story.implementation.ModelImp.Resizer... resizers) {
+
+	public ResizeDragManipulator( org.lgna.story.implementation.ModelImp.Resizer... resizers ) {
 		this.resizers = resizers;
-	}
-	
-	@Override
-	public void doClickManipulator(InputState endInput, InputState previousInput) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
-		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
+	public void doClickManipulator( InputState endInput, InputState previousInput ) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+		if( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
 		{
 			int xDif = currentInput.getMouseLocation().x - this.initialPoint.x;
-			int yDif = -(currentInput.getMouseLocation().y - this.initialPoint.y);
-			
-			double scaleAmount = ((xDif + yDif)*RESIZE_SCALE);
-			applyScale(scaleAmount);
+			int yDif = -( currentInput.getMouseLocation().y - this.initialPoint.y );
+
+			double scaleAmount = ( ( xDif + yDif ) * RESIZE_SCALE );
+			applyScale( scaleAmount );
 		}
 	}
 
 	@Override
-	public void doEndManipulator(InputState endInput, InputState previousInput) {
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	protected void initManipulator( InputState startInput )
 	{
-		this.initialPoint = new Point(startInput.getMouseLocation());
+		this.initialPoint = new Point( startInput.getMouseLocation() );
 	}
-	
+
 	@Override
-	public boolean doStartManipulator(InputState startInput) {
-		this.setManipulatedTransformable(startInput.getClickPickTransformable());
-		if (this.manipulatedTransformable != null)
+	public boolean doStartManipulator( InputState startInput ) {
+		this.setManipulatedTransformable( startInput.getClickPickTransformable() );
+		if( this.manipulatedTransformable != null )
 		{
 			Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 			if( scalable != null ) {
 				this.activeResizer = null;
-				for (org.lgna.story.implementation.ModelImp.Resizer toUse : this.resizers) {
-					for (org.lgna.story.implementation.ModelImp.Resizer r : scalable.getResizers()) {
-						if (r == toUse) {
+				for( org.lgna.story.implementation.ModelImp.Resizer toUse : this.resizers ) {
+					for( org.lgna.story.implementation.ModelImp.Resizer r : scalable.getResizers() ) {
+						if( r == toUse ) {
 							this.activeResizer = r;
 							break;
 						}
 					}
-					if (this.activeResizer != null) {
+					if( this.activeResizer != null ) {
 						break;
 					}
 				}
-				if (this.activeResizer != null) {
-					initialScale = scalable.getValueForResizer(this.activeResizer);
+				if( this.activeResizer != null ) {
+					initialScale = scalable.getValueForResizer( this.activeResizer );
 				}
 				else {
 					return false;
@@ -128,23 +128,23 @@ public class ResizeDragManipulator extends AbstractManipulator
 			return false;
 		}
 	}
-	
-	protected void applyScale( double scaleAmount ) 
+
+	protected void applyScale( double scaleAmount )
 	{
 		Scalable scalable = this.manipulatedTransformable.getBonusDataFor( Scalable.KEY );
 		if( scalable != null ) {
-			if (this.initialScale + scaleAmount < MIN_SCALE) {
+			if( ( this.initialScale + scaleAmount ) < MIN_SCALE ) {
 				scaleAmount = MIN_SCALE - this.initialScale;
 			}
-			this.accumulatedScale=  this.initialScale + scaleAmount;
-			scalable.setValueForResizer(this.activeResizer, this.accumulatedScale);
+			this.accumulatedScale = this.initialScale + scaleAmount;
+			scalable.setValueForResizer( this.activeResizer, this.accumulatedScale );
 		}
 	}
 
 	@Override
-	public void doTimeUpdateManipulator(double dTime, InputState currentInput) {
+	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -160,7 +160,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 
 	@Override
 	public void undoRedoEndManipulation() {
-		if( this.getManipulatedTransformable() != null ) 
+		if( this.getManipulatedTransformable() != null )
 		{
 			edu.cmu.cs.dennisc.animation.Animator animator;
 			if( this.dragAdapter != null ) {
@@ -173,7 +173,7 @@ public class ResizeDragManipulator extends AbstractManipulator
 			undoOperation.fire();
 		}
 	}
-	
+
 	@Override
 	public String getUndoRedoDescription() {
 		// TODO Auto-generated method stub

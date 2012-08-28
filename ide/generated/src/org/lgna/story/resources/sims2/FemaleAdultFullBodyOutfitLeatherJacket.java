@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitLeatherJacket implements FemaleAdultFullBodyOutfit {
-	BLACK ,
- 	BROWN ,
- 	RED ,
- 	PURPLE ,
- 	NAVY ,
- 	LIME ;
+	BLACK,
+	BROWN,
+	RED,
+	PURPLE,
+	NAVY,
+	LIME;
 }

@@ -54,6 +54,7 @@ public class NameEndsWithCriterion extends NameCriterion {
 		m_target = target;
 		m_isSensitiveToCase = isSensitiveToCase;
 	}
+
 	@Override
 	public boolean acceptName( String name ) {
 		boolean isAccepted;

@@ -41,13 +41,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitDressAboveKneeHooded implements FemaleAdultFullBodyOutfit {
-	RED ,
- 	CREAM ,
- 	BLUE ,
- 	PURPLE ,
- 	GREEN ,
- 	BLACKWHITE ,
- 	GREY ,
- 	BABYBLUE ;
+	RED,
+	CREAM,
+	BLUE,
+	PURPLE,
+	GREEN,
+	BLACKWHITE,
+	GREY,
+	BABYBLUE;
 }

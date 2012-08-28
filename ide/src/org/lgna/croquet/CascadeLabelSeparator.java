@@ -48,38 +48,44 @@ package org.lgna.croquet;
  */
 public abstract class CascadeLabelSeparator extends CascadeSeparator {
 	private String menuItemText;
+
 	public CascadeLabelSeparator( java.util.UUID id ) {
 		super( id );
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.menuItemText = this.findDefaultLocalizedText();
 	}
+
 	protected String getMenuItemIconProxyText( java.util.Locale locale ) {
 		return this.menuItemText;
 	}
+
 	public boolean isValid() {
 		String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
-		return text != null && text.length() > 0 && "null".equals( text )==false;
+		return ( text != null ) && ( text.length() > 0 ) && ( "null".equals( text ) == false );
 	}
+
 	@Override
-	protected final javax.swing.JComponent createMenuItemIconProxy(org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step) {
+	protected final javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super Void, Void> step ) {
 		if( this.isValid() ) {
 			String text = this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
 			javax.swing.JLabel rv = new javax.swing.JLabel();
 			rv.setText( text + ":" );
 			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-//			rv.setVerticalTextPosition( javax.swing.JLabel.LEADING );
-//			rv.setSize( new java.awt.Dimension( 300, 200 ) );
+			//			rv.setVerticalTextPosition( javax.swing.JLabel.LEADING );
+			//			rv.setSize( new java.awt.Dimension( 300, 200 ) );
 			return rv;
 		} else {
 			return null;
 		}
 	}
+
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super Void,Void > step ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super Void, Void> step ) {
 		return null;
-//		return this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
+		//		return this.getMenuItemIconProxyText( javax.swing.JComponent.getDefaultLocale() );
 	}
 }

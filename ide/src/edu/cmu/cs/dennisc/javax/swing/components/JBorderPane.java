@@ -49,6 +49,7 @@ public class JBorderPane extends JPane {
 	public JBorderPane() {
 		this( 0, 0 );
 	}
+
 	public JBorderPane( int hgap, int vgap ) {
 		setLayout( new java.awt.BorderLayout( hgap, vgap ) );
 	}

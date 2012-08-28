@@ -15,18 +15,18 @@ import org.lgna.story.AddExitViewListener;
 import org.lgna.story.AddPositionOrientationChangeListener;
 import org.lgna.story.AddStartCollisionListener;
 import org.lgna.story.AddStartOcclusionListener;
-import org.lgna.story.SThing;
 import org.lgna.story.SModel;
 import org.lgna.story.SScene;
+import org.lgna.story.SThing;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionStartListener;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.ProximityExitListener;
 import org.lgna.story.event.ViewEnterListener;
+import org.lgna.story.event.ViewExitListener;
 
 public class TransformationEventListenerMenu extends EventListenerMenuModel {
 
@@ -49,6 +49,7 @@ public class TransformationEventListenerMenu extends EventListenerMenuModel {
 	public static TransformationEventListenerMenu getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private TransformationEventListenerMenu() {
 		super( java.util.UUID.fromString( "67822611-4013-4fce-97b0-3c9e4d6440a1" ) );
 	}

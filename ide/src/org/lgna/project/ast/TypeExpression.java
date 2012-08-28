@@ -46,20 +46,25 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class TypeExpression extends Expression {
-	public DeclarationProperty<AbstractType<?,?,?>> value = new DeclarationProperty<AbstractType<?,?,?>>( this );
+	public DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+
 	public TypeExpression() {
 	}
-	public TypeExpression( AbstractType<?,?,?> value ) {
+
+	public TypeExpression( AbstractType<?, ?, ?> value ) {
 		this.value.setValue( value );
 	}
-	public TypeExpression( Class< ? > cls ) {
+
+	public TypeExpression( Class<?> cls ) {
 		this( JavaType.getInstance( cls ) );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		//todo
 		return JavaType.getInstance( Class.class );
 	}
+
 	@Override
 	public boolean isValid() {
 		return this.value.getValue() != null;

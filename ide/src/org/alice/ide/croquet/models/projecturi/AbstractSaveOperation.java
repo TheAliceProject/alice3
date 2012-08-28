@@ -51,11 +51,15 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	}
 
 	protected abstract boolean isPromptNecessary( java.io.File file );
+
 	protected abstract java.io.File getDefaultDirectory( org.alice.ide.ProjectApplication application );
+
 	protected abstract String getExtension();
+
 	protected abstract void save( org.alice.ide.ProjectApplication application, java.io.File file ) throws java.io.IOException;
+
 	protected abstract String getInitialFilename();
-	
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

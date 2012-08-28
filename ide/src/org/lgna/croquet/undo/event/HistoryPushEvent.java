@@ -47,10 +47,12 @@ package org.lgna.croquet.undo.event;
  */
 public class HistoryPushEvent extends HistoryEvent {
 	private org.lgna.croquet.edits.Edit edit;
+
 	public HistoryPushEvent( org.lgna.croquet.undo.UndoHistory source, org.lgna.croquet.edits.Edit edit ) {
 		super( source );
 		this.edit = edit;
 	}
+
 	public org.lgna.croquet.edits.Edit getEdit() {
 		return this.edit;
 	}

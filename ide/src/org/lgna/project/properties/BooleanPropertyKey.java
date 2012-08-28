@@ -45,10 +45,11 @@ package org.lgna.project.properties;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanPropertyKey extends PropertyKey< Boolean > {
+public class BooleanPropertyKey extends PropertyKey<Boolean> {
 	public BooleanPropertyKey( java.util.UUID id, String repr ) {
 		super( id, repr );
 	}
+
 	@Override
 	protected Boolean decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
@@ -58,6 +59,7 @@ public class BooleanPropertyKey extends PropertyKey< Boolean > {
 			return null;
 		}
 	}
+
 	@Override
 	protected void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Boolean value ) {
 		binaryEncoder.encode( value != null );

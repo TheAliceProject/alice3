@@ -47,14 +47,16 @@ import org.lgna.croquet.BooleanState;
 
 public class AreSnapDetailsExpandedState extends BooleanState
 {
-    private static class SingletonHolder {
-        private static AreSnapDetailsExpandedState instance = new AreSnapDetailsExpandedState();
-    }
-    public static AreSnapDetailsExpandedState getInstance() {
-        return SingletonHolder.instance;
-    }
-    private AreSnapDetailsExpandedState() {
-        //TODO: Localize this
-        super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "5a13da16-1b32-4c50-85ae-1b62dc537876" ), false );
-    }
+	private static class SingletonHolder {
+		private static AreSnapDetailsExpandedState instance = new AreSnapDetailsExpandedState();
+	}
+
+	public static AreSnapDetailsExpandedState getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private AreSnapDetailsExpandedState() {
+		//TODO: Localize this
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "5a13da16-1b32-4c50-85ae-1b62dc537876" ), false );
+	}
 }

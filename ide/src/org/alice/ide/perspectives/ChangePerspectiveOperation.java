@@ -47,7 +47,8 @@ package org.alice.ide.perspectives;
  * @author Dennis Cosgrove
  */
 public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation {
-	private static java.util.Map< org.alice.ide.perspectives.ProjectPerspective, ChangePerspectiveOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.alice.ide.perspectives.ProjectPerspective, ChangePerspectiveOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ChangePerspectiveOperation getInstance( org.alice.ide.perspectives.ProjectPerspective perspective ) {
 		ChangePerspectiveOperation rv = map.get( perspective );
 		if( rv != null ) {
@@ -60,14 +61,17 @@ public class ChangePerspectiveOperation extends org.lgna.croquet.ActionOperation
 	}
 
 	private final org.alice.ide.perspectives.ProjectPerspective perspective;
+
 	private ChangePerspectiveOperation( org.alice.ide.perspectives.ProjectPerspective perspective ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "2fc3846a-f943-4384-8af9-2292a3c405cd" ) );
 		this.perspective = perspective;
 	}
+
 	@Override
-	protected java.lang.Class< ? extends org.lgna.croquet.Element > getClassUsedForLocalization() {
+	protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 		return this.perspective.getClass();
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

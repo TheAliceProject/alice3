@@ -47,17 +47,17 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public enum OkCancelOption {
-	OK(javax.swing.JOptionPane.OK_OPTION), 
-	CANCEL(javax.swing.JOptionPane.CANCEL_OPTION);
+	OK( javax.swing.JOptionPane.OK_OPTION ),
+	CANCEL( javax.swing.JOptionPane.CANCEL_OPTION );
 	private final int internal;
 
-	OkCancelOption(int internal) {
+	OkCancelOption( int internal ) {
 		this.internal = internal;
 	}
 
-	public static OkCancelOption getInstance(int internal) {
-		for (OkCancelOption value : OkCancelOption.values()) {
-			if (value.internal == internal) {
+	public static OkCancelOption getInstance( int internal ) {
+		for( OkCancelOption value : OkCancelOption.values() ) {
+			if( value.internal == internal ) {
 				return value;
 			}
 		}

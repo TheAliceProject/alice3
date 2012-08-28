@@ -45,6 +45,7 @@ package org.alice.ide.issue;
 class BooleanRadio extends javax.swing.JPanel {
 	private javax.swing.JRadioButton trueButton;
 	private javax.swing.JRadioButton falseButton;
+
 	public BooleanRadio( String trueText, String falseText, Boolean selection, int axis ) {
 		this.setLayout( new javax.swing.BoxLayout( this, axis ) );
 		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
@@ -62,6 +63,7 @@ class BooleanRadio extends javax.swing.JPanel {
 			}
 		}
 	}
+
 	public Boolean getValue() {
 		if( this.trueButton.isSelected() ) {
 			return true;
@@ -71,6 +73,7 @@ class BooleanRadio extends javax.swing.JPanel {
 			return null;
 		}
 	}
+
 	public void setValue( boolean b ) {
 		if( b ) {
 			this.trueButton.setSelected( true );
@@ -99,7 +102,7 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 	private javax.swing.JLabel labelAttachment = createLabelForMultiLine( "attachment:" );
 	private AttachProjectRadioButtons radioAttachment = new AttachProjectRadioButtons();
 	private java.awt.Component[] rowAttachment = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelAttachment, radioAttachment );
-	
+
 	private javax.swing.JLabel labelVisibility = createLabelForSingleLine( "visibility:" );
 	private VisibilityRadioButtons radioVisibility = new VisibilityRadioButtons();
 	private java.awt.Component[] rowVisibility = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelVisibility, radioVisibility );
@@ -109,6 +112,7 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 		this.add( headerPane, java.awt.BorderLayout.NORTH );
 		this.setIssueType( issueType );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
 		return new ReportSubmissionConfiguration() {
@@ -125,6 +129,7 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 					return super.getJIRAViaRPCAuthenticator();
 				}
 			}
+
 			@Override
 			public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
 				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane.BUGS_ALICE_ORG_KEY );
@@ -140,13 +145,15 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 			}
 		};
 	}
+
 	@Override
-	protected java.util.ArrayList< java.awt.Component[] > addRows( java.util.ArrayList< java.awt.Component[] > rows ) {
+	protected java.util.ArrayList<java.awt.Component[]> addRows( java.util.ArrayList<java.awt.Component[]> rows ) {
 		rows.add( this.rowVisibility );
 		rows = super.addRows( rows );
 		rows.add( this.rowAttachment );
 		return rows;
 	}
+
 	@Override
 	protected String getJIRAProjectKey() {
 		if( this.radioVisibility.getValue() == Boolean.TRUE ) {
@@ -155,7 +162,6 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 			return "AIIIP";
 		}
 	}
-	
 
 	@Override
 	protected String[] getAffectsVersions() {
@@ -183,6 +189,7 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 			return false;
 		}
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
 		rv = super.addAttachments( rv );
@@ -191,6 +198,7 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 		}
 		return rv;
 	}
+
 	public static void main( String[] args ) {
 		PostIssuePane pane = new PostIssuePane( edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG );
 		javax.swing.JFrame window = edu.cmu.cs.dennisc.javax.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );

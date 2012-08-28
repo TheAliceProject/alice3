@@ -47,13 +47,15 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public enum RollDirection {
-	LEFT    ( edu.cmu.cs.dennisc.math.Vector3.createPositiveZAxis() ),
-	RIGHT   ( edu.cmu.cs.dennisc.math.Vector3.createNegativeZAxis() );
+	LEFT( edu.cmu.cs.dennisc.math.Vector3.createPositiveZAxis() ),
+	RIGHT( edu.cmu.cs.dennisc.math.Vector3.createNegativeZAxis() );
 	private final edu.cmu.cs.dennisc.math.Vector3 axis;
+
 	private RollDirection( edu.cmu.cs.dennisc.math.Vector3 axis ) {
 		this.axis = axis;
 	}
-	/*package protected*/ edu.cmu.cs.dennisc.math.Vector3 getAxis() {
+
+	/* package protected */edu.cmu.cs.dennisc.math.Vector3 getAxis() {
 		return this.axis;
 	}
 }

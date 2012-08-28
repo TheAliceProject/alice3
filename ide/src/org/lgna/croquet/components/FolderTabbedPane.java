@@ -49,20 +49,23 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
 
-/*package-private*/ class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite< ? >> extends TabItemDetails<E> {
+/*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
 	private final CardPanel.Key cardPanelKey;
-	private final FolderTabbedPane< E > folderTabbedPane;
-	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane< E > folderTabbedPane, ScrollPane scrollPane ) {
+	private final FolderTabbedPane<E> folderTabbedPane;
+
+	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane, ScrollPane scrollPane ) {
 		super( state, item, folderTabbedPane, scrollPane );
 		this.folderTabbedPane = folderTabbedPane;
 		this.cardPanelKey = folderTabbedPane.getCardPanel().createKey( this.getRootComponent(), this.getTabId() );
 	}
+
 	public CardPanel.Key getCardPanelKey() {
 		return this.cardPanelKey;
 	}
+
 	@Override
-	public void setSelected(boolean isSelected) {
-		super.setSelected(isSelected);
+	public void setSelected( boolean isSelected ) {
+		super.setSelected( isSelected );
 		if( isSelected ) {
 			this.folderTabbedPane.getCardPanel().showKey( this.cardPanelKey );
 			this.folderTabbedPane.getCardPanel().revalidateAndRepaint();
@@ -73,12 +76,13 @@ import org.lgna.croquet.Operation;
 /**
  * @author Dennis Cosgrove
  */
-public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> extends AbstractTabbedPane< E, FolderTabItemDetails<E> > {
+public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E, FolderTabItemDetails<E>> {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
+
 	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
 		@Override
-		public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) {
+		public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
 			java.awt.Font font = button.getFont();
 			java.awt.FontMetrics fm = button.getFontMetrics( font );
@@ -92,41 +96,41 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 			java.awt.Rectangle iconR = new java.awt.Rectangle();
 			java.awt.Rectangle textR = new java.awt.Rectangle();
 			int textIconGap = button.getIconTextGap();
-			javax.swing.SwingUtilities.layoutCompoundLabel(c, fm, text, icon, verticalAlignment, horizontalAlignment, verticalTextPosition, horizontalTextPosition, viewR, iconR, textR, textIconGap);
-			
-	        java.awt.Rectangle bounds = iconR.union(textR);
+			javax.swing.SwingUtilities.layoutCompoundLabel( c, fm, text, icon, verticalAlignment, horizontalAlignment, verticalTextPosition, horizontalTextPosition, viewR, iconR, textR, textIconGap );
 
-	        java.awt.Insets insets = button.getInsets();
-	        bounds.width += insets.left + insets.right;
-	        bounds.height += insets.top + insets.bottom;
+			java.awt.Rectangle bounds = iconR.union( textR );
 
-	        
-	        if( button.getComponentCount() > 0 ) {
-		        for( java.awt.Component component : button.getComponents() ) {
-		        	//if( component.isVisible() ) {
-		        		bounds.width += 2;
-				        bounds.width += component.getPreferredSize().width;
-		        	//}
-		        }
-	        }
+			java.awt.Insets insets = button.getInsets();
+			bounds.width += insets.left + insets.right;
+			bounds.height += insets.top + insets.bottom;
 
-	        return bounds.getSize();
+			if( button.getComponentCount() > 0 ) {
+				for( java.awt.Component component : button.getComponents() ) {
+					//if( component.isVisible() ) {
+					bounds.width += 2;
+					bounds.width += component.getPreferredSize().width;
+					//}
+				}
+			}
+
+			return bounds.getSize();
 		}
-//		@Override
-//		protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, java.lang.String text ) {
-//			int EPIC_HACK_offsetLeft = 6; 
-//			g.translate( -EPIC_HACK_offsetLeft, 0 );
-//			super.paintText( g, b, textRect, text );
-//			g.translate( EPIC_HACK_offsetLeft, 0 );
-//		}
+		//		@Override
+		//		protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, java.lang.String text ) {
+		//			int EPIC_HACK_offsetLeft = 6; 
+		//			g.translate( -EPIC_HACK_offsetLeft, 0 );
+		//			super.paintText( g, b, textRect, text );
+		//			g.translate( EPIC_HACK_offsetLeft, 0 );
+		//		}
 	}
-	
+
 	private static class JFolderTabTitle extends javax.swing.JRadioButton {
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-			public void itemStateChanged(java.awt.event.ItemEvent e) {
+			public void itemStateChanged( java.awt.event.ItemEvent e ) {
 				JFolderTabTitle.this.revalidate();
 			}
 		};
+
 		public JFolderTabTitle() {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 8 ) );
 			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
@@ -134,24 +138,29 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 			this.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 			this.setLayout( new javax.swing.SpringLayout() );
 		}
+
 		@Override
 		public boolean isOpaque() {
 			return false;
 		}
+
 		@Override
 		public void updateUI() {
 			this.setUI( new FolderTabTitleUI() );
 		}
+
 		@Override
 		public void addNotify() {
 			super.addNotify();
 			this.getModel().addItemListener( this.itemListener );
 		}
+
 		@Override
 		public void removeNotify() {
 			this.getModel().removeItemListener( this.itemListener );
 			super.removeNotify();
 		}
+
 		@Override
 		public void repaint() {
 			java.awt.Container parent = this.getParent();
@@ -162,7 +171,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 			}
 		}
 	}
-	
+
 	private static class FolderTabTitle extends BooleanStateButton<javax.swing.AbstractButton> {
 		public FolderTabTitle( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
 			super( booleanState );
@@ -179,16 +188,17 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 4 );
 			}
 		}
+
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
 			JFolderTabTitle rv = new JFolderTabTitle();
-//			{
-//				@Override
-//				public void setComponentOrientation(java.awt.ComponentOrientation componentOrientation) {
-//					super.setComponentOrientation(componentOrientation);
-//					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "adjust spring based on ", componentOrientation );
-//				}
-//			};
+			//			{
+			//				@Override
+			//				public void setComponentOrientation(java.awt.ComponentOrientation componentOrientation) {
+			//					super.setComponentOrientation(componentOrientation);
+			//					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "adjust spring based on ", componentOrientation );
+			//				}
+			//			};
 			return rv;
 		}
 	}
@@ -206,14 +216,14 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		@Override
 		protected javax.swing.JPanel createJPanel() {
 			javax.swing.JPanel rv = new javax.swing.JPanel() {
-				
+
 				@Override
 				public java.awt.Dimension getPreferredSize() {
 					java.awt.Dimension rv = super.getPreferredSize();
 					rv.width += TRAILING_TAB_PAD;
 					return rv;
 				}
-				
+
 				private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, boolean isContinuation ) {
 					float a = height * 0.25f;
 
@@ -223,21 +233,21 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 					float tabPad;
 					if( this.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
 						xStart = x;
-						xEnd = x + width - 1;
+						xEnd = ( x + width ) - 1;
 						tabPad = TRAILING_TAB_PAD;
 						xA = xStart + a;
 					} else {
-						xStart = x + width - 1;
+						xStart = ( x + width ) - 1;
 						xEnd = x;
 						tabPad = -TRAILING_TAB_PAD;
 						xA = xStart - a;
 					}
-					
-					float xCurve0 = xEnd - tabPad / 2;
+
+					float xCurve0 = xEnd - ( tabPad / 2 );
 					float xCurve1 = xEnd + tabPad;
-					float cx0 = xCurve0 + tabPad * 0.75f;
+					float cx0 = xCurve0 + ( tabPad * 0.75f );
 					float cx1 = xCurve0;
-					
+
 					float y0 = y + NORTH_AREA_PAD;
 					float y1 = y + height;// + this.contentBorderInsets.top;
 					float cy0 = y0;
@@ -250,7 +260,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 					} else {
 						rv.moveTo( xCurve1, y1 );
 					}
-					rv.lineTo( xCurve1, y1-1 );
+					rv.lineTo( xCurve1, y1 - 1 );
 					rv.curveTo( cx1, cy1, cx0, cy0, xCurve0, y0 );
 					rv.lineTo( xA, y0 );
 					rv.quadTo( xStart, y0, xStart, yA );
@@ -304,8 +314,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 					javax.swing.AbstractButton selectedButton = null;
 					java.awt.Component[] components = this.getComponents();
 					final int N = components.length;
-					for( int i=0; i<N; i++ ) {
-						java.awt.Component component = components[ N-1-i ];
+					for( int i = 0; i < N; i++ ) {
+						java.awt.Component component = components[ N - 1 - i ];
 						if( component instanceof javax.swing.AbstractButton ) {
 							javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
 							if( button.isSelected() ) {
@@ -333,32 +343,35 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 			return rv;
 		}
 	}
-	
+
 	private static final class InternalCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
 		public InternalCardOwnerComposite() {
 			super( java.util.UUID.fromString( "31cf52f4-80ea-49f9-9875-7ea942d241e7" ) );
 		}
 	}
+
 	private final InternalCardOwnerComposite cardComposite = new InternalCardOwnerComposite();
 	private final TitlesPanel titlesPanel = new TitlesPanel();
 	private final BorderPanel innerHeaderPanel = new BorderPanel();
 	private final BorderPanel outerHeaderPanel = new BorderPanel();
-	
+
 	//private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.Action getActionFor( E item ) {
 		return FolderTabbedPane.this.getModel().createActionForItem( item );
 	}
-	
+
 	//todo: PopupOperation
 	private class PopupOperation extends ActionOperation {
 		public PopupOperation() {
 			super( Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7923b4c8-6a9f-4c8b-99b5-909ae6c0889a" ) );
 		}
+
 		@Override
 		protected void localize() {
 			super.localize();
 			this.setName( ">>" );
 		}
+
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -370,15 +383,16 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 				popupMenu.add( checkBox );
 				buttonGroup.add( checkBox );
 			}
-			ViewController<?,?> viewController = trigger.getViewController();
+			ViewController<?, ?> viewController = trigger.getViewController();
 			popupMenu.show( viewController.getAwtComponent(), 0, viewController.getHeight() );
 		}
 	}
-	
+
 	private class PopupButton extends OperationButton<javax.swing.JButton, Operation> {
 		public PopupButton( Operation operation ) {
 			super( operation );
 		}
+
 		@Override
 		protected final javax.swing.JButton createAwtComponent() {
 			javax.swing.JButton rv = new javax.swing.JButton() {
@@ -392,25 +406,27 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 						return false;
 					}
 				}
+
 				@Override
-				public void paint(java.awt.Graphics g) {
+				public void paint( java.awt.Graphics g ) {
 					if( isNecessary() ) {
-						super.paint(g);
+						super.paint( g );
 					} else {
 						g.setColor( FolderTabbedPane.this.getBackgroundColor() );
 						g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 					}
 				}
+
 				@Override
-				public boolean contains(int x, int y) {
+				public boolean contains( int x, int y ) {
 					if( isNecessary() ) {
-						return super.contains(x, y);
+						return super.contains( x, y );
 					} else {
 						return false;
 					}
 				}
 			};
-			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2,4,2,4 ) );
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 4, 2, 4 ) );
 			return rv;
 		}
 	}
@@ -423,19 +439,21 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		this.innerHeaderPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
 		this.cardComposite.getView().setBorder( new javax.swing.border.Border() {
 			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
-				return new java.awt.Insets( 1,1,0,0 );
+				return new java.awt.Insets( 1, 1, 0, 0 );
 			}
+
 			public boolean isBorderOpaque() {
 				return true;
 			}
+
 			public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 				if( titlesPanel.getComponentCount() > 0 ) {
 					g.setColor( SELECTED_BORDER_COLOR );
 					g.fillRect( x, y, width, 1 );
 					g.fillRect( x, y, 1, height );
-					for( Component< ? > component : titlesPanel.getComponents() ) {
-						if( component instanceof AbstractButton< ?, ? > ) {
-							AbstractButton< ?, ? > button = (AbstractButton< ?, ? >)component;
+					for( Component<?> component : titlesPanel.getComponents() ) {
+						if( component instanceof AbstractButton<?, ?> ) {
+							AbstractButton<?, ?> button = (AbstractButton<?, ?>)component;
 							if( button.getAwtComponent().getModel().isSelected() ) {
 								java.awt.Rectangle bounds = button.getBounds( innerHeaderPanel );
 								g.setColor( button.getBackgroundColor() );
@@ -445,7 +463,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 								} else {
 									x0 = bounds.x - TRAILING_TAB_PAD;
 								}
-								g.fillRect( x0, y, bounds.width - 1 + TRAILING_TAB_PAD, 1 );
+								g.fillRect( x0, y, ( bounds.width - 1 ) + TRAILING_TAB_PAD, 1 );
 							}
 						}
 					}
@@ -460,7 +478,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 	public JComponent<?> getHeaderLeadingComponent() {
 		return (JComponent<?>)this.innerHeaderPanel.getLineStartComponent();
 	}
-	public void setHeaderLeadingComponent( JComponent< ? > component ) {
+
+	public void setHeaderLeadingComponent( JComponent<?> component ) {
 		if( component != null ) {
 			component.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.innerHeaderPanel.addLineStartComponent( component );
@@ -472,7 +491,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		}
 		this.innerHeaderPanel.revalidateAndRepaint();
 	}
-	private void setInnerHeaderTrailingComponent( JComponent< ? > component ) {
+
+	private void setInnerHeaderTrailingComponent( JComponent<?> component ) {
 		if( component != null ) {
 			if( component.isOpaque() ) {
 				//pass
@@ -489,7 +509,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		}
 		this.innerHeaderPanel.revalidateAndRepaint();
 	}
-	public void setHeaderTrailingComponent( JComponent< ? > component ) {
+
+	public void setHeaderTrailingComponent( JComponent<?> component ) {
 		if( component != null ) {
 			if( component.isOpaque() ) {
 				//pass
@@ -506,6 +527,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		}
 		this.outerHeaderPanel.revalidateAndRepaint();
 	}
+
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
@@ -515,23 +537,25 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		rv.add( this.cardComposite.getView().getAwtComponent(), java.awt.BorderLayout.CENTER );
 		return rv;
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout();
 	}
 
 	@Override
-	protected BooleanStateButton< ? extends javax.swing.AbstractButton > createTitleButton( E item, BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
+	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
 		return new FolderTabTitle( itemSelectedState, closeButtonActionListener );
 	}
+
 	@Override
 	protected FolderTabItemDetails<E> createTabItemDetails( E item, ScrollPane scrollPane ) {
 		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this.getModel(), item, this, scrollPane );
 		rv.getRootComponent().setVisible( false );
 		return rv;
 	};
-	
-	/*package-private*/ CardPanel getCardPanel() {
+
+	/* package-private */CardPanel getCardPanel() {
 		return this.cardComposite.getView();
 	}
 
@@ -540,35 +564,37 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> exte
 		this.titlesPanel.removeAllComponents();
 		this.cardComposite.getView().removeAllComponents();
 	}
+
 	@Override
-	protected void addPrologue(int count) {
+	protected void addPrologue( int count ) {
 	}
+
 	@Override
-	protected void addItem(FolderTabItemDetails<E> folderTabItemDetails) {
+	protected void addItem( FolderTabItemDetails<E> folderTabItemDetails ) {
 		this.titlesPanel.addComponent( folderTabItemDetails.getButton() );
 		this.cardComposite.getView().addComponent( folderTabItemDetails.getCardPanelKey() );
 	}
+
 	@Override
 	protected void addEpilogue() {
 	}
-	
-//	@Override
-//	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-//		return new FolderTab<E>( item, tabCreator );
-//	}
-//	@Override
-//	protected void addTab(AbstractTabbedPane.Tab<E> tab) {
-//		this.headerPane.addComponent( tab.getOuterTitleComponent() );
-//		this.cardPanel.addComponent( ((FolderTab<E>)tab).getCardPanelKey() );
-////		this.revalidateAndRepaint();
-//	}
-//	@Override
-//	protected void removeTab(AbstractTabbedPane.Tab<E> tab) {
-//		this.headerPane.removeComponent( tab.getOuterTitleComponent() );
-//		this.cardPanel.removeComponent( ((FolderTab<E>)tab).getCardPanelKey() );
-//	}
 
-	
+	//	@Override
+	//	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
+	//		return new FolderTab<E>( item, tabCreator );
+	//	}
+	//	@Override
+	//	protected void addTab(AbstractTabbedPane.Tab<E> tab) {
+	//		this.headerPane.addComponent( tab.getOuterTitleComponent() );
+	//		this.cardPanel.addComponent( ((FolderTab<E>)tab).getCardPanelKey() );
+	////		this.revalidateAndRepaint();
+	//	}
+	//	@Override
+	//	protected void removeTab(AbstractTabbedPane.Tab<E> tab) {
+	//		this.headerPane.removeComponent( tab.getOuterTitleComponent() );
+	//		this.cardPanel.removeComponent( ((FolderTab<E>)tab).getCardPanelKey() );
+	//	}
+
 	//
 	//	/* package-private */class Key {
 	//		private AbstractButton<?> headerComponent;

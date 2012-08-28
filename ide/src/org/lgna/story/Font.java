@@ -43,7 +43,15 @@
 
 package org.lgna.story;
 
-import org.lgna.story.font.*;
+import org.lgna.story.font.Attribute;
+import org.lgna.story.font.FamilyAttribute;
+import org.lgna.story.font.FamilyConstant;
+import org.lgna.story.font.PostureAttribute;
+import org.lgna.story.font.PostureConstant;
+import org.lgna.story.font.SizeAttribute;
+import org.lgna.story.font.SizeValue;
+import org.lgna.story.font.WeightAttribute;
+import org.lgna.story.font.WeightConstant;
 
 /**
  * @author Dennis Cosgrove
@@ -51,17 +59,16 @@ import org.lgna.story.font.*;
 public final class Font {
 	private java.awt.Font m_awtFont;
 
-	
-	public Font( 
-			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable=true )
-			Attribute< ? >... attributes 
-	) {
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		for( Attribute< ? > attribute : attributes ) {
+	public Font(
+			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable = true )
+			Attribute<?>... attributes ) {
+		java.util.Map<java.awt.font.TextAttribute, Object> map = new java.util.HashMap<java.awt.font.TextAttribute, Object>();
+		for( Attribute<?> attribute : attributes ) {
 			map.put( attribute.getKey(), attribute.getValue() );
 		}
 		m_awtFont = new java.awt.Font( map );
 	}
+
 	public Font( java.awt.Font awtFont ) {
 		m_awtFont = awtFont;
 	}
@@ -72,8 +79,9 @@ public final class Font {
 
 	//todo
 	public Font deriveScaledFont( float scalar ) {
-		return deriveSizeFont( (int)(m_awtFont.getSize() * scalar) );
+		return deriveSizeFont( (int)( m_awtFont.getSize() * scalar ) );
 	}
+
 	public Font deriveSizeFont( float size ) {
 		return new Font( m_awtFont.deriveFont( size ) );
 	}
@@ -86,22 +94,25 @@ public final class Font {
 			return FamilyConstant.SANS_SERIF;
 		}
 	}
+
 	public WeightAttribute getWeight() {
 		int style = m_awtFont.getStyle();
-		if( (style & java.awt.Font.BOLD) != 0 ) {
+		if( ( style & java.awt.Font.BOLD ) != 0 ) {
 			return WeightConstant.BOLD;
 		} else {
 			return WeightConstant.REGULAR;
 		}
 	}
+
 	public PostureAttribute getPosture() {
 		int style = m_awtFont.getStyle();
-		if( (style & java.awt.Font.ITALIC) != 0 ) {
+		if( ( style & java.awt.Font.ITALIC ) != 0 ) {
 			return PostureConstant.OBLIQUE;
 		} else {
 			return PostureConstant.REGULAR;
 		}
 	}
+
 	public SizeAttribute getSize() {
 		int size = m_awtFont.getSize();
 		return new SizeValue( (float)size );

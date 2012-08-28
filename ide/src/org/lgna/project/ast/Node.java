@@ -47,8 +47,12 @@ package org.lgna.project.ast;
  */
 public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner, edu.cmu.cs.dennisc.pattern.Crawlable {
 	public java.util.UUID getId();
+
 	public Node getParent();
+
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls, boolean isThisIncludedInSearch );
+
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
+
 	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, org.lgna.project.ast.CrawlPolicy crawlPolicy );
 }

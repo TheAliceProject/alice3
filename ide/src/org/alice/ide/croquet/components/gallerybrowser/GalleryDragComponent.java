@@ -46,7 +46,7 @@ package org.alice.ide.croquet.components.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent< org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel > {
+public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent<org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel> {
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model );
 		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
@@ -59,14 +59,17 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
+
 	@Override
 	protected int getInsetTop() {
 		return 4;
 	}
+
 	@Override
 	protected int getInsetRight() {
 		return 4;
 	}
+
 	@Override
 	protected int getInsetBottom() {
 		return 4;
@@ -76,20 +79,24 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	protected int getDockInsetLeft() {
 		return 0;
 	}
+
 	@Override
 	protected int getInternalInsetLeft() {
 		return 4;
 	}
+
 	@Override
 	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
-		return new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
+		return new java.awt.geom.RoundRectangle2D.Float( x, y, width - 1, height - 1, 8, 8 );
 	}
+
 	@Override
-	protected void fillBounds(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		g2.fill( this.createShape(x, y, width, height));
+	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.fill( this.createShape( x, y, width, height ) );
 	}
+
 	@Override
-	protected void paintPrologue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		g2.fill( this.createShape( x, y, width, height ) );
 	}
 }

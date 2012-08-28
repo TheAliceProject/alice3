@@ -52,96 +52,96 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
-public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<Point3, org.lgna.story.SMovableTurnable> 
+public class MoveableTurnableTranslationAdapter extends AbstractPropertyAdapter<Point3, org.lgna.story.SMovableTurnable>
 {
 	private AbsoluteTransformationListener absoluteTransformationListener;
-	
-	public MoveableTurnableTranslationAdapter(org.lgna.story.SMovableTurnable instance, StandardExpressionState expressionState) {
-		super("Position", instance, expressionState);
+
+	public MoveableTurnableTranslationAdapter( org.lgna.story.SMovableTurnable instance, StandardExpressionState expressionState ) {
+		super( "Position", instance, expressionState );
 	}
-	
+
 	private void initializeTransformationListenersIfNecessary()
 	{
-		if (this.absoluteTransformationListener == null)
+		if( this.absoluteTransformationListener == null )
 		{
 			this.absoluteTransformationListener = new AbsoluteTransformationListener() {
-				public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) 
+				public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent )
 				{
 					MoveableTurnableTranslationAdapter.this.handleInternalValueChanged();
 				}
 			};
 		}
 	}
-	
+
 	@Override
-	public void startListening() 
+	public void startListening()
 	{
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			this.initializeTransformationListenersIfNecessary();
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().addAbsoluteTransformationListener(this.absoluteTransformationListener);
+			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation( this.instance );
+			implementation.getSgComposite().addAbsoluteTransformationListener( this.absoluteTransformationListener );
 		}
 	}
-	
+
 	@Override
-	public void stopListening() 
+	public void stopListening()
 	{
-		if (this.instance != null)
+		if( this.instance != null )
 		{
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.getSgComposite().removeAbsoluteTransformationListener(this.absoluteTransformationListener);
+			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation( this.instance );
+			implementation.getSgComposite().removeAbsoluteTransformationListener( this.absoluteTransformationListener );
 		}
 	}
-	
+
 	@Override
 	public Class<Point3> getPropertyType()
 	{
 		return Point3.class;
 	}
-	
+
 	@Override
-	public Point3 getValueCopyIfMutable() 
+	public Point3 getValueCopyIfMutable()
 	{
-		return new Point3(this.getValue());
+		return new Point3( this.getValue() );
 	}
-	
+
 	@Override
-	public Point3 getValue() 
+	public Point3 getValue()
 	{
-		if (this.instance != null)
+		if( this.instance != null )
 		{
-			return ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation().translation;
+			return ImplementationAccessor.getImplementation( this.instance ).getAbsoluteTransformation().translation;
 		}
 		return null;
 	}
-	
+
 	@Override
-	public void setValue(Point3 newValue) 
+	public void setValue( Point3 newValue )
 	{
-		super.setValue(newValue);
-		if (this.instance != null)
+		super.setValue( newValue );
+		if( this.instance != null )
 		{
-			AffineMatrix4x4 currentTrans = ImplementationAccessor.getImplementation(this.instance).getAbsoluteTransformation();
-			double dist = Point3.calculateDistanceBetween(currentTrans.translation, newValue);
+			AffineMatrix4x4 currentTrans = ImplementationAccessor.getImplementation( this.instance ).getAbsoluteTransformation();
+			double dist = Point3.calculateDistanceBetween( currentTrans.translation, newValue );
 			double duration = 1;
-			if (dist < .02)
+			if( dist < .02 )
 			{
 				duration = 0;
 			}
-			else if (dist < .5)
+			else if( dist < .5 )
 			{
-				duration = (dist - .02) / (.5 - .02);
+				duration = ( dist - .02 ) / ( .5 - .02 );
 			}
-			
-			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation(this.instance);
-			implementation.animatePositionOnly( org.lgna.story.implementation.AsSeenBy.SCENE.getActualEntityImplementation(implementation), newValue, false, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY);
+
+			org.lgna.story.implementation.AbstractTransformableImp implementation = ImplementationAccessor.getImplementation( this.instance );
+			implementation.animatePositionOnly( org.lgna.story.implementation.AsSeenBy.SCENE.getActualEntityImplementation( implementation ), newValue, false, duration, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY );
 		}
 	}
 
 	protected void handleInternalValueChanged()
 	{
-		this.notifyValueObservers(this.getValue());
+		this.notifyValueObservers( this.getValue() );
 	}
 
 }

@@ -46,13 +46,15 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.lgna.project.ast.Expression > extends ExpressionFillInWithoutBlanks< F > {
+public abstract class PreviousExpressionBasedFillInWithoutBlanks<F extends org.lgna.project.ast.Expression> extends ExpressionFillInWithoutBlanks<F> {
 	public PreviousExpressionBasedFillInWithoutBlanks( java.util.UUID id ) {
 		super( id );
 	}
+
 	private org.lgna.project.ast.Expression getPreviousExpression() {
 		return org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
 	}
+
 	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
 		org.lgna.project.ast.Expression prevExpression = this.getPreviousExpression();
 		if( prevExpression != null ) {
@@ -61,18 +63,21 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.
 			return null;
 		}
 	}
-//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, org.lgna.project.ast.Expression previousExpression );
-//	@Override
-//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,Void> context ) {
-//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
-//	}
+
+	//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,Void> context, org.lgna.project.ast.Expression previousExpression );
+	//	@Override
+	//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,Void> context ) {
+	//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
+	//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
+	//	}
 	private org.lgna.project.ast.Expression cleanExpression;
+
 	@Override
 	protected void markClean() {
 		super.markClean();
 		this.cleanExpression = this.getPreviousExpression();
 	}
+
 	@Override
 	protected boolean isDirty() {
 		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
@@ -80,12 +85,14 @@ public abstract class PreviousExpressionBasedFillInWithoutBlanks< F extends org.
 	}
 
 	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression );
+
 	@Override
-	public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public final F createValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}
+
 	@Override
-	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
+	public final F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node ) {
 		//todo?
 		return this.createValue( this.createCopyOfPreviousExpression() );
 	}

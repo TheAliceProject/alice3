@@ -46,28 +46,33 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extends ItemSelectable<javax.swing.JPanel, E, org.lgna.croquet.ListSelectionState<E>> {
+public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends ItemSelectable<javax.swing.JPanel, E, org.lgna.croquet.ListSelectionState<E>> {
 	public ItemSelectablePanel( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
+
 	private boolean isInitialized = false;
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		if( this.isInitialized ) {
 			//pass
 		} else {
-			this.setSwingComboBoxModel(this.getModel().getSwingModel().getComboBoxModel());
-			this.setSwingListSelectionModel(this.getModel().getSwingModel().getListSelectionModel());
+			this.setSwingComboBoxModel( this.getModel().getSwingModel().getComboBoxModel() );
+			this.setSwingListSelectionModel( this.getModel().getSwingModel().getListSelectionModel() );
 			this.isInitialized = true;
 		}
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		//todo?
 		super.handleUndisplayable();
 	}
+
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
+
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = new javax.swing.JPanel() {
@@ -75,6 +80,7 @@ public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extend
 			public java.awt.Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
+
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				java.awt.Dimension rv = super.getMaximumSize();
@@ -97,18 +103,20 @@ public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extend
 	private javax.swing.ComboBoxModel comboBoxModel;
 	private javax.swing.ListSelectionModel listSelectionModel;
 	private javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
-		public void intervalAdded(javax.swing.event.ListDataEvent e) {
+		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
 		}
-		public void intervalRemoved(javax.swing.event.ListDataEvent e) {
+
+		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
 		}
-		public void contentsChanged(javax.swing.event.ListDataEvent e) {
+
+		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
 		}
 	};
 	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			ItemSelectablePanel.this.handleListSelectionChanged();
 		}
 	};
@@ -116,27 +124,31 @@ public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extend
 	protected ID getItemDetails( E item ) {
 		return this.map.get( item );
 	}
+
 	protected java.util.Collection<ID> getAllItemDetails() {
 		return this.map.values();
 	}
 
 	protected abstract void removeAllDetails();
+
 	protected abstract void addPrologue( int count );
+
 	protected abstract void addItem( ID itemDetails );
+
 	protected abstract void addEpilogue();
-	
+
 	protected abstract BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState );
-	
+
 	private java.util.ArrayList<E> prevItems = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-	
+
 	private void handleListDataChanged() {
 		synchronized( this.comboBoxModel ) {
 			final int N = this.comboBoxModel.getSize();
-			
+
 			boolean isActuallyChanged;
 			if( N == prevItems.size() ) {
 				isActuallyChanged = false;
-				for( int i=0; i<N; i++ ) {
+				for( int i = 0; i < N; i++ ) {
 					E item = (E)this.comboBoxModel.getElementAt( i );
 					if( item == prevItems.get( i ) ) {
 						//pass
@@ -146,16 +158,17 @@ public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extend
 					}
 				}
 			} else {
-				isActuallyChanged = true;;
+				isActuallyChanged = true;
+				;
 			}
-			
+
 			if( isActuallyChanged ) {
 				synchronized( this.getTreeLock() ) {
 					this.removeAllDetails();
 					this.prevItems.clear();
 					this.prevItems.ensureCapacity( N );
 					this.addPrologue( N );
-					for( int i=0; i<N; i++ ) {
+					for( int i = 0; i < N; i++ ) {
 						E item = (E)this.comboBoxModel.getElementAt( i );
 						ID itemDetails = this.map.get( item );
 						if( itemDetails != null ) {
@@ -171,19 +184,21 @@ public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extend
 					this.addEpilogue();
 				}
 			}
-			
-//			int i = this.listSelectionModel.getLeadSelectionIndex();
-//			E selectedItem;
-//			if( i > 0 ) {
-//				selectedItem = (E)this.model.getElementAt( i );
-//			} else {
-//				selectedItem = null;
-//			}
-//			this.handleItemSelected( selectedItem );
+
+			//			int i = this.listSelectionModel.getLeadSelectionIndex();
+			//			E selectedItem;
+			//			if( i > 0 ) {
+			//				selectedItem = (E)this.model.getElementAt( i );
+			//			} else {
+			//				selectedItem = null;
+			//			}
+			//			this.handleItemSelected( selectedItem );
 		}
 		this.revalidateAndRepaint();
 	}
+
 	protected abstract ID createItemDetails( E item );
+
 	protected void handleItemSelected( E item ) {
 		if( item != null ) {
 			ItemDetails<E> itemDetails = this.map.get( item );
@@ -203,6 +218,7 @@ public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extend
 			}
 		}
 	}
+
 	private void handleListSelectionChanged() {
 		this.handleItemSelected( (E)this.comboBoxModel.getSelectedItem() );
 	}
@@ -217,9 +233,10 @@ public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extend
 		}
 	}
 
-	/*package-private*/ javax.swing.ComboBoxModel getSwingComboBoxModel() {
+	/* package-private */javax.swing.ComboBoxModel getSwingComboBoxModel() {
 		return this.comboBoxModel;
 	}
+
 	private void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
 		if( this.comboBoxModel != null ) {
 			synchronized( this.comboBoxModel ) {
@@ -234,9 +251,11 @@ public abstract class ItemSelectablePanel< E, ID extends ItemDetails<E> > extend
 			}
 		}
 	}
-	/*package-private*/ javax.swing.ListSelectionModel getSwingListSelectionModel() {
+
+	/* package-private */javax.swing.ListSelectionModel getSwingListSelectionModel() {
 		return this.listSelectionModel;
 	}
+
 	private void setSwingListSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
 		if( this.listSelectionModel != null ) {
 			synchronized( this.listSelectionModel ) {

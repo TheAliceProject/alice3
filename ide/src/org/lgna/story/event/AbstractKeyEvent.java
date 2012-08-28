@@ -47,18 +47,23 @@ package org.lgna.story.event;
  */
 public abstract class AbstractKeyEvent extends AbstractEvent {
 	private final java.awt.event.KeyEvent e;
+
 	public AbstractKeyEvent( java.awt.event.KeyEvent e ) {
 		this.e = e;
 	}
+
 	public org.lgna.story.Key getKey() {
 		return org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
 	}
+
 	public Boolean isKey( org.lgna.story.Key key ) {
 		return this.getKey() == key;
 	}
+
 	protected char getKeyChar() {
 		return this.e.getKeyChar();
 	}
+
 	protected java.awt.event.KeyEvent getJavaEvent() {
 		return this.e;
 	}

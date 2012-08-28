@@ -45,9 +45,11 @@ package org.alice.stageide.person.components.renderers;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< E > {
+abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<E> {
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
+
 	protected abstract String getSubPath();
+
 	private java.net.URL getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "images/" );
@@ -74,7 +76,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 		if( value != null ) {
 			String clsName = value.getClass().getSimpleName();
 			String enumConstantName = value.toString();
-			
+
 			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getBaseSkinTone();
 
 			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
@@ -85,7 +87,7 @@ abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.javax.
 			if( isSelected ) {
 				rv.setBackground( org.alice.stageide.person.components.MainPanel.SELECTED_COLOR );
 			}
-			
+
 			javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
 			if( icon != null ) {
 				rv.setIcon( icon );

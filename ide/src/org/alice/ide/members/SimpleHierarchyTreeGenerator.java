@@ -47,11 +47,11 @@ package org.alice.ide.members;
  * @author Dennis Cosgrove
  */
 public class SimpleHierarchyTreeGenerator implements TreeGenerator {
-	private static java.util.List< org.lgna.project.ast.AbstractType< ?,?,? > > getTypes( org.lgna.project.ast.AbstractType< ?,?,? > type ) {
-		java.util.List< org.lgna.project.ast.AbstractType< ?,?,? > > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> getTypes( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( type != null ) {
-			org.lgna.project.ast.AbstractType< ?,?,? > t = type;
-			while( t instanceof org.lgna.project.ast.UserType< ? > ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> t = type;
+			while( t instanceof org.lgna.project.ast.UserType<?> ) {
 				rv.add( t );
 				t = t.getSuperType();
 			}
@@ -59,7 +59,8 @@ public class SimpleHierarchyTreeGenerator implements TreeGenerator {
 		}
 		return rv;
 	}
-	private static void update( edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > parent, org.lgna.project.ast.AbstractType< ?,?,? > type, org.alice.ide.members.filters.MemberFilter memberFilter ) {
+
+	private static void update( edu.cmu.cs.dennisc.tree.DefaultNode<org.alice.ide.members.nodedata.Data> parent, org.lgna.project.ast.AbstractType<?, ?, ?> type, org.alice.ide.members.filters.MemberFilter memberFilter ) {
 		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( memberFilter.isAcceptable( field ) ) {
 				parent.addChild( new org.alice.ide.members.nodedata.MemberData( field ) );
@@ -72,15 +73,16 @@ public class SimpleHierarchyTreeGenerator implements TreeGenerator {
 		}
 		if( type instanceof org.lgna.project.ast.JavaType ) {
 			if( type.isFollowToSuperClassDesired() ) {
-				org.lgna.project.ast.AbstractType< ?,?,? > superType = type.getSuperType();
+				org.lgna.project.ast.AbstractType<?, ?, ?> superType = type.getSuperType();
 				update( parent, superType, memberFilter );
 			}
 		}
 	}
-	public edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > createTree( org.alice.ide.instancefactory.InstanceFactory factory, org.alice.ide.members.filters.MemberFilter memberFilter ) {
-		edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > rv = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( new org.alice.ide.members.nodedata.RootData(), org.alice.ide.members.nodedata.Data.class );
-		for( org.lgna.project.ast.AbstractType< ?, ?, ? > type : getTypes( factory.getValueType() ) ) {
-			edu.cmu.cs.dennisc.tree.DefaultNode< org.alice.ide.members.nodedata.Data > typeNode = rv.addChild( new org.alice.ide.members.nodedata.TypeData( type ) );
+
+	public edu.cmu.cs.dennisc.tree.DefaultNode<org.alice.ide.members.nodedata.Data> createTree( org.alice.ide.instancefactory.InstanceFactory factory, org.alice.ide.members.filters.MemberFilter memberFilter ) {
+		edu.cmu.cs.dennisc.tree.DefaultNode<org.alice.ide.members.nodedata.Data> rv = edu.cmu.cs.dennisc.tree.DefaultNode.createUnsafeInstance( new org.alice.ide.members.nodedata.RootData(), org.alice.ide.members.nodedata.Data.class );
+		for( org.lgna.project.ast.AbstractType<?, ?, ?> type : getTypes( factory.getValueType() ) ) {
+			edu.cmu.cs.dennisc.tree.DefaultNode<org.alice.ide.members.nodedata.Data> typeNode = rv.addChild( new org.alice.ide.members.nodedata.TypeData( type ) );
 			update( typeNode, type, memberFilter );
 		}
 		return rv;

@@ -49,12 +49,14 @@ public class StringProperty extends InstanceProperty<String> {
 	public StringProperty( InstancePropertyOwner owner, String value ) {
 		super( owner, value );
 	}
+
 	protected boolean isNullAcceptable() {
 		return false;
 	}
+
 	@Override
 	public void setValue( PropertyOwner owner, String value ) {
-		assert value != null  || isNullAcceptable();
+		assert ( value != null ) || isNullAcceptable();
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
 			super.setValue( owner, value );
 		}

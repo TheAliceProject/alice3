@@ -47,21 +47,24 @@ package edu.cmu.cs.dennisc.java.lang;
  */
 public class ThreadWithRevealingToString extends Thread {
 	public ThreadWithRevealingToString() {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
+		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
 	}
+
 	public ThreadWithRevealingToString( ThreadGroup threadGroup, String name ) {
 		super( threadGroup, name );
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
+		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
 	}
-	protected StringBuffer updateRepr( StringBuffer rv ) { 
+
+	protected StringBuffer updateRepr( StringBuffer rv ) {
 		rv.append( "id=" );
 		rv.append( this.getId() );
-//		rv.append( ";group=" );
-//		rv.append( this.getThreadGroup() );
-//		rv.append( ";priority=" );
-//		rv.append( this.getPriority() );
+		//		rv.append( ";group=" );
+		//		rv.append( this.getThreadGroup() );
+		//		rv.append( ";priority=" );
+		//		rv.append( this.getPriority() );
 		return rv;
 	}
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

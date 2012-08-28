@@ -49,24 +49,30 @@ package org.lgna.project.ast;
 public class UserLambda extends AbstractUserMethod implements Lambda {
 	public UserLambda() {
 	}
-	public UserLambda( AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
+
+	public UserLambda( AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
 		super( returnType, requiredParameters, body );
 	}
+
 	public UserLambda( Class<?> returnCls, UserParameter[] requiredParameters, BlockStatement body ) {
 		this( JavaType.getInstance( returnCls ), requiredParameters, body );
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
+
 	@Override
 	public boolean isStatic() {
 		return false;
 	}
+
 	@Override
 	public boolean isAbstract() {
 		return false;
 	}
+
 	@Override
 	public boolean isFinal() {
 		return false;

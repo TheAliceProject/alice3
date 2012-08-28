@@ -50,14 +50,17 @@ public class ProcedureFunctionPropertyTabState extends TemplatesTabSelectionStat
 	private static class SingletonHolder {
 		private static ProcedureFunctionPropertyTabState instance = new ProcedureFunctionPropertyTabState();
 	}
+
 	public static ProcedureFunctionPropertyTabState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	public ProcedureFunctionPropertyTabState() {
 		super( java.util.UUID.fromString( "96e32c76-8786-4b34-a022-34b5820a73ff" ), ProcedureTemplateComposite.getInstance(), FunctionTemplateComposite.getInstance(), FieldTemplateComposite.getInstance() );
 	}
+
 	@Override
-	public org.lgna.croquet.components.AbstractTabbedPane<?,?> createTabbedPane() {
+	public org.lgna.croquet.components.AbstractTabbedPane<?, ?> createTabbedPane() {
 		return this.createFolderTabbedPane();
 	}
 }

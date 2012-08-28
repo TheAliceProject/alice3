@@ -46,53 +46,63 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ValueInputDialogOperation<T> extends InputDialogOperation< T > {
-	public static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueInputDialogOperation.VALUE_KEY" );
+public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<T> {
+	public static final org.lgna.croquet.history.Step.Key<Object> VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueInputDialogOperation.VALUE_KEY" );
 
-	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueInputDialogOperation<F> > {
+	public static final class InternalFillInResolver<F> extends IndirectResolver<InternalFillIn<F>, ValueInputDialogOperation<F>> {
 		private InternalFillInResolver( ValueInputDialogOperation<F> internal ) {
 			super( internal );
 		}
+
 		public InternalFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
 		protected InternalFillIn<F> getDirect( ValueInputDialogOperation<F> indirect ) {
 			return indirect.getFillIn();
 		}
 	}
-	private static final class InternalFillIn<F> extends CascadeFillIn< F, Void > {
+
+	private static final class InternalFillIn<F> extends CascadeFillIn<F, Void> {
 		private final ValueInputDialogOperation<F> valueInputDialogOperation;
+
 		private InternalFillIn( ValueInputDialogOperation<F> valueInputDialogOperation ) {
 			super( java.util.UUID.fromString( "f2c75b9f-aa0d-487c-a161-46cb23ff3e76" ) );
 			this.valueInputDialogOperation = valueInputDialogOperation;
 		}
+
 		public ValueInputDialogOperation<F> getInputDialogOperation() {
 			return this.valueInputDialogOperation;
 		}
+
 		@Override
 		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return this.valueInputDialogOperation.getClassUsedForLocalization();
 		}
+
 		@Override
 		protected InternalFillInResolver<F> createResolver() {
 			return new InternalFillInResolver<F>( this.valueInputDialogOperation );
 		}
+
 		@Override
-		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
 			return new javax.swing.JLabel( this.getTutorialItemText() );
 		}
+
 		@Override
-		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-			org.lgna.croquet.history.CompletionStep<?> inputDialogStep = this.valueInputDialogOperation.fire();
+		public final F createValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+			org.lgna.croquet.history.Step<?> inputDialogStep = this.valueInputDialogOperation.fire();
 			if( inputDialogStep.containsEphemeralDataFor( VALUE_KEY ) ) {
 				return (F)inputDialogStep.getEphemeralDataFor( VALUE_KEY );
 			} else {
 				throw new CancelException();
 			}
 		}
+
 		@Override
-		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
+		public F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node ) {
 			return null;
 		}
 
@@ -101,6 +111,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 			rv.append( this.getTutorialItemText() );
 			return rv;
 		}
+
 		@Override
 		protected void appendRepr( StringBuilder sb ) {
 			super.appendRepr( sb );
@@ -112,7 +123,9 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 	public ValueInputDialogOperation( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
 	}
+
 	private InternalFillIn<T> cascadeFillIn;
+
 	public synchronized InternalFillIn<T> getFillIn() {
 		if( this.cascadeFillIn != null ) {
 			//pass
@@ -121,7 +134,9 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		}
 		return this.cascadeFillIn;
 	}
+
 	protected abstract T createValue( org.lgna.croquet.history.CompletionStep<?> step );
+
 	@Override
 	protected final void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isCommit ) {
 		if( isCommit ) {

@@ -48,15 +48,18 @@ package org.lgna.story.annotation;
  */
 public enum VolumeLevelDetails implements org.lgna.project.annotations.NumberValueDetails {
 	SINGLETON;
-	public Class< Number > getSupportedCls() {
+	public Class<Number> getSupportedCls() {
 		return Number.class;
 	}
+
 	public Double getMinimumValue() {
 		return 0.0;
 	}
+
 	public Double getMaximumValue() {
 		return null;
 	}
+
 	public double[] getLiterals() {
 		return new double[] { 0.0, 0.25, 0.5, 1.0, 2.0 };
 	}

@@ -54,40 +54,40 @@ public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVis
 			edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, 0, 1 )
 	};
 	private final boolean faceUp;
-	
-	public HorizontalSurface( boolean faceUp, float size, float height, float tiling) {
+
+	public HorizontalSurface( boolean faceUp, float size, float height, float tiling ) {
 		this.faceUp = faceUp;
 		float k = this.getK();
 		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : sgVertices ) {
 			vertex.normal.set( 0, k, 0 );
 		}
 		this.setTiling( tiling, tiling );
-		this.setSize(size, size, height);
+		this.setSize( size, size, height );
 		this.sgGeometry.vertices.setValue( this.sgVertices );
 		this.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgGeometry } );
 	}
-	
+
 	public HorizontalSurface( boolean faceUp ) {
-		this(faceUp, 1, 1, 1);
+		this( faceUp, 1, 1, 1 );
 	}
-	
+
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Geometry getGeometry()
 	{
 		return this.sgGeometry;
 	}
-	
-	public void setTiling(float xTiling, float yTiling) {
-		if (xTiling == 1 && yTiling == 1) {
-			this.getAppearance().isDiffuseColorTextureClamped.setValue(true);
+
+	public void setTiling( float xTiling, float yTiling ) {
+		if( ( xTiling == 1 ) && ( yTiling == 1 ) ) {
+			this.getAppearance().isDiffuseColorTextureClamped.setValue( true );
 		}
 		else {
-			this.getAppearance().isDiffuseColorTextureClamped.setValue(false);
+			this.getAppearance().isDiffuseColorTextureClamped.setValue( false );
 		}
 		edu.cmu.cs.dennisc.scenegraph.Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
 		v0.textureCoordinate0.u = xTiling;
 		v0.textureCoordinate0.v = 0;
-		
+
 		edu.cmu.cs.dennisc.scenegraph.Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
 		v1.textureCoordinate0.u = xTiling;
 		v1.textureCoordinate0.v = yTiling;
@@ -100,15 +100,15 @@ public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVis
 		v3.textureCoordinate0.u = 0;
 		v3.textureCoordinate0.v = 0;
 	}
-	
-	public void setSize(float width, float depth, float height) {
+
+	public void setSize( float width, float depth, float height ) {
 		float x = width / 2;
 		float z = depth / 2;
 		edu.cmu.cs.dennisc.scenegraph.Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
 		v0.position.x = -x;
 		v0.position.y = height;
 		v0.position.z = +z;
-		
+
 		edu.cmu.cs.dennisc.scenegraph.Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
 		v1.position.x = -x;
 		v1.position.y = height;
@@ -132,6 +132,7 @@ public class HorizontalSurface extends edu.cmu.cs.dennisc.scenegraph.TexturedVis
 			return i;
 		}
 	}
+
 	private float getK() {
 		if( this.faceUp ) {
 			return 1.0f;

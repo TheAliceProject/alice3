@@ -49,7 +49,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass {
 	private javax.media.opengl.GLCanvas m_glCanvas;
 
-	/*package-private*/ HeavyweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
+	/* package-private */HeavyweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
 		m_glCanvas = LookingGlassFactory.getInstance().createGLCanvas();
 		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
@@ -57,10 +57,13 @@ class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		m_glCanvas.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentShown( java.awt.event.ComponentEvent e ) {
 			}
+
 			public void componentHidden( java.awt.event.ComponentEvent e ) {
 			}
+
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
 			}
+
 			public void componentResized( java.awt.event.ComponentEvent e ) {
 				m_glCanvas.setMinimumSize( new java.awt.Dimension( 0, 0 ) );
 				m_glCanvas.repaint();
@@ -71,9 +74,11 @@ class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 	public void repaint() {
 		getAWTComponent().repaint();
 	}
+
 	public java.awt.Component getAWTComponent() {
 		return m_glCanvas;
 	}
+
 	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		return getAWTComponent().getSize( rv );
 	}

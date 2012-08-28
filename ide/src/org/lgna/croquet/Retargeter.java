@@ -48,5 +48,6 @@ package org.lgna.croquet;
  */
 public interface Retargeter {
 	public void addKeyValuePair( Object key, Object value );
+
 	public <T> T retarget( T value );
 }

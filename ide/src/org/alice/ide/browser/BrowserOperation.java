@@ -49,13 +49,16 @@ public abstract class BrowserOperation extends org.alice.ide.operations.Inconseq
 	public BrowserOperation( java.util.UUID id ) {
 		super( id );
 	}
+
 	protected abstract java.net.URL getUrl();
+
 	@Override
 	protected void localize() {
 		java.net.URL url = this.getUrl();
-		this.setName( url.toString());
+		this.setName( url.toString() );
 		super.localize();
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		java.net.URL url = this.getUrl();

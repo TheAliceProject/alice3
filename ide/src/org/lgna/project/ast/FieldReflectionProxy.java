@@ -46,12 +46,14 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public final class FieldReflectionProxy extends MemberReflectionProxy< java.lang.reflect.Field > {
+public final class FieldReflectionProxy extends MemberReflectionProxy<java.lang.reflect.Field> {
 	private String name;
+
 	public FieldReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name ) {
 		super( declaringClassReflectionProxy );
 		this.name = name;
 	}
+
 	public FieldReflectionProxy( java.lang.reflect.Field fld ) {
 		super( fld, fld.getDeclaringClass() );
 		this.name = fld.getName();
@@ -60,11 +62,12 @@ public final class FieldReflectionProxy extends MemberReflectionProxy< java.lang
 	@Override
 	protected int hashCodeNonReifiable() {
 		int rv = super.hashCodeNonReifiable();
-		rv = 37*rv + this.name.hashCode();
+		rv = ( 37 * rv ) + this.name.hashCode();
 		return rv;
 	}
+
 	@Override
-	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy< ? > o ) {
+	protected boolean equalsInstanceOfSameClassButNonReifiable( org.lgna.project.ast.ReflectionProxy<?> o ) {
 		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
 			FieldReflectionProxy other = (FieldReflectionProxy)o;
 			return this.name != null ? this.name.equals( other.name ) : other.name == null;
@@ -72,13 +75,14 @@ public final class FieldReflectionProxy extends MemberReflectionProxy< java.lang
 			return false;
 		}
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
+
 	@Override
 	protected java.lang.reflect.Field reify() {
-		Class< ? > cls = this.getDeclaringClassReflectionProxy().getReification();
+		Class<?> cls = this.getDeclaringClassReflectionProxy().getReification();
 		if( cls != null ) {
 			try {
 				return cls.getField( name );
@@ -89,6 +93,7 @@ public final class FieldReflectionProxy extends MemberReflectionProxy< java.lang
 			return null;
 		}
 	}
+
 	@Override
 	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );

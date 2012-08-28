@@ -48,7 +48,8 @@ package org.alice.stageide.operations.ast.oneshot;
  */
 public class LocalTransformationMethodInvocationFillIn extends MethodInvocationFillIn {
 	//private static java.util.Map< org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
 			LocalTransformationMethodInvocationFillIn rv = map.get( instanceFactory, method );
@@ -61,17 +62,21 @@ public class LocalTransformationMethodInvocationFillIn extends MethodInvocationF
 			return rv;
 		}
 	}
-	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType< ?,?,? > type, String methodName, Class<?>... parameterClses ) {
+
+	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
 		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( instanceFactory, method );
 	}
+
 	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
 		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
 	}
+
 	private LocalTransformationMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "955cb8c1-3861-4ac7-b76f-72ca93b1289b" ), instanceFactory, method );
 	}
+
 	@Override
 	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		return new LocalTransformationMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );

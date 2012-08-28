@@ -11,38 +11,42 @@ import org.lgna.project.ast.UserCode;
 
 public class EventListenersView extends org.alice.ide.declarationseditor.code.components.AbstractCodeDeclarationView {
 	private final EventsContentPanel eventsPanel;
-	private ScrollPane scroll; 
-	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener< Statement > statementsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< Statement >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< Statement > e ) {
+	private ScrollPane scroll;
+	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement> statementsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<Statement>() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<Statement> e ) {
 		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< Statement > e ) {
+
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( true );
 		}
 
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< Statement > e ) {
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<Statement> e ) {
 		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< Statement > e ) {
+
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( false );
 		}
 
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< Statement > e ) {
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<Statement> e ) {
 		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< Statement > e ) {
+
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( false );
 		}
 
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< Statement > e ) {
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<Statement> e ) {
 		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< Statement > e ) {
+
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<Statement> e ) {
 			EventListenersView.this.handleStatementsChanged( false );
 		}
-		
+
 	};
 
 	public EventListenersView( org.alice.ide.declarationseditor.CodeComposite composite ) {
 		super( composite );
-		this.eventsPanel = new EventsContentPanel(composite.getDeclaration());
-//		BorderPanel panel = new BorderPanel();
+		this.eventsPanel = new EventsContentPanel( composite.getDeclaration() );
+		//		BorderPanel panel = new BorderPanel();
 		PopupButton button = AddEventListenerCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
 		scroll = new org.lgna.croquet.components.ScrollPane( eventsPanel );
@@ -64,7 +68,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 				}
 			}
 		} );
-		
+
 		panel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 12, 0 ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 		java.awt.Color color = this.eventsPanel.getBackgroundColor();
@@ -72,7 +76,7 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		scroll.setBackgroundColor( color );
 		this.addPageEndComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView() );
 	}
-	
+
 	private void handleStatementsChanged( boolean isScrollDesired ) {
 		this.revalidateAndRepaint();
 		if( isScrollDesired ) {
@@ -84,22 +88,25 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 			} );
 		}
 	}
+
 	@Override
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor() {
 		return this.eventsPanel;
 	}
+
 	@Override
-	protected void handleAddedTo(Component<?> parent) {
-		super.handleAddedTo(parent);
+	protected void handleAddedTo( Component<?> parent ) {
+		super.handleAddedTo( parent );
 		org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)this.getComposite();
 		UserCode userCode = (UserCode)codeComposite.getDeclaration();
 		userCode.getBodyProperty().getValue().statements.addListPropertyListener( this.statementsListener );
 	}
+
 	@Override
-	protected void handleRemovedFrom(Component<?> parent) {
+	protected void handleRemovedFrom( Component<?> parent ) {
 		org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)this.getComposite();
 		UserCode userCode = (UserCode)codeComposite.getDeclaration();
 		userCode.getBodyProperty().getValue().statements.removeListPropertyListener( this.statementsListener );
-		super.handleRemovedFrom(parent);
+		super.handleRemovedFrom( parent );
 	}
 }

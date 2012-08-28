@@ -57,13 +57,15 @@ public class WarningView extends org.lgna.croquet.components.PageAxisPanel {
 				super( 8, 4 );
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 			}
+
 			private java.awt.Component createLabel( String text ) {
 				javax.swing.JLabel rv = new javax.swing.JLabel( text );
 				rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 				return rv;
 			}
+
 			@Override
-			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
+			protected java.util.List<java.awt.Component[]> addComponentRows( java.util.List<java.awt.Component[]> rv ) {
 				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "updates:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://www.alice.org/3" ) ) );
 				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "blog:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://blog.alice.org/" ) ) );
 				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "community:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://www.alice.org/community/" ) ) );
@@ -73,7 +75,7 @@ public class WarningView extends org.lgna.croquet.components.PageAxisPanel {
 		}
 		this.getAwtComponent().add( new FurtherInfoPane() );
 
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16,16,16,16 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
 		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 	}
 }

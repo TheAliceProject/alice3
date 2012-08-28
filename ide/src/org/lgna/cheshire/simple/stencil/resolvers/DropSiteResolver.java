@@ -48,13 +48,15 @@ package org.lgna.cheshire.simple.stencil.resolvers;
  */
 public class DropSiteResolver extends TrackableShapeResolver {
 	private final org.lgna.croquet.history.Step<?> step;
+
 	public DropSiteResolver( org.lgna.croquet.history.Step<?> step ) {
 		this.step = step;
 	}
+
 	public org.lgna.croquet.components.TrackableShape getResolved() {
 		org.lgna.croquet.triggers.Trigger trigger = this.step.getTrigger();
-		if (trigger instanceof org.lgna.croquet.triggers.DropTrigger) {
-			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger) trigger;
+		if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
 			org.lgna.croquet.DropSite dropSite = dropTrigger.getDropSite();
 			org.lgna.croquet.DropReceptor dropReceptor = dropSite.getOwningDropReceptor();
 			return dropReceptor.getTrackableShape( dropSite );
@@ -63,11 +65,12 @@ public class DropSiteResolver extends TrackableShapeResolver {
 			return null;
 		}
 	}
+
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		org.lgna.croquet.triggers.Trigger trigger = this.step.getTrigger();
-		if (trigger instanceof org.lgna.croquet.triggers.DropTrigger) {
-			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger) trigger;
+		if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
 			org.lgna.croquet.DropSite dropSite = dropTrigger.getDropSite();
 			org.lgna.croquet.DropReceptor dropReceptor = dropSite.getOwningDropReceptor();
 			sb.append( "dropSite: " );

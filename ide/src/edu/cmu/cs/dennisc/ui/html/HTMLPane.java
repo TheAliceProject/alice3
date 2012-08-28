@@ -57,21 +57,24 @@ public class HTMLPane extends javax.swing.JEditorPane {
 			}
 		}
 	};
+
 	public HTMLPane() {
 		this.setEditable( false );
 		this.setContentType( "text/html" );
 	}
+
 	@Override
 	public void addNotify() {
 		super.addNotify();
 		this.addHyperlinkListener( this.hyperlinkAdapter );
 	}
+
 	@Override
 	public void removeNotify() {
 		this.removeHyperlinkListener( this.hyperlinkAdapter );
 		super.removeNotify();
 	}
-	
+
 	public static void main( String[] args ) throws Exception {
 		String text = "<html><a href=http://www.alice.org/3>alice3</a></html>";
 		HTMLPane htmlPane = new HTMLPane();

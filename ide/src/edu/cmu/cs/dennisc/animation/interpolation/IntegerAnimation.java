@@ -46,14 +46,16 @@ package edu.cmu.cs.dennisc.animation.interpolation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IntegerAnimation extends InterpolationAnimation< Integer > {
+public abstract class IntegerAnimation extends InterpolationAnimation<Integer> {
 	public IntegerAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, Integer n0, Integer n1 ) {
 		super( duration, style, n0, n1 );
 	}
+
 	@Override
 	protected Integer newE( Integer other ) {
 		return other;
 	}
+
 	@Override
 	protected Integer interpolate( Integer rv, Integer v0, Integer v1, double portion ) {
 		throw new RuntimeException( "TODO" );

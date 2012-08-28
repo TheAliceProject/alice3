@@ -47,8 +47,9 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
-	private static java.util.Map< org.lgna.project.ast.AbstractType<?,?,?>, FunctionsOfReturnTypeSubComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized FunctionsOfReturnTypeSubComposite getInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, FunctionsOfReturnTypeSubComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized FunctionsOfReturnTypeSubComposite getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( type != null ) {
 			FunctionsOfReturnTypeSubComposite rv = map.get( type );
 			if( rv != null ) {
@@ -62,23 +63,28 @@ public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
 			return null;
 		}
 	}
+
 	private java.util.List<org.lgna.project.ast.AbstractMethod> methods = java.util.Collections.emptyList();
-	private final org.lgna.project.ast.AbstractType<?,?,?> returnType;
-	private FunctionsOfReturnTypeSubComposite( org.lgna.project.ast.AbstractType<?,?,?> returnType ) {
-		super( java.util.UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), true /*returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class )*/);
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> returnType;
+
+	private FunctionsOfReturnTypeSubComposite( org.lgna.project.ast.AbstractType<?, ?, ?> returnType ) {
+		super( java.util.UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), true /* returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) */);
 		this.returnType = returnType;
-		
+
 		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
 		//this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getMenuTextForType( this.returnType ) );
 		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "Functions returning" );
 	}
-	public org.lgna.project.ast.AbstractType<?,?,?> getReturnType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getReturnType() {
 		return this.returnType;
 	}
+
 	@Override
 	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
 		return this.methods;
 	}
+
 	public void setMethods( java.util.List<org.lgna.project.ast.AbstractMethod> methods ) {
 		this.methods = java.util.Collections.unmodifiableList( methods );
 		this.getView().refreshLater();

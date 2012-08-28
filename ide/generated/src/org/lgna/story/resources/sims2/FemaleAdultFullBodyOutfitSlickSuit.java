@@ -41,12 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitSlickSuit implements FemaleAdultFullBodyOutfit {
-	BLACK ,
- 	BROWN ,
- 	RED ,
- 	PURPLE ,
- 	WHITE ,
- 	CREAM ,
- 	GREY ;
+	BLACK,
+	BROWN,
+	RED,
+	PURPLE,
+	WHITE,
+	CREAM,
+	GREY;
 }

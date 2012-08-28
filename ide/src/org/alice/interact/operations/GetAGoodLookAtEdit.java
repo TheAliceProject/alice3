@@ -44,27 +44,28 @@ package org.alice.interact.operations;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class GetAGoodLookAtEdit extends org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit{
+public class GetAGoodLookAtEdit extends org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit {
 	private final org.lgna.story.SCamera camera;
 	private final org.lgna.story.SThing toLookAt;
-	
+
 	public GetAGoodLookAtEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory cameraInstanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions, org.lgna.story.SCamera camera, org.lgna.story.SThing toLookAt ) {
 		super( completionStep, cameraInstanceFactory, method, argumentExpressions );
 		this.camera = camera;
 		this.toLookAt = toLookAt;
 	}
+
 	public GetAGoodLookAtEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.camera = null;
 		this.toLookAt = null;
 	}
-	
+
 	public org.lgna.story.SCamera getCamera() {
 		return this.camera;
 	}
-	
+
 	public org.lgna.story.SThing getTarget() {
 		return this.toLookAt;
 	}

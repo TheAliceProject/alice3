@@ -54,7 +54,9 @@ abstract class Animator implements Runnable {
 	private long sleepMillis = DEFAULT_SLEEP_MILLIS;
 
 	public enum ThreadDeferenceAction {
-		DO_NOTHING, SLEEP, YIELD
+		DO_NOTHING,
+		SLEEP,
+		YIELD
 	}
 
 	public void start() {
@@ -64,43 +66,49 @@ abstract class Animator implements Runnable {
 		//		javax.swing.SwingUtilities.invokeLater( this );
 		new Thread( this ).start();
 	}
+
 	public void stop() {
 		this.isActive = false;
 		//long tDelta = System.currentTimeMillis() - this.tStart;
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.frameCount, tDelta, this.frameCount/(tDelta*0.001) );
 	}
+
 	public int getFrameCount() {
 		return this.frameCount;
 	}
+
 	public long getStartTimeMillis() {
 		return this.tStart;
 	}
+
 	public long getSleepMillis() {
 		return this.sleepMillis;
 	}
+
 	public void setSleepMillis( long sleepMillis ) {
 		this.sleepMillis = sleepMillis;
 	}
 
 	protected abstract ThreadDeferenceAction step();
+
 	public void run() {
 		final long THRESHOLD = 5;
 		long tPrev = System.currentTimeMillis() - THRESHOLD;
 		while( this.isActive ) {
-//			int i = 0;
+			//			int i = 0;
 			while( true ) {
 				long tCurrent = System.currentTimeMillis();
-				if( (tCurrent-tPrev) < THRESHOLD ) {
+				if( ( tCurrent - tPrev ) < THRESHOLD ) {
 					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 5 );
-//					i++;
+					//					i++;
 				} else {
 					tPrev = tCurrent;
 					break;
 				}
 			}
-//			if( i>3 ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "sleep count:", i );
-//			}
+			//			if( i>3 ) {
+			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "sleep count:", i );
+			//			}
 			//		if( this.isActive ) {
 			//			try {
 			ThreadDeferenceAction threadAction = this.step();

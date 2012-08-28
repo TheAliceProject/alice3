@@ -58,73 +58,73 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  * @author David Culyba
  */
 public class Camera2DDragStrafeManipulator extends Camera2DDragManipulator {
-	
+
 	protected static final Color UP = Color.RED;
 	protected static final Color LEFT = Color.GREEN;
 	protected static final Color RIGHT = Color.BLUE;
 	protected static final Color DOWN = Color.WHITE;
-	
-	public Camera2DDragStrafeManipulator( ImageBasedManipulationHandle2D handle)
+
+	public Camera2DDragStrafeManipulator( ImageBasedManipulationHandle2D handle )
 	{
-		super(handle);
+		super( handle );
 	}
-	
+
 	@Override
 	protected void initializeEventMessages()
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.LEFT, MovementType.STOOD_UP), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.RIGHT, MovementType.STOOD_UP), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.DOWN, MovementType.STOOD_UP ), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.LEFT, MovementType.STOOD_UP ), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.RIGHT, MovementType.STOOD_UP ), this.manipulatedTransformable ) );
 	}
-	
+
 	@Override
-	protected Vector3 getMovementVectorForColor(Color color) {
-		Vector3 initialMove = new Vector3(0.0d, 0.0d, 0.0d);
-		if (color != null)
+	protected Vector3 getMovementVectorForColor( Color color ) {
+		Vector3 initialMove = new Vector3( 0.0d, 0.0d, 0.0d );
+		if( color != null )
 		{
-			if (color.equals( UP ))
+			if( color.equals( UP ) )
 			{
 				initialMove.y = INITIAL_MOVE_FACTOR;
 			}
-			else if (color.equals( DOWN ))
+			else if( color.equals( DOWN ) )
 			{
 				initialMove.y = -INITIAL_MOVE_FACTOR;
 			}
-			else if (color.equals( LEFT ))
+			else if( color.equals( LEFT ) )
 			{
 				initialMove.x = -INITIAL_MOVE_FACTOR;
 			}
-			else if (color.equals( RIGHT ))
+			else if( color.equals( RIGHT ) )
 			{
 				initialMove.x = INITIAL_MOVE_FACTOR;
 			}
 		}
 		return initialMove;
 	}
-	
+
 	@Override
 	protected Vector3 getRotationVectorForColor( Color color ) {
-		return new Vector3(0.0d, 0.0d, 0.0d);
+		return new Vector3( 0.0d, 0.0d, 0.0d );
 	}
-	
+
 	@Override
-	protected Vector3 getRelativeMovementAmount(Vector2 mousePos, double time)
+	protected Vector3 getRelativeMovementAmount( Vector2 mousePos, double time )
 	{
 		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
-		if (this.initialHandleColor != null)
+		if( this.initialHandleColor != null )
 		{
-			if (this.initialHandleColor.equals( LEFT ) || this.initialHandleColor.equals( RIGHT ))
+			if( this.initialHandleColor.equals( LEFT ) || this.initialHandleColor.equals( RIGHT ) )
 			{
-				if (Math.abs( relativeMousePos.y ) < MIN_PIXEL_MOVE_AMOUNT)
+				if( Math.abs( relativeMousePos.y ) < MIN_PIXEL_MOVE_AMOUNT )
 				{
 					relativeMousePos.y = 0.0d;
 				}
 				else
 				{
-					if (relativeMousePos.y < 0.0d)
+					if( relativeMousePos.y < 0.0d )
 					{
 						relativeMousePos.y += MIN_PIXEL_MOVE_AMOUNT;
 					}
@@ -134,15 +134,15 @@ public class Camera2DDragStrafeManipulator extends Camera2DDragManipulator {
 					}
 				}
 			}
-			else if (this.initialHandleColor.equals( UP ) || this.initialHandleColor.equals( DOWN ))
+			else if( this.initialHandleColor.equals( UP ) || this.initialHandleColor.equals( DOWN ) )
 			{
-				if (Math.abs( relativeMousePos.x ) < MIN_PIXEL_MOVE_AMOUNT)
+				if( Math.abs( relativeMousePos.x ) < MIN_PIXEL_MOVE_AMOUNT )
 				{
 					relativeMousePos.x = 0.0d;
 				}
 				else
 				{
-					if (relativeMousePos.x < 0.0d)
+					if( relativeMousePos.x < 0.0d )
 					{
 						relativeMousePos.x += MIN_PIXEL_MOVE_AMOUNT;
 					}
@@ -153,35 +153,31 @@ public class Camera2DDragStrafeManipulator extends Camera2DDragManipulator {
 				}
 			}
 		}
-		
-		
-		
+
 		relativeMousePos.y *= -1.0d;
-		
+
 		double amountToMoveY = relativeMousePos.y * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
 		double amountToMoveX = relativeMousePos.x * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
-		Vector3 amountToMoveMouse = new Vector3 (amountToMoveX, amountToMoveY, 0.0d);
+		Vector3 amountToMoveMouse = new Vector3( amountToMoveX, amountToMoveY, 0.0d );
 		return amountToMoveMouse;
 	}
-	
+
 	@Override
-	protected Vector3 getRelativeRotationAmount(Vector2 mousePos, double time)
+	protected Vector3 getRelativeRotationAmount( Vector2 mousePos, double time )
 	{
-		return new Vector3(0.0d, 0.0d, 0.0d);
+		return new Vector3( 0.0d, 0.0d, 0.0d );
 	}
-	
+
 	@Override
 	protected ReferenceFrame getRotationReferenceFrame()
 	{
 		return this.standUpReference;
 	}
-	
+
 	@Override
 	protected ReferenceFrame getMovementReferenceFrame()
 	{
 		return this.standUpReference;
 	}
-
-
 
 }

@@ -46,10 +46,11 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class RadioButton extends BooleanStateButton< javax.swing.JRadioButton > {
+public class RadioButton extends BooleanStateButton<javax.swing.JRadioButton> {
 	public RadioButton( org.lgna.croquet.BooleanState model ) {
 		super( model );
 	}
+
 	@Override
 	protected javax.swing.JRadioButton createAwtComponent() {
 		return new javax.swing.JRadioButton();

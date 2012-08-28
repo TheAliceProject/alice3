@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.keyed;
  * @author Dennis Cosgrove
  */
 public class RemoveKeyedArgumentOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.KeyedArgumentListProperty, org.lgna.project.ast.JavaKeyedArgument, RemoveKeyedArgumentOperation > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.KeyedArgumentListProperty, org.lgna.project.ast.JavaKeyedArgument, RemoveKeyedArgumentOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized RemoveKeyedArgumentOperation getInstance( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
 		RemoveKeyedArgumentOperation rv = map.get( argumentListProperty, argument );
 		if( rv != null ) {
@@ -58,24 +59,30 @@ public class RemoveKeyedArgumentOperation extends org.lgna.croquet.ActionOperati
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty;
 	private final org.lgna.project.ast.JavaKeyedArgument argument;
+
 	private RemoveKeyedArgumentOperation( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "b2332b11-7ed9-448f-8cfd-b61ea347d6ce" ) );
 		this.argumentListProperty = argumentListProperty;
 		this.argument = argument;
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.setName( "Remove " + this.argument.getKeyMethod().getName() + " Argument" );
 	}
+
 	public org.lgna.project.ast.JavaKeyedArgument getArgument() {
 		return this.argument;
 	}
+
 	public org.lgna.project.ast.KeyedArgumentListProperty getArgumentListProperty() {
 		return this.argumentListProperty;
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

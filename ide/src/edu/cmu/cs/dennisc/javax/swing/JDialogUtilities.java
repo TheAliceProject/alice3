@@ -65,6 +65,7 @@ public class JDialogUtilities {
 		rv.setModal( isModal );
 		return rv;
 	}
+
 	public static javax.swing.JDialog createPackedJDialog( java.awt.Component content, java.awt.Component ownerComponent, String title, boolean isModal, int closeOperation ) {
 		javax.swing.JDialog rv = createJDialog( ownerComponent, title, isModal );
 		rv.getContentPane().add( content );

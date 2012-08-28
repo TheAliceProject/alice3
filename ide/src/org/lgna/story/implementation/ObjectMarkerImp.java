@@ -44,7 +44,6 @@ package org.lgna.story.implementation;
 
 import java.util.LinkedList;
 
-
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
@@ -53,8 +52,8 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
  * @author dculyba
  * 
  */
-public class ObjectMarkerImp extends MarkerImp{
-	private java.util.Map< Cylinder.BottomToTopAxis, edu.cmu.cs.dennisc.scenegraph.SimpleAppearance > axisToSGAppearanceMap;
+public class ObjectMarkerImp extends MarkerImp {
+	private java.util.Map<Cylinder.BottomToTopAxis, edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> axisToSGAppearanceMap;
 	private double scale = 1.0;
 
 	private edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
@@ -65,73 +64,82 @@ public class ObjectMarkerImp extends MarkerImp{
 	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgBlueAppearance;
 	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgWhiteAppearance;
 
-	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] opacityAppearances = {sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
-	
-	public ObjectMarkerImp(org.lgna.story.SThingMarker abstraction){
-		super(abstraction);
+	private edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] opacityAppearances = { sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
+
+	public ObjectMarkerImp( org.lgna.story.SThingMarker abstraction ) {
+		super( abstraction );
 	}
-	
+
 	private Arrow createArrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis ) {
 		double lengthCylinder = unit * lengthFactor * 0.8;
 		double radiusCylinder = unit * 0.05;
 		double lengthCone = unit * lengthFactor * 0.3;
 		double radiusCone = radiusCylinder * 3.0;
-		return new Arrow( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, this.getSgPaintAppearances()[0], axisToSGAppearanceMap.get( bottomToTopAxis ), false );
+		return new Arrow( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, this.getSgPaintAppearances()[ 0 ], axisToSGAppearanceMap.get( bottomToTopAxis ), false );
 	}
-	
+
 	@Override
 	protected void createVisuals()
 	{
 		this.scale = .3;
-		createAxes(2.0*scale, scale);
+		createAxes( 2.0 * scale, scale );
 	}
-	
+
 	private void createAxes( double unitLength, double forwardFactor ) {
-		axisToSGAppearanceMap = new java.util.HashMap< Cylinder.BottomToTopAxis, edu.cmu.cs.dennisc.scenegraph.SimpleAppearance >();
-		
+		axisToSGAppearanceMap = new java.util.HashMap<Cylinder.BottomToTopAxis, edu.cmu.cs.dennisc.scenegraph.SimpleAppearance>();
+
 		this.sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
-		this.sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[]{ sgAppearance };
+		this.sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { sgAppearance };
 		this.sgRedAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
 		this.sgGreenAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
 		this.sgBlueAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
 		this.sgWhiteAppearance = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance();
-		this.opacityAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[]{sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
+		this.opacityAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { sgAppearance, sgRedAppearance, sgGreenAppearance, sgBlueAppearance, sgWhiteAppearance };
 
 		sgRedAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.RED );
 		sgGreenAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.GREEN );
 		sgBlueAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.BLUE );
 		sgWhiteAppearance.setDiffuseColor( edu.cmu.cs.dennisc.color.Color4f.WHITE );
-		
+
 		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_X, sgRedAppearance );
 		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_Y, sgGreenAppearance );
 		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.POSITIVE_Z, sgBlueAppearance );
 		axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.NEGATIVE_Z, sgWhiteAppearance );
-		
+
 		Arrow sgXAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X );
 		Arrow sgYAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Y );
 		Arrow sgZAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z );
 		Arrow sgFAxis = createArrow( unitLength, 2.0, Cylinder.BottomToTopAxis.NEGATIVE_Z );
 
 		sgXAxis.setParent( this.getSgComposite() );
-	    sgYAxis.setParent( this.getSgComposite() );
-	    sgZAxis.setParent( this.getSgComposite() );
-	    sgFAxis.setParent( this.getSgComposite() );
-	    
-	    LinkedList<Visual> axisVisuals = new LinkedList<Visual>();
-	    
-	    for (Visual v : sgXAxis.getVisuals()) { axisVisuals.add(v); }
-	    for (Visual v : sgYAxis.getVisuals()) { axisVisuals.add(v); }
-	    for (Visual v : sgZAxis.getVisuals()) { axisVisuals.add(v); }
-	    for (Visual v : sgFAxis.getVisuals()) { axisVisuals.add(v); }
+		sgYAxis.setParent( this.getSgComposite() );
+		sgZAxis.setParent( this.getSgComposite() );
+		sgFAxis.setParent( this.getSgComposite() );
 
-		this.sgVisuals = axisVisuals.toArray(new Visual[axisVisuals.size()]);
-		
+		LinkedList<Visual> axisVisuals = new LinkedList<Visual>();
+
+		for( Visual v : sgXAxis.getVisuals() ) {
+			axisVisuals.add( v );
+		}
+		for( Visual v : sgYAxis.getVisuals() ) {
+			axisVisuals.add( v );
+		}
+		for( Visual v : sgZAxis.getVisuals() ) {
+			axisVisuals.add( v );
+		}
+		for( Visual v : sgFAxis.getVisuals() ) {
+			axisVisuals.add( v );
+		}
+
+		this.sgVisuals = axisVisuals.toArray( new Visual[ axisVisuals.size() ] );
+
 	}
-	
+
 	@Override
 	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
 		return this.sgAppearances;
 	}
+
 	@Override
 	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.opacityAppearances;
@@ -141,11 +149,11 @@ public class ObjectMarkerImp extends MarkerImp{
 	protected Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
-	
+
 	@Override
 	public float getDefaultMarkerOpacity()
 	{
 		return .75f;
 	}
-	
+
 }

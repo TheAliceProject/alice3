@@ -47,20 +47,24 @@ package edu.cmu.cs.dennisc.scenegraph.util;
  */
 public class TexturedModel extends ModelTransformable {
 	private edu.cmu.cs.dennisc.texture.BufferedImageTexture m_bufferedImageTexture = new edu.cmu.cs.dennisc.texture.BufferedImageTexture();
-	
+
 	public TexturedModel() {
 		getSGVisual().getSGFrontFacingAppearance().setDiffuseColorTexture( m_bufferedImageTexture );
 	}
+
 	public edu.cmu.cs.dennisc.texture.BufferedImageTexture getBufferedImageTexture() {
 		return m_bufferedImageTexture;
 	}
+
 	public void setIsAlphaBlended( boolean isAlphaBlended ) {
 		getSGVisual().getSGFrontFacingAppearance().setDiffuseColorTextureAlphaBlended( isAlphaBlended );
 		m_bufferedImageTexture.setPotentiallyAlphaBlended( isAlphaBlended );
 	}
-	public void loadImage( String path ) { 
+
+	public void loadImage( String path ) {
 		m_bufferedImageTexture.setBufferedImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( path ) );
 	}
+
 	@Override
 	public void setName( String name ) {
 		super.setName( name );

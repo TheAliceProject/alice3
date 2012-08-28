@@ -47,39 +47,50 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  */
 public class ArrayListModel extends javax.swing.AbstractListModel {
 	private Object array;
+
 	private ArrayListModel( Object array ) {
 		if( array != null ) {
 			assert array.getClass().isArray();
 		}
 		this.array = array;
 	}
+
 	public ArrayListModel( Object[] array ) {
 		this( (Object)array );
 	}
+
 	public ArrayListModel( boolean[] array ) {
 		this( (Object)array );
 	}
+
 	public ArrayListModel( char[] array ) {
 		this( (Object)array );
 	}
+
 	public ArrayListModel( short[] array ) {
 		this( (Object)array );
 	}
+
 	public ArrayListModel( int[] array ) {
 		this( (Object)array );
 	}
+
 	public ArrayListModel( long[] array ) {
 		this( (Object)array );
 	}
+
 	public ArrayListModel( float[] array ) {
 		this( (Object)array );
 	}
+
 	public ArrayListModel( double[] array ) {
 		this( (Object)array );
 	}
+
 	public Object getElementAt( int index ) {
 		return java.lang.reflect.Array.get( this.array, index );
 	}
+
 	public int getSize() {
 		return java.lang.reflect.Array.getLength( this.array );
 	}

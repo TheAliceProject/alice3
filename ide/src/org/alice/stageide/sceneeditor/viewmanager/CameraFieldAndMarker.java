@@ -47,39 +47,38 @@ import org.lgna.project.ast.AbstractField;
 import org.lgna.story.CameraMarker;
 import org.lgna.story.OrthographicCameraMarker;
 
-
 public class CameraFieldAndMarker
 {
 	public AbstractField field;
 	public CameraMarker marker;
 
-	public CameraFieldAndMarker( AbstractField field, CameraMarker marker)
+	public CameraFieldAndMarker( AbstractField field, CameraMarker marker )
 	{
 		this.field = field;
 		this.marker = marker;
 	}
-	
+
 	public boolean isOrthographic()
 	{
-		if (marker != null)
+		if( marker != null )
 		{
-			return (marker instanceof OrthographicCameraMarker);
+			return ( marker instanceof OrthographicCameraMarker );
 		}
 		return false;
 	}
-	
+
 	public boolean isPerspective()
 	{
 		return !isOrthographic();
 	}
-	
+
 	@Override
 	public String toString() {
-		if (field != null)
+		if( field != null )
 		{
 			return field.getName();
 		}
-		else if (marker != null)
+		else if( marker != null )
 		{
 			return marker.getName();
 		}
@@ -87,17 +86,17 @@ public class CameraFieldAndMarker
 	}
 
 	@Override
-	public boolean equals(Object obj) 
+	public boolean equals( Object obj )
 	{
-		if (obj instanceof CameraFieldAndMarker)
+		if( obj instanceof CameraFieldAndMarker )
 		{
 			CameraFieldAndMarker other = (CameraFieldAndMarker)obj;
-			if (other.field == this.field)
+			if( other.field == this.field )
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 }

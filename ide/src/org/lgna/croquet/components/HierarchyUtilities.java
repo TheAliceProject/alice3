@@ -42,7 +42,6 @@
  */
 package org.lgna.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -50,13 +49,15 @@ public class HierarchyUtilities {
 	private HierarchyUtilities() {
 		throw new AssertionError();
 	}
+
 	public static final edu.cmu.cs.dennisc.pattern.HowMuch DEFAULT_HOW_MUCH = edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS;
-	private static <E extends Component<?>> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, Component<?> component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+
+	private static <E extends Component<?>> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, Component<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		assert component != null;
 		E rv = null;
 		boolean isAcceptedByAll;
 		if( isComponentACandidate ) {
-			if( cls == null || cls.isAssignableFrom( component.getClass() ) ) {
+			if( ( cls == null ) || cls.isAssignableFrom( component.getClass() ) ) {
 				isAcceptedByAll = true;
 				if( criterions == null ) {
 					//pass
@@ -80,8 +81,8 @@ public class HierarchyUtilities {
 			rv = (E)component;
 		} else {
 			if( isChildACandidate ) {
-				if (component instanceof Container<?>) {
-					Container<?> container = (Container<?>) component;
+				if( component instanceof Container<?> ) {
+					Container<?> container = (Container<?>)component;
 					for( Component<?> componentI : container.getComponents() ) {
 						rv = getFirstToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, componentI, cls, criterions );
 						if( rv != null ) {
@@ -94,11 +95,11 @@ public class HierarchyUtilities {
 		return rv;
 	}
 
-	private static <E extends Component<?>> void updateAllToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List< E > list, Component<?> component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+	private static <E extends Component<?>> void updateAllToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.util.List<E> list, Component<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		assert component != null;
 
 		if( isComponentACandidate ) {
-			if( cls == null || cls.isAssignableFrom( component.getClass() ) ) {
+			if( ( cls == null ) || cls.isAssignableFrom( component.getClass() ) ) {
 				boolean isAcceptedByAll = true;
 				if( criterions == null ) {
 					//pass
@@ -119,55 +120,62 @@ public class HierarchyUtilities {
 		}
 
 		if( isChildACandidate ) {
-			if (component instanceof Container<?>) {
-				Container<?> container = (Container<?>) component;
+			if( component instanceof Container<?> ) {
+				Container<?> container = (Container<?>)component;
 				for( Component<?> componentI : container.getComponents() ) {
 					updateAllToAccept( isChildACandidate, isGrandchildAndBeyondACandidate, isGrandchildAndBeyondACandidate, list, componentI, cls, criterions );
 				}
 			}
 		}
 	}
-	private static <E extends Component<?>> E getFirstToAccept( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, Component<?> component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+
+	private static <E extends Component<?>> E getFirstToAccept( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, Component<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		return getFirstToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), component, cls, criterions );
 	}
 
-	private static <E extends Component<?>> void updateAllToAccept( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, java.util.List< E > list, Component<?> component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+	private static <E extends Component<?>> void updateAllToAccept( edu.cmu.cs.dennisc.pattern.HowMuch candidateMask, java.util.List<E> list, Component<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		updateAllToAccept( candidateMask.isComponentACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), list, component, cls, criterions );
 	}
-	
-	public static <E extends Component<?>> E findFirstMatch( Component<?> component, edu.cmu.cs.dennisc.pattern.HowMuch howMuch, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+
+	public static <E extends Component<?>> E findFirstMatch( Component<?> component, edu.cmu.cs.dennisc.pattern.HowMuch howMuch, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		return HierarchyUtilities.getFirstToAccept( howMuch, component, cls, criterions );
 	}
-	public static <E extends Component<?>> E findFirstMatch( Component<?> component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+
+	public static <E extends Component<?>> E findFirstMatch( Component<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		return findFirstMatch( component, DEFAULT_HOW_MUCH, cls, criterions );
 	}
-	public static <E extends Component<?>> E findFirstMatch( Component<?> component, Class< E > cls ) {
-		return findFirstMatch( component, cls, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
+
+	public static <E extends Component<?>> E findFirstMatch( Component<?> component, Class<E> cls ) {
+		return findFirstMatch( component, cls, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
 	}
-	public static Component<?> findFirstMatch( Component<?> component, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+
+	public static Component<?> findFirstMatch( Component<?> component, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		return findFirstMatch( component, null, criterions );
 	}
-	
-	public static <E extends Component<?>> java.util.List< E > findAllMatches( Component<?> component, edu.cmu.cs.dennisc.pattern.HowMuch howMuch, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
-		java.util.List< E > list = new java.util.LinkedList< E >();
+
+	public static <E extends Component<?>> java.util.List<E> findAllMatches( Component<?> component, edu.cmu.cs.dennisc.pattern.HowMuch howMuch, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
+		java.util.List<E> list = new java.util.LinkedList<E>();
 		HierarchyUtilities.updateAllToAccept( howMuch, list, component, cls, criterions );
 		return list;
 	}
-	public static <E extends Component<?>> java.util.List< E > findAllMatches( Component<?> component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+
+	public static <E extends Component<?>> java.util.List<E> findAllMatches( Component<?> component, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		return findAllMatches( component, DEFAULT_HOW_MUCH, cls, criterions );
 	}
-	public static <E extends Component<?>> java.util.List< E > findAllMatches( Component<?> component, Class< E > cls ) {
-		return findAllMatches( component, cls, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
+
+	public static <E extends Component<?>> java.util.List<E> findAllMatches( Component<?> component, Class<E> cls ) {
+		return findAllMatches( component, cls, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
 	}
-	public static java.util.List< Component<?> > findAllMatches( Component<?> component, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+
+	public static java.util.List<Component<?>> findAllMatches( Component<?> component, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		return findAllMatches( component, null, criterions );
 	}
-	public static java.util.List< Component<?> > findAllMatches( Component<?> component ) {
-		return findAllMatches( component, null, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
+
+	public static java.util.List<Component<?>> findAllMatches( Component<?> component ) {
+		return findAllMatches( component, null, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
 	}
-	
-	
-	public static <E extends Component<?>> E findFirstAncestor( Component<?> component, boolean isComponentIncludedInSearch, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+
+	public static <E extends Component<?>> E findFirstAncestor( Component<?> component, boolean isComponentIncludedInSearch, Class<E> cls, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		Component<?> c;
 		if( isComponentIncludedInSearch ) {
 			c = component;
@@ -176,7 +184,7 @@ public class HierarchyUtilities {
 		}
 		while( c != null ) {
 			boolean isAcceptedByAll;
-			if( cls == null || cls.isAssignableFrom( c.getClass() ) ) {
+			if( ( cls == null ) || cls.isAssignableFrom( c.getClass() ) ) {
 				isAcceptedByAll = true;
 				if( criterions == null ) {
 					//pass
@@ -200,10 +208,12 @@ public class HierarchyUtilities {
 		}
 		return null;
 	}
-	public static <E extends Component<?>> E findFirstAncestor( Component<?> component, boolean isComponentIncludedInSearch, Class< E > cls ) {
-		return findFirstAncestor( component, isComponentIncludedInSearch, cls, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
+
+	public static <E extends Component<?>> E findFirstAncestor( Component<?> component, boolean isComponentIncludedInSearch, Class<E> cls ) {
+		return findFirstAncestor( component, isComponentIncludedInSearch, cls, (edu.cmu.cs.dennisc.pattern.Criterion<?>[])null );
 	}
-	public static Component<?> findFirstAncestor( Component<?> component, boolean isComponentIncludedInSearch, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+
+	public static Component<?> findFirstAncestor( Component<?> component, boolean isComponentIncludedInSearch, edu.cmu.cs.dennisc.pattern.Criterion<?>... criterions ) {
 		return findFirstAncestor( component, isComponentIncludedInSearch, null, criterions );
 	}
 }

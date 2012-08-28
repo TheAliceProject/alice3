@@ -44,13 +44,14 @@ package org.lgna.story.annotation;
 
 /**
  * @author alice
- *
+ * 
  */
-public enum RoomCeilingAppearanceDetails implements org.lgna.project.annotations.PublicStaticFieldValueDetails< org.lgna.story.ImagePaint > {
+public enum RoomCeilingAppearanceDetails implements org.lgna.project.annotations.PublicStaticFieldValueDetails<org.lgna.story.ImagePaint> {
 	SINGLETON;
-	public Class< org.lgna.story.ImagePaint > getSupportedCls() {
+	public Class<org.lgna.story.ImagePaint> getSupportedCls() {
 		return org.lgna.story.ImagePaint.class;
 	}
+
 	public java.lang.reflect.Field[] getFlds() {
 		return org.lgna.story.SRoom.CeilingAppearance.class.getFields();
 	}

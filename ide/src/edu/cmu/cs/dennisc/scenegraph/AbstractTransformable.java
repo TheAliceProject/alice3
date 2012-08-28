@@ -50,15 +50,18 @@ public abstract class AbstractTransformable extends Composite {
 	protected abstract Composite getVehicle();
 
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 accessLocalTransformation();
+
 	protected abstract void touchLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m );
 
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 		rv.set( this.accessLocalTransformation() );
 		return rv;
 	}
+
 	public final edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
 		return getLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN() );
 	}
+
 	protected void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation, TransformationAffect affect ) {
 		if( transformation == null ) {
 			throw new NullPointerException();
@@ -66,13 +69,14 @@ public abstract class AbstractTransformable extends Composite {
 		if( transformation.isNaN() ) {
 			throw new RuntimeException( "isNaN" );
 		}
-		
+
 		assert affect != null;
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.accessLocalTransformation();
 		affect.set( m, transformation );
 		this.touchLocalTransformation( m );
 		fireAbsoluteTransformationChange();
 	}
+
 	public final void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
 		setLocalTransformation( transformation, TransformationAffect.AFFECT_ALL );
 	}
@@ -81,7 +85,7 @@ public abstract class AbstractTransformable extends Composite {
 	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 		Composite vehicle = getVehicle();
-		if( vehicle == null || vehicle.isSceneOf( this ) ) {
+		if( ( vehicle == null ) || vehicle.isSceneOf( this ) ) {
 			rv = getLocalTransformation( rv );
 		} else {
 			rv = vehicle.getAbsoluteTransformation( rv );
@@ -155,6 +159,7 @@ public abstract class AbstractTransformable extends Composite {
 		}
 		setTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createTranslation( x, y, z ), asSeenBy, TransformationAffect.getTranslationAffect( x, y, z ) );
 	}
+
 	public void setTranslationOnly( edu.cmu.cs.dennisc.math.Tuple3 t, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		setTranslationOnly( t.x, t.y, t.z, asSeenBy );
 	}
@@ -178,9 +183,11 @@ public abstract class AbstractTransformable extends Composite {
 			setAxesOnly( new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( forward, null ).createOrthogonalMatrix3x3(), edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
 		}
 	}
+
 	public void setAxesOnlyToPointAt( Component target, edu.cmu.cs.dennisc.math.Point3 offset ) {
 		setAxesOnlyToPointAt( target, offset, null );
 	}
+
 	public void setAxesOnlyToPointAt( Component target ) {
 		setAxesOnlyToPointAt( target, null );
 	}
@@ -189,6 +196,7 @@ public abstract class AbstractTransformable extends Composite {
 		edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = getAxes( asSeenBy );
 		setAxesOnly( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createFromStandUp( axes ), asSeenBy );
 	}
+
 	public void setAxesOnlyToStandUp() {
 		setAxesOnlyToStandUp( edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
 	}
@@ -211,6 +219,7 @@ public abstract class AbstractTransformable extends Composite {
 			setTransformation( m, asSeenBy );
 		}
 	}
+
 	public void applyTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyTransformation( transformation, asSeenBy, TransformationAffect.AFFECT_ALL );
 	}
@@ -218,12 +227,15 @@ public abstract class AbstractTransformable extends Composite {
 	public void applyTranslation( double x, double y, double z, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createTranslation( x, y, z ), asSeenBy );
 	}
+
 	public void applyTranslation( edu.cmu.cs.dennisc.math.Tuple3 t, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyTranslation( t.x, t.y, t.z, asSeenBy );
 	}
+
 	public void applyTranslation( double x, double y, double z ) {
 		applyTranslation( x, y, z, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF );
 	}
+
 	public void applyTranslation( edu.cmu.cs.dennisc.math.Tuple3 t ) {
 		applyTranslation( t.x, t.y, t.z );
 	}
@@ -232,26 +244,32 @@ public abstract class AbstractTransformable extends Composite {
 	public void applyRotationAboutXAxisInRadians( double angleInRadians, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( angleInRadians ) ), asSeenBy );
 	}
+
 	@Deprecated
 	public void applyRotationAboutXAxisInRadians( double angleInRadians ) {
 		applyRotationAboutXAxisInRadians( angleInRadians, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF );
 	}
+
 	@Deprecated
 	public void applyRotationAboutYAxisInRadians( double angleInRadians, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutYAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( angleInRadians ) ), asSeenBy );
 	}
+
 	@Deprecated
 	public void applyRotationAboutYAxisInRadians( double angleInRadians ) {
 		applyRotationAboutYAxisInRadians( angleInRadians, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF );
 	}
+
 	@Deprecated
 	public void applyRotationAboutZAxisInRadians( double angleInRadians, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createRotationAboutZAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( angleInRadians ) ), asSeenBy );
 	}
+
 	@Deprecated
 	public void applyRotationAboutZAxisInRadians( double angleInRadians ) {
 		applyRotationAboutZAxisInRadians( angleInRadians, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF );
 	}
+
 	@Deprecated
 	public void applyRotationAboutArbitraryAxisInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		if( axis.isPositiveXAxis() ) {
@@ -270,32 +288,40 @@ public abstract class AbstractTransformable extends Composite {
 			applyTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createOrientation( new edu.cmu.cs.dennisc.math.AxisRotation( axis, new edu.cmu.cs.dennisc.math.AngleInRadians( angleInRadians ) ) ), asSeenBy );
 		}
 	}
+
 	@Deprecated
 	public void applyRotationAboutArbitraryAxisInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians ) {
 		applyRotationAboutArbitraryAxisInRadians( axis, angleInRadians, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF );
 	}
-	
+
 	public void applyRotationAboutXAxis( edu.cmu.cs.dennisc.math.Angle angle, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyRotationAboutXAxisInRadians( angle.getAsRadians(), asSeenBy );
 	}
+
 	public void applyRotationAboutXAxis( edu.cmu.cs.dennisc.math.Angle angle ) {
 		applyRotationAboutXAxis( angle, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF );
 	}
+
 	public void applyRotationAboutYAxis( edu.cmu.cs.dennisc.math.Angle angle, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyRotationAboutYAxisInRadians( angle.getAsRadians(), asSeenBy );
 	}
+
 	public void applyRotationAboutYAxis( edu.cmu.cs.dennisc.math.Angle angle ) {
 		applyRotationAboutYAxis( angle, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF );
 	}
+
 	public void applyRotationAboutZAxis( edu.cmu.cs.dennisc.math.Angle angle, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyRotationAboutZAxisInRadians( angle.getAsRadians(), asSeenBy );
 	}
+
 	public void applyRotationAboutZAxis( edu.cmu.cs.dennisc.math.Angle angle ) {
 		applyRotationAboutZAxis( angle, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF );
 	}
+
 	public void applyRotationAboutArbitraryAxis( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame asSeenBy ) {
 		applyRotationAboutArbitraryAxisInRadians( axis, angle.getAsRadians(), asSeenBy );
 	}
+
 	public void applyRotationAboutArbitraryAxis( edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.math.Angle angle ) {
 		applyRotationAboutArbitraryAxis( axis, angle, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SELF );
 	}

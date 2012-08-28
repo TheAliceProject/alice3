@@ -56,7 +56,7 @@ public abstract class SScene extends SThing {
 	private final org.lgna.story.implementation.SceneImp implementation = new org.lgna.story.implementation.SceneImp( this );
 
 	@Override
-	/*package-private*/org.lgna.story.implementation.SceneImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.SceneImp getImplementation() {
 		return this.implementation;
 	}
 
@@ -65,196 +65,222 @@ public abstract class SScene extends SThing {
 	protected void preserveStateAndEventListeners() {
 		this.implementation.preserveStateAndEventListeners();
 	}
+
 	protected void restoreStateAndEventListeners() {
 		this.implementation.restoreStateAndEventListeners();
 	}
 
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate()
+	@GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Color getAtmosphereColor() {
 		return this.implementation.atmosphereColor.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setAtmosphereColor( Color color, SetAtmosphereColor.Detail... details ) {
 		this.implementation.atmosphereColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@GetterTemplate(isPersistent = false)
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+
+	@GetterTemplate( isPersistent = false )
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	@Deprecated
 	public Color getAmbientLightColor() {
 		return this.implementation.fromAboveLightColor.getValue();
 	}
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	@Deprecated
 	public void setAmbientLightColor( Color color, SetAmbientLightColor.Detail... details ) {
 		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate()
+	@GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Color getFromAboveLightColor() {
 		return this.implementation.fromAboveLightColor.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setFromAboveLightColor( Color color, SetFromAboveLightColor.Detail... details ) {
 		this.implementation.fromAboveLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
-	@GetterTemplate(isPersistent = true)
-	@MethodTemplate()
+	@GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Color getFromBelowLightColor() {
 		return this.implementation.fromBelowLightColor.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setFromBelowLightColor( Color color, SetFromBelowLightColor.Detail... details ) {
 		this.implementation.fromBelowLightColor.animateValue( color, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
+	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
 	public Double getFogDensity() {
 		return (double)this.getImplementation().fogDensity.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setFogDensity( Number density, SetFogDensity.Detail... details ) {
 		this.getImplementation().fogDensity.animateValue( density.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	//Mouse
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addMouseClickOnScreenListener( org.lgna.story.event.MouseClickOnScreenListener listener, AddMouseButtonListener.Detail... details ) {
 		this.implementation.getEventManager().addMouseClickOnScreenListener( listener, MultipleEventPolicy.getValue( details ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addMouseClickOnObjectListener( org.lgna.story.event.MouseClickOnObjectListener listener, AddMouseButtonListener.Detail... details ) {
 		this.implementation.getEventManager().addMouseClickOnObjectListener( listener, MultipleEventPolicy.getValue( details ), SetOfVisuals.getValue( details ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addDefaultModelManipulation() {
 		this.getImplementation().getEventManager().addDragAdapter();
 	}
 
 	//time/Scene
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addTimeListener( org.lgna.story.event.TimeListener timeListener, AddTimeListener.Detail... details ) {
 		this.getImplementation().getEventManager().addTimerEventListener( timeListener, TimerFrequency.getValue( details ).getFrequency(), MultipleEventPolicy.getValue( details ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener, AddSceneActivationListener.Detail... details ) {
 		this.implementation.addSceneActivationListener( sceneActivationListener );
 	}
 
 	//keyListeners
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addKeyPressListener( org.lgna.story.event.KeyPressListener keyListener, AddKeyPressListener.Detail... details ) {
 		this.implementation.getEventManager().addKeyListener( keyListener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addArrowKeyPressListener( org.lgna.story.event.ArrowKeyPressListener keyPressListener, AddKeyPressListener.Detail... details ) {
 		this.getImplementation().getEventManager().addArrowKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addNumberKeyPressListener( org.lgna.story.event.NumberKeyPressListener keyPressListener, AddKeyPressListener.Detail... details ) {
 		this.getImplementation().getEventManager().addNumberKeyListener( keyPressListener, MultipleEventPolicy.getValue( details ), HeldKeyPolicy.getValue( details ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addObjectMoverFor( SMovableTurnable entity, AddObjectMoverFor.Detail... details ) {
 		this.implementation.getEventManager().moveWithArrows( entity );
 	}
 
 	//TransformationListeners
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addPointOfViewChangeListener( org.lgna.story.event.PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo, AddPositionOrientationChangeListener.Detail... details ) {
 		this.getImplementation().getEventManager().addTransformationListener( transformationlistener, shouldListenTo );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addCollisionStartListener( org.lgna.story.event.CollisionStartListener collisionListener, SThing[] groupOne, SThing[] groupTwo, AddStartCollisionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@AddEventListenerTemplate( )
 	public void addWhileCollisionListener( org.lgna.story.event.WhileCollisionListener collisionListener, SThing[] groupOne, SThing[] groupTwo, AddTimeListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
 				.addWhileCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), TimerFrequency.getValue( details ).getFrequency(),
 						MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addCollisionEndListener( org.lgna.story.event.CollisionEndListener collisionListener, SThing[] groupOne, SThing[] groupTwo, AddEndCollisionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addCollisionListener( collisionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addProximityEnterListener( org.lgna.story.event.ProximityEnterListener proximityEventListener, SThing[] groupOne, SThing[] groupTwo, Double distance, AddEnterProximityEventListener.Detail... details ) {
 		this.getImplementation().getEventManager().addProximityEventListener( proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance );// AddEnterProximityEventListener.getDist( details ));
 	}
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@AddEventListenerTemplate( )
 	public void addWhileProximityListener( org.lgna.story.event.WhileProximityListener proximityListener, SThing[] groupOne, SThing[] groupTwo, Double distance, AddTimeListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
 				.addWhileProximityListener( proximityListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance,
 						TimerFrequency.getValue( details ).getFrequency(), MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addViewEnterListener( org.lgna.story.event.ViewEnterListener listener, SModel[] models, AddEnterViewListener.Detail... details ) {
 		this.implementation.getEventManager().addComesIntoViewEventListener( listener, models );
 	}
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@AddEventListenerTemplate( )
 	public void addWhileInViewListener( org.lgna.story.event.WhileInViewListener listener, SModel[] models, AddTimeListener.Detail... details ) {
 		this.implementation.getEventManager().addWhileInViewListener( listener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( models ), TimerFrequency.getValue( details ).getFrequency(),
 				MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addProximityExitListener( org.lgna.story.event.ProximityExitListener proximityEventListener, SThing[] groupOne, SThing[] groupTwo, Double distance, AddExitProximityEventListener.Detail... details ) {
 		this.getImplementation().getEventManager().addProximityEventListener( proximityEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), distance );// AddExitProximityEventListener.getDist( details ));
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addViewExitListener( org.lgna.story.event.ViewExitListener listener, SModel[] entities, AddExitViewListener.Detail... details ) {
 		this.implementation.getEventManager().addLeavesViewEventListener( listener, entities );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addOcclusionStartListener( org.lgna.story.event.OcclusionStartListener occlusionEventListener, SModel[] groupOne, SModel[] groupTwo, AddStartOcclusionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	@AddEventListenerTemplate( )
 	public void addWhileOcclusionListener( org.lgna.story.event.WhileOcclusionListener occlusionListener, SModel[] groupOne, SModel[] groupTwo, AddTimeListener.Detail... details ) {
 		this.getImplementation()
 				.getEventManager()
 				.addWhileOcclusionListener( occlusionListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ), TimerFrequency.getValue( details ).getFrequency(),
 						MultipleEventPolicy.getValue( details, MultipleEventPolicy.IGNORE ) );
 	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	@AddEventListenerTemplate()
+
+	@MethodTemplate( visibility = Visibility.PRIME_TIME )
+	@AddEventListenerTemplate( )
 	public void addOcclusionEndListener( org.lgna.story.event.OcclusionEndListener occlusionEventListener, SModel[] groupOne, SModel[] groupTwo, AddEndOcclusionListener.Detail... details ) {
 		this.getImplementation().getEventManager().addOcclusionEventListener( occlusionEventListener, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupOne ), edu.cmu.cs.dennisc.java.util.Collections.newArrayList( groupTwo ) );
 	}
 
 	//remove
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public void removeKeyListener( org.lgna.story.event.KeyPressListener keyListener ) {
 		this.implementation.getEventManager().removeKeyListener( keyListener );
 	}
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
 	public void removeSceneActivationListener( org.lgna.story.event.SceneActivationListener sceneActivationListener ) {
 		this.implementation.removeSceneActivationListener( sceneActivationListener );
 	}

@@ -46,9 +46,10 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectable< J extends javax.swing.JComponent, T, M extends org.lgna.croquet.ItemState<T> > extends ViewController<J, M> {
+public abstract class ItemSelectable<J extends javax.swing.JComponent, T, M extends org.lgna.croquet.ItemState<T>> extends ViewController<J, M> {
 	public ItemSelectable( M model ) {
 		super( model );
 	}
+
 	public abstract org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item );
 }

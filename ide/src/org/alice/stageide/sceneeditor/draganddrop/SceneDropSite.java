@@ -42,29 +42,28 @@
  */
 package org.alice.stageide.sceneeditor.draganddrop;
 
-
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public final class SceneDropSite implements org.lgna.croquet.DropSite {
 
 	private final AffineMatrix4x4 transform;
-	
+
 	public SceneDropSite( AffineMatrix4x4 transform ) {
 		this.transform = transform;
 	}
-	
+
 	public SceneDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.transform = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
-	
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.transform );
 	}
-	
+
 	public AffineMatrix4x4 getTransform() {
 		return this.transform;
 	}
@@ -75,8 +74,9 @@ public final class SceneDropSite implements org.lgna.croquet.DropSite {
 
 	@Override
 	public boolean equals( Object o ) {
-		if( o == this )
+		if( o == this ) {
 			return true;
+		}
 		if( o instanceof SceneDropSite ) {
 			SceneDropSite sds = (SceneDropSite)o;
 			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.transform, sds.transform );
@@ -84,15 +84,16 @@ public final class SceneDropSite implements org.lgna.croquet.DropSite {
 			return false;
 		}
 	}
+
 	@Override
 	public int hashCode() {
 		int rv = 17;
 		if( this.transform != null ) {
-			rv = 37*rv + this.transform.hashCode();
+			rv = ( 37 * rv ) + this.transform.hashCode();
 		}
 		return rv;
 	}
-	
+
 	public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
 		//todo
 		return (org.lgna.croquet.DropReceptor)org.alice.ide.IDE.getActiveInstance().getSceneEditor();

@@ -50,7 +50,9 @@ public abstract class AbstractPrepModel extends AbstractModel implements PrepMod
 	public AbstractPrepModel( java.util.UUID id ) {
 		super( id );
 	}
-	public abstract Iterable< ? extends Model > getChildren();
+
+	public abstract Iterable<? extends Model> getChildren();
+
 	public boolean isChild( Model model ) {
 		for( Model child : this.getChildren() ) {
 			if( child == model ) {

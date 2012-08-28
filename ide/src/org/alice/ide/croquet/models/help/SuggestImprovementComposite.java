@@ -49,12 +49,15 @@ public class SuggestImprovementComposite extends ReportIssueComposite {
 	private static class SingletonHolder {
 		private static SuggestImprovementComposite instance = new SuggestImprovementComposite();
 	}
+
 	public static SuggestImprovementComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SuggestImprovementComposite() {
 		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.IMPROVEMENT );
 	}
+
 	public static void main( String[] args ) throws Exception {
 		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
 		if( lookAndFeelInfo != null ) {

@@ -48,10 +48,12 @@ package org.alice.ide.croquet.models.history;
  */
 public abstract class HistoryComposite extends org.lgna.croquet.FrameComposite {
 	private final org.lgna.croquet.Group historyGroup;
+
 	public HistoryComposite( java.util.UUID id, org.lgna.croquet.Group historyGroup ) {
 		super( id, org.alice.ide.ProjectApplication.INFORMATION_GROUP );
 		this.historyGroup = historyGroup;
 	}
+
 	@Override
 	protected final org.lgna.croquet.components.View createView() {
 		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();

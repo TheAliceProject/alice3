@@ -47,10 +47,12 @@ package edu.cmu.cs.dennisc.lookingglass.event;
  */
 public class LookingGlassRenderEvent extends LookingGlassEvent {
 	private edu.cmu.cs.dennisc.lookingglass.Graphics2D m_g;
+
 	public LookingGlassRenderEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.lookingglass.Graphics2D g ) {
 		super( lookingGlass );
 		m_g = g;
 	}
+
 	public edu.cmu.cs.dennisc.lookingglass.Graphics2D getGraphics2D() {
 		return m_g;
 	}

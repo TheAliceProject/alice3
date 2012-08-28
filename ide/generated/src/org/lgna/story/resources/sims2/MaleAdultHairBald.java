@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultHairBald implements MaleAdultHair {
-	STUBBLE_BLACK ,
- 	STUBBLE_BLOND ,
- 	STUBBLE_BROWN ,
- 	STUBBLE_GREY ,
- 	STUBBLE_RED ,
- 	BARE ;
+	STUBBLE_BLACK,
+	STUBBLE_BLOND,
+	STUBBLE_BROWN,
+	STUBBLE_GREY,
+	STUBBLE_RED,
+	BARE;
 }

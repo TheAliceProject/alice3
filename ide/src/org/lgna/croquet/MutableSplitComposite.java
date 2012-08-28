@@ -54,30 +54,36 @@ public abstract class MutableSplitComposite extends AbstractSplitComposite<org.l
 		this.setLeadingComposite( leadingComposite );
 		this.setTrailingComposite( trailingComposite );
 	}
+
 	@Override
 	public Composite<?> getLeadingComposite() {
 		return this.leadingComposite;
 	}
+
 	@Override
 	public Composite<?> getTrailingComposite() {
 		return this.trailingComposite;
 	}
+
 	public void setLeadingComposite( Composite<?> leadingComposite ) {
 		if( this.leadingComposite != leadingComposite ) {
 			this.leadingComposite = leadingComposite;
 			this.getView().setLeadingComponent( this.leadingComposite != null ? this.leadingComposite.getView() : null );
 		}
 	}
+
 	public void setTrailingComposite( Composite<?> trailingComposite ) {
 		if( this.trailingComposite != trailingComposite ) {
 			this.trailingComposite = trailingComposite;
 			this.getView().setTrailingComponent( this.trailingComposite != null ? this.trailingComposite.getView() : null );
 		}
 	}
+
 	@Override
 	protected org.lgna.croquet.components.HorizontalMutableSplitPane createHorizontalSplitPane() {
 		return new org.lgna.croquet.components.HorizontalMutableSplitPane( this );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.VerticalMutableSplitPane createVerticalSplitPane() {
 		return new org.lgna.croquet.components.VerticalMutableSplitPane( this );

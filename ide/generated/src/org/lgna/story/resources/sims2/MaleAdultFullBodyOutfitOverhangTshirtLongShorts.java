@@ -41,17 +41,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitOverhangTshirtLongShorts implements MaleAdultFullBodyOutfit {
-	BLACKSUN ,
- 	RED ,
- 	BLUE ,
- 	BLACK ,
- 	ASHLOGO ,
- 	BLUELOGO ,
- 	BROWNLOGO ,
- 	GREENLOGO ,
- 	PLUMLOGO ,
- 	WHITELOGO ,
- 	GRAYPAW ,
- 	CAMO ;
+	BLACKSUN,
+	RED,
+	BLUE,
+	BLACK,
+	ASHLOGO,
+	BLUELOGO,
+	BROWNLOGO,
+	GREENLOGO,
+	PLUMLOGO,
+	WHITELOGO,
+	GRAYPAW,
+	CAMO;
 }

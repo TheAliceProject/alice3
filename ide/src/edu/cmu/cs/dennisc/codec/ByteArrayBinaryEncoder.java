@@ -47,13 +47,16 @@ package edu.cmu.cs.dennisc.codec;
  */
 public class ByteArrayBinaryEncoder extends OutputStreamBinaryEncoder {
 	private final java.io.ByteArrayOutputStream baos;
+
 	private ByteArrayBinaryEncoder( java.io.ByteArrayOutputStream baos ) {
 		super( baos );
 		this.baos = baos;
 	}
+
 	public ByteArrayBinaryEncoder() {
 		this( new java.io.ByteArrayOutputStream() );
 	}
+
 	public BinaryDecoder createDecoder() {
 		this.flush();
 		byte[] data = this.baos.toByteArray();

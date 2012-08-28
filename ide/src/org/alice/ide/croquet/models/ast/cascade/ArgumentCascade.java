@@ -46,7 +46,8 @@ package org.alice.ide.croquet.models.ast.cascade;
  * @author Dennis Cosgrove
  */
 public class ArgumentCascade extends ProjectExpressionPropertyCascade {
-	private static java.util.Map< org.lgna.project.ast.SimpleArgument, ArgumentCascade > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.SimpleArgument, ArgumentCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ArgumentCascade getInstance( org.lgna.project.ast.SimpleArgument argument ) {
 		ArgumentCascade rv = map.get( argument );
 		if( rv != null ) {
@@ -57,23 +58,27 @@ public class ArgumentCascade extends ProjectExpressionPropertyCascade {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.SimpleArgument argument;
+
 	private ArgumentCascade( org.lgna.project.ast.SimpleArgument argument ) {
 		super( java.util.UUID.fromString( "c60b0eec-d8ac-4256-a8be-54b16605fc0e" ), argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
 		this.argument = argument;
 	}
-//	@Override
-//	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
-//		return this.argument.expression;
-//	}
-//	@Override
-//	protected String getTitle() {
-//		return this.argument.parameter.getValue().getName();
-//	}
+
+	//	@Override
+	//	public org.lgna.project.ast.ExpressionProperty getExpressionProperty() {
+	//		return this.argument.expression;
+	//	}
+	//	@Override
+	//	protected String getTitle() {
+	//		return this.argument.parameter.getValue().getName();
+	//	}
 	@Override
-	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ArgumentCascade >( this, org.lgna.project.ast.SimpleArgument.class, this.argument );
+	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ArgumentCascade> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ArgumentCascade>( this, org.lgna.project.ast.SimpleArgument.class, this.argument );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
 		assert expressions.length == 1;

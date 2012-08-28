@@ -47,36 +47,38 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public enum AccessLevel {
-//1.6
-//	PUBLIC( int.PUBLIC ),
-//	PROTECTED( javax.lang.model.element.Modifier.PROTECTED ),
-//	PRIVATE( javax.lang.model.element.Modifier.PRIVATE ),
-//	PACKAGE();
-//	private javax.lang.model.element.Modifier[] m_modifiers;
-//	Access( javax.lang.model.element.Modifier... modifiers ) {
-//		m_modifiers = modifiers;
-//	}
-//	public java.util.Set< javax.lang.model.element.Modifier > updateModifiers( java.util.Set< javax.lang.model.element.Modifier > rv ) {
-//		for( javax.lang.model.element.Modifier modifier : m_modifiers ) {
-//			rv.add( modifier );
-//		}
-//		return rv;
-//	}
+	//1.6
+	//	PUBLIC( int.PUBLIC ),
+	//	PROTECTED( javax.lang.model.element.Modifier.PROTECTED ),
+	//	PRIVATE( javax.lang.model.element.Modifier.PRIVATE ),
+	//	PACKAGE();
+	//	private javax.lang.model.element.Modifier[] m_modifiers;
+	//	Access( javax.lang.model.element.Modifier... modifiers ) {
+	//		m_modifiers = modifiers;
+	//	}
+	//	public java.util.Set< javax.lang.model.element.Modifier > updateModifiers( java.util.Set< javax.lang.model.element.Modifier > rv ) {
+	//		for( javax.lang.model.element.Modifier modifier : m_modifiers ) {
+	//			rv.add( modifier );
+	//		}
+	//		return rv;
+	//	}
 	PUBLIC( java.lang.reflect.Modifier.PUBLIC ),
 	PROTECTED( java.lang.reflect.Modifier.PROTECTED ),
 	PRIVATE( java.lang.reflect.Modifier.PRIVATE ),
 	PACKAGE();
 	private int[] m_modifiers;
+
 	AccessLevel( int... modifiers ) {
 		m_modifiers = modifiers;
 	}
-	public java.util.Collection< Integer > updateModifiers( java.util.Collection< Integer > rv ) {
+
+	public java.util.Collection<Integer> updateModifiers( java.util.Collection<Integer> rv ) {
 		for( int modifier : m_modifiers ) {
 			rv.add( modifier );
 		}
 		return rv;
 	}
-	
+
 	//todo: rename
 	public static AccessLevel get( int modifiers ) {
 		if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {

@@ -45,22 +45,26 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 public abstract class JRowsSpringPane extends edu.cmu.cs.dennisc.javax.swing.components.JPane {
 	private int xPad;
 	private int yPad;
+
 	public JRowsSpringPane( int xPad, int yPad ) {
 		this.xPad = xPad;
 		this.yPad = yPad;
 	}
+
 	@Override
 	public void addNotify() {
 		if( getLayout() instanceof javax.swing.SpringLayout ) {
 			//pass
 		} else {
-			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
+			java.util.List<java.awt.Component[]> componentRows = this.createComponentRows();
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
 		}
 		super.addNotify();
 	}
-	protected abstract java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv );
-	private java.util.List< java.awt.Component[] > createComponentRows() {
-		return addComponentRows( new java.util.LinkedList< java.awt.Component[] >() );
+
+	protected abstract java.util.List<java.awt.Component[]> addComponentRows( java.util.List<java.awt.Component[]> rv );
+
+	private java.util.List<java.awt.Component[]> createComponentRows() {
+		return addComponentRows( new java.util.LinkedList<java.awt.Component[]>() );
 	}
 }

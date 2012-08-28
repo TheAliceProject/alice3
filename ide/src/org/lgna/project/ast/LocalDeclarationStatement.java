@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class LocalDeclarationStatement extends Statement {
-	public DeclarationProperty< UserLocal > local = new DeclarationProperty< UserLocal >( this ) {
+	public DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
@@ -55,12 +55,14 @@ public class LocalDeclarationStatement extends Statement {
 	};
 	public ExpressionProperty initializer = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return LocalDeclarationStatement.this.local.getValue().valueType.getValue();
 		}
 	};
+
 	public LocalDeclarationStatement() {
 	}
+
 	public LocalDeclarationStatement( UserLocal local, Expression initializer ) {
 		this.local.setValue( local );
 		this.initializer.setValue( initializer );

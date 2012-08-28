@@ -47,23 +47,28 @@ package org.lgna.croquet.icon;
  */
 public abstract class AbstractIcon implements javax.swing.Icon {
 	private final java.awt.Dimension size;
+
 	public AbstractIcon( java.awt.Dimension size ) {
 		this.size = size;
 	}
+
 	public int getIconWidth() {
 		return this.size.width;
 	}
+
 	public int getIconHeight() {
 		return this.size.height;
 	}
-	protected abstract void paintIcon( java.awt.Graphics2D g2 );
-	public final void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+
+	protected abstract void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 );
+
+	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.Paint prevPaint = g2.getPaint();
 		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		g2.translate( x, y );
-		this.paintIcon( g2 );
+		this.paintIcon( c, g2 );
 		g2.translate( -x, -y );
 		g2.setPaint( prevPaint );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );

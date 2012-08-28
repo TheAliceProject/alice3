@@ -49,15 +49,18 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 	private static class SingletonHolder {
 		private static PrintCurrentCodeOperation instance = new PrintCurrentCodeOperation();
 	}
+
 	public static PrintCurrentCodeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private PrintCurrentCodeOperation() {
 		super( java.util.UUID.fromString( "097b41bf-d1ea-4991-a0d6-0fae51be35ef" ) );
 	}
+
 	@Override
 	protected java.awt.print.Printable getPrintable() {
-		org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 		org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
 		if( view.isPrintSupported() ) {
 			return view;

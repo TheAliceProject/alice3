@@ -47,12 +47,20 @@ package edu.cmu.cs.dennisc.scenegraph;
  */
 public interface ReferenceFrame {
 	public boolean isSceneOf( Component other );
+
 	public boolean isVehicleOf( Component other );
+
 	public boolean isLocalOf( Component other );
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv );
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation();
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv );
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation();
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, ReferenceFrame other );
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( ReferenceFrame other );
 }

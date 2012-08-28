@@ -48,23 +48,27 @@ package org.lgna.project.reflect;
 public class MethodInfo extends MemberWithParametersInfo {
 	private transient java.lang.reflect.Method mthd;
 	private final String name;
+
 	public MethodInfo( ClassInfo classInfo, String name, String[] parameterClassNames, String[] parameterNames ) {
 		super( classInfo, parameterClassNames, parameterNames );
 		this.name = name;
 	}
+
 	public MethodInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		this.name = binaryDecoder.decodeString();
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.name );
 	}
+
 	public java.lang.reflect.Method getMthd() {
 		if( this.mthd != null ) {
 			//pass
@@ -73,6 +77,7 @@ public class MethodInfo extends MemberWithParametersInfo {
 		}
 		return this.mthd;
 	}
+
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		sb.append( "name=" );

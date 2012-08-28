@@ -46,35 +46,38 @@ package org.alice.ide.croquet.models.cascade.integer;
 /**
  * @author Dennis Cosgrove
  */
-public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu< org.lgna.project.ast.Expression > {
+public class MathCascadeMenu extends org.alice.ide.croquet.models.cascade.ExpressionCascadeMenu<org.lgna.project.ast.Expression> {
 	private static class SingletonHolder {
 		private static MathCascadeMenu instance = new MathCascadeMenu();
 	}
+
 	public static MathCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private MathCascadeMenu() {
 		super( java.util.UUID.fromString( "a7c69555-3232-4091-96f6-8f9b6ec2ee3a" ) );
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< org.lgna.project.ast.Expression > context ) {
-//		final org.lgna.project.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().createCopyOfPreviousExpression();
-//		final boolean isTop = blank.getParentFillIn() == null;
-//		
-//		if( previousExpression != null ) {
-//			for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
-//				rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
-//			}
-//			rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "divide, remainder" ) {
-//				@Override
-//				protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-//					for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
-//						rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
-//					}
-//				}
-//			} );
-//			blank.addSeparator();
-//		}
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> context ) {
+		//		final org.lgna.project.ast.Expression previousExpression = org.alice.ide.IDE.getActiveInstance().getCascadeManager().createCopyOfPreviousExpression();
+		//		final boolean isTop = blank.getParentFillIn() == null;
+		//		
+		//		if( previousExpression != null ) {
+		//			for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
+		//				rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
+		//			}
+		//			rv.add( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "divide, remainder" ) {
+		//				@Override
+		//				protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+		//					for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.TUCKED_AWAY_INTEGER_ARITHMETIC_OPERATORS ) {
+		//						rv.add( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Integer.class, Integer.class ) );
+		//					}
+		//				}
+		//			} );
+		//			blank.addSeparator();
+		//		}
 		for( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator : org.alice.ide.croquet.models.cascade.arithmetic.ArithmeticUtilities.PRIME_TIME_INTEGER_ARITHMETIC_OPERATORS ) {
 			rv.add( org.alice.ide.croquet.models.cascade.integer.IntegerArithmeticExpressionRightOperandOnlyFillIn.getInstance( operator ) );
 		}

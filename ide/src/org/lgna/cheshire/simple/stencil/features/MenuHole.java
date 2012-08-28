@@ -49,10 +49,11 @@ public class MenuHole extends Hole {
 	private boolean isPathRenderingDesired;
 	private boolean isHoleRenderingDesired;
 	private boolean isCheckMarkRenderingDesired;
-	public MenuHole( 
-			org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver, 
-			ConnectionPreference connectionPreference, 
-			boolean isPathRenderingDesired, 
+
+	public MenuHole(
+			org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.components.TrackableShape> trackableShapeResolver,
+			ConnectionPreference connectionPreference,
+			boolean isPathRenderingDesired,
 			boolean isHoleRenderingDesired,
 			boolean isCheckMarkRenderingDesired ) {
 		super( trackableShapeResolver, connectionPreference );
@@ -60,31 +61,35 @@ public class MenuHole extends Hole {
 		this.isHoleRenderingDesired = isHoleRenderingDesired;
 		this.isCheckMarkRenderingDesired = isCheckMarkRenderingDesired;
 	}
+
 	@Override
 	protected boolean isPathRenderingDesired() {
 		return this.isPathRenderingDesired;
 	}
+
 	@Override
 	protected boolean isHoleRenderingDesired() {
 		return this.isHoleRenderingDesired;
 	}
+
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component<?> asSeenBy ) {
 		if( this.isHoleRenderingDesired() ) {
 			return super.getAreaToSubstractForContains( asSeenBy );
 		} else {
 			return null;
 		}
 	}
+
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForPaint( org.lgna.croquet.components.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForPaint( org.lgna.croquet.components.Component<?> asSeenBy ) {
 		if( this.isHoleRenderingDesired() ) {
 			return super.getAreaToSubstractForPaint( asSeenBy );
 		} else {
 			return null;
 		}
-	}	
-	
+	}
+
 	private static java.awt.Shape createCheckMark( int size ) {
 		float x0 = 0.0f * size;
 		float xA = 0.325f * size;
@@ -103,6 +108,7 @@ public class MenuHole extends Hole {
 		path.closePath();
 		return path;
 	}
+
 	@Override
 	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection ) {
 		super.paint( g2, shape, actualConnection );
@@ -117,7 +123,7 @@ public class MenuHole extends Hole {
 							int size = bounds.height;
 							java.awt.Shape checkMark = createCheckMark( size );
 							java.awt.geom.AffineTransform m = g2.getTransform();
-							
+
 							int x = bounds.x;
 							if( actualConnection == Connection.EAST ) {
 								x -= 0;
@@ -127,9 +133,9 @@ public class MenuHole extends Hole {
 								x += size / 4;
 								x += bounds.width;
 							}
-							
-							g2.translate( x, bounds.y-size/8 );
-							g2.rotate( Math.PI/5 );
+
+							g2.translate( x, bounds.y - ( size / 8 ) );
+							g2.rotate( Math.PI / 5 );
 							g2.setPaint( java.awt.Color.GREEN );
 							g2.fill( checkMark );
 							g2.setPaint( java.awt.Color.GREEN.darker() );

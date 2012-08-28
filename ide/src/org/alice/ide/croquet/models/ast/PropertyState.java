@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized PropertyState getInstanceForSetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
 		PropertyState rv = map.get( group, setter );
 		if( rv != null ) {
@@ -59,29 +59,36 @@ public class PropertyState extends org.alice.ide.croquet.models.StandardExpressi
 		}
 		return rv;
 	}
+
 	public static synchronized PropertyState getInstanceForGetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod getter ) {
 		return getInstanceForSetter( group, org.lgna.project.ast.AstUtilities.getSetterForGetter( getter ) );
 	}
+
 	private final org.lgna.project.ast.JavaMethod setter;
+
 	private PropertyState( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
 		super( group, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), null );
 		this.setter = setter;
 	}
+
 	public org.lgna.project.ast.JavaMethod getSetter() {
 		return this.setter;
 	}
+
 	private org.lgna.project.ast.JavaMethodParameter getParameter0() {
 		return (org.lgna.project.ast.JavaMethodParameter)this.setter.getRequiredParameters().get( 0 );
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return this.getParameter0().getValueType();
 	}
+
 	@Override
-	protected org.lgna.project.annotations.ValueDetails< ? > getValueDetails() {
+	protected org.lgna.project.annotations.ValueDetails<?> getValueDetails() {
 		return this.getParameter0().getDetails();
 	}
-	
+
 	public org.lgna.project.ast.Expression getValueOrNullLiteral() {
 		org.lgna.project.ast.Expression rv = this.getValue();
 		if( rv != null ) {

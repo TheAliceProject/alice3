@@ -50,19 +50,24 @@ public class TreeSelectionEventTrigger extends EventObjectTrigger<javax.swing.ev
 	public static TreeSelectionEventTrigger createUserInstance( javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
 		return new TreeSelectionEventTrigger( Origin.USER, null, treeSelectionEvent );
 	}
+
 	public static TreeSelectionEventTrigger createGeneratorInstance() {
 		return new TreeSelectionEventTrigger( Origin.GENERATOR, null, null );
 	}
-	private TreeSelectionEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
+
+	private TreeSelectionEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, javax.swing.event.TreeSelectionEvent treeSelectionEvent ) {
 		super( origin, viewController, treeSelectionEvent );
 	}
+
 	public TreeSelectionEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+
 	@Override
 	public String getNoteText() {
 		return "Select";

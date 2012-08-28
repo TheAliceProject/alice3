@@ -47,6 +47,8 @@ package edu.cmu.cs.dennisc.property;
  */
 public interface Property<E> {
 	public String getName();
+
 	public E getValue( PropertyOwner owner );
+
 	public void setValue( PropertyOwner owner, E value );
 }

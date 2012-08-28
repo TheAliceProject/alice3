@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PrimitiveBufferProperty< T extends java.nio.Buffer > extends InstanceProperty< T > {
+public abstract class PrimitiveBufferProperty<T extends java.nio.Buffer> extends InstanceProperty<T> {
 	public PrimitiveBufferProperty( InstancePropertyOwner owner, T value ) {
 		super( owner, value );
 	}

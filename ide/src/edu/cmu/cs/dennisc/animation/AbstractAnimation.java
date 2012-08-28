@@ -53,17 +53,19 @@ public abstract class AbstractAnimation implements Animation {
 		EPILOGUE_IS_REQUIRED,
 		COMPLETED
 	}
+
 	private State m_state = State.PROLOGUE_IS_REQUIRED;
 	private double m_t0 = Double.NaN;
 	private double m_tPrevious = Double.NaN;
-	
-//	public AbstractAnimation() {
-//		initialize();
-//	}
+
+	//	public AbstractAnimation() {
+	//		initialize();
+	//	}
 
 	public synchronized final void reset() {
 		m_state = State.INITIALIZE_IS_REQUIRED;
-	}	
+	}
+
 	public synchronized final double update( double tCurrent, AnimationObserver animationObserver ) {
 		double tRemaining = Double.NaN;
 		if( m_state != State.COMPLETED ) {
@@ -103,9 +105,9 @@ public abstract class AbstractAnimation implements Animation {
 		assert Double.isNaN( tRemaining ) == false;
 		return tRemaining;
 	}
-	
+
 	public synchronized final void complete( AnimationObserver animationObserver ) {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "complete: ", m_state );
+		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "complete: ", m_state );
 		if( m_state == State.PROLOGUE_IS_REQUIRED ) {
 			prologue();
 			if( animationObserver != null ) {
@@ -126,14 +128,13 @@ public abstract class AbstractAnimation implements Animation {
 			m_state = State.PROLOGUE_IS_REQUIRED;
 		}
 	}
-	
-	
-	
+
 	protected abstract void prologue();
+
 	protected abstract double update( double tDeltaSincePrologue, double tDeltaSinceLastUpdate, AnimationObserver animationObserver );
-	
+
 	//todo: clean
 	protected abstract void preEpilogue();
-	
+
 	protected abstract void epilogue();
 }

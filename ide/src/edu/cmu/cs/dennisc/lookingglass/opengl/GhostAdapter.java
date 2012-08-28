@@ -46,8 +46,9 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class GhostAdapter extends TransformableAdapter< edu.cmu.cs.dennisc.scenegraph.Ghost > {
+public class GhostAdapter extends TransformableAdapter<edu.cmu.cs.dennisc.scenegraph.Ghost> {
 	private float m_opacity = Float.NaN;
+
 	@Override
 	public void renderGhost( RenderContext rc, GhostAdapter root ) {
 		rc.pushGlobalOpacity();
@@ -58,12 +59,12 @@ public class GhostAdapter extends TransformableAdapter< edu.cmu.cs.dennisc.scene
 			rc.popGlobalOpacity();
 		}
 	}
-	
+
 	@Override
 	public void renderOpaque( RenderContext rc ) {
 		//pass
 	}
-	
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.opacity ) {

@@ -45,13 +45,14 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> > {
+public class FillInMoreEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> {
 	private org.lgna.project.ast.Expression argumentExpression;
 
 	public FillInMoreEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression argumentExpression ) {
 		super( completionStep );
 		this.argumentExpression = argumentExpression;
 	}
+
 	public FillInMoreEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -59,6 +60,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
 		this.argumentExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, prevExpressionId );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -68,7 +70,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 	private org.lgna.project.ast.SimpleArgument getArgumentAt( org.lgna.project.ast.MethodInvocation methodInvocation, int index ) {
 		return methodInvocation.requiredArguments.get( index );
 	}
-	
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel();
@@ -79,37 +81,38 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 		//prevMethodInvocation.expression.setValue( null );
 		nextMethodInvocation.expression.setValue( instanceExpression );
 		final int N = prevMethodInvocation.requiredArguments.size();
-		for( int i=0; i<N; i++ ) {
+		for( int i = 0; i < N; i++ ) {
 			org.lgna.project.ast.Expression expressionI = this.getArgumentAt( prevMethodInvocation, i ).expression.getValue();
 			//prevMethodInvocation.arguments.get( i ).expression.setValue( null );
 			this.getArgumentAt( nextMethodInvocation, i ).expression.setValue( expressionI );
 		}
 		this.getArgumentAt( nextMethodInvocation, N ).expression.setValue( this.argumentExpression );
 		model.getExpressionStatement().expression.setValue( nextMethodInvocation );
-//		this.getModel().updateToolTipText();
+		//		this.getModel().updateToolTipText();
 	}
+
 	@Override
 	protected final void undoInternal() {
 		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel();
 		org.lgna.project.ast.MethodInvocation prevMethodInvocation = model.getPrevMethodInvocation();
 		org.lgna.project.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
-		
+
 		org.lgna.project.ast.Expression instanceExpression = nextMethodInvocation.expression.getValue();
 		nextMethodInvocation.expression.setValue( null );
 		prevMethodInvocation.expression.setValue( instanceExpression );
 		final int N = prevMethodInvocation.requiredArguments.size();
-		for( int i=0; i<N; i++ ) {
-			org.lgna.project.ast.Expression expressionI =  this.getArgumentAt( nextMethodInvocation, i ).expression.getValue();
+		for( int i = 0; i < N; i++ ) {
+			org.lgna.project.ast.Expression expressionI = this.getArgumentAt( nextMethodInvocation, i ).expression.getValue();
 			//nextMethodInvocation.arguments.get( i ).expression.setValue( null );
 			this.getArgumentAt( prevMethodInvocation, i ).expression.setValue( expressionI );
 		}
 		//nextMethodInvocation.arguments.get( N ).expression.setValue( null );
 
 		model.getExpressionStatement().expression.setValue( prevMethodInvocation );
-		
 
-//		this.getModel().updateToolTipText();
+		//		this.getModel().updateToolTipText();
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel();
@@ -118,8 +121,8 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit< org.lgna.croque
 			rv.append( "more: " );
 			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, nextMethodInvocation.method.getValue(), org.lgna.croquet.Application.getLocale() );
 			rv.append( " " );
-			final int N = nextMethodInvocation.requiredArguments.size(); 
-			org.lgna.project.ast.AbstractArgument argument = nextMethodInvocation.requiredArguments.get( N-1 );
+			final int N = nextMethodInvocation.requiredArguments.size();
+			org.lgna.project.ast.AbstractArgument argument = nextMethodInvocation.requiredArguments.get( N - 1 );
 			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, argument, org.lgna.croquet.Application.getLocale() );
 		}
 		return rv;

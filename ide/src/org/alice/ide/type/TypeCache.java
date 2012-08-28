@@ -48,19 +48,21 @@ package org.alice.ide.type;
  */
 public class TypeCache {
 	private final org.lgna.project.Project project;
-	private final java.util.Map<TypeKey,org.lgna.project.ast.NamedUserType> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<TypeKey, org.lgna.project.ast.NamedUserType> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public TypeCache( org.lgna.project.Project project ) {
 		this.project = project;
 		this.seed();
 	}
+
 	private TypeKey createKeyForType( org.lgna.project.ast.NamedUserType type ) {
-		org.lgna.project.ast.AbstractType<?,?,?> superType = type.getSuperType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> superType = type.getSuperType();
 		java.util.ArrayList<org.lgna.project.ast.NamedUserConstructor> constructors = type.getDeclaredConstructors();
 		final int CONSTRUCTOR_COUNT = constructors.size();
 		switch( CONSTRUCTOR_COUNT ) {
 		case 1:
 			org.lgna.project.ast.NamedUserConstructor constructor0 = constructors.get( 0 );
-			java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor0.getRequiredParameters();
+			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
 			final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
 			switch( REQUIRED_PARAMETER_COUNT ) {
 			case 0:
@@ -90,6 +92,7 @@ public class TypeCache {
 			throw new AssertionError( type );
 		}
 	}
+
 	private void seed() {
 		for( org.lgna.project.ast.NamedUserType type : this.project.getNamedUserTypes() ) {
 			TypeKey key = this.createKeyForType( type );
@@ -100,6 +103,7 @@ public class TypeCache {
 			}
 		}
 	}
+
 	public org.lgna.project.ast.NamedUserType getTypeFor( TypeKey key ) {
 		synchronized( this.map ) {
 			org.lgna.project.ast.NamedUserType rv = this.map.get( key );

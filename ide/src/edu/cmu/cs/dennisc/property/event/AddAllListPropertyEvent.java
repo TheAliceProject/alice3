@@ -48,14 +48,17 @@ package edu.cmu.cs.dennisc.property.event;
 public class AddAllListPropertyEvent<E> extends ListPropertyEvent<E> {
 	private int m_index;
 	private java.util.Collection<? extends E> m_collection;
+
 	public AddAllListPropertyEvent( edu.cmu.cs.dennisc.property.ListProperty<E> source, int index, java.util.Collection<? extends E> collection ) {
 		super( source );
 		m_index = index;
 		m_collection = collection;
 	}
+
 	public int getIndex() {
 		return m_index;
 	}
+
 	public java.util.Collection<? extends E> getCollection() {
 		return m_collection;
 	}

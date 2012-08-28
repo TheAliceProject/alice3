@@ -50,24 +50,26 @@ public class SceneOrNonSceneCardOwnerComposite extends org.lgna.croquet.CardOwne
 	private static class SingletonHolder {
 		private static SceneOrNonSceneCardOwnerComposite instance = new SceneOrNonSceneCardOwnerComposite();
 	}
+
 	public static SceneOrNonSceneCardOwnerComposite getInstance() {
 		return SingletonHolder.instance;
 	}
-	
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType > typeListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.NamedUserType >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.NamedUserType > state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
 			SceneOrNonSceneCardOwnerComposite.this.handleTypeStateChanged( nextValue );
 		}
 	};
 
 	private SceneOrNonSceneCardOwnerComposite() {
 		super( java.util.UUID.fromString( "9d3525cd-c560-4a00-9de4-7c2b5a926ae9" ),
-				SceneTypeComposite.getInstance(), 
-				NonSceneTypeComposite.getInstance() 
-		);
+				SceneTypeComposite.getInstance(),
+				NonSceneTypeComposite.getInstance() );
 	}
+
 	@Override
 	public org.lgna.croquet.components.CardPanel createView() {
 		org.lgna.croquet.components.CardPanel rv = super.createView();
@@ -76,28 +78,30 @@ public class SceneOrNonSceneCardOwnerComposite extends org.lgna.croquet.CardOwne
 	}
 
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
-		org.lgna.croquet.Composite< ? > composite;
+		org.lgna.croquet.Composite<?> composite;
 		if( nextValue != null ) {
 			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
 				composite = SceneTypeComposite.getInstance();
 			} else {
 				composite = NonSceneTypeComposite.getInstance();
 			}
-//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
-//			if( view instanceof NonSceneTypeView ) {
-//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
-//				nonSceneTypeView.handlePreShow();
-//			}
+			//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
+			//			if( view instanceof NonSceneTypeView ) {
+			//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
+			//				nonSceneTypeView.handlePreShow();
+			//			}
 		} else {
 			composite = null;
 		}
 		this.showCard( composite );
 	}
+
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 	}
+
 	@Override
 	public void handlePostDeactivation() {
 		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );

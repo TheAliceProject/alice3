@@ -52,14 +52,14 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 	private org.lgna.story.implementation.Property<P> property;
 	private boolean isPropertyListening = false;
 	private boolean isPropertyUpdate = false;
-	
+
 	private void initializeListenersIfNecessary()
 	{
-		if (this.propertyListener == null)
+		if( this.propertyListener == null )
 		{
 			this.propertyListener = new Listener<P>()
 			{
-				public void propertyChanged(P prevValue, P nextValue) {
+				public void propertyChanged( P prevValue, P nextValue ) {
 					isPropertyUpdate = true;
 					handleInternalValueChanged();
 					isPropertyUpdate = false;
@@ -67,88 +67,88 @@ public abstract class AbstractImplementationPropertyAdapter<P, O> extends Abstra
 			};
 		}
 	}
-	
+
 	@Override
-	protected void startPropertyListening() 
+	protected void startPropertyListening()
 	{
 		super.startPropertyListening();
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			this.initializeListenersIfNecessary();
-			this.addPropertyListener(this.propertyListener);
+			this.addPropertyListener( this.propertyListener );
 		}
 	}
-	
+
 	@Override
-	protected void stopPropertyListening() 
+	protected void stopPropertyListening()
 	{
 		super.stopPropertyListening();
-		if (this.instance != null)
+		if( this.instance != null )
 		{
-			this.removePropertyListener(this.propertyListener);
+			this.removePropertyListener( this.propertyListener );
 		}
 	}
-	
-	public AbstractImplementationPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<P> property, StandardExpressionState expressionState ){
-		super(repr, instance, expressionState);
-		setProperty(property);
+
+	public AbstractImplementationPropertyAdapter( String repr, O instance, org.lgna.story.implementation.Property<P> property, StandardExpressionState expressionState ) {
+		super( repr, instance, expressionState );
+		setProperty( property );
 		this.initializeExpressionState();
 	}
-	
-	private void setProperty(org.lgna.story.implementation.Property<P> property) {
+
+	private void setProperty( org.lgna.story.implementation.Property<P> property ) {
 		stopPropertyListening();
 		this.property = property;
 		startPropertyListening();
 	}
-	
+
 	@Override
 	public P getValue() {
-		if (this.property != null){
+		if( this.property != null ) {
 			return this.property.getValue();
 		}
-		else{
+		else {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public Class<P> getPropertyType() {
 		return this.property.getValueCls();
 	}
-	
+
 	@Override
-	public void setValue(final P value) {
-		if (!isPropertyUpdate) {
-			super.setValue(value);
-			if (this.property != null){
+	public void setValue( final P value ) {
+		if( !isPropertyUpdate ) {
+			super.setValue( value );
+			if( this.property != null ) {
 				new Thread() {
 					@Override
 					public void run() {
-						AbstractImplementationPropertyAdapter.this.property.setValue(value);
+						AbstractImplementationPropertyAdapter.this.property.setValue( value );
 					}
 				}.start();
 			}
 		}
-		
+
 	}
 
-	protected void addPropertyListener(Listener<P> propertyListener) {
-		if (this.property != null){
-			property.addPropertyObserver(propertyListener);
+	protected void addPropertyListener( Listener<P> propertyListener ) {
+		if( this.property != null ) {
+			property.addPropertyObserver( propertyListener );
 			isPropertyListening = true;
 		}
 	}
 
-	protected void removePropertyListener(Listener<P> propertyListener) {
-		if (this.property != null && isPropertyListening){
-			property.removePropertyObserver(propertyListener);
+	protected void removePropertyListener( Listener<P> propertyListener ) {
+		if( ( this.property != null ) && isPropertyListening ) {
+			property.removePropertyObserver( propertyListener );
 			isPropertyListening = false;
 		}
 	}
-	
-	protected void handleInternalValueChanged(){
+
+	protected void handleInternalValueChanged() {
 		P newValue = this.getValue();
-		this.notifyValueObservers(newValue);
+		this.notifyValueObservers( newValue );
 	}
 
 }

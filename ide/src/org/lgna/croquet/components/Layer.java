@@ -53,26 +53,33 @@ public final class Layer {
 	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 		}
+
 		public void componentHidden( java.awt.event.ComponentEvent e ) {
 		}
+
 		public void componentMoved( java.awt.event.ComponentEvent e ) {
 		}
+
 		public void componentResized( java.awt.event.ComponentEvent e ) {
 			Layer.this.updateComponentSize();
 		}
 	};
-	/*package-private*/ Layer( AbstractWindow<?> window, Integer id ) {
+
+	/* package-private */Layer( AbstractWindow<?> window, Integer id ) {
 		this.window = window;
 		this.id = id;
 	}
+
 	private void updateComponentSize() {
 		if( this.component != null ) {
 			this.component.getAwtComponent().setSize( this.window.getRootPane().getLayeredPane().getSize() );
 		}
 	}
+
 	public JComponent<?> getComponent() {
 		return this.component;
 	}
+
 	public void setComponent( JComponent<?> component ) {
 		if( this.component != component ) {
 			javax.swing.JLayeredPane jLayeredPane = this.window.getRootPane().getLayeredPane();
@@ -89,34 +96,43 @@ public final class Layer {
 			jLayeredPane.repaint();
 		}
 	}
-	
+
 	public boolean isBelowDefaultLayer() {
 		return this.id < javax.swing.JLayeredPane.DEFAULT_LAYER;
 	}
+
 	public boolean isAboveDefaultLayer() {
 		return this.id > javax.swing.JLayeredPane.DEFAULT_LAYER;
 	}
+
 	public boolean isBelowPaletteLayer() {
 		return this.id < javax.swing.JLayeredPane.PALETTE_LAYER;
 	}
+
 	public boolean isAbovePaletteLayer() {
 		return this.id > javax.swing.JLayeredPane.PALETTE_LAYER;
 	}
+
 	public boolean isBelowModalLayer() {
 		return this.id < javax.swing.JLayeredPane.MODAL_LAYER;
 	}
+
 	public boolean isAboveModalLayer() {
 		return this.id > javax.swing.JLayeredPane.MODAL_LAYER;
 	}
+
 	public boolean isBelowPopupLayer() {
 		return this.id < javax.swing.JLayeredPane.POPUP_LAYER;
 	}
+
 	public boolean isAbovePopupLayer() {
 		return this.id > javax.swing.JLayeredPane.POPUP_LAYER;
 	}
+
 	public boolean isBelowDragLayer() {
 		return this.id < javax.swing.JLayeredPane.DRAG_LAYER;
 	}
+
 	public boolean isAboveDragLayer() {
 		return this.id > javax.swing.JLayeredPane.DRAG_LAYER;
 	}

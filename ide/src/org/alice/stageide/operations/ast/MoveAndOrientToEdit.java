@@ -46,32 +46,36 @@ import org.lgna.croquet.edits.Edit;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class MoveAndOrientToEdit extends Edit {
 	private final org.lgna.story.SMovableTurnable toMove;
 	private final org.lgna.story.SThing target;
 	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
 	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
-	public MoveAndOrientToEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.story.SMovableTurnable toMove, org.lgna.story.SThing target) {
+
+	public MoveAndOrientToEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.story.SMovableTurnable toMove, org.lgna.story.SThing target ) {
 		super( completionStep );
 		this.toMove = toMove;
 		this.target = target;
 	}
+
 	public MoveAndOrientToEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-			super( binaryDecoder, step );
-			this.toMove = null;
-			this.target = null;
-			
+		super( binaryDecoder, step );
+		this.toMove = null;
+		this.target = null;
+
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		assert false : "Not implemented yet";
 	}
+
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
-		if( this.toMove != null && this.target != null ) {
+		if( ( this.toMove != null ) && ( this.target != null ) ) {
 			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( this.toMove );
 			this.m = this.transformable.getAbsoluteTransformation();
 			org.lgna.story.implementation.EntityImp targetImp = org.lgna.story.ImplementationAccessor.getImplementation( this.target );
@@ -82,12 +86,14 @@ public class MoveAndOrientToEdit extends Edit {
 			this.m = null;
 		}
 	}
+
 	@Override
 	protected void undoInternal() {
-		if( this.transformable != null && this.m != null ) {
+		if( ( this.transformable != null ) && ( this.m != null ) ) {
 			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, this.m );
 		}
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		return null;

@@ -50,18 +50,20 @@ package edu.cmu.cs.dennisc.scenegraph;
  * <p>
  * when calculating a light's contribution to the illumination of a vertex, that light's color is multiplied a polynomial function of distance.<br>
  * this polynomial is controllable via constant, linear, and quadratic attenuation properties.<br>
+ * 
  * <pre>
  *    d = distance from light to vertex position
  *    c = constant attenuation
  *    l = linear attenuation
  *    q = quadratic attenuation
- *
+ * 
  *                              1
  *    attenuation factor = ------------
  *                         c + ld + qdd
  * </pre>
+ * 
  * note: the default values of ( constant=1, linear=0, quadratic=0 ) reduce the attenuation factor to 1.
- *
+ * 
  * @author Dennis Cosgrove
  */
 public class PointLight extends Light {

@@ -48,15 +48,17 @@ package org.alice.ide.common;
 public class TypeDropDownIcon extends TypeIcon {
 	private static final int ARROW_SIZE = 12;
 	private javax.swing.ButtonModel buttonModel;
-	public TypeDropDownIcon( org.lgna.project.ast.AbstractType<?,?,?> type, javax.swing.ButtonModel buttonModel ) {
+
+	public TypeDropDownIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, javax.swing.ButtonModel buttonModel ) {
 		super( type );
 		this.buttonModel = buttonModel;
 	}
-	
+
 	@Override
 	public int getIconWidth() {
 		return super.getIconWidth() + ARROW_SIZE + 4;
 	}
+
 	@Override
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		super.paintIcon( c, g, x, y );
@@ -79,17 +81,16 @@ public class TypeDropDownIcon extends TypeIcon {
 			fillPaint = java.awt.Color.LIGHT_GRAY;
 			drawPaint = null;
 		}
-		
+
 		int w = this.getIconWidth();
 		int h = this.getIconHeight();
 		if( fillPaint != null ) {
 			g2.setPaint( fillPaint );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+w-ARROW_SIZE, y+(h-ARROW_SIZE)/2, ARROW_SIZE, ARROW_SIZE );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, ( x + w ) - ARROW_SIZE, y + ( ( h - ARROW_SIZE ) / 2 ), ARROW_SIZE, ARROW_SIZE );
 		}
 		if( drawPaint != null ) {
 			g2.setPaint( drawPaint );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, x+w-ARROW_SIZE, y+(h-ARROW_SIZE)/2, ARROW_SIZE, ARROW_SIZE );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, ( x + w ) - ARROW_SIZE, y + ( ( h - ARROW_SIZE ) / 2 ), ARROW_SIZE, ARROW_SIZE );
 		}
 	}
 }
-

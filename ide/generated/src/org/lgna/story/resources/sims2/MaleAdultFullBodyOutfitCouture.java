@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitCouture implements MaleAdultFullBodyOutfit {
-	WHITE ,
- 	BLUE ,
- 	BLACK ;
+	WHITE,
+	BLUE,
+	BLACK;
 }

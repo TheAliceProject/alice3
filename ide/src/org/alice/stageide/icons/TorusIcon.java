@@ -49,12 +49,14 @@ public class TorusIcon extends ShapeIcon {
 	public TorusIcon( java.awt.Dimension size ) {
 		super( size );
 	}
+
 	private static java.awt.geom.Ellipse2D.Float createEllipse( float portion, int width, int height ) {
 		float diameter = Math.min( width, height ) * portion;
-		float x = (width - diameter) / 2;
-		float y = (height - diameter) / 2;
-		return new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter);
+		float x = ( width - diameter ) / 2;
+		float y = ( height - diameter ) / 2;
+		return new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter );
 	}
+
 	private static void paint( java.awt.Graphics2D g2, float outerPortion, float innerPortion, int width, int height, java.awt.Paint fillPaint, java.awt.Paint outerDrawPaint, java.awt.Paint innerDrawPaint ) {
 		java.awt.geom.Ellipse2D outer = createEllipse( outerPortion, width, height );
 		java.awt.geom.Ellipse2D inner = createEllipse( innerPortion, width, height );
@@ -73,9 +75,9 @@ public class TorusIcon extends ShapeIcon {
 			g2.draw( inner );
 		}
 	}
-	
+
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		paint( g2, 1.0f, 0.5f, width, height, fillPaint, drawPaint, java.awt.Color.GRAY );
 		if( height > 64 ) {
 			paint( g2, 0.825f, 0.675f, width, height, new java.awt.Color( 255, 255, 255, 63 ), null, null );

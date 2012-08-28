@@ -42,7 +42,6 @@
  */
 package org.lgna.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -50,56 +49,61 @@ public class SpringUtilities {
 	private SpringUtilities() {
 		throw new AssertionError();
 	}
-	public static Component< ? > createTrailingLabel(String text) {
+
+	public static Component<?> createTrailingLabel( String text ) {
 		Label rv = new Label( text );
 		rv.setHorizontalAlignment( HorizontalAlignment.TRAILING );
 		return rv;
 	}
-	public static Component< ? > createTrailingTopLabel(String text) {
+
+	public static Component<?> createTrailingTopLabel( String text ) {
 		Label rv = new Label( text );
 		rv.setHorizontalAlignment( HorizontalAlignment.TRAILING );
 		rv.setVerticalAlignment( VerticalAlignment.TOP );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 0, 0, 0 ) );
 		return rv;
 	}
-	
-	public static Component< ? >[] createRow( Component< ? >... rv ) {
-		for( int i=0; i<rv.length; i++ ) {
+
+	public static Component<?>[] createRow( Component<?>... rv ) {
+		for( int i = 0; i < rv.length; i++ ) {
 			if( rv[ i ] != null ) {
 				//pass
 			} else {
-				Component< ? > box = org.lgna.croquet.components.BoxUtilities.createRigidArea( 0, 0 );
-//				box.setBackground( java.awt.Color.BLUE );
-//				if( box instanceof javax.swing.JComponent ) {
-//					((javax.swing.JComponent)box).setOpaque( false );
-//				}
+				Component<?> box = org.lgna.croquet.components.BoxUtilities.createRigidArea( 0, 0 );
+				//				box.setBackground( java.awt.Color.BLUE );
+				//				if( box instanceof javax.swing.JComponent ) {
+				//					((javax.swing.JComponent)box).setOpaque( false );
+				//				}
 				rv[ i ] = box;
 			}
 		}
 		return rv;
 	}
-	public static Component< ? >[] createLabeledRow( String labelText, Component< ? >... components ) {
-		Component< ? >[] rv = new Component< ? >[ components.length + 1 ];
+
+	public static Component<?>[] createLabeledRow( String labelText, Component<?>... components ) {
+		Component<?>[] rv = new Component<?>[ components.length + 1 ];
 		rv[ 0 ] = createTrailingLabel( labelText );
 		System.arraycopy( components, 0, rv, 1, components.length );
 		return createRow( rv );
 	}
-	public static Component< ? >[] createTopLabeledRow( String labelText, Component< ? >... components ) {
-		Component< ? >[] rv = new Component< ? >[ components.length + 1 ];
+
+	public static Component<?>[] createTopLabeledRow( String labelText, Component<?>... components ) {
+		Component<?>[] rv = new Component<?>[ components.length + 1 ];
 		rv[ 0 ] = createTrailingTopLabel( labelText );
 		System.arraycopy( components, 0, rv, 1, components.length );
 		return createRow( rv );
 	}
-	public static SpringPanel springItUpANotch( SpringPanel rv, java.util.List<Component< ? >[]> componentRows, int xPad, int yPad ) {
+
+	public static SpringPanel springItUpANotch( SpringPanel rv, java.util.List<Component<?>[]> componentRows, int xPad, int yPad ) {
 		assert componentRows != null;
 		int rowCount = componentRows.size();
 		assert rowCount > 0;
 		int columnCount = componentRows.get( 0 ).length;
-		for( Component< ? >[] componentRow : componentRows ) {
+		for( Component<?>[] componentRow : componentRows ) {
 			assert componentRow.length == columnCount;
 		}
-		for( Component< ? >[] componentRow : componentRows ) {
-			for( Component< ? > component : componentRow ) {
+		for( Component<?>[] componentRow : componentRows ) {
+			for( Component<?> component : componentRow ) {
 				//assert component != null;
 				if( component != null ) {
 					rv.internalAddComponent( component );
@@ -112,39 +116,39 @@ public class SpringUtilities {
 		javax.swing.SpringLayout layout = (javax.swing.SpringLayout)rv.getAwtComponent().getLayout();
 
 		javax.swing.Spring xSpring = javax.swing.Spring.constant( 0 );
-		javax.swing.Spring xPadSpring = javax.swing.Spring.constant( xPad );	
-		for( int c=0; c<columnCount; c++ ) { 
+		javax.swing.Spring xPadSpring = javax.swing.Spring.constant( xPad );
+		for( int c = 0; c < columnCount; c++ ) {
 			javax.swing.Spring widthSpring = javax.swing.Spring.constant( 0 );
-			for( Component< ? >[] componentRow : componentRows ) { 
+			for( Component<?>[] componentRow : componentRows ) {
 				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
 				widthSpring = javax.swing.Spring.max( widthSpring, constraints.getWidth() );
 			}
-			for( Component< ? >[] componentRow : componentRows ) { 
+			for( Component<?>[] componentRow : componentRows ) {
 				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
 				constraints.setX( xSpring );
 				constraints.setWidth( widthSpring );
 			}
 			xSpring = javax.swing.Spring.sum( xSpring, widthSpring );
-			if( c<columnCount-1 ) {
+			if( c < ( columnCount - 1 ) ) {
 				xSpring = javax.swing.Spring.sum( xSpring, xPadSpring );
 			}
 		}
 		javax.swing.Spring ySpring = javax.swing.Spring.constant( 0 );
-		javax.swing.Spring yPadSpring = javax.swing.Spring.constant( yPad );	
-		for( int r=0; r<rowCount; r++ ) { 
-			Component< ? >[] componentRow = componentRows.get( r );
+		javax.swing.Spring yPadSpring = javax.swing.Spring.constant( yPad );
+		for( int r = 0; r < rowCount; r++ ) {
+			Component<?>[] componentRow = componentRows.get( r );
 			javax.swing.Spring heightSpring = javax.swing.Spring.constant( 0 );
-			for( int c=0; c<columnCount; c++ ) { 
+			for( int c = 0; c < columnCount; c++ ) {
 				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
 				heightSpring = javax.swing.Spring.max( heightSpring, constraints.getHeight() );
 			}
-			for( int c=0; c<columnCount; c++ ) { 
+			for( int c = 0; c < columnCount; c++ ) {
 				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getAwtComponent() );
 				constraints.setY( ySpring );
 				constraints.setHeight( heightSpring );
 			}
 			ySpring = javax.swing.Spring.sum( ySpring, heightSpring );
-			if( r<rowCount-1 ) {
+			if( r < ( rowCount - 1 ) ) {
 				ySpring = javax.swing.Spring.sum( ySpring, yPadSpring );
 			}
 		}
@@ -153,5 +157,5 @@ public class SpringUtilities {
 		constraints.setConstraint( javax.swing.SpringLayout.SOUTH, ySpring );
 		return rv;
 	}
-	
+
 }

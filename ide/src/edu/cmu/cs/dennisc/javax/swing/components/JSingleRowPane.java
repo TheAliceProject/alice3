@@ -49,7 +49,8 @@ public class JSingleRowPane extends JGridPane {
 	public JSingleRowPane( int hgap, int vgap, java.awt.Component... components ) {
 		super( true, hgap, vgap, new java.awt.Component[][] { components } );
 	}
+
 	public JSingleRowPane( java.awt.Component... components ) {
-		this( 0, 0, components);
+		this( 0, 0, components );
 	}
 }

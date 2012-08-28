@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaPackage extends AbstractPackage {
-	private static java.util.Map< PackageReflectionProxy, JavaPackage > s_map = new java.util.HashMap< PackageReflectionProxy, JavaPackage >();
+	private static java.util.Map<PackageReflectionProxy, JavaPackage> s_map = new java.util.HashMap<PackageReflectionProxy, JavaPackage>();
 
 	private PackageReflectionProxy packageReflectionProxy;
 
@@ -65,12 +65,15 @@ public class JavaPackage extends AbstractPackage {
 			return null;
 		}
 	}
+
 	public static JavaPackage getInstance( Package pckg ) {
 		return getInstance( new PackageReflectionProxy( pckg ) );
 	}
+
 	private JavaPackage( PackageReflectionProxy packageReflectionProxy ) {
 		this.packageReflectionProxy = packageReflectionProxy;
 	}
+
 	public PackageReflectionProxy getPackageReflectionProxy() {
 		return this.packageReflectionProxy;
 	}
@@ -79,15 +82,17 @@ public class JavaPackage extends AbstractPackage {
 	public boolean isUserAuthored() {
 		return false;
 	}
+
 	@Override
 	public String getName() {
 		return this.packageReflectionProxy.getName();
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;
 	}
-	
+
 	@Override
 	public boolean isEquivalentTo( Object o ) {
 		JavaPackage other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, JavaPackage.class );

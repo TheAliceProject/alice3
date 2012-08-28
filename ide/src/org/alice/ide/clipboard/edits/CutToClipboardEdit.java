@@ -50,14 +50,17 @@ public class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 	private org.lgna.project.ast.Statement statement;
 	private org.lgna.project.ast.BlockStatement originalBlockStatement;
 	private int originalIndex;
+
 	public CutToClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
 		super( completionStep );
 		this.statement = statement;
-		this.originalBlockStatement = (org.lgna.project.ast.BlockStatement)this.statement.getParent();;
+		this.originalBlockStatement = (org.lgna.project.ast.BlockStatement)this.statement.getParent();
+		;
 		assert this.originalBlockStatement != null;
 		this.originalIndex = this.originalBlockStatement.statements.indexOf( this.statement );
 		assert this.originalIndex != -1;
 	}
+
 	public CutToClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -68,6 +71,7 @@ public class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 		this.originalBlockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, blockStatementId );
 		this.originalIndex = binaryDecoder.decodeInt();
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -75,16 +79,19 @@ public class CutToClipboardEdit extends org.lgna.croquet.edits.Edit {
 		binaryEncoder.encode( this.originalBlockStatement.getId() );
 		binaryEncoder.encode( this.originalIndex );
 	}
+
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.clipboard.Clipboard.SINGLETON.push( this.statement );
 		this.originalBlockStatement.statements.remove( this.originalIndex );
 	}
+
 	@Override
 	protected void undoInternal() {
 		org.alice.ide.clipboard.Clipboard.SINGLETON.pop();
 		this.originalBlockStatement.statements.add( this.originalIndex, this.statement );
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "cut to clipboard" );

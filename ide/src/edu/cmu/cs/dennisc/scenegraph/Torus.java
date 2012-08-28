@@ -48,43 +48,45 @@ package edu.cmu.cs.dennisc.scenegraph;
  */
 public class Torus extends Shape {
 	//todo: rename
-//	private enum E {
-//		YES( true ), NO( true );
-//		private boolean is;
-//		E( boolean is ) {
-//			this.is = is;
-//		}
-//		public double get( double yesRadius, double noRadius ) {
-//			if( this.is ) {
-//				return yesRadius;
-//			} else {
-//				return noRadius;
-//			}
-//		}
-//	};
+	//	private enum E {
+	//		YES( true ), NO( true );
+	//		private boolean is;
+	//		E( boolean is ) {
+	//			this.is = is;
+	//		}
+	//		public double get( double yesRadius, double noRadius ) {
+	//			if( this.is ) {
+	//				return yesRadius;
+	//			} else {
+	//				return noRadius;
+	//			}
+	//		}
+	//	};
 	public enum CoordinatePlane {
-//		XY( E.YES, E.YES, E.NO ),
-//		XZ( E.YES, E.NO,  E.YES ),
-//		YZ( E.NO,  E.YES, E.YES );
-//		private E x;
-//		private E y;
-//		private E z;
-//		CoordinatePlane( E x, E y, E z ) {
-//			this.x = x;
-//			this.y = y;
-//			this.z = z;
-//		}
-		XY( true,  true,  false ),
-		XZ( true,  false, true ),
-		YZ( false, true,  true );
+		//		XY( E.YES, E.YES, E.NO ),
+		//		XZ( E.YES, E.NO,  E.YES ),
+		//		YZ( E.NO,  E.YES, E.YES );
+		//		private E x;
+		//		private E y;
+		//		private E z;
+		//		CoordinatePlane( E x, E y, E z ) {
+		//			this.x = x;
+		//			this.y = y;
+		//			this.z = z;
+		//		}
+		XY( true, true, false ),
+		XZ( true, false, true ),
+		YZ( false, true, true );
 		private boolean isX;
 		private boolean isY;
 		private boolean isZ;
+
 		CoordinatePlane( boolean isX, boolean isY, boolean isZ ) {
 			this.isX = isX;
 			this.isY = isY;
 			this.isZ = isZ;
 		}
+
 		public void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox, double yesRadius, double noRadius ) {
 			double x;
 			double y;
@@ -97,7 +99,7 @@ public class Torus extends Shape {
 			if( this.isY ) {
 				y = yesRadius;
 			} else {
-				y= noRadius;
+				y = noRadius;
 			}
 			if( this.isZ ) {
 				z = yesRadius;
@@ -109,7 +111,7 @@ public class Torus extends Shape {
 		}
 	}
 
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< CoordinatePlane > coordinatePlane = new edu.cmu.cs.dennisc.property.InstanceProperty< CoordinatePlane >( this, CoordinatePlane.XZ ) {
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<CoordinatePlane> coordinatePlane = new edu.cmu.cs.dennisc.property.InstanceProperty<CoordinatePlane>( this, CoordinatePlane.XZ ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, CoordinatePlane value ) {
 			//todo: check isEqual
@@ -120,14 +122,14 @@ public class Torus extends Shape {
 	};
 	public final BoundDoubleProperty minorRadius = new BoundDoubleProperty( this, 0.1 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty majorRadius = new BoundDoubleProperty( this, 0.9 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}

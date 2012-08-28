@@ -46,30 +46,34 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public class ChangeEventTrigger extends EventObjectTrigger< javax.swing.event.ChangeEvent > {
+public class ChangeEventTrigger extends EventObjectTrigger<javax.swing.event.ChangeEvent> {
 	public static ChangeEventTrigger createUserInstance( javax.swing.event.ChangeEvent changeEvent ) {
 		return new ChangeEventTrigger( Origin.USER, null, changeEvent );
 	}
+
 	public static ChangeEventTrigger createGeneratorInstance() {
 		return new ChangeEventTrigger( Origin.GENERATOR, null, null );
 	}
+
 	public static ChangeEventTrigger createRecoveryInstance() {
 		return new ChangeEventTrigger( Origin.RECOVERY, null, null );
 	}
 
-	private ChangeEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?,?> viewController, javax.swing.event.ChangeEvent changeEvent ) {
+	private ChangeEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, javax.swing.event.ChangeEvent changeEvent ) {
 		super( origin, viewController, changeEvent );
 	}
+
 	public ChangeEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;
 	}
 
 	@Override
-	public String getNoteText( ) {
+	public String getNoteText() {
 		return "Select";
 	}
 }

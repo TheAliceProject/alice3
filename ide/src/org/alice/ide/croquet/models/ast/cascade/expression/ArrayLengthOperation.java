@@ -50,7 +50,9 @@ public abstract class ArrayLengthOperation extends org.alice.ide.croquet.models.
 	public ArrayLengthOperation( java.util.UUID id, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( id, expressionProperty );
 	}
+
 	protected abstract org.lgna.project.ast.Expression createAccessExpression();
+
 	@Override
 	protected final org.lgna.project.ast.Expression createExpression() {
 		return new org.lgna.project.ast.ArrayLength( this.createAccessExpression() );

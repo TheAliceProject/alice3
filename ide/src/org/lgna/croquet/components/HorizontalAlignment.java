@@ -53,10 +53,12 @@ public enum HorizontalAlignment {
 	LEADING( javax.swing.SwingConstants.LEADING ),
 	TRAILING( javax.swing.SwingConstants.TRAILING );
 	private int internal;
+
 	private HorizontalAlignment( int internal ) {
 		this.internal = internal;
 	}
-	/*package-private*/ int getInternal() {
+
+	/* package-private */int getInternal() {
 		return this.internal;
 	}
 }

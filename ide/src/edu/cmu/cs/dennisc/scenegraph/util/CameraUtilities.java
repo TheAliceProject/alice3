@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.util;
 
-import edu.cmu.cs.dennisc.scenegraph.*;
+import edu.cmu.cs.dennisc.scenegraph.Component;
 
 /**
  * @author Dennis Cosgrove
@@ -52,10 +52,11 @@ public abstract class CameraUtilities {
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateGoodLookAt( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv, edu.cmu.cs.dennisc.math.Angle smallerViewingAngle, Component sgTarget, edu.cmu.cs.dennisc.math.Sphere sphere, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
 		sgTarget.getTransformation( rv, sgAsSeenBy );
 		double thetaInRadians = smallerViewingAngle.getAsRadians();
-		double distance = sphere.radius / Math.sin( thetaInRadians/2.0 );
+		double distance = sphere.radius / Math.sin( thetaInRadians / 2.0 );
 		rv.applyTranslationAlongZAxis( distance );
 		return rv;
 	}
+
 	//todo: better name
 	public static edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateGoodLookAt( edu.cmu.cs.dennisc.math.Angle smallerViewingAngle, Component sgTarget, edu.cmu.cs.dennisc.math.Sphere sphere, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
 		return calculateGoodLookAt( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN(), smallerViewingAngle, sgTarget, sphere, sgAsSeenBy );

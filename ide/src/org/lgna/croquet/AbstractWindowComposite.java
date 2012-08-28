@@ -45,10 +45,11 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractWindowComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractSeverityStatusComposite<V> {
+public abstract class AbstractWindowComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractSeverityStatusComposite<V> {
 	public AbstractWindowComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
+
 	protected static enum GoldenRatioPolicy {
 		WIDTH_LONG_SIDE {
 			@Override
@@ -81,12 +82,13 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.compone
 			}
 		};
 		public abstract void adjustWindowSize( org.lgna.croquet.components.AbstractWindow<?> window );
-		
+
 	}
-	
+
 	protected GoldenRatioPolicy getGoldenRatioPolicy() {
 		return GoldenRatioPolicy.WIDTH_LONG_SIDE;
 	}
+
 	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		GoldenRatioPolicy goldenRatioPolicy = this.getGoldenRatioPolicy();
 		if( goldenRatioPolicy != null ) {
@@ -94,6 +96,7 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.compone
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( window.getWidth()/(double)window.getHeight(), edu.cmu.cs.dennisc.math.GoldenRatio.PHI );
 		}
 	}
+
 	protected java.awt.Point getDesiredWindowLocation() {
 		return null;
 	}
