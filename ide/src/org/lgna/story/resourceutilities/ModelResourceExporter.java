@@ -1097,7 +1097,16 @@ public class ModelResourceExporter {
 	public static BufferedImage createClassThumb(BufferedImage imgSrc) {
 		ColorConvertOp colorConvert = 
 		        new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+		if (imgSrc == null) {
+			System.out.println("NULL!");
+		}
+		try {
 		    colorConvert.filter(imgSrc, imgSrc);
+		}
+		catch (NullPointerException e) {
+			e.printStackTrace();
+			throw e;
+		}
 		    return imgSrc;
 	}
 
