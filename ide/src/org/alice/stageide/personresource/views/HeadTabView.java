@@ -59,6 +59,6 @@ public class HeadTabView extends org.lgna.croquet.components.RowSpringPanel {
 		org.alice.stageide.personresource.HeadTabComposite composite = (org.alice.stageide.personresource.HeadTabComposite)this.getComposite();
 		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getHairColorNameState().getSidekickLabel(), new HorizontalWrapList( composite.getHairColorNameState(), 1 ) ) );
 		rows.add( new org.lgna.croquet.components.LabeledSpringRow( null, new org.alice.stageide.person.components.HairList() ) );
-		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getEyeColorState().getSidekickLabel(), new HorizontalWrapList( composite.getEyeColorState(), 1 ) ) );
+		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getBaseEyeColorState().getSidekickLabel(), new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ) ) );
 	}
 }

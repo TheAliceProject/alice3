@@ -92,4 +92,9 @@ public class BodyTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.
 	protected org.alice.stageide.personresource.views.BodyTabView createView() {
 		return new org.alice.stageide.personresource.views.BodyTabView( this );
 	}
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
+		return null; //todo
+	}
+
 }
