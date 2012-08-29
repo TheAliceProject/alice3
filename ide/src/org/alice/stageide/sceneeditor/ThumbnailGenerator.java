@@ -62,11 +62,10 @@ public class ThumbnailGenerator {
 			} else {
 				offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( null );
 			}
-			offscreenLookingGlass.setSize( width, height );
-			boolean isClearingAndAddingRequired;
+			boolean isClearingAndAddingRequired = offscreenLookingGlass.setSize( width, height );
 			if( offscreenLookingGlass.getCameraCount() == 1 ) {
 				if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {
-					isClearingAndAddingRequired = false;
+					//pass
 				} else {
 					isClearingAndAddingRequired = true;
 				}
