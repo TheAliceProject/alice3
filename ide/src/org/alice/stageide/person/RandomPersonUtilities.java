@@ -51,10 +51,13 @@ public class RandomPersonUtilities {
 		throw new AssertionError();
 	}
 
-	public static org.lgna.story.resources.sims2.PersonResource createRandomResource() {
-		//		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
-		org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT };
-		org.lgna.story.resources.sims2.LifeStage lifeStage = org.lgna.common.RandomUtilities.getRandomValueFrom( potentialLifeStages );
+	public static org.lgna.story.resources.sims2.PersonResource createRandomResource( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( lifeStage != null ) {
+			//pass
+		} else {
+			org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
+			lifeStage = org.lgna.common.RandomUtilities.getRandomValueFrom( potentialLifeStages );
+		}
 		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
 		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
 		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
@@ -62,5 +65,9 @@ public class RandomPersonUtilities {
 		org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 		double obesityLevel = org.lgna.common.RandomUtilities.nextDouble();
 		return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
+	}
+
+	public static org.lgna.story.resources.sims2.PersonResource createRandomResource() {
+		return createRandomResource( null );
 	}
 }
