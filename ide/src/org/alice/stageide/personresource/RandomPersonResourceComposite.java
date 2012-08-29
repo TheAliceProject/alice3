@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.personresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.lgna.story.resources.sims2.PersonResource> {
-	private final PreviewComposite previewComposite = new PreviewComposite();
-	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, IngredientsComposite.getInstance(), 0.0f );
-
-	public PersonResourceComposite( java.util.UUID migrationId ) {
-		super( migrationId );
-	}
-
-	public org.lgna.croquet.SplitComposite getSplitComposite() {
-		return this.splitComposite;
+public class RandomPersonResourceComposite extends PersonResourceComposite {
+	public RandomPersonResourceComposite() {
+		super( java.util.UUID.fromString( "9527895d-ee3f-43ed-86fe-b94538b1ff23" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new org.lgna.croquet.components.BorderPanel.Builder().center( this.splitComposite.getView() ).build();
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		IngredientsComposite.getInstance().getRandomize().fire();
 	}
 
 	@Override
-	protected org.lgna.story.resources.sims2.PersonResource createValue() {
-		return IngredientsComposite.getInstance().createResourceFromStates();
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
 	}
 
-	@Override
-	public boolean isStatusLineDesired() {
-		return false;
-	}
-
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		new org.alice.stageide.StageIDE();
+		try {
+			org.lgna.croquet.triggers.Trigger trigger = null;
+			org.lgna.croquet.history.CompletionStep<?> step = new RandomPersonResourceComposite().getValueCreator().fire( trigger );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( step.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+		} catch( org.lgna.croquet.CancelException ce ) {
+			//pass
+		}
+		System.exit( 0 );
 	}
 }
