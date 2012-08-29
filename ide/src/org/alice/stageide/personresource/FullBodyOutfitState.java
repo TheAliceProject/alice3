@@ -40,41 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.personresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
+public class FullBodyOutfitState extends AbstractListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> {
 	private static class SingletonHolder {
-		private static HeadTabComposite instance = new HeadTabComposite();
+		private static FullBodyOutfitState instance = new FullBodyOutfitState();
 	}
 
-	public static HeadTabComposite getInstance() {
+	public static FullBodyOutfitState getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private HeadTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
-	}
+	private FullBodyOutfitState() {
+		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.FullBodyOutfit>() {
+			public Class<org.lgna.story.resources.sims2.FullBodyOutfit> getValueClass() {
+				return org.lgna.story.resources.sims2.FullBodyOutfit.class;
+			}
 
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
+			public org.lgna.story.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+				throw new RuntimeException( "todo" );
+			}
 
-	@Override
-	protected org.alice.stageide.personresource.views.HeadTabView createView() {
-		return new org.alice.stageide.personresource.views.HeadTabView( this );
-	}
+			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.FullBodyOutfit t ) {
+				throw new RuntimeException( "todo" );
+			}
 
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return HairColorNameState.getInstance();
+			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
+				rv.append( value );
+				return rv;
+			}
+		} );
 	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return HairState.getInstance();
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
-		return this.baseEyeColorState;
-	}
-};
+}

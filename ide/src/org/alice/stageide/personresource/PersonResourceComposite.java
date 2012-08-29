@@ -48,8 +48,7 @@ package org.alice.stageide.personresource;
  */
 public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.lgna.story.resources.sims2.PersonResource> {
 	private final PreviewComposite previewComposite = new PreviewComposite();
-	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
-	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.ingredientsComposite, 0.0f );
+	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, IngredientsComposite.getInstance(), 0.0f );
 
 	public PersonResourceComposite() {
 		super( java.util.UUID.fromString( "9527895d-ee3f-43ed-86fe-b94538b1ff23" ) );

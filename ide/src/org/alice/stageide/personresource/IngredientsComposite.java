@@ -47,9 +47,17 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.IngredientsView> {
+	private static class SingletonHolder {
+		private static IngredientsComposite instance = new IngredientsComposite();
+	}
+
+	public static IngredientsComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
 	private final org.lgna.croquet.Operation randomize = this.createActionOperation( this.createKey( "randomize" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			return null;
+			return new org.alice.stageide.personresource.edits.RandomizeEdit( step );
 		}
 	} );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
@@ -57,7 +65,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneState = this.createListSelectionStateForEnum( this.createKey( "baseSkinToneState" ), org.lgna.story.resources.sims2.BaseSkinTone.class, org.lgna.story.resources.sims2.BaseSkinTone.getRandom() );
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, BodyTabComposite.getInstance(), HeadTabComposite.getInstance() );
 
-	public IngredientsComposite() {
+	private IngredientsComposite() {
 		super( java.util.UUID.fromString( "dd127381-09a8-4f78-bfd5-f3bffc1af98b" ) );
 	}
 
@@ -82,23 +90,23 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.baseSkinToneState;
 	}
 
-	private org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
 		return HeadTabComposite.getInstance().getHairState();
 	}
 
-	private org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
+	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
 		return HeadTabComposite.getInstance().getHairColorNameState();
 	}
 
-	private org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
 		return HeadTabComposite.getInstance().getBaseEyeColorState();
 	}
 
-	private org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
 		return BodyTabComposite.getInstance().getFullBodyOutfitState();
 	}
 
-	private org.lgna.croquet.BoundedDoubleState getObesityLevelState() {
+	public org.lgna.croquet.BoundedDoubleState getObesityLevelState() {
 		return BodyTabComposite.getInstance().getObesityLevelState();
 	}
 
@@ -245,34 +253,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		assert activeCount == 0; //todo
 	}
 
-	/* package-private */org.lgna.story.resources.sims2.LifeStage getLifeStage() {
-		return this.lifeStageState.getValue();
-	}
-
-	/* package-private */org.lgna.story.resources.sims2.Gender getGender() {
-		return this.genderState.getValue();
-	}
-
-	/* package-private */org.lgna.story.resources.sims2.SkinTone getSkinTone() {
-		return this.getBaseSkinToneState().getValue();
-	}
-
-	/* package-private */org.lgna.story.resources.sims2.EyeColor getEyeColor() {
-		return this.getBaseEyeColorState().getValue();
-	}
-
-	/* package-private */double getObesityLevel() {
-		return this.getObesityLevelState().getValue();
-	}
-
-	/* package-private */org.lgna.story.resources.sims2.Hair getHair() {
-		return this.getHairState().getValue();
-	}
-
-	/* package-private */org.lgna.story.resources.sims2.Outfit getOutfit() {
-		return this.getFullBodyOutfitState().getValue();
-	}
-
 	private static org.lgna.story.resources.sims2.LifeStage getLifeStage( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		return personResource != null ? personResource.getLifeStage() : null;
 	}
@@ -309,7 +289,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			this.removeListenersIfAppropriate();
 			try {
 				org.lgna.story.resources.sims2.LifeStage prevLifeStage = getLifeStage( this.prevPersonResource );
-				org.lgna.story.resources.sims2.LifeStage nextLifeStage = this.getLifeStage();
+				org.lgna.story.resources.sims2.LifeStage nextLifeStage = this.getLifeStageState().getValue();
 				boolean isLifeStageChanged = prevLifeStage != nextLifeStage;
 				if( isLifeStageChanged ) {
 					String[] hairColors = getHairColors( nextLifeStage );
@@ -324,7 +304,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 						this.getHairColorNameState().setListData( index, hairColors );
 					}
 				}
-				org.lgna.story.resources.sims2.Gender nextGender = this.getGender();
+				org.lgna.story.resources.sims2.Gender nextGender = this.getGenderState().getValue();
 				org.lgna.story.resources.sims2.Gender prevGender = getGender( this.prevPersonResource );
 				boolean isGenderChanged = prevGender != nextGender;
 
@@ -341,7 +321,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 							}
 							);
 					int index;
-					org.lgna.story.resources.sims2.Hair hair = this.getHair();
+					org.lgna.story.resources.sims2.Hair hair = this.getHairState().getValue();
 					if( hair != null ) {
 						index = list.indexOf( hair );
 					} else {
@@ -380,13 +360,13 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	}
 
 	public org.lgna.story.resources.sims2.PersonResource createResourceFromStates() {
-		org.lgna.story.resources.sims2.LifeStage lifeStage = this.getLifeStage();
-		org.lgna.story.resources.sims2.Gender gender = this.getGender();
-		org.lgna.story.resources.sims2.SkinTone skinTone = this.getSkinTone();
-		org.lgna.story.resources.sims2.EyeColor eyeColor = this.getEyeColor();
-		org.lgna.story.resources.sims2.Outfit outfit = this.getOutfit();
-		org.lgna.story.resources.sims2.Hair hair = this.getHair();
-		double obesityLevel = this.getObesityLevel();
+		org.lgna.story.resources.sims2.LifeStage lifeStage = this.getLifeStageState().getValue();
+		org.lgna.story.resources.sims2.Gender gender = this.getGenderState().getValue();
+		org.lgna.story.resources.sims2.SkinTone skinTone = this.getBaseSkinToneState().getValue();
+		org.lgna.story.resources.sims2.EyeColor eyeColor = this.getBaseEyeColorState().getValue();
+		org.lgna.story.resources.sims2.Outfit outfit = this.getFullBodyOutfitState().getValue();
+		org.lgna.story.resources.sims2.Hair hair = this.getHairState().getValue();
+		double obesityLevel = this.getObesityLevelState().getValue();
 		if( lifeStage != null ) {
 			return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
 		} else {

@@ -40,41 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
-	private static class SingletonHolder {
-		private static HeadTabComposite instance = new HeadTabComposite();
+abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<E> {
+	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
+
+	protected abstract String getSubPath();
+
+	private java.net.URL getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "images/" );
+		sb.append( this.getSubPath() );
+		sb.append( "/" );
+		sb.append( skinTone );
+		sb.append( "/" );
+		sb.append( clsName );
+		sb.append( "." );
+		sb.append( enumConstantName );
+		sb.append( ".png" );
+		java.net.URL rv = org.alice.stageide.personeditor.IngredientImageUtilities.getResource( sb.toString() );
+		assert rv != null : sb;
+		return rv;
 	}
 
-	public static HeadTabComposite getInstance() {
-		return SingletonHolder.instance;
+	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
+		return org.alice.stageide.personresource.IngredientsComposite.getInstance().getBaseSkinToneState().getValue();
 	}
-
-	private HeadTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
-	}
-
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
 
 	@Override
-	protected org.alice.stageide.personresource.views.HeadTabView createView() {
-		return new org.alice.stageide.personresource.views.HeadTabView( this );
-	}
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus ) {
+		assert rv != null;
+		if( value != null ) {
+			String clsName = value.getClass().getSimpleName();
+			String enumConstantName = value.toString();
 
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return HairColorNameState.getInstance();
-	}
+			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getSkinTone();
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return HairState.getInstance();
-	}
+			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
+			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
+			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
-		return this.baseEyeColorState;
+			rv.setOpaque( isSelected );
+			if( isSelected ) {
+				rv.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
+			}
+
+			javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
+			if( icon != null ) {
+				rv.setIcon( icon );
+				rv.setText( "" );
+			} else {
+				rv.setText( "image not found" );
+			}
+			rv.setBorder( this.border );
+		} else {
+			rv.setText( "null" );
+		}
+		return rv;
 	}
-};
+}

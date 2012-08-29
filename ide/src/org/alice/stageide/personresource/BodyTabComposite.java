@@ -94,7 +94,7 @@ public class BodyTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
-		return null; //todo
+		return FullBodyOutfitState.getInstance();
 	}
 
 }

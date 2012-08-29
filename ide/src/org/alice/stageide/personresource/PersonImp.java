@@ -43,7 +43,6 @@
 
 package org.alice.stageide.personresource;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -75,8 +74,8 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 	}
 
 	/* package-private */void updateNebPerson() {
-		IngredientsComposite composite = null; //todo
-		org.lgna.story.resources.sims2.LifeStage lifeStage = composite.getLifeStage();
+		IngredientsComposite composite = IngredientsComposite.getInstance();
+		org.lgna.story.resources.sims2.LifeStage lifeStage = composite.getLifeStageState().getValue();
 		edu.cmu.cs.dennisc.nebulous.Person nebPerson = this.mapLifeStageToNebPerson.get( lifeStage );
 		if( nebPerson != null ) {
 			//pass
@@ -89,12 +88,12 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 				throw new RuntimeException( lre );
 			}
 		}
-		org.lgna.story.resources.sims2.Gender gender = composite.getGender();
-		org.lgna.story.resources.sims2.SkinTone skinTone = composite.getSkinTone();
-		org.lgna.story.resources.sims2.EyeColor eyeColor = composite.getEyeColor();
-		double obesityLevel = composite.getObesityLevel();
-		org.lgna.story.resources.sims2.Hair hair = composite.getHair();
-		org.lgna.story.resources.sims2.Outfit outfit = composite.getOutfit();
+		org.lgna.story.resources.sims2.Gender gender = composite.getGenderState().getValue();
+		org.lgna.story.resources.sims2.SkinTone skinTone = composite.getBaseSkinToneState().getValue();
+		org.lgna.story.resources.sims2.EyeColor eyeColor = composite.getBaseEyeColorState().getValue();
+		double obesityLevel = composite.getObesityLevelState().getValue();
+		org.lgna.story.resources.sims2.Hair hair = composite.getHairState().getValue();
+		org.lgna.story.resources.sims2.Outfit outfit = composite.getFullBodyOutfitState().getValue();
 		if( ( gender == null ) || ( outfit == null ) || ( skinTone == null ) || ( eyeColor == null ) || ( hair == null ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skintTone=" + skinTone + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair );
 		}

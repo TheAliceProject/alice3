@@ -49,8 +49,9 @@ package org.alice.stageide.personresource.views;
 public class BodyTabView extends org.lgna.croquet.components.BorderPanel {
 	public BodyTabView( org.alice.stageide.personresource.BodyTabComposite composite ) {
 		super( composite, 8, 8 );
-		java.awt.Color backgroundColor = org.alice.stageide.person.components.MainPanel.BACKGROUND_COLOR;
-		org.lgna.croquet.components.List<?> list = new org.alice.stageide.person.components.FullBodyOutfitList();
+		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
+		org.lgna.croquet.components.List<?> list = composite.getFullBodyOutfitState().createList();
+		list.setCellRenderer( org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance() );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
 		scrollPane.setBothScrollBarIncrements( 66, 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
