@@ -55,7 +55,7 @@ public class HairState extends AbstractListSelectionState<org.lgna.story.resourc
 	}
 
 	private HairState() {
-		super( java.util.UUID.fromString( "682e4dea-91f3-4b0a-8004-51942613c643" ), new org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.Hair>() {
+		super( java.util.UUID.fromString( "f8e40b32-96ce-4094-9578-1a458f757162" ), new org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.Hair>() {
 			public Class<org.lgna.story.resources.sims2.Hair> getValueClass() {
 				return org.lgna.story.resources.sims2.Hair.class;
 			}

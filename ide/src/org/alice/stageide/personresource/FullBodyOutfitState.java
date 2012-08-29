@@ -55,7 +55,7 @@ public class FullBodyOutfitState extends AbstractListSelectionState<org.lgna.sto
 	}
 
 	private FullBodyOutfitState() {
-		super( java.util.UUID.fromString( "c63d0356-ebf1-40b4-bff6-715583290646" ), new org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.FullBodyOutfit>() {
+		super( java.util.UUID.fromString( "67cd45d9-639a-4315-b6a1-6a7e1f8d7671" ), new org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.FullBodyOutfit>() {
 			public Class<org.lgna.story.resources.sims2.FullBodyOutfit> getValueClass() {
 				return org.lgna.story.resources.sims2.FullBodyOutfit.class;
 			}
