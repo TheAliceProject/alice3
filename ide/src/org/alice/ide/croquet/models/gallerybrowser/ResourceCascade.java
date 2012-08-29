@@ -76,7 +76,7 @@ public class ResourceCascade extends org.lgna.croquet.Cascade<org.lgna.project.a
 			org.lgna.project.ast.AbstractField argumentField = fieldAccess.field.getValue();
 			org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( argumentField, this.dropSite ).fire();
 		} else if( values[ 0 ] instanceof org.lgna.project.ast.TypeExpression ) {
-			org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance().fire();
+			org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance().fire();
 		}
 		//todo
 		return null;

@@ -46,7 +46,15 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public class RandomPersonResourceComposite extends PersonResourceComposite {
-	public RandomPersonResourceComposite() {
+	private static class SingletonHolder {
+		private static RandomPersonResourceComposite instance = new RandomPersonResourceComposite();
+	}
+
+	public static RandomPersonResourceComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private RandomPersonResourceComposite() {
 		super( java.util.UUID.fromString( "9527895d-ee3f-43ed-86fe-b94538b1ff23" ) );
 	}
 

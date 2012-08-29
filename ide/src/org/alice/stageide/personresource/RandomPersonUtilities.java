@@ -41,31 +41,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.gallerybrowser;
+package org.alice.stageide.personresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreatePersonResourceOperation extends PersonResourceOperation {
-	private static class SingletonHolder {
-		private static CreatePersonResourceOperation instance = new CreatePersonResourceOperation();
+public class RandomPersonUtilities {
+	private RandomPersonUtilities() {
+		throw new AssertionError();
 	}
 
-	public static CreatePersonResourceOperation getInstance() {
-		return SingletonHolder.instance;
+	public static org.lgna.story.resources.sims2.PersonResource createRandomResource( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( lifeStage != null ) {
+			//pass
+		} else {
+			org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
+			lifeStage = org.lgna.common.RandomUtilities.getRandomValueFrom( potentialLifeStages );
+		}
+		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
+		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
+		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
+		org.lgna.story.resources.sims2.Outfit outfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		double obesityLevel = org.lgna.common.RandomUtilities.nextDouble();
+		return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
 	}
 
-	private CreatePersonResourceOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ), org.alice.stageide.personresource.RandomPersonResourceComposite.getInstance() );
+	public static org.lgna.story.resources.sims2.PersonResource createRandomResource() {
+		return createRandomResource( null );
 	}
-
-	//	@Override
-	//	protected org.alice.stageide.person.PersonComposite getPersonComposite() {
-	//		return org.alice.stageide.person.CreatePersonComposite.getInstance();
-	//	}
-	//
-	//	@Override
-	//	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.story.resources.sims2.PersonResource personResource ) {
-	//		return null;
-	//	}
 }

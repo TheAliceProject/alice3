@@ -53,7 +53,7 @@ public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
 	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
 		this.prevResource = org.alice.stageide.personresource.IngredientsComposite.getInstance().createResourceFromStates();
-		this.nextResource = org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
+		this.nextResource = org.alice.stageide.personresource.RandomPersonUtilities.createRandomResource();
 	}
 
 	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
