@@ -150,6 +150,11 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		}
 
 		@Override
+		public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy ) {
+			return internalJointImp.getAxisAlignedMinimumBoundingBox( asSeenBy );
+		}
+
+		@Override
 		public AbstractTransformable getSgComposite() {
 			return internalJointImp.getSgComposite();
 		}
@@ -170,8 +175,43 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		}
 
 		@Override
+		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
+			return internalJointImp.getLocalTransformation();
+		}
+
+		@Override
+		public void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
+			internalJointImp.setLocalTransformation( transformation );
+		}
+
+		@Override
 		public void setVehicle( EntityImp vehicle ) {
 			this.internalJointImp.setVehicle( vehicle );
+		}
+
+		@Override
+		public boolean isFacing( EntityImp other ) {
+			return this.internalJointImp.isFacing( other );
+		}
+
+		@Override
+		public void applyTranslation( double x, double y, double z, ReferenceFrame asSeenBy ) {
+			this.internalJointImp.applyTranslation( x, y, z, asSeenBy );
+		}
+
+		@Override
+		public void applyRotationInRadians( edu.cmu.cs.dennisc.math.Vector3 axis, double angleInRadians, ReferenceFrame asSeenBy ) {
+			this.internalJointImp.applyRotationInRadians( axis, angleInRadians, asSeenBy );
+		}
+
+		@Override
+		public boolean isPivotVisible() {
+			return internalJointImp.isPivotVisible();
+		}
+
+		@Override
+		public void setPivotVisible( boolean isPivotVisible ) {
+			internalJointImp.setPivotVisible( isPivotVisible );
 		}
 
 	}
