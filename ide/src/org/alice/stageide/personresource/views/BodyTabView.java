@@ -50,7 +50,7 @@ public class BodyTabView extends org.lgna.croquet.components.BorderPanel {
 	public BodyTabView( org.alice.stageide.personresource.BodyTabComposite composite ) {
 		super( composite, 8, 8 );
 		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
-		org.lgna.croquet.components.List<?> list = new HorizontalWrapList<org.lgna.story.resources.sims2.FullBodyOutfit>( composite.getFullBodyOutfitState(), -1, org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance() );
+		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.FullBodyOutfit> list = new HorizontalWrapList<org.lgna.story.resources.sims2.FullBodyOutfit>( composite.getFullBodyOutfitState(), -1, org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance() );
 		list.setBackgroundColor( backgroundColor );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
 		scrollPane.setBothScrollBarIncrements( 66, 66 );
