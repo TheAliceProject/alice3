@@ -69,8 +69,8 @@ public class RandomPersonResourceComposite extends PersonResourceComposite {
 		new org.alice.stageide.StageIDE();
 		try {
 			org.lgna.croquet.triggers.Trigger trigger = null;
-			org.lgna.croquet.history.CompletionStep<?> step = new RandomPersonResourceComposite().getValueCreator().fire( trigger );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( step.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+			org.lgna.story.resources.sims2.PersonResource resource = new RandomPersonResourceComposite().getValueCreator().fireAndGetValue( trigger );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( resource );
 		} catch( org.lgna.croquet.CancelException ce ) {
 			//pass
 		}

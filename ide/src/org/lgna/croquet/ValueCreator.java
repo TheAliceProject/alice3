@@ -163,15 +163,12 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 	}
 
-	//	@Override
-	//	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-	//		this.initializeIfNecessary();
-	//		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
-	//		T value = this.createValue( transaction, trigger );
-	//		org.lgna.croquet.history.CompletionStep<?> rv = transaction.getCompletionStep();
-	//		if( rv != null ) {
-	//			rv.putEphemeralDataFor( VALUE_KEY, value );
-	//		}
-	//		return rv;
-	//	}
+	public T fireAndGetValue( org.lgna.croquet.triggers.Trigger trigger ) throws CancelException {
+		org.lgna.croquet.history.CompletionStep<?> step = this.fire( trigger );
+		if( step.isSuccessfullyCompleted() ) {
+			return (T)step.getEphemeralDataFor( VALUE_KEY );
+		} else {
+			throw new CancelException();
+		}
+	}
 }
