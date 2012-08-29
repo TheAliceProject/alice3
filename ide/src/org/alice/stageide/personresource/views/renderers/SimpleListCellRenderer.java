@@ -40,41 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
-	private static class SingletonHolder {
-		private static HeadTabComposite instance = new HeadTabComposite();
+public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
+	SINGLETON;
+	private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
+	private javax.swing.JLabel label = new javax.swing.JLabel();
+
+	private SimpleListCellRenderer() {
+		label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
+		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
+		label.setOpaque( true );
+		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+		pane.setOpaque( false );
+		pane.add( label, java.awt.BorderLayout.CENTER );
 	}
 
-	public static HeadTabComposite getInstance() {
-		return SingletonHolder.instance;
+	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		this.label.setText( value.toString() );
+		if( isSelected ) {
+			this.label.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
+		} else {
+			this.label.setBackground( org.alice.stageide.personresource.views.IngredientsView.UNSELECTED_COLOR );
+		}
+		return this.pane;
 	}
-
-	private HeadTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
-	}
-
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
-
-	@Override
-	protected org.alice.stageide.personresource.views.HeadTabView createView() {
-		return new org.alice.stageide.personresource.views.HeadTabView( this );
-	}
-
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return HairColorNameState.getInstance();
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return HairState.getInstance();
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
-		return this.baseEyeColorState;
-	}
-};
+}

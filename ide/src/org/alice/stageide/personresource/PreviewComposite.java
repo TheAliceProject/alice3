@@ -46,17 +46,29 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.BorderPanel> {
-	public PreviewComposite() {
+public class PreviewComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.PersonViewer> {
+	private static class SingletonHolder {
+		private static PreviewComposite instance = new PreviewComposite();
+	}
+
+	public static PreviewComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private final PersonImp personImp = new PersonImp();
+
+	private PreviewComposite() {
 		super( java.util.UUID.fromString( "f9cd8c6a-5307-49ca-ae72-5cf4b629758f" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder().center( new org.lgna.croquet.components.Label( "preview" ) ).build();
-		int width = 300;
-		int height = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( 200 );
-		rv.setPreferredSize( new java.awt.Dimension( width, height ) );
-		return rv;
+	protected org.alice.stageide.personresource.views.PersonViewer createView() {
+		return new org.alice.stageide.personresource.views.PersonViewer();
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.getView().setPerson( personImp );
 	}
 }

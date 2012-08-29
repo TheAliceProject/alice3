@@ -41,40 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
-	private static class SingletonHolder {
-		private static HeadTabComposite instance = new HeadTabComposite();
+public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
+	private final org.lgna.story.resources.sims2.PersonResource prevResource;
+	private final org.lgna.story.resources.sims2.PersonResource nextResource;
+
+	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
+		super( step );
+		this.prevResource = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
+		this.nextResource = org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
 	}
 
-	public static HeadTabComposite getInstance() {
-		return SingletonHolder.instance;
+	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.pushAtomic();
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( resource );
+		org.alice.stageide.person.PersonResourceManager.SINGLETON.popAtomic();
 	}
-
-	private HeadTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
-	}
-
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
 
 	@Override
-	protected org.alice.stageide.personresource.views.HeadTabView createView() {
-		return new org.alice.stageide.personresource.views.HeadTabView( this );
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.setResource( this.nextResource );
 	}
 
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return HairColorNameState.getInstance();
+	@Override
+	protected final void undoInternal() {
+		this.setResource( this.prevResource );
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return HairState.getInstance();
+	@Override
+	protected StringBuilder updatePresentation( StringBuilder rv ) {
+		rv.append( "randomize" );
+		return rv;
 	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
-		return this.baseEyeColorState;
-	}
-};
+}

@@ -40,41 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.personresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
-	private static class SingletonHolder {
-		private static HeadTabComposite instance = new HeadTabComposite();
+abstract class AbstractListSelectionState<E> extends org.lgna.croquet.DefaultListSelectionState<E> {
+	public AbstractListSelectionState( java.util.UUID individualId, org.lgna.croquet.ItemCodec<E> codec, E... elements ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
 	}
-
-	public static HeadTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private HeadTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
-	}
-
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
-
-	@Override
-	protected org.alice.stageide.personresource.views.HeadTabView createView() {
-		return new org.alice.stageide.personresource.views.HeadTabView( this );
-	}
-
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return HairColorNameState.getInstance();
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return HairState.getInstance();
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
-		return this.baseEyeColorState;
-	}
-};
+}

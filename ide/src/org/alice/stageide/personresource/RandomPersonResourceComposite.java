@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.personresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
-	private static class SingletonHolder {
-		private static HeadTabComposite instance = new HeadTabComposite();
+public class RandomPersonResourceComposite extends PersonResourceComposite {
+	public RandomPersonResourceComposite() {
+		super( java.util.UUID.fromString( "9527895d-ee3f-43ed-86fe-b94538b1ff23" ) );
 	}
-
-	public static HeadTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private HeadTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
-	}
-
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
 
 	@Override
-	protected org.alice.stageide.personresource.views.HeadTabView createView() {
-		return new org.alice.stageide.personresource.views.HeadTabView( this );
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		IngredientsComposite.getInstance().getRandomize().fire();
 	}
 
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return HairColorNameState.getInstance();
+	@Override
+	public void handlePostDeactivation() {
+		super.handlePostDeactivation();
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return HairState.getInstance();
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		new org.alice.stageide.StageIDE();
+		try {
+			org.lgna.croquet.triggers.Trigger trigger = null;
+			org.lgna.story.resources.sims2.PersonResource resource = new RandomPersonResourceComposite().getValueCreator().fireAndGetValue( trigger );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( resource );
+		} catch( org.lgna.croquet.CancelException ce ) {
+			//pass
+		}
+		System.exit( 0 );
 	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
-		return this.baseEyeColorState;
-	}
-};
+}

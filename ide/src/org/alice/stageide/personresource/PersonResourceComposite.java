@@ -47,12 +47,10 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.lgna.story.resources.sims2.PersonResource> {
-	private final PreviewComposite previewComposite = new PreviewComposite();
-	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
-	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.ingredientsComposite, 0.0f );
+	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( PreviewComposite.getInstance(), IngredientsComposite.getInstance(), 0.0f );
 
-	public PersonResourceComposite() {
-		super( java.util.UUID.fromString( "9527895d-ee3f-43ed-86fe-b94538b1ff23" ) );
+	public PersonResourceComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
 	public org.lgna.croquet.SplitComposite getSplitComposite() {
@@ -66,7 +64,7 @@ public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCrea
 
 	@Override
 	protected org.lgna.story.resources.sims2.PersonResource createValue() {
-		return null;
+		return IngredientsComposite.getInstance().createResourceFromStates();
 	}
 
 	@Override
@@ -75,23 +73,21 @@ public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCrea
 	}
 
 	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.splitComposite.handlePreActivation();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo remove handlePreActivation" );
 	}
 
-	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
-		new org.alice.stageide.StageIDE();
-		try {
-			org.lgna.croquet.triggers.Trigger trigger = null;
-			new PersonResourceComposite() {
-			}.getValueCreator().fire( trigger );
-		} catch( org.lgna.croquet.CancelException ce ) {
-			//pass
-		}
-		System.exit( 0 );
+	@Override
+	public void handlePostDeactivation() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo remove handlePostDeactivation" );
+		this.splitComposite.handlePostDeactivation();
+		super.handlePostDeactivation();
+	}
+
+	@Override
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
 	}
 }
