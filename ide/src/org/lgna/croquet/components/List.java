@@ -49,45 +49,6 @@ import org.lgna.croquet.ListSelectionState;
  * @author Dennis Cosgrove
  */
 public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionState<T>> {
-	private long tModelChange;
-
-	private class ListUI extends javax.swing.plaf.basic.BasicListUI {
-		@Override
-		protected javax.swing.event.MouseInputListener createMouseInputListener() {
-			return new javax.swing.event.MouseInputListener() {
-				public void mouseClicked( java.awt.event.MouseEvent e ) {
-				}
-
-				public void mouseEntered( java.awt.event.MouseEvent e ) {
-				}
-
-				public void mouseExited( java.awt.event.MouseEvent e ) {
-				}
-
-				public void mousePressed( java.awt.event.MouseEvent e ) {
-					long tCurrent = e.getWhen();
-					long tDelta = tCurrent - List.this.tModelChange;
-					if( tDelta > 400 ) {
-						int row = ListUI.this.locationToIndex( list, e.getPoint() );
-						list.setValueIsAdjusting( true );
-						list.setSelectionInterval( row, row );
-					}
-				}
-
-				public void mouseReleased( java.awt.event.MouseEvent e ) {
-					list.setValueIsAdjusting( false );
-					list.repaint();
-				}
-
-				public void mouseMoved( java.awt.event.MouseEvent e ) {
-				}
-
-				public void mouseDragged( java.awt.event.MouseEvent e ) {
-				}
-			};
-		}
-	}
-
 	public enum LayoutOrientation {
 		VERTICAL( javax.swing.JList.VERTICAL ),
 		VERTICAL_WRAP( javax.swing.JList.VERTICAL_WRAP ),
@@ -97,9 +58,6 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 		private LayoutOrientation( int internal ) {
 			this.internal = internal;
 		}
-		//		/*package-private*/ int getInternal() {
-		//			return this.internal;
-		//		}
 	}
 
 	public List( ListSelectionState<T> model ) {
@@ -110,12 +68,7 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 
 	@Override
 	protected javax.swing.JList createAwtComponent() {
-		return new javax.swing.JList() {
-			@Override
-			public void updateUI() {
-				this.setUI( new ListUI() );
-			}
-		};
+		return new javax.swing.JList();
 	}
 
 	@Override
@@ -123,19 +76,6 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 		//todo
 		return this;
 	}
-
-	//	public enum DoubleClickBehavior {
-	//		DO_NOTHING,
-	//		DO_DEFAULT_BUTTON_CLICK,
-	//	}
-	//	private DoubleClickBehavior doubleClickBehavior = DoubleClickBehavior.DO_NOTHING;
-	//	public DoubleClickBehavior getDoubleClickBehavior() {
-	//		return this.doubleClickBehavior;
-	//	}
-	//	public void setDoubleClickBehavior( DoubleClickBehavior doubleClickBehavior ) {
-	//		assert doubleClickBehavior != null;
-	//		this.doubleClickBehavior = doubleClickBehavior;
-	//	}
 
 	public javax.swing.ListCellRenderer getCellRenderer() {
 		return this.getAwtComponent().getCellRenderer();
@@ -157,38 +97,8 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
 	}
 
-	private class ListDataListener implements javax.swing.event.ListDataListener {
-		private void handleChanged() {
-			List.this.tModelChange = System.currentTimeMillis();
-			List.this.revalidateAndRepaint();
-		}
-
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
-			this.handleChanged();
-		}
-
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
-			this.handleChanged();
-		}
-
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
-			this.handleChanged();
-		}
-	}
-
-	private ListDataListener listDataListener = new ListDataListener();
-	private javax.swing.ListModel model;
-
 	/* package-private */void setSwingListModel( javax.swing.ListModel model ) {
-		if( this.model != null ) {
-			this.model.removeListDataListener( this.listDataListener );
-		}
-		this.model = model;
 		this.getAwtComponent().setModel( model );
-		this.listDataListener.handleChanged();
-		if( this.model != null ) {
-			this.model.addListDataListener( this.listDataListener );
-		}
 	}
 
 	/* package-private */void setSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
