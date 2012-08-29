@@ -65,7 +65,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneState = this.createListSelectionStateForEnum( this.createKey( "baseSkinToneState" ), org.lgna.story.resources.sims2.BaseSkinTone.class, org.lgna.story.resources.sims2.BaseSkinTone.getRandom() );
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, BodyTabComposite.getInstance(), HeadTabComposite.getInstance() );
 
-	private final PersonImp personImp = new PersonImp();
 	private final edu.cmu.cs.dennisc.map.MapToMap<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.resources.sims2.Gender, org.lgna.story.resources.sims2.PersonResource> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage> lifeStageListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage>() {
 		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.LifeStage> state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {
@@ -231,27 +230,50 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	}
 
-	public org.alice.stageide.person.components.PersonViewer allocatePersonViewer( org.lgna.story.resources.sims2.PersonResource personResource ) {
-		assert activeCount == 0; //todo
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
 		this.pushAtomic();
-		this.setStates( personResource );
+		//		this.setStates( personResource );
 		if( activeCount == 0 ) {
 			this.addListeners();
 		}
 		this.activeCount++;
 		this.popAtomic();
-		//return org.alice.stageide.person.components.PersonViewer.getInstance( this.personImp );
-		return null;
 	}
 
-	public void releasePersonViewer( org.alice.stageide.person.components.PersonViewer personViewer ) {
+	@Override
+	public void handlePostDeactivation() {
 		this.activeCount--;
 		if( activeCount == 0 ) {
 			this.removeListeners();
 		}
 		//personViewer.setPerson( null );
 		assert activeCount == 0; //todo
+		super.handlePostDeactivation();
 	}
+
+	//	public org.alice.stageide.person.components.PersonViewer allocatePersonViewer( org.lgna.story.resources.sims2.PersonResource personResource ) {
+	//		assert activeCount == 0; //todo
+	//		this.pushAtomic();
+	//		this.setStates( personResource );
+	//		if( activeCount == 0 ) {
+	//			this.addListeners();
+	//		}
+	//		this.activeCount++;
+	//		this.popAtomic();
+	//		//return org.alice.stageide.person.components.PersonViewer.getInstance( this.personImp );
+	//		return null;
+	//	}
+	//
+	//	public void releasePersonViewer( org.alice.stageide.person.components.PersonViewer personViewer ) {
+	//		this.activeCount--;
+	//		if( activeCount == 0 ) {
+	//			this.removeListeners();
+	//		}
+	//		//personViewer.setPerson( null );
+	//		assert activeCount == 0; //todo
+	//	}
 
 	private static org.lgna.story.resources.sims2.LifeStage getLifeStage( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		return personResource != null ? personResource.getLifeStage() : null;
@@ -350,7 +372,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			} finally {
 				this.addListenersIfAppropriate();
 			}
-			this.personImp.updateNebPerson();
+			PreviewComposite.getInstance().getView().getPerson().updateNebPerson();
 
 			this.prevPersonResource = this.createResourceFromStates();
 			if( this.prevPersonResource != null ) {

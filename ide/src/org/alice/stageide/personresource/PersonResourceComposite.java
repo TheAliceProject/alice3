@@ -47,8 +47,7 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.lgna.story.resources.sims2.PersonResource> {
-	private final PreviewComposite previewComposite = new PreviewComposite();
-	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, IngredientsComposite.getInstance(), 0.0f );
+	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( PreviewComposite.getInstance(), IngredientsComposite.getInstance(), 0.0f );
 
 	public PersonResourceComposite( java.util.UUID migrationId ) {
 		super( migrationId );
@@ -71,6 +70,20 @@ public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCrea
 	@Override
 	public boolean isStatusLineDesired() {
 		return false;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.splitComposite.handlePreActivation();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo remove handlePreActivation" );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo remove handlePostDeactivation" );
+		this.splitComposite.handlePostDeactivation();
+		super.handlePostDeactivation();
 	}
 
 	@Override
