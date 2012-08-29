@@ -46,12 +46,17 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonResourceOperation extends org.lgna.croquet.IteratingOperation {
-	private final org.alice.stageide.personresource.PersonResourceComposite composite;
+public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.croquet.IteratingOperation {
+	private static class SingletonHolder {
+		private static DeclareFieldFromPersonResourceIteratingOperation instance = new DeclareFieldFromPersonResourceIteratingOperation();
+	}
 
-	public PersonResourceOperation( org.lgna.croquet.Group group, java.util.UUID id, org.alice.stageide.personresource.PersonResourceComposite composite ) {
-		super( group, id );
-		this.composite = composite;
+	public static DeclareFieldFromPersonResourceIteratingOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private DeclareFieldFromPersonResourceIteratingOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
 	}
 
 	@Override
@@ -63,7 +68,7 @@ public abstract class PersonResourceOperation extends org.lgna.croquet.Iterating
 	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
-			return this.composite.getValueCreator();
+			return org.alice.stageide.personresource.RandomPersonResourceComposite.getInstance().getValueCreator();
 		case 1:
 			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
 			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {

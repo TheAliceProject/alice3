@@ -122,7 +122,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		if( this.getDeclaration().isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
-			return org.alice.stageide.croquet.models.gallerybrowser.CreatePersonResourceOperation.getInstance();
+			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstance();
 		} else {
 			return ResourceCascade.getInstance( this.getDeclaration(), dropSite );
 		}
