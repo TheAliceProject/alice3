@@ -68,6 +68,14 @@ public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCrea
 	}
 
 	@Override
+	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		super.modifyPackedWindowSizeIfDesired( window );
+		int width = 1000;
+		int height = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( width );
+		window.setSize( width, height );
+	}
+
+	@Override
 	public boolean isStatusLineDesired() {
 		return false;
 	}

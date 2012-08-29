@@ -49,9 +49,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
 
 	public PersonViewer() {
-		int width = 300;
-		int height = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( width );
-		this.setPreferredSize( new java.awt.Dimension( width, height ) );
+		this.setMinimumPreferredWidth( 300 );
 	}
 
 	private void positionAndOrientCamera( double height, int index, double duration ) {
@@ -99,8 +97,8 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			double height = person.getSize().y;
 			if( Double.isNaN( height ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( person );
-				height = 1.7;
 			}
+			height = 1.7;
 			this.positionAndOrientCamera( height, 0, 0.0 );
 		}
 	}
