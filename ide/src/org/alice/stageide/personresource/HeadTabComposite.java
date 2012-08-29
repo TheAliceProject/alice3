@@ -70,6 +70,10 @@ public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.
 		return HairColorNameState.getInstance();
 	}
 
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
+		return null;
+	}
+
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getEyeColorState() {
 		return this.eyeColorState;
 	}
