@@ -99,7 +99,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			double height = person.getSize().y;
 			if( Double.isNaN( height ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( person );
-				height = 1.5;
+				height = 1.7;
 			}
 			this.positionAndOrientCamera( height, 0, 0.0 );
 		}

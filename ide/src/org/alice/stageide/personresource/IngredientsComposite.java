@@ -373,6 +373,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				this.addListenersIfAppropriate();
 			}
 			PreviewComposite.getInstance().getView().getPerson().updateNebPerson();
+			this.getView().repaint();
 
 			this.prevPersonResource = this.createResourceFromStates();
 			if( this.prevPersonResource != null ) {
