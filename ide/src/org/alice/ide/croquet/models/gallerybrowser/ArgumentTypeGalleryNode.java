@@ -132,4 +132,19 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().getSelectionOperationFor( this );
 	}
+
+	//	@Override
+	//	public boolean isLeaf() {
+	//		int childCount = this.getChildCount();
+	//		switch( childCount ) {
+	//		case 0:
+	//			return true;
+	//		case 1:
+	//			GalleryNode child0 = this.getChild( 0 );
+	//			//todo: check more strictly
+	//			return child0 instanceof FieldGalleryNode;
+	//		default:
+	//			return false;
+	//		}
+	//	}
 }

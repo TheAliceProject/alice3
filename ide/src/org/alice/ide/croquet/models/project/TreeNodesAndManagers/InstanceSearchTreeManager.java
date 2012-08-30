@@ -104,7 +104,7 @@ public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldRef
 	}
 
 	@Override
-	protected FieldReferenceSearchTreeNode getParent( FieldReferenceSearchTreeNode node ) {
+	public FieldReferenceSearchTreeNode getParent( FieldReferenceSearchTreeNode node ) {
 		return node.getParent();
 	}
 
