@@ -113,7 +113,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		if( this.isPerson() ) {
-			sb.append( "MyPerson" );
+			sb.append( "Person" );
 		} else {
 			super.appendClassName( sb );
 		}

@@ -49,8 +49,27 @@ package org.alice.stageide.personresource;
 public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.lgna.story.resources.sims2.PersonResource> {
 	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( PreviewComposite.getInstance(), IngredientsComposite.getInstance(), 0.0f );
 
+	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> expressionValueCreator;
+
 	public PersonResourceComposite( java.util.UUID migrationId ) {
 		super( migrationId );
+		this.expressionValueCreator = new org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression>( java.util.UUID.fromString( "d636961b-6ccb-47d0-a36f-60df0b5e1e8e" ), this.getValueCreator() ) {
+			@Override
+			protected org.lgna.project.ast.Expression convert( org.lgna.story.resources.sims2.PersonResource value ) {
+				try {
+					org.lgna.project.ast.Expression expression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( value );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( expression );
+					return expression;
+				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+					throw new RuntimeException( ccee );
+				}
+			}
+		};
+
+	}
+
+	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getExpressionValueCreator() {
+		return this.expressionValueCreator;
 	}
 
 	public org.lgna.croquet.SplitComposite getSplitComposite() {

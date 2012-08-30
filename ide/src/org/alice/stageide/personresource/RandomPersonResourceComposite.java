@@ -61,6 +61,7 @@ public class RandomPersonResourceComposite extends PersonResourceComposite {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
+		//todo
 		IngredientsComposite.getInstance().getRandomize().fire();
 	}
 

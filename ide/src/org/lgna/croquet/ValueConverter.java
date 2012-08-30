@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.declaration;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryRootBlank extends org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression> {
-	private static class SingletonHolder {
-		private static GalleryRootBlank instance = new GalleryRootBlank();
-	}
+public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
+	private final ValueCreator<T> source;
 
-	public static GalleryRootBlank getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private GalleryRootBlank() {
-		super( java.util.UUID.fromString( "2d2a9ea9-029a-40e1-9a4e-9e4ad7cae57c" ) );
+	public ValueConverter( java.util.UUID migrationId, ValueCreator<T> source ) {
+		super( migrationId );
+		this.source = source;
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-		java.util.List<org.lgna.project.ast.JavaType> topLevelTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
-		for( org.lgna.project.ast.AbstractType<?, ?, ?> type : topLevelTypes ) {
-			rv.add( GalleryResourceMenu.getInstance( type.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType() ) );
-		}
-		return rv;
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		return this.source.getClassUsedForLocalization();
 	}
+
+	protected abstract TPRIME convert( T value );
+
+	@Override
+	protected final TPRIME createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		T value = this.source.createValue( transaction, trigger );
+		return this.convert( value );
+	}
+
 }
