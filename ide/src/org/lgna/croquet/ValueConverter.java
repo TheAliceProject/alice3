@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,17 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.person.components;
-
-import org.alice.stageide.person.components.renderers.HairListCellRenderer;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairList extends HorizontalWrapList<org.lgna.story.resources.sims2.Hair> {
-	public HairList() {
-		super( org.alice.stageide.person.models.HairState.getInstance(), -1 );
-		this.setCellRenderer( HairListCellRenderer.getInstance() );
+public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
+	private final ValueCreator<T> source;
+
+	public ValueConverter( java.util.UUID migrationId, ValueCreator<T> source ) {
+		super( migrationId );
+		this.source = source;
 	}
+
+	@Override
+	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		return this.source.getClassUsedForLocalization();
+	}
+
+	protected abstract TPRIME convert( T value );
+
+	@Override
+	protected final TPRIME createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		T value = this.source.createValue( transaction, trigger );
+		return this.convert( value );
+	}
+
 }

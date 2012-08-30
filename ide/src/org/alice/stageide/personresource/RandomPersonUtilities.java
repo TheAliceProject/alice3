@@ -40,65 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.person.components.renderers;
+
+package org.alice.stageide.personresource;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<E> {
-	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
-
-	protected abstract String getSubPath();
-
-	private java.net.URL getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "images/" );
-		sb.append( this.getSubPath() );
-		sb.append( "/" );
-		sb.append( skinTone );
-		sb.append( "/" );
-		sb.append( clsName );
-		sb.append( "." );
-		sb.append( enumConstantName );
-		sb.append( ".png" );
-		java.net.URL rv = org.alice.stageide.personeditor.IngredientImageUtilities.getResource( sb.toString() );
-		assert rv != null : sb;
-		return rv;
+public class RandomPersonUtilities {
+	private RandomPersonUtilities() {
+		throw new AssertionError();
 	}
 
-	private org.lgna.story.resources.sims2.BaseSkinTone getBaseSkinTone() {
-		return org.alice.stageide.person.models.BaseSkinToneState.getInstance().getValue();
-	}
-
-	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus ) {
-		assert rv != null;
-		if( value != null ) {
-			String clsName = value.getClass().getSimpleName();
-			String enumConstantName = value.toString();
-
-			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getBaseSkinTone();
-
-			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
-			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
-			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
-
-			rv.setOpaque( isSelected );
-			if( isSelected ) {
-				rv.setBackground( org.alice.stageide.person.components.MainPanel.SELECTED_COLOR );
-			}
-
-			javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
-			if( icon != null ) {
-				rv.setIcon( icon );
-				rv.setText( "" );
-			} else {
-				rv.setText( "image not found" );
-			}
-			rv.setBorder( this.border );
+	public static org.lgna.story.resources.sims2.PersonResource createRandomResource( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( lifeStage != null ) {
+			//pass
 		} else {
-			rv.setText( "null" );
+			org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
+			lifeStage = org.lgna.common.RandomUtilities.getRandomValueFrom( potentialLifeStages );
 		}
-		return rv;
+		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
+		org.lgna.story.resources.sims2.SkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
+		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
+		org.lgna.story.resources.sims2.Outfit outfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		double obesityLevel = org.lgna.common.RandomUtilities.nextDouble();
+		return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
+	}
+
+	public static org.lgna.story.resources.sims2.PersonResource createRandomResource() {
+		return createRandomResource( null );
 	}
 }

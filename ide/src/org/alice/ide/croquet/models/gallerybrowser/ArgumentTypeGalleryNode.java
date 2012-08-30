@@ -113,7 +113,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		if( this.isPerson() ) {
-			sb.append( "MyPerson" );
+			sb.append( "Person" );
 		} else {
 			super.appendClassName( sb );
 		}
@@ -122,7 +122,7 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		if( this.getDeclaration().isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
-			return org.alice.stageide.croquet.models.gallerybrowser.CreateFieldFromPersonResourceOperation.getInstance();
+			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstance();
 		} else {
 			return ResourceCascade.getInstance( this.getDeclaration(), dropSite );
 		}
@@ -132,4 +132,19 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance().getSelectionOperationFor( this );
 	}
+
+	//	@Override
+	//	public boolean isLeaf() {
+	//		int childCount = this.getChildCount();
+	//		switch( childCount ) {
+	//		case 0:
+	//			return true;
+	//		case 1:
+	//			GalleryNode child0 = this.getChild( 0 );
+	//			//todo: check more strictly
+	//			return child0 instanceof FieldGalleryNode;
+	//		default:
+	//			return false;
+	//		}
+	//	}
 }

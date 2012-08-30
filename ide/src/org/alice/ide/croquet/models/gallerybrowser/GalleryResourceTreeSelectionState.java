@@ -105,7 +105,7 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 	}
 
 	@Override
-	protected GalleryNode getParent( GalleryNode node ) {
+	public GalleryNode getParent( GalleryNode node ) {
 		return node.getParent();
 	}
 

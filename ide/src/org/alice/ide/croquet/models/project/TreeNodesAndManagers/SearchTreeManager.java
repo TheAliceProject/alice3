@@ -138,7 +138,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	}
 
 	@Override
-	final protected SearchTreeNode getParent( SearchTreeNode node ) {
+	final public SearchTreeNode getParent( SearchTreeNode node ) {
 		return node.getParent();
 	}
 

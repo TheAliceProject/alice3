@@ -52,14 +52,14 @@ public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
 
 	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
 		super( step );
-		this.prevResource = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
-		this.nextResource = org.alice.stageide.person.RandomPersonUtilities.createRandomResource();
+		this.prevResource = org.alice.stageide.personresource.IngredientsComposite.getInstance().createResourceFromStates();
+		this.nextResource = org.alice.stageide.personresource.RandomPersonUtilities.createRandomResource();
 	}
 
 	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
-		org.alice.stageide.person.PersonResourceManager.SINGLETON.pushAtomic();
-		org.alice.stageide.person.PersonResourceManager.SINGLETON.setStates( resource );
-		org.alice.stageide.person.PersonResourceManager.SINGLETON.popAtomic();
+		org.alice.stageide.personresource.IngredientsComposite.getInstance().pushAtomic();
+		org.alice.stageide.personresource.IngredientsComposite.getInstance().setStates( resource );
+		org.alice.stageide.personresource.IngredientsComposite.getInstance().popAtomic();
 	}
 
 	@Override

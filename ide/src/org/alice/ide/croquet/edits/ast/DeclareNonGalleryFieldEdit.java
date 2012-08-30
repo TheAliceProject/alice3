@@ -45,7 +45,7 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit<org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation> {
+public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit {
 	private transient int index;
 
 	public DeclareNonGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
