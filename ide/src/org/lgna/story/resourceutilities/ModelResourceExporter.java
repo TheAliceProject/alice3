@@ -89,6 +89,8 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
 public class ModelResourceExporter {
 
+	private static boolean REMOVE_ROOT_JOINTS = false;
+	
 	private static String COPYRIGHT_COMMENT = null;
 	private static final String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
 
@@ -324,16 +326,22 @@ public class ModelResourceExporter {
 		}
 		return sourceList;
 	}
-
-	private List<Tuple2<String, String>> makeCodeReadyTree( List<Tuple2<String, String>> sourceList ) {
-		if( sourceList != null ) {
-			List<Tuple2<String, String>> cleaned = new ArrayList<Tuple2<String, String>>();
-			for( Tuple2<String, String> entry : sourceList ) {
-				if( entry.getA().equalsIgnoreCase( "root" ) && ( ( entry.getB() == null ) || ( entry.getB().length() == 0 ) ) ) {
-					continue;
-				}
-				else if( ( entry.getB() != null ) && entry.getB().equalsIgnoreCase( "root" ) ) {
-					entry.setB( null );
+	
+	private static boolean isRootJoint(String jointName) {
+		return jointName.equalsIgnoreCase("root");
+	}
+	
+	private List<Tuple2<String, String>> makeCodeReadyTree(List<Tuple2<String, String>> sourceList) {
+		if (sourceList != null) {
+			List<Tuple2<String, String>> cleaned = new ArrayList<Tuple2<String,String>>();
+			for (Tuple2<String, String> entry : sourceList) {
+				if (REMOVE_ROOT_JOINTS) {
+					if (isRootJoint(entry.getA())&& (entry.getB() == null || entry.getB().length() == 0) ){
+						continue;
+					}
+					else if (entry.getB() != null && isRootJoint(entry.getB())) {
+						entry.setB(null);
+					}
 				}
 				cleaned.add( entry );
 			}
@@ -746,6 +754,9 @@ public class ModelResourceExporter {
 		if( this.jointIdsToSuppress.contains( jointString ) ) {
 			return true;
 		}
+		if (isRootJoint( jointString )) {
+			return true;
+		}
 		return false;
 	}
 
@@ -1071,12 +1082,21 @@ public class ModelResourceExporter {
 		String resourceDirectory = rootPath + getDirectoryStringForPackage( this.classData.packageString ) + ModelResourceExporter.getResourceSubDirWithSeparator( this.className );
 		return resourceDirectory + thumbnailName;
 	}
-
-	public static BufferedImage createClassThumb( BufferedImage imgSrc ) {
-		ColorConvertOp colorConvert =
-				new ColorConvertOp( ColorSpace.getInstance( ColorSpace.CS_GRAY ), null );
-		colorConvert.filter( imgSrc, imgSrc );
-		return imgSrc;
+	
+	public static BufferedImage createClassThumb(BufferedImage imgSrc) {
+		ColorConvertOp colorConvert = 
+		        new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
+		if (imgSrc == null) {
+			System.out.println("NULL!");
+		}
+		try {
+		    colorConvert.filter(imgSrc, imgSrc);
+		}
+		catch (NullPointerException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		    return imgSrc;
 	}
 
 	private List<File> saveThumbnailsToDir( String root )

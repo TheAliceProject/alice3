@@ -66,6 +66,7 @@ public class TemplateUriSelectionState extends org.alice.ide.projecturi.UriSelec
 		SEA_SURFACE( org.lgna.story.SGround.SurfaceAppearance.WATER ),
 		LAGOON_FLOOR( org.lgna.story.SGround.SurfaceAppearance.SAND, new org.lgna.story.Color( 75 / 255.0, 220 / 255.0, 255 / 255.0 ), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( 0 / 255.0, 26 / 255.0, 60 / 255.0 ) ),
 
+		SWAMP( org.lgna.story.SGround.SurfaceAppearance.SWAMP, new org.lgna.story.Color( .2, .4, 0 ), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .2, .4, 0 ) ),
 		DESERT( org.lgna.story.SGround.SurfaceAppearance.DESERT ),
 		DIRT( org.lgna.story.SGround.SurfaceAppearance.DIRT );
 
