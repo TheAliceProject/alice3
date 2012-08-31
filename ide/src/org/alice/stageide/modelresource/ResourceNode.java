@@ -42,15 +42,18 @@
  */
 package org.alice.stageide.modelresource;
 
+import org.alice.ide.croquet.models.gallerybrowser.ResourceCascade;
+
 /**
  * @author Dennis Cosgrove
  */
-public final class ResourceNode {
+public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
 	private ResourceNode parent;
 	private final ResourceKey resourceKey;
 	private final java.util.List<ResourceNode> children;
 
 	public ResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
+		super( java.util.UUID.fromString( "3829c7ee-e604-4917-9384-2913b5df28b3" ) );
 		this.resourceKey = resourceKey;
 		for( ResourceNode child : children ) {
 			assert child.parent == null : parent;
@@ -67,17 +70,52 @@ public final class ResourceNode {
 		return this.resourceKey;
 	}
 
-	public java.util.List<ResourceNode> getChildren() {
+	public java.util.List<ResourceNode> getNodeChildren() {
 		return this.children;
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.resourceKey );
-		sb.append( "]" );
-		return sb.toString();
+	public String getText() {
+		return this.resourceKey.getText();
 	}
+
+	@Override
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return this.resourceKey.getIconFactory();
+	}
+
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		if( this.resourceKey instanceof EnumConstantResourceKey ) {
+			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
+			return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( enumConstantResourceKey.getField(), dropSite );
+		} else if( this.resourceKey instanceof ClassResourceKey ) {
+			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
+			if( classResourceKey.isLeaf() ) {
+				return this.children.get( 0 ).getDropModel( step, dropSite );
+			} else {
+				return ResourceCascade.getInstance( classResourceKey.getType(), dropSite );
+			}
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public org.lgna.croquet.Model getLeftButtonClickModel() {
+		if( this.resourceKey instanceof EnumConstantResourceKey ) {
+			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
+			return this.getDropModel( null, null );
+		} else if( this.resourceKey instanceof ClassResourceKey ) {
+			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
+			if( classResourceKey.isLeaf() ) {
+				return this.children.get( 0 ).getLeftButtonClickModel();
+			} else {
+				return ResourceNodeTreeSelectionState.getInstance().getItemSelectionOperation( this );
+			}
+		} else {
+			return null;
+		}
+	}
+
 }

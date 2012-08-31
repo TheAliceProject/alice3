@@ -116,14 +116,20 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 	}
 
 	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return this.largeIcon;
-	}
-
-	@Override
-	public javax.swing.Icon getSmallIcon() {
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		//todo
 		return null;
 	}
+
+	//	@Override
+	//	public javax.swing.Icon getLargeIcon() {
+	//		return this.largeIcon;
+	//	}
+	//
+	//	@Override
+	//	public javax.swing.Icon getSmallIcon() {
+	//		return null;
+	//	}
 
 	@Override
 	public String getText() {

@@ -52,6 +52,14 @@ public final class ClassResourceKey extends ResourceKey {
 		this.cls = cls;
 	}
 
+	public Class<? extends org.lgna.story.resources.ModelResource> getCls() {
+		return this.cls;
+	}
+
+	public org.lgna.project.ast.JavaType getType() {
+		return org.lgna.project.ast.JavaType.getInstance( this.cls );
+	}
+
 	@Override
 	public String getText() {
 		return cls.getSimpleName().replace( "Resource", "" );

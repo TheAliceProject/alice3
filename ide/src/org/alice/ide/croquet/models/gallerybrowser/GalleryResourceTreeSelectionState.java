@@ -61,7 +61,8 @@ public class GalleryResourceTreeSelectionState extends org.lgna.croquet.CustomTr
 
 	@Override
 	protected javax.swing.Icon getIconForNode( GalleryNode node ) {
-		return node.getSmallIcon();
+		org.lgna.croquet.icon.IconFactory iconFactory = node.getIconFactory();
+		return iconFactory != null ? iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) : null;
 	}
 
 	@Override

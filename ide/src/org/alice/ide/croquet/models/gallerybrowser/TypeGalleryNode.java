@@ -146,14 +146,20 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode<org.lgna.pr
 	}
 
 	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		//todo
+		return null;
 	}
 
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return this.largeIcon;
-	}
+	//	@Override
+	//	public javax.swing.Icon getSmallIcon() {
+	//		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
+	//	}
+	//
+	//	@Override
+	//	public javax.swing.Icon getLargeIcon() {
+	//		return this.largeIcon;
+	//	}
 
 	@Override
 	public String[] getTags() {

@@ -90,13 +90,8 @@ public class FieldGalleryNode extends DeclarationGalleryNode<org.lgna.project.as
 	}
 
 	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return this.iconFactory.getIcon( new java.awt.Dimension( 24, 24 ) );
-	}
-
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return this.iconFactory.getIcon( this.iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return this.iconFactory;
 	}
 
 	@Override

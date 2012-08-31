@@ -76,18 +76,18 @@ public class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeS
 		if( this.isLeaf( parent ) ) {
 			return 0;
 		} else {
-			return parent.getChildren().size();
+			return parent.getNodeChildren().size();
 		}
 	}
 
 	@Override
 	protected ResourceNode getChild( ResourceNode parent, int index ) {
-		return parent.getChildren().get( index );
+		return parent.getNodeChildren().get( index );
 	}
 
 	@Override
 	protected int getIndexOfChild( ResourceNode parent, ResourceNode child ) {
-		return parent.getChildren().indexOf( child );
+		return parent.getNodeChildren().indexOf( child );
 	}
 
 	@Override

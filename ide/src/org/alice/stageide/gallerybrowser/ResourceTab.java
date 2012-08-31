@@ -80,12 +80,16 @@ public class ResourceTab extends GalleryTab {
 				filterTextField.setMaximumSizeClampedToPreferredSize( true );
 				filterTextField.scaleFont( 1.5f );
 
+				org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = org.alice.stageide.modelresource.ResourceNodeTreeSelectionState.getInstance();
+
+				org.alice.stageide.modelresource.views.ModelResourceDirectoryView view = new org.alice.stageide.modelresource.views.ModelResourceDirectoryView( state );
+				view.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
 				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-						.lineStart( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ) )
+						.lineStart( new org.lgna.croquet.components.TreePathViewController( state ) )
 						.lineEnd( filterTextField )
 						.build();
 
-				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new GalleryDirectoryViewController() ) {
+				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
 					@Override
 					protected javax.swing.JScrollPane createAwtComponent() {
 						return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();

@@ -109,14 +109,20 @@ public class RootGalleryNode extends GalleryNode {
 	}
 
 	@Override
-	public javax.swing.Icon getSmallIcon() {
-		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		//todo
+		return null;
 	}
 
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		return org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
-	}
+	//	@Override
+	//	public javax.swing.Icon getSmallIcon() {
+	//		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
+	//	}
+	//
+	//	@Override
+	//	public javax.swing.Icon getLargeIcon() {
+	//		return org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
+	//	}
 
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {

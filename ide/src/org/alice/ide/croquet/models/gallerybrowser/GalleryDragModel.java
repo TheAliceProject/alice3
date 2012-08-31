@@ -53,9 +53,7 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 
 	public abstract String getText();
 
-	public abstract javax.swing.Icon getSmallIcon();
-
-	public abstract javax.swing.Icon getLargeIcon();
+	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();
 
 	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
 

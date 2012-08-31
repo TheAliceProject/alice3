@@ -92,23 +92,29 @@ public class ArgumentTypeGalleryNode extends TypeGalleryNode {
 	}
 
 	@Override
-	public javax.swing.Icon getSmallIcon() {
-		if( this.isPerson() ) {
-			return org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_SMALL_ICON;
-		} else {
-			return super.getSmallIcon();
-		}
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		//todo
+		return null;
 	}
 
-	@Override
-	public javax.swing.Icon getLargeIcon() {
-		if( this.isPerson() ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
-			return org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_LARGE_ICON;
-		} else {
-			return super.getLargeIcon();
-		}
-	}
+	//	@Override
+	//	public javax.swing.Icon getSmallIcon() {
+	//		if( this.isPerson() ) {
+	//			return org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_SMALL_ICON;
+	//		} else {
+	//			return super.getSmallIcon();
+	//		}
+	//	}
+	//
+	//	@Override
+	//	public javax.swing.Icon getLargeIcon() {
+	//		if( this.isPerson() ) {
+	//			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
+	//			return org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_LARGE_ICON;
+	//		} else {
+	//			return super.getLargeIcon();
+	//		}
+	//	}
 
 	@Override
 	protected void appendClassName( java.lang.StringBuilder sb ) {

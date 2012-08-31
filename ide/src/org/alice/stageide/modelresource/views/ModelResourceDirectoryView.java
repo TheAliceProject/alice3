@@ -52,13 +52,8 @@ public class ModelResourceDirectoryView extends org.lgna.croquet.components.Tree
 
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
-		org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label();
-		org.lgna.croquet.icon.IconFactory iconFactory = value.getResourceKey().getIconFactory();
-		java.awt.Dimension size = iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE );
-		rv.setIcon( iconFactory.getIcon( size ) );
-		rv.setText( "class " + value.getResourceKey().getText() );
-		rv.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
-		rv.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
+		org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent rv = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( value );
+		rv.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 		return rv;
 	}
 }

@@ -52,6 +52,18 @@ public final class EnumConstantResourceKey extends ResourceKey {
 		this.enumConstant = enumConstant;
 	}
 
+	public Enum<? extends org.lgna.story.resources.ModelResource> getEnumConstant() {
+		return this.enumConstant;
+	}
+
+	public org.lgna.project.ast.JavaField getField() {
+		try {
+			return org.lgna.project.ast.JavaField.getInstance( this.enumConstant.getClass().getField( this.enumConstant.name() ) );
+		} catch( NoSuchFieldException nsfe ) {
+			throw new RuntimeException( nsfe );
+		}
+	}
+
 	@Override
 	public String getText() {
 		return this.enumConstant.name();
