@@ -47,8 +47,8 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class ResourceTab extends GalleryTab {
-	public static final javax.swing.Icon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryBrowser.class.getResource( "images/create_person.png" ) );
-	public static final javax.swing.Icon CREATE_PERSON_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryBrowser.class.getResource( "images/create_person_24.png" ) );
+	public static final javax.swing.ImageIcon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryBrowser.class.getResource( "images/create_person.png" ) );
+	public static final javax.swing.ImageIcon CREATE_PERSON_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryBrowser.class.getResource( "images/create_person_24.png" ) );
 
 	private static class SingletonHolder {
 		private static ResourceTab instance = new ResourceTab();

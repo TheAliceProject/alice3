@@ -45,53 +45,38 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class TreeUtilities {
-	private TreeUtilities() {
-		throw new AssertionError();
+public class PersonResourceKey extends ResourceKey {
+
+	private static final org.lgna.croquet.icon.IconFactory ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_LARGE_ICON.getImage() );
+
+	private static class SingletonHolder {
+		private static PersonResourceKey instance = new PersonResourceKey();
 	}
 
-	private static ResourceNode tree;
-
-	private static ResourceNode createNode( org.lgna.story.resourceutilities.ModelResourceTreeNode source, ResourceKey key ) {
-		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		if( key instanceof ClassResourceKey ) {
-			ClassResourceKey classResourceKey = (ClassResourceKey)key;
-			if( classResourceKey.getCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
-				java.util.List<ResourceNode> emptyList = java.util.Collections.emptyList();
-				childNodes.add( new ResourceNode( PersonResourceKey.getInstance(), emptyList ) );
-			}
-		}
-		for( org.lgna.story.resourceutilities.ModelResourceTreeNode childSource : source.childrenList() ) {
-			org.lgna.project.ast.JavaType type = childSource.getResourceJavaType();
-			org.lgna.project.ast.JavaField field = childSource.getJavaField();
-			ResourceKey childKey;
-			if( field != null ) {
-				try {
-					childKey = new EnumConstantResourceKey( (Enum<? extends org.lgna.story.resources.ModelResource>)field.getFieldReflectionProxy().getReification().get( null ) );
-				} catch( IllegalAccessException iae ) {
-					throw new RuntimeException( iae );
-				}
-			} else {
-				childKey = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)type.getClassReflectionProxy().getReification() );
-			}
-			childNodes.add( createNode( childSource, childKey ) );
-		}
-		return new ResourceNode( key, java.util.Collections.unmodifiableList( childNodes ) );
+	public static PersonResourceKey getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	private static ResourceNode createTreeBasedOnClassHierarchy() {
-		org.lgna.story.resourceutilities.StorytellingResources storytellingResources = org.lgna.story.resourceutilities.StorytellingResources.getInstance();
-		org.lgna.story.resourceutilities.ModelResourceTreeNode root = storytellingResources.getGalleryTree();
-		return createNode( root, new RootResourceKey() );
+	private PersonResourceKey() {
 	}
 
-	public static ResourceNode getTreeBasedOnClassHierarchy() {
-		if( tree != null ) {
-			//pass
-		} else {
-			tree = createTreeBasedOnClassHierarchy();
-		}
-		return tree;
+	@Override
+	public String getText() {
+		return "Person";
 	}
 
+	@Override
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return ICON_FACTORY;
+	}
+
+	@Override
+	public boolean isLeaf() {
+		return true;
+	}
+
+	@Override
+	protected void appendRep( StringBuilder sb ) {
+		sb.append( this.getText() );
+	}
 }

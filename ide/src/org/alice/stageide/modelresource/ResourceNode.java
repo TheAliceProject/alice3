@@ -96,6 +96,9 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 			} else {
 				return ResourceCascade.getInstance( classResourceKey.getType(), dropSite );
 			}
+		} else if( this.resourceKey instanceof PersonResourceKey ) {
+			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
+			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstance();
 		} else {
 			return null;
 		}
@@ -113,6 +116,9 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 			} else {
 				return ResourceNodeTreeSelectionState.getInstance().getItemSelectionOperation( this );
 			}
+		} else if( this.resourceKey instanceof PersonResourceKey ) {
+			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
+			return this.getDropModel( null, null );
 		} else {
 			return null;
 		}
