@@ -59,6 +59,7 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode<org.lgna.pr
 	private static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> setOfClassesWithIcons = edu.cmu.cs.dennisc.java.util.Collections.newHashSet(
 			org.lgna.story.resources.BipedResource.class,
 			org.lgna.story.resources.FishResource.class,
+			org.lgna.story.resources.FlyerResource.class,
 			org.lgna.story.resources.PropResource.class,
 			org.lgna.story.resources.QuadrupedResource.class,
 			org.lgna.story.resources.SwimmerResource.class,
