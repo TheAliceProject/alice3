@@ -81,7 +81,7 @@ public class ResourceTab extends GalleryTab {
 				filterTextField.scaleFont( 1.5f );
 
 				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-						.lineStart( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance(), null ) )
+						.lineStart( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ) )
 						.lineEnd( filterTextField )
 						.build();
 

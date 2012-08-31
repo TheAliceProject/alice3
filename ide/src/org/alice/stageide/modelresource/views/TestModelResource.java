@@ -40,37 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource;
+package org.alice.stageide.modelresource.views;
 
 /**
  * @author Dennis Cosgrove
  */
 public class TestModelResource {
-	private static final javax.swing.Icon EMPTY_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height );
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
 
-	public static void main( String[] args ) {
-		ResourceNode root = TreeUtilities.getTreeBasedOnClassHierarchy();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( root );
+		final org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = org.alice.stageide.modelresource.ResourceNodeTreeSelectionState.getInstance();
 		org.lgna.croquet.simple.SimpleApplication simpleApplication = new org.lgna.croquet.simple.SimpleApplication();
 		simpleApplication.getFrame().setMainComposite( new org.lgna.croquet.SimpleComposite( java.util.UUID.randomUUID() ) {
 			@Override
 			protected org.lgna.croquet.components.View createView() {
-				ResourceNodeTreeSelectionState state = ResourceNodeTreeSelectionState.getInstance();
 				//				org.lgna.croquet.components.Tree<ResourceNode> tree = ResourceNodeTreeSelectionState.getInstance().createTree();
 				//				tree.setRootVisible( false );
 				//				tree.expandAllRows();
 
 				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-						.lineStart( new org.lgna.croquet.components.TreePathViewController( state, new org.lgna.croquet.components.TreePathViewController.Renderer<org.alice.stageide.modelresource.ResourceNode>() {
-							public String getText( org.alice.stageide.modelresource.ResourceNode value ) {
-								return value.getResourceKey().getText();
-							}
-
-							public javax.swing.Icon getIcon( org.alice.stageide.modelresource.ResourceNode value ) {
-								org.lgna.croquet.icon.IconFactory iconFactory = value.getResourceKey().getIconFactory();
-								return iconFactory != null ? iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) : EMPTY_ICON;
-							}
-						} ) )
+						.lineStart( new org.lgna.croquet.components.TreePathViewController( state ) )
 						//.lineEnd( filterTextField )
 						.build();
 
@@ -87,12 +79,12 @@ public class TestModelResource {
 				scrollPane.setBothScrollBarIncrements( 16, 160 );
 				return new org.lgna.croquet.components.BorderPanel.Builder()
 						.pageStart( topPanel )
-						.center( view )
+						.center( scrollPane )
 						.build();
 			}
 		} );
 
-		ResourceNodeTreeSelectionState.getInstance().setValue( root );
+		state.setValue( state.getTreeModel().getRoot() );
 		simpleApplication.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		simpleApplication.getFrame().pack();
 		simpleApplication.getFrame().setVisible( true );

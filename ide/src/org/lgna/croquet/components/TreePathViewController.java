@@ -50,18 +50,12 @@ import org.lgna.croquet.TreeSelectionState;
  * @author Dennis Cosgrove
  */
 public class TreePathViewController<T> extends PanelViewController<TreeSelectionState<T>> {
-	public static interface Renderer<T> {
-		public javax.swing.Icon getIcon( T value );
-
-		public String getText( T value );
-	}
-
 	private static class SelectDirectoryPanel<T> extends BorderPanel {
 		//		public static <T> SelectDirectoryPanel<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode ) {
 		//			return new SelectDirectoryPanel<T>( treeSelectionState, treeNode );
 		//		}
 
-		private SelectDirectoryPanel( TreeSelectionState<T> treeSelectionState, T treeNode, Renderer<T> renderer ) {
+		private SelectDirectoryPanel( TreeSelectionState<T> treeSelectionState, T treeNode ) {
 			//PopupButton selectChildButton = SelectChildDirectoryMenuModel.getInstance( treeSelectionState, treeNode, initializer ).getPopupPrepModel().createPopupButton();
 			PopupButton selectChildButton = treeSelectionState.getCascadeFor( treeNode ).getRoot().getPopupPrepModel().createPopupButton();
 			if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
@@ -73,10 +67,6 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 			operation.initializeIfNecessary();
 			//initializer.configure( operation, treeNode );
 			Button button = operation.createButton();
-			if( renderer != null ) {
-				button.getAwtComponent().setText( renderer.getText( treeNode ) );
-				button.setIcon( renderer.getIcon( treeNode ) );
-			}
 			//			selectChildButton.getAwtComponent().putClientProperty("JComponent.sizeVariant", "small");
 			this.addCenterComponent( button );
 			this.addLineEndComponent( selectChildButton );
@@ -85,11 +75,8 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 	}
 
 	private static class InternalPanel<T> extends LineAxisPanel {
-		private final Renderer<T> renderer;
-
-		public InternalPanel( Renderer<T> renderer ) {
+		public InternalPanel() {
 			this.setBackgroundColor( null );
-			this.renderer = renderer;
 		}
 
 		@Override
@@ -113,7 +100,7 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 					if( treeModel.isLeaf( treeNode ) ) {
 						//pass
 					} else {
-						SelectDirectoryPanel<T> selectDirectoryPanel = new SelectDirectoryPanel( owner.getModel(), treeNode, this.renderer );
+						SelectDirectoryPanel<T> selectDirectoryPanel = new SelectDirectoryPanel( owner.getModel(), treeNode );
 						this.internalAddComponent( selectDirectoryPanel );
 					}
 				}
@@ -128,8 +115,8 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 		}
 	};
 
-	public TreePathViewController( TreeSelectionState<T> model, Renderer<T> renderer ) {
-		super( model, new InternalPanel<T>( renderer ) );
+	public TreePathViewController( TreeSelectionState<T> model ) {
+		super( model, new InternalPanel<T>() );
 		this.setBackgroundColor( null );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
 	}

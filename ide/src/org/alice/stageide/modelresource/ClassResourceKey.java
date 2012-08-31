@@ -54,12 +54,21 @@ public final class ClassResourceKey extends ResourceKey {
 
 	@Override
 	public String getText() {
-		return this.cls.getSimpleName();
+		return cls.getSimpleName().replace( "Resource", "" );
 	}
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( cls );
+		if( this.isLeaf() ) {
+			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( cls.getEnumConstants()[ 0 ] );
+		} else {
+			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( cls );
+		}
+	}
+
+	@Override
+	public boolean isLeaf() {
+		return this.cls.isEnum() && ( this.cls.getEnumConstants().length == 1 );
 	}
 
 	@Override

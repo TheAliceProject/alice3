@@ -46,6 +46,8 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState<ResourceNode> {
+	private static final javax.swing.Icon EMPTY_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height );
+
 	private static class SingletonHolder {
 		private static ResourceNodeTreeSelectionState instance = new ResourceNodeTreeSelectionState();
 	}
@@ -60,18 +62,22 @@ public class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeS
 
 	@Override
 	protected javax.swing.Icon getIconForNode( ResourceNode node ) {
-		return null;
-		//return node.getSmallIcon();
+		org.lgna.croquet.icon.IconFactory iconFactory = node.getResourceKey().getIconFactory();
+		return iconFactory != null ? iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) : EMPTY_ICON;
 	}
 
 	@Override
 	protected String getTextForNode( ResourceNode node ) {
-		return node.toString();
+		return node.getResourceKey().getText();
 	}
 
 	@Override
 	protected int getChildCount( ResourceNode parent ) {
-		return parent.getChildren().size();
+		if( this.isLeaf( parent ) ) {
+			return 0;
+		} else {
+			return parent.getChildren().size();
+		}
 	}
 
 	@Override
@@ -96,7 +102,6 @@ public class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeS
 
 	@Override
 	public boolean isLeaf( ResourceNode node ) {
-		return false;
-		//return node.isLeaf();
+		return node.getResourceKey().isLeaf();
 	}
 }

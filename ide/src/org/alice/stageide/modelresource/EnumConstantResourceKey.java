@@ -63,6 +63,11 @@ public final class EnumConstantResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public boolean isLeaf() {
+		return true;
+	}
+
+	@Override
 	public boolean equals( Object o ) {
 		if( this == o ) {
 			return true;

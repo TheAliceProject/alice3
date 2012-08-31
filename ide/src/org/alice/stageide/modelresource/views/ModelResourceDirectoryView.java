@@ -54,6 +54,9 @@ public class ModelResourceDirectoryView extends org.lgna.croquet.components.Tree
 	protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
 		org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label();
 		rv.setIcon( value.getResourceKey().getIconFactory().getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
+		rv.setText( "class " + value.getResourceKey().getText() );
+		rv.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
+		rv.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		return rv;
 	}
 }

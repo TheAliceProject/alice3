@@ -60,6 +60,11 @@ public class RootResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public boolean isLeaf() {
+		return false;
+	}
+
+	@Override
 	protected void appendRep( StringBuilder sb ) {
 	}
 }

@@ -50,6 +50,8 @@ public abstract class ResourceKey {
 
 	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();
 
+	public abstract boolean isLeaf();
+
 	protected abstract void appendRep( StringBuilder sb );
 
 	@Override
