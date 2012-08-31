@@ -46,6 +46,8 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public class TestModelResource {
+	private static final javax.swing.Icon EMPTY_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height );
+
 	public static void main( String[] args ) {
 		ResourceNode root = TreeUtilities.getTreeBasedOnClassHierarchy();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( root );
@@ -53,14 +55,45 @@ public class TestModelResource {
 		simpleApplication.getFrame().setMainComposite( new org.lgna.croquet.SimpleComposite( java.util.UUID.randomUUID() ) {
 			@Override
 			protected org.lgna.croquet.components.View createView() {
-				org.lgna.croquet.components.Tree<ResourceNode> tree = ResourceNodeTreeSelectionState.getInstance().createTree();
-				tree.setRootVisible( false );
-				tree.expandAllRows();
+				ResourceNodeTreeSelectionState state = ResourceNodeTreeSelectionState.getInstance();
+				//				org.lgna.croquet.components.Tree<ResourceNode> tree = ResourceNodeTreeSelectionState.getInstance().createTree();
+				//				tree.setRootVisible( false );
+				//				tree.expandAllRows();
+
+				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+						.lineStart( new org.lgna.croquet.components.TreePathViewController( state, new org.lgna.croquet.components.TreePathViewController.Renderer<org.alice.stageide.modelresource.ResourceNode>() {
+							public String getText( org.alice.stageide.modelresource.ResourceNode value ) {
+								return value.getResourceKey().getText();
+							}
+
+							public javax.swing.Icon getIcon( org.alice.stageide.modelresource.ResourceNode value ) {
+								org.lgna.croquet.icon.IconFactory iconFactory = value.getResourceKey().getIconFactory();
+								return iconFactory != null ? iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) : EMPTY_ICON;
+							}
+						} ) )
+						//.lineEnd( filterTextField )
+						.build();
+
+				org.alice.stageide.modelresource.views.ModelResourceDirectoryView view = new org.alice.stageide.modelresource.views.ModelResourceDirectoryView( state );
+
+				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
+					@Override
+					protected javax.swing.JScrollPane createAwtComponent() {
+						return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+					}
+				};
+				scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
+				scrollPane.setBorder( null );
+				scrollPane.setBothScrollBarIncrements( 16, 160 );
 				return new org.lgna.croquet.components.BorderPanel.Builder()
-						.center( tree )
+						.pageStart( topPanel )
+						.center( view )
 						.build();
 			}
 		} );
+
+		ResourceNodeTreeSelectionState.getInstance().setValue( root );
+		simpleApplication.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		simpleApplication.getFrame().pack();
 		simpleApplication.getFrame().setVisible( true );
 	}

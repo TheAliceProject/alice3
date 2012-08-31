@@ -53,6 +53,16 @@ public final class ClassResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public String getText() {
+		return this.cls.getSimpleName();
+	}
+
+	@Override
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( cls );
+	}
+
+	@Override
 	public boolean equals( Object o ) {
 		if( this == o ) {
 			return true;

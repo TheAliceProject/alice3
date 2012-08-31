@@ -40,48 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource;
+package org.alice.stageide.modelresource.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class EnumConstantResourceKey extends ResourceKey {
-	private final Enum<? extends org.lgna.story.resources.ModelResource> enumConstant;
-
-	public EnumConstantResourceKey( Enum<? extends org.lgna.story.resources.ModelResource> enumConstant ) {
-		this.enumConstant = enumConstant;
+public class ModelResourceDirectoryView extends org.lgna.croquet.components.TreeDirectoryViewController<org.alice.stageide.modelresource.ResourceNode> {
+	public ModelResourceDirectoryView( org.lgna.croquet.TreeSelectionState<org.alice.stageide.modelresource.ResourceNode> model ) {
+		super( model );
 	}
 
 	@Override
-	public String getText() {
-		return this.enumConstant.name();
-	}
-
-	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( (org.lgna.story.resources.ModelResource)this.enumConstant );
-	}
-
-	@Override
-	public boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		}
-		if( o instanceof EnumConstantResourceKey ) {
-			EnumConstantResourceKey other = (EnumConstantResourceKey)o;
-			return this.enumConstant == other.enumConstant;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public int hashCode() {
-		return this.enumConstant.hashCode();
-	}
-
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.enumConstant );
+	protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
+		org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label();
+		rv.setIcon( value.getResourceKey().getIconFactory().getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
+		return rv;
 	}
 }

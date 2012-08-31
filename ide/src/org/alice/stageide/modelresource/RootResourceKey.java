@@ -45,43 +45,21 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class EnumConstantResourceKey extends ResourceKey {
-	private final Enum<? extends org.lgna.story.resources.ModelResource> enumConstant;
-
-	public EnumConstantResourceKey( Enum<? extends org.lgna.story.resources.ModelResource> enumConstant ) {
-		this.enumConstant = enumConstant;
+public class RootResourceKey extends ResourceKey {
+	public RootResourceKey() {
 	}
 
 	@Override
 	public String getText() {
-		return this.enumConstant.name();
+		return "all models";
 	}
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( (org.lgna.story.resources.ModelResource)this.enumConstant );
-	}
-
-	@Override
-	public boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		}
-		if( o instanceof EnumConstantResourceKey ) {
-			EnumConstantResourceKey other = (EnumConstantResourceKey)o;
-			return this.enumConstant == other.enumConstant;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public int hashCode() {
-		return this.enumConstant.hashCode();
+		return null;
 	}
 
 	@Override
 	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.enumConstant );
 	}
 }
