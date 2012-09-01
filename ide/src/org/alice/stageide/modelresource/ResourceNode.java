@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.modelresource;
 
-import org.alice.ide.croquet.models.gallerybrowser.ResourceCascade;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -51,6 +49,7 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 	private ResourceNode parent;
 	private final ResourceKey resourceKey;
 	private final java.util.List<ResourceNode> children;
+	private final org.lgna.croquet.CascadeBlankChild<ResourceNode> blankChild;
 
 	public ResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
 		super( java.util.UUID.fromString( "3829c7ee-e604-4917-9384-2913b5df28b3" ) );
@@ -60,6 +59,11 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 			child.parent = this;
 		}
 		this.children = children;
+		if( this.resourceKey.isLeaf() ) {
+			this.blankChild = new ResourceFillIn( this );
+		} else {
+			this.blankChild = new ResourceMenuModel( this );
+		}
 	}
 
 	public ResourceNode getParent() {
@@ -84,6 +88,10 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 		return this.resourceKey.getIconFactory();
 	}
 
+	public org.lgna.croquet.CascadeBlankChild<ResourceNode> getAddFieldBlankChild() {
+		return this.blankChild;
+	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		if( this.resourceKey instanceof EnumConstantResourceKey ) {
@@ -94,7 +102,8 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 			if( classResourceKey.isLeaf() ) {
 				return this.children.get( 0 ).getDropModel( step, dropSite );
 			} else {
-				return ResourceCascade.getInstance( classResourceKey.getType(), dropSite );
+				//return ResourceCascade.getInstance( classResourceKey.getType(), dropSite );
+				return new AddFieldCascade( this, dropSite );
 			}
 		} else if( this.resourceKey instanceof PersonResourceKey ) {
 			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
