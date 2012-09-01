@@ -199,7 +199,7 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
 		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
 		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getArrayTypeLabel(), new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ) ) );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new ExpressionList( composite.getValueState(), composite.getAddItemCascade().getRoot().getPopupPrepModel(), composite.getArrayType().getComponentType() ) );

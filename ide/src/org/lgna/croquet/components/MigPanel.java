@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.custom.components;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
+public class MigPanel extends Panel {
+	private static final String DEFAULT_CONSTRAINT = "";
+	private final String layoutConstraints;
+	private final String columnConstraints;
+	private final String rowConstraints;
+
+	public MigPanel( org.lgna.croquet.Composite<?> composite, String layoutConstraints, String columnConstraints, String rowConstraints ) {
 		super( composite );
+		this.layoutConstraints = layoutConstraints;
+		this.columnConstraints = columnConstraints;
+		this.rowConstraints = rowConstraints;
+	}
+
+	public MigPanel( org.lgna.croquet.Composite<?> composite, String layoutConstraints, String columnConstraints ) {
+		this( composite, layoutConstraints, columnConstraints, DEFAULT_CONSTRAINT );
+	}
+
+	public MigPanel( org.lgna.croquet.Composite<?> composite, String layoutConstraints ) {
+		this( composite, layoutConstraints, DEFAULT_CONSTRAINT );
+	}
+
+	public MigPanel( org.lgna.croquet.Composite<?> composite ) {
+		this( composite, DEFAULT_CONSTRAINT );
+	}
+
+	public MigPanel() {
+		this( null );
 	}
 
 	@Override
-	public org.alice.ide.custom.CustomExpressionCreatorComposite<?> getComposite() {
-		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		net.miginfocom.swing.MigLayout rv = new net.miginfocom.swing.MigLayout();
+		rv.setLayoutConstraints( this.layoutConstraints );
+		rv.setColumnConstraints( this.columnConstraints );
+		rv.setRowConstraints( this.rowConstraints );
+		return rv;
 	}
 
-	protected abstract void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows );
+	public void addComponent( Component<?> component ) {
+		this.internalAddComponent( component );
+	}
 
-	@Override
-	public org.lgna.croquet.components.FormPanel createMainComponent() {
-		org.lgna.croquet.components.FormPanel rowsSpringPanel = new org.lgna.croquet.components.FormPanel() {
-			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
-				RowBasedCustomExpressionCreatorView.this.appendRows( rows );
-			}
-		};
-		return rowsSpringPanel;
+	public void addComponent( Component<?> component, String constraint ) {
+		this.internalAddComponent( component, constraint );
 	}
 }

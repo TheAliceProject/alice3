@@ -46,16 +46,16 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabView extends org.lgna.croquet.components.RowSpringPanel {
+public class HeadTabView extends org.lgna.croquet.components.FormPanel {
 	public HeadTabView( org.alice.stageide.personresource.HeadTabComposite composite ) {
-		super( composite, 8, 8 );
+		super( composite );
 		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
 		this.setBackgroundColor( backgroundColor );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
 		org.alice.stageide.personresource.HeadTabComposite composite = (org.alice.stageide.personresource.HeadTabComposite)this.getComposite();
 		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.Hair> list = new HorizontalWrapList<org.lgna.story.resources.sims2.Hair>( composite.getHairState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
 		list.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );

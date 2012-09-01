@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,31 +45,18 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowSpringPanel extends SpringPanel {
-	private java.util.List<SpringRow> rows;
-	private final int xPad;
-	private final int yPad;
+public abstract class FormPanel extends MigPanel {
+	private java.util.List<LabeledSpringRow> rows;
 
-	protected abstract void appendRows( java.util.List<SpringRow> rows );
-
-	public RowSpringPanel( org.lgna.croquet.Composite<?> composite ) {
-		this( composite, 12, 12 );
+	public FormPanel( org.lgna.croquet.Composite<?> composite ) {
+		super( composite, "", "[right][left]", "" );
 	}
 
-	public RowSpringPanel( org.lgna.croquet.Composite<?> composite, int xPad, int yPad ) {
-		super( composite );
-		this.xPad = xPad;
-		this.yPad = yPad;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-	}
-
-	public RowSpringPanel() {
+	public FormPanel() {
 		this( null );
 	}
 
-	public RowSpringPanel( int xPad, int yPad ) {
-		this( null, xPad, yPad );
-	}
+	protected abstract void appendRows( java.util.List<LabeledSpringRow> rows );
 
 	@Override
 	protected void handleDisplayable() {
@@ -79,11 +66,12 @@ public abstract class RowSpringPanel extends SpringPanel {
 		} else {
 			this.rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.appendRows( this.rows );
-			java.util.List<Component<?>[]> components = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( rows.size() );
 			for( SpringRow row : rows ) {
-				components.add( row.createComponentArray() );
+				Component<?>[] components = row.createComponentArray();
+				assert components.length == 2 : components.length;
+				this.addComponent( components[ 0 ] );
+				this.addComponent( components[ 1 ], "grow, wrap" );
 			}
-			SpringUtilities.springItUpANotch( this, components, this.xPad, this.yPad );
 		}
 	}
 

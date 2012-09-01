@@ -53,9 +53,9 @@ public class IngredientsView extends org.lgna.croquet.components.BorderPanel {
 
 	public IngredientsView( final org.alice.stageide.personresource.IngredientsComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.RowSpringPanel rowSpringPanel = new org.lgna.croquet.components.RowSpringPanel() {
+		org.lgna.croquet.components.FormPanel rowSpringPanel = new org.lgna.croquet.components.FormPanel() {
 			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
 				org.lgna.croquet.ListSelectionState<?>[] states = new org.lgna.croquet.ListSelectionState<?>[] { composite.getLifeStageState(), composite.getGenderState(), composite.getBaseSkinToneState() };
 				for( org.lgna.croquet.ListSelectionState<?> state : states ) {
 					rows.add( new org.lgna.croquet.components.LabeledSpringRow( state.getSidekickLabel(), new HorizontalWrapList( state, 1 ) ) );

@@ -73,15 +73,15 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 
 		org.lgna.croquet.components.PageAxisPanel otherPanel = new org.lgna.croquet.components.PageAxisPanel();
 
-		org.lgna.croquet.components.RowSpringPanel rowSpringPanel = new org.lgna.croquet.components.RowSpringPanel() {
+		org.lgna.croquet.components.FormPanel formPanel = new org.lgna.croquet.components.FormPanel() {
 			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
 				for( org.alice.stageide.about.EulaComposite eulaComposite : new org.alice.stageide.about.EulaComposite[] { org.alice.stageide.about.SystemEulaComposite.getInstance(), org.alice.stageide.about.SimsArtAssetsEulaComposite.getInstance() } ) {
 					rows.add( new org.lgna.croquet.components.LabeledSpringRow( eulaComposite.getOperation().getSidekickLabel(), eulaComposite.getOperation().createButton() ) );
 				}
 			}
 		};
-		otherPanel.addComponent( rowSpringPanel );
+		otherPanel.addComponent( formPanel );
 		otherPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 
 		//		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel( 

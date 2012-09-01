@@ -51,12 +51,11 @@ import org.alice.ide.croquet.models.help.ReportIssueComposite;
 import org.alice.ide.issue.HeaderPane;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.FlowPanel;
+import org.lgna.croquet.components.FormPanel;
 import org.lgna.croquet.components.Hyperlink;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LabeledSpringRow;
 import org.lgna.croquet.components.PageAxisPanel;
-import org.lgna.croquet.components.RowSpringPanel;
-import org.lgna.croquet.components.SpringRow;
 import org.lgna.croquet.components.VerticalAlignment;
 
 import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
@@ -80,9 +79,9 @@ public class ReportIssueView extends BorderPanel {
 	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
 		final org.lgna.croquet.components.TextArea environmentTextArea = reportIssueComposite.getEnvironmentState().createTextArea();
 		environmentTextArea.getAwtComponent().setEditable( false );
-		RowSpringPanel centerComponent = new RowSpringPanel() {
+		FormPanel centerComponent = new FormPanel() {
 			@Override
-			protected void appendRows( List<SpringRow> rows ) {
+			protected void appendRows( List<LabeledSpringRow> rows ) {
 				rows.add( new LabeledSpringRow( reportIssueComposite.getVisibilityState().getSidekickLabel(), reportIssueComposite.getVisibilityState().createHorizontalDefaultRadioButtons() ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getTypeState().getSidekickLabel(), reportIssueComposite.getTypeState().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
 				rows.add( new LabeledSpringRow( reportIssueComposite.getSummaryState().getSidekickLabel(), reportIssueComposite.getSummaryState().createTextField() ) );

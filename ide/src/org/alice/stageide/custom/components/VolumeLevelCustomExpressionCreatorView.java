@@ -52,7 +52,7 @@ public class VolumeLevelCustomExpressionCreatorView extends org.alice.ide.custom
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
 		org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite composite = (org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite)this.getComposite();
 		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getValueLabel(), new VolumeLevelSlider( composite.getValueState() ) ) );
 	}

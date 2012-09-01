@@ -58,9 +58,9 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 
 	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {
 		final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
-		org.lgna.croquet.components.RowSpringPanel rv = new org.lgna.croquet.components.RowSpringPanel() {
+		org.lgna.croquet.components.FormPanel rv = new org.lgna.croquet.components.FormPanel() {
 			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
 				org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
 				if( composite.isValueComponentTypeDisplayed() ) {
 					org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();

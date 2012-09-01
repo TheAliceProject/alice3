@@ -74,8 +74,12 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 	}
 
 	public void enableRendering() {
-		org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
+		if( this.stack.isEmpty() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		} else {
+			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
+			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
+		}
 	}
 
 	protected abstract void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel );
