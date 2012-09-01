@@ -47,7 +47,7 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna.project.ast.UserField> {
-	protected static class FieldDetailsBuilder {
+	public static class FieldDetailsBuilder {
 		private ApplicabilityStatus valueComponentTypeStatus;
 		private org.lgna.project.ast.AbstractType<?, ?, ?> valueComponentTypeInitialValue;
 		private ApplicabilityStatus valueIsArrayTypeStatus;

@@ -104,9 +104,15 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-		if( this.resourceKey instanceof EnumConstantResourceKey ) {
+		if( ( this.resourceKey instanceof EnumConstantResourceKey ) ) {
 			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
 			return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( enumConstantResourceKey.getField(), dropSite );
+		} else if( this.resourceKey instanceof PersonResourceKey ) {
+			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
+			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstance();
+			//todo
+			//		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
+			//			return new org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite( this.resourceKey ).getOperation();
 		} else if( this.resourceKey instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
 			if( classResourceKey.isLeaf() ) {
@@ -115,9 +121,6 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 				//return ResourceCascade.getInstance( classResourceKey.getType(), dropSite );
 				return new AddFieldCascade( this, dropSite );
 			}
-		} else if( this.resourceKey instanceof PersonResourceKey ) {
-			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
-			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstance();
 		} else {
 			return null;
 		}
@@ -125,8 +128,7 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		if( this.resourceKey instanceof EnumConstantResourceKey ) {
-			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
+		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
 			return this.getDropModel( null, null );
 		} else if( this.resourceKey instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
@@ -135,9 +137,6 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 			} else {
 				return ResourceNodeTreeSelectionState.getInstance().getItemSelectionOperation( this );
 			}
-		} else if( this.resourceKey instanceof PersonResourceKey ) {
-			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
-			return this.getDropModel( null, null );
 		} else {
 			return null;
 		}

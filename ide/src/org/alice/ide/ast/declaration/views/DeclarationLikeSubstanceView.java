@@ -58,7 +58,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 
 	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {
 		final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
-		return new org.lgna.croquet.components.RowSpringPanel() {
+		org.lgna.croquet.components.RowSpringPanel rv = new org.lgna.croquet.components.RowSpringPanel() {
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
 				org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
@@ -119,12 +119,13 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 				}
 			}
 		};
+		return rv;
 	}
 
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
-		return new org.lgna.croquet.components.BorderPanel.Builder().
-				pageStart( this.createPageStartComponent() )
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+				.pageStart( this.createPageStartComponent() )
 				.build();
 
 	}

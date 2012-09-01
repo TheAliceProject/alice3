@@ -62,11 +62,22 @@ public class AddFieldView extends AddDeclarationView<org.lgna.project.ast.UserFi
 
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
-				.center( super.createPageStartComponent() )
+		//		org.lgna.croquet.components.JComponent<?> a = super.createPageStartComponent();
+		//		org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
+		//		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		//		gbc.anchor = java.awt.GridBagConstraints.LINE_START;
+		//		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+		//		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+		//		gbc.weightx = 1.0;
+		//		rv.addComponent( super.createPageStartComponent(), gbc );
+		//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		//		gbc.weightx = 0.0;
+		//		rv.addComponent( this.typeIconView, gbc );
+		//		return rv;
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineStart( super.createPageStartComponent() )
 				.lineEnd( this.typeIconView )
 				.build();
-		return rv;
 	}
 
 	@Override
