@@ -43,12 +43,12 @@
 
 package org.lgna.croquet.cascade;
 
+import org.lgna.croquet.AbstractCascadeMenuModel;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeCancel;
 import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.CascadeItem;
-import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.CascadeSeparator;
 import org.lgna.croquet.CascadeUnfilledInCancel;
 
@@ -120,9 +120,9 @@ class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.cascade.BlankN
 				for( int i = 0; i < N; i++ ) {
 					CascadeItem item = blankChild.getItemAt( i );
 					RtItem rtItem;
-					if( item instanceof CascadeMenuModel ) {
-						CascadeMenuModel menu = (CascadeMenuModel)item;
-						rtItem = new RtMenu<B>( menu, blankChild, i );
+					if( item instanceof AbstractCascadeMenuModel ) {
+						AbstractCascadeMenuModel menu = (AbstractCascadeMenuModel)item;
+						rtItem = new RtMenu( menu, blankChild, i );
 					} else if( item instanceof CascadeFillIn ) {
 						CascadeFillIn fillIn = (CascadeFillIn)item;
 						rtItem = new RtFillIn( fillIn, blankChild, i );

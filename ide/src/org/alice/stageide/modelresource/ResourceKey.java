@@ -54,6 +54,8 @@ public abstract class ResourceKey {
 
 	protected abstract void appendRep( StringBuilder sb );
 
+	public abstract org.lgna.project.ast.InstanceCreation createInstanceCreation();
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

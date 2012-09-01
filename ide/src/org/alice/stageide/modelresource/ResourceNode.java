@@ -60,7 +60,11 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 		}
 		this.children = children;
 		if( this.resourceKey.isLeaf() ) {
-			this.blankChild = new ResourceFillIn( this );
+			if( this.resourceKey instanceof ClassResourceKey ) {
+				this.blankChild = null;
+			} else {
+				this.blankChild = new ResourceFillIn( this );
+			}
 		} else {
 			this.blankChild = new ResourceMenuModel( this );
 		}
@@ -89,6 +93,12 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 	}
 
 	public org.lgna.croquet.CascadeBlankChild<ResourceNode> getAddFieldBlankChild() {
+		if( this.resourceKey instanceof ClassResourceKey ) {
+			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
+			if( classResourceKey.isLeaf() ) {
+				return this.children.get( 0 ).getAddFieldBlankChild();
+			}
+		}
 		return this.blankChild;
 	}
 

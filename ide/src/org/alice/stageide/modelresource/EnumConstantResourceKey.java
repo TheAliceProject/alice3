@@ -46,6 +46,8 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public final class EnumConstantResourceKey extends ResourceKey {
+	private static java.util.Map<org.lgna.project.ast.JavaType, org.lgna.project.ast.JavaType> mapResourceTypeToAbstractionType;
+
 	private final Enum<? extends org.lgna.story.resources.ModelResource> enumConstant;
 
 	public EnumConstantResourceKey( Enum<? extends org.lgna.story.resources.ModelResource> enumConstant ) {
@@ -72,6 +74,44 @@ public final class EnumConstantResourceKey extends ResourceKey {
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
 		return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( (org.lgna.story.resources.ModelResource)this.enumConstant );
+	}
+
+	@Override
+	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
+		if( mapResourceTypeToAbstractionType != null ) {
+			//pass
+		} else {
+			mapResourceTypeToAbstractionType = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
+			for( org.lgna.project.ast.JavaType abstractionType : abstractionTypes ) {
+				org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
+				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
+			}
+		}
+		org.lgna.project.ast.JavaField argumentField = this.getField();
+
+		org.lgna.project.ast.JavaType abstractionType = null;
+		for( org.lgna.project.ast.JavaType resourceType : mapResourceTypeToAbstractionType.keySet() ) {
+			if( resourceType.isAssignableFrom( this.enumConstant.getClass() ) ) {
+				abstractionType = mapResourceTypeToAbstractionType.get( resourceType );
+				break;
+			}
+		}
+		if( abstractionType != null ) {
+			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( abstractionType, argumentField );
+			org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
+			org.lgna.project.ast.Expression[] argumentExpressions;
+			if( constructor.getRequiredParameters().size() == 1 ) {
+				argumentExpressions = new org.lgna.project.ast.Expression[] {
+						org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField )
+				};
+			} else {
+				argumentExpressions = new org.lgna.project.ast.Expression[] {};
+			}
+			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, argumentExpressions );
+		} else {
+			return null;
+		}
 	}
 
 	@Override

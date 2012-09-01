@@ -43,13 +43,13 @@
 
 package org.lgna.croquet.cascade;
 
+import org.lgna.croquet.AbstractCascadeMenuModel;
 import org.lgna.croquet.CascadeBlank;
 import org.lgna.croquet.CascadeBlankChild;
 import org.lgna.croquet.CascadeBlankOwner;
 import org.lgna.croquet.CascadeCancel;
 import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.CascadeItem;
-import org.lgna.croquet.CascadeMenuModel;
 import org.lgna.croquet.CascadeSeparator;
 
 /**
@@ -367,8 +367,8 @@ class RtFillIn<F, B> extends RtBlankOwner<F, B, CascadeFillIn<F, B>, org.lgna.cr
 	}
 }
 
-class RtMenu<FB> extends RtBlankOwner<FB, FB, CascadeMenuModel<FB>, org.lgna.croquet.cascade.MenuNode<FB>> {
-	public RtMenu( CascadeMenuModel<FB> element, CascadeBlankChild<FB> owner, int index ) {
+class RtMenu<F, B> extends RtBlankOwner<F, B, AbstractCascadeMenuModel<F, B>, org.lgna.croquet.cascade.MenuNode<F, B>> {
+	public RtMenu( AbstractCascadeMenuModel<F, B> element, CascadeBlankChild<F> owner, int index ) {
 		super( element, MenuNode.createInstance( element ), owner, index );
 	}
 }

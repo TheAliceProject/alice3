@@ -46,12 +46,12 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuNode<FB> extends BlankOwnerNode<FB, FB, org.lgna.croquet.CascadeMenuModel<FB>> {
-	public static <FB> MenuNode<FB> createInstance( org.lgna.croquet.CascadeMenuModel<FB> model ) {
-		return new MenuNode<FB>( model );
+public class MenuNode<F, B> extends BlankOwnerNode<F, B, org.lgna.croquet.AbstractCascadeMenuModel<F, B>> {
+	public static <F, B> MenuNode<F, B> createInstance( org.lgna.croquet.AbstractCascadeMenuModel<F, B> model ) {
+		return new MenuNode<F, B>( model );
 	}
 
-	private MenuNode( org.lgna.croquet.CascadeMenuModel<FB> model ) {
+	private MenuNode( org.lgna.croquet.AbstractCascadeMenuModel<F, B> model ) {
 		super( model );
 	}
 

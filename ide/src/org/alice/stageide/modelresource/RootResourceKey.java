@@ -60,6 +60,11 @@ public class RootResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
+		throw new Error();
+	}
+
+	@Override
 	public boolean isLeaf() {
 		return false;
 	}

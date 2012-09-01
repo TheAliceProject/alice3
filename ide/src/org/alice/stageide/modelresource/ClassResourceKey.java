@@ -75,6 +75,11 @@ public final class ClassResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
+		throw new Error();
+	}
+
+	@Override
 	public boolean isLeaf() {
 		return this.cls.isEnum() && ( this.cls.getEnumConstants().length == 1 );
 	}

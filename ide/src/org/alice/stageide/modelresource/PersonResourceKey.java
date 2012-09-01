@@ -71,6 +71,19 @@ public class PersonResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
+		org.lgna.story.resources.sims2.PersonResource personResource = org.alice.stageide.personresource.RandomPersonResourceComposite.getInstance().getValueCreator().fireAndGetValue( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+		org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource( personResource );
+		org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
+		try {
+			org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
+			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, argumentExpression );
+		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			throw new RuntimeException( ccee );
+		}
+	}
+
+	@Override
 	public boolean isLeaf() {
 		return true;
 	}
