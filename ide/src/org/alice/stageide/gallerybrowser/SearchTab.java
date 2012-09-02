@@ -67,7 +67,6 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 	@Override
 	public javax.swing.Icon getTitleIcon() {
 		return org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON;
-		//return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED );
 	}
 
 	@Override

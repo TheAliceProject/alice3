@@ -61,7 +61,7 @@ public final class ClassResourceKey extends ResourceKey {
 	}
 
 	@Override
-	public String getText() {
+	public String getDisplayText() {
 		return cls.getSimpleName().replace( "Resource", "" );
 	}
 
@@ -86,7 +86,7 @@ public final class ClassResourceKey extends ResourceKey {
 
 	@Override
 	public String[] getTags() {
-		return null;
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this.cls );
 	}
 
 	@Override

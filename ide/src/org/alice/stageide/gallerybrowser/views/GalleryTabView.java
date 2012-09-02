@@ -46,8 +46,11 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
+	protected static final int PAD = 4;
+
 	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
-		super( composite );
+		super( composite, 0, PAD );
 		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
 	}
 }

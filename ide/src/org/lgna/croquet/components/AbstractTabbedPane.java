@@ -162,6 +162,8 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 	@Override
 	protected void handleItemSelected( E item ) {
 		super.handleItemSelected( item );
-		item.TEMPORARY_HACK_handleSelected();
+		if( item != null ) {
+			item.TEMPORARY_HACK_handleSelected();
+		}
 	}
 }

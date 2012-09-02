@@ -46,7 +46,11 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceKey {
-	public abstract String getText();
+	public String getSearchText() {
+		return this.getDisplayText();
+	}
+
+	public abstract String getDisplayText();
 
 	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();
 

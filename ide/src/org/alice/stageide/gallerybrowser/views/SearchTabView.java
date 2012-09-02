@@ -106,10 +106,17 @@ public class SearchTabView extends GalleryTabView {
 				}
 			}
 		} else {
-			appendIfMatch( matches, node, lcFilter, criterion, node.getText() );
+			String searchText = node.getResourceKey().getSearchText();
+			if( ( searchText != null ) && ( searchText.length() > 0 ) ) {
+				appendIfMatch( matches, node, lcFilter, criterion, searchText );
+			}
 		}
-		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
-			appendMatches( matches, child, lcFilter, criterion, isTag );
+		if( node.getResourceKey().isLeaf() ) {
+			//pass
+		} else {
+			for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
+				appendMatches( matches, child, lcFilter, criterion, isTag );
+			}
 		}
 	}
 
@@ -163,7 +170,10 @@ public class SearchTabView extends GalleryTabView {
 		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.filteredResourcesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
-		this.addPageStartComponent( filterTextField );
+		this.addPageStartComponent( new org.lgna.croquet.components.LineAxisPanel(
+				composite.getFilterState().getSidekickLabel().createImmutableTextField(),
+				this.filterTextField
+				) );
 		this.addCenterComponent( scrollPane );
 	}
 

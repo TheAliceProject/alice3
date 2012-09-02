@@ -61,7 +61,7 @@ public class PersonResourceKey extends ResourceKey {
 	}
 
 	@Override
-	public String getText() {
+	public String getDisplayText() {
 		return "Person";
 	}
 
@@ -95,6 +95,6 @@ public class PersonResourceKey extends ResourceKey {
 
 	@Override
 	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.getText() );
+		sb.append( this.getDisplayText() );
 	}
 }

@@ -80,7 +80,7 @@ public class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeS
 
 	@Override
 	protected String getTextForNode( ResourceNode node ) {
-		return node.getResourceKey().getText();
+		return node.getResourceKey().getDisplayText();
 	}
 
 	@Override

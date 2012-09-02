@@ -84,7 +84,7 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 
 	@Override
 	public String getText() {
-		return this.resourceKey.getText();
+		return this.resourceKey.getDisplayText();
 	}
 
 	@Override

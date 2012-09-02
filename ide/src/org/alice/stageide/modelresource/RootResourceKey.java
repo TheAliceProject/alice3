@@ -50,7 +50,11 @@ public class RootResourceKey extends ResourceKey {
 	}
 
 	@Override
-	public String getText() {
+	public String getSearchText() {
+		return null;
+	}
+	@Override
+	public String getDisplayText() {
 		return "all models";
 	}
 

@@ -46,10 +46,9 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public class ResourceTabView extends GalleryTabView {
-	private static final int PAD = 4;
 
 	public ResourceTabView( org.alice.stageide.gallerybrowser.ResourceTab composite ) {
-		super( composite );//, PAD, 0 );
+		super( composite );
 
 		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = org.alice.stageide.modelresource.ResourceNodeTreeSelectionState.getInstance();
 
