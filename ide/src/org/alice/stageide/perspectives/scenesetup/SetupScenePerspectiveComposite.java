@@ -43,6 +43,8 @@
 
 package org.alice.stageide.perspectives.scenesetup;
 
+import org.alice.stageide.gallerybrowser.GalleryComposite;
+
 /**
  * @author Dennis Cosgrove
  */

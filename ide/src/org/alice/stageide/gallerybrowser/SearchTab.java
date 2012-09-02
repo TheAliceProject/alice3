@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,22 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FilterState extends org.lgna.croquet.StringState {
+public class SearchTab extends GalleryTab {
 	private static class SingletonHolder {
-		private static FilterState instance = new FilterState();
+		private static SearchTab instance = new SearchTab();
 	}
 
-	public static FilterState getInstance() {
+	public static SearchTab getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private FilterState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "ecfb472a-c73f-4dda-9db7-757dfcab8a46" ), "" );
+	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
+
+	private SearchTab() {
+		super( java.util.UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
+	}
+
+	public org.lgna.croquet.StringState getFilterState() {
+		return this.filterState;
+	}
+
+	@Override
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponent( booleanState, button );
+		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				( (org.alice.stageide.gallerybrowser.views.SearchTabView)getView() ).filterTextField.requestFocus();
+			}
+		} );
+	}
+
+	@Override
+	protected org.alice.stageide.gallerybrowser.views.SearchTabView createView() {
+		return new org.alice.stageide.gallerybrowser.views.SearchTabView( this );
 	}
 }

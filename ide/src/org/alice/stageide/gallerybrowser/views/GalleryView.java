@@ -41,26 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.gallerybrowser.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryTabState extends org.lgna.croquet.SimpleTabSelectionState<GalleryTab> {
-	private static class SingletonHolder {
-		private static GalleryTabState instance = new GalleryTabState();
-	}
+public final class GalleryView extends org.lgna.croquet.components.BorderPanel {
+	public final static java.awt.Color BACKGROUND_COLOR = org.alice.ide.IDE.getActiveInstance().getTheme().getConstructorColor();
 
-	public static GalleryTabState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private GalleryTabState() {
-		super(
-				org.alice.ide.IDE.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "46bffcb8-9f19-4328-aae3-550b0fc72f43" ),
-				GalleryTab.class,
-				0,
-				ResourceTab.getInstance(), TypeTab.getInstance() );
+	public GalleryView( org.alice.stageide.gallerybrowser.GalleryComposite composite ) {
+		super( composite );
+		this.addCenterComponent( composite.getTabState().createFolderTabbedPane() );
 	}
 }

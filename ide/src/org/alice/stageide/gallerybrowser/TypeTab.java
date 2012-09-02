@@ -43,6 +43,9 @@
 
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.gallerybrowser.views.GalleryView;
+import org.alice.stageide.gallerybrowser.views.MyTypesView;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -78,9 +81,9 @@ public class TypeTab extends GalleryTab {
 					.build();
 			rv.addLineEndComponent( lineEndPanel );
 		}
-		myTypesView.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-		rv.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+		myTypesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		return rv;
 	}
 

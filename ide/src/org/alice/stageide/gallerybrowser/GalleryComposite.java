@@ -41,12 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.perspectives.scenesetup;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.gallerybrowser.GalleryBrowser> {
+public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.gallerybrowser.views.GalleryView> {
 	private static class SingletonHolder {
 		private static GalleryComposite instance = new GalleryComposite();
 	}
@@ -55,12 +55,18 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 		return SingletonHolder.instance;
 	}
 
+	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, ResourceTab.getInstance(), SearchTab.getInstance(), TypeTab.getInstance() );
+
 	private GalleryComposite() {
 		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
 	}
 
+	public org.lgna.croquet.TabSelectionState<GalleryTab> getTabState() {
+		return this.tabState;
+	}
+
 	@Override
-	protected org.alice.stageide.gallerybrowser.GalleryBrowser createView() {
-		return new org.alice.stageide.gallerybrowser.GalleryBrowser();
+	protected org.alice.stageide.gallerybrowser.views.GalleryView createView() {
+		return new org.alice.stageide.gallerybrowser.views.GalleryView( this );
 	}
 }

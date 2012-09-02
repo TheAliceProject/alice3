@@ -41,7 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.gallerybrowser.views;
+
+import org.alice.stageide.gallerybrowser.TypeDragModel;
 
 /**
  * @author Dennis Cosgrove

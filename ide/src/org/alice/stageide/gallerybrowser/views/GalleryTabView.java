@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.gallerybrowser.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryBrowser extends org.lgna.croquet.components.BorderPanel {
-	public final static java.awt.Color BACKGROUND_COLOR = org.alice.ide.IDE.getActiveInstance().getTheme().getConstructorColor();
-
-	public GalleryBrowser() {
-		this.addCenterComponent( GalleryTabState.getInstance().createFolderTabbedPane() );
+public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
+	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
+		super( composite );
+		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
 	}
 }
