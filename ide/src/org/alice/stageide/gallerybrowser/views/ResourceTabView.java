@@ -107,6 +107,7 @@ public class ResourceTabView extends GalleryTabView {
 		this.addLineEndComponent( lineEndPanel );
 
 		//todo
+		view.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );

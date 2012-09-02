@@ -56,6 +56,8 @@ public abstract class ResourceKey {
 
 	public abstract org.lgna.project.ast.InstanceCreation createInstanceCreation();
 
+	public abstract String[] getTags();
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

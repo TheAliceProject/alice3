@@ -65,6 +65,11 @@ public class RootResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public String[] getTags() {
+		return null;
+	}
+
+	@Override
 	public boolean isLeaf() {
 		return false;
 	}

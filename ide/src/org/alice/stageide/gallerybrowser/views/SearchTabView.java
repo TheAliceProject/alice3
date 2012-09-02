@@ -46,8 +46,8 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public class SearchTabView extends GalleryTabView {
-	private static class FilteredResourcesView extends org.lgna.croquet.components.LineAxisPanel {
-	}
+
+	public static final javax.swing.Icon SEARCH_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( SearchTabView.class.getResource( "images/system-search.png" ) );
 
 	private static enum Criterion {
 		STARTS_WITH {
@@ -74,6 +74,73 @@ public class SearchTabView extends GalleryTabView {
 		}
 	};
 
+	private java.util.LinkedList<org.alice.ide.croquet.models.gallerybrowser.GalleryNode> update( java.util.LinkedList<org.alice.ide.croquet.models.gallerybrowser.GalleryNode> rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode, String lcFilter, Criterion criterion, boolean isTag, String text ) {
+		if( rv.contains( treeNode ) ) {
+			//pass
+		} else {
+			String lcName = text.toLowerCase();
+			if( criterion.accept( lcName, lcFilter ) ) {
+				rv.add( treeNode );
+			}
+		}
+		return rv;
+	}
+
+	private static void appendIfMatch( java.util.List<org.alice.stageide.modelresource.ResourceNode> rv, org.alice.stageide.modelresource.ResourceNode node, String lcFilter, Criterion criterion, String text ) {
+		if( rv.contains( node ) ) {
+			//pass
+		} else {
+			String lcName = text.toLowerCase();
+			if( criterion.accept( lcName, lcFilter ) ) {
+				rv.add( node );
+			}
+		}
+	}
+
+	private static void appendMatches( java.util.List<org.alice.stageide.modelresource.ResourceNode> matches, org.alice.stageide.modelresource.ResourceNode node, String lcFilter, Criterion criterion, boolean isTag ) {
+		if( isTag ) {
+			String[] tags = node.getResourceKey().getTags();
+			if( ( tags != null ) && ( tags.length > 0 ) ) {
+				for( String tag : tags ) {
+					appendIfMatch( matches, node, lcFilter, criterion, tag );
+				}
+			}
+		} else {
+			appendIfMatch( matches, node, lcFilter, criterion, node.getText() );
+		}
+		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
+			appendMatches( matches, child, lcFilter, criterion, isTag );
+		}
+	}
+
+	private class FilteredResourcesView extends org.lgna.croquet.components.LineAxisPanel {
+		@Override
+		protected void internalRefresh() {
+			super.internalRefresh();
+			this.internalRemoveAllComponents();
+
+			org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)SearchTabView.this.getComposite();
+			String filter = composite.getFilterState().getValue();
+
+			if( filter.length() > 0 ) {
+				org.alice.stageide.modelresource.ResourceNode root = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
+				java.util.List<org.alice.stageide.modelresource.ResourceNode> matchingNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				String lcFilter = filter.toLowerCase();
+				for( boolean isTag : new boolean[] { false, true } ) {
+					appendMatches( matchingNodes, root, lcFilter, Criterion.STARTS_WITH, isTag );
+					if( lcFilter.length() > 2 ) {
+						appendMatches( matchingNodes, root, lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH, isTag );
+					}
+				}
+				for( org.alice.stageide.modelresource.ResourceNode matchingNode : matchingNodes ) {
+					org.lgna.croquet.components.JComponent<?> component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( matchingNode );
+					component.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
+					this.addComponent( component );
+				}
+			}
+		}
+	}
+
 	private final FilteredResourcesView filteredResourcesView = new FilteredResourcesView();
 	private final org.lgna.croquet.components.TextField filterTextField;
 
@@ -84,8 +151,20 @@ public class SearchTabView extends GalleryTabView {
 		this.filterTextField.setMaximumSizeClampedToPreferredSize( true );
 		this.filterTextField.scaleFont( 1.5f );
 
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.filteredResourcesView ) {
+			@Override
+			protected javax.swing.JScrollPane createAwtComponent() {
+				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+			}
+		};
+		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
+		scrollPane.setBorder( null );
+		scrollPane.setBothScrollBarIncrements( 16, 160 );
+		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		this.filteredResourcesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+
 		this.addPageStartComponent( filterTextField );
-		this.addCenterComponent( this.filteredResourcesView );
+		this.addCenterComponent( scrollPane );
 	}
 
 	@Override
@@ -103,12 +182,12 @@ public class SearchTabView extends GalleryTabView {
 	}
 
 	public void TEMPORARY_HACK_handleSelected() {
-		//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-		//			public void run() {
-		//				filterTextField.requestFocus();
-		//			}
-		//		} );
-		this.filterTextField.requestFocus();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				filterTextField.requestFocus();
+			}
+		} );
+		//		this.filterTextField.requestFocus();
 	}
 
 	private void handleFilterChanged( String filter ) {

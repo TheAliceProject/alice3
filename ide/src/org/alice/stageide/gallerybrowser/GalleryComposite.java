@@ -55,7 +55,7 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, ResourceTab.getInstance(), SearchTab.getInstance(), TypeTab.getInstance() );
+	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, ResourceTab.getInstance(), TypeTab.getInstance(), SearchTab.getInstance() );
 
 	private GalleryComposite() {
 		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );

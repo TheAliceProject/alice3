@@ -65,9 +65,9 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 	}
 
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponent( booleanState, button );
-		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
+	public javax.swing.Icon getTitleIcon() {
+		return org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON;
+		//return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED );
 	}
 
 	@Override

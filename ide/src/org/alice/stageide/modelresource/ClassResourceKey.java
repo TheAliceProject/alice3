@@ -85,6 +85,11 @@ public final class ClassResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public String[] getTags() {
+		return null;
+	}
+
+	@Override
 	public boolean equals( Object o ) {
 		if( this == o ) {
 			return true;
