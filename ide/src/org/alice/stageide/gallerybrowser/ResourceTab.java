@@ -48,7 +48,7 @@ import org.alice.stageide.gallerybrowser.views.GalleryView;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceTab extends GalleryTab {
+public class ResourceTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ResourceTabView> {
 	public static final javax.swing.ImageIcon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryView.class.getResource( "images/create_person.png" ) );
 	public static final javax.swing.ImageIcon CREATE_PERSON_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryView.class.getResource( "images/create_person_24.png" ) );
 
@@ -71,7 +71,7 @@ public class ResourceTab extends GalleryTab {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.View<?, ?> createView() {
+	protected org.alice.stageide.gallerybrowser.views.ResourceTabView createView() {
 		return new org.alice.stageide.gallerybrowser.views.ResourceTabView( this );
 	}
 	//	@Override

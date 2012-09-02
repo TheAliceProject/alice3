@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class SearchTab extends GalleryTab {
+public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.SearchTabView> {
 	private static class SingletonHolder {
 		private static SearchTab instance = new SearchTab();
 	}
@@ -71,17 +71,13 @@ public class SearchTab extends GalleryTab {
 	}
 
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				( (org.alice.stageide.gallerybrowser.views.SearchTabView)getView() ).filterTextField.requestFocus();
-			}
-		} );
+	protected org.alice.stageide.gallerybrowser.views.SearchTabView createView() {
+		return new org.alice.stageide.gallerybrowser.views.SearchTabView( this );
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.views.SearchTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.SearchTabView( this );
+	public void TEMPORARY_HACK_handleSelected() {
+		super.TEMPORARY_HACK_handleSelected();
+		this.getView().TEMPORARY_HACK_handleSelected();
 	}
 }

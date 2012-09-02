@@ -43,13 +43,10 @@
 
 package org.alice.stageide.gallerybrowser;
 
-import org.alice.stageide.gallerybrowser.views.GalleryView;
-import org.alice.stageide.gallerybrowser.views.MyTypesView;
-
 /**
  * @author Dennis Cosgrove
  */
-public class TypeTab extends GalleryTab {
+public class TypeTab extends GalleryTab<org.lgna.croquet.components.Panel> {
 	private static class SingletonHolder {
 		private static TypeTab instance = new TypeTab();
 	}
@@ -63,9 +60,9 @@ public class TypeTab extends GalleryTab {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.View<?, ?> createView() {
+	protected org.lgna.croquet.components.Panel createView() {
 
-		MyTypesView myTypesView = new MyTypesView();
+		org.alice.stageide.gallerybrowser.views.MyTypesView myTypesView = new org.alice.stageide.gallerybrowser.views.MyTypesView();
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( myTypesView );
 		scrollPane.setBorder( null );
@@ -81,9 +78,9 @@ public class TypeTab extends GalleryTab {
 					.build();
 			rv.addLineEndComponent( lineEndPanel );
 		}
-		myTypesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		rv.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+		myTypesView.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
+		scrollPane.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
+		rv.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
 		return rv;
 	}
 

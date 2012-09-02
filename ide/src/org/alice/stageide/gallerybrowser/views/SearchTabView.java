@@ -75,7 +75,7 @@ public class SearchTabView extends GalleryTabView {
 	};
 
 	private final FilteredResourcesView filteredResourcesView = new FilteredResourcesView();
-	public final org.lgna.croquet.components.TextField filterTextField;
+	private final org.lgna.croquet.components.TextField filterTextField;
 
 	public SearchTabView( org.alice.stageide.gallerybrowser.SearchTab composite ) {
 		super( composite );
@@ -100,6 +100,15 @@ public class SearchTabView extends GalleryTabView {
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
 		composite.getFilterState().removeValueListener( this.filterListener );
 		super.handleUndisplayable();
+	}
+
+	public void TEMPORARY_HACK_handleSelected() {
+		//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		//			public void run() {
+		//				filterTextField.requestFocus();
+		//			}
+		//		} );
+		this.filterTextField.requestFocus();
 	}
 
 	private void handleFilterChanged( String filter ) {
