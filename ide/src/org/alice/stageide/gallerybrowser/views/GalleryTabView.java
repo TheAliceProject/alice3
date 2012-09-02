@@ -47,10 +47,15 @@ package org.alice.stageide.gallerybrowser.views;
  */
 public abstract class GalleryTabView extends org.lgna.croquet.components.BorderPanel {
 	protected static final int PAD = 4;
+	private final GalleryDragComponentCache cache = new GalleryDragComponentCache();
 
 	public GalleryTabView( org.alice.stageide.gallerybrowser.GalleryTab composite ) {
 		super( composite, 0, PAD );
 		this.setBackgroundColor( org.alice.stageide.gallerybrowser.views.GalleryView.BACKGROUND_COLOR );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+	}
+
+	protected org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
+		return this.cache.getGalleryDragComponent( resourceNode );
 	}
 }

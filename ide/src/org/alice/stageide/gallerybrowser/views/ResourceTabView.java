@@ -46,13 +46,23 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public class ResourceTabView extends GalleryTabView {
+	private class ModelResourceDirectoryView extends org.lgna.croquet.components.TreeDirectoryViewController<org.alice.stageide.modelresource.ResourceNode> {
+		public ModelResourceDirectoryView( org.lgna.croquet.TreeSelectionState<org.alice.stageide.modelresource.ResourceNode> model ) {
+			super( model );
+		}
+
+		@Override
+		protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
+			return ResourceTabView.this.getGalleryDragComponent( value );
+		}
+	}
 
 	public ResourceTabView( org.alice.stageide.gallerybrowser.ResourceTab composite ) {
 		super( composite );
 
 		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = org.alice.stageide.modelresource.ResourceNodeTreeSelectionState.getInstance();
 
-		org.alice.stageide.modelresource.views.ModelResourceDirectoryView view = new org.alice.stageide.modelresource.views.ModelResourceDirectoryView( state );
+		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
 			@Override

@@ -40,18 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource.views;
+package org.alice.stageide.gallerybrowser.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ModelResourceDirectoryView extends org.lgna.croquet.components.TreeDirectoryViewController<org.alice.stageide.modelresource.ResourceNode> {
-	public ModelResourceDirectoryView( org.lgna.croquet.TreeSelectionState<org.alice.stageide.modelresource.ResourceNode> model ) {
-		super( model );
+public class GalleryDragComponentCache {
+	private final java.util.Map<org.alice.stageide.modelresource.ResourceKey, org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public synchronized org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent getGalleryDragComponent( org.alice.stageide.modelresource.ResourceNode resourceNode ) {
+		org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
+		org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent rv = this.map.get( resourceKey );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( resourceNode );
+			this.map.put( resourceKey, rv );
+		}
+		return rv;
 	}
 
-	@Override
-	protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
-		return new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( value );
-	}
 }
