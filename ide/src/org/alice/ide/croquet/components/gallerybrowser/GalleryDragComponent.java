@@ -61,6 +61,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		this.internalAddComponent( label );
 		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
 		this.setMaximumSizeClampedToPreferredSize( true );
+		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 	}
 
 	@Override

@@ -52,8 +52,6 @@ public class ModelResourceDirectoryView extends org.lgna.croquet.components.Tree
 
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
-		org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent rv = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( value );
-		rv.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
-		return rv;
+		return new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( value );
 	}
 }

@@ -128,9 +128,7 @@ public class GalleryDirectoryViewController extends org.lgna.croquet.components.
 	//
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.alice.ide.croquet.models.gallerybrowser.GalleryNode value ) {
-		org.lgna.croquet.components.JComponent<?> component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( value );
-		component.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
-		return component;
+		return new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( value );
 	}
 	//
 	//	@Override

@@ -140,9 +140,7 @@ public class SearchTabView extends GalleryTabView {
 					}
 				}
 				for( org.alice.stageide.modelresource.ResourceNode matchingNode : matchingNodes ) {
-					org.lgna.croquet.components.JComponent<?> component = new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( matchingNode );
-					component.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
-					this.addComponent( component );
+					this.addComponent( new org.alice.ide.croquet.components.gallerybrowser.GalleryDragComponent( matchingNode ) );
 				}
 			}
 		}
