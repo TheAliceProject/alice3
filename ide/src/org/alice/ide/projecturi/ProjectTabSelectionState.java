@@ -70,15 +70,6 @@ public class ProjectTabSelectionState extends org.lgna.croquet.SimpleTabSelectio
 		}
 	}
 
-	public java.net.URI getSelectedURI() {
-		ContentTab contentTab = org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().getSelectedItem();
-		if( contentTab != null ) {
-			return contentTab.getSelectedUri();
-		} else {
-			return null;
-		}
-	}
-
 	public void selectAppropriateTab( boolean isNew ) {
 		ContentTab tab;
 		if( isNew ) {

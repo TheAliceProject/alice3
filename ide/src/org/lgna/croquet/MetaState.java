@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,55 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectProjectUriWithPreviewComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, java.net.URI> {
-	private final boolean isNew;
-	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
-	private final UriMetaState uriMetaState = new UriMetaState();
-
-	public SelectProjectUriWithPreviewComposite( java.util.UUID individualUUID, boolean isNew ) {
-		super( individualUUID );
-		this.isNew = isNew;
+public abstract class MetaState<T> {
+	public static interface MetaStateValueListener<T> {
+		public void metaStateValueChanged( T prevValue, T nextValue );
 	}
 
-	@Override
-	protected java.net.URI createValue() {
-		return this.uriMetaState.getValue();
-	}
+	private final java.util.List<MetaStateValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
+		}
 
-	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return org.alice.ide.projecturi.views.SelectProjectUriWithPreviewPanel.getInstance();
-	}
+		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
+			MetaState.this.handleFiredEvent( e );
+		}
+	};
 
-	@Override
-	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.uriMetaState.getValue() != null ) {
-			return IS_GOOD_TO_GO_STATUS;
+	private T prevValue;
+
+	protected abstract T getValue();
+
+	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
+		T nextValue = this.getValue();
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValue, nextValue ) ) {
+			//pass
 		} else {
-			return this.noSelectionError;
+			for( MetaStateValueListener<T> listener : this.valueListeners ) {
+				listener.metaStateValueChanged( this.prevValue, nextValue );
+			}
+			this.prevValue = nextValue;
 		}
 	}
 
-	@Override
-	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
-		if( org.alice.ide.projecturi.views.PreviewProjectPanel.IS_READY_FOR_PRIME_TIME ) {
-			final int width = 960;
-			window.setSize( width, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( width ) );
-		} else {
-			window.setSize( 620, 480 );
-		}
+	public void activate( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		this.prevValue = this.getValue();
+		completionStep.addListener( this.listener );
 	}
 
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew );
-		org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().refresh();
-		super.handlePreShowDialog( completionStep );
+	public void deactivate( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		completionStep.removeListener( this.listener );
 	}
 }
