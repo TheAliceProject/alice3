@@ -82,6 +82,7 @@ public abstract class ValueCreatorInputDialogCoreComposite<V extends org.lgna.cr
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
 			@Override
 			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				super.handlePostHideDialog( completionStep );
 				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
 				if( isCommited != null ) { // close button condition
 					if( isCommited ) {
