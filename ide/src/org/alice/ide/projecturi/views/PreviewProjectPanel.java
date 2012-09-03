@@ -49,8 +49,8 @@ public class PreviewProjectPanel extends org.lgna.croquet.components.PageAxisPan
 	public static final boolean IS_READY_FOR_PRIME_TIME = false;
 
 	public PreviewProjectPanel() {
-		this.addComponent( new org.lgna.croquet.components.Label( "preview", 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
-		this.addComponent( new ActualPreviewProjectPanel() );
+		this.addComponent( new org.lgna.croquet.components.Label( "preview", 2.0f ) );
+		this.addComponent( new ActualPreviewProjectComponent() );
 		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalGlue() );
 		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 8, 0, 8 ) );
