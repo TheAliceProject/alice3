@@ -52,16 +52,16 @@ public class UriProjectPair {
 
 		public void workEnded();
 
-		public void done( org.lgna.project.Project project );
+		public void completed( org.lgna.project.Project project );
 	}
 
 	private static void invokeOnEventDispatchThread( final GetProjectObserver observer, final org.lgna.project.Project project ) {
 		if( java.awt.EventQueue.isDispatchThread() ) {
-			observer.done( project );
+			observer.completed( project );
 		} else {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					observer.done( project );
+					observer.completed( project );
 				}
 			} );
 		}
@@ -120,7 +120,7 @@ public class UriProjectPair {
 				observer.workStarted();
 			}
 			try {
-				java.io.InputStream is = new java.io.FileInputStream( new java.io.File( uri ) );
+				java.io.InputStream is = new java.io.FileInputStream( new java.io.File( this.uri ) );
 				return org.lgna.project.io.IoUtilities.readProject( is );
 			} finally {
 				if( observer != null ) {
@@ -129,8 +129,13 @@ public class UriProjectPair {
 			}
 		}
 
-		public void execute() {
-			this.executorService.execute( this.futureTask );
+		public void executeIfNecessary() {
+			//note: this check may not be necessary
+			if( this.isStarted() ) {
+				//pass
+			} else {
+				this.executorService.execute( this.futureTask );
+			}
 		}
 
 		public boolean isDone() {
@@ -141,14 +146,8 @@ public class UriProjectPair {
 			return this.isStarted;
 		}
 
-		public org.lgna.project.Project getProject() {
-			try {
-				return this.futureTask.get();
-			} catch( InterruptedException ie ) {
-				throw new RuntimeException( "should only be called when isDone", ie );
-			} catch( java.util.concurrent.ExecutionException ee ) {
-				throw new RuntimeException( "should only be called when isDone", ee );
-			}
+		public org.lgna.project.Project getProject() throws InterruptedException, java.util.concurrent.ExecutionException {
+			return this.futureTask.get();
 		}
 
 		private void invokeObserversOnEventDispatchThread( org.lgna.project.Project project ) {
@@ -168,19 +167,19 @@ public class UriProjectPair {
 		return this.worker.getUri();
 	}
 
-	public synchronized void getProject( final GetProjectObserver observer ) throws Exception {
+	public synchronized void getProjectOnEventDispatchThread( final GetProjectObserver observer ) throws Exception {
 		if( this.worker.isDone() ) {
 			org.lgna.project.Project project = worker.getProject();
 			invokeOnEventDispatchThread( observer, project );
 		} else {
 			this.worker.addObserver( observer );
-			//note: this check may not be necessary
-			if( this.worker.isStarted() ) {
-				//pass
-			} else {
-				worker.execute();
-			}
+			this.worker.executeIfNecessary();
 		}
+	}
+
+	public org.lgna.project.Project getProjectWaitingIfNecessary() throws InterruptedException, java.util.concurrent.ExecutionException {
+		this.worker.executeIfNecessary();
+		return this.worker.getProject();
 	}
 
 	public static void main( String[] args ) throws Exception {
@@ -189,19 +188,24 @@ public class UriProjectPair {
 
 		for( int i = 0; i < 32; i++ ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( i );
-			uriProjectPair.getProject( new GetProjectObserver() {
-				public void workStarted() {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "workStarted" );
-				}
+			final boolean IS_OBSERVER_DESIRED = true;
+			if( IS_OBSERVER_DESIRED ) {
+				uriProjectPair.getProjectOnEventDispatchThread( new GetProjectObserver() {
+					public void workStarted() {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "workStarted" );
+					}
 
-				public void workEnded() {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "workEnded" );
-				}
+					public void workEnded() {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "workEnded" );
+					}
 
-				public void done( org.lgna.project.Project project ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( project );
-				}
-			} );
+					public void completed( org.lgna.project.Project project ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( project );
+					}
+				} );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( uriProjectPair.getProjectWaitingIfNecessary() );
+			}
 			Thread.sleep( 100 );
 		}
 	}
