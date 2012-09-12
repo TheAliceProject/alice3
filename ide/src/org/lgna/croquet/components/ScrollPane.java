@@ -87,14 +87,18 @@ public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
 		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
 	}
 
-	@Override
-	protected javax.swing.JScrollPane createAwtComponent() {
-		return new javax.swing.JScrollPane() {
+	protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
+		return new edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
 		};
+	}
+
+	@Override
+	protected final javax.swing.JScrollPane createAwtComponent() {
+		return createJScrollPane();
 	}
 
 	public Component<?> getViewportView() {

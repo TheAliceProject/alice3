@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,43 +45,10 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends JScrollPaneCoveringLinuxPaintBug {
-	private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
-		if( jScrollBar != null ) {
-			return ( jScrollBar.getMinimum() != jScrollBar.getValue() ) || ( jScrollBar.getMaximum() != jScrollBar.getVisibleAmount() );
-		} else {
-			return false;
-		}
-	}
-
-	protected class PaintOmittingJScrollBar extends javax.swing.JScrollBar {
-		public PaintOmittingJScrollBar( int orientation ) {
-			super( orientation );
-		}
-
-		@Override
-		public void paint( java.awt.Graphics g ) {
-			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
-			if( isPaintRequiredFor( this ) || ( isPaintRequiredIfOtherRequiresIt() && isPaintRequiredFor( otherScrollBar ) ) ) {
-				super.paint( g );
-			} else {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				java.awt.Shape clip = g.getClip();
-				g2.setPaint( ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getBackground() );
-				g2.fill( clip );
-			}
-		}
-	}
-
-	protected boolean isPaintRequiredIfOtherRequiresIt() {
-		return true;
-	}
-
-	private javax.swing.JScrollBar getOtherScrollBar( javax.swing.JScrollBar scrollBar ) {
-		if( scrollBar.getOrientation() == javax.swing.JScrollBar.HORIZONTAL ) {
-			return this.getVerticalScrollBar();
-		} else {
-			return this.getHorizontalScrollBar();
+public class JScrollPaneCoveringLinuxPaintBug extends javax.swing.JScrollPane {
+	public JScrollPaneCoveringLinuxPaintBug() {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			this.getViewport().setScrollMode( javax.swing.JViewport.SIMPLE_SCROLL_MODE );
 		}
 	}
 }

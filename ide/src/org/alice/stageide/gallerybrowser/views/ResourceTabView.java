@@ -66,7 +66,7 @@ public class ResourceTabView extends GalleryTabView {
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
 			@Override
-			protected javax.swing.JScrollPane createAwtComponent() {
+			protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
 				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
 			}
 		};
