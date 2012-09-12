@@ -43,6 +43,9 @@
 
 package org.alice.ide.croquet.models.gallerybrowser;
 
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.JavaType;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -122,5 +125,14 @@ public class FieldGalleryNode extends DeclarationGalleryNode<org.lgna.project.as
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
+		AbstractField field = this.getDeclaration();
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
+		JavaType javaType = type.getFirstEncounteredJavaType();
+		String name = field.getName();
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( javaType.getClassReflectionProxy().getReification(), name );
 	}
 }

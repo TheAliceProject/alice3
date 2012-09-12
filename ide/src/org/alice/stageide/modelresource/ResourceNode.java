@@ -142,4 +142,9 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 		}
 	}
 
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
+		return null;
+	}
+
 }

@@ -74,18 +74,6 @@ public class SearchTabView extends GalleryTabView {
 		}
 	};
 
-	private java.util.LinkedList<org.alice.ide.croquet.models.gallerybrowser.GalleryNode> update( java.util.LinkedList<org.alice.ide.croquet.models.gallerybrowser.GalleryNode> rv, org.alice.ide.croquet.models.gallerybrowser.GalleryNode treeNode, String lcFilter, Criterion criterion, boolean isTag, String text ) {
-		if( rv.contains( treeNode ) ) {
-			//pass
-		} else {
-			String lcName = text.toLowerCase();
-			if( criterion.accept( lcName, lcFilter ) ) {
-				rv.add( treeNode );
-			}
-		}
-		return rv;
-	}
-
 	private static void appendIfMatch( java.util.List<org.alice.stageide.modelresource.ResourceNode> rv, org.alice.stageide.modelresource.ResourceNode node, String lcFilter, Criterion criterion, String text ) {
 		if( rv.contains( node ) ) {
 			//pass

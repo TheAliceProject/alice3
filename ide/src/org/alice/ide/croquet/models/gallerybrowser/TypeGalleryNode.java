@@ -43,6 +43,8 @@
 
 package org.alice.ide.croquet.models.gallerybrowser;
 
+import org.lgna.project.ast.JavaType;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -170,5 +172,12 @@ public abstract class TypeGalleryNode extends DeclarationGalleryNode<org.lgna.pr
 	protected void appendClassName( java.lang.StringBuilder sb ) {
 		String name = this.getDeclaration().getName();
 		sb.append( name.replace( "Resource", "" ) );
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getDeclaration();
+		JavaType javaType = type.getFirstEncounteredJavaType();
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( javaType.getClassReflectionProxy().getReification() );
 	}
 }

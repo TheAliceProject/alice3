@@ -138,4 +138,10 @@ public class RootGalleryNode extends GalleryNode {
 	public String[] getTags() {
 		return null;
 	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
+		//todo
+		return null;
+	}
 }

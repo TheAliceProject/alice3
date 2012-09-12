@@ -135,4 +135,10 @@ public class TypeDragModel extends org.alice.ide.croquet.models.gallerybrowser.G
 	public String getText() {
 		return this.type.getName();
 	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
+		//todo
+		return null;
+	}
 }
