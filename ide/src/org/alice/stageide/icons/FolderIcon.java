@@ -40,76 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ClassResourceKey extends ResourceKey {
-	private final Class<? extends org.lgna.story.resources.ModelResource> cls;
+public class FolderIcon extends org.lgna.croquet.icon.AbstractIcon {
+	private final javax.swing.Icon icon;
 
-	public ClassResourceKey( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
-		this.cls = cls;
-	}
-
-	public Class<? extends org.lgna.story.resources.ModelResource> getCls() {
-		return this.cls;
-	}
-
-	public org.lgna.project.ast.JavaType getType() {
-		return org.lgna.project.ast.JavaType.getInstance( this.cls );
+	public FolderIcon( java.awt.Dimension size, javax.swing.Icon icon ) {
+		super( size );
+		this.icon = icon;
 	}
 
 	@Override
-	public String getDisplayText() {
-		return cls.getSimpleName().replace( "Resource", "" );
-	}
-
-	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		if( this.isLeaf() ) {
-			org.lgna.story.resources.ModelResource modelResource = cls.getEnumConstants()[ 0 ];
-			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
-		} else {
-			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( cls );
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+		boolean b = ( this.getIconWidth() == org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE.width ) && ( this.getIconHeight() == org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE.height );
+		if( b ) {
+			org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE.paintIcon( c, g2, 0, 0 );
 		}
-	}
-
-	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		throw new Error();
-	}
-
-	@Override
-	public boolean isLeaf() {
-		return this.cls.isEnum() && ( this.cls.getEnumConstants().length == 1 );
-	}
-
-	@Override
-	public String[] getTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this.cls );
-	}
-
-	@Override
-	public boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
+		this.icon.paintIcon( c, g2, 0, 0 );
+		if( b ) {
+			java.awt.Composite prevComposite = g2.getComposite();
+			g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 0.9f ) );
+			org.alice.ide.icons.Icons.FOLDER_FRONT_ICON_LARGE.paintIcon( c, g2, 0, 0 );
+			g2.setComposite( prevComposite );
 		}
-		if( o instanceof ClassResourceKey ) {
-			ClassResourceKey other = (ClassResourceKey)o;
-			return this.cls.equals( other.cls );
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public int hashCode() {
-		return this.cls.hashCode();
-	}
-
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.cls.getSimpleName() );
 	}
 }

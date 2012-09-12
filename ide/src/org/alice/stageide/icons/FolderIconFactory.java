@@ -40,76 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ClassResourceKey extends ResourceKey {
-	private final Class<? extends org.lgna.story.resources.ModelResource> cls;
+public class FolderIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
+	private final org.lgna.croquet.icon.IconFactory iconFactory;
 
-	public ClassResourceKey( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
-		this.cls = cls;
-	}
-
-	public Class<? extends org.lgna.story.resources.ModelResource> getCls() {
-		return this.cls;
-	}
-
-	public org.lgna.project.ast.JavaType getType() {
-		return org.lgna.project.ast.JavaType.getInstance( this.cls );
+	public FolderIconFactory( org.lgna.croquet.icon.IconFactory iconFactory ) {
+		this.iconFactory = iconFactory;
 	}
 
 	@Override
-	public String getDisplayText() {
-		return cls.getSimpleName().replace( "Resource", "" );
-	}
-
-	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		if( this.isLeaf() ) {
-			org.lgna.story.resources.ModelResource modelResource = cls.getEnumConstants()[ 0 ];
-			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		java.awt.Dimension subIconSize;
+		if( size.equals( org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE ) ) {
+			subIconSize = new java.awt.Dimension();
+			subIconSize.width = ( org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE.width * 3 ) / 4;
+			subIconSize.height = ( org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE.height * 3 ) / 4;
 		} else {
-			return org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( cls );
+			subIconSize = size;
 		}
+		return new FolderIcon( size, this.iconFactory.getIcon( subIconSize ) );
 	}
 
-	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		throw new Error();
-	}
-
-	@Override
-	public boolean isLeaf() {
-		return this.cls.isEnum() && ( this.cls.getEnumConstants().length == 1 );
-	}
-
-	@Override
-	public String[] getTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this.cls );
-	}
-
-	@Override
-	public boolean equals( Object o ) {
-		if( this == o ) {
-			return true;
-		}
-		if( o instanceof ClassResourceKey ) {
-			ClassResourceKey other = (ClassResourceKey)o;
-			return this.cls.equals( other.cls );
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public int hashCode() {
-		return this.cls.hashCode();
-	}
-
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.cls.getSimpleName() );
+	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+		return new java.awt.Dimension( org.alice.ide.icons.Icons.FOLDER_ICON_LARGE_SIZE );
 	}
 }

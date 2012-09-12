@@ -63,12 +63,17 @@ public class IconFactoryManager {
 			} else {
 				if( org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode.getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
 					javax.swing.ImageIcon imageIcon = org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode.getIcon( modelResourceCls );
-					return new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
+					return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
 				}
 			}
 			java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
 			if( url != null ) {
-				return new org.lgna.croquet.icon.ImageIconFactory( url );
+				org.lgna.croquet.icon.IconFactory iconFactory = new org.lgna.croquet.icon.ImageIconFactory( url );
+				if( modelResourceName != null ) {
+					return iconFactory;
+				} else {
+					return new FolderIconFactory( iconFactory );
+				}
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
 				return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
