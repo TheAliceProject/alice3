@@ -64,7 +64,7 @@ public class RobotUtilities {
 				}
 			}
 		} catch( Throwable t ) {
-			r = null;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
 		}
 		robot = r;
 	}
