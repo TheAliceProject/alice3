@@ -42,11 +42,7 @@
  */
 package org.alice.interact.manipulator;
 
-import java.awt.AWTException;
 import java.awt.Point;
-import java.awt.Robot;
-
-import javax.swing.SwingUtilities;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
@@ -557,12 +553,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 
 	protected void moveCursorToPointInLookingGlass( Point awtPoint )
 	{
-		try {
-			SwingUtilities.convertPointToScreen( awtPoint, this.getOnscreenLookingGlass().getAWTComponent() );
-			Robot mouseMover = new Robot();
-			mouseMover.mouseMove( awtPoint.x, awtPoint.y );
-		} catch( AWTException e ) {
-		}
+		edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.getOnscreenLookingGlass().getAWTComponent(), awtPoint );
 	}
 
 	protected void moveCursorToObjectRelativePosition()
