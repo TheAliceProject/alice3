@@ -50,6 +50,27 @@ public final class EnumConstantResourceKey extends ResourceKey {
 
 	private final Enum<? extends org.lgna.story.resources.ModelResource> enumConstant;
 
+	public static org.lgna.project.ast.JavaType getAbstractionTypeForResourceType( org.lgna.project.ast.AbstractType<?, ?, ?> assignableFromResourceType ) {
+		if( mapResourceTypeToAbstractionType != null ) {
+			//pass
+		} else {
+			mapResourceTypeToAbstractionType = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
+			for( org.lgna.project.ast.JavaType abstractionType : abstractionTypes ) {
+				org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
+				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
+			}
+		}
+		org.lgna.project.ast.JavaType abstractionType = null;
+		for( org.lgna.project.ast.JavaType resourceType : mapResourceTypeToAbstractionType.keySet() ) {
+			if( resourceType.isAssignableFrom( assignableFromResourceType ) ) {
+				abstractionType = mapResourceTypeToAbstractionType.get( resourceType );
+				break;
+			}
+		}
+		return abstractionType;
+	}
+
 	public EnumConstantResourceKey( Enum<? extends org.lgna.story.resources.ModelResource> enumConstant ) {
 		this.enumConstant = enumConstant;
 	}
@@ -78,25 +99,9 @@ public final class EnumConstantResourceKey extends ResourceKey {
 
 	@Override
 	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		if( mapResourceTypeToAbstractionType != null ) {
-			//pass
-		} else {
-			mapResourceTypeToAbstractionType = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
-			for( org.lgna.project.ast.JavaType abstractionType : abstractionTypes ) {
-				org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
-				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
-			}
-		}
 		org.lgna.project.ast.JavaField argumentField = this.getField();
 
-		org.lgna.project.ast.JavaType abstractionType = null;
-		for( org.lgna.project.ast.JavaType resourceType : mapResourceTypeToAbstractionType.keySet() ) {
-			if( resourceType.isAssignableFrom( this.enumConstant.getClass() ) ) {
-				abstractionType = mapResourceTypeToAbstractionType.get( resourceType );
-				break;
-			}
-		}
+		org.lgna.project.ast.JavaType abstractionType = getAbstractionTypeForResourceType( org.lgna.project.ast.JavaType.getInstance( this.enumConstant.getClass() ) );
 		if( abstractionType != null ) {
 			org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( abstractionType, argumentField );
 			org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );

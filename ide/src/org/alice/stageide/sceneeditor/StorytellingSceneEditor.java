@@ -137,8 +137,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			org.lgna.croquet.DragModel model = step.getModel();
 			DragComponent dragSource = step.getDragSource();
 			dragSource.showDragProxy();
-			if( model instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryNode ) {
-				org.alice.ide.croquet.models.gallerybrowser.GalleryNode galleryNode = (org.alice.ide.croquet.models.gallerybrowser.GalleryNode)model;
+			if( model instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel ) {
+				org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel galleryDragModel = (org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel)model;
 				System.err.println( "galleryNode.setDesiredTransformation(null);" );
 				//galleryNode.setDesiredTransformation(null);
 			}
