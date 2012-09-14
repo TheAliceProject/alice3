@@ -49,7 +49,7 @@ public abstract class FormPanel extends MigPanel {
 	private java.util.List<LabeledSpringRow> rows;
 
 	public FormPanel( org.lgna.croquet.Composite<?> composite ) {
-		super( composite, "", "[right][left]", "" );
+		super( composite, "", "[right][left,grow]", "" );
 	}
 
 	public FormPanel() {
