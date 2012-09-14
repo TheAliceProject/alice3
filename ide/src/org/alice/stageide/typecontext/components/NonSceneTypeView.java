@@ -121,14 +121,6 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 	}
 }
 
-enum SceneTypeCallable implements java.util.concurrent.Callable<org.lgna.project.ast.NamedUserType> {
-	SINGLEON() {
-		public org.lgna.project.ast.NamedUserType call() throws java.lang.Exception {
-			return org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
-		}
-	};
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -154,7 +146,7 @@ public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPa
 		this.setNorthWestComponent( new SelectedTypeView() );
 		this.setNorthEastComponent( org.alice.stageide.croquet.models.run.RunOperation.getInstance().createButton() );
 
-		org.lgna.croquet.Operation returnToSceneTypeOperation = org.alice.ide.declarationseditor.TypeState.getInstance().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
+		org.lgna.croquet.Operation returnToSceneTypeOperation = composite.getSelectSceneTypeOperation();
 		returnToSceneTypeOperation.initializeIfNecessary();
 		returnToSceneTypeOperation.setName( "" );
 		this.returnToSceneTypeButton = new ReturnToSceneTypeButton( returnToSceneTypeOperation );
