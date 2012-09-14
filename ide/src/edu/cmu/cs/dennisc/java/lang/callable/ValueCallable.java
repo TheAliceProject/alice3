@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.typecontext;
+package edu.cmu.cs.dennisc.java.lang.callable;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectSceneTypeOperation extends org.lgna.croquet.ActionOperation {
-	private static class SingletonHolder {
-		private static SelectSceneTypeOperation instance = new SelectSceneTypeOperation();
-	}
+public class ValueCallable<T> implements java.util.concurrent.Callable<T> {
+	private final T value;
 
-	public static SelectSceneTypeOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SelectSceneTypeOperation() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "53176db0-cfaa-4560-bbb7-2a18244ca97c" ) );
+	public ValueCallable( T value ) {
+		this.value = value;
 	}
 
 	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.alice.ide.declarationseditor.TypeState.getInstance().setValue( org.alice.stageide.StageIDE.getActiveInstance().getSceneType() );
-		step.finish();
+	public boolean equals( Object obj ) {
+		if( this == obj ) {
+			return true;
+		}
+		if( obj instanceof ValueCallable ) {
+			ValueCallable other = (ValueCallable)obj;
+			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.value, other.value );
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return this.value != null ? this.value.hashCode() : 0;
+	}
+
+	public T call() throws java.lang.Exception {
+		return this.value;
 	}
 }

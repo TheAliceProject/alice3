@@ -98,7 +98,7 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 			);
 	private final org.lgna.croquet.components.Label typeIconLabel = new org.lgna.croquet.components.Label();
 
-	public ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation operation ) {
+	public ReturnToSceneTypeButton( org.lgna.croquet.Operation operation ) {
 		super( operation );
 		javax.swing.JButton jButton = this.getAwtComponent();
 		jButton.setLayout( new javax.swing.BoxLayout( jButton, javax.swing.BoxLayout.LINE_AXIS ) );
@@ -121,6 +121,14 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 	}
 }
 
+enum SceneTypeCallable implements java.util.concurrent.Callable<org.lgna.project.ast.NamedUserType> {
+	SINGLEON() {
+		public org.lgna.project.ast.NamedUserType call() throws java.lang.Exception {
+			return org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
+		}
+	};
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -137,12 +145,19 @@ public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPa
 			}
 		}
 	};
-	private final ReturnToSceneTypeButton returnToSceneTypeButton = new ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance() );
+	//private final ReturnToSceneTypeButton returnToSceneTypeButton = new ReturnToSceneTypeButton( org.alice.stageide.typecontext.SelectSceneTypeOperation.getInstance() );
+
+	private final ReturnToSceneTypeButton returnToSceneTypeButton;
 
 	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {
 		super( composite );
 		this.setNorthWestComponent( new SelectedTypeView() );
 		this.setNorthEastComponent( org.alice.stageide.croquet.models.run.RunOperation.getInstance().createButton() );
+
+		org.lgna.croquet.Operation returnToSceneTypeOperation = org.alice.ide.declarationseditor.TypeState.getInstance().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
+		returnToSceneTypeOperation.initializeIfNecessary();
+		returnToSceneTypeOperation.setName( "" );
+		this.returnToSceneTypeButton = new ReturnToSceneTypeButton( returnToSceneTypeOperation );
 	}
 
 	@Override
