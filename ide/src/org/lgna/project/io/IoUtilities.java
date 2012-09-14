@@ -176,7 +176,9 @@ public abstract class IoUtilities {
 		String projectVersion = readVersion( zipEntryContainer );
 		org.lgna.project.Version version = new org.lgna.project.Version( projectVersion );
 		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, version );
-		return (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, projectVersion );
+		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, projectVersion );
+		org.lgna.project.migration.MigrationManager.migrate( rv, version );
+		return rv;
 	}
 
 	private static java.util.Set<org.lgna.common.Resource> readResources( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
@@ -212,6 +214,7 @@ public abstract class IoUtilities {
 	private static org.lgna.project.Project readProject( ZipEntryContainer zipEntryContainer ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert zipEntryContainer != null;
 		org.lgna.project.ast.NamedUserType type = readType( zipEntryContainer, PROGRAM_TYPE_ENTRY_NAME );
+
 		//todo
 		java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = java.util.Collections.emptySet();
 		java.util.Set<org.lgna.common.Resource> resources = readResources( zipEntryContainer );

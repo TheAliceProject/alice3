@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,8 +45,27 @@ package org.lgna.project.migration;
 /**
  * @author Dennis Cosgrove
  */
-public interface Migration {
-	public boolean isApplicable( org.lgna.project.Version version );
+public abstract class AbstractMigration implements Migration {
+	private final org.lgna.project.Version minimumVersion;
+	private final org.lgna.project.Version resultVersion;
 
-	public org.lgna.project.Version getResultVersion();
+	public AbstractMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+		this.minimumVersion = minimumVersion;
+		this.resultVersion = resultVersion;
+	}
+
+	public org.lgna.project.Version getResultVersion() {
+		return this.resultVersion;
+	}
+
+	public boolean isApplicable( org.lgna.project.Version version ) {
+		if( ( this.minimumVersion != null ) && ( this.resultVersion != null ) ) {
+			return ( this.minimumVersion.compareTo( version ) <= 0 )
+					&&
+					( this.resultVersion.compareTo( version ) > 0 );
+		} else {
+			//todo?
+			return false;
+		}
+	}
 }

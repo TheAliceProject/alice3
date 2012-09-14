@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,8 +45,22 @@ package org.lgna.project.migration;
 /**
  * @author Dennis Cosgrove
  */
-public interface Migration {
-	public boolean isApplicable( org.lgna.project.Version version );
+public abstract class MethodInvocationAstMigration extends AstMigration {
+	public MethodInvocationAstMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
+		super( minimumVersion, resultVersion );
+	}
 
-	public org.lgna.project.Version getResultVersion();
+	protected abstract void migrate( org.lgna.project.ast.MethodInvocation methodInvocation );
+
+	@Override
+	public final void migrate( org.lgna.project.ast.NamedUserType programType ) {
+		programType.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+			public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+				if( crawlable instanceof org.lgna.project.ast.MethodInvocation ) {
+					org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)crawlable;
+					MethodInvocationAstMigration.this.migrate( methodInvocation );
+				}
+			}
+		}, org.lgna.project.ast.CrawlPolicy.COMPLETE );
+	}
 }
