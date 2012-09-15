@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.ast.code;
 
 import org.lgna.project.ast.NodeListProperty;
 import org.lgna.project.ast.UserParameter;
@@ -48,10 +48,9 @@ import org.lgna.project.ast.UserParameter;
 /**
  * @author Dennis Cosgrove
  */
-public class ForwardShiftParameterOperation extends ShiftParameterOperation {
+public class ForwardShiftParameterOperation extends SwapParametersOperation {
 	public ForwardShiftParameterOperation( NodeListProperty<UserParameter> parametersProperty, UserParameter parameter ) {
 		super( java.util.UUID.fromString( "75777bff-85f1-4816-b860-cebf04cc95ee" ), parametersProperty, parameter );
-		this.setName( "Shift Forward" );
 	}
 
 	@Override
