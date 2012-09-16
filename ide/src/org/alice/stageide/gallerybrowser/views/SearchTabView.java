@@ -108,6 +108,9 @@ public class SearchTabView extends GalleryTabView {
 		}
 	}
 
+	private final org.lgna.croquet.components.ImmutableTextField noMatchesLabel;
+	private final org.lgna.croquet.components.ImmutableTextField noEntryLabel;
+
 	private class FilteredResourcesView extends org.lgna.croquet.components.LineAxisPanel {
 		@Override
 		protected void internalRefresh() {
@@ -127,9 +130,15 @@ public class SearchTabView extends GalleryTabView {
 						appendMatches( matchingNodes, root, lcFilter, Criterion.CONTAINS_BUT_DOES_NOT_START_WITH, isTag );
 					}
 				}
-				for( org.alice.stageide.modelresource.ResourceNode matchingNode : matchingNodes ) {
-					this.addComponent( SearchTabView.this.getGalleryDragComponent( matchingNode ) );
+				if( matchingNodes.size() > 0 ) {
+					for( org.alice.stageide.modelresource.ResourceNode matchingNode : matchingNodes ) {
+						this.addComponent( SearchTabView.this.getGalleryDragComponent( matchingNode ) );
+					}
+				} else {
+					this.addComponent( noMatchesLabel );
 				}
+			} else {
+				this.addComponent( noEntryLabel );
 			}
 		}
 	}
@@ -139,6 +148,12 @@ public class SearchTabView extends GalleryTabView {
 
 	public SearchTabView( org.alice.stageide.gallerybrowser.SearchTab composite ) {
 		super( composite );
+
+		this.noMatchesLabel = composite.getNoMatchesLabel().createImmutableTextField( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		this.noEntryLabel = composite.getNoEntryLabel().createImmutableTextField( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		this.noMatchesLabel.setForegroundColor( java.awt.Color.DARK_GRAY );
+		this.noEntryLabel.setForegroundColor( java.awt.Color.DARK_GRAY );
+
 		this.filterTextField = composite.getFilterState().createTextField();
 		this.filterTextField.setMinimumPreferredWidth( 320 );
 		this.filterTextField.setMaximumSizeClampedToPreferredSize( true );

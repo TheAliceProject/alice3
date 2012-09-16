@@ -55,6 +55,8 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 	}
 
 	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
+	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( this.createKey( "noMatchesLabel" ) );
+	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( this.createKey( "noEntryLabel" ) );
 
 	private SearchTab() {
 		super( java.util.UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
@@ -62,6 +64,14 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 
 	public org.lgna.croquet.StringState getFilterState() {
 		return this.filterState;
+	}
+
+	public org.lgna.croquet.PlainStringValue getNoMatchesLabel() {
+		return this.noMatchesLabel;
+	}
+
+	public org.lgna.croquet.PlainStringValue getNoEntryLabel() {
+		return this.noEntryLabel;
 	}
 
 	@Override

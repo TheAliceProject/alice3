@@ -66,7 +66,7 @@ public class DeleteFieldFrameView extends BorderPanel {
 		//		System.out.println( composite.getField().getValueType() );
 		//		System.out.println( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy() );
 		//		BufferedImage image = AliceResourceUtilties.getThumbnail( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy().getReification() );
-		ImmutableTextArea textArea = new ImmutableTextArea( composite.getBleh() );
+		ImmutableTextArea textArea = composite.getBleh().createImmutableTextArea();
 		//		System.out.println(image);
 		//		Icon icon = new ScaledImageIcon( image, 120, 90 );
 		//		System.out.println( composite.getField() );
