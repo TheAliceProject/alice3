@@ -73,6 +73,17 @@ public class StageIDE extends org.alice.ide.IDE {
 		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 	}
 
+	private final edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> declarationFilter = new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration>() {
+		public boolean accept( org.lgna.project.ast.Declaration declaration ) {
+			return PERFORM_GENERATED_SET_UP_METHOD_NAME.equals( declaration.getName() ) == false;
+		}
+	};
+
+	@Override
+	protected edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> getDeclarationFilter() {
+		return this.declarationFilter;
+	}
+
 	@Override
 	public org.alice.ide.ApiConfigurationManager getApiConfigurationManager() {
 		return StoryApiConfigurationManager.getInstance();

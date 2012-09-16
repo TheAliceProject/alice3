@@ -66,7 +66,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					return parameterAccess.parameter.getValue() == getParameter();
 				}
 			};
-			method.crawl( crawler, false );
+			method.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
 			java.util.List<org.lgna.project.ast.ParameterAccess> parameterAccesses = crawler.getList();
 			final int N_ACCESSES = parameterAccesses.size();
 

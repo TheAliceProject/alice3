@@ -230,10 +230,21 @@ public abstract class AbstractNode extends Element implements Node {
 		super.fireAdded( e );
 	}
 
-	private static void acceptIfCrawlable( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, Object value, CrawlPolicy crawlPolicy ) {
+	private static void acceptIfCrawlable( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, Object value, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter ) {
 		if( value instanceof AbstractNode ) {
-			AbstractNode crawlable = (AbstractNode)value;
-			crawlable.accept( crawler, visited, crawlPolicy );
+			AbstractNode node = (AbstractNode)value;
+			if( declarationFilter != null ) {
+				if( node instanceof Declaration ) {
+					Declaration declaration = (Declaration)node;
+					if( declarationFilter.accept( declaration ) ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "skipping", declaration );
+						return;
+					}
+				}
+			}
+			node.accept( crawler, visited, crawlPolicy, declarationFilter );
 		} else if( value instanceof edu.cmu.cs.dennisc.pattern.Crawlable ) {
 			edu.cmu.cs.dennisc.pattern.Crawlable crawlable = (edu.cmu.cs.dennisc.pattern.Crawlable)value;
 			crawlable.accept( crawler, visited );
@@ -241,10 +252,10 @@ public abstract class AbstractNode extends Element implements Node {
 	}
 
 	public void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited ) {
-		accept( crawler, visited, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+		this.accept( crawler, visited, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY, null );
 	}
 
-	private void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, CrawlPolicy crawlPolicy ) {
+	private void accept( edu.cmu.cs.dennisc.pattern.Crawler crawler, java.util.Set<edu.cmu.cs.dennisc.pattern.Crawlable> visited, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter ) {
 		if( visited.contains( this ) ) {
 			//pass
 		} else {
@@ -271,7 +282,6 @@ public abstract class AbstractNode extends Element implements Node {
 							}
 							continue;
 						}
-
 					}
 				}
 
@@ -279,29 +289,33 @@ public abstract class AbstractNode extends Element implements Node {
 				if( value instanceof Iterable<?> ) {
 					Iterable<?> iterable = (Iterable<?>)value;
 					for( Object item : iterable ) {
-						acceptIfCrawlable( crawler, visited, item, crawlPolicy );
+						acceptIfCrawlable( crawler, visited, item, crawlPolicy, declarationFilter );
 					}
 				} else if( value instanceof Object[] ) {
 					Object[] array = (Object[])value;
 					for( Object item : array ) {
-						acceptIfCrawlable( crawler, visited, item, crawlPolicy );
+						acceptIfCrawlable( crawler, visited, item, crawlPolicy, declarationFilter );
 					}
 				} else {
-					acceptIfCrawlable( crawler, visited, value, crawlPolicy );
+					acceptIfCrawlable( crawler, visited, value, crawlPolicy, declarationFilter );
 				}
 			}
 		}
 	}
 
-	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, CrawlPolicy crawlPolicy ) {
-		this.accept( crawler, new java.util.HashSet<edu.cmu.cs.dennisc.pattern.Crawlable>(), crawlPolicy );
+	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> criterion ) {
+		this.accept( crawler, new java.util.HashSet<edu.cmu.cs.dennisc.pattern.Crawlable>(), crawlPolicy, criterion );
 	}
 
-	@Deprecated
-	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences ) {
-		CrawlPolicy crawlPolicy = followReferences ? CrawlPolicy.COMPLETE : CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY;
-		this.crawl( crawler, crawlPolicy );
+	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, CrawlPolicy crawlPolicy ) {
+		this.crawl( crawler, crawlPolicy, null );
 	}
+
+	//	@Deprecated
+	//	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean followReferences ) {
+	//		CrawlPolicy crawlPolicy = followReferences ? CrawlPolicy.COMPLETE : CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY;
+	//		this.crawl( crawler, crawlPolicy );
+	//	}
 
 	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
 		org.w3c.dom.Element rv;

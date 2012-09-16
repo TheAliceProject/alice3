@@ -405,7 +405,7 @@ public abstract class IoUtilities {
 				return true;
 			}
 		};
-		programType.crawl( crawler, true );
+		programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE );
 
 		for( org.lgna.project.ast.ResourceExpression resourceExpression : crawler.getList() ) {
 			org.lgna.common.Resource resource = resourceExpression.resource.getValue();
@@ -444,7 +444,7 @@ public abstract class IoUtilities {
 				return true;
 			}
 		};
-		type.crawl( crawler, false );
+		type.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
 		java.util.Set<org.lgna.common.Resource> resources = new java.util.HashSet<org.lgna.common.Resource>();
 		for( org.lgna.project.ast.ResourceExpression resourceExpression : crawler.getList() ) {
 			resources.add( resourceExpression.resource.getValue() );

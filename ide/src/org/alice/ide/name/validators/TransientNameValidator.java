@@ -72,7 +72,7 @@ public abstract class TransientNameValidator extends NodeNameValidator {
 			//				
 			//			}
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.UserLocal> crawler = edu.cmu.cs.dennisc.pattern.IsInstanceCrawler.createInstance( org.lgna.project.ast.UserLocal.class );
-			( (org.lgna.project.ast.AbstractCode)this.code ).crawl( crawler, false );
+			( (org.lgna.project.ast.AbstractCode)this.code ).crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
 			for( org.lgna.project.ast.UserLocal local : crawler.getList() ) {
 				if( local == node ) {
 					//pass
