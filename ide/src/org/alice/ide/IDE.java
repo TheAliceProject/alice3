@@ -254,10 +254,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void ensureProjectCodeUpToDate() {
 		org.lgna.project.Project project = this.getProject();
 		if( project != null ) {
-			if( this.isProjectUpToDateWithFile() == false ) {
+			if( this.isProjectUpToDateWithSceneSetUp() == false ) {
 				synchronized( project.getLock() ) {
 					this.generateCodeForSceneSetUp();
 					this.reorganizeFieldsIfNecessary();
+					this.updateHistoryIndexSceneSetUpSync();
 				}
 			}
 		}
