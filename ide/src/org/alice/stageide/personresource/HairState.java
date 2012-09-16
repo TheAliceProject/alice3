@@ -68,9 +68,8 @@ public class HairState extends AbstractListSelectionState<org.lgna.story.resourc
 				throw new RuntimeException( "todo" );
 			}
 
-			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.Hair value ) {
-				rv.append( value );
-				return rv;
+			public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.Hair value ) {
+				sb.append( value );
 			}
 		} );
 	}

@@ -158,18 +158,19 @@ public class FieldReferenceSearchTreeNode {
 		return new ItemCodec<FieldReferenceSearchTreeNode>() {
 
 			public Class<FieldReferenceSearchTreeNode> getValueClass() {
-				return null;
+				return FieldReferenceSearchTreeNode.class;
 			}
 
 			public FieldReferenceSearchTreeNode decodeValue( BinaryDecoder binaryDecoder ) {
-				return null;
+				throw new RuntimeException( "todo" );
 			}
 
 			public void encodeValue( BinaryEncoder binaryEncoder, FieldReferenceSearchTreeNode value ) {
+				throw new RuntimeException( "todo" );
 			}
 
-			public StringBuilder appendRepresentation( StringBuilder rv, FieldReferenceSearchTreeNode value ) {
-				return null;
+			public void appendRepresentation( StringBuilder sb, FieldReferenceSearchTreeNode value ) {
+				sb.append( value );
 			}
 
 		};

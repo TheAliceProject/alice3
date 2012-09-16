@@ -76,8 +76,7 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 		binaryEncoder.encode( t );
 	}
 
-	public final StringBuilder appendRepresentation( StringBuilder rv, T value ) {
-		rv.append( value );
-		return rv;
+	public final void appendRepresentation( StringBuilder sb, T value ) {
+		sb.append( value );
 	}
 }

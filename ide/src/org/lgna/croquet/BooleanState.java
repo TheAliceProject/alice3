@@ -208,9 +208,8 @@ public abstract class BooleanState extends State<Boolean> {
 	}
 
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, Boolean value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, Boolean value ) {
+		sb.append( value );
 	}
 
 	@Override

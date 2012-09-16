@@ -69,7 +69,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	public abstract void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
 
-	public abstract StringBuilder appendRepresentation( StringBuilder rv, T value );
+	public abstract void appendRepresentation( StringBuilder sb, T value );
 
 	public void pushGeneratedValue( T value ) {
 		this.generatorValueStack.push( value );

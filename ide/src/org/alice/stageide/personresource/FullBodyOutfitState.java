@@ -68,9 +68,8 @@ public class FullBodyOutfitState extends AbstractListSelectionState<org.lgna.sto
 				throw new RuntimeException( "todo" );
 			}
 
-			public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
-				rv.append( value );
-				return rv;
+			public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
+				sb.append( value );
 			}
 		} );
 	}

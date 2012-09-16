@@ -71,12 +71,7 @@ public enum UriCodec implements org.lgna.croquet.ItemCodec<java.net.URI> {
 		}
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, java.net.URI value ) {
-		if( value != null ) {
-			rv.append( value.toString() );
-		} else {
-			rv.append( value );
-		}
-		return rv;
+	public void appendRepresentation( StringBuilder sb, java.net.URI value ) {
+		sb.append( value );
 	}
 }

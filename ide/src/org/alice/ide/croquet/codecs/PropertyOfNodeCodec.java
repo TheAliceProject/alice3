@@ -97,8 +97,8 @@ public class PropertyOfNodeCodec<T extends edu.cmu.cs.dennisc.property.InstanceP
 		}
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, T value ) {
+	public void appendRepresentation( StringBuilder sb, T value ) {
 		//todo
-		return rv;
+		sb.append( value );
 	}
 }

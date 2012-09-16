@@ -120,9 +120,8 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 	}
 
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, N value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, N value ) {
+		sb.append( value );
 	}
 
 	public SwingModel<N> getSwingModel() {

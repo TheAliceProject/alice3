@@ -76,8 +76,8 @@ public abstract class ItemState<T> extends State<T> {
 	}
 
 	@Override
-	public final StringBuilder appendRepresentation( StringBuilder rv, T value ) {
-		return this.itemCodec.appendRepresentation( rv, value );
+	public final void appendRepresentation( StringBuilder sb, T value ) {
+		this.itemCodec.appendRepresentation( sb, value );
 	}
 
 	public ItemCodec<T> getItemCodec() {
