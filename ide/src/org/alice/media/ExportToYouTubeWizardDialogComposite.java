@@ -44,6 +44,8 @@ package org.alice.media;
 
 import java.io.File;
 
+import org.alice.ide.IDE;
+
 import edu.cmu.cs.dennisc.matt.EventScript;
 
 /**
@@ -76,6 +78,11 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	}
 
 	public org.lgna.project.Project getProject() {
+		if( this.project != null ) {
+			//pass
+		} else if( IDE.getActiveInstance() != null ) {
+			this.project = IDE.getActiveInstance().getProject();
+		}
 		return this.project;
 	}
 

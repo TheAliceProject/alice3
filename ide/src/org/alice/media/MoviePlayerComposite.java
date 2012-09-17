@@ -44,35 +44,65 @@ package org.alice.media;
 
 import java.awt.Component;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.alice.media.components.MoviePlayerView;
+import org.monte.media.anim.ANIMPlayer;
+import org.monte.media.iff.IFFOutputStream;
 
 /**
  * @author Matt May
  */
 public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<MoviePlayerView> {
 
-	private MoviePlayer player;
+	//	private MoviePlayer player;
+	//	private QuickTimePlayer player;
+	private ANIMPlayer animPlayer;
+	private MoviePlayerView view;
 
 	public MoviePlayerComposite( File file ) {
 		super( java.util.UUID.fromString( "28ea7f67-1f3f-443f-a3fb-130676779b5f" ) );
-		player = new MoviePlayer();
-		player.registerHack( this );
+		//		player = new MoviePlayer();
+		//		player.registerHack( this );
 	}
 
 	@Override
 	protected MoviePlayerView createView() {
-		return new MoviePlayerView( this );
+		view = new MoviePlayerView( this );
+		return view;
 	}
 
 	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
-		System.out.println( "bye" );
 		getView().handlePlayerRealized( visualComponent, controlComponent );
 		getView().revalidateAndRepaint();
 	}
 
 	public void setMovie( File file ) {
-		player.setMovie( file );
-		player.init();
+		System.out.println( "setMovie" );
+		FileInputStream fStream = null;
+		//		QuickTimeInputStream stream = null;
+		IFFOutputStream blah = null;
+		try {
+			fStream = new FileInputStream( file );
+			//			blah = new IFFOutputStream( file );
+			//			fStream = new QuickTimeInputStream( file );
+			//			fStream = new FileInputStream(stream);
+		} catch( FileNotFoundException e ) {
+			return;
+		} catch( IOException e ) {
+			e.printStackTrace();
+		}
+
+		animPlayer = new ANIMPlayer( fStream );
+		animPlayer.realize();
+		view.update( this );
+		//		player.setMovie( file );
+		//		player.init();
+	}
+
+	public ANIMPlayer getAnimPlayer() {
+		return this.animPlayer;
 	}
 }

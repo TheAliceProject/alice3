@@ -25,5 +25,6 @@
 	<classpathentry kind="lib" path="lib/alice/aliceModelSource.jar"/>
 	<classpathentry kind="lib" path="lib/alice/nebulousModelSource.jar"/>
 	<classpathentry kind="lib" path="lib/jogl/lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/monte.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

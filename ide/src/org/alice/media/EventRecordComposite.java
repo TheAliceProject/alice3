@@ -82,6 +82,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	public EventRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "35d34417-8c0c-4f06-b919-5945b336b596" ) );
+		assert owner != null;
 		this.owner = owner;
 		isRecordingState.addValueListener( isRecordingListener );
 	}
