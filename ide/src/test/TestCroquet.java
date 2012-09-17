@@ -55,35 +55,62 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		TestCroquet testCroquet = new TestCroquet();
 		testCroquet.initialize( args );
 
-		class IntegerState extends org.lgna.croquet.BoundedIntegerState {
-			public IntegerState() {
+		class TestIntegerState extends org.lgna.croquet.BoundedIntegerState {
+			public TestIntegerState() {
 				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ) );
 			}
 		}
-		class DoubleState extends org.lgna.croquet.BoundedDoubleState {
-			public DoubleState() {
-				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "82e0bdc9-92af-4c8d-92c5-68ea3d9d2457" ) ).maximum( 80 ).initialValue( 50 ).stepSize( 10 ).minimum( 20 ) );
+		class TestDoubleState extends org.lgna.croquet.BoundedDoubleState {
+			public TestDoubleState() {
+				super( new Details( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "397994c3-daf3-4db9-ad5b-feaccfb2aa56" ) ).maximum( 80 ).initialValue( 50 ).stepSize( 10 ).minimum( 20 ) );
 			}
 		}
 
-		IntegerState integerState = new IntegerState();
-		DoubleState doubleState = new DoubleState();
+		class TestBooleanState extends org.lgna.croquet.BooleanState {
+			public TestBooleanState() {
+				super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "1d7a975b-58cb-4ebb-b1cb-e0b456584820" ), false );
+			}
+		}
+
+		TestIntegerState integerState = new TestIntegerState();
+		TestDoubleState doubleState = new TestDoubleState();
+		final TestBooleanState booleanState = new TestBooleanState();
 
 		integerState.addValueListener( new org.lgna.croquet.State.ValueListener<Integer>() {
-			public void changing( org.lgna.croquet.State<java.lang.Integer> state, java.lang.Integer prevValue, java.lang.Integer nextValue, boolean isAdjusting ) {
+			public void changing( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
 			}
 
-			public void changed( org.lgna.croquet.State<java.lang.Integer> state, java.lang.Integer prevValue, java.lang.Integer nextValue, boolean isAdjusting ) {
+			public void changed( org.lgna.croquet.State<Integer> state, Integer prevValue, Integer nextValue, boolean isAdjusting ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue, isAdjusting );
+			}
+		} );
+		booleanState.addValueListener( new org.lgna.croquet.State.ValueListener<Boolean>() {
+			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue, isAdjusting );
 			}
 		} );
 
+		class TestOperation extends org.lgna.croquet.ActionOperation {
+			public TestOperation() {
+				super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "bc3e9e3a-0219-4ed7-9fa7-c4e7ff5c7360" ) );
+			}
+
+			@Override
+			protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+				booleanState.setValue( !booleanState.getValue() );
+			}
+		}
+
+		TestOperation operation = new TestOperation();
 		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane(
-				4, 1,
+				0, 2,
 				integerState.createSlider(), integerState.createSpinner(),
 				doubleState.createSlider(), doubleState.createSpinner(),
-
-				new org.lgna.croquet.components.SwingAdapter( new javax.swing.JComboBox() )
+				booleanState.createRadioButton(), booleanState.createCheckBox(),
+				operation.createButton(), new org.lgna.croquet.components.Label()
 				);
 
 		testCroquet.getFrame().getContentPanel().addCenterComponent( gridPanel );

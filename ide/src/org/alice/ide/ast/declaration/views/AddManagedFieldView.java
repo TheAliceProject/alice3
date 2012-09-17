@@ -63,9 +63,9 @@ public class AddManagedFieldView extends AddFieldView {
 			final org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
 			org.lgna.croquet.components.FormPanel propertiesPanel = new org.lgna.croquet.components.FormPanel() {
 				@Override
-				protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
+				protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
 					for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state : states ) {
-						rows.add( new org.lgna.croquet.components.LabeledSpringRow( state.getSidekickLabel(), new org.alice.ide.croquet.components.ExpressionDropDown( state, factory ) ) );
+						rows.add( new org.lgna.croquet.components.LabeledFormRow( state.getSidekickLabel(), new org.alice.ide.croquet.components.ExpressionDropDown( state, factory ) ) );
 					}
 				}
 			};

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.custom.components;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
-		super( composite );
+public class ShowSystemPropertiesComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.ShowSystemPropertiesView> {
+	private static class SingletonHolder {
+		private static ShowSystemPropertiesComposite instance = new ShowSystemPropertiesComposite();
+	}
+
+	public static ShowSystemPropertiesComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ShowSystemPropertiesComposite() {
+		super( java.util.UUID.fromString( "497ed779-82e4-4d6e-9198-f79d2328587a" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 	}
 
 	@Override
-	public org.alice.ide.custom.CustomExpressionCreatorComposite<?> getComposite() {
-		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
+	protected org.alice.ide.croquet.models.help.views.ShowSystemPropertiesView createView() {
+		return new org.alice.ide.croquet.models.help.views.ShowSystemPropertiesView( this );
 	}
 
-	protected abstract void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows );
-
-	@Override
-	public org.lgna.croquet.components.FormPanel createMainComponent() {
-		org.lgna.croquet.components.FormPanel rowsSpringPanel = new org.lgna.croquet.components.FormPanel() {
-			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-				RowBasedCustomExpressionCreatorView.this.appendRows( rows );
-			}
-		};
-		return rowsSpringPanel;
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
+		ShowSystemPropertiesComposite.getInstance().getOperation().fire();
+		System.exit( 0 );
 	}
 }

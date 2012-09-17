@@ -45,6 +45,6 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public interface SpringRow {
+public interface FormRow {
 	public Component<?>[] createComponentArray();
 }

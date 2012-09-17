@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class FormPanel extends MigPanel {
-	private java.util.List<LabeledSpringRow> rows;
+	private java.util.List<LabeledFormRow> rows;
 
 	public FormPanel( org.lgna.croquet.Composite<?> composite ) {
 		super( composite, "", "[right][left,grow]", "" );
@@ -56,7 +56,7 @@ public abstract class FormPanel extends MigPanel {
 		this( null );
 	}
 
-	protected abstract void appendRows( java.util.List<LabeledSpringRow> rows );
+	protected abstract void appendRows( java.util.List<LabeledFormRow> rows );
 
 	@Override
 	protected void handleDisplayable() {
@@ -66,7 +66,7 @@ public abstract class FormPanel extends MigPanel {
 		} else {
 			this.rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.appendRows( this.rows );
-			for( SpringRow row : rows ) {
+			for( FormRow row : rows ) {
 				Component<?>[] components = row.createComponentArray();
 				assert components.length == 2 : components.length;
 				this.addComponent( components[ 0 ] );

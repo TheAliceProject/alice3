@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.croquet.models.help.views;
 
-package org.alice.ide.custom.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
+public class ShowSystemPropertiesView extends org.lgna.croquet.components.FormPanel {
+	public ShowSystemPropertiesView( org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite composite ) {
 		super( composite );
 	}
 
 	@Override
-	public org.alice.ide.custom.CustomExpressionCreatorComposite<?> getComposite() {
-		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
-	}
-
-	protected abstract void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows );
-
-	@Override
-	public org.lgna.croquet.components.FormPanel createMainComponent() {
-		org.lgna.croquet.components.FormPanel rowsSpringPanel = new org.lgna.croquet.components.FormPanel() {
-			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-				RowBasedCustomExpressionCreatorView.this.appendRows( rows );
-			}
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+		String[] propertyNames = { "java.version", "os.name", "os.version", "os.arch", "sun.arch.data.model" };
+		for( String propertyName : propertyNames ) {
+			String value = System.getProperty( propertyName );
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( propertyName + ":" ), new org.lgna.croquet.components.Label( value ) ) );
+		}
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) ) );
+		org.alice.ide.croquet.models.help.ShowPathPropertyOperation[] showPathPropertyOperations = {
+				org.alice.ide.croquet.models.help.ShowClassPathPropertyOperation.getInstance(),
+				org.alice.ide.croquet.models.help.ShowLibraryPathPropertyOperation.getInstance(),
 		};
-		return rowsSpringPanel;
+		for( org.alice.ide.croquet.models.help.ShowPathPropertyOperation showPathPropertyOperation : showPathPropertyOperations ) {
+			String propertyName = showPathPropertyOperation.getPropertyName();
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel(
+					new org.lgna.croquet.components.Label( propertyName + ":" ),
+					showPathPropertyOperation.createHyperlink()
+					) );
+		}
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) ) );
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, org.alice.ide.croquet.models.help.ShowAllSystemPropertiesOperation.getInstance().createHyperlink() ) );
 	}
 }
