@@ -103,21 +103,12 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 					if( map.get( modelAtMouseLocation ) != null ) {
 						listeners.addAll( map.get( modelAtMouseLocation ) );
 					}
-<<<<<<< HEAD
 				}
 				if( listeners != null ) {
 					for( Object listener : listeners ) {
-//						if( classMap.get( listener ) == null || classMap.get( listener ).isAssignableFrom( checkEvent.getObjectAtMouseLocation().getClass() ) ) {
-							fireEvent( listener, event, modelAtMouseLocation );
-//						}
-=======
-					if( listeners != null ) {
-						for( Object listener : listeners ) {
-							if( ( classMap.get( listener ) == null ) || classMap.get( listener ).isAssignableFrom( checkEvent.getObjectAtMouseLocation().getClass() ) ) {
-								fireEvent( listener, event, modelAtMouseLocation );
-							}
-						}
->>>>>>> 5461c9dbb87e93668e458e86b61906dcad1da9a6
+						//						if( classMap.get( listener ) == null || classMap.get( listener ).isAssignableFrom( checkEvent.getObjectAtMouseLocation().getClass() ) ) {
+						fireEvent( listener, event, modelAtMouseLocation );
+						//						}
 					}
 				}
 			}
