@@ -49,31 +49,33 @@ public class AliceFormatter extends Formatter {
 	private static class SingletonHolder {
 		private static AliceFormatter instance = new AliceFormatter();
 	}
+
 	public static AliceFormatter getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private java.util.Map<String, String> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
+
 	private AliceFormatter() {
 		super( new java.util.Locale( "en", "US", "alice" ), "Alice" );
-		java.util.Locale locale = java.util.Locale.getDefault(); 
-		String[] bundleNames = { 
-				"AliceFormatter", 
-				"java_lang_Functions", 
-				"org_alice_integer_Functions", 
-				"org_alice_random_Functions", 
-				"org_alice_apis_moveandturn_Procedures", 
-				"org_alice_apis_moveandturn_Functions", 
-				"org_alice_apis_moveandturn_Fields", 
-				"org_alice_apis_moveandturn_Parameters", 
-				"edu_wustl_cse_lookingglass_apis_walkandtouch_Procedures", 
-				"edu_wustl_cse_lookingglass_apis_walkandtouch_Functions", 
-				"edu_wustl_cse_lookingglass_apis_walkandtouch_Parameters" 
+		java.util.Locale locale = java.util.Locale.getDefault();
+		String[] bundleNames = {
+				"AliceFormatter",
+				"java_lang_Functions",
+				"org_alice_integer_Functions",
+				"org_alice_random_Functions",
+				"org_alice_apis_moveandturn_Procedures",
+				"org_alice_apis_moveandturn_Functions",
+				"org_alice_apis_moveandturn_Fields",
+				"org_alice_apis_moveandturn_Parameters",
+				"edu_wustl_cse_lookingglass_apis_walkandtouch_Procedures",
+				"edu_wustl_cse_lookingglass_apis_walkandtouch_Functions",
+				"edu_wustl_cse_lookingglass_apis_walkandtouch_Parameters"
 		};
 		for( String bundleName : bundleNames ) {
 			try {
 				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.formatter." + bundleName, locale );
-				for( java.util.Enumeration<String> e=resourceBundle.getKeys(); e.hasMoreElements();  ) {
+				for( java.util.Enumeration<String> e = resourceBundle.getKeys(); e.hasMoreElements(); ) {
 					String key = e.nextElement();
 					map.put( key, resourceBundle.getString( key ) );
 				}
@@ -82,7 +84,7 @@ public class AliceFormatter extends Formatter {
 			}
 		}
 	}
-	
+
 	private String getLocalizedText( String text, String rvIfNull ) {
 		String rv = this.map.get( text );
 		if( rv != null ) {
@@ -91,20 +93,24 @@ public class AliceFormatter extends Formatter {
 			return rvIfNull;
 		}
 	}
+
 	private String getLocalizedText( String text ) {
 		return getLocalizedText( text, text );
 	}
-//	public String getTextForThis() {
-//		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( org.lgna.project.ast.ThisExpression.class, "org.lgna.project.ast.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
-//	}
+
+	//	public String getTextForThis() {
+	//		return edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( org.lgna.project.ast.ThisExpression.class, "org.lgna.project.ast.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
+	//	}
 	@Override
 	public String getTextForThis() {
 		return this.getLocalizedText( "this" );
 	}
+
 	@Override
 	public String getTextForNull() {
 		return this.getLocalizedText( "null" );
 	}
+
 	@Override
 	protected String getTextForCls( Class<?> cls ) {
 		if( cls != null ) {
@@ -118,16 +124,17 @@ public class AliceFormatter extends Formatter {
 	protected String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter ) {
 		return this.getLocalizedText( javaParameter.getName() );
 	}
+
 	@Override
 	protected String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy ) {
 		return this.getLocalizedText( methodReflectionProxy.getName() );
 	}
-	
+
 	@Override
 	public boolean isTypeExpressionDesired() {
 		return false;
 	}
-	
+
 	@Override
 	public String getNameForField( java.lang.reflect.Field fld ) {
 		return fld.getName();

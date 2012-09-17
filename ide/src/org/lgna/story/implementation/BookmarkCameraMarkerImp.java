@@ -46,16 +46,16 @@ import org.lgna.story.SCameraMarker;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class BookmarkCameraMarkerImp extends PerspectiveCameraMarkerImp{
+public class BookmarkCameraMarkerImp extends PerspectiveCameraMarkerImp {
 
 	public BookmarkCameraMarkerImp( SCameraMarker abstraction ) {
-		super(abstraction);
+		super( abstraction );
 	}
 
 	@Override
-	public float getDefaultMarkerOpacity() 
+	public float getDefaultMarkerOpacity()
 	{
 		return .5f;
 	}

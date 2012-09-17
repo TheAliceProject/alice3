@@ -50,9 +50,11 @@ public class PositionAndOrientationProceduresComposite extends org.alice.ide.mem
 	private static class SingletonHolder {
 		private static PositionAndOrientationProceduresComposite instance = new PositionAndOrientationProceduresComposite();
 	}
+
 	public static PositionAndOrientationProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private PositionAndOrientationProceduresComposite() {
 		super( java.util.UUID.fromString( "6f85f6c4-3006-41d9-ae73-1ad481bcd4d7" ), "moveAndOrientTo", "moveAndOrientToAGoodVantagePointOf" );
 	}

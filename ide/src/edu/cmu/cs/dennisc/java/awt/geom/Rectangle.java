@@ -45,16 +45,18 @@ package edu.cmu.cs.dennisc.java.awt.geom;
 /**
  * @author Dennis Cosgrove
  */
-public class Rectangle extends Shape{
+public class Rectangle extends Shape {
 	private java.awt.geom.Rectangle2D m_rect;
 
 	public Rectangle( double xHalfLength, double yHalfLength ) {
 		m_rect = new java.awt.geom.Rectangle2D.Double( -xHalfLength, -yHalfLength, xHalfLength + xHalfLength, yHalfLength + yHalfLength );
 	}
+
 	@Override
 	protected java.awt.Shape getDrawShape() {
 		return m_rect;
 	}
+
 	@Override
 	protected java.awt.Shape getFillShape() {
 		return m_rect;

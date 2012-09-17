@@ -46,8 +46,8 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractValueLiteral extends AbstractLiteral {
-	public abstract edu.cmu.cs.dennisc.property.InstanceProperty< ? > getValueProperty();
-	
+	public abstract edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty();
+
 	@Override
 	public boolean isValid() {
 		return this.getValueProperty().getValue() != null;

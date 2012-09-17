@@ -49,6 +49,7 @@ public class ToggleButton extends BooleanStateButton<javax.swing.JToggleButton> 
 	public ToggleButton( org.lgna.croquet.BooleanState model ) {
 		super( model );
 	}
+
 	@Override
 	protected javax.swing.JToggleButton createAwtComponent() {
 		return new javax.swing.JToggleButton();

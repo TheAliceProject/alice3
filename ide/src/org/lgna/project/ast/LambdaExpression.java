@@ -57,11 +57,13 @@ public class LambdaExpression extends Expression {
 
 	public LambdaExpression() {
 	}
+
 	public LambdaExpression( Lambda value ) {
 		this.value.setValue( value );
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		Lambda lambda = this.value.getValue();
 		if( lambda != null ) {
 			return lambda.getReturnType();

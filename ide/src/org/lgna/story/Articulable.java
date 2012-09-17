@@ -48,5 +48,6 @@ package org.lgna.story;
  */
 public interface Articulable {
 	public void touch( SThing entity );
+
 	public void walkTo( SThing entity );
 }

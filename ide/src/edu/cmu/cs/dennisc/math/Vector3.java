@@ -48,9 +48,11 @@ package edu.cmu.cs.dennisc.math;
 public class Vector3 extends Tuple3 {
 	public Vector3() {
 	}
+
 	public Vector3( Tuple3 other ) {
 		super( other );
 	}
+
 	public Vector3( double x, double y, double z ) {
 		super( x, y, z );
 	}
@@ -58,66 +60,80 @@ public class Vector3 extends Tuple3 {
 	public static Vector3 createZero() {
 		return (Vector3)setReturnValueToZero( new Vector3() );
 	}
+
 	public static Vector3 createNaN() {
 		return (Vector3)setReturnValueToNaN( new Vector3() );
 	}
+
 	public static Vector3 createAddition( Tuple3 a, Tuple3 b ) {
 		return (Vector3)setReturnValueToAddition( new Vector3(), a, b );
 	}
+
 	public static Vector3 createSubtraction( Tuple3 a, Tuple3 b ) {
 		return (Vector3)setReturnValueToSubtraction( new Vector3(), a, b );
 	}
+
 	public static Vector3 createNegation( Tuple3 a ) {
 		return (Vector3)setReturnValueToNegation( new Vector3(), a );
 	}
+
 	public static Vector3 createMultiplication( Tuple3 a, Tuple3 b ) {
 		return (Vector3)setReturnValueToMultiplication( new Vector3(), a, b );
 	}
+
 	public static Vector3 createMultiplication( Tuple3 a, double b ) {
 		return (Vector3)setReturnValueToMultiplication( new Vector3(), a, b );
 	}
+
 	public static Vector3 createDivision( Tuple3 a, Tuple3 b ) {
 		return (Vector3)setReturnValueToDivision( new Vector3(), a, b );
 	}
+
 	public static Vector3 createDivision( Tuple3 a, double b ) {
 		return (Vector3)setReturnValueToDivision( new Vector3(), a, b );
 	}
+
 	public static Vector3 createInterpolation( Tuple3 a, Tuple3 b, double portion ) {
 		return (Vector3)setReturnValueToInterpolation( new Vector3(), a, b, portion );
 	}
+
 	public static Vector3 createNormalized( Tuple3 a ) {
 		return (Vector3)setReturnValueToNormalized( new Vector3(), a );
 	}
 
 	public static double calculateDotProduct( Vector3 a, Vector3 b ) {
-		return a.x * b.x + a.y * b.y + a.z * b.z;
+		return ( a.x * b.x ) + ( a.y * b.y ) + ( a.z * b.z );
 	}
 
 	@Deprecated
 	public static double calculateCrossProductX( double ax, double ay, double az, double bx, double by, double bz ) {
-		return ay * bz - az * by;
+		return ( ay * bz ) - ( az * by );
 	}
+
 	@Deprecated
 	public static double calculateCrossProductY( double ax, double ay, double az, double bx, double by, double bz ) {
-		return bx * az - bz * ax;
+		return ( bx * az ) - ( bz * ax );
 	}
+
 	@Deprecated
 	public static double calculateCrossProductZ( double ax, double ay, double az, double bx, double by, double bz ) {
-		return ax * by - ay * bx;
+		return ( ax * by ) - ( ay * bx );
 	}
-	
+
 	public static Vector3 setReturnValueToCrossProduct( Vector3 rv, Vector3 a, Vector3 b ) {
-		double x = a.y * b.z - a.z * b.y;
-		double y = b.x * a.z - b.z * a.x;
-		double z = a.x * b.y - a.y * b.x;
+		double x = ( a.y * b.z ) - ( a.z * b.y );
+		double y = ( b.x * a.z ) - ( b.z * a.x );
+		double z = ( a.x * b.y ) - ( a.y * b.x );
 		rv.x = x;
 		rv.y = y;
 		rv.z = z;
 		return rv;
 	}
+
 	public void setToCrossProduct( Vector3 a, Vector3 b ) {
 		setReturnValueToCrossProduct( this, a, b );
 	}
+
 	public static Vector3 createCrossProduct( Vector3 a, Vector3 b ) {
 		return setReturnValueToCrossProduct( new Vector3(), a, b );
 	}
@@ -145,10 +161,12 @@ public class Vector3 extends Tuple3 {
 		POSITIVE_X_AXIS.set( 1, 0, 0 );
 		return POSITIVE_X_AXIS;
 	}
+
 	public static Vector3 accessPositiveYAxis() {
 		POSITIVE_Y_AXIS.set( 0, 1, 0 );
 		return POSITIVE_Y_AXIS;
 	}
+
 	public static Vector3 accessPositiveZAxis() {
 		POSITIVE_Z_AXIS.set( 0, 0, 1 );
 		return POSITIVE_Z_AXIS;
@@ -158,10 +176,12 @@ public class Vector3 extends Tuple3 {
 		NEGATIVE_X_AXIS.set( -1, 0, 0 );
 		return NEGATIVE_X_AXIS;
 	}
+
 	public static Vector3 accessNegativeYAxis() {
 		NEGATIVE_Y_AXIS.set( 0, -1, 0 );
 		return NEGATIVE_Y_AXIS;
 	}
+
 	public static Vector3 accessNegativeZAxis() {
 		NEGATIVE_Z_AXIS.set( 0, 0, -1 );
 		return NEGATIVE_Z_AXIS;
@@ -170,18 +190,23 @@ public class Vector3 extends Tuple3 {
 	public static Vector3 createPositiveXAxis() {
 		return new Vector3( 1, 0, 0 );
 	}
+
 	public static Vector3 createPositiveYAxis() {
 		return new Vector3( 0, 1, 0 );
 	}
+
 	public static Vector3 createPositiveZAxis() {
 		return new Vector3( 0, 0, 1 );
 	}
+
 	public static Vector3 createNegativeXAxis() {
 		return new Vector3( -1, 0, 0 );
 	}
+
 	public static Vector3 createNegativeYAxis() {
 		return new Vector3( 0, -1, 0 );
 	}
+
 	public static Vector3 createNegativeZAxis() {
 		return new Vector3( 0, 0, -1 );
 	}
@@ -189,22 +214,27 @@ public class Vector3 extends Tuple3 {
 	public boolean isPositiveXAxis() {
 		return this.equals( accessPositiveXAxis() );
 	}
+
 	public boolean isPositiveYAxis() {
 		return this.equals( accessPositiveYAxis() );
 	}
+
 	public boolean isPositiveZAxis() {
 		return this.equals( accessPositiveZAxis() );
 	}
+
 	public boolean isNegativeXAxis() {
 		return this.equals( accessNegativeXAxis() );
 	}
+
 	public boolean isNegativeYAxis() {
 		return this.equals( accessNegativeYAxis() );
 	}
+
 	public boolean isNegativeZAxis() {
 		return this.equals( accessNegativeZAxis() );
 	}
-	
+
 	//	
 	//	public VectorD3() {
 	//	}

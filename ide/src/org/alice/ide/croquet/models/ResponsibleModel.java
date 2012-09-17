@@ -48,9 +48,14 @@ package org.alice.ide.croquet.models;
  */
 public interface ResponsibleModel {
 	public void retarget( org.lgna.croquet.Retargeter retargeter );
+
 	public void doOrRedoInternal( boolean isDo );
+
 	public void undoInternal();
+
 	public StringBuilder updatePresentation( StringBuilder rv );
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate );
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit );	
+
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate );
+
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit );
 }

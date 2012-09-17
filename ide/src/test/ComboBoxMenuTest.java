@@ -55,8 +55,8 @@ public class ComboBoxMenuTest {
 		model.addElement( "mo" );
 		model.addElement( "jack" );
 		model.addElement( "berkeley" );
-		javax.swing.JComboBox jComboBox = new javax.swing.JComboBox(model);
-		
+		javax.swing.JComboBox jComboBox = new javax.swing.JComboBox( model );
+
 		javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				System.out.println( e );
@@ -65,16 +65,17 @@ public class ComboBoxMenuTest {
 		action.putValue( javax.swing.Action.NAME, "does not work" );
 		final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		final org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-			.lineStart( label )
-			.center( new org.lgna.croquet.components.SwingAdapter( new javax.swing.JButton( action ) ) )
-		.build();
+				.lineStart( label )
+				.center( new org.lgna.croquet.components.SwingAdapter( new javax.swing.JButton( action ) ) )
+				.build();
 		class ListCellRenderer implements javax.swing.ListCellRenderer {
 			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 				label.setText( (String)value );
 				return borderPanel.getAwtComponent();
 			}
-		};
-		
+		}
+		;
+
 		jComboBox.setRenderer( new ListCellRenderer() );
 		frame.getContentPanel().getAwtComponent().add( jComboBox, java.awt.BorderLayout.PAGE_START );
 		frame.pack();

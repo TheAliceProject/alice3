@@ -49,16 +49,16 @@ import java.util.BitSet;
  */
 public class HandleSet extends BitSet
 {
-	public static HandleSet GROUND_TRANSLATION_VISUALIZATION = new HandleSet(HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.X_AND_Z_AXIS);
-	public static HandleSet UP_DOWN_TRANSLATION_VISUALIZATION = new HandleSet(HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.Y_AXIS);
-	public static HandleSet DEFAULT_INTERACTION = new HandleSet(HandleGroup.DEFAULT, HandleGroup.INTERACTION);
-	public static HandleSet RESIZE_INTERACTION = new HandleSet(HandleGroup.RESIZE, HandleGroup.INTERACTION);
-	public static HandleSet ROTATION_INTERACTION = new HandleSet(HandleGroup.ROTATION, HandleGroup.INTERACTION);
-	public static HandleSet JOINT_ROTATION_INTERACTION = new HandleSet(HandleGroup.ROTATION, HandleGroup.INTERACTION);
-	public static HandleSet TRANSLATION_INTERACTION = new HandleSet(HandleGroup.TRANSLATION, HandleGroup.INTERACTION);
-	public static HandleSet MAIN_ORTHOGRAPHIC_CAMERA_CONTROLS = new HandleSet(HandleGroup.ORTHOGRAPHIC_CAMERA, HandleGroup.MAIN_CAMERA);
-	public static HandleSet MAIN_PERSPECTIVE_CAMERA_CONTROLS = new HandleSet(HandleGroup.PERSPECTIVE_CAMERA, HandleGroup.MAIN_CAMERA);
-	
+	public static HandleSet GROUND_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.X_AND_Z_AXIS );
+	public static HandleSet UP_DOWN_TRANSLATION_VISUALIZATION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.VISUALIZATION, HandleGroup.Y_AXIS );
+	public static HandleSet DEFAULT_INTERACTION = new HandleSet( HandleGroup.DEFAULT, HandleGroup.INTERACTION );
+	public static HandleSet RESIZE_INTERACTION = new HandleSet( HandleGroup.RESIZE, HandleGroup.INTERACTION );
+	public static HandleSet ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
+	public static HandleSet JOINT_ROTATION_INTERACTION = new HandleSet( HandleGroup.ROTATION, HandleGroup.INTERACTION );
+	public static HandleSet TRANSLATION_INTERACTION = new HandleSet( HandleGroup.TRANSLATION, HandleGroup.INTERACTION );
+	public static HandleSet MAIN_ORTHOGRAPHIC_CAMERA_CONTROLS = new HandleSet( HandleGroup.ORTHOGRAPHIC_CAMERA, HandleGroup.MAIN_CAMERA );
+	public static HandleSet MAIN_PERSPECTIVE_CAMERA_CONTROLS = new HandleSet( HandleGroup.PERSPECTIVE_CAMERA, HandleGroup.MAIN_CAMERA );
+
 	public enum HandleGroup {
 		ROTATION,
 		TRANSLATION,
@@ -85,92 +85,90 @@ public class HandleSet extends BitSet
 		BOTTOM_LEFT_CAMERA,
 		BOTTOM_RIGHT_CAMERA,
 		JOINT,
-		
+
 	}
-		 
+
 	@Override
 	//HandleSet intersection is true if all of the bits passed in are set on this
 	//An empty set will never match
 	public boolean intersects( BitSet set )
 	{
-		if (set == null)
+		if( set == null )
 		{
 			return false;
 		}
 		boolean intersection = false;
-		for (int i=0; i<set.length(); i++)
+		for( int i = 0; i < set.length(); i++ )
 		{
-			if (set.get( i ) && this.get( i ))
+			if( set.get( i ) && this.get( i ) )
 			{
 				intersection = true;
 			}
-			else if (set.get( i ) && !this.get( i ))
+			else if( set.get( i ) && !this.get( i ) )
 			{
 				return false;
 			}
 		}
 		return intersection;
 	}
+
 	public void addSet( HandleSet set )
 	{
 		this.or( set );
 	}
-	
-	
-	public static String getStringForSet(HandleSet set)
+
+	public static String getStringForSet( HandleSet set )
 	{
-		if (set == RESIZE_INTERACTION)
+		if( set == RESIZE_INTERACTION )
 		{
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
-			return resourceBundle.getString("resize");
+			return resourceBundle.getString( "resize" );
 		}
-		else if (set == ROTATION_INTERACTION)
+		else if( set == ROTATION_INTERACTION )
 		{
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
-			return resourceBundle.getString("rotation");
+			return resourceBundle.getString( "rotation" );
 		}
-		else if (set == TRANSLATION_INTERACTION)
+		else if( set == TRANSLATION_INTERACTION )
 		{
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
-			return resourceBundle.getString("translation");
+			return resourceBundle.getString( "translation" );
 		}
-		else if (set == DEFAULT_INTERACTION)
+		else if( set == DEFAULT_INTERACTION )
 		{
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
-			return resourceBundle.getString("default");
+			return resourceBundle.getString( "default" );
 		}
-		else if (set == GROUND_TRANSLATION_VISUALIZATION)
+		else if( set == GROUND_TRANSLATION_VISUALIZATION )
 		{
 			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( HandleSet.class.getPackage().getName() + ".handle" );
-			return resourceBundle.getString("groundTranslation");
+			return resourceBundle.getString( "groundTranslation" );
 		}
 		else
 		{
 			return "NO STRING SET";
 		}
 	}
-	
-	public HandleSet( HandleGroup...groups)
+
+	public HandleSet( HandleGroup... groups )
 	{
-		addGroups(groups);
+		addGroups( groups );
 	}
-	
+
 	public void addGroup( HandleGroup group )
 	{
 		this.set( group.ordinal() );
 	}
-	
-	public void addGroups( HandleGroup...groups )
+
+	public void addGroups( HandleGroup... groups )
 	{
-		for (int i=0; i<groups.length; i++)
-		{
-			this.set( groups[i].ordinal() );
+		for( HandleGroup group : groups ) {
+			this.set( group.ordinal() );
 		}
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		return getStringForSet(this);
+		return getStringForSet( this );
 	}
 }

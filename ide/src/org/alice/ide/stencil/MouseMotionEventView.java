@@ -47,15 +47,15 @@ package org.alice.ide.stencil;
  */
 public abstract class MouseMotionEventView extends CustomView {
 	private final java.awt.event.AWTEventListener awtEventListener = new java.awt.event.AWTEventListener() {
-		public void eventDispatched(java.awt.AWTEvent event) {
+		public void eventDispatched( java.awt.AWTEvent event ) {
 			java.awt.event.MouseEvent e = (java.awt.event.MouseEvent)event;
-			e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent(e.getComponent(), e, MouseMotionEventView.this.getAwtComponent());
+			e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( e.getComponent(), e, MouseMotionEventView.this.getAwtComponent() );
 			MouseMotionEventView.this.handleMouseMotionEvent( e );
 		}
 	};
-	
+
 	protected abstract void handleMouseMotionEvent( java.awt.event.MouseEvent e );
-	
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();

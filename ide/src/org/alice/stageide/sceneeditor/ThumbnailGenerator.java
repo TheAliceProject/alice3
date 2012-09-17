@@ -50,8 +50,9 @@ public class ThumbnailGenerator {
 	private ThumbnailGenerator() {
 		throw new AssertionError();
 	}
+
 	private static edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
-	
+
 	public static synchronized java.awt.image.BufferedImage createThumbnail( int width, int height ) {
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
@@ -81,6 +82,5 @@ public class ThumbnailGenerator {
 			return null;
 		}
 	}
-	
-	
+
 }

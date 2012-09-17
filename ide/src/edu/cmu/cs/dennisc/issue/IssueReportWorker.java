@@ -49,21 +49,24 @@ import edu.cmu.cs.dennisc.mail.MailReport;
 /**
  * @author Dennis Cosgrove
  */
-public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boolean, String > {
+public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Boolean, String> {
 	private ProgressPane progressPane;
 	private ReportGenerator issueReportGenerator;
 	private ReportSubmissionConfiguration reportSubmissionConfiguration;
 	private String key = null;
+
 	public IssueReportWorker( ProgressPane progressPane, ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
 		assert progressPane != null;
 		this.progressPane = progressPane;
 		this.issueReportGenerator = issueReportGenerator;
 		this.reportSubmissionConfiguration = reportSubmissionConfiguration;
 	}
+
 	@Override
-	protected void process( java.util.List< String > chunks ) {
+	protected void process( java.util.List<String> chunks ) {
 		this.progressPane.handleProcess( chunks );
 	}
+
 	private void process( String... chunks ) {
 		this.process( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( chunks ) );
 	}
@@ -74,20 +77,20 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
 			String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
-		    com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
+			com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
 
-		    boolean rv;
-		    //todo?
-		    try {
-		    	boolean isBase64EncodingDesired = false;
-		    	edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.addAttachments( result, jiraReport, service, token, isBase64EncodingDesired );
-		    	rv = true;
-		    } catch( java.rmi.RemoteException re ) {
-		    	re.printStackTrace();
-		    	rv = false;
-		    }
-		    
-		    this.key = result.getKey();
+			boolean rv;
+			//todo?
+			try {
+				boolean isBase64EncodingDesired = false;
+				edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.addAttachments( result, jiraReport, service, token, isBase64EncodingDesired );
+				rv = true;
+			} catch( java.rmi.RemoteException re ) {
+				re.printStackTrace();
+				rv = false;
+			}
+
+			this.key = result.getKey();
 			service.logout( token );
 
 			return rv;
@@ -95,6 +98,7 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 			throw new Exception( "pass" );
 		}
 	}
+
 	protected void uploadToJIRAViaRPC() throws Exception {
 		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
 		if( jiraReport != null ) {
@@ -116,11 +120,12 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 		MailReport mailReport = this.issueReportGenerator.generateIssueForSMTP();
 		if( mailReport != null ) {
 			edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.reportSubmissionConfiguration.getMailServer(), this.reportSubmissionConfiguration.getMailAuthenticator(), mailReport.getReplyTo(), mailReport.getReplyToPersonal(), this.reportSubmissionConfiguration.getMailRecipient(), mailReport.getSubject(), mailReport.getBody(), mailReport.getAttachments() );
-		    this.key = null;
+			this.key = null;
 		} else {
 			throw new Exception( "pass" );
 		}
 	}
+
 	@Override
 	protected Boolean doInBackground() throws Exception {
 		this.process( "attempting to submit bug report...\n" );
@@ -157,28 +162,29 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 				} catch( Exception eC ) {
 					eC.printStackTrace();
 					this.process( "FAILED.\n" );
-//					this.process( "* sending secure mail (on secure smtp port)... " );
-//					try {
-//						this.sendMail( true, null );
-//						this.process( "SUCCEEDED.\n" );
-//					} catch( Exception eD ) {
-//						eD.printStackTrace();
-//						this.process( "FAILED.\n" );
-//						this.process( "* sending secure mail (on http port)... " );
-//						try {
-//							this.sendMail( true, 80 );
-//							this.process( "SUCCEEDED.\n" );
-//						} catch( Exception eE ) {
-//							eE.printStackTrace();
-							this.process( "FAILED.\n" );
-							return false;
-//						}
-//					}
+					//					this.process( "* sending secure mail (on secure smtp port)... " );
+					//					try {
+					//						this.sendMail( true, null );
+					//						this.process( "SUCCEEDED.\n" );
+					//					} catch( Exception eD ) {
+					//						eD.printStackTrace();
+					//						this.process( "FAILED.\n" );
+					//						this.process( "* sending secure mail (on http port)... " );
+					//						try {
+					//							this.sendMail( true, 80 );
+					//							this.process( "SUCCEEDED.\n" );
+					//						} catch( Exception eE ) {
+					//							eE.printStackTrace();
+					this.process( "FAILED.\n" );
+					return false;
+					//						}
+					//					}
 				}
 			}
 		}
 		return true;
 	}
+
 	@Override
 	protected void done() {
 		try {

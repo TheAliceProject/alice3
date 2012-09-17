@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.menubar;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -50,9 +49,11 @@ public class PreferencesMenuModel extends org.lgna.croquet.PredeterminedMenuMode
 	private static class SingletonHolder {
 		private static PreferencesMenuModel instance = new PreferencesMenuModel();
 	}
+
 	public static PreferencesMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private PreferencesMenuModel() {
 		super( java.util.UUID.fromString( "e8f8a5b3-83be-4519-8956-3ef2b9546e23" ),
 				org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getMenuModel(),
@@ -68,7 +69,6 @@ public class PreferencesMenuModel extends org.lgna.croquet.PredeterminedMenuMode
 				org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForFieldInitializers.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.preferences.IsNullAllowedForLocalInitializers.getInstance().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
-				GalleryMenuModel.getInstance()
-		);
+				GalleryMenuModel.getInstance() );
 	}
 }

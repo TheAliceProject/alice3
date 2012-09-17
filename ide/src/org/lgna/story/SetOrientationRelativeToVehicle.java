@@ -44,12 +44,13 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class SetOrientationRelativeToVehicle extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetOrientationRelativeToVehicle.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetOrientationRelativeToVehicle.class )
 	public static interface Detail {
 	}
+
 	private SetOrientationRelativeToVehicle() {
 		super();
 	}

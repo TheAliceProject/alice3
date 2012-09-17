@@ -46,13 +46,14 @@ package org.alice.ide.declarationseditor.type.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldList extends MemberList< org.lgna.project.ast.UserField > {
-	public FieldList( org.lgna.croquet.ListSelectionState< org.lgna.project.ast.UserField > model, org.lgna.croquet.Operation operation ) {
+public abstract class FieldList extends MemberList<org.lgna.project.ast.UserField> {
+	public FieldList( org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> model, org.lgna.croquet.Operation operation ) {
 		super( model, operation );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserField item ) {
+	protected org.lgna.croquet.components.JComponent<?> createButtonLineStart( org.lgna.project.ast.UserField item ) {
 		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
 		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
 			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
@@ -65,13 +66,15 @@ public abstract class FieldList extends MemberList< org.lgna.project.ast.UserFie
 			return null;
 		}
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserField item ) {
+	protected org.lgna.croquet.components.JComponent<?> createButtonCenter( org.lgna.project.ast.UserField item ) {
 		org.lgna.project.ast.ManagementLevel managementLevel = item.managementLevel.getValue();
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), item, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserField item ) {
+	protected org.lgna.croquet.components.JComponent<?> createButtonLineEnd( org.lgna.project.ast.UserField item ) {
 		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
 		rv.addComponent( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( item ).getOperation().createButton() );
 		if( item.isDeletionAllowed.getValue() ) {

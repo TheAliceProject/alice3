@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.cascade.array;
  * @author Dennis Cosgrove
  */
 public class ParameterArrayLengthFillIn extends ArrayLengthFillIn {
-	private static java.util.Map< org.lgna.project.ast.AbstractParameter, ParameterArrayLengthFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractParameter, ParameterArrayLengthFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ParameterArrayLengthFillIn getInstance( org.lgna.project.ast.AbstractParameter parameter ) {
 		assert parameter != null;
 		ParameterArrayLengthFillIn rv = map.get( parameter );
@@ -59,11 +60,14 @@ public class ParameterArrayLengthFillIn extends ArrayLengthFillIn {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.AbstractParameter parameter;
+
 	private ParameterArrayLengthFillIn( org.lgna.project.ast.AbstractParameter parameter ) {
 		super( java.util.UUID.fromString( "92eaae4a-7f4c-466a-8e0b-1f31b63a7d66" ) );
 		this.parameter = parameter;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
 		return new org.lgna.project.ast.ParameterAccess( this.parameter );

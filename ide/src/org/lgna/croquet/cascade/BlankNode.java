@@ -46,24 +46,30 @@ package org.lgna.croquet.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class BlankNode< B > extends CascadeNode< AbstractItemNode< B, ?, org.lgna.croquet.CascadeItem<B,?> >, org.lgna.croquet.CascadeBlank< B > > {
-	public static <B> BlankNode< B > createInstance( org.lgna.croquet.CascadeBlank< B > model ) {
-		return new BlankNode< B >( model );
+public class BlankNode<B> extends CascadeNode<AbstractItemNode<B, ?, org.lgna.croquet.CascadeItem<B, ?>>, org.lgna.croquet.CascadeBlank<B>> {
+	public static <B> BlankNode<B> createInstance( org.lgna.croquet.CascadeBlank<B> model ) {
+		return new BlankNode<B>( model );
 	}
-	private BlankNode( org.lgna.croquet.CascadeBlank< B > model ) {
+
+	private BlankNode( org.lgna.croquet.CascadeBlank<B> model ) {
 		super( null, model );
 	}
-	private RtBlank< B > rtBlank;
+
+	private RtBlank<B> rtBlank;
+
 	public BlankNode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	/*package-private*/ void setRtBlank( RtBlank< B > rtBlank ) {
+
+	/* package-private */void setRtBlank( RtBlank<B> rtBlank ) {
 		this.rtBlank = rtBlank;
 	}
+
 	public boolean isTop() {
 		return this.rtBlank.getParent() instanceof RtRoot;
 	}
-	public AbstractItemNode getSelectedFillInContext() {	
+
+	public AbstractItemNode getSelectedFillInContext() {
 		return this.rtBlank.getSelectedFillInNode();
 	}
 }

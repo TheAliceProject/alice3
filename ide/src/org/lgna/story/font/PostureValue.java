@@ -52,9 +52,11 @@ public class PostureValue implements PostureAttribute {
 	public PostureValue( Float value ) {
 		m_value = value;
 	}
+
 	public java.awt.font.TextAttribute getKey() {
 		return java.awt.font.TextAttribute.POSTURE;
 	}
+
 	public Float getValue() {
 		return m_value;
 	}

@@ -46,22 +46,25 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class View< J extends javax.swing.JComponent, C extends org.lgna.croquet.Composite<?> > extends JComponent< J > {
+public abstract class View<J extends javax.swing.JComponent, C extends org.lgna.croquet.Composite<?>> extends JComponent<J> {
 	private final C composite;
+
 	public View( C composite ) {
 		this.composite = composite;
 		if( this.composite != null ) {
 			this.composite.initializeIfNecessary();
 		}
 	}
+
 	public C getComposite() {
 		return composite;
 	}
+
 	@Override
 	protected java.lang.StringBuilder appendRepr( java.lang.StringBuilder rv ) {
 		super.appendRepr( rv );
 		rv.append( "composite=" );
 		rv.append( composite );
 		return rv;
-	}	
+	}
 }

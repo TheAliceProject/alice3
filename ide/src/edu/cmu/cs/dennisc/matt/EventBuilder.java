@@ -42,13 +42,12 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
-import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lgna.story.SThing;
 import org.lgna.story.SModel;
 import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionEvent;
 import org.lgna.story.event.CollisionStartListener;
@@ -61,7 +60,6 @@ import org.lgna.story.event.LeavesViewEvent;
 import org.lgna.story.event.OcclusionEndListener;
 import org.lgna.story.event.OcclusionEvent;
 import org.lgna.story.event.OcclusionStartListener;
-import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.PointOfViewEvent;
 import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.ProximityEvent;
@@ -79,8 +77,8 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class EventBuilder {
 
-	private static HashMap<Object,ArrayList<ArrayList<? extends Object>>> collectionMap = Collections.newHashMap();
-	private static HashMap<Object,Class<?>[]> classMap = Collections.newHashMap();
+	private static HashMap<Object, ArrayList<ArrayList<? extends Object>>> collectionMap = Collections.newHashMap();
+	private static HashMap<Object, Class<?>[]> classMap = Collections.newHashMap();
 
 	private static class EventPair<A, B> {
 		A first;
@@ -94,6 +92,7 @@ public class EventBuilder {
 		protected A getFirst() {
 			return first;
 		}
+
 		protected B getSecond() {
 			return second;
 		}
@@ -104,7 +103,7 @@ public class EventBuilder {
 		classMap.put( listener, clsArr );
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( "unchecked" )
 	private static <A> A buildEvent( Class<A> event, Object listener, Object[] array ) {
 		if( CollisionEvent.class.isAssignableFrom( event ) ) {
 			if( SMovableTurnable.class.isAssignableFrom( classMap.get( listener )[ 0 ] ) ) {
@@ -135,27 +134,28 @@ public class EventBuilder {
 					return (A)makeOcclusionEvent( clsOne, clsTwo, listener, array );
 				}
 			}
-		} else if( PointOfViewEvent.class.isAssignableFrom( event ) ){
-			if(array != null && array.length > 0  )
-			return (A)new PointOfViewEvent( (SMovableTurnable)array[0] );
+		} else if( PointOfViewEvent.class.isAssignableFrom( event ) ) {
+			if( ( array != null ) && ( array.length > 0 ) ) {
+				return (A)new PointOfViewEvent( (SMovableTurnable)array[ 0 ] );
+			}
 		}
 		System.out.println( "ATTEMPTED TO MAKE UNHANDLED EVENT: " + event );
 		return null;
 	}
 
-	private static <A extends SModel, B extends SModel> OcclusionEvent<A,B> makeOcclusionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
-		EventPair<A,B> pair = pairedEvent( clsOne, clsTwo, listener, array );
+	private static <A extends SModel, B extends SModel> OcclusionEvent<A, B> makeOcclusionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
+		EventPair<A, B> pair = pairedEvent( clsOne, clsTwo, listener, array );
 		if( listener instanceof OcclusionStartListener ) {
-			return new StartOcclusionEvent<A,B>( pair.getFirst(), pair.getSecond() );
+			return new StartOcclusionEvent<A, B>( pair.getFirst(), pair.getSecond() );
 		} else if( listener instanceof OcclusionEndListener ) {
-			return new EndOcclusionEvent<A,B>( pair.getFirst(), pair.getSecond() );
+			return new EndOcclusionEvent<A, B>( pair.getFirst(), pair.getSecond() );
 		} else {
 			System.out.println( "ATTEMPTED TO MAKE UNHANDLED OCCLUSION EVENT" );
 			return null;
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings( "unchecked" )
 	private static <A extends SModel> ViewEvent<A> makeViewEvent( Class<A> clsOne, Object listener, Object[] array ) {
 		if( listener instanceof ViewEnterListener ) {
 			return new ComesIntoViewEvent<A>( (A)array[ 0 ] );
@@ -167,31 +167,32 @@ public class EventBuilder {
 		}
 	}
 
-	private static <A extends SMovableTurnable, B extends SMovableTurnable> ProximityEvent<A,B> makeProximityEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
-		EventPair<A,B> pair = pairedEvent( clsOne, clsTwo, listener, array );
+	private static <A extends SMovableTurnable, B extends SMovableTurnable> ProximityEvent<A, B> makeProximityEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
+		EventPair<A, B> pair = pairedEvent( clsOne, clsTwo, listener, array );
 		if( listener instanceof ProximityEnterListener ) {
-			return new EnterProximityEvent<A,B>( pair.getFirst(), pair.getSecond() );
+			return new EnterProximityEvent<A, B>( pair.getFirst(), pair.getSecond() );
 		} else if( listener instanceof ProximityExitListener ) {
-			return new ExitProximityEvent<A,B>( pair.getFirst(), pair.getSecond() );
+			return new ExitProximityEvent<A, B>( pair.getFirst(), pair.getSecond() );
 		} else {
 			System.out.println( "ATTEMPTED TO MAKE UNHANDLED PROXIMITY EVENT" );
 			return null;
 		}
 	}
 
-	private static <A extends SMovableTurnable, B extends SMovableTurnable> CollisionEvent<A,B> makeCollisionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
-		EventPair<A,B> pair = pairedEvent( clsOne, clsTwo, listener, array );
+	private static <A extends SMovableTurnable, B extends SMovableTurnable> CollisionEvent<A, B> makeCollisionEvent( Class<A> clsOne, Class<B> clsTwo, Object listener, Object[] array ) {
+		EventPair<A, B> pair = pairedEvent( clsOne, clsTwo, listener, array );
 		if( listener instanceof CollisionStartListener ) {
-			return new StartCollisionEvent<A,B>( pair.getFirst(), pair.getSecond() );
+			return new StartCollisionEvent<A, B>( pair.getFirst(), pair.getSecond() );
 		} else if( listener instanceof CollisionEndListener ) {
-			return new EndCollisionEvent<A,B>( pair.getFirst(), pair.getSecond() );
+			return new EndCollisionEvent<A, B>( pair.getFirst(), pair.getSecond() );
 		} else {
 			System.out.println( "ATTEMPTED TO MAKE UNHANDLED COLLISION EVENT" );
 			return null;
 		}
 	}
-	@SuppressWarnings("unchecked")
-	private static <A, B> EventPair<A,B> pairedEvent( Class<A> a, Class<B> b, Object listener, Object[] array ) {
+
+	@SuppressWarnings( "unchecked" )
+	private static <A, B> EventPair<A, B> pairedEvent( Class<A> a, Class<B> b, Object listener, Object[] array ) {
 		assert array.length == 2;
 		A first = null;
 		B second = null;
@@ -207,8 +208,9 @@ public class EventBuilder {
 			first = (A)array[ 1 ];
 			second = (B)array[ 0 ];
 		}
-		return new EventPair<A,B>( first, second );
+		return new EventPair<A, B>( first, second );
 	}
+
 	public static void ammend( Object key, int group, Object newObject ) {
 		ArrayList temp = Collections.newArrayList( newObject );
 		collectionMap.get( key ).get( group ).addAll( temp );

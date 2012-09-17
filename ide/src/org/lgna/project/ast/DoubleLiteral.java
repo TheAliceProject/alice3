@@ -47,22 +47,27 @@ package org.lgna.project.ast;
  */
 public class DoubleLiteral extends AbstractValueLiteral {
 	public edu.cmu.cs.dennisc.property.DoubleProperty value = new edu.cmu.cs.dennisc.property.DoubleProperty( this, null, true );
+
 	public DoubleLiteral() {
 	}
+
 	public DoubleLiteral( Double value ) {
 		this.value.setValue( value );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return JavaType.getInstance( Double.class );
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
 	}
+
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty< ? > getValueProperty() {
+	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
 		return this.value;
 	}
 }

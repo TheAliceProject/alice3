@@ -46,17 +46,22 @@ package edu.cmu.cs.dennisc.java.awt;
  * @author Dennis Cosgrove
  */
 public class FileDialogUtilities {
-	
+
 	private static interface FileDialog {
 		public String getFile();
+
 		public void setFile( String filename );
+
 		public String getDirectory();
+
 		public void setDirectory( String path );
+
 		public void show();
 	}
-	
+
 	private static class AwtFileDialog implements FileDialog {
 		private final java.awt.FileDialog awtFileDialog;
+
 		public AwtFileDialog( java.awt.Component root, String title, int mode ) {
 			if( root instanceof java.awt.Frame ) {
 				awtFileDialog = new java.awt.FileDialog( (java.awt.Frame)root, title, mode );
@@ -66,33 +71,41 @@ public class FileDialogUtilities {
 				awtFileDialog = new java.awt.FileDialog( (java.awt.Dialog)null, title, mode );
 			}
 		}
+
 		public String getFile() {
 			return this.awtFileDialog.getFile();
 		}
+
 		public void setFile( String filename ) {
 			this.awtFileDialog.setFile( filename );
 		}
+
 		public String getDirectory() {
 			return this.awtFileDialog.getDirectory();
 		}
+
 		public void setDirectory( String path ) {
 			this.awtFileDialog.setDirectory( path );
 		}
+
 		public void show() {
 			this.awtFileDialog.setVisible( true );
 		}
 	}
+
 	private static class SwingFileDialog implements FileDialog {
 		private final javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser();
 		private final java.awt.Component root;
 		private final String title;
 		private final int mode;
 		private int result = javax.swing.JFileChooser.CANCEL_OPTION;
+
 		public SwingFileDialog( java.awt.Component root, String title, int mode ) {
 			this.root = root;
 			this.title = title;
 			this.mode = mode;
 		}
+
 		public String getFile() {
 			if( this.result != javax.swing.JFileChooser.CANCEL_OPTION ) {
 				java.io.File file = this.jFileChooser.getSelectedFile();
@@ -105,9 +118,11 @@ public class FileDialogUtilities {
 				return null;
 			}
 		}
+
 		public void setFile( String filename ) {
-			this.jFileChooser.setSelectedFile( new java.io.File(filename) );
+			this.jFileChooser.setSelectedFile( new java.io.File( filename ) );
 		}
+
 		public String getDirectory() {
 			if( this.result != javax.swing.JFileChooser.CANCEL_OPTION ) {
 				java.io.File file = this.jFileChooser.getCurrentDirectory();
@@ -120,11 +135,13 @@ public class FileDialogUtilities {
 				return null;
 			}
 		}
+
 		public void setDirectory( String path ) {
 			if( path != null ) {
 				this.jFileChooser.setCurrentDirectory( new java.io.File( path ) );
 			}
 		}
+
 		public void show() {
 			//todo: use this.title
 			this.result = javax.swing.JFileChooser.CANCEL_OPTION;
@@ -133,14 +150,14 @@ public class FileDialogUtilities {
 			} else {
 				this.result = this.jFileChooser.showSaveDialog( this.root );
 			}
-			
+
 		}
 	}
-	
+
 	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToLoadFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private static edu.cmu.cs.dennisc.map.MapToMap<java.awt.Component, String, FileDialog> mapPathToSaveFileDialog = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private static java.util.Map<String, String> mapSecondaryKeyToPath = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	
+
 	private static FileDialog createFileDialog( java.awt.Component root, String title, int mode ) {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			return new SwingFileDialog( root, title, mode );
@@ -150,6 +167,7 @@ public class FileDialogUtilities {
 	}
 
 	private static final String NULL_KEY = "null";
+
 	private static java.io.File showFileDialog( java.awt.Component component, String title, int mode, String directoryKey, String filename, String extension, boolean isSharingDesired ) {
 		FileDialog fileDialog;
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( component );
@@ -196,7 +214,7 @@ public class FileDialogUtilities {
 		if( path != null ) {
 			fileDialog.setDirectory( path );
 		}
-		
+
 		fileDialog.show();
 		String fileName = fileDialog.getFile();
 		java.io.File rv;
@@ -219,19 +237,23 @@ public class FileDialogUtilities {
 		}
 		return rv;
 	}
+
 	public static java.io.File showOpenFileDialog( java.awt.Component component, java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return showOpenFileDialog( component, directory != null ? directory.getAbsolutePath() : null, filename, extension, isSharingDesired ); 
+		return showOpenFileDialog( component, directory != null ? directory.getAbsolutePath() : null, filename, extension, isSharingDesired );
 	}
+
 	public static java.io.File showSaveFileDialog( java.awt.Component component, java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
-		return showSaveFileDialog( component, directory != null ? directory.getAbsolutePath() : null, filename, extension, isSharingDesired ); 
+		return showSaveFileDialog( component, directory != null ? directory.getAbsolutePath() : null, filename, extension, isSharingDesired );
 	}
+
 	public static java.io.File showOpenFileDialog( java.awt.Component component, String directoryPath, String filename, String extension, boolean isSharingDesired ) {
-		return showFileDialog( component, "Open...", java.awt.FileDialog.LOAD, directoryPath, filename, extension, isSharingDesired ); 
+		return showFileDialog( component, "Open...", java.awt.FileDialog.LOAD, directoryPath, filename, extension, isSharingDesired );
 	}
+
 	public static java.io.File showSaveFileDialog( java.awt.Component component, String directoryPath, String filename, String extension, boolean isSharingDesired ) {
-		return showFileDialog( component, "Save...", java.awt.FileDialog.SAVE, directoryPath, filename, extension, isSharingDesired ); 
+		return showFileDialog( component, "Save...", java.awt.FileDialog.SAVE, directoryPath, filename, extension, isSharingDesired );
 	}
-	
+
 	private static java.io.File showFileDialog( int mode, java.util.UUID sharingId, java.awt.Component component, String title, java.io.File directory, String filename, String extensionToAddIfMissing ) {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( component );
 		FileDialog fileDialog = createFileDialog( root, title, mode );
@@ -240,9 +262,9 @@ public class FileDialogUtilities {
 		java.io.File rv;
 		if( fileName != null ) {
 			String requestedDirectoryPath = fileDialog.getDirectory();
-//			if( isSharingDesired ) {
-//				FileDialogUtilities.mapSecondaryKeyToPath.put( secondaryKey, requestedDirectoryPath );
-//			}
+			//			if( isSharingDesired ) {
+			//				FileDialogUtilities.mapSecondaryKeyToPath.put( secondaryKey, requestedDirectoryPath );
+			//			}
 			java.io.File rvDirectory = new java.io.File( requestedDirectoryPath );
 			if( mode == java.awt.FileDialog.SAVE ) {
 				if( fileName.endsWith( "." + extensionToAddIfMissing ) ) {
@@ -257,9 +279,11 @@ public class FileDialogUtilities {
 		}
 		return rv;
 	}
+
 	public static java.io.File showOpenFileDialog( java.util.UUID sharingId, java.awt.Component component, String title, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter ) {
 		return showFileDialog( java.awt.FileDialog.LOAD, sharingId, component, title, initialDirectory, initialFilename, null );
 	}
+
 	public static java.io.File showSaveFileDialog( java.util.UUID sharingId, java.awt.Component component, String title, java.io.File initialDirectory, String initialFilename, java.io.FilenameFilter filenameFilter, String extensionToAddIfMissing ) {
 		return showFileDialog( java.awt.FileDialog.SAVE, sharingId, component, title, initialDirectory, initialFilename, extensionToAddIfMissing );
 	}

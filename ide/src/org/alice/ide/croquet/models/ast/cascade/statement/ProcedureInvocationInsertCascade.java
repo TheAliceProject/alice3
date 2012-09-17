@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractMethod, ProcedureInvocationInsertCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.AbstractMethod, ProcedureInvocationInsertCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized ProcedureInvocationInsertCascade getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
 		ProcedureInvocationInsertCascade rv = mapToMap.get( blockStatementIndexPair, method );
 		if( rv != null ) {
@@ -58,18 +59,23 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.AbstractMethod method;
+
 	private ProcedureInvocationInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "d8ea7244-f0eb-4c3a-a9fa-a92182ed221a" ), blockStatementIndexPair, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 		this.method = method;
 	}
+
 	public org.lgna.project.ast.AbstractMethod getMethod() {
 		return this.method;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( instanceExpression, this.method, expressions );
 	}
+
 	@Override
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
@@ -77,12 +83,11 @@ public class ProcedureInvocationInsertCascade extends ExpressionStatementInsertC
 		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 		assert expression instanceof org.lgna.project.ast.MethodInvocation : expression;
 		org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-		
+
 		org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-		
-		
+
 		assert method == this.method : method;
-		
+
 		java.util.List<org.lgna.project.ast.Expression> expressions = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.project.ast.SimpleArgument argument : methodInvocation.requiredArguments ) {
 			org.lgna.project.ast.Expression argumentExpression = argument.expression.getValue();

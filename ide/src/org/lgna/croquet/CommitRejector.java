@@ -46,5 +46,5 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public interface CommitRejector {
-	public AbstractSeverityStatusComposite.Status getRejectionStatus( org.lgna.croquet.history.CompletionStep< ? > step );
+	public AbstractSeverityStatusComposite.Status getRejectionStatus( org.lgna.croquet.history.CompletionStep<?> step );
 }

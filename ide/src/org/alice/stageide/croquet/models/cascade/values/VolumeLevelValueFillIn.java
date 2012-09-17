@@ -47,7 +47,8 @@ package org.alice.stageide.croquet.models.cascade.values;
  * @author Dennis Cosgrove
  */
 public class VolumeLevelValueFillIn extends org.alice.ide.croquet.models.cascade.literals.AbstractDoubleLiteralFillIn {
-	private static java.util.Map< Double, VolumeLevelValueFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Double, VolumeLevelValueFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static VolumeLevelValueFillIn getInstance( double value ) {
 		synchronized( map ) {
 			VolumeLevelValueFillIn rv = map.get( value );
@@ -60,6 +61,7 @@ public class VolumeLevelValueFillIn extends org.alice.ide.croquet.models.cascade
 			return rv;
 		}
 	}
+
 	private VolumeLevelValueFillIn( double value ) {
 		super( java.util.UUID.fromString( "3c9c5dda-22b6-4de2-a839-529e3c3ff208" ), value );
 	}

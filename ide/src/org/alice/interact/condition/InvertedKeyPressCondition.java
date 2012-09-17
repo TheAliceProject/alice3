@@ -56,22 +56,21 @@ public class InvertedKeyPressCondition extends KeyPressCondition {
 	{
 		this( keyValue, null );
 	}
-	
+
 	public InvertedKeyPressCondition( int keyValue, ModifierMask modifierMask )
 	{
-		super(keyValue, modifierMask);
+		super( keyValue, modifierMask );
 	}
-	
+
 	@Override
 	protected boolean testState( InputState state )
 	{
-		return (super.testState( state ) && !state.isKeyDown( this.keyValue));
+		return ( super.testState( state ) && !state.isKeyDown( this.keyValue ) );
 	}
-	
-	
+
 	@Override
 	public String toString()
 	{
-		return "!"+KeyEvent.getKeyText( this.keyValue );
+		return "!" + KeyEvent.getKeyText( this.keyValue );
 	}
 }

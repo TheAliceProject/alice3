@@ -67,7 +67,7 @@ public final class ReloadContentResourceOperation extends SelectedResourceOperat
 		}
 	}
 
-	private static class ImageCapsule extends Capsule< org.lgna.common.resources.ImageResource > {
+	private static class ImageCapsule extends Capsule<org.lgna.common.resources.ImageResource> {
 		private int width;
 		private int height;
 
@@ -76,6 +76,7 @@ public final class ReloadContentResourceOperation extends SelectedResourceOperat
 			this.width = imageResource.getWidth();
 			this.height = imageResource.getHeight();
 		}
+
 		@Override
 		public org.lgna.common.resources.ImageResource update( org.lgna.common.resources.ImageResource rv ) {
 			rv = super.update( rv );
@@ -85,13 +86,14 @@ public final class ReloadContentResourceOperation extends SelectedResourceOperat
 		}
 	}
 
-	private static class AudioCapsule extends Capsule< org.lgna.common.resources.AudioResource > {
+	private static class AudioCapsule extends Capsule<org.lgna.common.resources.AudioResource> {
 		private double duration;
 
 		public AudioCapsule( org.lgna.common.resources.AudioResource audioResource ) {
 			super( audioResource );
 			this.duration = audioResource.getDuration();
 		}
+
 		@Override
 		public org.lgna.common.resources.AudioResource update( org.lgna.common.resources.AudioResource rv ) {
 			rv = super.update( rv );
@@ -103,12 +105,15 @@ public final class ReloadContentResourceOperation extends SelectedResourceOperat
 	private static class SingletonHolder {
 		private static ReloadContentResourceOperation instance = new ReloadContentResourceOperation();
 	}
+
 	public static ReloadContentResourceOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ReloadContentResourceOperation() {
 		super( java.util.UUID.fromString( "05f5ede7-194a-45b2-bb97-c3d23aedf5b9" ) );
 	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, final org.lgna.common.Resource resource ) {
 		if( resource != null ) {
@@ -139,16 +144,18 @@ public final class ReloadContentResourceOperation extends SelectedResourceOperat
 				prevCapsule = null;
 				nextCapsule = null;
 			}
-			if( prevCapsule != null && nextCapsule != null ) {
+			if( ( prevCapsule != null ) && ( nextCapsule != null ) ) {
 				return new org.alice.ide.ToDoEdit( step ) {
 					@Override
 					protected final void doOrRedoInternal( boolean isDo ) {
 						nextCapsule.update( resource );
 					}
+
 					@Override
 					protected final void undoInternal() {
 						prevCapsule.update( resource );
 					}
+
 					@Override
 					protected StringBuilder updatePresentation( StringBuilder rv ) {
 						rv.append( "reload content" );

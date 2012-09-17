@@ -43,10 +43,9 @@
 
 package org.lgna.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeInputDialogPanel< F > extends Panel {
+public abstract class CascadeInputDialogPanel<F> extends Panel {
 	public abstract F getInputValue();
 }

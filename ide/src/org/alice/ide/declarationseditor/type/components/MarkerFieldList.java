@@ -48,32 +48,34 @@ import org.lgna.project.ast.UserField;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public abstract class MarkerFieldList extends FieldList {
 
-	public MarkerFieldList(ListSelectionState<UserField> model, Operation operation) {
-		super(model, operation);
+	public MarkerFieldList( ListSelectionState<UserField> model, Operation operation ) {
+		super( model, operation );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.UserField item ) {
+	protected org.lgna.croquet.components.JComponent<?> createButtonLineStart( org.lgna.project.ast.UserField item ) {
 		return null;
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.UserField item ) {
-		return new org.alice.stageide.sceneeditor.viewmanager.MarkerFieldTile(item);
+	protected org.lgna.croquet.components.JComponent<?> createButtonCenter( org.lgna.project.ast.UserField item ) {
+		return new org.alice.stageide.sceneeditor.viewmanager.MarkerFieldTile( item );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.UserField item ) {
+	protected org.lgna.croquet.components.JComponent<?> createButtonLineEnd( org.lgna.project.ast.UserField item ) {
 		org.lgna.croquet.components.Button renameButton = org.alice.ide.ast.rename.RenameFieldComposite.getInstance( item ).getOperation().createButton();
 		if( item.isDeletionAllowed.getValue() ) {
 			return new org.lgna.croquet.components.LineAxisPanel(
 					renameButton,
-					org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() 
-			);
+					org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( item ).createButton() );
 		} else {
 			return renameButton;
 		}
 	}
-	
+
 }

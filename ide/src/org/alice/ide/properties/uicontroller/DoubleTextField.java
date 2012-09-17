@@ -52,63 +52,63 @@ import javax.swing.JTextField;
 public class DoubleTextField extends JTextField
 {
 	private static final java.text.NumberFormat CENTI_FORMAT = new java.text.DecimalFormat( "0.00" );
-	protected boolean isDirty = false;	
+	protected boolean isDirty = false;
 	protected double trueValue = Double.NaN;
-	
-	public DoubleTextField(int columns)
+
+	public DoubleTextField( int columns )
 	{
-		super(columns);
-		this.addActionListener(new ActionListener() 
+		super( columns );
+		this.addActionListener( new ActionListener()
 		{
-			public void actionPerformed(ActionEvent e) 
+			public void actionPerformed( ActionEvent e )
 			{
 				markValueSet();
 			}
-		});
+		} );
 		this.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
 			@Override
-			protected void updated( javax.swing.event.DocumentEvent e ) 
+			protected void updated( javax.swing.event.DocumentEvent e )
 			{
 				markValueTemporary();
 				DoubleTextField.this.isDirty = true;
 			}
 		} );
 	}
-	
+
 	public boolean isValueValid()
 	{
 		String text = this.getText();
 		Double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( text );
 		return Double.isNaN( value ) == false;
 	}
-	
+
 	public void markValueTemporary()
 	{
-		if (isValueValid())
+		if( isValueValid() )
 		{
-			DoubleTextField.this.setForeground(Color.GRAY);
+			DoubleTextField.this.setForeground( Color.GRAY );
 		}
 		else
 		{
-			DoubleTextField.this.setForeground(Color.RED);
+			DoubleTextField.this.setForeground( Color.RED );
 		}
 	}
-	
+
 	public void markValueSet()
 	{
-		if (isValueValid())
+		if( isValueValid() )
 		{
-			DoubleTextField.this.setForeground(Color.BLACK);
+			DoubleTextField.this.setForeground( Color.BLACK );
 		}
 		else
 		{
-			DoubleTextField.this.setForeground(Color.RED);
+			DoubleTextField.this.setForeground( Color.RED );
 		}
 	}
-	
+
 	public double getValue()
 	{
-		if (this.isDirty)
+		if( this.isDirty )
 		{
 			double value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( this.getText() );
 			this.trueValue = value;
@@ -116,10 +116,10 @@ public class DoubleTextField extends JTextField
 		this.isDirty = false;
 		return this.trueValue;
 	}
-	
-	public void setValue(Double value)
+
+	public void setValue( Double value )
 	{
-		if (value != null)
+		if( value != null )
 		{
 			this.trueValue = value;
 			this.setText( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( this.trueValue, CENTI_FORMAT ) );
@@ -127,7 +127,7 @@ public class DoubleTextField extends JTextField
 		else
 		{
 			this.trueValue = Double.NaN;
-			this.setText("None");
+			this.setText( "None" );
 		}
 		this.isDirty = false;
 		this.markValueSet();

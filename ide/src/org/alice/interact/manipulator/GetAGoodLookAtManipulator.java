@@ -51,9 +51,10 @@ import org.lgna.story.implementation.EntityImp;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
-public class GetAGoodLookAtManipulator extends AbstractManipulator implements CameraInformedManipulator{
+public class GetAGoodLookAtManipulator extends AbstractManipulator implements CameraInformedManipulator {
 
 	protected AbstractCamera camera;
+
 	public AbstractCamera getCamera() {
 		return camera;
 	}
@@ -62,39 +63,39 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 		return CameraView.PICK_CAMERA;
 	}
 
-	public void setCamera(AbstractCamera camera) 
+	public void setCamera( AbstractCamera camera )
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof AbstractTransformable)
+		if( ( this.camera != null ) && ( this.camera.getParent() instanceof AbstractTransformable ) )
 		{
-			this.setManipulatedTransformable((AbstractTransformable)this.camera.getParent());
+			this.setManipulatedTransformable( (AbstractTransformable)this.camera.getParent() );
 		}
 	}
 
-	public void setDesiredCameraView(CameraView cameraView) 
+	public void setDesiredCameraView( CameraView cameraView )
 	{
 		//this can only be PICK_CAMERA
 	}
-	
+
 	@Override
-	public void doClickManipulator(InputState endInput, InputState previousInput) 
+	public void doClickManipulator( InputState endInput, InputState previousInput )
 	{
 		AbstractTransformable toLookAt = endInput.getClickPickTransformable();
-		if (toLookAt != null && this.camera != null)
+		if( ( toLookAt != null ) && ( this.camera != null ) )
 		{
-			org.lgna.story.SThing toLookAtEntity = EntityImp.getAbstractionFromSgElement(toLookAt);
-			org.lgna.story.SThing cameraAbstraction  = EntityImp.getAbstractionFromSgElement(this.camera);
+			org.lgna.story.SThing toLookAtEntity = EntityImp.getAbstractionFromSgElement( toLookAt );
+			org.lgna.story.SThing cameraAbstraction = EntityImp.getAbstractionFromSgElement( this.camera );
 			assert cameraAbstraction instanceof org.lgna.story.SCamera;
 			org.lgna.story.SCamera storytellingCamera = (org.lgna.story.SCamera)cameraAbstraction;
 
 			//Check to see if the last action we did was a GetAGoodLookAt this object. If so, undo it
 			int transactionCount = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionCount();
-			if (transactionCount > 0) {
-				org.lgna.croquet.history.Transaction lastTransaction = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionAt(transactionCount-1);
+			if( transactionCount > 0 ) {
+				org.lgna.croquet.history.Transaction lastTransaction = org.alice.ide.IDE.getActiveInstance().getProjectTransactionHistory().getTransactionAt( transactionCount - 1 );
 				org.lgna.croquet.edits.Edit lastEdit = lastTransaction.getEdit();
-				if (lastEdit instanceof org.alice.interact.operations.GetAGoodLookAtEdit) {
+				if( lastEdit instanceof org.alice.interact.operations.GetAGoodLookAtEdit ) {
 					org.alice.interact.operations.GetAGoodLookAtEdit edit = (org.alice.interact.operations.GetAGoodLookAtEdit)lastEdit;
-					if (edit.getCamera() == storytellingCamera && edit.getTarget() == toLookAtEntity) {
+					if( ( edit.getCamera() == storytellingCamera ) && ( edit.getTarget() == toLookAtEntity ) ) {
 						org.alice.ide.croquet.models.history.UndoOperation.getInstance().fire();
 						return;
 					}
@@ -102,36 +103,36 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 			}
 
 			//Check to see if we're already at a "good look" position of the target. If so, don't do anything
-			org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation(storytellingCamera);
-			org.lgna.story.implementation.StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn(org.lgna.story.ImplementationAccessor.getImplementation(toLookAtEntity));
+			org.lgna.story.implementation.SymmetricPerspectiveCameraImp cameraImp = org.lgna.story.ImplementationAccessor.getImplementation( storytellingCamera );
+			org.lgna.story.implementation.StandInImp cameraGoal = cameraImp.createGoodVantagePointStandIn( org.lgna.story.ImplementationAccessor.getImplementation( toLookAtEntity ) );
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 currentTransform = cameraImp.getAbsoluteTransformation();
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 goalTransform = cameraGoal.getAbsoluteTransformation();
-			if (currentTransform.orientation.isWithinReasonableEpsilonOf(goalTransform.orientation) && currentTransform.translation.isWithinReasonableEpsilonOf(goalTransform.translation)) {
+			if( currentTransform.orientation.isWithinReasonableEpsilonOf( goalTransform.orientation ) && currentTransform.translation.isWithinReasonableEpsilonOf( goalTransform.translation ) ) {
 				//Do nothing since we're already where we're supposed to be
 				return;
 			}
-			
+
 			//Actually "get a good look at" the target
-			org.alice.interact.operations.GetAGoodLookAtActionOperation lookAtOperation = new org.alice.interact.operations.GetAGoodLookAtActionOperation(org.alice.ide.IDE.PROJECT_GROUP, storytellingCamera, toLookAtEntity);
+			org.alice.interact.operations.GetAGoodLookAtActionOperation lookAtOperation = new org.alice.interact.operations.GetAGoodLookAtActionOperation( org.alice.ide.IDE.PROJECT_GROUP, storytellingCamera, toLookAtEntity );
 			lookAtOperation.fire();
 		}
 	}
 
 	@Override
-	public void doDataUpdateManipulator(InputState currentInput, InputState previousInput) {
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void doEndManipulator(InputState endInput, InputState previousInput) {
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public boolean doStartManipulator(InputState startInput) {
-		if (this.manipulatedTransformable != null)
+	public boolean doStartManipulator( InputState startInput ) {
+		if( this.manipulatedTransformable != null )
 		{
 			return true;
 		}
@@ -139,7 +140,7 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 	}
 
 	@Override
-	public void doTimeUpdateManipulator(double dTime, InputState currentInput) {
+	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
 		// TODO Auto-generated method stub
 
 	}
@@ -151,7 +152,7 @@ public class GetAGoodLookAtManipulator extends AbstractManipulator implements Ca
 	}
 
 	@Override
-	public String getUndoRedoDescription() 
+	public String getUndoRedoDescription()
 	{
 		return "Look At Object";
 	}

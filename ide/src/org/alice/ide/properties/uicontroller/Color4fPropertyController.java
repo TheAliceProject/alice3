@@ -50,31 +50,31 @@ import edu.cmu.cs.dennisc.color.Color4f;
 
 public class Color4fPropertyController extends LabelBasedPropertyController<Color4f>
 {
-	public Color4fPropertyController(AbstractPropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?> propertyAdapter)
+	public Color4fPropertyController( AbstractPropertyAdapter<edu.cmu.cs.dennisc.color.Color4f, ?> propertyAdapter )
 	{
-		super(propertyAdapter);
+		super( propertyAdapter );
 	}
-	
+
 	@Override
-	public Class<?> getPropertyType() 
+	public Class<?> getPropertyType()
 	{
 		return edu.cmu.cs.dennisc.color.Color4f.class;
 	}
-	
+
 	@Override
-	protected void setValueOnUI(edu.cmu.cs.dennisc.color.Color4f color)
+	protected void setValueOnUI( edu.cmu.cs.dennisc.color.Color4f color )
 	{
-		if (color != null)
+		if( color != null )
 		{
-			this.label.setText(null);
-			this.label.setIcon(new ColorIcon( color.getAsAWTColor(), 50, 20 ) );
+			this.label.setText( null );
+			this.label.setIcon( new ColorIcon( color.getAsAWTColor(), 50, 20 ) );
 		}
 		else
 		{
-			this.label.setText(BLANK_STRING);
-			this.label.setIcon(null);
+			this.label.setText( BLANK_STRING );
+			this.label.setIcon( null );
 		}
-		
+
 	}
 
 }

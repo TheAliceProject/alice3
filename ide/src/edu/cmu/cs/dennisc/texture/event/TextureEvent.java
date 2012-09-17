@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.texture.event;
 /**
  * @author Dennis Cosgrove
  */
-public class TextureEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.texture.Texture > {
+public class TextureEvent extends edu.cmu.cs.dennisc.pattern.event.Event<edu.cmu.cs.dennisc.texture.Texture> {
 	public TextureEvent( edu.cmu.cs.dennisc.texture.Texture source ) {
 		super( source );
 	}

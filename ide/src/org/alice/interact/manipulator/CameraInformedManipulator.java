@@ -50,10 +50,13 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  * @author David Culyba
  */
 public interface CameraInformedManipulator {
-	
+
 	public AbstractCamera getCamera();
+
 	public void setCamera( AbstractCamera camera );
+
 	public AbstractDragAdapter.CameraView getDesiredCameraView();
-	public void setDesiredCameraView(AbstractDragAdapter.CameraView cameraView);
-	
+
+	public void setDesiredCameraView( AbstractDragAdapter.CameraView cameraView );
+
 }

@@ -50,31 +50,36 @@ public class StringCustomExpressionCreatorComposite extends CustomExpressionCrea
 	private static class SingletonHolder {
 		private static StringCustomExpressionCreatorComposite instance = new StringCustomExpressionCreatorComposite();
 	}
+
 	public static StringCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.lgna.croquet.StringState valueState = this.createStringState( this.createKey( "valueState" ) );
-	
+
 	private StringCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "cf6e1f22-d9f7-4027-b7e1-0c514afec0a3" ) );
 	}
+
 	@Override
 	protected org.alice.ide.custom.components.StringCustomExpressionCreatorView createView() {
 		return new org.alice.ide.custom.components.StringCustomExpressionCreatorView( this );
 	}
+
 	public org.lgna.croquet.StringState getValueState() {
 		return this.valueState;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
 		return new org.lgna.project.ast.StringLiteral( this.valueState.getValue() );
 	}
+
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
 	}
-	
-	
+
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
 		String value;

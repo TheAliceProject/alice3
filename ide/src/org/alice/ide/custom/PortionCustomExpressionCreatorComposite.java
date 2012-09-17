@@ -50,27 +50,33 @@ public class PortionCustomExpressionCreatorComposite extends CustomExpressionCre
 	private static class SingletonHolder {
 		private static PortionCustomExpressionCreatorComposite instance = new PortionCustomExpressionCreatorComposite();
 	}
+
 	public static PortionCustomExpressionCreatorComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.lgna.croquet.BoundedIntegerState valueState = this.createBoundedIntegerState( this.createKey( "valueState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 100 ) );
-	
+
 	private PortionCustomExpressionCreatorComposite() {
 		super( java.util.UUID.fromString( "f1d64eb4-38fd-4c43-856f-e8aa2b1708d1" ) );
 	}
+
 	@Override
 	protected org.alice.ide.custom.components.PortionCustomExpressionCreatorView createView() {
 		return new org.alice.ide.custom.components.PortionCustomExpressionCreatorView( this );
 	}
+
 	public org.lgna.croquet.BoundedIntegerState getValueState() {
 		return this.valueState;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
 		java.math.BigDecimal decimal = new java.math.BigDecimal( this.valueState.getValue() );
 		decimal = decimal.movePointLeft( 2 );
 		return new org.lgna.project.ast.DoubleLiteral( decimal.doubleValue() );
 	}
+
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;

@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class ConvexHull extends Geometry {
-    public final edu.cmu.cs.dennisc.property.DoubleBufferProperty points = new edu.cmu.cs.dennisc.property.DoubleBufferProperty(this, new double[] {} );
-	
+	public final edu.cmu.cs.dennisc.property.DoubleBufferProperty points = new edu.cmu.cs.dennisc.property.DoubleBufferProperty( this, new double[] {} );
+
 	@Override
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
 		java.nio.DoubleBuffer doubleBuffer = this.points.getValue();
@@ -56,26 +56,29 @@ public class ConvexHull extends Geometry {
 
 		edu.cmu.cs.dennisc.math.Point3 p = edu.cmu.cs.dennisc.math.Point3.createNaN();
 
-		for( int i=0; i<xyzs.length; i+=3 ) {
+		for( int i = 0; i < xyzs.length; i += 3 ) {
 			p.set( xyzs[ i ], xyzs[ i ], xyzs[ i ] );
 			trans.transform( p );
 			xyzs[ i ] = p.x;
-			xyzs[ i+1 ] = p.y;
-			xyzs[ i+2 ] = p.z;
+			xyzs[ i + 1 ] = p.y;
+			xyzs[ i + 2 ] = p.z;
 		}
 	}
+
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		java.nio.DoubleBuffer doubleBuffer = this.points.getValue();
 		double[] xyzs = doubleBuffer.array();
 		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, xyzs );
 	}
+
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
 		java.nio.DoubleBuffer doubleBuffer = this.points.getValue();
 		double[] xyzs = doubleBuffer.array();
 		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, xyzs );
 	}
+
 	@Override
 	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		java.nio.DoubleBuffer doubleBuffer = this.points.getValue();

@@ -46,7 +46,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GraphicAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Graphic > extends ElementAdapter< E > {
+public abstract class GraphicAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Graphic> extends ElementAdapter<E> {
 	protected abstract void render( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera );
+
 	protected abstract void forget( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2 );
 }

@@ -46,25 +46,31 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public final class PopupPrepStep extends PrepStep< org.lgna.croquet.PopupPrepModel > {
+public final class PopupPrepStep extends PrepStep<org.lgna.croquet.PopupPrepModel> {
 	private transient org.lgna.croquet.components.PopupMenu popupMenu;
+
 	public static PopupPrepStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.PopupPrepModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		return new PopupPrepStep( parent, model, trigger );
 	}
+
 	private PopupPrepStep( Transaction parent, org.lgna.croquet.PopupPrepModel model, org.lgna.croquet.triggers.Trigger trigger ) {
 		super( parent, model, trigger );
 	}
+
 	public PopupPrepStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		org.lgna.croquet.triggers.Trigger trigger = this.getTrigger();
 		this.popupMenu = popupMenu;
 		trigger.showPopupMenu( popupMenu );
 		this.popupMenu = null;
 	}
+
 	public void handleResized( java.awt.event.ComponentEvent componentEvent ) {
 	}
+
 	public org.lgna.croquet.components.PopupMenu getPopupMenu() {
 		return this.popupMenu;
 	}

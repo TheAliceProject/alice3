@@ -8,9 +8,11 @@ public abstract class CollisionEvent<A extends org.lgna.story.SMovableTurnable, 
 		this.collidingFromA = collidingFromA;
 		this.collidingFromB = collidingFromB;
 	}
+
 	public A getCollidingFromGroupA() {
 		return this.collidingFromA;
 	}
+
 	public B getCollidingFromGroupB() {
 		return this.collidingFromB;
 	}

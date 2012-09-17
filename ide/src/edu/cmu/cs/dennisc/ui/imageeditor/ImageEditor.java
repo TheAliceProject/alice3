@@ -60,9 +60,11 @@ public class ImageEditor extends javax.swing.JFrame {
 		m_imagePane.setTransferHandler( myFileTransferHandler );
 		getContentPane().add( m_imagePane, java.awt.BorderLayout.CENTER );
 	}
+
 	private void load( java.io.File file ) {
 		m_imagePane.setImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( file ) );
 	}
+
 	public static void main( String[] args ) {
 		ImageEditor imageEditor = new ImageEditor();
 		imageEditor.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );

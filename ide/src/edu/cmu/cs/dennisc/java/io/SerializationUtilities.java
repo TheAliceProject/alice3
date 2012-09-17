@@ -53,6 +53,7 @@ public class SerializationUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public static void serialize( java.io.Serializable serializable, java.io.File outFile ) {
 		try {
 			java.io.FileOutputStream fos = new java.io.FileOutputStream( outFile );
@@ -64,6 +65,7 @@ public class SerializationUtilities {
 			throw new RuntimeException( outFile.getAbsolutePath(), ioe );
 		}
 	}
+
 	public static java.io.Serializable unserialize( java.io.ObjectInputStream ois ) {
 		try {
 			return (java.io.Serializable)ois.readObject();
@@ -73,6 +75,7 @@ public class SerializationUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public static java.io.Serializable unserialize( java.io.File inFile ) {
 		try {
 			java.io.FileInputStream fis = new java.io.FileInputStream( inFile );
@@ -86,16 +89,16 @@ public class SerializationUtilities {
 			throw new RuntimeException( inFile.getAbsolutePath(), ioe );
 		}
 	}
-	
+
 	public static void serializeBufferedImage( java.awt.image.BufferedImage bufferedImage, java.io.ObjectOutputStream oos ) {
 		try {
 			if( bufferedImage != null ) {
 				int width = bufferedImage.getWidth();
 				int height = bufferedImage.getHeight();
-//				int imageType = m_bufferedImage.getType();
-//				if( imageType == java.awt.image.BufferedImage.TYPE_CUSTOM ) {
-//				}
-				
+				//				int imageType = m_bufferedImage.getType();
+				//				if( imageType == java.awt.image.BufferedImage.TYPE_CUSTOM ) {
+				//				}
+
 				int[] pixels = bufferedImage.getRGB( 0, 0, width, height, null, 0, width );
 				oos.writeObject( pixels );
 				oos.writeInt( width );
@@ -107,6 +110,7 @@ public class SerializationUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public static void serializeBufferedImage( java.awt.image.BufferedImage bufferedImage, java.io.File outFile ) {
 		try {
 			java.io.FileOutputStream fos = new java.io.FileOutputStream( outFile );
@@ -140,6 +144,7 @@ public class SerializationUtilities {
 			throw new RuntimeException( ioe );
 		}
 	}
+
 	public static java.awt.image.BufferedImage unserializeBufferedImage( java.io.File inFile ) {
 		try {
 			java.io.FileInputStream fis = new java.io.FileInputStream( inFile );
@@ -151,5 +156,5 @@ public class SerializationUtilities {
 			throw new RuntimeException( inFile.getAbsolutePath(), ioe );
 		}
 	}
-	
+
 }

@@ -46,26 +46,27 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.PanelViewController< org.alice.ide.instancefactory.croquet.InstanceFactoryState > {
-	private static final class InternalButton extends org.lgna.croquet.components.JComponent< javax.swing.AbstractButton > {
+public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.PanelViewController<org.alice.ide.instancefactory.croquet.InstanceFactoryState> {
+	private static final class InternalButton extends org.lgna.croquet.components.JComponent<javax.swing.AbstractButton> {
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( InternalButton.this.instanceFactory );
 			}
-			
+
 		};
-		
+
 		private final edu.cmu.cs.dennisc.java.awt.event.AltTriggerMouseAdapter altTriggerMouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.AltTriggerMouseAdapter() {
 			@Override
 			protected void altTriggered( java.awt.event.MouseEvent e ) {
 				InternalButton.this.handleAltTriggered( e );
 			}
 		};
-		
+
 		public InternalButton( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 			this.instanceFactory = instanceFactory;
 		}
+
 		@Override
 		protected javax.swing.AbstractButton createAwtComponent() {
 			javax.swing.JRadioButton rv = new javax.swing.JRadioButton( this.action ) {
@@ -74,13 +75,14 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 					//note: do not invoke super
 					//super.paintComponent( g );
 				}
+
 				@Override
 				protected void paintChildren( java.awt.Graphics g ) {
 					//todo: better indication of selection/rollover
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					
+
 					java.awt.Composite prevComposite = g2.getComposite();
-					
+
 					java.awt.Composite nextComposite = prevComposite;
 					float alpha;
 					if( model.isSelected() ) {
@@ -98,7 +100,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 						}
 					}
 					nextComposite = java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, alpha );
-					
+
 					g2.setComposite( nextComposite );
 					try {
 						super.paintChildren( g );
@@ -126,27 +128,32 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( top, left, bottom, right ) );
 			return rv;
 		}
-		
+
 		protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
 			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
 		}
+
 		@Override
 		protected void handleDisplayable() {
 			super.handleDisplayable();
 			this.addMouseListener( this.altTriggerMouseAdapter );
 		}
+
 		@Override
 		protected void handleUndisplayable() {
 			this.removeMouseListener( this.altTriggerMouseAdapter );
 			super.handleUndisplayable();
 		}
 	}
+
 	private static final class InternalPanel extends org.lgna.croquet.components.PageAxisPanel {
 		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-		private final java.util.Map< org.alice.ide.instancefactory.InstanceFactory, InternalButton > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InternalButton> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 		public InternalPanel() {
 			this.setBackgroundColor( null );
 		}
+
 		private InternalButton getButtonFor( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 			InternalButton rv = map.get( instanceFactory );
 			if( rv != null ) {
@@ -157,12 +164,12 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 			}
 			return rv;
 		}
-		
+
 		@Override
 		protected void internalRefresh() {
 			super.internalRefresh();
 			this.removeAllComponents();
-			java.util.List< InternalButton > buttons = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<InternalButton> buttons = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) );
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 			org.lgna.project.ast.NamedUserType sceneType = ide.getSceneType();
@@ -177,7 +184,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 			}
 			this.setSelected( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue() );
 		}
-		
+
 		private void setSelected( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 			InternalButton button;
 			if( instanceFactory != null ) {
@@ -195,33 +202,37 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 			}
 		}
 	}
-	
-	private final org.lgna.croquet.State.ValueListener< org.alice.ide.instancefactory.InstanceFactory > instanceFactoryListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.instancefactory.InstanceFactory >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.instancefactory.InstanceFactory > state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 			InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
 		}
 	};
 	private org.lgna.project.ast.UserType type;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< org.lgna.project.ast.UserField > fieldsListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< org.lgna.project.ast.UserField >() {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserField> fieldsListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserField>() {
 		@Override
-		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
 		}
+
 		@Override
-		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< org.lgna.project.ast.UserField > e ) {
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserField> e ) {
 			InstanceFactorySelectionPanel.this.getInternalPanel().refreshLater();
 		}
 	};
+
 	public InstanceFactorySelectionPanel() {
 		super( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance(), new InternalPanel() );
 		this.setBackgroundColor( null );
 		this.getAwtComponent().setOpaque( false );
 	}
-	
+
 	public org.lgna.project.ast.UserType getType() {
 		return this.type;
 	}
+
 	public void setType( org.lgna.project.ast.UserType type ) {
 		if( this.type != null ) {
 			this.type.fields.removeListPropertyListener( this.fieldsListener );
@@ -231,11 +242,13 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 			this.type.fields.addListPropertyListener( this.fieldsListener );
 		}
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getModel().addValueListener( this.instanceFactoryListener );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.getModel().removeValueListener( this.instanceFactoryListener );

@@ -52,13 +52,16 @@ public enum EmptyIconFactory implements IconFactory {
 			public int getIconWidth() {
 				return size.width;
 			}
+
 			public int getIconHeight() {
 				return size.height;
 			}
+
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 			}
 		};
 	}
+
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		return sizeIfResolutionIndependent;
 	}

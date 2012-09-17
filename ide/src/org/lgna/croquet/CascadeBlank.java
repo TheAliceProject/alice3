@@ -46,25 +46,29 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeBlank< B > extends AbstractElement {
+public abstract class CascadeBlank<B> extends AbstractElement {
 	public CascadeBlank( java.util.UUID id ) {
 		super( id );
 	}
+
 	@Override
 	protected void localize() {
 	}
-	protected abstract java.util.List< CascadeBlankChild > updateChildren( java.util.List< CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<B> blankNode );
+
+	protected abstract java.util.List<CascadeBlankChild> updateChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<B> blankNode );
+
 	private static boolean isEmptySeparator( CascadeBlankChild child ) {
-		return child instanceof CascadeLineSeparator || ( (child instanceof CascadeLabelSeparator) && ((CascadeLabelSeparator)child).isValid() == false );
+		return ( child instanceof CascadeLineSeparator ) || ( ( child instanceof CascadeLabelSeparator ) && ( ( (CascadeLabelSeparator)child ).isValid() == false ) );
 	}
+
 	public final CascadeBlankChild[] getFilteredChildren( org.lgna.croquet.cascade.BlankNode<B> blankNode ) {
-		java.util.List< CascadeBlankChild > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<CascadeBlankChild> children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updateChildren( children, blankNode );
 		for( CascadeBlankChild child : children ) {
 			assert child != null;
 		}
 
-		java.util.ListIterator< CascadeBlankChild > listIterator = children.listIterator();
+		java.util.ListIterator<CascadeBlankChild> listIterator = children.listIterator();
 		boolean isLineSeparatorAcceptable = false;
 		while( listIterator.hasNext() ) {
 			CascadeBlankChild child = listIterator.next();

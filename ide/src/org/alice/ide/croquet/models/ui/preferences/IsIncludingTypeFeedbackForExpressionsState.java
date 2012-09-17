@@ -49,9 +49,11 @@ public class IsIncludingTypeFeedbackForExpressionsState extends org.lgna.croquet
 	private static class SingletonHolder {
 		private static IsIncludingTypeFeedbackForExpressionsState instance = new IsIncludingTypeFeedbackForExpressionsState();
 	}
+
 	public static IsIncludingTypeFeedbackForExpressionsState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsIncludingTypeFeedbackForExpressionsState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), true );
 	}

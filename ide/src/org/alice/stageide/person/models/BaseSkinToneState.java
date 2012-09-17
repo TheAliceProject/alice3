@@ -45,13 +45,15 @@ package org.alice.stageide.person.models;
 /**
  * @author Dennis Cosgrove
  */
-public class BaseSkinToneState extends AbstractListSelectionState< org.lgna.story.resources.sims2.BaseSkinTone > {
+public class BaseSkinToneState extends AbstractListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> {
 	private static class SingletonHolder {
 		private static BaseSkinToneState instance = new BaseSkinToneState();
 	}
+
 	public static BaseSkinToneState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private BaseSkinToneState() {
 		super( java.util.UUID.fromString( "16db5f23-5fa8-41e5-8477-de0f9271e797" ), edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.BaseSkinTone.class ), org.lgna.story.resources.sims2.BaseSkinTone.values() );
 	}

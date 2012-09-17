@@ -42,124 +42,155 @@
  */
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
 
 /**
  * @author dculyba
  */
 public class SFlyer extends SJointedModel implements Articulable {
 	private final org.lgna.story.implementation.FlyerImp implementation;
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.FlyerImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.FlyerImp getImplementation() {
 		return this.implementation;
 	}
+
 	public SFlyer( org.lgna.story.resources.FlyerResource resource ) {
 		this.implementation = resource.createImplementation( this );
 	}
-	
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void walkTo( SThing entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: walkTo" );
 	}
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void touch( SThing entity ) {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
 	}
-	@MethodTemplate(visibility=Visibility.TUCKED_AWAY)
+
+	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public SJoint getRoot() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.ROOT);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.ROOT );
 	}
+
 	public SJoint getSpineBase() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_BASE);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_BASE );
 	}
+
 	public SJoint getSpineMiddle() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_MIDDLE);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_MIDDLE );
 	}
+
 	public SJoint getSpineUpper() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_UPPER);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.SPINE_UPPER );
 	}
+
 	public SJoint getNeck() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.NECK);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.NECK );
 	}
+
 	public SJoint getHead() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.HEAD);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.HEAD );
 	}
+
 	public SJoint getMouth() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.MOUTH);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.MOUTH );
 	}
-//	public SJoint getLowerLip() {
-//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LOWER_LIP);
-//	}
+
+	//	public SJoint getLowerLip() {
+	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LOWER_LIP);
+	//	}
 	public SJoint getLeftEye() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_EYE);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_EYE );
 	}
+
 	public SJoint getRightEye() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_EYE);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_EYE );
 	}
+
 	public SJoint getLeftWingShoulder() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_SHOULDER);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_SHOULDER );
 	}
+
 	public SJoint getLeftWingElbow() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_ELBOW);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_ELBOW );
 	}
+
 	public SJoint getLeftWingWrist() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_WRIST);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_WRIST );
 	}
-//	public SJoint getLeftWingTip() {
-//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_TIP);
-//	}
+
+	//	public SJoint getLeftWingTip() {
+	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_WING_TIP);
+	//	}
 	public SJoint getRightWingShoulder() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_SHOULDER);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_SHOULDER );
 	}
+
 	public SJoint getRightWingElbow() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_ELBOW);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_ELBOW );
 	}
+
 	public SJoint getRightWingWrist() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_WRIST);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_WRIST );
 	}
-//	public SJoint getRightWingTip() {
-//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_TIP);
-//	}
+
+	//	public SJoint getRightWingTip() {
+	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_WING_TIP);
+	//	}
 	public SJoint getPelvisLowerBody() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.PELVIS_LOWER_BODY);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.PELVIS_LOWER_BODY );
 	}
+
 	public SJoint getTail() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL );
 	}
+
 	public SJoint getTail2() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_2);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_2 );
 	}
+
 	public SJoint getTail3() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_3);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.TAIL_3 );
 	}
+
 	public SJoint getLeftHip() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_HIP);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_HIP );
 	}
+
 	public SJoint getLeftKnee() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_KNEE);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_KNEE );
 	}
+
 	public SJoint getLeftAnkle() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_ANKLE);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_ANKLE );
 	}
+
 	public SJoint getLeftFoot() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_FOOT);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_FOOT );
 	}
-//	public SJoint getLeftToe() {
-//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_TOE);
-//	}
+
+	//	public SJoint getLeftToe() {
+	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.LEFT_TOE);
+	//	}
 	public SJoint getRightHip() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_HIP);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_HIP );
 	}
+
 	public SJoint getRightKnee() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_KNEE);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_KNEE );
 	}
+
 	public SJoint getRightAnkle() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_ANKLE);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_ANKLE );
 	}
+
 	public SJoint getRightFoot() {
-		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_FOOT);
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_FOOT );
 	}
-//	public SJoint getRightToe() {
-//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_TOE);
-//	}
+	//	public SJoint getRightToe() {
+	//		 return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.RIGHT_TOE);
+	//	}
 }

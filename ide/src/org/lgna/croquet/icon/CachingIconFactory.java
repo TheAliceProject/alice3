@@ -46,11 +46,14 @@ package org.lgna.croquet.icon;
  * @author Dennis Cosgrove
  */
 public abstract class CachingIconFactory implements IconFactory {
-	private final java.util.Map<java.awt.Dimension,javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	protected java.util.Map<java.awt.Dimension,javax.swing.Icon> getMap() {
+	private final java.util.Map<java.awt.Dimension, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	protected java.util.Map<java.awt.Dimension, javax.swing.Icon> getMap() {
 		return this.map;
 	}
+
 	protected abstract javax.swing.Icon createIcon( java.awt.Dimension size );
+
 	public final javax.swing.Icon getIcon( java.awt.Dimension size ) {
 		javax.swing.Icon rv = this.map.get( size );
 		if( rv != null ) {

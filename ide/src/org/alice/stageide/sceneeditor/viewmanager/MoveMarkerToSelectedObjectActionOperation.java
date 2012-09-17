@@ -43,7 +43,6 @@
 
 package org.alice.stageide.sceneeditor.viewmanager;
 
-
 import org.lgna.project.ast.UserField;
 
 public class MoveMarkerToSelectedObjectActionOperation extends ObjectMarkerMoveActionOperation {
@@ -51,22 +50,22 @@ public class MoveMarkerToSelectedObjectActionOperation extends ObjectMarkerMoveA
 	private static class SingletonHolder {
 		private static MoveMarkerToSelectedObjectActionOperation instance = new MoveMarkerToSelectedObjectActionOperation();
 	}
-	
+
 	public static MoveMarkerToSelectedObjectActionOperation getInstance() {
 		return SingletonHolder.instance;
 	}
-	
+
 	private MoveMarkerToSelectedObjectActionOperation() {
-		super(java.util.UUID.fromString( "e52ae9a7-14d9-4cd6-b33d-ec2415fbdddf" ));
+		super( java.util.UUID.fromString( "e52ae9a7-14d9-4cd6-b33d-ec2415fbdddf" ) );
 	}
-	
+
 	@Override
-	protected void updateMoveFields(UserField markerField, UserField selectedField) {
+	protected void updateMoveFields( UserField markerField, UserField selectedField ) {
 		org.lgna.croquet.icon.IconFactory selectedFieldIconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( selectedField );
 		javax.swing.Icon selectedFieldIcon = selectedFieldIconFactory != null ? selectedFieldIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
-		this.setToMoveToField(selectedField, selectedFieldIcon);
-		org.lgna.croquet.icon.IconFactory markerIconFactory = MarkerUtilities.getIconFactoryForObjectMarker(markerField);
+		this.setToMoveToField( selectedField, selectedFieldIcon );
+		org.lgna.croquet.icon.IconFactory markerIconFactory = MarkerUtilities.getIconFactoryForObjectMarker( markerField );
 		javax.swing.Icon markerIcon = markerIconFactory != null ? markerIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
-		this.setToMoveField(markerField, markerIcon);
+		this.setToMoveField( markerField, markerIcon );
 	}
 }

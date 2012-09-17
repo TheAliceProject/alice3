@@ -50,7 +50,7 @@ public abstract class Renderer {
 
 	protected void createBufferedImageIfNecessary( java.awt.GraphicsConfiguration gc, int width, int height, int transparency ) {
 		if( m_bufferedImage != null ) {
-			if( m_bufferedImage.getWidth() < width || m_bufferedImage.getHeight() < height || m_bufferedImage.getTransparency() != transparency ) {
+			if( ( m_bufferedImage.getWidth() < width ) || ( m_bufferedImage.getHeight() < height ) || ( m_bufferedImage.getTransparency() != transparency ) ) {
 				m_bufferedImage = null;
 			}
 		}
@@ -64,6 +64,7 @@ public abstract class Renderer {
 	protected java.awt.image.BufferedImage getBufferedImage() {
 		return m_bufferedImage;
 	}
+
 	protected int getAllocatedWidth() {
 		if( m_bufferedImage != null ) {
 			return m_bufferedImage.getWidth();
@@ -71,6 +72,7 @@ public abstract class Renderer {
 			return 0;
 		}
 	}
+
 	protected int getAllocatedHeight() {
 		if( m_bufferedImage != null ) {
 			return m_bufferedImage.getHeight();
@@ -78,16 +80,21 @@ public abstract class Renderer {
 			return 0;
 		}
 	}
+
 	protected abstract int getWidth();
+
 	protected abstract int getHeight();
+
 	protected abstract int getTransparency();
 
 	public abstract void renderIntoBufferedImage( java.awt.GraphicsConfiguration gc );
+
 	public abstract void paintBackground( java.awt.Graphics2D g2 );
 
 	public void paint( java.awt.Graphics2D g2 ) {
 		paint( g2, getWidth(), getHeight() );
 	}
+
 	protected final void paint( java.awt.Graphics2D g2, int width, int height ) {
 		paintBackground( g2 );
 		renderIntoBufferedImage( g2.getDeviceConfiguration() );

@@ -57,7 +57,7 @@ public class VolumeLevelSlider extends org.lgna.croquet.components.Slider {
 		String silentText = composite.getSilentLabel().getText() + " (" + format.format( 0.0 ) + ")";
 		String normalText = composite.getNormalLabel().getText() + " (" + format.format( 1.0 ) + ")";
 		String louderText = composite.getLouderLabel().getText() + " (" + format.format( 2.0 ) + ")";
-		
+
 		this.setOrientation( org.lgna.croquet.components.Slider.Orientation.VERTICAL );
 
 		java.util.Dictionary<Integer, javax.swing.JComponent> labelTable = new java.util.Hashtable<Integer, javax.swing.JComponent>();

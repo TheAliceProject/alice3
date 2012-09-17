@@ -62,8 +62,10 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 					}
 				}
 			}
+
 			public void keyReleased( java.awt.event.KeyEvent e ) {
 			}
+
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		} );
@@ -74,23 +76,28 @@ public class JSuggestiveTextArea extends javax.swing.JTextArea {
 			this.setTextForBlankCondition( textForBlankCondition );
 		}
 	}
+
 	public JSuggestiveTextArea( String text ) {
 		this( text, null );
 	}
+
 	public JSuggestiveTextArea() {
 		this( null, null );
 	}
-	
+
 	public String getTextForBlankCondition() {
 		return this.textForBlankCondition;
 	}
-	public void setTextForBlankCondition(String textForBlankCondition) {
+
+	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
 	}
+
 	@Override
 	public boolean isManagingFocus() {
 		return false;
 	}
+
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );

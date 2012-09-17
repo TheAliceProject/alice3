@@ -51,9 +51,11 @@ public class ThisExpressionLikeView extends AbstractExpressionView<org.lgna.proj
 		super( factory, expression );
 		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
 	}
+
 	public ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ThisExpression thisExpression ) {
 		this( factory, (org.lgna.project.ast.Expression)thisExpression );
 	}
+
 	public ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.alice.ide.ast.CurrentThisExpression currentThisExpression ) {
 		this( factory, (org.lgna.project.ast.Expression)currentThisExpression );
 	}

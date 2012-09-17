@@ -47,9 +47,11 @@ package org.alice.stageide.modelviewer;
  */
 public class ModelViewer extends Viewer {
 	private org.lgna.story.implementation.ModelImp model = null;
+
 	public org.lgna.story.implementation.ModelImp getModel() {
 		return this.model;
 	}
+
 	public void setModel( org.lgna.story.implementation.ModelImp model ) {
 		if( model != this.model ) {
 			if( this.model != null ) {

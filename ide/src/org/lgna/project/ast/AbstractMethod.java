@@ -48,25 +48,31 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractMethod extends AbstractCode implements Method {
 	public abstract boolean isStatic();
+
 	public abstract boolean isAbstract();
+
 	public abstract boolean isFinal();
+
 	public abstract boolean isNative();
+
 	public abstract boolean isSynchronized();
+
 	public abstract boolean isStrictFloatingPoint();
 
 	public boolean isOverride() {
-		java.util.ArrayList< ? extends AbstractParameter > parameters = this.getRequiredParameters();
+		java.util.ArrayList<? extends AbstractParameter> parameters = this.getRequiredParameters();
 		final int N = parameters.size();
-		AbstractType<?,?,?>[] parameterTypes = new AbstractType[ N ];
-		for( int i=0; i<N; i++ ) {
+		AbstractType<?, ?, ?>[] parameterTypes = new AbstractType[ N ];
+		for( int i = 0; i < N; i++ ) {
 			parameterTypes[ i ] = parameters.get( i ).getValueType();
 		}
 		return this.getDeclaringType().getSuperType().findMethod( this.getName(), parameterTypes ) != null;
 	}
-	
+
 	public boolean isFunction() {
 		return getReturnType() != JavaType.VOID_TYPE;
 	}
+
 	public boolean isProcedure() {
 		return isFunction() == false;
 	}

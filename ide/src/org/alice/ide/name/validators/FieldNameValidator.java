@@ -47,9 +47,11 @@ public class FieldNameValidator extends MemberNameValidator {
 	public FieldNameValidator( org.lgna.project.ast.UserField field ) {
 		super( field, field.getDeclaringType() );
 	}
+
 	public FieldNameValidator( org.lgna.project.ast.UserType<?> type ) {
 		super( null, type );
 	}
+
 	@Override
 	public boolean isNameAvailable( String name ) {
 		org.lgna.project.ast.Node node = this.getNode();

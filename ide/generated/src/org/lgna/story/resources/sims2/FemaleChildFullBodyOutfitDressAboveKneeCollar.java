@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleChildFullBodyOutfitDressAboveKneeCollar implements FemaleChildFullBodyOutfit {
 	BLACK,
- 	BLUE,
- 	APPLE,
- 	LEMON,
- 	MAGENTA,
- 	SKY;
+	BLUE,
+	APPLE,
+	LEMON,
+	MAGENTA,
+	SKY;
 }

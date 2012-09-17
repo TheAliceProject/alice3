@@ -48,12 +48,16 @@ package edu.cmu.cs.dennisc.lookingglass.event;
 public class LookingGlassAdapter implements LookingGlassListener {
 	public void initialized( LookingGlassInitializeEvent e ) {
 	}
+
 	public void cleared( LookingGlassRenderEvent e ) {
 	}
+
 	public void rendered( LookingGlassRenderEvent e ) {
 	}
+
 	public void resized( LookingGlassResizeEvent e ) {
 	}
+
 	public void displayChanged( LookingGlassDisplayChangeEvent e ) {
 	}
 }

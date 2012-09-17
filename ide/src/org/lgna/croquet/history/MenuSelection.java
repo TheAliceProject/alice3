@@ -49,14 +49,15 @@ package org.lgna.croquet.history;
 public class MenuSelection {
 	private static boolean isCroquetMenuSelection( javax.swing.MenuElement[] menuElements ) {
 		for( javax.swing.MenuElement menuElement : menuElements ) {
-			org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( menuElement.getComponent() );
-			if( component instanceof org.lgna.croquet.components.MenuBar || component instanceof org.lgna.croquet.components.MenuItem || component instanceof org.lgna.croquet.components.Menu || component instanceof org.lgna.croquet.components.PopupMenu || component instanceof org.lgna.croquet.components.MenuTextSeparator ) {
+			org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( menuElement.getComponent() );
+			if( ( component instanceof org.lgna.croquet.components.MenuBar ) || ( component instanceof org.lgna.croquet.components.MenuItem ) || ( component instanceof org.lgna.croquet.components.Menu ) || ( component instanceof org.lgna.croquet.components.PopupMenu ) || ( component instanceof org.lgna.croquet.components.MenuTextSeparator ) ) {
 				return true;
 			}
 		}
 		return menuElements.length == 0;
 	}
-	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) { 
+
+	private static javax.swing.JMenuBar getJMenuBarOrigin( javax.swing.MenuElement[] menuElements ) {
 		if( menuElements.length > 0 ) {
 			javax.swing.MenuElement menuElement0 = menuElements[ 0 ];
 			if( menuElement0 instanceof javax.swing.JMenuBar ) {
@@ -65,6 +66,7 @@ public class MenuSelection {
 		}
 		return null;
 	}
+
 	private static org.lgna.croquet.components.MenuBar getMenuBarOrigin( javax.swing.MenuElement[] menuElements ) {
 		javax.swing.JMenuBar jMenuBar = getJMenuBarOrigin( menuElements );
 		if( jMenuBar != null ) {
@@ -73,6 +75,7 @@ public class MenuSelection {
 			return null;
 		}
 	}
+
 	private static org.lgna.croquet.MenuBarComposite getMenuBarComposite( javax.swing.MenuElement[] menuElements ) {
 		org.lgna.croquet.components.MenuBar menuBar = getMenuBarOrigin( menuElements );
 		if( menuBar != null ) {
@@ -85,12 +88,13 @@ public class MenuSelection {
 	private final org.lgna.croquet.triggers.ChangeEventTrigger trigger;
 	private final org.lgna.croquet.MenuBarComposite menuBarComposite;
 	private final org.lgna.croquet.MenuItemPrepModel[] menuItemPrepModels;
+
 	public MenuSelection( org.lgna.croquet.triggers.ChangeEventTrigger trigger ) {
 		this.trigger = trigger;
 		javax.swing.MenuElement[] selectedPath = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath();
 		if( isCroquetMenuSelection( selectedPath ) ) {
 			menuBarComposite = getMenuBarComposite( selectedPath );
-			java.util.List< org.lgna.croquet.MenuItemPrepModel > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.croquet.MenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			int i0;
 			if( menuBarComposite != null ) {
 				i0 = 1;
@@ -98,25 +102,25 @@ public class MenuSelection {
 				i0 = 0;
 			}
 			final int N = selectedPath.length;
-			for( int i=i0; i<N; i++ ) {
+			for( int i = i0; i < N; i++ ) {
 				javax.swing.MenuElement menuElementI = selectedPath[ i ];
 				if( menuElementI instanceof javax.swing.JPopupMenu ) {
 					javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)menuElementI;
 					//pass
 				} else if( menuElementI instanceof javax.swing.JMenuItem ) {
 					javax.swing.JMenuItem jMenuItem = (javax.swing.JMenuItem)menuElementI;
-					org.lgna.croquet.components.Component< ? > component = org.lgna.croquet.components.Component.lookup( jMenuItem );
-					if( component instanceof org.lgna.croquet.components.ViewController< ?, ? > ) {
-						org.lgna.croquet.components.ViewController< ?, ? > viewController = (org.lgna.croquet.components.ViewController< ?, ? >)component;
+					org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jMenuItem );
+					if( component instanceof org.lgna.croquet.components.ViewController<?, ?> ) {
+						org.lgna.croquet.components.ViewController<?, ?> viewController = (org.lgna.croquet.components.ViewController<?, ?>)component;
 						org.lgna.croquet.Model model = viewController.getModel();
 						if( model != null ) {
 							org.lgna.croquet.MenuItemPrepModel menuItemPrepModel;
 							if( model instanceof org.lgna.croquet.MenuItemPrepModel ) {
 								menuItemPrepModel = (org.lgna.croquet.MenuItemPrepModel)model;
 							} else if( model instanceof org.lgna.croquet.Operation ) {
-								menuItemPrepModel = ((org.lgna.croquet.Operation)model).getMenuItemPrepModel();
+								menuItemPrepModel = ( (org.lgna.croquet.Operation)model ).getMenuItemPrepModel();
 							} else if( model instanceof org.lgna.croquet.BooleanState ) {
-								menuItemPrepModel = ((org.lgna.croquet.BooleanState)model).getMenuItemPrepModel();
+								menuItemPrepModel = ( (org.lgna.croquet.BooleanState)model ).getMenuItemPrepModel();
 							} else {
 								throw new RuntimeException( model.toString() );
 							}
@@ -133,18 +137,23 @@ public class MenuSelection {
 			menuItemPrepModels = new org.lgna.croquet.MenuItemPrepModel[ 0 ];
 		}
 	}
+
 	public org.lgna.croquet.triggers.ChangeEventTrigger getTrigger() {
 		return this.trigger;
 	}
+
 	public org.lgna.croquet.MenuBarComposite getMenuBarComposite() {
 		return this.menuBarComposite;
 	}
+
 	public org.lgna.croquet.MenuItemPrepModel[] getMenuItemPrepModels() {
 		return this.menuItemPrepModels;
 	}
+
 	public boolean isValid() {
-		return this.menuBarComposite != null || this.menuItemPrepModels.length > 0;
+		return ( this.menuBarComposite != null ) || ( this.menuItemPrepModels.length > 0 );
 	}
+
 	public org.lgna.croquet.MenuItemPrepModel getLastMenuItemPrepModel() {
 		if( this.menuItemPrepModels.length > 0 ) {
 			return this.menuItemPrepModels[ this.menuItemPrepModels.length - 1 ];
@@ -152,11 +161,12 @@ public class MenuSelection {
 			return null;
 		}
 	}
+
 	public boolean isPrevious( org.lgna.croquet.MenuBarComposite otherMenuBarComposite, org.lgna.croquet.MenuItemPrepModel[] otherMenuItemPrepModels ) {
 		if( this.menuBarComposite == otherMenuBarComposite ) {
-			if( this.menuItemPrepModels.length == otherMenuItemPrepModels.length+1 ) {
+			if( this.menuItemPrepModels.length == ( otherMenuItemPrepModels.length + 1 ) ) {
 				final int N = otherMenuItemPrepModels.length;
-				for( int i=0; i<N; i++ ) {
+				for( int i = 0; i < N; i++ ) {
 					if( this.menuItemPrepModels[ i ] == otherMenuItemPrepModels[ i ] ) {
 						//pass
 					} else {

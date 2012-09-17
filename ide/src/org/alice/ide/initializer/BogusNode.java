@@ -46,26 +46,27 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 public class BogusNode extends org.lgna.project.ast.AbstractNode {
-	public org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> > componentType = new org.lgna.project.ast.DeclarationProperty< org.lgna.project.ast.AbstractType<?,?,?> >( this ) {
+	public org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> componentType = new org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>>( this ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, org.lgna.project.ast.AbstractType<?,?,?> value) {
-			assert value == null || value.isArray() == false;
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, org.lgna.project.ast.AbstractType<?, ?, ?> value ) {
+			assert ( value == null ) || ( value.isArray() == false );
 			super.setValue( owner, value );
 		}
 	};
 	public edu.cmu.cs.dennisc.property.BooleanProperty isArray = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 	public org.lgna.project.ast.ExpressionProperty componentExpression = new org.lgna.project.ast.ExpressionProperty( this ) {
 		@Override
-		public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
+		public org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
 			return BogusNode.this.componentType.getValue();
 		}
 	};
 	public org.lgna.project.ast.ExpressionListProperty arrayExpressions = new org.lgna.project.ast.ExpressionListProperty( this );
 
-	public BogusNode( org.lgna.project.ast.AbstractType<?,?,?> type, boolean isArrayIfTypeIsNull ) {
+	public BogusNode( org.lgna.project.ast.AbstractType<?, ?, ?> type, boolean isArrayIfTypeIsNull ) {
 		this.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
+
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 				BogusNode.this.handleChanged( e );
 			}
@@ -73,11 +74,12 @@ public class BogusNode extends org.lgna.project.ast.AbstractNode {
 		this.isArray.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
+
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 				BogusNode.this.handleChanged( e );
 			}
 		} );
-		org.lgna.project.ast.AbstractType<?,?,?> componentType;
+		org.lgna.project.ast.AbstractType<?, ?, ?> componentType;
 		boolean isArray;
 		if( type != null ) {
 			if( type.isArray() ) {
@@ -94,19 +96,20 @@ public class BogusNode extends org.lgna.project.ast.AbstractNode {
 		this.componentType.setValue( componentType );
 		this.isArray.setValue( isArray );
 	}
+
 	private void handleChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		org.lgna.project.ast.AbstractType<?,?,?> type = this.componentType.getValue();
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.componentType.getValue();
 		if( type != null ) {
 			this.componentExpression.setValue( ExpressionUtilities.getNextExpression( type, this.componentExpression.getValue() ) );
 			final int N = this.arrayExpressions.size();
-			for( int i=0; i<N; i++ ) {
+			for( int i = 0; i < N; i++ ) {
 				this.arrayExpressions.set( i, ExpressionUtilities.getNextExpression( type, this.arrayExpressions.get( i ) ) );
 			}
 		}
 	}
-	
-	public org.lgna.project.ast.AbstractType<?,?,?> getType() {
-		org.lgna.project.ast.AbstractType<?,?,?> componentType = this.componentType.getValue();
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
+		org.lgna.project.ast.AbstractType<?, ?, ?> componentType = this.componentType.getValue();
 		if( componentType != null ) {
 			if( this.isArray.getValue() ) {
 				return componentType.getArrayType();

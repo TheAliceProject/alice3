@@ -49,6 +49,7 @@ public class ScaledImageIcon implements javax.swing.Icon {
 	private java.awt.Image image;
 	private int width;
 	private int height;
+
 	public ScaledImageIcon( java.awt.Image image, int width, int height ) {
 		if( image != null ) {
 			//pass
@@ -59,27 +60,32 @@ public class ScaledImageIcon implements javax.swing.Icon {
 		this.width = width;
 		this.height = height;
 	}
+
 	public int getIconWidth() {
 		return this.width;
 	}
+
 	public int getIconHeight() {
 		return this.height;
 	}
+
 	public java.awt.Image getImage() {
 		return this.image;
 	}
+
 	private void paintErrorCondition( java.awt.Graphics2D g2, int x, int y ) {
 		java.awt.Paint prevPaint = g2.getPaint();
 		g2.setColor( java.awt.Color.RED );
-		g2.fillRect(x, y, this.width, this.height);
+		g2.fillRect( x, y, this.width, this.height );
 		g2.setPaint( prevPaint );
 	}
+
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		if( this.image != null ) {
 			int imageWidth = this.image.getWidth( c );
 			int imageHeight = this.image.getHeight( c );
-			if( imageWidth > 0 && imageHeight > 0 ) {
+			if( ( imageWidth > 0 ) && ( imageHeight > 0 ) ) {
 				g2.translate( x, y );
 				g2.drawImage( this.image, 0, 0, this.width, this.height, 0, 0, imageWidth, imageHeight, c );
 				g2.translate( -x, -y );

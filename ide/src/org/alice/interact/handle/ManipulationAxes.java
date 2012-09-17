@@ -47,28 +47,28 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ManipulationAxes extends ManipulationHandle3D {
 	private static final double MIN_SIZE = .6;
-	
+
 	private edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes axis;
 	private double diameterScale = 1;
 
 	public ManipulationAxes()
 	{
-		this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes(1, 1.5);
-		this.axis.setParent(this);
+		this.axis = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1, 1.5 );
+		this.axis.setParent( this );
 	}
-	
+
 	@Override
 	public ManipulationHandle3D clone() {
 		return new ManipulationAxes();
 	}
 
 	@Override
-	protected void setScale(double scale) {
-		if (scale < 1.0) {
+	protected void setScale( double scale ) {
+		if( scale < 1.0 ) {
 			scale = 1;
 		}
 		this.diameterScale = scale * 1.4;
@@ -89,57 +89,59 @@ public class ManipulationAxes extends ManipulationHandle3D {
 	public boolean isPickable() {
 		return false;
 	}
-	
+
 	@Override
-	public void setVisualsShowing(boolean showing) {
-		super.setVisualsShowing(showing);
-		if (this.axis != null) {
-			this.axis.setIsShowing(showing);
+	public void setVisualsShowing( boolean showing ) {
+		super.setVisualsShowing( showing );
+		if( this.axis != null ) {
+			this.axis.setIsShowing( showing );
 		}
 	}
-	
+
 	@Override
 	protected float getOpacity() {
-		if (this.axis != null) {
+		if( this.axis != null ) {
 			return this.axis.getOpacity();
 		}
 		else {
 			return super.getOpacity();
 		}
 	}
-	
+
 	@Override
-	protected void setOpacity(float opacity) {
-		super.setOpacity(opacity);
-		if (this.axis != null) {
-			this.axis.setOpacity(opacity);
+	protected void setOpacity( float opacity ) {
+		super.setOpacity( opacity );
+		if( this.axis != null ) {
+			this.axis.setOpacity( opacity );
 		}
-		
+
 	}
-	
+
 	@Override
-	protected double getDesiredOpacity(HandleRenderState renderState)
+	protected double getDesiredOpacity( HandleRenderState renderState )
 	{
-		switch (renderState)
+		switch( renderState )
 		{
-		case NOT_VISIBLE : return 0.0d;
-		default : return 0.6d * this.cameraRelativeOpacity;
+		case NOT_VISIBLE:
+			return 0.0d;
+		default:
+			return 0.6d * this.cameraRelativeOpacity;
 		}
 	}
 
 	@Override
 	public void resizeToObject()
 	{
-		if (this.getParentTransformable() != null)
+		if( this.getParentTransformable() != null )
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 			double diagonal = boundingBox.getDiagonal();
-			if (Double.isNaN(diagonal) || diagonal < MIN_SIZE) {
+			if( Double.isNaN( diagonal ) || ( diagonal < MIN_SIZE ) ) {
 				diagonal = MIN_SIZE;
 			}
-			if (this.axis != null)
+			if( this.axis != null )
 			{
-				this.axis.resize(diagonal * .5, 1.5, this.diameterScale);
+				this.axis.resize( diagonal * .5, 1.5, this.diameterScale );
 			}
 		}
 	}

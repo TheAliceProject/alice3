@@ -46,14 +46,17 @@ package org.alice.ide.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel > extends org.lgna.croquet.components.DragComponent< javax.swing.AbstractButton, M > {
+public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> extends org.lgna.croquet.components.DragComponent<javax.swing.AbstractButton, M> {
 	protected static final int KNURL_WIDTH = 8;
+
 	public KnurlDragComponent( M model ) {
 		super( model );
 	}
+
 	protected java.awt.Paint getForegroundPaint( int x, int y, int width, int height ) {
 		return this.getForegroundColor();
 	}
+
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		return this.getBackgroundColor();
 	}
@@ -61,8 +64,11 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 	protected final boolean isKnurlDesired() {
 		return this.getModel() != null;
 	}
+
 	protected abstract int getInsetTop();
+
 	protected abstract int getDockInsetLeft();
+
 	protected final int getKnurlInsetLeft() {
 		if( this.isKnurlDesired() ) {
 			return KNURL_WIDTH;
@@ -70,7 +76,9 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 			return 0;
 		}
 	}
+
 	protected abstract int getInternalInsetLeft();
+
 	protected final int getInsetLeft() {
 		int rv = 0;
 		rv += this.getDockInsetLeft();
@@ -78,27 +86,33 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 		rv += this.getInternalInsetLeft();
 		return rv;
 	}
+
 	protected abstract int getInsetBottom();
+
 	protected abstract int getInsetRight();
 
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
 		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
 	}
+
 	@Override
 	protected final javax.swing.AbstractButton createAwtComponent() {
 		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
 			@Override
-			public boolean contains(int x, int y) {
-				return KnurlDragComponent.this.contains(x, y, super.contains(x, y) );
+			public boolean contains( int x, int y ) {
+				return KnurlDragComponent.this.contains( x, y, super.contains( x, y ) );
 			}
+
 			@Override
 			public javax.swing.JToolTip createToolTip() {
 				return KnurlDragComponent.this.createToolTip( super.createToolTip() );
 			}
+
 			@Override
 			public java.awt.Point getToolTipLocation( java.awt.event.MouseEvent event ) {
 				return KnurlDragComponent.this.getToolTipLocation( super.getToolTipLocation( event ), event );
 			}
+
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				if( KnurlDragComponent.this.isMaximumSizeClampedToPreferredSize() ) {
@@ -107,12 +121,14 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 					return super.getMaximumSize();
 				}
 			}
+
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return KnurlDragComponent.this.getPreferredSize( super.getPreferredSize() );
 			}
+
 			@Override
-			public void paint(java.awt.Graphics g) {
+			public void paint( java.awt.Graphics g ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				int x = 0;
 				int y = 0;
@@ -127,7 +143,7 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 				} finally {
 					g2.setPaint( prevPaint );
 				}
-				super.paint(g);
+				super.paint( g );
 				prevPaint = g2.getPaint();
 				g2.setPaint( KnurlDragComponent.this.getForegroundPaint( x, y, width, height ) );
 				try {
@@ -137,53 +153,58 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 				}
 			}
 		};
-		
+
 		rv.setModel( new javax.swing.DefaultButtonModel() );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
 		if( this.isKnurlDesired() ) {
 			rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
 		}
-		
+
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 
 		//rv.setOpaque( false );
 		rv.setBackground( null );
 		rv.setOpaque( false );
-		
+
 		//rv.setDoubleBuffered( false );
 		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-		
-//		rv.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.GARISH_COLOR );
-//		rv.setOpaque( true );
+
+		//		rv.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.GARISH_COLOR );
+		//		rv.setOpaque( true );
 		return rv;
 	}
+
 	protected boolean contains( int x, int y, boolean jContains ) {
 		return jContains;
 	}
+
 	protected java.awt.Dimension getPreferredSize( java.awt.Dimension size ) {
 		return size;
 	}
-	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
+
+	protected javax.swing.JToolTip createToolTip( javax.swing.JToolTip jToolTip ) {
 		return jToolTip;
 	}
+
 	protected java.awt.Point getToolTipLocation( java.awt.Point location, java.awt.event.MouseEvent event ) {
 		return location;
 	}
-	
+
 	private static final java.awt.Stroke ACTIVE_STROKE = new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static final java.awt.Stroke PASSIVE_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 255 );
 	private static final java.awt.Color SHADOW_COLOR = new java.awt.Color( 0, 0, 0 );
+
 	protected void paintOutline( java.awt.Graphics2D g2, java.awt.Shape shape ) {
 		if( shape != null ) {
 			java.awt.Stroke prevStroke = g2.getStroke();
 			if( this.isActive() ) {
-//				g2.setPaint( SHADOW_COLOR );
-//				g2.setStroke( ACTIVE_STROKE );
-//				g2.draw( shape );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DishShape(g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
+				//				g2.setPaint( SHADOW_COLOR );
+				//				g2.setStroke( ACTIVE_STROKE );
+				//				g2.draw( shape );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DishShape( g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
 			} else {
 				g2.setPaint( java.awt.Color.GRAY );
 				g2.setStroke( PASSIVE_STROKE );
@@ -192,10 +213,12 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 			g2.setStroke( prevStroke );
 		}
 	}
+
 	protected abstract java.awt.Shape createShape( int x, int y, int width, int height );
+
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		this.paintOutline( g2, this.createShape(x, y, width, height) );
+		this.paintOutline( g2, this.createShape( x, y, width, height ) );
 		if( isKnurlDesired() ) {
 			int grayscale;
 			if( this.isActive() ) {
@@ -204,25 +227,30 @@ public abstract class KnurlDragComponent< M extends org.lgna.croquet.DragModel >
 				grayscale = 127;
 			}
 			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( grayscale ) );
-			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x+this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
+			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x + this.getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
 		}
 	}
-	
-	public void addComponent(org.lgna.croquet.components.Component<?> component) {
-		this.internalAddComponent(component);
+
+	public void addComponent( org.lgna.croquet.components.Component<?> component ) {
+		this.internalAddComponent( component );
 	}
-	public void addComponent(org.lgna.croquet.components.Component<?> component, Object constraints) {
-		this.internalAddComponent(component, constraints);
+
+	public void addComponent( org.lgna.croquet.components.Component<?> component, Object constraints ) {
+		this.internalAddComponent( component, constraints );
 	}
-	public void forgetAndRemoveComponent( org.lgna.croquet.components.Component< ? > component ) {
+
+	public void forgetAndRemoveComponent( org.lgna.croquet.components.Component<?> component ) {
 		this.internalForgetAndRemoveComponent( component );
 	}
+
 	public void removeAllComponents() {
 		this.internalRemoveAllComponents();
 	}
+
 	public void forgetAndRemoveAllComponents() {
 		this.internalForgetAndRemoveAllComponents();
 	}
+
 	protected void fillBounds( java.awt.Graphics2D g2 ) {
 		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
 	}

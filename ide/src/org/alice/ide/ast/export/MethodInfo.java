@@ -45,7 +45,7 @@ package org.alice.ide.ast.export;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInfo extends MemberInfo<org.lgna.project.ast.UserMethod>{
+public class MethodInfo extends MemberInfo<org.lgna.project.ast.UserMethod> {
 	public MethodInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserMethod method ) {
 		super( projectInfo, method );
 	}

@@ -45,11 +45,13 @@ package org.alice.ide.ast.export.views;
 /**
  * @author Dennis Cosgrove
  */
-public class InfoCheckBox extends org.lgna.croquet.components.JComponent< javax.swing.JCheckBox > {
+public class InfoCheckBox extends org.lgna.croquet.components.JComponent<javax.swing.JCheckBox> {
 	private final org.alice.ide.ast.export.DeclarationInfo<?> info;
+
 	public InfoCheckBox( org.alice.ide.ast.export.DeclarationInfo<?> info ) {
 		this.info = info;
 	}
+
 	@Override
 	protected javax.swing.JCheckBox createAwtComponent() {
 		return this.info.getCheckBox();

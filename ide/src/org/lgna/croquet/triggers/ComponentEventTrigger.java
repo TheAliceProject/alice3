@@ -46,13 +46,15 @@ package org.lgna.croquet.triggers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentEventTrigger< E extends java.awt.event.ComponentEvent > extends EventObjectTrigger<E> {
-	public ComponentEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, E event ) {
+public abstract class ComponentEventTrigger<E extends java.awt.event.ComponentEvent> extends EventObjectTrigger<E> {
+	public ComponentEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, E event ) {
 		super( origin, viewController, event );
 	}
+
 	public ComponentEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected final java.awt.Component getComponent() {
 		java.awt.Component rv = super.getComponent();

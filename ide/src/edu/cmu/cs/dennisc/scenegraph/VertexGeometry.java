@@ -47,14 +47,16 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class VertexGeometry extends Geometry {
-	public class VerticesProperty extends edu.cmu.cs.dennisc.property.CopyableArrayProperty< Vertex > {
+	public class VerticesProperty extends edu.cmu.cs.dennisc.property.CopyableArrayProperty<Vertex> {
 		public VerticesProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Vertex... vertices ) {
 			super( owner, vertices );
 		}
+
 		@Override
 		protected Vertex[] createArray( int length ) {
 			return new Vertex[ length ];
 		}
+
 		@Override
 		protected Vertex createCopy( Vertex src ) {
 			return new Vertex( src );
@@ -78,10 +80,12 @@ public abstract class VertexGeometry extends Geometry {
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertices.getValue() );
 	}
+
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
 		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, vertices.getValue() );
 	}
+
 	@Override
 	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		edu.cmu.cs.dennisc.math.Point3 point0;
@@ -96,13 +100,14 @@ public abstract class VertexGeometry extends Geometry {
 		forward.set( normal.x, normal.y, normal.z );
 		forward.normalize();
 		forward.negate();
-		
+
 		upGuide.set( point0 );
 		upGuide.subtract( point1 );
 		upGuide.normalize();
-		
+
 		translation.set( point0 );
 	}
+
 	@Override
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
 		//todo: does not seem to work

@@ -50,9 +50,11 @@ public class ArrayLengthSeparator extends org.lgna.croquet.CascadeLabelSeparator
 	private static class SingletonHolder {
 		private static ArrayLengthSeparator instance = new ArrayLengthSeparator();
 	}
+
 	public static ArrayLengthSeparator getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ArrayLengthSeparator() {
 		super( java.util.UUID.fromString( "a011ac89-a965-4518-a02e-055c1737cd57" ) );
 	}

@@ -49,33 +49,35 @@ public class IntegerModel extends NumberModel<org.lgna.project.ast.Expression> {
 	private static class SingletonHolder {
 		private static IntegerModel instance = new IntegerModel();
 	}
+
 	public static IntegerModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IntegerModel() {
 		super( NUMBER_PAD_GROUP, java.util.UUID.fromString( "fceee598-ccd1-46f9-8539-5f2a42b021b2" ) );
 	}
+
 	@Override
 	public boolean isDecimalPointSupported() {
 		return false;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression valueOf( String s ) {
 		long l = Long.parseLong( s );
 		if( l > Integer.MAX_VALUE ) {
-			return new org.lgna.project.ast.FieldAccess( 
-					new org.lgna.project.ast.TypeExpression( 
-							org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE 
-					), 
-					org.lgna.project.ast.JavaField.getInstance(Integer.class, "MAX_VALUE" ) 
-			);
+			return new org.lgna.project.ast.FieldAccess(
+					new org.lgna.project.ast.TypeExpression(
+							org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE
+					),
+					org.lgna.project.ast.JavaField.getInstance( Integer.class, "MAX_VALUE" ) );
 		} else if( l < Integer.MIN_VALUE ) {
-			return new org.lgna.project.ast.FieldAccess( 
-					new org.lgna.project.ast.TypeExpression( 
-							org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE 
-					), 
-					org.lgna.project.ast.JavaField.getInstance(Integer.class, "MIN_VALUE" ) 
-			);
+			return new org.lgna.project.ast.FieldAccess(
+					new org.lgna.project.ast.TypeExpression(
+							org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE
+					),
+					org.lgna.project.ast.JavaField.getInstance( Integer.class, "MIN_VALUE" ) );
 		} else {
 			return new org.lgna.project.ast.IntegerLiteral( (int)l );
 		}

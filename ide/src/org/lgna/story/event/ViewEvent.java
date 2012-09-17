@@ -6,6 +6,7 @@ public abstract class ViewEvent<A extends org.lgna.story.SModel> extends Abstrac
 	public ViewEvent( A model ) {
 		this.a = model;
 	}
+
 	public A getEnteringView() {
 		return a;
 	}

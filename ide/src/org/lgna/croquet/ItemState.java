@@ -47,8 +47,9 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
+	private final ItemCodec<T> itemCodec;
+
+	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec<T> itemCodec ) {
 		super( group, id, initialValue );
 		//assert itemCodec != null;
 		if( itemCodec != null ) {
@@ -58,39 +59,47 @@ public abstract class ItemState<T> extends State<T> {
 		}
 		this.itemCodec = itemCodec;
 	}
+
 	@Override
-	public Class< T > getItemClass() {
+	public Class<T> getItemClass() {
 		return this.itemCodec.getValueClass();
 	}
+
 	@Override
 	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return this.itemCodec.decodeValue( binaryDecoder );
 	}
+
 	@Override
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		this.itemCodec.encodeValue( binaryEncoder, value );
 	}
+
 	@Override
-	public final StringBuilder appendRepresentation(StringBuilder rv, T value) {
+	public final StringBuilder appendRepresentation( StringBuilder rv, T value ) {
 		return this.itemCodec.appendRepresentation( rv, value );
 	}
-	public ItemCodec< T > getItemCodec() {
+
+	public ItemCodec<T> getItemCodec() {
 		return this.itemCodec;
 	}
+
 	@Override
 	public void appendUserRepr( java.lang.StringBuilder sb ) {
 		this.appendRepresentation( sb, this.getValue() );
 	}
 
 	private static class InternalItemSelectedState<T> extends BooleanState {
-		private final ItemState< T > state;
+		private final ItemState<T> state;
 		private final T item;
-		private InternalItemSelectedState( ItemState< T > state, T item ) {
+
+		private InternalItemSelectedState( ItemState<T> state, T item ) {
 			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == item );
 			assert state != null;
 			this.state = state;
 			this.item = item;
 		}
+
 		@Override
 		protected void localize() {
 			super.localize();
@@ -99,7 +108,9 @@ public abstract class ItemState<T> extends State<T> {
 			this.setTextForBothTrueAndFalse( sb.toString() );
 		}
 	}
-	private java.util.Map< T, InternalItemSelectedState<T> > mapItemToItemSelectedState;
+
+	private java.util.Map<T, InternalItemSelectedState<T>> mapItemToItemSelectedState;
+
 	public BooleanState getItemSelectedState( T item ) {
 		if( mapItemToItemSelectedState != null ) {
 			//pass
@@ -110,21 +121,23 @@ public abstract class ItemState<T> extends State<T> {
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new InternalItemSelectedState< T >( this, item );
+			rv = new InternalItemSelectedState<T>( this, item );
 			this.mapItemToItemSelectedState.put( item, rv );
 		}
 		return rv;
 	}
 
 	private static class InternalSelectItemOperation<T> extends ActionOperation {
-		private final ItemState< T > state;
+		private final ItemState<T> state;
 		private final T item;
-		private InternalSelectItemOperation( ItemState< T > state, T item ) {
+
+		private InternalSelectItemOperation( ItemState<T> state, T item ) {
 			super( state.getGroup(), java.util.UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
 			assert state != null;
 			this.state = state;
 			this.item = item;
 		}
+
 		@Override
 		protected void localize() {
 			super.localize();
@@ -132,6 +145,7 @@ public abstract class ItemState<T> extends State<T> {
 			this.state.getItemCodec().appendRepresentation( sb, this.item );
 			this.setName( sb.toString() );
 		}
+
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -139,7 +153,9 @@ public abstract class ItemState<T> extends State<T> {
 			step.finish();
 		}
 	}
-	private java.util.Map< T, InternalSelectItemOperation<T> > mapItemToSelectionOperation;
+
+	private java.util.Map<T, InternalSelectItemOperation<T>> mapItemToSelectionOperation;
+
 	public ActionOperation getItemSelectionOperation( T item ) {
 		if( mapItemToSelectionOperation != null ) {
 			//pass
@@ -150,7 +166,7 @@ public abstract class ItemState<T> extends State<T> {
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new InternalSelectItemOperation< T >( this, item );
+			rv = new InternalSelectItemOperation<T>( this, item );
 			this.mapItemToSelectionOperation.put( item, rv );
 		}
 		return rv;

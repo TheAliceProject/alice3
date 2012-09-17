@@ -54,6 +54,7 @@ public class DebugInputStreamBinaryDecoder extends InputStreamBinaryDecoder {
 		byte b = super.decodeByte();
 		assert b == (byte)c : b + " " + (byte)c + " " + c;
 	}
+
 	@Override
 	public boolean decodeBoolean() {
 		this.readAndAssertByte( 'B' );
@@ -63,6 +64,7 @@ public class DebugInputStreamBinaryDecoder extends InputStreamBinaryDecoder {
 			this.readAndAssertByte( 'b' );
 		}
 	}
+
 	@Override
 	public char decodeChar() {
 		this.readAndAssertByte( 'C' );
@@ -72,6 +74,7 @@ public class DebugInputStreamBinaryDecoder extends InputStreamBinaryDecoder {
 			this.readAndAssertByte( 'c' );
 		}
 	}
+
 	@Override
 	public double decodeDouble() {
 		this.readAndAssertByte( 'D' );
@@ -81,6 +84,7 @@ public class DebugInputStreamBinaryDecoder extends InputStreamBinaryDecoder {
 			this.readAndAssertByte( 'd' );
 		}
 	}
+
 	@Override
 	public float decodeFloat() {
 		this.readAndAssertByte( 'F' );
@@ -90,6 +94,7 @@ public class DebugInputStreamBinaryDecoder extends InputStreamBinaryDecoder {
 			this.readAndAssertByte( 'f' );
 		}
 	}
+
 	@Override
 	public long decodeLong() {
 		this.readAndAssertByte( 'L' );
@@ -99,6 +104,7 @@ public class DebugInputStreamBinaryDecoder extends InputStreamBinaryDecoder {
 			this.readAndAssertByte( 'l' );
 		}
 	}
+
 	@Override
 	public int decodeInt() {
 		this.readAndAssertByte( 'I' );
@@ -108,6 +114,7 @@ public class DebugInputStreamBinaryDecoder extends InputStreamBinaryDecoder {
 			this.readAndAssertByte( 'i' );
 		}
 	}
+
 	@Override
 	public short decodeShort() {
 		this.readAndAssertByte( 'S' );
@@ -117,6 +124,7 @@ public class DebugInputStreamBinaryDecoder extends InputStreamBinaryDecoder {
 			this.readAndAssertByte( 's' );
 		}
 	}
+
 	@Override
 	public String decodeString() {
 		this.readAndAssertByte( 'X' );

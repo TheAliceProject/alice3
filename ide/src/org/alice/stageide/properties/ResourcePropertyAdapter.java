@@ -1,6 +1,3 @@
-import java.net.URL;
-import java.net.URLClassLoader;
-
 /*
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
@@ -43,36 +40,51 @@ import java.net.URLClassLoader;
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.properties;
+
+import org.alice.ide.croquet.models.StandardExpressionState;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class GalleryWebpageGenerator {
+public class ResourcePropertyAdapter extends org.alice.ide.properties.adapter.AbstractPropertyAdapter<org.lgna.story.resources.JointedModelResource, org.lgna.story.implementation.JointedModelImp<? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource>> {
 
-	
-	public static String getResourcePath(Class<?> cls, String resourceString) {
-		return cls.getPackage().getName().replace(".", "/")+"/"+resourceString;
+	public ResourcePropertyAdapter( org.lgna.story.implementation.JointedModelImp<? extends org.lgna.story.SJointedModel, ? extends org.lgna.story.resources.JointedModelResource> instance, StandardExpressionState expressionState )
+	{
+		super( "Visual Resource", instance, expressionState );
 	}
-	
-	public static void buildGalleryWebpage(java.io.File[] sourceJars, java.io.File[] resourceJars) {
-		
-		try {
-			URL[] urlArray = new URL[sourceJars.length + resourceJars.length];
-			for (int i=0; i<sourceJars.length; i++) {
-				urlArray[i] = sourceJars[i].toURI().toURL();
-			}
-			URLClassLoader sourceLoader = new URLClassLoader(urlArray);
-			org.lgna.story.resourceutilities.StorytellingResources.getInstance().initializeGalleryTreeWithJars(resourceJars);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
+
+	@Override
+	public void setValue( org.lgna.story.resources.JointedModelResource value )
+	{
+		super.setValue( value );
+		if( this.instance != null )
+		{
+			this.instance.setNewResource( value );
 		}
 	}
-	
-	public static void main( String[] args ) throws Exception {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		
+
+	@Override
+	public Class<org.lgna.story.resources.JointedModelResource> getPropertyType()
+	{
+		return org.lgna.story.resources.JointedModelResource.class;
+	}
+
+	@Override
+	public org.lgna.story.resources.JointedModelResource getValue()
+	{
+		if( this.instance != null )
+		{
+			return this.instance.getResource();
+		}
+		return null;
+	}
+
+	@Override
+	public org.lgna.story.resources.JointedModelResource getValueCopyIfMutable()
+	{
+		return this.getValue();
 	}
 
 }

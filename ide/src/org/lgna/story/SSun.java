@@ -49,10 +49,12 @@ package org.lgna.story;
 @Deprecated
 public class SSun extends STurnable implements MutableRider {
 	private final org.lgna.story.implementation.SunImp implementation = new org.lgna.story.implementation.SunImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SunImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.SunImp getImplementation() {
 		return this.implementation;
 	}
+
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}

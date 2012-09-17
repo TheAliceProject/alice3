@@ -46,8 +46,9 @@ package org.lgna.cheshire.simple.stencil.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TrackableShapeResolver implements org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape > {
+public abstract class TrackableShapeResolver implements org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape> {
 	protected abstract void appendRepr( StringBuilder sb );
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

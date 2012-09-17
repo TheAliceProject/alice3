@@ -41,16 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitShorts implements MaleAdultFullBodyOutfit {
-	BLACKSILKY ,
- 	BLUEYELLOW ,
- 	GREENYELLOW ,
- 	MAGENTAPURPLE ,
- 	ORANGERED ,
- 	REDBLUE ,
- 	YELLOWGREEN ,
- 	AQUASILKY ,
- 	BLUESILKY ,
- 	REDSILKY ,
- 	FRIED ;
+	BLACKSILKY,
+	BLUEYELLOW,
+	GREENYELLOW,
+	MAGENTAPURPLE,
+	ORANGERED,
+	REDBLUE,
+	YELLOWGREEN,
+	AQUASILKY,
+	BLUESILKY,
+	REDSILKY,
+	FRIED;
 }

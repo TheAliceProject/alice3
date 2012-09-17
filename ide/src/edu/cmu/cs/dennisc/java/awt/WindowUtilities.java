@@ -49,7 +49,7 @@ public class WindowUtilities {
 	public static void setLocationOnScreenToCenteredWithin( java.awt.Window window, java.awt.Component root ) {
 		java.awt.Dimension sizeDialog = window.getSize();
 		java.awt.Rectangle boundsRoot;
-		if( root != null && root.isShowing() ) {
+		if( ( root != null ) && root.isShowing() ) {
 			java.awt.Point locationRoot = root.getLocationOnScreen();
 			java.awt.Dimension sizeRoot = root.getSize();
 			boundsRoot = new java.awt.Rectangle( locationRoot, sizeRoot );
@@ -57,8 +57,8 @@ public class WindowUtilities {
 			//todo: handle multiple screens better?
 			boundsRoot = window.getGraphicsConfiguration().getBounds();
 		}
-		int x = boundsRoot.x + (boundsRoot.width - sizeDialog.width) / 2;
-		int y = boundsRoot.y + (boundsRoot.height - sizeDialog.height) / 2;
+		int x = boundsRoot.x + ( ( boundsRoot.width - sizeDialog.width ) / 2 );
+		int y = boundsRoot.y + ( ( boundsRoot.height - sizeDialog.height ) / 2 );
 		window.setLocation( x, y );
 		//ensureTopLeftCornerIsOnScreen( window );
 	}
@@ -66,9 +66,9 @@ public class WindowUtilities {
 	public static void ensureTopLeftCornerIsOnScreen( final java.awt.Window window ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ensureTopLeftCornerIsOnScreen", window.isValid(), window.isVisible() );
 		assert window != null;
-		if( /*window.isValid() &&*/ window.isVisible() ) {
+		if( /* window.isValid() && */window.isVisible() ) {
 			java.awt.Point ptScreen = window.getLocationOnScreen();
-			if( ptScreen.x < 0 || ptScreen.y < 0 ) {
+			if( ( ptScreen.x < 0 ) || ( ptScreen.y < 0 ) ) {
 				java.awt.Point ptParent = window.getLocation();
 				ptParent.x -= Math.min( ptScreen.x, 0 );
 				ptParent.y -= Math.min( ptScreen.y, 0 );

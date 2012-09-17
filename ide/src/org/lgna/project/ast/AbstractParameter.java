@@ -48,19 +48,23 @@ package org.lgna.project.ast;
  */
 public abstract class AbstractParameter extends AbstractTransient {
 	public abstract boolean isVariableLength();
+
 	public final boolean isKeyworded() {
-		AbstractType< ?,?,? > valueType = this.getValueType();
-		if( valueType != null && valueType.isArray() ) {
-			AbstractType< ?,?,? > componentType = valueType.getComponentType();
+		AbstractType<?, ?, ?> valueType = this.getValueType();
+		if( ( valueType != null ) && valueType.isArray() ) {
+			AbstractType<?, ?, ?> componentType = valueType.getComponentType();
 			if( componentType != null ) {
 				return componentType.getKeywordFactoryType() != null;
 			}
 		}
 		return false;
 	}
+
 	public abstract org.lgna.project.annotations.ValueDetails<?> getDetails();
+
 	public String getValidName( Node context ) {
 		return this.getName();
 	}
+
 	public abstract Code getCode();
 }

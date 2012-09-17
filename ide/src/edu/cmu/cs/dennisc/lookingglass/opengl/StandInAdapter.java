@@ -1,16 +1,17 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-public class StandInAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Transformable > extends CompositeAdapter< E > {
+public class StandInAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Transformable> extends CompositeAdapter<E> {
 	private double[] m_localTransformation = new double[ 16 ];
 	private java.nio.DoubleBuffer m_localTransformationBuffer = java.nio.DoubleBuffer.wrap( m_localTransformation );
-	
+
 	public double[] accessLocalTransformation() {
 		return m_localTransformation;
 	}
+
 	public java.nio.DoubleBuffer accessLocalTransformationAsBuffer() {
 		return m_localTransformationBuffer;
 	}
-		
+
 	@Override
 	public void renderOpaque( RenderContext rc ) {
 		rc.gl.glPushMatrix();
@@ -21,23 +22,22 @@ public class StandInAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Transformab
 			rc.gl.glPopMatrix();
 		}
 	}
-	
+
 	@Override
 	public void renderGhost( RenderContext rc, GhostAdapter root ) {
-//		rc.gl.glPushMatrix();
-//		try {
-//			if( this == root ) {
-//				rc.gl.glMultMatrixd( accessAbsoluteTransformationAsBuffer() );
-//			} else {
-//				rc.gl.glMultMatrixd( accessLocalTransformationAsBuffer() );
-//			}
-//			super.renderGhost( rc, root );
-//		} finally {
-//			rc.gl.glPopMatrix();
-//		}
+		//		rc.gl.glPushMatrix();
+		//		try {
+		//			if( this == root ) {
+		//				rc.gl.glMultMatrixd( accessAbsoluteTransformationAsBuffer() );
+		//			} else {
+		//				rc.gl.glMultMatrixd( accessLocalTransformationAsBuffer() );
+		//			}
+		//			super.renderGhost( rc, root );
+		//		} finally {
+		//			rc.gl.glPopMatrix();
+		//		}
 	}
-	
-	
+
 	@Override
 	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 		pc.gl.glPushMatrix();

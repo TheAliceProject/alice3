@@ -55,117 +55,118 @@ public class ModifierMask {
 		ALL_MUST_BE_VALID,
 		ANY_MAY_BE_VALID,
 	}
-	
-	public static ModifierKey[] NO_MODIFIERS_DOWN = { ModifierKey.NOT_CONTROL, ModifierKey.NOT_ALT, ModifierKey.NOT_SHIFT};
-	public static ModifierKey[] JUST_SHIFT = { ModifierKey.NOT_CONTROL, ModifierKey.NOT_ALT, ModifierKey.SHIFT};
-	public static ModifierKey[] JUST_CONTROL = { ModifierKey.CONTROL, ModifierKey.NOT_ALT, ModifierKey.NOT_SHIFT};
-	public static ModifierKey[] JUST_ALT = { ModifierKey.NOT_CONTROL, ModifierKey.ALT, ModifierKey.NOT_SHIFT};
-	
+
+	public static ModifierKey[] NO_MODIFIERS_DOWN = { ModifierKey.NOT_CONTROL, ModifierKey.NOT_ALT, ModifierKey.NOT_SHIFT };
+	public static ModifierKey[] JUST_SHIFT = { ModifierKey.NOT_CONTROL, ModifierKey.NOT_ALT, ModifierKey.SHIFT };
+	public static ModifierKey[] JUST_CONTROL = { ModifierKey.CONTROL, ModifierKey.NOT_ALT, ModifierKey.NOT_SHIFT };
+	public static ModifierKey[] JUST_ALT = { ModifierKey.NOT_CONTROL, ModifierKey.ALT, ModifierKey.NOT_SHIFT };
+
 	public enum ModifierKey
 	{
-		CONTROL (KeyEventUtilities.getQuoteControlUnquoteKey(), false),
-		NOT_CONTROL (KeyEventUtilities.getQuoteControlUnquoteKey(), true),
-		ALT (KeyEventUtilities.getQuoteAltUnquoteKey(), false),
-		NOT_ALT (KeyEventUtilities.getQuoteAltUnquoteKey(), true),
-		SHIFT (KeyEvent.VK_SHIFT, false),
-		NOT_SHIFT (KeyEvent.VK_SHIFT, true);
-		
+		CONTROL( KeyEventUtilities.getQuoteControlUnquoteKey(), false ),
+		NOT_CONTROL( KeyEventUtilities.getQuoteControlUnquoteKey(), true ),
+		ALT( KeyEventUtilities.getQuoteAltUnquoteKey(), false ),
+		NOT_ALT( KeyEventUtilities.getQuoteAltUnquoteKey(), true ),
+		SHIFT( KeyEvent.VK_SHIFT, false ),
+		NOT_SHIFT( KeyEvent.VK_SHIFT, true );
+
 		private int keyValue;
 		private boolean inverted;
-		
+
 		private ModifierKey( int keyValue, boolean inverted )
 		{
 			this.keyValue = keyValue;
 			this.inverted = inverted;
 		}
-		
+
 		public int getKeyValue()
 		{
 			return this.keyValue;
 		}
-		
+
 		public boolean testKey( InputState state )
 		{
 			boolean isDown = state.isKeyDown( this.keyValue );
-			if (this.inverted)
+			if( this.inverted )
 			{
 				return !isDown;
 			}
 			return isDown;
 		}
-		
+
 	}
-	
+
 	private ModifierKey[] keys;
-	private TestType testType; 
-	
+	private TestType testType;
+
 	public ModifierMask()
 	{
 		this.testType = TestType.ALL_MUST_BE_VALID;
-		setKeys( new ModifierKey[0]);
+		setKeys( new ModifierKey[ 0 ] );
 	}
-	
+
 	public ModifierMask( ModifierKey[] keys, TestType testType )
 	{
 		this.testType = testType;
-		setKeys(keys);
-	}
-	
-	public ModifierMask( ModifierKey[] keys)
-	{
-		this(keys, TestType.ALL_MUST_BE_VALID);
+		setKeys( keys );
 	}
 
-	public ModifierMask( ModifierKey key)
+	public ModifierMask( ModifierKey[] keys )
 	{
-		this(key, TestType.ALL_MUST_BE_VALID);
+		this( keys, TestType.ALL_MUST_BE_VALID );
 	}
-	
-	public  ModifierMask( ModifierKey key, TestType testType )
+
+	public ModifierMask( ModifierKey key )
+	{
+		this( key, TestType.ALL_MUST_BE_VALID );
+	}
+
+	public ModifierMask( ModifierKey key, TestType testType )
 	{
 		ModifierKey[] keyArray = { key };
 		setKeys( keyArray );
 		this.testType = testType;
 	}
-	
-	public void setKeys( ModifierKey[] keys)
+
+	public void setKeys( ModifierKey[] keys )
 	{
 		this.keys = keys;
 	}
-	
+
 	public boolean anyValid( InputState state )
 	{
-		for (int i=0; i<this.keys.length; i++)
-		{
-			if ( this.keys[i].testKey( state ) )
+		for( ModifierKey key : this.keys ) {
+			if( key.testKey( state ) )
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean allValid( InputState state )
 	{
-		for (int i=0; i<this.keys.length; i++)
+		for( int i = 0; i < this.keys.length; i++ )
 		{
-			if ( !this.keys[i].testKey( state ))
+			if( !this.keys[ i ].testKey( state ) )
 			{
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	public boolean test( InputState state )
 	{
-		switch (this.testType)
+		switch( this.testType )
 		{
-		case ANY_MAY_BE_VALID : return anyValid(state);
-		case ALL_MUST_BE_VALID : return allValid(state);
-		default : return false;
+		case ANY_MAY_BE_VALID:
+			return anyValid( state );
+		case ALL_MUST_BE_VALID:
+			return allValid( state );
+		default:
+			return false;
 		}
 	}
-	
 
 }

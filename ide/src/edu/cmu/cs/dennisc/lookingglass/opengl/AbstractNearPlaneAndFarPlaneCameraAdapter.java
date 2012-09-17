@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractNearPlaneAndFarPlaneCameraAdapter< E extends edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera > extends AbstractCameraAdapter< E > {
+public abstract class AbstractNearPlaneAndFarPlaneCameraAdapter<E extends edu.cmu.cs.dennisc.scenegraph.AbstractNearPlaneAndFarPlaneCamera> extends AbstractCameraAdapter<E> {
 	private float m_near;
 	private float m_far;
 
@@ -56,7 +56,7 @@ public abstract class AbstractNearPlaneAndFarPlaneCameraAdapter< E extends edu.c
 	protected void setupProjection( edu.cmu.cs.dennisc.lookingglass.opengl.Context context, java.awt.Rectangle actualViewport ) {
 		setupProjection( context, actualViewport, m_near, m_far );
 	}
-	
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.nearClippingPlaneDistance ) {

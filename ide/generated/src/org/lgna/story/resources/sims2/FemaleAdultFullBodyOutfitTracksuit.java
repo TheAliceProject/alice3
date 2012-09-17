@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitTracksuit implements FemaleAdultFullBodyOutfit {
-	RED ,
- 	BLACK ,
- 	TURQGOLD ,
- 	PINKSIL ,
- 	GREYFLUOR ;
+	RED,
+	BLACK,
+	TURQGOLD,
+	PINKSIL,
+	GREYFLUOR;
 }

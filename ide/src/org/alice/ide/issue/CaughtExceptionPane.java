@@ -53,14 +53,15 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 		sb.append( "  If you were running your program then:\n    it could be either a bug(error) in Alice or your code.\n\n" );
 		sb.append( "  If you were building your program then:\n    it is a bug in Alice.\n\n" );
 		sb.append( "Please press the \"submit bug report\" button." );
-		
+
 		javax.swing.JTextArea message = new javax.swing.JTextArea( sb.toString() ) {
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				return this.getPreferredSize();
 			}
+
 			@Override
-			public boolean contains(int x, int y) {
+			public boolean contains( int x, int y ) {
 				return false;
 			}
 		};
@@ -68,41 +69,43 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 		//message.setOpaque( false );
 		message.setBackground( java.awt.Color.DARK_GRAY );
 		message.setForeground( java.awt.Color.WHITE );
-//		header.setLineWrap( false );
-//		header.setWrapStyleWord( true );
+		//		header.setLineWrap( false );
+		//		header.setWrapStyleWord( true );
 		java.awt.Font font = message.getFont();
 		font = font.deriveFont( (float)(int)( font.getSize() * 1.15f ) );
 		font = font.deriveFont( java.awt.Font.BOLD );
 		message.setFont( font );
 		message.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 16 ) );
-		
-		
+
 		javax.swing.ImageIcon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( CaughtExceptionPane.class.getResource( "images/meanQueen.png" ) );
 		javax.swing.JLabel meanQueen = new javax.swing.JLabel( icon );
-		
-		
-//		message.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-//		label.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-		
+
+		//		message.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		//		label.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+
 		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( meanQueen, javax.swing.Box.createHorizontalStrut( 16 ), message );
 		pane.setBackground( message.getBackground() );
 		pane.setOpaque( true );
 		this.add( pane, java.awt.BorderLayout.NORTH );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
 		return new ReportSubmissionConfiguration();
 	}
+
 	@Override
 	protected String getJIRAProjectKey() {
 		return "AIIIP";
 	}
+
 	@Override
 	protected String[] getAffectsVersions() {
 		return new String[] { org.lgna.project.Version.getCurrentVersionText() };
 	}
 
 	private boolean isClearedToAttachCurrentProject = false;
+
 	@Override
 	protected boolean isClearedToSubmit() {
 		boolean rv = super.isClearedToSubmit();
@@ -112,6 +115,7 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 		}
 		return rv;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
 		rv = super.addAttachments( rv );
@@ -120,15 +124,16 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 		}
 		return rv;
 	}
+
 	public static void main( String[] args ) {
 		CaughtExceptionPane pane = new CaughtExceptionPane();
-		
+
 		try {
 			throw new RuntimeException( "DELETE ME" );
 		} catch( RuntimeException re ) {
 			pane.setThreadAndThrowable( Thread.currentThread(), re );
 		}
-		
+
 		javax.swing.JDialog window = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, null, "Report Bug", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.setVisible( true );

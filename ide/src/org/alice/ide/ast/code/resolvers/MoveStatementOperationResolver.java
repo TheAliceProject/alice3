@@ -48,19 +48,19 @@ package org.alice.ide.ast.code.resolvers;
  */
 public class MoveStatementOperationResolver extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<org.alice.ide.ast.code.MoveStatementOperation> {
 	public MoveStatementOperationResolver( org.alice.ide.ast.code.MoveStatementOperation instance ) {
-		super( instance, 
-				new Class[] { 
-					org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class, 
-					org.lgna.project.ast.Statement.class, 
-					org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class
-				}, 
+		super( instance,
+				new Class[] {
+						org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class,
+						org.lgna.project.ast.Statement.class,
+						org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class
+				},
 				new Object[] {
-					instance.getFromLocation(),
-					instance.getStatement(),
-					instance.getToLocation()
-				}
-		);
+						instance.getFromLocation(),
+						instance.getStatement(),
+						instance.getToLocation()
+				} );
 	}
+
 	public MoveStatementOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
@@ -74,6 +74,7 @@ public class MoveStatementOperationResolver extends org.lgna.croquet.resolvers.S
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return new Object[] { fromLocation, statement, toLocation };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation = (org.alice.ide.ast.draganddrop.BlockStatementIndexPair)arguments[ 0 ];

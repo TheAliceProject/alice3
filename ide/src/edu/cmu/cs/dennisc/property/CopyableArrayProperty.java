@@ -45,36 +45,43 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CopyableArrayProperty<E> extends ArrayProperty< E > implements CopyableProperty< E[] > {
+public abstract class CopyableArrayProperty<E> extends ArrayProperty<E> implements CopyableProperty<E[]> {
 	public CopyableArrayProperty( InstancePropertyOwner owner, E... value ) {
 		super( owner, value );
 	}
+
 	protected abstract E[] createArray( int length );
+
 	protected abstract E createCopy( E e );
 
 	public E[] getCopy( E[] rv, edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		E[] value = getValue();
-		for( int i=0; i<value.length; i++ ) {
+		for( int i = 0; i < value.length; i++ ) {
 			rv[ i ] = createCopy( value[ i ] );
 		}
 		return rv;
 	}
+
 	public E[] getCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner ) {
 		return getCopy( createArray( getLength() ), owner );
 	}
+
 	public void setCopy( edu.cmu.cs.dennisc.property.PropertyOwner owner, E[] value ) {
 		E[] dst = createArray( value.length );
-		for( int i=0; i<value.length; i++ ) {
+		for( int i = 0; i < value.length; i++ ) {
 			dst[ i ] = createCopy( value[ i ] );
 		}
 		setValue( value );
 	}
+
 	public E[] getCopy( E[] rv ) {
 		return getCopy( rv, getOwner() );
 	}
+
 	public E[] getCopy() {
 		return getCopy( getOwner() );
 	}
+
 	public void setCopy( E[] value ) {
 		setCopy( getOwner(), value );
 	}

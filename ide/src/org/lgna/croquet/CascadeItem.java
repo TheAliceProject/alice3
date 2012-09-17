@@ -46,41 +46,50 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements CascadeBlankChild< F > {
+public abstract class CascadeItem<F, B> extends MenuItemPrepModel implements CascadeBlankChild<F> {
 	private transient boolean isDirty = true;
 	private transient javax.swing.JComponent menuProxy = null;
 	private transient javax.swing.Icon icon = null;
 	private transient String tutorialItemText;
+
 	public CascadeItem( java.util.UUID id ) {
 		super( id );
 	}
+
 	public int getItemCount() {
 		return 1;
 	}
-	public org.lgna.croquet.CascadeItem< F, B > getItemAt( int index ) {
+
+	public org.lgna.croquet.CascadeItem<F, B> getItemAt( int index ) {
 		assert index == 0;
 		return this;
 	}
-	
-	public abstract F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F,B> node );
-	public abstract F createValue( org.lgna.croquet.cascade.ItemNode<? super F,B> node, org.lgna.croquet.history.TransactionHistory transactionHistory );
-	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> node );
-	
+
+	public abstract F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F, B> node );
+
+	public abstract F createValue( org.lgna.croquet.cascade.ItemNode<? super F, B> node, org.lgna.croquet.history.TransactionHistory transactionHistory );
+
+	protected abstract javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, B> node );
+
 	@Override
 	protected void localize() {
 		this.isDirty = true;
 		this.tutorialItemText = this.findDefaultLocalizedText();
 	}
+
 	protected boolean isDirty() {
 		return this.isDirty;
 	}
+
 	protected void markClean() {
 		this.isDirty = false;
 	}
+
 	protected void markDirty() {
 		this.isDirty = true;
 	}
-	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.cascade.ItemNode<? super F,B> node ) {
+
+	protected javax.swing.JComponent getMenuProxy( org.lgna.croquet.cascade.ItemNode<? super F, B> node ) {
 		if( this.menuProxy != null ) {
 			//pass
 		} else {
@@ -88,7 +97,8 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 		}
 		return this.menuProxy;
 	}
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super F,B> node ) {
+
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super F, B> node ) {
 		if( this.isDirty() ) {
 			this.icon = null;
 			this.menuProxy = null;
@@ -101,9 +111,9 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
 				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.setSizeToPreferredSizeTree( component );
-				
+
 				java.awt.Dimension size = component.getPreferredSize();
-				if( size.width > 0 && size.height > 0 ) {
+				if( ( size.width > 0 ) && ( size.height > 0 ) ) {
 					this.icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
 				} else {
 					this.icon = null;
@@ -115,16 +125,17 @@ public abstract class CascadeItem< F,B > extends MenuItemPrepModel implements Ca
 		}
 		return this.icon;
 	}
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super F,B > node ) {
+
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super F, B> node ) {
 		return null;
 	}
-	
+
 	protected String getTutorialItemText() {
 		return this.tutorialItemText;
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > node, org.lgna.croquet.edits.Edit< ? > edit ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> node, org.lgna.croquet.edits.Edit<?> edit ) {
 		rv.append( " <strong>" );
 		rv.append( this.getTutorialItemText() );
 		rv.append( "</strong>." );

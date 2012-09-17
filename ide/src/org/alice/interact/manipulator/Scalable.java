@@ -48,12 +48,15 @@ import org.lgna.story.implementation.ModelImp.Resizer;
  * @author Dennis Cosgrove
  */
 public interface Scalable {
-	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key< Scalable > KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "Scalable.KEY" );
+	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key<Scalable> KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "Scalable.KEY" );
 
 	public Resizer[] getResizers();
+
 	public double getValueForResizer( Resizer resizer );
+
 	public void setValueForResizer( Resizer resizer, double value );
 
-	public void addScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
-	public void removeScaleListener(edu.cmu.cs.dennisc.property.event.PropertyListener listener);
+	public void addScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener );
+
+	public void removeScaleListener( edu.cmu.cs.dennisc.property.event.PropertyListener listener );
 }

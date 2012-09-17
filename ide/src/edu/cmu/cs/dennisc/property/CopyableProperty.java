@@ -45,8 +45,10 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public interface CopyableProperty<E>  extends Property< E >{
+public interface CopyableProperty<E> extends Property<E> {
 	public E getCopy( E rv, PropertyOwner owner );
+
 	public E getCopy( PropertyOwner owner );
+
 	public void setCopy( PropertyOwner owner, E value );
 }

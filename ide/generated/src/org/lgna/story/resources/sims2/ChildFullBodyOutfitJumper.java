@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum ChildFullBodyOutfitJumper implements UnisexChildFullBodyOutfit {
 	SHIRTOVERSHORTS,
- 	YELLOWBLUEJEAN,
- 	STRIPES,
- 	TAN,
- 	BLUE,
- 	GREEN;
+	YELLOWBLUEJEAN,
+	STRIPES,
+	TAN,
+	BLUE,
+	GREEN;
 }

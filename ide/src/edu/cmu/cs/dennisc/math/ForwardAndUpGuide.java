@@ -51,66 +51,82 @@ public class ForwardAndUpGuide implements Orientation {
 
 	private ForwardAndUpGuide() {
 	}
+
 	public ForwardAndUpGuide( Vector3 forward, Vector3 upGuide ) {
 		setValueFrom( forward, upGuide );
 	}
+
 	public ForwardAndUpGuide( OrthogonalMatrix3x3 other ) {
 		setValue( other );
 	}
+
 	public ForwardAndUpGuide( UnitQuaternion other ) {
 		setValue( other );
 	}
+
 	public ForwardAndUpGuide( AxisRotation other ) {
 		setValue( other );
 	}
+
 	public ForwardAndUpGuide( EulerAngles other ) {
 		setValue( other );
 	}
+
 	public ForwardAndUpGuide( ForwardAndUpGuide other ) {
 		setValue( other );
 	}
+
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
 	}
+
 	public UnitQuaternion createUnitQuaternion() {
 		return new UnitQuaternion( this );
 	}
+
 	public AxisRotation createAxisRotation() {
 		return new AxisRotation( this );
 	}
+
 	public EulerAngles createEulerAngles() {
 		return new EulerAngles( this );
 	}
+
 	public ForwardAndUpGuide createForwardAndUpGuide() {
 		return new ForwardAndUpGuide( this );
 	}
-	
+
 	public OrthogonalMatrix3x3 getValue( OrthogonalMatrix3x3 rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public UnitQuaternion getValue( UnitQuaternion rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public AxisRotation getValue( AxisRotation rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public EulerAngles getValue( EulerAngles rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public ForwardAndUpGuide getValue( ForwardAndUpGuide rv ) {
 		rv.setValue( this );
 		return rv;
 	}
-	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		forward.decode( binaryDecoder );
 		upGuide.decode( binaryDecoder );
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		forward.encode( binaryEncoder );
 		upGuide.encode( binaryEncoder );
 	}
@@ -121,12 +137,15 @@ public class ForwardAndUpGuide implements Orientation {
 		rv.upGuide.setNaN();
 		return rv;
 	}
+
 	public static ForwardAndUpGuide createFromNaN() {
 		return setReturnValueToNaN( new ForwardAndUpGuide() );
 	}
+
 	public void setNaN() {
 		setReturnValueToNaN( this );
 	}
+
 	public boolean isNaN() {
 		return forward.isNaN() || upGuide.isNaN();
 	}
@@ -137,32 +156,39 @@ public class ForwardAndUpGuide implements Orientation {
 		rv.upGuide.set( 0, 1, 0 );
 		return rv;
 	}
+
 	public static ForwardAndUpGuide createFromIdentity() {
 		return setReturnValueToIdentity( ForwardAndUpGuide.createFromNaN() );
 	}
+
 	public void setIdentity() {
 		setReturnValueToIdentity( this );
 	}
+
 	public boolean isIdentity() {
 		//todo?
 		//return forward.isNegativeZAxis() && upGuide.y > 0.0;
 		return forward.isNegativeZAxis() && upGuide.isPositiveYAxis();
 	}
-	
+
 	public void setValue( OrthogonalMatrix3x3 m ) {
 		this.forward.set( m.backward );
 		this.forward.negate();
 		this.upGuide.set( m.up );
 	}
+
 	public void setValue( UnitQuaternion q ) {
 		setValue( new OrthogonalMatrix3x3( q ) );
 	}
+
 	public void setValue( AxisRotation aa ) {
 		setValue( new OrthogonalMatrix3x3( aa ) );
 	}
+
 	public void setValue( EulerAngles ea ) {
 		setValue( new OrthogonalMatrix3x3( ea ) );
 	}
+
 	public void setValue( ForwardAndUpGuide faug ) {
 		setValueFrom( faug.forward, faug.upGuide );
 	}
@@ -171,7 +197,7 @@ public class ForwardAndUpGuide implements Orientation {
 		this.forward.set( forward );
 		this.upGuide.set( upGuide );
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

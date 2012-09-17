@@ -48,19 +48,22 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEachInTogether extends AbstractStatementWithBody implements EachInStatement {
-	public DeclarationProperty< UserLocal > item = new DeclarationProperty< UserLocal >( this ) {
+	public DeclarationProperty<UserLocal> item = new DeclarationProperty<UserLocal>( this ) {
 		@Override
 		public boolean isReference() {
 			return false;
 		}
 	};
+
 	public AbstractEachInTogether() {
 	}
+
 	public AbstractEachInTogether( UserLocal item, BlockStatement body ) {
 		super( body );
 		assert item.isFinal.getValue();
 		this.item.setValue( item );
 	}
+
 	public DeclarationProperty<UserLocal> getItemProperty() {
 		return this.item;
 	}

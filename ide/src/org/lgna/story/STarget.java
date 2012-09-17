@@ -48,8 +48,9 @@ package org.lgna.story;
  */
 public class STarget extends SMovableTurnable {
 	private final org.lgna.story.implementation.TargetImp implementation = new org.lgna.story.implementation.TargetImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.TargetImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.TargetImp getImplementation() {
 		return this.implementation;
 	}
 }

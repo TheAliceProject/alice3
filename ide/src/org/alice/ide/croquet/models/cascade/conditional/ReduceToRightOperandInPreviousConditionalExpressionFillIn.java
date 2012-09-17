@@ -50,12 +50,15 @@ public class ReduceToRightOperandInPreviousConditionalExpressionFillIn extends R
 	private static class SingletonHolder {
 		private static ReduceToRightOperandInPreviousConditionalExpressionFillIn instance = new ReduceToRightOperandInPreviousConditionalExpressionFillIn();
 	}
+
 	public static ReduceToRightOperandInPreviousConditionalExpressionFillIn getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ReduceToRightOperandInPreviousConditionalExpressionFillIn() {
 		super( java.util.UUID.fromString( "56cba468-e24c-461d-acdd-163bb2e6dbb0" ) );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression getOperand( org.lgna.project.ast.ConditionalInfixExpression previousConditional ) {
 		return previousConditional.rightOperand.getValue();

@@ -68,10 +68,12 @@ public class CurrentProjectAttachment implements edu.cmu.cs.dennisc.issue.Attach
 			this.isCreateAttempted = true;
 		}
 	}
+
 	public byte[] getBytes() {
 		this.createBytesIfNecessary();
 		return this.bytes;
 	}
+
 	public String getMIMEType() {
 		this.createBytesIfNecessary();
 		if( this.isCreateSuccessful ) {
@@ -80,6 +82,7 @@ public class CurrentProjectAttachment implements edu.cmu.cs.dennisc.issue.Attach
 			return "text/plain";
 		}
 	}
+
 	public String getFileName() {
 		this.createBytesIfNecessary();
 		if( this.isCreateSuccessful ) {

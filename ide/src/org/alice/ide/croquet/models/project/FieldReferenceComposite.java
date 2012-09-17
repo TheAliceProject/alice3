@@ -69,7 +69,7 @@ public class FieldReferenceComposite extends SimpleComposite<FieldReferenceView>
 
 		public void changed( State<FieldAccess> state, FieldAccess prevValue, FieldAccess nextValue, boolean isAdjusting ) {
 			FieldAccess selection = state.getValue();
-			if( selection != null && isJumpDesired ) {
+			if( ( selection != null ) && isJumpDesired ) {
 				UserMethod ancestor = selection.getParent().getFirstAncestorAssignableTo( UserMethod.class );
 				if( ancestor == null ) {
 					NamedUserType type = selection.getFirstAncestorAssignableTo( NamedUserType.class );

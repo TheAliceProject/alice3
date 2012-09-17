@@ -49,9 +49,11 @@ public class ShowLibraryPathPropertyOperation extends ShowPathPropertyOperation 
 	private static class SingletonHolder {
 		private static ShowLibraryPathPropertyOperation instance = new ShowLibraryPathPropertyOperation();
 	}
+
 	public static ShowLibraryPathPropertyOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ShowLibraryPathPropertyOperation() {
 		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ), "java.library.path" );
 	}

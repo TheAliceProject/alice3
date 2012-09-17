@@ -53,6 +53,7 @@ public abstract class Point2DAnimation extends InterpolationAnimation<java.awt.g
 	public Point2DAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, java.awt.geom.Point2D p0, java.awt.geom.Point2D p1 ) {
 		super( duration, style, p0, p1 );
 	}
+
 	@Override
 	protected java.awt.geom.Point2D newE( java.awt.geom.Point2D other ) {
 		double x;
@@ -66,13 +67,13 @@ public abstract class Point2DAnimation extends InterpolationAnimation<java.awt.g
 		}
 		return new java.awt.geom.Point2D.Double( x, y );
 	}
+
 	@Override
 	protected java.awt.geom.Point2D interpolate( java.awt.geom.Point2D rv, java.awt.geom.Point2D v0, java.awt.geom.Point2D v1, double portion ) {
-		rv.setLocation( 
-				v0.getX() + (v1.getX()-v0.getX()) * portion,
-				v0.getY() + (v1.getY()-v0.getY()) * portion
-		);
+		rv.setLocation(
+				v0.getX() + ( ( v1.getX() - v0.getX() ) * portion ),
+				v0.getY() + ( ( v1.getY() - v0.getY() ) * portion )
+				);
 		return rv;
 	}
 }
-

@@ -47,15 +47,19 @@ package org.lgna.project.reflect;
  */
 public abstract class MemberInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	private final ClassInfo declaringClassInfo;
+
 	public MemberInfo( ClassInfo declaringClassInfo ) {
 		this.declaringClassInfo = declaringClassInfo;
 	}
+
 	public MemberInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.declaringClassInfo = ClassInfo.forName( binaryDecoder.decodeString() );
 	}
+
 	protected Class<?> getDeclaringCls() {
 		return this.declaringClassInfo.getCls();
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.declaringClassInfo.getClsName() );
 	}

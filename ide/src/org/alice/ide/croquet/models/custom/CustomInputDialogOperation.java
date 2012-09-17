@@ -45,31 +45,33 @@ package org.alice.ide.croquet.models.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomInputDialogOperation< E extends org.lgna.project.ast.Expression > extends org.alice.ide.croquet.models.ValueInputDialogOperationWithPreview<E> {
+public abstract class CustomInputDialogOperation<E extends org.lgna.project.ast.Expression> extends org.alice.ide.croquet.models.ValueInputDialogOperationWithPreview<E> {
 	public CustomInputDialogOperation( java.util.UUID id ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, id );
 	}
+
 	@Override
-	protected abstract org.alice.ide.choosers.ValueChooser< E > prologue( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract org.alice.ide.choosers.ValueChooser<E> prologue( org.lgna.croquet.history.CompletionStep<?> step );
+
 	@Override
 	protected final E createValue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.choosers.ValueChooser< E > chooser = (org.alice.ide.choosers.ValueChooser< E >)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
+		org.alice.ide.choosers.ValueChooser<E> chooser = (org.alice.ide.choosers.ValueChooser<E>)step.getEphemeralDataFor( org.lgna.croquet.InputDialogOperation.INPUT_PANEL_KEY );
 		return chooser.getValue();
 	}
 
-//	@Override
-//	protected StringBuilder updateTutorialStepText( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
-////		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
-////		if( successfulCompletionEvent != null ) {
-//		if( edit != null ) {
-//			//org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
-//			rv.append( "1) Enter " );
-//			rv.append( "<strong>" );
-//			rv.append( "fill_in_expression_value_here" );
-//			rv.append( "</strong>" );
-//			rv.append( "<br>" );
-//			rv.append( "2) Press <strong>OK</strong>." );
-//		}
-//		return rv;
-//	}
+	//	@Override
+	//	protected StringBuilder updateTutorialStepText( StringBuilder rv, edu.cmu.cs.dennisc.croquet.ModelContext< ? > modelContext, edu.cmu.cs.dennisc.croquet.Edit< ? > edit, edu.cmu.cs.dennisc.croquet.UserInformation userInformation ) {
+	////		edu.cmu.cs.dennisc.croquet.SuccessfulCompletionEvent successfulCompletionEvent = modelContext.getSuccessfulCompletionEvent();
+	////		if( successfulCompletionEvent != null ) {
+	//		if( edit != null ) {
+	//			//org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)successfulCompletionEvent.getEdit();
+	//			rv.append( "1) Enter " );
+	//			rv.append( "<strong>" );
+	//			rv.append( "fill_in_expression_value_here" );
+	//			rv.append( "</strong>" );
+	//			rv.append( "<br>" );
+	//			rv.append( "2) Press <strong>OK</strong>." );
+	//		}
+	//		return rv;
+	//	}
 }

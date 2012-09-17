@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public abstract class Composite extends Component {
-	private final java.util.List< Component > children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.List< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > childrenListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<Component> children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener> childrenListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	@Override
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
@@ -82,6 +82,7 @@ public abstract class Composite extends Component {
 			childrenListener.componentAdded( e );
 		}
 	}
+
 	protected void fireChildRemoved( Component child ) {
 		this.children.remove( child );
 		edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent( this, child );
@@ -94,6 +95,7 @@ public abstract class Composite extends Component {
 		assert component != this;
 		component.setParent( this );
 	}
+
 	public void removeComponent( Component component ) {
 		if( component.getParent() == this ) {
 			component.setParent( null );
@@ -102,18 +104,22 @@ public abstract class Composite extends Component {
 		}
 	}
 
-	public Iterable< Component > getComponents() {
+	public Iterable<Component> getComponents() {
 		return this.children;
 	}
+
 	public int getComponentCount() {
 		return this.children.size();
 	}
+
 	public int getIndexOfComponent( Component component ) {
 		return this.children.indexOf( component );
 	}
+
 	public Component getComponentAt( int i ) {
 		return this.children.get( i );
 	}
+
 	public Component[] getComponentsAsArray() {
 		return this.children.toArray( new Component[ this.children.size() ] );
 	}
@@ -121,10 +127,12 @@ public abstract class Composite extends Component {
 	public void addChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
 		this.childrenListeners.add( childrenListener );
 	}
+
 	public void removeChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
 		this.childrenListeners.remove( childrenListener );
 	}
-	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > getChildrenListeners() {
+
+	public Iterable<edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener> getChildrenListeners() {
 		return this.childrenListeners;
 	}
 
@@ -135,6 +143,7 @@ public abstract class Composite extends Component {
 			child.fireAbsoluteTransformationChange();
 		}
 	}
+
 	@Override
 	protected void fireHierarchyChanged() {
 		super.fireHierarchyChanged();
@@ -142,22 +151,23 @@ public abstract class Composite extends Component {
 			child.fireHierarchyChanged();
 		}
 	}
-	
+
 	@Override
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Map<edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer> map) {
-	    super.encode(binaryEncoder, map);
-	    binaryEncoder.encode( this.children.size() );
-	    for( Component component : this.children ) {
-	        binaryEncoder.encode( component, map );
-	    }
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.util.Map<edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable, Integer> map ) {
+		super.encode( binaryEncoder, map );
+		binaryEncoder.encode( this.children.size() );
+		for( Component component : this.children ) {
+			binaryEncoder.encode( component, map );
+		}
 	}
+
 	@Override
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, java.util.Map<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable> map) {
-	    super.decode(binaryDecoder, map);
-	    final int N = binaryDecoder.decodeInt();
-	    for( int i=0; i<N; i++ ) {
-	        this.addComponent( (Component)binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( map ) );
-	    }
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, java.util.Map<Integer, edu.cmu.cs.dennisc.codec.ReferenceableBinaryEncodableAndDecodable> map ) {
+		super.decode( binaryDecoder, map );
+		final int N = binaryDecoder.decodeInt();
+		for( int i = 0; i < N; i++ ) {
+			this.addComponent( (Component)binaryDecoder.decodeReferenceableBinaryEncodableAndDecodable( map ) );
+		}
 	}
 
 	@Override
@@ -169,5 +179,5 @@ public abstract class Composite extends Component {
 		}
 		return rv;
 	}
-	
+
 }

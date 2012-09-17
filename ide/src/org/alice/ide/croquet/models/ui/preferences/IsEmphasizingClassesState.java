@@ -49,9 +49,11 @@ public class IsEmphasizingClassesState extends org.lgna.croquet.preferences.Pref
 	private static class SingletonHolder {
 		private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
 	}
+
 	public static IsEmphasizingClassesState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsEmphasizingClassesState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), true );
 	}

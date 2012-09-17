@@ -49,19 +49,23 @@ package org.lgna.story.implementation;
 public abstract class SingleVisualModelImp extends VisualScaleModelImp {
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals;
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] { new edu.cmu.cs.dennisc.scenegraph.TexturedAppearance() };
+
 	public SingleVisualModelImp( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual ) {
 		this.sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { sgVisual };
 		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
 		this.sgVisuals[ 0 ].setParent( this.getSgComposite() );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
+
 	@Override
 	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgPaintAppearances() {
 		return this.sgAppearances;
 	}
+
 	@Override
 	protected final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.getSgPaintAppearances();

@@ -49,32 +49,37 @@ package org.lgna.croquet;
 public abstract class AbstractCompletionModel extends AbstractModel implements CompletionModel {
 	private final Group group;
 	private int ignoreCount = 0;
-	
+
 	private static final class SidekickLabel extends PlainStringValue {
 		private final AbstractCompletionModel completionModel;
+
 		public SidekickLabel( AbstractCompletionModel completionModel ) {
 			super( java.util.UUID.fromString( "9ca020c1-1a00-44f1-8541-84b31b787e49" ) );
 			this.completionModel = completionModel;
 		}
+
 		@Override
 		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return this.completionModel.getClassUsedForLocalization();
 		}
+
 		@Override
 		protected String getSubKeyForLocalization() {
 			return "sidekickLabel";
 		}
 	}
-	
+
 	private SidekickLabel sidekickLabel;
 
 	public AbstractCompletionModel( Group group, java.util.UUID id ) {
 		super( id );
 		this.group = group;
 	}
+
 	public Group getGroup() {
 		return this.group;
 	}
+
 	public synchronized PlainStringValue getSidekickLabel() {
 		if( this.sidekickLabel != null ) {
 			//pass
@@ -84,6 +89,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		}
 		return this.sidekickLabel;
 	}
+
 	public StringValue peekSidekickLabel() {
 		return this.sidekickLabel;
 	}
@@ -91,16 +97,19 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	protected void pushIgnore() {
 		this.ignoreCount++;
 	}
+
 	protected void popIgnore() {
 		this.ignoreCount--;
 		assert this.ignoreCount >= 0;
 	}
+
 	protected boolean isAppropriateToComplete() {
-		return Manager.isInTheMidstOfUndoOrRedo()==false && this.ignoreCount == 0;
+		return ( Manager.isInTheMidstOfUndoOrRedo() == false ) && ( this.ignoreCount == 0 );
 	}
-	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep< ? > step ) {
+
+	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.initializeIfNecessary();
-		org.lgna.croquet.edits.Edit< ? > edit = step.getEdit();
+		org.lgna.croquet.edits.Edit<?> edit = step.getEdit();
 		if( edit != null ) {
 			return edit.getTutorialTransactionTitle();
 		} else {
@@ -108,12 +117,16 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 			return this.getTutorialNoteText( step, trigger != null ? "" : "", edit );
 		}
 	}
-	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit );
-	public org.lgna.croquet.edits.Edit< ? > commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep< ? > completionStep, org.lgna.croquet.edits.Edit< ? > originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+
+	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit );
+
+	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( originalEdit );
 		return null;
 	}
-	public abstract Iterable< ? extends PrepModel > getPotentialRootPrepModels();
+
+	public abstract Iterable<? extends PrepModel> getPotentialRootPrepModels();
+
 	@Override
 	protected void appendRepr( StringBuilder sb ) {
 		super.appendRepr( sb );
@@ -124,16 +137,22 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	protected boolean isSubTransactionHistoryRequired() {
 		return false;
 	}
+
 	protected void addGeneratedPrepSteps( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
+
 	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
 	}
+
 	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
+
 	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
 	}
+
 	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
 	}
+
 	public final org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit ) {
 		this.pushGeneratedContexts( edit );
 		try {

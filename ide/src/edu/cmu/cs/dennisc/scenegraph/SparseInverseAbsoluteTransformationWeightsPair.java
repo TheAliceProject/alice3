@@ -51,50 +51,50 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
 public class SparseInverseAbsoluteTransformationWeightsPair extends InverseAbsoluteTransformationWeightsPair
 {
-    protected int[] indices;
-    
-    @Override
-    public void setWeights(float[] weightsIn)
-    {
-        List<Float> nonZeroWeights = new LinkedList<Float>();
-        List<Integer> nonZeroIndices = new LinkedList<Integer>();
-        for (int i=0; i<weightsIn.length; i++)
-        {
-            if (weightsIn[i] != 0)
-            {
-                nonZeroWeights.add(new Float(weightsIn[i]));
-                nonZeroIndices.add(new Integer(i));
-            }
-        }
-        
-        this.weights = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createFloatArray(nonZeroWeights);
-        this.indices = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createIntArray(nonZeroIndices);
-    }
+	protected int[] indices;
 
-    public void setWeightsAndIndices(float[] weights, int[] indices)
-    {
-        this.weights = weights;
-        this.indices = indices;
-    }
-    
-    @Override
-    public void decode(BinaryDecoder binaryDecoder)
-    {
-        super.decode(binaryDecoder);
-        this.indices = binaryDecoder.decodeIntArray();
-    }
+	@Override
+	public void setWeights( float[] weightsIn )
+	{
+		List<Float> nonZeroWeights = new LinkedList<Float>();
+		List<Integer> nonZeroIndices = new LinkedList<Integer>();
+		for( int i = 0; i < weightsIn.length; i++ )
+		{
+			if( weightsIn[ i ] != 0 )
+			{
+				nonZeroWeights.add( new Float( weightsIn[ i ] ) );
+				nonZeroIndices.add( new Integer( i ) );
+			}
+		}
 
-    @Override
-    public void encode(BinaryEncoder binaryEncoder)
-    {
-        super.encode(binaryEncoder);
-        binaryEncoder.encode(this.indices);
-    }
-    
-    @Override
-    public int getIndex()
-    {
-        return this.indices[this.index];
-    }
+		this.weights = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createFloatArray( nonZeroWeights );
+		this.indices = edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createIntArray( nonZeroIndices );
+	}
+
+	public void setWeightsAndIndices( float[] weights, int[] indices )
+	{
+		this.weights = weights;
+		this.indices = indices;
+	}
+
+	@Override
+	public void decode( BinaryDecoder binaryDecoder )
+	{
+		super.decode( binaryDecoder );
+		this.indices = binaryDecoder.decodeIntArray();
+	}
+
+	@Override
+	public void encode( BinaryEncoder binaryEncoder )
+	{
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.indices );
+	}
+
+	@Override
+	public int getIndex()
+	{
+		return this.indices[ this.index ];
+	}
 
 }

@@ -53,45 +53,53 @@ public class DefaultTheme implements Theme {
 	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xb0c9a4 );
 	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xadc0ab );
 	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 230, 230, 210 );
-//	private static final java.awt.Color DEFAULT_EVENT_COLOR = new Color( 100, 200, 100 );
-//	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_EVENT_COLOR.brighter().brighter(); //new Color( 150, 225, 150 );
+	//	private static final java.awt.Color DEFAULT_EVENT_COLOR = new Color( 100, 200, 100 );
+	//	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_EVENT_COLOR.brighter().brighter(); //new Color( 150, 225, 150 );
 	private static final java.awt.Color DEFAULT_EVENT_COLOR = new java.awt.Color( 0xd3d7f0 );
 	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_PROCEDURE_COLOR;
 
-	private static final java.awt.Color DEFAULT_SELECTED_COLOR = new java.awt.Color(255, 255, 179);
-	private static final java.awt.Color DEFAULT_UNSELECTED_COLOR = new java.awt.Color(141, 137, 166);
-	private static final java.awt.Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new java.awt.Color(173, 167, 208);
-	private static final java.awt.Color DEFAULT_SECONDARY_BACKGROUND_COLOR = new java.awt.Color(201, 201, 218);
+	private static final java.awt.Color DEFAULT_SELECTED_COLOR = new java.awt.Color( 255, 255, 179 );
+	private static final java.awt.Color DEFAULT_UNSELECTED_COLOR = new java.awt.Color( 141, 137, 166 );
+	private static final java.awt.Color DEFAULT_PRIMARY_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
+	private static final java.awt.Color DEFAULT_SECONDARY_BACKGROUND_COLOR = new java.awt.Color( 201, 201, 218 );
 
 	public java.awt.Color getTypeColor() {
 		return DEFAULT_TYPE_COLOR;
 	}
+
 	public java.awt.Color getProcedureColor() {
 		return DEFAULT_PROCEDURE_COLOR;
 	}
+
 	public java.awt.Color getFunctionColor() {
 		return DEFAULT_FUNCTION_COLOR;
 	}
+
 	public java.awt.Color getConstructorColor() {
 		return DEFAULT_CONSTRUCTOR_COLOR;
 	}
+
 	public java.awt.Color getFieldColor() {
 		return DEFAULT_FIELD_COLOR;
 	}
+
 	public java.awt.Color getLocalColor() {
 		return getFieldColor();
 	}
+
 	public java.awt.Color getParameterColor() {
 		return getFieldColor();
 	}
+
 	public java.awt.Color getEventColor() {
 		return DEFAULT_EVENT_COLOR;
 	}
+
 	public java.awt.Color getEventBodyColor() {
 		return DEFAULT_EVENT_BODY_COLOR;
 	}
 
-	public java.awt.Paint getPaintFor( Class< ? extends org.lgna.project.ast.Statement > cls, int x, int y, int width, int height ) {
+	public java.awt.Paint getPaintFor( Class<? extends org.lgna.project.ast.Statement> cls, int x, int y, int width, int height ) {
 		java.awt.Color color = this.getColorFor( cls );
 		if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
 			return color;
@@ -106,19 +114,20 @@ public class DefaultTheme implements Theme {
 			}
 		}
 	}
-	public java.awt.Color getColorFor( Class< ? extends org.lgna.project.ast.Node > cls ) {
+
+	public java.awt.Color getColorFor( Class<? extends org.lgna.project.ast.Node> cls ) {
 		if( org.lgna.project.ast.Statement.class.isAssignableFrom( cls ) ) {
 			if( org.lgna.project.ast.Comment.class.isAssignableFrom( cls ) ) {
 				return edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 245 );
 			} else {
-//				if( org.lgna.project.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
-//					return new java.awt.Color( 255, 230, 180 );
-////				} else if( org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
-////					return new java.awt.Color( 255, 230, 180 );
-//				} else {
-					return new java.awt.Color( 0xd3d7f0 );
-					//return new java.awt.Color( 255, 255, 210 );
-//				}
+				//				if( org.lgna.project.ast.ExpressionStatement.class.isAssignableFrom( cls ) ) {
+				//					return new java.awt.Color( 255, 230, 180 );
+				////				} else if( org.lgna.project.ast.LocalDeclarationStatement.class.isAssignableFrom( cls ) ) {
+				////					return new java.awt.Color( 255, 230, 180 );
+				//				} else {
+				return new java.awt.Color( 0xd3d7f0 );
+				//return new java.awt.Color( 255, 255, 210 );
+				//				}
 			}
 		} else if( org.lgna.project.ast.Expression.class.isAssignableFrom( cls ) ) {
 			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.MethodInvocation.class ) ) {
@@ -137,7 +146,7 @@ public class DefaultTheme implements Theme {
 					return new java.awt.Color( 0xfdf6c0 );
 				}
 			}
-		} else if( org.lgna.project.ast.AbstractField.class.isAssignableFrom( cls ) ){
+		} else if( org.lgna.project.ast.AbstractField.class.isAssignableFrom( cls ) ) {
 			return this.getFieldColor();
 		} else if( org.lgna.project.ast.AbstractParameter.class.isAssignableFrom( cls ) ) {
 			return this.getParameterColor();
@@ -149,6 +158,7 @@ public class DefaultTheme implements Theme {
 			return java.awt.Color.BLUE;
 		}
 	}
+
 	public java.awt.Color getColorFor( org.lgna.project.ast.Node node ) {
 		if( node != null ) {
 			if( node instanceof org.lgna.project.ast.AbstractMethod ) {
@@ -159,15 +169,15 @@ public class DefaultTheme implements Theme {
 					return this.getFunctionColor();
 				}
 			} else {
-				Class< ? extends org.lgna.project.ast.Node > cls = node.getClass();
-//				if( node instanceof org.lgna.project.ast.FieldAccess ) {
-//					org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)node;
-//					if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
-//						//pass
-//					} else {
-//						cls = org.lgna.project.ast.MethodInvocation.class;
-//					}
-//				}
+				Class<? extends org.lgna.project.ast.Node> cls = node.getClass();
+				//				if( node instanceof org.lgna.project.ast.FieldAccess ) {
+				//					org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)node;
+				//					if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
+				//						//pass
+				//					} else {
+				//						cls = org.lgna.project.ast.MethodInvocation.class;
+				//					}
+				//				}
 				return this.getColorFor( cls );
 			}
 		} else {
@@ -193,21 +203,25 @@ public class DefaultTheme implements Theme {
 			return java.awt.Color.GRAY;
 		}
 	}
-    public Color getSelectedColor()
-    {
-        return DEFAULT_SELECTED_COLOR;
-    }
-    public Color getUnselectedColor()
-    {
-        return DEFAULT_UNSELECTED_COLOR;
-    }
-    public Color getPrimaryBackgroundColor()
-    {
-        return DEFAULT_PRIMARY_BACKGROUND_COLOR;
-    }
-    public Color getSecondaryBackgroundColor()
-    {
-        // TODO Auto-generated method stub
-        return DEFAULT_SECONDARY_BACKGROUND_COLOR;
-    }
+
+	public Color getSelectedColor()
+	{
+		return DEFAULT_SELECTED_COLOR;
+	}
+
+	public Color getUnselectedColor()
+	{
+		return DEFAULT_UNSELECTED_COLOR;
+	}
+
+	public Color getPrimaryBackgroundColor()
+	{
+		return DEFAULT_PRIMARY_BACKGROUND_COLOR;
+	}
+
+	public Color getSecondaryBackgroundColor()
+	{
+		// TODO Auto-generated method stub
+		return DEFAULT_SECONDARY_BACKGROUND_COLOR;
+	}
 }

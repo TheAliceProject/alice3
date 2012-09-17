@@ -53,6 +53,6 @@ public class TypeHeader extends org.lgna.croquet.components.FlowPanel {
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type ) );
 		this.addComponent( new org.lgna.croquet.components.Label( " extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( type != null ? type.getSuperType() : null ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0,0,0,8 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 0, 8 ) );
 	}
 }

@@ -46,14 +46,16 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionState extends org.lgna.croquet.DefaultCustomItemState< org.lgna.project.ast.Expression > {
+public abstract class ExpressionState extends org.lgna.croquet.DefaultCustomItemState<org.lgna.project.ast.Expression> {
 	public ExpressionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.project.ast.Expression initialValue ) {
 		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue );
 	}
-	public org.lgna.croquet.components.JComponent< ? > createEditor( org.alice.ide.x.AstI18nFactory factory ) {
+
+	public org.lgna.croquet.components.JComponent<?> createEditor( org.alice.ide.x.AstI18nFactory factory ) {
 		return new org.alice.ide.croquet.components.ExpressionDropDown( this, factory );
 	}
-	public org.lgna.croquet.components.JComponent< ? > createView( org.alice.ide.x.AstI18nFactory factory ) {
+
+	public org.lgna.croquet.components.JComponent<?> createView( org.alice.ide.x.AstI18nFactory factory ) {
 		return factory.createExpressionPane( this.getValue() );
 	}
 }

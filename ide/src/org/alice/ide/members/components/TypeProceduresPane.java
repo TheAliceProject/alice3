@@ -46,32 +46,32 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 public class TypeProceduresPane extends AbstractTypeMethodsPane {
-	public TypeProceduresPane(org.lgna.project.ast.AbstractType<?, ?, ?> type) {
-		super(type);
+	public TypeProceduresPane( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		super( type );
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember>[] getListPropertiesToListenTo(org.lgna.project.ast.NamedUserType type) {
+	protected edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember>[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods };
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Button createDeclareMemberButton(org.lgna.project.ast.NamedUserType type) {
+	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
 		return org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( type ).getOperation().createButton();
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Button createEditConstructorButton(org.lgna.project.ast.NamedUserType type) {
+	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createFunctionTemplate(org.lgna.project.ast.AbstractMethod method) {
+	protected org.lgna.croquet.components.Component<?> createFunctionTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		return null;
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Component<?> createProcedureTemplate(org.lgna.project.ast.AbstractMethod method) {
-		return org.alice.ide.members.components.templates.TemplateFactory.getProcedureInvocationTemplate(method);
+	protected org.lgna.croquet.components.Component<?> createProcedureTemplate( org.lgna.project.ast.AbstractMethod method ) {
+		return org.alice.ide.members.components.templates.TemplateFactory.getProcedureInvocationTemplate( method );
 	}
 }

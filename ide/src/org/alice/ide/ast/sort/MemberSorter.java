@@ -47,5 +47,5 @@ package org.alice.ide.ast.sort;
  * @author Dennis Cosgrove
  */
 public interface MemberSorter {
-	public < T extends org.lgna.project.ast.AbstractMember > java.util.List< T > createSortedList( java.util.List< T > src );
+	public <T extends org.lgna.project.ast.AbstractMember> java.util.List<T> createSortedList( java.util.List<T> src );
 }

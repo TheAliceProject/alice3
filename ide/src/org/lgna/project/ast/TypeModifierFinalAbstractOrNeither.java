@@ -47,34 +47,36 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public enum TypeModifierFinalAbstractOrNeither {
-//1.6
-//	FINAL( javax.lang.model.element.Modifier.FINAL ),
-//	ABSTRACT( javax.lang.model.element.Modifier.ABSTRACT ),
-//	NEITHER();
-//	private javax.lang.model.element.Modifier[] m_modifiers;
-//	TypeModifierFinalAbstractOrNeither( javax.lang.model.element.Modifier... modifiers ) {
-//		m_modifiers = modifiers;
-//	}
-//	public java.util.Set< javax.lang.model.element.Modifier > updateModifiers( java.util.Set< javax.lang.model.element.Modifier > rv ) {
-//		for( javax.lang.model.element.Modifier modifier : m_modifiers ) {
-//			rv.add( modifier );
-//		}
-//		return rv;
-//	}
+	//1.6
+	//	FINAL( javax.lang.model.element.Modifier.FINAL ),
+	//	ABSTRACT( javax.lang.model.element.Modifier.ABSTRACT ),
+	//	NEITHER();
+	//	private javax.lang.model.element.Modifier[] m_modifiers;
+	//	TypeModifierFinalAbstractOrNeither( javax.lang.model.element.Modifier... modifiers ) {
+	//		m_modifiers = modifiers;
+	//	}
+	//	public java.util.Set< javax.lang.model.element.Modifier > updateModifiers( java.util.Set< javax.lang.model.element.Modifier > rv ) {
+	//		for( javax.lang.model.element.Modifier modifier : m_modifiers ) {
+	//			rv.add( modifier );
+	//		}
+	//		return rv;
+	//	}
 	FINAL( java.lang.reflect.Modifier.FINAL ),
 	ABSTRACT( java.lang.reflect.Modifier.ABSTRACT ),
 	NEITHER();
 	private int[] m_modifiers;
+
 	TypeModifierFinalAbstractOrNeither( int... modifiers ) {
 		m_modifiers = modifiers;
 	}
-	public java.util.Set< Integer > updateModifiers( java.util.Set< Integer > rv ) {
+
+	public java.util.Set<Integer> updateModifiers( java.util.Set<Integer> rv ) {
 		for( int modifier : m_modifiers ) {
 			rv.add( modifier );
 		}
 		return rv;
 	}
-	
+
 	//todo: rename
 	public static TypeModifierFinalAbstractOrNeither get( int modifiers ) {
 		if( java.lang.reflect.Modifier.isFinal( modifiers ) ) {

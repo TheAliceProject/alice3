@@ -49,6 +49,7 @@ public class InputEventUtilities {
 	public static int getCompleteModifiers( java.awt.event.InputEvent e ) {
 		return e.getModifiers() | e.getModifiersEx();
 	}
+
 	public static int performPlatformModifiersFilter( int originalModifiers ) {
 		int rv;
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
@@ -59,10 +60,11 @@ public class InputEventUtilities {
 		}
 		return rv;
 	}
+
 	public static int getAcceleratorMask() {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			return java.awt.event.InputEvent.META_MASK;
-		} else {		
+		} else {
 			return java.awt.event.InputEvent.CTRL_MASK;
 		}
 	}

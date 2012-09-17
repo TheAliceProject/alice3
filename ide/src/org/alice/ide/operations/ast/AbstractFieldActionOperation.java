@@ -47,14 +47,16 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractFieldActionOperation extends org.lgna.croquet.ActionOperation {
 	private org.lgna.project.ast.AbstractField field;
+
 	public AbstractFieldActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, org.lgna.project.ast.AbstractField field ) {
 		super( group, individualId );
 		this.field = field;
 	}
+
 	public org.lgna.project.ast.AbstractField getField() {
 		return this.field;
 	}
-//	public void setField( org.lgna.project.ast.AbstractField field ) {
-//		this.field = field;
-//	}
+	//	public void setField( org.lgna.project.ast.AbstractField field ) {
+	//		this.field = field;
+	//	}
 }

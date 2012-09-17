@@ -50,12 +50,15 @@ public class RecentProjectsTab extends ContentTab<org.alice.ide.openprojectpane.
 	private static class SingletonHolder {
 		private static RecentProjectsTab instance = new RecentProjectsTab();
 	}
+
 	public static RecentProjectsTab getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RecentProjectsTab() {
 		super( java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ) );
 	}
+
 	@Override
 	protected org.alice.ide.openprojectpane.RecentPane createView() {
 		return new org.alice.ide.openprojectpane.RecentPane( this );

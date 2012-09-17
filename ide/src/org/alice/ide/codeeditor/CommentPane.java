@@ -46,8 +46,9 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea {
-//class CommentLine extends javax.swing.JTextArea {
+	//class CommentLine extends javax.swing.JTextArea {
 	private org.lgna.project.ast.Comment comment;
+
 	public CommentLine( org.lgna.project.ast.Comment comment ) {
 		this.setText( comment.text.getValue() );
 		this.setTextForBlankCondition( "enter your comment here" );
@@ -57,9 +58,11 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
 			}
+
 			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
 			}
+
 			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
 			}
@@ -74,7 +77,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 					CommentLine.this.requestFocus();
 					org.alice.ide.IDE.getActiveInstance().setCommentThatWantsFocus( null );
 				}
-			} ); 
+			} );
 		}
 		//todo: remove?
 		this.addKeyListener( new java.awt.event.KeyListener() {
@@ -83,46 +86,52 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 					CommentLine.this.transferFocus();
 				}
 			}
+
 			public void keyReleased( java.awt.event.KeyEvent e ) {
 			}
+
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		} );
-		
-		
+
 		this.addFocusListener( new java.awt.event.FocusListener() {
 			public void focusGained( java.awt.event.FocusEvent e ) {
 				CommentLine.this.setToolTipText( "Press the escape key to remove focus" );
 				//CommentLine.this.repaint();
 			}
+
 			public void focusLost( java.awt.event.FocusEvent e ) {
 				CommentLine.this.setToolTipText( null );
 				//CommentLine.this.repaint();
 			}
 		} );
-		
-//		java.awt.Font font = this.getFont();
-//		font = font.deriveFont( java.awt.Font.BOLD );
-//		font = font.deriveFont( font.getSize() * 1.2f );
-//		this.setFont( font );
+
+		//		java.awt.Font font = this.getFont();
+		//		font = font.deriveFont( java.awt.Font.BOLD );
+		//		font = font.deriveFont( font.getSize() * 1.2f );
+		//		this.setFont( font );
 		this.updateBorder();
 	}
+
 	private void updateBorder() {
 		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
 		java.awt.FontMetrics fm = g.getFontMetrics( this.getFont() );
 		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( "//", g );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, (int)bounds.getWidth()+2, 0, 0 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, (int)bounds.getWidth() + 2, 0, 0 ) );
 	}
+
 	@Override
 	public void setFont( java.awt.Font f ) {
 		super.setFont( f );
 		this.updateBorder();
 	}
+
 	private void handleUpdate() {
 		this.revalidate();
 		this.setSize( getPreferredSize() );
 		this.comment.text.setValue( this.getText() );
 	}
+
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = super.getPreferredSize();
@@ -130,6 +139,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMaximumHeight( rv, this.getMinimumSize().height );
 		return rv;
 	}
+
 	@Override
 	public java.awt.Dimension getMaximumSize() {
 		java.awt.Dimension rv = super.getMaximumSize();
@@ -137,6 +147,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 		rv.height = preferredSize.height;
 		return rv;
 	}
+
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		super.paint( g );
@@ -144,7 +155,7 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 		final int ROW_HEIGHT = this.getRowHeight();
 		final int N = this.getLineCount();
 		int y = -g.getFontMetrics().getDescent();
-		for( int i=0; i<N; i++ ) {
+		for( int i = 0; i < N; i++ ) {
 			y += ROW_HEIGHT;
 			g.drawString( "//", 0, y );
 		}

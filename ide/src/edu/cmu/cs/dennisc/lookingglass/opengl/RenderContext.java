@@ -43,16 +43,38 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_ABGR_EXT;
+import static javax.media.opengl.GL.GL_CLAMP;
+import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
+import static javax.media.opengl.GL.GL_COLOR_MATERIAL;
+import static javax.media.opengl.GL.GL_CULL_FACE;
+import static javax.media.opengl.GL.GL_DEPTH_COMPONENT;
+import static javax.media.opengl.GL.GL_DEPTH_TEST;
+import static javax.media.opengl.GL.GL_DIFFUSE;
+import static javax.media.opengl.GL.GL_FLOAT;
+import static javax.media.opengl.GL.GL_FOG;
+import static javax.media.opengl.GL.GL_FOG_COLOR;
+import static javax.media.opengl.GL.GL_LIGHT0;
+import static javax.media.opengl.GL.GL_LIGHTING;
+import static javax.media.opengl.GL.GL_LIGHT_MODEL_AMBIENT;
+import static javax.media.opengl.GL.GL_NORMALIZE;
+import static javax.media.opengl.GL.GL_NO_ERROR;
+import static javax.media.opengl.GL.GL_REPEAT;
+import static javax.media.opengl.GL.GL_SCISSOR_TEST;
+import static javax.media.opengl.GL.GL_SPECULAR;
+import static javax.media.opengl.GL.GL_TEXTURE_2D;
+import static javax.media.opengl.GL.GL_TEXTURE_WRAP_S;
+import static javax.media.opengl.GL.GL_TEXTURE_WRAP_T;
+import static javax.media.opengl.GL.GL_UNSIGNED_BYTE;
 
 /**
  * @author Dennis Cosgrove
  */
 public class RenderContext extends Context {
-	private final java.util.Map< GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry >, Integer > displayListMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Map< TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture >, ForgettableBinding > textureBindingMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.List< Integer > toBeForgottenDisplayLists = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final java.util.List< ForgettableBinding > toBeForgottenTextures = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.Map<GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>, Integer> displayListMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Map<TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture>, ForgettableBinding> textureBindingMap = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.List<Integer> toBeForgottenDisplayLists = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<ForgettableBinding> toBeForgottenTextures = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private int lastTime_nextLightID = GL_LIGHT0;
 	private int nextLightID;
@@ -66,7 +88,7 @@ public class RenderContext extends Context {
 
 	private float globalBrightness = 1.0f;
 
-	private TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > currDiffuseColorTextureAdapter;
+	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> currDiffuseColorTextureAdapter;
 
 	private boolean isShadingEnabled;
 
@@ -75,15 +97,17 @@ public class RenderContext extends Context {
 
 	private final java.awt.Rectangle clearRect = new java.awt.Rectangle();
 
-	private final java.util.Stack< Float > globalOpacityStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private final java.util.Stack<Float> globalOpacityStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	private float globalOpacity = 1.0f;
 
 	public void pushGlobalOpacity() {
 		this.globalOpacityStack.push( this.globalOpacity );
 	}
+
 	public void multiplyGlobalOpacity( float globalOpacity ) {
 		this.globalOpacity *= globalOpacity;
 	}
+
 	public void popGlobalOpacity() {
 		this.globalOpacity = this.globalOpacityStack.pop();
 	}
@@ -95,17 +119,19 @@ public class RenderContext extends Context {
 		this.globalOpacity = 1.0f;
 		this.globalOpacityStack.clear();
 	}
-	
+
 	@Override
 	protected void enableNormalize() {
 		this.gl.glEnable( GL_NORMALIZE );
 	}
+
 	@Override
 	protected void disableNormalize() {
 		this.gl.glDisable( GL_NORMALIZE );
 	}
+
 	public void renderLetterboxingIfNecessary( int width, int height ) {
-		if( this.clearRect.x == 0 && this.clearRect.y == 0 && this.clearRect.width == width && this.clearRect.height == height ) {
+		if( ( this.clearRect.x == 0 ) && ( this.clearRect.y == 0 ) && ( this.clearRect.width == width ) && ( this.clearRect.height == height ) ) {
 			//			gl.glClearColor( 0, 0, 0, 1 );
 			//			gl.glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		} else {
@@ -116,7 +142,7 @@ public class RenderContext extends Context {
 					gl.glScissor( 0, 0, this.clearRect.x, height );
 					gl.glClear( GL_COLOR_BUFFER_BIT );
 				}
-				if( (this.clearRect.x + this.clearRect.width) < width ) {
+				if( ( this.clearRect.x + this.clearRect.width ) < width ) {
 					gl.glScissor( this.clearRect.x + this.clearRect.width, 0, width - this.clearRect.width, height );
 					gl.glClear( GL_COLOR_BUFFER_BIT );
 				}
@@ -124,7 +150,7 @@ public class RenderContext extends Context {
 					gl.glScissor( 0, 0, width, this.clearRect.y );
 					gl.glClear( GL_COLOR_BUFFER_BIT );
 				}
-				if( (this.clearRect.y + this.clearRect.height) < height ) {
+				if( ( this.clearRect.y + this.clearRect.height ) < height ) {
 					gl.glScissor( 0, this.clearRect.y + this.clearRect.height, width, height - this.clearRect.height );
 					gl.glClear( GL_COLOR_BUFFER_BIT );
 				}
@@ -140,15 +166,15 @@ public class RenderContext extends Context {
 			int height = rvColor.getHeight();
 			java.awt.image.DataBuffer dataBuffer = rvColor.getRaster().getDataBuffer();
 			if( rvDepth != null ) {
-				byte[] color = ((java.awt.image.DataBufferByte)dataBuffer).getData();
+				byte[] color = ( (java.awt.image.DataBufferByte)dataBuffer ).getData();
 				java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( color );
 				gl.glReadPixels( 0, 0, width, height, GL_ABGR_EXT, GL_UNSIGNED_BYTE, buffer );
-				
+
 				gl.glReadPixels( 0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, rvDepth );
-				
+
 				final byte ON = (byte)0;
 				final byte OFF = (byte)255;
-				int i=0;
+				int i = 0;
 				while( rvDepth.hasRemaining() ) {
 					if( rvDepth.get() == 1.0f ) {
 						color[ i ] = ON;
@@ -161,24 +187,23 @@ public class RenderContext extends Context {
 
 			} else {
 				//java.nio.IntBuffer buffer = java.nio.IntBuffer.wrap( ((java.awt.image.DataBufferInt)dataBuffer).getData() );
-				java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( ((java.awt.image.DataBufferByte)dataBuffer).getData() );
+				java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( ( (java.awt.image.DataBufferByte)dataBuffer ).getData() );
 
-				
 				//clear error buffer if necessary
 				while( gl.glGetError() != GL_NO_ERROR ) {
 				}
-				
+
 				//int format = GL_RGB;
 				//int format = GL_RGBA;
 				int format = GL_ABGR_EXT;
 				//int format = GL_BGRA;
-				
+
 				//int type = GL_UNSIGNED_INT;
 				int type = GL_UNSIGNED_BYTE;
-				
+
 				gl.glReadPixels( 0, 0, width, height, format, type, buffer );
-				
-				java.util.List< Integer > errors = null;
+
+				java.util.List<Integer> errors = null;
 				while( true ) {
 					int error = gl.glGetError();
 					if( error == GL_NO_ERROR ) {
@@ -187,7 +212,7 @@ public class RenderContext extends Context {
 						if( errors != null ) {
 							//pass
 						} else {
-							errors = new java.util.LinkedList< Integer >();
+							errors = new java.util.LinkedList<Integer>();
 						}
 						errors.add( error );
 					}
@@ -202,6 +227,7 @@ public class RenderContext extends Context {
 			throw new RuntimeException( "todo" );
 		}
 	}
+
 	@Override
 	protected void handleGLChange() {
 		//forgetAllTextureAdapters();
@@ -212,6 +238,7 @@ public class RenderContext extends Context {
 		this.face = face;
 		this.multipleAppearanceAdapter = multipleAppearanceAdapter;
 	}
+
 	@Override
 	public void setAppearanceIndex( int index ) {
 		this.multipleAppearanceAdapter.setPipelineState( this, this.face, index );
@@ -234,6 +261,7 @@ public class RenderContext extends Context {
 			}
 		}
 	}
+
 	public void actuallyForgetDisplayListsIfNecessary() {
 		final int N = this.toBeForgottenDisplayLists.size();
 		if( N > 0 ) {
@@ -258,6 +286,7 @@ public class RenderContext extends Context {
 
 		this.currDiffuseColorTextureAdapter = null;
 	}
+
 	public void endAffectorSetup() {
 		this.ambient[ 0 ] *= this.globalBrightness;
 		this.ambient[ 1 ] *= this.globalBrightness;
@@ -285,10 +314,11 @@ public class RenderContext extends Context {
 	public float getGlobalBrightness() {
 		return this.globalBrightness;
 	}
+
 	public void setGlobalBrightness( float globalBrightness ) {
 		this.globalBrightness = globalBrightness;
 	}
-	
+
 	public float[] getAmbient( float[] rv ) {
 		rv[ 0 ] = this.ambient[ 0 ];
 		rv[ 1 ] = this.ambient[ 1 ];
@@ -307,6 +337,7 @@ public class RenderContext extends Context {
 			gl.glLightfv( id, GL_SPECULAR, s_colorBuffer );
 		}
 	}
+
 	public void setFogColor( float[] fogColor ) {
 		synchronized( s_colorBuffer ) {
 			s_color[ 0 ] = fogColor[ 0 ] * this.globalBrightness;
@@ -316,6 +347,7 @@ public class RenderContext extends Context {
 			gl.glFogfv( GL_FOG_COLOR, s_colorBuffer );
 		}
 	}
+
 	public void setColor( float[] color, float opacity ) {
 		synchronized( s_colorBuffer ) {
 			s_color[ 0 ] = color[ 0 ] * this.globalBrightness;
@@ -325,6 +357,7 @@ public class RenderContext extends Context {
 			gl.glColor4fv( s_colorBuffer );
 		}
 	}
+
 	public void setMaterial( int face, int name, float[] color, float opacity ) {
 		synchronized( s_colorBuffer ) {
 			s_color[ 0 ] = color[ 0 ] * this.globalBrightness;
@@ -334,13 +367,14 @@ public class RenderContext extends Context {
 			gl.glMaterialfv( face, name, s_colorBuffer );
 		}
 	}
+
 	public void setClearColor( float[] color ) {
 		gl.glClearColor( color[ 0 ] * this.globalBrightness, color[ 1 ] * this.globalBrightness, color[ 2 ] * this.globalBrightness, color[ 3 ] * this.globalBrightness );
 	}
 
 	public void setViewportAndAddToClearRect( java.awt.Rectangle viewport ) {
 		gl.glViewport( viewport.x, viewport.y, viewport.width, viewport.height );
-		if( this.clearRect.width == 0 || this.clearRect.height == 0 ) {
+		if( ( this.clearRect.width == 0 ) || ( this.clearRect.height == 0 ) ) {
 			this.clearRect.setBounds( viewport );
 		} else {
 			this.clearRect.union( viewport );
@@ -350,33 +384,37 @@ public class RenderContext extends Context {
 	public boolean isFogEnabled() {
 		return this.isFogEnabled;
 	}
+
 	public void setIsFogEnabled( boolean isFogEnabled ) {
 		this.isFogEnabled = isFogEnabled;
 	}
+
 	public void addAmbient( float[] color, float brightness ) {
 		this.ambient[ 0 ] += color[ 0 ] * brightness;
 		this.ambient[ 1 ] += color[ 1 ] * brightness;
 		this.ambient[ 2 ] += color[ 2 ] * brightness;
 	}
+
 	public int getNextLightID() {
 		int id = this.nextLightID;
 		this.nextLightID++;
 		return id;
 	}
 
-	public Integer getDisplayListID( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter ) {
+	public Integer getDisplayListID( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter ) {
 		synchronized( this.displayListMap ) {
 			Integer rv = this.displayListMap.get( geometryAdapter );
-//			if( this.gl.glIsList( rv ) ) {
-//				//pass
-//			} else {
-//				this.displayListMap.remove( geometryAdapter );
-//				rv = null;
-//			}
+			//			if( this.gl.glIsList( rv ) ) {
+			//				//pass
+			//			} else {
+			//				this.displayListMap.remove( geometryAdapter );
+			//				rv = null;
+			//			}
 			return rv;
 		}
 	}
-	public Integer generateDisplayListID( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter ) {
+
+	public Integer generateDisplayListID( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter ) {
 		Integer id = new Integer( gl.glGenLists( 1 ) );
 		synchronized( this.displayListMap ) {
 			this.displayListMap.put( geometryAdapter, id );
@@ -387,14 +425,14 @@ public class RenderContext extends Context {
 
 	private void forgetAllGeometryAdapters() {
 		synchronized( this.displayListMap ) {
-			for( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter : this.displayListMap.keySet() ) {
+			for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.displayListMap.keySet() ) {
 				forgetGeometryAdapter( geometryAdapter, false );
 			}
 			this.displayListMap.clear();
 		}
 	}
 
-	public void forgetGeometryAdapter( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter, boolean removeFromMap ) {
+	public void forgetGeometryAdapter( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter, boolean removeFromMap ) {
 		synchronized( this.displayListMap ) {
 			Integer value = this.displayListMap.get( geometryAdapter );
 			if( value != null ) {
@@ -408,11 +446,12 @@ public class RenderContext extends Context {
 			}
 		}
 	}
-	public void forgetGeometryAdapter( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter ) {
+
+	public void forgetGeometryAdapter( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter ) {
 		forgetGeometryAdapter( geometryAdapter, true );
 	}
 
-	private void forgetTextureBindingID( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, ForgettableBinding value, boolean removeFromMap ) {
+	private void forgetTextureBindingID( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter, ForgettableBinding value, boolean removeFromMap ) {
 		if( value != null ) {
 			this.toBeForgottenTextures.add( value );
 			if( removeFromMap ) {
@@ -428,19 +467,20 @@ public class RenderContext extends Context {
 	private void forgetAllTextureAdapters() {
 		synchronized( this.textureBindingMap ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.textureBindingMap );
-			for( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter : this.textureBindingMap.keySet() ) {
+			for( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter : this.textureBindingMap.keySet() ) {
 				forgetTextureBindingID( textureAdapter, this.textureBindingMap.get( textureAdapter ), false );
 			}
 			this.textureBindingMap.clear();
 		}
 	}
 
-	public void forgetTextureAdapter( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, boolean removeFromMap ) {
+	public void forgetTextureAdapter( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter, boolean removeFromMap ) {
 		synchronized( this.textureBindingMap ) {
 			forgetTextureBindingID( textureAdapter, this.textureBindingMap.get( textureAdapter ), removeFromMap );
 		}
 	}
-	public void forgetTextureAdapter( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter ) {
+
+	public void forgetTextureAdapter( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> textureAdapter ) {
 		forgetTextureAdapter( textureAdapter, true );
 	}
 
@@ -449,22 +489,22 @@ public class RenderContext extends Context {
 		this.forgetAllTextureAdapters();
 	}
 
-//	//todo: better name
-//	public void put( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, com.sun.opengl.util.texture.Texture glTexture ) {
-//		this.textureBindingMap.put( textureAdapter, glTexture );
-//	}
-	
+	//	//todo: better name
+	//	public void put( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, com.sun.opengl.util.texture.Texture glTexture ) {
+	//		this.textureBindingMap.put( textureAdapter, glTexture );
+	//	}
+
 	public boolean isTextureEnabled() {
 		return this.currDiffuseColorTextureAdapter != null;
 	}
 
-	public void setDiffuseColorTextureAdapter( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > diffuseColorTextureAdapter, boolean isDiffuseColorTextureClamped ) {
-		if( diffuseColorTextureAdapter != null && diffuseColorTextureAdapter.isValid() ) {
+	public void setDiffuseColorTextureAdapter( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> diffuseColorTextureAdapter, boolean isDiffuseColorTextureClamped ) {
+		if( ( diffuseColorTextureAdapter != null ) && diffuseColorTextureAdapter.isValid() ) {
 			gl.glEnable( GL_TEXTURE_2D );
 			if( this.currDiffuseColorTextureAdapter != diffuseColorTextureAdapter ) {
 				diffuseColorTextureAdapter.bindTexture( this );
 				//System.out.println("Bound texture "+diffuseColorTextureAdapter.hashCode()+", context: "+this.hashCode()+" to texture "+texture.getTextureObject());
-				
+
 				int value = isDiffuseColorTextureClamped ? GL_CLAMP : GL_REPEAT;
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, value );
 				gl.glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, value );
@@ -476,8 +516,9 @@ public class RenderContext extends Context {
 			this.currDiffuseColorTextureAdapter = null;
 		}
 	}
-	public void setBumpTextureAdapter( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > bumpTextureAdapter ) {
-		if( bumpTextureAdapter != null && bumpTextureAdapter.isValid() ) {
+
+	public void setBumpTextureAdapter( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> bumpTextureAdapter ) {
+		if( ( bumpTextureAdapter != null ) && bumpTextureAdapter.isValid() ) {
 			//todo:
 			//String extensions = gl.glGetString(GL_EXTENSIONS);
 		}
@@ -486,6 +527,7 @@ public class RenderContext extends Context {
 	public boolean isShadingEnabled() {
 		return this.isShadingEnabled;
 	}
+
 	public void setIsShadingEnabled( boolean isShadingEnabled ) {
 		this.isShadingEnabled = isShadingEnabled;
 		if( this.isShadingEnabled ) {
@@ -509,6 +551,7 @@ public class RenderContext extends Context {
 			return Float.NaN;
 		}
 	}
+
 	public float getVRatio() {
 		if( this.currDiffuseColorTextureAdapter != null ) {
 			return this.currDiffuseColorTextureAdapter.mapV( 1 );

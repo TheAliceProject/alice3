@@ -50,15 +50,18 @@ package org.lgna.story.implementation;
 public class SunImp extends TransformableImp {
 	private final edu.cmu.cs.dennisc.scenegraph.DirectionalLight sgSun = new edu.cmu.cs.dennisc.scenegraph.DirectionalLight();
 	private final org.lgna.story.SSun abstraction;
+
 	public SunImp( org.lgna.story.SSun abstraction ) {
 		this.abstraction = abstraction;
 		this.getSgComposite().addComponent( this.sgSun );
 		this.getSgComposite().applyRotationAboutXAxis( new edu.cmu.cs.dennisc.math.AngleInRevolutions( -0.25 ) );
 	}
+
 	@Override
 	public org.lgna.story.SSun getAbstraction() {
 		return this.abstraction;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		return rv;

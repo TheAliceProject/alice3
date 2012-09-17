@@ -45,20 +45,22 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListPropertyPane extends org.alice.ide.croquet.components.AbstractListPropertyPane< org.lgna.project.ast.ExpressionListProperty, org.lgna.project.ast.Expression > {
+public class ExpressionListPropertyPane extends org.alice.ide.croquet.components.AbstractListPropertyPane<org.lgna.project.ast.ExpressionListProperty, org.lgna.project.ast.Expression> {
 	public ExpressionListPropertyPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ExpressionListProperty property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createInterstitial( int i, final int N ) {
-		if( i < N - 1 ) {
+	protected org.lgna.croquet.components.Component<?> createInterstitial( int i, final int N ) {
+		if( i < ( N - 1 ) ) {
 			return new org.lgna.croquet.components.Label( ", " );
 		} else {
 			return null;
 		}
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.Expression expression ) {
+	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.Expression expression ) {
 		return this.getFactory().createExpressionPane( expression );
 	}
 }

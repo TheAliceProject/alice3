@@ -44,7 +44,7 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class TextFont implements Say.Detail, Think.Detail {
 	private final Font value;
@@ -52,7 +52,8 @@ public class TextFont implements Say.Detail, Think.Detail {
 	public TextFont( Font value ) {
 		this.value = value;
 	}
-	/*package-private*/static Font getValue( Object[] details, Font defaultValue ) {
+
+	/* package-private */static Font getValue( Object[] details, Font defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof TextFont ) {
 				TextFont textFont = (TextFont)detail;

@@ -45,7 +45,7 @@ package org.alice.interact.manipulator;
 
 import org.alice.interact.InputState;
 
-public interface ManipulatorClickAdapter 
+public interface ManipulatorClickAdapter
 {
-	public void onClick(InputState clickInput);
+	public void onClick( InputState clickInput );
 }

@@ -47,7 +47,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultListCellRenderer;
@@ -73,7 +72,6 @@ import org.lgna.project.ast.DoInOrder;
 import org.lgna.project.ast.DoTogether;
 import org.lgna.project.ast.LocalDeclarationStatement;
 import org.lgna.project.ast.ReturnStatement;
-import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.WhileLoop;
 
@@ -84,9 +82,9 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  * @author Matt May
  */
 public class StatisticsFlowControlFrequencyView extends BorderPanel {
-	
-	public StatisticsFlowControlFrequencyView( StatisticsFlowControlFrequencyComposite composite ){
-		super(composite);
+
+	public StatisticsFlowControlFrequencyView( StatisticsFlowControlFrequencyComposite composite ) {
+		super( composite );
 		GridPanel gridPanel = GridPanel.createGridPane( 2, 1 );
 		ListSelectionState<UserMethod> userMethodList = composite.getUserMethodList();
 		ControlDisplay statsDisplay = new ControlDisplay( userMethodList );
@@ -106,10 +104,11 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 		statsDisplay.gridPanel.setMinimumPreferredHeight( StatisticsFrameComposite.TOP_SIZE );
 		this.addComponent( gridPanel, Constraint.CENTER );
 	}
+
 	public class ControlDisplay implements ValueListener<UserMethod> {
 
 		private GridPanel gridPanel;
-		private Map<Integer,Map<Integer,Component>> componentMap = Collections.newHashMap();
+		private Map<Integer, Map<Integer, Component>> componentMap = Collections.newHashMap();
 		private int numRows = 10;
 		private int numCols = 2;
 		private int maximum = 10;
@@ -122,8 +121,8 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 			this.gridPanel.setBackgroundColor( Color.WHITE );
 		}
 
-		public void setMaximum( /*Map<UserMethod,List<Statement>> methodToConstructMap*/ ) {
-			((StatisticsFlowControlFrequencyComposite)getComposite()).getMaximum( clsArr );
+		public void setMaximum( /* Map<UserMethod,List<Statement>> methodToConstructMap */) {
+			( (StatisticsFlowControlFrequencyComposite)getComposite() ).getMaximum( clsArr );
 		}
 
 		private class BarLabel extends Label {
@@ -134,13 +133,16 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 				this.setBackgroundColor( null );
 				this.setForegroundColor( Color.BLACK );
 			}
+
 			public int getCount() {
 				return this.count;
 			}
+
 			public void setCount( int count ) {
 				this.count = count;
 				this.setText( "" + this.count );
 			}
+
 			@Override
 			protected JLabel createAwtComponent() {
 				return new JLabel() {
@@ -150,11 +152,12 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 						//g2.setPaint( this.getBackground() );
 						g2.setPaint( new Color( 150, 255, 150 ) );
 
-						int w = (int)(this.getWidth() * (count / (double)maximum)) + 1;
+						int w = (int)( this.getWidth() * ( count / (double)maximum ) ) + 1;
 						g2.fillRect( 0, 0, w, this.getHeight() );
 						g2.setPaint( this.getForeground() );
 						super.paintComponent( g );
 					}
+
 					@Override
 					public Dimension getPreferredSize() {
 						return DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
@@ -165,10 +168,10 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 
 		private void populateGridPanel() {
 			for( int i = 0; i != numRows; ++i ) {
-				componentMap.put( i, new HashMap<Integer,Component>() );
+				componentMap.put( i, new HashMap<Integer, Component>() );
 				for( int j = 0; j != numCols; ++j ) {
 					Label label;
-					if( j == 1 && i != 0 ) {
+					if( ( j == 1 ) && ( i != 0 ) ) {
 						label = new BarLabel();
 					} else {
 						label = new Label();
@@ -179,27 +182,28 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 				}
 			}
 		}
+
 		public GridPanel getLayout() {
 			return gridPanel;
 		}
 
 		private void update( UserMethod selected ) {
-			((Label)getCell( 0, 0 )).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
+			( (Label)getCell( 0, 0 ) ).setText( "<HTML><Strong>" + selected.getName() + "</Strong></HTML>" );
 			for( int i = 1; i != numRows; ++i ) {
 				setCell( 1, i, getCount( selected, clsArr[ i - 1 ] ) );
 			}
 		}
 
 		private void populateLeftCol() {
-			((Label)getCell( 0, 1 )).setText( "If" );
-			((Label)getCell( 0, 2 )).setText( "CountLoop" );
-			((Label)getCell( 0, 3 )).setText( "WhileLoop" );
-			((Label)getCell( 0, 4 )).setText( "ForEach" );
-			((Label)getCell( 0, 5 )).setText( "EachTogether" );
-			((Label)getCell( 0, 6 )).setText( "Return" );
-			((Label)getCell( 0, 7 )).setText( "LocalDeclaration" );
-			((Label)getCell( 0, 8 )).setText( "DoInOrder" );
-			((Label)getCell( 0, 9 )).setText( "DoTogether" );
+			( (Label)getCell( 0, 1 ) ).setText( "If" );
+			( (Label)getCell( 0, 2 ) ).setText( "CountLoop" );
+			( (Label)getCell( 0, 3 ) ).setText( "WhileLoop" );
+			( (Label)getCell( 0, 4 ) ).setText( "ForEach" );
+			( (Label)getCell( 0, 5 ) ).setText( "EachTogether" );
+			( (Label)getCell( 0, 6 ) ).setText( "Return" );
+			( (Label)getCell( 0, 7 ) ).setText( "LocalDeclaration" );
+			( (Label)getCell( 0, 8 ) ).setText( "DoInOrder" );
+			( (Label)getCell( 0, 9 ) ).setText( "DoTogether" );
 		}
 
 		private void setCell( int col, int row, int count ) {
@@ -209,12 +213,13 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 				label.setCount( count );
 			}
 		}
+
 		private Component getCell( int col, int row ) {
 			return componentMap.get( row ).get( col );
 		}
 
 		public int getCount( UserMethod method, Class<? extends org.lgna.project.ast.Statement> cls ) {
-			return ((StatisticsFlowControlFrequencyComposite) getComposite()).getCount( method, cls );
+			return ( (StatisticsFlowControlFrequencyComposite)getComposite() ).getCount( method, cls );
 		}
 
 		public void changing( State<UserMethod> state, UserMethod prevValue, UserMethod nextValue, boolean isAdjusting ) {
@@ -233,7 +238,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 				rv.setBackgroundColor( Color.BLUE );
 				rv.setForegroundColor( Color.WHITE );
 			}
-			if( !value.equals(StatisticsFlowControlFrequencyComposite.dummy ) ) {
+			if( !value.equals( StatisticsFlowControlFrequencyComposite.dummy ) ) {
 				if( value instanceof UserMethod ) {
 					UserMethod userMethod = (UserMethod)value;
 					rv.setText( userMethod.getName() );

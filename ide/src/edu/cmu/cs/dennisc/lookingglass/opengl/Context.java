@@ -55,41 +55,46 @@ public abstract class Context {
 	public Context() {
 		glu = new javax.media.opengl.glu.GLU();
 	}
-	
+
 	private int scaledCount = 0;
-	private java.util.Stack< Integer > scaledCountStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+	private java.util.Stack<Integer> scaledCountStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+
 	public void initialize() {
 		this.scaledCount = 0;
 		this.disableNormalize();
 	}
-	
+
 	public boolean isScaled() {
 		return this.scaledCount > 0;
 	}
+
 	protected abstract void enableNormalize();
+
 	protected abstract void disableNormalize();
+
 	public void incrementScaledCount() {
-		this.scaledCount ++;
+		this.scaledCount++;
 		if( this.scaledCount == 1 ) {
 			this.enableNormalize();
 		}
-		
+
 	}
+
 	public void decrementScaledCount() {
 		if( this.scaledCount == 1 ) {
 			this.disableNormalize();
 		}
-		this.scaledCount --;
+		this.scaledCount--;
 	}
-	
+
 	public void pushScaledCountAndSetToZero() {
 		this.scaledCountStack.push( this.scaledCount );
 		this.scaledCount = 0;
 	}
+
 	public void popAndRestoreScaledCount() {
 		this.scaledCount = this.scaledCountStack.pop();
 	}
-	
 
 	//todo: synchronize?
 	public javax.media.opengl.glu.GLUquadric getQuadric() {
@@ -101,17 +106,18 @@ public abstract class Context {
 
 	protected abstract void handleGLChange();
 
-//	private boolean isGLChanged = true;
-//	public boolean isGLChanged() {
-//		return this.isGLChanged;
-//	}
+	//	private boolean isGLChanged = true;
+	//	public boolean isGLChanged() {
+	//		return this.isGLChanged;
+	//	}
 	public void setGL( javax.media.opengl.GL gl ) {
-//		this.isGLChanged = this.gl != gl;
-//		if( this.isGLChanged ) {
+		//		this.isGLChanged = this.gl != gl;
+		//		if( this.isGLChanged ) {
 		if( this.gl != gl ) {
 			this.gl = gl;
 			handleGLChange();
 		}
 	}
+
 	public abstract void setAppearanceIndex( int index );
 }

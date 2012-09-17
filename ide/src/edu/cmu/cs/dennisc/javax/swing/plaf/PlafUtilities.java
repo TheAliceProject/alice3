@@ -49,15 +49,17 @@ public class PlafUtilities {
 	private PlafUtilities() {
 		throw new AssertionError();
 	}
-	public static javax.swing.UIManager.LookAndFeelInfo getInstalledLookAndFeelInfoNamed(String plafName) {
-		for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-			if (plafName.equals(info.getName())) {
+
+	public static javax.swing.UIManager.LookAndFeelInfo getInstalledLookAndFeelInfoNamed( String plafName ) {
+		for( javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels() ) {
+			if( plafName.equals( info.getName() ) ) {
 				return info;
 			}
 		}
 		return null;
 	}
-	public static boolean isInstalledLookAndFeelNamed(String plafName) {
+
+	public static boolean isInstalledLookAndFeelNamed( String plafName ) {
 		return getInstalledLookAndFeelInfoNamed( plafName ) != null;
 	}
 }

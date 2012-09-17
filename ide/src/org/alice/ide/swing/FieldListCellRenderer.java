@@ -43,9 +43,9 @@
 
 package org.alice.ide.swing;
 
-public abstract class FieldListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< org.lgna.project.ast.AbstractField > {
+public abstract class FieldListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.lgna.project.ast.AbstractField> {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.lgna.project.ast.AbstractField value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( value != null ) {
 			rv.setText( value.getName() );
 		} else {

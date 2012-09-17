@@ -52,95 +52,95 @@ public class ModelOpacityAdapter extends AbstractPropertyAdapter<Double, ModelIm
 
 	private Listener<Float> propertyListener;
 	private org.lgna.story.implementation.Property<Float> property;
-	
+
 	private void initializeListenersIfNecessary()
 	{
-		if (this.propertyListener == null)
+		if( this.propertyListener == null )
 		{
 			this.propertyListener = new Listener<Float>()
 			{
-				public void propertyChanged(Float prevValue, Float nextValue) {
+				public void propertyChanged( Float prevValue, Float nextValue ) {
 					handleInternalValueChanged();
 				}
 			};
 		}
 	}
-	
+
 	@Override
-	protected void startPropertyListening() 
+	protected void startPropertyListening()
 	{
 		super.startPropertyListening();
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			this.initializeListenersIfNecessary();
-			this.addPropertyListener(this.propertyListener);
+			this.addPropertyListener( this.propertyListener );
 		}
 	}
-	
+
 	@Override
-	protected void stopPropertyListening() 
+	protected void stopPropertyListening()
 	{
 		super.stopPropertyListening();
-		if (this.instance != null)
+		if( this.instance != null )
 		{
-			this.removePropertyListener(this.propertyListener);
+			this.removePropertyListener( this.propertyListener );
 		}
 	}
-	
-	public ModelOpacityAdapter( ModelImp instance, StandardExpressionState expressionState ){
-		super("Opacity", instance, expressionState);
+
+	public ModelOpacityAdapter( ModelImp instance, StandardExpressionState expressionState ) {
+		super( "Opacity", instance, expressionState );
 		this.property = instance.opacity;
 		this.initializeExpressionState();
 	}
-	
+
 	@Override
 	public Double getValue() {
-		if (this.property != null){
+		if( this.property != null ) {
 			return this.property.getValue().doubleValue();
 		}
-		else{
+		else {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public Class<Double> getPropertyType() {
 		return Double.class;
 	}
-	
+
 	@Override
-	public void setValue(final Double value) {
-		super.setValue(value);
-		if (this.property != null){
+	public void setValue( final Double value ) {
+		super.setValue( value );
+		if( this.property != null ) {
 			new Thread() {
 				@Override
 				public void run() {
-					ModelOpacityAdapter.this.property.setValue(value.floatValue());
+					ModelOpacityAdapter.this.property.setValue( value.floatValue() );
 				}
 			}.start();
 		}
 	}
 
-	protected void addPropertyListener(Listener<Float> propertyListener) {
-		if (this.property != null){
-			property.addPropertyObserver(propertyListener);
+	protected void addPropertyListener( Listener<Float> propertyListener ) {
+		if( this.property != null ) {
+			property.addPropertyObserver( propertyListener );
 		}
 	}
 
-	protected void removePropertyListener(Listener<Float> propertyListener) {
-		if (this.property != null){
-			property.removePropertyObserver(propertyListener);
+	protected void removePropertyListener( Listener<Float> propertyListener ) {
+		if( this.property != null ) {
+			property.removePropertyObserver( propertyListener );
 		}
 	}
-	
-	protected void handleInternalValueChanged(){
+
+	protected void handleInternalValueChanged() {
 		Double newValue = this.getValue();
-		this.notifyValueObservers(newValue);
+		this.notifyValueObservers( newValue );
 	}
 
 	@Override
 	public Double getValueCopyIfMutable() {
-		return new Double(this.getValue());
+		return new Double( this.getValue() );
 	}
-	
+
 }

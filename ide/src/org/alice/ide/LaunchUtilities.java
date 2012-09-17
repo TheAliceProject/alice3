@@ -104,7 +104,7 @@ public class LaunchUtilities {
 			if( lookAndFeelInfo != null ) {
 				try {
 					javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-//					edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
+					//					edu.cmu.cs.dennisc.javax.swing.plaf.nimbus.NimbusUtilities.installModifiedNimbus( lookAndFeelInfo );
 				} catch( Throwable t ) {
 					t.printStackTrace();
 				}
@@ -136,9 +136,10 @@ public class LaunchUtilities {
 				}
 			}
 		}
-		
+
 		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
 	}
+
 	private static Runnable createRunnable( final java.awt.Window splashScreen, final String[] args, final boolean isVisible ) {
 		return new Runnable() {
 			public void run() {
@@ -195,7 +196,7 @@ public class LaunchUtilities {
 		};
 	}
 
-	public static void launch( final Class< ? extends IDE > cls, final java.awt.Window splashScreen, final String[] args ) {
+	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
 		preLaunch( splashScreen );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
@@ -207,7 +208,8 @@ public class LaunchUtilities {
 			}
 		} );
 	}
-	public static <I extends IDE> I launchAndWait( final Class< I > cls, final java.awt.Window splashScreen, final String[] args, boolean isVisible ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
+
+	public static <I extends IDE> I launchAndWait( final Class<I> cls, final java.awt.Window splashScreen, final String[] args, boolean isVisible ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
 		preLaunch( splashScreen );
 		IDE ide = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 		Runnable runnable = createRunnable( splashScreen, args, isVisible );

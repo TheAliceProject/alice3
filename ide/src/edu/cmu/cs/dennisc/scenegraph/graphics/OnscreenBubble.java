@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
-public class OnscreenBubble 
+public class OnscreenBubble
 {
 	public enum PositionPreference
 	{
@@ -51,14 +51,14 @@ public class OnscreenBubble
 		CENTER,
 		RIGHT
 	}
-	
+
 	private java.awt.geom.Point2D.Float originOfTail;
 	private java.awt.geom.Point2D.Float endOfTail;
 	private java.awt.geom.RoundRectangle2D.Double bubbleRect;
 	private java.awt.geom.Rectangle2D.Double textBounds;
 	private PositionPreference positionPreference;
-	
-	public OnscreenBubble(java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Point2D.Float endOfTail, java.awt.geom.RoundRectangle2D.Double bubbleRect, java.awt.geom.Rectangle2D.Double textBounds, PositionPreference positionPreference)
+
+	public OnscreenBubble( java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Point2D.Float endOfTail, java.awt.geom.RoundRectangle2D.Double bubbleRect, java.awt.geom.Rectangle2D.Double textBounds, PositionPreference positionPreference )
 	{
 		this.originOfTail = originOfTail;
 		this.endOfTail = endOfTail;
@@ -66,64 +66,64 @@ public class OnscreenBubble
 		this.textBounds = textBounds;
 		this.positionPreference = positionPreference;
 	}
-	
-	public void setPosition(double x, double y)
+
+	public void setPosition( double x, double y )
 	{
-		java.awt.geom.Point2D.Double tailEndOffset = new java.awt.geom.Point2D.Double(endOfTail.x - bubbleRect.x, endOfTail.y - bubbleRect.y);
-		java.awt.geom.Point2D.Double textOffset = new java.awt.geom.Point2D.Double(textBounds.x - bubbleRect.x, textBounds.y - bubbleRect.y);
-		
+		java.awt.geom.Point2D.Double tailEndOffset = new java.awt.geom.Point2D.Double( endOfTail.x - bubbleRect.x, endOfTail.y - bubbleRect.y );
+		java.awt.geom.Point2D.Double textOffset = new java.awt.geom.Point2D.Double( textBounds.x - bubbleRect.x, textBounds.y - bubbleRect.y );
+
 		this.bubbleRect.x = x;
 		this.bubbleRect.y = y;
-		endOfTail.setLocation(bubbleRect.x + tailEndOffset.x, bubbleRect.y + tailEndOffset.y);
+		endOfTail.setLocation( bubbleRect.x + tailEndOffset.x, bubbleRect.y + tailEndOffset.y );
 		textBounds.x = bubbleRect.x + textOffset.x;
 		textBounds.y = bubbleRect.y + textOffset.y;
 	}
-	
-	public void setPosition(java.awt.geom.Point2D.Double position)
+
+	public void setPosition( java.awt.geom.Point2D.Double position )
 	{
-		setPosition(position.x, position.y);
+		setPosition( position.x, position.y );
 	}
-	
+
 	public PositionPreference getPositionPreference()
 	{
 		return this.positionPreference;
 	}
-	
+
 	public java.awt.geom.Point2D.Float getOriginOfTail()
 	{
 		return this.originOfTail;
 	}
-	
+
 	public java.awt.geom.Point2D.Float getEndOfTail()
 	{
 		return this.endOfTail;
 	}
-	
+
 	public java.awt.geom.RoundRectangle2D.Double getBubbleRect()
 	{
 		return this.bubbleRect;
 	}
-	
+
 	public java.awt.geom.Rectangle2D.Double getTextBounds()
 	{
 		return this.textBounds;
 	}
-	
-	public void updateOriginOfTail(java.awt.geom.Point2D.Float newOrigin, java.awt.Rectangle viewport)
+
+	public void updateOriginOfTail( java.awt.geom.Point2D.Float newOrigin, java.awt.Rectangle viewport )
 	{
 		this.originOfTail.x = newOrigin.x;
 		this.originOfTail.y = newOrigin.y;
 		double percentOriginAcrossScreen = originOfTail.getX() / viewport.width;
-		this.endOfTail.x = (float)(this.bubbleRect.getMinX() + this.getHorizontalPadding() + percentOriginAcrossScreen*this.textBounds.getWidth());
+		this.endOfTail.x = (float)( this.bubbleRect.getMinX() + this.getHorizontalPadding() + ( percentOriginAcrossScreen * this.textBounds.getWidth() ) );
 	}
-	
+
 	public double getHorizontalPadding()
 	{
-		return (this.bubbleRect.getWidth() - this.textBounds.getWidth()) *.5;
+		return ( this.bubbleRect.getWidth() - this.textBounds.getWidth() ) * .5;
 	}
-	
+
 	public double getVerticalPadding()
 	{
-		return (this.bubbleRect.getHeight() - this.textBounds.getHeight()) *.5;
+		return ( this.bubbleRect.getHeight() - this.textBounds.getHeight() ) * .5;
 	}
 }

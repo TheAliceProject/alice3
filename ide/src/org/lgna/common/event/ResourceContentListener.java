@@ -48,5 +48,6 @@ package org.lgna.common.event;
  */
 public interface ResourceContentListener {
 	public void contentChanging( ResourceContentEvent e );
+
 	public void contentChanged( ResourceContentEvent e );
 }

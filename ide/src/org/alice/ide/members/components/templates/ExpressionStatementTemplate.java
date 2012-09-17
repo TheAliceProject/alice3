@@ -45,13 +45,15 @@ package org.alice.ide.members.components.templates;
 /**
  * @author Dennis Cosgrove
  */
-/*package-private*/ abstract class ExpressionStatementTemplate extends org.alice.ide.templates.StatementTemplate {
+/* package-private */abstract class ExpressionStatementTemplate extends org.alice.ide.templates.StatementTemplate {
 	public ExpressionStatementTemplate( org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel dragAndDropModel ) {
 		super( dragAndDropModel, org.lgna.project.ast.ExpressionStatement.class );
 	}
+
 	protected abstract org.lgna.project.ast.Expression createIncompleteExpression();
-	
+
 	private boolean isInitialized = false;
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
@@ -62,11 +64,13 @@ package org.alice.ide.members.components.templates;
 			this.isInitialized = true;
 		}
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		//this.removeAllComponents();
 		super.handleUndisplayable();
 	}
+
 	protected void refresh() {
 		this.removeAllComponents();
 		org.lgna.project.ast.Expression incompleteExpression = this.createIncompleteExpression();
@@ -74,14 +78,14 @@ package org.alice.ide.members.components.templates;
 		this.addComponent( org.alice.ide.x.TemplateAstI18nFactory.getInstance().createExpressionPane( incompleteExpression ) );
 	}
 
-//	@Override
-//	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
-//		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
-//		if( expression != null ) {
-//			return new org.lgna.project.ast.ExpressionStatement( expression );
-//		} else {
-//			return null;
-//		}
-//	}
-	
+	//	@Override
+	//	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
+	//		org.lgna.project.ast.Expression expression = this.createExpression( expressions );
+	//		if( expression != null ) {
+	//			return new org.lgna.project.ast.ExpressionStatement( expression );
+	//		} else {
+	//			return null;
+	//		}
+	//	}
+
 }

@@ -46,24 +46,28 @@ package org.alice.ide.croquet.components;
  * @author Dennis Cosgrove
  */
 public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.components.BorderPanel implements java.awt.print.Printable {
-	public PrintableBorderPanelWithCenterScrollPane( org.lgna.croquet.Composite< ? > composite ) {
+	public PrintableBorderPanelWithCenterScrollPane( org.lgna.croquet.Composite<?> composite ) {
 		super( composite );
 		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane() );
 	}
+
 	public PrintableBorderPanelWithCenterScrollPane() {
 		this( null );
 	}
+
 	public org.lgna.croquet.components.ScrollPane getScrollPane() {
 		return (org.lgna.croquet.components.ScrollPane)this.getCenterComponent();
 	}
+
 	@Override
-	public void addComponent( org.lgna.croquet.components.Component< ? > child, org.lgna.croquet.components.BorderPanel.Constraint constraint ) {
+	public void addComponent( org.lgna.croquet.components.Component<?> child, org.lgna.croquet.components.BorderPanel.Constraint constraint ) {
 		if( constraint == Constraint.CENTER ) {
 			assert child instanceof org.lgna.croquet.components.ScrollPane : child;
 		}
 		super.addComponent( child, constraint );
 	}
-	public int print(java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex) throws java.awt.print.PrinterException {
+
+	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
 		if( pageIndex > 0 ) {
 			return NO_SUCH_PAGE;
 		} else {
@@ -72,8 +76,7 @@ public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.c
 			org.lgna.croquet.components.Component<?> lineEnd = this.getLineEndComponent();
 			org.lgna.croquet.components.Component<?> pageStart = this.getPageStartComponent();
 			org.lgna.croquet.components.Component<?> pageEnd = this.getPageEndComponent();
-			
-			
+
 			//todo: this code will not suffice in the limit
 			java.awt.Dimension scrollSize = scrollPane.getViewportView().getAwtComponent().getPreferredSize();
 			int width = scrollSize.width;
@@ -96,20 +99,19 @@ public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.c
 			java.awt.Insets insets = this.getInsets();
 			width += insets.left + insets.right;
 			height += insets.top + insets.bottom;
-			
-			
+
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
 			try {
-				double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
+				double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );
 				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
 				if( scale > 1.0 ) {
-					g2.scale( 1.0/scale, 1.0/scale );
+					g2.scale( 1.0 / scale, 1.0 / scale );
 				}
-				
+
 				g2.setPaint( this.getBackgroundColor() );
 				g2.fillRect( 0, 0, width, height );
-				
+
 				if( pageStart != null ) {
 					int x = pageStart.getX();
 					int y = pageStart.getY();
@@ -138,15 +140,15 @@ public class PrintableBorderPanelWithCenterScrollPane extends org.lgna.croquet.c
 				} finally {
 					g2.translate( -x, -y );
 				}
-				
+
 				if( lineEnd != null ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( lineEnd );
 				}
-				
+
 				if( pageEnd != null ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( pageEnd );
 				}
-				
+
 			} finally {
 				g2.setTransform( prevTransform );
 			}

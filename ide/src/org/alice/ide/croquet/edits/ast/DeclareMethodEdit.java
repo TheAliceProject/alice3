@@ -48,7 +48,7 @@ package org.alice.ide.croquet.edits.ast;
 public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.CompletionModel> {
 	private org.lgna.project.ast.UserType<?> declaringType;
 	private org.lgna.project.ast.UserMethod method;
-	
+
 	private transient org.lgna.project.ast.AbstractCode prevFocusedCode;
 
 	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserMethod method ) {
@@ -56,21 +56,24 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 		this.declaringType = declaringType;
 		this.method = method;
 	}
+
 	public DeclareMethodEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
 		this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMethod.class ).decodeValue( binaryDecoder );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMethod.class ).encodeValue( binaryEncoder, this.method );
 	}
-	
-	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
+
+	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
+
 	public org.lgna.project.ast.UserMethod getMethod() {
 		return this.method;
 	}
@@ -82,6 +85,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 		this.prevFocusedCode = ide.getFocusedCode();
 		ide.setFocusedCode( method );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		int index = this.declaringType.methods.indexOf( method );
@@ -93,28 +97,28 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 			throw new javax.swing.undo.CannotUndoException();
 		}
 	}
-	
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "declare: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method, org.lgna.croquet.Application.getLocale());
-		return rv;
-	}
-	
-	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
-		rv.append( "declare " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, this.method, org.lgna.croquet.Application.getLocale() );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.method, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
 
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
+	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
+		rv.append( "declare " );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.method, org.lgna.croquet.Application.getLocale() );
+		return rv;
+	}
+
+	@Override
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
 		if( replacementCandidate instanceof DeclareMethodEdit ) {
 			DeclareMethodEdit declareMethodEdit = (DeclareMethodEdit)replacementCandidate;
 			if( this.method != null ) {
-				org.lgna.project.ast.AbstractType< ?,?,? > originalReturnType = this.method.getReturnType();
-				org.lgna.project.ast.AbstractType< ?,?,? > replacementReturnType = declareMethodEdit.method.getReturnType();
+				org.lgna.project.ast.AbstractType<?, ?, ?> originalReturnType = this.method.getReturnType();
+				org.lgna.project.ast.AbstractType<?, ?, ?> replacementReturnType = declareMethodEdit.method.getReturnType();
 				if( originalReturnType == replacementReturnType ) {
 					String originalName = this.method.getName();
 					String replacementName = declareMethodEdit.method.getName();
@@ -127,27 +131,27 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 						sb.append( "; changed to: " );
 						sb.append( replacementName );
 						//sb.append( "." );
-						return org.lgna.croquet.edits.ReplacementAcceptability.createDeviation( org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() ); 
+						return org.lgna.croquet.edits.ReplacementAcceptability.createDeviation( org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() );
 					}
 				} else {
 					org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
-					return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( method.getReturnType() ) + "</strong></html>" ); 
+					return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( method.getReturnType() ) + "</strong></html>" );
 				}
 			} else {
-				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement method is null" ); 
+				return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement method is null" );
 			}
 		} else {
-			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" ); 
+			return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "replacement is not an instance of DeclareMethodEdit" );
 		}
 	}
-	
-//	public DeclareMethodEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
-//		org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
-//		org.lgna.project.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
-//		retargeter.addKeyValuePair( this.method, replacementMethod );
-//		retargeter.addKeyValuePair( this.method.body.getValue(), replacementMethod.body.getValue() );
-//		return new DeclareMethodEdit( replacementDeclaringType, replacementMethod );
-//	}
+
+	//	public DeclareMethodEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter ) {
+	//		org.lgna.project.ast.AbstractTypeDeclaredInAlice<?> replacementDeclaringType = retargeter.retarget( this.declaringType );
+	//		org.lgna.project.ast.MethodDeclaredInAlice replacementMethod = org.alice.ide.ast.NodeUtilities.createMethod( this.method.getName(), this.method.getReturnType() );
+	//		retargeter.addKeyValuePair( this.method, replacementMethod );
+	//		retargeter.addKeyValuePair( this.method.body.getValue(), replacementMethod.body.getValue() );
+	//		return new DeclareMethodEdit( replacementDeclaringType, replacementMethod );
+	//	}
 
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
@@ -155,8 +159,9 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 		this.declaringType = retargeter.retarget( this.declaringType );
 		this.method = retargeter.retarget( this.method );
 	}
+
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		assert edit instanceof DeclareMethodEdit;
 		DeclareMethodEdit replacementEdit = (DeclareMethodEdit)edit;

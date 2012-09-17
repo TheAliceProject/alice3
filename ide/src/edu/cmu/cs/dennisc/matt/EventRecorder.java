@@ -12,7 +12,7 @@ public class EventRecorder {
 
 	private Long startTime = new Long( -1 );
 	private static EventRecorder instance = new EventRecorder();
-	private Map<Long,AbstractEvent> eventMap = Collections.newHashMap();
+	private Map<Long, AbstractEvent> eventMap = Collections.newHashMap();
 	private List<Long> remainingEvents = Collections.newArrayList();
 
 	private EventRecorder() {

@@ -56,6 +56,7 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;
 	}
+
 	public ExpressionPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		java.util.UUID expressionPropertyNodeId = binaryDecoder.decodeId();
@@ -63,7 +64,6 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 		java.util.UUID prevExpressionId = binaryDecoder.decodeId();
 		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
 
-		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project = ide.getProject();
 		org.lgna.project.ast.AbstractNode node = org.lgna.project.ProgramTypeUtilities.lookupNode( project, expressionPropertyNodeId );
@@ -71,13 +71,14 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 		this.prevExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, prevExpressionId );
 		this.nextExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, nextExpressionId );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)this.expressionProperty.getOwner();
 		binaryEncoder.encode( node.getId() );
 		binaryEncoder.encode( this.expressionProperty.getName() );
-		
+
 		binaryEncoder.encode( this.prevExpression.getId() );
 		binaryEncoder.encode( this.nextExpression.getId() );
 	}
@@ -86,10 +87,12 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.expressionProperty.setValue( this.nextExpression );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		this.expressionProperty.setValue( this.prevExpression );
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "set: " );

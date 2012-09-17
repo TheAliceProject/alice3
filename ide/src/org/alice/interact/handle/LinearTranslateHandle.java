@@ -58,85 +58,93 @@ public class LinearTranslateHandle extends LinearDragHandle {
 
 	protected Color4f baseColor;
 	protected Arrow arrow;
-	
-	
+
 	public LinearTranslateHandle( MovementDescription dragDescription, Color4f color )
 	{
 		super( dragDescription );
 		this.baseColor = color;
 		this.initializeAppearance();
 	}
-	
+
 	public LinearTranslateHandle( LinearTranslateHandle handle )
 	{
-		super(handle);
+		super( handle );
 		this.baseColor = handle.baseColor;
 		this.initializeAppearance();
 	}
-	
+
 	@Override
 	public LinearTranslateHandle clone()
 	{
-		LinearTranslateHandle newHandle = new LinearTranslateHandle(this);
+		LinearTranslateHandle newHandle = new LinearTranslateHandle( this );
 		return newHandle;
 	}
-	
+
 	@Override
 	protected void createShape() {
-		this.createShape(1.0d);
+		this.createShape( 1.0d );
 	}
-	
-	protected void createShape(double scale) {
-		if (this.arrow == null)
+
+	protected void createShape( double scale ) {
+		if( this.arrow == null )
 		{
-			this.arrow = new Arrow(.05*scale, 0.1*scale, 0.15*scale, 0.15*scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+			this.arrow = new Arrow( .05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true );
 		}
 		else
 		{
-			this.arrow.resize(.05*scale, 0.1*scale, 0.15*scale, 0.15*scale);
+			this.arrow.resize( .05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale );
 		}
 		this.arrow.setParent( this );
 	}
-	
+
 	@Override
 	protected Color4f getBaseColor()
 	{
-		if (this.baseColor == null)
+		if( this.baseColor == null )
 		{
 			return super.getBaseColor();
 		}
 		return this.baseColor;
 	}
-	
+
 	@Override
-	protected Color4f getDesiredColor(HandleRenderState renderState)
+	protected Color4f getDesiredColor( HandleRenderState renderState )
 	{
-		Color desiredColor = new Color(this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue);
-		switch (renderState)
+		Color desiredColor = new Color( this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue );
+		switch( renderState )
 		{
-		case NOT_VISIBLE : break; //Do nothing
-		case VISIBLE_BUT_SIBLING_IS_ACTIVE : ColorUtilities.shiftHSB( desiredColor, 0.0d, -.6d, -.5d ); break;
-		case VISIBLE_AND_ACTIVE : desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, 0.0d, .1d ); break;
-		case VISIBLE_AND_ROLLOVER : desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, -.4d, -.3d ); break;
-		case JUST_VISIBLE : break; //Do nothing
-		default : break; //Do nothing
+		case NOT_VISIBLE:
+			break; //Do nothing
+		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
+			ColorUtilities.shiftHSB( desiredColor, 0.0d, -.6d, -.5d );
+			break;
+		case VISIBLE_AND_ACTIVE:
+			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, 0.0d, .1d );
+			break;
+		case VISIBLE_AND_ROLLOVER:
+			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, -.4d, -.3d );
+			break;
+		case JUST_VISIBLE:
+			break; //Do nothing
+		default:
+			break; //Do nothing
 		}
-		return new Color4f(desiredColor);
+		return new Color4f( desiredColor );
 	}
-	
+
 	@Override
 	protected void setScale( double scale ) {
-		if (this.arrow != null)
+		if( this.arrow != null )
 		{
 			this.arrow.setParent( null );
 		}
 		this.createShape( scale );
 	}
-	
+
 	@Override
-	public void setVisualsShowing(boolean showing) {
-		super.setVisualsShowing(showing);
-		this.arrow.setVisualShowing(showing);
+	public void setVisualsShowing( boolean showing ) {
+		super.setVisualsShowing( showing );
+		this.arrow.setVisualShowing( showing );
 	}
 
 }

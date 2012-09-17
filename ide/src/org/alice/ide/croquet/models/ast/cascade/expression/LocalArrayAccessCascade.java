@@ -47,7 +47,8 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class LocalArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayAccessCascade > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayAccessCascade> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static synchronized LocalArrayAccessCascade getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert local != null;
 		assert expressionProperty != null;
@@ -60,17 +61,21 @@ public class LocalArrayAccessCascade extends ArrayAccessCascade {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserLocal local;
+
 	private LocalArrayAccessCascade( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( java.util.UUID.fromString( "93e8c105-e813-4000-ac8c-78a0d2d81d18" ), expressionProperty );
 		this.local = local;
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createAccessExpression() {
 		return new org.lgna.project.ast.LocalAccess( this.local );
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getArrayType() {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getArrayType() {
 		return this.local.getValueType();
 	}
 }

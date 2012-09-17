@@ -77,6 +77,7 @@ public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.
 	public LogOutCard() {
 		super( java.util.UUID.fromString( "ec4e5145-6754-4add-a821-55357866ba0b" ) );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.LineAxisPanel createView() {
 		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();

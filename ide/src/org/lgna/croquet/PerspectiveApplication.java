@@ -47,9 +47,11 @@ package org.lgna.croquet;
  */
 public abstract class PerspectiveApplication extends Application {
 	private Perspective perspective;
+
 	public Perspective getPerspective() {
 		return this.perspective;
 	}
+
 	public void setPerspective( Perspective perspective ) {
 		if( this.perspective != perspective ) {
 			this.perspective = perspective;

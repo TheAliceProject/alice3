@@ -44,12 +44,13 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class SetWallPaint extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetWallPaint.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetWallPaint.class )
 	public static interface Detail {
 	}
+
 	private SetWallPaint() {
 		super();
 	}

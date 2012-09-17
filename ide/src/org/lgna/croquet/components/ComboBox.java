@@ -48,29 +48,28 @@ import org.lgna.croquet.ListSelectionState;
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna.croquet.ListSelectionState.InternalPrepModel< E > > {
-	public ComboBox( org.lgna.croquet.ListSelectionState.InternalPrepModel< E > model ) {
+public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.croquet.ListSelectionState.InternalPrepModel<E>> {
+	public ComboBox( org.lgna.croquet.ListSelectionState.InternalPrepModel<E> model ) {
 		super( model );
 		this.setSwingComboBoxModel( model.getListSelectionState().getSwingModel().getComboBoxModel() );
 	}
-	
-//	@Override
-//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
-//		super.appendPrepStepsIfNecessary( transaction );
-//		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
-//		org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
-//		assert completionModel == this.getModel();
-//		org.lgna.croquet.ListSelectionState.InternalPrepModel< E > prepModel = this.getModel().getPrepModel();
-//		if( transaction.getPrepStepCount() == 1 ) {
-//			org.lgna.croquet.history.PrepStep< ? > prepStep = transaction.getPrepStepAt( 0 );
-//			if( prepStep.getModel() == prepModel ) {
-//				return;
-//			}
-//		}
-//		transaction.removeAllPrepSteps();
-//		org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToTransaction( transaction, prepModel, new org.lgna.croquet.triggers.SimulatedTrigger() );		
-//	}
-	
+
+	//	@Override
+	//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
+	//		super.appendPrepStepsIfNecessary( transaction );
+	//		org.lgna.croquet.history.CompletionStep< ? > completionStep = transaction.getCompletionStep();
+	//		org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
+	//		assert completionModel == this.getModel();
+	//		org.lgna.croquet.ListSelectionState.InternalPrepModel< E > prepModel = this.getModel().getPrepModel();
+	//		if( transaction.getPrepStepCount() == 1 ) {
+	//			org.lgna.croquet.history.PrepStep< ? > prepStep = transaction.getPrepStepAt( 0 );
+	//			if( prepStep.getModel() == prepModel ) {
+	//				return;
+	//			}
+	//		}
+	//		transaction.removeAllPrepSteps();
+	//		org.lgna.croquet.history.ListSelectionStatePrepStep.createAndAddToTransaction( transaction, prepModel, new org.lgna.croquet.triggers.SimulatedTrigger() );		
+	//	}
 
 	@Override
 	protected javax.swing.JComboBox createAwtComponent() {
@@ -79,6 +78,7 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 			public java.awt.Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
+
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				java.awt.Dimension rv = super.getMaximumSize();
@@ -98,8 +98,10 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 			org.lgna.croquet.history.TransactionManager.addListSelectionPrepStep( ComboBox.this.getModel(), org.lgna.croquet.triggers.PopupMenuEventTrigger.createUserInstance( ComboBox.this, e ) );
 		}
+
 		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 		}
+
 		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 			org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( ComboBox.this.getModel().getListSelectionState(), org.lgna.croquet.triggers.PopupMenuEventTrigger.createUserInstance( ComboBox.this, e ) );
 		}
@@ -110,6 +112,7 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 		super.handleDisplayable();
 		this.getAwtComponent().addPopupMenuListener( this.popupMenuListener );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.getAwtComponent().removePopupMenuListener( this.popupMenuListener );
@@ -119,12 +122,15 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 	public javax.swing.ListCellRenderer getRenderer() {
 		return this.getAwtComponent().getRenderer();
 	}
+
 	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
 		this.getAwtComponent().setRenderer( listCellRenderer );
 	}
+
 	public int getMaximumRowCount() {
 		return this.getAwtComponent().getMaximumRowCount();
 	}
+
 	public void setMaximumRowCount( int maximumRowCount ) {
 		this.getAwtComponent().setMaximumRowCount( maximumRowCount );
 	}
@@ -135,6 +141,7 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 		public ItemInPopupTrackableShape( E item ) {
 			this.item = item;
 		}
+
 		private java.awt.Component getView() {
 			javax.swing.JComboBox jComboBox = ComboBox.this.getAwtComponent();
 			if( jComboBox.isPopupVisible() ) {
@@ -146,20 +153,22 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 						javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)component;
 						javax.swing.JViewport viewport = scrollPane.getViewport();
 						return viewport.getView();
-					} 
+					}
 				}
 			}
 			return null;
 		}
+
 		public org.lgna.croquet.components.ScrollPane getScrollPaneAncestor() {
 			//todo
 			return null;
 		}
+
 		public java.awt.Shape getShape( org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets ) {
 			java.awt.Component view = this.getView();
 			if( view != null ) {
 				java.awt.Rectangle rv = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertRectangle( view.getParent(), view.getBounds(), asSeenBy.getAwtComponent() );
-				ListSelectionState< E > listSelectionState = ComboBox.this.getModel().getListSelectionState();
+				ListSelectionState<E> listSelectionState = ComboBox.this.getModel().getListSelectionState();
 				final int N = listSelectionState.getItemCount();
 				int index = listSelectionState.indexOf( item );
 				if( index != -1 ) {
@@ -182,7 +191,7 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 					//									}
 					double heightPerCell = height / (double)N;
 					rv.y += offsetY;
-					rv.y += (int)(heightPerCell * index);
+					rv.y += (int)( heightPerCell * index );
 					rv.height = (int)heightPerCell;
 
 					//todo
@@ -195,9 +204,11 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 			}
 			return null;
 		}
+
 		public java.awt.Shape getVisibleShape( org.lgna.croquet.components.ScreenElement asSeenBy, java.awt.Insets insets ) {
 			return getShape( asSeenBy, insets );
 		}
+
 		public boolean isInView() {
 			java.awt.Component view = this.getView();
 			if( view != null ) {
@@ -206,12 +217,16 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 				return false;
 			}
 		}
+
 		public void addComponentListener( java.awt.event.ComponentListener listener ) {
 		}
+
 		public void removeComponentListener( java.awt.event.ComponentListener listener ) {
 		}
+
 		public void addHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 		}
+
 		public void removeHierarchyBoundsListener( java.awt.event.HierarchyBoundsListener listener ) {
 		}
 	}
@@ -219,14 +234,16 @@ public class ComboBox<E> extends ViewController< javax.swing.JComboBox, org.lgna
 	public TrackableShape getTrackableShapeFor( E item ) {
 		return new ItemInPopupTrackableShape( item );
 	}
-	/*package-private*/void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
+
+	/* package-private */void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
 		this.getAwtComponent().setModel( model );
 	}
 
-	/*package-private*/void addItemListener( java.awt.event.ItemListener itemListener ) {
+	/* package-private */void addItemListener( java.awt.event.ItemListener itemListener ) {
 		this.getAwtComponent().addItemListener( itemListener );
 	}
-	/*package-private*/void removeItemListener( java.awt.event.ItemListener itemListener ) {
+
+	/* package-private */void removeItemListener( java.awt.event.ItemListener itemListener ) {
 		this.getAwtComponent().removeItemListener( itemListener );
 	}
 }

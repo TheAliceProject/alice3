@@ -50,14 +50,17 @@ public class StringStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.re
 	public StringStaticGetInstanceKeyedResolver( T instance, String value ) {
 		super( instance, new Class[] { String.class }, new Object[] { value } );
 	}
+
 	public StringStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		String value = binaryDecoder.decodeString();
 		return new Object[] { value };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		String value = (String)arguments[ 0 ];

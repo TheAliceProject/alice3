@@ -43,7 +43,19 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_CULL_FACE;
+import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
+import static javax.media.opengl.GL.GL_DEPTH_TEST;
+import static javax.media.opengl.GL.GL_EXTENSIONS;
+import static javax.media.opengl.GL.GL_LEQUAL;
+import static javax.media.opengl.GL.GL_MODELVIEW;
+import static javax.media.opengl.GL.GL_PROJECTION;
+import static javax.media.opengl.GL.GL_QUAD_STRIP;
+import static javax.media.opengl.GL.GL_RENDER;
+import static javax.media.opengl.GL.GL_RENDERER;
+import static javax.media.opengl.GL.GL_SELECT;
+import static javax.media.opengl.GL.GL_VENDOR;
+import static javax.media.opengl.GL.GL_VERSION;
 
 /**
  * @author Dennis Cosgrove
@@ -58,13 +70,14 @@ public class ConformanceTestResults {
 	//		}
 	//		return ConformanceTestResults.singleton;
 	//	}
-	private static final long FISHY_PICK_VALUE = PickContext.MAX_UNSIGNED_INTEGER / 2 + 1;
+	private static final long FISHY_PICK_VALUE = ( PickContext.MAX_UNSIGNED_INTEGER / 2 ) + 1;
 
 	private static long convertZValueToLong( int zValue ) {
 		long rv = zValue;
 		rv &= PickContext.MAX_UNSIGNED_INTEGER;
 		return rv;
 	}
+
 	private static float convertZValueToFloat( long zValue ) {
 		float zFront = (float)zValue;
 		zFront /= (float)PickContext.MAX_UNSIGNED_INTEGER;
@@ -81,21 +94,22 @@ public class ConformanceTestResults {
 
 	private ConformanceTestResults() {
 		javax.media.opengl.GLDrawableFactory factory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if (factory.canCreateGLPbuffer()) {
+		if( factory.canCreateGLPbuffer() ) {
 			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities();
-			javax.media.opengl.GLPbuffer glPbuffer = factory.createGLPbuffer(glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null);
-//todo: jogl2
-//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getDesktopFactory();
-//		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() ) ) {
-//			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-//			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities( glProfile );
-//			javax.media.opengl.GLPbuffer glPbuffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
+			javax.media.opengl.GLPbuffer glPbuffer = factory.createGLPbuffer( glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
+			//todo: jogl2
+			//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getDesktopFactory();
+			//		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() ) ) {
+			//			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+			//			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities( glProfile );
+			//			javax.media.opengl.GLPbuffer glPbuffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
 
 			javax.media.opengl.GLContext glContext = glPbuffer.getContext();
 			glContext.makeCurrent();
 			inititialize( glPbuffer.getGL() );
 		}
 	}
+
 	public ConformanceTestResults( javax.media.opengl.GL gl ) {
 		inititialize( gl );
 	}
@@ -177,7 +191,7 @@ public class ConformanceTestResults {
 			long zFrontAsLong = convertZValueToLong( zFrontAsInt );
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsLong", "0x"+Long.toHexString(zFrontAsLong));
 
-			if( zFrontAsLong != FISHY_PICK_VALUE && zFrontAsLong != PickContext.MAX_UNSIGNED_INTEGER && zFrontAsLong != 0 ) {
+			if( ( zFrontAsLong != FISHY_PICK_VALUE ) && ( zFrontAsLong != PickContext.MAX_UNSIGNED_INTEGER ) && ( zFrontAsLong != 0 ) ) {
 				//float zFront = convertZValueToFloat( zFrontAsLong );;
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFront", zFront);
 
@@ -210,6 +224,7 @@ public class ConformanceTestResults {
 	public boolean isValid() {
 		return this.isValid;
 	}
+
 	public boolean isPickFunctioningCorrectly() {
 		return this.isPickFunctioningCorrectly;
 	}
@@ -217,12 +232,15 @@ public class ConformanceTestResults {
 	public String getVersion() {
 		return this.version;
 	}
+
 	public String getVendor() {
 		return this.vendor;
 	}
+
 	public String getRenderer() {
 		return this.renderer;
 	}
+
 	public String[] getExtensions() {
 		return this.extensions;
 	}

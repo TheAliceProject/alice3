@@ -47,7 +47,7 @@ package org.alice.ide.type;
  * @author Dennis Cosgrove
  */
 public final class ExtendsTypeKey extends AbstractExtendsTypeKey {
-	public ExtendsTypeKey( org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
+	public ExtendsTypeKey( org.lgna.project.ast.AbstractType<?, ?, ?> superType ) {
 		super( superType );
 	}
 }

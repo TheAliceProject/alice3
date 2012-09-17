@@ -49,12 +49,15 @@ public final class RemoveResourceOperation extends SelectedResourceOperation {
 	private static class SingletonHolder {
 		private static RemoveResourceOperation instance = new RemoveResourceOperation();
 	}
+
 	public static RemoveResourceOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RemoveResourceOperation() {
 		super( java.util.UUID.fromString( "a1df4e40-3d74-46b7-8d57-9b55d793cea6" ) );
 	}
+
 	@Override
 	public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource ) {
 		return new org.alice.ide.resource.manager.edits.RemoveResourceEdit( step, resource );

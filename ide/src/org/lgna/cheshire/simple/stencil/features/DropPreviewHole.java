@@ -46,11 +46,13 @@ package org.lgna.cheshire.simple.stencil.features;
  * @author Dennis Cosgrove
  */
 public class DropPreviewHole extends org.lgna.cheshire.simple.stencil.features.Hole {
-	/*package-private*/ static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 45 );
-	/*package-private*/ static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
+	/* package-private */static final java.awt.Color STENCIL_BASE_COLOR = new java.awt.Color( 181, 140, 140, 45 );
+	/* package-private */static final java.awt.Color STENCIL_LINE_COLOR = new java.awt.Color( 92, 48, 24, 63 );
+
 	private enum Paint {
 		SINGLETON;
 		private java.awt.Paint internal;
+
 		Paint() {
 			int width = 8;
 			int height = 8;
@@ -66,23 +68,26 @@ public class DropPreviewHole extends org.lgna.cheshire.simple.stencil.features.H
 			this.internal = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 		}
 	};
+
 	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 220 );
 	private static final java.awt.Color SHADOW_COLOR = new java.awt.Color( 31, 31, 31 );
-	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 3.0f ); 
+	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 3.0f );
 
-	public DropPreviewHole( org.lgna.croquet.resolvers.RuntimeResolver< ? extends org.lgna.croquet.components.TrackableShape > trackableShapeResolver, ConnectionPreference connectionPreference ) {
+	public DropPreviewHole( org.lgna.croquet.resolvers.RuntimeResolver<? extends org.lgna.croquet.components.TrackableShape> trackableShapeResolver, ConnectionPreference connectionPreference ) {
 		super( trackableShapeResolver, connectionPreference );
 		this.setHeightConstraint( 64 );
 	}
+
 	@Override
 	protected boolean isPathRenderingDesired() {
 		return false;
 	}
+
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component< ? > asSeenBy ) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component<?> asSeenBy ) {
 		return null;
 	}
-	
+
 	@Override
 	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape, org.lgna.cheshire.simple.Feature.Connection actualConnection ) {
 		java.awt.Paint prevPaint = g2.getPaint();
@@ -93,13 +98,13 @@ public class DropPreviewHole extends org.lgna.cheshire.simple.stencil.features.H
 			g2.setStroke( STROKE );
 			java.awt.Rectangle bounds = shape.getBounds();
 			java.awt.geom.GeneralPath highlightPath = new java.awt.geom.GeneralPath();
-			highlightPath.moveTo( bounds.x, bounds.y+bounds.height );
-			highlightPath.lineTo( bounds.x+bounds.width, bounds.y+bounds.height );
-			highlightPath.lineTo( bounds.x+bounds.width, bounds.y );
+			highlightPath.moveTo( bounds.x, bounds.y + bounds.height );
+			highlightPath.lineTo( bounds.x + bounds.width, bounds.y + bounds.height );
+			highlightPath.lineTo( bounds.x + bounds.width, bounds.y );
 			java.awt.geom.GeneralPath shadowPath = new java.awt.geom.GeneralPath();
-			shadowPath.moveTo( bounds.x, bounds.y+bounds.height );
+			shadowPath.moveTo( bounds.x, bounds.y + bounds.height );
 			shadowPath.lineTo( bounds.x, bounds.y );
-			shadowPath.lineTo( bounds.x+bounds.width, bounds.y );
+			shadowPath.lineTo( bounds.x + bounds.width, bounds.y );
 			g2.setPaint( HIGHLIGHT_COLOR );
 			g2.draw( highlightPath );
 			g2.setPaint( SHADOW_COLOR );

@@ -7,10 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.SMovableTurnable;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
 import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.implementation.AbstractTransformableImp;
@@ -20,11 +20,11 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
-public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler<L,E> implements AbsoluteTransformationListener {
-	HashMap<Visual,LinkedList<Object>> eventMap = new HashMap<Visual,LinkedList<Object>>();
+public abstract class TransformationChangedHandler<L, E extends AbstractEvent> extends AbstractEventHandler<L, E> implements AbsoluteTransformationListener {
+	HashMap<Visual, LinkedList<Object>> eventMap = new HashMap<Visual, LinkedList<Object>>();
 	List<L> listenerList = Collections.newLinkedList();
 	List<SThing> modelList = Collections.newLinkedList();
-	private Map<Object,Class[]> checkNewMap = Collections.newHashMap();
+	private Map<Object, Class[]> checkNewMap = Collections.newHashMap();
 
 	public final void fireAllTargeted( SThing changedThing ) {
 		if( shouldFire ) {
@@ -38,7 +38,7 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 				Class cls = checkNewMap.get( key )[ i ];
 				if( cls != null ) {
 					SThing abstraction = created.getAbstraction();
-					if( checkNewMap.get( key )[ 1 - i ] == null || cls.isAssignableFrom( abstraction.getClass() ) && !checkNewMap.get( key )[ 1 - i ].isAssignableFrom( cls ) ) {
+					if( ( checkNewMap.get( key )[ 1 - i ] == null ) || ( cls.isAssignableFrom( abstraction.getClass() ) && !checkNewMap.get( key )[ 1 - i ].isAssignableFrom( cls ) ) ) {
 						ammend( key, i, abstraction );
 					}
 				}
@@ -85,7 +85,7 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 		ArrayList<?> firstList;
 		ArrayList<?> secondList;
 		Class[] checkClassArr = { null, null };
-		if( groupOne == null && groupTwo == null ) {
+		if( ( groupOne == null ) && ( groupTwo == null ) ) {
 			firstList = scene.findAll( a );
 			secondList = scene.findAll( b );
 			checkClassArr[ 0 ] = a;
@@ -98,12 +98,12 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 			} else if( b.isAssignableFrom( a ) ) {
 				secondList.removeAll( firstList );
 			}
-		} else if( groupOne == null && groupTwo != null ) {
+		} else if( ( groupOne == null ) && ( groupTwo != null ) ) {
 			firstList = scene.findAll( a );
 			secondList = groupTwo;
 			firstList.removeAll( secondList );
 			checkClassArr[ 0 ] = a;
-		} else if( groupOne != null && groupTwo == null ) {
+		} else if( ( groupOne != null ) && ( groupTwo == null ) ) {
 			firstList = groupOne;
 			secondList = scene.findAll( b );
 			checkClassArr[ 1 ] = b;
@@ -117,7 +117,7 @@ public abstract class TransformationChangedHandler<L, E extends AbstractEvent> e
 				}
 			}
 		}
-		if( checkClassArr[ 0 ] != null || checkClassArr[ 1 ] != null ) {
+		if( ( checkClassArr[ 0 ] != null ) || ( checkClassArr[ 1 ] != null ) ) {
 			checkNewMap.put( listener, checkClassArr );
 		}
 		list = Collections.newArrayList( firstList, secondList );

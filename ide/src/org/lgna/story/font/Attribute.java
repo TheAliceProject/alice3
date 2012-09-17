@@ -48,5 +48,6 @@ package org.lgna.story.font;
  */
 public interface Attribute<E> {
 	public java.awt.font.TextAttribute getKey();
+
 	public E getValue();
 }

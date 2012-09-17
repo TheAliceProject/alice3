@@ -47,11 +47,13 @@ package org.alice.stageide.instancefactory.croquet.joint.all;
  * @author Dennis Cosgrove
  */
 public class LocalAccessJointedTypeMenuModel extends JointedTypeMenuModel {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.UserLocal, Integer, LocalAccessJointedTypeMenuModel > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, Integer, LocalAccessJointedTypeMenuModel> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
 	public static LocalAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserLocal value ) {
 		java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos = org.alice.stageide.ast.JointedTypeInfo.getInstances( value.getValueType() );
 		return getInstance( value, jointedTypeInfos, 0 );
 	}
+
 	private static LocalAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserLocal value, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
 		synchronized( mapToMap ) {
 			LocalAccessJointedTypeMenuModel rv = mapToMap.get( value, index );
@@ -64,17 +66,21 @@ public class LocalAccessJointedTypeMenuModel extends JointedTypeMenuModel {
 			return rv;
 		}
 	}
+
 	private final org.lgna.project.ast.UserLocal local;
+
 	private LocalAccessJointedTypeMenuModel( org.lgna.project.ast.UserLocal local, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
 		super( java.util.UUID.fromString( "68729d94-33e9-4da7-a04c-cb88939b8c93" ), jointedTypeInfos, index );
 		this.local = local;
 	}
+
 	@Override
 	protected org.alice.stageide.instancefactory.croquet.joint.all.JointedTypeMenuModel getInstance( java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
 		return getInstance( this.local, jointedTypeInfos, index );
 	}
+
 	@Override
-	protected org.lgna.croquet.CascadeFillIn< org.alice.ide.instancefactory.InstanceFactory, ? > getFillIn( org.lgna.project.ast.AbstractMethod method ) {
+	protected org.lgna.croquet.CascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, ?> getFillIn( org.lgna.project.ast.AbstractMethod method ) {
 		return org.alice.ide.instancefactory.croquet.InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessMethodInvocationFactory.getInstance( this.local, method ) );
 	}
 }

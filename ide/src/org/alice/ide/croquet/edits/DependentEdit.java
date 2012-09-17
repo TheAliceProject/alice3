@@ -46,19 +46,22 @@ package org.alice.ide.croquet.edits;
 /**
  * @author Dennis Cosgrove
  */
-public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit< M > {
+public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit<M> {
 	public DependentEdit( org.lgna.croquet.history.CompletionStep completionStep ) {
 		super( completionStep );
 	}
+
 	public DependentEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 	}
+
 	private org.alice.ide.croquet.models.ResponsibleModel getResponsibleModel() {
-		org.lgna.croquet.history.CompletionStep< ? > step = this.getCompletionStep();
+		org.lgna.croquet.history.CompletionStep<?> step = this.getCompletionStep();
 		if( step != null ) {
 			org.lgna.croquet.CompletionModel model = step.getModel();
 			if( model instanceof org.alice.ide.croquet.models.ResponsibleModel ) {
@@ -70,12 +73,13 @@ public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> ext
 			throw new NullPointerException();
 		}
 	}
+
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.getResponsibleModel().retarget( retargeter );
 	}
-	
+
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
 		this.getResponsibleModel().doOrRedoInternal( isDo );
@@ -85,17 +89,19 @@ public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> ext
 	protected void undoInternal() {
 		this.getResponsibleModel().undoInternal();
 	}
-	
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		return this.getResponsibleModel().updatePresentation( rv );
 	}
+
 	@Override
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
 		return this.getResponsibleModel().getReplacementAcceptability( replacementCandidate );
 	}
+
 	@Override
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
 		super.addKeyValuePairs( retargeter, edit );
 		this.getResponsibleModel().addKeyValuePairs( retargeter, edit );
 	}

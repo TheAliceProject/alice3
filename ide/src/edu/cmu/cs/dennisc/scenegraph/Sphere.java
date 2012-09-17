@@ -49,11 +49,12 @@ package edu.cmu.cs.dennisc.scenegraph;
 public class Sphere extends Shape {
 	public final BoundDoubleProperty radius = new BoundDoubleProperty( this, 0.5 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0;
 			super.setValue( owner, value );
 		}
 	};
+
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		double d = radius.getValue();

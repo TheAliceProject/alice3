@@ -47,21 +47,23 @@ package org.alice.stageide.person.components;
  */
 public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
-	
+
 	private static class SingletonHolder {
 		private static PersonViewer instance = new PersonViewer();
 	}
+
 	public static PersonViewer getInstance( org.alice.stageide.person.PersonImp personImp ) {
 		SingletonHolder.instance.setPerson( personImp );
 		return SingletonHolder.instance;
 	}
+
 	private PersonViewer() {
 	}
 
 	private void positionAndOrientCamera( double height, int index, double duration ) {
 		double xzFactor;
 		if( index == 0 ) {
-			xzFactor = 2.0*height;
+			xzFactor = 2.0 * height;
 		} else {
 			xzFactor = 1.0;
 		}
@@ -75,10 +77,10 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		xzFactor *= 0.65;
 		if( this.getScene() != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
-			this.getCamera().setTransformation( this.getScene().createOffsetStandIn( -0.3*xzFactor, height*yFactor, -height*xzFactor ) );
-			this.getCamera().setOrientationOnlyToPointAt( this.getScene().createOffsetStandIn( 0, height*.5, 0 ) );
+			this.getCamera().setTransformation( this.getScene().createOffsetStandIn( -0.3 * xzFactor, height * yFactor, -height * xzFactor ) );
+			this.getCamera().setOrientationOnlyToPointAt( this.getScene().createOffsetStandIn( 0, height * .5, 0 ) );
 			edu.cmu.cs.dennisc.animation.Animator animator = this.getAnimator();
-			if( duration > 0.0 && animator != null ) {
+			if( ( duration > 0.0 ) && ( animator != null ) ) {
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
 				this.getCamera().setLocalTransformation( prevPOV );
 
@@ -94,6 +96,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	public org.alice.stageide.person.PersonImp getPerson() {
 		return (org.alice.stageide.person.PersonImp)this.getModel();
 	}
+
 	public void setPerson( org.alice.stageide.person.PersonImp person ) {
 		this.setModel( person );
 		this.dragAdapter.setSelectedImplementation( person );
@@ -102,6 +105,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			this.positionAndOrientCamera( height, 0, 0.0 );
 		}
 	}
+
 	@Override
 	protected void initialize() {
 		super.initialize();

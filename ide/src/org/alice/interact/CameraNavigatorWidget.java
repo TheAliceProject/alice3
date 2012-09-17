@@ -62,15 +62,15 @@ import org.alice.interact.manipulator.OrthographicCameraDragZoomManipulator;
 /**
  * @author David Culyba
  */
-public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxisPanel {
-	
+public class CameraNavigatorWidget extends org.lgna.croquet.components.LineAxisPanel {
+
 	public enum CameraMode
 	{
 		ORTHOGRAPHIC,
 		PERSPECTIVE,
 	}
-	
-	protected CameraMode cameraMode = CameraMode.PERSPECTIVE; 
+
+	protected CameraMode cameraMode = CameraMode.PERSPECTIVE;
 	protected boolean isExpanded = false;
 	protected AbstractDragAdapter dragAdapter;
 	protected ManipulationHandle2DCameraDriver cameraDriver;
@@ -78,25 +78,25 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 	protected ManipulationHandle2DCameraStrafe cameraControlStrafe;
 	protected ManipulationHandle2DCameraStrafe orthographicCameraControlStrafe;
 	protected ManipulationHandle2CameraZoom orthographicCameraControlZoom;
-	
-	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter, CameraView attachedView)
+
+	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter, CameraView attachedView )
 	{
 		super();
-		
+
 		//this.setLayout( new FlowLayout() );
-		this.setBackgroundColor(null); //transparent
+		this.setBackgroundColor( null ); //transparent
 		this.dragAdapter = dragAdapter;
-		
+
 		//CAMERA DRIVER
 		//Create the new handle
 		this.cameraDriver = new ManipulationHandle2DCameraDriver();
 		//Create the manipulator
-		Camera2DDragDriveManipulator driverManipulator = new Camera2DDragDriveManipulator(this.cameraDriver);
+		Camera2DDragDriveManipulator driverManipulator = new Camera2DDragDriveManipulator( this.cameraDriver );
 		//Set the desired view so the manipulator knows which camera to control 
 		driverManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.cameraDriver.setManipulation( driverManipulator );
-		for (ManipulationEvent event : driverManipulator.getManipulationEvents())
+		for( ManipulationEvent event : driverManipulator.getManipulationEvents() )
 		{
 			this.cameraDriver.addCondition( new ManipulationEventCriteria(
 					event.getType(),
@@ -107,17 +107,17 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 		this.dragAdapter.addManipulationListener( this.cameraDriver );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
 		this.cameraDriver.setDragAdapterAndAddHandle( this.dragAdapter );
-		
+
 		//CAMERA ROTATE UP/DOWN
 		//Create the new handle
 		this.cameraControlUpDown = new ManipulationHandle2DCameraTurnUpDown();
 		//Create the manipulator
-		Camera2DDragUpDownRotateManipulator upDownManipulator = new Camera2DDragUpDownRotateManipulator(this.cameraControlUpDown);
+		Camera2DDragUpDownRotateManipulator upDownManipulator = new Camera2DDragUpDownRotateManipulator( this.cameraControlUpDown );
 		//Set the desired view so the manipulator knows which camera to control 
 		upDownManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.cameraControlUpDown.setManipulation( upDownManipulator );
-		for (ManipulationEvent event : upDownManipulator.getManipulationEvents())
+		for( ManipulationEvent event : upDownManipulator.getManipulationEvents() )
 		{
 			this.cameraControlUpDown.addCondition( new ManipulationEventCriteria(
 					event.getType(),
@@ -128,17 +128,17 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 		this.dragAdapter.addManipulationListener( this.cameraControlUpDown );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
 		this.cameraControlUpDown.setDragAdapterAndAddHandle( this.dragAdapter );
-		
+
 		//CAMERA STRAFE
 		//Create the new handle
 		this.cameraControlStrafe = new ManipulationHandle2DCameraStrafe();
 		//Create the manipulator
-		Camera2DDragStrafeManipulator strafeManipulator = new Camera2DDragStrafeManipulator(this.cameraControlStrafe);
+		Camera2DDragStrafeManipulator strafeManipulator = new Camera2DDragStrafeManipulator( this.cameraControlStrafe );
 		//Set the desired view so the manipulator knows which camera to control 
 		strafeManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.cameraControlStrafe.setManipulation( strafeManipulator );
-		for (ManipulationEvent event : strafeManipulator.getManipulationEvents())
+		for( ManipulationEvent event : strafeManipulator.getManipulationEvents() )
 		{
 			this.cameraControlStrafe.addCondition( new ManipulationEventCriteria(
 					event.getType(),
@@ -149,28 +149,26 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 		this.dragAdapter.addManipulationListener( this.cameraControlStrafe );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
 		this.cameraControlStrafe.setDragAdapterAndAddHandle( this.dragAdapter );
-		
+
 		//This is the manipulator used to strafe the camera when holding down shift and using the camera widget
 		//Note that this is the only manipulator directly added to the dragAdapter
 		//The dragAdapter will automatically activate the correct manipulator based on which handle was clicked
 		strafeManipulator.setDragAdapter( this.dragAdapter );
 		ManipulatorConditionSet mouseHandleDrag_Shift = new ManipulatorConditionSet( strafeManipulator );
-		MouseDragCondition handleShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ));
+		MouseDragCondition handleShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.TWO_D_HANDLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
 		mouseHandleDrag_Shift.addCondition( handleShiftCondition );
 		this.dragAdapter.addManipulator( mouseHandleDrag_Shift );
-		
-		
-		
+
 		//ORTHOGRAPHIC STRAFE
 		//Create the new handle
 		this.orthographicCameraControlStrafe = new ManipulationHandle2DCameraStrafe();
 		//Create the manipulator
-		OrthographicCameraDragStrafeManipulator orthoStrafeManipulator = new OrthographicCameraDragStrafeManipulator(this.cameraControlStrafe);
+		OrthographicCameraDragStrafeManipulator orthoStrafeManipulator = new OrthographicCameraDragStrafeManipulator( this.cameraControlStrafe );
 		//Set the desired view so the manipulator knows which camera to control 
 		orthoStrafeManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.orthographicCameraControlStrafe.setManipulation( orthoStrafeManipulator );
-		for (ManipulationEvent event : orthoStrafeManipulator.getManipulationEvents())
+		for( ManipulationEvent event : orthoStrafeManipulator.getManipulationEvents() )
 		{
 			this.orthographicCameraControlStrafe.addCondition( new ManipulationEventCriteria(
 					event.getType(),
@@ -181,17 +179,17 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 		this.dragAdapter.addManipulationListener( this.orthographicCameraControlStrafe );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
 		this.orthographicCameraControlStrafe.setDragAdapterAndAddHandle( this.dragAdapter );
-		
+
 		//ORTHOGRAPHIC ZOOM
 		//Create the new handle
 		this.orthographicCameraControlZoom = new ManipulationHandle2CameraZoom();
 		//Create the manipulator
-		OrthographicCameraDragZoomManipulator orthoZoomManipulator = new OrthographicCameraDragZoomManipulator(this.orthographicCameraControlZoom);
+		OrthographicCameraDragZoomManipulator orthoZoomManipulator = new OrthographicCameraDragZoomManipulator( this.orthographicCameraControlZoom );
 		//Set the desired view so the manipulator knows which camera to control 
 		orthoZoomManipulator.setDesiredCameraView( attachedView );
 		//Set up the handle to know about its own manipulator and conditions so the ObjectGlobalHandleDragManipulator can activate the control
 		this.orthographicCameraControlZoom.setManipulation( orthoZoomManipulator );
-		for (ManipulationEvent event : orthoZoomManipulator.getManipulationEvents())
+		for( ManipulationEvent event : orthoZoomManipulator.getManipulationEvents() )
 		{
 			this.orthographicCameraControlZoom.addCondition( new ManipulationEventCriteria(
 					event.getType(),
@@ -202,75 +200,69 @@ public class CameraNavigatorWidget extends  org.lgna.croquet.components.LineAxis
 		this.dragAdapter.addManipulationListener( this.orthographicCameraControlZoom );
 		//Set the dragAdapter on the handle which sets up listening and adds the handle to the dragAdapter
 		this.orthographicCameraControlZoom.setDragAdapterAndAddHandle( this.dragAdapter );
-		
+
 		this.cameraMode = null;
-		setMode(CameraMode.PERSPECTIVE); //This will set the mode and also put the controls in the panel
-		
-		
+		setMode( CameraMode.PERSPECTIVE ); //This will set the mode and also put the controls in the panel
+
 	}
-	
+
 	public void setExpanded( boolean isExpanded ) {
 		this.isExpanded = isExpanded;
-		switch (this.cameraMode)
+		switch( this.cameraMode )
 		{
-		case PERSPECTIVE:
-			{
-				this.cameraControlUpDown.setVisible( isExpanded );
-				this.cameraControlStrafe.setVisible( isExpanded );
-				this.cameraDriver.setVisible( true );
-				this.orthographicCameraControlStrafe.setVisible( false );
-				this.orthographicCameraControlZoom.setVisible( false );
-			}
+		case PERSPECTIVE: {
+			this.cameraControlUpDown.setVisible( isExpanded );
+			this.cameraControlStrafe.setVisible( isExpanded );
+			this.cameraDriver.setVisible( true );
+			this.orthographicCameraControlStrafe.setVisible( false );
+			this.orthographicCameraControlZoom.setVisible( false );
+		}
 			break;
-		case ORTHOGRAPHIC:
-			{
-				this.cameraControlUpDown.setVisible( false );
-				this.cameraControlStrafe.setVisible( false );
-				this.cameraDriver.setVisible( false );
-				this.orthographicCameraControlStrafe.setVisible( true );
-				this.orthographicCameraControlZoom.setVisible( true );
-			}
+		case ORTHOGRAPHIC: {
+			this.cameraControlUpDown.setVisible( false );
+			this.cameraControlStrafe.setVisible( false );
+			this.cameraDriver.setVisible( false );
+			this.orthographicCameraControlStrafe.setVisible( true );
+			this.orthographicCameraControlZoom.setVisible( true );
+		}
 			break;
 		}
-		
+
 	}
-	
-	
-	protected void setControlsBasedOnMode(CameraMode mode)
+
+	protected void setControlsBasedOnMode( CameraMode mode )
 	{
 		this.removeAllComponents();
 		this.setExpanded( this.isExpanded );
-		switch (mode)
+		switch( mode )
 		{
-		case PERSPECTIVE:
-			{
-				this.addComponent(this.cameraControlStrafe);
-				this.addComponent(this.cameraDriver);
-				this.addComponent(this.cameraControlUpDown);
-			}
+		case PERSPECTIVE: {
+			this.addComponent( this.cameraControlStrafe );
+			this.addComponent( this.cameraDriver );
+			this.addComponent( this.cameraControlUpDown );
+		}
 			break;
-		case ORTHOGRAPHIC:
-			{
-				this.addComponent(this.orthographicCameraControlStrafe);
-				this.addComponent(this.orthographicCameraControlZoom);
-			}
+		case ORTHOGRAPHIC: {
+			this.addComponent( this.orthographicCameraControlStrafe );
+			this.addComponent( this.orthographicCameraControlZoom );
+		}
 			break;
 		}
 	}
-	
+
 	public void setToOrthographicMode()
 	{
-		setMode(CameraMode.ORTHOGRAPHIC);
+		setMode( CameraMode.ORTHOGRAPHIC );
 	}
-	
+
 	public void setToPerspectiveMode()
 	{
-		setMode(CameraMode.PERSPECTIVE);
+		setMode( CameraMode.PERSPECTIVE );
 	}
-	
-	public void setMode(CameraMode mode)
+
+	public void setMode( CameraMode mode )
 	{
-		if (mode != this.cameraMode)
+		if( mode != this.cameraMode )
 		{
 			this.cameraMode = mode;
 			setControlsBasedOnMode( this.cameraMode );

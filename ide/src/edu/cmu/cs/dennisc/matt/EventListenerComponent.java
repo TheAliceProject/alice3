@@ -75,21 +75,21 @@ public class EventListenerComponent extends BorderPanel {
 					UserLambda lambda = (UserLambda)lambdaExpression.value.getValue();
 					//ParametersPane parametersPane = new ParametersPane( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda );
 
-					LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel( 
-							new Label( "declare procedure", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), 
+					LineAxisPanel singleAbstractMethodHeader = new LineAxisPanel(
+							new Label( "declare procedure", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ),
 							org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 4 ),
-							new Label( singleAbstractMethod.getName(), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), 
+							new Label( singleAbstractMethod.getName(), 1.5f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ),
 							org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
 							new org.alice.ide.eventseditor.components.EventAccessorMethodsPanel( lambda )
-					);
+							);
 
 					StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
 					org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( putCodeHere );
-					
+
 					BorderPanel codeContainer = new BorderPanel.Builder()
-						.pageStart( singleAbstractMethodHeader )
-						.center( bodyPane )
-					.build();
+							.pageStart( singleAbstractMethodHeader )
+							.center( bodyPane )
+							.build();
 					codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );
 					codeContainer.setBorder( BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
 					this.addCenterComponent( codeContainer );

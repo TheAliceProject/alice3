@@ -49,9 +49,11 @@ class ExceptionPane extends javax.swing.JPanel {
 	protected Thread getThread() {
 		return this.thread;
 	}
+
 	protected Throwable getThrowable() {
 		return this.throwable;
 	}
+
 	public void setThreadAndThrowable( final Thread thread, final Throwable throwable ) {
 		assert thread != null;
 		assert throwable != null;
@@ -68,7 +70,7 @@ class ExceptionPane extends javax.swing.JPanel {
 		StringBuffer sb = new StringBuffer();
 		sb.append( throwable.getClass().getSimpleName() );
 		String message = throwable.getLocalizedMessage();
-		if( message != null && message.length() > 0 ) {
+		if( ( message != null ) && ( message.length() > 0 ) ) {
 			sb.append( "[" );
 			sb.append( message );
 			sb.append( "]" );
@@ -91,18 +93,19 @@ class ExceptionPane extends javax.swing.JPanel {
 	}
 }
 
-
 public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 	private static javax.swing.JLabel createSystemPropertyLabel( String propertyName ) {
 		return new javax.swing.JLabel( propertyName + ": " + System.getProperty( propertyName ) );
 	}
+
 	class SystemPropertiesPane extends javax.swing.JPanel {
 		class ShowAllSystemPropertiesAction extends javax.swing.AbstractAction {
 			public ShowAllSystemPropertiesAction() {
 				super( "show all system properties..." );
 			}
+
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				java.util.List< edu.cmu.cs.dennisc.java.lang.Property > propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertyList();
+				java.util.List<edu.cmu.cs.dennisc.java.lang.Property> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertyList();
 				java.util.Collections.sort( propertyList );
 				StringBuilder sb = new StringBuilder();
 				sb.append( "<html>" );
@@ -112,7 +115,7 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 					sb.append( property.getKey() );
 					sb.append( ":</strong> " );
 					sb.append( property.getValue() );
-					sb.append( "<br>" ); 
+					sb.append( "<br>" );
 				}
 				sb.append( "</body>" );
 				sb.append( "</html>" );
@@ -166,7 +169,7 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 		protected javax.swing.JComponent createCenterPane() {
 			javax.swing.JPanel rv = new javax.swing.JPanel();
 			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
-			java.util.List< java.awt.Component[] > rows = new java.util.LinkedList< java.awt.Component[] >();
+			java.util.List<java.awt.Component[]> rows = new java.util.LinkedList<java.awt.Component[]>();
 			rows.add( rowSummary );
 			rows.add( rowDescription );
 			rows.add( rowSteps );
@@ -177,14 +180,17 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.springItUpANotch( rv, rows, 8, 4 );
 			return rv;
 		}
+
 		@Override
 		protected String getCollapsedButtonText() {
 			return "yes >>>";
 		}
+
 		@Override
 		protected String getCollapsedLabelText() {
 			return "Can you provide insight into this problem?";
 		}
+
 		@Override
 		protected String getExpandedLabelText() {
 			return "Please provide insight:";
@@ -192,12 +198,12 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 	}
 
 	private MyExpandPane expandPane = new MyExpandPane();
-	
+
 	public AbstractCaughtExceptionPane() {
 		expandPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 		this.add( expandPane, java.awt.BorderLayout.CENTER );
 	}
-	
+
 	@Override
 	protected boolean isInclusionOfCompleteSystemPropertiesDesired() {
 		return true;
@@ -206,7 +212,7 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 	@Override
 	protected String getSummaryText() {
 		String rv = super.getSummaryText();
-		if( rv != null && rv.length() > 0 ) {
+		if( ( rv != null ) && ( rv.length() > 0 ) ) {
 			//pass
 		} else {
 			StringBuffer sb = new StringBuffer();
@@ -223,7 +229,7 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 					sb.append( "; " );
 				}
 				StackTraceElement[] stackTraceElements = throwable.getStackTrace();
-				if( stackTraceElements != null && stackTraceElements.length > 0 && stackTraceElements[ 0 ] != null ) {
+				if( ( stackTraceElements != null ) && ( stackTraceElements.length > 0 ) && ( stackTraceElements[ 0 ] != null ) ) {
 					sb.append( "stack[0]: " );
 					sb.append( stackTraceElements[ 0 ].toString() );
 					sb.append( "; " );
@@ -234,65 +240,74 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 		}
 		return rv;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getJIRAType() {
 		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG;
 	}
+
 	@Override
 	protected String getSMTPReplyToPersonal() {
 		return this.textReporterName.getText();
 	}
+
 	@Override
 	protected String getSMTPReplyTo() {
 		return this.textReporterEMailAddress.getText();
 	}
+
 	@Override
 	protected String getEnvironmentText() {
 		return null;
 	}
+
 	@Override
 	protected Throwable getThrowable() {
 		return this.paneException.getThrowable();
 	}
+
 	@Override
 	protected boolean isClearedToSubmit() {
 		return true;
 	}
+
 	@Override
 	protected int getPreferredDescriptionHeight() {
 		return 64;
 	}
+
 	@Override
 	protected int getPreferredStepsHeight() {
 		return 64;
 	}
+
 	@Override
 	protected boolean isSummaryRequired() {
 		return false;
 	}
-	
+
 	public void setThreadAndThrowable( Thread thread, Throwable throwable ) {
 		assert this.paneException != null;
 		this.paneException.setThreadAndThrowable( thread, throwable );
 		this.revalidate();
 	}
-//	private StringBuffer updateMailSubject( StringBuffer rv, Issue issue ) {
-//		rv.append( issue.getAffectsVersionText() );
-//		rv.append( ": " );
-//		String summary = issue.getSummary();
-//		if( summary != null && summary.length() > 0 ) {
-//			rv.append( summary );
-//		} else {
-//			rv.append( this.getSubSummary( issue ) );
-//		}
-//		return rv;
-//	}
-//	protected final String getMailSubject( Issue issue ) {
-//		StringBuffer sb = new StringBuffer();
-//		updateMailSubject( sb, issue );
-//		return sb.toString();
-//	}
-//	protected final String getMailBody( Issue issue ) {
-//		return "detailed decription:\n" + issue.getDescription() + "\n\nsteps to reproduce:\n" + issue.getSteps() + "\n\nexception:\n" + issue.getExceptionText();
-//	}
+	//	private StringBuffer updateMailSubject( StringBuffer rv, Issue issue ) {
+	//		rv.append( issue.getAffectsVersionText() );
+	//		rv.append( ": " );
+	//		String summary = issue.getSummary();
+	//		if( summary != null && summary.length() > 0 ) {
+	//			rv.append( summary );
+	//		} else {
+	//			rv.append( this.getSubSummary( issue ) );
+	//		}
+	//		return rv;
+	//	}
+	//	protected final String getMailSubject( Issue issue ) {
+	//		StringBuffer sb = new StringBuffer();
+	//		updateMailSubject( sb, issue );
+	//		return sb.toString();
+	//	}
+	//	protected final String getMailBody( Issue issue ) {
+	//		return "detailed decription:\n" + issue.getDescription() + "\n\nsteps to reproduce:\n" + issue.getSteps() + "\n\nexception:\n" + issue.getExceptionText();
+	//	}
 }

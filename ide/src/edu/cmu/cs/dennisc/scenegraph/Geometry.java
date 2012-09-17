@@ -52,7 +52,9 @@ public abstract class Geometry extends Element {
 	private edu.cmu.cs.dennisc.math.Sphere boundingSphere = new edu.cmu.cs.dennisc.math.Sphere();
 
 	protected abstract void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox );
+
 	protected abstract void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere );
+
 	protected abstract void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation );
 
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPlane( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
@@ -62,14 +64,15 @@ public abstract class Geometry extends Element {
 		rv.orientation.setValue( new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( forward, upGuide ) );
 		return rv;
 	}
-	
+
 	public abstract void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans );
-	
+
 	//todo: better name
 	public class BoundDoubleProperty extends edu.cmu.cs.dennisc.property.DoubleProperty {
 		public BoundDoubleProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Double value ) {
 			super( owner, value );
 		}
+
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			//todo: check isEqual
@@ -80,23 +83,26 @@ public abstract class Geometry extends Element {
 	}
 
 	public final edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		if( this.boundingBox.isNaN()) 
+		if( this.boundingBox.isNaN() )
 		{
 			updateBoundingBox( this.boundingBox );
 		}
 		boundingBox.set( this.boundingBox );
 		return boundingBox;
 	}
+
 	public final edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox() {
 		return getAxisAlignedMinimumBoundingBox( new edu.cmu.cs.dennisc.math.AxisAlignedBox() );
 	}
+
 	public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		if( this.boundingSphere.isNaN()) {
+		if( this.boundingSphere.isNaN() ) {
 			updateBoundingSphere( this.boundingSphere );
 		}
 		boundingSphere.set( this.boundingSphere );
 		return boundingSphere;
 	}
+
 	public final edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
 		return getBoundingSphere( new edu.cmu.cs.dennisc.math.Sphere() );
 	}
@@ -104,17 +110,20 @@ public abstract class Geometry extends Element {
 	public void addBoundObserver( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver ) {
 		this.boundObservers.add( boundObserver );
 	}
+
 	public void removeBoundObserver( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver ) {
 		this.boundObservers.remove( boundObserver );
 	}
-	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.BoundListener > accessBoundObservers() {
+
+	public Iterable<edu.cmu.cs.dennisc.scenegraph.event.BoundListener> accessBoundObservers() {
 		return this.boundObservers;
 	}
-	
+
 	protected void boundsChanging() {
 		this.boundingBox.setNaN();
 		this.boundingSphere.setNaN();
 	}
+
 	protected void fireBoundChange() {
 		edu.cmu.cs.dennisc.scenegraph.event.BoundEvent e = new edu.cmu.cs.dennisc.scenegraph.event.BoundEvent( this );
 		for( edu.cmu.cs.dennisc.scenegraph.event.BoundListener boundObserver : this.boundObservers ) {

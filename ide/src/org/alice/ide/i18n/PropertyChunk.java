@@ -48,8 +48,9 @@ package org.alice.ide.i18n;
 public class PropertyChunk extends Chunk {
 	private String propertyName;
 	private int underscoreCount;
+
 	public PropertyChunk( String propertyName ) {
-		
+
 		if( propertyName.startsWith( "__" ) && propertyName.endsWith( "__" ) ) {
 			this.underscoreCount = 2;
 		} else if( propertyName.startsWith( "_" ) && propertyName.endsWith( "_" ) ) {
@@ -57,14 +58,17 @@ public class PropertyChunk extends Chunk {
 		} else {
 			this.underscoreCount = 0;
 		}
-		this.propertyName = propertyName.substring( this.underscoreCount, propertyName.length()-this.underscoreCount );
+		this.propertyName = propertyName.substring( this.underscoreCount, propertyName.length() - this.underscoreCount );
 	}
+
 	public int getUnderscoreCount() {
 		return this.underscoreCount;
 	}
+
 	public String getPropertyName() {
 		return this.propertyName;
 	}
+
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv.append( "propertyName=" );

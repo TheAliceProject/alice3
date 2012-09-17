@@ -47,26 +47,28 @@ package org.alice.stageide.croquet.models.run;
  */
 public class PreviewMethodOperation extends org.lgna.croquet.ActionOperation {
 	private org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
+
 	public PreviewMethodOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-//		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getAwtComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
-//		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getAwtComponent(), null, mouseEvent );
-//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Statement >() {
-//			public void handleCompletion( org.lgna.project.ast.Statement statement ) {
-//				org.lgna.project.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, org.lgna.project.ast.ExpressionStatement.class );
-//				org.lgna.project.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), org.lgna.project.ast.MethodInvocation.class );
-//				methodInvocation.expression.setValue( null );
-//				PreviewMethodOperation.this.getIDE().handlePreviewMethod( context, methodInvocation );
-//				context.finish();
-//			}
-//			public void handleCancelation() {
-//				context.cancel();
-//			}
-//		} );
+		//		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate.getAwtComponent(), 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
+		//		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate.getAwtComponent(), null, mouseEvent );
+		//		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Statement >() {
+		//			public void handleCompletion( org.lgna.project.ast.Statement statement ) {
+		//				org.lgna.project.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, org.lgna.project.ast.ExpressionStatement.class );
+		//				org.lgna.project.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), org.lgna.project.ast.MethodInvocation.class );
+		//				methodInvocation.expression.setValue( null );
+		//				PreviewMethodOperation.this.getIDE().handlePreviewMethod( context, methodInvocation );
+		//				context.finish();
+		//			}
+		//			public void handleCancelation() {
+		//				context.cancel();
+		//			}
+		//		} );
 	}
 }

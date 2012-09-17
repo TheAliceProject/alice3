@@ -47,15 +47,19 @@ package edu.cmu.cs.dennisc.issue;
  */
 public class StackTraceAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
 	private Throwable throwable;
+
 	public StackTraceAttachment( Throwable throwable ) {
 		this.throwable = throwable;
 	}
+
 	public byte[] getBytes() {
 		return edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsByteArray( this.throwable );
 	}
+
 	public String getMIMEType() {
 		return "text/plain";
 	}
+
 	public String getFileName() {
 		return "stacktrace.txt";
 	}

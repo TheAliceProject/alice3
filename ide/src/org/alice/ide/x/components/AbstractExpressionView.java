@@ -45,9 +45,10 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class AbstractExpressionView< E extends org.lgna.project.ast.Expression > extends org.alice.ide.common.ExpressionLikeSubstance  {
+public class AbstractExpressionView<E extends org.lgna.project.ast.Expression> extends org.alice.ide.common.ExpressionLikeSubstance {
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final E expression;
+
 	public AbstractExpressionView( org.alice.ide.x.AstI18nFactory factory, E expression ) {
 		super( null, expression != null ? expression.getType() == org.lgna.project.ast.JavaType.VOID_TYPE : false );
 		this.factory = factory;
@@ -57,19 +58,21 @@ public class AbstractExpressionView< E extends org.lgna.project.ast.Expression >
 			this.setBackgroundColor( ide.getTheme().getColorFor( expression ) );
 		}
 	}
+
 	public E getExpression() {
 		return this.expression;
 	}
+
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		java.awt.Paint validPaint = super.getBackgroundPaint( x, y, width, height );
-		if( this.expression != null && this.expression.isValid() ) {
+		if( ( this.expression != null ) && this.expression.isValid() ) {
 			return validPaint;
 		} else {
 			return this.factory.getInvalidExpressionPaint( validPaint, x, y, width, height );
 		}
 	}
-	
+
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		if( this.expression != null ) {
@@ -86,27 +89,29 @@ public class AbstractExpressionView< E extends org.lgna.project.ast.Expression >
 			return true;
 		}
 	}
-	
+
 	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
 		if( this.expression != null ) {
-			org.lgna.project.ast.AbstractType<?,?,?> rv = this.expression.getType();
+			org.lgna.project.ast.AbstractType<?, ?, ?> rv = this.expression.getType();
 			return rv;
 		} else {
 			return org.lgna.project.ast.JavaType.OBJECT_TYPE;
 		}
 	}
+
 	@Override
 	protected int getInsetTop() {
-		if( this.expression instanceof org.lgna.project.ast.InfixExpression || this.expression instanceof org.lgna.project.ast.LogicalComplement ) {
+		if( ( this.expression instanceof org.lgna.project.ast.InfixExpression ) || ( this.expression instanceof org.lgna.project.ast.LogicalComplement ) ) {
 			return 0;
 		} else {
 			return super.getInsetTop();
 		}
 	}
+
 	@Override
 	protected int getInsetBottom() {
-		if( this.expression instanceof org.lgna.project.ast.InfixExpression || this.expression instanceof org.lgna.project.ast.LogicalComplement ) {
+		if( ( this.expression instanceof org.lgna.project.ast.InfixExpression ) || ( this.expression instanceof org.lgna.project.ast.LogicalComplement ) ) {
 			return 0;
 		} else {
 			return super.getInsetTop();

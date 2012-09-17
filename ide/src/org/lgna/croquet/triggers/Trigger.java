@@ -52,30 +52,37 @@ public abstract class Trigger implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		RECOVERY,
 		GENERATOR
 	}
-	
+
 	private final Origin origin;
+
 	public Trigger( Origin origin ) {
 		this.origin = origin;
 	}
+
 	public Trigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.origin = binaryDecoder.decodeEnum();
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.origin );
 	}
-	
+
 	public Origin getOrigin() {
 		return this.origin;
 	}
-	
-	public abstract org.lgna.croquet.components.ViewController< ?, ? > getViewController();
+
+	public abstract org.lgna.croquet.components.ViewController<?, ?> getViewController();
+
 	public abstract void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu );
+
 	public abstract String getNoteText();
+
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 	}
-	
+
 	protected void appendReprInternal( StringBuilder repr ) {
 	}
+
 	public void appendRepr( StringBuilder repr ) {
 		repr.append( this.getClass().getSimpleName() );
 		repr.append( "[origin=" );

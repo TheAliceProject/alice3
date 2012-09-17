@@ -46,7 +46,8 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class AddParameterComposite extends AddDeclarationComposite<org.lgna.project.ast.UserParameter> {
-	private static java.util.Map< org.lgna.project.ast.UserCode, AddParameterComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserCode, AddParameterComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static AddParameterComposite getInstance( org.lgna.project.ast.UserCode code ) {
 		synchronized( map ) {
 			AddParameterComposite rv = map.get( code );
@@ -59,27 +60,27 @@ public final class AddParameterComposite extends AddDeclarationComposite<org.lgn
 			return rv;
 		}
 	}
-	
+
 	private final org.lgna.croquet.BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( this.createKey( "isRequirementToUpdateInvocationsUnderstoodState" ), false );
 	private final ErrorStatus hasNotAgreedToUpdateInvocationsStatus = this.createErrorStatus( this.createKey( "hasNotAgreedToUpdateInvocationsStatus" ) );
 	private final org.lgna.project.ast.UserCode code;
 	//todo: remove
 	private final org.alice.ide.name.validators.ParameterNameValidator parameterNameValidator;
+
 	private AddParameterComposite( org.lgna.project.ast.UserCode code ) {
 		super( java.util.UUID.fromString( "628f8e97-84b5-480c-8f05-d69749a4203e" ), new Details()
-			.valueComponentType( ApplicabilityStatus.EDITABLE, null )
-			.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
-			.name( ApplicabilityStatus.EDITABLE )
-		);
+				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
+				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
+				.name( ApplicabilityStatus.EDITABLE ) );
 		this.code = code;
-		this.parameterNameValidator = new org.alice.ide.name.validators.ParameterNameValidator( code ); 
+		this.parameterNameValidator = new org.alice.ide.name.validators.ParameterNameValidator( code );
 	}
-	
+
 	@Override
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return null;
 	}
-	
+
 	@Override
 	protected void localize() {
 		super.localize();
@@ -97,22 +98,27 @@ public final class AddParameterComposite extends AddDeclarationComposite<org.lgn
 		}
 		String text = "I understand that I need to update the invocations to this " + codeText + ".";
 		this.isRequirementToUpdateInvocationsUnderstoodState.setTextForBothTrueAndFalse( text );
-		
+
 		this.hasNotAgreedToUpdateInvocationsStatus.setText( "You must agree to update the invocations." );
 	}
+
 	public org.lgna.croquet.BooleanState getIsRequirementToUpdateInvocationsUnderstoodState() {
 		return this.isRequirementToUpdateInvocationsUnderstoodState;
 	}
+
 	public org.lgna.project.ast.UserCode getCode() {
 		return this.code;
 	}
+
 	@Override
 	protected org.alice.ide.ast.declaration.views.AddParameterView createView() {
 		return new org.alice.ide.ast.declaration.views.AddParameterView( this );
 	}
+
 	private org.lgna.project.ast.UserParameter createParameter() {
 		return new org.lgna.project.ast.UserParameter( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
+
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Status rv = super.getStatusPreRejectorCheck( step );
@@ -125,21 +131,24 @@ public final class AddParameterComposite extends AddDeclarationComposite<org.lgn
 		}
 		return rv;
 	}
+
 	@Override
 	public org.lgna.project.ast.UserParameter getPreviewValue() {
 		return this.createParameter();
 	}
+
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return new org.alice.ide.croquet.edits.ast.AddParameterEdit( completionStep, this.code, this.createParameter() );
 	}
-	
+
 	@Override
 	public void handlePreActivation() {
-		java.util.List< org.lgna.project.ast.SimpleArgumentListProperty > argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
+		java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
 		this.isRequirementToUpdateInvocationsUnderstoodState.setValue( argumentLists.size() == 0 );
 		super.handlePreActivation();
 	}
+
 	@Override
 	protected boolean isNameAvailable( String name ) {
 		return this.parameterNameValidator.isNameAvailable( name );

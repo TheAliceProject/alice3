@@ -3,8 +3,8 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.lgna.story.SModel;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.Visual;
 import org.lgna.story.event.MouseClickEvent;
@@ -103,12 +103,21 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 					if( map.get( modelAtMouseLocation ) != null ) {
 						listeners.addAll( map.get( modelAtMouseLocation ) );
 					}
+<<<<<<< HEAD
 				}
 				if( listeners != null ) {
 					for( Object listener : listeners ) {
 //						if( classMap.get( listener ) == null || classMap.get( listener ).isAssignableFrom( checkEvent.getObjectAtMouseLocation().getClass() ) ) {
 							fireEvent( listener, event, modelAtMouseLocation );
 //						}
+=======
+					if( listeners != null ) {
+						for( Object listener : listeners ) {
+							if( ( classMap.get( listener ) == null ) || classMap.get( listener ).isAssignableFrom( checkEvent.getObjectAtMouseLocation().getClass() ) ) {
+								fireEvent( listener, event, modelAtMouseLocation );
+							}
+						}
+>>>>>>> 5461c9dbb87e93668e458e86b61906dcad1da9a6
 					}
 				}
 			}
@@ -119,7 +128,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 		registerIsFiringMap( listener, targets );
 		registerPolicyMap( listener, eventPolicy );
 		classMap.put( listener, cls );
-		if( targets != null && targets.length > 0 ) {
+		if( ( targets != null ) && ( targets.length > 0 ) ) {
 			for( Visual target : targets ) {
 				if( map.get( target ) != null ) {
 					map.get( target ).add( listener );

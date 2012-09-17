@@ -50,18 +50,21 @@ public class RenameDeclarationEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.project.ast.AbstractDeclaration declaration;
 	private final String prevValue;
 	private final String nextValue;
+
 	public RenameDeclarationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.AbstractDeclaration declaration, String prevValue, String nextValue ) {
 		super( completionStep );
 		this.declaration = declaration;
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
 	}
+
 	public RenameDeclarationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.declaration = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractDeclaration.class ).decodeValue( binaryDecoder );
 		this.prevValue = binaryDecoder.decodeString();
 		this.nextValue = binaryDecoder.decodeString();
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -74,10 +77,12 @@ public class RenameDeclarationEdit extends org.lgna.croquet.edits.Edit {
 	protected final void doOrRedoInternal( boolean isDo ) {
 		this.declaration.getNamePropertyIfItExists().setValue( this.nextValue );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		this.declaration.getNamePropertyIfItExists().setValue( this.prevValue );
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "rename: " );

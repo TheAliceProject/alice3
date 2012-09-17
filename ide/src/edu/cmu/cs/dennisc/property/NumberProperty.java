@@ -47,21 +47,24 @@ package edu.cmu.cs.dennisc.property;
  */
 public class NumberProperty extends InstanceProperty<Number> {
 	private boolean m_isNaNAcceptable;
+
 	public NumberProperty( InstancePropertyOwner owner, Number value, boolean isNaNAcceptable ) {
 		super( owner, value );
 		m_isNaNAcceptable = isNaNAcceptable;
 	}
+
 	public NumberProperty( InstancePropertyOwner owner, Number value ) {
 		this( owner, value, false );
 	}
+
 	@Override
 	public void setValue( PropertyOwner owner, Number value ) {
 		assert value != null;
 		if( value instanceof Float ) {
-			assert Float.isNaN( (Float)value ) == false || m_isNaNAcceptable;  
+			assert ( Float.isNaN( (Float)value ) == false ) || m_isNaNAcceptable;
 		}
 		if( value instanceof Double ) {
-			assert Double.isNaN( (Double)value ) == false || m_isNaNAcceptable;  
+			assert ( Double.isNaN( (Double)value ) == false ) || m_isNaNAcceptable;
 		}
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
 			super.setValue( owner, value );

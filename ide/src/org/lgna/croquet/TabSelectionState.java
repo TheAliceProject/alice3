@@ -50,12 +50,15 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 	public TabSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex ) {
 		super( group, id, codec, selectionIndex );
 	}
+
 	public TabSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec ) {
 		super( group, id, codec );
 	}
+
 	public TabSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex, java.util.Collection<T> data ) {
 		super( group, id, codec, selectionIndex, data );
 	}
+
 	public TabSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex, T... data ) {
 		super( group, id, codec, selectionIndex, data );
 	}
@@ -63,27 +66,31 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 	public org.lgna.croquet.components.FolderTabbedPane<T> createFolderTabbedPane() {
 		return new org.lgna.croquet.components.FolderTabbedPane<T>( this );
 	};
+
 	public org.lgna.croquet.components.ToolPaletteTabbedPane<T> createToolPaletteTabbedPane() {
 		return new org.lgna.croquet.components.ToolPaletteTabbedPane<T>( this );
 	};
+
 	public org.lgna.croquet.components.JComponent<?> getMainComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane<T,?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( tabbedPane != null ) {
 			return tabbedPane.getMainComponentFor( item );
 		} else {
 			return null;
 		}
 	}
+
 	public org.lgna.croquet.components.ScrollPane getScrollPaneFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane<T,?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( tabbedPane != null ) {
 			return tabbedPane.getScrollPaneFor( item );
 		} else {
 			return null;
 		}
 	}
+
 	public org.lgna.croquet.components.JComponent<?> getRootComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane<T,?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( tabbedPane != null ) {
 			return tabbedPane.getRootComponentFor( item );
 		} else {

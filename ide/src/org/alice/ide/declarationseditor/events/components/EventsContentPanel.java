@@ -54,24 +54,29 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
 			super( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements );
 		}
+
 		@Override
 		public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
 			return true;
 		}
+
 		@Override
 		protected int getBoxLayoutPad() {
 			return 0;
 		}
+
 		@Override
 		protected int getLeftInset() {
 			return 0;
 		}
+
 		@Override
 		protected int getRightInset() {
 			return 0;
 		}
+
 		@Override
-		protected org.lgna.croquet.components.Component< ? > createComponent( org.lgna.project.ast.Statement statement ) {
+		protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.Statement statement ) {
 			if( statement instanceof ExpressionStatement ) {
 				ExpressionStatement expressionStatement = (ExpressionStatement)statement;
 				Expression expression = expressionStatement.expression.getValue();
@@ -85,8 +90,10 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 			return null;
 		}
 	}
+
 	private final org.lgna.project.ast.AbstractCode code;
 	private final RootStatementListPropertyPane rootPane;
+
 	public EventsContentPanel( org.lgna.project.ast.AbstractCode code ) {
 		this.code = code;
 		this.rootPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)code );
@@ -95,20 +102,23 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		this.rootPane.setBackgroundColor( color );
 		this.setBackgroundColor( color );
 	}
-	
+
 	@Override
 	public org.lgna.project.ast.AbstractCode getCode() {
 		return this.code;
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > getAsSeenBy() {
+	protected org.lgna.croquet.components.Component<?> getAsSeenBy() {
 		return this;
 	}
+
 	@Override
 	public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( potentialDropSite );
 		return null;
 	}
+
 	public int print( java.awt.Graphics graphics, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 		return 0;

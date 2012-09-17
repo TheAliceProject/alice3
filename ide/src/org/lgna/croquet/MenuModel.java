@@ -51,67 +51,74 @@ public abstract class MenuModel extends AbstractMenuModel {
 	public MenuModel( java.util.UUID individualId, Class<? extends Model> clsForI18N ) {
 		super( individualId, clsForI18N );
 	}
+
 	public MenuModel( java.util.UUID individualId ) {
 		this( individualId, null );
 	}
-	public static class InternalPopupPrepModelResolver  extends IndirectResolver< InternalPopupPrepModel, MenuModel > {
+
+	public static class InternalPopupPrepModelResolver extends IndirectResolver<InternalPopupPrepModel, MenuModel> {
 		private InternalPopupPrepModelResolver( MenuModel indirect ) {
 			super( indirect );
 		}
+
 		public InternalPopupPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
 		protected InternalPopupPrepModel getDirect( MenuModel indirect ) {
 			return indirect.getPopupPrepModel();
 		}
 	}
+
 	public final static class InternalPopupPrepModel extends PopupPrepModel {
 		private MenuModel menuModel;
+
 		private InternalPopupPrepModel( MenuModel menuModel ) {
 			super( java.util.UUID.fromString( "34efc403-9eff-4151-b1c6-53dd1249a325" ) );
 			this.menuModel = menuModel;
 		}
-		
+
 		@Override
-		public Iterable< ? extends org.lgna.croquet.Model > getChildren() {
+		public Iterable<? extends org.lgna.croquet.Model> getChildren() {
 			return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( this.menuModel );
 		}
+
 		@Override
-		protected Class< ? extends org.lgna.croquet.Model > getClassUsedForLocalization() {
+		protected Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
 			return this.menuModel.getClassUsedForLocalization();
 		}
+
 		public MenuModel getMenuModel() {
 			return this.menuModel;
 		}
-			
-//		@Override
-//		public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-//			SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
-//			if( successfulCompletionEvent != null ) {
-//				ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
-//				return descendantContext.getModel().getTutorialStepTitle( descendantContext, userInformation );
-//			} else {
-//				return super.getTutorialStepTitle( modelContext, edit, userInformation );
-//			}
-//		}
-//		@Override
-//		public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
-//			SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
-//			if( successfulCompletionEvent != null ) {
-//				ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
-//				return descendantContext.getModel().getTutorialNoteText( descendantContext, userInformation );
-//			} else {
-//				return super.getTutorialNoteText( modelContext, edit, userInformation );
-//			}
-//		}
-		
+
+		//		@Override
+		//		public String getTutorialStepTitle( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		//			SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
+		//			if( successfulCompletionEvent != null ) {
+		//				ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+		//				return descendantContext.getModel().getTutorialStepTitle( descendantContext, userInformation );
+		//			} else {
+		//				return super.getTutorialStepTitle( modelContext, edit, userInformation );
+		//			}
+		//		}
+		//		@Override
+		//		public String getTutorialNoteText( ModelContext< ? > modelContext, Edit< ? > edit, UserInformation userInformation ) {
+		//			SuccessfulCompletionEvent successfulCompletionEvent = modelContext != null ? modelContext.getSuccessfulCompletionEvent() : null;
+		//			if( successfulCompletionEvent != null ) {
+		//				ModelContext< ? > descendantContext = successfulCompletionEvent.getParent();
+		//				return descendantContext.getModel().getTutorialNoteText( descendantContext, userInformation );
+		//			} else {
+		//				return super.getTutorialNoteText( modelContext, edit, userInformation );
+		//			}
+		//		}
+
 		@Override
 		protected InternalPopupPrepModelResolver createResolver() {
 			return new InternalPopupPrepModelResolver( this.menuModel );
 		}
-		
-		
+
 		@Override
 		protected org.lgna.croquet.history.PopupPrepStep perform( org.lgna.croquet.triggers.Trigger trigger ) {
 			final org.lgna.croquet.history.PopupPrepStep step = org.lgna.croquet.history.TransactionManager.addPopupPrepStep( this, trigger );
@@ -124,6 +131,7 @@ public abstract class MenuModel extends AbstractMenuModel {
 					//PopupMenuOperation.this.menuModel.addPopupMenuListener( this );
 					ComponentManager.addComponent( InternalPopupPrepModel.this, this );
 				}
+
 				@Override
 				protected void handleUndisplayable() {
 					ComponentManager.removeComponent( InternalPopupPrepModel.this, this );
@@ -133,12 +141,14 @@ public abstract class MenuModel extends AbstractMenuModel {
 			};
 			//todo: investigate
 			this.menuModel.addPopupMenuListener( popupMenu );
-			
+
 			popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 				private javax.swing.event.PopupMenuEvent cancelEvent = null;
+
 				public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
 					this.cancelEvent = null;
 				}
+
 				public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
 					if( this.cancelEvent != null ) {
 						System.err.println( "todo: cancel" );
@@ -149,10 +159,11 @@ public abstract class MenuModel extends AbstractMenuModel {
 						//step.getParent().finish();
 					}
 					InternalPopupPrepModel.this.menuModel.handlePopupMenuEpilogue( popupMenu, step );
-					
+
 					System.err.println( "TODO: handleFinally?" );
-//					performObserver.handleFinally();
+					//					performObserver.handleFinally();
 				}
+
 				public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 					this.cancelEvent = e;
 				}
@@ -160,33 +171,36 @@ public abstract class MenuModel extends AbstractMenuModel {
 
 			popupMenu.addComponentListener( new java.awt.event.ComponentListener() {
 				public void componentShown( java.awt.event.ComponentEvent e ) {
-//					java.awt.Component awtComponent = e.getComponent();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+					//					java.awt.Component awtComponent = e.getComponent();
+					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentShown", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 				}
+
 				public void componentMoved( java.awt.event.ComponentEvent e ) {
-//					java.awt.Component awtComponent = e.getComponent();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+					//					java.awt.Component awtComponent = e.getComponent();
+					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentMoved", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 				}
+
 				public void componentResized( java.awt.event.ComponentEvent e ) {
-//					java.awt.Component awtComponent = e.getComponent();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+					//					java.awt.Component awtComponent = e.getComponent();
+					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentResized", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 					step.handleResized( e );
 				}
+
 				public void componentHidden( java.awt.event.ComponentEvent e ) {
-//					java.awt.Component awtComponent = e.getComponent();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+					//					java.awt.Component awtComponent = e.getComponent();
+					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "componentHidden", awtComponent.getLocationOnScreen(), awtComponent.getSize() );
 				}
 			} );
 
-			
 			this.menuModel.handlePopupMenuPrologue( popupMenu, step );
-			
+
 			step.showPopupMenu( popupMenu );
 			return step;
 		}
 	}
 
 	private InternalPopupPrepModel popupPrepModel;
+
 	public synchronized InternalPopupPrepModel getPopupPrepModel() {
 		if( this.popupPrepModel != null ) {
 			//pass

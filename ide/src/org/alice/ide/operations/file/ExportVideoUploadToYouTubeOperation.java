@@ -50,6 +50,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 		super( java.util.UUID.fromString( "fd6ec0d7-add3-4061-a895-f085f45c0667" ) );
 		this.setName( "Export Video / Upload To YouTube\u2122..." );
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		final org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -57,7 +58,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 		if( project != null ) {
 			final int frameRate = 24;
 			//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
-			org.alice.media.VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane(project, frameRate){
+			org.alice.media.VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane( project, frameRate ) {
 				@Override
 				protected void onClose()
 				{

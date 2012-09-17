@@ -48,25 +48,26 @@ package edu.cmu.cs.dennisc.math;
 public class AngleInDegrees implements Angle {
 	private double m_degrees;
 
-	public AngleInDegrees(double degrees) {
-		setAsDegrees(degrees);
+	public AngleInDegrees( double degrees ) {
+		setAsDegrees( degrees );
 	}
 
-	public AngleInDegrees(Angle other) {
-		set(other);
+	public AngleInDegrees( Angle other ) {
+		set( other );
 	}
-	
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		m_degrees = binaryDecoder.decodeDouble();
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( m_degrees );
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof Angle) {
-			Angle a = (Angle) obj;
+	public boolean equals( Object obj ) {
+		if( obj instanceof Angle ) {
+			Angle a = (Angle)obj;
 			return m_degrees == a.getAsDegrees();
 		} else {
 			return false;
@@ -74,7 +75,7 @@ public class AngleInDegrees implements Angle {
 	}
 
 	public boolean isNaN() {
-		return Double.isNaN(m_degrees);
+		return Double.isNaN( m_degrees );
 	}
 
 	public void setNaN() {
@@ -82,7 +83,7 @@ public class AngleInDegrees implements Angle {
 	}
 
 	public double getAsRadians() {
-		return AngleUtilities.degreesToRadians(m_degrees);
+		return AngleUtilities.degreesToRadians( m_degrees );
 	}
 
 	public double getAsDegrees() {
@@ -90,40 +91,40 @@ public class AngleInDegrees implements Angle {
 	}
 
 	public double getAsRevolutions() {
-		return AngleUtilities.degreesToRevolutions(m_degrees);
+		return AngleUtilities.degreesToRevolutions( m_degrees );
 	}
 
-	public void setAsRadians(double radians) {
-		m_degrees = AngleUtilities.radiansToDegrees(radians);
+	public void setAsRadians( double radians ) {
+		m_degrees = AngleUtilities.radiansToDegrees( radians );
 	}
 
-	public void setAsDegrees(double degrees) {
+	public void setAsDegrees( double degrees ) {
 		m_degrees = degrees;
 	}
 
-	public void setAsRevolutions(double revolutions) {
-		m_degrees = AngleUtilities.revolutionsToDegrees(revolutions);
+	public void setAsRevolutions( double revolutions ) {
+		m_degrees = AngleUtilities.revolutionsToDegrees( revolutions );
 	}
 
 	public Angle createCopy() {
-		return new AngleInDegrees(this);
+		return new AngleInDegrees( this );
 	}
 
-	public void set(Angle other) {
-		setAsDegrees(other.getAsDegrees());
+	public void set( Angle other ) {
+		setAsDegrees( other.getAsDegrees() );
 	}
 
-	public void setToInterpolation(Angle a0, Angle a1, double portion) {
+	public void setToInterpolation( Angle a0, Angle a1, double portion ) {
 		setAsDegrees( InterpolationUtilities.interpolate( a0.getAsDegrees(), a1.getAsDegrees(), portion ) );
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(AngleInDegrees.class.getName());
-		sb.append("[");
-		sb.append(m_degrees);
-		sb.append("]");
+		sb.append( AngleInDegrees.class.getName() );
+		sb.append( "[" );
+		sb.append( m_degrees );
+		sb.append( "]" );
 		return sb.toString();
 	}
 }

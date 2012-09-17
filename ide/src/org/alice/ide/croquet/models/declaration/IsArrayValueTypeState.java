@@ -48,6 +48,7 @@ package org.alice.ide.croquet.models.declaration;
  */
 public class IsArrayValueTypeState extends org.lgna.croquet.BooleanState {
 	private final DeclarationLikeSubstanceOperation<?> owner;
+
 	public IsArrayValueTypeState( DeclarationLikeSubstanceOperation<?> owner, boolean initialValue ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "0d05e96f-4eee-4b50-8065-c6a1aff9a573" ), initialValue );
 		this.owner = owner;

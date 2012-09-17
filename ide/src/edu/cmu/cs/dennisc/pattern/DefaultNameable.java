@@ -48,17 +48,22 @@ package edu.cmu.cs.dennisc.pattern;
 
 public class DefaultNameable implements Nameable {
 	private String m_name = null;
+
 	public DefaultNameable() {
 	}
+
 	public DefaultNameable( String name ) {
 		setName( name );
 	}
+
 	public String getName() {
 		return m_name;
 	}
+
 	public void setName( String name ) {
 		m_name = name;
 	}
+
 	@Override
 	public String toString() {
 		String name = getName();

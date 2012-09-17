@@ -46,34 +46,39 @@ package org.alice.ide.choosers.array;
 /**
  * @author Dennis Cosgrove
  */
-public class AddExpressionCascade extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > {
+public class AddExpressionCascade extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> {
 	private static class InternalBlank extends org.alice.ide.croquet.models.cascade.ExpressionBlank {
 		private static class SingletonHolder {
 			private static InternalBlank instance = new InternalBlank();
 		}
+
 		public static InternalBlank getInstance() {
 			return SingletonHolder.instance;
 		}
+
 		private InternalBlank() {
 			super( java.util.UUID.fromString( "309a7961-22d1-4c64-b9bc-23c5aba8f0ff" ), Double.class );
 		}
 	}
+
 	private static class SingletonHolder {
 		private static AddExpressionCascade instance = new AddExpressionCascade();
 	}
+
 	public static AddExpressionCascade getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private AddExpressionCascade() {
-		super( 
-				org.lgna.croquet.Application.INHERIT_GROUP, 
-				java.util.UUID.fromString( "031117ba-2e27-4323-beff-e3c1e6d83a6c" ), 
-				org.lgna.project.ast.Expression.class, 
-				InternalBlank.getInstance()
-		);
+		super(
+				org.lgna.croquet.Application.INHERIT_GROUP,
+				java.util.UUID.fromString( "031117ba-2e27-4323-beff-e3c1e6d83a6c" ),
+				org.lgna.project.ast.Expression.class,
+				InternalBlank.getInstance() );
 	}
+
 	@Override
-	protected org.lgna.croquet.edits.Edit< ? extends org.lgna.croquet.Cascade< org.lgna.project.ast.Expression >> createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< org.lgna.project.ast.Expression > > completionStep, org.lgna.project.ast.Expression[] values ) {
+	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( values[ 0 ] );
 		ExpressionListSelectionState.getInstance().addItem( values[ 0 ] );
 		return null;

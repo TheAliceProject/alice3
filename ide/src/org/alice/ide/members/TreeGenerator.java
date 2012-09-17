@@ -49,5 +49,5 @@ import org.alice.ide.members.nodedata.Data;
  * @author Dennis Cosgrove
  */
 public interface TreeGenerator {
-	public edu.cmu.cs.dennisc.tree.Node< Data > createTree( org.alice.ide.instancefactory.InstanceFactory factory, org.alice.ide.members.filters.MemberFilter memberFilter );
+	public edu.cmu.cs.dennisc.tree.Node<Data> createTree( org.alice.ide.instancefactory.InstanceFactory factory, org.alice.ide.members.filters.MemberFilter memberFilter );
 }

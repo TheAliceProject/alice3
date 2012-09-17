@@ -50,9 +50,11 @@ public class MyProjectsUriSelectionState extends DirectoryUriSelectionState {
 	private static class SingletonHolder {
 		private static MyProjectsUriSelectionState instance = new MyProjectsUriSelectionState();
 	}
+
 	public static MyProjectsUriSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private MyProjectsUriSelectionState() {
 		super( java.util.UUID.fromString( "6390ecee-7d11-4881-8eca-7db9baf1c19c" ), org.alice.ide.IDE.getActiveInstance().getMyProjectsDirectory() );
 	}

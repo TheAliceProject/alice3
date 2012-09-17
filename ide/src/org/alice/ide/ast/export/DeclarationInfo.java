@@ -58,24 +58,29 @@ public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration
 			handleItemStateChanged( e );
 		}
 	};
-	
+
 	private boolean isDesired;
 	private boolean isRequired;
+
 	public DeclarationInfo( ProjectInfo projectInfo, D declaration ) {
 		this.projectInfo = projectInfo;
 		this.declaration = declaration;
 		this.action.putValue( javax.swing.Action.NAME, this.declaration.getName() );
 		this.checkBox.getModel().addItemListener( this.itemListener );
 	}
+
 	public ProjectInfo getProjectInfo() {
 		return this.projectInfo;
 	}
+
 	public D getDeclaration() {
 		return this.declaration;
 	}
+
 	public javax.swing.JCheckBox getCheckBox() {
 		return this.checkBox;
 	}
+
 	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
 		if( this.projectInfo.isInTheMidstOfChange() ) {
 			//pass
@@ -84,19 +89,22 @@ public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration
 			this.projectInfo.update();
 		}
 	}
-	
+
 	public void resetRequired() {
 		this.isRequired = false;
 	}
+
 	public void appendDesired( java.util.List<DeclarationInfo<?>> desired ) {
 		if( this.isDesired ) {
 			desired.add( this );
 		}
 	}
+
 	protected void addRequired( java.util.Set<DeclarationInfo<?>> visited ) {
 		visited.add( this );
 		this.isRequired = true;
 	}
+
 	public final void updateRequired( java.util.Set<DeclarationInfo<?>> visited ) {
 		if( visited.contains( this ) ) {
 			//pass
@@ -104,9 +112,10 @@ public abstract class DeclarationInfo<D extends org.lgna.project.ast.Declaration
 			this.addRequired( visited );
 		}
 	}
+
 	public void updateSwing() {
 		javax.swing.ButtonModel buttonModel = this.checkBox.getModel();
 		buttonModel.setSelected( this.isDesired || this.isRequired );
-		buttonModel.setEnabled( this.isDesired || this.isRequired == false );
+		buttonModel.setEnabled( this.isDesired || ( this.isRequired == false ) );
 	}
 }

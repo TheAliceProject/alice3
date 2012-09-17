@@ -150,7 +150,7 @@ public class BufferUtilities {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.DoubleBuffer buf = java.nio.ByteBuffer.allocateDirect( (Double.SIZE / 8) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asDoubleBuffer();
+		java.nio.DoubleBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Double.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asDoubleBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
@@ -169,7 +169,7 @@ public class BufferUtilities {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.FloatBuffer buf = java.nio.ByteBuffer.allocateDirect( (Float.SIZE / 8) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asFloatBuffer();
+		java.nio.FloatBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Float.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asFloatBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
@@ -188,7 +188,7 @@ public class BufferUtilities {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.IntBuffer buf = java.nio.ByteBuffer.allocateDirect( (Integer.SIZE / 8) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asIntBuffer();
+		java.nio.IntBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Integer.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asIntBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
@@ -207,7 +207,7 @@ public class BufferUtilities {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.LongBuffer buf = java.nio.ByteBuffer.allocateDirect( (Long.SIZE / 8) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asLongBuffer();
+		java.nio.LongBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Long.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asLongBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
@@ -226,7 +226,7 @@ public class BufferUtilities {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocateDirect( (Byte.SIZE / 8) * data.length ).order( java.nio.ByteOrder.nativeOrder() );
+		java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Byte.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() );
 		buf.clear();
 		buf.put( data );
 		buf.flip();
@@ -245,7 +245,7 @@ public class BufferUtilities {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.CharBuffer buf = java.nio.ByteBuffer.allocateDirect( (Character.SIZE / 8) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asCharBuffer();
+		java.nio.CharBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Character.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asCharBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();
@@ -264,7 +264,7 @@ public class BufferUtilities {
 		if( data == null ) {
 			return null;
 		}
-		java.nio.ShortBuffer buf = java.nio.ByteBuffer.allocateDirect( (Short.SIZE / 8) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asShortBuffer();
+		java.nio.ShortBuffer buf = java.nio.ByteBuffer.allocateDirect( ( Short.SIZE / 8 ) * data.length ).order( java.nio.ByteOrder.nativeOrder() ).asShortBuffer();
 		buf.clear();
 		buf.put( data );
 		buf.flip();

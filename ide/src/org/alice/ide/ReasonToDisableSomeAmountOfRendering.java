@@ -41,13 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.ide;
-	
+
 /**
  * @author Dennis Cosgrove
  */
-public enum ReasonToDisableSomeAmountOfRendering { 
+public enum ReasonToDisableSomeAmountOfRendering {
 	MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN,
 	DRAG_AND_DROP,
 	CLICK_AND_CLACK
 }
-

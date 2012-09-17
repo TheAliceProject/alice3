@@ -50,20 +50,26 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	public static final int DOCKING_BAY_INSET_LEFT = 5;
 
 	private final boolean isVoid;
+
 	public ExpressionLikeSubstance( org.lgna.croquet.DragModel model, boolean isVoid ) {
 		super( model );
 		this.isVoid = isVoid;
 	}
+
 	public ExpressionLikeSubstance( org.lgna.croquet.DragModel model ) {
-		this( model, false );;
+		this( model, false );
+		;
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
 		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
 	}
+
 	protected boolean isExpressionTypeFeedbackDesired() {
 		return org.alice.ide.croquet.models.ui.preferences.IsIncludingTypeFeedbackForExpressionsState.getInstance().getValue() || isKnurlDesired();
 	}
+
 	protected static boolean isExpressionTypeFeedbackSurpressedBasedOnParentClass( org.lgna.project.ast.Expression e ) {
 		if( e != null ) {
 			org.lgna.project.ast.Node parent = e.getParent();
@@ -75,6 +81,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		}
 		return false;
 	}
+
 	@Override
 	protected int getInsetTop() {
 		if( this.isVoid ) {
@@ -83,14 +90,16 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			return ExpressionLikeSubstance.INSET;
 		}
 	}
+
 	@Override
 	protected int getDockInsetLeft() {
-		if( this.isVoid || this.isExpressionTypeFeedbackDesired() == false ) {
+		if( this.isVoid || ( this.isExpressionTypeFeedbackDesired() == false ) ) {
 			return 0;
 		} else {
 			return DOCKING_BAY_INSET_LEFT + 2;
 		}
 	}
+
 	@Override
 	protected int getInternalInsetLeft() {
 		if( this.isVoid ) {
@@ -99,7 +108,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			return 1;
 		}
 	}
-	
+
 	@Override
 	protected int getInsetBottom() {
 		if( this.isVoid ) {
@@ -108,6 +117,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			return ExpressionLikeSubstance.INSET;
 		}
 	}
+
 	@Override
 	protected int getInsetRight() {
 		if( this.isVoid ) {
@@ -118,29 +128,30 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 
 	protected edu.cmu.cs.dennisc.java.awt.BeveledShape createBoundsShape( int x, int y, int width, int height ) {
-		org.lgna.project.ast.AbstractType<?,?,?> type = this.getExpressionType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getExpressionType();
 		if( type != null ) {
-//			assert type != org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
+			//			assert type != org.lgna.project.ast.TypeDeclaredInJava.VOID_TYPE;
 		} else {
 			type = org.lgna.project.ast.JavaType.OBJECT_TYPE;
 		}
-//		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
+		//		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
 		int left = this.getDockInsetLeft();
 		int top = this.getInsetTop();
 		int right = this.getInsetRight();
 		int bottom = this.getInsetBottom();
-		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( left, top, width-left-right, height-top-bottom, 8, 8 );
+		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( left, top, width - left - right, height - top - bottom, 8, 8 );
 		return BeveledShapeForType.createBeveledShapeFor( type, shape, left, Math.min( height * 0.5f, 12.0f ) );
 	}
-	
+
 	@Override
-	protected java.awt.Shape createShape(int x, int y, int width, int height) {
-		if( this.isVoid || this.isExpressionTypeFeedbackDesired() == false ) {
+	protected java.awt.Shape createShape( int x, int y, int width, int height ) {
+		if( this.isVoid || ( this.isExpressionTypeFeedbackDesired() == false ) ) {
 			return null;
 		} else {
-			return this.createBoundsShape(x, y, width, height).getBaseShape();
+			return this.createBoundsShape( x, y, width, height ).getBaseShape();
 		}
 	}
+
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		if( this.isExpressionTypeFeedbackDesired() ) {
@@ -151,7 +162,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		if( this.isVoid || this.isExpressionTypeFeedbackDesired() == false ) {
+		if( this.isVoid || ( this.isExpressionTypeFeedbackDesired() == false ) ) {
 			//pass
 		} else {
 			//edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
@@ -162,7 +173,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		}
 	}
 
-	public abstract org.lgna.project.ast.AbstractType<?,?,?> getExpressionType();
+	public abstract org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType();
 	//	@Override
 	//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
 	//		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET+DOCKING_BAY_INSET_LEFT, INSET, (float)getWidth()-2*INSET-DOCKING_BAY_INSET_LEFT, (float)getHeight()-2*INSET, 8, 8 );

@@ -48,46 +48,48 @@ package edu.cmu.cs.dennisc.java.util.zip;
 public class ZipUtilities {
 	public static byte[] extractBytes( java.util.zip.ZipInputStream zis, java.util.zip.ZipEntry zipEntry ) throws java.io.IOException {
 		final int BUFFER_SIZE = 2048;
-		byte[] buffer = new byte[BUFFER_SIZE];
+		byte[] buffer = new byte[ BUFFER_SIZE ];
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream( BUFFER_SIZE );
 		int count;
-		while ((count = zis.read( buffer, 0, BUFFER_SIZE )) != -1) {
+		while( ( count = zis.read( buffer, 0, BUFFER_SIZE ) ) != -1 ) {
 			baos.write( buffer, 0, count );
 		}
 		zis.closeEntry();
 		return baos.toByteArray();
 	}
 
-	public static java.util.HashMap< String, byte[] > extract( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
+	public static java.util.HashMap<String, byte[]> extract( java.util.zip.ZipInputStream zis ) throws java.io.IOException {
 		java.util.HashMap<String, byte[]> filenameToBytesMap = new java.util.HashMap<String, byte[]>();
 		java.util.zip.ZipEntry zipEntry;
-		while ((zipEntry = zis.getNextEntry()) != null) {
+		while( ( zipEntry = zis.getNextEntry() ) != null ) {
 			String name = zipEntry.getName();
 			if( zipEntry.isDirectory() ) {
 				// pass
 			} else {
-				filenameToBytesMap.put( name, extractBytes(zis, zipEntry) );
+				filenameToBytesMap.put( name, extractBytes( zis, zipEntry ) );
 			}
 		}
 		return filenameToBytesMap;
 	}
-	public static java.util.HashMap< String, byte[] > extract( java.io.InputStream is ) throws java.io.IOException {
+
+	public static java.util.HashMap<String, byte[]> extract( java.io.InputStream is ) throws java.io.IOException {
 		java.util.zip.ZipInputStream zis;
 		if( is instanceof java.util.zip.ZipInputStream ) {
-			zis = (java.util.zip.ZipInputStream) is;
+			zis = (java.util.zip.ZipInputStream)is;
 		} else {
 			zis = new java.util.zip.ZipInputStream( is );
 		}
 		return extract( zis );
 	}
-	public static java.util.HashMap< String, byte[] > extract( java.io.File file ) throws java.io.IOException {
+
+	public static java.util.HashMap<String, byte[]> extract( java.io.File file ) throws java.io.IOException {
 		return extract( new java.io.FileInputStream( file ) );
 	}
-	public static java.util.HashMap< String, byte[] > extract( String path ) throws java.io.IOException {
+
+	public static java.util.HashMap<String, byte[]> extract( String path ) throws java.io.IOException {
 		return extract( new java.io.File( path ) );
 	}
 
-	
 	public static void write( java.util.zip.ZipOutputStream zos, DataSource dataSource ) throws java.io.IOException {
 		assert dataSource != null;
 		assert dataSource.getName() != null;
@@ -98,13 +100,12 @@ public class ZipUtilities {
 		bos.flush();
 		zos.closeEntry();
 	}
-	
 
 	//todo: support recursion
 	public static void zip( java.io.File srcDirectory, java.io.File dstZip ) throws java.io.IOException {
-		
+
 		assert srcDirectory.isDirectory();
-		
+
 		java.io.FileOutputStream fos = new java.io.FileOutputStream( dstZip );
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
 
@@ -118,7 +119,7 @@ public class ZipUtilities {
 			} else {
 				String path = file.getAbsolutePath();
 				assert path.startsWith( rootPath );
-				String subPath = path.substring( rootPath.length()+1 );
+				String subPath = path.substring( rootPath.length() + 1 );
 				subPath = subPath.replace( '\\', '/' );
 				java.io.FileInputStream fis = new java.io.FileInputStream( file );
 				java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry( subPath );
@@ -138,27 +139,30 @@ public class ZipUtilities {
 		zos.flush();
 		zos.close();
 	}
+
 	public static void zip( java.io.File srcDirectory, String dstZipPath ) throws java.io.IOException {
 		zip( srcDirectory, new java.io.File( dstZipPath ) );
 	}
+
 	public static void zip( String srcDirectoryPath, java.io.File dstZip ) throws java.io.IOException {
 		zip( new java.io.File( srcDirectoryPath ), dstZip );
 	}
+
 	public static void zip( String srcDirectoryPath, String dstZipPath ) throws java.io.IOException {
 		zip( new java.io.File( srcDirectoryPath ), new java.io.File( dstZipPath ) );
 	}
-	
+
 	public static void unzip( java.io.File srcFile, java.io.File dstDirectory ) throws java.io.IOException {
 		java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream( new java.io.FileInputStream( srcFile ) );
 		java.util.zip.ZipEntry zipEntry;
-		while ((zipEntry = zis.getNextEntry()) != null) {
+		while( ( zipEntry = zis.getNextEntry() ) != null ) {
 			if( zipEntry.isDirectory() ) {
 				// pass
 			} else {
 				java.io.File outFile = new java.io.File( dstDirectory, zipEntry.getName() );
 				edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( outFile );
 				java.io.FileOutputStream fos = new java.io.FileOutputStream( outFile );
-				byte[] data = extractBytes(zis, zipEntry);
+				byte[] data = extractBytes( zis, zipEntry );
 				fos.write( data, 0, data.length );
 				fos.close();
 			}
@@ -168,9 +172,11 @@ public class ZipUtilities {
 	public static void unzip( java.io.File srcZip, String dstDirectoryPath ) throws java.io.IOException {
 		unzip( srcZip, new java.io.File( dstDirectoryPath ) );
 	}
+
 	public static void unzip( String srcZipPath, java.io.File dstDirectory ) throws java.io.IOException {
 		unzip( new java.io.File( srcZipPath ), dstDirectory );
 	}
+
 	public static void unzip( String srcZipPath, String dstDirectoryPath ) throws java.io.IOException {
 		unzip( new java.io.File( srcZipPath ), new java.io.File( dstDirectoryPath ) );
 	}

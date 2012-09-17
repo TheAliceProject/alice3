@@ -47,28 +47,32 @@ package org.lgna.croquet.components;
  */
 public abstract class CustomItemStatePopupButton<T> extends PopupButton {
 	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
-		public void changing(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
+		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 		}
-		public void changed(org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting) {
+
+		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 			CustomItemStatePopupButton.this.handleChanged( state, prevValue, nextValue, isAdjusting );
 		}
 	};
+
 	public CustomItemStatePopupButton( org.lgna.croquet.CustomItemState<T> itemState ) {
 		super( itemState.getCascadeRoot().getPopupPrepModel() );
 	}
+
 	public org.lgna.croquet.CustomItemState<T> getCustomItemState() {
 		org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T> model = (org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T>)this.getModel();
 		org.lgna.croquet.CustomItemState.InternalRoot<T> root = (org.lgna.croquet.CustomItemState.InternalRoot<T>)model.getCascadeRoot();
 		return root.getCompletionModel();
 	}
-	
-	protected abstract void handleChanged( org.lgna.croquet.State< T > state, T prevValue, T nextValue, boolean isAdjusting );
-	
+
+	protected abstract void handleChanged( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting );
+
 	@Override
 	protected void handleDisplayable() {
 		this.getCustomItemState().addAndInvokeValueListener( valueListener );
 		super.handleDisplayable();
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();

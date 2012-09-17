@@ -45,16 +45,19 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * the root of the scenegraph
+ * 
  * @author Dennis Cosgrove
  */
 public class Scene extends Composite {
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< Background > background = new edu.cmu.cs.dennisc.property.InstanceProperty< Background >( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Background> background = new edu.cmu.cs.dennisc.property.InstanceProperty<Background>( this, null );
 	public final edu.cmu.cs.dennisc.property.FloatProperty globalBrightness = new edu.cmu.cs.dennisc.property.FloatProperty( this, 1.0f );
+
 	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 		rv.setIdentity();
 		return rv;
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInverseAbsoluteTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv ) {
 		rv.setIdentity();

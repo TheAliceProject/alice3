@@ -47,13 +47,13 @@ package edu.cmu.cs.dennisc.java.awt;
  */
 public class KeyboardFocusManagerUtilities {
 	//todo
-//	final java.awt.KeyboardFocusManager focusManager = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager();
-//	focusManager.addPropertyChangeListener( new java.beans.PropertyChangeListener() {
-//		public void propertyChange( java.beans.PropertyChangeEvent e ) {
-//			String prop = e.getPropertyName();
-//			if( ("focusOwner".equals( prop )) ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "focus owner: ", focusManager.getFocusOwner() );
-//			}
-//		}
-//	} );
+	//	final java.awt.KeyboardFocusManager focusManager = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager();
+	//	focusManager.addPropertyChangeListener( new java.beans.PropertyChangeListener() {
+	//		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+	//			String prop = e.getPropertyName();
+	//			if( ("focusOwner".equals( prop )) ) {
+	//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "focus owner: ", focusManager.getFocusOwner() );
+	//			}
+	//		}
+	//	} );
 }

@@ -46,24 +46,28 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class CornerSpringPanel extends SpringPanel {
-	private Component< ? > northWestComponent;
-	private Component< ? > northEastComponent;
-	private Component< ? > southWestComponent;
-	private Component< ? > southEastComponent;
-	
+	private Component<?> northWestComponent;
+	private Component<?> northEastComponent;
+	private Component<?> southWestComponent;
+	private Component<?> southEastComponent;
+
 	public CornerSpringPanel() {
 		this( null );
 	}
+
 	public CornerSpringPanel( org.lgna.croquet.Composite composite ) {
 		super( composite );
 	}
+
 	protected int getPad() {
 		return 8;
 	}
-	public Component< ? > getNorthWestComponent() {
+
+	public Component<?> getNorthWestComponent() {
 		return this.northWestComponent;
 	}
-	public void setNorthWestComponent( Component< ? > northWestComponent ) {
+
+	public void setNorthWestComponent( Component<?> northWestComponent ) {
 		if( this.northWestComponent != northWestComponent ) {
 			if( this.northWestComponent != null ) {
 				this.removeComponent( this.northWestComponent );
@@ -75,10 +79,12 @@ public class CornerSpringPanel extends SpringPanel {
 			}
 		}
 	}
-	public Component< ? > getNorthEastComponent() {
+
+	public Component<?> getNorthEastComponent() {
 		return this.northEastComponent;
 	}
-	public void setNorthEastComponent( Component< ? > northEastComponent ) {
+
+	public void setNorthEastComponent( Component<?> northEastComponent ) {
 		if( this.northEastComponent != northEastComponent ) {
 			if( this.northEastComponent != null ) {
 				this.removeComponent( this.northEastComponent );
@@ -90,10 +96,12 @@ public class CornerSpringPanel extends SpringPanel {
 			}
 		}
 	}
-	public Component< ? > getSouthWestComponent() {
+
+	public Component<?> getSouthWestComponent() {
 		return this.southWestComponent;
 	}
-	public void setSouthWestComponent( Component< ? > southWestComponent ) {
+
+	public void setSouthWestComponent( Component<?> southWestComponent ) {
 		if( this.southWestComponent != southWestComponent ) {
 			if( this.southWestComponent != null ) {
 				this.removeComponent( this.southWestComponent );
@@ -105,10 +113,12 @@ public class CornerSpringPanel extends SpringPanel {
 			}
 		}
 	}
-	public Component< ? > getSouthEastComponent() {
+
+	public Component<?> getSouthEastComponent() {
 		return this.southEastComponent;
 	}
-	public void setSouthEastComponent( Component< ? > southEastComponent ) {
+
+	public void setSouthEastComponent( Component<?> southEastComponent ) {
 		if( this.southEastComponent != southEastComponent ) {
 			if( this.southEastComponent != null ) {
 				this.removeComponent( this.southEastComponent );

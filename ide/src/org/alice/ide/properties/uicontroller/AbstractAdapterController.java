@@ -48,91 +48,86 @@ import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Panel;
 
 public abstract class AbstractAdapterController<P> extends GridBagPanel implements PropertyAdapterController<P>
-{   
+{
 	protected AbstractPropertyAdapter.ValueChangeObserver<P> valueChangeObserver = new AbstractPropertyAdapter.ValueChangeObserver<P>()
 	{
-		public void valueChanged(P newValue) 
+		public void valueChanged( P newValue )
 		{
-			AbstractAdapterController.this.setValueOnUI(newValue);
+			AbstractAdapterController.this.setValueOnUI( newValue );
 		}
 	};
-	
+
 	protected AbstractPropertyAdapter<P, ?> propertyAdapter;
-	
-	public AbstractAdapterController(AbstractPropertyAdapter<P, ?> propertyAdapter)
+
+	public AbstractAdapterController( AbstractPropertyAdapter<P, ?> propertyAdapter )
 	{
 		super();
 		this.propertyAdapter = propertyAdapter;
 		this.initializeComponents();
-		this.setPropertyAdapter(this.propertyAdapter);
+		this.setPropertyAdapter( this.propertyAdapter );
 	}
-	
+
 	public Class<?> getPropertyType()
 	{
 		return this.propertyAdapter.getPropertyType();
 	}
-	protected abstract void setValueOnUI(P value);
-    
-    protected void setValueOnData(P value)
-    {
-        this.propertyAdapter.setValue(value);
-    }
-    
-    @Override
-    protected void internalRefresh() {
-    	super.internalRefresh();
-    	this.updateUIFromNewAdapter();
-    }
-    
-    protected void updateUIFromNewAdapter() 
-    {
-        if (this.propertyAdapter != null)
-        {
-            this.setValueOnUI(this.propertyAdapter.getValue());
-        }
-        else
-        {
-            this.setValueOnUI(null);
-        }
-    }
-	
-    protected void initializeComponents()
-    {
-    }
-    
-    public Panel getPanel()
-    {
-        return this;
-    }
-    
-    
+
+	protected abstract void setValueOnUI( P value );
+
+	protected void setValueOnData( P value )
+	{
+		this.propertyAdapter.setValue( value );
+	}
+
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.updateUIFromNewAdapter();
+	}
+
+	protected void updateUIFromNewAdapter()
+	{
+		if( this.propertyAdapter != null )
+		{
+			this.setValueOnUI( this.propertyAdapter.getValue() );
+		}
+		else
+		{
+			this.setValueOnUI( null );
+		}
+	}
+
+	protected void initializeComponents()
+	{
+	}
+
+	public Panel getPanel()
+	{
+		return this;
+	}
+
 	public AbstractPropertyAdapter<P, ?> getPropertyAdapter()
 	{
 		return this.propertyAdapter;
 	}
 
-	public void setPropertyAdapter(AbstractPropertyAdapter<P, ?> propertyAdapter)
+	public void setPropertyAdapter( AbstractPropertyAdapter<P, ?> propertyAdapter )
 	{
-		if (this.propertyAdapter != null)
+		if( this.propertyAdapter != null )
 		{
-			this.propertyAdapter.removeValueChangeObserver(this.valueChangeObserver);
+			this.propertyAdapter.removeValueChangeObserver( this.valueChangeObserver );
 		}
 		this.propertyAdapter = propertyAdapter;
 		this.refreshLater();
-		if (this.propertyAdapter != null)
+		if( this.propertyAdapter != null )
 		{
-			this.propertyAdapter.addAndInvokeValueChangeObserver(this.valueChangeObserver);
+			this.propertyAdapter.addAndInvokeValueChangeObserver( this.valueChangeObserver );
 		}
 		else
 		{
-			setValueOnUI(null);
+			setValueOnUI( null );
 		}
-		
+
 	}
-	
-	
-	
-	
-	
 
 }

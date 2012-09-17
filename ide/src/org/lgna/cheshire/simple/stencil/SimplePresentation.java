@@ -47,7 +47,7 @@ package org.lgna.cheshire.simple.stencil;
  */
 public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 
-	/*package-private*/static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
+	/* package-private */static java.awt.Color CONTROL_COLOR = new java.awt.Color( 230, 230, 255 );
 
 	private final org.lgna.croquet.Operation prevOperation = new PrevStepOperation( this );
 
@@ -105,8 +105,10 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 					break;
 				}
 			}
+
 			public void keyReleased( java.awt.event.KeyEvent e ) {
 			}
+
 			public void keyTyped( java.awt.event.KeyEvent e ) {
 			}
 		};
@@ -115,18 +117,22 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
 			}
+
 			public void mouseExited( java.awt.event.MouseEvent e ) {
 			}
+
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 				java.awt.Component component = e.getComponent();
 				this.prevCursor = component.getCursor();
 				component.setCursor( java.awt.dnd.DragSource.DefaultMoveNoDrop );
 			}
+
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
 				java.awt.Component component = e.getComponent();
 				component.setCursor( this.prevCursor );
 				this.prevCursor = null;
 			}
+
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
 			}
 		};
@@ -179,9 +185,10 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 	private final org.lgna.croquet.history.event.Listener transactionListener = new org.lgna.croquet.history.event.Listener() {
 		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
 		}
+
 		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
 			if( e instanceof org.lgna.croquet.history.event.AddTransactionEvent ) {
-				SimplePresentation.this.insertRecoveryChapter( ((org.lgna.croquet.history.event.AddTransactionEvent)e).getTransaction(), ((org.lgna.croquet.history.event.AddTransactionEvent)e).getIndex() );
+				SimplePresentation.this.insertRecoveryChapter( ( (org.lgna.croquet.history.event.AddTransactionEvent)e ).getTransaction(), ( (org.lgna.croquet.history.event.AddTransactionEvent)e ).getIndex() );
 			}
 		}
 	};
@@ -261,6 +268,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 			}
 		}
 	}
+
 	@Override
 	protected void handleChapterChanged( org.lgna.cheshire.simple.Chapter chapter ) {
 		super.handleChapterChanged( chapter );
@@ -301,7 +309,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				//				boolean isAutoAdvanceDesired = false;
 				boolean isWaiting = chapterPage.getChapter().isAlreadyInTheDesiredState() == false;
 
-				NextStepOperation.getInstance().setEnabled( 0 <= selectedIndex && selectedIndex < this.getBook().getChapterCount() - 1 && isWaiting == false );
+				NextStepOperation.getInstance().setEnabled( ( 0 <= selectedIndex ) && ( selectedIndex < ( this.getBook().getChapterCount() - 1 ) ) && ( isWaiting == false ) );
 
 				this.prevOperation.setEnabled( 1 <= selectedIndex );
 
@@ -309,7 +317,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				this.stencil.revalidateAndRepaint();
 				this.stencil.setCursor( cursor );
 			} else {
-				org.lgna.croquet.history.Transaction transaction = ((org.lgna.cheshire.simple.TransactionChapter)chapter).getTransaction();
+				org.lgna.croquet.history.Transaction transaction = ( (org.lgna.cheshire.simple.TransactionChapter)chapter ).getTransaction();
 
 				org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
 				org.lgna.croquet.CompletionModel completionModel = completionStep.getModel();
@@ -342,7 +350,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 									if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
 										org.lgna.croquet.edits.StateEdit stateEdit = (org.lgna.croquet.edits.StateEdit)edit;
 										if( completionModel instanceof org.alice.ide.declarationseditor.TypeState ) {
-											org.lgna.project.ast.AbstractType<?,?,?> type = (org.lgna.project.ast.AbstractType<?,?,?>)stateEdit.getNextValue();
+											org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)stateEdit.getNextValue();
 											org.lgna.croquet.MenuItemPrepModel[] stateValueMenuItemPrepModels = { org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type ) };
 											org.lgna.croquet.history.MenuItemSelectStep.createAndAddToTransaction( transaction, null, stateValueMenuItemPrepModels, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance() );
 										} else if( completionModel instanceof org.alice.ide.instancefactory.croquet.InstanceFactoryState ) {
@@ -441,7 +449,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 		if( menu != null ) {
 			menu.setBorder( javax.swing.BorderFactory.createEmptyBorder( menuSpacer, 0, 0, 0 ) );
 		}
-		((javax.swing.JComponent)frame.getContentPane()).setBorder( javax.swing.BorderFactory.createEmptyBorder( frameSpacer, 0, 0, 0 ) );
+		( (javax.swing.JComponent)frame.getContentPane() ).setBorder( javax.swing.BorderFactory.createEmptyBorder( frameSpacer, 0, 0, 0 ) );
 
 		this.stencil.setStencilShowing( isVisible );
 	}

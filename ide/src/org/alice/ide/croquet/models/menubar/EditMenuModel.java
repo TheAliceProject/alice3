@@ -49,17 +49,18 @@ public class EditMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	private static class SingletonHolder {
 		private static EditMenuModel instance = new EditMenuModel();
 	}
+
 	public static EditMenuModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private EditMenuModel() {
-		super( java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), 
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance().getMenuItemPrepModel(), 
-				org.lgna.croquet.MenuModel.SEPARATOR, 
+		super( java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ),
+				org.alice.ide.croquet.models.history.UndoOperation.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.history.RedoOperation.getInstance().getMenuItemPrepModel(),
+				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.croquet.models.clipboard.CutOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.clipboard.CopyOperation.getInstance().getMenuItemPrepModel(), 
-				org.alice.ide.croquet.models.clipboard.PasteOperation.getInstance() .getMenuItemPrepModel()
-		);
+				org.alice.ide.croquet.models.clipboard.CopyOperation.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.clipboard.PasteOperation.getInstance().getMenuItemPrepModel() );
 	}
 }

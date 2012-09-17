@@ -16,15 +16,15 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 
 	protected boolean shouldFire = true;
 	protected Integer count = 0;
-	protected Map<Object,MultipleEventPolicy> policyMap = Collections.newHashMap();
-	protected Map<Object,HashMap<Object,Boolean>> isFiringMap = Collections.newHashMap();
+	protected Map<Object, MultipleEventPolicy> policyMap = Collections.newHashMap();
+	protected Map<Object, HashMap<Object, Boolean>> isFiringMap = Collections.newHashMap();
 	protected EventRecorder recorder = EventRecorder.getSingleton();
 	private LinkedList<E> queue = new LinkedList<E>();
 	protected SceneImp scene;
 
 	protected void fireEvent( final L listener, final E event, final Object o ) {
 		if( isFiringMap.get( listener ) == null ) {
-			isFiringMap.put( listener, new HashMap<Object,Boolean>() );
+			isFiringMap.put( listener, new HashMap<Object, Boolean>() );
 		}
 		if( isFiringMap.get( listener ).get( o ) == null ) {
 			isFiringMap.get( listener ).put( o, false );
@@ -50,6 +50,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 			}
 		}
 	}
+
 	protected void enqueue( E event ) {
 		synchronized( queue ) {
 			queue.addLast( event );
@@ -81,22 +82,25 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	public final void silenceListeners() {
 		shouldFire = false;
 	}
+
 	public final void restoreListeners() {
 		shouldFire = true;
 	}
 
 	protected void registerIsFiringMap( Object eventListener ) {
-		isFiringMap.put( eventListener, new HashMap<Object,Boolean>() );
+		isFiringMap.put( eventListener, new HashMap<Object, Boolean>() );
 		isFiringMap.get( eventListener ).put( eventListener, false );
 	}
+
 	protected void registerIsFiringMap( Object eventListener, Visual[] targets ) {
-		isFiringMap.put( eventListener, new HashMap<Object,Boolean>() );
-		if( targets != null && targets.length > 0 ) {
+		isFiringMap.put( eventListener, new HashMap<Object, Boolean>() );
+		if( ( targets != null ) && ( targets.length > 0 ) ) {
 			for( Visual target : targets ) {
 				isFiringMap.get( eventListener ).put( target, false );
 			}
 		}
 	}
+
 	protected void registerPolicyMap( L listener, MultipleEventPolicy policy ) {
 		policyMap.put( listener, policy );
 	}
@@ -104,6 +108,7 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	protected void fireEvent( L listener, E event ) {
 		fireEvent( listener, event, listener ); //used if policy is not constrained by anything else, such as selected model for mouse click events
 	}
+
 	public void setScene( SceneImp scene ) {
 		this.scene = scene;
 	}

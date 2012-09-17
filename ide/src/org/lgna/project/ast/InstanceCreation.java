@@ -47,10 +47,10 @@ package org.lgna.project.ast;
  */
 public class InstanceCreation extends Expression implements ArgumentOwner {
 	//todo: AbstractConstructor -> Expression<AbstractConstructor>
-	public DeclarationProperty< AbstractConstructor > constructor = new DeclarationProperty< AbstractConstructor >( this ) {
+	public DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
 		@Override
 		public boolean isReference() {
-			return ( this.getValue() instanceof AnonymousUserConstructor ) == false; 
+			return ( this.getValue() instanceof AnonymousUserConstructor ) == false;
 		}
 	};
 	public SimpleArgumentListProperty requiredArguments = new SimpleArgumentListProperty( this );
@@ -59,9 +59,11 @@ public class InstanceCreation extends Expression implements ArgumentOwner {
 
 	public InstanceCreation() {
 	}
-	public InstanceCreation( AbstractConstructor constructor, SimpleArgument... requiredArguments ){
+
+	public InstanceCreation( AbstractConstructor constructor, SimpleArgument... requiredArguments ) {
 		this( constructor, requiredArguments, null, null );
 	}
+
 	public InstanceCreation( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
 		assert constructor != null;
 		this.constructor.setValue( constructor );
@@ -73,23 +75,28 @@ public class InstanceCreation extends Expression implements ArgumentOwner {
 			this.keyedArguments.add( keyedArguments );
 		}
 	}
-//	public InstanceCreation( java.lang.reflect.Constructor< ? > cnstrctr, Argument... arguments ) {
-//		this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );
-//	}
+
+	//	public InstanceCreation( java.lang.reflect.Constructor< ? > cnstrctr, Argument... arguments ) {
+	//		this( ConstructorDeclaredInJava.get( cnstrctr ), arguments );
+	//	}
 	public org.lgna.project.ast.DeclarationProperty<? extends AbstractCode> getParameterOwnerProperty() {
 		return this.constructor;
 	}
+
 	public org.lgna.project.ast.SimpleArgumentListProperty getRequiredArgumentsProperty() {
 		return this.requiredArguments;
 	}
+
 	public org.lgna.project.ast.SimpleArgumentListProperty getVariableArgumentsProperty() {
 		return this.variableArguments;
 	}
+
 	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return constructor.getValue().getDeclaringType();
 	}
 

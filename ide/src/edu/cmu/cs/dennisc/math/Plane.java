@@ -43,13 +43,12 @@
 
 package edu.cmu.cs.dennisc.math;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public final class Plane {
-	public static final Plane NaN = new Plane( Double.NaN, Double.NaN, Double.NaN, Double.NaN ); 
-	public static final Plane XZ_PLANE = new Plane( 0, 1, 0, 0 ); 
+	public static final Plane NaN = new Plane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
+	public static final Plane XZ_PLANE = new Plane( 0, 1, 0, 0 );
 
 	private final double a;
 	private final double b;
@@ -66,25 +65,30 @@ public final class Plane {
 	public static Plane createInstance( double a, double b, double c, double d ) {
 		return new Plane( a, b, c, d );
 	}
+
 	public static Plane createInstance( double[] array ) {
 		return createInstance( array[ 0 ], array[ 1 ], array[ 2 ], array[ 3 ] );
 	}
+
 	//Kept private to avoid confusion on order
 	private static Plane createInstance( double xPosition, double yPosition, double zPosition, double xNormal, double yNormal, double zNormal ) {
 		final double EPSILON = 0.01;
 		assert EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal ), EPSILON );
 		//assert EpsilonUtilities.isWithinEpsilon( Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal ), 1.0, EPSILON );
-		return createInstance( xNormal, yNormal, zNormal, -(xNormal*xPosition + yNormal*yPosition + zNormal*zPosition) );
+		return createInstance( xNormal, yNormal, zNormal, -( ( xNormal * xPosition ) + ( yNormal * yPosition ) + ( zNormal * zPosition ) ) );
 	}
+
 	public static Plane createInstance( edu.cmu.cs.dennisc.math.Point3 position, edu.cmu.cs.dennisc.math.Vector3 normal ) {
 		assert position.isNaN() == false;
 		assert normal.isNaN() == false;
 		return createInstance( position.x, position.y, position.z, normal.x, normal.y, normal.z );
 	}
+
 	public static Plane createInstance( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
 		assert m.isNaN() == false;
 		return createInstance( m.translation.x, m.translation.y, m.translation.z, -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
 	}
+
 	public static Plane createInstance( edu.cmu.cs.dennisc.math.Point3 a, edu.cmu.cs.dennisc.math.Point3 b, edu.cmu.cs.dennisc.math.Point3 c ) {
 		assert a.isNaN() == false;
 		assert b.isNaN() == false;
@@ -97,34 +101,35 @@ public final class Plane {
 		return createInstance( a, normal );
 	}
 
-	
 	@Override
 	public boolean equals( Object o ) {
-		if( o == this )
+		if( o == this ) {
 			return true;
-		if( o != null && o instanceof Plane ) {
+		}
+		if( ( o != null ) && ( o instanceof Plane ) ) {
 			Plane plane = (Plane)o;
-			return this.a == plane.a && this.b == plane.b && this.c == plane.c && this.d == plane.d;
+			return ( this.a == plane.a ) && ( this.b == plane.b ) && ( this.c == plane.c ) && ( this.d == plane.d );
 		} else {
 			return false;
 		}
 	}
+
 	@Override
 	public final int hashCode() {
 		int rv = 17;
 		long lng;
 
 		lng = Double.doubleToLongBits( this.a );
-		rv = 37*rv + (int)( lng ^(lng >>>32) );
+		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
 
 		lng = Double.doubleToLongBits( this.b );
-		rv = 37*rv + (int)( lng ^(lng >>>32) );
+		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
 
 		lng = Double.doubleToLongBits( this.c );
-		rv = 37*rv + (int)( lng ^(lng >>>32) );
+		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
 
 		lng = Double.doubleToLongBits( this.d );
-		rv = 37*rv + (int)( lng ^(lng >>>32) );
+		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
 
 		return rv;
 	}
@@ -140,46 +145,49 @@ public final class Plane {
 		rv[ 3 ] = this.d;
 		return rv;
 	}
+
 	public double[] getEquation() {
 		return getEquation( new double[ 4 ] );
 	}
+
 	public double intersect( Ray ray ) {
 		edu.cmu.cs.dennisc.math.Point3 p = ray.getOrigin();
 		edu.cmu.cs.dennisc.math.Vector3 d = ray.getDirection();
-		double denom = this.a * d.x + this.b * d.y + this.c * d.z;
+		double denom = ( this.a * d.x ) + ( this.b * d.y ) + ( this.c * d.z );
 		if( denom == 0 ) {
 			return Double.NaN;
 		} else {
-			double numer = this.a * p.x + this.b * p.y + this.c * p.z + this.d;
+			double numer = ( this.a * p.x ) + ( this.b * p.y ) + ( this.c * p.z ) + this.d;
 			return -numer / denom;
 		}
 	}
-	
-	public double evaluate( Point3 p ) {
-		return this.a*p.x + this.b*p.y + this.c*p.z + this.d;
-	}
-	
-//	public LineD intersect( LineD rv, PlaneD other ) {
-//		throw new RuntimException( "todo" );
-//	}
-//	public LineD intersect( PlaneD other ) {
-//		return intersect( new LineD(), other );
-//	}
 
-//	public edu.cmu.cs.dennisc.math.Matrix4d getReflection( edu.cmu.cs.dennisc.math.Matrix4d rv ) {
-//		rv.setRow( 0, -2 * this.a * this.a + 1,   -2 * this.b * this.a,       -2 * this.c * this.a,       0.0 );
-//		rv.setRow( 1, -2 * this.a * this.b,       -2 * this.b * this.b + 1,   -2 * this.c * this.b,       0.0 );
-//		rv.setRow( 2, -2 * this.a * this.c,       -2 * this.b * this.c,       -2 * this.c * this.c + 1,   0.0 );
-//		rv.setRow( 3, -2 * this.a * this.d,       -2 * this.b * this.d,       -2 * this.c * this.d,       1.0 );
-//		return rv;
-//	}
-//	public edu.cmu.cs.dennisc.math.Matrix4d getReflection() {
-//		return getReflection( new edu.cmu.cs.dennisc.math.Matrix4d() );
-//	}
+	public double evaluate( Point3 p ) {
+		return ( this.a * p.x ) + ( this.b * p.y ) + ( this.c * p.z ) + this.d;
+	}
+
+	//	public LineD intersect( LineD rv, PlaneD other ) {
+	//		throw new RuntimException( "todo" );
+	//	}
+	//	public LineD intersect( PlaneD other ) {
+	//		return intersect( new LineD(), other );
+	//	}
+
+	//	public edu.cmu.cs.dennisc.math.Matrix4d getReflection( edu.cmu.cs.dennisc.math.Matrix4d rv ) {
+	//		rv.setRow( 0, -2 * this.a * this.a + 1,   -2 * this.b * this.a,       -2 * this.c * this.a,       0.0 );
+	//		rv.setRow( 1, -2 * this.a * this.b,       -2 * this.b * this.b + 1,   -2 * this.c * this.b,       0.0 );
+	//		rv.setRow( 2, -2 * this.a * this.c,       -2 * this.b * this.c,       -2 * this.c * this.c + 1,   0.0 );
+	//		rv.setRow( 3, -2 * this.a * this.d,       -2 * this.b * this.d,       -2 * this.c * this.d,       1.0 );
+	//		return rv;
+	//	}
+	//	public edu.cmu.cs.dennisc.math.Matrix4d getReflection() {
+	//		return getReflection( new edu.cmu.cs.dennisc.math.Matrix4d() );
+	//	}
 	@Override
 	public String toString() {
 		return "edu.cmu.cs.dennisc.math.Plane[a=" + this.a + ",b=" + this.b + ",c=" + this.c + ",d=" + this.d + "]";
 	}
+
 	public static Plane valueOf( String s ) {
 		String[] markers = { "edu.cmu.cs.dennisc.math.Plane[a=", ",b=", ",c=", ",d=", "]" };
 		double[] values = new double[ markers.length - 1 ];

@@ -46,10 +46,11 @@ package org.lgna.project.reflect;
  * @author Dennis Cosgrove
  */
 public class ClassInfoManager {
-	private static java.util.Map< String, edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > > s_map = new java.util.HashMap< String, edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > >();
+	private static java.util.Map<String, edu.cmu.cs.dennisc.pattern.LazilyInitialized<ClassInfo>> s_map = new java.util.HashMap<String, edu.cmu.cs.dennisc.pattern.LazilyInitialized<ClassInfo>>();
+
 	private ClassInfoManager() {
 	}
-	
+
 	public static void addClassInfosFrom( java.io.InputStream is ) throws java.io.IOException {
 		java.util.zip.ZipInputStream zis = new java.util.zip.ZipInputStream( is );
 		while( true ) {
@@ -59,8 +60,8 @@ public class ClassInfoManager {
 					//pass
 				} else {
 					String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( zipEntry.getName() );
-					final byte[] data = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extractBytes(zis, zipEntry);
-					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
+					final byte[] data = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extractBytes( zis, zipEntry );
+					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized<ClassInfo>() {
 						@Override
 						protected ClassInfo initialize() {
 							ClassInfo rv = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( data, ClassInfo.class );
@@ -78,9 +79,10 @@ public class ClassInfoManager {
 	public static java.util.Set<String> getKeys() {
 		return java.util.Collections.unmodifiableSet( s_map.keySet() );
 	}
+
 	public static ClassInfo getInstance( String clsName ) {
 		if( clsName != null ) {
-			edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > lazyClassInfo = s_map.get( clsName );
+			edu.cmu.cs.dennisc.pattern.LazilyInitialized<ClassInfo> lazyClassInfo = s_map.get( clsName );
 			if( lazyClassInfo != null ) {
 				try {
 					return lazyClassInfo.get();
@@ -95,6 +97,7 @@ public class ClassInfoManager {
 			return null;
 		}
 	}
+
 	public static ClassInfo getInstance( Class<?> cls ) {
 		if( cls != null ) {
 			return getInstance( cls.getName() );
@@ -102,7 +105,8 @@ public class ClassInfoManager {
 			return null;
 		}
 	}
-	public static java.util.List< MethodInfo > getMethodInfos( String clsName ) {
+
+	public static java.util.List<MethodInfo> getMethodInfos( String clsName ) {
 		ClassInfo clsInfo = getInstance( clsName );
 		if( clsInfo != null ) {
 			return clsInfo.getMethodInfos();
@@ -111,14 +115,15 @@ public class ClassInfoManager {
 			return null;
 		}
 	}
-	public static java.util.List< MethodInfo > getMethodInfos( Class<?> cls ) {
+
+	public static java.util.List<MethodInfo> getMethodInfos( Class<?> cls ) {
 		if( cls != null ) {
 			return getMethodInfos( cls.getName() );
 		} else {
 			return null;
 		}
 	}
-	
+
 	public static String[] getParameterNamesFor( java.lang.reflect.Method mthd ) {
 		ClassInfo clsInfo = getInstance( mthd.getDeclaringClass() );
 		if( clsInfo != null ) {

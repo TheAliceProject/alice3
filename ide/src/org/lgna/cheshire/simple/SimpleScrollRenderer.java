@@ -43,8 +43,6 @@
 
 package org.lgna.cheshire.simple;
 
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -54,10 +52,10 @@ public class SimpleScrollRenderer implements ScrollRenderer {
 		g2.setColor( java.awt.Color.BLACK );
 		g2.drawRect( rect.x, rect.y, rect.width, rect.height );
 		g2.setColor( java.awt.Color.YELLOW );
-		g2.drawRect( rect.x-1, rect.y-1, rect.width+2, rect.height+2 );
+		g2.drawRect( rect.x - 1, rect.y - 1, rect.width + 2, rect.height + 2 );
 		g2.setColor( java.awt.Color.BLACK );
-		g2.drawRect( rect.x-2, rect.y-2, rect.width+4, rect.height+4 );
-		return new java.awt.geom.Area( new java.awt.Rectangle( rect.x-2, rect.y-2, rect.width+4 + 1, rect.height+4 + 1 ) );
+		g2.drawRect( rect.x - 2, rect.y - 2, rect.width + 4, rect.height + 4 );
+		return new java.awt.geom.Area( new java.awt.Rectangle( rect.x - 2, rect.y - 2, rect.width + 4 + 1, rect.height + 4 + 1 ) );
 	}
 
 	public java.awt.Shape renderScrollIndicators( java.awt.Graphics2D g2, org.lgna.croquet.components.ScreenElement root, org.lgna.croquet.components.TrackableShape trackableShape ) {
@@ -65,7 +63,7 @@ public class SimpleScrollRenderer implements ScrollRenderer {
 		if( scrollPane != null ) {
 			org.lgna.croquet.components.Component<?> view = scrollPane.getViewportView();
 
-			java.awt.Shape shape = trackableShape.getShape( view, null);
+			java.awt.Shape shape = trackableShape.getShape( view, null );
 			if( shape != null ) {
 				java.awt.geom.Area repaintShape = new java.awt.geom.Area();
 
@@ -73,7 +71,7 @@ public class SimpleScrollRenderer implements ScrollRenderer {
 				double portion = bounds.getCenterY() / view.getHeight();
 
 				javax.swing.JScrollBar scrollBar = scrollPane.getAwtComponent().getVerticalScrollBar();
-				java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle(scrollBar.getParent(), scrollBar.getBounds(), root.getAwtComponent() );
+				java.awt.Rectangle rect = javax.swing.SwingUtilities.convertRectangle( scrollBar.getParent(), scrollBar.getBounds(), root.getAwtComponent() );
 
 				StringBuilder sb = new StringBuilder();
 				sb.append( "You must scroll " );
@@ -95,15 +93,15 @@ public class SimpleScrollRenderer implements ScrollRenderer {
 				java.awt.Rectangle textBounds = fm.getStringBounds( s, g2 ).getBounds();
 
 				textBounds.x += rect.x + rect.width + 12;
-				textBounds.y += rect.y + rect.height/2;
+				textBounds.y += rect.y + ( rect.height / 2 );
 
-				edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( textBounds, new java.awt.Insets( 4,4,4,4 ) );
+				edu.cmu.cs.dennisc.java.awt.RectangleUtilities.inset( textBounds, new java.awt.Insets( 4, 4, 4, 4 ) );
 				g2.setColor( java.awt.Color.WHITE );
 				g2.fill( textBounds );
 
 				repaintShape.add( drawScrollFeedback( g2, textBounds ) );
 
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText(g2, s, textBounds );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, s, textBounds );
 
 				repaintShape.add( drawScrollFeedback( g2, rect ) );
 
@@ -112,21 +110,21 @@ public class SimpleScrollRenderer implements ScrollRenderer {
 				float xSize = 24.0f;
 				float yHalfSize = xSize * 0.5f;
 				java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
-				path.moveTo( 0,0 );
+				path.moveTo( 0, 0 );
 				path.lineTo( -xSize, yHalfSize );
 				path.lineTo( -xSize, -yHalfSize );
 				path.closePath();
 
-				repaintShape.add( new java.awt.geom.Area( new java.awt.geom.Rectangle2D.Float( rect.x-2-xSize, y-yHalfSize, xSize+1, yHalfSize+yHalfSize+1 ) ) ); 
-				repaintShape.add( new java.awt.geom.Area( new java.awt.geom.Rectangle2D.Float( rect.x+rect.width+2, y-yHalfSize, xSize+1, yHalfSize+yHalfSize+1 ) ) ); 
+				repaintShape.add( new java.awt.geom.Area( new java.awt.geom.Rectangle2D.Float( rect.x - 2 - xSize, y - yHalfSize, xSize + 1, yHalfSize + yHalfSize + 1 ) ) );
+				repaintShape.add( new java.awt.geom.Area( new java.awt.geom.Rectangle2D.Float( rect.x + rect.width + 2, y - yHalfSize, xSize + 1, yHalfSize + yHalfSize + 1 ) ) );
 
 				java.awt.geom.AffineTransform m = g2.getTransform();
-				g2.translate( rect.x-2, y );
+				g2.translate( rect.x - 2, y );
 				g2.setColor( java.awt.Color.YELLOW );
 				g2.fill( path );
 				g2.setColor( java.awt.Color.BLACK );
 				g2.draw( path );
-				g2.translate( rect.width+4, 0 );
+				g2.translate( rect.width + 4, 0 );
 				g2.rotate( Math.PI );
 				g2.setColor( java.awt.Color.YELLOW );
 				g2.fill( path );

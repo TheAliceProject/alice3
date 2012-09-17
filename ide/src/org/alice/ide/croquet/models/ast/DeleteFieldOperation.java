@@ -45,12 +45,14 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.project.ast.UserField > {
-	private static java.util.Map< org.lgna.project.ast.UserField, DeleteFieldOperation > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project.ast.UserField> {
+	private static java.util.Map<org.lgna.project.ast.UserField, DeleteFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized DeleteFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
 		return getInstance( field, field.getDeclaringType() );
 	}
-	public static synchronized DeleteFieldOperation getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.UserType< ? > declaringType ) {
+
+	public static synchronized DeleteFieldOperation getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.UserType<?> declaringType ) {
 		DeleteFieldOperation rv = map.get( field );
 		if( rv != null ) {
 			//pass
@@ -61,20 +63,23 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 		return rv;
 	}
 
-	private DeleteFieldOperation( org.lgna.project.ast.UserField field, org.lgna.project.ast.UserType< ? > declaringType ) {
+	private DeleteFieldOperation( org.lgna.project.ast.UserField field, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
 	}
+
 	@Override
-	public Class< org.lgna.project.ast.UserField > getNodeParameterType() {
+	public Class<org.lgna.project.ast.UserField> getNodeParameterType() {
 		return org.lgna.project.ast.UserField.class;
 	}
+
 	@Override
-	public org.lgna.project.ast.NodeListProperty< org.lgna.project.ast.UserField > getNodeListProperty( org.lgna.project.ast.UserType< ? > declaringType ) {
+	public org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserField> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType ) {
 		return declaringType.fields;
 	}
+
 	@Override
 	protected boolean isClearToDelete( org.lgna.project.ast.UserField field ) {
-		java.util.List< org.lgna.project.ast.FieldAccess > references = org.alice.ide.IDE.getActiveInstance().getFieldAccesses( field );
+		java.util.List<org.lgna.project.ast.FieldAccess> references = org.alice.ide.IDE.getActiveInstance().getFieldAccesses( field );
 		final int N = references.size();
 		if( N > 0 ) {
 			StringBuffer sb = new StringBuffer();
@@ -103,29 +108,30 @@ public class DeleteFieldOperation extends DeleteMemberOperation< org.lgna.projec
 			return true;
 		}
 	}
-	
+
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
 		org.lgna.project.ast.UserField field = this.getMember();
 		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField( 
-					this.getDeclaringType(), 
-					field, 
-					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) 
-			);
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField(
+					this.getDeclaringType(),
+					field,
+					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false )
+					);
 		} else {
 			super.doOrRedoInternal( isDo );
 		}
 	}
+
 	@Override
 	public void undoInternal() {
 		org.lgna.project.ast.UserField field = this.getMember();
 		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( 
-					this.getDeclaringType(), 
-					field, 
-					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true ) 
-			);
+			org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField(
+					this.getDeclaringType(),
+					field,
+					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true )
+					);
 		} else {
 			super.undoInternal();
 		}

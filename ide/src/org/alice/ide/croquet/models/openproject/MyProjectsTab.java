@@ -46,16 +46,19 @@ package org.alice.ide.croquet.models.openproject;
 /**
  * @author Dennis Cosgrove
  */
-public class MyProjectsTab extends ContentTab< org.alice.ide.openprojectpane.DirectoryListContentPanel > {
+public class MyProjectsTab extends ContentTab<org.alice.ide.openprojectpane.DirectoryListContentPanel> {
 	private static class SingletonHolder {
 		private static MyProjectsTab instance = new MyProjectsTab();
 	}
+
 	public static MyProjectsTab getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private MyProjectsTab() {
 		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ) );
 	}
+
 	@Override
 	protected org.alice.ide.openprojectpane.DirectoryListContentPanel createView() {
 		return new org.alice.ide.openprojectpane.DirectoryListContentPanel( this, org.alice.ide.openprojectpane.models.MyProjectsUriSelectionState.getInstance() );

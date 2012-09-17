@@ -48,21 +48,24 @@ import org.alice.ide.declarationseditor.type.ConstructorState;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorList extends MemberList< org.lgna.project.ast.NamedUserConstructor > {
+public class ConstructorList extends MemberList<org.lgna.project.ast.NamedUserConstructor> {
 	public ConstructorList( org.lgna.project.ast.NamedUserType type ) {
 		super( ConstructorState.getInstance( type ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getConstructorColor() );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineStart( org.lgna.project.ast.NamedUserConstructor item ) {
+	protected org.lgna.croquet.components.JComponent<?> createButtonLineStart( org.lgna.project.ast.NamedUserConstructor item ) {
 		return org.alice.ide.croquet.models.ast.EditConstructorOperation.getInstance( item ).createButton();
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonCenter( org.lgna.project.ast.NamedUserConstructor item ) {
+	protected org.lgna.croquet.components.JComponent<?> createButtonCenter( org.lgna.project.ast.NamedUserConstructor item ) {
 		return new org.alice.ide.ast.components.DeclarationNameLabel( item, NAME_FONT_SCALE );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.JComponent< ? > createButtonLineEnd( org.lgna.project.ast.NamedUserConstructor item ) {
+	protected org.lgna.croquet.components.JComponent<?> createButtonLineEnd( org.lgna.project.ast.NamedUserConstructor item ) {
 		return null;
 	}
 }

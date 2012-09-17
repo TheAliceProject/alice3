@@ -46,16 +46,18 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public /*abstract*/ class SProgram {
+public/* abstract */class SProgram {
 	private final org.lgna.story.implementation.ProgramImp implementation = org.lgna.story.implementation.ProgramImp.createInstance( this );
 	private SScene activeScene;
-	/*package-private*/ org.lgna.story.implementation.ProgramImp getImplementation() {
+
+	/* package-private */org.lgna.story.implementation.ProgramImp getImplementation() {
 		return this.implementation;
 	}
-	
+
 	public SScene getActiveScene() {
 		return this.activeScene;
 	}
+
 	public void setActiveScene( SScene scene ) {
 		if( this.activeScene != null ) {
 			this.activeScene.getImplementation().deactivate( this.getImplementation() );
@@ -65,14 +67,15 @@ public /*abstract*/ class SProgram {
 			this.activeScene.getImplementation().activate( this.getImplementation() );
 		}
 	}
-	
+
 	public Double getSimulationSpeedFactor() {
 		return this.implementation.getSimulationSpeedFactor();
 	}
+
 	public void setSimulationSpeedFactor( Number simulationSpeedFactor ) {
 		this.implementation.setSimulationSpeedFactor( simulationSpeedFactor.doubleValue() );
 	}
-	
+
 	public void initializeInFrame( String[] args ) {
 		final int DEFAULT_CLOSE_OPERATION = javax.swing.WindowConstants.EXIT_ON_CLOSE;
 		javax.swing.JFrame frame = new javax.swing.JFrame();
@@ -80,6 +83,7 @@ public /*abstract*/ class SProgram {
 		frame.setDefaultCloseOperation( DEFAULT_CLOSE_OPERATION );
 		this.implementation.initializeInFrame( frame );
 	}
+
 	public void initializeInApplet( javax.swing.JApplet applet ) {
 		this.implementation.initializeInApplet( applet );
 	}

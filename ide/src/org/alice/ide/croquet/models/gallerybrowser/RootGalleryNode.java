@@ -50,14 +50,16 @@ public class RootGalleryNode extends GalleryNode {
 	private static class SingletonHolder {
 		private static RootGalleryNode instance = new RootGalleryNode();
 	}
+
 	public static RootGalleryNode getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private RootGalleryNode() {
 		super( java.util.UUID.fromString( "9c1a9783-f865-446d-b1ef-268e266d6230" ) );
 	}
 
-	public org.lgna.project.ast.AbstractConstructor getConstructorForArgumentType( org.lgna.project.ast.AbstractType< ?,?,? > argumentType ) {
+	public org.lgna.project.ast.AbstractConstructor getConstructorForArgumentType( org.lgna.project.ast.AbstractType<?, ?, ?> argumentType ) {
 		for( org.lgna.project.ast.NamedUserType userType : this.getDeclarationChildren() ) {
 			org.lgna.project.ast.AbstractConstructor constructor = userType.getDeclaredConstructors().get( 0 );
 			org.lgna.project.ast.AbstractParameter parameter = constructor.getRequiredParameters().get( 0 );
@@ -72,49 +74,60 @@ public class RootGalleryNode extends GalleryNode {
 	public String getSearchText() {
 		return "";
 	}
-	private java.util.List< org.lgna.project.ast.NamedUserType > getDeclarationChildren() {
+
+	private java.util.List<org.lgna.project.ast.NamedUserType> getDeclarationChildren() {
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.ide.ApiConfigurationManager.EPIC_HACK_getActiveInstance();
 		return org.alice.ide.typemanager.TypeManager.getNamedUserTypesFromSuperTypes( apiConfigurationManager.getTopLevelGalleryTypes() );
 	}
+
 	@Override
 	public GalleryNode getParent() {
 		return null;
 	}
+
 	@Override
 	public int getChildCount() {
 		return this.getDeclarationChildren().size();
 	}
+
 	@Override
 	public GalleryNode getChild( int index ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > type = this.getDeclarationChildren().get( index );
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getDeclarationChildren().get( index );
 		org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
 		org.lgna.project.ast.AbstractParameter parameter = constructor.getRequiredParameters().get( 0 );
 		return ArgumentTypeGalleryNode.getInstance( parameter.getValueType() );
 	}
+
 	@Override
 	public int getIndexOfChild( GalleryNode child ) {
-		return this.getDeclarationChildren().indexOf( ((TypeGalleryNode)child).getDeclaration() );
+		return this.getDeclarationChildren().indexOf( ( (TypeGalleryNode)child ).getDeclaration() );
 	}
+
 	@Override
 	public String getText() {
 		return "all models";
 	}
+
 	@Override
 	public javax.swing.Icon getSmallIcon() {
 		return org.alice.ide.icons.Icons.FOLDER_ICON_SMALL;
 	}
+
 	@Override
 	public javax.swing.Icon getLargeIcon() {
 		return org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE;
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		return null;
 	}
+
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
 		return null;
 	}
+
 	@Override
 	public String[] getTags() {
 		return null;

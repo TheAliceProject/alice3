@@ -50,20 +50,23 @@ public abstract class LgnaException extends RuntimeException {
 	private final Thread thread;
 	private VirtualMachine vm;
 	private LgnaStackTraceElement[] stackTrace;
+
 	public LgnaException( VirtualMachine vm ) {
 		this.vm = vm;
 		this.thread = Thread.currentThread();
 		this.stackTrace = this.vm.getStackTrace( this.thread );
 	}
+
 	public VirtualMachine getVirtualMachine() {
 		return this.vm;
 	}
+
 	public LgnaStackTraceElement[] getLgnaStackTrace() {
 		return this.stackTrace;
 	}
-	
+
 	protected abstract void appendDescription( StringBuilder sb );
-	
+
 	public String getFormattedString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
@@ -86,7 +89,7 @@ public abstract class LgnaException extends RuntimeException {
 		sb.append( "</html>" );
 		return sb.toString();
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

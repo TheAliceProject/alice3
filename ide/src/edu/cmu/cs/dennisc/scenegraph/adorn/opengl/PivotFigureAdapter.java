@@ -42,7 +42,8 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.adorn.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_LIGHTING;
+import static javax.media.opengl.GL.GL_LINES;
 
 /**
  * @author Dennis Cosgrove
@@ -55,7 +56,7 @@ public class PivotFigureAdapter extends AdornmentAdapter {
 		gl.glPushMatrix();
 		try {
 			gl.glMultMatrixd( ltParent );
-			Iterable< edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> > componentAdapters = parent.accessComponentAdapters();
+			Iterable<edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component>> componentAdapters = parent.accessComponentAdapters();
 			synchronized( componentAdapters ) {
 				for( edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter : componentAdapters ) {
 					if( componentAdapter instanceof edu.cmu.cs.dennisc.lookingglass.opengl.TransformableAdapter ) {
@@ -63,9 +64,9 @@ public class PivotFigureAdapter extends AdornmentAdapter {
 						java.nio.DoubleBuffer ltChild = child.accessLocalTransformationAsBuffer();
 						gl.glBegin( GL_LINES );
 						try {
-							
+
 							//todo: account for global brightness
-							
+
 							gl.glColor3f( FULL, ZERO, ZERO );
 							gl.glVertex3d( 0, 0, 0 );
 							gl.glVertex3d( 1, 0, 0 );
@@ -89,6 +90,7 @@ public class PivotFigureAdapter extends AdornmentAdapter {
 			gl.glPopMatrix();
 		}
 	}
+
 	@Override
 	protected void actuallyRender( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.CompositeAdapter adornmentRootAdapter ) {
 		rc.gl.glDisable( GL_LIGHTING );

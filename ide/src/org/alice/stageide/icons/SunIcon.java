@@ -48,12 +48,15 @@ package org.alice.stageide.icons;
 public class SunIcon implements javax.swing.Icon {
 	//todo
 	private static final int SMALL_ICON_SIZE = 24;
+
 	public int getIconWidth() {
 		return SMALL_ICON_SIZE;
 	}
+
 	public int getIconHeight() {
 		return SMALL_ICON_SIZE;
 	}
+
 	private java.awt.Shape createArc( float size ) {
 		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
 		rv.moveTo( 0.0f, 0.0f );
@@ -62,7 +65,8 @@ public class SunIcon implements javax.swing.Icon {
 		rv.closePath();
 		return rv;
 	}
-	public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.geom.AffineTransform m = g2.getTransform();
 		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
@@ -70,15 +74,15 @@ public class SunIcon implements javax.swing.Icon {
 		try {
 			java.awt.Shape innerArc = this.createArc( 16.0f );
 			java.awt.Shape outerArc = this.createArc( 18.0f );
-			
+
 			g2.translate( 4.0f, 4.0f );
 			java.awt.geom.GeneralPath pathRays = new java.awt.geom.GeneralPath();
-			double thetaN = Math.PI/2.0;
-			double thetaDelta = thetaN/8.0;
+			double thetaN = Math.PI / 2.0;
+			double thetaDelta = thetaN / 8.0;
 			g2.setColor( new java.awt.Color( 255, 210, 0 ) );
-			for( double theta = 0.0; theta<=thetaN; theta += thetaDelta ) {
+			for( double theta = 0.0; theta <= thetaN; theta += thetaDelta ) {
 				pathRays.moveTo( 0.0f, 0.0f );
-				pathRays.lineTo( (float)( Math.cos( theta ) * 20.0 ), (float)( Math.sin( theta ) * 20.0 ) ); 
+				pathRays.lineTo( (float)( Math.cos( theta ) * 20.0 ), (float)( Math.sin( theta ) * 20.0 ) );
 			}
 			g2.draw( pathRays );
 			g2.fill( outerArc );

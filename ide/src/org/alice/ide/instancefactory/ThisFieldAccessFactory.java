@@ -47,7 +47,8 @@ package org.alice.ide.instancefactory;
  * @author Dennis Cosgrove
  */
 public class ThisFieldAccessFactory extends AbstractInstanceFactory {
-	private static java.util.Map< org.lgna.project.ast.UserField, ThisFieldAccessFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserField, ThisFieldAccessFactory> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ThisFieldAccessFactory getInstance( org.lgna.project.ast.UserField field ) {
 		assert field != null;
 		ThisFieldAccessFactory rv = map.get( field );
@@ -59,48 +60,59 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.UserField field;
+
 	private ThisFieldAccessFactory( org.lgna.project.ast.UserField field ) {
 		super( field.name );
 		this.field = field;
 	}
+
 	@Override
-	protected boolean isValid( org.lgna.project.ast.AbstractType< ?, ?, ? > type, org.lgna.project.ast.AbstractCode code ) {
-		org.lgna.project.ast.AbstractType< ?,?,? > fieldDeclaringType = this.field.getDeclaringType();
+	protected boolean isValid( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.ast.AbstractCode code ) {
+		org.lgna.project.ast.AbstractType<?, ?, ?> fieldDeclaringType = this.field.getDeclaringType();
 		if( fieldDeclaringType != null ) {
 			return fieldDeclaringType.isAssignableFrom( type );
 		} else {
 			return false;
 		}
 	}
+
 	@Override
-	protected org.lgna.croquet.resolvers.Resolver< ThisFieldAccessFactory > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< ThisFieldAccessFactory >( this, org.lgna.project.ast.UserField.class, this.field );
+	protected org.lgna.croquet.resolvers.Resolver<ThisFieldAccessFactory> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ThisFieldAccessFactory>( this, org.lgna.project.ast.UserField.class, this.field );
 	}
+
 	public org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
+
 	private org.lgna.project.ast.FieldAccess createFieldAccess( org.lgna.project.ast.Expression expression ) {
 		return new org.lgna.project.ast.FieldAccess( expression, this.field );
 	}
+
 	public org.lgna.project.ast.FieldAccess createTransientExpression() {
 		return this.createFieldAccess( createTransientThisExpression() );
 	}
+
 	public org.lgna.project.ast.FieldAccess createExpression() {
 		return this.createFieldAccess( createThisExpression() );
 	}
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getValueType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
 		return this.field.getValueType();
 	}
+
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
 		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( this.field );
-		if( iconFactory != null && iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) {
+		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) ) {
 			return iconFactory;
 		} else {
 			return super.getIconFactory();
 		}
 	}
+
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "this." );

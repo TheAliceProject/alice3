@@ -53,7 +53,7 @@ public class JLineAxisPane extends JBoxPane {
 			component.doLayout();
 		}
 		if( components.length > 0 ) {
-//			this.revalidate();
+			//			this.revalidate();
 			this.doLayout();
 		}
 	}

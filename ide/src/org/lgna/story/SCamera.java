@@ -43,20 +43,24 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.MethodTemplate;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SCamera extends SMovableTurnable implements MutableRider {
 	private final org.lgna.story.implementation.SymmetricPerspectiveCameraImp implementation = new org.lgna.story.implementation.SymmetricPerspectiveCameraImp( this );
+
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.SymmetricPerspectiveCameraImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.SymmetricPerspectiveCameraImp getImplementation() {
 		return this.implementation;
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void moveAndOrientToAGoodVantagePointOf( SThing entity, MoveAndOrientToAGoodVantagePointOf.Detail... details ) {
 		this.implementation.animateSetTransformationToAGoodVantagePointOf( entity.getImplementation(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

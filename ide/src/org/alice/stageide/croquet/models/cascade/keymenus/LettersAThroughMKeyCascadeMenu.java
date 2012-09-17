@@ -52,11 +52,13 @@ public class LettersAThroughMKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	private static class SingletonHolder {
 		private static LettersAThroughMKeyCascadeMenu instance = new LettersAThroughMKeyCascadeMenu();
 	}
+
 	public static LettersAThroughMKeyCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private LettersAThroughMKeyCascadeMenu() {
-		super( java.util.UUID.fromString( "7acafa54-f6ed-4c69-b5fe-b00e68c549a6" ), 
+		super( java.util.UUID.fromString( "7acafa54-f6ed-4c69-b5fe-b00e68c549a6" ),
 				Key.A,
 				Key.B,
 				Key.C,
@@ -69,8 +71,7 @@ public class LettersAThroughMKeyCascadeMenu extends AbstractKeyCascadeMenu {
 				Key.J,
 				Key.K,
 				Key.L,
-				Key.M
-		);
+				Key.M );
 	}
 
 }

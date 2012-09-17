@@ -50,6 +50,7 @@ public abstract class HtmlStringValue extends StringValue {
 	public HtmlStringValue( java.util.UUID migrationId ) {
 		super( migrationId, new javax.swing.text.html.HTMLDocument() );
 	}
+
 	public org.lgna.croquet.components.ImmutableEditorPane createImmutableEditorPane() {
 		return new org.lgna.croquet.components.ImmutableEditorPane( this );
 	}

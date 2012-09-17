@@ -53,19 +53,20 @@ public class ShapeUtilities {
 		java.awt.Stroke stroke = g2.getStroke();
 		int width2 = width * 2;
 		for( int i = width2; i >= 2; i -= 2 ) {
-			float portion = (float)(width2 - i) / (width2);
+			float portion = (float)( width2 - i ) / ( width2 );
 			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( a, b, portion ) );
 			g2.setStroke( new java.awt.BasicStroke( i ) );
 			g2.draw( shape );
 		}
 		g2.setStroke( stroke );
 	}
+
 	public static void paintBorder( java.awt.Graphics2D g2, java.awt.Shape shape, java.awt.Color a, java.awt.Color b, int width, int alphaRule ) {
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		java.awt.Stroke stroke = g2.getStroke();
 		int width2 = width * 2;
 		for( int i = width2; i >= 2; i -= 2 ) {
-			float portion = (float)(width2 - i) / (width2);
+			float portion = (float)( width2 - i ) / ( width2 );
 			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( a, b, portion ) );
 			g2.setComposite( java.awt.AlphaComposite.getInstance( alphaRule, portion ) );
 			g2.setStroke( new java.awt.BasicStroke( i ) );
@@ -73,16 +74,16 @@ public class ShapeUtilities {
 		}
 		g2.setStroke( stroke );
 	}
-	
+
 	private static void drawShadedLine( java.awt.Graphics2D g2, float x0, float y0, float x1, float y1, java.awt.Paint topLeftPaint, java.awt.Paint otherPaint, java.awt.Paint bottomRightPaint, java.awt.geom.GeneralPath buffer ) {
-//		float xDelta = x1-x0;
-//		float yDelta = y1-y0;
-		float xDelta = x0-x1;
-		float yDelta = y0-y1;
+		//		float xDelta = x1-x0;
+		//		float yDelta = y1-y0;
+		float xDelta = x0 - x1;
+		float yDelta = y0 - y1;
 		if( xDelta > 0 ) {
 			if( yDelta > 0 ) {
 				g2.setPaint( otherPaint );
-			} else if( yDelta < 0 ){
+			} else if( yDelta < 0 ) {
 				g2.setPaint( topLeftPaint );
 			} else {
 				g2.setPaint( topLeftPaint );
@@ -90,7 +91,7 @@ public class ShapeUtilities {
 		} else if( xDelta < 0 ) {
 			if( yDelta > 0 ) {
 				g2.setPaint( bottomRightPaint );
-			} else if( yDelta < 0 ){
+			} else if( yDelta < 0 ) {
 				g2.setPaint( otherPaint );
 			} else {
 				g2.setPaint( bottomRightPaint );
@@ -98,7 +99,7 @@ public class ShapeUtilities {
 		} else {
 			if( yDelta > 0 ) {
 				g2.setPaint( bottomRightPaint );
-			} else if( yDelta < 0 ){
+			} else if( yDelta < 0 ) {
 				g2.setPaint( topLeftPaint );
 			} else {
 				return;
@@ -110,6 +111,7 @@ public class ShapeUtilities {
 		g2.draw( buffer );
 		//g2.drawLine( (int)( x0+0.5f ), (int)( y0+0.5f ), (int)( x1+0.5f ), (int)( y1+0.5f ) );
 	}
+
 	public static void paint( java.awt.Graphics2D g2, java.awt.Shape shape, BevelState bevelState ) {
 		g2.fill( shape );
 		if( bevelState != null ) {
@@ -120,9 +122,9 @@ public class ShapeUtilities {
 			} else {
 				java.awt.Stroke strokePrev = g2.getStroke();
 				g2.setStroke( new java.awt.BasicStroke( 1, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND ) );
-				
+
 				//g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-				
+
 				final float FLATNESS = 0.01f;
 				float[] segment = new float[ 6 ];
 				float x0 = Float.NaN;
@@ -131,7 +133,7 @@ public class ShapeUtilities {
 				float yPrev = Float.NaN;
 				float xCurr;
 				float yCurr;
-				
+
 				java.awt.Paint highlightPaint = new java.awt.Color( 255, 255, 255, 255 );
 				java.awt.Paint shadowPaint = new java.awt.Color( 0, 0, 0, 255 );
 				java.awt.Paint topLeftPaint;
@@ -144,7 +146,7 @@ public class ShapeUtilities {
 					bottomRightPaint = highlightPaint;
 				}
 				java.awt.Paint inBetweenPaint = new java.awt.Color( 128, 128, 128, 255 );
-				
+
 				synchronized( s_generalPath ) {
 					java.awt.geom.PathIterator pathIterator = shape.getPathIterator( null, FLATNESS );
 					while( pathIterator.isDone() == false ) {
@@ -156,8 +158,8 @@ public class ShapeUtilities {
 						case java.awt.geom.PathIterator.SEG_LINETO:
 							xCurr = segment[ 0 ];
 							yCurr = segment[ 1 ];
-							assert Float.isNaN( xPrev ) == false; 
-							assert Float.isNaN( yPrev ) == false; 
+							assert Float.isNaN( xPrev ) == false;
+							assert Float.isNaN( yPrev ) == false;
 							drawShadedLine( g2, xPrev, yPrev, xCurr, yCurr, topLeftPaint, inBetweenPaint, bottomRightPaint, s_generalPath );
 							xPrev = xCurr;
 							yPrev = yCurr;
@@ -167,7 +169,7 @@ public class ShapeUtilities {
 							x0 = xPrev = Float.NaN;
 							y0 = yPrev = Float.NaN;
 							break;
-	
+
 						case java.awt.geom.PathIterator.SEG_QUADTO:
 							throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
 						case java.awt.geom.PathIterator.SEG_CUBICTO:

@@ -49,8 +49,9 @@ package org.lgna.story;
 public class OrthographicCameraMarker extends CameraMarker {
 
 	private final org.lgna.story.implementation.OrthographicCameraMarkerImp implementation = new org.lgna.story.implementation.OrthographicCameraMarkerImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.OrthographicCameraMarkerImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.OrthographicCameraMarkerImp getImplementation() {
 		return this.implementation;
 	}
 

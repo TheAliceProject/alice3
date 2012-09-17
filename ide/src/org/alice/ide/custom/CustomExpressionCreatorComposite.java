@@ -46,15 +46,19 @@ package org.alice.ide.custom;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.custom.components.CustomExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V,org.lgna.project.ast.Expression> {
-	private final org.lgna.croquet.PlainStringValue valueLabel = this.createStringValue( this.createKey( "valueLabel" ) ); 
+public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.custom.components.CustomExpressionCreatorView> extends org.alice.ide.preview.PreviewContainingValueCreatorInputDialogCoreComposite<V, org.lgna.project.ast.Expression> {
+	private final org.lgna.croquet.PlainStringValue valueLabel = this.createStringValue( this.createKey( "valueLabel" ) );
+
 	public CustomExpressionCreatorComposite( java.util.UUID id ) {
 		super( id );
 	}
+
 	public org.lgna.croquet.PlainStringValue getValueLabel() {
 		return this.valueLabel;
 	}
+
 	protected abstract void initializeToPreviousExpression( org.lgna.project.ast.Expression expression );
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();

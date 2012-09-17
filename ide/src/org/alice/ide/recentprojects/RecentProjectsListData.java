@@ -45,26 +45,32 @@ package org.alice.ide.recentprojects;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsListData extends org.lgna.croquet.AbstractListData< java.net.URI > {
+public class RecentProjectsListData extends org.lgna.croquet.AbstractListData<java.net.URI> {
 	private static class SingletonHolder {
 		private static RecentProjectsListData instance = new RecentProjectsListData();
 	}
+
 	public static RecentProjectsListData getInstance() {
 		return SingletonHolder.instance;
 	}
-	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	private final java.util.List<java.net.URI> list = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	private RecentProjectsListData() {
 	}
-	public org.lgna.croquet.ItemCodec< java.net.URI > getItemCodec() {
+
+	public org.lgna.croquet.ItemCodec<java.net.URI> getItemCodec() {
 		return org.alice.ide.croquet.codecs.UriCodec.SINGLETON;
 	}
+
 	public int getSize() {
 		return this.list.size();
 	}
+
 	public java.net.URI get( int index ) {
 		return this.list.get( index );
 	}
-	
+
 	public java.net.URI[] createArray() {
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.list, java.net.URI.class );
 	}
@@ -79,7 +85,7 @@ public class RecentProjectsListData extends org.lgna.croquet.AbstractListData< j
 				}
 				this.list.add( 0, uri );
 				while( this.list.size() > N ) {
-					this.list.remove( this.list.size()-1 );
+					this.list.remove( this.list.size() - 1 );
 				}
 			} else {
 				this.list.clear();
@@ -89,9 +95,11 @@ public class RecentProjectsListData extends org.lgna.croquet.AbstractListData< j
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( file );
 		}
 	}
+
 	public void handleOpen( java.io.File file ) {
 		this.addFile( file );
 	}
+
 	public void handleSave( java.io.File file ) {
 		this.addFile( file );
 	}

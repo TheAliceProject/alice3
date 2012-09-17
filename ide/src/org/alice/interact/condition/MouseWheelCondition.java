@@ -51,37 +51,37 @@ import org.alice.interact.ModifierMask;
  * @author David Culyba
  */
 public class MouseWheelCondition extends ModifierSensitiveCondition {
-	
+
 	public MouseWheelCondition()
 	{
-		this(null);
+		this( null );
 	}
-	
-	public MouseWheelCondition( ModifierMask modifierMask)
+
+	public MouseWheelCondition( ModifierMask modifierMask )
 	{
-		super(modifierMask);
+		super( modifierMask );
 	}
-	
+
 	@Override
 	public boolean stateChanged( InputState currentState, InputState previousState ) {
 		boolean fullChange = super.stateChanged( currentState, previousState );
-		if (fullChange)
+		if( fullChange )
 		{
 			return true;
 		}
-		else if (testState(currentState) && testState(previousState))			
+		else if( testState( currentState ) && testState( previousState ) )
 		{
-			if (currentState.getInputEvent() instanceof MouseWheelEvent)
+			if( currentState.getInputEvent() instanceof MouseWheelEvent )
 			{
 				return currentState.getInputEvent() != previousState.getInputEvent();
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
 	protected boolean testState( InputState state ) {
-		return (super.testState( state ) && state.getMouseWheelState() != 0);
+		return ( super.testState( state ) && ( state.getMouseWheelState() != 0 ) );
 	}
 
 }

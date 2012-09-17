@@ -46,11 +46,12 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation > {
-	private final org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression > initializerListener = new org.lgna.croquet.State.ValueListener< org.lgna.project.ast.Expression >() {
-		public void changing( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel<org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation> {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.lgna.project.ast.Expression > state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 			GalleryFieldDeclarationPanel.this.update();
 		}
 	};
@@ -61,11 +62,12 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 		this.iconLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
 		this.addLineEndComponent( this.iconLabel );
 	}
+
 	private void update() {
 		this.updateNameTextField();
 		javax.swing.Icon prevIcon = this.iconLabel.getIcon();
 		javax.swing.Icon nextIcon;
-		
+
 		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
 		java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
 		if( fld != null ) {
@@ -85,12 +87,14 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel< org.ali
 			this.revalidateAndRepaint();
 		}
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getModel().getInitializerState().addValueListener( this.initializerListener );
 		this.update();
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.getModel().getInitializerState().removeValueListener( this.initializerListener );

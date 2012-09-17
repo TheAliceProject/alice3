@@ -47,9 +47,10 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class SetScale extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetScale.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetScale.class )
 	public static interface Detail {
 	}
+
 	private SetScale() {
 		super();
 	}

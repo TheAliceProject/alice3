@@ -49,26 +49,28 @@ package org.lgna.project.ast;
 public class LogicalComplement extends Expression {
 	public ExpressionProperty operand = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return JavaType.BOOLEAN_OBJECT_TYPE;
 		}
 	};
 
 	public LogicalComplement() {
 	}
-	public LogicalComplement( Expression operand ){
+
+	public LogicalComplement( Expression operand ) {
 		this.operand.setValue( operand );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
-	
+
 	@Override
 	public boolean isValid() {
 		Expression operand = this.operand.getValue();
 		if( operand != null ) {
-			AbstractType<?,?,?> operandType = operand.getType();
+			AbstractType<?, ?, ?> operandType = operand.getType();
 			return JavaType.BOOLEAN_OBJECT_TYPE.isAssignableFrom( operandType );
 		} else {
 			return false;

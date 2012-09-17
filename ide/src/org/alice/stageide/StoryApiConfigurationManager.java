@@ -56,6 +56,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	public static StoryApiConfigurationManager getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private final java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> filteredProceduresComposites;
 
@@ -73,11 +74,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBox.class, new org.alice.stageide.icons.BoxIconFactory() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SRoom.class, new org.alice.stageide.icons.RoomIconFactory() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SGround.class, new org.alice.stageide.icons.GroundIconFactory() );
-		
+
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, new org.alice.stageide.icons.JointIconFactory() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
-		
-		
+
 		java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		list.add( org.alice.stageide.member.TextProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.AtmosphereProceduresComposite.getInstance() );
@@ -93,11 +93,12 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		list.add( org.alice.stageide.member.AddListenerProceduresComposite.getInstance() );
 		this.filteredProceduresComposites = java.util.Collections.unmodifiableList( list );
 	}
-	
-	private static enum TypeComparator implements java.util.Comparator<org.lgna.project.ast.AbstractType<?,?,?>> {
+
+	private static enum TypeComparator implements java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> {
 		SINGLETON;
 		private static final double DEFAULT_VALUE = 50.0;
-		private final java.util.Map<org.lgna.project.ast.AbstractType<?,?,?>,Double> mapTypeToValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, Double> mapTypeToValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 		TypeComparator() {
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.BOOLEAN_OBJECT_TYPE, 1.1 );
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE, 1.2 );
@@ -105,7 +106,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( String.class ), 1.4 );
 
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ), 10.1 );
-			
+
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class ), 20.1 );
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Paint.class ), 20.2 );
 
@@ -115,7 +116,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 			mapTypeToValue.put( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ), 99.9 );
 		}
-		private double getValue( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+		private double getValue( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 			Double value = mapTypeToValue.get( type );
 			if( value != null ) {
 				return value;
@@ -123,7 +125,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 				return DEFAULT_VALUE;
 			}
 		}
-		public int compare( org.lgna.project.ast.AbstractType<?,?,?> typeA, org.lgna.project.ast.AbstractType<?,?,?> typeB ) {
+
+		public int compare( org.lgna.project.ast.AbstractType<?, ?, ?> typeA, org.lgna.project.ast.AbstractType<?, ?, ?> typeB ) {
 			double valueA = getValue( typeA );
 			double valueB = getValue( typeB );
 			if( valueA == valueB ) {
@@ -133,31 +136,37 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			}
 		}
 	};
+
 	@Override
-	public java.util.Comparator<org.lgna.project.ast.AbstractType<?,?,?>> getTypeComparator() {
+	public java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> getTypeComparator() {
 		return TypeComparator.SINGLETON;
 	}
-		
+
 	@Override
 	protected boolean isNamedUserTypesAcceptableForGallery( org.lgna.project.ast.NamedUserType type ) {
 		return type.isAssignableTo( org.lgna.story.SModel.class );
 	}
+
 	@Override
 	protected boolean isNamedUserTypesAcceptableForSelection( org.lgna.project.ast.NamedUserType type ) {
-		return type.isAssignableTo( org.lgna.story.SProgram.class ) == false || org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
+		return ( type.isAssignableTo( org.lgna.story.SProgram.class ) == false ) || org.alice.ide.croquet.models.ui.preferences.IsIncludingProgramType.getInstance().getValue();
 	}
+
 	@Override
 	public java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> getFilteredProceduresComposites() {
 		return this.filteredProceduresComposites;
 	}
+
 	@Override
-	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType< ? > type ) {
+	public boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType<?> type ) {
 		return type.isAssignableTo( org.lgna.story.SScene.class );
 	}
+
 	@Override
-	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType< ?, ?, ? > type ) {
+	public boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return type.isAssignableTo( org.lgna.story.SThing.class );
 	}
+
 	@Override
 	public java.util.List<org.lgna.project.ast.JavaType> getTopLevelGalleryTypes() {
 		return org.lgna.story.resourceutilities.StorytellingResources.getInstance().getTopLevelGalleryTypes();
@@ -167,7 +176,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getGalleryResourceParentFor( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getGalleryResourceParentFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( type == PERSON_RESOURCE_TYPE ) {
 			return BIPED_RESOURCE_TYPE;
 		} else {
@@ -176,15 +185,16 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	@Override
-	public java.util.List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public java.util.List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		java.util.List<org.lgna.project.ast.AbstractDeclaration> rv = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryResourceChildrenFor( type );
 		if( type == BIPED_RESOURCE_TYPE ) {
 			rv.add( 0, PERSON_RESOURCE_TYPE );
 		}
 		return rv;
 	}
+
 	@Override
-	public org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.croquet.joint.all.ThisJointedTypeMenuModel.getInstance( type );
 		} else {
@@ -194,7 +204,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	@Override
 	public org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForThisFieldAccess( org.lgna.project.ast.UserField field ) {
-		org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
 		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.croquet.joint.all.ThisFieldAccessJointedTypeMenuModel.getInstance( field );
 		} else {
@@ -202,18 +212,20 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		}
 		//		return org.alice.stageide.instancefactory.croquet.joint.declaration.ThisFieldAccessJointedTypeMenuModel.getMenuModel( field );
 	}
+
 	@Override
 	public org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForParameterAccess( org.lgna.project.ast.UserParameter parameter ) {
-		org.lgna.project.ast.AbstractType<?,?,?> type = parameter.getValueType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = parameter.getValueType();
 		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.croquet.joint.all.ParameterAccessJointedTypeMenuModel.getInstance( parameter );
 		} else {
 			return null;
 		}
 	}
+
 	@Override
 	public org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForLocalAccess( org.lgna.project.ast.UserLocal local ) {
-		org.lgna.project.ast.AbstractType<?,?,?> type = local.getValueType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = local.getValueType();
 		if( org.alice.stageide.ast.JointedTypeInfo.isJointed( type ) ) {
 			return org.alice.stageide.instancefactory.croquet.joint.all.LocalAccessJointedTypeMenuModel.getInstance( local );
 		} else {
@@ -222,9 +234,9 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType<?,?,?> argumentType ) {
+	public org.lgna.project.ast.AbstractConstructor getGalleryResourceConstructorFor( org.lgna.project.ast.AbstractType<?, ?, ?> argumentType ) {
 		java.util.List<org.lgna.project.ast.NamedUserType> types = org.alice.ide.typemanager.TypeManager.getNamedUserTypesFromSuperTypes( getTopLevelGalleryTypes() );
-		for( org.lgna.project.ast.AbstractType<?,?,?> type : types ) {
+		for( org.lgna.project.ast.AbstractType<?, ?, ?> type : types ) {
 			org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
 			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
 			if( parameters.size() == 1 ) {
@@ -242,6 +254,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 			public ThisFieldAccessNameLabel( org.lgna.project.ast.AbstractField field ) {
 				super( field );
 			}
+
 			@Override
 			protected String getNameText() {
 				if( org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().getValue() ) {
@@ -257,10 +270,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public org.lgna.croquet.components.JComponent<?> createReplacementForFieldAccessIfAppropriate( org.lgna.project.ast.FieldAccess fieldAccess ) {
 		org.lgna.project.ast.Expression fieldExpression = fieldAccess.expression.getValue();
-		if( fieldExpression instanceof org.lgna.project.ast.ThisExpression || fieldExpression instanceof org.alice.ide.ast.CurrentThisExpression ) {
+		if( ( fieldExpression instanceof org.lgna.project.ast.ThisExpression ) || ( fieldExpression instanceof org.alice.ide.ast.CurrentThisExpression ) ) {
 			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
-			org.lgna.project.ast.AbstractType< ?,?,? > declaringType = field.getDeclaringType();
-			if( declaringType != null && declaringType.isAssignableTo( org.lgna.story.SScene.class ) ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
+			if( ( declaringType != null ) && declaringType.isAssignableTo( org.lgna.story.SScene.class ) ) {
 				if( field.getValueType().isAssignableTo( org.lgna.story.SThing.class ) ) {
 					return this.createDeclarationNameLabel( field );
 				}
@@ -268,17 +281,19 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		}
 		return null;
 	}
+
 	@Override
-	public org.lgna.croquet.CascadeItem<?,?> getCustomFillInFor( org.lgna.project.annotations.ValueDetails<?> valueDetails ) {
+	public org.lgna.croquet.CascadeItem<?, ?> getCustomFillInFor( org.lgna.project.annotations.ValueDetails<?> valueDetails ) {
 		if( valueDetails instanceof org.lgna.story.annotation.PortionDetails ) {
 			return org.alice.ide.custom.PortionCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
 		} else if( valueDetails instanceof org.lgna.story.annotation.VolumeLevelDetails ) {
-//			return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn();
+			//			return org.alice.stageide.croquet.models.custom.CustomVolumeLevelInputDialogOperation.getInstance().getFillIn();
 			return org.alice.stageide.custom.VolumeLevelCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn();
 		} else {
 			return null;
 		}
 	}
+
 	@Override
 	public org.alice.ide.ast.ExpressionCreator getExpressionCreator() {
 		return this.expressionCreator;
@@ -304,8 +319,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	@Override
-	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes(java.util.List<? super org.lgna.project.ast.JavaType> rv) {
-		super.addSecondaryJavaTypes(rv);
+	protected java.util.List<? super org.lgna.project.ast.JavaType> addSecondaryJavaTypes( java.util.List<? super org.lgna.project.ast.JavaType> rv ) {
+		super.addSecondaryJavaTypes( rv );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SThing.class ) );
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class ) );
@@ -328,12 +343,14 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		rv.add( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.RollDirection.class ) );
 		return rv;
 	}
+
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
+
 	@Override
 	public org.lgna.project.ast.UserType<?> augmentTypeIfNecessary( org.lgna.project.ast.UserType<?> rv ) {
 		if( JOINTED_MODEL_TYPE.isAssignableFrom( rv ) ) {
 			org.lgna.project.ast.AbstractConstructor constructor0 = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0( rv );
-			org.lgna.project.ast.AbstractType<?,?,?> resourceType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getParameter0Type( constructor0 );
+			org.lgna.project.ast.AbstractType<?, ?, ?> resourceType = org.alice.ide.typemanager.ConstructorArgumentUtilities.getParameter0Type( constructor0 );
 			if( resourceType != null ) {
 				//pass
 			} else {
@@ -350,15 +367,15 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 					org.lgna.project.ast.JavaMethod getJointMethod = JOINTED_MODEL_TYPE.getDeclaredMethod( "getJoint", org.lgna.story.resources.JointId.class );
 					for( org.lgna.project.ast.AbstractField field : resourceType.getDeclaredFields() ) {
 						if( field.isStatic() ) {
-							if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId.class ) && field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN) {
+							if( field.getValueType().isAssignableTo( org.lgna.story.resources.JointId.class ) && ( field.getVisibility() != org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN ) ) {
 								org.lgna.project.ast.UserMethod method = org.lgna.project.ast.AstUtilities.createFunction( org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( field.getName(), "get" ), org.lgna.story.SJoint.class );
 								method.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.GENERATED );
 								org.lgna.project.ast.BlockStatement body = method.body.getValue();
-								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation( 
-										new org.lgna.project.ast.ThisExpression(), 
-										getJointMethod, 
+								org.lgna.project.ast.Expression expression = org.lgna.project.ast.AstUtilities.createMethodInvocation(
+										new org.lgna.project.ast.ThisExpression(),
+										getJointMethod,
 										org.lgna.project.ast.AstUtilities.createStaticFieldAccess( field )
-								);
+										);
 								body.statements.add( org.lgna.project.ast.AstUtilities.createReturnStatement( org.lgna.story.SJoint.class, expression ) );
 								rv.methods.add( method );
 							}

@@ -45,6 +45,7 @@ package org.alice.ide.i18n;
 public class Page {
 	private static final java.util.regex.Pattern NEW_LINE_PATTERN = java.util.regex.Pattern.compile( "\n" );
 	private Line[] lines = null;
+
 	public Page( String s ) {
 		String[] array = NEW_LINE_PATTERN.split( s );
 		this.lines = new Line[ array.length ];
@@ -52,6 +53,7 @@ public class Page {
 			this.lines[ i ] = new Line( array[ i ] );
 		}
 	}
+
 	public Line[] getLines() {
 		return this.lines;
 	}

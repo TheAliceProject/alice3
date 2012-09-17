@@ -48,7 +48,18 @@ package test;
  */
 import java.awt.event.MouseEvent;
 
-import org.lgna.story.*;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.MoveDirection;
+import org.lgna.story.SBiped;
+import org.lgna.story.SCamera;
+import org.lgna.story.SGround;
+import org.lgna.story.SProgram;
+import org.lgna.story.SScene;
+import org.lgna.story.SSun;
+import org.lgna.story.SThingMarker;
+import org.lgna.story.Turn;
+import org.lgna.story.TurnDirection;
+import org.lgna.story.TurnToFace;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
 import org.lgna.story.resources.sims2.BaseSkinTone;
@@ -62,12 +73,13 @@ class TestScene extends SScene {
 	private final SCamera camera;
 	private final SBiped susan;
 	private final SThingMarker marker;
+
 	public TestScene( SCamera camera, MyBiped susan, SThingMarker marker ) {
 		this.camera = camera;
 		this.susan = susan;
 		this.marker = marker;
 	}
-	
+
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
@@ -79,20 +91,20 @@ class TestScene extends SScene {
 		this.susan.turn( TurnDirection.LEFT, 0.25 );
 		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 		this.camera.moveAndOrientToAGoodVantagePointOf( this.susan );
-		this.camera.move( MoveDirection.UP, .4);
+		this.camera.move( MoveDirection.UP, .4 );
 		this.camera.move( MoveDirection.FORWARD, 3 );
-		
-		
+
 		//note: we pull the upper body away from the lower body
-		
+
 		//this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.5 );
 		//this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.5 );
 		org.lgna.story.implementation.JointedModelImp susanImp = ImplementationAccessor.getImplementation( this.susan );
 		//susanImp.getJointImplementation( org.lgna.story.resources.BipedResource.PELVIS_UPPER_BODY ).applyTranslation( 0, 1.0, 0, org.lgna.story.implementation.AsSeenBy.SELF );
 	}
+
 	private void performCustomSetup() {
-	} 
-	
+	}
+
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
 		if( isActive ) {
@@ -111,10 +123,10 @@ class TestScene extends SScene {
 		org.lgna.story.implementation.JointedModelImp imp = ImplementationAccessor.getImplementation( this.susan );
 		imp.showVisualization();
 		while( true ) {
-////			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
-//			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
-////			this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.25 );
-////			this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.25 );
+			////			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
+			//			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
+			////			this.susan.getPelvisForLowerBody().turn( TurnDirection.BACKWARD, 0.25 );
+			////			this.susan.getPelvisForUpperBody().turn( TurnDirection.BACKWARD, 0.25 );
 		}
 	}
 }
@@ -123,20 +135,22 @@ class TestScene extends SScene {
  * @author Dennis Cosgrove
  */
 class TestJointedModel extends SProgram {
-	private static java.util.Map< Integer, org.lgna.story.resources.JointId > mapHashCodeToJointId = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<Integer, org.lgna.story.resources.JointId> mapHashCodeToJointId = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	static {
 		for( org.lgna.story.resources.JointId rootJointId : org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS ) {
 			fillInMap( rootJointId );
 		}
 	}
+
 	private static void fillInMap( org.lgna.story.resources.JointId jointId ) {
 		mapHashCodeToJointId.put( jointId.hashCode(), jointId );
 		for( org.lgna.story.resources.JointId childId : jointId.getDeclaredChildren() ) {
 			fillInMap( childId );
 		}
 	}
+
 	private final SCamera camera = new SCamera();
-	private final MyBiped susan = new MyBiped( 
+	private final MyBiped susan = new MyBiped(
 			new AdultPersonResource(
 					Gender.FEMALE,
 					BaseSkinTone.getRandom(),
@@ -144,54 +158,61 @@ class TestJointedModel extends SProgram {
 					FemaleAdultHairBraids.BLACK,
 					0.5,
 					FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE
-	) );
-	private final MyBiped ogre = new MyBiped(org.lgna.story.resources.biped.OgreResource.BROWN);
+			) );
+	private final MyBiped ogre = new MyBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
 	private final SThingMarker marker = new SThingMarker();
 	private final TestScene testScene = new TestScene( camera, susan, marker );
-	
+
 	private int previousX = -1;
 	private int previousY = -1;
-	
+
 	public void test() {
 		final edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = ImplementationAccessor.getImplementation( this ).getOnscreenLookingGlass();
-		
-		lg.getAWTComponent().addMouseListener(new java.awt.event.MouseListener() {
-			public void mousePressed(MouseEvent e) {
+
+		lg.getAWTComponent().addMouseListener( new java.awt.event.MouseListener() {
+			public void mousePressed( MouseEvent e ) {
 				previousX = e.getX();
 				previousY = e.getY();
 			}
-			public void mouseClicked(MouseEvent e) {}
-			public void mouseReleased(MouseEvent e) {
+
+			public void mouseClicked( MouseEvent e ) {
+			}
+
+			public void mouseReleased( MouseEvent e ) {
 				previousX = -1;
 				previousY = -1;
 			}
-			public void mouseEntered(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
-			
-		});
+
+			public void mouseEntered( MouseEvent e ) {
+			}
+
+			public void mouseExited( MouseEvent e ) {
+			}
+
+		} );
 		lg.getAWTComponent().addMouseMotionListener( new java.awt.event.MouseMotionListener() {
-			
-			public void mouseMoved(java.awt.event.MouseEvent e) {
+
+			public void mouseMoved( java.awt.event.MouseEvent e ) {
 				edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = lg.getPicker().pickFrontMost( e.getX(), e.getY(), edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.REQUIRED );
 				org.lgna.story.implementation.EntityImp entityImp = org.lgna.story.implementation.EntityImp.getInstance( pickResult.getVisual() );
-				int subElement = pickResult.getSubElement();  
-				if( entityImp == null && subElement != -1 ) {
+				int subElement = pickResult.getSubElement();
+				if( ( entityImp == null ) && ( subElement != -1 ) ) {
 					org.lgna.story.resources.JointId jointId = mapHashCodeToJointId.get( subElement );
 					System.out.println( jointId );
 				}
 			}
-			
-			
-			public void mouseDragged(java.awt.event.MouseEvent e) {
-				if (previousX != -1 && previousY != -1) {
+
+			public void mouseDragged( java.awt.event.MouseEvent e ) {
+				if( ( previousX != -1 ) && ( previousY != -1 ) ) {
 					int xDif = e.getX() - previousX;
 					int yDif = e.getY() - previousY;
-					if (xDif != 0) {
-						camera.turn(TurnDirection.RIGHT, xDif*.002, Turn.duration(0), Turn.asSeenBy(testScene));
+					if( xDif != 0 ) {
+						camera.turn( TurnDirection.RIGHT, xDif * .002, Turn.duration( 0 ), Turn.asSeenBy( testScene ) );
 					}
-					if (yDif != 0) {
-						marker.turnToFace(camera, TurnToFace.duration(0));;
-						camera.turn(TurnDirection.BACKWARD, yDif*.002, Turn.duration(0), Turn.asSeenBy(marker));
+					if( yDif != 0 ) {
+						marker.turnToFace( camera, TurnToFace.duration( 0 ) );
+						;
+						camera.turn( TurnDirection.BACKWARD, yDif * .002, Turn.duration( 0 ), Turn.asSeenBy( marker ) );
 					}
 				}
 				previousX = e.getX();
@@ -201,6 +222,7 @@ class TestJointedModel extends SProgram {
 		this.setActiveScene( this.testScene );
 		this.testScene.test();
 	}
+
 	public static void main( String[] args ) {
 		TestJointedModel test = new TestJointedModel();
 		test.initializeInFrame( args );

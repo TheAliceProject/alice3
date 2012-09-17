@@ -49,9 +49,11 @@ public class ReportBugComposite extends ReportIssueComposite {
 	private static class SingletonHolder {
 		private static ReportBugComposite instance = new ReportBugComposite();
 	}
+
 	public static ReportBugComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ReportBugComposite() {
 		super( java.util.UUID.fromString( "616fa02a-f9f4-4b94-ae69-1da9f8beb515" ), edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG );
 	}

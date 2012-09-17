@@ -51,21 +51,24 @@ public abstract class DialogOperation extends SingleThreadOperation {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
 	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
 
-	public static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Container< ? > > CONTENT_PANE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogOperation.CONTENT_PANEL_KEY" );
-	
+	public static final org.lgna.croquet.history.Step.Key<org.lgna.croquet.components.Container<?>> CONTENT_PANE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DialogOperation.CONTENT_PANEL_KEY" );
+
 	public DialogOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
 
 	protected void modifyPackedDialogSizeIfDesired( Dialog dialog ) {
 	}
+
 	protected java.awt.Point getDesiredDialogLocation() {
 		return null;
 	}
 
-	protected abstract org.lgna.croquet.components.Container< ? > createContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog );
-	protected abstract void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane );
-	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, org.lgna.croquet.components.Container< ? > contentPane ) {
+	protected abstract org.lgna.croquet.components.Container<?> createContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog );
+
+	protected abstract void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, org.lgna.croquet.components.Container<?> contentPane );
+
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
 	}
 
 	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
@@ -101,7 +104,7 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		if( ownerDialog != null ) {
 			owner = ownerDialog;
 		} else {
-			org.lgna.croquet.components.ViewController< ?, ? > viewController = trigger.getViewController();
+			org.lgna.croquet.components.ViewController<?, ?> viewController = trigger.getViewController();
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
@@ -117,9 +120,9 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		step.putEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY, dialog );
 		//		dialog.getAwtComponent().setUndecorated( true );
 		//		dialog.getRootPane().setWindowDecorationStyle(javax.swing.JRootPane.PLAIN_DIALOG);
-		org.lgna.croquet.components.Container< ? > contentPane = this.createContentPane( step, dialog );
+		org.lgna.croquet.components.Container<?> contentPane = this.createContentPane( step, dialog );
 		step.putEphemeralDataFor( CONTENT_PANE_KEY, contentPane );
-		
+
 		try {
 			if( contentPane != null ) {
 				dialog.getAwtComponent().setContentPane( contentPane.getAwtComponent() );

@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.ast.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > {
-	private static java.util.Map< org.lgna.project.ast.JavaMethod, JavaKeyedArgumentFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> {
+	private static java.util.Map<org.lgna.project.ast.JavaMethod, JavaKeyedArgumentFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static JavaKeyedArgumentFillIn getInstance( org.lgna.project.ast.JavaMethod value ) {
 		synchronized( map ) {
 			JavaKeyedArgumentFillIn rv = map.get( value );
@@ -60,7 +61,9 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org
 			return rv;
 		}
 	}
+
 	private final org.lgna.project.ast.JavaKeyedArgument transientValue;
+
 	private JavaKeyedArgumentFillIn( org.lgna.project.ast.JavaMethod keyMethod ) {
 		super( java.util.UUID.fromString( "484ff351-b7a9-4c7a-b2de-a6479b97ade7" ) );
 		this.transientValue = new org.lgna.project.ast.JavaKeyedArgument();
@@ -69,34 +72,37 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn< org
 			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( requiredParameter ) );
 		}
 	}
-	
+
 	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > node ) {
+	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
 		return this.transientValue.getKeyMethod().getName();
 	}
+
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
 		return null;
 	}
 
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
 		throw new AssertionError();
 	}
+
 	@Override
-	public org.lgna.project.ast.JavaKeyedArgument createValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public org.lgna.project.ast.JavaKeyedArgument createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( node, transactionHistory, org.lgna.project.ast.Expression.class );
 		org.lgna.project.ast.JavaMethod keyMethod = this.transientValue.getKeyMethod();
-		return new org.lgna.project.ast.JavaKeyedArgument( 
-				this.transientValue.parameter.getValue(), 
-				keyMethod, 
-				argumentExpressions 
-		);
+		return new org.lgna.project.ast.JavaKeyedArgument(
+				this.transientValue.parameter.getValue(),
+				keyMethod,
+				argumentExpressions );
 	}
+
 	@Override
-	public org.lgna.project.ast.JavaKeyedArgument getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression > node ) {
+	public org.lgna.project.ast.JavaKeyedArgument getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> node ) {
 		return this.transientValue;
 	}
+
 	@Override
 	protected java.lang.String getTutorialItemText() {
 		return this.transientValue.getKeyMethod().getName();

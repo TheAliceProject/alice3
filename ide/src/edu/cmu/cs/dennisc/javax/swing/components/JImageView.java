@@ -44,13 +44,16 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 
 public class JImageView extends javax.swing.JComponent {
 	private java.awt.image.BufferedImage bufferedImage;
+
 	public java.awt.image.BufferedImage getBufferedImage() {
 		return this.bufferedImage;
 	}
-	public void setBufferedImage(java.awt.image.BufferedImage bufferedImage) {
+
+	public void setBufferedImage( java.awt.image.BufferedImage bufferedImage ) {
 		this.bufferedImage = bufferedImage;
 		this.repaint();
 	}
+
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		//super.paintComponent( g );
@@ -61,11 +64,11 @@ public class JImageView extends javax.swing.JComponent {
 
 			java.awt.Dimension componentSize = this.getSize();
 			java.awt.Dimension drawSize = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.calculateBestFittingSize( componentSize, widthToHeightImageAspectRatio );
-			
-			int x = (componentSize.width - drawSize.width)/2;
-			int y = (componentSize.height - drawSize.height)/2;
-			
-			g.drawImage( this.bufferedImage, x, y, x+drawSize.width, y+drawSize.height, 0, 0, imageWidth, imageHeight, this );
+
+			int x = ( componentSize.width - drawSize.width ) / 2;
+			int y = ( componentSize.height - drawSize.height ) / 2;
+
+			g.drawImage( this.bufferedImage, x, y, x + drawSize.width, y + drawSize.height, 0, 0, imageWidth, imageHeight, this );
 		}
 	}
 }

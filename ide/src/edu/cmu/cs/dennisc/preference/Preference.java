@@ -45,18 +45,19 @@ package edu.cmu.cs.dennisc.preference;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Preference< E > {
+public abstract class Preference<E> {
 	private CollectionOfPreferences collectionOfPreferences;
 	private String key;
 	private E defaultValue;
 	private boolean isTransient;
 	private E currentValueIfTransient;
-	private java.util.List< edu.cmu.cs.dennisc.preference.event.PreferenceListener<E> > preferenceListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.preference.event.PreferenceListener<E> >();
+	private java.util.List<edu.cmu.cs.dennisc.preference.event.PreferenceListener<E>> preferenceListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.preference.event.PreferenceListener<E>>();
+
 	public Preference( E defaultValue ) {
 		this.defaultValue = defaultValue;
 	}
-	
-	/*package private*/ void initialize( CollectionOfPreferences collectionOfPreferences, String key, boolean isTransient ) {
+
+	/* package private */void initialize( CollectionOfPreferences collectionOfPreferences, String key, boolean isTransient ) {
 		this.collectionOfPreferences = collectionOfPreferences;
 		this.key = key;
 		this.isTransient = isTransient;
@@ -64,19 +65,23 @@ public abstract class Preference< E > {
 			this.currentValueIfTransient = this.defaultValue;
 		}
 	}
-	
+
 	public boolean isTransient() {
 		return this.isTransient;
 	}
-	
+
 	public String getKey() {
 		return this.key;
 	}
+
 	public E getDefaultValue() {
 		return this.defaultValue;
 	}
+
 	protected abstract E getValue( java.util.prefs.Preferences utilPrefs, String key, E defaultValue );
+
 	protected abstract void setAndCommitValue( java.util.prefs.Preferences utilPrefs, String key, E nextValue );
+
 	public final E getValue() {
 		if( this.isTransient ) {
 			return this.currentValueIfTransient;
@@ -85,6 +90,7 @@ public abstract class Preference< E > {
 			return this.getValue( utilPrefs, this.key, this.defaultValue );
 		}
 	}
+
 	public final void setAndCommitValue( E nextValue ) {
 		java.util.prefs.Preferences utilPrefs = this.collectionOfPreferences.getUtilPrefs();
 		edu.cmu.cs.dennisc.preference.event.PreferenceEvent<E> e;
@@ -100,15 +106,15 @@ public abstract class Preference< E > {
 			e = null;
 		}
 		if( e != null ) {
-			this.firePropertyChanging(e);
+			this.firePropertyChanging( e );
 		}
 		if( this.isTransient ) {
 			this.currentValueIfTransient = nextValue;
 		} else {
-			this.setAndCommitValue(utilPrefs, this.key, nextValue);
+			this.setAndCommitValue( utilPrefs, this.key, nextValue );
 		}
 		if( e != null ) {
-			this.firePropertyChanged(e);
+			this.firePropertyChanged( e );
 		}
 	}
 
@@ -117,12 +123,14 @@ public abstract class Preference< E > {
 			this.preferenceListeners.add( propertyListener );
 		}
 	}
+
 	public void removePropertyListener( edu.cmu.cs.dennisc.preference.event.PreferenceListener<E> propertyListener ) {
 		synchronized( this.preferenceListeners ) {
 			this.preferenceListeners.remove( propertyListener );
 		}
 	}
-	public Iterable< edu.cmu.cs.dennisc.preference.event.PreferenceListener<E> > getPropertyListeners() {
+
+	public Iterable<edu.cmu.cs.dennisc.preference.event.PreferenceListener<E>> getPropertyListeners() {
 		return this.preferenceListeners;
 	}
 
@@ -135,6 +143,7 @@ public abstract class Preference< E > {
 			}
 		}
 	}
+
 	private void firePropertyChanged( edu.cmu.cs.dennisc.preference.event.PreferenceEvent<E> e ) {
 		if( this.preferenceListeners != null ) {
 			synchronized( this.preferenceListeners ) {

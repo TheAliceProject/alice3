@@ -49,7 +49,7 @@ public class PopupFactoryUtilities {
 	public static javax.swing.JComboBox forceHeavyWeightPopups( javax.swing.JComboBox rv ) {
 		rv.setLightWeightPopupEnabled( false );
 		try {
-			Class< ? > cls = Class.forName( "javax.swing.PopupFactory" );
+			Class<?> cls = Class.forName( "javax.swing.PopupFactory" );
 			java.lang.reflect.Field field = cls.getDeclaredField( "forceHeavyWeightPopupKey" );
 			field.setAccessible( true );
 			rv.putClientProperty( field.get( null ), Boolean.TRUE );

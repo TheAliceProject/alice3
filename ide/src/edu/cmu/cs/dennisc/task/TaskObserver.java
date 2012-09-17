@@ -47,6 +47,6 @@ package edu.cmu.cs.dennisc.task;
  */
 public interface TaskObserver<E> {
 	void handleCompletion( E e );
+
 	void handleCancelation();
 }
-

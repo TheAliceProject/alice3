@@ -43,36 +43,33 @@
 
 package org.alice.ide.properties.adapter;
 
-import java.util.Locale;
-
 import org.alice.ide.croquet.models.StandardExpressionState;
 import org.lgna.story.Color;
 
-public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<org.lgna.story.Color, O> 
+public class ColorPropertyAdapter<O> extends AbstractImplementationPropertyAdapter<org.lgna.story.Color, O>
 {
-	public ColorPropertyAdapter(O instance, org.lgna.story.implementation.Property<org.lgna.story.Color> property, StandardExpressionState expressionState)
+	public ColorPropertyAdapter( O instance, org.lgna.story.implementation.Property<org.lgna.story.Color> property, StandardExpressionState expressionState )
 	{
-		this("Color", instance, property, expressionState);
+		this( "Color", instance, property, expressionState );
 	}
-	
-	public ColorPropertyAdapter(String repr, O instance, org.lgna.story.implementation.Property<org.lgna.story.Color> property, StandardExpressionState expressionState )
+
+	public ColorPropertyAdapter( String repr, O instance, org.lgna.story.implementation.Property<org.lgna.story.Color> property, StandardExpressionState expressionState )
 	{
-		super(repr, instance, property, expressionState);
+		super( repr, instance, property, expressionState );
 	}
-	
+
 	@Override
-	public Color getValueCopyIfMutable() 
+	public Color getValueCopyIfMutable()
 	{
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "Color is immutable.  No need to copy???" );
 		//return new Color4f(this.getValue());
 		return this.getValue();
 	}
-	
+
 	@Override
-	public String getUndoRedoDescription() 
+	public String getUndoRedoDescription()
 	{
 		return "Color";
 	}
-	
 
 }

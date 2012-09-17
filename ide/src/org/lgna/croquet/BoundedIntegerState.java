@@ -45,14 +45,16 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedIntegerState extends BoundedNumberState< Integer > {
+public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 	public static class Details {
-		private static class IntegerSwingModel implements SwingModel< Integer > {
+		private static class IntegerSwingModel implements SwingModel<Integer> {
 			private boolean isInTheMidstOfStateChanged = false;
+
 			private class CustomSpinnerNumberModel extends javax.swing.SpinnerNumberModel {
 				public CustomSpinnerNumberModel( Details details ) {
 					super( details.initialValue, details.minimum, details.maximum, details.stepSize );
 				}
+
 				@Override
 				protected void fireStateChanged() {
 					super.fireStateChanged();
@@ -69,15 +71,16 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 					}
 				}
 			}
+
 			private class CustomBoundedRangeModel extends javax.swing.DefaultBoundedRangeModel {
 				public CustomBoundedRangeModel( Details details ) {
-					super( 
-							Math.min( Math.max( details.initialValue, details.minimum ), details.maximum-details.extent ), 
-							details.extent, 
-							details.minimum, 
-							details.maximum 
-					);
+					super(
+							Math.min( Math.max( details.initialValue, details.minimum ), details.maximum - details.extent ),
+							details.extent,
+							details.minimum,
+							details.maximum );
 				}
+
 				@Override
 				protected void fireStateChanged() {
 					super.fireStateChanged();
@@ -95,6 +98,7 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 					}
 				}
 			}
+
 			private final CustomBoundedRangeModel boundedRangeModel;
 			private final CustomSpinnerNumberModel spinnerModel;
 
@@ -102,15 +106,19 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 				this.spinnerModel = new CustomSpinnerNumberModel( details );
 				this.boundedRangeModel = new CustomBoundedRangeModel( details );
 			}
+
 			public javax.swing.BoundedRangeModel getBoundedRangeModel() {
 				return this.boundedRangeModel;
 			}
+
 			public javax.swing.SpinnerNumberModel getSpinnerModel() {
 				return this.spinnerModel;
 			}
+
 			public void setValue( Integer value ) {
 				this.boundedRangeModel.setValue( value );
-			}			
+			}
+
 			public void setAll( Integer value, Integer minimum, Integer maximum, Integer stepSize, Integer extent, boolean isAdjusting ) {
 				if( value != null ) {
 					//pass
@@ -151,68 +159,81 @@ public abstract class BoundedIntegerState extends BoundedNumberState< Integer > 
 		private int extent = 0;
 		private int stepSize = 1;
 		private int initialValue = 50;
+
 		public Details( Group group, java.util.UUID id ) {
 			this.group = group;
 			this.id = id;
 		}
+
 		public Details minimum( int minimum ) {
 			this.minimum = minimum;
 			return this;
 		}
+
 		public Details maximum( int maximum ) {
 			this.maximum = maximum;
 			return this;
 		}
+
 		public Details extent( int extent ) {
 			this.extent = extent;
 			return this;
 		}
+
 		public Details stepSize( int stepSize ) {
 			this.stepSize = stepSize;
 			return this;
 		}
+
 		public Details initialValue( int initialValue ) {
 			this.initialValue = initialValue;
 			return this;
 		}
-		
+
 		private synchronized IntegerSwingModel createSwingModel() {
 			return new IntegerSwingModel( this );
 		}
 	}
+
 	public BoundedIntegerState( Details details ) {
 		super( details.group, details.id, details.initialValue, details.createSwingModel() );
 	}
+
 	@Override
-	public Class< Integer > getItemClass() {
+	public Class<Integer> getItemClass() {
 		return Integer.class;
 	}
+
 	@Override
 	public Integer decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeInt();
 	}
+
 	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Integer value ) {
 		binaryEncoder.encode( value );
 	}
-	
+
 	@Override
 	public Integer getMinimum() {
 		return this.getSwingModel().getBoundedRangeModel().getMinimum();
 	}
+
 	@Override
 	public void setMinimum( Integer minimum ) {
 		this.getSwingModel().getBoundedRangeModel().setMinimum( minimum );
 	}
+
 	@Override
 	public Integer getMaximum() {
 		return this.getSwingModel().getBoundedRangeModel().getMaximum();
 	}
+
 	@Override
 	public void setMaximum( Integer maximum ) {
 		this.getSwingModel().getBoundedRangeModel().setMaximum( maximum );
 	}
-	
+
 	@Override
 	protected Integer getActualValue() {
 		return this.getSwingModel().getBoundedRangeModel().getValue();

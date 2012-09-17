@@ -47,8 +47,9 @@ package org.lgna.cheshire.task.stencil.views;
  * @author Dennis Cosgrove
  */
 public class PresentationView extends org.lgna.croquet.components.LayerStencil {
-	private static final java.awt.Color STENCIL_BASE_COLOR =  new java.awt.Color( 181, 140, 140, 150 );
-	private static final java.awt.Color STENCIL_LINE_COLOR =  new java.awt.Color( 92, 48, 24, 63 );
+	private static final java.awt.Color STENCIL_BASE_COLOR = new java.awt.Color( 181, 140, 140, 150 );
+	private static final java.awt.Color STENCIL_LINE_COLOR = new java.awt.Color( 92, 48, 24, 63 );
+
 	private static java.awt.Paint createStencilPaint() {
 		int width = 8;
 		int height = 8;
@@ -63,34 +64,40 @@ public class PresentationView extends org.lgna.croquet.components.LayerStencil {
 		g2.dispose();
 		return new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
 	}
+
 	private static final java.awt.Paint stencilPaint = createStencilPaint();
 
 	public PresentationView( org.lgna.cheshire.task.stencil.PresentationComposite composite ) {
-		super( composite.getWindow(), javax.swing.JLayeredPane.POPUP_LAYER-1 );
+		super( composite.getWindow(), javax.swing.JLayeredPane.POPUP_LAYER - 1 );
 		org.lgna.croquet.components.Layer layer = this.getLayer();
 		org.lgna.croquet.components.FlowPanel controlPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER, 2, 0 );
 		controlPanel.addComponent( composite.getPreviousOperation().createButton() );
 		controlPanel.addComponent( new TaskComboBox( composite.getTaskComboBoxModel(), layer ) );
 		controlPanel.addComponent( composite.getNextOperation().createButton() );
-		
+
 		this.internalAddComponent( controlPanel, java.awt.BorderLayout.PAGE_START );
 	}
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout();
 	}
+
 	@Override
 	protected boolean contains( int x, int y, boolean superContains ) {
 		return superContains;
 	}
+
 	@Override
 	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
 		g2.setPaint( stencilPaint );
 		g2.fill( g2.getClip() );
 	}
+
 	@Override
 	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
 	}
+
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
 	}

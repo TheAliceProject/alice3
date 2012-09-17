@@ -42,11 +42,11 @@
  */
 package org.lgna.croquet;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public interface DropSite extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public DropReceptor getOwningDropReceptor();
+
 	public DropSite createReplacement( org.lgna.croquet.Retargeter retargeter );
 }

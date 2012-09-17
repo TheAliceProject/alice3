@@ -46,10 +46,11 @@ package edu.cmu.cs.dennisc.media.jmf;
  * @author Dennis Cosgrove
  */
 public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
-	private java.util.Map< org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource > audioResourceToDataSourceMap = new java.util.HashMap< org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource >();
+	private java.util.Map<org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource> audioResourceToDataSourceMap = new java.util.HashMap<org.lgna.common.resources.AudioResource, javax.media.protocol.DataSource>();
 	private org.lgna.common.event.ResourceContentListener resourceContentListener = new org.lgna.common.event.ResourceContentListener() {
 		public void contentChanging( org.lgna.common.event.ResourceContentEvent e ) {
 		}
+
 		public void contentChanged( org.lgna.common.event.ResourceContentEvent e ) {
 			MediaFactory.this.forget( (org.lgna.common.resources.AudioResource)e.getTypedSource() );
 		}
@@ -64,6 +65,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 	static {
 		MediaFactory.singleton = new MediaFactory();
 	}
+
 	public static MediaFactory getSingleton() {
 		return MediaFactory.singleton;
 	}
@@ -75,7 +77,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 		this.audioResourceToDataSourceMap.remove( audioResource );
 		audioResource.removeContentListener( this.resourceContentListener );
 	}
-	
+
 	public org.lgna.common.resources.AudioResource createAudioResource( java.io.File file ) throws java.io.IOException {
 		String contentType = org.lgna.common.resources.AudioResource.getContentType( file );
 		if( contentType != null ) {
@@ -93,12 +95,12 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 			} else {
 				runnable.run();
 			}
-			return rv;			
+			return rv;
 		} else {
 			throw new RuntimeException( "content type not found for " + file );
 		}
 	}
-	
+
 	private javax.media.Player createJMFPlayer( org.lgna.common.resources.AudioResource audioResource ) {
 		assert audioResource != null;
 		javax.media.protocol.DataSource dataSource = this.audioResourceToDataSourceMap.get( audioResource );
@@ -119,6 +121,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 			throw new RuntimeException( audioResource.toString(), ioe );
 		}
 	}
+
 	@Override
 	public Player createPlayer( org.lgna.common.resources.AudioResource audioResource, double volume, double startTime, double stopTime ) {
 		Player player = new Player( createJMFPlayer( audioResource ), volume, startTime, stopTime );

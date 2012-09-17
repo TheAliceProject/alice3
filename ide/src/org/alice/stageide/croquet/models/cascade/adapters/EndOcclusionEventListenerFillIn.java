@@ -3,10 +3,11 @@ package org.alice.stageide.croquet.models.cascade.adapters;
 import org.lgna.story.event.OcclusionEndListener;
 
 public class EndOcclusionEventListenerFillIn extends LambdaExpressionFillIn {
-	
+
 	private static class SingletonHolder {
 		private static EndOcclusionEventListenerFillIn instance = new EndOcclusionEventListenerFillIn();
 	}
+
 	public static EndOcclusionEventListenerFillIn getInstance() {
 		return SingletonHolder.instance;
 	}

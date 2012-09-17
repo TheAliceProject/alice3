@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.java.awt;
  */
 public class MouseFocusEventQueue extends java.awt.EventQueue {
 	private static MouseFocusEventQueue singleton;
+
 	public static MouseFocusEventQueue getSingleton() {
 		if( singleton != null ) {
 			//pass
@@ -57,21 +58,19 @@ public class MouseFocusEventQueue extends java.awt.EventQueue {
 	}
 
 	private java.awt.Component componentWithMouseFocus = null;
+
 	public void pushComponentWithMouseFocus( java.awt.Component componentWithMouseFocus ) {
 		assert this.componentWithMouseFocus == null;
 		this.componentWithMouseFocus = componentWithMouseFocus;
 		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
 
-		
-		
 		//sadly, this breaks opengl on for some video card drivers
 		toolkit.getSystemEventQueue().push( this );
-		
-		
-		
+
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
 	}
+
 	public java.awt.Component popComponentWithMouseFocus() {
 		assert this.componentWithMouseFocus != null;
 		java.awt.Component rv = this.componentWithMouseFocus;

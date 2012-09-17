@@ -43,34 +43,48 @@
 
 package org.lgna.story.implementation.sims2;
 
+import edu.cmu.cs.dennisc.scenegraph.Composite;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NebulousVisualData< M extends edu.cmu.cs.dennisc.nebulous.Model> implements org.lgna.story.implementation.JointedModelImp.VisualData {
+public class NebulousVisualData<M extends edu.cmu.cs.dennisc.nebulous.Model> implements org.lgna.story.implementation.JointedModelImp.VisualData {
 	private final M nebModel;
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { new edu.cmu.cs.dennisc.scenegraph.Visual() };
 	private final edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] sgAppearances = new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] { new edu.cmu.cs.dennisc.scenegraph.SimpleAppearance() };
+
 	public NebulousVisualData( M nebModel ) {
 		this.nebModel = nebModel;
-		this.nebModel.setVisual(sgVisuals[0]);
+		this.nebModel.setVisual( sgVisuals[ 0 ] );
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.nebModel } );
 		this.getSgVisuals()[ 0 ].frontFacingAppearance.setValue( sgAppearances[ 0 ] );
 	}
+
 	public edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgAppearances() {
 		return this.sgAppearances;
 	}
+
 	public edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
+
 	public M getNebModel() {
 		return this.nebModel;
 	}
+
 	public double getBoundingSphereRadius() {
 		return 1.0;
 	}
-	
-	public void setSGParent(edu.cmu.cs.dennisc.scenegraph.Composite parent) {
-		nebModel.setSGParent(parent);
+
+	public void setSGParent( edu.cmu.cs.dennisc.scenegraph.Composite parent ) {
+		nebModel.setSGParent( parent );
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.getSgVisuals() ) {
+			sgVisual.setParent( parent );
+		}
 	}
+
+	public Composite getSGParent() {
+		return nebModel.getSGParent();
+	}
+
 }

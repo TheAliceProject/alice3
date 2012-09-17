@@ -55,23 +55,27 @@ public abstract class ReplacementAcceptability {
 		CAUSE_FOR_ALARM( "cause for alarm" ),
 		CAUSE_FOR_REJECTION( "cause for alarm" );
 		private String repr;
+
 		private DeviationSeverity( String repr ) {
 			this.repr = repr;
 		}
+
 		public String getRepr() {
 			return this.repr;
 		}
 	}
-	
+
 	public final static ReplacementAcceptability PERFECT_MATCH = new ReplacementAcceptability() {
 		@Override
 		public boolean isAcceptable() {
 			return true;
 		}
+
 		@Override
 		public DeviationSeverity getDeviationSeverity() {
 			return null;
 		}
+
 		@Override
 		public String getDeviationDescription() {
 			return null;
@@ -83,10 +87,12 @@ public abstract class ReplacementAcceptability {
 		public boolean isAcceptable() {
 			return true;
 		}
+
 		@Override
 		public DeviationSeverity getDeviationSeverity() {
 			return DeviationSeverity.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 		}
+
 		@Override
 		public String getDeviationDescription() {
 			return null;
@@ -99,10 +105,12 @@ public abstract class ReplacementAcceptability {
 			public boolean isAcceptable() {
 				return deviationSeverity != DeviationSeverity.CAUSE_FOR_REJECTION;
 			}
+
 			@Override
 			public DeviationSeverity getDeviationSeverity() {
 				return deviationSeverity;
 			}
+
 			@Override
 			public String getDeviationDescription() {
 				return deviationDescription;
@@ -113,14 +121,20 @@ public abstract class ReplacementAcceptability {
 	public static ReplacementAcceptability createRejection( final String deviationDescription ) {
 		return createDeviation( DeviationSeverity.CAUSE_FOR_REJECTION, deviationDescription );
 	}
+
 	private ReplacementAcceptability() {
 	}
+
 	public abstract boolean isAcceptable();
+
 	public final boolean isDeviation() {
 		return this.getDeviationSeverity() != null;
 	}
+
 	public abstract DeviationSeverity getDeviationSeverity();
+
 	public abstract String getDeviationDescription();
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

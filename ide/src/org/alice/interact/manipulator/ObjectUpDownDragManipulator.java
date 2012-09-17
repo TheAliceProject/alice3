@@ -42,7 +42,6 @@
  */
 package org.alice.interact.manipulator;
 
-
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.PlaneUtilities;
@@ -65,16 +64,16 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
 	{
 		this.mainManipulationEvent = new ManipulationEvent( ManipulationEvent.EventType.Translate, null, this.manipulatedTransformable );
 		this.manipulationEvents.clear();
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
-		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.DOWN, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription( MovementDirection.DOWN, MovementType.ABSOLUTE ), this.manipulatedTransformable ) );
 	}
-	
+
 	@Override
 	protected Plane createPickPlane( Point3 clickPoint )
 	{
 		return this.createCameraFacingStoodUpPlane( clickPoint );
 	}
-	
+
 	@Override
 	protected Plane createBadAnglePlane( Point3 clickPoint )
 	{
@@ -82,17 +81,17 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
 		Vector3 badPlaneNormal = Vector3.createPositiveYAxis();
 		badPlaneNormal.subtract( cameraUp );
 		badPlaneNormal.normalize();
-		if (badPlaneNormal.isNaN())
+		if( badPlaneNormal.isNaN() )
 		{
 			badPlaneNormal = Vector3.createPositiveYAxis();
 		}
 		return Plane.createInstance( clickPoint, badPlaneNormal );
 	}
-	
+
 	@Override
 	protected Point3 getPositionForPlane( Plane movementPlane, Ray pickRay )
 	{
-		if (pickRay != null)
+		if( pickRay != null )
 		{
 			Point3 pointInPlane = PlaneUtilities.getPointInPlane( movementPlane, pickRay );
 			Point3 newPosition = Point3.createAddition( this.offsetToOrigin, pointInPlane );
@@ -105,10 +104,10 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
 			return null;
 		}
 	}
-	
+
 	@Override
 	protected HandleSet getHandleSetToEnable() {
-		return new HandleSet(HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.TRANSLATION);
+		return new HandleSet( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.TRANSLATION );
 	}
-	
+
 }

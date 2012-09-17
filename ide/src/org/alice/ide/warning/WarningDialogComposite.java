@@ -45,14 +45,17 @@ package org.alice.ide.warning;
 /**
  * @author Dennis Cosgrove
  */
-public class WarningDialogComposite extends org.lgna.croquet.PlainDialogOperationComposite< org.alice.ide.warning.components.WarningView > {
+public class WarningDialogComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.warning.components.WarningView> {
 	private static class SingletonHolder {
 		private static WarningDialogComposite instance = new WarningDialogComposite();
 	}
+
 	public static WarningDialogComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.lgna.croquet.PlainStringValue descriptionText;
+
 	private WarningDialogComposite() {
 		super( java.util.UUID.fromString( "741c9139-a58d-46d6-ba0e-9a8e51f27980" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 		StringBuilder sb = new StringBuilder();
@@ -63,13 +66,16 @@ public class WarningDialogComposite extends org.lgna.croquet.PlainDialogOperatio
 		sb.append( "We welcome your feedback.\n" );
 		this.descriptionText = this.createUnlocalizedPlainStringValue( sb.toString() );
 	}
+
 	public org.lgna.croquet.PlainStringValue getDescriptionText() {
 		return this.descriptionText;
 	}
+
 	@Override
 	protected org.alice.ide.warning.components.WarningView createView() {
 		return new org.alice.ide.warning.components.WarningView( this );
 	}
+
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		WarningDialogComposite.getInstance().getOperation().fire();

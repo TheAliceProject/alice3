@@ -46,13 +46,15 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.IteratingOperation {
-	private static final org.lgna.croquet.history.Step.Key< Stage > STAGE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DeclareFieldFromImportedTypeOperation.STAGE_KEY" );
+	private static final org.lgna.croquet.history.Step.Key<Stage> STAGE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DeclareFieldFromImportedTypeOperation.STAGE_KEY" );
+
 	private static enum Stage {
 		REQUESTING_URI {
 			@Override
 			public Stage getNextStage() {
 				return DECLARING_FIELD;
 			}
+
 			@Override
 			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.CompletionStep<?> step ) {
 				return TypeFromUriProducer.getInstance();
@@ -63,6 +65,7 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 			public Stage getNextStage() {
 				return null;
 			}
+
 			@Override
 			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.CompletionStep<?> step ) {
 				org.lgna.croquet.history.TransactionHistory transactionHistory = step.getTransactionHistory();
@@ -72,10 +75,10 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 				org.lgna.project.ast.NamedUserType type = valueProducer.getValue( valueProducerStep );
 				if( type != null ) {
 					org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-					java.util.ArrayList< ? extends org.lgna.project.ast.AbstractParameter > requiredParameters = constructor.getRequiredParameters();
+					java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
 					org.lgna.croquet.DropSite dropSite = null;
 					if( requiredParameters.size() > 0 ) {
-						org.lgna.project.ast.AbstractType< ?,?,? > parameterType = requiredParameters.get( 0 ).getValueType();
+						org.lgna.project.ast.AbstractType<?, ?, ?> parameterType = requiredParameters.get( 0 ).getValueType();
 						return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType, dropSite );
 					} else {
 						org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( constructor );
@@ -87,18 +90,22 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 			}
 		};
 		public abstract Stage getNextStage();
+
 		public abstract org.lgna.croquet.Model getModel( org.lgna.croquet.history.CompletionStep<?> step );
 	}
-	
+
 	private static class SingletonHolder {
 		private static DeclareFieldFromImportedTypeOperation instance = new DeclareFieldFromImportedTypeOperation();
 	}
+
 	public static DeclareFieldFromImportedTypeOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private DeclareFieldFromImportedTypeOperation() {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "d5578a1f-2d43-4d42-802f-62016d82e92b" ) );
 	}
+
 	@Override
 	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Stage nextStage;
@@ -111,6 +118,7 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 		step.putEphemeralDataFor( STAGE_KEY, nextStage );
 		return nextStage != null;
 	}
+
 	@Override
 	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Stage stage = step.getEphemeralDataFor( STAGE_KEY );

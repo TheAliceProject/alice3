@@ -45,19 +45,20 @@ package org.alice.stageide.croquet.models.sceneditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ViewListSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState< org.alice.stageide.sceneeditor.View > {
+public class ViewListSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState<org.alice.stageide.sceneeditor.View> {
 	private static class SingletonHolder {
 		private static ViewListSelectionState instance = new ViewListSelectionState();
 	}
+
 	public static ViewListSelectionState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ViewListSelectionState() {
-		super( 
-				org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "5ac32bb0-95ba-43b0-842d-66f824e3ef38" ), 
+		super(
+				org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP,
+				java.util.UUID.fromString( "5ac32bb0-95ba-43b0-842d-66f824e3ef38" ),
 				0,
-				org.alice.stageide.sceneeditor.View.class
-		);
+				org.alice.stageide.sceneeditor.View.class );
 	}
 }

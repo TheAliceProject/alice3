@@ -47,9 +47,11 @@ package org.lgna.story;
  */
 public final class ImageSource implements Paint {
 	private final org.lgna.common.resources.ImageResource imageResource;
+
 	public ImageSource( org.lgna.common.resources.ImageResource imageResource ) {
 		this.imageResource = imageResource;
 	}
+
 	public org.lgna.common.resources.ImageResource getImageResource() {
 		return this.imageResource;
 	}

@@ -53,11 +53,12 @@ public abstract class OnscreenLookingGlassDragAdapter extends DragAdapter {
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return m_onscreenLookingGlass;
 	}
+
 	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		m_onscreenLookingGlass = onscreenLookingGlass;
 		setAWTComponent( getAWTComponentToAddListenersTo( onscreenLookingGlass ) );
 	}
-	
+
 	protected java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		return onscreenLookingGlass.getAWTComponent();
 	}

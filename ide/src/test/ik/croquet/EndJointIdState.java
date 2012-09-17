@@ -50,9 +50,11 @@ public class EndJointIdState extends JointIdState {
 	private static class SingletonHolder {
 		private static EndJointIdState instance = new EndJointIdState();
 	}
+
 	public static EndJointIdState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private EndJointIdState() {
 		super( java.util.UUID.fromString( "84b41b87-d780-4366-8d59-74ba93d8b3f6" ) );
 	}

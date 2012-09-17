@@ -51,125 +51,126 @@ import javax.swing.ImageIcon;
 
 import org.lgna.croquet.BooleanState;
 
-
-
-public class LinkScaleButton extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> 
+public class LinkScaleButton extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton>
 {
 	private ImageIcon linkedIcon;
 	private ImageIcon unlinkedIcon;
 	private Dimension size;
-	
-	public LinkScaleButton( BooleanState booleanState, URL linkedResource, URL unlinkedResource) {
+
+	public LinkScaleButton( BooleanState booleanState, URL linkedResource, URL unlinkedResource ) {
 		super( booleanState );
-		this.linkedIcon = new ImageIcon(linkedResource);
-		this.unlinkedIcon = new ImageIcon(unlinkedResource);
-		this.size = new Dimension(this.linkedIcon.getIconWidth(), this.linkedIcon.getIconHeight());
+		this.linkedIcon = new ImageIcon( linkedResource );
+		this.unlinkedIcon = new ImageIcon( unlinkedResource );
+		this.size = new Dimension( this.linkedIcon.getIconWidth(), this.linkedIcon.getIconHeight() );
 		this.updateLabel();
 	}
-	
+
 	public LinkScaleButton( BooleanState booleanState ) {
-		this( booleanState, IsAllScaleLinkedState.class.getResource("images/scaleLinked.png"), IsAllScaleLinkedState.class.getResource("images/scaleUnlinked.png") );
+		this( booleanState, IsAllScaleLinkedState.class.getResource( "images/scaleLinked.png" ), IsAllScaleLinkedState.class.getResource( "images/scaleUnlinked.png" ) );
 	}
-	
-	private org.lgna.croquet.State.ValueListener< Boolean > valueObserver = new org.lgna.croquet.State.ValueListener< Boolean >() {
-		public void changing( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+	private org.lgna.croquet.State.ValueListener<Boolean> valueObserver = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< Boolean > state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			LinkScaleButton.this.updateLabel();
 		}
 	};
-	
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().addAndInvokeValueListener( this.valueObserver );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		org.alice.ide.croquet.models.ui.preferences.IsIncludingThisForFieldAccessesState.getInstance().removeValueListener( this.valueObserver );
 		super.handleUndisplayable();
 	}
+
 	@Override
-	protected javax.swing.AbstractButton createAwtComponent() 
+	protected javax.swing.AbstractButton createAwtComponent()
 	{
-		return new javax.swing.JRadioButton() 
+		return new javax.swing.JRadioButton()
 		{
 			@Override
-			public Dimension getPreferredSize() 
+			public Dimension getPreferredSize()
 			{
 				return LinkScaleButton.this.size;
 			}
-			
+
 			@Override
-			public Dimension getMinimumSize() 
+			public Dimension getMinimumSize()
 			{
 				return LinkScaleButton.this.size;
 			}
-			
+
 			@Override
-			public Dimension getMaximumSize() 
+			public Dimension getMaximumSize()
 			{
 				return LinkScaleButton.this.size;
 			}
-			
+
 			@Override
-			public boolean isRolloverEnabled() 
+			public boolean isRolloverEnabled()
 			{
 				return true;
 			}
-			
+
 			@Override
 			public boolean isFocusable() {
 				return false;
 			}
+
 			@Override
 			public boolean isOpaque() {
 				return false;
 			}
-			
-			
+
 			@Override
-			protected void paintComponent(java.awt.Graphics g) {
-				if (this.getModel().isRollover())
+			protected void paintComponent( java.awt.Graphics g ) {
+				if( this.getModel().isRollover() )
 				{
 					int leftX = 0;
-					int rightX = (int)LinkScaleButton.this.size.getWidth()-1;
+					int rightX = (int)LinkScaleButton.this.size.getWidth() - 1;
 					int topY = 0;
-					int bottomY = (int)LinkScaleButton.this.size.getHeight()-1;
-					g.setColor(Color.WHITE);
-					g.drawLine(leftX, topY, rightX, topY);
-					g.drawLine(leftX, topY, leftX, bottomY);
-					g.setColor(Color.DARK_GRAY);
-					g.drawLine(leftX, bottomY, rightX, bottomY);
-					g.drawLine(rightX, topY, rightX, bottomY);
+					int bottomY = (int)LinkScaleButton.this.size.getHeight() - 1;
+					g.setColor( Color.WHITE );
+					g.drawLine( leftX, topY, rightX, topY );
+					g.drawLine( leftX, topY, leftX, bottomY );
+					g.setColor( Color.DARK_GRAY );
+					g.drawLine( leftX, bottomY, rightX, bottomY );
+					g.drawLine( rightX, topY, rightX, bottomY );
 				}
-				if (this.getModel().isPressed())
+				if( this.getModel().isPressed() )
 				{
 					int leftX = 0;
-					int rightX = (int)LinkScaleButton.this.size.getWidth()-1;
+					int rightX = (int)LinkScaleButton.this.size.getWidth() - 1;
 					int topY = 0;
-					int bottomY = (int)LinkScaleButton.this.size.getHeight()-1;
-					g.setColor(Color.DARK_GRAY);
-					g.drawLine(leftX, topY, rightX, topY);
-					g.drawLine(leftX, topY, leftX, bottomY);
-					g.setColor(Color.WHITE);
-					g.drawLine(leftX, bottomY, rightX, bottomY);
-					g.drawLine(rightX, topY, rightX, bottomY);
+					int bottomY = (int)LinkScaleButton.this.size.getHeight() - 1;
+					g.setColor( Color.DARK_GRAY );
+					g.drawLine( leftX, topY, rightX, topY );
+					g.drawLine( leftX, topY, leftX, bottomY );
+					g.setColor( Color.WHITE );
+					g.drawLine( leftX, bottomY, rightX, bottomY );
+					g.drawLine( rightX, topY, rightX, bottomY );
 				}
-				if (this.getModel().isSelected())
+				if( this.getModel().isSelected() )
 				{
-					g.drawImage(LinkScaleButton.this.linkedIcon.getImage(), 0, 0, null );
+					g.drawImage( LinkScaleButton.this.linkedIcon.getImage(), 0, 0, null );
 				}
 				else
 				{
-					g.drawImage(LinkScaleButton.this.unlinkedIcon.getImage(), 0, 0, null );
+					g.drawImage( LinkScaleButton.this.unlinkedIcon.getImage(), 0, 0, null );
 				}
-//				super.paintComponent(g);
+				//				super.paintComponent(g);
 			}
 		};
 	}
-	
-	void updateLabel() 
+
+	void updateLabel()
 	{
 		this.repaint();
 	}
