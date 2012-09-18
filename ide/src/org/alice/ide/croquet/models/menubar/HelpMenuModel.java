@@ -55,7 +55,7 @@ public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 				org.alice.ide.croquet.models.help.RequestNewFeatureComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
 				org.lgna.croquet.MenuModel.SEPARATOR,
 				org.alice.ide.warning.WarningDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ShowSystemPropertiesOperation.getInstance().getMenuItemPrepModel(),
+				org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite.getInstance().getOperation().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel()
 				);
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {

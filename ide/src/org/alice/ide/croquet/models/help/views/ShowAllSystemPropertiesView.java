@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.croquet.models.help.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ShowClassPathPropertyOperation extends ShowPathPropertyOperation {
-	private static class SingletonHolder {
-		private static ShowClassPathPropertyOperation instance = new ShowClassPathPropertyOperation();
-	}
+public class ShowAllSystemPropertiesView extends org.lgna.croquet.components.BorderPanel {
+	public ShowAllSystemPropertiesView( org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite composite ) {
+		super( composite );
+		java.util.Properties properties = System.getProperties();
+		java.util.Enumeration<String> nameEnum = (java.util.Enumeration<String>)properties.propertyNames();
+		java.util.SortedSet<String> names = new java.util.TreeSet<String>();
+		int max = 0;
+		while( nameEnum.hasMoreElements() ) {
+			String name = nameEnum.nextElement();
+			names.add( name );
+			max = Math.max( max, name.length() );
+		}
+		String formatString = "%-" + ( max + 1 ) + "s";
+		StringBuffer sb = new StringBuffer();
+		for( String name : names ) {
+			sb.append( String.format( formatString, name ) );
+			sb.append( ": " );
+			sb.append( System.getProperty( name ) );
+			sb.append( "\n" );
+		}
+		javax.swing.JTextArea textArea = new javax.swing.JTextArea( sb.toString() );
+		textArea.setEditable( false );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( textArea, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
+		this.getAwtComponent().add( scrollPane );
 
-	public static ShowClassPathPropertyOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
-	private ShowClassPathPropertyOperation() {
-		super( java.util.UUID.fromString( "b33142ba-0e96-4823-935e-99c702eb57eb" ), "java.class.path" );
+		int width = 640;
+		this.setPreferredSize( new java.awt.Dimension( width, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( width ) ) );
 	}
 }

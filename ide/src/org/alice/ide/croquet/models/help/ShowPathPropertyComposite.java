@@ -40,37 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help.views;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ShowSystemPropertiesView extends org.lgna.croquet.components.FormPanel {
-	public ShowSystemPropertiesView( org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite composite ) {
-		super( composite );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+public abstract class ShowPathPropertyComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.ShowPathPropertyView> {
+	private final String propertyName;
+
+	public ShowPathPropertyComposite( java.util.UUID migrationId, String propertyName ) {
+		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
+		this.propertyName = propertyName;
+	}
+
+	public String getPropertyName() {
+		return this.propertyName;
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-		String[] propertyNames = { "java.version", "os.name", "os.version", "os.arch", "sun.arch.data.model" };
-		for( String propertyName : propertyNames ) {
-			String value = System.getProperty( propertyName );
-			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( propertyName + ":" ), new org.lgna.croquet.components.Label( value ) ) );
-		}
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) ) );
-		org.alice.ide.croquet.models.help.ShowPathPropertyComposite[] showPathPropertyComposites = {
-				org.alice.ide.croquet.models.help.ShowClassPathPropertyComposite.getInstance(),
-				org.alice.ide.croquet.models.help.ShowLibraryPathPropertyComposite.getInstance(),
-		};
-		for( org.alice.ide.croquet.models.help.ShowPathPropertyComposite showPathPropertyComposite : showPathPropertyComposites ) {
-			String propertyName = showPathPropertyComposite.getPropertyName();
-			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel(
-					new org.lgna.croquet.components.Label( propertyName + ":" ),
-					showPathPropertyComposite.getOperation().createHyperlink()
-					) );
-		}
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) ) );
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, org.alice.ide.croquet.models.help.ShowAllSystemPropertiesComposite.getInstance().getOperation().createHyperlink() ) );
+	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return "System Property: " + this.propertyName;
+	}
+
+	@Override
+	protected org.alice.ide.croquet.models.help.views.ShowPathPropertyView createView() {
+		return new org.alice.ide.croquet.models.help.views.ShowPathPropertyView( this );
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,47 +45,16 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ShowPathPropertyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private String propertyName;
-
-	public ShowPathPropertyOperation( java.util.UUID id, String propertyName ) {
-		super( id );
-		this.propertyName = propertyName;
+public class ShowClassPathPropertyComposite extends ShowPathPropertyComposite {
+	private static class SingletonHolder {
+		private static ShowClassPathPropertyComposite instance = new ShowClassPathPropertyComposite();
 	}
 
-	public String getPropertyName() {
-		return this.propertyName;
+	public static ShowClassPathPropertyComposite getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.components.RowsSpringPanel formPane = new org.lgna.croquet.components.RowsSpringPanel( 8, 2 ) {
-			private org.lgna.croquet.components.Component<?>[][] createComponentRowsForSystemProperty( String name, String separator ) {
-				String value = System.getProperty( name );
-				assert value != null;
-				String[] array = value.split( separator );
-				org.lgna.croquet.components.Component<?>[][] rv = new org.lgna.croquet.components.Component<?>[ array.length ][];
-				for( int i = 0; i < array.length; i++ ) {
-					String prefix;
-					if( i == 0 ) {
-						prefix = name;
-					} else {
-						prefix = "";
-					}
-					rv[ i ] = org.lgna.croquet.components.SpringUtilities.createRow( org.lgna.croquet.components.SpringUtilities.createTrailingLabel( prefix + "[" + i + "]:" ), new org.lgna.croquet.components.Label( array[ i ] ) );
-				}
-				return rv;
-			}
-
-			@Override
-			protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows( java.util.List<org.lgna.croquet.components.Component<?>[]> rv ) {
-				String pathSepartor = System.getProperty( "path.separator" );
-				for( org.lgna.croquet.components.Component<?>[] componentRow : createComponentRowsForSystemProperty( propertyName, pathSepartor ) ) {
-					rv.add( componentRow );
-				}
-				return rv;
-			}
-		};
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( formPane, "System Property: " + this.propertyName, org.lgna.croquet.MessageType.INFORMATION );
+	private ShowClassPathPropertyComposite() {
+		super( java.util.UUID.fromString( "497ed779-82e4-4d6e-9198-f79d2328587a" ), "java.class.path" );
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,16 +45,21 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class ShowLibraryPathPropertyOperation extends ShowPathPropertyOperation {
+public class ShowAllSystemPropertiesComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.ShowAllSystemPropertiesView> {
 	private static class SingletonHolder {
-		private static ShowLibraryPathPropertyOperation instance = new ShowLibraryPathPropertyOperation();
+		private static ShowAllSystemPropertiesComposite instance = new ShowAllSystemPropertiesComposite();
 	}
 
-	public static ShowLibraryPathPropertyOperation getInstance() {
+	public static ShowAllSystemPropertiesComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private ShowLibraryPathPropertyOperation() {
-		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ), "java.library.path" );
+	private ShowAllSystemPropertiesComposite() {
+		super( java.util.UUID.fromString( "17e79b9b-9a19-4edd-bef5-15685681a88e" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	}
+
+	@Override
+	protected org.alice.ide.croquet.models.help.views.ShowAllSystemPropertiesView createView() {
+		return new org.alice.ide.croquet.models.help.views.ShowAllSystemPropertiesView( this );
 	}
 }
