@@ -65,10 +65,20 @@ public class ShowAllSystemPropertiesView extends org.lgna.croquet.components.Bor
 			sb.append( System.getProperty( name ) );
 			sb.append( "\n" );
 		}
+
 		javax.swing.JTextArea textArea = new javax.swing.JTextArea( sb.toString() );
 		textArea.setEditable( false );
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( textArea, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
+
+		final boolean IS_SET_FONT_TO_DERIVED_FONT_WORKING = false;
+		if( IS_SET_FONT_TO_DERIVED_FONT_WORKING ) {
+			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( textArea, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
+		} else {
+			java.awt.Font font = textArea.getFont();
+			textArea.setFont( new java.awt.Font( "Monospaced", font.getStyle(), font.getSize() ) );
+		}
+
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
+
 		this.getAwtComponent().add( scrollPane );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );

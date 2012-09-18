@@ -55,6 +55,6 @@ public class ShowClassPathPropertyComposite extends ShowPathPropertyComposite {
 	}
 
 	private ShowClassPathPropertyComposite() {
-		super( java.util.UUID.fromString( "497ed779-82e4-4d6e-9198-f79d2328587a" ), "java.class.path" );
+		super( java.util.UUID.fromString( "2783c62b-cae1-4366-bf73-7ed359cdd10d" ), "java.class.path" );
 	}
 }
