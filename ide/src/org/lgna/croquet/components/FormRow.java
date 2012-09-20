@@ -40,49 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ShowAllSystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static ShowAllSystemPropertiesOperation instance = new ShowAllSystemPropertiesOperation();
-	}
-
-	public static ShowAllSystemPropertiesOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ShowAllSystemPropertiesOperation() {
-		super( java.util.UUID.fromString( "db633e18-dd47-49ca-9406-cf4988d90960" ) );
-	}
-
-	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		java.util.Properties properties = System.getProperties();
-		java.util.Enumeration<String> nameEnum = (java.util.Enumeration<String>)properties.propertyNames();
-		java.util.SortedSet<String> names = new java.util.TreeSet<String>();
-		int max = 0;
-		while( nameEnum.hasMoreElements() ) {
-			String name = nameEnum.nextElement();
-			names.add( name );
-			max = Math.max( max, name.length() );
-		}
-		String formatString = "%-" + ( max + 1 ) + "s";
-		StringBuffer sb = new StringBuffer();
-		for( String name : names ) {
-			java.util.Formatter formatter = new java.util.Formatter();
-			sb.append( formatter.format( formatString, name ) );
-			sb.append( ": " );
-			sb.append( System.getProperty( name ) );
-			sb.append( "\n" );
-		}
-		javax.swing.JTextArea textArea = new javax.swing.JTextArea( sb.toString() );
-		java.awt.Font font = textArea.getFont();
-		textArea.setFont( new java.awt.Font( "Monospaced", font.getStyle(), font.getSize() ) );
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
-		scrollPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( scrollPane, "System Properties", org.lgna.croquet.MessageType.INFORMATION );
-	}
+public interface FormRow {
+	public Component<?>[] createComponentArray();
 }

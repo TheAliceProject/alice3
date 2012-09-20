@@ -55,7 +55,7 @@ public class HeadTabView extends org.lgna.croquet.components.FormPanel {
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
 		org.alice.stageide.personresource.HeadTabComposite composite = (org.alice.stageide.personresource.HeadTabComposite)this.getComposite();
 		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.Hair> list = new HorizontalWrapList<org.lgna.story.resources.sims2.Hair>( composite.getHairState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
 		list.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
@@ -63,8 +63,8 @@ public class HeadTabView extends org.lgna.croquet.components.FormPanel {
 		scrollPane.setBothScrollBarIncrements( 66, 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
-		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getHairColorNameState().getSidekickLabel(), new HorizontalWrapList( composite.getHairColorNameState(), 1 ) ) );
-		rows.add( new org.lgna.croquet.components.LabeledSpringRow( null, scrollPane ) );
-		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getBaseEyeColorState().getSidekickLabel(), new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ) ) );
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getHairColorNameState().getSidekickLabel(), new HorizontalWrapList( composite.getHairColorNameState(), 1 ) ) );
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, scrollPane ) );
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getBaseEyeColorState().getSidekickLabel(), new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ) ) );
 	}
 }

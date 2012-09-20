@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,11 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface SpringRow {
-	public Component<?>[] createComponentArray();
+public class ShowLibraryPathPropertyComposite extends ShowPathPropertyComposite {
+	private static class SingletonHolder {
+		private static ShowLibraryPathPropertyComposite instance = new ShowLibraryPathPropertyComposite();
+	}
+
+	public static ShowLibraryPathPropertyComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ShowLibraryPathPropertyComposite() {
+		super( java.util.UUID.fromString( "79303110-751d-4e99-9a9f-f8ede00f0b16" ), "java.library.path" );
+	}
 }

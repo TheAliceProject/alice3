@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.custom.components;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowBasedCustomExpressionCreatorView extends CustomExpressionCreatorView {
-	public RowBasedCustomExpressionCreatorView( org.alice.ide.custom.CustomExpressionCreatorComposite<?> composite ) {
-		super( composite );
+public abstract class ShowPathPropertyComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.ShowPathPropertyView> {
+	private final String propertyName;
+
+	public ShowPathPropertyComposite( java.util.UUID migrationId, String propertyName ) {
+		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
+		this.propertyName = propertyName;
+	}
+
+	public String getPropertyName() {
+		return this.propertyName;
 	}
 
 	@Override
-	public org.alice.ide.custom.CustomExpressionCreatorComposite<?> getComposite() {
-		return (org.alice.ide.custom.CustomExpressionCreatorComposite<?>)super.getComposite();
+	protected String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return "System Property: " + this.propertyName;
 	}
 
-	protected abstract void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows );
-
 	@Override
-	public org.lgna.croquet.components.FormPanel createMainComponent() {
-		org.lgna.croquet.components.FormPanel rowsSpringPanel = new org.lgna.croquet.components.FormPanel() {
-			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-				RowBasedCustomExpressionCreatorView.this.appendRows( rows );
-			}
-		};
-		return rowsSpringPanel;
+	protected org.alice.ide.croquet.models.help.views.ShowPathPropertyView createView() {
+		return new org.alice.ide.croquet.models.help.views.ShowPathPropertyView( this );
 	}
 }
