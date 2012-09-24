@@ -102,13 +102,13 @@ public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCrea
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		super.handlePreShowDialog( completionStep );
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
 	}
 
 	@Override
 	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		super.handleFinally( step, dialog );
-		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().enableRendering();
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().enableRendering();
 	}
 
 	@Override
