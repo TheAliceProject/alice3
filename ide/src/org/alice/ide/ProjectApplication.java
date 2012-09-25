@@ -245,6 +245,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
+	//todo: investigate
+	private static final int PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL = 0;
+
 	private int projectHistoryIndexFile = 0;
 	private int projectHistoryIndexSceneSetUp = 0;
 
@@ -267,13 +270,23 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private void updateHistoryIndexFileSync() {
-		this.projectHistoryIndexFile = this.getProjectHistory().getInsertionIndex();
+		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		if( history != null ) {
+			this.projectHistoryIndexFile = history.getInsertionIndex();
+		} else {
+			this.projectHistoryIndexFile = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
+		}
 		this.updateHistoryIndexSceneSetUpSync();
 		this.updateTitle();
 	}
 
 	protected void updateHistoryIndexSceneSetUpSync() {
-		this.projectHistoryIndexSceneSetUp = this.getProjectHistory().getInsertionIndex();
+		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		if( history != null ) {
+			this.projectHistoryIndexSceneSetUp = history.getInsertionIndex();
+		} else {
+			this.projectHistoryIndexSceneSetUp = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
+		}
 	}
 
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
