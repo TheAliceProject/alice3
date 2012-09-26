@@ -68,8 +68,23 @@ public class Version implements Comparable<Version> {
 		final int N = subTexts.length;
 		this.subNumbers = new int[ N ];
 		for( int i = 0; i < N; i++ ) {
-			this.subNumbers[ i ] = Integer.parseInt( subTexts[ i ] );
+			try {
+				this.subNumbers[ i ] = Integer.parseInt( subTexts[ i ] );
+			} catch( NumberFormatException nfe ) {
+				this.subNumbers[ i ] = -1;
+			}
 		}
+	}
+
+	public boolean isValid() {
+		for( int i : this.subNumbers ) {
+			if( i >= 0 ) {
+				//pass
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public int getMajor() {
@@ -121,7 +136,7 @@ public class Version implements Comparable<Version> {
 	}
 
 	public static void main( String[] args ) {
-		System.out.println( new Version( "3.1.20.0.0" ) );
-		System.out.println( new Version( "3.1.20.0.0" ).compareTo( new Version( "3.1.22.0.0.0" ) ) );
+		System.out.println( new Version( "3.1.beta.0.0" ) );
+		System.out.println( new Version( "3.1.20.0.0" ).compareTo( new Version( "3.1.beta.0.0.0" ) ) );
 	}
 }
