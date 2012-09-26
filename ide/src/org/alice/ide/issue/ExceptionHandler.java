@@ -63,11 +63,22 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
 	public void uncaughtException( Thread thread, Throwable throwable ) {
 		throwable.printStackTrace();
-		if( throwable instanceof org.lgna.project.virtualmachine.LgnaException ) {
-			org.lgna.project.virtualmachine.LgnaException lgnaException = (org.lgna.project.virtualmachine.LgnaException)throwable;
+		if( throwable instanceof RuntimeException ) {
+			RuntimeException runtimeException = (RuntimeException)throwable;
+			Throwable cause = runtimeException.getCause();
+			if( cause instanceof java.lang.reflect.InvocationTargetException ) {
+				java.lang.reflect.InvocationTargetException invocationTargetException = (java.lang.reflect.InvocationTargetException)cause;
+				Throwable targetException = invocationTargetException.getTargetException();
+				if( targetException instanceof org.lgna.common.LgnaRuntimeException ) {
+					throwable = targetException;
+				}
+			}
+		}
+		if( throwable instanceof org.lgna.common.LgnaRuntimeException ) {
+			org.lgna.common.LgnaRuntimeException lgnaRuntimeException = (org.lgna.common.LgnaRuntimeException)throwable;
 			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 			if( application != null ) {
-				application.showMessageDialog( lgnaException.getFormattedString(), lgnaException.getClass().getSimpleName() );
+				application.showMessageDialog( lgnaRuntimeException.getFormattedString(), lgnaRuntimeException.getClass().getSimpleName(), org.lgna.croquet.MessageType.ERROR );
 			}
 		} else {
 			this.count++;

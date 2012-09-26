@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,68 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.virtualmachine;
+package org.lgna.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LgnaException extends RuntimeException {
-	private final Thread thread;
-	private VirtualMachine vm;
-	private LgnaStackTraceElement[] stackTrace;
-
-	public LgnaException( VirtualMachine vm ) {
-		this.vm = vm;
-		this.thread = Thread.currentThread();
-		this.stackTrace = this.vm.getStackTrace( this.thread );
+public abstract class LgnaRuntimeException extends RuntimeException {
+	public LgnaRuntimeException() {
+		super();
 	}
 
-	public VirtualMachine getVirtualMachine() {
-		return this.vm;
+	public LgnaRuntimeException( String message ) {
+		super( message );
 	}
 
-	public LgnaStackTraceElement[] getLgnaStackTrace() {
-		return this.stackTrace;
-	}
+	protected abstract void appendFormattedString( StringBuilder sb );
 
-	protected abstract void appendDescription( StringBuilder sb );
-
-	public String getFormattedString() {
+	public final String getFormattedString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "<h1>" );
-		this.appendDescription( sb );
-		sb.append( "</h1>" );
-		LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
-		if( lgnaStackTrace != null ) {
-			sb.append( "<ul>" );
-			for( LgnaStackTraceElement stackTraceElement : lgnaStackTrace ) {
-				sb.append( "<li>" );
-				if( stackTraceElement != null ) {
-					stackTraceElement.appendFormatted( sb );
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
-				}
-			}
-			sb.append( "</ul>" );
-		}
-		sb.append( "</html>" );
-		return sb.toString();
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( super.toString() );
-		LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
-		if( lgnaStackTrace != null ) {
-			for( LgnaStackTraceElement stackTraceElement : lgnaStackTrace ) {
-				if( stackTraceElement != null ) {
-					sb.append( "\n\t" + stackTraceElement.toString() );
-				}
-			}
-		}
+		this.appendFormattedString( sb );
 		return sb.toString();
 	}
 }

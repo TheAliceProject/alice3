@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.common;
 
-package org.lgna.project.virtualmachine;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LgnaNoReturnException extends LgnaVmException {
-	public LgnaNoReturnException( VirtualMachine vm ) {
-		super( vm );
+public class LgnaIllegalArgumentException extends LgnaRuntimeException {
+	private final int index;
+	private final Object value;
+
+	public LgnaIllegalArgumentException( String message, int index, Object value ) {
+		super( message );
+		this.index = index;
+		this.value = value;
+	}
+
+	public int getIndex() {
+		return this.index;
+	}
+
+	public Object getValue() {
+		return this.value;
 	}
 
 	@Override
-	protected void appendDescription( StringBuilder sb ) {
-		sb.append( "return statement required" );
+	protected void appendFormattedString( java.lang.StringBuilder sb ) {
+		sb.append( "<html>" );
+		sb.append( "<h1>" );
+		sb.append( this.getMessage() );
+		sb.append( "</h1>" );
+		sb.append( "</html>" );
 	}
 }
