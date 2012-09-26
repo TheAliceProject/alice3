@@ -42,7 +42,6 @@
  */
 package org.lgna.common;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -68,8 +67,11 @@ public class LgnaIllegalArgumentException extends LgnaRuntimeException {
 	protected void appendFormattedString( java.lang.StringBuilder sb ) {
 		sb.append( "<html>" );
 		sb.append( "<h1>" );
-		sb.append( this.getMessage() );
+		sb.append( this.getClass().getSimpleName() );
 		sb.append( "</h1>" );
+		sb.append( "<h2>" );
+		sb.append( this.getMessage() );
+		sb.append( "</h2>" );
 		sb.append( "</html>" );
 	}
 }
