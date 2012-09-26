@@ -65,22 +65,29 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		throwable.printStackTrace();
 		if( throwable instanceof org.lgna.project.virtualmachine.LgnaException ) {
 			org.lgna.project.virtualmachine.LgnaException lgnaException = (org.lgna.project.virtualmachine.LgnaException)throwable;
-
 			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-			application.showMessageDialog( lgnaException.getFormattedString(), lgnaException.getClass().getSimpleName() );
+			if( application != null ) {
+				application.showMessageDialog( lgnaException.getFormattedString(), lgnaException.getClass().getSimpleName() );
+			}
 		} else {
 			this.count++;
 			if( this.isBugReportSubmissionPaneDesired ) {
 				try {
 					org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();
 					bugReportPane.setThreadAndThrowable( thread, throwable );
-					//					javax.swing.JFrame frame = org.alice.ide.IDE.getActiveInstance().getFrame();
-					//					if( frame != null ) {
-					//						//pass
-					//					} else {
-					//						frame = new javax.swing.JFrame();
-					//					}
-					java.awt.Component owner = org.alice.ide.IDE.getActiveInstance().getFrame().getAwtComponent();
+
+					java.awt.Component owner;
+					org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+					if( application != null ) {
+						org.lgna.croquet.components.Frame frame = application.getFrame();
+						if( frame != null ) {
+							owner = frame.getAwtComponent();
+						} else {
+							owner = null;
+						}
+					} else {
+						owner = null;
+					}
 					//					while( true ) {
 					javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 					dialog.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
