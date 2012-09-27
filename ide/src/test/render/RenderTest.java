@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,6 +40,8 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+package test.render;
 
 class ExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractCaughtExceptionPane {
 	@Override
@@ -103,22 +105,23 @@ class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 /**
  * @author Dennis Cosgrove
  */
-public class FieldTest {
+public class RenderTest extends org.lgna.story.SProgram {
 	static {
 		ExceptionHandler exceptionHandler = new ExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler( exceptionHandler );
 	}
-	public static void main( String[] args ) {
-		
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		frame.setSize( 640, 480 );
-		frame.setVisible( true );
-		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-//		java.util.List<edu.cmu.cs.dennisc.java.lang.Property> properties = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertyList();
-//		java.util.Collections.sort( properties );
-//		for( edu.cmu.cs.dennisc.java.lang.Property property : properties ) {
-//			System.out.println( property );
-//		}
-		throw new RuntimeException();
+
+	public static void main( final String[] args ) {
+		org.lgna.story.implementation.ProgramImp.ACCEPTABLE_HACK_FOR_NOW_setClassForNextInstance( RenderTestProgramImp.class );
+		RenderTest test = new RenderTest();
+
+		RenderTestScene scene = new RenderTestScene();
+		test.initializeInFrame( args );
+		test.setActiveScene( scene );
+
+		//javax.swing.SwingUtilities.invokeLater( new Runnable() {
+		//	public void run() {
+		//	}
+		//} );
 	}
 }
