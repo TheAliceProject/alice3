@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.help;
+package org.alice.ide.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	public HelpBrowserOperation() {
-		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" );
+public class GlExceptionComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.views.GlExceptionView> {
+	private static class SingletonHolder {
+		private static GlExceptionComposite instance = new GlExceptionComposite();
+	}
+
+	public static GlExceptionComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private final DisplayDriverHelpOperation displayDriverHelpOperation = new DisplayDriverHelpOperation();
+
+	private GlExceptionComposite() {
+		super( java.util.UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	}
+
+	@Override
+	protected org.alice.ide.issue.views.GlExceptionView createView() {
+		return new org.alice.ide.issue.views.GlExceptionView( this );
+	}
+
+	public DisplayDriverHelpOperation getDisplayDriverHelpOperation() {
+		return this.displayDriverHelpOperation;
 	}
 }

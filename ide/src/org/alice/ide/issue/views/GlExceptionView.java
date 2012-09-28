@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.help;
+package org.alice.ide.issue.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	public HelpBrowserOperation() {
-		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" );
+public class GlExceptionView extends org.lgna.croquet.components.BorderPanel {
+	private static final javax.swing.Icon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/paintingTheRoses.png" ) );
+
+	public GlExceptionView( org.alice.ide.issue.GlExceptionComposite composite ) {
+		super( composite );
+		this.addPageStartComponent( new org.lgna.croquet.components.Label( javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ) ) );
+		this.addLineStartComponent( new org.lgna.croquet.components.Label( ICON ) );
+		this.addPageEndComponent( composite.getDisplayDriverHelpOperation().createHyperlink() );
 	}
 }

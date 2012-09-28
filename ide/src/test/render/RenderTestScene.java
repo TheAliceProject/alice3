@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.help;
 
-/**
- * @author Dennis Cosgrove
- */
-public final class HelpBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	public HelpBrowserOperation() {
-		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" );
+package test.render;
+
+import org.lgna.story.Color;
+import org.lgna.story.SCamera;
+import org.lgna.story.SSphere;
+
+public class RenderTestScene extends org.lgna.story.SScene {
+	private final SSphere sphere = new SSphere();
+	private final SCamera camera = new SCamera();
+
+	private void performGeneratedSetup() {
+		this.camera.setVehicle( this );
+		this.sphere.setName( "sphere" );
+		this.sphere.setVehicle( this );
+		this.sphere.setPaint( Color.RED );
+		this.camera.move( org.lgna.story.MoveDirection.BACKWARD, 4.0 );
+	}
+
+	private void performCustomSetup() {
+	}
+
+	@Override
+	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
+		if( isActive ) {
+			if( activeCount == 1 ) {
+				this.performGeneratedSetup();
+				this.performCustomSetup();
+			} else {
+				this.restoreStateAndEventListeners();
+			}
+		} else {
+			this.preserveStateAndEventListeners();
+		}
 	}
 }

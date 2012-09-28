@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.browser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MutableUrlBrowserOperation extends BrowserOperation {
-	public MutableUrlBrowserOperation( java.util.UUID id ) {
+public class MutableBrowserOperation extends BrowserOperation {
+	private java.net.URL url;
+
+	public MutableBrowserOperation( java.util.UUID id ) {
 		super( id );
 	}
-
-	private java.net.URL url;
 
 	@Override
 	protected java.net.URL getUrl() {
@@ -60,5 +59,13 @@ public class MutableUrlBrowserOperation extends BrowserOperation {
 
 	public void setUrl( java.net.URL url ) {
 		this.url = url;
+	}
+
+	public void setUrl( String spec ) {
+		try {
+			this.setUrl( new java.net.URL( spec ) );
+		} catch( java.net.MalformedURLException murle ) {
+			throw new RuntimeException( spec, murle );
+		}
 	}
 }

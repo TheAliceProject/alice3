@@ -131,17 +131,7 @@ public class IsRecursionAllowedPreferenceView extends org.lgna.croquet.component
 	public IsRecursionAllowedPreferenceView( org.alice.ide.preferences.recursion.IsRecursionAllowedPreferenceDialogComposite composite ) {
 		super( composite );
 		//todo
-		org.alice.ide.browser.BrowserOperation browserOperation = new org.alice.ide.browser.BrowserOperation( java.util.UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ) ) {
-			@Override
-			protected java.net.URL getUrl() {
-				String path = "http://help.alice.org/recursion";
-				try {
-					return new java.net.URL( path );
-				} catch( java.net.MalformedURLException murle ) {
-					throw new RuntimeException( path, murle );
-				}
-			}
-		};
+		org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "30e5e6e1-39ca-4c0f-a4a5-17e3f0e8212d" ), "http://help.alice.org/recursion" );
 		org.lgna.croquet.components.Hyperlink hyperlink = browserOperation.createHyperlink();
 		hyperlink.setBorder( javax.swing.BorderFactory.createEmptyBorder( SPACING, INDENT, SPACING, 0 ) );
 

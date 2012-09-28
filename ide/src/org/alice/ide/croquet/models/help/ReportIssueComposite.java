@@ -42,10 +42,6 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
 import org.alice.ide.issue.CurrentProjectAttachment;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
@@ -113,18 +109,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	private final StringState stepsState = createStringState( this.createKey( "stepsState" ) );
 	private final StringState environmentState = createStringState( this.createKey( "environmentState" ), environment );
 	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, BugSubmitAttachment.YES );
-	private final BrowserOperation operation = new BrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ) ) {
-
-		@Override
-		protected URL getUrl() {
-			try {
-				return new URL( "http://bugs.alice.org:8080/" );
-			} catch( MalformedURLException e ) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-	};
+	private final org.lgna.croquet.Operation operation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 
 	private ActionOperation submitBugOperation = createActionOperation( this.createKey( "submitBugOperation" ), new Action() {
 
@@ -196,7 +181,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		return new ReportIssueView( this );
 	}
 
-	public BrowserOperation getBrowserOperation() {
+	public org.lgna.croquet.Operation getBrowserOperation() {
 		return this.operation;
 	}
 

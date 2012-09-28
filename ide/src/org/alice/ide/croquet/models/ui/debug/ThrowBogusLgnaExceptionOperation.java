@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.help;
+package org.alice.ide.croquet.models.ui.debug;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	public HelpBrowserOperation() {
-		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" );
+public class ThrowBogusLgnaExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private static class SingletonHolder {
+		private static ThrowBogusLgnaExceptionOperation instance = new ThrowBogusLgnaExceptionOperation();
+	}
+
+	public static ThrowBogusLgnaExceptionOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ThrowBogusLgnaExceptionOperation() {
+		super( java.util.UUID.fromString( "d43ded9d-baa9-44be-9e90-8dfe2918cc4c" ) );
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setName( "Throw Bogus Lgna Exception..." );
+	}
+
+	@Override
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		new Thread() {
+			@Override
+			public void run() {
+				throw new org.lgna.common.LgnaIllegalArgumentException( "DELETE THIS BOGUS LGNA EXCEPTION", 0, null );
+			}
+		}.start();
 	}
 }

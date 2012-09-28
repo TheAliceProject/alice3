@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.help;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	public HelpBrowserOperation() {
-		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" );
+public class SignUpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
+	public SignUpOperation() {
+		super( java.util.UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ), "http://bugs.alice.org:8080/secure/Signup!default.jspa" );
 	}
 }
