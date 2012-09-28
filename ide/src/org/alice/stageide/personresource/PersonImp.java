@@ -68,6 +68,11 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		}
 	}
 
+	public void clear() {
+		this.mapLifeStageToNebPerson.clear();
+		this.setSgGeometry( null );
+	}
+
 	private void setSgGeometry( edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry ) {
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
 		sgVisual.setGeometry( sgGeometry );
