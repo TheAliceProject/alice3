@@ -46,5 +46,108 @@ package org.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class DefaultExceptionHandler extends ExceptionHandler {
+	private static final String SILENTLY_FAIL_TEXT = "Silently Fail";
+	private static final String CONTINUE_TEXT = "Continue";
+	private boolean isBugReportSubmissionPaneDesired = true;
+	private int count = 0;
+	private String title = "";
+	private String applicationName = "Alice";
 
+	public void setTitle( String title ) {
+		this.title = title;
+	}
+
+	public void setApplicationName( String applicationName ) {
+		this.applicationName = applicationName;
+	}
+
+	@Override
+	protected boolean handleLgnaRuntimeException( Thread thread, org.lgna.common.LgnaRuntimeException lgnare ) {
+		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+		if( application != null ) {
+			application.showMessageDialog( lgnare.getFormattedString(), lgnare.getClass().getSimpleName(), org.lgna.croquet.MessageType.ERROR );
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	protected boolean handleGlException( Thread thread, javax.media.opengl.GLException gle ) {
+		//GlExceptionComposite.getInstance().getOperation().fire();
+		return false;
+	}
+
+	@Override
+	protected void handleThrowable( Thread thread, Throwable throwable ) {
+		this.count++;
+		if( this.isBugReportSubmissionPaneDesired ) {
+			try {
+				org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();
+				bugReportPane.setThreadAndThrowable( thread, throwable );
+
+				java.awt.Component owner;
+				org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+				if( application != null ) {
+					org.lgna.croquet.components.Frame frame = application.getFrame();
+					if( frame != null ) {
+						owner = frame.getAwtComponent();
+					} else {
+						owner = null;
+					}
+				} else {
+					owner = null;
+				}
+				//					while( true ) {
+				javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+				dialog.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
+				dialog.setVisible( true );
+
+				if( bugReportPane.isSubmitAttempted() ) {
+					if( bugReportPane.isSubmitBackgrounded() ) {
+						//javax.swing.JOptionPane.showMessageDialog( frame, "Thank you for submitting a bug report." );
+					} else {
+						if( bugReportPane.isSubmitSuccessful() ) {
+							javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report has been successfully submitted.  Thank you." );
+						} else {
+							javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report FAILED to submit.  Thank you for trying." );
+						}
+					}
+					//							break;
+				} else {
+					if( this.count > 1 ) {
+						Object[] options = { CONTINUE_TEXT, SILENTLY_FAIL_TEXT };
+						String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + this.applicationName + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
+						String title = "Multiple Exceptions Detected";
+						int result = javax.swing.JOptionPane.showOptionDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
+						if( result == javax.swing.JOptionPane.NO_OPTION ) {
+							this.isBugReportSubmissionPaneDesired = false;
+						}
+					}
+					//							int result = javax.swing.JOptionPane.showConfirmDialog( frame,
+					//									"NOTE: You do not actually have to fill in any of the fields to submit a bug report.\n\nWould you like to submit this bug?\n\n(If you wish to not see this dialog again during this session, press cancel.  NOTE: Alice may silently fail under these conditions.)",
+					//									"Bug report NOT submitted", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
+					//							if( result == javax.swing.JOptionPane.YES_OPTION ) {
+					//								//pass
+					//							} else {
+					//								if( result == javax.swing.JOptionPane.CANCEL_OPTION ) {
+					//									this.isBugReportSubmissionPaneDesired = false;
+					//								}
+					//								break;
+					//							}
+				}
+				//					}
+			} catch( Throwable t ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+			}
+		}
+	}
+
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
+		Thread.setDefaultUncaughtExceptionHandler( new DefaultExceptionHandler() );
+		throw new javax.media.opengl.GLException();
+		//throw new RuntimeException();
+		//throw new org.lgna.common.LgnaIllegalArgumentException( "test", 0, null );
+	}
 }

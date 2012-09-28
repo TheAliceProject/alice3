@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.issue.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BrowseReleaseNotesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static BrowseReleaseNotesOperation instance = new BrowseReleaseNotesOperation();
-	}
+public class GlExceptionView extends org.lgna.croquet.components.BorderPanel {
+	private static final javax.swing.Icon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/paintingTheRoses.png" ) );
 
-	public static BrowseReleaseNotesOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private BrowseReleaseNotesOperation() {
-		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
-	}
-
-	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.browser.BrowserOperation browserOperation = new org.alice.ide.browser.BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://help.alice.org/w/page/57571480/Release%20Notes%20Alice%203_1" );
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( browserOperation.createHyperlink(), this.getName(), org.lgna.croquet.MessageType.PLAIN );
+	public GlExceptionView( org.alice.ide.issue.GlExceptionComposite composite ) {
+		super( composite );
+		this.addPageStartComponent( new org.lgna.croquet.components.Label( javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ) ) );
+		this.addLineStartComponent( new org.lgna.croquet.components.Label( ICON ) );
+		this.addPageEndComponent( composite.getDisplayDriverHelpOperation().createHyperlink() );
 	}
 }

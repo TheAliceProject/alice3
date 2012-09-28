@@ -113,18 +113,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	private final StringState stepsState = createStringState( this.createKey( "stepsState" ) );
 	private final StringState environmentState = createStringState( this.createKey( "environmentState" ), environment );
 	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, BugSubmitAttachment.YES );
-	private final BrowserOperation operation = new BrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ) ) {
-
-		@Override
-		protected URL getUrl() {
-			try {
-				return new URL( "http://bugs.alice.org:8080/" );
-			} catch( MalformedURLException e ) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-	};
+	private final BrowserOperation operation = new BrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 
 	private ActionOperation submitBugOperation = createActionOperation( this.createKey( "submitBugOperation" ), new Action() {
 

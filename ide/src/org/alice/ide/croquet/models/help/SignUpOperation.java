@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,22 +45,8 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class BrowseReleaseNotesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private static class SingletonHolder {
-		private static BrowseReleaseNotesOperation instance = new BrowseReleaseNotesOperation();
-	}
-
-	public static BrowseReleaseNotesOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private BrowseReleaseNotesOperation() {
-		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ) );
-	}
-
-	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.browser.BrowserOperation browserOperation = new org.alice.ide.browser.BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://help.alice.org/w/page/57571480/Release%20Notes%20Alice%203_1" );
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( browserOperation.createHyperlink(), this.getName(), org.lgna.croquet.MessageType.PLAIN );
+public class SignUpOperation extends org.alice.ide.browser.BrowserOperation {
+	public SignUpOperation() {
+		super( java.util.UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ), "http://bugs.alice.org:8080/secure/Signup!default.jspa" );
 	}
 }

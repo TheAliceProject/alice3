@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.browser;
+package org.alice.ide.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MutableUrlBrowserOperation extends BrowserOperation {
-	public MutableUrlBrowserOperation( java.util.UUID id ) {
-		super( id );
-	}
-
-	private java.net.URL url;
-
-	@Override
-	protected java.net.URL getUrl() {
-		return this.url;
-	}
-
-	public void setUrl( java.net.URL url ) {
-		this.url = url;
+public class DisplayDriverHelpOperation extends org.alice.ide.browser.BrowserOperation {
+	public DisplayDriverHelpOperation() {
+		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), "http://help.alice.org/w/page/54959364/Updating%20Video%20Drivers" );
 	}
 }
