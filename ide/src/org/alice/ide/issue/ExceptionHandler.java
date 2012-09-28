@@ -61,7 +61,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		this.applicationName = applicationName;
 	}
 
-	public void uncaughtException( Thread thread, Throwable throwable ) {
+	public final void uncaughtException( Thread thread, Throwable throwable ) {
 		throwable.printStackTrace();
 		if( throwable instanceof RuntimeException ) {
 			RuntimeException runtimeException = (RuntimeException)throwable;
@@ -80,6 +80,8 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 			if( application != null ) {
 				application.showMessageDialog( lgnaRuntimeException.getFormattedString(), lgnaRuntimeException.getClass().getSimpleName(), org.lgna.croquet.MessageType.ERROR );
 			}
+			//		} else if( throwable instanceof javax.media.opengl.GLException ) {
+			//			javax.media.opengl.GLException gle = (javax.media.opengl.GLException)throwable;
 		} else {
 			this.count++;
 			if( this.isBugReportSubmissionPaneDesired ) {
