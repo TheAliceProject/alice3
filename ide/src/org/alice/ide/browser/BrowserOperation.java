@@ -45,38 +45,25 @@ package org.alice.ide.browser;
 /**
  * @author Dennis Cosgrove
  */
-public class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private final java.net.URL url;
-
-	public BrowserOperation( java.util.UUID id, String spec ) {
+public abstract class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	public BrowserOperation( java.util.UUID id ) {
 		super( id );
-		try {
-			this.url = new java.net.URL( spec );
-		} catch( java.net.MalformedURLException murle ) {
-			throw new RuntimeException( spec, murle );
-		}
 	}
 
-	@Override
-	protected final void localize() {
-		String spec = this.url.toString();
-		this.setName( spec );
-		super.localize();
-		String name = this.getName();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( spec, name ) ) {
-			//pass
-		} else {
-			this.setToolTipText( spec );
-		}
-	}
+	protected abstract java.net.URL getUrl();
 
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		//try {
+		java.net.URL url = this.getUrl();
 		try {
-			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
+			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
 		} catch( Exception e ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( this.url.toString() );
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( url.toString() );
 			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." );
 		}
+		//} catch( java.net.MalformedURLException murle ) {
+		//	throw new RuntimeException( this.getClass().getName(), murle );
+		//}
 	}
 }

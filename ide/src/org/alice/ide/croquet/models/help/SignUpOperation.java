@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class SignUpOperation extends org.alice.ide.browser.BrowserOperation {
+public class SignUpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
 	public SignUpOperation() {
 		super( java.util.UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ), "http://bugs.alice.org:8080/secure/Signup!default.jspa" );
 	}

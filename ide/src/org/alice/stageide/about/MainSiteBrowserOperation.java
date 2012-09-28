@@ -46,7 +46,7 @@ package org.alice.stageide.about;
 /**
  * @author Dennis Cosgrove
  */
-public class MainSiteBrowserOperation extends org.alice.ide.browser.BrowserOperation {
+public class MainSiteBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
 	private static class SingletonHolder {
 		private static MainSiteBrowserOperation instance = new MainSiteBrowserOperation();
 	}

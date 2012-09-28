@@ -45,7 +45,7 @@ package org.alice.ide.issue;
 /**
  * @author Dennis Cosgrove
  */
-public class DisplayDriverHelpOperation extends org.alice.ide.browser.BrowserOperation {
+public class DisplayDriverHelpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
 	public DisplayDriverHelpOperation() {
 		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), "http://help.alice.org/w/page/54959364/Updating%20Video%20Drivers" );
 	}

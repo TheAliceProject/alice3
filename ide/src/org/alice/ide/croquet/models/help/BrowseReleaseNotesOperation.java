@@ -60,7 +60,7 @@ public class BrowseReleaseNotesOperation extends org.alice.ide.operations.Incons
 
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.browser.BrowserOperation browserOperation = new org.alice.ide.browser.BrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://help.alice.org/w/page/57571480/Release%20Notes%20Alice%203_1" );
+		org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "7a93cf56-04ad-4159-a0e9-7047642d3b1e" ), "http://help.alice.org/w/page/57571480/Release%20Notes%20Alice%203_1" );
 		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( browserOperation.createHyperlink(), this.getName(), org.lgna.croquet.MessageType.PLAIN );
 	}
 }
