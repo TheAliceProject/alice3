@@ -328,6 +328,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 
+	public void clear() {
+		this.clearCameraViews();
+		this.handleManager.clear();
+	}
+
 	public void clearCameraViews()
 	{
 		for( CameraPair cameraPair : this.cameraMap.values() )
