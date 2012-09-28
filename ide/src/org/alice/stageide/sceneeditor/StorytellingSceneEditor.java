@@ -898,9 +898,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 					}
 				}
 				if( !alreadyHasIt ) {
-					if( marker.getVehicle() != null ) {
-						marker.setVehicle( null );
-					}
 					marker.setVehicle( sceneImp );
 				}
 			}
