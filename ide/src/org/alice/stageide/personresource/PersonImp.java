@@ -68,6 +68,14 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		}
 	}
 
+	public void clear() {
+		for( java.util.Map.Entry<org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person> entry : this.mapLifeStageToNebPerson.entrySet() ) {
+			entry.getValue().unload();
+		}
+		this.mapLifeStageToNebPerson.clear();
+		this.setSgGeometry( null );
+	}
+
 	private void setSgGeometry( edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry ) {
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
 		sgVisual.setGeometry( sgGeometry );

@@ -71,4 +71,10 @@ public class PreviewComposite extends org.lgna.croquet.SimpleComposite<org.alice
 		super.handlePreActivation();
 		this.getView().setPerson( personImp );
 	}
+
+	@Override
+	public void handlePostDeactivation() {
+		this.personImp.clear();
+		super.handlePostDeactivation();
+	}
 }

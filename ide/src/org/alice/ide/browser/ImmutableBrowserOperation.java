@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.help;
+package org.alice.ide.browser;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	public HelpBrowserOperation() {
-		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" );
+public class ImmutableBrowserOperation extends BrowserOperation {
+	private final java.net.URL url;
+
+	public ImmutableBrowserOperation( java.util.UUID id, String spec ) {
+		super( id );
+		try {
+			this.url = new java.net.URL( spec );
+		} catch( java.net.MalformedURLException murle ) {
+			throw new RuntimeException( spec, murle );
+		}
+	}
+
+	@Override
+	protected final void localize() {
+		String spec = this.url.toString();
+		this.setName( spec );
+		super.localize();
+		String name = this.getName();
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( spec, name ) ) {
+			//pass
+		} else {
+			this.setToolTipText( spec );
+		}
+	}
+
+	@Override
+	protected java.net.URL getUrl() {
+		return this.url;
 	}
 }

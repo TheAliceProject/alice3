@@ -13,6 +13,8 @@ public class Thing extends Model {
 
 	private native void initialize( Object o, Object o2 );
 
+	public native void unload();
+
 	public native void setTexture( Object o );
 
 	public Thing( Object o, Object o2 ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {

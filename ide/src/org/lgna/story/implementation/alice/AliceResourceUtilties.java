@@ -53,6 +53,9 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.story.resourceutilities.ModelResourceExporter;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
@@ -632,6 +635,11 @@ public class AliceResourceUtilties {
 		return getThumbnailInternal( modelResource, null );
 	}
 
+	public static BufferedImage getThumbnail( ResourceKey key )
+	{
+		return getThumbnailInternal( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
 	public static java.net.URL getThumbnailURL( Class<?> modelResource )
 	{
 		return getThumbnailURLInternal( modelResource, null );
@@ -640,6 +648,38 @@ public class AliceResourceUtilties {
 	public static java.net.URL getThumbnailURL( Class<?> modelResource, String instanceName )
 	{
 		return getThumbnailURLInternal( modelResource, instanceName );
+	}
+
+	public static java.net.URL getThumbnailURL( ResourceKey key )
+	{
+		return getThumbnailURLInternal( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
+	private static Class<?> getClassFromKey( ResourceKey key ) {
+		if( key instanceof ClassResourceKey ) {
+			ClassResourceKey clsKey = (ClassResourceKey)key;
+			return clsKey.getCls();
+		}
+		else if( key instanceof EnumConstantResourceKey ) {
+			EnumConstantResourceKey enumKey = (EnumConstantResourceKey)key;
+			return enumKey.getEnumConstant().getDeclaringClass();
+		}
+		return null;
+	}
+
+	private static String getEnumNameFromKey( ResourceKey key ) {
+		if( key instanceof ClassResourceKey ) {
+			return null;
+		}
+		else if( key instanceof EnumConstantResourceKey ) {
+			EnumConstantResourceKey enumKey = (EnumConstantResourceKey)key;
+			return enumKey.getEnumConstant().name();
+		}
+		return null;
+	}
+
+	private static String getKey( ResourceKey key ) {
+		return getKey( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
 	private static String getKey( Class<?> modelResource, String resourceName ) {
@@ -708,6 +748,13 @@ public class AliceResourceUtilties {
 		return getModelResourceInfo( modelResource, null );
 	}
 
+	public static org.lgna.story.resourceutilities.ModelResourceInfo getModelResourceInfo( ResourceKey key ) {
+		if( key == null ) {
+			return null;
+		}
+		return getModelResourceInfo( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
 	public static AxisAlignedBox getBoundingBox( Class<?> modelResource, String resourceName )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
@@ -722,6 +769,10 @@ public class AliceResourceUtilties {
 		return getBoundingBox( modelResource, null );
 	}
 
+	public static AxisAlignedBox getBoundingBox( ResourceKey key ) {
+		return getBoundingBox( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
 	public static String getModelName( Class<?> modelResource, String resourceName )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
@@ -734,6 +785,10 @@ public class AliceResourceUtilties {
 	public static String getModelName( Class<?> modelResource )
 	{
 		return getModelName( modelResource, null );
+	}
+
+	public static String getModelName( ResourceKey key ) {
+		return getModelName( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
 	public static String getJavaCode( Class<?> modelResource ) {
@@ -777,6 +832,10 @@ public class AliceResourceUtilties {
 		return getCreator( modelResource, null );
 	}
 
+	public static String getCreator( ResourceKey key ) {
+		return getCreator( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
 	public static int getCreationYear( Class<?> modelResource, String resourceName )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
@@ -791,6 +850,11 @@ public class AliceResourceUtilties {
 		return getCreationYear( modelResource, null );
 	}
 
+	public static int getCreationYear( ResourceKey key )
+	{
+		return getCreationYear( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
 	public static String[] getTags( Class<?> modelResource, String resourceName )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
@@ -803,6 +867,30 @@ public class AliceResourceUtilties {
 	public static String[] getTags( Class<?> modelResource )
 	{
 		return getTags( modelResource, null );
+	}
+
+	public static String[] getTags( ResourceKey key )
+	{
+		return getTags( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
+	public static String[] getGroupTags( Class<?> modelResource, String resourceName )
+	{
+		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
+		if( info != null ) {
+			return info.getGroupTags();
+		}
+		return null;
+	}
+
+	public static String[] getGroupTags( Class<?> modelResource )
+	{
+		return getGroupTags( modelResource, null );
+	}
+
+	public static String[] getGroupTags( ResourceKey key )
+	{
+		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
 }

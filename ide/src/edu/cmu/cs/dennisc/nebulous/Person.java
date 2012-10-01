@@ -18,6 +18,8 @@ public class Person extends Model {
 
 	private native void initialize( Object o );
 
+	public native void unload();
+
 	public native void setGender( Object o );
 
 	public native void setOutfit( Object o );
