@@ -1,7 +1,6 @@
 package org.lgna.story.resourceutilities;
 import java.io.File;
 
-import org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
@@ -184,7 +183,7 @@ public class GalleryWebpageGenerator {
 				sb.append( node.getResourceClass().getName().replace( ".", "/" ) );
 				sb.append( ".png" );
 				try {
-					image = javax.imageio.ImageIO.read(TypeGalleryNode.class.getResource( sb.toString() ));
+					image = javax.imageio.ImageIO.read(org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel.class.getResource( sb.toString() ));
 				}
 				catch (Exception e) {
 					e.printStackTrace();

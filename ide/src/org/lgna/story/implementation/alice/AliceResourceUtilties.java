@@ -795,7 +795,7 @@ public class AliceResourceUtilties {
 		String name = getName( modelResource );
 		InputStream is = null;
 		try {
-			is = getAliceResourceAsStream( modelResource, name + ".java" );
+			is = getAliceResourceAsStream( modelResource, name + "Resource.java" );
 			if( is != null ) {
 				String javaCode = TextFileUtilities.read( is );
 				return javaCode;

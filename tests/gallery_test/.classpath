@@ -3,5 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ide"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/ide/lib/alice/aliceModelSource.jar" sourcepath="/ide/lib/alice/aliceModelSource.jar"/>
+	<classpathentry kind="lib" path="/ide/lib/alice/nebulousModelSource.jar" sourcepath="/ide/lib/alice/nebulousModelSource.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
