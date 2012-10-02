@@ -11,17 +11,24 @@ public class UserApplicationDirectoryState extends DirectoryState {
 		java.util.regex.Matcher matcher = KEY_PATTERN.matcher( value );
 		String userApplicationDirectoryValue = this.getValue();
 		try {
+			//throw new IllegalArgumentException();
 			return matcher.replaceAll( userApplicationDirectoryValue );
 		} catch( IllegalArgumentException iae ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( value );
-			StringBuilder sb = new StringBuilder();
-			sb.append( "the following value has been copied to your clipboard: \n\n\t" );
-			sb.append( value );
-			sb.append( "\n\nplease paste it in an email and send it to dennis." );
-
-			javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
-			java.util.regex.Matcher defaultMatcher = KEY_PATTERN.matcher( defaultValue );
-			return defaultMatcher.replaceAll( userApplicationDirectoryValue );
+			if( value.startsWith( KEY ) ) {
+				return userApplicationDirectoryValue + value.substring( KEY.length() );
+			} else if( defaultValue.startsWith( KEY ) ) {
+				return userApplicationDirectoryValue + defaultValue.substring( KEY.length() );
+			} else {
+				//				edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( value );
+				//				StringBuilder sb = new StringBuilder();
+				//				sb.append( "the following value has been copied to your clipboard: \n\n\t" );
+				//				sb.append( value );
+				//				sb.append( "\n\nplease paste it in an email and send it to dennis." );
+				//
+				//				javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
+				java.util.regex.Matcher defaultMatcher = KEY_PATTERN.matcher( defaultValue );
+				return defaultMatcher.replaceAll( userApplicationDirectoryValue );
+			}
 		}
 	}
 
