@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.project.virtualmachine;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LgnaNoReturnException extends LgnaVmException {
-	public LgnaNoReturnException( VirtualMachine vm ) {
-		super( vm );
+public class LgnaVmNullPointerException extends LgnaVmException {
+	public LgnaVmNullPointerException( String message, VirtualMachine vm ) {
+		super( message, vm );
 	}
 
 	@Override
 	protected void appendDescription( StringBuilder sb ) {
-		sb.append( "return statement required" );
+		String message = this.getMessage();
+		if( message != null ) {
+			sb.append( message );
+		}
 	}
 }

@@ -46,66 +46,29 @@ package org.lgna.project.virtualmachine;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LgnaVmException extends org.lgna.common.LgnaRuntimeException {
-	private final Thread thread;
-	private final VirtualMachine vm;
-	private final LgnaStackTraceElement[] stackTrace;
+public class LgnaVmArrayIndexOutOfBoundsException extends LgnaVmException {
+	private final int index;
+	private final int length;
 
-	public LgnaVmException( String message, VirtualMachine vm ) {
-		super( message );
-		this.vm = vm;
-		this.thread = Thread.currentThread();
-		this.stackTrace = this.vm.getStackTrace( this.thread );
+	public LgnaVmArrayIndexOutOfBoundsException( VirtualMachine vm, int index, int length ) {
+		super( vm );
+		this.index = index;
+		this.length = length;
 	}
 
-	public LgnaVmException( VirtualMachine vm ) {
-		this( null, vm );
+	public int getIndex() {
+		return this.index;
 	}
 
-	public VirtualMachine getVirtualMachine() {
-		return this.vm;
-	}
-
-	public LgnaStackTraceElement[] getLgnaStackTrace() {
-		return this.stackTrace;
-	}
-
-	protected abstract void appendDescription( StringBuilder sb );
-
-	@Override
-	protected void appendFormattedString( java.lang.StringBuilder sb ) {
-		sb.append( "<html>" );
-		sb.append( "<h1>" );
-		this.appendDescription( sb );
-		sb.append( "</h1>" );
-		LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
-		if( lgnaStackTrace != null ) {
-			sb.append( "<ul>" );
-			for( LgnaStackTraceElement stackTraceElement : lgnaStackTrace ) {
-				sb.append( "<li>" );
-				if( stackTraceElement != null ) {
-					stackTraceElement.appendFormatted( sb );
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
-				}
-			}
-			sb.append( "</ul>" );
-		}
-		sb.append( "</html>" );
+	public int getLength() {
+		return this.length;
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( super.toString() );
-		LgnaStackTraceElement[] lgnaStackTrace = this.getLgnaStackTrace();
-		if( lgnaStackTrace != null ) {
-			for( LgnaStackTraceElement stackTraceElement : lgnaStackTrace ) {
-				if( stackTraceElement != null ) {
-					sb.append( "\n\t" + stackTraceElement.toString() );
-				}
-			}
-		}
-		return sb.toString();
+	protected void appendDescription( StringBuilder sb ) {
+		sb.append( this.index );
+		sb.append( " is not in range [0," );
+		sb.append( this.length );
+		sb.append( ")" );
 	}
 }
