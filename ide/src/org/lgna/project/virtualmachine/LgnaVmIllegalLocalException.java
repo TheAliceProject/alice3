@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,45 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.lgna.project.virtualmachine;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccess extends Expression {
-	public DeclarationProperty<UserParameter> parameter = new DeclarationProperty<UserParameter>( this );
+public abstract class LgnaVmIllegalLocalException extends LgnaVmException {
+	private final org.lgna.project.ast.UserLocal local;
 
-	public ParameterAccess() {
+	public LgnaVmIllegalLocalException( VirtualMachine vm, org.lgna.project.ast.UserLocal local ) {
+		super( vm );
+		this.local = local;
 	}
 
-	public ParameterAccess( UserParameter parameter ) {
-		this.parameter.setValue( parameter );
-	}
-
-	@Override
-	public AbstractType<?, ?, ?> getType() {
-		AbstractParameter parameter = this.parameter.getValue();
-		if( parameter != null ) {
-			return parameter.getValueType();
-		} else {
-			return null;
-		}
+	public final org.lgna.project.ast.UserLocal getLocal() {
+		return this.local;
 	}
 
 	@Override
-	public boolean isValid() {
-		AbstractParameter parameter = this.parameter.getValue();
-		if( parameter != null ) {
-			Code parameterCode = parameter.getCode();
-			if( parameterCode != null ) {
-				Code code = this.getFirstAncestorAssignableTo( Code.class );
-				return code == parameterCode;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+	protected void appendDescription( StringBuilder sb ) {
+		sb.append( this.local != null ? this.local.getName() : "null" );
 	}
 }

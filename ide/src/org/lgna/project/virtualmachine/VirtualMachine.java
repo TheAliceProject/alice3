@@ -62,7 +62,7 @@ public abstract class VirtualMachine {
 
 	protected abstract void popFrame();
 
-	protected abstract Object lookup( org.lgna.project.ast.AbstractParameter parameter );
+	protected abstract Object lookup( org.lgna.project.ast.UserParameter parameter );
 
 	protected abstract void pushLocal( org.lgna.project.ast.UserLocal local, Object value );
 

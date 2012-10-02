@@ -73,7 +73,7 @@ public abstract class LgnaVmException extends org.lgna.common.LgnaRuntimeExcepti
 	protected abstract void appendDescription( StringBuilder sb );
 
 	@Override
-	protected void appendFormattedString( java.lang.StringBuilder sb ) {
+	protected final void appendFormattedString( java.lang.StringBuilder sb ) {
 		sb.append( "<html>" );
 		sb.append( "<h1>" );
 		this.appendDescription( sb );
