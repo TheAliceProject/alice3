@@ -53,6 +53,7 @@ public class EquivalenceUtilities {
 			return a.equals( b );
 		}
 	}
+
 	public static boolean areNotEquivalent( Object a, Object b ) {
 		return !areEquivalent( a, b );
 	}
@@ -64,6 +65,7 @@ public class EquivalenceUtilities {
 			return a.equals( b );
 		}
 	}
+
 	public static boolean areNotEquivalent( String a, String b, CaseSensitivityPolicy caseSensitivityPolicy ) {
 		return !areEquivalent( a, b, caseSensitivityPolicy );
 	}

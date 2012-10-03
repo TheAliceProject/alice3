@@ -47,19 +47,23 @@ package edu.cmu.cs.dennisc.math;
  */
 public class AngleInRadians implements Angle {
 	private double m_radians;
+
 	public AngleInRadians( double radians ) {
 		m_radians = radians;
 	}
+
 	public AngleInRadians( Angle other ) {
 		this( other.getAsRadians() );
 	}
-	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+
+	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		m_radians = binaryDecoder.decodeDouble();
 	}
-	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( m_radians );
 	}
-	
+
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj instanceof Angle ) {
@@ -69,40 +73,51 @@ public class AngleInRadians implements Angle {
 			return false;
 		}
 	}
+
 	public boolean isNaN() {
 		return Double.isNaN( m_radians );
 	}
+
 	public void setNaN() {
 		m_radians = Double.NaN;
 	}
+
 	public double getAsRadians() {
 		return m_radians;
 	}
+
 	public double getAsDegrees() {
 		return edu.cmu.cs.dennisc.math.AngleUtilities.radiansToDegrees( m_radians );
 	}
+
 	public double getAsRevolutions() {
 		return edu.cmu.cs.dennisc.math.AngleUtilities.radiansToRevolutions( m_radians );
 	}
+
 	public void setAsRadians( double radians ) {
 		m_radians = radians;
 	}
+
 	public void setAsDegrees( double degrees ) {
 		m_radians = AngleUtilities.degreesToRadians( degrees );
 	}
+
 	public void setAsRevolutions( double revolutions ) {
 		m_radians = AngleUtilities.revolutionsToRadians( revolutions );
 	}
+
 	public Angle createCopy() {
 		return new AngleInRadians( this );
 	}
+
 	public void set( Angle other ) {
 		setAsRadians( other.getAsRadians() );
 	}
-	
-	public void setToInterpolation(Angle a0, Angle a1, double portion) {
+
+	public void setToInterpolation( Angle a0, Angle a1, double portion ) {
 		setAsRadians( InterpolationUtilities.interpolate( a0.getAsRadians(), a1.getAsRadians(), portion ) );
 	}
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

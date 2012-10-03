@@ -47,11 +47,11 @@ package org.alice.ide.cascade;
  */
 public abstract class ExpressionCascadeManager {
 	private final org.alice.ide.cascade.fillerinners.BooleanFillerInner booleanFillerInner = new org.alice.ide.cascade.fillerinners.BooleanFillerInner();
-	private final java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<org.alice.ide.cascade.fillerinners.ExpressionFillerInner> expressionFillerInners = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private final org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner assumingStringConcatenationObjectFillerInner = new org.alice.ide.cascade.fillerinners.AssumingStringConcatenationObjectFillerInner();
 
 	private final java.util.Stack<ExpressionCascadeContext> contextStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
-	
+
 	public ExpressionCascadeManager() {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.DoubleFillerInner() );
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.IntegerFillerInner() );
@@ -61,12 +61,14 @@ public abstract class ExpressionCascadeManager {
 		this.addExpressionFillerInner( new org.alice.ide.cascade.fillerinners.ImageResourceFillerInner() );
 	}
 
-	public void addRelationalTypeToBooleanFillerInner( org.lgna.project.ast.AbstractType< ?, ?, ? > operandType ) {
+	public void addRelationalTypeToBooleanFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> operandType ) {
 		this.booleanFillerInner.addRelationalType( operandType );
 	}
+
 	public void addRelationalTypeToBooleanFillerInner( Class<?> operandCls ) {
 		addRelationalTypeToBooleanFillerInner( org.lgna.project.ast.JavaType.getInstance( operandCls ) );
 	}
+
 	protected void addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner ) {
 		this.expressionFillerInners.add( expressionFillerInner );
 	}
@@ -75,10 +77,12 @@ public abstract class ExpressionCascadeManager {
 		public org.lgna.project.ast.Expression getPreviousExpression() {
 			return null;
 		}
+
 		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
 			return null;
 		}
 	};
+
 	private ExpressionCascadeContext safePeekContext() {
 		if( this.contextStack.size() > 0 ) {
 			return this.contextStack.peek();
@@ -86,6 +90,7 @@ public abstract class ExpressionCascadeManager {
 			return NULL_CONTEXT;
 		}
 	}
+
 	public void pushContext( ExpressionCascadeContext context ) {
 		assert context != null;
 		if( this.contextStack.size() > 0 ) {
@@ -93,6 +98,7 @@ public abstract class ExpressionCascadeManager {
 		}
 		this.contextStack.push( context );
 	}
+
 	public ExpressionCascadeContext popContext() {
 		if( this.contextStack.size() > 0 ) {
 			return this.contextStack.pop();
@@ -102,6 +108,7 @@ public abstract class ExpressionCascadeManager {
 			return NULL_CONTEXT;
 		}
 	}
+
 	public ExpressionCascadeContext popAndCheckContext( ExpressionCascadeContext expectedContext ) {
 		ExpressionCascadeContext poppedContext = this.popContext();
 		if( poppedContext != expectedContext ) {
@@ -109,12 +116,12 @@ public abstract class ExpressionCascadeManager {
 		}
 		return poppedContext;
 	}
+
 	public org.lgna.project.ast.Expression getPreviousExpression() {
 		return this.safePeekContext().getPreviousExpression();
 	}
-	
 
-	private java.util.LinkedList< org.lgna.project.ast.UserLocal > updateAccessibleLocalsForBlockStatementAndIndex( java.util.LinkedList< org.lgna.project.ast.UserLocal > rv, org.lgna.project.ast.BlockStatement blockStatement, int index ) {
+	private java.util.LinkedList<org.lgna.project.ast.UserLocal> updateAccessibleLocalsForBlockStatementAndIndex( java.util.LinkedList<org.lgna.project.ast.UserLocal> rv, org.lgna.project.ast.BlockStatement blockStatement, int index ) {
 		while( index >= 1 ) {
 			index--;
 			//todo: investigate
@@ -135,7 +142,8 @@ public abstract class ExpressionCascadeManager {
 		}
 		return rv;
 	}
-	private java.util.LinkedList< org.lgna.project.ast.UserLocal > updateAccessibleLocals( java.util.LinkedList< org.lgna.project.ast.UserLocal > rv, org.lgna.project.ast.Statement statement ) {
+
+	private java.util.LinkedList<org.lgna.project.ast.UserLocal> updateAccessibleLocals( java.util.LinkedList<org.lgna.project.ast.UserLocal> rv, org.lgna.project.ast.Statement statement ) {
 		org.lgna.project.ast.Node parent = statement.getParent();
 		if( parent instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
 			parent = parent.getParent();
@@ -145,7 +153,7 @@ public abstract class ExpressionCascadeManager {
 			if( statementParent instanceof org.lgna.project.ast.BlockStatement ) {
 				org.lgna.project.ast.BlockStatement blockStatementParent = (org.lgna.project.ast.BlockStatement)statementParent;
 				int index = blockStatementParent.statements.indexOf( statement );
-				this.updateAccessibleLocalsForBlockStatementAndIndex(rv, blockStatementParent, index);
+				this.updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatementParent, index );
 			} else if( statementParent instanceof org.lgna.project.ast.CountLoop ) {
 				org.lgna.project.ast.CountLoop countLoopParent = (org.lgna.project.ast.CountLoop)statementParent;
 				boolean areCountLoopLocalsViewable = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava();
@@ -165,27 +173,30 @@ public abstract class ExpressionCascadeManager {
 		return rv;
 	}
 
-	private Iterable< org.lgna.project.ast.UserLocal > getAccessibleLocals( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		java.util.LinkedList< org.lgna.project.ast.UserLocal > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private Iterable<org.lgna.project.ast.UserLocal> getAccessibleLocals( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		java.util.LinkedList<org.lgna.project.ast.UserLocal> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		updateAccessibleLocalsForBlockStatementAndIndex( rv, blockStatementIndexPair.getBlockStatement(), blockStatementIndexPair.getIndex() );
 		updateAccessibleLocals( rv, blockStatementIndexPair.getBlockStatement() );
 		return rv;
 	}
 
-	protected final boolean isApplicableForFillIn( org.lgna.project.ast.AbstractType<?,?,?> desiredType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
+	protected final boolean isApplicableForFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType ) {
 		return desiredType.isAssignableFrom( expressionType );
 	}
-	protected abstract boolean isApplicableForPartFillIn( org.lgna.project.ast.AbstractType<?,?,?> desiredType, org.lgna.project.ast.AbstractType<?,?,?> expressionType );
-	protected final boolean isApplicableForFillInAndPossiblyPartFillIns( org.lgna.project.ast.AbstractType<?,?,?> desiredType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
+
+	protected abstract boolean isApplicableForPartFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType );
+
+	protected final boolean isApplicableForFillInAndPossiblyPartFillIns( org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType ) {
 		return this.isApplicableForFillIn( desiredType, expressionType ) || this.isApplicableForPartFillIn( desiredType, expressionType );
 	}
-	protected abstract org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> createPartMenuModel( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType< ?, ?, ? > desiredType, org.lgna.project.ast.AbstractType< ?, ?, ? > expressionType, boolean isOwnedByCascadeItemMenuCombo );
-	
-	private void appendFillInAndPossiblyPartFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > blankChildren, org.lgna.project.ast.AbstractType<?,?,?> desiredType, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
+
+	protected abstract org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> createPartMenuModel( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType, boolean isOwnedByCascadeItemMenuCombo );
+
+	private void appendFillInAndPossiblyPartFillIns( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType ) {
 		org.lgna.croquet.CascadeBlankChild blankChild;
-		org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression,?> expressionFillIn;
+		org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression, ?> expressionFillIn;
 		if( this.isApplicableForFillIn( desiredType, expressionType ) ) {
-			expressionFillIn = new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn< org.lgna.project.ast.Expression >( expression );
+			expressionFillIn = new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn<org.lgna.project.ast.Expression>( expression );
 		} else {
 			expressionFillIn = null;
 		}
@@ -193,7 +204,7 @@ public abstract class ExpressionCascadeManager {
 			org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> menuModel = this.createPartMenuModel( expression, desiredType, expressionType, expressionFillIn != null );
 			if( menuModel != null ) {
 				if( expressionFillIn != null ) {
-					blankChild = new org.lgna.croquet.CascadeItemMenuCombo( expressionFillIn, menuModel );				
+					blankChild = new org.lgna.croquet.CascadeItemMenuCombo( expressionFillIn, menuModel );
 				} else {
 					blankChild = menuModel;
 				}
@@ -211,17 +222,17 @@ public abstract class ExpressionCascadeManager {
 			blankChildren.add( blankChild );
 		}
 	}
-	private void appendFillInAndPossiblyPartFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > blankChildren, org.lgna.project.ast.AbstractType<?,?,?> desiredType, org.lgna.project.ast.Expression expression ) {
+
+	private void appendFillInAndPossiblyPartFillIns( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.Expression expression ) {
 		this.appendFillInAndPossiblyPartFillIns( blankChildren, desiredType, expression, expression.getType() );
 	}
-	
-	
-	private void appendExpressionBonusFillInsForType( java.util.List< org.lgna.croquet.CascadeBlankChild > blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+
+	private void appendExpressionBonusFillInsForType( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		org.lgna.project.ast.Expression prevExpression = this.safePeekContext().getPreviousExpression();
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair = this.safePeekContext().getBlockStatementIndexPair();
-		java.util.List< org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn > arrayLengthFillIns;
+		java.util.List<org.alice.ide.croquet.models.cascade.array.ArrayLengthFillIn> arrayLengthFillIns;
 		if( blankNode.isTop() ) {
-			if( type == org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE || ( type.isAssignableFrom( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) && prevExpression != null ) ) {
+			if( ( type == org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) || ( type.isAssignableFrom( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE ) && ( prevExpression != null ) ) ) {
 				arrayLengthFillIns = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			} else {
 				arrayLengthFillIns = null;
@@ -230,19 +241,19 @@ public abstract class ExpressionCascadeManager {
 			arrayLengthFillIns = null;
 		}
 
-		org.lgna.project.ast.AbstractType<?,?,?> selectedType = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
+		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 		if( this.isApplicableForFillInAndPossiblyPartFillIns( type, selectedType ) ) {
 			this.appendFillInAndPossiblyPartFillIns( blankChildren, type, new org.lgna.project.ast.ThisExpression(), selectedType );
 		}
 
 		for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
-			org.lgna.project.ast.AbstractType<?,?,?> fieldType = field.getValueType();
+			org.lgna.project.ast.AbstractType<?, ?, ?> fieldType = field.getValueType();
 			if( this.isApplicableForFillInAndPossiblyPartFillIns( type, fieldType ) ) {
 				org.lgna.project.ast.Expression fieldAccess = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
 				this.appendFillInAndPossiblyPartFillIns( blankChildren, type, fieldAccess );
 			}
 			if( fieldType.isArray() ) {
-				org.lgna.project.ast.AbstractType<?,?,?> fieldComponentType = fieldType.getComponentType();
+				org.lgna.project.ast.AbstractType<?, ?, ?> fieldComponentType = fieldType.getComponentType();
 				if( this.isApplicableForFillInAndPossiblyPartFillIns( type, fieldComponentType ) ) {
 					org.lgna.project.ast.Expression fieldAccess = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), field );
 					blankChildren.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( fieldAccess ) );
@@ -254,14 +265,15 @@ public abstract class ExpressionCascadeManager {
 		}
 
 		org.lgna.project.ast.AbstractCode codeInFocus = org.alice.ide.IDE.getActiveInstance().getFocusedCode();
-		if( codeInFocus != null ) {
-			for( org.lgna.project.ast.AbstractParameter parameter : codeInFocus.getRequiredParameters() ) {
-				org.lgna.project.ast.AbstractType<?,?,?> parameterType = parameter.getValueType();
+		if( codeInFocus instanceof org.lgna.project.ast.UserCode ) {
+			org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)codeInFocus;
+			for( org.lgna.project.ast.UserParameter parameter : userCode.getRequiredParamtersProperty() ) {
+				org.lgna.project.ast.AbstractType<?, ?, ?> parameterType = parameter.getValueType();
 				if( this.isApplicableForFillInAndPossiblyPartFillIns( type, parameterType ) ) {
 					this.appendFillInAndPossiblyPartFillIns( blankChildren, type, new org.lgna.project.ast.ParameterAccess( parameter ) );
 				}
 				if( parameterType.isArray() ) {
-					org.lgna.project.ast.AbstractType<?,?,?> parameterArrayComponentType = parameterType.getComponentType();
+					org.lgna.project.ast.AbstractType<?, ?, ?> parameterArrayComponentType = parameterType.getComponentType();
 					if( this.isApplicableForFillInAndPossiblyPartFillIns( type, parameterArrayComponentType ) ) {
 						blankChildren.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new org.lgna.project.ast.ParameterAccess( parameter ) ) );
 					}
@@ -272,12 +284,12 @@ public abstract class ExpressionCascadeManager {
 			}
 			if( blockStatementIndexPair != null ) {
 				for( org.lgna.project.ast.UserLocal local : this.getAccessibleLocals( blockStatementIndexPair ) ) {
-					org.lgna.project.ast.AbstractType<?,?,?> localType = local.getValueType();
+					org.lgna.project.ast.AbstractType<?, ?, ?> localType = local.getValueType();
 					if( this.isApplicableForFillInAndPossiblyPartFillIns( type, localType ) ) {
 						this.appendFillInAndPossiblyPartFillIns( blankChildren, type, new org.lgna.project.ast.LocalAccess( local ) );
 					}
 					if( localType.isArray() ) {
-						org.lgna.project.ast.AbstractType<?,?,?> localArrayComponentType = localType.getComponentType();
+						org.lgna.project.ast.AbstractType<?, ?, ?> localArrayComponentType = localType.getComponentType();
 						if( this.isApplicableForFillInAndPossiblyPartFillIns( type, localArrayComponentType ) ) {
 							blankChildren.add( new org.alice.ide.croquet.models.cascade.array.ArrayAccessFillIn( new org.lgna.project.ast.LocalAccess( local ) ) );
 						}
@@ -297,14 +309,16 @@ public abstract class ExpressionCascadeManager {
 			}
 		}
 	}
-	protected org.lgna.project.ast.AbstractType<?,?,?> getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType<?,?,?> interfaceType ) {
+
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType<?, ?, ?> interfaceType ) {
 		return null;
 	}
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > addCustomFillIns( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> step, org.lgna.project.ast.AbstractType< ?,?,? > type ) {
+
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> addCustomFillIns( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> step, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return rv;
 	}
 
-	protected org.lgna.project.ast.AbstractType<?,?,?> getTypeFor( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getTypeFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		if( type == org.lgna.project.ast.JavaType.getInstance( Number.class ) ) {
 			return org.lgna.project.ast.JavaType.DOUBLE_OBJECT_TYPE;
 		} else {
@@ -312,18 +326,18 @@ public abstract class ExpressionCascadeManager {
 		}
 	}
 
-	protected boolean areEnumConstantsDesired( org.lgna.project.ast.AbstractType<?,?,?> enumType ) {
+	protected boolean areEnumConstantsDesired( org.lgna.project.ast.AbstractType<?, ?, ?> enumType ) {
 		return true;
 	}
-	
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType< ?,?,? > type, org.lgna.project.annotations.ValueDetails< ? > details ) {
+
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.annotations.ValueDetails<?> details ) {
 		if( type != null ) {
 			boolean isRoot = blankNode.isTop();
-			
+
 			ExpressionCascadeContext context = this.safePeekContext();
-			
+
 			org.lgna.project.ast.Expression prevExpression = context.getPreviousExpression();
-			if( isRoot && prevExpression != null ) {
+			if( isRoot && ( prevExpression != null ) ) {
 				if( type.isAssignableFrom( prevExpression.getType() ) ) {
 					items.add( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( type ) );
 					items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
@@ -344,7 +358,7 @@ public abstract class ExpressionCascadeManager {
 				}
 			}
 
-			org.lgna.project.ast.AbstractType<?,?,?> enumType;
+			org.lgna.project.ast.AbstractType<?, ?, ?> enumType;
 			if( type.isInterface() ) {
 				enumType = this.getEnumTypeForInterfaceType( type );
 			} else {
@@ -354,7 +368,7 @@ public abstract class ExpressionCascadeManager {
 					enumType = null;
 				}
 			}
-			if( enumType != null && this.areEnumConstantsDesired( enumType ) ) {
+			if( ( enumType != null ) && this.areEnumConstantsDesired( enumType ) ) {
 				items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( enumType ).appendItems( items, details, isRoot, prevExpression );
 			}

@@ -48,18 +48,20 @@ package org.lgna.cheshire.simple.stencil.stepnotes;
  */
 public class StepNoteFactory {
 	private static final String PACKAGE_NAME = StepNoteFactory.class.getPackage().getName();
+
 	private StepNoteFactory() {
 		throw new AssertionError();
 	}
-	public static StepNote<?> createNote( org.lgna.croquet.history.Step< ? > step ) {
+
+	public static StepNote<?> createNote( org.lgna.croquet.history.Step<?> step ) {
 		org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
 		if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
 			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
-			if( step instanceof org.lgna.croquet.history.PrepStep< ? > ) {
-				org.lgna.croquet.history.PrepStep< ? > prepStep = (org.lgna.croquet.history.PrepStep< ? >)step;
+			if( step instanceof org.lgna.croquet.history.PrepStep<?> ) {
+				org.lgna.croquet.history.PrepStep<?> prepStep = (org.lgna.croquet.history.PrepStep<?>)step;
 				return new DropPrepNote( prepStep );
-			} else if( step instanceof org.lgna.croquet.history.CompletionStep< ? > ) {
-				org.lgna.croquet.history.CompletionStep< ? > completionStep = (org.lgna.croquet.history.CompletionStep< ? >)step;
+			} else if( step instanceof org.lgna.croquet.history.CompletionStep<?> ) {
+				org.lgna.croquet.history.CompletionStep<?> completionStep = (org.lgna.croquet.history.CompletionStep<?>)step;
 				return new DropCompletionNote( completionStep );
 			} else {
 				throw new RuntimeException();
@@ -68,35 +70,35 @@ public class StepNoteFactory {
 			Class<?> stepCls = step.getClass();
 			String stepClsName;
 			stepClsName = stepCls.getSimpleName();
-			stepClsName = stepClsName.substring( 0, stepClsName.length()-4 ) + "Note";
+			stepClsName = stepClsName.substring( 0, stepClsName.length() - 4 ) + "Note";
 			if( step instanceof org.lgna.croquet.history.CompletionStep ) {
 				org.lgna.croquet.history.CompletionStep<org.lgna.croquet.CompletionModel> completionStep = (org.lgna.croquet.history.CompletionStep)step;
-//				if( completionStep.isCanceled() ) {
-//					stepClsName = "CancelCompletionNote";
-//				} else {
-					org.lgna.croquet.CompletionModel model = completionStep.getModel();
-					if( model != null ) {
-						if( model instanceof org.lgna.croquet.ActionOperation ) {
-							stepClsName = "ActionOperationNote";
-						} else if( model instanceof org.lgna.croquet.InputDialogOperation ) {
-							stepClsName = "InputDialogOperationNote";
-						} else if( model instanceof org.lgna.croquet.PlainDialogOperation ) {
-							stepClsName = "PlainDialogOperationNote";
-						} else if( model instanceof org.lgna.croquet.PlainDialogOperation.InternalCloseOperation ) {
-							stepClsName = "PlainDialogCloseOperationNote";
-						} else if( model instanceof org.lgna.croquet.SerialOperation ) {
-							stepClsName = "SerialOperationNote";
-						} else if( model instanceof org.lgna.croquet.Cascade ) {
-							stepClsName = "CascadeCompletionNote";
-						} else if( model instanceof org.lgna.croquet.State ) {
-							stepClsName = "StateChangeNote";
-						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model ); 
-						}
+				//				if( completionStep.isCanceled() ) {
+				//					stepClsName = "CancelCompletionNote";
+				//				} else {
+				org.lgna.croquet.CompletionModel model = completionStep.getModel();
+				if( model != null ) {
+					if( model instanceof org.lgna.croquet.ActionOperation ) {
+						stepClsName = "ActionOperationNote";
+					} else if( model instanceof org.lgna.croquet.InputDialogOperation ) {
+						stepClsName = "InputDialogOperationNote";
+					} else if( model instanceof org.lgna.croquet.PlainDialogOperation ) {
+						stepClsName = "PlainDialogOperationNote";
+					} else if( model instanceof org.lgna.croquet.PlainDialogOperation.InternalCloseOperation ) {
+						stepClsName = "PlainDialogCloseOperationNote";
+					} else if( model instanceof org.lgna.croquet.SerialOperation ) {
+						stepClsName = "SerialOperationNote";
+					} else if( model instanceof org.lgna.croquet.Cascade ) {
+						stepClsName = "CascadeCompletionNote";
+					} else if( model instanceof org.lgna.croquet.State ) {
+						stepClsName = "StateChangeNote";
 					} else {
-						stepClsName = "CancelCompletionNote";
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model );
 					}
-//				}
+				} else {
+					stepClsName = "CancelCompletionNote";
+				}
+				//				}
 			}
 			String noteClsName = PACKAGE_NAME + "." + stepClsName;
 			try {

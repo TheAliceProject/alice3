@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class VertexGeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.VertexGeometry > extends GeometryAdapter< E > {
+public abstract class VertexGeometryAdapter<E extends edu.cmu.cs.dennisc.scenegraph.VertexGeometry> extends GeometryAdapter<E> {
 	private boolean m_isAlphaBlended;
 
 	//    private boolean m_isVertexColored;
@@ -71,11 +71,12 @@ public abstract class VertexGeometryAdapter< E extends edu.cmu.cs.dennisc.sceneg
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean isAlphaBlended() {
 		return m_isAlphaBlended;
 	}
+
 	//    public boolean isVertexColored() {
 	//    	return m_isVertexColored;
 	//    }
@@ -83,6 +84,7 @@ public abstract class VertexGeometryAdapter< E extends edu.cmu.cs.dennisc.sceneg
 	protected edu.cmu.cs.dennisc.scenegraph.Vertex accessVertexAt( int index ) {
 		return m_element.vertices.getValue()[ index ];
 	}
+
 	public void renderPrimative( RenderContext rc, int mode ) {
 		rc.gl.glBegin( mode );
 		for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : m_element.vertices.getValue() ) {
@@ -90,6 +92,7 @@ public abstract class VertexGeometryAdapter< E extends edu.cmu.cs.dennisc.sceneg
 		}
 		rc.gl.glEnd();
 	}
+
 	public void pickPrimative( PickContext pc, int mode ) {
 		pc.gl.glPushName( -1 );
 		pc.gl.glBegin( mode );
@@ -99,7 +102,7 @@ public abstract class VertexGeometryAdapter< E extends edu.cmu.cs.dennisc.sceneg
 		pc.gl.glEnd();
 		pc.gl.glPopName();
 	}
-	
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.vertices ) {

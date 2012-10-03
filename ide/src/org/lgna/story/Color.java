@@ -62,33 +62,40 @@ public final class Color implements Paint {
 	public static final Color RED = new Color( edu.cmu.cs.dennisc.color.Color4f.RED );
 	public static final Color WHITE = new Color( edu.cmu.cs.dennisc.color.Color4f.WHITE );
 	public static final Color YELLOW = new Color( edu.cmu.cs.dennisc.color.Color4f.YELLOW );
-	public static final Color LIGHT_BLUE = new Color( 149.0/255.0, 166.0/255.0, 216.0/255.0 );
-	public static final Color DARK_BLUE = new Color( 0/255.0, 0/255.0, 150.0/255.0 );
-	
+	public static final Color LIGHT_BLUE = new Color( 149.0 / 255.0, 166.0 / 255.0, 216.0 / 255.0 );
+	public static final Color DARK_BLUE = new Color( 0 / 255.0, 0 / 255.0, 150.0 / 255.0 );
+
 	public static final Color PURPLE = new Color( edu.cmu.cs.dennisc.color.Color4f.PURPLE );
 	public static final Color BROWN = new Color( edu.cmu.cs.dennisc.color.Color4f.BROWN );
 
 	private final edu.cmu.cs.dennisc.color.Color4f internal;
-	public Color( 
-			@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)Number red, 
-			@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)Number green, 
-			@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)Number blue ) {
+
+	public Color(
+			@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
+			Number red,
+			@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
+			Number green,
+			@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
+			Number blue ) {
 		this( new edu.cmu.cs.dennisc.color.Color4f( red.floatValue(), green.floatValue(), blue.floatValue(), 1.0f ) );
 	}
+
 	private Color( edu.cmu.cs.dennisc.color.Color4f internal ) {
 		this.internal = internal;
 	}
-	/*package-private*/ static Color createInstance( edu.cmu.cs.dennisc.color.Color4f internal ) {
+
+	/* package-private */static Color createInstance( edu.cmu.cs.dennisc.color.Color4f internal ) {
 		return internal != null ? new Color( internal ) : null;
 	}
-	/*package-private*/ edu.cmu.cs.dennisc.color.Color4f getInternal() {
+
+	/* package-private */edu.cmu.cs.dennisc.color.Color4f getInternal() {
 		return this.internal;
 	}
-	/*package-private*/ static edu.cmu.cs.dennisc.color.Color4f getInternal( Color color ) {
+
+	/* package-private */static edu.cmu.cs.dennisc.color.Color4f getInternal( Color color ) {
 		return color != null ? color.internal : null;
 	}
-	
-	
+
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj instanceof Color ) {
@@ -98,6 +105,7 @@ public final class Color implements Paint {
 			return false;
 		}
 	}
+
 	@Override
 	public int hashCode() {
 		return this.internal.hashCode();
@@ -106,9 +114,11 @@ public final class Color implements Paint {
 	public Double getRed() {
 		return (double)this.internal.red;
 	}
+
 	public Double getGreen() {
 		return (double)this.internal.green;
 	}
+
 	public Double getBlue() {
 		return (double)this.internal.blue;
 	}

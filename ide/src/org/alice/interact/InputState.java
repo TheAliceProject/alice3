@@ -51,8 +51,9 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
-//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+
+//import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -69,11 +70,10 @@ public class InputState {
 		KEY_UP,
 		NULL_EVENT,
 	}
-	
-	
+
 	private java.awt.Point currentMouseLocation = new java.awt.Point();
-	private java.util.HashMap< Integer, Boolean > currentKeysToStatesMap = new java.util.HashMap< Integer, Boolean >();
-	private java.util.HashMap< Integer, Boolean > currentMouseButtonsToStatesMap = new java.util.HashMap< Integer, Boolean >();
+	private java.util.HashMap<Integer, Boolean> currentKeysToStatesMap = new java.util.HashMap<Integer, Boolean>();
+	private java.util.HashMap<Integer, Boolean> currentMouseButtonsToStatesMap = new java.util.HashMap<Integer, Boolean>();
 	private int currentMouseWheelState = 0;
 	private InputEventType currentInputEventType = InputEventType.NULL_EVENT;
 	private PickResult clickPickResult = null;
@@ -87,14 +87,13 @@ public class InputState {
 	private InputEvent inputEvent = null;
 	private boolean isDragEvent = false;
 	private org.lgna.croquet.history.DragStep dragAndDropContext = null;
-	
-	
+
 	public InputEvent getInputEvent()
 	{
 		return this.inputEvent;
 	}
-	
-	public void setInputEvent(InputEvent inputEvent)
+
+	public void setInputEvent( InputEvent inputEvent )
 	{
 		this.inputEvent = inputEvent;
 	}
@@ -105,32 +104,32 @@ public class InputState {
 
 	public AbstractCamera getPickCamera()
 	{
-		if (this.rolloverPickResult != null && this.rolloverPickResult.getSource() instanceof AbstractCamera)
+		if( ( this.rolloverPickResult != null ) && ( this.rolloverPickResult.getSource() instanceof AbstractCamera ) )
 		{
-			return (AbstractCamera)this.rolloverPickResult.getSource(); 
+			return (AbstractCamera)this.rolloverPickResult.getSource();
 		}
-		else if (this.clickPickResult != null && this.clickPickResult.getSource() instanceof AbstractCamera)
+		else if( ( this.clickPickResult != null ) && ( this.clickPickResult.getSource() instanceof AbstractCamera ) )
 		{
-			return (AbstractCamera)this.clickPickResult.getSource(); 
+			return (AbstractCamera)this.clickPickResult.getSource();
 		}
 		return null;
 	}
-	
-	public void setIsDragEvent(boolean isDragEvent)
+
+	public void setIsDragEvent( boolean isDragEvent )
 	{
 		this.isDragEvent = isDragEvent;
 	}
-	
+
 	public boolean getIsDragEvent()
 	{
 		return this.isDragEvent;
 	}
-	
-	public void setDragAndDropContext(org.lgna.croquet.history.DragStep dragAndDropContext)
+
+	public void setDragAndDropContext( org.lgna.croquet.history.DragStep dragAndDropContext )
 	{
 		this.dragAndDropContext = dragAndDropContext;
 	}
-	
+
 	public org.lgna.croquet.history.DragStep getDragAndDropContext()
 	{
 		return this.dragAndDropContext;
@@ -165,103 +164,102 @@ public class InputState {
 	public InputState()
 	{
 	}
-	
-	public InputState(InputState other)
+
+	public InputState( InputState other )
 	{
 		this();
-		copyState(other);
+		copyState( other );
 	}
-	
-	
+
 	public boolean isKeyDown( int keyIndex )
 	{
-		if (currentKeysToStatesMap.containsKey( keyIndex ))
+		if( currentKeysToStatesMap.containsKey( keyIndex ) )
 		{
 			return currentKeysToStatesMap.get( keyIndex ).booleanValue();
 		}
 		return false;
 	}
-	
+
 	public void setKeyState( int keyIndex, boolean isDown )
 	{
-		currentKeysToStatesMap.put( keyIndex, new Boolean(isDown) );
+		currentKeysToStatesMap.put( keyIndex, new Boolean( isDown ) );
 	}
-	
+
 	public void setMouseState( int mouseButton, boolean isDown )
 	{
-		Integer mouseInt = new Integer(mouseButton);
-		currentMouseButtonsToStatesMap.put( mouseInt, new Boolean(isDown) );
+		Integer mouseInt = new Integer( mouseButton );
+		currentMouseButtonsToStatesMap.put( mouseInt, new Boolean( isDown ) );
 	}
-	
+
 	public boolean isAnyMouseButtonDown()
 	{
-		for (Integer key : this.currentMouseButtonsToStatesMap.keySet())
+		for( Integer key : this.currentMouseButtonsToStatesMap.keySet() )
 		{
-			if (this.currentMouseButtonsToStatesMap.get( key ).booleanValue())
+			if( this.currentMouseButtonsToStatesMap.get( key ).booleanValue() )
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public boolean isMouseDown( int mouseButton )
 	{
-		if (currentMouseButtonsToStatesMap.containsKey( mouseButton ))
+		if( currentMouseButtonsToStatesMap.containsKey( mouseButton ) )
 		{
 			return currentMouseButtonsToStatesMap.get( mouseButton ).booleanValue();
 		}
 		return false;
 	}
-	
+
 	public void setMouseWheelState( int mouseWheelMovement )
 	{
 		this.currentMouseWheelState = mouseWheelMovement;
 	}
-	
+
 	public int getMouseWheelState()
 	{
 		return this.currentMouseWheelState;
 	}
-	
+
 	public void setMouseLocation( java.awt.Point mouseLocation )
 	{
 		this.currentMouseLocation = mouseLocation;
 	}
-	
+
 	public java.awt.Point getMouseLocation()
 	{
 		return this.currentMouseLocation;
 	}
-	
+
 	public void setInputEventType( InputEventType eventType )
 	{
 		this.currentInputEventType = eventType;
 	}
-	
+
 	public InputEventType getInputEventType()
 	{
 		return this.currentInputEventType;
 	}
-	
+
 	public void setClickPickResult( edu.cmu.cs.dennisc.lookingglass.PickResult pickResult )
 	{
 		this.clickPickResult = pickResult;
 		AbstractTransformable picked = this.getClickPickedTransformable( true );
 		PickHint clickedObjectType = PickUtilities.getPickType( this.clickPickResult );
-		if ( !clickedObjectType.intersects( PickHint.PickType.NOTHING.pickHint()) )
+		if( !clickedObjectType.intersects( PickHint.PickType.NOTHING.pickHint() ) )
 		{
 			this.setClickPickTransformable( picked );
 		}
-//		else if (clickedObjectType.intersects( PickHint.HANDLES) )
-//		{
-//			this.setClickPickTransformable(picked);
-//		}
+		//		else if (clickedObjectType.intersects( PickHint.HANDLES) )
+		//		{
+		//			this.setClickPickTransformable(picked);
+		//		}
 		else
 		{
 			this.setClickPickTransformable( null );
 		}
-		if (picked instanceof ManipulationHandle)
+		if( picked instanceof ManipulationHandle )
 		{
 			this.clickHandle = (ManipulationHandle)picked;
 		}
@@ -270,48 +268,48 @@ public class InputState {
 			this.clickHandle = null;
 		}
 	}
-	
+
 	public edu.cmu.cs.dennisc.lookingglass.PickResult getClickPickResult()
 	{
 		return this.clickPickResult;
 	}
-	
+
 	public PickHint getCurrentlySelectedObjectPickHint()
 	{
-		if ( this.getCurrentlySelectedObject() != null )
+		if( this.getCurrentlySelectedObject() != null )
 		{
-			return PickUtilities.getPickType(this.getCurrentlySelectedObject()); 
+			return PickUtilities.getPickType( this.getCurrentlySelectedObject() );
 		}
 		else
 		{
 			return PickHint.PickType.NOTHING.pickHint();
 		}
 	}
-	
+
 	public PickHint getClickPickHint()
 	{
 		//Evaluate handles first since they may be overlayed on the scene
-		if ( this.clickHandle != null )
+		if( this.clickHandle != null )
 		{
 			return this.clickHandle.getPickHint();
 		}
-		else if (this.getClickPickResult() != null)
+		else if( this.getClickPickResult() != null )
 		{
-			return PickUtilities.getPickType(this.getClickPickResult());
+			return PickUtilities.getPickType( this.getClickPickResult() );
 		}
 		else
 		{
 			return PickHint.PickType.NOTHING.pickHint();
 		}
 	}
-	
+
 	public PickHint getRolloverPickHint()
 	{
-		if (this.getRolloverPickResult() != null)
+		if( this.getRolloverPickResult() != null )
 		{
-			return PickUtilities.getPickType(this.getRolloverPickResult());
+			return PickUtilities.getPickType( this.getRolloverPickResult() );
 		}
-		else if ( this.rolloverHandle != null )
+		else if( this.rolloverHandle != null )
 		{
 			return this.rolloverHandle.getPickHint();
 		}
@@ -320,7 +318,7 @@ public class InputState {
 			return PickHint.PickType.NOTHING.pickHint();
 		}
 	}
-	
+
 	public PickResult getRolloverPickResult() {
 		return this.rolloverPickResult;
 	}
@@ -329,17 +327,17 @@ public class InputState {
 		this.rolloverPickResult = rolloverPickResult;
 		AbstractTransformable picked = this.getRolloverPickedTransformable( true );
 		boolean validPick = true;
-		if (picked instanceof ManipulationHandle)
+		if( picked instanceof ManipulationHandle )
 		{
 			ManipulationHandle handle = (ManipulationHandle)picked;
-			if (!handle.isPickable())
+			if( !handle.isPickable() )
 			{
 				validPick = false;
 			}
-				
+
 		}
 		PickHint rolloverObjectType = PickUtilities.getPickType( this.rolloverPickResult );
-		if ( validPick && !rolloverObjectType.intersects( PickHint.PickType.NOTHING.pickHint() ) )
+		if( validPick && !rolloverObjectType.intersects( PickHint.PickType.NOTHING.pickHint() ) )
 		{
 			this.setRolloverPickTransformable( picked );
 		}
@@ -347,7 +345,7 @@ public class InputState {
 		{
 			this.setRolloverPickTransformable( null );
 		}
-		if (validPick && picked instanceof ManipulationHandle)
+		if( validPick && ( picked instanceof ManipulationHandle ) )
 		{
 			this.rolloverHandle = (ManipulationHandle)picked;
 		}
@@ -364,7 +362,7 @@ public class InputState {
 	public void setRolloverPickTransformable( AbstractTransformable rolloverPickTransformable ) {
 		this.rolloverPickTransformable = rolloverPickTransformable;
 	}
-	
+
 	public AbstractTransformable getClickPickTransformable() {
 		return this.clickPickTransformable;
 	}
@@ -373,23 +371,21 @@ public class InputState {
 		this.clickPickTransformable = clickPickTransformable;
 	}
 
-	
-	
-	protected AbstractTransformable getPickedTransformable( PickResult pickResult, boolean getFirstClass)
+	protected AbstractTransformable getPickedTransformable( PickResult pickResult, boolean getFirstClass )
 	{
-		if (pickResult != null)
+		if( pickResult != null )
 		{
-		    Visual sgVisual = pickResult.getVisual();
+			Visual sgVisual = pickResult.getVisual();
 			if( sgVisual != null ) {
 				Composite sgParent = sgVisual.getParent();
 				if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Scalable ) {
 					sgParent = sgParent.getParent();
 				}
 				if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
-					if (getFirstClass)
+					if( getFirstClass )
 					{
 						Component firstClassComponent = PickUtilities.getFirstClassFromComponent( sgParent );
-						if (firstClassComponent instanceof AbstractTransformable)
+						if( firstClassComponent instanceof AbstractTransformable )
 						{
 							return (AbstractTransformable)firstClassComponent;
 						}
@@ -403,36 +399,36 @@ public class InputState {
 		}
 		return null;
 	}
-	
+
 	public AbstractTransformable getClickPickedTransformable( boolean getFirstClassObject )
 	{
 		return this.getPickedTransformable( this.clickPickResult, getFirstClassObject );
 	}
-	
+
 	public AbstractTransformable getRolloverPickedTransformable( boolean getFirstClassObject )
 	{
 		return this.getPickedTransformable( this.rolloverPickResult, getFirstClassObject );
 	}
-	
+
 	public long getTimeCaptured()
 	{
 		return this.timeCaptured;
 	}
-	
+
 	public void setTimeCaptured()
 	{
 		this.timeCaptured = System.currentTimeMillis();
 	}
-	
+
 	public void setTimeCaptured( long currentTime )
 	{
 		this.timeCaptured = currentTime;
 	}
-	
+
 	public void copyState( InputState sourceState )
 	{
-		this.currentKeysToStatesMap = (java.util.HashMap< Integer, Boolean >)sourceState.currentKeysToStatesMap.clone();
-		this.currentMouseButtonsToStatesMap = (java.util.HashMap< Integer, Boolean >)sourceState.currentMouseButtonsToStatesMap.clone();
+		this.currentKeysToStatesMap = (java.util.HashMap<Integer, Boolean>)sourceState.currentKeysToStatesMap.clone();
+		this.currentMouseButtonsToStatesMap = (java.util.HashMap<Integer, Boolean>)sourceState.currentMouseButtonsToStatesMap.clone();
 		this.currentMouseLocation.setLocation( sourceState.currentMouseLocation );
 		this.currentMouseWheelState = sourceState.currentMouseWheelState;
 		this.currentInputEventType = sourceState.currentInputEventType;
@@ -447,20 +443,19 @@ public class InputState {
 		this.isDragEvent = sourceState.isDragEvent;
 		this.dragAndDropContext = sourceState.dragAndDropContext;
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		String mouseButtonState = "";
 		String keyState = "";
-		
+
 		boolean isFirst = true;
 		Object[] keyKeys = this.currentKeysToStatesMap.keySet().toArray();
-		for (int i=0; i<keyKeys.length; i++)
-		{
-			if (this.currentKeysToStatesMap.get( keyKeys[i] ).booleanValue())
+		for( Object keyKey : keyKeys ) {
+			if( this.currentKeysToStatesMap.get( keyKey ).booleanValue() )
 			{
-				if (isFirst)
+				if( isFirst )
 				{
 					isFirst = false;
 				}
@@ -468,16 +463,15 @@ public class InputState {
 				{
 					keyState += ", ";
 				}
-				keyState += java.awt.event.KeyEvent.getKeyText( (Integer)keyKeys[i] );
+				keyState += java.awt.event.KeyEvent.getKeyText( (Integer)keyKey );
 			}
 		}
 		isFirst = true;
 		Object[] mouseKeys = this.currentMouseButtonsToStatesMap.keySet().toArray();
-		for (int i=0; i<mouseKeys.length; i++)
-		{
-			if (this.currentMouseButtonsToStatesMap.get( mouseKeys[i] ).booleanValue())
+		for( Object mouseKey : mouseKeys ) {
+			if( this.currentMouseButtonsToStatesMap.get( mouseKey ).booleanValue() )
 			{
-				if (isFirst)
+				if( isFirst )
 				{
 					isFirst = false;
 				}
@@ -485,11 +479,11 @@ public class InputState {
 				{
 					mouseButtonState += ", ";
 				}
-				mouseButtonState += "button "+mouseKeys[i] ;
+				mouseButtonState += "button " + mouseKey;
 			}
 		}
-		return "Event Type: "+this.currentInputEventType+"\nKeys: "+keyState+"\nMouse Buttons: "+mouseButtonState+"\nMouse Wheel: "+this.currentMouseWheelState+"\nMouse Location: "+this.currentMouseLocation;
-		
+		return "Event Type: " + this.currentInputEventType + "\nKeys: " + keyState + "\nMouse Buttons: " + mouseButtonState + "\nMouse Wheel: " + this.currentMouseWheelState + "\nMouse Location: " + this.currentMouseLocation;
+
 	}
-	
+
 }

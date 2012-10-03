@@ -46,9 +46,10 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ImmutableTextArea extends ImmutableTextComponent<javax.swing.JTextArea> {
-	public ImmutableTextArea( org.lgna.croquet.PlainStringValue value ) {
-		super( value );
+	public ImmutableTextArea( org.lgna.croquet.PlainStringValue value, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		super( value, fontScalar, textAttributes );
 	}
+
 	@Override
 	protected javax.swing.JTextArea createAwtComponent() {
 		javax.swing.JTextArea rv = new javax.swing.JTextArea( this.getValue().getDocument() ) {
@@ -56,6 +57,7 @@ public class ImmutableTextArea extends ImmutableTextComponent<javax.swing.JTextA
 			public java.awt.Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
+
 			@Override
 			public void updateUI() {
 				this.setUI( new javax.swing.plaf.basic.BasicTextAreaUI() );

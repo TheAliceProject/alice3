@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitPowerSuit implements MaleAdultFullBodyOutfit {
-	DKBLUEREDTIE ,
- 	DKBLUELTBLUETIE ,
- 	BLACK ,
- 	BROWN ,
- 	STRIP ,
- 	TAN ;
+	DKBLUEREDTIE,
+	DKBLUELTBLUETIE,
+	BLACK,
+	BROWN,
+	STRIP,
+	TAN;
 }

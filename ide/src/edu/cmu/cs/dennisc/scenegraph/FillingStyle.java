@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.scenegraph;
 
 /**
  * SOLID, WIREFRAME, or POINTS.
- *
+ * 
  * @see Visual#setFillingStyle
  * @author Dennis Cosgrove
  */

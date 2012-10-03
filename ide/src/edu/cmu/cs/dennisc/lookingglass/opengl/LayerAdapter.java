@@ -46,27 +46,31 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public class LayerAdapter extends ElementAdapter< edu.cmu.cs.dennisc.scenegraph.Layer > {
-	private java.util.List<GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic>> activeGraphicAdapters = java.util.Collections.synchronizedList( new java.util.LinkedList<GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic >>());
-	private java.util.List<GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic>> forgetGraphicAdapters = java.util.Collections.synchronizedList( new java.util.LinkedList<GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic >>());
-	private void handleGraphicAdded( GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic > graphicAdapter ) {
+public class LayerAdapter extends ElementAdapter<edu.cmu.cs.dennisc.scenegraph.Layer> {
+	private java.util.List<GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic>> activeGraphicAdapters = java.util.Collections.synchronizedList( new java.util.LinkedList<GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic>>() );
+	private java.util.List<GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic>> forgetGraphicAdapters = java.util.Collections.synchronizedList( new java.util.LinkedList<GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic>>() );
+
+	private void handleGraphicAdded( GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter ) {
 		synchronized( this.activeGraphicAdapters ) {
 			this.activeGraphicAdapters.add( graphicAdapter );
 		}
 	}
-	private void handleGraphicRemoved( GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic > graphicAdapter ) {
+
+	private void handleGraphicRemoved( GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter ) {
 		synchronized( this.forgetGraphicAdapters ) {
 			this.forgetGraphicAdapters.add( graphicAdapter );
 		}
 	}
+
 	public static void handleGraphicAdded( edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e ) {
 		LayerAdapter layerAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic > graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
+		GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		layerAdapter.handleGraphicAdded( graphicAdapter );
 	}
+
 	public static void handleGraphicRemoved( edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e ) {
 		LayerAdapter layerAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
-		GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic > graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
+		GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		layerAdapter.handleGraphicRemoved( graphicAdapter );
 	}
 
@@ -78,7 +82,7 @@ public class LayerAdapter extends ElementAdapter< edu.cmu.cs.dennisc.scenegraph.
 		}
 	}
 
-	/*package-private*/ void render( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
+	/* package-private */void render( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera ) {
 		synchronized( this.forgetGraphicAdapters ) {
 			for( GraphicAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Graphic> graphicAdapter : this.forgetGraphicAdapters ) {
 				graphicAdapter.forget( g2 );
@@ -94,5 +98,5 @@ public class LayerAdapter extends ElementAdapter< edu.cmu.cs.dennisc.scenegraph.
 			}
 		}
 	}
-	
+
 }

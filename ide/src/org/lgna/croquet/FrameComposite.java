@@ -43,33 +43,39 @@
 
 package org.lgna.croquet;
 
-/*package-private*/ class IsShowingButtonModel extends javax.swing.JToggleButton.ToggleButtonModel {
+/*package-private*/class IsShowingButtonModel extends javax.swing.JToggleButton.ToggleButtonModel {
 	private final FrameComposite<?> frameComposite;
 	private org.lgna.croquet.components.Frame frame;
 	private final java.awt.event.WindowListener windowListener = new java.awt.event.WindowListener() {
 		public void windowActivated( java.awt.event.WindowEvent e ) {
 		}
+
 		public void windowDeactivated( java.awt.event.WindowEvent e ) {
 		}
+
 		public void windowIconified( java.awt.event.WindowEvent e ) {
 		}
+
 		public void windowDeiconified( java.awt.event.WindowEvent e ) {
 		}
+
 		public void windowOpened( java.awt.event.WindowEvent e ) {
 			frameComposite.handlePreActivation();
 		}
+
 		public void windowClosing( java.awt.event.WindowEvent e ) {
 			frameComposite.handlePostDeactivation();
 			IsShowingButtonModel.this.setSelected( false );
 		}
+
 		public void windowClosed( java.awt.event.WindowEvent e ) {
 		}
 	};
-	
+
 	public IsShowingButtonModel( FrameComposite<?> frameComposite ) {
 		this.frameComposite = frameComposite;
 	}
-	
+
 	private org.lgna.croquet.components.Frame getFrame() {
 		if( this.frame != null ) {
 			//pass
@@ -83,6 +89,7 @@ package org.lgna.croquet;
 		}
 		return this.frame;
 	}
+
 	@Override
 	public void setSelected( boolean b ) {
 		super.setSelected( b );
@@ -102,14 +109,16 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FrameComposite<V extends org.lgna.croquet.components.View<?,?>> extends AbstractWindowComposite<V> {
-	public static final class InternalBooleanStateResolver extends IndirectResolver< InternalBooleanState, FrameComposite > {
+public abstract class FrameComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractWindowComposite<V> {
+	public static final class InternalBooleanStateResolver extends IndirectResolver<InternalBooleanState, FrameComposite> {
 		private InternalBooleanStateResolver( FrameComposite indirect ) {
 			super( indirect );
 		}
+
 		public InternalBooleanStateResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
 		protected InternalBooleanState getDirect( FrameComposite indirect ) {
 			return indirect.booleanState;
@@ -118,13 +127,17 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.View<
 
 	private static final class InternalBooleanState extends BooleanState {
 		private final FrameComposite frameComposite;
+
 		public InternalBooleanState( Group group, FrameComposite frameComposite ) {
 			super( group, java.util.UUID.fromString( "9afc0e33-5677-4e1f-a178-95d40f3e0b9c" ), false, new IsShowingButtonModel( frameComposite ) );
 			this.frameComposite = frameComposite;
-		}@Override
+		}
+
+		@Override
 		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return this.frameComposite.getClassUsedForLocalization();
 		}
+
 		public FrameComposite getFrameComposite() {
 			return this.frameComposite;
 		}
@@ -132,18 +145,22 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.View<
 
 	private final InternalBooleanState booleanState;
 	private String title;
+
 	public FrameComposite( java.util.UUID id, Group booleanStateGroup ) {
 		super( id );
 		this.booleanState = new InternalBooleanState( booleanStateGroup, this );
 	}
+
 	public BooleanState getBooleanState() {
 		return this.booleanState;
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.title = this.findLocalizedText( "title" );
 	}
+
 	protected String getFrameTitle() {
 		this.initializeIfNecessary();
 		String rv = this.title;

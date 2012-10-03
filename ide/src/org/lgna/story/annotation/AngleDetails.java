@@ -48,15 +48,18 @@ package org.lgna.story.annotation;
  */
 public enum AngleDetails implements org.lgna.project.annotations.NumberValueDetails {
 	SINGLETON;
-	public Class< Number > getSupportedCls() {
+	public Class<Number> getSupportedCls() {
 		return Number.class;
 	}
+
 	public Double getMinimumValue() {
 		return null;
 	}
+
 	public Double getMaximumValue() {
 		return null;
 	}
+
 	public double[] getLiterals() {
 		return new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0 };
 	}

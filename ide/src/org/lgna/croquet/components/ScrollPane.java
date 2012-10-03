@@ -46,51 +46,65 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ScrollPane extends JComponent< javax.swing.JScrollPane > {
+public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
 	public enum VerticalScrollbarPolicy {
 		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
 		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
 		ALWAYS( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
 		private int internal;
+
 		private VerticalScrollbarPolicy( int internal ) {
 			this.internal = internal;
 		}
 	}
+
 	public enum HorizontalScrollbarPolicy {
 		NEVER( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ),
 		AS_NEEDED( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ),
 		ALWAYS( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
 		private int internal;
+
 		private HorizontalScrollbarPolicy( int internal ) {
 			this.internal = internal;
 		}
 	}
+
 	public ScrollPane() {
 	}
+
 	public ScrollPane( Component<?> viewportView ) {
 		this.setViewportView( viewportView );
 	}
+
 	public ScrollPane( Component<?> viewportView, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		this.setViewportView( viewportView );
 		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
 		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
 	}
+
 	public ScrollPane( VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
 		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
 	}
-	@Override
-	protected javax.swing.JScrollPane createAwtComponent() {
-		return new javax.swing.JScrollPane() {
+
+	protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
+		return new edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
 		};
 	}
+
+	@Override
+	protected final javax.swing.JScrollPane createAwtComponent() {
+		return createJScrollPane();
+	}
+
 	public Component<?> getViewportView() {
 		return Component.lookup( this.getAwtComponent().getViewport().getView() );
 	}
+
 	public void setViewportView( Component<?> view ) {
 		if( view != null ) {
 			this.getAwtComponent().setViewportView( view.getAwtComponent() );
@@ -98,25 +112,30 @@ public class ScrollPane extends JComponent< javax.swing.JScrollPane > {
 			this.getAwtComponent().setViewportView( null );
 		}
 	}
+
 	public void setVerticalScrollbarPolicy( VerticalScrollbarPolicy verticalScrollbarPolicy ) {
 		assert verticalScrollbarPolicy != null;
 		this.getAwtComponent().setVerticalScrollBarPolicy( verticalScrollbarPolicy.internal );
 	}
+
 	public void setHorizontalScrollbarPolicy( HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		assert horizontalScrollbarPolicy != null;
 		this.getAwtComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
 	}
-	
+
 	private void setScrollBarIncrements( javax.swing.JScrollBar scrollBar, int unitIncrement, int blockIncrement ) {
 		scrollBar.setUnitIncrement( unitIncrement );
 		scrollBar.setBlockIncrement( blockIncrement );
 	}
+
 	public void setVerticalScrollBarIncrements( int unitIncrement, int blockIncrement ) {
 		this.setScrollBarIncrements( this.getAwtComponent().getVerticalScrollBar(), unitIncrement, blockIncrement );
 	}
+
 	public void setHorizontalScrollBarIncrements( int unitIncrement, int blockIncrement ) {
 		this.setScrollBarIncrements( this.getAwtComponent().getHorizontalScrollBar(), unitIncrement, blockIncrement );
 	}
+
 	public void setBothScrollBarIncrements( int unitIncrement, int blockIncrement ) {
 		this.setHorizontalScrollBarIncrements( unitIncrement, blockIncrement );
 		this.setVerticalScrollBarIncrements( unitIncrement, blockIncrement );

@@ -47,12 +47,12 @@ package org.lgna.croquet;
  */
 public interface ItemCodec<T> {
 	public static class Arrays {
-		public static <T> T[] decodeArray( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, ItemCodec< T > itemCodec ) {
+		public static <T> T[] decodeArray( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, ItemCodec<T> itemCodec ) {
 			boolean isNotNull = binaryDecoder.decodeBoolean();
 			if( isNotNull ) {
 				final int N = binaryDecoder.decodeInt();
 				T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( itemCodec.getValueClass(), N );
-				for( int i=0; i<rv.length; i++ ) {
+				for( int i = 0; i < rv.length; i++ ) {
 					rv[ i ] = itemCodec.decodeValue( binaryDecoder );
 				}
 				return rv;
@@ -60,20 +60,25 @@ public interface ItemCodec<T> {
 				return null;
 			}
 		}
-		public static <T> void encodeArray( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, ItemCodec< T > itemCodec, T[] array ) {
+
+		public static <T> void encodeArray( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, ItemCodec<T> itemCodec, T[] array ) {
 			if( array != null ) {
 				binaryEncoder.encode( true );
 				binaryEncoder.encode( array.length );
-				for( int i=0; i<array.length; i++ ) {
-					itemCodec.encodeValue( binaryEncoder, array[ i ] );
+				for( T element : array ) {
+					itemCodec.encodeValue( binaryEncoder, element );
 				}
 			} else {
 				binaryEncoder.encode( false );
 			}
 		}
 	}
+
 	public Class<T> getValueClass();
+
 	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
-	public StringBuilder appendRepresentation( StringBuilder rv, T value );
+
+	public void appendRepresentation( StringBuilder sb, T value );
 }

@@ -48,10 +48,12 @@ package edu.cmu.cs.dennisc.pattern;
 public class NameEqualsCriterion extends NameCriterion {
 	private String m_target;
 	private boolean m_isSensitiveToCase;
+
 	public NameEqualsCriterion( String target, boolean isSensitiveToCase ) {
 		m_target = target;
 		m_isSensitiveToCase = isSensitiveToCase;
 	}
+
 	@Override
 	public boolean acceptName( String name ) {
 		boolean isAccepted;

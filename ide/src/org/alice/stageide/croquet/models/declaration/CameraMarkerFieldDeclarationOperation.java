@@ -43,26 +43,28 @@
 package org.alice.stageide.croquet.models.declaration;
 
 import org.lgna.story.Color;
+
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class CameraMarkerFieldDeclarationOperation extends MarkerFieldDeclarationOperation {
 	private static class SingletonHolder {
 		private static CameraMarkerFieldDeclarationOperation instance = new CameraMarkerFieldDeclarationOperation();
 	}
+
 	public static CameraMarkerFieldDeclarationOperation getInstance() {
 		return SingletonHolder.instance;
 	}
 
 	public CameraMarkerFieldDeclarationOperation() {
-		super( java.util.UUID.fromString( "93addd81-69ea-4fc9-9664-f641229cbf5d" ),  org.lgna.story.SCameraMarker.class );
+		super( java.util.UUID.fromString( "93addd81-69ea-4fc9-9664-f641229cbf5d" ), org.lgna.story.SCameraMarker.class );
 	}
-	
+
 	@Override
-	protected org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<CameraMarkerFieldDeclarationOperation> createMainComponent( ) {
+	protected org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<CameraMarkerFieldDeclarationOperation> createMainComponent() {
 		return new org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<CameraMarkerFieldDeclarationOperation>( this );
 	}
 
@@ -72,13 +74,13 @@ public class CameraMarkerFieldDeclarationOperation extends MarkerFieldDeclaratio
 	}
 
 	@Override
-	protected String getInitialMarkerName(Color color) {
-		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getSuggestedNameForNewCameraMarker(color);
+	protected String getInitialMarkerName( Color color ) {
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getSuggestedNameForNewCameraMarker( color );
 	}
 
 	@Override
 	protected AffineMatrix4x4 getInitialMarkerTransform() {
 		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getTransformForNewCameraMarker();
 	}
-	
+
 }

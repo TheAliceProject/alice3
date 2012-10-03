@@ -45,14 +45,16 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edit< org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> > {
+public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> {
 	private org.lgna.project.ast.Expression nextExpression;
 	private org.lgna.project.ast.Expression prevExpression;
+
 	public FillInExpressionListPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression prevExpression, org.lgna.project.ast.Expression nextExpression ) {
 		super( completionStep );
 		this.prevExpression = prevExpression;
 		this.nextExpression = nextExpression;
 	}
+
 	public FillInExpressionListPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -62,12 +64,14 @@ public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edi
 		java.util.UUID nextExpressionId = binaryDecoder.decodeId();
 		this.nextExpression = org.lgna.project.ProgramTypeUtilities.lookupNode( project, nextExpressionId );
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.prevExpression.getId() );
 		binaryEncoder.encode( this.nextExpression.getId() );
 	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade model = (org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade)this.getModel();
@@ -75,6 +79,7 @@ public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edi
 		int index = model.getIndex();
 		expressionListProperty.set( index, this.nextExpression );
 	}
+
 	@Override
 	protected final void undoInternal() {
 		org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade model = (org.alice.ide.croquet.models.ast.cascade.ExpressionListPropertyCascade)this.getModel();
@@ -82,6 +87,7 @@ public class FillInExpressionListPropertyEdit extends org.lgna.croquet.edits.Edi
 		int index = model.getIndex();
 		expressionListProperty.set( index, this.prevExpression );
 	}
+
 	@Override
 	protected StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "set: " );

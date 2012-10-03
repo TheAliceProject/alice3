@@ -46,23 +46,27 @@ package org.alice.ide.croquet.components.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FieldDeclarationPanel< M extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation > extends DeclarationPanel< M > {
+public abstract class FieldDeclarationPanel<M extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation> extends DeclarationPanel<M> {
 	public FieldDeclarationPanel( M model ) {
 		super( model );
 	}
+
 	@Override
 	protected boolean isValueTypeRowDesired() {
 		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
 	}
+
 	@Override
 	protected boolean isInitializerRowDesired() {
 		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
 	}
+
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
 		M model = this.getModel();
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), model.createPreviewDeclaration() );
 	}
+
 	@Override
 	protected boolean isPreviewDesired() {
 		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();

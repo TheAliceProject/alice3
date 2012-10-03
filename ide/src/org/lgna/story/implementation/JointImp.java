@@ -48,96 +48,51 @@ package org.lgna.story.implementation;
  */
 public abstract class JointImp extends AbstractTransformableImp {
 	private org.lgna.story.SJoint abstraction;
-	private final JointedModelImp<?,?> jointedModelImplementation;
+	private final JointedModelImp<?, ?> jointedModelImplementation;
 	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes axes;
-	public JointImp( JointedModelImp<?,?> jointedModelImplementation ) {
+
+	public JointImp( JointedModelImp<?, ?> jointedModelImplementation ) {
 		this.jointedModelImplementation = jointedModelImplementation;
 	}
+
 	@Override
 	public org.lgna.story.implementation.SceneImp getScene() {
 		return this.jointedModelImplementation.getScene();
 	}
+
 	public abstract org.lgna.story.resources.JointId getJointId();
+
 	@Override
 	public final org.lgna.story.SJoint getAbstraction() {
 		return this.abstraction;
 	}
-	public final void setAbstraction( org.lgna.story.SJoint abstraction ) {
+
+	public void setAbstraction( org.lgna.story.SJoint abstraction ) {
 		assert abstraction != null;
 		assert this.abstraction == null : this.abstraction;
 		this.abstraction = abstraction;
 	}
 
-//	@Override
-//	protected edu.cmu.cs.dennisc.scenegraph.Composite getSgVehicle() {
-//		edu.cmu.cs.dennisc.scenegraph.Composite rv = super.getSgVehicle();
-//		if( rv != null ) {
-//			//pass
-//		} else {
-//			rv = this.jointedModelImplementation.getSgComposite();
-//		}
-//		assert rv != null;
-//		return rv;
-//	}
 	public abstract boolean isFreeInX();
+
 	public abstract boolean isFreeInY();
+
 	public abstract boolean isFreeInZ();
-	
-	
-//	private edu.cmu.cs.dennisc.scenegraph.Visual sgAxisVisual;
-//	private static edu.cmu.cs.dennisc.scenegraph.Geometry[] sgAxisGeometries = new edu.cmu.cs.dennisc.scenegraph.Geometry[] { null };
-//	
-//	private static edu.cmu.cs.dennisc.scenegraph.Geometry[] getSgAxisGeometries() {
-//		if( sgAxisGeometries[ 0 ] != null ) {
-//			//pass
-//		} else {
-//			edu.cmu.cs.dennisc.scenegraph.LineArray lineArray = new edu.cmu.cs.dennisc.scenegraph.LineArray();
-//			lineArray.vertices.setValue( new edu.cmu.cs.dennisc.scenegraph.Vertex[] {
-//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 1,1,1 ),
-//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,-2, 1,1,1 ),
-//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 0,0,1 ),
-//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,1, 0,0,1 ),
-//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 0,1,0 ),
-//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,1,0, 0,1,0 ),
-//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 0,0,0, 1,0,0 ),
-//					edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZRGB( 1,0,0, 1,0,0 ),
-//			} );
-//			sgAxisGeometries[ 0 ] = lineArray;
-//		}
-//		return sgAxisGeometries;
-//	}
-//	private edu.cmu.cs.dennisc.scenegraph.Visual getSgAxisVisual() {
-//		if( this.sgAxisVisual != null ) {
-//			//pass
-//		} else {
-//			this.sgAxisVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
-//			this.sgAxisVisual.geometries.setValue( getSgAxisGeometries() );
-//		}
-//		return this.sgAxisVisual;
-//	}
-//	public void setJointAxisVisible( boolean isJointAxisVisible ) {
-//		if( isJointAxisVisible ) {
-//			getSgAxisVisual().setParent( this.getSgComposite() );
-//		} else {
-//			if( this.sgAxisVisual != null ) {
-//				this.sgAxisVisual.setParent( null );
-//			}
-//		}
-//	}
-	
+
 	@Override
-	public void setVehicle(EntityImp vehicle) {
-		assert vehicle != this;
+	protected void postCheckSetVehicle( org.lgna.story.implementation.EntityImp vehicle ) {
+		//note: do not call super
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
-	
+
 	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
 		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
 	}
+
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
 		return this.jointedModelImplementation.getOriginalJointTransformation( this.getJointId() );
 	}
-	
+
 	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes getPivot() {
 		if( this.axes != null ) {
 			//pass
@@ -147,6 +102,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 		}
 		return this.axes;
 	}
+
 	public boolean isPivotVisible() {
 		if( this.axes != null ) {
 			return this.axes.getParent() == this.getSgComposite();
@@ -154,6 +110,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 			return false;
 		}
 	}
+
 	public void setPivotVisible( boolean isPivotVisible ) {
 		if( isPivotVisible ) {
 			this.getPivot().setParent( this.getSgComposite() );
@@ -163,7 +120,7 @@ public abstract class JointImp extends AbstractTransformableImp {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		super.appendRepr( sb );

@@ -57,13 +57,19 @@ public abstract class ImmutableTextComponent<J extends javax.swing.text.JTextCom
 			return java.awt.Color.RED;
 		}
 	}
+
 	private final org.lgna.croquet.StringValue value;
-	public ImmutableTextComponent( org.lgna.croquet.StringValue value ) {
+
+	public ImmutableTextComponent( org.lgna.croquet.StringValue value, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		this.value = value;
+		this.scaleFont( fontScalar );
+		this.changeFont( textAttributes );
 	}
+
 	public org.lgna.croquet.StringValue getValue() {
 		return this.value;
 	}
+
 	protected void initializeJComponent( javax.swing.text.JTextComponent component ) {
 		//component.setOpaque( false );
 		component.setEditable( false );

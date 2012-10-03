@@ -48,25 +48,29 @@ import org.alice.ide.members.components.templates.TemplateFactory;
  * @author Dennis Cosgrove
  */
 public class TypeFieldsPane extends AbstractTypeMembersPane {
-	public TypeFieldsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public TypeFieldsPane( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( type );
 	}
+
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember>[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
+
 	@Override
 	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
 		//return org.alice.ide.croquet.models.declaration.UnmanagedFieldDeclarationOperation.getInstance( type ).createButton();
 		return org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().createButton();
 	}
+
 	@Override
 	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
 		return null;
 	}
+
 	@Override
-	protected java.lang.Iterable< org.lgna.croquet.components.Component< ? >> createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair ) {
-		java.util.List< org.lgna.croquet.components.Component< ? > > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	protected java.lang.Iterable<org.lgna.croquet.components.Component<?>> createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair ) {
+		java.util.List<org.lgna.croquet.components.Component<?>> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		rv.add( org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( getterSetterPair.getGetter() ) );
 		org.lgna.project.ast.AbstractMethod setter = getterSetterPair.getSetter();
 		if( setter != null ) {
@@ -74,9 +78,10 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 		}
 		return rv;
 	}
+
 	@Override
-	protected Iterable< org.lgna.croquet.components.Component< ? > > createTemplates( org.lgna.project.ast.AbstractMember member ) {
-		java.util.List< org.lgna.croquet.components.Component< ? > > rv;
+	protected Iterable<org.lgna.croquet.components.Component<?>> createTemplates( org.lgna.project.ast.AbstractMember member ) {
+		java.util.List<org.lgna.croquet.components.Component<?>> rv;
 		if( member instanceof org.lgna.project.ast.AbstractField ) {
 			rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)member;
@@ -85,24 +90,24 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 			} else {
 				if( field instanceof org.lgna.project.ast.UserField ) {
 					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
-					org.lgna.croquet.components.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.TemplateAstI18nFactory.getInstance(), userField);
+					org.lgna.croquet.components.Component<?> declarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.TemplateAstI18nFactory.getInstance(), userField );
 					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "add popup menu to field declaration pane" );
-////					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
-////						public EditFieldDeclarationOperation() {
-////							super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "cb8936e6-a011-427a-bc64-0a4e646dc869" ) );
-////							this.setName( "Edit..." );
-////						}
-////						@Override
-////						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
-////							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
-////						}
-////					}
-//					rv.add( new org.lgna.croquet.components.LineAxisPanel(
-//								new org.alice.ide.operations.ast.EditFieldOperation( fieldInAlice ).createButton(),
-//								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-//								declarationPane
-//							) 
-//					);
+					////					class EditFieldDeclarationOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation { 
+					////						public EditFieldDeclarationOperation() {
+					////							super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "cb8936e6-a011-427a-bc64-0a4e646dc869" ) );
+					////							this.setName( "Edit..." );
+					////						}
+					////						@Override
+					////						protected void perform(edu.cmu.cs.dennisc.croquet.ActionOperationContext context) {
+					////							edu.cmu.cs.dennisc.croquet.Application.getSingleton().showMessageDialog( "todo" );
+					////						}
+					////					}
+					//					rv.add( new org.lgna.croquet.components.LineAxisPanel(
+					//								new org.alice.ide.operations.ast.EditFieldOperation( fieldInAlice ).createButton(),
+					//								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+					//								declarationPane
+					//							) 
+					//					);
 				}
 			}
 			rv.add( TemplateFactory.getAccessorTemplate( field ) );
@@ -113,23 +118,23 @@ public class TypeFieldsPane extends AbstractTypeMembersPane {
 			if( field.isFinal() ) {
 				//pass
 			} else {
-				rv.add( 
-						new org.lgna.croquet.components.LineAxisPanel( 
+				rv.add(
+						new org.lgna.croquet.components.LineAxisPanel(
 								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
 								TemplateFactory.getMutatorTemplate( field )
 						)
-				);
+						);
 			}
-			
+
 			if( field.getValueType().isArray() ) {
-				rv.add( 
-						new org.lgna.croquet.components.LineAxisPanel( 
+				rv.add(
+						new org.lgna.croquet.components.LineAxisPanel(
 								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( org.alice.ide.common.ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT ),
 								TemplateFactory.getMutateArrayAtIndexTemplate( field )
 						)
-				);
+						);
 			}
-			
+
 			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				//pass
 			} else {

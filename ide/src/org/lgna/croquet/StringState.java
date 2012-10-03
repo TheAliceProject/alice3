@@ -45,11 +45,13 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StringState extends State< String > {
+public abstract class StringState extends State<String> {
 	public class SwingModel {
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
+
 		private SwingModel() {
 		}
+
 		public javax.swing.text.Document getDocument() {
 			return this.document;
 		}
@@ -67,18 +69,22 @@ public abstract class StringState extends State< String > {
 				throw new RuntimeException( ble );
 			}
 		}
+
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 			this.handleUpdate( e );
 		}
+
 		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
 			this.handleUpdate( e );
 		}
+
 		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 			this.handleUpdate( e );
 		}
 	};
 
 	private String textForBlankCondition;
+
 	public StringState( Group group, java.util.UUID id, String initialValue ) {
 		super( group, id, initialValue );
 		try {
@@ -90,39 +96,42 @@ public abstract class StringState extends State< String > {
 	}
 
 	@Override
-	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
 		return java.util.Collections.emptyList();
 	}
 
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, String value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, String value ) {
+		sb.append( value );
 	}
 
 	@Override
-	public Class< String > getItemClass() {
+	public Class<String> getItemClass() {
 		return String.class;
 	}
+
 	@Override
 	public String decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeString();
 	}
+
 	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String value ) {
 		binaryEncoder.encode( value );
 	}
 
 	private boolean isEnabled = true;
+
 	@Override
 	public boolean isEnabled() {
 		return this.isEnabled;
 	}
+
 	@Override
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
-			for( org.lgna.croquet.components.JComponent< ? > component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+			for( org.lgna.croquet.components.JComponent<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
 				component.getAwtComponent().setEnabled( this.isEnabled );
 			}
 		}
@@ -149,10 +158,11 @@ public abstract class StringState extends State< String > {
 	protected void localize() {
 		this.textForBlankCondition = this.findLocalizedText( "textForBlankCondition" );
 	}
-	
+
 	public String getTextForBlankCondition() {
 		return this.textForBlankCondition;
 	}
+
 	public void setTextForBlankCondition( String textForBlankCondition ) {
 		this.textForBlankCondition = textForBlankCondition;
 		for( org.lgna.croquet.components.JComponent<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
@@ -163,10 +173,10 @@ public abstract class StringState extends State< String > {
 		}
 	}
 
-//	@Override
-//	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-//		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
-//	}
+	//	@Override
+	//	protected void commitStateEdit( String prevValue, String nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+	//		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
+	//	}
 	@Override
 	protected String getActualValue() {
 		try {
@@ -179,13 +189,15 @@ public abstract class StringState extends State< String > {
 	public org.lgna.croquet.components.TextField createTextField() {
 		return new org.lgna.croquet.components.TextField( this );
 	}
+
 	public org.lgna.croquet.components.PasswordField createPasswordField() {
 		return new org.lgna.croquet.components.PasswordField( this );
 	}
+
 	public org.lgna.croquet.components.TextArea createTextArea() {
 		return new org.lgna.croquet.components.TextArea( this );
 	}
-	
+
 	public void selectAll() {
 		for( org.lgna.croquet.components.Component component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
 			if( component instanceof org.lgna.croquet.components.TextComponent ) {

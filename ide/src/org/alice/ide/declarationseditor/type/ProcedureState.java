@@ -47,7 +47,8 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class ProcedureState extends MethodState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ProcedureState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ProcedureState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ProcedureState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ProcedureState rv = map.get( type );
 		if( rv != null ) {
@@ -58,9 +59,11 @@ public class ProcedureState extends MethodState {
 		}
 		return rv;
 	}
+
 	private ProcedureState( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "ce34123a-1e8a-4f95-8e90-77a1477609d7" ), type );
 	}
+
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
 		return super.isAcceptableItem( value ) && value.isProcedure();

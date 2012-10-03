@@ -47,23 +47,25 @@ package org.alice.stageide.icons;
  */
 public class TextModelIcon extends ShapeIcon {
 	private final java.awt.Font font;
+
 	public TextModelIcon( java.awt.Dimension size ) {
 		super( size );
-		this.font = new java.awt.Font( null, java.awt.Font.ITALIC, (size.height*4)/5 );
+		this.font = new java.awt.Font( null, java.awt.Font.ITALIC, ( size.height * 4 ) / 5 );
 	}
+
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		java.awt.Font prevFont = g2.getFont();
 		g2.setFont( font );
-		
-		
+
 		String text = "A";
 		java.awt.FontMetrics fm = g2.getFontMetrics();
 		int messageWidth = fm.stringWidth( text );
-	    int ascent = fm.getMaxAscent();
-	    int descent = fm.getMaxDescent();
-		int x = width/2-messageWidth/2;
-		int y = height/2+ascent/2-descent/2;;
+		int ascent = fm.getMaxAscent();
+		int descent = fm.getMaxDescent();
+		int x = ( width / 2 ) - ( messageWidth / 2 );
+		int y = ( ( height / 2 ) + ( ascent / 2 ) ) - ( descent / 2 );
+		;
 
 		java.awt.font.GlyphVector glyphVector = font.createGlyphVector( g2.getFontRenderContext(), text );
 		java.awt.Shape outline = glyphVector.getOutline( x, y );
@@ -72,8 +74,8 @@ public class TextModelIcon extends ShapeIcon {
 
 		g2.setPaint( fillPaint );
 		g2.fill( outline );
-//		g2.drawString( text, x, y );
-		
+		//		g2.drawString( text, x, y );
+
 		g2.setFont( prevFont );
 	}
 }

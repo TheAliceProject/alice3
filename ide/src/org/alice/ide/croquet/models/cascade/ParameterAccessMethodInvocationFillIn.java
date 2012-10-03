@@ -47,8 +47,9 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap< org.lgna.project.ast.AbstractParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFillIn > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static ParameterAccessMethodInvocationFillIn getInstance( org.lgna.project.ast.AbstractParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFillIn> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
+	public static ParameterAccessMethodInvocationFillIn getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
 		synchronized( map ) {
 			ParameterAccessMethodInvocationFillIn rv = map.get( parameter, method );
 			if( rv != null ) {
@@ -61,9 +62,10 @@ public class ParameterAccessMethodInvocationFillIn extends MethodInvocationFillI
 		}
 	}
 
-	private ParameterAccessMethodInvocationFillIn( org.lgna.project.ast.AbstractParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+	private ParameterAccessMethodInvocationFillIn( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "356231af-d038-417c-a58b-f4ad3d77a743" ), new org.lgna.project.ast.ParameterAccess( parameter ), method );
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression transientValueExpression ) {
 		org.lgna.project.ast.ParameterAccess transientValueParameterAccess = (org.lgna.project.ast.ParameterAccess)transientValueExpression;

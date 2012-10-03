@@ -57,6 +57,7 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		this.statement = statement;
 		this.toLocation = toLocation;
 	}
+
 	public MoveStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
@@ -65,6 +66,7 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		this.statement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, statementId );
 		this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
@@ -72,6 +74,7 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		binaryEncoder.encode( this.statement.getId() );
 		binaryEncoder.encode( this.toLocation );
 	}
+
 	private int getToDelta() {
 		int toDelta;
 		if( this.fromLocation.getBlockStatement() == this.toLocation.getBlockStatement() ) {
@@ -85,6 +88,7 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		}
 		return toDelta;
 	}
+
 	@Override
 	public void doOrRedoInternal( boolean isDo ) {
 		int toDelta = this.getToDelta();
@@ -108,6 +112,7 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 		retargeter.addKeyValuePair( this.toLocation, replacementEdit.toLocation );
 	}
+
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.fromLocation = retargeter.retarget( this.fromLocation );

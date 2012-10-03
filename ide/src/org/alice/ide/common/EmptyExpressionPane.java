@@ -50,6 +50,7 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 	private static final java.awt.Color TOP_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 0.9f );
 	private static final java.awt.Color BOTTOM_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0f, 1.0f, 1.1f );
 	private final org.alice.ide.ast.EmptyExpression emptyExpression;
+
 	public EmptyExpressionPane( org.alice.ide.ast.EmptyExpression emptyExpression ) {
 		super( null );
 		this.emptyExpression = emptyExpression;
@@ -58,27 +59,30 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 	}
 
 	@Override
-	public org.lgna.project.ast.AbstractType<?,?,?> getExpressionType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
 		return this.emptyExpression.getType();
 	}
 
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y+height, BOTTOM_COLOR );
+		return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y + height, BOTTOM_COLOR );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
 		return edu.cmu.cs.dennisc.java.awt.BevelState.SUNKEN;
 	}
+
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		return true;
 	}
-	
+
 	@Override
 	protected int getInsetTop() {
 		return 0;
 	}
+
 	@Override
 	protected int getInsetBottom() {
 		return 1;

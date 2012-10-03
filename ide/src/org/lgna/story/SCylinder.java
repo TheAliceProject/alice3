@@ -42,33 +42,38 @@
  */
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
 
 /**
  * @author Dennis Cosgrove
  */
 public class SCylinder extends SShape {
 	private final org.lgna.story.implementation.CylinderImp implementation = new org.lgna.story.implementation.CylinderImp( this );
+
 	@Override
-	/*package-private*/ org.lgna.story.implementation.CylinderImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.CylinderImp getImplementation() {
 		return this.implementation;
 	}
-	
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
+
+	@GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Double getRadius() {
 		return this.implementation.radius.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setRadius( Number radius, SetRadius.Detail... details ) {
 		this.implementation.radius.animateValue( radius.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-	@GetterTemplate(isPersistent=true)
-	@MethodTemplate()
+
+	@GetterTemplate( isPersistent = true )
+	@MethodTemplate( )
 	public Double getLength() {
 		return this.implementation.length.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setLength( Number length, SetLength.Detail... details ) {
 		this.implementation.length.animateValue( length.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

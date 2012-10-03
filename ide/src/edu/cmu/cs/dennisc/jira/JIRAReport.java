@@ -48,8 +48,11 @@ package edu.cmu.cs.dennisc.jira;
  */
 public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	public enum Type {
-		BUG, NEW_FEATURE, IMPROVEMENT
+		BUG,
+		NEW_FEATURE,
+		IMPROVEMENT
 	}
+
 	private String projectKey;
 	private Type type;
 	private String summary;
@@ -58,9 +61,11 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	private String environment;
 	private String exception;
 	private String[] affectsVersions = new String[] {};
+
 	public String getProjectKey() {
 		return this.projectKey;
 	}
+
 	public void setProjectKey( String projectKey ) {
 		this.projectKey = projectKey;
 	}
@@ -68,49 +73,62 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	public Type getType() {
 		return this.type;
 	}
+
 	public void setType( Type type ) {
 		this.type = type;
 	}
+
 	public String getSummary() {
 		return this.summary;
 	}
+
 	public void setSummary( String summary ) {
 		this.summary = summary;
 	}
+
 	public String getDescription() {
 		return this.description;
 	}
+
 	public void setDescription( String description ) {
 		this.description = description;
 	}
+
 	public String getSteps() {
 		return this.steps;
 	}
+
 	public void setSteps( String steps ) {
 		this.steps = steps;
 	}
+
 	public String getEnvironment() {
 		return this.environment;
 	}
+
 	public void setEnvironment( String environment ) {
 		this.environment = environment;
 	}
+
 	public String[] getAffectsVersions() {
 		return this.affectsVersions;
 	}
+
 	public void setAffectsVersions( String... affectsVersions ) {
 		this.affectsVersions = affectsVersions;
 	}
+
 	public String getException() {
 		return this.exception;
 	}
+
 	public void setException( String exception ) {
 		this.exception = exception;
 	}
 
 	public String getAffectsVersionText() {
 		String rv;
-		if( this.affectsVersions != null && this.affectsVersions.length > 0 ) {
+		if( ( this.affectsVersions != null ) && ( this.affectsVersions.length > 0 ) ) {
 			rv = this.affectsVersions[ 0 ];
 		} else {
 			rv = null;

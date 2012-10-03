@@ -13,6 +13,7 @@ public class OcclusionEvent extends AbstractEvent {
 	public org.lgna.story.SMovableTurnable getForegroundMovable() {
 		return foreground;
 	}
+
 	public org.lgna.story.SMovableTurnable getBackgroundMovable() {
 		return background;
 	}

@@ -45,13 +45,13 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ListPropertyLabelsView extends org.alice.ide.croquet.components.AbstractListPropertyPane< edu.cmu.cs.dennisc.property.ListProperty<Object>, Object > {
+public class ListPropertyLabelsView extends org.alice.ide.croquet.components.AbstractListPropertyPane<edu.cmu.cs.dennisc.property.ListProperty<Object>, Object> {
 	public ListPropertyLabelsView( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.ListProperty<Object> property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createComponent( Object instance ) {
+	protected org.lgna.croquet.components.Component<?> createComponent( Object instance ) {
 		return new org.lgna.croquet.components.Label( instance.toString() );
 	}
 }
-

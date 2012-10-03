@@ -3,8 +3,8 @@ package edu.cmu.cs.dennisc.matt;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.lgna.story.SModel;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SModel;
 import org.lgna.story.SScene;
 import org.lgna.story.Visual;
 import org.lgna.story.event.MouseClickEvent;
@@ -12,9 +12,9 @@ import org.lgna.story.event.MouseClickOnObjectEvent;
 import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 
-public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickEvent> {
+public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClickEvent> {
 
-	HashMap<Object,LinkedList<Object>> map = new HashMap<Object,LinkedList<Object>>();
+	HashMap<Object, LinkedList<Object>> map = new HashMap<Object, LinkedList<Object>>();
 	Object empty = new Object();
 
 	private boolean isMouseButtonListenerInExistence() {
@@ -51,6 +51,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickE
 	public MouseClickedHandler() {
 		map.put( empty, new LinkedList<Object>() );
 	}
+
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, SScene scene ) {
 		if( this.isMouseButtonListenerInExistence() ) {
 			final org.lgna.story.event.MouseClickEvent mbe = new org.lgna.story.event.MouseClickEvent( e, scene );
@@ -98,19 +99,20 @@ public class MouseClickedHandler extends AbstractEventHandler<Object,MouseClickE
 					if( map.get( modelAtMouseLocation ) != null ) {
 						listeners.addAll( map.get( modelAtMouseLocation ) );
 					}
-					if( listeners != null ) {
-						for( Object listener : listeners ) {
-							fireEvent( listener, event, modelAtMouseLocation );
-						}
+				}
+				if( listeners != null ) {
+					for( Object listener : listeners ) {
+						fireEvent( listener, event, modelAtMouseLocation );
 					}
 				}
 			}
 		}
 	}
+
 	public void addListener( Object listener, MultipleEventPolicy eventPolicy, Visual[] targets ) {
 		registerIsFiringMap( listener, targets );
 		registerPolicyMap( listener, eventPolicy );
-		if( targets != null && targets.length > 0 ) {
+		if( ( targets != null ) && ( targets.length > 0 ) ) {
 			for( Visual target : targets ) {
 				if( map.get( target ) != null ) {
 					map.get( target ).add( listener );

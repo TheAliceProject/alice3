@@ -47,29 +47,37 @@ package edu.cmu.cs.dennisc.apple;
  */
 public class Adapter implements com.apple.eawt.ApplicationListener {
 	private edu.cmu.cs.dennisc.apple.event.ApplicationListener listener;
+
 	public Adapter( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) {
 		this.listener = listener;
 	}
+
 	public void handleOpenApplication( com.apple.eawt.ApplicationEvent e ) {
 	}
+
 	public void handleReOpenApplication( com.apple.eawt.ApplicationEvent e ) {
 	}
+
 	public void handleOpenFile( com.apple.eawt.ApplicationEvent e ) {
 		this.listener.handleOpenFile( e );
-		e.setHandled(true);
+		e.setHandled( true );
 	}
+
 	public void handlePrintFile( com.apple.eawt.ApplicationEvent e ) {
 	}
+
 	public void handleQuit( com.apple.eawt.ApplicationEvent e ) {
 		this.listener.handleQuit( e );
-		e.setHandled(false); //setting this to false does not make sense to me.  dennisc
+		e.setHandled( false ); //setting this to false does not make sense to me.  dennisc
 	}
+
 	public void handleAbout( com.apple.eawt.ApplicationEvent e ) {
 		this.listener.handleAbout( e );
-		e.setHandled(true);
+		e.setHandled( true );
 	}
+
 	public void handlePreferences( com.apple.eawt.ApplicationEvent e ) {
 		this.listener.handlePreferences( e );
-		e.setHandled(true);
+		e.setHandled( true );
 	}
 }

@@ -46,79 +46,100 @@ package edu.cmu.cs.dennisc.javax.swing.models;
  * @author Dennis Cosgrove
  */
 public class ListPropertyMutableListModel<E> extends AbstractReorderableListModel<E> implements MutableListModel<E> {
-	private edu.cmu.cs.dennisc.property.ListProperty< E > property;
+	private edu.cmu.cs.dennisc.property.ListProperty<E> property;
 
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< E >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
 		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
+
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
 			//todo
 		}
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
+
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
 		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
+
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<E> e ) {
 			//todo
 		}
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
+
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
 		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
+
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent<E> e ) {
 			//todo
 		}
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
+
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
 		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
+
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent<E> e ) {
 			//todo
 		}
 	};
 
-	public ListPropertyMutableListModel( edu.cmu.cs.dennisc.property.ListProperty< E > property ) {
+	public ListPropertyMutableListModel( edu.cmu.cs.dennisc.property.ListProperty<E> property ) {
 		this.property = property;
 	}
+
 	public void startListening() {
 		this.property.addListPropertyListener( this.listPropertyListener );
 	}
+
 	public void stopListening() {
 		this.property.removeListPropertyListener( this.listPropertyListener );
 	}
-	
+
 	public Object getElementAt( int index ) {
 		return this.property.get( index );
 	}
+
 	public int getSize() {
 		return this.property.size();
 	}
+
 	public void add( E element ) {
 		this.property.add( element );
 	}
+
 	public void add( E... elements ) {
 		this.property.add( elements );
 	}
+
 	public void insert( int i, E element ) {
 		this.property.add( i, element );
 	}
+
 	public void insert( int i, E... elements ) {
 		this.property.add( i, elements );
 	}
+
 	public void clear() {
 		this.property.clear();
 	}
+
 	public void remove( int i ) {
 		this.property.remove( i );
 	}
+
 	public void removeExclusive( int fromIndex, int upToButExcludingIndex ) {
 		this.property.removeExclusive( fromIndex, upToButExcludingIndex );
 	}
+
 	public void removeInclusive( int fromIndex, int upToAndIncludingIndex ) {
 		this.property.removeInclusive( fromIndex, upToAndIncludingIndex );
 	}
+
 	public void set( E... elements ) {
 		//todo
 		this.property.clear();
 		this.property.set( 0, elements );
 	}
+
 	public void swap( int indexA, int indexB ) {
 		this.property.swap( indexA, indexB );
 	}
+
 	public void slide( int prevIndex, int nextIndex ) {
 		this.property.slide( prevIndex, nextIndex );
 	}

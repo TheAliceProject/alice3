@@ -46,30 +46,37 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends ViewController< javax.swing.JMenu, M > implements MenuItemContainer {
+public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends ViewController<javax.swing.JMenu, M> implements MenuItemContainer {
 	private boolean isIconSet;
 	private javax.swing.Icon setIcon;
+
 	public AbstractMenu( M model ) {
 		super( model );
 	}
-	
+
 	protected javax.swing.Icon getSetIcon() {
 		return this.setIcon;
 	}
+
 	public boolean isIconSet() {
 		return this.isIconSet;
 	}
+
 	public void setIconSet( boolean isIconSet ) {
 		this.isIconSet = isIconSet;
 	}
+
 	public javax.swing.Icon getIcon() {
 		return this.getAwtComponent().getIcon();
 	}
+
 	public void setIcon( javax.swing.Icon icon ) {
 		this.setIconSet( true );
 		this.setIcon = icon;
 	}
+
 	protected abstract boolean areIconsDisplayedInMenus();
+
 	@Override
 	protected javax.swing.JMenu createAwtComponent() {
 		return new javax.swing.JMenu() {
@@ -88,34 +95,42 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 		};
 	}
 
-	public final org.lgna.croquet.components.ViewController< ?, ? > getViewController() {
+	public final org.lgna.croquet.components.ViewController<?, ?> getViewController() {
 		return this;
 	}
-	
-	public void addPopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+
+	public void addPopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 		this.getAwtComponent().getPopupMenu().addPopupMenuListener( listener );
 	}
-	public void removePopupMenuListener(javax.swing.event.PopupMenuListener listener) {
+
+	public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
 		this.getAwtComponent().getPopupMenu().removePopupMenuListener( listener );
 	}
+
 	public void addMenu( Menu menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
+
 	public void addMenuItem( MenuItem menuItem ) {
 		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
+
 	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
 		this.getAwtComponent().add( cascadeMenu.getAwtComponent() );
 	}
+
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
 		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
 	}
+
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
 	}
+
 	public void addSeparator() {
 		this.addSeparator( null );
 	}
+
 	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
 		if( menuTextSeparator != null ) {
 			this.getAwtComponent().add( menuTextSeparator.getAwtComponent() );
@@ -123,11 +138,12 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 			this.getAwtComponent().addSeparator();
 		}
 	}
-	
+
 	public void removeAllMenuItems() {
 		//this.internalRemoveAllComponents();
 		this.getAwtComponent().removeAll();
 	}
+
 	public void forgetAndRemoveAllMenuItems() {
 		//this.internalForgetAndRemoveAllComponents();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );

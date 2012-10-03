@@ -43,6 +43,6 @@
 
 package org.lgna.story;
 
-public class SCameraMarker extends PerspectiveCameraMarker {	
-	
+public class SCameraMarker extends PerspectiveCameraMarker {
+
 }

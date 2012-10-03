@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultHairMulletLong implements MaleAdultHair {
-	BROWN ,
- 	BLACK ,
- 	RED ,
- 	BLOND ,
- 	GREY ;
- 	//BLENDBLOND ; //Nonstandard hair color is not supported
+	BROWN,
+	BLACK,
+	RED,
+	BLOND,
+	GREY;
+	//BLENDBLOND ; //Nonstandard hair color is not supported
 }

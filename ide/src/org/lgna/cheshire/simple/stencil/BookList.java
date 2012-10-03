@@ -45,17 +45,19 @@ package org.lgna.cheshire.simple.stencil;
 /**
  * @author Dennis Cosgrove
  */
-public class BookList extends org.lgna.croquet.components.JComponent< javax.swing.JList > {
+public class BookList extends org.lgna.croquet.components.JComponent<javax.swing.JList> {
 	private BookComboBoxModel comboBoxModel;
+
 	public BookList( BookComboBoxModel comboBoxModel ) {
 		this.comboBoxModel = comboBoxModel;
 	}
-	
+
 	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			comboBoxModel.setSelectedItem( getAwtComponent().getSelectedValue() );
 		}
 	};
+
 	@Override
 	protected javax.swing.JList createAwtComponent() {
 		javax.swing.JList rv = new javax.swing.JList( this.comboBoxModel );
@@ -63,11 +65,13 @@ public class BookList extends org.lgna.croquet.components.JComponent< javax.swin
 		rv.setCellRenderer( cellRenderer );
 		return rv;
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getAwtComponent().addListSelectionListener( this.listSelectionListener );
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.getAwtComponent().removeListSelectionListener( this.listSelectionListener );

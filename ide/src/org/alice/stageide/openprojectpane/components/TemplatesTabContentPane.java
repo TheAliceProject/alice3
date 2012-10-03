@@ -42,17 +42,19 @@
  */
 package org.alice.stageide.openprojectpane.components;
 
-public class TemplatesTabContentPane extends org.alice.ide.openprojectpane.ListContentPanel< org.alice.stageide.openprojectpane.models.TemplateUriSelectionState > {
-	public TemplatesTabContentPane( org.alice.ide.croquet.models.openproject.TemplatesTab composite ) {
+public class TemplatesTabContentPane extends org.alice.ide.projecturi.views.ListContentPanel<org.alice.stageide.openprojectpane.models.TemplateUriSelectionState> {
+	public TemplatesTabContentPane( org.alice.ide.projecturi.TemplatesTab composite ) {
 		super( composite, org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getInstance() );
 	}
+
 	@Override
 	protected String getTextForZeroProjects() {
 		return "there are no template projects.";
 	}
+
 	@Override
 	protected javax.swing.ListCellRenderer createListCellRenderer() {
-		return new org.alice.ide.openprojectpane.ProjectSnapshotListCellRenderer() {
+		return new org.alice.ide.projecturi.views.ProjectSnapshotListCellRenderer() {
 			@Override
 			protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
 				java.net.URI uri = (java.net.URI)value;

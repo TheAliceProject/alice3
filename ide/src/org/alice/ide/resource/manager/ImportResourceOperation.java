@@ -48,16 +48,19 @@ package org.alice.ide.resource.manager;
  */
 public abstract class ImportResourceOperation<R extends org.lgna.common.Resource> extends ResourceOperation {
 	private final org.lgna.croquet.importer.Importer<R> importer;
+
 	public ImportResourceOperation( java.util.UUID migrationId, org.lgna.croquet.importer.Importer<R> importer ) {
 		super( migrationId );
 		this.importer = importer;
 	}
+
 	@Override
 	protected R getResource() {
 		return this.importer.createValue( this.getName() );
 	}
+
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< ? > step, org.lgna.common.Resource resource ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.common.Resource resource ) {
 		return new org.alice.ide.resource.manager.edits.AddResourceEdit( step, resource );
 	}
 }

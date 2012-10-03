@@ -74,7 +74,7 @@ public class TransactionManager {
 
 	@Deprecated
 	public static DragStep addDragStep( org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.DragTrigger trigger ) {
-		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
+		return DragStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 
 	@Deprecated
@@ -83,8 +83,8 @@ public class TransactionManager {
 	}
 
 	@Deprecated
-	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.ListSelectionState.InternalPrepModel< T > model, org.lgna.croquet.triggers.Trigger trigger ) {
-		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger ); 
+	public static <T> ListSelectionStatePrepStep<T> addListSelectionPrepStep( org.lgna.croquet.ListSelectionState.InternalPrepModel<T> model, org.lgna.croquet.triggers.Trigger trigger ) {
+		return ListSelectionStatePrepStep.createAndAddToTransaction( getActiveTransaction(), model, trigger );
 	}
 
 	@Deprecated

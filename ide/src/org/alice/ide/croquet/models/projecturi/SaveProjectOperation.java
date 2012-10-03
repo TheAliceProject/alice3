@@ -49,14 +49,17 @@ public class SaveProjectOperation extends AbstractSaveProjectOperation {
 	private static class SingletonHolder {
 		private static SaveProjectOperation instance = new SaveProjectOperation();
 	}
+
 	public static SaveProjectOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SaveProjectOperation() {
 		super( java.util.UUID.fromString( "44ffba8a-3fb3-4cb5-97b6-55cd93c88e9d" ) );
 	}
+
 	@Override
 	protected boolean isPromptNecessary( java.io.File file ) {
-		return ( file != null && file.canWrite() ) == false;
+		return ( ( file != null ) && file.canWrite() ) == false;
 	}
 }

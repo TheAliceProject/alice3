@@ -5,27 +5,29 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 localTransformation;
 	private edu.cmu.cs.dennisc.scenegraph.Geometry geometry;
 	private edu.cmu.cs.dennisc.texture.BufferedImageTexture texture;
-	private java.util.List< ModelPart > children;
+	private java.util.List<ModelPart> children;
 
 	private Integer geometryID = null;
 	private Integer textureID = null;
 
 	private ModelPart() {
 	}
+
 	public ModelPart( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.name = binaryDecoder.decodeString();
 		this.localTransformation = binaryDecoder.decodeBinaryEncodableAndDecodable(/* edu.cmu.cs.dennisc.math.AffineMatrix4x4.class */);
 		this.geometryID = binaryDecoder.decodeInt();
 		this.textureID = binaryDecoder.decodeInt();
 		final int N = binaryDecoder.decodeInt();
-		java.util.ArrayList< ModelPart > arrayList = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+		java.util.ArrayList<ModelPart> arrayList = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		arrayList.ensureCapacity( N );
 		for( int i = 0; i < N; i++ ) {
-			ModelPart modelPart = binaryDecoder.decodeBinaryEncodableAndDecodable(/* ModelPart.class */); 
+			ModelPart modelPart = binaryDecoder.decodeBinaryEncodableAndDecodable(/* ModelPart.class */);
 			arrayList.add( modelPart );
 		}
 		this.children = arrayList;
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.name );
 		binaryEncoder.encode( this.localTransformation );
@@ -37,12 +39,12 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		}
 	}
 
-	public static ModelPart newInstance( edu.cmu.cs.dennisc.scenegraph.Transformable parent, java.util.Set< edu.cmu.cs.dennisc.scenegraph.Geometry > geometries, java.util.Set< edu.cmu.cs.dennisc.texture.BufferedImageTexture > textures ) {
+	public static ModelPart newInstance( edu.cmu.cs.dennisc.scenegraph.Transformable parent, java.util.Set<edu.cmu.cs.dennisc.scenegraph.Geometry> geometries, java.util.Set<edu.cmu.cs.dennisc.texture.BufferedImageTexture> textures ) {
 		ModelPart rv = new ModelPart();
 		rv.name = parent.getName();
 		rv.localTransformation = parent.localTransformation.getValue();
 		rv.children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		
+
 		for( edu.cmu.cs.dennisc.scenegraph.Component component : parent.getComponents() ) {
 			if( component instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {
 				edu.cmu.cs.dennisc.scenegraph.Visual visual = (edu.cmu.cs.dennisc.scenegraph.Visual)component;
@@ -58,7 +60,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 							assert false;
 						}
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "no texture for ", rv.name ); 
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "no texture for ", rv.name );
 					}
 				} else {
 					assert false;
@@ -71,7 +73,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 						if( scale.isIdentity() ) {
 							//pass
 						} else {
-//							System.err.println( "fixing scale for: " + rv.name + " " + scale.right.x + " " + scale.up.y + " " + scale.backward.z );
+							//							System.err.println( "fixing scale for: " + rv.name + " " + scale.right.x + " " + scale.up.y + " " + scale.backward.z );
 							for( edu.cmu.cs.dennisc.scenegraph.Vertex v : sgITA.vertices.getValue() ) {
 								v.position.x *= scale.right.x;
 								v.position.y *= scale.up.y;
@@ -83,7 +85,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 					}
 					geometries.add( rv.geometry );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "no geometry for ", rv.name ); 
+					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "no geometry for ", rv.name );
 				}
 			} else if( component instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
 				edu.cmu.cs.dennisc.scenegraph.Transformable transformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)component;
@@ -108,7 +110,8 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		}
 		return rv;
 	}
-	public void resolve( java.util.Map< Integer, edu.cmu.cs.dennisc.scenegraph.Geometry > mapIdToGeometry, java.util.Map< Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture > mapIdToTexture ) {
+
+	public void resolve( java.util.Map<Integer, edu.cmu.cs.dennisc.scenegraph.Geometry> mapIdToGeometry, java.util.Map<Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture> mapIdToTexture ) {
 		if( this.geometryID != 0 ) {
 			assert mapIdToGeometry.containsKey( this.geometryID ) : geometryID;
 			this.geometry = mapIdToGeometry.get( this.geometryID );
@@ -127,7 +130,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		}
 	}
 
-	public void replaceGeometries( java.util.Map< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry, ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > map ) {
+	public void replaceGeometries( java.util.Map<? extends edu.cmu.cs.dennisc.scenegraph.Geometry, ? extends edu.cmu.cs.dennisc.scenegraph.Geometry> map ) {
 		if( this.geometry != null ) {
 			this.geometry = map.get( this.geometry );
 		}
@@ -135,6 +138,7 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 			child.replaceGeometries( map );
 		}
 	}
+
 	private static int getID( Object o ) {
 		int rv;
 		if( o != null ) {

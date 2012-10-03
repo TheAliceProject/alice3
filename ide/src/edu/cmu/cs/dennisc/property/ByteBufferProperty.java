@@ -46,13 +46,15 @@ package edu.cmu.cs.dennisc.property;
 /**
  * @author Dennis Cosgrove
  */
-public class ByteBufferProperty extends PrimitiveBufferProperty< java.nio.ByteBuffer > {
+public class ByteBufferProperty extends PrimitiveBufferProperty<java.nio.ByteBuffer> {
 	public ByteBufferProperty( InstancePropertyOwner owner, java.nio.ByteBuffer value ) {
 		super( owner, value );
 	}
+
 	public ByteBufferProperty( InstancePropertyOwner owner, byte[] value ) {
 		super( owner, java.nio.ByteBuffer.wrap( value ) );
 	}
+
 	public final void setValue( byte[] value ) {
 		this.setValue( java.nio.ByteBuffer.wrap( value ) );
 	}

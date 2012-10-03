@@ -49,9 +49,11 @@ package org.lgna.story;
 public class IsVolumePreserved implements ResizeWidth.Detail, ResizeHeight.Detail, ResizeDepth.Detail {
 	private static final boolean DEFAULT_VALUE = true;
 	private final boolean value;
+
 	public IsVolumePreserved( Boolean value ) {
-		this.value = value.booleanValue(); 
+		this.value = value.booleanValue();
 	}
+
 	private static boolean getValue( Object[] details, boolean defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof IsVolumePreserved ) {
@@ -61,7 +63,8 @@ public class IsVolumePreserved implements ResizeWidth.Detail, ResizeHeight.Detai
 		}
 		return defaultValue;
 	}
-	/*package-private*/ static boolean getValue( Object[] details ) {
+
+	/* package-private */static boolean getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
 }

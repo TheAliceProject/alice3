@@ -52,6 +52,7 @@ public abstract class AbstractConstructor extends AbstractCode {
 	public String getName() {
 		return "constructor";
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return null;

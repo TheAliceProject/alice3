@@ -47,112 +47,114 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 
 public class SkeletonVisual extends Visual {
-	
-    public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>(this, null);
-    public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>(this, new AxisAlignedBox());
 
-    public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< WeightedMesh > weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< WeightedMesh >( this, new WeightedMesh[ 0 ] )
-    {
-        @Override
-        protected WeightedMesh[] createArray( int length ) {
-            return new WeightedMesh[ length ];
-        }
-        @Override
-        protected WeightedMesh createCopy( WeightedMesh src ) {
-            //todo?
-            return src;
-        }
-    };
-    
-    public final edu.cmu.cs.dennisc.property.CopyableArrayProperty< TexturedAppearance > textures = new edu.cmu.cs.dennisc.property.CopyableArrayProperty< TexturedAppearance >( this, new TexturedAppearance[ 0 ] )
-    {
-        @Override
-        protected TexturedAppearance[] createArray( int length ) {
-            return new TexturedAppearance[ length ];
-        }
-        @Override
-        protected TexturedAppearance createCopy( TexturedAppearance src ) {
-            //todo?
-            return src;
-        }
-    };
-    
-    @Override
-	public void setParent(Composite parent) {
-    	super.setParent(parent);
-    	if (this.skeleton.getValue() != null) {
-    		this.skeleton.getValue().setParent(parent);
-    	}
-    };
-	
-    
-    @Override
-    protected void actuallyRelease() {
-        super.actuallyRelease();
-        if (skeleton.getValue() != null)
-        {
-        	skeleton.getValue().release();
-        }
-        for( WeightedMesh mesh : weightedMeshes.getValue() ) {
-        	mesh.release();
-        }
-        for( TexturedAppearance texture : textures.getValue() ) {
-        	texture.release();
-        }
-    }
-    
-    @Override
-    public int getGeometryCount() 
-    {
-        return super.getGeometryCount() + this.weightedMeshes.getLength();
-    }
-    
-    @Override
-    public Geometry getGeometryAt(int index)
-    {
-        if (index < super.getGeometryCount())
-        {
-            return super.getGeometryAt(index);
-        }
-        else
-        {
-            return this.weightedMeshes.getValue()[index - super.getGeometryCount()];
-        }
-    };
-    
-    @Override
-    public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
-        if (this.weightedMeshes.getValue() != null) {
-        	for (edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue())
-        	{
-        		edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
-        		rv.union(b);
-        	}
-        }
-        if( this.geometries.getValue() != null) {
-        	for (edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue())
-        	{
-        		edu.cmu.cs.dennisc.math.AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
-        		rv.union(b);
-        	}
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<Joint> skeleton = new edu.cmu.cs.dennisc.property.InstanceProperty<Joint>( this, null );
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox> baseBoundingBox = new edu.cmu.cs.dennisc.property.InstanceProperty<AxisAlignedBox>( this, new AxisAlignedBox() );
+
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh> weightedMeshes = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<WeightedMesh>( this, new WeightedMesh[ 0 ] )
+	{
+		@Override
+		protected WeightedMesh[] createArray( int length ) {
+			return new WeightedMesh[ length ];
 		}
-        if (!rv.isNaN())
-        {
-        	rv.scale(this.scale.getValue());
-        }
-        return rv;
-    }
-    @Override
-    public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
-    	edu.cmu.cs.dennisc.math.AxisAlignedBox box = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
-    	getAxisAlignedMinimumBoundingBox(box);
-    	if (!box.isNaN()){
-            double diameter = Point3.calculateDistanceBetween(box.getMinimum(), box.getMaximum());
-            rv.center.set(box.getCenter());
-            rv.radius = diameter/2;
-        } else {
-            rv.setNaN();
-        }
-        return rv;
-    }
+
+		@Override
+		protected WeightedMesh createCopy( WeightedMesh src ) {
+			//todo?
+			return src;
+		}
+	};
+
+	public final edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance> textures = new edu.cmu.cs.dennisc.property.CopyableArrayProperty<TexturedAppearance>( this, new TexturedAppearance[ 0 ] )
+	{
+		@Override
+		protected TexturedAppearance[] createArray( int length ) {
+			return new TexturedAppearance[ length ];
+		}
+
+		@Override
+		protected TexturedAppearance createCopy( TexturedAppearance src ) {
+			//todo?
+			return src;
+		}
+	};
+
+	@Override
+	public void setParent( Composite parent ) {
+		super.setParent( parent );
+		if( this.skeleton.getValue() != null ) {
+			this.skeleton.getValue().setParent( parent );
+		}
+	};
+
+	@Override
+	protected void actuallyRelease() {
+		super.actuallyRelease();
+		if( skeleton.getValue() != null )
+		{
+			skeleton.getValue().release();
+		}
+		for( WeightedMesh mesh : weightedMeshes.getValue() ) {
+			mesh.release();
+		}
+		for( TexturedAppearance texture : textures.getValue() ) {
+			texture.release();
+		}
+	}
+
+	@Override
+	public int getGeometryCount()
+	{
+		return super.getGeometryCount() + this.weightedMeshes.getLength();
+	}
+
+	@Override
+	public Geometry getGeometryAt( int index )
+	{
+		if( index < super.getGeometryCount() )
+		{
+			return super.getGeometryAt( index );
+		}
+		else
+		{
+			return this.weightedMeshes.getValue()[ index - super.getGeometryCount() ];
+		}
+	};
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+		if( this.weightedMeshes.getValue() != null ) {
+			for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+			{
+				edu.cmu.cs.dennisc.math.AxisAlignedBox b = wm.getAxisAlignedMinimumBoundingBox();
+				rv.union( b );
+			}
+		}
+		if( this.geometries.getValue() != null ) {
+			for( edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue() )
+			{
+				edu.cmu.cs.dennisc.math.AxisAlignedBox b = g.getAxisAlignedMinimumBoundingBox();
+				rv.union( b );
+			}
+		}
+		if( !rv.isNaN() )
+		{
+			rv.scale( this.scale.getValue() );
+		}
+		return rv;
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv ) {
+		edu.cmu.cs.dennisc.math.AxisAlignedBox box = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
+		getAxisAlignedMinimumBoundingBox( box );
+		if( !box.isNaN() ) {
+			double diameter = Point3.calculateDistanceBetween( box.getMinimum(), box.getMaximum() );
+			rv.center.set( box.getCenter() );
+			rv.radius = diameter / 2;
+		} else {
+			rv.setNaN();
+		}
+		return rv;
+	}
 }

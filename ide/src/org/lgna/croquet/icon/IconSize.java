@@ -46,15 +46,17 @@ package org.lgna.croquet.icon;
  * @author Dennis Cosgrove
  */
 public enum IconSize {
-	EXTRA_SMALL(16), 
-	SMALL(22), 
-	MEDIUM(32), 
-	LARGE(48), 
-	EXTRA_LARGE(256);
+	EXTRA_SMALL( 16 ),
+	SMALL( 22 ),
+	MEDIUM( 32 ),
+	LARGE( 48 ),
+	EXTRA_LARGE( 256 );
 	private final java.awt.Dimension size;
+
 	private IconSize( int size ) {
 		this.size = new java.awt.Dimension( size, size );
 	}
+
 	public java.awt.Dimension getSize() {
 		return this.size;
 	}

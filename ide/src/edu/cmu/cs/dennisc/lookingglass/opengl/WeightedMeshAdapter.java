@@ -42,9 +42,10 @@
  */
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
+
 import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
-public class WeightedMeshAdapter< E extends WeightedMesh > extends MeshAdapter<E>
+public class WeightedMeshAdapter<E extends WeightedMesh> extends MeshAdapter<E>
 {
     
     @Override

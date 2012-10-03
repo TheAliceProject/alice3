@@ -50,9 +50,11 @@ public class InfoState extends org.lgna.croquet.StringState {
 	private static class SingletonHolder {
 		private static InfoState instance = new InfoState();
 	}
+
 	public static InfoState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private InfoState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "da932f7d-8a24-4cb4-af00-b519993b9044" ), "" );
 	}

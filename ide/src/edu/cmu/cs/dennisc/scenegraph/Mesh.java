@@ -49,50 +49,51 @@ import edu.cmu.cs.dennisc.property.IntBufferProperty;
 
 public class Mesh extends Geometry
 {
-    public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty(this, (java.nio.DoubleBuffer)null);
-    public final FloatBufferProperty normalBuffer = new FloatBufferProperty(this, (java.nio.FloatBuffer)null);
-    public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty(this, (java.nio.FloatBuffer)null);
-	public final IntBufferProperty indexBuffer = new IntBufferProperty(this, (java.nio.IntBuffer)null);
-	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty(this, -1);
-	public final edu.cmu.cs.dennisc.property.BooleanProperty cullBackfaces = new edu.cmu.cs.dennisc.property.BooleanProperty(this, Boolean.TRUE);
-	
-    public Mesh()
-    {
-    }
-    
-    @Override
-    protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) 
-    {
-    	edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue() );
-    }
-    
-    @Override
-    protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) 
-    {
-        edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, vertexBuffer.getValue().array() );
-    }
-    
-    @Override
-    protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
+	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (java.nio.DoubleBuffer)null );
+	public final FloatBufferProperty normalBuffer = new FloatBufferProperty( this, (java.nio.FloatBuffer)null );
+	public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty( this, (java.nio.FloatBuffer)null );
+	public final IntBufferProperty indexBuffer = new IntBufferProperty( this, (java.nio.IntBuffer)null );
+	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty( this, -1 );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty cullBackfaces = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
-        double[] xyzs = vertexBuffer.getValue().array();
-        float[] ijks = normalBuffer.getValue().array();
-        
-        assert xyzs.length >= 6;
-        assert ijks.length >= 3;
+	public Mesh()
+	{
+	}
 
-        forward.set( ijks[ 0 ], ijks[ 1 ], ijks[ 2 ] );
-        forward.normalize();
-        forward.negate();
-        
-        translation.set( xyzs[ 0 ], xyzs[ 1 ], xyzs[ 2 ] );
-        upGuide.set( translation.x - xyzs[ 3 ], translation.y - xyzs[ 4 ], translation.z - xyzs[ 5 ] );
-        upGuide.normalize();
-        
-    }
-    @Override
-    public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
-        //todo
-    }
+	@Override
+	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox )
+	{
+		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingBox( boundingBox, vertexBuffer.getValue() );
+	}
+
+	@Override
+	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere )
+	{
+		edu.cmu.cs.dennisc.scenegraph.bound.BoundUtilities.getBoundingSphere( boundingSphere, vertexBuffer.getValue().array() );
+	}
+
+	@Override
+	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {
+
+		double[] xyzs = vertexBuffer.getValue().array();
+		float[] ijks = normalBuffer.getValue().array();
+
+		assert xyzs.length >= 6;
+		assert ijks.length >= 3;
+
+		forward.set( ijks[ 0 ], ijks[ 1 ], ijks[ 2 ] );
+		forward.normalize();
+		forward.negate();
+
+		translation.set( xyzs[ 0 ], xyzs[ 1 ], xyzs[ 2 ] );
+		upGuide.set( translation.x - xyzs[ 3 ], translation.y - xyzs[ 4 ], translation.z - xyzs[ 5 ] );
+		upGuide.normalize();
+
+	}
+
+	@Override
+	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
+		//todo
+	}
 
 }

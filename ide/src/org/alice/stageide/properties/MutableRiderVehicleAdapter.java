@@ -48,9 +48,9 @@ import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 import org.lgna.project.ast.NullLiteral;
 import org.lgna.project.virtualmachine.UserInstance;
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MutableRider;
+import org.lgna.story.SThing;
 
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent;
@@ -60,44 +60,44 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 
 	private HierarchyListener hierarchyListener;
 	private org.lgna.project.virtualmachine.UserInstance sceneInstance;
-	
-	public MutableRiderVehicleAdapter(MutableRider instance, StandardExpressionState expressionState, org.lgna.project.virtualmachine.UserInstance sceneInstance) 
+
+	public MutableRiderVehicleAdapter( MutableRider instance, StandardExpressionState expressionState, org.lgna.project.virtualmachine.UserInstance sceneInstance )
 	{
-		super("Vehicle", instance, expressionState);
+		super( "Vehicle", instance, expressionState );
 		this.sceneInstance = sceneInstance;
 		this.initializeExpressionState();
 	}
-	
+
 	private void initializeListenersIfNecessary()
 	{
-		if (this.hierarchyListener == null)
+		if( this.hierarchyListener == null )
 		{
 			this.hierarchyListener = new HierarchyListener()
 			{
-				public void hierarchyChanged(HierarchyEvent hierarchyEvent) 
+				public void hierarchyChanged( HierarchyEvent hierarchyEvent )
 				{
 					MutableRiderVehicleAdapter.this.handleHeirarchyChanged();
 				}
 			};
 		}
 	}
-	
+
 	@Override
-	protected void setExpressionValue(SThing value)
+	protected void setExpressionValue( SThing value )
 	{
-		if (this.expressionState != null && this.sceneInstance != null)
+		if( ( this.expressionState != null ) && ( this.sceneInstance != null ) )
 		{
 			org.lgna.project.ast.Expression expressionValue;
-			if (value != null)
+			if( value != null )
 			{
 				org.lgna.story.SThing entity = value;
-				if (entity instanceof org.lgna.story.SJoint) {
-					expressionValue = org.alice.stageide.sceneeditor.SetUpMethodGenerator.getGetterExpressionForJoint((org.lgna.story.SJoint)entity, this.sceneInstance);
+				if( entity instanceof org.lgna.story.SJoint ) {
+					expressionValue = org.alice.stageide.sceneeditor.SetUpMethodGenerator.getGetterExpressionForJoint( (org.lgna.story.SJoint)entity, this.sceneInstance );
 				}
 				else {
-					org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava(entity);
+					org.lgna.project.ast.AbstractField entityField = sceneInstance.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_getFieldForInstanceInJava( entity );
 					org.lgna.project.ast.Expression thisExpression = new org.lgna.project.ast.ThisExpression();
-					if (value instanceof org.lgna.story.SScene) {
+					if( value instanceof org.lgna.story.SScene ) {
 						expressionValue = thisExpression;
 					}
 					else {
@@ -109,57 +109,57 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 			{
 				expressionValue = new NullLiteral();
 			}
-			this.expressionState.setValueTransactionlessly(expressionValue);
+			this.expressionState.setValueTransactionlessly( expressionValue );
 		}
 	}
-	
+
 	@Override
-	protected void intermediateSetValue(Object value)
+	protected void intermediateSetValue( Object value )
 	{
-		if (value instanceof UserInstance)
+		if( value instanceof UserInstance )
 		{
-			Object instanceInJava = ((UserInstance)value).getJavaInstance();
-			if (instanceInJava instanceof SThing)
+			Object instanceInJava = ( (UserInstance)value ).getJavaInstance();
+			if( instanceInJava instanceof SThing )
 			{
 				value = instanceInJava;
 			}
 		}
-		if (value instanceof SThing)
+		if( value instanceof SThing )
 		{
-			this.setValue((SThing)value);
+			this.setValue( (SThing)value );
 		}
 		else {
-			Logger.severe("Trying to set vehicle expression to something other than an Entity.", value);
+			Logger.severe( "Trying to set vehicle expression to something other than an Entity.", value );
 		}
 	}
-	
+
 	@Override
-	protected Object evaluateExpression(org.lgna.project.ast.Expression expression)
+	protected Object evaluateExpression( org.lgna.project.ast.Expression expression )
 	{
 		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.stageide.StageIDE.getActiveInstance().getVirtualMachineForSceneEditor();
 		Object[] values = vm.ENTRY_POINT_evaluate( this.sceneInstance, new org.lgna.project.ast.Expression[] { expression } );
 		assert values.length == 1;
-		return values[0];
+		return values[ 0 ];
 	}
-	
+
 	protected void handleHeirarchyChanged()
 	{
-		this.notifyValueObservers(this.getValue());
+		this.notifyValueObservers( this.getValue() );
 	}
-	
-	public static String getNameForVehicle(SThing vehicle)
+
+	public static String getNameForVehicle( SThing vehicle )
 	{
-		if (vehicle != null)
+		if( vehicle != null )
 		{
-			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
-			if (field != null)
+			org.lgna.project.ast.AbstractField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM( vehicle );
+			if( field != null )
 			{
-				org.lgna.project.ast.AbstractType<?,?,?> valueType = field.getValueType();
+				org.lgna.project.ast.AbstractType<?, ?, ?> valueType = field.getValueType();
 				return field.getName();
 			}
 			else
 			{
-				return vehicle.getName()+", "+vehicle.getClass().getSimpleName();
+				return vehicle.getName() + ", " + vehicle.getClass().getSimpleName();
 			}
 		}
 		else
@@ -167,13 +167,13 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 			return "No Vehicle";
 		}
 	}
-	
-	public static javax.swing.Icon getIconForVehicle(SThing vehicle)
+
+	public static javax.swing.Icon getIconForVehicle( SThing vehicle )
 	{
-		if (vehicle != null)
+		if( vehicle != null )
 		{
-			org.lgna.project.ast.UserField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM(vehicle);
-			if (field != null)
+			org.lgna.project.ast.UserField field = IDE.getActiveInstance().getSceneEditor().getFieldForInstanceInJavaVM( vehicle );
+			if( field != null )
 			{
 				org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( field );
 				return iconFactory.getIcon( new java.awt.Dimension( 24, 18 ) );
@@ -183,59 +183,58 @@ public class MutableRiderVehicleAdapter extends AbstractPropertyAdapter<SThing, 
 	}
 
 	@Override
-	public void setValue(SThing value) 
+	public void setValue( SThing value )
 	{
-		super.setValue(value);
-		if (this.instance != null)
+		super.setValue( value );
+		if( this.instance != null )
 		{
-			this.instance.setVehicle(value);
+			this.instance.setVehicle( value );
 		}
 	}
 
 	@Override
-	public Class<SThing> getPropertyType() 
+	public Class<SThing> getPropertyType()
 	{
 		return SThing.class;
 	}
 
 	@Override
-	public SThing getValue() 
+	public SThing getValue()
 	{
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			return this.instance.getVehicle();
 		}
 		return null;
 	}
-	
+
 	@Override
-	public SThing getValueCopyIfMutable() 
+	public SThing getValueCopyIfMutable()
 	{
 		return this.getValue();
 	}
 
 	@Override
-	protected void startPropertyListening() 
+	protected void startPropertyListening()
 	{
 		super.startPropertyListening();
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			this.initializeListenersIfNecessary();
-			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation((SThing)this.instance);
-			imp.getSgComposite().addHierarchyListener(this.hierarchyListener);
+			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation( (SThing)this.instance );
+			imp.getSgComposite().addHierarchyListener( this.hierarchyListener );
 		}
 	}
 
 	@Override
-	protected void stopPropertyListening() 
+	protected void stopPropertyListening()
 	{
 		super.stopPropertyListening();
-		if (this.instance != null)
+		if( this.instance != null )
 		{
-			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation((SThing)this.instance);
-			imp.getSgComposite().removeHierarchyListener(this.hierarchyListener);
+			org.lgna.story.implementation.EntityImp imp = ImplementationAccessor.getImplementation( (SThing)this.instance );
+			imp.getSgComposite().removeHierarchyListener( this.hierarchyListener );
 		}
 	}
-
 
 }

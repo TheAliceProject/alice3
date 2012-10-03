@@ -65,7 +65,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 
 	private final BooleanState showFunctionsState = this.createBooleanState( this.createKey( "areFunctionsShowing" ), true );
 	private final BooleanState showProceduresState = this.createBooleanState( this.createKey( "areProceduresShowing" ), true );
-	private Map<UserMethod,InvocationCounts> mapMethodToInvocationCounts = Collections.newHashMap();
+	private Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts = Collections.newHashMap();
 
 	private final ListSelectionState<UserMethod> listSelectionState = createListSelectionState( this.createKey( "userMethodList" ), UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static final UserMethod dummy = new UserMethod();
@@ -79,12 +79,15 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 			this.method = method;
 			this.count = 1;
 		}
+
 		public void bumpItUpANotch() {
 			this.count++;
 		}
+
 		public AbstractMethod getMethod() {
 			return this.method;
 		}
+
 		public int getCount() {
 			return this.count;
 		}
@@ -96,9 +99,11 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		public void addInvocation( MethodInvocation invocation ) {
 			addMethod( invocation.method.getValue() );
 		}
+
 		public List<MethodCountPair> getMethodCountPairs() {
 			return this.methodCountPairs;
 		}
+
 		public void addMethod( AbstractMethod method ) {
 			if( get( method ) != null ) {
 				get( method ).bumpItUpANotch();
@@ -107,6 +112,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 				sort();
 			}
 		}
+
 		private void sort() {
 			java.util.Collections.sort( methodCountPairs, new Comparator<MethodCountPair>() {
 
@@ -115,12 +121,15 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 				}
 			} );
 		}
+
 		public int size() {
 			return methodCountPairs.size();
 		}
+
 		public AbstractMethod get( int i ) {
 			return methodCountPairs.get( i ).getMethod();
 		}
+
 		public MethodCountPair get( AbstractMethod method ) {
 			for( MethodCountPair methodCountPair : this.methodCountPairs ) {
 				if( methodCountPair.getMethod().equals( method ) ) {
@@ -135,10 +144,8 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		super( java.util.UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ) );
 
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
-
 		MethodInvocationCrawler crawler = new MethodInvocationCrawler();
-		programType.crawl( crawler, true );
+		ide.crawlFilteredProgramType( crawler );
 
 		for( AbstractMethod method : crawler.getMethods() ) {
 			List<MethodInvocation> invocations = crawler.getInvocationsFor( method );
@@ -179,7 +186,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	}
 
 	public Integer getMaximum() {
-		if(maximum != null){
+		if( maximum != null ) {
 			InvocationCounts invocationCounts = new InvocationCounts();
 			for( UserMethod method : getMapMethodToInvocationCounts().keySet() ) {
 				for( MethodCountPair pair : getMapMethodToInvocationCounts().get( method ).getMethodCountPairs() ) {
@@ -241,16 +248,16 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		return this.showProceduresState;
 	}
 
-	public Map<UserMethod,InvocationCounts> getMapMethodToInvocationCounts() {
+	public Map<UserMethod, InvocationCounts> getMapMethodToInvocationCounts() {
 		return this.mapMethodToInvocationCounts;
 	}
 
-	public void setMapMethodToInvocationCounts( Map<UserMethod,InvocationCounts> mapMethodToInvocationCounts ) {
+	public void setMapMethodToInvocationCounts( Map<UserMethod, InvocationCounts> mapMethodToInvocationCounts ) {
 		this.mapMethodToInvocationCounts = mapMethodToInvocationCounts;
 	}
 
 	private static class MethodInvocationCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-		private final Map<AbstractMethod,List<MethodInvocation>> mapMethodToInvocations = Collections.newHashMap();
+		private final Map<AbstractMethod, List<MethodInvocation>> mapMethodToInvocations = Collections.newHashMap();
 
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
@@ -269,6 +276,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		public java.util.Set<AbstractMethod> getMethods() {
 			return this.mapMethodToInvocations.keySet();
 		}
+
 		public List<MethodInvocation> getInvocationsFor( AbstractMethod method ) {
 			return this.mapMethodToInvocations.get( method );
 		}

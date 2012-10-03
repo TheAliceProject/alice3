@@ -48,29 +48,35 @@ package org.lgna.croquet.triggers;
  */
 public class KeyEventTrigger extends ComponentEventTrigger<java.awt.event.KeyEvent> {
 
-	public static KeyEventTrigger createUserInstance( org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.KeyEvent keyEvent ) {
+	public static KeyEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.KeyEvent keyEvent ) {
 		return new KeyEventTrigger( Origin.USER, viewController, keyEvent );
 	}
+
 	public static KeyEventTrigger createUserInstance( java.awt.event.KeyEvent keyEvent ) {
 		return createUserInstance( null, keyEvent );
 	}
+
 	public static KeyEventTrigger createGeneratorInstance() {
 		return new KeyEventTrigger( Origin.GENERATOR, null, null );
 	}
+
 	public static KeyEventTrigger createRecoveryInstance() {
 		return new KeyEventTrigger( Origin.RECOVERY, null, null );
 	}
 
-	private KeyEventTrigger( Origin origin, org.lgna.croquet.components.ViewController< ?, ? > viewController, java.awt.event.KeyEvent keyEvent ) {
+	private KeyEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.KeyEvent keyEvent ) {
 		super( origin, viewController, keyEvent );
 	}
+
 	public KeyEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+
 	@Override
 	public String getNoteText() {
 		return "Press";

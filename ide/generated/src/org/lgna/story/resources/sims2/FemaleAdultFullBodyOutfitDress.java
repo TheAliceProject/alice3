@@ -41,11 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitDress implements FemaleAdultFullBodyOutfit {
-	COBALT ,
- 	BLACKSHINY ,
- 	GOLD ,
- 	GREENMOM ,
- 	ROSEMOM ,
- 	TEAL ;
+	COBALT,
+	BLACKSHINY,
+	GOLD,
+	GREENMOM,
+	ROSEMOM,
+	TEAL;
 }

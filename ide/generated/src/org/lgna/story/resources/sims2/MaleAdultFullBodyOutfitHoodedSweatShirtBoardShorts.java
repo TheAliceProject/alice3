@@ -41,8 +41,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitHoodedSweatShirtBoardShorts implements MaleAdultFullBodyOutfit {
-	BLACK ,
- 	GREY ,
- 	REDSKULL ;
+	BLACK,
+	GREY,
+	REDSKULL;
 }

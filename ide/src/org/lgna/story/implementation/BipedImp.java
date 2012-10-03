@@ -48,8 +48,8 @@ import org.lgna.story.resources.JointId;
 /**
  * @author Dennis Cosgrove
  */
-public final class BipedImp extends JointedModelImp< org.lgna.story.SBiped, org.lgna.story.resources.BipedResource > {
-	public BipedImp( org.lgna.story.SBiped abstraction, JointImplementationAndVisualDataFactory< org.lgna.story.resources.BipedResource > factory ) {
+public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.lgna.story.resources.BipedResource> {
+	public BipedImp( org.lgna.story.SBiped abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.BipedResource> factory ) {
 		super( abstraction, factory );
 	}
 
@@ -57,14 +57,14 @@ public final class BipedImp extends JointedModelImp< org.lgna.story.SBiped, org.
 	public JointId[] getRootJointIds() {
 		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 	}
-	
+
 	@Override
 	protected edu.cmu.cs.dennisc.math.Vector4 getThoughtBubbleOffset() {
-		return this.getTopOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.HEAD));
+		return this.getTopOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.BipedResource.HEAD ) );
 	}
-	
+
 	@Override
 	protected edu.cmu.cs.dennisc.math.Vector4 getSpeechBubbleOffset() {
-		return this.getFrontOffsetForJoint(this.getJointImplementation(org.lgna.story.resources.BipedResource.MOUTH));
+		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.BipedResource.MOUTH ) );
 	}
 }

@@ -50,14 +50,17 @@ public class VolumeLevelUtilities {
 	private static final int MINIMUM = 0;
 	private static final int INITIAL_VALUE = 100;
 	private static final int MAXIMUM = 200;
+
 	public static org.lgna.croquet.BoundedIntegerState.Details createDetails() {
 		return new org.lgna.croquet.AbstractComposite.BoundedIntegerDetails().initialValue( INITIAL_VALUE ).minimum( MINIMUM ).maximum( MAXIMUM );
 	}
+
 	public static double toDouble( int value ) {
 		java.math.BigDecimal decimal = new java.math.BigDecimal( value );
 		decimal = decimal.movePointLeft( 2 );
 		return decimal.doubleValue();
 	}
+
 	public static int toInt( double value ) {
 		java.math.BigDecimal decimal = new java.math.BigDecimal( value, new java.math.MathContext( java.math.BigDecimal.ROUND_HALF_DOWN ) );
 		decimal = decimal.movePointRight( 2 );

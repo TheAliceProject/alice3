@@ -42,7 +42,5 @@
  */
 package org.lgna.story.resources.sims2;
 
-import org.lgna.story.resources.sims2.ChildFullBodyOutfit;
-
 public interface MaleChildFullBodyOutfit extends ChildFullBodyOutfit {
 }

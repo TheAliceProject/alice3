@@ -43,19 +43,23 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_COMPILE_AND_EXECUTE;
+import static javax.media.opengl.GL.GL_LINES;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Geometry > extends ElementAdapter< E > {
-	private java.util.List< RenderContext > m_renderContexts = new java.util.LinkedList< RenderContext >();
+public abstract class GeometryAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Geometry> extends ElementAdapter<E> {
+	private java.util.List<RenderContext> m_renderContexts = new java.util.LinkedList<RenderContext>();
+
 	public void addRenderContext( RenderContext rc ) {
 		m_renderContexts.add( rc );
 	}
+
 	public void removeRenderContext( RenderContext rc ) {
 		m_renderContexts.add( rc );
 	}
+
 	@Override
 	public void handleReleased() {
 		super.handleReleased();
@@ -69,16 +73,14 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
 	}
 
 	private boolean m_isGeometryChanged;
-    protected boolean isGeometryChanged() {
-        return m_isGeometryChanged;
-    }
-    protected void setIsGeometryChanged( boolean isGeometryChanged ) {
-        m_isGeometryChanged = isGeometryChanged;
-    }
     public abstract boolean isAlphaBlended();
     public boolean hasOpaque() {
     	return !isAlphaBlended();
     }
+
+	protected boolean isGeometryChanged() {
+		return m_isGeometryChanged;
+	}
 
     protected boolean isDisplayListDesired() {
     	return true;
@@ -86,6 +88,9 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
     protected boolean isDisplayListInNeedOfRefresh( RenderContext rc ) {
     	return isGeometryChanged();
     }
+	protected void setIsGeometryChanged( boolean isGeometryChanged ) {
+		m_isGeometryChanged = isGeometryChanged;
+	}
 
     //todo: better name
     protected abstract void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType );
@@ -137,13 +142,15 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
 		if( plane.isNaN() ) {
 			rv.setNaN();
 		} else {
-			double t = plane.intersect(ray);
+			double t = plane.intersect( ray );
 			ray.getPointAlong( rv, t );
 		}
 		return rv;
 	}
+
 	protected static edu.cmu.cs.dennisc.math.Point3 getIntersectionInSourceFromPlaneInLocal( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, edu.cmu.cs.dennisc.math.Point3 planePosition, edu.cmu.cs.dennisc.math.Vector3 planeDirection ) {
-		return getIntersectionInSourceFromPlaneInLocal(rv, ray, m, planePosition.x, planePosition.y, planePosition.x, planeDirection.x, planeDirection.y, planeDirection.z );
+		return getIntersectionInSourceFromPlaneInLocal( rv, ray, m, planePosition.x, planePosition.y, planePosition.x, planeDirection.x, planeDirection.y, planeDirection.z );
 	}
-	public abstract edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement);
+
+	public abstract edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement );
 }

@@ -43,58 +43,75 @@
 
 package org.lgna.croquet.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public class Label extends JComponent< javax.swing.JLabel > {
+public class Label extends JComponent<javax.swing.JLabel> {
 	public Label() {
 	}
-	public Label( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
+
+	public Label( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		this.setText( text );
 		this.changeFont( textAttributes );
 	}
-	public Label( javax.swing.Icon icon, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
+
+	public Label( javax.swing.Icon icon, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		this.setIcon( icon );
 		this.changeFont( textAttributes );
 	}
-	public Label( String text, javax.swing.Icon icon, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
+
+	public Label( String text, javax.swing.Icon icon, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		this.setText( text );
 		this.setIcon( icon );
 		this.changeFont( textAttributes );
 	}
-	public Label( String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
+
+	public Label( String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		this.setText( text );
 		this.scaleFont( fontScalar );
 		this.changeFont( textAttributes );
 	}
+
+	public Label( String text, javax.swing.Icon icon, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this.setText( text );
+		this.setIcon( icon );
+		this.scaleFont( fontScalar );
+		this.changeFont( textAttributes );
+	}
+
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
 		return new javax.swing.JLabel();
 	}
-	
+
 	public String getText() {
 		return this.getAwtComponent().getText();
 	}
+
 	public void setText( String text ) {
 		this.getAwtComponent().setText( text );
 	}
+
 	public javax.swing.Icon getIcon() {
 		return this.getAwtComponent().getIcon();
 	}
+
 	public void setIcon( javax.swing.Icon icon ) {
 		this.getAwtComponent().setIcon( icon );
 	}
-	
+
 	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
 		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
 	}
+
 	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
 		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
 	}
+
 	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
 		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
 	}
+
 	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
 		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
 	}

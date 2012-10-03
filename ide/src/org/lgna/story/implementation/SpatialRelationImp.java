@@ -47,12 +47,12 @@ package org.lgna.story.implementation;
  * @author Dennis Cosgrove
  */
 public enum SpatialRelationImp {
-	LEFT_OF(new edu.cmu.cs.dennisc.math.Point3( -1, 0, 0 )),
-	RIGHT_OF(new edu.cmu.cs.dennisc.math.Point3( 1, 0, 0 )),
-	ABOVE(new edu.cmu.cs.dennisc.math.Point3( 0, 1, 0 )),
-	BELOW(new edu.cmu.cs.dennisc.math.Point3( 0, -1, 0 )),
-	IN_FRONT_OF(new edu.cmu.cs.dennisc.math.Point3( 0, 0, -1 )),
-	BEHIND(new edu.cmu.cs.dennisc.math.Point3( 0, 0, 1 ));
+	LEFT_OF( new edu.cmu.cs.dennisc.math.Point3( -1, 0, 0 ) ),
+	RIGHT_OF( new edu.cmu.cs.dennisc.math.Point3( 1, 0, 0 ) ),
+	ABOVE( new edu.cmu.cs.dennisc.math.Point3( 0, 1, 0 ) ),
+	BELOW( new edu.cmu.cs.dennisc.math.Point3( 0, -1, 0 ) ),
+	IN_FRONT_OF( new edu.cmu.cs.dennisc.math.Point3( 0, 0, -1 ) ),
+	BEHIND( new edu.cmu.cs.dennisc.math.Point3( 0, 0, 1 ) );
 
 	//	FRONT_RIGHT_OF ( new edu.cmu.cs.dennisc.math.Point3( 0.7071068, 0, -0.7071068 ) ),
 	//	FRONT_LEFT_OF ( new edu.cmu.cs.dennisc.math.Point3( -0.7071068, 0, -0.7071068 ) ),
@@ -75,19 +75,19 @@ public enum SpatialRelationImp {
 		double z = alongAxisOffset * this.placeAxis.z;
 
 		if( this.placeAxis.x > 0 ) {
-			x += this.placeAxis.x * (objectBoundingBox.getMaximum().x - subjectBoundingBox.getMinimum().x);
+			x += this.placeAxis.x * ( objectBoundingBox.getMaximum().x - subjectBoundingBox.getMinimum().x );
 		} else if( this.placeAxis.x < 0 ) {
-			x += this.placeAxis.x * (subjectBoundingBox.getMaximum().x - objectBoundingBox.getMinimum().x);
+			x += this.placeAxis.x * ( subjectBoundingBox.getMaximum().x - objectBoundingBox.getMinimum().x );
 		}
 		if( this.placeAxis.y > 0 ) {
-			y += this.placeAxis.y * (objectBoundingBox.getMaximum().y - subjectBoundingBox.getMinimum().y);
+			y += this.placeAxis.y * ( objectBoundingBox.getMaximum().y - subjectBoundingBox.getMinimum().y );
 		} else if( this.placeAxis.y < 0 ) {
-			y += this.placeAxis.y * (subjectBoundingBox.getMaximum().y - objectBoundingBox.getMinimum().y);
+			y += this.placeAxis.y * ( subjectBoundingBox.getMaximum().y - objectBoundingBox.getMinimum().y );
 		}
 		if( this.placeAxis.z > 0 ) {
-			z += this.placeAxis.z * (subjectBoundingBox.getMaximum().z - objectBoundingBox.getMinimum().z);
+			z += this.placeAxis.z * ( subjectBoundingBox.getMaximum().z - objectBoundingBox.getMinimum().z );
 		} else if( this.placeAxis.z < 0 ) {
-			z += this.placeAxis.z * (objectBoundingBox.getMaximum().z - subjectBoundingBox.getMinimum().z);
+			z += this.placeAxis.z * ( objectBoundingBox.getMaximum().z - subjectBoundingBox.getMinimum().z );
 		}
 
 		return new edu.cmu.cs.dennisc.math.Point3( x, y, z );

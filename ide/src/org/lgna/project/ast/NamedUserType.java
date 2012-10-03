@@ -48,40 +48,46 @@ package org.lgna.project.ast;
  */
 public class NamedUserType extends UserType<NamedUserConstructor> {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public DeclarationProperty< UserPackage > _package = new DeclarationProperty< UserPackage >( this );
-	public NodeListProperty< NamedUserConstructor > constructors = new NodeListProperty< NamedUserConstructor >( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel > accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel >( this, AccessLevel.PUBLIC );
-	public edu.cmu.cs.dennisc.property.EnumProperty< TypeModifierFinalAbstractOrNeither > finalAbstractOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty< TypeModifierFinalAbstractOrNeither >( this, TypeModifierFinalAbstractOrNeither.NEITHER );
+	public DeclarationProperty<UserPackage> _package = new DeclarationProperty<UserPackage>( this );
+	public NodeListProperty<NamedUserConstructor> constructors = new NodeListProperty<NamedUserConstructor>( this );
+	public edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
+	public edu.cmu.cs.dennisc.property.EnumProperty<TypeModifierFinalAbstractOrNeither> finalAbstractOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty<TypeModifierFinalAbstractOrNeither>( this, TypeModifierFinalAbstractOrNeither.NEITHER );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
 	public NamedUserType() {
 	}
-	public NamedUserType( String name, UserPackage _package, AbstractType<?,?,?> superType, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
+
+	public NamedUserType( String name, UserPackage _package, AbstractType<?, ?, ?> superType, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
 		super( superType, methods, fields );
 		this.name.setValue( name );
 		this._package.setValue( _package );
 		this.constructors.add( constructors );
 	}
-	public NamedUserType( String name, UserPackage _package, Class< ? > superCls, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
+
+	public NamedUserType( String name, UserPackage _package, Class<?> superCls, NamedUserConstructor[] constructors, UserMethod[] methods, UserField[] fields ) {
 		this( name, _package, JavaType.getInstance( superCls ), constructors, methods, fields );
 	}
+
 	@Override
 	public String getName() {
 		return name.getValue();
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
 		return this.name;
 	}
+
 	@Override
 	public AbstractPackage getPackage() {
 		return _package.getValue();
 	}
+
 	@Override
-	public java.util.ArrayList< NamedUserConstructor > getDeclaredConstructors() {
+	public java.util.ArrayList<NamedUserConstructor> getDeclaredConstructors() {
 		return constructors.getValue();
 	}
-	
+
 	@Override
 	public AccessLevel getAccessLevel() {
 		return this.accessLevel.getValue();
@@ -92,14 +98,17 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 		return false;
 		//return this.isStatic.getValue();
 	}
+
 	@Override
 	public boolean isAbstract() {
 		return this.finalAbstractOrNeither.getValue() == TypeModifierFinalAbstractOrNeither.ABSTRACT;
 	}
+
 	@Override
 	public boolean isFinal() {
 		return this.finalAbstractOrNeither.getValue() == TypeModifierFinalAbstractOrNeither.FINAL;
 	}
+
 	@Override
 	public boolean isStrictFloatingPoint() {
 		return this.isStrictFloatingPoint.getValue();

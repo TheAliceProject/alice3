@@ -49,9 +49,11 @@ package org.lgna.project.ast;
 public class SuperConstructorInvocationStatement extends ConstructorInvocationStatement {
 	public SuperConstructorInvocationStatement() {
 	}
-	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... arguments ){
+
+	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument... arguments ) {
 		super( constructor, arguments );
 	}
+
 	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
 		super( constructor, requiredArguments, variableArguments, keyedArguments );
 	}

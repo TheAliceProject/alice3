@@ -52,63 +52,70 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 			PopupPrepModel.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 		}
 	};
+
 	public PopupPrepModel( java.util.UUID id ) {
 		super( id );
 	}
-	
+
 	@Override
 	protected final void localize() {
 		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
 			this.setName( name );
-//			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
-//			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
+			//			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
+			//			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
-	
+
 	public javax.swing.Action getAction() {
 		return this.action;
 	}
+
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
 	}
+
 	public void setName( String name ) {
 		this.action.putValue( javax.swing.Action.NAME, name );
 	}
-	
-//	public void setShortDescription( String shortDescription ) {
-//		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
-//	}
-//	public void setLongDescription( String longDescription ) {
-//		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
-//	}
-//	public void setSmallIcon( javax.swing.Icon icon ) {
-//		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
-//	}
-//	public void setMnemonicKey( int mnemonicKey ) {
-//		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
-//	}
-//	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-//		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
-//	}
-	
+
+	//	public void setShortDescription( String shortDescription ) {
+	//		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	//	}
+	//	public void setLongDescription( String longDescription ) {
+	//		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
+	//	}
+	//	public void setSmallIcon( javax.swing.Icon icon ) {
+	//		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+	//	}
+	//	public void setMnemonicKey( int mnemonicKey ) {
+	//		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+	//	}
+	//	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+	//		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+	//	}
+
 	@Override
 	public boolean isEnabled() {
 		return this.action.isEnabled();
 	}
+
 	@Override
 	public void setEnabled( boolean isEnabled ) {
 		this.action.setEnabled( isEnabled );
 	}
+
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		return rv;
 	}
+
 	public org.lgna.croquet.components.PopupButton createPopupButton() {
 		return new org.lgna.croquet.components.PopupButton( this );
 	}
 
 	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger );
+
 	@Override
 	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
 		return this.perform( trigger );

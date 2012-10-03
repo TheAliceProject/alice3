@@ -43,7 +43,9 @@
 
 package org.lgna.story;
 
-import org.lgna.project.annotations.*;
+import org.lgna.project.annotations.GetterTemplate;
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.ValueTemplate;
 
 /**
  * @author Dennis Cosgrove
@@ -56,7 +58,8 @@ public class SGround extends SThing implements MutableRider, Visual {
 		SAND("sand"),
 		MARS("mars"),
 		DESERT("desert"),
-		SNOW("snow"), 
+		SNOW("snow"),
+		SWAMP("swamp"), 
 		WATER("water"), 
 		OCEAN_FLOOR("underwater"), 
 		MOON("moon");
@@ -65,6 +68,7 @@ public class SGround extends SThing implements MutableRider, Visual {
 		SurfaceAppearance( String resourceName ) {
 			this.resourceName = resourceName;
 		}
+
 		public java.net.URL getResource() {
 			return SGround.class.getResource( "resources/grounds/" + this.resourceName + ".png" );
 		}
@@ -73,30 +77,34 @@ public class SGround extends SThing implements MutableRider, Visual {
 	private final org.lgna.story.implementation.GroundImp implementation = new org.lgna.story.implementation.GroundImp( this );
 
 	@Override
-	/*package-private*/org.lgna.story.implementation.GroundImp getImplementation() {
+	/* package-private */org.lgna.story.implementation.GroundImp getImplementation() {
 		return this.implementation;
 	}
+
 	public void setVehicle( SThing vehicle ) {
 		this.getImplementation().setVehicle( vehicle != null ? vehicle.getImplementation() : null );
 	}
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.GroundSurfaceAppearanceDetails.class)
+
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
+	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.GroundSurfaceAppearanceDetails.class )
 	public Paint getPaint() {
 		return this.getImplementation().paint.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setPaint( Paint paint, SetPaint.Detail... details ) {
-		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal()  );
+		this.getImplementation().paint.animateValue( paint, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
-	@MethodTemplate()
-	@GetterTemplate(isPersistent = true)
-	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.PortionDetails.class)
+	@MethodTemplate( )
+	@GetterTemplate( isPersistent = true )
+	@ValueTemplate( detailsEnumCls = org.lgna.story.annotation.PortionDetails.class )
 	public Double getOpacity() {
 		return (double)this.getImplementation().opacity.getValue();
 	}
-	@MethodTemplate()
+
+	@MethodTemplate( )
 	public void setOpacity( Number opacity, SetOpacity.Detail... details ) {
 		this.getImplementation().opacity.animateValue( opacity.floatValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}

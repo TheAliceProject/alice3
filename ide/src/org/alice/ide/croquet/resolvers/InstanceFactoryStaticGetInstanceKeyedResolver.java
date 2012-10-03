@@ -46,19 +46,21 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
+public class InstanceFactoryStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
 	public InstanceFactoryStaticGetInstanceKeyedResolver( T instance, org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
 		super( instance, new Class<?>[] { org.alice.ide.instancefactory.InstanceFactory.class }, new Object[] { instanceFactory } );
 	}
+
 	public InstanceFactoryStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.Resolver< org.alice.ide.instancefactory.InstanceFactory > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		org.lgna.croquet.resolvers.Resolver<org.alice.ide.instancefactory.InstanceFactory> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return new Object[] { resolver.getResolved() };
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments ) {
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = (org.alice.ide.instancefactory.InstanceFactory)arguments[ 0 ];

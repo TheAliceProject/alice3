@@ -46,18 +46,22 @@ package test.ik.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum JointIdCodec implements org.lgna.croquet.ItemCodec< org.lgna.story.resources.JointId > {
+public enum JointIdCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.JointId> {
 	SINGLETON;
-	public java.lang.StringBuilder appendRepresentation( java.lang.StringBuilder rv, org.lgna.story.resources.JointId value ) {
-		return rv;
-	}
+
 	public org.lgna.story.resources.JointId decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException();
 	}
+
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.JointId value ) {
 		throw new RuntimeException();
 	}
-	public java.lang.Class< org.lgna.story.resources.JointId > getValueClass() {
+
+	public java.lang.Class<org.lgna.story.resources.JointId> getValueClass() {
 		return org.lgna.story.resources.JointId.class;
+	}
+
+	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.JointId value ) {
+		sb.append( value );
 	}
 }

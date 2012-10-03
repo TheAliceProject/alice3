@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitUnderwear implements FemaleAdultFullBodyOutfit {
-	CREAMUNDERTHINGS ,
- 	ROSEUNDERTHINGS ,
- 	BLACKUNDERTHINGS ,
- 	CLASSICBEIGE ,
- 	WHITEUNDERWEAR ;
+	CREAMUNDERTHINGS,
+	ROSEUNDERTHINGS,
+	BLACKUNDERTHINGS,
+	CLASSICBEIGE,
+	WHITEUNDERWEAR;
 }

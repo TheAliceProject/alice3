@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.java.awt.event;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class LenientMouseClickAdapter implements javax.swing.event.MouseInputListener /*java.awt.event.MouseListener, java.awt.event.MouseMotionListener*/ {
+public abstract class LenientMouseClickAdapter implements javax.swing.event.MouseInputListener /* java.awt.event.MouseListener, java.awt.event.MouseMotionListener */{
 	private static final long CLICK_THRESHOLD_MILLIS = 500; //todo: query windowing system 
 	private static final long CLICK_THRESHOLD_PIXELS_SQUARED = 25; //todo: query windowing system 
 	private boolean isStillClick = false;
@@ -53,16 +53,16 @@ public abstract class LenientMouseClickAdapter implements javax.swing.event.Mous
 	private java.awt.event.MouseEvent ePressed = null;
 	private java.awt.event.MouseEvent eReleased = null;
 	private int count = 0;
-	
+
 	protected abstract void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote );
-	
+
 	private boolean isWithinThreshold( java.awt.event.MouseEvent eThen, java.awt.event.MouseEvent eNow ) {
 		if( eThen != null ) {
 			long whenDelta = eNow.getWhen() - eThen.getWhen();
 			if( whenDelta < CLICK_THRESHOLD_MILLIS ) {
 				int xDelta = eNow.getX() - eThen.getX();
 				int yDelta = eNow.getY() - eThen.getY();
-				int distanceSquared = xDelta*xDelta + yDelta*yDelta;
+				int distanceSquared = ( xDelta * xDelta ) + ( yDelta * yDelta );
 				return distanceSquared <= CLICK_THRESHOLD_PIXELS_SQUARED;
 			} else {
 				return false;
@@ -71,30 +71,36 @@ public abstract class LenientMouseClickAdapter implements javax.swing.event.Mous
 			return false;
 		}
 	}
+
 	private void updateStillClick( java.awt.event.MouseEvent eNow ) {
 		if( this.isStillClick ) {
 			this.isStillClick = this.isWithinThreshold( this.ePressed, eNow );
 		}
 	}
+
 	private void updateStillUnclick( java.awt.event.MouseEvent eNow ) {
 		if( this.isStillUnclick ) {
 			this.isStillUnclick = this.isWithinThreshold( this.eReleased, eNow );
 		}
 	}
+
 	public final void mouseEntered( java.awt.event.MouseEvent e ) {
 	}
+
 	public final void mouseExited( java.awt.event.MouseEvent e ) {
 	}
+
 	public final void mousePressed( java.awt.event.MouseEvent e ) {
 		this.updateStillUnclick( e );
 		if( this.isStillUnclick ) {
 			//pass
 		} else {
-			this.count = 0; 
+			this.count = 0;
 		}
 		this.isStillClick = true;
 		this.ePressed = e;
 	}
+
 	public final void mouseReleased( java.awt.event.MouseEvent e ) {
 		this.updateStillClick( e );
 		if( this.isStillClick ) {
@@ -106,11 +112,14 @@ public abstract class LenientMouseClickAdapter implements javax.swing.event.Mous
 		this.isStillUnclick = true;
 		this.eReleased = e;
 	}
+
 	public final void mouseClicked( java.awt.event.MouseEvent e ) {
 	}
+
 	public final void mouseMoved( java.awt.event.MouseEvent e ) {
 		this.updateStillUnclick( e );
 	}
+
 	public final void mouseDragged( java.awt.event.MouseEvent e ) {
 		this.updateStillClick( e );
 	}

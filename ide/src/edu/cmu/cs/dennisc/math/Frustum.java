@@ -55,29 +55,30 @@ public class Frustum extends Hexahedron {
 		double zMin = -1.0;
 		double zMax = +1.0;
 
-		Point3[] points = { 
-				new Point3( xMin, yMin, zMin ), 
-				new Point3( xMax, yMin, zMin ), 
+		Point3[] points = {
+				new Point3( xMin, yMin, zMin ),
+				new Point3( xMax, yMin, zMin ),
 				new Point3( xMin, yMax, zMin ),
-				new Point3( xMax, yMax, zMin ), 
-				new Point3( xMin, yMin, zMax ), 
-				new Point3( xMax, yMin, zMax ), 
-				new Point3( xMin, yMax, zMax ), 
-				new Point3( xMax, yMax, zMax ) 
+				new Point3( xMax, yMax, zMin ),
+				new Point3( xMin, yMin, zMax ),
+				new Point3( xMax, yMin, zMax ),
+				new Point3( xMin, yMax, zMax ),
+				new Point3( xMax, yMax, zMax )
 		};
-		Vector3[] normals = { 
-				new Vector3( +1, 0, 0 ), 
-				new Vector3( -1, 0, 0 ), 
+		Vector3[] normals = {
+				new Vector3( +1, 0, 0 ),
+				new Vector3( -1, 0, 0 ),
 				new Vector3( 0, +1, 0 ),
-				new Vector3( 0, -1, 0 ), 
-				new Vector3( 0, 0, +1 ), 
-				new Vector3( 0, 0, -1 ) 
+				new Vector3( 0, -1, 0 ),
+				new Vector3( 0, 0, +1 ),
+				new Vector3( 0, 0, -1 )
 		};
-		
+
 		Frustum rv = new Frustum( points, normals );
 		rv.transform( projection );
 		return rv;
 	}
+
 	private Frustum( Point3[] points, Vector3[] normals ) {
 		super( points, normals );
 	}

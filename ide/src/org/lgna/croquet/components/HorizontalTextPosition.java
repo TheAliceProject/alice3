@@ -53,10 +53,12 @@ public enum HorizontalTextPosition {
 	LEADING( javax.swing.SwingConstants.LEADING ),
 	TRAILING( javax.swing.SwingConstants.TRAILING );
 	private int internal;
+
 	private HorizontalTextPosition( int internal ) {
 		this.internal = internal;
 	}
-	/*package-private*/ int getInternal() {
+
+	/* package-private */int getInternal() {
 		return this.internal;
 	}
 }

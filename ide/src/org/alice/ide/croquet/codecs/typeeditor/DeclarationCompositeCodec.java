@@ -46,11 +46,12 @@ package org.alice.ide.croquet.codecs.typeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.declarationseditor.DeclarationComposite > {
+public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.declarationseditor.DeclarationComposite> {
 	SINGLETON;
-	public Class< org.alice.ide.declarationseditor.DeclarationComposite > getValueClass() {
+	public Class<org.alice.ide.declarationseditor.DeclarationComposite> getValueClass() {
 		return org.alice.ide.declarationseditor.DeclarationComposite.class;
 	}
+
 	public org.alice.ide.declarationseditor.DeclarationComposite decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
@@ -62,15 +63,16 @@ public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec< org
 			return null;
 		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.declarationseditor.DeclarationComposite value ) {
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.declarationseditor.DeclarationComposite value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
 			binaryEncoder.encode( value.getDeclaration().getId() );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.declarationseditor.DeclarationComposite value) {
-		rv.append( value != null ? value.getDeclaration().getName() : value );
-		return rv;
+
+	public void appendRepresentation( StringBuilder sb, org.alice.ide.declarationseditor.DeclarationComposite value ) {
+		sb.append( value != null ? value.getDeclaration().getName() : value );
 	}
 }

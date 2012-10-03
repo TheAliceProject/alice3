@@ -47,5 +47,5 @@ package edu.cmu.cs.dennisc.pattern;
  */
 @Deprecated
 public interface Validator {
-    public boolean isValid();
+	public boolean isValid();
 }

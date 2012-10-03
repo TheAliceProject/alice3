@@ -45,9 +45,10 @@ package edu.cmu.cs.dennisc.task;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BlockingTaskObserver<E> implements TaskObserver< E >, Runnable  {
+public abstract class BlockingTaskObserver<E> implements TaskObserver<E>, Runnable {
 	private java.util.concurrent.CyclicBarrier barrier;
 	private E result;
+
 	private void await() {
 		//todo?
 		try {
@@ -58,13 +59,13 @@ public abstract class BlockingTaskObserver<E> implements TaskObserver< E >, Runn
 			throw new RuntimeException( bbe );
 		}
 	}
-	
+
 	public BlockingTaskObserver() {
 		this.barrier = new java.util.concurrent.CyclicBarrier( 2 );
 	}
-	
+
 	public abstract void run();
-	
+
 	public E getResult() {
 		RuntimeException runtimeException;
 		try {
@@ -85,6 +86,7 @@ public abstract class BlockingTaskObserver<E> implements TaskObserver< E >, Runn
 		this.result = result;
 		this.await();
 	}
+
 	public void handleCancelation() {
 		this.result = null;
 		this.await();

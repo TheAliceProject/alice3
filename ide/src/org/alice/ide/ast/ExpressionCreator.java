@@ -47,19 +47,22 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionCreator {
-	public static final int MILLI_DECIMAL_PLACES = 3; 
-	public static final int MICRO_DECIMAL_PLACES = 6; 
-	public static final int DEFAULT_DECIMAL_PLACES = MICRO_DECIMAL_PLACES; 
+	public static final int MILLI_DECIMAL_PLACES = 3;
+	public static final int MICRO_DECIMAL_PLACES = 6;
+	public static final int DEFAULT_DECIMAL_PLACES = MICRO_DECIMAL_PLACES;
 
 	public static final class CannotCreateExpressionException extends Exception {
 		private final Object value;
+
 		public CannotCreateExpressionException( Object value ) {
 			this.value = value;
 		}
+
 		public Object getValue() {
 			return this.value;
 		}
 	}
+
 	protected org.lgna.project.ast.FieldAccess createPublicStaticFieldAccess( java.lang.reflect.Field fld ) {
 		int modifiers = fld.getModifiers();
 		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers ) ) {
@@ -70,16 +73,20 @@ public abstract class ExpressionCreator {
 			throw new RuntimeException( fld.toGenericString() );
 		}
 	}
+
 	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value, int decimalPlaces ) {
 		value = edu.cmu.cs.dennisc.java.lang.DoubleUtilities.round( value, decimalPlaces );
 		return new org.lgna.project.ast.DoubleLiteral( value );
 	}
+
 	protected final org.lgna.project.ast.Expression createDoubleExpression( Double value ) {
 		return this.createDoubleExpression( value, DEFAULT_DECIMAL_PLACES );
 	}
+
 	protected final org.lgna.project.ast.Expression createIntegerExpression( Integer value ) {
 		return new org.lgna.project.ast.IntegerLiteral( value );
 	}
+
 	//todo:
 	public final org.lgna.project.ast.Expression createStringExpression( String value ) {
 		if( value != null ) {
@@ -88,17 +95,20 @@ public abstract class ExpressionCreator {
 			return new org.lgna.project.ast.NullLiteral();
 		}
 	}
+
 	protected final org.lgna.project.ast.Expression createEnumExpression( Enum<?> value ) {
 		if( value != null ) {
 			return this.createPublicStaticFieldAccess( edu.cmu.cs.dennisc.java.lang.EnumUtilities.getFld( value ) );
-//			org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( value.getClass() );
-//			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, value.name() );
-//			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
+			//			org.lgna.project.ast.JavaType type = org.lgna.project.ast.JavaType.getInstance( value.getClass() );
+			//			org.lgna.project.ast.AbstractField field = type.getDeclaredField( type, value.name() );
+			//			return new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( type ), field );
 		} else {
 			return new org.lgna.project.ast.NullLiteral();
 		}
 	}
+
 	protected abstract org.lgna.project.ast.Expression createCustomExpression( Object value ) throws CannotCreateExpressionException;
+
 	public org.lgna.project.ast.Expression createExpression( Object value ) throws CannotCreateExpressionException {
 		if( value != null ) {
 			if( value instanceof Double ) {

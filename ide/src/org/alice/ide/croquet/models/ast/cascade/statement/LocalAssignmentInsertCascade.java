@@ -48,22 +48,25 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  */
 public class LocalAssignmentInsertCascade extends ExpressionStatementInsertCascade {
 	private final org.lgna.project.ast.UserLocal local;
+
 	public LocalAssignmentInsertCascade( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "ae9cd20c-b158-4298-bcee-720810dcbef9" ), blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( local.getValueType() ) );
 		this.local = local;
 	}
+
 	@Override
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
 		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-		
+
 		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
 		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
-				assignmentExpression.rightHandSide.getValue() 
-		);
+				assignmentExpression.rightHandSide.getValue()
+				);
 	}
+
 	@Override
 	protected org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression instanceExpression, org.lgna.project.ast.Expression... expressions ) {
 		return org.lgna.project.ast.AstUtilities.createLocalAssignment( this.local, expressions[ 0 ] );

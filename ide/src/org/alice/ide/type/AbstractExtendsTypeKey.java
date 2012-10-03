@@ -47,26 +47,30 @@ package org.alice.ide.type;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractExtendsTypeKey extends TypeKey {
-	private final org.lgna.project.ast.AbstractType< ?,?,? > superType;
-	public AbstractExtendsTypeKey( org.lgna.project.ast.AbstractType< ?,?,? > superType ) {
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> superType;
+
+	public AbstractExtendsTypeKey( org.lgna.project.ast.AbstractType<?, ?, ?> superType ) {
 		assert superType != null;
 		this.superType = superType;
 	}
-	public org.lgna.project.ast.AbstractType<?,?,?> getSuperType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getSuperType() {
 		return this.superType;
 	}
+
 	@Override
 	public int hashCode() {
 		int rv = 17;
-		rv = 37*rv + this.getSuperType().hashCode();
+		rv = ( 37 * rv ) + this.getSuperType().hashCode();
 		return rv;
 	}
-//	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
-//		return userType.superType.getValue() == this.superType;
-//	}
+
+	//	public boolean accept( org.lgna.project.ast.NamedUserType userType ) {
+	//		return userType.superType.getValue() == this.superType;
+	//	}
 	@Override
 	protected boolean contentEquals( org.alice.ide.type.TypeKey other ) {
 		// super class's equals methods ensures this.getClass() == other.getClass()
-		return this.superType == ((AbstractExtendsTypeKey)other).superType;
+		return this.superType == ( (AbstractExtendsTypeKey)other ).superType;
 	}
 }

@@ -49,21 +49,27 @@ public class AddBoxManagedFieldComposite extends AddModelManagedFieldComposite {
 	private static class SingletonHolder {
 		private static AddBoxManagedFieldComposite instance = new AddBoxManagedFieldComposite();
 	}
+
 	public static AddBoxManagedFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> widthState = this.createInitialPropertyValueExpressionState( this.createKey( "widthState" ), 1.0, org.lgna.story.SModel.class, "setWidth", Number.class, org.lgna.story.SetWidth.Detail[].class );
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> heightState = this.createInitialPropertyValueExpressionState( this.createKey( "heightState" ), 1.0, org.lgna.story.SModel.class, "setHeight", Number.class, org.lgna.story.SetHeight.Detail[].class );
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> depthState = this.createInitialPropertyValueExpressionState( this.createKey( "depthState" ), 1.0, org.lgna.story.SModel.class, "setDepth", Number.class, org.lgna.story.SetDepth.Detail[].class );
+
 	private AddBoxManagedFieldComposite() {
-		super( java.util.UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ),	org.lgna.story.SBox.class );
+		super( java.util.UUID.fromString( "c2f02836-1016-4477-abe2-9ab63e530db6" ), org.lgna.story.SBox.class );
 	}
+
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getWidthState() {
 		return this.widthState;
 	}
+
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getHeightState() {
 		return this.heightState;
 	}
+
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getDepthState() {
 		return this.depthState;
 	}

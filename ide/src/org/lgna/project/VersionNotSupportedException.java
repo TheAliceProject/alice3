@@ -49,13 +49,16 @@ package org.lgna.project;
 public class VersionNotSupportedException extends Exception {
 	private final double minimumSupportedVersion;
 	private final double version;
+
 	public VersionNotSupportedException( double minimumSupportedVersion, double version ) {
 		this.minimumSupportedVersion = minimumSupportedVersion;
 		this.version = version;
 	}
+
 	public double getMinimumSupportedVersion() {
 		return this.minimumSupportedVersion;
 	}
+
 	public double getVersion() {
 		return this.version;
 	}

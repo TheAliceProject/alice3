@@ -47,6 +47,6 @@ package org.lgna.project.migration;
  */
 public interface Migration {
 	public boolean isApplicable( org.lgna.project.Version version );
-	public String migrate( String source );
+
 	public org.lgna.project.Version getResultVersion();
 }

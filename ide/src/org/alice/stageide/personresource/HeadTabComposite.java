@@ -50,21 +50,31 @@ public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.
 	private static class SingletonHolder {
 		private static HeadTabComposite instance = new HeadTabComposite();
 	}
+
 	public static HeadTabComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private HeadTabComposite() {
 		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
 	}
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> eyeColorState = this.createListSelectionStateForEnum( this.createKey( "eyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
+
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
+
 	@Override
 	protected org.alice.stageide.personresource.views.HeadTabView createView() {
 		return new org.alice.stageide.personresource.views.HeadTabView( this );
 	}
+
 	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
 		return HairColorNameState.getInstance();
 	}
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getEyeColorState() {
-		return this.eyeColorState;
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
+		return HairState.getInstance();
+	}
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
+		return this.baseEyeColorState;
 	}
 };

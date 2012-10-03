@@ -49,19 +49,20 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 	public IntegerFillerInner() {
 		super( Integer.class );
 	}
+
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		super.appendItems( items, details, isTop, prevExpression );
 		int[] literals;
 		if( details instanceof org.lgna.project.annotations.IntegerValueDetails ) {
-			literals = ((org.lgna.project.annotations.IntegerValueDetails)details).getLiterals();
+			literals = ( (org.lgna.project.annotations.IntegerValueDetails)details ).getLiterals();
 		} else {
 			literals = new int[] { 0, 1, 2, 3 };
 		}
 		for( int i : literals ) {
 			items.add( org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( i ) );
 		}
-		if( isTop && prevExpression != null ) {
+		if( isTop && ( prevExpression != null ) ) {
 			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			items.add( org.alice.ide.croquet.models.cascade.integer.RandomCascadeMenu.getInstance() );
 			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );

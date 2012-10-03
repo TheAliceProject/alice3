@@ -49,9 +49,11 @@ public class DeclarationNameState extends org.lgna.croquet.StringState {
 	private static class SingletonHolder {
 		private static DeclarationNameState instance = new DeclarationNameState();
 	}
+
 	public static DeclarationNameState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private DeclarationNameState() {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "c63e8377-84e0-48b0-a77e-137879e398c1" ), "" );
 	}

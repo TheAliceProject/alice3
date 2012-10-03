@@ -49,18 +49,21 @@ package org.lgna.project.ast;
 public class EachInArrayTogether extends AbstractEachInTogether implements EachInArrayStatement {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			UserLocal item = EachInArrayTogether.this.item.getValue();
-			AbstractType<?,?,?> type = item.valueType.getValue();
+			AbstractType<?, ?, ?> type = item.valueType.getValue();
 			return type.getArrayType();
 		}
 	};
+
 	public EachInArrayTogether() {
 	}
+
 	public EachInArrayTogether( UserLocal item, Expression array, BlockStatement body ) {
 		super( item, body );
 		this.array.setValue( array );
 	}
+
 	public ExpressionProperty getArrayProperty() {
 		return this.array;
 	}

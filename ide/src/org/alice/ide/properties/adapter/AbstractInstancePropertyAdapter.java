@@ -49,95 +49,95 @@ import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public abstract class AbstractInstancePropertyAdapter<P, O> extends AbstractPropertyAdapter<P, O> {
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener;
 	private InstanceProperty<P> property;
-	
+
 	private void initializeListenersIfNecessary()
 	{
-		if (this.propertyListener == null)
+		if( this.propertyListener == null )
 		{
 			this.propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener()
 			{
-				public void propertyChanging(PropertyEvent e) {
+				public void propertyChanging( PropertyEvent e ) {
 				}
 
-				public void propertyChanged(PropertyEvent e) {
+				public void propertyChanged( PropertyEvent e ) {
 					handleInternalValueChanged();
 				}
 			};
 		}
 	}
-	
+
 	@Override
-	protected void startPropertyListening() 
+	protected void startPropertyListening()
 	{
 		super.startPropertyListening();
-		if (this.instance != null)
+		if( this.instance != null )
 		{
 			this.initializeListenersIfNecessary();
-			this.addPropertyListener(this.propertyListener);
+			this.addPropertyListener( this.propertyListener );
 		}
 	}
-	
+
 	@Override
-	protected void stopPropertyListening() 
+	protected void stopPropertyListening()
 	{
 		super.stopPropertyListening();
-		if (this.instance != null)
+		if( this.instance != null )
 		{
-			this.removePropertyListener(this.propertyListener);
+			this.removePropertyListener( this.propertyListener );
 		}
 	}
-	
-	public AbstractInstancePropertyAdapter(String repr, O instance, InstanceProperty<P> property, StandardExpressionState expressionState){
-		super(repr, instance, expressionState);
+
+	public AbstractInstancePropertyAdapter( String repr, O instance, InstanceProperty<P> property, StandardExpressionState expressionState ) {
+		super( repr, instance, expressionState );
 		this.property = property;
 		startPropertyListening();
 		this.initializeExpressionState();
 	}
-	
+
 	@Override
 	public P getValue() {
-		if (this.property != null){
+		if( this.property != null ) {
 			return this.property.getValue();
 		}
-		else{
+		else {
 			return null;
 		}
 	}
-	
+
 	@Override
-	public void setValue(final P value) {
-		super.setValue(value);
-		if (this.property != null){
+	public void setValue( final P value ) {
+		super.setValue( value );
+		if( this.property != null ) {
 			new Thread() {
 				@Override
 				public void run() {
-					AbstractInstancePropertyAdapter.this.property.setValue(value);
+					AbstractInstancePropertyAdapter.this.property.setValue( value );
 				}
 			}.start();
 		}
-		
+
 	}
 
-	protected void addPropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.property != null){
-			property.addPropertyListener(propertyListener);
+	protected void addPropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+		if( this.property != null ) {
+			property.addPropertyListener( propertyListener );
 		}
 	}
 
-	protected void removePropertyListener(edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener) {
-		if (this.property != null){
-			property.removePropertyListener(propertyListener);
+	protected void removePropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
+		if( this.property != null ) {
+			property.removePropertyListener( propertyListener );
 		}
 	}
-	
-	protected void handleInternalValueChanged(){
+
+	protected void handleInternalValueChanged() {
 		P newValue = this.getValue();
-		this.notifyValueObservers(newValue);
+		this.notifyValueObservers( newValue );
 	}
 
 }

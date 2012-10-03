@@ -50,53 +50,64 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	//todo: edits are never created by value creators.  allow group specification anyways?
 	public static final org.lgna.croquet.Group VALUE_CREATOR_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "4bef663b-1474-40ec-9731-4e2a2cb49333" ), "VALUE_CREATOR_GROUP" );
 
-	public static final class InternalFillInResolver<F> extends IndirectResolver< InternalFillIn<F>, ValueCreator<F> > {
+	public static final class InternalFillInResolver<F> extends IndirectResolver<InternalFillIn<F>, ValueCreator<F>> {
 		private InternalFillInResolver( ValueCreator<F> internal ) {
 			super( internal );
 		}
+
 		public InternalFillInResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
 		protected InternalFillIn<F> getDirect( ValueCreator<F> indirect ) {
 			return indirect.fillIn;
 		}
 	}
-	private static final class InternalFillIn<F> extends CascadeFillIn< F, Void > {
+
+	private static final class InternalFillIn<F> extends CascadeFillIn<F, Void> {
 		private final ValueCreator<F> valueCreator;
-		private String text; 
+		private String text;
+
 		private InternalFillIn( ValueCreator<F> valueCreator ) {
 			super( java.util.UUID.fromString( "258797f2-c1b6-4887-b6fc-42702493d573" ) );
 			this.valueCreator = valueCreator;
 		}
+
 		@Override
 		protected void localize() {
 			super.localize();
 			this.text = this.findDefaultLocalizedText();
 		}
+
 		public ValueCreator<F> getValueCreator() {
 			return this.valueCreator;
 		}
+
 		@Override
 		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
 			return this.valueCreator.getClassUsedForLocalization();
 		}
+
 		@Override
 		protected InternalFillInResolver<F> createResolver() {
 			return new InternalFillInResolver<F>( this.valueCreator );
 		}
+
 		@Override
 		protected String getTutorialItemText() {
 			this.initializeIfNecessary();
 			return this.text;
 		}
+
 		@Override
-		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super F,Void > step ) {
+		protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, Void> step ) {
 			return new javax.swing.JLabel( this.text );
 		}
+
 		@Override
-		public final F createValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-			org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER );
+		public final F createValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+			org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.NullTrigger.createUserInstance();
 			org.lgna.croquet.history.Step<?> step = this.valueCreator.fire( trigger );
 			if( step != null ) {
 				return (F)step.getEphemeralDataFor( VALUE_KEY );
@@ -104,46 +115,60 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 				throw new CancelException();
 			}
 		}
+
 		@Override
-		public F getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super F,Void > node ) {
+		public F getTransientValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node ) {
 			return null;
 		}
 	}
 
-	
 	private InternalFillIn<T> fillIn = new InternalFillIn<T>( this );
-	public static final org.lgna.croquet.history.Step.Key< Object > VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueCreator.VALUE_KEY" );
+	public static final org.lgna.croquet.history.Step.Key<Object> VALUE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "ValueCreator.VALUE_KEY" );
+
 	public ValueCreator( java.util.UUID migrationId ) {
 		super( VALUE_CREATOR_GROUP, migrationId );
 	}
+
 	@Override
 	protected void localize() {
 	}
+
 	@Override
 	public java.lang.Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
 		return java.util.Collections.emptyList();
 	}
+
 	@Override
 	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
 		return false;
 	}
+
 	@Override
 	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		return rv;
 	}
-	public CascadeFillIn< T, Void > getFillIn() {
+
+	public CascadeFillIn<T, Void> getFillIn() {
 		return this.fillIn;
 	}
+
 	protected abstract T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
+
 	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		this.initializeIfNecessary();
-		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		T value = this.createValue( transaction, trigger );
-		org.lgna.croquet.history.CompletionStep<?> rv = transaction.getCompletionStep();
-		if( rv != null ) {
-			rv.putEphemeralDataFor( VALUE_KEY, value );
+		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
+		if( completionStep != null ) {
+			completionStep.putEphemeralDataFor( VALUE_KEY, value );
 		}
-		return rv;
+	}
+
+	public T fireAndGetValue( org.lgna.croquet.triggers.Trigger trigger ) throws CancelException {
+		org.lgna.croquet.history.CompletionStep<?> step = this.fire( trigger );
+		if( step.isSuccessfullyCompleted() ) {
+			return (T)step.getEphemeralDataFor( VALUE_KEY );
+		} else {
+			throw new CancelException();
+		}
 	}
 }

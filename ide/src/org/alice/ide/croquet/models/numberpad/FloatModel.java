@@ -49,16 +49,20 @@ public class FloatModel extends NumberModel<org.lgna.project.ast.FloatLiteral> {
 	private static class SingletonHolder {
 		private static FloatModel instance = new FloatModel();
 	}
+
 	public static FloatModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private FloatModel() {
-		 super( NUMBER_PAD_GROUP, java.util.UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" )  );
+		super( NUMBER_PAD_GROUP, java.util.UUID.fromString( "f34ce6db-6de0-48cb-ba43-98e89f55b59b" ) );
 	}
+
 	@Override
 	public boolean isDecimalPointSupported() {
 		return true;
 	}
+
 	@Override
 	protected org.lgna.project.ast.FloatLiteral valueOf( String s ) {
 		float f = (float)edu.cmu.cs.dennisc.java.lang.DoubleUtilities.parseDoubleInCurrentDefaultLocale( s );

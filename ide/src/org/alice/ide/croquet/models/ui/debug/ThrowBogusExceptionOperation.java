@@ -49,24 +49,28 @@ public class ThrowBogusExceptionOperation extends org.alice.ide.operations.Incon
 	private static class SingletonHolder {
 		private static ThrowBogusExceptionOperation instance = new ThrowBogusExceptionOperation();
 	}
+
 	public static ThrowBogusExceptionOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ThrowBogusExceptionOperation() {
 		super( java.util.UUID.fromString( "8c417baa-8be7-42e9-818c-b6ed4ecd8758" ) );
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.setName( "Throw Bogus Exception..." );
 	}
+
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 		new Thread() {
 			@Override
 			public void run() {
 				throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
-			}			
+			}
 		}.start();
 	}
 }

@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 public class ClassUtilities {
-	private static java.util.HashMap< String, Class< ? >> s_primativeTypeMap = new java.util.HashMap< String, Class< ? >>();
+	private static java.util.HashMap<String, Class<?>> s_primativeTypeMap = new java.util.HashMap<String, Class<?>>();
 	static {
 		s_primativeTypeMap.put( Void.TYPE.getName(), Void.TYPE );
 		s_primativeTypeMap.put( Boolean.TYPE.getName(), Boolean.TYPE );
@@ -59,6 +59,7 @@ public class ClassUtilities {
 		s_primativeTypeMap.put( Double.TYPE.getName(), Double.TYPE );
 		s_primativeTypeMap.put( Float.TYPE.getName(), Float.TYPE );
 	}
+
 	public static <E> E getInstance( Object o, Class<E> cls ) {
 		E rv = null;
 		if( o != null ) {
@@ -82,7 +83,7 @@ public class ClassUtilities {
 			}
 		}
 	}
-	
+
 	public static boolean isAssignableToAtLeastOne( Class<?> right, Class<?>... lefts ) {
 		for( Class<?> left : lefts ) {
 			if( left.isAssignableFrom( right ) ) {
@@ -91,11 +92,11 @@ public class ClassUtilities {
 		}
 		return false;
 	}
-	
+
 	public static int getArrayDimensionCount( String packageNameAndSimpleClassNames ) {
 		final int N = packageNameAndSimpleClassNames.length();
 		int i;
-		for( i=0; i<N; i++ ) {
+		for( i = 0; i < N; i++ ) {
 			char c = packageNameAndSimpleClassNames.charAt( i );
 			if( c == '[' ) {
 				//pass
@@ -105,6 +106,7 @@ public class ClassUtilities {
 		}
 		return i;
 	}
+
 	public static String getPackageName( String packageNameAndSimpleClassNames ) {
 		int index = packageNameAndSimpleClassNames.lastIndexOf( '.' );
 		if( index != -1 ) {
@@ -118,16 +120,17 @@ public class ClassUtilities {
 			return null;
 		}
 	}
+
 	public static String[] getSimpleClassNames( String packageNameAndSimpleClassNames ) {
 		int index = packageNameAndSimpleClassNames.lastIndexOf( '.' );
 		int n = packageNameAndSimpleClassNames.length();
-		if( packageNameAndSimpleClassNames.charAt( n-1 ) == ';' ) {
+		if( packageNameAndSimpleClassNames.charAt( n - 1 ) == ';' ) {
 			n -= 1;
 		}
-		String simpleClassNames = packageNameAndSimpleClassNames.substring( index+1, n );
+		String simpleClassNames = packageNameAndSimpleClassNames.substring( index + 1, n );
 		return simpleClassNames.split( "\\$" );
 	}
-	
+
 	public static Package getPackage( Class<?> cls ) {
 		if( cls.isArray() ) {
 			return getPackage( cls.getComponentType() );
@@ -135,11 +138,12 @@ public class ClassUtilities {
 			return cls.getPackage();
 		}
 	}
+
 	public static String getTrimmedClassName( Class<?> cls ) {
 		if( cls != null ) {
 			if( cls.isMemberClass() ) {
-				Package pckg = getPackage( cls ); 
-				return cls.getName().substring( pckg.getName().length()+1 );
+				Package pckg = getPackage( cls );
+				return cls.getName().substring( pckg.getName().length() + 1 );
 			} else {
 				return cls.getSimpleName();
 			}
@@ -147,6 +151,7 @@ public class ClassUtilities {
 			return null;
 		}
 	}
+
 	public static String getTrimmedClassNameForInstance( Object instance ) {
 		if( instance != null ) {
 			return getTrimmedClassName( instance.getClass() );

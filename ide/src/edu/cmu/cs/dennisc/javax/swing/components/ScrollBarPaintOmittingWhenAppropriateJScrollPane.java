@@ -45,18 +45,20 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends javax.swing.JScrollPane {
+public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends JScrollPaneCoveringLinuxPaintBug {
 	private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
 		if( jScrollBar != null ) {
-			return jScrollBar.getMinimum() != jScrollBar.getValue() || jScrollBar.getMaximum() != jScrollBar.getVisibleAmount();
+			return ( jScrollBar.getMinimum() != jScrollBar.getValue() ) || ( jScrollBar.getMaximum() != jScrollBar.getVisibleAmount() );
 		} else {
 			return false;
 		}
 	}
+
 	protected class PaintOmittingJScrollBar extends javax.swing.JScrollBar {
 		public PaintOmittingJScrollBar( int orientation ) {
 			super( orientation );
 		}
+
 		@Override
 		public void paint( java.awt.Graphics g ) {
 			javax.swing.JScrollBar otherScrollBar = ScrollBarPaintOmittingWhenAppropriateJScrollPane.this.getOtherScrollBar( this );
@@ -70,9 +72,11 @@ public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends j
 			}
 		}
 	}
+
 	protected boolean isPaintRequiredIfOtherRequiresIt() {
 		return true;
 	}
+
 	private javax.swing.JScrollBar getOtherScrollBar( javax.swing.JScrollBar scrollBar ) {
 		if( scrollBar.getOrientation() == javax.swing.JScrollBar.HORIZONTAL ) {
 			return this.getVerticalScrollBar();

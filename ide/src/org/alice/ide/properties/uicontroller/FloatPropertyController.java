@@ -48,29 +48,29 @@ import org.alice.ide.properties.adapter.AbstractPropertyAdapter;
 public class FloatPropertyController extends LabelBasedPropertyController<Float>
 {
 	private static java.text.NumberFormat FLOAT_FORMAT = new java.text.DecimalFormat( "0.0" );
-	
-	public FloatPropertyController(AbstractPropertyAdapter<Float, ?> propertyAdapter)
+
+	public FloatPropertyController( AbstractPropertyAdapter<Float, ?> propertyAdapter )
 	{
-		super(propertyAdapter);
+		super( propertyAdapter );
 	}
-	
+
 	@Override
-	public Class<?> getPropertyType() 
+	public Class<?> getPropertyType()
 	{
 		return Double.class;
 	}
-	
+
 	@Override
-	protected void setValueOnUI(Float value)
+	protected void setValueOnUI( Float value )
 	{
-		if (value != null)
+		if( value != null )
 		{
-			this.label.setText(FLOAT_FORMAT.format(value));
+			this.label.setText( FLOAT_FORMAT.format( value ) );
 		}
 		else
 		{
-			this.label.setText(BLANK_STRING);
+			this.label.setText( BLANK_STRING );
 		}
 	}
-	
+
 }

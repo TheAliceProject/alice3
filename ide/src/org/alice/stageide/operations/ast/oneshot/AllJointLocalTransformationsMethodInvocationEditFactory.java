@@ -49,12 +49,14 @@ public class AllJointLocalTransformationsMethodInvocationEditFactory implements 
 	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 	private final org.lgna.project.ast.AbstractMethod method;
 	private final org.lgna.project.ast.Expression[] argumentExpressions;
+
 	public AllJointLocalTransformationsMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		this.instanceFactory = instanceFactory;
 		this.method = method;
 		this.argumentExpressions = argumentExpressions;
 	}
-	public org.lgna.croquet.edits.Edit< ? > createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
+
+	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
 		return new AllJointLocalTransformationsEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

@@ -46,20 +46,23 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryTab extends org.lgna.croquet.SimpleTabComposite< org.lgna.croquet.components.View< ?,? > > {
+public abstract class GalleryTab<V extends org.lgna.croquet.components.Panel> extends org.lgna.croquet.SimpleTabComposite<V> {
 	public GalleryTab( java.util.UUID id ) {
 		super( id );
 	}
+
 	@Override
 	public final boolean isCloseable() {
 		return false;
 	}
+
 	@Override
 	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
 		return null;
 	}
+
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton< ? > button ) {
+	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
 		super.customizeTitleComponent( booleanState, button );
 		button.scaleFont( 1.5f );
 	}

@@ -49,18 +49,23 @@ public class FontMouseWheelAdapter implements java.awt.event.MouseWheelListener 
 	private float scaleFactor = 1.0f;
 	private AdjustableFontSizeOceanTheme adjustableFontSizeOceanTheme;
 	private boolean isLookAndFeelUpdated = false;
+
 	public FontMouseWheelAdapter() {
 		this( new AdjustableFontSizeOceanTheme() );
 	}
+
 	public FontMouseWheelAdapter( AdjustableFontSizeOceanTheme adjustableFontSizeOceanTheme ) {
 		this.adjustableFontSizeOceanTheme = adjustableFontSizeOceanTheme;
 	}
+
 	public float getScaleFactor() {
 		return this.scaleFactor;
 	}
+
 	public void setScaleFactor( float scaleFactor ) {
 		this.scaleFactor = scaleFactor;
 	}
+
 	public void updateLookAndFeel() {
 		javax.swing.plaf.metal.MetalLookAndFeel.setCurrentTheme( this.adjustableFontSizeOceanTheme );
 		try {
@@ -70,6 +75,7 @@ public class FontMouseWheelAdapter implements java.awt.event.MouseWheelListener 
 		}
 		this.isLookAndFeelUpdated = true;
 	}
+
 	public void mouseWheelMoved( final java.awt.event.MouseWheelEvent e ) {
 		if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
 			this.adjustableFontSizeOceanTheme.adjustSizeDelta( e.getWheelRotation() * scaleFactor );

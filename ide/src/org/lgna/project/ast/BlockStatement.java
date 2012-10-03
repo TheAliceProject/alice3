@@ -48,8 +48,10 @@ package org.lgna.project.ast;
  */
 public class BlockStatement extends Statement {
 	public StatementListProperty statements = new StatementListProperty( this );
+
 	public BlockStatement() {
 	}
+
 	public BlockStatement( Statement... statements ) {
 		this.statements.add( statements );
 	}

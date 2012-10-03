@@ -49,27 +49,28 @@ import org.lgna.project.ast.UserParameter;
  * @author Dennis Cosgrove
  */
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
-	public DeleteParameterOperation( NodeListProperty< UserParameter > parametersProperty, org.lgna.project.ast.UserParameter parameter ) {
+	public DeleteParameterOperation( NodeListProperty<UserParameter> parametersProperty, org.lgna.project.ast.UserParameter parameter ) {
 		super( java.util.UUID.fromString( "853fb6a3-ea7b-4575-93d6-547f687a7033" ), parametersProperty, parameter );
 		this.setName( "Delete" );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		final org.lgna.project.ast.UserMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), org.lgna.project.ast.UserMethod.class );
 		final int index = method.requiredParameters.indexOf( this.getParameter() );
-		if( method != null && index >= 0 ) {
-			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ParameterAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ParameterAccess >( org.lgna.project.ast.ParameterAccess.class ) {
+		if( ( method != null ) && ( index >= 0 ) ) {
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ParameterAccess> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ParameterAccess>( org.lgna.project.ast.ParameterAccess.class ) {
 				@Override
 				protected boolean isAcceptable( org.lgna.project.ast.ParameterAccess parameterAccess ) {
 					return parameterAccess.parameter.getValue() == getParameter();
 				}
 			};
-			method.crawl( crawler, false );
-			java.util.List< org.lgna.project.ast.ParameterAccess > parameterAccesses = crawler.getList();
+			method.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+			java.util.List<org.lgna.project.ast.ParameterAccess> parameterAccesses = crawler.getList();
 			final int N_ACCESSES = parameterAccesses.size();
 
-			java.util.List< org.lgna.project.ast.MethodInvocation > methodInvocations = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
+			java.util.List<org.lgna.project.ast.MethodInvocation> methodInvocations = org.alice.ide.IDE.getActiveInstance().getMethodInvocations( method );
 			final int N_INVOCATIONS = methodInvocations.size();
 			if( N_ACCESSES > 0 ) {
 				StringBuffer sb = new StringBuffer();
@@ -116,8 +117,8 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 						sb.append( "invocations" );
 					}
 					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
-					org.lgna.croquet.YesNoCancelOption result = org.lgna.croquet.Application.getActiveInstance().showYesNoCancelConfirmDialog(sb.toString(), "Delete Parameter");
-					if( result == org.lgna.croquet.YesNoCancelOption.YES ){
+					org.lgna.croquet.YesNoCancelOption result = org.lgna.croquet.Application.getActiveInstance().showYesNoCancelConfirmDialog( sb.toString(), "Delete Parameter" );
+					if( result == org.lgna.croquet.YesNoCancelOption.YES ) {
 						//pass
 					} else {
 						step.cancel();

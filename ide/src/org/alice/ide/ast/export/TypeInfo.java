@@ -46,57 +46,63 @@ package org.alice.ide.ast.export;
  * @author Dennis Cosgrove
  */
 public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> {
-	private final java.util.Map<org.lgna.project.ast.UserConstructor,ConstructorInfo> constructorInfoMap;
-	private final java.util.Map<org.lgna.project.ast.UserMethod,MethodInfo> methodInfoMap;
-	private final java.util.Map<org.lgna.project.ast.UserField,FieldInfo> fieldInfoMap;
+	private final java.util.Map<org.lgna.project.ast.UserConstructor, ConstructorInfo> constructorInfoMap;
+	private final java.util.Map<org.lgna.project.ast.UserMethod, MethodInfo> methodInfoMap;
+	private final java.util.Map<org.lgna.project.ast.UserField, FieldInfo> fieldInfoMap;
 
 	public TypeInfo( ProjectInfo projectInfo, org.lgna.project.ast.UserType<?> type ) {
 		super( projectInfo, type );
-		java.util.Map<org.lgna.project.ast.UserConstructor,ConstructorInfo> mapC = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.UserConstructor, ConstructorInfo> mapC = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		for( org.lgna.project.ast.UserConstructor constructor : type.getDeclaredConstructors() ) {
 			mapC.put( constructor, new ConstructorInfo( projectInfo, constructor ) );
 		}
 		this.constructorInfoMap = java.util.Collections.unmodifiableMap( mapC );
-		java.util.Map<org.lgna.project.ast.UserMethod,MethodInfo> mapM = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.UserMethod, MethodInfo> mapM = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		for( org.lgna.project.ast.UserMethod method : type.methods ) {
 			mapM.put( method, new MethodInfo( projectInfo, method ) );
 		}
 		this.methodInfoMap = java.util.Collections.unmodifiableMap( mapM );
-		java.util.Map<org.lgna.project.ast.UserField,FieldInfo> mapF = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<org.lgna.project.ast.UserField, FieldInfo> mapF = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		for( org.lgna.project.ast.UserField field : type.fields ) {
 			mapF.put( field, new FieldInfo( projectInfo, field ) );
 		}
 		this.fieldInfoMap = java.util.Collections.unmodifiableMap( mapF );
 	}
-	
+
 	public TypeInfo getSuperTypeInfo() {
-		org.lgna.project.ast.AbstractType<?,?,?> superType = this.getDeclaration().getSuperType();
-		if( superType instanceof org.lgna.project.ast.UserType<?> ) { 
+		org.lgna.project.ast.AbstractType<?, ?, ?> superType = this.getDeclaration().getSuperType();
+		if( superType instanceof org.lgna.project.ast.UserType<?> ) {
 			return this.getProjectInfo().getInfoForType( (org.lgna.project.ast.UserType<?>)superType );
 		} else {
 			return null;
 		}
 	}
+
 	public java.util.Collection<ConstructorInfo> getConstructorInfos() {
 		return this.constructorInfoMap.values();
 	}
+
 	public java.util.Collection<MethodInfo> getMethodInfos() {
 		return this.methodInfoMap.values();
 	}
+
 	public java.util.Collection<FieldInfo> getFieldInfos() {
 		return this.fieldInfoMap.values();
 	}
+
 	public ConstructorInfo getInfoForConstructor( org.lgna.project.ast.UserConstructor constructor ) {
 		return this.constructorInfoMap.get( constructor );
 	}
+
 	public MethodInfo getInfoForMethod( org.lgna.project.ast.UserMethod method ) {
 		return this.methodInfoMap.get( method );
 	}
+
 	public FieldInfo getInfoForField( org.lgna.project.ast.UserField field ) {
 		return this.fieldInfoMap.get( field );
 	}
 
-	/*package-private*/void updateDependencies() {
+	/* package-private */void updateDependencies() {
 		for( ConstructorInfo info : this.constructorInfoMap.values() ) {
 			info.updateDependencies();
 		}
@@ -107,6 +113,7 @@ public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> 
 			info.updateDependencies();
 		}
 	}
+
 	@Override
 	public void appendDesired( java.util.List<org.alice.ide.ast.export.DeclarationInfo<?>> desired ) {
 		super.appendDesired( desired );
@@ -120,6 +127,7 @@ public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> 
 			info.appendDesired( desired );
 		}
 	}
+
 	@Override
 	public void resetRequired() {
 		super.resetRequired();
@@ -133,6 +141,7 @@ public class TypeInfo extends DeclarationInfo<org.lgna.project.ast.UserType<?>> 
 			info.resetRequired();
 		}
 	}
+
 	@Override
 	public void updateSwing() {
 		super.updateSwing();

@@ -49,13 +49,13 @@ public class NodeUtilities {
 	private NodeUtilities() {
 		throw new AssertionError();
 	}
-	public static StringBuilder safeAppendRepr( StringBuilder rv, Node node, java.util.Locale locale ) {
+
+	public static void safeAppendRepr( StringBuilder sb, Node node, java.util.Locale locale ) {
 		if( node instanceof AbstractNode ) {
-			((AbstractNode)node).appendRepr( rv, locale );
+			( (AbstractNode)node ).appendRepr( sb, locale );
 		} else {
 			//todo?
-			rv.append( node );
+			sb.append( node );
 		}
-		return rv;
 	}
 }

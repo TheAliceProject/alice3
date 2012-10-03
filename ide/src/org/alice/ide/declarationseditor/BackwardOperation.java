@@ -49,17 +49,21 @@ public class BackwardOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
 		private static BackwardOperation instance = new BackwardOperation();
 	}
+
 	public static BackwardOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private BackwardOperation() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "b640eded-bbcc-4fdb-836d-dcd0993ff45d" ) );
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
 		this.setSmallIcon( org.alice.ide.icons.Icons.PREVIOUS_SMALL );
 	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

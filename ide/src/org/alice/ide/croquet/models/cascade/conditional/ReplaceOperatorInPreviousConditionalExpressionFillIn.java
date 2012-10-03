@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.cascade.conditional;
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< org.lgna.project.ast.ConditionalInfixExpression > {
-	private static java.util.Map< org.lgna.project.ast.ConditionalInfixExpression.Operator, ReplaceOperatorInPreviousConditionalExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.ConditionalInfixExpression> {
+	private static java.util.Map<org.lgna.project.ast.ConditionalInfixExpression.Operator, ReplaceOperatorInPreviousConditionalExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static ReplaceOperatorInPreviousConditionalExpressionFillIn getInstance( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			ReplaceOperatorInPreviousConditionalExpressionFillIn rv = map.get( operator );
@@ -60,16 +61,18 @@ public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends org.al
 			return rv;
 		}
 	}
+
 	private final org.lgna.project.ast.ConditionalInfixExpression.Operator operator;
+
 	private ReplaceOperatorInPreviousConditionalExpressionFillIn( org.lgna.project.ast.ConditionalInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "92c952b4-cb89-4cb5-9e6e-ff185c1dda41" ) );
 		this.operator = operator;
 	}
-	
-//	@Override
-//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ConditionalInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
-//		return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
-//	}
+
+	//	@Override
+	//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ConditionalInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+	//		return previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
+	//	}
 	@Override
 	protected org.lgna.project.ast.ConditionalInfixExpression createValue( org.lgna.project.ast.Expression previousExpression ) {
 		assert previousExpression instanceof org.lgna.project.ast.ConditionalInfixExpression;
@@ -77,7 +80,6 @@ public class ReplaceOperatorInPreviousConditionalExpressionFillIn extends org.al
 		return new org.lgna.project.ast.ConditionalInfixExpression(
 				previousConditional.leftOperand.getValue(),
 				this.operator,
-				previousConditional.rightOperand.getValue()
-		);
-	}	
+				previousConditional.rightOperand.getValue() );
+	}
 }

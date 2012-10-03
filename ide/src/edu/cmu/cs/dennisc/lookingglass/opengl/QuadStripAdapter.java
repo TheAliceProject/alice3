@@ -43,22 +43,24 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_QUAD_STRIP;
 
 /**
  * @author Dennis Cosgrove
  */
-public class QuadStripAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.QuadStrip > {
+public class QuadStripAdapter extends VertexGeometryAdapter<edu.cmu.cs.dennisc.scenegraph.QuadStrip> {
 	@Override
 	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
-    	renderPrimative( rc, GL_QUAD_STRIP );
-    }
+		renderPrimative( rc, GL_QUAD_STRIP );
+	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-    	pickPrimative( pc, GL_QUAD_STRIP );
-	}    
+		pickPrimative( pc, GL_QUAD_STRIP );
+	}
+
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		//todo
 		rv.setNaN();
 		return rv;

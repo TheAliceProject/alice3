@@ -43,5 +43,7 @@
 package org.lgna.project.annotations;
 
 public enum Visibility {
-	PRIME_TIME, TUCKED_AWAY, COMPLETELY_HIDDEN
+	PRIME_TIME,
+	TUCKED_AWAY,
+	COMPLETELY_HIDDEN
 }

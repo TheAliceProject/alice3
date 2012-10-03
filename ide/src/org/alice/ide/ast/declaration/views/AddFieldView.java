@@ -48,29 +48,45 @@ package org.alice.ide.ast.declaration.views;
  */
 public class AddFieldView extends AddDeclarationView<org.lgna.project.ast.UserField> {
 	private final org.lgna.croquet.components.Label typeIconView = new org.lgna.croquet.components.Label( org.lgna.croquet.icon.EmptyIconFactory.SINGLETON.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
+
 	public AddFieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
 		super( composite );
 	}
+
 	@Override
-	public org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent() {
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
 		org.alice.ide.ast.declaration.AddFieldComposite composite = (org.alice.ide.ast.declaration.AddFieldComposite)this.getComposite();
 		org.lgna.project.ast.UserField field = composite.getPreviewValue();
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
-			.center( super.createPageStartComponent() )
-			.lineEnd( this.typeIconView )
-		.build();
-		return rv;
+		//		org.lgna.croquet.components.JComponent<?> a = super.createPageStartComponent();
+		//		org.lgna.croquet.components.GridBagPanel rv = new org.lgna.croquet.components.GridBagPanel();
+		//		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		//		gbc.anchor = java.awt.GridBagConstraints.LINE_START;
+		//		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
+		//		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+		//		gbc.weightx = 1.0;
+		//		rv.addComponent( super.createPageStartComponent(), gbc );
+		//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		//		gbc.weightx = 0.0;
+		//		rv.addComponent( this.typeIconView, gbc );
+		//		return rv;
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineStart( super.createPageStartComponent() )
+				.lineEnd( this.typeIconView )
+				.build();
 	}
+
 	@Override
 	protected boolean isPreviewDesired() {
 		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
 	}
+
 	@Override
-	public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?,?,?> nextType ) {
+	public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?, ?, ?> nextType ) {
 		super.handleValueTypeChanged( nextType );
 		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( nextType );
 		this.typeIconView.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );

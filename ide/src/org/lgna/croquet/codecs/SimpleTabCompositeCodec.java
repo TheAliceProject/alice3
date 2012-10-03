@@ -46,24 +46,29 @@ package org.lgna.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposite<?>> implements org.lgna.croquet.ItemCodec< C > {
-	private static java.util.Map< Class<?>, SimpleTabCompositeCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T extends org.lgna.croquet.SimpleTabComposite<?> > SimpleTabCompositeCodec< T > getInstance( Class< T > cls ) {
-		SimpleTabCompositeCodec< ? > rv = map.get( cls );
+public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposite<?>> implements org.lgna.croquet.ItemCodec<C> {
+	private static java.util.Map<Class<?>, SimpleTabCompositeCodec<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized <T extends org.lgna.croquet.SimpleTabComposite<?>> SimpleTabCompositeCodec<T> getInstance( Class<T> cls ) {
+		SimpleTabCompositeCodec<?> rv = map.get( cls );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new SimpleTabCompositeCodec< T >( cls );
+			rv = new SimpleTabCompositeCodec<T>( cls );
 		}
-		return (SimpleTabCompositeCodec< T >)rv;
+		return (SimpleTabCompositeCodec<T>)rv;
 	}
+
 	private Class<C> valueCls;
+
 	private SimpleTabCompositeCodec( Class<C> valueCls ) {
 		this.valueCls = valueCls;
 	}
-	public Class< C > getValueClass() {
+
+	public Class<C> getValueClass() {
 		return this.valueCls;
 	}
+
 	public C decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
@@ -73,16 +78,19 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 			return null;
 		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, C value) {
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, C value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
 			binaryEncoder.encode( value.getResolver() );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, C value) {
-		value.initializeIfNecessary();
-		rv.append( value.getTitleText() );
-		return rv;
+
+	public void appendRepresentation( StringBuilder sb, C value ) {
+		if( value != null ) {
+			value.initializeIfNecessary();
+		}
+		sb.append( value != null ? value.getTitleText() : null );
 	}
 }

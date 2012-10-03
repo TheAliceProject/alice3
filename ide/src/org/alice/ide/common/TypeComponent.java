@@ -45,15 +45,18 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComponent extends org.lgna.croquet.components.JComponent< javax.swing.JLabel > {
-	public static TypeComponent createInstance( org.lgna.project.ast.AbstractType<?,?,?> type ) {
-		TypeComponent rv = new TypeComponent(type);
+public class TypeComponent extends org.lgna.croquet.components.JComponent<javax.swing.JLabel> {
+	public static TypeComponent createInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		TypeComponent rv = new TypeComponent( type );
 		return rv;
 	}
-	private org.lgna.project.ast.AbstractType<?,?,?> type;
-	private TypeComponent( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+
+	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
+
+	private TypeComponent( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		this.type = type;
 	}
+
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
 		final javax.swing.JLabel rv = new javax.swing.JLabel();

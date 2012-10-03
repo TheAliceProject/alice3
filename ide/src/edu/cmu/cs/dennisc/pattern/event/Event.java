@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.pattern.event;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Event< E > extends java.util.EventObject {
+public abstract class Event<E> extends java.util.EventObject {
 	public Event( E source ) {
 		super( source );
 	}
@@ -54,7 +54,7 @@ public abstract class Event< E > extends java.util.EventObject {
 	public E getTypedSource() {
 		return (E)super.getSource();
 	}
-	
+
 	public boolean isReservedForReuse() {
 		return false;
 	}

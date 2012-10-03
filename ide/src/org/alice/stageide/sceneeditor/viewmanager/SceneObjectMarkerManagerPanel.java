@@ -48,28 +48,24 @@ import org.alice.ide.declarationseditor.type.components.ManagedObjectMarkerField
 import org.lgna.croquet.components.Button;
 import org.lgna.project.ast.NamedUserType;
 
-
 public class SceneObjectMarkerManagerPanel extends AbstractMarkerManagerPanel {
 
-    @Override
-    protected Button createMovetoMarkerButton()
-    {
-        return MoveSelectedObjectToMarkerActionOperation.getInstance().createButton();
-    }
-    
-    @Override
-    protected Button createMoveToObjectButton()
-    {
-        return MoveMarkerToSelectedObjectActionOperation.getInstance().createButton();
-    }
-
+	@Override
+	protected Button createMovetoMarkerButton()
+	{
+		return MoveSelectedObjectToMarkerActionOperation.getInstance().createButton();
+	}
 
 	@Override
-	protected FieldList createFieldList(org.lgna.project.ast.UserType<?> type) {
-		assert type instanceof NamedUserType;
-		return new ManagedObjectMarkerFieldList((NamedUserType)type);
+	protected Button createMoveToObjectButton()
+	{
+		return MoveMarkerToSelectedObjectActionOperation.getInstance().createButton();
 	}
-    
-	
-	
+
+	@Override
+	protected FieldList createFieldList( org.lgna.project.ast.UserType<?> type ) {
+		assert type instanceof NamedUserType;
+		return new ManagedObjectMarkerFieldList( (NamedUserType)type );
+	}
+
 }

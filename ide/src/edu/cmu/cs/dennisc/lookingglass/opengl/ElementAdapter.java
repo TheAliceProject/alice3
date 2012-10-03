@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ElementAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Element > extends AbstractElementAdapter< E > {
+public abstract class ElementAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Element> extends AbstractElementAdapter<E> {
 	@Override
 	public void initialize( E element ) {
 		super.initialize( element );

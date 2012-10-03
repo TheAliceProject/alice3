@@ -45,16 +45,19 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractListData<T> implements ListData< T > {
-	private final java.util.List< Listener<T> > listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+public abstract class AbstractListData<T> implements ListData<T> {
+	private final java.util.List<Listener<T>> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public final void addListener( Listener<T> listener ) {
 		this.listeners.add( listener );
 	}
+
 	public final void removeListener( Listener<T> listener ) {
 		this.listeners.remove( listener );
 	}
+
 	protected void fireChanged() {
-		for( Listener< T > listener : this.listeners ) {
+		for( Listener<T> listener : this.listeners ) {
 			listener.changed();
 		}
 	}

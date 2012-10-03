@@ -45,53 +45,64 @@ package org.lgna.croquet.history;
 /**
  * @author Dennis Cosgrove
  */
-public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
+public class DragStep extends PrepStep<org.lgna.croquet.DragModel> {
 	private static class DropReceptorInfo {
 		private org.lgna.croquet.DropReceptor dropReceptor;
 		private java.awt.Rectangle bounds;
+
 		public DropReceptorInfo( org.lgna.croquet.DropReceptor dropReceptor, java.awt.Rectangle bounds ) {
 			this.dropReceptor = dropReceptor;
 			this.bounds = bounds;
 		}
+
 		public boolean contains( int x, int y ) {
 			return this.bounds.contains( x, y );
 		}
+
 		public boolean intersects( java.awt.Rectangle rectangle ) {
 			return this.bounds.intersects( rectangle );
 		}
+
 		public org.lgna.croquet.DropReceptor getDropReceptor() {
 			return this.dropReceptor;
 		}
+
 		public void setDropReceptor( org.lgna.croquet.DropReceptor dropReceptor ) {
 			this.dropReceptor = dropReceptor;
 		}
+
 		public java.awt.Rectangle getBounds() {
 			return this.bounds;
 		}
+
 		public void setBounds( java.awt.Rectangle bounds ) {
 			this.bounds = bounds;
 		}
 	}
+
 	private DropReceptorInfo[] potentialDropReceptorInfos;
 	private org.lgna.croquet.DropReceptor currentDropReceptor;
 	private org.lgna.croquet.DropSite currentPotentialDropSite;
 	private java.awt.event.MouseEvent latestMouseEvent;
+
 	public static DragStep createAndAddToTransaction( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.DragTrigger trigger ) {
 		return new DragStep( parent, model, trigger );
 	}
+
 	private DragStep( Transaction parent, org.lgna.croquet.DragModel model, org.lgna.croquet.triggers.DragTrigger trigger ) {
 		super( parent, model, trigger );
 	}
+
 	public DragStep( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	
+
 	private DropReceptorInfo[] getPotentialDropReceptorInfos() {
 		if( this.potentialDropReceptorInfos != null ) {
 			//pass
 		} else {
 			org.lgna.croquet.DragModel dragModel = this.getModel();
-			java.util.List< ? extends org.lgna.croquet.DropReceptor > potentialDropReceptors = dragModel.createListOfPotentialDropReceptors();
+			java.util.List<? extends org.lgna.croquet.DropReceptor> potentialDropReceptors = dragModel.createListOfPotentialDropReceptors();
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
 			int i = 0;
 			for( org.lgna.croquet.DropReceptor dropReceptor : potentialDropReceptors ) {
@@ -104,13 +115,15 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 		}
 		return this.potentialDropReceptorInfos;
 	}
-	
+
 	public org.lgna.croquet.components.DragComponent getDragSource() {
 		return (org.lgna.croquet.components.DragComponent)this.getViewController();
 	}
+
 	public java.awt.event.MouseEvent getLatestMouseEvent() {
 		return this.latestMouseEvent;
 	}
+
 	public void setLatestMouseEvent( java.awt.event.MouseEvent e ) {
 		this.latestMouseEvent = e;
 	}
@@ -121,21 +134,23 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 			dropReceptorInfo.getDropReceptor().dragStarted( this );
 		}
 	}
-//	public java.awt.event.MouseEvent getOriginalMouseEvent() {
-//		return (java.awt.event.MouseEvent)this.getAwtEvent();
-//	}
+
+	//	public java.awt.event.MouseEvent getOriginalMouseEvent() {
+	//		return (java.awt.event.MouseEvent)this.getAwtEvent();
+	//	}
 
 	public org.lgna.croquet.DropReceptor getCurrentDropReceptor() {
 		return this.currentDropReceptor;
 	}
-//	public void setCurrentDropReceptor( org.lgna.croquet.DropReceptor currentDropReceptor ) {
-//		this.currentDropReceptor = currentDropReceptor;
-//	}
-	
+
+	//	public void setCurrentDropReceptor( org.lgna.croquet.DropReceptor currentDropReceptor ) {
+	//		this.currentDropReceptor = currentDropReceptor;
+	//	}
+
 	public org.lgna.croquet.DropSite getCurrentPotentialDropSite() {
 		return this.currentPotentialDropSite;
 	}
-	
+
 	private org.lgna.croquet.DropReceptor getDropReceptorUnder( int x, int y ) {
 		org.lgna.croquet.DropReceptor rv = null;
 		int prevHeight = Integer.MAX_VALUE;
@@ -153,6 +168,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 		}
 		return rv;
 	}
+
 	private org.lgna.croquet.DropReceptor getDropReceptorUnder( java.awt.Rectangle bounds ) {
 		org.lgna.croquet.DropReceptor rv = null;
 		int prevHeight = Integer.MAX_VALUE;
@@ -167,6 +183,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 		}
 		return rv;
 	}
+
 	protected org.lgna.croquet.DropReceptor getDropReceptorUnder( java.awt.event.MouseEvent e ) {
 		org.lgna.croquet.DropReceptor rv = getDropReceptorUnder( e.getX(), e.getY() );
 		if( rv != null ) {
@@ -176,7 +193,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 				java.awt.Rectangle dragBounds = this.getDragSource().getDragProxy().getBounds();
 				dragBounds = javax.swing.SwingUtilities.convertRectangle( this.getDragSource().getDragProxy().getParent(), dragBounds, this.getDragSource().getAwtComponent() );
 				int x = dragBounds.x;
-				int y = dragBounds.y + dragBounds.height / 2;
+				int y = dragBounds.y + ( dragBounds.height / 2 );
 				rv = getDropReceptorUnder( x, y );
 				if( rv != null ) {
 					//pass
@@ -187,7 +204,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 		}
 		return rv;
 	}
-	
+
 	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		this.setLatestMouseEvent( e );
 		org.lgna.croquet.DropReceptor nextDropReceptor = getDropReceptorUnder( e );
@@ -228,7 +245,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 			this.getDragSource().getDragProxy().setOverDropAcceptor( this.currentDropReceptor != null );
 		}
 	}
-	
+
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( this.isCanceled() ) {
 			this.cancel( e );
@@ -237,19 +254,19 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 			if( this.currentDropReceptor != null ) {
 				org.lgna.croquet.Model model = this.currentDropReceptor.dragDropped( this );
 
-//				org.lgna.croquet.history.TransactionManager.pendDrop( model, this.currentDropReceptor, this.currentPotentialDropSite );
-//				
+				//				org.lgna.croquet.history.TransactionManager.pendDrop( model, this.currentDropReceptor, this.currentPotentialDropSite );
+				//				
 				if( model != null ) {
 					//this.addChild( new DroppedEvent( e, this.currentDropReceptor ) );
 					org.lgna.croquet.components.JComponent<?> component = this.currentDropReceptor.getViewController();
-					org.lgna.croquet.components.ViewController<?,?> viewController;
-					if( component instanceof org.lgna.croquet.components.ViewController<?,?> ) {
-						viewController = (org.lgna.croquet.components.ViewController<?,?>)component;
+					org.lgna.croquet.components.ViewController<?, ?> viewController;
+					if( component instanceof org.lgna.croquet.components.ViewController<?, ?> ) {
+						viewController = (org.lgna.croquet.components.ViewController<?, ?>)component;
 					} else {
 						viewController = null;
 					}
 					try {
-						org.lgna.croquet.history.Step< ? > step = model.fire( org.lgna.croquet.triggers.DropTrigger.createUserInstance( viewController, this.getLatestMouseEvent(), this.currentPotentialDropSite ) );
+						org.lgna.croquet.history.Step<?> step = model.fire( org.lgna.croquet.triggers.DropTrigger.createUserInstance( viewController, this.getLatestMouseEvent(), this.currentPotentialDropSite ) );
 					} catch( org.lgna.croquet.CancelException ce ) {
 						this.cancel( e );
 					}
@@ -268,6 +285,7 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 			this.hideProxies();
 		}
 	}
+
 	public void handleCancel( java.util.EventObject e ) {
 		if( this.currentDropReceptor != null ) {
 			this.currentDropReceptor.dragExited( this, false );
@@ -285,11 +303,12 @@ public class DragStep extends PrepStep< org.lgna.croquet.DragModel > {
 		this.getDragSource().hideDragProxy();
 		this.getDragSource().hideDropProxyIfNecessary();
 	}
-	
+
 	public boolean isCanceled() {
 		//todo
 		return false;
 	}
+
 	public void cancel( java.awt.event.MouseEvent e ) {
 		org.lgna.croquet.history.TransactionManager.addCancelCompletionStep( null, org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
 	}

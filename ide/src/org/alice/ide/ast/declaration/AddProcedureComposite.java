@@ -46,7 +46,8 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class AddProcedureComposite extends AddMethodComposite {
-	private static java.util.Map< org.lgna.project.ast.UserType<?>, AddProcedureComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.UserType<?>, AddProcedureComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static AddProcedureComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
 		synchronized( map ) {
 			AddProcedureComposite rv = map.get( declaringType );
@@ -59,34 +60,36 @@ public final class AddProcedureComposite extends AddMethodComposite {
 			return rv;
 		}
 	}
+
 	private AddProcedureComposite( org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "1e7af2e9-2ce0-4c7e-9ddd-9af001601660" ), new Details()
-			.valueComponentType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, org.lgna.project.ast.JavaType.VOID_TYPE )
-			.name( ApplicabilityStatus.EDITABLE )
-		, declaringType );
+				.valueComponentType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, org.lgna.project.ast.JavaType.VOID_TYPE )
+				.name( ApplicabilityStatus.EDITABLE )
+				, declaringType );
 	}
+
 	@Override
 	protected org.alice.ide.ast.declaration.views.AddProcedureView createView() {
 		return new org.alice.ide.ast.declaration.views.AddProcedureView( this );
 	}
-	
+
 	@Override
 	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
 		super.pushGeneratedContexts( ownerEdit );
 		assert ownerEdit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : ownerEdit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)ownerEdit;
-		
+
 		org.lgna.project.ast.UserType<?> declaringType = declareMethodEdit.getDeclaringType();
 		org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)declaringType;
 		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
 
-		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( namedUserType );
 			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
 		} else {
 			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-			if ( sceneType == declaringType ) {
+			if( sceneType == declaringType ) {
 				instanceFactory = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
 			} else {
 				instanceFactory = null;
@@ -101,14 +104,15 @@ public final class AddProcedureComposite extends AddMethodComposite {
 			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( org.alice.ide.members.ProcedureTemplateComposite.getInstance() );
 		}
 	}
+
 	@Override
 	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
-		if ( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().popGeneratedValue();
 			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		} else {
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
-			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();				
+			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();
 		}
 		super.popGeneratedContexts( ownerEdit );
 	}
@@ -123,6 +127,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 
 		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
 	}
+
 	@Override
 	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
 		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
@@ -131,8 +136,9 @@ public final class AddProcedureComposite extends AddMethodComposite {
 		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
 		org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( ownerTransactionHistory, method.body.getValue() );
 	}
+
 	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< AddProcedureComposite > createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver< AddProcedureComposite >( this, org.lgna.project.ast.UserType.class, this.getDeclaringType() );
+	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<AddProcedureComposite> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<AddProcedureComposite>( this, org.lgna.project.ast.UserType.class, this.getDeclaringType() );
 	}
 }

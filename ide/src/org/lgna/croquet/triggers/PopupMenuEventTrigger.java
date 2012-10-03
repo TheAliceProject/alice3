@@ -47,27 +47,33 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class PopupMenuEventTrigger extends EventObjectTrigger<javax.swing.event.PopupMenuEvent> {
-	public static PopupMenuEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?,?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+	public static PopupMenuEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
 		return new PopupMenuEventTrigger( Origin.USER, viewController, popupMenuEvent );
 	}
+
 	public static PopupMenuEventTrigger createUserInstance( javax.swing.event.PopupMenuEvent popupMenuEvent ) {
 		return createUserInstance( null, popupMenuEvent );
 	}
+
 	public static PopupMenuEventTrigger createGeneratorInstance() {
 		return new PopupMenuEventTrigger( Origin.GENERATOR, null, null );
 	}
-	private PopupMenuEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?,?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
+
+	private PopupMenuEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, javax.swing.event.PopupMenuEvent popupMenuEvent ) {
 		super( origin, viewController, popupMenuEvent );
 	}
+
 	public PopupMenuEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected java.awt.Point getPoint() {
 		return null;
 	}
+
 	@Override
-	public String getNoteText( ) {
+	public String getNoteText() {
 		return "Click to Pop Up Menu";
 	}
 }

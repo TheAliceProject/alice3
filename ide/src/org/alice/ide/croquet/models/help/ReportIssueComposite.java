@@ -42,23 +42,15 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
 import org.alice.ide.issue.CurrentProjectAttachment;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
-import org.alice.stageide.typecontext.SceneTypeComposite;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
-import org.lgna.croquet.CardComposite;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 
@@ -92,15 +84,15 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		}
 
 		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			if( !(summaryState.getValue().length() > 0) ) {
+			if( !( summaryState.getValue().length() > 0 ) ) {
 				submitBugOperation.setEnabled( false );
 				return;
 			}
-			if( !(descriptionState.getValue().length() > 0) ) {
+			if( !( descriptionState.getValue().length() > 0 ) ) {
 				submitBugOperation.setEnabled( false );
 				return;
 			}
-			if( !(stepsState.getValue().length() > 0) ) {
+			if( !( stepsState.getValue().length() > 0 ) ) {
 				submitBugOperation.setEnabled( false );
 				return;
 			}
@@ -117,18 +109,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	private final StringState stepsState = createStringState( this.createKey( "stepsState" ) );
 	private final StringState environmentState = createStringState( this.createKey( "environmentState" ), environment );
 	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, BugSubmitAttachment.YES );
-	private final BrowserOperation operation = new BrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ) ) {
-
-		@Override
-		protected URL getUrl() {
-			try {
-				return new URL( "http://bugs.alice.org:8080/" );
-			} catch( MalformedURLException e ) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-	};
+	private final org.lgna.croquet.Operation operation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 
 	private ActionOperation submitBugOperation = createActionOperation( this.createKey( "submitBugOperation" ), new Action() {
 
@@ -157,32 +138,40 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 
 	private ReportSubmissionConfiguration reportSubmissionConfiguration;
 
-	private LogInOutCardComposite logInOutCardComposite = new LogInOutCardComposite();
+	private LogInOutCardOwnerComposite logInOutCardComposite = new LogInOutCardOwnerComposite();
 
 	public ListSelectionState<BugSubmitVisibility> getVisibilityState() {
 		return this.visibilityState;
 	}
+
 	public ListSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> getTypeState() {
 		return this.typeState;
 	}
+
 	public StringState getSummaryState() {
 		return this.summaryState;
 	}
+
 	public StringState getDescriptionState() {
 		return this.descriptionState;
 	}
+
 	public StringState getStepsState() {
 		return this.stepsState;
 	}
+
 	public StringState getEnvironmentState() {
 		return this.environmentState;
 	}
+
 	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
 	}
-	public LogInOutCardComposite getLogInOutCardComposite() {
+
+	public LogInOutCardOwnerComposite getLogInOutCardComposite() {
 		return this.logInOutCardComposite;
 	}
+
 	public ActionOperation getSubmitBugOperation() {
 		return this.submitBugOperation;
 	}
@@ -191,9 +180,11 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	protected ReportIssueView createView() {
 		return new ReportIssueView( this );
 	}
-	public BrowserOperation getBrowserOperation() {
+
+	public org.lgna.croquet.Operation getBrowserOperation() {
 		return this.operation;
 	}
+
 	private String getEnvironment() {
 		StringBuffer sb = new StringBuffer();
 
@@ -225,6 +216,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 			return "AIIIP";
 		}
 	}
+
 	public JIRAReport createJIRAReport() {
 		JIRAReport rv = new JIRAReport();
 		rv.setProjectKey( getJIRAProjectKey() );
@@ -264,6 +256,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 			throw new Exception( "pass" );
 		}
 	}
+
 	public void uploadToJIRAViaRPC( JIRAReport jiraReport ) throws Exception {
 		if( jiraReport != null ) {
 			final boolean STREAM_MESSAGES = true;
@@ -279,7 +272,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 			throw new Exception( "pass" );
 		}
 	}
-	
+
 	@Override
 	public void handlePreActivation() {
 		this.descriptionState.setValueTransactionlessly( "" );
@@ -289,6 +282,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		this.logInOutCardComposite.handlePreActivation();
 		super.handlePreActivation();
 	}
+
 	@Override
 	public void handlePostDeactivation() {
 		this.logInOutCardComposite.handlePostDeactivation();
@@ -310,6 +304,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 					return super.getJIRAViaRPCAuthenticator();
 				}
 			}
+
 			@Override
 			public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
 				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane.BUGS_ALICE_ORG_KEY );

@@ -1,6 +1,17 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_AMBIENT;
+import static javax.media.opengl.GL.GL_AMBIENT_AND_DIFFUSE;
+import static javax.media.opengl.GL.GL_DIFFUSE;
+import static javax.media.opengl.GL.GL_EMISSION;
+import static javax.media.opengl.GL.GL_FILL;
+import static javax.media.opengl.GL.GL_LEQUAL;
+import static javax.media.opengl.GL.GL_LESS;
+import static javax.media.opengl.GL.GL_LINE;
+import static javax.media.opengl.GL.GL_POINT;
+import static javax.media.opengl.GL.GL_SHININESS;
+import static javax.media.opengl.GL.GL_SPECULAR;
+import static javax.media.opengl.GL.GL_TEXTURE_2D;
 
 public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.SimpleAppearance> extends AppearanceAdapter<E> {
 	private boolean m_isShaded;
@@ -20,11 +31,12 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 	public boolean isActuallyShowing() {
 		return m_isMaterialActuallyShowing;
 	}
+
 	@Override
 	public boolean isAlphaBlended() {
 		return m_isMaterialAlphaBlended;
 	}
-	
+
 	@Override
 	public boolean isAllAlphaBlended() {
 		return m_isMaterialAlphaBlended;
@@ -66,6 +78,7 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 		m_isMaterialActuallyShowing = opacity > 0.0f;
 		m_isMaterialAlphaBlended = opacity < 1.0f;
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.ambientColor ) {
@@ -87,7 +100,7 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 			}
 		} else if( property == m_element.shadingStyle ) {
 			edu.cmu.cs.dennisc.scenegraph.ShadingStyle shadingStyle = m_element.shadingStyle.getValue();
-			if( shadingStyle == null || shadingStyle.equals( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE ) ) {
+			if( ( shadingStyle == null ) || shadingStyle.equals( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.NONE ) ) {
 				m_isShaded = false;
 			} else if( shadingStyle.equals( edu.cmu.cs.dennisc.scenegraph.ShadingStyle.FLAT ) ) {
 				m_isShaded = true;

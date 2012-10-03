@@ -48,7 +48,8 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTransient extends AbstractDeclaration implements Accessible {
-	public abstract AbstractType<?,?,?> getValueType();
+	public abstract AbstractType<?, ?, ?> getValueType();
+
 	public String getValidName() {
 		return this.getValidName( null );
 	}

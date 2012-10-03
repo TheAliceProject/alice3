@@ -46,12 +46,13 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum UriCodec implements org.lgna.croquet.ItemCodec< java.net.URI > {
+public enum UriCodec implements org.lgna.croquet.ItemCodec<java.net.URI> {
 	SINGLETON;
 	public Class<java.net.URI> getValueClass() {
 		return java.net.URI.class;
 	}
-	public java.net.URI decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+
+	public java.net.URI decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
 			String path = binaryDecoder.decodeString();
@@ -60,7 +61,8 @@ public enum UriCodec implements org.lgna.croquet.ItemCodec< java.net.URI > {
 			return null;
 		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI value) {
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.net.URI value ) {
 		if( value != null ) {
 			binaryEncoder.encode( true );
 			binaryEncoder.encode( value.toString() );
@@ -68,12 +70,8 @@ public enum UriCodec implements org.lgna.croquet.ItemCodec< java.net.URI > {
 			binaryEncoder.encode( false );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, java.net.URI value) {
-		if( value != null ) {
-			rv.append( value.toString() );
-		} else {
-			rv.append( value );
-		}
-		return rv;
+
+	public void appendRepresentation( StringBuilder sb, java.net.URI value ) {
+		sb.append( value );
 	}
 }

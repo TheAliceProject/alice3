@@ -51,40 +51,40 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
  */
 public class EventCriteriaManager {
 
-	private List< ManipulationEventCriteria > manipulationConditions = new java.util.LinkedList< ManipulationEventCriteria >();
+	private List<ManipulationEventCriteria> manipulationConditions = new java.util.LinkedList<ManipulationEventCriteria>();
 	private AbstractTransformable targetTransformable;
 
 	public void addCondition( ManipulationEventCriteria condition )
 	{
 		synchronized( this.manipulationConditions ) {
-			if ( !this.manipulationConditions.contains( condition ) )
+			if( !this.manipulationConditions.contains( condition ) )
 			{
 				this.manipulationConditions.add( condition );
 			}
 		}
 	}
-	
+
 	public void removeCondition( ManipulationEventCriteria condition )
 	{
 		synchronized( this.manipulationConditions ) {
 			this.manipulationConditions.remove( condition );
 		}
 	}
-	
-	public void setTargetTransformable(AbstractTransformable transformable)
+
+	public void setTargetTransformable( AbstractTransformable transformable )
 	{
 		this.targetTransformable = transformable;
 	}
-	
+
 	public boolean matches( ManipulationEvent event )
 	{
-		if (this.targetTransformable == null || event.getTarget() == null || this.targetTransformable == event.getTarget())
+		if( ( this.targetTransformable == null ) || ( event.getTarget() == null ) || ( this.targetTransformable == event.getTarget() ) )
 		{
-			for (ManipulationEventCriteria condition : this.manipulationConditions)
+			for( ManipulationEventCriteria condition : this.manipulationConditions )
 			{
 				boolean matches = condition.matches( event );
-	//			System.out.println("checking "+condition+": "+matches);
-				if (condition.matches( event ))
+				//			System.out.println("checking "+condition+": "+matches);
+				if( condition.matches( event ) )
 				{
 					return true;
 				}
@@ -92,5 +92,5 @@ public class EventCriteriaManager {
 		}
 		return false;
 	}
-	
+
 }

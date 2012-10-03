@@ -47,7 +47,7 @@ package org.lgna.cheshire.simple.stencil.features;
  */
 public class DialogCloseButtonFeature extends org.lgna.cheshire.simple.Feature {
 	public DialogCloseButtonFeature( final org.lgna.croquet.history.CompletionStep<?> step ) {
-		super( new org.lgna.croquet.resolvers.RuntimeResolver< org.lgna.croquet.components.TrackableShape >() {
+		super( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 			public org.lgna.croquet.components.TrackableShape getResolved() {
 				org.lgna.croquet.PlainDialogOperation.InternalCloseOperation closeOperation = (org.lgna.croquet.PlainDialogOperation.InternalCloseOperation)step.getModel();
 				org.lgna.croquet.PlainDialogOperation dialogOperation = closeOperation.getPlainDialogOperation();
@@ -64,35 +64,43 @@ public class DialogCloseButtonFeature extends org.lgna.cheshire.simple.Feature {
 			}
 		}, org.lgna.cheshire.simple.Feature.ConnectionPreference.EAST_WEST );
 	}
+
 	@Override
 	protected boolean isPathRenderingDesired() {
 		return true;
 	}
+
 	@Override
 	public boolean isPotentiallyScrollable() {
 		return false;
 	}
+
 	@Override
 	protected java.awt.Insets getBoundsInsets() {
 		return null;
 	}
+
 	@Override
 	protected java.awt.Insets getContainsInsets() {
 		return null;
 	}
+
 	@Override
 	protected java.awt.Insets getPaintInsets() {
 		return null;
 	}
+
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForPaint(org.lgna.croquet.components.Component<?> asSeenBy) {
+	public java.awt.geom.Area getAreaToSubstractForPaint( org.lgna.croquet.components.Component<?> asSeenBy ) {
 		return null;
 	}
+
 	@Override
-	public java.awt.geom.Area getAreaToSubstractForContains(org.lgna.croquet.components.Component<?> asSeenBy) {
+	public java.awt.geom.Area getAreaToSubstractForContains( org.lgna.croquet.components.Component<?> asSeenBy ) {
 		return null;
 	}
+
 	@Override
-	protected void paint(java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection) {
+	protected void paint( java.awt.Graphics2D g2, java.awt.Shape shape, Connection actualConnection ) {
 	}
 }

@@ -46,24 +46,29 @@ package org.alice.ide.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceCodec< R extends org.lgna.common.Resource > implements org.lgna.croquet.ItemCodec< R > {
-	private static java.util.Map< Class< org.lgna.common.Resource >, ResourceCodec< org.lgna.common.Resource > > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < R extends org.lgna.common.Resource > ResourceCodec< R > getInstance( Class< R > cls ) {
-		ResourceCodec< ? > rv = map.get( cls );
+public class ResourceCodec<R extends org.lgna.common.Resource> implements org.lgna.croquet.ItemCodec<R> {
+	private static java.util.Map<Class<org.lgna.common.Resource>, ResourceCodec<org.lgna.common.Resource>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized <R extends org.lgna.common.Resource> ResourceCodec<R> getInstance( Class<R> cls ) {
+		ResourceCodec<?> rv = map.get( cls );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new ResourceCodec< R >( cls );
+			rv = new ResourceCodec<R>( cls );
 		}
-		return (ResourceCodec< R >)rv;
+		return (ResourceCodec<R>)rv;
 	}
+
 	private Class<R> valueCls;
+
 	private ResourceCodec( Class<R> valueCls ) {
 		this.valueCls = valueCls;
 	}
-	public Class< R > getValueClass() {
+
+	public Class<R> getValueClass() {
 		return this.valueCls;
 	}
+
 	public R decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
@@ -74,15 +79,16 @@ public class ResourceCodec< R extends org.lgna.common.Resource > implements org.
 			return null;
 		}
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, R value) {
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, R value ) {
 		boolean valueIsNotNull = value != null;
 		binaryEncoder.encode( valueIsNotNull );
 		if( valueIsNotNull ) {
 			binaryEncoder.encode( value.getId() );
 		}
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, R value) {
-		rv.append( value );
-		return rv;
+
+	public void appendRepresentation( StringBuilder sb, R value ) {
+		sb.append( value );
 	}
 }

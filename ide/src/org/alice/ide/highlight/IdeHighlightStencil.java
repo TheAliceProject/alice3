@@ -49,11 +49,12 @@ public class IdeHighlightStencil extends HighlightStencil {
 	public IdeHighlightStencil( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId ) {
 		super( window, layerId );
 	}
+
 	public void showHighlightOverField( final org.lgna.project.ast.UserField field, String noteText ) {
 		if( field != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 				public org.lgna.croquet.components.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 					if( composite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
 						if( view instanceof org.alice.ide.declarationseditor.type.components.TypeDeclarationView ) {
@@ -77,15 +78,15 @@ public class IdeHighlightStencil extends HighlightStencil {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "field is null", noteText );
 		}
 	}
+
 	public void showHighlightOverExpression( final org.lgna.project.ast.Expression expression, String noteText ) {
 		if( expression != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 				public org.lgna.croquet.components.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 					if( composite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
 
-						
 						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
 						for( javax.swing.AbstractButton jButton : jButtons ) {
 							org.lgna.project.ast.Expression candidate = null;
@@ -106,8 +107,8 @@ public class IdeHighlightStencil extends HighlightStencil {
 							}
 							if( candidate == expression ) {
 								return component;
-//							} else {
-//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+								//							} else {
+								//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
 							}
 						}
 					}
@@ -118,11 +119,12 @@ public class IdeHighlightStencil extends HighlightStencil {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
 		}
 	}
-	public void showHighlightOverStatementAndRenderWindow( final org.lgna.project.ast.Statement statement ) {
+
+	public void showHighlightOverStatement( final org.lgna.project.ast.Statement statement, String message ) {
 		if( statement != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 				public org.lgna.croquet.components.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?,?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 					if( composite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
 						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
@@ -135,22 +137,19 @@ public class IdeHighlightStencil extends HighlightStencil {
 							}
 							if( candidate == statement ) {
 								return component;
-//							} else {
-//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+								//							} else {
+								//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
 							}
 						}
 					}
 					return null;
 				}
-			}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
-				public org.lgna.croquet.components.TrackableShape getResolved() {
-					return org.alice.stageide.typecontext.SceneTypeComposite.getInstance().getView();
-				}
-			}, "" );
+			}, null, message );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	}
+
 	public void showHighlightOverCroquetViewController( final org.lgna.croquet.Model model, String noteText ) {
 		if( model != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
@@ -167,5 +166,66 @@ public class IdeHighlightStencil extends HighlightStencil {
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( noteText );
 		}
+	}
+
+	private org.lgna.croquet.components.TrackableShape getRenderWindow() {
+		org.alice.ide.perspectives.ProjectPerspective perspective = org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue();
+		if( perspective != null ) {
+			return perspective.getRenderWindow();
+		} else {
+			return null;
+		}
+	}
+
+	public void showHighlightOverStatementAndRenderWindow( final org.lgna.project.ast.Statement statement ) {
+		if( statement != null ) {
+			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+				public org.lgna.croquet.components.TrackableShape getResolved() {
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+					if( composite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
+						for( javax.swing.AbstractButton jButton : jButtons ) {
+							org.lgna.project.ast.Statement candidate = null;
+							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jButton );
+							if( component instanceof org.alice.ide.common.AbstractStatementPane ) {
+								org.alice.ide.common.AbstractStatementPane statementPane = (org.alice.ide.common.AbstractStatementPane)component;
+								candidate = statementPane.getStatement();
+							}
+							if( candidate == statement ) {
+								return component;
+								//							} else {
+								//								edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+							}
+						}
+					}
+					return null;
+				}
+			}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+				public org.lgna.croquet.components.TrackableShape getResolved() {
+					return getRenderWindow();
+				}
+			}, "" );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
+		}
+	}
+
+	public void showHighlightOverCroquetViewControllerAndRenderWindow( final org.lgna.croquet.Model model ) {
+		this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.ComponentManager.getFirstComponent( model );
+				if( component != null ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "cannot resolve first component for", model );
+				}
+				return component;
+			}
+		}, new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
+			public org.lgna.croquet.components.TrackableShape getResolved() {
+				return getRenderWindow();
+			}
+		}, "" );
 	}
 }

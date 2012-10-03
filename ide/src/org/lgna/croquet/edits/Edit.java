@@ -51,18 +51,23 @@ import org.lgna.croquet.Retargeter;
  * @author Dennis Cosgrove
  */
 public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private transient org.lgna.croquet.history.CompletionStep< M > completionStep;
-	public Edit( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
+	private transient org.lgna.croquet.history.CompletionStep<M> completionStep;
+
+	public Edit( org.lgna.croquet.history.CompletionStep<M> completionStep ) {
 		this.completionStep = completionStep;
 	}
+
 	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		this.completionStep = (org.lgna.croquet.history.CompletionStep< M >) step;
+		this.completionStep = (org.lgna.croquet.history.CompletionStep<M>)step;
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
+
 	public boolean isValid() {
 		return true;
 	}
+
 	public M getModel() {
 		if( this.completionStep != null ) {
 			return this.completionStep.getModel();
@@ -70,6 +75,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 			return null;
 		}
 	}
+
 	public Group getGroup() {
 		M model = this.getModel();
 		if( model != null ) {
@@ -78,23 +84,28 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 			return null;
 		}
 	}
-	public org.lgna.croquet.history.CompletionStep< M > getCompletionStep() {
+
+	public org.lgna.croquet.history.CompletionStep<M> getCompletionStep() {
 		return this.completionStep;
 	}
-	public void setCompletionStep( org.lgna.croquet.history.CompletionStep< M > completionStep ) {
+
+	public void setCompletionStep( org.lgna.croquet.history.CompletionStep<M> completionStep ) {
 		assert this.completionStep == null : this.completionStep;
 		this.completionStep = completionStep;
 	}
+
 	public boolean canUndo() {
 		return true;
 	}
+
 	public boolean canRedo() {
 		return true;
 	}
-	
+
 	protected abstract void doOrRedoInternal( boolean isDo );
+
 	protected abstract void undoInternal();
-	
+
 	public final void doOrRedo( boolean isDo ) {
 		if( isDo ) {
 			//pass
@@ -112,6 +123,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 			Manager.popUndoOrRedo();
 		}
 	}
+
 	public final void undo() {
 		if( canUndo() ) {
 			//pass
@@ -129,6 +141,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 	protected StringBuilder updateTutorialTransactionTitle( StringBuilder title ) {
 		return title;
 	}
+
 	public final String getTutorialTransactionTitle() {
 		StringBuilder sb = new StringBuilder();
 		this.updateTutorialTransactionTitle( sb );
@@ -140,6 +153,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 	}
 
 	protected abstract StringBuilder updatePresentation( StringBuilder rv );
+
 	public final String getPresentation() {
 		StringBuilder sb = new StringBuilder();
 		this.updatePresentation( sb );
@@ -148,32 +162,37 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		}
 		return sb.toString();
 	}
+
 	public String getRedoPresentation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Redo:" );
 		this.updatePresentation( sb );
 		return sb.toString();
 	}
+
 	public String getUndoPresentation() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Undo:" );
 		this.updatePresentation( sb );
 		return sb.toString();
 	}
-	public ReplacementAcceptability getReplacementAcceptability( Edit< ? > replacementCandidate ) {
+
+	public ReplacementAcceptability getReplacementAcceptability( Edit<?> replacementCandidate ) {
 		if( replacementCandidate != null ) {
 			return ReplacementAcceptability.PERFECT_MATCH;
 		} else {
 			return ReplacementAcceptability.createRejection( "replacement is null" );
 		}
 	}
+
 	public void retarget( Retargeter retargeter ) {
 	}
-	public void addKeyValuePairs( Retargeter retargeter, Edit< ? > edit ) {
+
+	public void addKeyValuePairs( Retargeter retargeter, Edit<?> edit ) {
 	}
-	
+
 	protected <D extends org.lgna.croquet.DropSite> D findFirstDropSite( Class<D> cls ) {
-		org.lgna.croquet.history.Step< ? > step = this.getCompletionStep();
+		org.lgna.croquet.history.Step<?> step = this.getCompletionStep();
 		while( step != null ) {
 			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
 			if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
@@ -189,7 +208,7 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		}
 		return null;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

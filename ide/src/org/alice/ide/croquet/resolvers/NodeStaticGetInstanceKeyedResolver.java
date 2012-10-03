@@ -46,28 +46,32 @@ package org.alice.ide.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver< T > {
-	public NodeStaticGetInstanceKeyedResolver( T instance,Class< ? extends org.lgna.project.ast.Node >[] parameterTypes, Object[] arguments ) {
+public class NodeStaticGetInstanceKeyedResolver<T> extends org.lgna.croquet.resolvers.StaticGetInstanceKeyedResolver<T> {
+	public NodeStaticGetInstanceKeyedResolver( T instance, Class<? extends org.lgna.project.ast.Node>[] parameterTypes, Object[] arguments ) {
 		super( instance, parameterTypes, arguments );
 	}
-	public NodeStaticGetInstanceKeyedResolver( T instance, Class< ? extends org.lgna.project.ast.Node > parameterType, org.lgna.project.ast.Node node ) {
+
+	public NodeStaticGetInstanceKeyedResolver( T instance, Class<? extends org.lgna.project.ast.Node> parameterType, org.lgna.project.ast.Node node ) {
 		this( instance, new Class[] { parameterType }, new Object[] { node } );
 	}
+
 	public NodeStaticGetInstanceKeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
+
 	@Override
 	protected Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		final int N = binaryDecoder.decodeInt();
 		org.lgna.project.ast.Node[] rv = new org.lgna.project.ast.Node[ N ];
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		for( int i=0; i<N; i++ ) {
+		for( int i = 0; i < N; i++ ) {
 			java.util.UUID id = binaryDecoder.decodeId();
 			rv[ i ] = org.lgna.project.ProgramTypeUtilities.lookupNode( ide.getProject(), id );
 			//assert rv[ i ] != null : this;
 		}
 		return rv;
 	}
+
 	@Override
 	protected void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.lang.Object[] arguments ) {
 		binaryEncoder.encode( arguments.length );

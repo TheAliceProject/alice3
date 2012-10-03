@@ -49,71 +49,72 @@ import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class JointRotationRingHandle extends RotationRingHandle {
-	
+
 	protected static final double JOINT_MIN_RADIUS = .2d;
-	
-	public JointRotationRingHandle( )
+
+	public JointRotationRingHandle()
 	{
 		super();
 	}
-	
+
 	public JointRotationRingHandle( MovementDirection rotationAxisDirection )
 	{
 		super( rotationAxisDirection );
 	}
-	
+
 	public JointRotationRingHandle( MovementDirection rotationAxisDirection, Color4f color )
 	{
-		super( rotationAxisDirection, color);
+		super( rotationAxisDirection, color );
 	}
-	
+
 	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
 	{
-		super(rotationAxisDirection, handlePosition);
+		super( rotationAxisDirection, handlePosition );
 	}
-	
+
 	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f color )
 	{
-		super(rotationAxisDirection, handlePosition, color);
+		super( rotationAxisDirection, handlePosition, color );
 	}
+
 	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor )
 	{
-		super(rotationAxisDirection, handlePosition, baseColor, activeColor, rolloverColor, mutedColor);
+		super( rotationAxisDirection, handlePosition, baseColor, activeColor, rolloverColor, mutedColor );
 	}
-	
+
 	public JointRotationRingHandle( JointRotationRingHandle handle )
 	{
-		super(handle.rotationAxisDirection, handle.handlePosition, handle.baseColor, handle.activeColor, handle.rolloverColor, handle.mutedColor);
+		super( handle.rotationAxisDirection, handle.handlePosition, handle.baseColor, handle.activeColor, handle.rolloverColor, handle.mutedColor );
 	}
-	
+
 	@Override
 	public JointRotationRingHandle clone()
 	{
-		JointRotationRingHandle newHandle = new JointRotationRingHandle(this);
+		JointRotationRingHandle newHandle = new JointRotationRingHandle( this );
 		return newHandle;
 	}
-	
+
 	@Override
 	protected double getMinTorusRadius() {
-		return super.getMinTorusRadius()*.8;
+		return super.getMinTorusRadius() * .8;
 	}
-	
+
 	@Override
 	protected double getMaxTorusRadius() {
-		return super.getMaxTorusRadius()*.8;
+		return super.getMaxTorusRadius() * .8;
 	}
-	
+
 	@Override
-	protected double getMajorAxisRadius( )
+	protected double getMajorAxisRadius()
 	{
-		if (this.getParentTransformable() != null)
+		if( this.getParentTransformable() != null )
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-			double radius = boundingBox.getDiagonal()*.5;
-			if (Double.isNaN( radius ) || radius < JOINT_MIN_RADIUS)
+			double radius = boundingBox.getDiagonal() * .5;
+			if( Double.isNaN( radius ) || ( radius < JOINT_MIN_RADIUS ) )
 			{
 				radius = JOINT_MIN_RADIUS;
 			}

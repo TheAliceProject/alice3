@@ -44,7 +44,6 @@ package org.alice.ide.croquet.models.ast;
 
 import javax.swing.Icon;
 
-import org.alice.ide.croquet.models.project.FindFieldsFrameComposite;
 import org.alice.stageide.icons.IconFactoryManager;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
@@ -67,14 +66,14 @@ public class DeleteFieldFrameView extends BorderPanel {
 		//		System.out.println( composite.getField().getValueType() );
 		//		System.out.println( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy() );
 		//		BufferedImage image = AliceResourceUtilties.getThumbnail( composite.getField().getValueType().getFirstEncounteredJavaType().getClassReflectionProxy().getReification() );
-		ImmutableTextArea textArea = new ImmutableTextArea( composite.getBleh() );
+		ImmutableTextArea textArea = composite.getBleh().createImmutableTextArea();
 		//		System.out.println(image);
 		//		Icon icon = new ScaledImageIcon( image, 120, 90 );
-//		System.out.println( composite.getField() );
+		//		System.out.println( composite.getField() );
 		IconFactory iconFactory = IconFactoryManager.getIconFactoryForField( composite.getField() );
 		Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE );
-//		System.out.println( "icon factory: " + iconFactory );
-//		System.out.println( "icon: " + icon );
+		//		System.out.println( "icon factory: " + iconFactory );
+		//		System.out.println( "icon: " + icon );
 		Label label = new Label( icon );
 		this.addComponent( label, Constraint.LINE_START );
 		GridPanel panel = GridPanel.createGridPane( 3, 1 );
@@ -82,7 +81,7 @@ public class DeleteFieldFrameView extends BorderPanel {
 		panel.addComponent( textArea );
 		panel.addComponent( new Label() );
 		this.addComponent( panel, Constraint.CENTER );
-//		FindFieldsFrameComposite searchFrame = FindFieldsFrameComposite.getFrameFor( composite.getField() );
+		//		FindFieldsFrameComposite searchFrame = FindFieldsFrameComposite.getFrameFor( composite.getField() );
 		this.addComponent( composite.getSearchFrame().getBooleanState().createPushButton(), Constraint.PAGE_END );
 	}
 }

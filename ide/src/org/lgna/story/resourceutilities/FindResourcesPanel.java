@@ -44,24 +44,27 @@ package org.lgna.story.resourceutilities;
 
 import javax.swing.event.DocumentEvent;
 
-
-
 /**
  * @author dculyba
- *
+ * 
  */
 public class FindResourcesPanel extends javax.swing.JPanel {
-	
+
 	private static interface FileDialog {
 		public String getFile();
+
 		public void setFile( String filename );
+
 		public String getDirectory();
+
 		public void setDirectory( String path );
+
 		public void show();
 	}
-	
+
 	private static class AwtFileDialog implements FileDialog {
 		private final java.awt.FileDialog awtFileDialog;
+
 		public AwtFileDialog( java.awt.Component root, String title, int mode ) {
 			if( root instanceof java.awt.Frame ) {
 				awtFileDialog = new java.awt.FileDialog( (java.awt.Frame)root, title, mode );
@@ -71,35 +74,43 @@ public class FindResourcesPanel extends javax.swing.JPanel {
 				awtFileDialog = new java.awt.FileDialog( (java.awt.Dialog)null, title, mode );
 			}
 		}
+
 		public String getFile() {
 			return this.awtFileDialog.getFile();
 		}
+
 		public void setFile( String filename ) {
 			this.awtFileDialog.setFile( filename );
 		}
+
 		public String getDirectory() {
 			return this.awtFileDialog.getDirectory();
 		}
+
 		public void setDirectory( String path ) {
 			this.awtFileDialog.setDirectory( path );
 		}
+
 		public void show() {
 			this.awtFileDialog.setVisible( true );
 		}
 	}
+
 	private static class SwingFileDialog implements FileDialog {
 		private final javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser();
 		private final java.awt.Component root;
 		private final String title;
 		private final int mode;
 		private int result = javax.swing.JFileChooser.CANCEL_OPTION;
+
 		public SwingFileDialog( java.awt.Component root, String title, int mode ) {
 			this.root = root;
 			this.title = title;
 			this.mode = mode;
-			this.jFileChooser.setApproveButtonText("Select");
-			this.jFileChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
+			this.jFileChooser.setApproveButtonText( "Select" );
+			this.jFileChooser.setFileSelectionMode( javax.swing.JFileChooser.DIRECTORIES_ONLY );
 		}
+
 		public String getFile() {
 			if( this.result != javax.swing.JFileChooser.CANCEL_OPTION ) {
 				java.io.File file = this.jFileChooser.getSelectedFile();
@@ -112,9 +123,11 @@ public class FindResourcesPanel extends javax.swing.JPanel {
 				return null;
 			}
 		}
+
 		public void setFile( String filename ) {
-			this.jFileChooser.setSelectedFile( new java.io.File(filename) );
+			this.jFileChooser.setSelectedFile( new java.io.File( filename ) );
 		}
+
 		public String getDirectory() {
 			if( this.result != javax.swing.JFileChooser.CANCEL_OPTION ) {
 				java.io.File file = this.jFileChooser.getCurrentDirectory();
@@ -127,11 +140,13 @@ public class FindResourcesPanel extends javax.swing.JPanel {
 				return null;
 			}
 		}
+
 		public void setDirectory( String path ) {
 			if( path != null ) {
 				this.jFileChooser.setCurrentDirectory( new java.io.File( path ) );
 			}
 		}
+
 		public void show() {
 			//todo: use this.title
 			this.result = javax.swing.JFileChooser.CANCEL_OPTION;
@@ -140,13 +155,13 @@ public class FindResourcesPanel extends javax.swing.JPanel {
 			} else {
 				this.result = this.jFileChooser.showSaveDialog( this.root );
 			}
-			
+
 		}
 	}
-	
+
 	class BrowseAction extends javax.swing.AbstractAction {
 		private final FileDialog jFileChooser;
-		
+
 		public BrowseAction() {
 			super( "browse" );
 			String title = "Select gallery directory";
@@ -155,202 +170,208 @@ public class FindResourcesPanel extends javax.swing.JPanel {
 			} else {
 				jFileChooser = new AwtFileDialog( FindResourcesPanel.this, title, java.awt.FileDialog.LOAD );
 			}
-			
+
 		}
+
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			jFileChooser.show();
-			if (jFileChooser.getDirectory() != null && jFileChooser.getFile() != null) {
-				setGalleryDir(new java.io.File(jFileChooser.getDirectory(), jFileChooser.getFile()));
+			if( ( jFileChooser.getDirectory() != null ) && ( jFileChooser.getFile() != null ) ) {
+				setGalleryDir( new java.io.File( jFileChooser.getDirectory(), jFileChooser.getFile() ) );
 			}
 		}
 	}
+
 	class OkayAction extends javax.swing.AbstractAction {
 		public OkayAction() {
 			super( "OK" );
 		}
+
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			javax.swing.SwingUtilities.getRoot( FindResourcesPanel.this ).setVisible( false );
 		}
 	}
+
 	class CancelAction extends javax.swing.AbstractAction {
 		public CancelAction() {
 			super( "Cancel" );
 		}
+
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			javax.swing.SwingUtilities.getRoot( FindResourcesPanel.this ).setVisible( false );
 		}
 	}
-	
+
 	private static class SingletonHolder {
-        private static FindResourcesPanel instance = new FindResourcesPanel();
-    }
-    public static FindResourcesPanel getInstance() {
-        return SingletonHolder.instance;
-    }
-	
+		private static FindResourcesPanel instance = new FindResourcesPanel();
+	}
+
+	public static FindResourcesPanel getInstance() {
+		return SingletonHolder.instance;
+	}
+
 	private BrowseAction browseAction = new BrowseAction();
 	private javax.swing.JButton browseButton = new javax.swing.JButton( browseAction );
 	private javax.swing.JButton okayButton = new javax.swing.JButton( new OkayAction() );
 	private javax.swing.JButton cancelButton = new javax.swing.JButton( new CancelAction() );
-	private javax.swing.JTextArea textDescription = new javax.swing.JTextArea( 
-			"Alice can't find the gallery resources. If you have Alice installed, please use the 'browse' button to navigate to the Alice install directory.");
-	
+	private javax.swing.JTextArea textDescription = new javax.swing.JTextArea(
+			"Alice can't find the gallery resources. If you have Alice installed, please use the 'browse' button to navigate to the Alice install directory." );
+
 	private javax.swing.JTextField installDirectoryField = new javax.swing.JTextField();
 	private javax.swing.JLabel statusLabel = new javax.swing.JLabel();
 	private java.io.File galleryDir = null;
-	
+
 	private FindResourcesPanel() {
 		java.awt.Font font = this.browseButton.getFont();
 		this.browseButton.setFont( font.deriveFont( font.getSize2D() * 1.2f ) );
 		this.browseButton.setAlignmentX( java.awt.Component.CENTER_ALIGNMENT );
-		java.io.File startingDir = new java.io.File("");
-		this.browseAction.jFileChooser.setDirectory(startingDir.getAbsolutePath());
-		this.textDescription.setEditable(false);
+		java.io.File startingDir = new java.io.File( "" );
+		this.browseAction.jFileChooser.setDirectory( startingDir.getAbsolutePath() );
+		this.textDescription.setEditable( false );
 		this.textDescription.setLineWrap( true );
 		this.textDescription.setWrapStyleWord( true );
-		this.textDescription.setBorder(null);
-		this.textDescription.setOpaque(false);
-		this.textDescription.setBackground(new java.awt.Color(1, 1, 1, 0));
-		this.installDirectoryField.setText(startingDir.getAbsolutePath());
-		this.installDirectoryField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+		this.textDescription.setBorder( null );
+		this.textDescription.setOpaque( false );
+		this.textDescription.setBackground( new java.awt.Color( 1, 1, 1, 0 ) );
+		this.installDirectoryField.setText( startingDir.getAbsolutePath() );
+		this.installDirectoryField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 
-			public void insertUpdate(DocumentEvent e) {
+			public void insertUpdate( DocumentEvent e ) {
 				doUpdate();
 			}
 
-			public void removeUpdate(DocumentEvent e) {
+			public void removeUpdate( DocumentEvent e ) {
 				doUpdate();
 			}
 
-			public void changedUpdate(DocumentEvent e) {
+			public void changedUpdate( DocumentEvent e ) {
 				doUpdate();
 			}
-			
-		});
+
+		} );
 		this.doUpdate();
 		this.setLayout( new java.awt.GridBagLayout() );
-		
-		this.add(textDescription, new java.awt.GridBagConstraints( 
-                0, //gridX
-                0, //gridY
-                2, //gridWidth
-                1, //gridHeight
-                0.0, //weightX
-                0.0, //weightY
-                java.awt.GridBagConstraints.CENTER, //anchor 
-                java.awt.GridBagConstraints.HORIZONTAL, //fill
-                new java.awt.Insets(8,8,10,8), //insets: top, left, bottom, right
-                0, //ipadX
-                0 ) //ipadY
+
+		this.add( textDescription, new java.awt.GridBagConstraints(
+				0, //gridX
+				0, //gridY
+				2, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				java.awt.GridBagConstraints.CENTER, //anchor 
+				java.awt.GridBagConstraints.HORIZONTAL, //fill
+				new java.awt.Insets( 8, 8, 10, 8 ), //insets: top, left, bottom, right
+				0, //ipadX
+				0 ) //ipadY
 		);
-		this.add(installDirectoryField, new java.awt.GridBagConstraints( 
-                0, //gridX
-                1, //gridY
-                1, //gridWidth
-                1, //gridHeight
-                1.0, //weightX
-                0.0, //weightY
-                java.awt.GridBagConstraints.EAST, //anchor 
-                java.awt.GridBagConstraints.HORIZONTAL, //fill
-                new java.awt.Insets(2,4,2,2), //insets: top, left, bottom, right
-                0, //ipadX
-                0 ) //ipadY
+		this.add( installDirectoryField, new java.awt.GridBagConstraints(
+				0, //gridX
+				1, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				java.awt.GridBagConstraints.EAST, //anchor 
+				java.awt.GridBagConstraints.HORIZONTAL, //fill
+				new java.awt.Insets( 2, 4, 2, 2 ), //insets: top, left, bottom, right
+				0, //ipadX
+				0 ) //ipadY
 		);
-		this.add(browseButton, new java.awt.GridBagConstraints( 
-                1, //gridX
-                1, //gridY
-                1, //gridWidth
-                1, //gridHeight
-                0.0, //weightX
-                0.0, //weightY
-                java.awt.GridBagConstraints.WEST, //anchor 
-                java.awt.GridBagConstraints.NONE, //fill
-                new java.awt.Insets(2,4,2,4), //insets: top, left, bottom, right
-                0, //ipadX
-                0 ) //ipadY
+		this.add( browseButton, new java.awt.GridBagConstraints(
+				1, //gridX
+				1, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				java.awt.GridBagConstraints.WEST, //anchor 
+				java.awt.GridBagConstraints.NONE, //fill
+				new java.awt.Insets( 2, 4, 2, 4 ), //insets: top, left, bottom, right
+				0, //ipadX
+				0 ) //ipadY
 		);
-		this.add(statusLabel, new java.awt.GridBagConstraints( 
-                0, //gridX
-                2, //gridY
-                2, //gridWidth
-                1, //gridHeight
-                0.0, //weightX
-                0.0, //weightY
-                java.awt.GridBagConstraints.CENTER, //anchor 
-                java.awt.GridBagConstraints.NONE, //fill
-                new java.awt.Insets(12,4,2,4), //insets: top, left, bottom, right
-                0, //ipadX
-                0 ) //ipadY
+		this.add( statusLabel, new java.awt.GridBagConstraints(
+				0, //gridX
+				2, //gridY
+				2, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				java.awt.GridBagConstraints.CENTER, //anchor 
+				java.awt.GridBagConstraints.NONE, //fill
+				new java.awt.Insets( 12, 4, 2, 4 ), //insets: top, left, bottom, right
+				0, //ipadX
+				0 ) //ipadY
 		);
-		this.add(javax.swing.Box.createVerticalGlue(), new java.awt.GridBagConstraints( 
-                0, //gridX
-                3, //gridY
-                2, //gridWidth
-                1, //gridHeight
-                1.0, //weightX
-                1.0, //weightY
-                java.awt.GridBagConstraints.CENTER, //anchor 
-                java.awt.GridBagConstraints.BOTH, //fill
-                new java.awt.Insets(0,0,0,0), //insets: top, left, bottom, right
-                0, //ipadX
-                0 ) //ipadY
+		this.add( javax.swing.Box.createVerticalGlue(), new java.awt.GridBagConstraints(
+				0, //gridX
+				3, //gridY
+				2, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				1.0, //weightY
+				java.awt.GridBagConstraints.CENTER, //anchor 
+				java.awt.GridBagConstraints.BOTH, //fill
+				new java.awt.Insets( 0, 0, 0, 0 ), //insets: top, left, bottom, right
+				0, //ipadX
+				0 ) //ipadY
 		);
 		javax.swing.JPanel buttonPanel = new javax.swing.JPanel();
-		buttonPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 8, 4));
-		buttonPanel.add(okayButton);
-		buttonPanel.add(cancelButton);
-		this.add(buttonPanel, new java.awt.GridBagConstraints( 
-                0, //gridX
-                4, //gridY
-                2, //gridWidth
-                1, //gridHeight
-                0.0, //weightX
-                0.0, //weightY
-                java.awt.GridBagConstraints.EAST, //anchor 
-                java.awt.GridBagConstraints.NONE, //fill
-                new java.awt.Insets(2,2,2,2), //insets: top, left, bottom, right
-                0, //ipadX
-                0 ) //ipadY
+		buttonPanel.setLayout( new java.awt.FlowLayout( java.awt.FlowLayout.RIGHT, 8, 4 ) );
+		buttonPanel.add( okayButton );
+		buttonPanel.add( cancelButton );
+		this.add( buttonPanel, new java.awt.GridBagConstraints(
+				0, //gridX
+				4, //gridY
+				2, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				java.awt.GridBagConstraints.EAST, //anchor 
+				java.awt.GridBagConstraints.NONE, //fill
+				new java.awt.Insets( 2, 2, 2, 2 ), //insets: top, left, bottom, right
+				0, //ipadX
+				0 ) //ipadY
 		);
-		this.setPreferredSize(new java.awt.Dimension(500, 250));
+		this.setPreferredSize( new java.awt.Dimension( 500, 250 ) );
 	}
-	
-	private void setGalleryDir(final java.io.File dir) {
-		setGalleryDir(dir.getAbsolutePath());
+
+	private void setGalleryDir( final java.io.File dir ) {
+		setGalleryDir( dir.getAbsolutePath() );
 	}
-	
-	private void setGalleryDir(final String dir) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
+	private void setGalleryDir( final String dir ) {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				FindResourcesPanel.this.installDirectoryField.setText(dir);
+				FindResourcesPanel.this.installDirectoryField.setText( dir );
 			}
-		});
+		} );
 	}
-	
+
 	private void doUpdate() {
 		String dirText = this.installDirectoryField.getText();
-		this.galleryDir = StorytellingResources.getGalleryDirectory(new java.io.File(dirText));
-		if (this.galleryDir != null) {
-			this.statusLabel.setForeground(java.awt.Color.BLACK);
-			this.statusLabel.setText("Found gallery at '"+this.galleryDir.getAbsolutePath()+"'");
-			this.okayButton.setEnabled(true);
+		this.galleryDir = StorytellingResources.getGalleryDirectory( new java.io.File( dirText ) );
+		if( this.galleryDir != null ) {
+			this.statusLabel.setForeground( java.awt.Color.BLACK );
+			this.statusLabel.setText( "Found gallery at '" + this.galleryDir.getAbsolutePath() + "'" );
+			this.okayButton.setEnabled( true );
 		}
 		else
 		{
-			this.statusLabel.setForeground(java.awt.Color.RED);
-			this.statusLabel.setText("Cannot find gallery at '"+this.installDirectoryField.getText()+"'");
-			this.okayButton.setEnabled(false);
+			this.statusLabel.setForeground( java.awt.Color.RED );
+			this.statusLabel.setText( "Cannot find gallery at '" + this.installDirectoryField.getText() + "'" );
+			this.okayButton.setEnabled( false );
 		}
 	}
-	
+
 	public java.io.File getGalleryDir() {
 		return this.galleryDir;
 	}
-	
-	public void show(javax.swing.JRootPane root) {
+
+	public void show( javax.swing.JRootPane root ) {
 		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( this, root, "Locate Resources", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, root );
 		dialog.setVisible( true );
 	}
-	
+
 }

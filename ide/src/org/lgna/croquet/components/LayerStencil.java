@@ -49,27 +49,34 @@ package org.lgna.croquet.components;
 public abstract class LayerStencil extends Panel {
 	private final AbstractWindow<?> window;
 	private final Layer layer;
+
 	public LayerStencil( AbstractWindow<?> window, Integer layerId ) {
 		this.window = window;
 		this.layer = this.window.getLayer( layerId );
 	}
+
 	public Layer getLayer() {
 		return this.layer;
 	}
-	protected abstract void processMouseEvent( java.awt.event.MouseEvent e );
+
 	protected abstract void paintComponentPrologue( java.awt.Graphics2D g2 );
+
 	protected abstract void paintComponentEpilogue( java.awt.Graphics2D g2 );
+
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2 );
+
 	protected abstract boolean contains( int x, int y, boolean superContains );
+
 	@Override
 	protected javax.swing.JPanel createJPanel() {
 		class JStencil extends javax.swing.JPanel {
 			public JStencil() {
 				this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK );
 			}
+
 			@Override
-			protected void paintComponent(java.awt.Graphics g) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+			protected void paintComponent( java.awt.Graphics g ) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				java.awt.Paint prevPaint = g2.getPaint();
 				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
@@ -84,26 +91,22 @@ public abstract class LayerStencil extends Panel {
 			}
 
 			@Override
-			public void paint(java.awt.Graphics g) {
-				super.paint(g);
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+			public void paint( java.awt.Graphics g ) {
+				super.paint( g );
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				LayerStencil.this.paintEpilogue( g2 );
 			}
 
 			@Override
-			public boolean contains(int x, int y) {
+			public boolean contains( int x, int y ) {
 				return LayerStencil.this.contains( x, y, super.contains( x, y ) );
-			}
-			@Override
-			protected void processMouseEvent( java.awt.event.MouseEvent e ) {
-				super.processMouseEvent( e );
-				LayerStencil.this.processMouseEvent( e );
 			}
 		}
 		JStencil rv = new JStencil();
 		rv.setOpaque( false );
 		return rv;
 	}
+
 	public boolean isStencilShowing() {
 		return this.layer.getComponent() == this;
 	}

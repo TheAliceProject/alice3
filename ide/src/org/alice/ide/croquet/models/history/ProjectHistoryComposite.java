@@ -50,9 +50,11 @@ public class ProjectHistoryComposite extends HistoryComposite {
 	private static class SingletonHolder {
 		private static ProjectHistoryComposite instance = new ProjectHistoryComposite();
 	}
+
 	public static ProjectHistoryComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ProjectHistoryComposite() {
 		super( java.util.UUID.fromString( "ed880fda-17fb-4109-bed2-6e1eb9f12823" ), org.alice.ide.IDE.PROJECT_GROUP );
 	}

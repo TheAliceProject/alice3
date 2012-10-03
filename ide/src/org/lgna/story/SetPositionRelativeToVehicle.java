@@ -44,15 +44,17 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class SetPositionRelativeToVehicle extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=SetPositionRelativeToVehicle.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = SetPositionRelativeToVehicle.class )
 	public static interface Detail {
 	}
+
 	private SetPositionRelativeToVehicle() {
 		super();
 	}
+
 	public static PathStyle pathStyle( PathStyle pathStyle ) {
 		return pathStyle;
 	}

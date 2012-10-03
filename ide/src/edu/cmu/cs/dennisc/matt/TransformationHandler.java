@@ -4,17 +4,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.lgna.story.SThing;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
+import org.lgna.story.SThing;
 import org.lgna.story.event.PointOfViewChangeListener;
 import org.lgna.story.event.PointOfViewEvent;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener,PointOfViewEvent> {
+public class TransformationHandler extends TransformationChangedHandler<PointOfViewChangeListener, PointOfViewEvent> {
 
-	private Map<SThing,List<PointOfViewChangeListener>> checkMap = Collections.newHashMap();
+	private Map<SThing, List<PointOfViewChangeListener>> checkMap = Collections.newHashMap();
 
 	public void addTransformationListener( PointOfViewChangeListener transformationlistener, SThing[] shouldListenTo ) {
 		registerIsFiringMap( transformationlistener );

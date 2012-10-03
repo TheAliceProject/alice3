@@ -47,31 +47,33 @@ package org.alice.ide.ast.declaration.views;
  */
 public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview.components.PanelWithPreview {
 	private org.lgna.croquet.components.TextField nameTextField;
+
 	public DeclarationLikeSubstanceView( org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite ) {
 		super( composite );
 		this.setMinimumPreferredWidth( 480 );
 	}
 
-	public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?,?,?> nextType ) {
+	public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?, ?, ?> nextType ) {
 	}
+
 	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {
 		final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
-		return new org.lgna.croquet.components.RowSpringPanel() {
+		org.lgna.croquet.components.FormPanel rv = new org.lgna.croquet.components.FormPanel() {
 			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
 				org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
 				if( composite.isValueComponentTypeDisplayed() ) {
 					org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();
 					org.lgna.croquet.BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
 					if( valueComponentTypeState != null ) {
-						org.lgna.croquet.components.JComponent< ? > component;
+						org.lgna.croquet.components.JComponent<?> component;
 						if( valueComponentTypeState.isEnabled() ) {
 							org.alice.ide.croquet.components.TypeDropDown typeDropDown = new org.alice.ide.croquet.components.TypeDropDown( valueComponentTypeState );
 							if( composite.isValueIsArrayTypeStateDisplayed() ) {
 								component = new org.lgna.croquet.components.BorderPanel.Builder()
-									.center( typeDropDown )
-									.lineEnd( valueIsArrayTypeState.createCheckBox() )
-								.build();
+										.center( typeDropDown )
+										.lineEnd( valueIsArrayTypeState.createCheckBox() )
+										.build();
 							} else {
 								component = typeDropDown;
 							}
@@ -82,50 +84,52 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 								component = new org.alice.ide.croquet.components.TypeView( valueComponentTypeState, valueIsArrayTypeState.getValue() );
 							}
 						}
-						rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
-								valueComponentTypeState.getSidekickLabel(), 
-								component, 
-								false 
-						) );
+						rows.add( new org.lgna.croquet.components.LabeledFormRow(
+								valueComponentTypeState.getSidekickLabel(),
+								component,
+								false
+								) );
 					}
 				}
-		
+
 				org.lgna.croquet.StringState nameState = composite.getNameState();
 				if( nameState != null ) {
 					nameTextField = nameState.createTextField();
-					rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
-							nameState.getSidekickLabel(), 
+					rows.add( new org.lgna.croquet.components.LabeledFormRow(
+							nameState.getSidekickLabel(),
 							nameTextField
-					) );
+							) );
 				}
-				
+
 				if( composite.isInitializerDisplayed() ) {
 					org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initializerState = composite.getInitializerState();
 					if( initializerState != null ) {
-						org.lgna.croquet.components.JComponent< ? > component;
+						org.lgna.croquet.components.JComponent<?> component;
 						if( initializerState.isEnabled() ) {
 							component = new org.alice.ide.croquet.components.ExpressionDropDown( initializerState, factory );
 						} else {
 							component = factory.createExpressionPane( initializerState.getValue() );
 						}
-						rows.add( new org.lgna.croquet.components.LabeledSpringRow( 
-								initializerState.getSidekickLabel(), 
+						rows.add( new org.lgna.croquet.components.LabeledFormRow(
+								initializerState.getSidekickLabel(),
 								component,
 								false
-						) );
+								) );
 					}
 				}
 			}
 		};
+		return rv;
 	}
+
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
-		return new org.lgna.croquet.components.BorderPanel.Builder().
-				pageStart( this.createPageStartComponent() )
-		.build();
-		
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+				.pageStart( this.createPageStartComponent() )
+				.build();
+
 	}
-	
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();

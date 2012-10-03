@@ -48,8 +48,8 @@ package org.lgna.project.ast;
  */
 public class SuperExpression extends Expression {
 	@Override
-	public AbstractType<?,?,?> getType() {
-		AbstractType<?,?,?> type = this.getFirstAncestorAssignableTo( AbstractType.class );
+	public AbstractType<?, ?, ?> getType() {
+		AbstractType<?, ?, ?> type = this.getFirstAncestorAssignableTo( AbstractType.class );
 		if( type != null ) {
 			return type.getSuperType();
 		} else {
@@ -57,6 +57,7 @@ public class SuperExpression extends Expression {
 			return null;
 		}
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "super" );

@@ -54,7 +54,7 @@ public class BillboardImp extends VisualScaleModelImp {
 
 	public final PaintProperty backPaint = new PaintProperty( BillboardImp.this ) {
 		@Override
-		protected void internalSetValue(org.lgna.story.Paint value) {
+		protected void internalSetValue( org.lgna.story.Paint value ) {
 			BillboardImp.this.sgBackFace.setPaint( value );
 		}
 	};
@@ -68,7 +68,7 @@ public class BillboardImp extends VisualScaleModelImp {
 				edu.cmu.cs.dennisc.scenegraph.Vertex.createXYZIJKUV( Double.NaN, Double.NaN, Double.NaN, Float.NaN, Float.NaN, Float.NaN, MAX_U, MAX_V )
 		};
 		private boolean isFront;
-		
+
 		public Face( boolean isFront ) {
 			putInstance( this );
 			putInstance( this.getAppearance() );
@@ -82,16 +82,15 @@ public class BillboardImp extends VisualScaleModelImp {
 			this.sgGeometry.vertices.setValue( this.sgVertices );
 			this.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgGeometry } );
 		}
-		
-		public void updateAspectRatio( double widthToHeightAspectRatio ) { 
+
+		public void updateAspectRatio( double widthToHeightAspectRatio ) {
 			double x = widthToHeightAspectRatio * 0.5;
-			
-			
+
 			edu.cmu.cs.dennisc.scenegraph.Vertex v0 = sgVertices[ this.getIndex( 0 ) ];
 			v0.position.x = -x;
 			v0.position.y = 1;
 			v0.position.z = 0;
-			
+
 			edu.cmu.cs.dennisc.scenegraph.Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
 			v1.position.x = -x;
 			v1.position.y = 0;
@@ -107,6 +106,7 @@ public class BillboardImp extends VisualScaleModelImp {
 			v3.position.y = 1;
 			v3.position.z = 0;
 		}
+
 		private int getIndex( int i ) {
 			if( this.isFront ) {
 				return sgVertices.length - 1 - i;
@@ -114,6 +114,7 @@ public class BillboardImp extends VisualScaleModelImp {
 				return i;
 			}
 		}
+
 		private float getK() {
 			if( this.isFront ) {
 				return -1.0f;
@@ -130,12 +131,14 @@ public class BillboardImp extends VisualScaleModelImp {
 	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.sgFrontFace.getAppearance(), this.sgBackFace.getAppearance() };
 
 	private final org.lgna.story.SBillboard abstraction;
+
 	public BillboardImp( org.lgna.story.SBillboard abstraction ) {
 		this.abstraction = abstraction;
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.sgVisuals ) {
 			sgVisual.setParent( this.getSgComposite() );
 		}
 	}
+
 	@Override
 	public org.lgna.story.SBillboard getAbstraction() {
 		return this.abstraction;
@@ -145,12 +148,14 @@ public class BillboardImp extends VisualScaleModelImp {
 	public Resizer[] getResizers() {
 		return new Resizer[] { Resizer.XY_PLANE };
 	}
+
 	@Override
 	public double getValueForResizer( Resizer resizer ) {
 		//todo
 		assert resizer == Resizer.XY_PLANE : resizer;
 		return this.getScale().x;
 	}
+
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
 		//todo
@@ -159,10 +164,10 @@ public class BillboardImp extends VisualScaleModelImp {
 	}
 
 	@Override
-	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
-		this.setScale(getScaleForSize(size));
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
+		this.setScale( getScaleForSize( size ) );
 	}
-	
+
 	private void updateAspectRatio() {
 		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
 		edu.cmu.cs.dennisc.texture.Texture backTexture = this.sgBackFace.getTexture();
@@ -176,7 +181,7 @@ public class BillboardImp extends VisualScaleModelImp {
 			width = -1;
 			height = -1;
 		}
-		if( width > 0 && height > 0 ) {
+		if( ( width > 0 ) && ( height > 0 ) ) {
 			//pass
 		} else {
 			if( backTexture != null ) {
@@ -184,9 +189,9 @@ public class BillboardImp extends VisualScaleModelImp {
 				height = backTexture.getHeight();
 			}
 		}
-		
+
 		double widthToHeightAspectRatio;
-		if( width > 0 && height > 0 ) {
+		if( ( width > 0 ) && ( height > 0 ) ) {
 			widthToHeightAspectRatio = width / (double)height;
 		} else {
 			widthToHeightAspectRatio = 1.0;
@@ -194,29 +199,35 @@ public class BillboardImp extends VisualScaleModelImp {
 		this.sgFrontFace.updateAspectRatio( widthToHeightAspectRatio );
 		this.sgBackFace.updateAspectRatio( widthToHeightAspectRatio );
 	}
+
 	public org.lgna.story.Paint getFrontPaint() {
 		return this.sgFrontFace.getPaint();
 	}
+
 	public void setFrontPaint( org.lgna.story.Paint frontPaint ) {
 		this.sgFrontFace.setPaint( frontPaint );
 		this.updateAspectRatio();
 	}
+
 	public org.lgna.story.Paint getBackPaint() {
 		return this.sgBackFace.getPaint();
 	}
+
 	public void setBackPaint( org.lgna.story.Paint backPaint ) {
 		this.sgBackFace.setPaint( backPaint );
 		this.updateAspectRatio();
 	}
-	
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.Visual[] getSgVisuals() {
 		return this.sgVisuals;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
 		return this.sgPaintAppearances;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
 		return this.sgOpacityAppearances;

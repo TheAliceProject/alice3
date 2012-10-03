@@ -46,11 +46,12 @@ package edu.cmu.cs.dennisc.java.awt.geom;
  * @author Dennis Cosgrove
  */
 public class Composite extends Transformable {
-	private java.util.List< Transformable > m_children = new java.util.LinkedList< Transformable >();
+	private java.util.List<Transformable> m_children = new java.util.LinkedList<Transformable>();
 
 	public void add( Transformable child ) {
 		m_children.add( child );
 	}
+
 	public void remove( Transformable child ) {
 		m_children.remove( child );
 	}
@@ -61,7 +62,7 @@ public class Composite extends Transformable {
 			child.paint( gc );
 		}
 	}
-	
+
 	@Override
 	protected java.awt.geom.Area update( java.awt.geom.Area rv, TransformContext tc ) {
 		for( Transformable child : m_children ) {

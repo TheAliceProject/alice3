@@ -45,14 +45,16 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameState extends org.lgna.croquet.DefaultListSelectionState< String > {
+public class HairColorNameState extends AbstractListSelectionState<String> {
 	private static class SingletonHolder {
 		private static HairColorNameState instance = new HairColorNameState();
 	}
+
 	public static HairColorNameState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private HairColorNameState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString("11945667-ee73-493d-88f1-f5d9188ec91d"), org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
+		super( java.util.UUID.fromString( "7c4d1bb3-fca3-4b7f-b92d-ffb7ee9296fb" ), org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
 	}
 }

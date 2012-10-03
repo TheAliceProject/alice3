@@ -47,32 +47,32 @@ import org.alice.ide.declarationseditor.type.components.ManagedCameraMarkerField
 import org.lgna.croquet.components.Button;
 import org.lgna.project.ast.NamedUserType;
 
-
 /**
  * @author David Culyba
  */
-public class SceneCameraMarkerManagerPanel extends AbstractMarkerManagerPanel{
-    
-    @Override
-    protected Button createMovetoMarkerButton()
-    {
-        return MoveActiveCameraToMarkerActionOperation.getInstance().createButton();
-    }
-    
-    @Override
-    protected Button createMoveToObjectButton()
-    {
-        return MoveMarkerToActiveCameraActionOperation.getInstance().createButton();
-    }
-	
+public class SceneCameraMarkerManagerPanel extends AbstractMarkerManagerPanel {
 
-	/* (non-Javadoc)
+	@Override
+	protected Button createMovetoMarkerButton()
+	{
+		return MoveActiveCameraToMarkerActionOperation.getInstance().createButton();
+	}
+
+	@Override
+	protected Button createMoveToObjectButton()
+	{
+		return MoveMarkerToActiveCameraActionOperation.getInstance().createButton();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.alice.stageide.sceneeditor.viewmanager.AbstractMarkerManagerPanel#getFieldList(org.lgna.project.ast.NamedUserType)
 	 */
 	@Override
-	protected FieldList createFieldList(org.lgna.project.ast.UserType<?> type) {
+	protected FieldList createFieldList( org.lgna.project.ast.UserType<?> type ) {
 		assert type instanceof NamedUserType;
-		return new ManagedCameraMarkerFieldList((NamedUserType)type);
+		return new ManagedCameraMarkerFieldList( (NamedUserType)type );
 	}
 
 }

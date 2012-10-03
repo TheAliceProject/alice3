@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleChildFullBodyOutfitBigShorts implements MaleChildFullBodyOutfit {
 	BLUEHAWAIIANSWIMTRUNKS,
- 	LEMONLIMESWIMTRUNKS,
- 	REDSWIMTRUNKS,
- 	STAINEDGLASSSWIMTRUNKS;
+	LEMONLIMESWIMTRUNKS,
+	REDSWIMTRUNKS,
+	STAINEDGLASSSWIMTRUNKS;
 }

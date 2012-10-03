@@ -49,18 +49,22 @@ package org.lgna.story.implementation;
 public class AxesImp extends AbstractTransformableImp {
 	private final org.lgna.story.SAxes abstraction;
 	private final edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes sgAxes = new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 1.0 );
+
 	public AxesImp( org.lgna.story.SAxes abstraction ) {
 		this.abstraction = abstraction;
 		this.putInstance( this.sgAxes );
 	}
+
 	@Override
 	public org.lgna.story.SAxes getAbstraction() {
 		return this.abstraction;
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Transformable getSgComposite() {
 		return this.sgAxes;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo();

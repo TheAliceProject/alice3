@@ -45,59 +45,73 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BooleanState extends State< Boolean > {
-	public static final class InternalMenuItemPrepModelResolver extends IndirectResolver< InternalMenuItemPrepModel, BooleanState > {
+public abstract class BooleanState extends State<Boolean> {
+	public static final class InternalMenuItemPrepModelResolver extends IndirectResolver<InternalMenuItemPrepModel, BooleanState> {
 		private InternalMenuItemPrepModelResolver( BooleanState indirect ) {
 			super( indirect );
 		}
+
 		public InternalMenuItemPrepModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
 		protected InternalMenuItemPrepModel getDirect( BooleanState indirect ) {
 			return indirect.getMenuItemPrepModel();
 		}
 	}
+
 	public static final class InternalMenuItemPrepModel extends StandardMenuItemPrepModel {
 		private final BooleanState booleanState;
+
 		private InternalMenuItemPrepModel( BooleanState booleanState ) {
 			super( java.util.UUID.fromString( "1395490e-a04f-4447-93c5-892a1e1bd899" ) );
 			assert booleanState != null;
 			this.booleanState = booleanState;
 		}
+
 		@Override
-		public Iterable< ? extends Model > getChildren() {
+		public Iterable<? extends Model> getChildren() {
 			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.booleanState );
 		}
+
 		@Override
 		protected void localize() {
 		}
+
 		public BooleanState getBooleanState() {
 			return this.booleanState;
 		}
+
 		@Override
 		public boolean isEnabled() {
 			return this.booleanState.isEnabled();
 		}
+
 		@Override
 		public void setEnabled( boolean isEnabled ) {
 			this.booleanState.setEnabled( isEnabled );
 		}
+
 		@Override
 		protected InternalMenuItemPrepModelResolver createResolver() {
 			return new InternalMenuItemPrepModelResolver( this.booleanState );
 		}
+
 		@Override
 		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
 			rv.addCheckBoxMenuItem( new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() ) );
 			return rv;
 		}
+
 		@Override
-		protected StringBuilder updateTutorialStepText(StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit) {
+		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 			return this.booleanState.updateTutorialStepText( rv, step, edit );
 		}
 	}
+
 	private InternalMenuItemPrepModel menuPrepModel;
+
 	public synchronized InternalMenuItemPrepModel getMenuItemPrepModel() {
 		if( this.menuPrepModel != null ) {
 			//pass
@@ -106,13 +120,12 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 		return this.menuPrepModel;
 	}
-	
-	
+
 	public class SwingModel {
 		private final javax.swing.ButtonModel buttonModel;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			@Override
-			public Object getValue(String key) {
+			public Object getValue( String key ) {
 				if( NAME.equals( key ) ) {
 					return BooleanState.this.getTextFor( buttonModel.isSelected() );
 				} else if( SMALL_ICON.equals( key ) ) {
@@ -121,6 +134,7 @@ public abstract class BooleanState extends State< Boolean > {
 					return super.getValue( key );
 				}
 			}
+
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				boolean isSelected = buttonModel.isSelected();
 				if( isTextVariable() ) {
@@ -131,18 +145,22 @@ public abstract class BooleanState extends State< Boolean > {
 				}
 			}
 		};
+
 		private SwingModel( javax.swing.ButtonModel buttonModel ) {
 			this.buttonModel = buttonModel;
 		}
+
 		public javax.swing.ButtonModel getButtonModel() {
 			return this.buttonModel;
 		}
+
 		public javax.swing.Action getAction() {
 			return this.action;
 		}
 	}
+
 	private final SwingModel swingModel;
-	
+
 	private String trueText;
 	private String falseText;
 	private javax.swing.Icon trueIcon;
@@ -160,12 +178,13 @@ public abstract class BooleanState extends State< Boolean > {
 		this.swingModel.buttonModel.setSelected( initialValue );
 		this.swingModel.buttonModel.addItemListener( this.itemListener );
 	}
+
 	public BooleanState( Group group, java.util.UUID id, boolean initialValue ) {
 		this( group, id, initialValue, new javax.swing.JToggleButton.ToggleButtonModel() );
 	}
 
 	@Override
-	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
 		if( this.menuPrepModel != null ) {
 			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.menuPrepModel );
 		} else {
@@ -174,26 +193,30 @@ public abstract class BooleanState extends State< Boolean > {
 	}
 
 	@Override
-	public Class< Boolean > getItemClass() {
+	public Class<Boolean> getItemClass() {
 		return Boolean.class;
 	}
+
 	@Override
 	public Boolean decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeBoolean();
 	}
+
 	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Boolean value ) {
 		binaryEncoder.encode( value );
 	}
+
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, Boolean value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, Boolean value ) {
+		sb.append( value );
 	}
+
 	@Override
 	public boolean isEnabled() {
 		return this.swingModel.action.isEnabled();
 	}
+
 	@Override
 	public void setEnabled( boolean isEnabled ) {
 		this.swingModel.action.setEnabled( isEnabled );
@@ -202,12 +225,14 @@ public abstract class BooleanState extends State< Boolean > {
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}
+
 	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
 		if( this.isAppropriateToComplete() ) {
 			boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
 			this.commitStateEdit( !nextValue, nextValue, false, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
 		}
 	}
+
 	@Override
 	protected void localize() {
 		String text = this.findDefaultLocalizedText();
@@ -227,12 +252,14 @@ public abstract class BooleanState extends State< Boolean > {
 		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 	}
+
 	//	public int getMnemonicKey() {
 	//	return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
 	//}
 	private void setMnemonicKey( int mnemonicKey ) {
 		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
+
 	//public javax.swing.KeyStroke getAcceleratorKey() {
 	//	return javax.swing.KeyStroke.class.cast( this.swingModel.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
 	//}
@@ -244,7 +271,7 @@ public abstract class BooleanState extends State< Boolean > {
 	protected Boolean getActualValue() {
 		return this.swingModel.buttonModel.isSelected();
 	}
-	
+
 	@Override
 	protected void updateSwingModel( Boolean nextValue ) {
 		this.swingModel.buttonModel.removeItemListener( this.itemListener );
@@ -258,6 +285,7 @@ public abstract class BooleanState extends State< Boolean > {
 	private boolean isTextVariable() {
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.getTrueText(), this.getFalseText() );
 	}
+
 	private boolean isIconVariable() {
 		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.getTrueIcon(), this.getFalseIcon() );
 	}
@@ -265,32 +293,41 @@ public abstract class BooleanState extends State< Boolean > {
 	public final String getTextFor( boolean value ) {
 		return value ? this.getTrueText() : this.getFalseText();
 	}
+
 	public String getTrueText() {
 		return this.trueText;
 	}
+
 	public String getFalseText() {
 		return this.falseText;
 	}
+
 	public void setTextForBothTrueAndFalse( String text ) {
 		this.setTextForTrueAndTextForFalse( text, text );
 	}
+
 	public void setTextForTrueAndTextForFalse( String trueText, String falseText ) {
 		this.trueText = trueText;
 		this.falseText = falseText;
 		this.updateNameAndIcon();
 	}
+
 	public final javax.swing.Icon getIconFor( boolean value ) {
 		return value ? this.getTrueIcon() : this.getFalseIcon();
 	}
+
 	public javax.swing.Icon getTrueIcon() {
 		return this.trueIcon;
 	}
+
 	public javax.swing.Icon getFalseIcon() {
 		return this.falseIcon;
 	}
+
 	public void setIconForBothTrueAndFalse( javax.swing.Icon icon ) {
 		this.setIconForTrueAndIconForFalse( icon, icon );
 	}
+
 	public void setIconForTrueAndIconForFalse( javax.swing.Icon trueIcon, javax.swing.Icon falseIcon ) {
 		this.trueIcon = trueIcon;
 		this.falseIcon = falseIcon;
@@ -309,24 +346,89 @@ public abstract class BooleanState extends State< Boolean > {
 		}
 		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+		if( this.trueOperation != null ) {
+			this.trueOperation.setName( this.trueText );
+			this.trueOperation.setSmallIcon( this.trueIcon );
+		}
+		if( this.falseOperation != null ) {
+			this.falseOperation.setName( this.falseText );
+			this.falseOperation.setSmallIcon( this.falseIcon );
+		}
 	}
-	
+
 	public org.lgna.croquet.components.RadioButton createRadioButton() {
 		return new org.lgna.croquet.components.RadioButton( this );
 	}
+
 	public org.lgna.croquet.components.CheckBox createCheckBox() {
 		return new org.lgna.croquet.components.CheckBox( this );
 	}
+
 	public org.lgna.croquet.components.ToggleButton createToggleButton() {
 		return new org.lgna.croquet.components.ToggleButton( this );
 	}
-	
+
 	@Deprecated
 	public org.lgna.croquet.components.PushButton createPushButton() {
 		return new org.lgna.croquet.components.PushButton( this );
 	}
+
 	//todo: convert to composite
-	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.JComponent< ? > component ) {
+	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.JComponent<?> component ) {
 		return new org.lgna.croquet.components.ToolPalette( this, component );
 	}
+
+	private static class InternalSelectValueOperation extends ActionOperation {
+		private final BooleanState state;
+		private final boolean value;
+
+		private InternalSelectValueOperation( BooleanState state, boolean value ) {
+			super( state.getGroup(), java.util.UUID.fromString( "ca23dcf0-e00d-439b-b8a2-6c691be8ab5f" ) );
+			assert state != null;
+			this.state = state;
+			this.value = value;
+		}
+
+		@Override
+		protected void initialize() {
+			this.state.initializeIfNecessary();
+			super.initialize();
+		}
+
+		@Override
+		protected void localize() {
+			super.localize();
+			this.setName( this.value ? this.state.getTrueText() : this.state.getFalseText() );
+			this.setSmallIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
+		}
+
+		@Override
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			this.state.setValueTransactionlessly( this.value );
+			step.finish();
+		}
+	}
+
+	private InternalSelectValueOperation trueOperation;
+	private InternalSelectValueOperation falseOperation;
+
+	public synchronized Operation getSetToTrueOperation() {
+		if( this.trueOperation != null ) {
+			//pass
+		} else {
+			this.trueOperation = new InternalSelectValueOperation( this, true );
+		}
+		return this.trueOperation;
+	}
+
+	public synchronized Operation getSetToFalseOperation() {
+		if( this.falseOperation != null ) {
+			//pass
+		} else {
+			this.falseOperation = new InternalSelectValueOperation( this, false );
+		}
+		return this.falseOperation;
+	}
+
 }

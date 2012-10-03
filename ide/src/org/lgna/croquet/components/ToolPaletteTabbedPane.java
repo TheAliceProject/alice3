@@ -43,15 +43,17 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/ class ToolPaletteTabItemDetails<E extends org.lgna.croquet.TabComposite< ? >> extends TabItemDetails<E> {
-	private final ToolPaletteTabbedPane< E > toolPaletteTabbedPane;
-	public ToolPaletteTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, ToolPaletteTabbedPane< E > toolPaletteTabbedPane, ScrollPane scrollPane ) {
+/*package-private*/class ToolPaletteTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
+	private final ToolPaletteTabbedPane<E> toolPaletteTabbedPane;
+
+	public ToolPaletteTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, ToolPaletteTabbedPane<E> toolPaletteTabbedPane, ScrollPane scrollPane ) {
 		super( state, item, toolPaletteTabbedPane, scrollPane );
 		this.toolPaletteTabbedPane = toolPaletteTabbedPane;
 	}
+
 	@Override
-	public void setSelected(boolean isSelected) {
-		super.setSelected(isSelected);
+	public void setSelected( boolean isSelected ) {
+		super.setSelected( isSelected );
 		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.toolPaletteTabbedPane.getAllItemDetails() ) {
 			tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
 		}
@@ -62,15 +64,16 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite< ? >> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>> {
+public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>> {
 	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
 
 	@Override
-	protected BooleanStateButton< ? extends javax.swing.AbstractButton > createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
+	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
 		return new ToolPaletteTitle( itemSelectedState );
 	}
+
 	@Override
 	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item, ScrollPane scrollPane ) {
 		if( scrollPane != null ) {
@@ -78,7 +81,7 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite< ? >>
 		}
 		return new ToolPaletteTabItemDetails<E>( this.getModel(), item, this, scrollPane );
 	};
-	
+
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridBagLayout();
@@ -88,11 +91,13 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite< ? >>
 	protected void removeAllDetails() {
 		this.internalRemoveAllComponents();
 	}
+
 	@Override
-	protected void addPrologue(int count) {
+	protected void addPrologue( int count ) {
 	}
+
 	@Override
-	protected void addItem( ToolPaletteTabItemDetails<E> itemDetails) {
+	protected void addItem( ToolPaletteTabItemDetails<E> itemDetails ) {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -102,6 +107,7 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite< ? >>
 		gbc.weighty = 1.0f;
 		this.internalAddComponent( itemDetails.getRootComponent(), gbc );
 	}
+
 	@Override
 	protected void addEpilogue() {
 	}

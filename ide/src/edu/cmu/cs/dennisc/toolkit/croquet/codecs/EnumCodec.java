@@ -45,32 +45,38 @@ package edu.cmu.cs.dennisc.toolkit.croquet.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumCodec< T extends Enum< T > > implements org.lgna.croquet.ItemCodec< T > {
-	private static java.util.Map< Class<?>, EnumCodec<?> > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public static synchronized < T extends Enum< T > > EnumCodec< T > getInstance( Class< T > valueCls ) {
-		EnumCodec< ? > rv = map.get( valueCls );
+public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<T> {
+	private static java.util.Map<Class<?>, EnumCodec<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance( Class<T> valueCls ) {
+		EnumCodec<?> rv = map.get( valueCls );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new EnumCodec< T >( valueCls );
+			rv = new EnumCodec<T>( valueCls );
 		}
-		return (EnumCodec< T >)rv;
+		return (EnumCodec<T>)rv;
 	}
+
 	private Class<T> valueCls;
+
 	private EnumCodec( Class<T> valueCls ) {
 		this.valueCls = valueCls;
 	}
-	public Class< T > getValueClass() {
+
+	public Class<T> getValueClass() {
 		return this.valueCls;
 	}
+
 	public final T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return binaryDecoder.decodeEnum();
 	}
-	public final void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t) {
+
+	public final void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T t ) {
 		binaryEncoder.encode( t );
 	}
-	public final StringBuilder appendRepresentation(StringBuilder rv, T value) {
-		rv.append( value );
-		return rv;
+
+	public final void appendRepresentation( StringBuilder sb, T value ) {
+		sb.append( value );
 	}
 }

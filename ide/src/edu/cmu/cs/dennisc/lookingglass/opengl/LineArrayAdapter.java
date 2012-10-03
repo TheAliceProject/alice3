@@ -43,22 +43,24 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_LINES;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LineArrayAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.LineArray > {
+public class LineArrayAdapter extends VertexGeometryAdapter<edu.cmu.cs.dennisc.scenegraph.LineArray> {
 	@Override
 	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
-    	renderPrimative( rc, GL_LINES );
-    }
+		renderPrimative( rc, GL_LINES );
+	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-    	pickPrimative( pc, GL_LINES );
-	}    
+		pickPrimative( pc, GL_LINES );
+	}
+
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		//todo
 		rv.setNaN();
 		return rv;

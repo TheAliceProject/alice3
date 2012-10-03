@@ -46,10 +46,11 @@ import org.lgna.story.SThingMarker;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
-	private static java.util.Map< org.lgna.project.ast.NamedUserType, ManagedObjectMarkerFieldState > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedObjectMarkerFieldState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized ManagedObjectMarkerFieldState getInstance( org.lgna.project.ast.NamedUserType type ) {
 		ManagedObjectMarkerFieldState rv = map.get( type );
 		if( rv != null ) {
@@ -60,12 +61,13 @@ public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
 		}
 		return rv;
 	}
+
 	private ManagedObjectMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "84bf0218-ded7-472d-9b4c-0dbac1c0d9d8" ), type );
 	}
-	
+
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableTo(SThingMarker.class) && value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
+		return value.valueType.getValue().isAssignableTo( SThingMarker.class ) && ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED );
 	}
 }

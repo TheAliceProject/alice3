@@ -49,24 +49,25 @@ package org.alice.stageide.personresource.views;
 public class BodyTabView extends org.lgna.croquet.components.BorderPanel {
 	public BodyTabView( org.alice.stageide.personresource.BodyTabComposite composite ) {
 		super( composite, 8, 8 );
-		java.awt.Color backgroundColor = org.alice.stageide.person.components.MainPanel.BACKGROUND_COLOR;
-		org.lgna.croquet.components.List< ? > list = new org.alice.stageide.person.components.FullBodyOutfitList();
+		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
+		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.FullBodyOutfit> list = new HorizontalWrapList<org.lgna.story.resources.sims2.FullBodyOutfit>( composite.getFullBodyOutfitState(), -1, org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance() );
+		list.setBackgroundColor( backgroundColor );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
-	    scrollPane.setBothScrollBarIncrements( 66, 66 );
+		scrollPane.setBothScrollBarIncrements( 66, 66 );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
 		org.lgna.croquet.components.Slider slider = composite.getObesityLevelState().createSlider();
 		slider.setBackgroundColor( backgroundColor );
-		
+
 		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel.Builder()
 				.lineStart( composite.getSetToInShape().createButton() )
 				.center( slider )
 				.lineEnd( composite.getSetToOutOfShape().createButton() )
-		.build();
-		
+				.build();
+
 		this.addCenterComponent( scrollPane );
 		this.addPageEndComponent( obesityLevelPane );
 		this.setBackgroundColor( backgroundColor );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 }

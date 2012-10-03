@@ -56,10 +56,11 @@ package org.lgna.croquet;
 	}
 }
 
-/*package-private*/final class WizardDialogContentComposite extends GatedCommitDialogContentComposite<WizardDialogContentPanel> {
+/* package-private */final class WizardDialogContentComposite extends GatedCommitDialogContentComposite<WizardDialogContentPanel> {
 	public WizardDialogContentComposite( WizardDialogCoreComposite coreComposite ) {
-		super( java.util.UUID.fromString( "7cb5123b-293e-4ec8-bc99-a221f8a10d1b" ), coreComposite );
+		super( java.util.UUID.fromString( "ecfac12c-7762-445b-a952-fcffc09126f9" ), coreComposite );
 	}
+
 	@Override
 	protected WizardDialogContentPanel createView() {
 		return new WizardDialogContentPanel( this );
@@ -69,11 +70,12 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreComposite<org.lgna.croquet.components.BorderPanel,WizardDialogContentComposite> {
+public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreComposite<org.lgna.croquet.components.Panel, WizardDialogContentComposite> {
 	private static abstract class InternalWizardDialogOperation extends InternalDialogOperation {
 		public InternalWizardDialogOperation( java.util.UUID id, WizardDialogCoreComposite composite ) {
 			super( id, composite );
 		}
+
 		@Override
 		public WizardDialogCoreComposite getDialogCoreComposite() {
 			return (WizardDialogCoreComposite)super.getDialogCoreComposite();
@@ -84,6 +86,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		public PreviousOperation( WizardDialogCoreComposite composite ) {
 			super( java.util.UUID.fromString( "2b1ff0fd-8d8a-4d23-9d95-6203e9abff9c" ), composite );
 		}
+
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -99,6 +102,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		public NextOperation( WizardDialogCoreComposite composite ) {
 			super( java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ), composite );
 		}
+
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -113,8 +117,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	private final NextOperation nextOperation = new NextOperation( this );
 	private final PreviousOperation prevOperation = new PreviousOperation( this );
 
-	private static class WizardCardComposite extends CardComposite {
-		public WizardCardComposite( WizardPageComposite<?>[] wizardPages ) {
+	private static class WizardCardOwnerComposite extends CardOwnerComposite {
+		public WizardCardOwnerComposite( WizardPageComposite<?>[] wizardPages ) {
 			super( java.util.UUID.fromString( "d660e0ed-900a-4f98-ac23-bec8804dba22" ), wizardPages );
 		}
 	}
@@ -125,6 +129,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	private int getIndex() {
 		return this.index;
 	}
+
 	private void setIndex( int index ) {
 		this.index = index;
 		this.cardComposite.showCard( this.cardComposite.getCards().get( index ) );
@@ -144,15 +149,19 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.stepLabel.setText( text );
 		this.updateEnabled();
 	}
+
 	private boolean isPrevPageAvailable() {
 		return this.index > 0;
 	}
+
 	private boolean isNextPageAvailable() {
-		return this.index < this.cardComposite.getCards().size() - 1;
+		return this.index < ( this.cardComposite.getCards().size() - 1 );
 	}
+
 	private void prev() {
 		this.setIndex( this.getIndex() - 1 );
 	}
+
 	private void next() {
 		this.setIndex( this.getIndex() + 1 );
 	}
@@ -161,6 +170,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		public Object getElementAt( int index ) {
 			return cardComposite.getCards().get( index );
 		}
+
 		public int getSize() {
 			return cardComposite.getCards().size();
 		}
@@ -198,31 +208,35 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	private final org.lgna.croquet.components.Label stepLabel = new org.lgna.croquet.components.Label( "todo" );
 
 	private final WizardDialogContentComposite contentComposite = new WizardDialogContentComposite( this );
-	private final WizardCardComposite cardComposite;
+	private final WizardCardOwnerComposite cardComposite;
 
 	public WizardDialogCoreComposite( java.util.UUID migrationId, WizardPageComposite<?>[] wizardPages ) {
 		super( migrationId );
-		this.cardComposite = new WizardCardComposite( wizardPages );
+		this.cardComposite = new WizardCardOwnerComposite( wizardPages );
 	}
+
 	@Override
 	protected org.lgna.croquet.WizardDialogContentComposite getDialogContentComposite() {
 		return this.contentComposite;
 	}
-	
+
 	public Operation getPrevOperation() {
 		return this.prevOperation;
 	}
+
 	public Operation getNextOperation() {
 		return this.nextOperation;
 	}
+
 	public void addPage( WizardPageComposite<?> page ) {
 		this.cardComposite.addCard( page );
 	}
+
 	public void removePage( WizardPageComposite<?> page ) {
 		this.cardComposite.removeCard( page );
 	}
 
-	private org.lgna.croquet.components.PageAxisPanel createPageAxisPanel( org.lgna.croquet.components.JComponent<?> header ) {
+	private org.lgna.croquet.components.PageAxisPanel createAdornmentPageAxisPanel( org.lgna.croquet.components.JComponent<?> header ) {
 		final int PAD = 16;
 		org.lgna.croquet.components.PageAxisPanel rv = new org.lgna.croquet.components.PageAxisPanel();
 		header.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.ULTRABOLD );
@@ -232,57 +246,64 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
 		return rv;
 	}
+
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
+	protected org.lgna.croquet.components.Panel createView() {
+		org.lgna.croquet.components.CardPanel cardPanel = this.cardComposite.getView();
+		org.lgna.croquet.components.Panel rv;
+		if( this.isAdornmentDesired() ) {
+			org.lgna.croquet.components.ImmutableTextField stepsTextField = this.stepsLabel.createImmutableTextField();
+			javax.swing.JList list = new javax.swing.JList( this.listModel ) {
+				@Override
+				public boolean contains( int x, int y ) {
+					return false;
+				}
+			};
+			list.setSelectionModel( this.listSelectionModel );
+			list.setAlignmentX( 0.0f );
+			//list.setEnabled( false );
+			list.setCellRenderer( this.listCellRenderer );
 
-		org.lgna.croquet.components.ImmutableTextField stepsTextField = this.stepsLabel.createImmutableTextField();
-		javax.swing.JList list = new javax.swing.JList( this.listModel ) {
-			@Override
-			public boolean contains( int x, int y ) {
-				return false;
-			}
-		};
-		list.setSelectionModel( this.listSelectionModel );
-		list.setAlignmentX( 0.0f );
-		//list.setEnabled( false );
-		list.setCellRenderer( this.listCellRenderer );
+			org.lgna.croquet.components.PageAxisPanel stepsView = this.createAdornmentPageAxisPanel( stepsTextField );
+			stepsView.setBackgroundColor( java.awt.Color.WHITE );
+			stepsView.getAwtComponent().add( list );
 
-		org.lgna.croquet.components.PageAxisPanel stepsView = this.createPageAxisPanel( stepsTextField );
-		stepsView.setBackgroundColor( java.awt.Color.WHITE );
-		stepsView.getAwtComponent().add( list );
+			org.lgna.croquet.components.PageAxisPanel mainView = this.createAdornmentPageAxisPanel( this.stepLabel );
+			mainView.addComponent( cardPanel );
 
-		org.lgna.croquet.components.PageAxisPanel mainView = this.createPageAxisPanel( this.stepLabel );
-		mainView.addComponent( this.cardComposite.getView() );
-
-		org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel.Builder()
-			.lineStart( stepsView )
-			.center( mainView )
-		.build();
-
-		//todo: remove
-		this.cardComposite.getView().setBackgroundColor( rv.getBackgroundColor() );
-
+			rv = new org.lgna.croquet.components.BorderPanel.Builder()
+					.lineStart( stepsView )
+					.center( mainView )
+					.build();
+			rv.setBackgroundColor( cardPanel.getBackgroundColor() );
+		} else {
+			rv = cardPanel;
+		}
 		return rv;
 	}
+
 	@Override
 	protected final Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		Composite<?> page = this.cardComposite.getShowingCard();
 		if( page instanceof WizardPageComposite ) {
-			return ((WizardPageComposite)page).getPageStatus( step );
+			return ( (WizardPageComposite)page ).getPageStatus( step );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this, page );
 			//todo
 			return IS_GOOD_TO_GO_STATUS;
 		}
 	}
+
 	@Override
 	protected String getCommitUiKey() {
 		return null;
 	}
+
 	@Override
 	protected String getDefaultCommitText() {
 		return "Finish";
 	}
+
 	@Override
 	protected void localize() {
 		super.localize();
@@ -290,17 +311,22 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.prevOperation.setName( this.findLocalizedText( "previous" ) );
 	}
 
+	protected boolean isAdornmentDesired() {
+		return true;
+	}
+
 	private void updateEnabled() {
 		this.nextOperation.setEnabled( this.isNextPageAvailable() );
 		this.prevOperation.setEnabled( this.isPrevPageAvailable() );
 	}
+
 	@Override
 	public void updateIsGoodToGo( boolean isGoodToGo ) {
 		this.nextOperation.setEnabled( this.isNextPageAvailable() && isGoodToGo );
 		boolean isCommitEnabled = isGoodToGo;
 		if( isGoodToGo ) {
 			java.util.List<Composite<?>> cards = this.cardComposite.getCards();
-			for( int i=this.index+1; i<cards.size(); i++ ) {
+			for( int i = this.index + 1; i < cards.size(); i++ ) {
 				WizardPageComposite page = (WizardPageComposite)cards.get( i );
 				if( page.isOptional() ) {
 					//pass
@@ -312,12 +338,14 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 		this.getCommitOperation().setEnabled( isCommitEnabled );
 	}
+
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		this.setIndex( 0 );
 		this.cardComposite.handlePreActivation();
 	}
+
 	@Override
 	public void handlePostDeactivation() {
 		this.cardComposite.handlePostDeactivation();

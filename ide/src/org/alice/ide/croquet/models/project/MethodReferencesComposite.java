@@ -72,7 +72,7 @@ public class MethodReferencesComposite extends SimpleComposite<MethodReferencesV
 		public void changed( State<SearchTreeNode> state, SearchTreeNode prevValue, SearchTreeNode nextValue, boolean isAdjusting ) {
 			if( state.getValue() != prevValue ) {
 				SearchTreeNode selection = state.getValue();
-				if( selection != null && isJumpDesired ) {
+				if( ( selection != null ) && isJumpDesired ) {
 					selection.invokeOperation();
 				}
 			}
@@ -126,7 +126,7 @@ public class MethodReferencesComposite extends SimpleComposite<MethodReferencesV
 			if( newValue != null ) {
 				ArrayList<SearchTreeNode> hiddenList2 = Collections.newArrayList( hiddenList );
 				for( SearchTreeNode node : hiddenList2 ) {
-					if( node.getContent().equals( newValue.getContent() ) && node.getDepth() <= SHOULD_BE_EXPANDED ) {
+					if( node.getContent().equals( newValue.getContent() ) && ( node.getDepth() <= SHOULD_BE_EXPANDED ) ) {
 						show( node );
 					}
 				}
@@ -141,7 +141,7 @@ public class MethodReferencesComposite extends SimpleComposite<MethodReferencesV
 				crawl( child, depth + 1 );
 			}
 		}
-		
+
 		@Override
 		public void setOwner( Tree<SearchTreeNode> tree ) {
 			//this is sorta hacky sorry (mmay)

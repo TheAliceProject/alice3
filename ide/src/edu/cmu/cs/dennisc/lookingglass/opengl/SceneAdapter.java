@@ -43,18 +43,33 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_ALWAYS;
+import static javax.media.opengl.GL.GL_BLEND;
+import static javax.media.opengl.GL.GL_CCW;
+import static javax.media.opengl.GL.GL_CLIP_PLANE0;
+import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
+import static javax.media.opengl.GL.GL_CW;
+import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
+import static javax.media.opengl.GL.GL_DEPTH_TEST;
+import static javax.media.opengl.GL.GL_EQUAL;
+import static javax.media.opengl.GL.GL_KEEP;
+import static javax.media.opengl.GL.GL_MODELVIEW;
+import static javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
+import static javax.media.opengl.GL.GL_REPLACE;
+import static javax.media.opengl.GL.GL_SRC_ALPHA;
+import static javax.media.opengl.GL.GL_STENCIL_BUFFER_BIT;
+import static javax.media.opengl.GL.GL_STENCIL_TEST;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegraph.Scene > {
+public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph.Scene> {
 	private BackgroundAdapter m_backgroundAdapter = null;
 	private float m_globalBrightness;
-	private java.util.Vector< GhostAdapter > m_ghostAdapters = new java.util.Vector< GhostAdapter >();
+	private java.util.Vector<GhostAdapter> m_ghostAdapters = new java.util.Vector<GhostAdapter>();
 	//todo: reduce visibility
-	protected java.util.Vector< VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_visualAdapters = new java.util.Vector< VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> >();
-	private java.util.Vector< PlanarReflectorAdapter > m_planarReflectorAdapters = new java.util.Vector< PlanarReflectorAdapter >();
+	protected java.util.Vector<VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>> m_visualAdapters = new java.util.Vector<VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual>>();
+	private java.util.Vector<PlanarReflectorAdapter> m_planarReflectorAdapters = new java.util.Vector<PlanarReflectorAdapter>();
 
 	@Override
 	public void initialize( edu.cmu.cs.dennisc.scenegraph.Scene sgElement ) {
@@ -62,18 +77,19 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 		for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : edu.cmu.cs.dennisc.pattern.VisitUtilities.getAll( m_element, edu.cmu.cs.dennisc.scenegraph.Component.class ) ) {
 			addDescendant( AdapterFactory.getAdapterFor( sgComponent ) );
 		}
-//		m_sgE.accept( new edu.cmu.cs.dennisc.pattern.FilteredVisitor< edu.cmu.cs.dennisc.scenegraph.Component >() {
-//			@Override
-//			protected void filteredVisit( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
-//				addDescendant( AdapterFactory.getAdapterFor( sgComponent ) );
-//			}
-//		} );
+		//		m_sgE.accept( new edu.cmu.cs.dennisc.pattern.FilteredVisitor< edu.cmu.cs.dennisc.scenegraph.Component >() {
+		//			@Override
+		//			protected void filteredVisit( edu.cmu.cs.dennisc.scenegraph.Component sgComponent ) {
+		//				addDescendant( AdapterFactory.getAdapterFor( sgComponent ) );
+		//			}
+		//		} );
 	}
+
 	public BackgroundAdapter getBackgroundAdapter() {
 		return m_backgroundAdapter;
 	}
-	
-	public void addDescendant( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > componentAdapter ) {
+
+	public void addDescendant( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter ) {
 		if( componentAdapter instanceof GhostAdapter ) {
 			synchronized( m_ghostAdapters ) {
 				m_ghostAdapters.add( (GhostAdapter)componentAdapter );
@@ -89,7 +105,8 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 			}
 		}
 	}
-	public void removeDescendant( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > componentAdapter ) {
+
+	public void removeDescendant( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> componentAdapter ) {
 		if( componentAdapter instanceof GhostAdapter ) {
 			synchronized( m_ghostAdapters ) {
 				m_ghostAdapters.remove( componentAdapter );
@@ -120,7 +137,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 			for( VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter : m_visualAdapters ) {
 				if( visualAdapter.isAlphaBlended() ) {
 					//todo: adapters should be removed 
-					if( visualAdapter.m_element != null && visualAdapter.m_element.getRoot() instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
+					if( ( visualAdapter.m_element != null ) && ( visualAdapter.m_element.getRoot() instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) ) {
 						if (visualAdapter.isAllAlpha()) {
 							visualAdapter.renderAllAlphaBlended( rc );
 						}
@@ -154,7 +171,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 		rc.gl.glDisable( GL_BLEND );
 	}
 
-	public void renderScene( RenderContext rc, AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter, BackgroundAdapter backgroundAdapter ) {
+	public void renderScene( RenderContext rc, AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, BackgroundAdapter backgroundAdapter ) {
 		rc.gl.glMatrixMode( GL_MODELVIEW );
 		synchronized( cameraAdapter ) {
 			rc.gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
@@ -208,6 +225,7 @@ public class SceneAdapter extends CompositeAdapter< edu.cmu.cs.dennisc.scenegrap
 		}
 		renderScene( rc );
 	}
+
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.background ) {

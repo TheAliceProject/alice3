@@ -42,8 +42,6 @@
  */
 package org.alice.ide.i18n;
 
-
-
 /**
  * @author Dennis Cosgrove
  */
@@ -51,14 +49,14 @@ public class Line {
 	private static final String PREFIX = "</";
 	private static final String POSTFIX = "/>";
 	private static final java.util.regex.Pattern TAG_PATTERN = java.util.regex.Pattern.compile( PREFIX + "[A-Za-z_0-9()]*" + POSTFIX );
-	
+
 	private int indentCount;
 	private Chunk[] array;
 	private boolean isLoop;
 
 	public Line( String s ) {
 		this.isLoop = "\t loop".equals( s );
-		java.util.List< Chunk > chunks = new java.util.LinkedList< Chunk >();
+		java.util.List<Chunk> chunks = new java.util.LinkedList<Chunk>();
 		this.indentCount = 0;
 		for( byte b : s.getBytes() ) {
 			if( b == '\t' ) {
@@ -74,9 +72,9 @@ public class Line {
 			if( iStart != iEnd ) {
 				chunks.add( new TextChunk( s.substring( iEnd, iStart ) ) );
 			}
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( s );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( iStart );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( iEnd );
+			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( s );
+			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( iStart );
+			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( iEnd );
 			iEnd = matcher.end();
 			String sub = s.substring( iStart + PREFIX.length(), iEnd - POSTFIX.length() );
 			if( sub.startsWith( "_gets_toward_" ) ) {
@@ -104,12 +102,15 @@ public class Line {
 		this.array = new Chunk[ chunks.size() ];
 		chunks.toArray( this.array );
 	}
+
 	public int getIndentCount() {
 		return this.indentCount;
 	}
+
 	public Chunk[] getChunks() {
 		return this.array;
 	}
+
 	@Deprecated
 	public boolean isLoop() {
 		return this.isLoop;

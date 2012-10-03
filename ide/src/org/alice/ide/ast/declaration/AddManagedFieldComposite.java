@@ -48,100 +48,117 @@ package org.alice.ide.ast.declaration;
 public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	private final org.lgna.croquet.BooleanState initialPropertyValuesExpandedState = this.createBooleanState( this.createKey( "initialPropertyValuesExpandedState" ), true );
 	private java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> initialPropertyValueExpressionStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
 	public AddManagedFieldComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
+
 	public org.lgna.croquet.BooleanState getInitialPropertyValuesExpandedState() {
 		return this.initialPropertyValuesExpandedState;
 	}
+
 	public java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> getInitialPropertyValueExpressionStates() {
 		return this.initialPropertyValueExpressionStates;
 	}
-	
+
 	@Override
 	protected boolean isFieldFinal() {
 		return true;
 	}
+
 	@Override
 	protected org.lgna.project.ast.ManagementLevel getManagementLevel() {
 		return org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
+
 	@Override
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return org.alice.ide.IDE.getActiveInstance().getSceneType();
 	}
+
 	@Override
 	public boolean isValueComponentTypeDisplayed() {
 		return super.isValueComponentTypeDisplayed() && org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
-	}	
+	}
+
 	@Override
 	public boolean isInitializerDisplayed() {
 		return super.isInitializerDisplayed() && org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingTypeAndInitializerState.getInstance().getValue();
 	}
+
 	protected static class EditCustomization {
-		private final java.util.List< org.lgna.project.ast.Statement > doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List< org.lgna.project.ast.Statement > undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		private final java.util.List< org.lgna.common.Resource > resources = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		
+		private final java.util.List<org.lgna.project.ast.Statement> doStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private final java.util.List<org.lgna.project.ast.Statement> undoStatements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		private final java.util.List<org.lgna.common.Resource> resources = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
 		public void addDoStatement( org.lgna.project.ast.Statement statement ) {
 			this.doStatements.add( statement );
 		}
+
 		public org.lgna.project.ast.Statement[] getDoStatements() {
 			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.doStatements, org.lgna.project.ast.Statement.class );
 		}
+
 		public void addUndoStatement( org.lgna.project.ast.Statement statement ) {
 			this.undoStatements.add( statement );
 		}
+
 		public org.lgna.project.ast.Statement[] getUndoStatements() {
 			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.undoStatements, org.lgna.project.ast.Statement.class );
 		}
+
 		public void addResource( org.lgna.common.Resource resource ) {
 			this.resources.add( resource );
 		}
+
 		public org.lgna.common.Resource[] getResources() {
 			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.resources, org.lgna.common.Resource.class );
 		}
 	}
+
 	private static class InitialPropertyValueExpressionCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
 		private final org.lgna.project.ast.JavaMethod setter;
+
 		public InitialPropertyValueExpressionCustomizer( org.lgna.project.ast.JavaMethod setter ) {
 			this.setter = setter;
 		}
+
 		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
 			//todo
 			return null;
 		}
+
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.lgna.project.ast.AbstractParameter parameter = this.setter.getRequiredParameters().get( 0 );
-			org.lgna.project.ast.AbstractType<?,?,?> valueType = parameter.getValueType();
+			org.lgna.project.ast.AbstractType<?, ?, ?> valueType = parameter.getValueType();
 			org.lgna.project.annotations.ValueDetails<?> valueDetails = parameter.getDetails();
 
 			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().appendItems( rv, blankNode, valueType, valueDetails );
 		}
-		
+
 		public void appendDoStatements( EditCustomization editCustomization, org.lgna.project.ast.UserField field, org.lgna.project.ast.Expression expression ) {
 			editCustomization.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement( false, field, setter, expression ) );
 		}
-	}	
+	}
 
-	
-	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType< ? > declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
-		rv.addDoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true));
-		rv.addUndoStatement(org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false));
-		
+	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
+		rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true ) );
+		rv.addUndoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) );
+
 		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initialPropertyValueExpressionState : this.initialPropertyValueExpressionStates ) {
-			InitialPropertyValueExpressionCustomizer customizer = (InitialPropertyValueExpressionCustomizer)((InternalCustomItemState<org.lgna.project.ast.Expression>)initialPropertyValueExpressionState).getCustomizer();
+			InitialPropertyValueExpressionCustomizer customizer = (InitialPropertyValueExpressionCustomizer)( (InternalCustomItemState<org.lgna.project.ast.Expression>)initialPropertyValueExpressionState ).getCustomizer();
 			customizer.appendDoStatements( rv, field, initialPropertyValueExpressionState.getValue() );
 		}
 		return rv;
 	}
+
 	@Override
 	protected org.alice.ide.croquet.edits.ast.DeclareFieldEdit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
 		EditCustomization customization = new EditCustomization();
 		this.customize( completionStep, declaringType, field, customization );
 		return new org.alice.ide.croquet.edits.ast.DeclareGalleryFieldEdit( completionStep, this.getDeclaringType(), field, customization.getDoStatements(), customization.getUndoStatements() );
 	}
-	
+
 	protected <T> org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createInitialPropertyValueExpressionState( Key key, T initialValue, Class<?> declaringCls, String setterName, Class<T> valueCls, Class<?> variableLengthCls ) {
 		java.lang.reflect.Method mthd;
 		if( variableLengthCls != null ) {
@@ -160,7 +177,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 			throw new RuntimeException( ccee );
 		}
 	}
-	
+
 	@Override
 	protected org.alice.ide.ast.declaration.views.AddManagedFieldView createView() {
 		return new org.alice.ide.ast.declaration.views.AddManagedFieldView( this );

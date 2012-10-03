@@ -48,41 +48,41 @@ import org.alice.interact.InputState;
 public class DragAndDropCondition extends InputCondition {
 
 	protected boolean hasStarted = false;
-	
+
 	@Override
-	protected boolean testState(InputState state) {
+	protected boolean testState( InputState state ) {
 		return state.getIsDragEvent();
 	}
-	
+
 	@Override
 	public boolean stateChanged( InputState currentState, InputState previousState ) {
 		return ( super.stateChanged( currentState, previousState ) || !currentState.getMouseLocation().equals( previousState.getMouseLocation() ) );
 	}
-	
+
 	@Override
 	public boolean isRunning( InputState currentState, InputState previousState ) {
-		if (this.hasStarted && testState(currentState) && testState(previousState))
+		if( this.hasStarted && testState( currentState ) && testState( previousState ) )
 		{
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean justStarted( InputState currentState, InputState previousState ) 
+	public boolean justStarted( InputState currentState, InputState previousState )
 	{
-		if (!testState(previousState) && testState(currentState))
+		if( !testState( previousState ) && testState( currentState ) )
 		{
 			this.hasStarted = true;
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean justEnded( InputState currentState, InputState previousState ) 
+	public boolean justEnded( InputState currentState, InputState previousState )
 	{
-		if (this.hasStarted && !testState(currentState) && testState(previousState))
+		if( this.hasStarted && !testState( currentState ) && testState( previousState ) )
 		{
 			this.hasStarted = false;
 			return true;

@@ -42,32 +42,34 @@
  */
 package org.alice.ide.croquet.models.ui.preferences;
 
-
 /**
  * @author dculyba
- *
+ * 
  */
 public class NebulousResourceDirectoryState extends DirectoryState {
 
 	private static String getInitialValue() {
 		java.io.File defaultDirectory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
-		java.io.File directory = new java.io.File( defaultDirectory, org.alice.ide.IDE.getActiveInstance().getApplicationSubPath() );
+		java.io.File directory = new java.io.File( defaultDirectory, org.alice.ide.IDE.getApplicationSubPath() );
 		java.net.URI uri = directory.toURI();
 		return uri.toString();
 	}
+
 	private static class SingletonHolder {
 		private static NebulousResourceDirectoryState instance = new NebulousResourceDirectoryState();
 	}
+
 	public static NebulousResourceDirectoryState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private NebulousResourceDirectoryState() {
-		super( 
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "b6fc2151-fe58-498d-9c91-cd6335bb0646" ), 
-				getInitialValue() 
-		);
+		super(
+				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
+				java.util.UUID.fromString( "b6fc2151-fe58-498d-9c91-cd6335bb0646" ),
+				getInitialValue() );
 	}
+
 	@Override
 	protected String getPath() {
 		return this.getValue();

@@ -45,20 +45,36 @@ package edu.cmu.cs.dennisc.java.lang;
 /**
  * @author Dennis Cosgrove
  */
-public class Property implements Comparable< Property >{
+public class Property implements Comparable<Property> {
 	private final String key;
 	private final String value;
+
 	public Property( String key, String value ) {
 		this.key = key;
 		this.value = value;
 	}
-	public int compareTo(Property other) {
+
+	public int compareTo( Property other ) {
 		return this.key.compareTo( other.key );
 	}
+
 	public String getKey() {
 		return this.key;
 	}
+
 	public String getValue() {
 		return this.value;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.key );
+		sb.append( ":" );
+		sb.append( this.value );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

@@ -46,15 +46,17 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyedArgumentListPropertyView extends ArgumentListPropertyView< org.lgna.project.ast.JavaKeyedArgument > {
-	public KeyedArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty< org.lgna.project.ast.JavaKeyedArgument > argumentListProperty ) {
+public class KeyedArgumentListPropertyView extends ArgumentListPropertyView<org.lgna.project.ast.JavaKeyedArgument> {
+	public KeyedArgumentListPropertyView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ArgumentListProperty<org.lgna.project.ast.JavaKeyedArgument> argumentListProperty ) {
 		super( factory, argumentListProperty );
 	}
+
 	@Override
 	protected java.lang.String getInitialPrefix() {
 		//todo: check to see if requiredParameters.size() > 0
 		return SEPARATOR;
 	}
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();

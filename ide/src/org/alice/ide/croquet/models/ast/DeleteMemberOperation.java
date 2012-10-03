@@ -45,39 +45,46 @@ package org.alice.ide.croquet.models.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.AbstractMember > extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
+public abstract class DeleteMemberOperation<N extends org.lgna.project.ast.AbstractMember> extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ResponsibleModel {
 	private N member;
 	private org.lgna.project.ast.UserType<?> declaringType;
-	
+
 	//todo
 	//note: index not preserved and restored
 	//in the case where it is undone across sessions, it will not know where to insert the declaration
 	private transient int index = -1;
-	
+
 	public DeleteMemberOperation( java.util.UUID individualId, N node, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, individualId );
 		this.member = node;
 		this.declaringType = declaringType;
 	}
+
 	public abstract Class<N> getNodeParameterType();
+
 	@Override
 	protected org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N> createResolver() {
 		return new org.alice.ide.croquet.resolvers.DeleteMemberOperationResolver<N>( this );
 	}
-	public org.lgna.project.ast.UserType< ? > getDeclaringType() {
+
+	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
+
 	public N getMember() {
 		return this.member;
 	}
+
 	protected abstract org.lgna.project.ast.NodeListProperty<N> getNodeListProperty( org.lgna.project.ast.UserType<?> declaringType );
+
 	protected abstract boolean isClearToDelete( N node );
-	
+
 	public void doOrRedoInternal( boolean isDo ) {
 		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		this.index = owner.indexOf( this.member );
 		owner.remove( index );
 	}
+
 	public void undoInternal() {
 		org.lgna.project.ast.NodeListProperty<N> owner = this.getNodeListProperty( this.declaringType );
 		if( this.index == -1 ) {
@@ -85,30 +92,34 @@ public abstract class DeleteMemberOperation< N extends org.lgna.project.ast.Abst
 		}
 		owner.add( this.index, member );
 	}
-	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit< ? > edit ) {
+
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>)edit;
 		DeleteMemberOperation<N> replacement = replacementEdit.getModel();
 		retargeter.addKeyValuePair( this.member, replacement.member );
 		retargeter.addKeyValuePair( this.declaringType, replacement.declaringType );
 	}
+
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.member = retargeter.retarget( this.member );
 		this.declaringType = retargeter.retarget( this.declaringType );
 	}
-	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit< ? > replacementCandidate ) {
+
+	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
 		return org.lgna.croquet.edits.ReplacementAcceptability.TO_BE_HONEST_I_DIDNT_EVEN_REALLY_CHECK;
 	}
+
 	public StringBuilder updatePresentation( StringBuilder rv ) {
 		rv.append( "delete: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr(rv, member, org.lgna.croquet.Application.getLocale());
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, member, org.lgna.croquet.Application.getLocale() );
 		return rv;
 	}
-	
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		if( this.isClearToDelete( this.member ) ) {
-			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit< DeleteMemberOperation< N > >( step ) );
+			step.commitAndInvokeDo( new org.alice.ide.croquet.edits.DependentEdit<DeleteMemberOperation<N>>( step ) );
 		} else {
 			step.cancel();
 		}

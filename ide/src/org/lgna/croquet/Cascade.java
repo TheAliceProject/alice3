@@ -47,35 +47,41 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Cascade<T> extends AbstractCompletionModel {
-	public static class InternalRootResolver<T> extends IndirectResolver< InternalRoot<T>, Cascade<T> > {
+	public static class InternalRootResolver<T> extends IndirectResolver<InternalRoot<T>, Cascade<T>> {
 		private InternalRootResolver( Cascade<T> indirect ) {
 			super( indirect );
 		}
+
 		public InternalRootResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
 		protected InternalRoot<T> getDirect( Cascade<T> indirect ) {
 			return indirect.getRoot();
 		}
 	}
 
-	public static final class InternalRoot<T> extends CascadeRoot<T,Cascade<T>> {
-		private final Cascade< T > cascade;
-		private InternalRoot( Cascade< T > cascade, CascadeBlank< T >[] blanks ) {
+	public static final class InternalRoot<T> extends CascadeRoot<T, Cascade<T>> {
+		private final Cascade<T> cascade;
+
+		private InternalRoot( Cascade<T> cascade, CascadeBlank<T>[] blanks ) {
 			super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ), blanks );
 			this.cascade = cascade;
 		}
+
 		@Override
 		protected InternalRootResolver<T> createResolver() {
 			return new InternalRootResolver<T>( this.cascade );
 		}
+
 		@Override
-		public Cascade< T > getCompletionModel() {
+		public Cascade<T> getCompletionModel() {
 			return this.cascade;
 		}
+
 		@Override
-		public Class< T > getComponentType() {
+		public Class<T> getComponentType() {
 			return this.cascade.getComponentType();
 		}
 
@@ -83,138 +89,177 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 		public void prologue() {
 			this.cascade.prologue();
 		}
+
 		@Override
 		public void epilogue() {
 			this.cascade.epilogue();
 		}
+
 		@Override
-		public org.lgna.croquet.history.CompletionStep< Cascade<T> > createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		public org.lgna.croquet.history.CompletionStep<Cascade<T>> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			return transaction.createAndSetCompletionStep( this.cascade, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		}
+
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit(org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values) {
+		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values ) {
 			return this.cascade.createEdit( completionStep, values );
 		}
 	}
 
-	private final Class< T > componentType;
-	private final InternalRoot< T > root;
-	
+	private final Class<T> componentType;
+	private final InternalRoot<T> root;
 
-	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T >[] blanks ) {
+	public Cascade( Group group, java.util.UUID id, Class<T> componentType, CascadeBlank<T>[] blanks ) {
 		super( group, id );
 		this.componentType = componentType;
-		this.root = new InternalRoot< T >( this, blanks );
+		this.root = new InternalRoot<T>( this, blanks );
 	}
-	public Cascade( Group group, java.util.UUID id, Class< T > componentType, CascadeBlank< T > blank ) {
+
+	public Cascade( Group group, java.util.UUID id, Class<T> componentType, CascadeBlank<T> blank ) {
 		this( group, id, componentType, new CascadeBlank[] { blank } );
 	}
+
 	@Override
-	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.root.getPopupPrepModel() );
 	}
-	
-	public InternalRoot< T > getRoot() {
+
+	public InternalRoot<T> getRoot() {
 		return this.root;
 	}
+
 	@Override
 	protected void localize() {
 	}
+
 	@Override
-	public org.lgna.croquet.history.Step< ? > fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		return this.root.getPopupPrepModel().fire( trigger );
+	@java.lang.Deprecated
+	protected org.lgna.croquet.Model getSurrogateModel() {
+		return this.root.getPopupPrepModel();
 	}
+
 	@Override
-	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit< ? > edit ) {
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
 		return false;
 	}
-	public Class< T > getComponentType() {
+
+	public Class<T> getComponentType() {
 		return this.componentType;
 	}
+
 	protected void prologue() {
 	}
+
 	protected void epilogue() {
 	}
-	protected abstract org.lgna.croquet.edits.Edit< ? extends Cascade< T > > createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
 
-	public static final class InternalMenuModelResolver<T> extends IndirectResolver< InternalMenuModel<T>, Cascade< T > > {
-		private InternalMenuModelResolver( Cascade< T > indirect ) {
+	protected abstract org.lgna.croquet.edits.Edit<? extends Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
+
+	public static final class InternalMenuModelResolver<T> extends IndirectResolver<InternalMenuModel<T>, Cascade<T>> {
+		private InternalMenuModelResolver( Cascade<T> indirect ) {
 			super( indirect );
 		}
+
 		public InternalMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 			super( binaryDecoder );
 		}
+
 		@Override
-		protected InternalMenuModel<T> getDirect( Cascade< T > indirect ) {
+		protected InternalMenuModel<T> getDirect( Cascade<T> indirect ) {
 			return indirect.getMenuModel();
 		}
 	}
+
 	//todo: reduce visibility
 	public static final class InternalMenuModel<T> extends AbstractMenuModel {
 		private final Cascade<T> cascade;
+
 		private InternalMenuModel( Cascade<T> cascade ) {
 			super( java.util.UUID.fromString( "d5ac0f5a-6f04-4c68-94c3-96d32775fd4e" ), cascade.getClass() );
 			assert cascade != null;
 			this.cascade = cascade;
 		}
+
 		public Cascade<T> getCascade() {
 			return this.cascade;
 		}
+
 		@Override
 		public boolean isEnabled() {
 			return this.cascade.isEnabled();
 		}
+
 		@Override
 		public void setEnabled( boolean isEnabled ) {
 			this.cascade.setEnabled( isEnabled );
 		}
+
 		@Override
 		protected InternalMenuModelResolver<T> createResolver() {
 			return new InternalMenuModelResolver<T>( this.cascade );
 		}
+
 		private static class ComponentListener<T> implements java.awt.event.ComponentListener {
 			private org.lgna.croquet.history.PopupPrepStep prepStep;
+
 			public ComponentListener( org.lgna.croquet.history.PopupPrepStep prepStep ) {
 				this.prepStep = prepStep;
 			}
+
 			public org.lgna.croquet.history.PopupPrepStep getPrepStep() {
 				return this.prepStep;
 			}
+
 			public void setPrepStep( org.lgna.croquet.history.PopupPrepStep prepStep ) {
 				this.prepStep = prepStep;
 			}
+
 			public void componentShown( java.awt.event.ComponentEvent e ) {
 			}
+
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
 			}
+
 			public void componentResized( java.awt.event.ComponentEvent e ) {
 				org.lgna.croquet.history.TransactionManager.firePopupMenuResized( this.prepStep );
 			}
+
 			public void componentHidden( java.awt.event.ComponentEvent e ) {
 			}
 		};
+
 		private static class Listeners {
 			private final javax.swing.event.PopupMenuListener popupMenuListener;
 			private final ComponentListener componentListener;
+
 			public Listeners( javax.swing.event.PopupMenuListener popupMenuListener, ComponentListener componentListener ) {
 				this.popupMenuListener = popupMenuListener;
 				this.componentListener = componentListener;
 			}
+
 			public javax.swing.event.PopupMenuListener getPopupMenuListener() {
 				return this.popupMenuListener;
 			}
+
 			public ComponentListener getComponentListener() {
 				return this.componentListener;
 			}
 		}
-		private java.util.Map< org.lgna.croquet.components.MenuItemContainer, Listeners > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+		private java.util.Map<org.lgna.croquet.components.MenuItemContainer, Listeners> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 		@Override
 		protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
 			//javax.swing.JMenu jMenu = (javax.swing.JMenu)jPopupMenu.getInvoker();
 			//org.lgna.croquet.components.MenuItemContainer menuItemContainer = (org.lgna.croquet.components.MenuItemContainer)org.lgna.croquet.components.Component.lookup( jMenu );
-			final org.lgna.croquet.cascade.RtRoot< T,Cascade<T>> rtRoot = new org.lgna.croquet.cascade.RtRoot< T,Cascade<T> >( this.getCascade().getRoot() );
+			final org.lgna.croquet.cascade.RtRoot<T, Cascade<T>> rtRoot = new org.lgna.croquet.cascade.RtRoot<T, Cascade<T>>( this.getCascade().getRoot() );
 			if( rtRoot.isAutomaticallyDetermined() ) {
 				throw new RuntimeException( "todo" );
 			} else {
@@ -224,7 +269,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 				if( listeners != null ) {
 					listeners.componentListener.setPrepStep( prepStep );
 				} else {
-					ComponentListener componentListener = new ComponentListener< T >( prepStep );
+					ComponentListener componentListener = new ComponentListener<T>( prepStep );
 					javax.swing.event.PopupMenuListener popupMenuListener = rtRoot.createPopupMenuListener( menuItemContainer );
 					listeners = new Listeners( popupMenuListener, componentListener );
 					this.map.put( menuItemContainer, listeners );
@@ -234,15 +279,17 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 				listeners.getPopupMenuListener().popupMenuWillBecomeVisible( e );
 			}
 		}
+
 		@Override
 		protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			Listeners listeners = map.get( menuItemContainer );
-			javax.swing.JPopupMenu jPopupMenu = ((javax.swing.JMenu)menuItemContainer.getViewController().getAwtComponent()).getPopupMenu();
+			javax.swing.JPopupMenu jPopupMenu = ( (javax.swing.JMenu)menuItemContainer.getViewController().getAwtComponent() ).getPopupMenu();
 			jPopupMenu.removeComponentListener( listeners.getComponentListener() );
 			//jPopupMenu.removePopupMenuListener( listeners.getPopupMenuListener() );
 			listeners.getPopupMenuListener().popupMenuWillBecomeInvisible( e );
 			super.handleHiding( menuItemContainer, e );
 		}
+
 		@Override
 		protected void handleCanceled( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 			Listeners listeners = map.get( menuItemContainer );
@@ -250,7 +297,9 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 			super.handleCanceled( menuItemContainer, e );
 		}
 	}
+
 	private InternalMenuModel<T> menuModel;
+
 	public synchronized InternalMenuModel<T> getMenuModel() {
 		if( this.menuModel != null ) {
 			//pass
@@ -259,17 +308,19 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 		}
 		return this.menuModel;
 	}
+
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step< ? > step, org.lgna.croquet.edits.Edit< ? > edit ) {
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		//todo:
 		org.lgna.croquet.history.Transaction ownerTransaction = step.getOwner();
 		final int N = ownerTransaction.getPrepStepCount();
 		if( N > 0 ) {
-			org.lgna.croquet.history.PrepStep prepStep = ownerTransaction.getPrepStepAt( N-1 );
-			((AbstractModel)prepStep.getModel()).updateTutorialStepText( rv, prepStep, edit );
+			org.lgna.croquet.history.PrepStep prepStep = ownerTransaction.getPrepStepAt( N - 1 );
+			( (AbstractModel)prepStep.getModel() ).updateTutorialStepText( rv, prepStep, edit );
 		}
 		return rv;
 	}
+
 	@Override
 	public void appendUserRepr( java.lang.StringBuilder sb ) {
 		sb.append( this.getRoot().getPopupPrepModel().getName() );

@@ -46,40 +46,87 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel,org.lgna.story.resources.sims2.PersonResource> {
-	private final PreviewComposite previewComposite = new PreviewComposite();
-	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
-	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.ingredientsComposite, 0.0f );
-	public PersonResourceComposite() {
-		super( java.util.UUID.fromString( "9527895d-ee3f-43ed-86fe-b94538b1ff23" ) );
+public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.lgna.story.resources.sims2.PersonResource> {
+	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( PreviewComposite.getInstance(), IngredientsComposite.getInstance(), 0.0f );
+
+	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> expressionValueCreator;
+
+	public PersonResourceComposite( java.util.UUID migrationId ) {
+		super( migrationId );
+		this.expressionValueCreator = new org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression>( java.util.UUID.fromString( "d636961b-6ccb-47d0-a36f-60df0b5e1e8e" ), this.getValueCreator() ) {
+			@Override
+			protected org.lgna.project.ast.Expression convert( org.lgna.story.resources.sims2.PersonResource value ) {
+				try {
+					org.lgna.project.ast.Expression expression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( value );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( expression );
+					return expression;
+				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+					throw new RuntimeException( ccee );
+				}
+			}
+		};
+
 	}
+
+	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getExpressionValueCreator() {
+		return this.expressionValueCreator;
+	}
+
 	public org.lgna.croquet.SplitComposite getSplitComposite() {
 		return this.splitComposite;
 	}
+
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
 		return new org.lgna.croquet.components.BorderPanel.Builder().center( this.splitComposite.getView() ).build();
 	}
+
 	@Override
 	protected org.lgna.story.resources.sims2.PersonResource createValue() {
-		return null;
+		return IngredientsComposite.getInstance().createResourceFromStates();
 	}
+
+	@Override
+	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		super.modifyPackedWindowSizeIfDesired( window );
+		int width = 1000;
+		int height = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( width );
+		window.setSize( width, height );
+	}
+
+	@Override
+	public boolean isStatusLineDesired() {
+		return false;
+	}
+
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePreShowDialog( completionStep );
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN );
+	}
+
+	@Override
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+		super.handleFinally( step, dialog );
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().enableRendering();
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.splitComposite.handlePreActivation();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo remove handlePreActivation" );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo remove handlePostDeactivation" );
+		this.splitComposite.handlePostDeactivation();
+		super.handlePostDeactivation();
+	}
+
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
-	}
-	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
-		new org.alice.stageide.StageIDE();
-		try {
-			org.lgna.croquet.triggers.Trigger trigger = null;
-			new PersonResourceComposite() {}.getValueCreator().fire( trigger );
-		} catch( org.lgna.croquet.CancelException ce ) {
-			//pass
-		}
-		System.exit( 0 );
 	}
 }

@@ -45,58 +45,71 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalInfixExpression extends InfixExpression< RelationalInfixExpression.Operator > {
+public class RelationalInfixExpression extends InfixExpression<RelationalInfixExpression.Operator> {
 	private static boolean isNumberComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return leftOperand instanceof Number && rightOperand instanceof Number;
+		return ( leftOperand instanceof Number ) && ( rightOperand instanceof Number );
 	}
+
 	private static boolean isDoubleComparisonDesired( Object leftOperand, Object rightOperand ) {
-//		if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
-			return leftOperand instanceof Double || rightOperand instanceof Double;
-//		} else {
-//			return false;
-//		}
+		//		if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
+		return ( leftOperand instanceof Double ) || ( rightOperand instanceof Double );
+		//		} else {
+		//			return false;
+		//		}
 	}
+
 	private static boolean isFloatComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return leftOperand instanceof Float || rightOperand instanceof Float;
+		return ( leftOperand instanceof Float ) || ( rightOperand instanceof Float );
 	}
+
 	private static boolean isLongComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return leftOperand instanceof Long || rightOperand instanceof Long;
+		return ( leftOperand instanceof Long ) || ( rightOperand instanceof Long );
 	}
+
 	private static boolean isIntegerComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return leftOperand instanceof Integer || rightOperand instanceof Integer;
+		return ( leftOperand instanceof Integer ) || ( rightOperand instanceof Integer );
 	}
+
 	private static boolean isShortComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return leftOperand instanceof Short || rightOperand instanceof Short;
+		return ( leftOperand instanceof Short ) || ( rightOperand instanceof Short );
 	}
+
 	private static boolean isByteComparisonDesired( Object leftOperand, Object rightOperand ) {
-		return leftOperand instanceof Byte || rightOperand instanceof Byte;
+		return ( leftOperand instanceof Byte ) || ( rightOperand instanceof Byte );
 	}
+
 	private static double doubleValue( Object o ) {
 		assert o instanceof Number;
-		return ((Number)o).doubleValue();
+		return ( (Number)o ).doubleValue();
 	}
+
 	private static float floatValue( Object o ) {
 		assert o instanceof Number;
-		return ((Number)o).floatValue();
+		return ( (Number)o ).floatValue();
 	}
+
 	private static long longValue( Object o ) {
 		assert o instanceof Number;
-		return ((Number)o).longValue();
+		return ( (Number)o ).longValue();
 	}
+
 	private static int intValue( Object o ) {
 		assert o instanceof Number;
-		return ((Number)o).intValue();
+		return ( (Number)o ).intValue();
 	}
+
 	private static short shortValue( Object o ) {
 		assert o instanceof Number;
-		return ((Number)o).shortValue();
+		return ( (Number)o ).shortValue();
 	}
+
 	private static byte byteValue( Object o ) {
 		assert o instanceof Number;
-		return ((Number)o).byteValue();
+		return ( (Number)o ).byteValue();
 	}
+
 	public enum Operator {
-		LESS() { 
+		LESS() {
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
 				//todo Character
@@ -122,9 +135,9 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		LESS_EQUALS() { 
+		LESS_EQUALS() {
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
 				//todo Character
@@ -150,9 +163,9 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		GREATER() { 
+		GREATER() {
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
 				//todo Character
@@ -178,9 +191,9 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		GREATER_EQUALS() { 
+		GREATER_EQUALS() {
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
 				//todo Character
@@ -206,9 +219,9 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				} else {
 					throw new RuntimeException();
 				}
-			}			
+			}
 		},
-		EQUALS() { 
+		EQUALS() {
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
 				//todo Character
@@ -234,9 +247,9 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				} else {
 					return leftOperand == rightOperand;
 				}
-			}			
+			}
 		},
-		NOT_EQUALS() { 
+		NOT_EQUALS() {
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
 				//todo Character
@@ -266,38 +279,46 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 		};
 		public abstract Boolean operate( Object leftOperand, Object rightOperand );
 	}
-	public DeclarationProperty<AbstractType<?,?,?>> leftOperandType = new DeclarationProperty<AbstractType<?,?,?>>( this );
-	public DeclarationProperty<AbstractType<?,?,?>> rightOperandType = new DeclarationProperty<AbstractType<?,?,?>>( this );
+
+	public DeclarationProperty<AbstractType<?, ?, ?>> leftOperandType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public DeclarationProperty<AbstractType<?, ?, ?>> rightOperandType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+
 	public RelationalInfixExpression() {
 	}
-	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?,?,?> leftOperandType, AbstractType<?,?,?> rightOperandType ) {
+
+	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType<?, ?, ?> leftOperandType, AbstractType<?, ?, ?> rightOperandType ) {
 		super( leftOperand, operator, rightOperand );
 		this.leftOperandType.setValue( leftOperandType );
 		this.rightOperandType.setValue( rightOperandType );
 	}
+
 	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, Class<?> leftOperandCls, Class<?> rightOperandCls ) {
 		this( leftOperand, operator, rightOperand, JavaType.getInstance( leftOperandCls ), JavaType.getInstance( rightOperandCls ) );
 	}
+
 	@Override
-	protected AbstractType<?,?,?> getLeftOperandType() {
+	protected AbstractType<?, ?, ?> getLeftOperandType() {
 		return this.leftOperandType.getValue();
 	}
+
 	@Override
-	protected AbstractType<?,?,?> getRightOperandType() {
+	protected AbstractType<?, ?, ?> getRightOperandType() {
 		return this.rightOperandType.getValue();
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return JavaType.BOOLEAN_OBJECT_TYPE;
 	}
+
 	@Override
 	protected void handleMissingProperty( String propertyName, Object value ) {
 		assert propertyName.equals( "expressionType" );
 		if( value == JavaType.DOUBLE_OBJECT_TYPE ) {
 			value = JavaType.getInstance( Number.class );
 		}
-		this.leftOperandType.setValue( (AbstractType<?,?,?>)value );
-		this.rightOperandType.setValue( (AbstractType<?,?,?>)value );
+		this.leftOperandType.setValue( (AbstractType<?, ?, ?>)value );
+		this.rightOperandType.setValue( (AbstractType<?, ?, ?>)value );
 	}
-	
+
 }

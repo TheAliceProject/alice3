@@ -48,34 +48,42 @@ package org.alice.ide.preview.components;
  */
 public abstract class PanelWithPreview extends org.lgna.croquet.components.BorderPanel {
 	private static final int PAD = 16;
+
 	public PanelWithPreview() {
 		this( null );
 	}
+
 	public PanelWithPreview( org.lgna.croquet.Composite<?> composite ) {
 		super( composite );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, 0, PAD ) );
 		this.setMinimumPreferredWidth( 320 );
 	}
+
 	protected boolean isPreviewDesired() {
 		return true;
 	}
+
 	private org.alice.ide.croquet.components.PreviewPanel previewPanel;
-	
-	public abstract org.lgna.croquet.components.JComponent< ? > createPreviewSubComponent();
+
+	public abstract org.lgna.croquet.components.JComponent<?> createPreviewSubComponent();
+
 	public org.alice.ide.croquet.components.PreviewPanel getPreviewPanel() {
 		return this.previewPanel;
 	}
-	
+
 	protected final org.alice.ide.croquet.components.PreviewPanel createPreviewPanel() {
 		return new org.alice.ide.croquet.components.PreviewPanel( this );
 	}
+
 	public void updatePreview() {
 		org.alice.ide.croquet.components.PreviewPanel previewPanel = this.getPreviewPanel();
 		if( previewPanel != null ) {
 			previewPanel.refreshLater();
 		}
 	}
-	protected abstract org.lgna.croquet.components.JComponent< ? > createMainComponent();
+
+	protected abstract org.lgna.croquet.components.JComponent<?> createMainComponent();
+
 	private void initializeIfNecessary() {
 		if( this.previewPanel != null ) {
 			//pass
@@ -85,7 +93,7 @@ public abstract class PanelWithPreview extends org.lgna.croquet.components.Borde
 			if( this.isPreviewDesired() ) {
 				this.previewPanel = this.createPreviewPanel();
 				org.lgna.croquet.components.PageAxisPanel northPanel = new org.lgna.croquet.components.PageAxisPanel(
-						new org.lgna.croquet.components.LineAxisPanel( 
+						new org.lgna.croquet.components.LineAxisPanel(
 								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
 								new org.lgna.croquet.components.Label( "preview:", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ),
 								org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 16 ),
@@ -94,11 +102,12 @@ public abstract class PanelWithPreview extends org.lgna.croquet.components.Borde
 						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ),
 						new org.lgna.croquet.components.HorizontalSeparator(),
 						org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 )
-				);
+						);
 				this.addPageStartComponent( northPanel );
 			}
 		}
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();

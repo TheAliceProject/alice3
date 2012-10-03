@@ -50,6 +50,7 @@ public class UriUtilities {
 	private UriUtilities() {
 		throw new AssertionError();
 	}
+
 	public static java.io.File getFile( java.net.URI uri ) {
 		if( uri != null ) {
 			if( uri.getScheme().equalsIgnoreCase( "file" ) ) {

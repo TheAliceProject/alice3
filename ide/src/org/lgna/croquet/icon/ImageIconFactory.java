@@ -47,18 +47,22 @@ package org.lgna.croquet.icon;
  */
 public class ImageIconFactory implements IconFactory {
 	private final javax.swing.ImageIcon imageIcon;
+
 	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
 		this.imageIcon = imageIcon;
 	}
+
 	public ImageIconFactory( java.net.URL resource ) {
 		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
 	}
+
 	public ImageIconFactory( java.awt.Image image ) {
 		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
 	}
+
 	public javax.swing.Icon getIcon( java.awt.Dimension size ) {
 		if( imageIcon != null ) {
-			if( this.imageIcon.getIconWidth() == size.width && this.imageIcon.getIconHeight() == size.height ) {
+			if( ( this.imageIcon.getIconWidth() == size.width ) && ( this.imageIcon.getIconHeight() == size.height ) ) {
 				return this.imageIcon;
 			} else {
 				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( this.imageIcon, size.width, size.height );
@@ -67,6 +71,7 @@ public class ImageIconFactory implements IconFactory {
 			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
 		}
 	}
+
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		if( this.imageIcon != null ) {
 			return new java.awt.Dimension( this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight() );

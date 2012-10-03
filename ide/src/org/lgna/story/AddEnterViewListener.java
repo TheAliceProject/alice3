@@ -2,5 +2,6 @@ package org.lgna.story;
 
 public class AddEnterViewListener {
 
-	public interface Detail{}
+	public interface Detail {
+	}
 }

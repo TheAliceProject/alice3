@@ -49,16 +49,20 @@ package edu.cmu.cs.dennisc.javax.swing.icons;
 public class EmptyIcon implements javax.swing.Icon {
 	private final int width;
 	private final int height;
+
 	public EmptyIcon( int width, int height ) {
 		this.width = width;
 		this.height = height;
 	}
+
 	public int getIconWidth() {
 		return this.width;
 	}
+
 	public int getIconHeight() {
 		return this.height;
 	}
+
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 	}
 }

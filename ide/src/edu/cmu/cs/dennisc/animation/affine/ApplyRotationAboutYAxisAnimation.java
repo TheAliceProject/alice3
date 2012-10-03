@@ -48,9 +48,11 @@ package edu.cmu.cs.dennisc.animation.affine;
 public class ApplyRotationAboutYAxisAnimation extends AbstractApplyRotationAnimation {
 	public ApplyRotationAboutYAxisAnimation() {
 	}
+
 	public ApplyRotationAboutYAxisAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle ) {
 		super( sgSubject, sgAsSeenBy, angle );
 	}
+
 	@Override
 	protected void applyRotationInRadians( double angleInRadians ) {
 		getSubject().applyRotationAboutYAxisInRadians( angleInRadians, getAsSeenBy() );

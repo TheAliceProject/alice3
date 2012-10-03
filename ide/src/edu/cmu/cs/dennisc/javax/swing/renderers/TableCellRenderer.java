@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing.renderers;
  */
 public abstract class TableCellRenderer<E> extends javax.swing.table.DefaultTableCellRenderer {
 	protected abstract javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column );
+
 	@Override
 	public final java.awt.Component getTableCellRendererComponent( javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		java.awt.Component rv = super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, column );

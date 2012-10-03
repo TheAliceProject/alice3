@@ -46,14 +46,10 @@ package org.alice.interact.manipulator;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode;
-import org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.lgna.croquet.components.DragComponent;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.JavaType;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
@@ -78,186 +74,181 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	private Transformable sgDecoratorOffsetTransformable = new Transformable();
 	private BoundingBoxDecorator sgBoundingBoxDecorator = new BoundingBoxDecorator();
 	private ModestAxes sgAxes = null;
-	
+
 	public OmniDirectionalBoundingBoxManipulator()
 	{
-		this.sgBoundingBoxOffsetTransformable.setParent(this.sgBoundingBoxTransformable);
-		this.sgBoundingBoxOffsetTransformable.setLocalTransformation(AffineMatrix4x4.createIdentity());
+		this.sgBoundingBoxOffsetTransformable.setParent( this.sgBoundingBoxTransformable );
+		this.sgBoundingBoxOffsetTransformable.setLocalTransformation( AffineMatrix4x4.createIdentity() );
 		AffineMatrix4x4 decoratorTransform = AffineMatrix4x4.createIdentity();
 		decoratorTransform.translation.y = .01;
-		this.sgDecoratorOffsetTransformable.setLocalTransformation(decoratorTransform);
-		this.sgDecoratorOffsetTransformable.setParent(this.sgBoundingBoxOffsetTransformable);
-		this.sgBoundingBoxDecorator.setParent(this.sgDecoratorOffsetTransformable);
+		this.sgDecoratorOffsetTransformable.setLocalTransformation( decoratorTransform );
+		this.sgDecoratorOffsetTransformable.setParent( this.sgBoundingBoxOffsetTransformable );
+		this.sgBoundingBoxDecorator.setParent( this.sgDecoratorOffsetTransformable );
 	}
-	
+
 	public AffineMatrix4x4 getTargetTransformation()
 	{
 		return this.sgBoundingBoxOffsetTransformable.getAbsoluteTransformation();
 	}
-	
+
 	@Override
 	protected void initializeEventMessages()
 	{
 		this.manipulationEvents.clear();
 	}
-	
+
 	@Override
 	protected HandleSet getHandleSetToEnable() {
 		return null;
 	}
-	
+
 	@Override
-	protected Transformable getInitialTransformable(InputState startInput) {
-		
+	protected Transformable getInitialTransformable( InputState startInput ) {
+
 		return this.sgBoundingBoxTransformable;
 	}
-	
+
 	@Override
-	protected Point3 getInitialClickPoint(InputState startInput) 
+	protected Point3 getInitialClickPoint( InputState startInput )
 	{
 		return this.manipulatedTransformable.getAbsoluteTransformation().translation;
 	}
-	
+
 	private int getHorizonPixelLocation()
 	{
 		assert this.camera instanceof OrthographicCamera;
 		OrthographicCamera orthoCamera = (OrthographicCamera)this.camera;
 		AffineMatrix4x4 cameraTransform = orthoCamera.getAbsoluteTransformation();
-		double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
-		if (dotProd == 1 || dotProd == -1)
+		double dotProd = Vector3.calculateDotProduct( cameraTransform.orientation.up, Vector3.accessPositiveYAxis() );
+		if( ( dotProd == 1 ) || ( dotProd == -1 ) )
 		{
 			Point3 cameraPosition = orthoCamera.getAbsoluteTransformation().translation;
-			ClippedZPlane dummyPlane = new ClippedZPlane(orthoCamera.picturePlane.getValue(), this.onscreenLookingGlass.getActualViewport(orthoCamera));
+			ClippedZPlane dummyPlane = new ClippedZPlane( orthoCamera.picturePlane.getValue(), this.onscreenLookingGlass.getActualViewport( orthoCamera ) );
 			double yRatio = this.onscreenLookingGlass.getHeight() / dummyPlane.getHeight();
 			double horizonInCameraSpace = 0.0d - cameraPosition.y;
 			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
-			int horizonLinePixelVal = (int)(yRatio * distanceFromMaxY);
+			int horizonLinePixelVal = (int)( yRatio * distanceFromMaxY );
 			return horizonLinePixelVal;
 		}
 		return -1;
 	}
-	
+
 	private boolean isHorizonInView()
 	{
 		assert this.camera instanceof OrthographicCamera;
 		int horizonLinePixelVal = this.getHorizonPixelLocation();
 		Dimension lookingGlassSize = this.onscreenLookingGlass.getSize();
 		double lookingGlassHeight = lookingGlassSize.getHeight();
-		if (horizonLinePixelVal >= 0 && horizonLinePixelVal <= lookingGlassHeight)
+		if( ( horizonLinePixelVal >= 0 ) && ( horizonLinePixelVal <= lookingGlassHeight ) )
 		{
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
-	protected Point3 getOthographicMovementVector(InputState currentInput, InputState previousInput)
+	protected Point3 getOthographicMovementVector( InputState currentInput, InputState previousInput )
 	{
 		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 		Point3 pickPoint = PlaneUtilities.getPointInPlane( this.orthographicPickPlane, pickRay );
-		if (isHorizonInView())
+		if( isHorizonInView() )
 		{
 			pickPoint.y = 0;
 		}
-		Point3 newPosition = Point3.createAddition(pickPoint, this.orthographicOffsetToOrigin);
-		return Point3.createSubtraction(newPosition, this.getManipulatedTransformable().getAbsoluteTransformation().translation);
+		Point3 newPosition = Point3.createAddition( pickPoint, this.orthographicOffsetToOrigin );
+		return Point3.createSubtraction( newPosition, this.getManipulatedTransformable().getAbsoluteTransformation().translation );
 	}
-	
+
 	@Override
 	public boolean doStartManipulator( InputState startInput )
 	{
-		if (this.manipulatedTransformable != null)
+		if( this.manipulatedTransformable != null )
 		{
 			assert this.camera != null;
-			this.sgBoundingBoxTransformable.setParent(this.camera.getRoot());
-			this.sgBoundingBoxTransformable.setTranslationOnly(new Point3(0,0,0), AsSeenBy.SCENE);
-			this.sgBoundingBoxDecorator.isShowing.setValue(true);
-			this.setManipulatedTransformable(this.sgBoundingBoxTransformable);
+			this.sgBoundingBoxTransformable.setParent( this.camera.getRoot() );
+			this.sgBoundingBoxTransformable.setTranslationOnly( new Point3( 0, 0, 0 ), AsSeenBy.SCENE );
+			this.sgBoundingBoxDecorator.isShowing.setValue( true );
+			this.setManipulatedTransformable( this.sgBoundingBoxTransformable );
 			this.hidCursor = false;
 			this.initializeEventMessages();
 			this.hasMoved = false;
-			this.orthographicOffsetToOrigin = new Point3(0,0,0);
-			this.offsetFromOrigin = new Point3(0,0,0);			
-			this.mousePlaneOffset = new Point(0,0);
-			this.originalPosition = new Point3(0,0,0);
+			this.orthographicOffsetToOrigin = new Point3( 0, 0, 0 );
+			this.offsetFromOrigin = new Point3( 0, 0, 0 );
+			this.mousePlaneOffset = new Point( 0, 0 );
+			this.originalPosition = new Point3( 0, 0, 0 );
 			//We don't need special planes for the orthographic camera
-			if (!(this.getCamera() instanceof OrthographicCamera))
+			if( !( this.getCamera() instanceof OrthographicCamera ) )
 			{
-				setUpPlanes(new Point3(0,0,0), startInput.getMouseLocation());
+				setUpPlanes( new Point3( 0, 0, 0 ), startInput.getMouseLocation() );
 				Vector3 cameraBackward = this.camera.getAbsoluteTransformation().orientation.backward;
 				cameraBackward.y = 0.0;
 				cameraBackward.normalize();
-				if (cameraBackward.isNaN())
+				if( cameraBackward.isNaN() )
 				{
 					cameraBackward = this.camera.getAbsoluteTransformation().orientation.up;
-					cameraBackward.multiply(-1);
+					cameraBackward.multiply( -1 );
 					cameraBackward.y = 0.0;
 					cameraBackward.normalize();
 				}
-				OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3(new ForwardAndUpGuide(cameraBackward, Vector3.accessPositiveYAxis()));
-				this.sgBoundingBoxTransformable.setAxesOnly(facingCameraOrientation, AsSeenBy.SCENE);
-				this.sgBoundingBoxTransformable.setTranslationOnly(this.getPerspectivePositionBasedOnInput(startInput), AsSeenBy.SCENE);
+				OrthogonalMatrix3x3 facingCameraOrientation = new OrthogonalMatrix3x3( new ForwardAndUpGuide( cameraBackward, Vector3.accessPositiveYAxis() ) );
+				this.sgBoundingBoxTransformable.setAxesOnly( facingCameraOrientation, AsSeenBy.SCENE );
+				this.sgBoundingBoxTransformable.setTranslationOnly( this.getPerspectivePositionBasedOnInput( startInput ), AsSeenBy.SCENE );
 			}
 			this.originalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
 			AffineMatrix4x4 cameraTransform = this.getCamera().getParent().getAbsoluteTransformation();
-			Vector3 toOrigin = Vector3.createSubtraction(this.originalPosition, cameraTransform.translation);
+			Vector3 toOrigin = Vector3.createSubtraction( this.originalPosition, cameraTransform.translation );
 			toOrigin.normalize();
-			Vector3 cameraFacingNormal = Vector3.createMultiplication(cameraTransform.orientation.backward, -1);
-			this.orthographicPickPlane = Plane.createInstance( new Point3(0,0,0), cameraFacingNormal );
+			Vector3 cameraFacingNormal = Vector3.createMultiplication( cameraTransform.orientation.backward, -1 );
+			this.orthographicPickPlane = Plane.createInstance( new Point3( 0, 0, 0 ), cameraFacingNormal );
 			addPlaneTransitionPointSphereToScene();
-			
+
 			org.lgna.croquet.history.DragStep dragStep = startInput.getDragAndDropContext();
 			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
 			DragComponent dragSource = dragStep.getDragSource();
 			dragSource.hideDragProxy();
-			edu.cmu.cs.dennisc.math.AxisAlignedBox box = null;
-			if (dragModel instanceof TypeGalleryNode)
-			{
-				org.lgna.project.ast.AbstractType<?,?,?> type = ((TypeGalleryNode)dragModel).getDeclaration();
-				JavaType javaType = type.getFirstEncounteredJavaType();
-				box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(javaType.getClassReflectionProxy().getReification());
+			edu.cmu.cs.dennisc.math.AxisAlignedBox box;
+			if( dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel ) {
+				org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel galleryDragModel = (org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel)dragModel;
+				box = galleryDragModel.getBoundingBox();
+			} else {
+				box = null;
 			}
-			else if (dragModel instanceof FieldGalleryNode)
-			{
-				AbstractField field = ((FieldGalleryNode)dragModel).getDeclaration();
-				org.lgna.project.ast.AbstractType<?,?,?> type = field.getValueType();
-				JavaType javaType = type.getFirstEncounteredJavaType();
-				box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(javaType.getClassReflectionProxy().getReification());
+
+			if( box != null ) {
+				//pass
+			} else {
+				box = new AxisAlignedBox( new Point3( -.5, 0, -.5 ), new Point3( .5, 1, .5 ) );
 			}
-			if (box == null)
-			{
-				box = new AxisAlignedBox(new Point3(-.5, 0, -.5), new Point3(.5,1,.5));
-			}
-			
+
 			AffineMatrix4x4 offsetTransform = AffineMatrix4x4.createIdentity();
-			if (this.sgAxes != null)
+			if( this.sgAxes != null )
 			{
-				this.sgAxes.setParent(null);
+				this.sgAxes.setParent( null );
 			}
-			if (box.isNaN())
+			if( box.isNaN() )
 			{
-				this.sgBoundingBoxDecorator.isShowing.setValue(false);
-				this.sgAxes = new ModestAxes(1.0);
+				this.sgBoundingBoxDecorator.isShowing.setValue( false );
+				this.sgAxes = new ModestAxes( 1.0 );
 			}
 			else
 			{
 				offsetTransform.translation.y += -box.getMinimum().y;
-				this.sgBoundingBoxDecorator.setBox(box);
-				this.sgAxes = new ModestAxes(box.getWidth()*.5);
+				this.sgBoundingBoxDecorator.setBox( box );
+				this.sgAxes = new ModestAxes( box.getWidth() * .5 );
 			}
-			this.sgBoundingBoxOffsetTransformable.setLocalTransformation(offsetTransform);
-			this.sgAxes.setParent(this.sgDecoratorOffsetTransformable);
+			this.sgBoundingBoxOffsetTransformable.setLocalTransformation( offsetTransform );
+			this.sgAxes.setParent( this.sgDecoratorOffsetTransformable );
 			return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	protected void hideCursor()
 	{
 		//don't hide the cursor
 	}
-	
+
 	@Override
 	protected void showCursor()
 	{
@@ -265,19 +256,18 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 	}
 
 	@Override
-	public void doEndManipulator( InputState endInput, InputState previousInput  )
+	public void doEndManipulator( InputState endInput, InputState previousInput )
 	{
-		super.doEndManipulator(endInput, previousInput);
-		this.sgBoundingBoxDecorator.isShowing.setValue(false);
-		if (this.sgAxes != null)
+		super.doEndManipulator( endInput, previousInput );
+		this.sgBoundingBoxDecorator.isShowing.setValue( false );
+		if( this.sgAxes != null )
 		{
-			this.sgAxes.isShowing.setValue(false);
+			this.sgAxes.isShowing.setValue( false );
 		}
-//		this.sgBoundingBoxTransformable.setParent(null);
-//		System.out.println("End drag position = "+this.sgBoundingBoxTransformable.localTransformation.getValue().translation);
+		//		this.sgBoundingBoxTransformable.setParent(null);
+		//		System.out.println("End drag position = "+this.sgBoundingBoxTransformable.localTransformation.getValue().translation);
 		DragComponent dragSource = endInput.getDragAndDropContext().getDragSource();
 		dragSource.showDragProxy();
 	}
-	
-	
+
 }

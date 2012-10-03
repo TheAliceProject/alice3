@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.javax.swing.renderers;
  */
 public abstract class TreeCellRenderer<E> extends javax.swing.tree.DefaultTreeCellRenderer {
 	protected abstract javax.swing.JLabel updateListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
+
 	@Override
 	public final java.awt.Component getTreeCellRendererComponent( javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
 		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, sel, expanded, leaf, row, hasFocus );

@@ -43,21 +43,16 @@
 package org.alice.ide.croquet.models.project.views;
 
 import java.awt.Color;
-import java.awt.Component;
 
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
 import javax.swing.JList;
 
 import org.alice.ide.croquet.models.project.FieldReferenceComposite;
-import org.alice.ide.croquet.models.project.StatisticsFlowControlFrequencyComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.project.ast.FieldAccess;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserMethod;
-
-import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 
 /**
  * @author Matt May
@@ -73,7 +68,7 @@ public class FieldReferenceView extends BorderPanel {
 		@Override
 		public java.awt.Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 			assert value instanceof FieldAccess;
-			FieldAccess access = (FieldAccess) value;
+			FieldAccess access = (FieldAccess)value;
 			Label rv = new Label();
 			if( isSelected ) {
 				rv.setBackgroundColor( Color.BLUE );

@@ -49,17 +49,18 @@ public class SphereIcon extends ShapeIcon {
 	public SphereIcon( java.awt.Dimension size ) {
 		super( size );
 	}
+
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		int diameter = Math.min( width, height );
-		int x = (width - diameter) / 2;
-		int y = (height - diameter) / 2;
-		java.awt.geom.Ellipse2D core = new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter);
-		java.awt.geom.Ellipse2D slice = new java.awt.geom.Ellipse2D.Float( x, y + diameter*0.35f, diameter, diameter*0.3f);
+		int x = ( width - diameter ) / 2;
+		int y = ( height - diameter ) / 2;
+		java.awt.geom.Ellipse2D core = new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter );
+		java.awt.geom.Ellipse2D slice = new java.awt.geom.Ellipse2D.Float( x, y + ( diameter * 0.35f ), diameter, diameter * 0.3f );
 
 		g2.setPaint( fillPaint );
 		g2.fill( core );
-		
+
 		g2.setPaint( java.awt.Color.GRAY );
 		g2.draw( slice );
 

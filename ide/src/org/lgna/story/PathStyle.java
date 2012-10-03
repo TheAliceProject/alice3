@@ -46,22 +46,26 @@ package org.lgna.story;
 /**
  * @author Dennis Cosgrove
  */
-public enum PathStyle implements 
-		MoveTo.Detail, 
+public enum PathStyle implements
+		MoveTo.Detail,
 		MoveAndOrientTo.Detail,
 		SetPositionRelativeToVehicle.Detail,
-		Place.Detail 
+		Place.Detail
 {
 	BEE_LINE( false ),
 	SMOOTH( true );
 	private final boolean isSmooth;
+
 	PathStyle( boolean isSmooth ) {
 		this.isSmooth = isSmooth;
 	}
-	/*package-private*/ boolean isSmooth() {
+
+	/* package-private */boolean isSmooth() {
 		return this.isSmooth;
 	}
+
 	private static final PathStyle DEFAULT_VALUE = PathStyle.BEE_LINE;
+
 	private static PathStyle getValue( Object[] details, PathStyle defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof PathStyle ) {
@@ -71,7 +75,8 @@ public enum PathStyle implements
 		}
 		return defaultValue;
 	}
-	/*package-private*/ static PathStyle getValue( Object[] details ) {
+
+	/* package-private */static PathStyle getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
 }

@@ -50,12 +50,15 @@ public class ConditionalStatementTemplateDragModel extends StatementTemplateDrag
 	private static class SingletonHolder {
 		private static ConditionalStatementTemplateDragModel instance = new ConditionalStatementTemplateDragModel();
 	}
+
 	public static ConditionalStatementTemplateDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ConditionalStatementTemplateDragModel() {
 		super( java.util.UUID.fromString( "b777b20e-9d46-4e42-a980-a155f0604773" ), org.lgna.project.ast.ConditionalStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteConditionalStatement() );
 	}
+
 	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		return org.alice.ide.croquet.models.ast.cascade.statement.ConditionalStatementInsertCascade.getInstance( blockStatementIndexPair );

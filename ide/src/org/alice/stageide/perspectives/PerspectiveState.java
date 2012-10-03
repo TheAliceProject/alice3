@@ -43,24 +43,40 @@
 
 package org.alice.stageide.perspectives;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public class PerspectiveState extends org.lgna.croquet.DefaultListSelectionState< org.alice.ide.perspectives.ProjectPerspective > {
+public class PerspectiveState extends org.lgna.croquet.DefaultListSelectionState<org.alice.ide.perspectives.ProjectPerspective> {
 	private static class SingletonHolder {
 		private static PerspectiveState instance = new PerspectiveState();
 	}
+
 	public static PerspectiveState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private PerspectiveState() {
-		super( 
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP, 
-				java.util.UUID.fromString( "9daef1a1-fd63-4069-8431-25126032ec1f" ), 
+		super(
+				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
+				java.util.UUID.fromString( "9daef1a1-fd63-4069-8431-25126032ec1f" ),
 				org.alice.ide.perspectives.codecs.IdePerspectiveCodec.SINGLETON,
-				0, 
-				org.alice.stageide.perspectives.CodePerspective.getInstance(), SetupScenePerspective.getInstance()
-		);
-	}	
+				0,
+				org.alice.stageide.perspectives.CodePerspective.getInstance(), SetupScenePerspective.getInstance() );
+	}
+
+	private java.util.Stack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+
+	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+		this.stack.push( reasonToDisableSomeAmountOfRendering );
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
+	}
+
+	public void enableRendering() {
+		if( this.stack.isEmpty() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		} else {
+			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
+			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
+		}
+	}
 }

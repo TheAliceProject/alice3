@@ -53,8 +53,9 @@ public final class JCloseButton extends javax.swing.JButton {
 		private static final java.awt.Color PRESS_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
 
 		private static final int SIZE = 14;
+
 		@Override
-		public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
+		public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
 			javax.swing.ButtonModel model = button.getModel();
 
@@ -85,9 +86,9 @@ public final class JCloseButton extends javax.swing.JButton {
 
 			int x0 = 0;
 			int y0 = 0;
-			
+
 			java.awt.geom.AffineTransform m = new java.awt.geom.AffineTransform();
-			m.translate( x0 + closeWidth / 2, y0 + closeHeight / 2 );
+			m.translate( x0 + ( closeWidth / 2 ), y0 + ( closeHeight / 2 ) );
 			area0.transform( m );
 
 			java.awt.Paint prevPaint = g2.getPaint();
@@ -111,12 +112,15 @@ public final class JCloseButton extends javax.swing.JButton {
 			g2.draw( area0 );
 			g2.setPaint( prevPaint );
 		}
+
 		@Override
-		public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) {
+		public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
 			return new java.awt.Dimension( SIZE, SIZE );
 		}
 	}
+
 	private boolean isVisibleOnlyWhenParentIsSelected;
+
 	public JCloseButton( boolean isVisibleOnlyWhenParentIsSelected ) {
 		this.isVisibleOnlyWhenParentIsSelected = isVisibleOnlyWhenParentIsSelected;
 		this.setOpaque( false );
@@ -124,20 +128,23 @@ public final class JCloseButton extends javax.swing.JButton {
 		this.setBorder( null );
 		this.setRolloverEnabled( true );
 	}
+
 	@Override
 	public void updateUI() {
 		this.setUI( new CloseButtonUI() );
 	}
+
 	@Override
 	public java.awt.Dimension getMaximumSize() {
 		return this.getPreferredSize();
 	}
+
 	@Override
-	public boolean contains(int x, int y) {
+	public boolean contains( int x, int y ) {
 		if( this.isVisibleOnlyWhenParentIsSelected ) {
 			java.awt.Container parent = this.getParent();
-			if (parent instanceof javax.swing.AbstractButton) {
-				javax.swing.AbstractButton button = (javax.swing.AbstractButton) parent;
+			if( parent instanceof javax.swing.AbstractButton ) {
+				javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent;
 				if( button.isSelected() ) {
 					//pass
 				} else {
@@ -145,14 +152,15 @@ public final class JCloseButton extends javax.swing.JButton {
 				}
 			}
 		}
-		return super.contains(x, y);
+		return super.contains( x, y );
 	}
+
 	@Override
 	public boolean isVisible() {
 		if( this.isVisibleOnlyWhenParentIsSelected ) {
 			java.awt.Container parent = this.getParent();
-			if (parent instanceof javax.swing.AbstractButton) {
-				javax.swing.AbstractButton button = (javax.swing.AbstractButton) parent;
+			if( parent instanceof javax.swing.AbstractButton ) {
+				javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent;
 				if( button.isSelected() ) {
 					//pass
 				} else {

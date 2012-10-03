@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks< org.lgna.project.ast.InstanceCreation > {
-	private static java.util.Map< org.lgna.project.ast.AbstractConstructor, InstanceCreationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.InstanceCreation> {
+	private static java.util.Map<org.lgna.project.ast.AbstractConstructor, InstanceCreationFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized InstanceCreationFillIn getInstance( org.lgna.project.ast.AbstractConstructor constructor ) {
 		InstanceCreationFillIn rv = map.get( constructor );
 		if( rv != null ) {
@@ -58,7 +59,9 @@ public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade
 		}
 		return rv;
 	}
+
 	private final org.lgna.project.ast.InstanceCreation transientValue;
+
 	private InstanceCreationFillIn( org.lgna.project.ast.AbstractConstructor constructor ) {
 		super( java.util.UUID.fromString( "98dde1d1-ad25-463a-bbbf-67e96e11f87f" ) );
 		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
@@ -66,21 +69,23 @@ public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade
 		}
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteInstanceCreation( constructor );
 	}
+
 	@Override
-	protected org.lgna.project.ast.InstanceCreation createValue(org.lgna.project.ast.Expression[] expressions) {
+	protected org.lgna.project.ast.InstanceCreation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		return org.lgna.project.ast.AstUtilities.createInstanceCreation( this.transientValue.constructor.getValue(), expressions );
 	}
+
 	@Override
-	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
+	public org.lgna.project.ast.InstanceCreation getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression> step ) {
 		return this.transientValue;
 	}
-	
-//	@Override
-//	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
-//		return this.transientValue.constructor.getValue().getDeclaringType().getName();
-//	}
-//	@Override
-//	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
-//		return null;
-//	}
+
+	//	@Override
+	//	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
+	//		return this.transientValue.constructor.getValue().getDeclaringType().getName();
+	//	}
+	//	@Override
+	//	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.Expression > step ) {
+	//		return null;
+	//	}
 }

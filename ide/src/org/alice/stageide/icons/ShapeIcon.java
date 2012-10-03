@@ -55,18 +55,25 @@ public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
 
 	private static final int PAD = 2;
 	protected static final java.awt.Color FILL_PAINT = new java.awt.Color( 191, 191, 255 );
+
 	public ShapeIcon( java.awt.Dimension size ) {
 		super( size );
 	}
-	protected abstract void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
+
+	protected abstract void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint );
+
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2 ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		int xOffset = PAD;
 		int yOffset = PAD;
-		int width = this.getIconWidth()-PAD-PAD;
-		int height = this.getIconHeight()-PAD-PAD;
+		int width = this.getIconWidth() - PAD - PAD;
+		int height = this.getIconHeight() - PAD - PAD;
 		g2.translate( xOffset, yOffset );
-		this.paintIcon( g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
+
+		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		this.paintIcon( c, g2, width, height, FILL_PAINT, java.awt.Color.BLACK );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 		g2.translate( -xOffset, -yOffset );
 	}
 }

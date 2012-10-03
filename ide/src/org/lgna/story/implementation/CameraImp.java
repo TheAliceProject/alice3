@@ -48,22 +48,26 @@ package org.lgna.story.implementation;
  */
 public abstract class CameraImp<S extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> extends TransformableImp {
 	private final S sgCamera;
+
 	public CameraImp( S sgCamera ) {
 		this.sgCamera = sgCamera;
 		this.sgCamera.setParent( this.getSgComposite() );
 		this.putInstance( this.sgCamera );
 	}
+
 	public final S getSgCamera() {
 		return this.sgCamera;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans ) {
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.scenegraph.Layer getPostRenderLayer() {
 		if( sgCamera.postRenderLayers.getLength() == 0 ) {
 			edu.cmu.cs.dennisc.scenegraph.Layer[] layers = {
-				new edu.cmu.cs.dennisc.scenegraph.Layer()
+					new edu.cmu.cs.dennisc.scenegraph.Layer()
 			};
 			sgCamera.postRenderLayers.setValue( layers );
 		}

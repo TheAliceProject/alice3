@@ -46,20 +46,26 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDropReceptor implements DropReceptor {
-	private final java.util.List< DropRejector > dropRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<DropRejector> dropRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public void addDropRejector( DropRejector dropRejector ) {
 		this.dropRejectors.add( dropRejector );
 	}
+
 	public void removeDropRejector( DropRejector dropRejector ) {
 		this.dropRejectors.remove( dropRejector );
 	}
+
 	public void clearDropRejectors() {
 		this.dropRejectors.clear();
 	}
+
 	public java.util.List<org.lgna.croquet.DropRejector> getDropRejectors() {
 		return java.util.Collections.unmodifiableList( this.dropRejectors );
 	}
+
 	protected abstract Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step );
+
 	public final Model dragDropped( org.lgna.croquet.history.DragStep step ) {
 		for( DropRejector rejector : this.dropRejectors ) {
 			if( rejector.isRejected( step ) ) {
@@ -68,7 +74,8 @@ public abstract class AbstractDropReceptor implements DropReceptor {
 		}
 		return this.dragDroppedPostRejectorCheck( step );
 	}
-	public final String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit< ? > edit ) {
+
+	public final String getTutorialNoteText( org.lgna.croquet.Model model, org.lgna.croquet.edits.Edit<?> edit ) {
 		return "Drop...";
 	}
 }

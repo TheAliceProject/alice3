@@ -52,56 +52,62 @@ public class Cylinder extends Shape {
 		CENTER,
 		BOTTOM
 	}
+
 	public enum BottomToTopAxis {
-		POSITIVE_X( +1,  0,  0 ),
-		POSITIVE_Y(  0, +1,  0 ),
-		POSITIVE_Z(  0,  0, +1 ),
-		NEGATIVE_X( -1,  0,  0 ),
-		NEGATIVE_Y(  0, -1,  0 ),
-		NEGATIVE_Z(  0,  0, -1 );
-		
+		POSITIVE_X( +1, 0, 0 ),
+		POSITIVE_Y( 0, +1, 0 ),
+		POSITIVE_Z( 0, 0, +1 ),
+		NEGATIVE_X( -1, 0, 0 ),
+		NEGATIVE_Y( 0, -1, 0 ),
+		NEGATIVE_Z( 0, 0, -1 );
+
 		private edu.cmu.cs.dennisc.math.Vector3 m_axis = new edu.cmu.cs.dennisc.math.Vector3();
+
 		BottomToTopAxis( double x, double y, double z ) {
 			m_axis.set( x, y, z );
 		}
+
 		public edu.cmu.cs.dennisc.math.Vector3 accessVector() {
 			return m_axis;
 		}
+
 		public edu.cmu.cs.dennisc.math.Vector3 getVector( edu.cmu.cs.dennisc.math.Vector3 rv ) {
 			rv.set( m_axis );
 			return rv;
 		}
+
 		public edu.cmu.cs.dennisc.math.Vector3 getVector() {
 			return getVector( new edu.cmu.cs.dennisc.math.Vector3() );
 		}
+
 		public boolean isPositive() {
-			return m_axis.x > 0 || m_axis.y > 0 || m_axis.z > 0;
+			return ( m_axis.x > 0 ) || ( m_axis.y > 0 ) || ( m_axis.z > 0 );
 		}
 	}
 
 	public final BoundDoubleProperty length = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty bottomRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	public final BoundDoubleProperty topRadius = new BoundDoubleProperty( this, 1.0 ) {
 		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value ) {
 			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};
 	//todo: change default to CENTER?
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< OriginAlignment > originAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty< OriginAlignment >( this, OriginAlignment.BOTTOM ) {
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment> originAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty<OriginAlignment>( this, OriginAlignment.BOTTOM ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, OriginAlignment value ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
@@ -111,9 +117,9 @@ public class Cylinder extends Shape {
 			}
 		};
 	};
-	
+
 	//todo: change default to POSITIVE_Z? NEGATIVE_Z?
-	public final edu.cmu.cs.dennisc.property.InstanceProperty< BottomToTopAxis > bottomToTopAxis = new edu.cmu.cs.dennisc.property.InstanceProperty< BottomToTopAxis >( this, BottomToTopAxis.POSITIVE_Y ) {
+	public final edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis> bottomToTopAxis = new edu.cmu.cs.dennisc.property.InstanceProperty<BottomToTopAxis>( this, BottomToTopAxis.POSITIVE_Y ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, BottomToTopAxis value ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
@@ -133,7 +139,7 @@ public class Cylinder extends Shape {
 			return topRadius.getValue();
 		}
 	}
-	
+
 	private double getMaxRadius() {
 		if( Double.isNaN( topRadius.getValue() ) ) {
 			return bottomRadius.getValue();
@@ -154,6 +160,7 @@ public class Cylinder extends Shape {
 			throw new RuntimeException();
 		}
 	}
+
 	private double getBottom() {
 		OriginAlignment originAlignment = this.originAlignment.getValue();
 		if( originAlignment == OriginAlignment.BOTTOM ) {
@@ -166,6 +173,7 @@ public class Cylinder extends Shape {
 			throw new RuntimeException();
 		}
 	}
+
 	private double getCenter() {
 		OriginAlignment originAlignment = this.originAlignment.getValue();
 		if( originAlignment == OriginAlignment.BOTTOM ) {
@@ -178,7 +186,7 @@ public class Cylinder extends Shape {
 			throw new RuntimeException();
 		}
 	}
-	
+
 	public edu.cmu.cs.dennisc.math.Point3 getCenterOfTop( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		double top = getTop();
 		BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
@@ -199,9 +207,11 @@ public class Cylinder extends Shape {
 		}
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getCenterOfTop() {
 		return getCenterOfTop( new edu.cmu.cs.dennisc.math.Point3() );
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getCenterOfBottom( edu.cmu.cs.dennisc.math.Point3 rv ) {
 		double bottom = getBottom();
 		BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
@@ -222,10 +232,11 @@ public class Cylinder extends Shape {
 		}
 		return rv;
 	}
+
 	public edu.cmu.cs.dennisc.math.Point3 getCenterOfBottom() {
 		return getCenterOfBottom( new edu.cmu.cs.dennisc.math.Point3() );
 	}
-	
+
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
 		double top = getTop();
@@ -234,26 +245,27 @@ public class Cylinder extends Shape {
 		BottomToTopAxis bottomToTopAxis = this.bottomToTopAxis.getValue();
 		if( bottomToTopAxis == BottomToTopAxis.POSITIVE_X ) {
 			boundingBox.setMinimum( bottom, -maxRadius, -maxRadius );
-			boundingBox.setMaximum( top,    +maxRadius, +maxRadius );
+			boundingBox.setMaximum( top, +maxRadius, +maxRadius );
 		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Y ) {
 			boundingBox.setMinimum( -maxRadius, bottom, -maxRadius );
-			boundingBox.setMaximum( +maxRadius, top,    +maxRadius );
+			boundingBox.setMaximum( +maxRadius, top, +maxRadius );
 		} else if( bottomToTopAxis == BottomToTopAxis.POSITIVE_Z ) {
 			boundingBox.setMinimum( -maxRadius, -maxRadius, bottom );
-			boundingBox.setMaximum( +maxRadius, +maxRadius, top    );
+			boundingBox.setMaximum( +maxRadius, +maxRadius, top );
 		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_X ) {
-			boundingBox.setMinimum( top,    -maxRadius, -maxRadius );
+			boundingBox.setMinimum( top, -maxRadius, -maxRadius );
 			boundingBox.setMaximum( bottom, +maxRadius, +maxRadius );
 		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Y ) {
-			boundingBox.setMinimum( -maxRadius, top,    -maxRadius );
+			boundingBox.setMinimum( -maxRadius, top, -maxRadius );
 			boundingBox.setMaximum( +maxRadius, bottom, +maxRadius );
 		} else if( bottomToTopAxis == BottomToTopAxis.NEGATIVE_Z ) {
-			boundingBox.setMinimum( -maxRadius, -maxRadius, top    );
+			boundingBox.setMinimum( -maxRadius, -maxRadius, top );
 			boundingBox.setMaximum( +maxRadius, +maxRadius, bottom );
 		} else {
 			throw new RuntimeException();
 		}
 	}
+
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
 		double center = getCenter();

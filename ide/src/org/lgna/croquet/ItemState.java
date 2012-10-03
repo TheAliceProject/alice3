@@ -47,8 +47,9 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ItemState<T> extends State<T> {
-	private final ItemCodec< T > itemCodec;
-	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec< T > itemCodec ) {
+	private final ItemCodec<T> itemCodec;
+
+	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec<T> itemCodec ) {
 		super( group, id, initialValue );
 		//assert itemCodec != null;
 		if( itemCodec != null ) {
@@ -58,101 +59,134 @@ public abstract class ItemState<T> extends State<T> {
 		}
 		this.itemCodec = itemCodec;
 	}
+
 	@Override
-	public Class< T > getItemClass() {
+	public Class<T> getItemClass() {
 		return this.itemCodec.getValueClass();
 	}
+
 	@Override
 	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return this.itemCodec.decodeValue( binaryDecoder );
 	}
+
 	@Override
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		this.itemCodec.encodeValue( binaryEncoder, value );
 	}
+
 	@Override
-	public final StringBuilder appendRepresentation(StringBuilder rv, T value) {
-		return this.itemCodec.appendRepresentation( rv, value );
+	public final void appendRepresentation( StringBuilder sb, T value ) {
+		this.itemCodec.appendRepresentation( sb, value );
 	}
-	public ItemCodec< T > getItemCodec() {
+
+	public ItemCodec<T> getItemCodec() {
 		return this.itemCodec;
 	}
+
 	@Override
 	public void appendUserRepr( java.lang.StringBuilder sb ) {
 		this.appendRepresentation( sb, this.getValue() );
 	}
 
+	private static <T> T getItem( java.util.concurrent.Callable<T> itemCallable ) {
+		try {
+			return itemCallable.call();
+		} catch( Exception e ) {
+			throw new RuntimeException( e );
+		}
+	}
+
 	private static class InternalItemSelectedState<T> extends BooleanState {
-		private final ItemState< T > state;
-		private final T item;
-		private InternalItemSelectedState( ItemState< T > state, T item ) {
-			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == item );
+		private final ItemState<T> state;
+		private final java.util.concurrent.Callable<T> itemCallable;
+
+		private InternalItemSelectedState( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable ) {
+			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ) );
 			assert state != null;
 			this.state = state;
-			this.item = item;
+			this.itemCallable = itemCallable;
 		}
+
 		@Override
 		protected void localize() {
 			super.localize();
 			StringBuilder sb = new StringBuilder();
-			this.state.getItemCodec().appendRepresentation( sb, this.item );
+			this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 			this.setTextForBothTrueAndFalse( sb.toString() );
 		}
 	}
-	private java.util.Map< T, InternalItemSelectedState<T> > mapItemToItemSelectedState;
-	public BooleanState getItemSelectedState( T item ) {
-		if( mapItemToItemSelectedState != null ) {
+
+	private static class InternalSelectItemOperation<T> extends ActionOperation {
+		private final ItemState<T> state;
+		private final java.util.concurrent.Callable<T> itemCallable;
+
+		private InternalSelectItemOperation( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable ) {
+			super( state.getGroup(), java.util.UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
+			assert state != null;
+			this.state = state;
+			this.itemCallable = itemCallable;
+		}
+
+		@Override
+		protected void localize() {
+			super.localize();
+			StringBuilder sb = new StringBuilder();
+			this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+			this.setName( sb.toString() );
+		}
+
+		@Override
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			this.state.setValueTransactionlessly( getItem( this.itemCallable ) );
+			step.finish();
+		}
+	}
+
+	private java.util.Map<java.util.concurrent.Callable<T>, InternalItemSelectedState<T>> mapItemCallableToItemSelectedState;
+
+	//note: itemCallable must be valid key
+	public BooleanState getItemSelectedState( java.util.concurrent.Callable<T> itemCallable ) {
+		if( mapItemCallableToItemSelectedState != null ) {
 			//pass
 		} else {
-			this.mapItemToItemSelectedState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			this.mapItemCallableToItemSelectedState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		}
-		InternalItemSelectedState<T> rv = this.mapItemToItemSelectedState.get( item );
+		InternalItemSelectedState<T> rv = this.mapItemCallableToItemSelectedState.get( itemCallable );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new InternalItemSelectedState< T >( this, item );
-			this.mapItemToItemSelectedState.put( item, rv );
+			rv = new InternalItemSelectedState<T>( this, itemCallable );
+			this.mapItemCallableToItemSelectedState.put( itemCallable, rv );
 		}
 		return rv;
 	}
 
-	private static class InternalSelectItemOperation<T> extends ActionOperation {
-		private final ItemState< T > state;
-		private final T item;
-		private InternalSelectItemOperation( ItemState< T > state, T item ) {
-			super( state.getGroup(), java.util.UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
-			assert state != null;
-			this.state = state;
-			this.item = item;
-		}
-		@Override
-		protected void localize() {
-			super.localize();
-			StringBuilder sb = new StringBuilder();
-			this.state.getItemCodec().appendRepresentation( sb, this.item );
-			this.setName( sb.toString() );
-		}
-		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			this.state.setValueTransactionlessly( this.item );
-			step.finish();
-		}
+	public BooleanState getItemSelectedState( T item ) {
+		return getItemSelectedState( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
 	}
-	private java.util.Map< T, InternalSelectItemOperation<T> > mapItemToSelectionOperation;
-	public ActionOperation getItemSelectionOperation( T item ) {
-		if( mapItemToSelectionOperation != null ) {
+
+	private java.util.Map<java.util.concurrent.Callable<T>, InternalSelectItemOperation<T>> mapItemCallableToSelectionOperation;
+
+	//note: itemCallable must be valid key
+	public ActionOperation getItemSelectionOperation( java.util.concurrent.Callable<T> itemCallable ) {
+		if( mapItemCallableToSelectionOperation != null ) {
 			//pass
 		} else {
-			this.mapItemToSelectionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			this.mapItemCallableToSelectionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		}
-		InternalSelectItemOperation<T> rv = this.mapItemToSelectionOperation.get( item );
+		InternalSelectItemOperation<T> rv = this.mapItemCallableToSelectionOperation.get( itemCallable );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new InternalSelectItemOperation< T >( this, item );
-			this.mapItemToSelectionOperation.put( item, rv );
+			rv = new InternalSelectItemOperation<T>( this, itemCallable );
+			this.mapItemCallableToSelectionOperation.put( itemCallable, rv );
 		}
 		return rv;
+	}
+
+	public ActionOperation getItemSelectionOperation( final T item ) {
+		return getItemSelectionOperation( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
 	}
 }

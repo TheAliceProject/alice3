@@ -41,6 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitServer implements MaleAdultFullBodyOutfit {
-	UNIFORM ;
+	UNIFORM;
 }

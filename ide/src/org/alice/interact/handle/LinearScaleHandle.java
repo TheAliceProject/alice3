@@ -52,7 +52,6 @@ import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -61,64 +60,55 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 /**
  * @author David Culyba
  */
-public class LinearScaleHandle extends LinearDragHandle{
+public class LinearScaleHandle extends LinearDragHandle {
 
 	protected Arrow arrow;
 	protected Color4f baseColor;
 	protected Transformable standUpReference = new Transformable();
 	protected boolean applyAlongAxis = false;
 	protected org.lgna.story.implementation.ModelImp.Resizer resizer;
-	
-	
-	public static LinearScaleHandle createFromResizer(org.lgna.story.implementation.ModelImp.Resizer resizer) {
+
+	public static LinearScaleHandle createFromResizer( org.lgna.story.implementation.ModelImp.Resizer resizer ) {
 		LinearScaleHandle toReturn = null;
-		switch (resizer) {
-			case UNIFORM : 
-			{
-				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP), Color4f.PINK);
-				break;
-			}
-			case X_AXIS : 
-			{
-				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), Color4f.MAGENTA, true);
-				break;
-			}
-			case Y_AXIS : 
-			{
-				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP, MovementType.LOCAL), Color4f.YELLOW, true);
-				break;
-			}
-			case Z_AXIS : 
-			{
-				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL), Color4f.CYAN, true);
-				break;
-			}
-			case XY_PLANE : 
-			{
-				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_RIGHT, MovementType.LOCAL), Color4f.PINK);
-				break;
-			}
-			case XZ_PLANE : 
-			{
-				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT_FORWARD, MovementType.LOCAL), Color4f.PINK);
-				break;
-			}
-			case YZ_PLANE : 
-			{
-				toReturn = new LinearScaleHandle(new MovementDescription(MovementDirection.UP_FORWARD, MovementType.LOCAL), Color4f.PINK);
-				break;
-			}
+		switch( resizer ) {
+		case UNIFORM: {
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RESIZE, MovementType.STOOD_UP ), Color4f.PINK );
+			break;
+		}
+		case X_AXIS: {
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RIGHT, MovementType.LOCAL ), Color4f.MAGENTA, true );
+			break;
+		}
+		case Y_AXIS: {
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP, MovementType.LOCAL ), Color4f.YELLOW, true );
+			break;
+		}
+		case Z_AXIS: {
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ), Color4f.CYAN, true );
+			break;
+		}
+		case XY_PLANE: {
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP_RIGHT, MovementType.LOCAL ), Color4f.PINK );
+			break;
+		}
+		case XZ_PLANE: {
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.RIGHT_FORWARD, MovementType.LOCAL ), Color4f.PINK );
+			break;
+		}
+		case YZ_PLANE: {
+			toReturn = new LinearScaleHandle( new MovementDescription( MovementDirection.UP_FORWARD, MovementType.LOCAL ), Color4f.PINK );
+			break;
+		}
 		}
 		toReturn.resizer = resizer;
 		return toReturn;
 	}
-	
-	
+
 	public LinearScaleHandle( MovementDescription dragDescription, Color4f color )
 	{
 		this( dragDescription, color, false );
 	}
-	
+
 	public LinearScaleHandle( MovementDescription dragDescription, Color4f color, boolean applyAlongAxis )
 	{
 		super( dragDescription );
@@ -126,119 +116,128 @@ public class LinearScaleHandle extends LinearDragHandle{
 		this.applyAlongAxis = applyAlongAxis;
 		this.initializeAppearance();
 	}
-	
+
 	public LinearScaleHandle( LinearScaleHandle handle )
 	{
-		super(handle);
+		super( handle );
 		this.baseColor = handle.baseColor;
 		this.applyAlongAxis = handle.applyAlongAxis;
 		this.resizer = handle.resizer;
 		this.initializeAppearance();
 	}
-	
+
 	@Override
 	public LinearScaleHandle clone()
 	{
-		LinearScaleHandle newHandle = new LinearScaleHandle(this);
+		LinearScaleHandle newHandle = new LinearScaleHandle( this );
 		return newHandle;
 	}
-	
+
 	public boolean applyAlongAxis()
 	{
 		return this.applyAlongAxis;
 	}
-	
+
 	@Override
 	protected void createShape() {
-		createShape(1.0d);
+		createShape( 1.0d );
 	}
-	
-	protected void createShape(double scale) {
-		this.arrow = new Arrow(.05*scale, 0.1*scale, 0.15*scale, 0.15*scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+
+	protected void createShape( double scale ) {
+		this.arrow = new Arrow( .05 * scale, 0.1 * scale, 0.15 * scale, 0.15 * scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true );
 		this.arrow.setParent( this );
 	}
-	
+
 	public org.lgna.story.implementation.ModelImp.Resizer getResizer()
 	{
 		return this.resizer;
 	}
-	
+
 	protected Vector3 getUniformResizeOffset()
 	{
 		AxisAlignedBox bbox = getManipulatedObjectBox();
 		Vector3 handleOffset;
-		if (bbox != null)
+		if( bbox != null )
 		{
-			handleOffset = new Vector3(bbox.getMaximum());
+			handleOffset = new Vector3( bbox.getMaximum() );
 			handleOffset.z = 0;
 			handleOffset.x *= -1;
 		}
 		else
 		{
-			handleOffset = new Vector3(1, 1, 0);
+			handleOffset = new Vector3( 1, 1, 0 );
 		}
-		if (handleOffset.isZero())
+		if( handleOffset.isZero() )
 		{
-			handleOffset = new Vector3(1, 1, 0);
+			handleOffset = new Vector3( 1, 1, 0 );
 		}
 		return handleOffset;
 	}
-	
+
 	protected Vector3 getUniformResizeDirection()
 	{
-		Vector3 direction =  getUniformResizeOffset();
+		Vector3 direction = getUniformResizeOffset();
 		direction.normalize();
 		return direction;
 	}
-	
+
 	@Override
-	public void positionRelativeToObject( ) {
-		if (this.dragDescription.direction == MovementDirection.RESIZE)
+	public void positionRelativeToObject() {
+		if( this.dragDescription.direction == MovementDirection.RESIZE )
 		{
 			this.dragAxis = this.getUniformResizeDirection();
 		}
 		AffineMatrix4x4 objectTransformation = this.getTransformationForAxis( this.dragAxis );
-		if (objectTransformation.isNaN())
+		if( objectTransformation.isNaN() )
 		{
 			objectTransformation = this.getTransformationForAxis( this.dragAxis );
-			assert !objectTransformation.isNaN() : "Created NaN transformation from "+this.dragAxis;
+			assert !objectTransformation.isNaN() : "Created NaN transformation from " + this.dragAxis;
 			objectTransformation = new AffineMatrix4x4();
 		}
 		this.setTransformation( objectTransformation, this.getReferenceFrame() );
-		Vector3 handleOffset = new Vector3(this.dragAxis);
+		Vector3 handleOffset = new Vector3( this.dragAxis );
 		handleOffset.multiply( this.getHandleLength() );
 		this.setTranslationOnly( handleOffset, this.getReferenceFrame() );
 	}
-	
+
 	@Override
 	protected Color4f getBaseColor()
 	{
-		if (this.baseColor == null)
+		if( this.baseColor == null )
 		{
 			return super.getBaseColor();
 		}
 		return this.baseColor;
 	}
-	
+
 	@Override
-	protected Color4f getDesiredColor(HandleRenderState renderState)
+	protected Color4f getDesiredColor( HandleRenderState renderState )
 	{
-		Color desiredColor = new Color(this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue);
-		switch (renderState)
+		Color desiredColor = new Color( this.getBaseColor().red, this.getBaseColor().green, this.getBaseColor().blue );
+		switch( renderState )
 		{
-		case NOT_VISIBLE : break; //Do nothing
-		case VISIBLE_BUT_SIBLING_IS_ACTIVE : ColorUtilities.shiftHSB( desiredColor, 0.0d, -.6d, -.5d ); break;
-		case VISIBLE_AND_ACTIVE : desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, 0.0d, .1d ); break;
-		case VISIBLE_AND_ROLLOVER : desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, -.4d, -.3d ); break;
-		case JUST_VISIBLE : break; //Do nothing
-		default : break; //Do nothing
+		case NOT_VISIBLE:
+			break; //Do nothing
+		case VISIBLE_BUT_SIBLING_IS_ACTIVE:
+			ColorUtilities.shiftHSB( desiredColor, 0.0d, -.6d, -.5d );
+			break;
+		case VISIBLE_AND_ACTIVE:
+			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, 0.0d, .1d );
+			break;
+		case VISIBLE_AND_ROLLOVER:
+			desiredColor = ColorUtilities.shiftHSB( desiredColor, 0.0d, -.4d, -.3d );
+			break;
+		case JUST_VISIBLE:
+			break; //Do nothing
+		default:
+			break; //Do nothing
 		}
-		return new Color4f(desiredColor);
+		return new Color4f( desiredColor );
 	}
 
 	@Override
 	protected void setScale( double scale ) {
-		if (this.arrow != null)
+		if( this.arrow != null )
 		{
 			this.arrow.setParent( null );
 		}
@@ -246,10 +245,9 @@ public class LinearScaleHandle extends LinearDragHandle{
 	}
 
 	@Override
-	public void setVisualsShowing(boolean showing) {
-		super.setVisualsShowing(showing);
-		this.arrow.setVisualShowing(showing);
+	public void setVisualsShowing( boolean showing ) {
+		super.setVisualsShowing( showing );
+		this.arrow.setVisualShowing( showing );
 	}
-	
 
 }

@@ -56,12 +56,12 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 public class SelectObjectDragManipulator extends AbstractManipulator {
 
 	protected GlobalDragAdapter globalDragAdapter;
-	
+
 	public SelectObjectDragManipulator( GlobalDragAdapter globalDragAdapter )
 	{
 		this.globalDragAdapter = globalDragAdapter;
 	}
-	
+
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		// TODO Auto-generated method stub
@@ -73,40 +73,39 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
-	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+	public void doClickManipulator( InputState clickInput, InputState previousInput ) {
 		//Do nothing
 	}
-
 
 	@Override
 	public String getUndoRedoDescription() {
 		return "Object Select";
 	}
-	
+
 	@Override
 	public boolean isUndoable() {
 		return false;
 	}
-	
+
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-//		PrintUtilities.println("SelectObjectDragManipulator!!!");
+		//		PrintUtilities.println("SelectObjectDragManipulator!!!");
 		PickHint clickedObjectType = startInput.getClickPickHint();
-		if ( clickedObjectType.intersects( PickHint.PickType.SELECTABLE.pickHint() ))
+		if( clickedObjectType.intersects( PickHint.PickType.SELECTABLE.pickHint() ) )
 		{
-			this.globalDragAdapter.triggerSgObjectSelection( startInput.getClickPickedTransformable(true) );
+			this.globalDragAdapter.triggerSgObjectSelection( startInput.getClickPickedTransformable( true ) );
 		}
-		else if (clickedObjectType.intersects( PickHint.PickType.THREE_D_HANDLE.pickHint() ) )
+		else if( clickedObjectType.intersects( PickHint.PickType.THREE_D_HANDLE.pickHint() ) )
 		{
-			AbstractTransformable pickedHandle = startInput.getClickPickedTransformable(true);
-			if (pickedHandle instanceof RotationRingHandle)
+			AbstractTransformable pickedHandle = startInput.getClickPickedTransformable( true );
+			if( pickedHandle instanceof RotationRingHandle )
 			{
-				this.globalDragAdapter.triggerSgObjectSelection( ((RotationRingHandle)pickedHandle).getManipulatedObject() );
+				this.globalDragAdapter.triggerSgObjectSelection( ( (RotationRingHandle)pickedHandle ).getManipulatedObject() );
 			}
 		}
-		else if (clickedObjectType.intersects( PickHint.PickType.TWO_D_HANDLE.pickHint() ) )
+		else if( clickedObjectType.intersects( PickHint.PickType.TWO_D_HANDLE.pickHint() ) )
 		{
 			//Do nothing since the 2D handles don't select anything right now
 		}

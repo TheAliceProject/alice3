@@ -50,10 +50,20 @@ public abstract class PlainStringValue extends StringValue {
 	public PlainStringValue( java.util.UUID id ) {
 		super( id, new javax.swing.text.PlainDocument() );
 	}
-	public org.lgna.croquet.components.ImmutableTextArea createImmutableTextArea() {
-		return new org.lgna.croquet.components.ImmutableTextArea( this );
+
+	public org.lgna.croquet.components.ImmutableTextArea createImmutableTextArea( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return new org.lgna.croquet.components.ImmutableTextArea( this, fontScalar, textAttributes );
 	}
-	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField() {
-		return new org.lgna.croquet.components.ImmutableTextField( this );
+
+	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return new org.lgna.croquet.components.ImmutableTextField( this, fontScalar, textAttributes );
+	}
+
+	public org.lgna.croquet.components.ImmutableTextArea createImmutableTextArea( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return this.createImmutableTextArea( 1.0f, textAttributes );
+	}
+
+	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return this.createImmutableTextField( 1.0f, textAttributes );
 	}
 }

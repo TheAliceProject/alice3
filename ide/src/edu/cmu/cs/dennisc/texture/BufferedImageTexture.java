@@ -53,12 +53,14 @@ public class BufferedImageTexture extends Texture {
 
 	public BufferedImageTexture() {
 	}
+
 	public BufferedImageTexture( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 		byte[] buffer = binaryDecoder.decodeByteArray();
 		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( buffer );
 		setBufferedImage( edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, bais ) );
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		//todo
 		assert m_bufferedImage != null;
@@ -66,9 +68,11 @@ public class BufferedImageTexture extends Texture {
 		edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, baos, m_bufferedImage );
 		binaryEncoder.encode( baos.toByteArray() );
 	}
+
 	public java.awt.image.BufferedImage getBufferedImage() {
 		return m_bufferedImage;
 	}
+
 	public void setBufferedImage( java.awt.image.BufferedImage bufferedImage ) {
 		if( m_bufferedImage != bufferedImage ) {
 			m_bufferedImage = bufferedImage;
@@ -80,16 +84,19 @@ public class BufferedImageTexture extends Texture {
 	public boolean isMipMappingDesired() {
 		return m_isMipMappingDesired;
 	}
+
 	public void setMipMappingDesired( boolean isMipMappingDesired ) {
 		if( m_isMipMappingDesired != isMipMappingDesired ) {
 			m_isMipMappingDesired = isMipMappingDesired;
 			fireTextureChanged();
 		}
 	}
+
 	@Override
 	public boolean isPotentiallyAlphaBlended() {
 		return m_isPotentiallyAlphaBlended;
 	}
+
 	public void setPotentiallyAlphaBlended( boolean isPotentiallyAlphaBlended ) {
 		if( m_isPotentiallyAlphaBlended != isPotentiallyAlphaBlended ) {
 			m_isPotentiallyAlphaBlended = isPotentiallyAlphaBlended;
@@ -105,6 +112,7 @@ public class BufferedImageTexture extends Texture {
 			return 0;
 		}
 	}
+
 	@Override
 	public int getHeight() {
 		if( m_bufferedImage != null ) {
@@ -113,12 +121,15 @@ public class BufferedImageTexture extends Texture {
 			return 0;
 		}
 	}
+
 	public boolean isAnimated() {
 		return false;
 	}
+
 	public edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy getMipMapGenerationPolicy() {
 		return edu.cmu.cs.dennisc.texture.MipMapGenerationPolicy.PAINT_EACH_INDIVIDUAL_LEVEL;
 	}
+
 	public void paint( java.awt.Graphics2D g, int width, int height ) {
 		g.drawImage( m_bufferedImage, 0, 0, width, height, null );
 	}

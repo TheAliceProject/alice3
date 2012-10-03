@@ -55,10 +55,11 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 	public String getText() {
 		try {
 			return this.document.getText( 0, this.document.getLength() );
-		} catch( javax.swing.text.BadLocationException ble ) {			
+		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( ble );
 		}
 	}
+
 	public void setText( String text ) {
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );
@@ -66,6 +67,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 			throw new RuntimeException( text, ble );
 		}
 	}
+
 	public void addFeature( Feature feature ) {
 		if( feature != null ) {
 			this.features.add( feature );
@@ -73,22 +75,26 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	}
+
 	public void removeAllFeatures() {
 		this.features.clear();
 	}
+
 	public java.util.List<Feature> getFeatures() {
 		return this.features;
 	}
+
 	public java.awt.Point calculateLocation( org.lgna.croquet.components.Container<?> container ) {
 		java.awt.Point rv;
 		if( this.features.size() > 0 ) {
 			Feature feature = this.features.get( 0 );
 			rv = feature.calculateNoteLocation( container, this );
 		} else {
-			rv = new java.awt.Point( (container.getWidth() - this.getWidth()) / 2, 320 );
+			rv = new java.awt.Point( ( container.getWidth() - this.getWidth() ) / 2, 320 );
 		}
 		return rv;
 	}
+
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane() {
@@ -96,6 +102,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 			public void updateUI() {
 				this.setUI( new javax.swing.plaf.basic.BasicEditorPaneUI() );
 			}
+
 			@Override
 			public boolean contains( int x, int y ) {
 				return false;
@@ -121,7 +128,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 				int w = this.getWidth();
 				int h = this.getHeight();
 
-				java.awt.Shape shape = new java.awt.geom.Rectangle2D.Float( 0, 0, w-4, h-4 );
+				java.awt.Shape shape = new java.awt.geom.Rectangle2D.Float( 0, 0, w - 4, h - 4 );
 
 				int x1 = w - 20;
 				int y1 = h - 20;
@@ -142,12 +149,14 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 				}
 				super.paintComponent( g );
 			}
+
 			@Override
 			public void paint( java.awt.Graphics g ) {
 				if( Note.this.getText().length() > 0 ) {
 					super.paint( g );
 				}
 			}
+
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				java.awt.Dimension rv = super.getPreferredSize();
@@ -161,22 +170,28 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 		rv.setOpaque( false );
 		return rv;
 	}
+
 	private javax.swing.event.MouseInputListener mouseInputListener = new javax.swing.event.MouseInputListener() {
 		private java.awt.event.MouseEvent ePressed;
 		private java.awt.Point ptPressed;
 
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
+
 		public void mouseExited( java.awt.event.MouseEvent e ) {
 		}
+
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			this.ePressed = javax.swing.SwingUtilities.convertMouseEvent( e.getComponent(), e, e.getComponent().getParent() );
 			this.ptPressed = Note.this.getAwtComponent().getLocation();
 		}
+
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 		}
+
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
+
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			java.awt.event.MouseEvent eDragged = javax.swing.SwingUtilities.convertMouseEvent( e.getComponent(), e, e.getComponent().getParent() );
 			int xDelta = eDragged.getX() - this.ePressed.getX();
@@ -186,14 +201,17 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 			Note.this.getAwtComponent().setLocation( x, y );
 			Note.this.getAwtComponent().getParent().repaint();
 		}
+
 		public void mouseMoved( java.awt.event.MouseEvent e ) {
 		}
 	};
 
 	private boolean isActive = true;
+
 	public boolean isActive() {
 		return this.isActive;
 	}
+
 	public void setActive( boolean isActive ) {
 		if( this.isActive != isActive ) {
 			this.isActive = isActive;
@@ -212,6 +230,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 			feature.bind();
 		}
 	}
+
 	private void unbind() {
 		for( Feature feature : this.features ) {
 			feature.unbind();
@@ -220,7 +239,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 
 	private java.awt.event.HierarchyListener hierarchyListener = new java.awt.event.HierarchyListener() {
 		public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
-			if( (e.getChangeFlags() & java.awt.event.HierarchyEvent.SHOWING_CHANGED) != 0 ) {
+			if( ( e.getChangeFlags() & java.awt.event.HierarchyEvent.SHOWING_CHANGED ) != 0 ) {
 				Note.this.handleShowingChanged( e.getChanged().isShowing() );
 			}
 		}
@@ -239,6 +258,7 @@ public class Note extends org.lgna.croquet.components.JComponent<javax.swing.JPa
 		this.addMouseMotionListener( this.mouseInputListener );
 		this.bind();
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		this.unbind();

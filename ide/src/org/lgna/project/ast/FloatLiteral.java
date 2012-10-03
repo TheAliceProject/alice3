@@ -47,20 +47,25 @@ package org.lgna.project.ast;
  */
 public class FloatLiteral extends AbstractValueLiteral {
 	public edu.cmu.cs.dennisc.property.FloatProperty value = new edu.cmu.cs.dennisc.property.FloatProperty( this, 0.0f );
+
 	public FloatLiteral() {
 	}
+
 	public FloatLiteral( Float value ) {
 		this.value.setValue( value );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return JavaType.getInstance( Float.class );
 	}
+
 	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.value.getValue() );
 		return rv;
 	}
+
 	@Override
 	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
 		return this.value;

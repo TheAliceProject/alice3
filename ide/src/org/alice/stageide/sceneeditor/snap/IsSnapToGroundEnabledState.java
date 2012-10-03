@@ -49,11 +49,13 @@ public class IsSnapToGroundEnabledState extends BooleanState {
 	private static class SingletonHolder {
 		private static IsSnapToGroundEnabledState instance = new IsSnapToGroundEnabledState();
 	}
+
 	public static IsSnapToGroundEnabledState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private IsSnapToGroundEnabledState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "46b05c1f-b980-45c2-a587-4000400f7add" ), true );
 	}
-	
+
 }

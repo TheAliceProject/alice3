@@ -49,12 +49,15 @@ public class PrintSceneEditorOperation extends PrintOperation {
 	private static class SingletonHolder {
 		private static PrintSceneEditorOperation instance = new PrintSceneEditorOperation();
 	}
+
 	public static PrintSceneEditorOperation getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private PrintSceneEditorOperation() {
 		super( java.util.UUID.fromString( "b38997ea-e970-416e-86db-58623d1c3352" ) );
 	}
+
 	@Override
 	protected java.awt.print.Printable getPrintable() {
 		return new java.awt.print.Printable() {
@@ -71,10 +74,10 @@ public class PrintSceneEditorOperation extends PrintOperation {
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 						int width = sceneEditor.getWidth();
 						int height = sceneEditor.getHeight();
-						double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
+						double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );
 						g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
 						if( scale > 1.0 ) {
-							g2.scale( 1.0/scale, 1.0/scale );
+							g2.scale( 1.0 / scale, 1.0 / scale );
 						}
 						sceneEditor.getAwtComponent().paintAll( g2 );
 						return PAGE_EXISTS;
@@ -85,5 +88,5 @@ public class PrintSceneEditorOperation extends PrintOperation {
 			}
 		};
 	}
-	
+
 }

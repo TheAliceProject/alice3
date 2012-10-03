@@ -41,12 +41,13 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleAdultFullBodyOutfitPajamasDrawstring implements MaleAdultFullBodyOutfit {
-	BLUESPECKED ,
- 	BLUESTRIPED ,
- 	BROWNCHECKED ,
- 	GREENSTRIPED ,
- 	GREY ,
- 	BLUECHECKED ,
- 	REDSPECKED ;
+	BLUESPECKED,
+	BLUESTRIPED,
+	BROWNCHECKED,
+	GREENSTRIPED,
+	GREY,
+	BLUECHECKED,
+	REDSPECKED;
 }

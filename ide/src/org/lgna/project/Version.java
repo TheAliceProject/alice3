@@ -52,33 +52,53 @@ public class Version implements Comparable<Version> {
 		TEXT = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( Version.class.getResourceAsStream( "Version.txt" ) ).trim();
 		CURRENT = new Version( TEXT );
 	}
+
 	public static String getCurrentVersionText() {
 		return TEXT;
 	}
+
 	public static Version getCurrentVersion() {
 		return CURRENT;
 	}
-	
+
 	private int[] subNumbers;
+
 	public Version( String text ) {
 		String[] subTexts = text.split( "\\." );
 		final int N = subTexts.length;
 		this.subNumbers = new int[ N ];
-		for( int i=0; i<N; i++ ) {
-			this.subNumbers[ i ] = Integer.parseInt( subTexts[ i ] );
+		for( int i = 0; i < N; i++ ) {
+			try {
+				this.subNumbers[ i ] = Integer.parseInt( subTexts[ i ] );
+			} catch( NumberFormatException nfe ) {
+				this.subNumbers[ i ] = -1;
+			}
 		}
 	}
-	
+
+	public boolean isValid() {
+		for( int i : this.subNumbers ) {
+			if( i >= 0 ) {
+				//pass
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public int getMajor() {
 		return this.subNumbers[ 0 ];
 	}
+
 	public int getMinor() {
 		return this.subNumbers[ 1 ];
 	}
+
 	public int getBuild() {
 		return this.subNumbers[ 2 ];
 	}
-	
+
 	private static int[] growIfNecessary( int[] source, int[] other ) {
 		if( source.length < other.length ) {
 			int[] rv = new int[ other.length ];
@@ -88,11 +108,11 @@ public class Version implements Comparable<Version> {
 			return source;
 		}
 	}
-	
+
 	public int compareTo( org.lgna.project.Version other ) {
 		int[] thisSubNumbers = growIfNecessary( this.subNumbers, other.subNumbers );
 		int[] otherSubNumbers = growIfNecessary( other.subNumbers, this.subNumbers );
-		for( int i=0; i<thisSubNumbers.length; i++ ) {
+		for( int i = 0; i < thisSubNumbers.length; i++ ) {
 			int result = Integer.signum( thisSubNumbers[ i ] - otherSubNumbers[ i ] );
 			if( result == 0 ) {
 				//pass
@@ -102,7 +122,7 @@ public class Version implements Comparable<Version> {
 		}
 		return 0;
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -114,9 +134,9 @@ public class Version implements Comparable<Version> {
 		}
 		return sb.toString();
 	}
-	
+
 	public static void main( String[] args ) {
-		System.out.println( new Version( "3.1.20.0.0" ) );
-		System.out.println( new Version( "3.1.20.0.0" ).compareTo( new Version( "3.1.22.0.0.0" ) ) );
+		System.out.println( new Version( "3.1.beta.0.0" ) );
+		System.out.println( new Version( "3.1.20.0.0" ).compareTo( new Version( "3.1.beta.0.0.0" ) ) );
 	}
 }

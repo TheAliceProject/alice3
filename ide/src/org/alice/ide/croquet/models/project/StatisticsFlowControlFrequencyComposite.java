@@ -56,7 +56,7 @@ import org.lgna.project.ast.UserMethod;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<StatisticsFlowControlFrequencyView> {
-	private Map<UserMethod,List<Statement>> methodToConstructMap;
+	private Map<UserMethod, List<Statement>> methodToConstructMap;
 	private final ListSelectionState<UserMethod> userMethodList = createListSelectionState( createKey( "userMethodList" ), UserMethod.class, org.alice.ide.croquet.codecs.NodeCodec.getInstance( UserMethod.class ), -1 );
 	public static UserMethod dummy = new UserMethod();
 
@@ -64,11 +64,9 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 		super( java.util.UUID.fromString( "b12770d1-e65e-430f-92a1-dc3159a85a7b" ) );
 		methodToConstructMap = Collections.newHashMap();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
-
 		StatementCountCrawler crawler = new StatementCountCrawler();
+		ide.crawlFilteredProgramType( crawler );
 		List<UserMethod> a = new LinkedList<UserMethod>();
-		programType.crawl( crawler, true );
 		for( UserMethod method : methodToConstructMap.keySet() ) {
 			a.add( method );
 		}
@@ -86,6 +84,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 		}
 		dummy.setName( "Project" );
 	}
+
 	@Override
 	public boolean isCloseable() {
 		return false;
@@ -96,7 +95,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 		return new StatisticsFlowControlFrequencyView( this );
 	}
 
-	public Map<UserMethod,List<Statement>> getMethodToConstructMap() {
+	public Map<UserMethod, List<Statement>> getMethodToConstructMap() {
 		return this.methodToConstructMap;
 	}
 
@@ -105,15 +104,15 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 	}
 
 	private class StatementCountCrawler implements edu.cmu.cs.dennisc.pattern.Crawler {
-		private java.util.Map<Class<? extends org.lgna.project.ast.Statement>,Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		private java.util.Map<Class<? extends org.lgna.project.ast.Statement>, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof org.lgna.project.ast.Statement ) {
 				org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)crawlable;
 				UserMethod method = statement.getFirstAncestorAssignableTo( UserMethod.class );
-				if( method != null && !method.getManagementLevel().isGenerated()
-				// This condition prevents counting methods of the Program class (e.g., main method) which a user cannot edit
-						&& !(method.getDeclaringType().isAssignableTo( org.lgna.story.SProgram.class )) && statement.isEnabled.getValue() ) {
+				if( ( method != null ) && !method.getManagementLevel().isGenerated()
+						// This condition prevents counting methods of the Program class (e.g., main method) which a user cannot edit
+						&& !( method.getDeclaringType().isAssignableTo( org.lgna.story.SProgram.class ) ) && statement.isEnabled.getValue() ) {
 					if( !methodToConstructMap.keySet().contains( method ) ) {
 						methodToConstructMap.put( method, new LinkedList<Statement>() );
 					}
@@ -143,7 +142,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 		return count;
 	}
 
-	public int getMaximum(Class[] clsArr) {
+	public int getMaximum( Class[] clsArr ) {
 		int maxCount = 0;
 		for( Class cls : clsArr ) {
 			int count = getCount( StatisticsFlowControlFrequencyComposite.dummy, cls );

@@ -52,15 +52,15 @@ public abstract class IoUtilities {
 
 	public static final String PROJECT_EXTENSION = "a3p";
 	public static final String TYPE_EXTENSION = "a3c";
-	
+
 	public static java.io.File[] listProjectFiles( java.io.File directory ) {
 		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );
 	}
+
 	public static java.io.File[] listTypeFiles( java.io.File directory ) {
 		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, TYPE_EXTENSION );
 	}
-	
-	
+
 	private static final String PROPERTIES_ENTRY_NAME = "properties.bin";
 	private static final String PROGRAM_TYPE_ENTRY_NAME = "programType.xml";
 	private static final String VERSION_ENTRY_NAME = "version.txt";
@@ -73,16 +73,17 @@ public abstract class IoUtilities {
 	private static final String XML_RESOURCE_UUID_ATTRIBUTE = "uuid";
 	private static final String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
-
 	private static interface ZipEntryContainer {
 		public java.io.InputStream getInputStream( String name ) throws java.io.IOException;
 	}
-	
+
 	private static class ZipFileEntryContainer implements ZipEntryContainer {
 		private final java.util.zip.ZipFile zipFile;
+
 		public ZipFileEntryContainer( java.util.zip.ZipFile zipFile ) {
 			this.zipFile = zipFile;
 		}
+
 		public java.io.InputStream getInputStream( String name ) throws java.io.IOException {
 			java.util.zip.ZipEntry zipEntry = this.zipFile.getEntry( name );
 			if( zipEntry != null ) {
@@ -92,8 +93,10 @@ public abstract class IoUtilities {
 			}
 		}
 	}
+
 	private static class ZipInputStreamEntryContainer implements ZipEntryContainer {
-		private final java.util.Map< String, byte[] > mapZipEntryToBuffer;
+		private final java.util.Map<String, byte[]> mapZipEntryToBuffer;
+
 		public ZipInputStreamEntryContainer( java.util.zip.ZipInputStream zipInputStream ) {
 			try {
 				this.mapZipEntryToBuffer = edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.extract( zipInputStream );
@@ -101,6 +104,7 @@ public abstract class IoUtilities {
 				throw new RuntimeException( ioe );
 			}
 		}
+
 		public java.io.InputStream getInputStream( String name ) throws java.io.IOException {
 			byte[] buffer = this.mapZipEntryToBuffer.get( name );
 			if( buffer != null ) {
@@ -110,13 +114,13 @@ public abstract class IoUtilities {
 			}
 		}
 	}
-	
+
 	private static String readVersion( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
 		assert zipEntryContainer != null;
 		java.io.InputStream is = zipEntryContainer.getInputStream( VERSION_ENTRY_NAME );
 		if( is != null ) {
 			//todo?
-			java.util.ArrayList< Byte > buffer = new java.util.ArrayList< Byte >( 32 );
+			java.util.ArrayList<Byte> buffer = new java.util.ArrayList<Byte>( 32 );
 			while( true ) {
 				int b = is.read();
 				if( b != -1 ) {
@@ -135,6 +139,7 @@ public abstract class IoUtilities {
 			throw new java.io.IOException( zipEntryContainer.toString() + " does not contain entry " + VERSION_ENTRY_NAME );
 		}
 	}
+
 	private static org.lgna.project.Project readProperties( org.lgna.project.Project rv, ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
 		assert zipEntryContainer != null;
 		java.io.InputStream is = zipEntryContainer.getInputStream( PROPERTIES_ENTRY_NAME );
@@ -143,14 +148,15 @@ public abstract class IoUtilities {
 			edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder binaryDecoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( bis );
 			String version = binaryDecoder.decodeString();
 			final int N = binaryDecoder.decodeInt();
-			for( int i=0; i<N; i++ ) {
+			for( int i = 0; i < N; i++ ) {
 				org.lgna.project.properties.PropertyKey.decodeIdAndValueAndPut( rv, binaryDecoder, version );
 			}
 		}
 		return rv;
 	}
+
 	public static org.w3c.dom.Document readXML( java.io.InputStream is, org.lgna.project.Version version ) throws java.io.IOException {
-		if( org.lgna.project.Version.getCurrentVersion().compareTo( version ) == 0 && org.lgna.project.migration.MigrationManager.isDevoidOfVersionIndependentMigrations() ) {
+		if( ( org.lgna.project.Version.getCurrentVersion().compareTo( version ) == 0 ) && org.lgna.project.migration.MigrationManager.isDevoidOfVersionIndependentMigrations() ) {
 			//pass
 		} else {
 			String text = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is );
@@ -159,6 +165,7 @@ public abstract class IoUtilities {
 		}
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
 	}
+
 	private static org.w3c.dom.Document readXML( ZipEntryContainer zipEntryContainer, String entryName, org.lgna.project.Version version ) throws java.io.IOException {
 		assert zipEntryContainer != null;
 		java.io.InputStream is = zipEntryContainer.getInputStream( entryName );
@@ -169,23 +176,26 @@ public abstract class IoUtilities {
 		String projectVersion = readVersion( zipEntryContainer );
 		org.lgna.project.Version version = new org.lgna.project.Version( projectVersion );
 		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, version );
-		return (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, projectVersion );
+		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, projectVersion );
+		org.lgna.project.migration.MigrationManager.migrate( rv, version );
+		return rv;
 	}
-	private static java.util.Set< org.lgna.common.Resource > readResources( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
-		java.util.Set< org.lgna.common.Resource > rv = new java.util.HashSet< org.lgna.common.Resource >();
+
+	private static java.util.Set<org.lgna.common.Resource> readResources( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
+		java.util.Set<org.lgna.common.Resource> rv = new java.util.HashSet<org.lgna.common.Resource>();
 		java.io.InputStream isResources = zipEntryContainer.getInputStream( RESOURCES_ENTRY_NAME );
 		if( isResources != null ) {
 			org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.read( isResources );
-			java.util.List< org.w3c.dom.Element > xmlElements = edu.cmu.cs.dennisc.xml.XMLUtilities.getChildElementsByTagName( xmlDocument.getDocumentElement(), XML_RESOURCE_TAG_NAME );
+			java.util.List<org.w3c.dom.Element> xmlElements = edu.cmu.cs.dennisc.xml.XMLUtilities.getChildElementsByTagName( xmlDocument.getDocumentElement(), XML_RESOURCE_TAG_NAME );
 			for( org.w3c.dom.Element xmlElement : xmlElements ) {
 				String className = xmlElement.getAttribute( XML_RESOURCE_CLASSNAME_ATTRIBUTE );
 				String uuidText = xmlElement.getAttribute( XML_RESOURCE_UUID_ATTRIBUTE );
 				String entryName = xmlElement.getAttribute( XML_RESOURCE_ENTRY_NAME_ATTRIBUTE );
-				if( className != null && uuidText != null && entryName != null ) {
+				if( ( className != null ) && ( uuidText != null ) && ( entryName != null ) ) {
 					byte[] data = edu.cmu.cs.dennisc.java.io.InputStreamUtilities.getBytes( zipEntryContainer.getInputStream( entryName ) );
 					if( data != null ) {
 						try {
-							Class< ? extends org.lgna.common.Resource > resourceCls = (Class< ? extends org.lgna.common.Resource >)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
+							Class<? extends org.lgna.common.Resource> resourceCls = (Class<? extends org.lgna.common.Resource>)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
 							org.lgna.common.Resource resource = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.valueOf( resourceCls, uuidText );
 							resource.decodeAttributes( xmlElement, data );
 							rv.add( resource );
@@ -204,54 +214,63 @@ public abstract class IoUtilities {
 	private static org.lgna.project.Project readProject( ZipEntryContainer zipEntryContainer ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert zipEntryContainer != null;
 		org.lgna.project.ast.NamedUserType type = readType( zipEntryContainer, PROGRAM_TYPE_ENTRY_NAME );
+
 		//todo
-		java.util.Set< org.lgna.project.ast.NamedUserType > namedUserTypes = java.util.Collections.emptySet();
-		java.util.Set< org.lgna.common.Resource > resources = readResources( zipEntryContainer );
+		java.util.Set<org.lgna.project.ast.NamedUserType> namedUserTypes = java.util.Collections.emptySet();
+		java.util.Set<org.lgna.common.Resource> resources = readResources( zipEntryContainer );
 		org.lgna.project.Project rv = new org.lgna.project.Project( type, namedUserTypes, resources );
 		readProperties( rv, zipEntryContainer );
 		return rv;
 	}
+
 	public static org.lgna.project.Project readProject( java.util.zip.ZipInputStream zis ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readProject( new ZipInputStreamEntryContainer( zis ) );
 	}
+
 	public static org.lgna.project.Project readProject( java.io.InputStream is ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readProject( new java.util.zip.ZipInputStream( is ) );
 	}
+
 	public static org.lgna.project.Project readProject( java.util.zip.ZipFile zipFile ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readProject( new ZipFileEntryContainer( zipFile ) );
 	}
+
 	public static org.lgna.project.Project readProject( java.io.File file ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert file != null;
 		assert file.exists();
 		return readProject( new java.util.zip.ZipFile( file ) );
 	}
+
 	public static org.lgna.project.Project readProject( String path ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert path != null;
 		return readProject( new java.io.File( path ) );
 	}
 
-	private static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > readType( ZipEntryContainer zipEntryContainer ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
-		org.lgna.project.ast.AbstractType<?,?,?> type = readType( zipEntryContainer, TYPE_ENTRY_NAME );
-		java.util.Set< org.lgna.common.Resource > resources = readResources( zipEntryContainer );
+	private static edu.cmu.cs.dennisc.pattern.Tuple2<? extends org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> readType( ZipEntryContainer zipEntryContainer ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+		org.lgna.project.ast.NamedUserType type = readType( zipEntryContainer, TYPE_ENTRY_NAME );
+		java.util.Set<org.lgna.common.Resource> resources = readResources( zipEntryContainer );
 		return edu.cmu.cs.dennisc.pattern.Tuple2.createInstance( type, resources );
 	}
 
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > readType( java.util.zip.ZipInputStream zis ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2<? extends org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> readType( java.util.zip.ZipInputStream zis ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new ZipInputStreamEntryContainer( zis ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > readType( java.io.InputStream is ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+
+	public static edu.cmu.cs.dennisc.pattern.Tuple2<? extends org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> readType( java.io.InputStream is ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new java.util.zip.ZipInputStream( is ) );
 	}
 
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource > > readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+	public static edu.cmu.cs.dennisc.pattern.Tuple2<? extends org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> readType( java.util.zip.ZipFile zipFile ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new ZipFileEntryContainer( zipFile ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource >> readType( java.io.File file ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+
+	public static edu.cmu.cs.dennisc.pattern.Tuple2<? extends org.lgna.project.ast.NamedUserType, java.util.Set<org.lgna.common.Resource>> readType( java.io.File file ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		assert file != null;
 		assert file.exists();
 		return readType( new java.util.zip.ZipFile( file ) );
 	}
-	public static edu.cmu.cs.dennisc.pattern.Tuple2< ? extends org.lgna.project.ast.AbstractType<?,?,?>, java.util.Set< org.lgna.common.Resource >> readType( String path ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+
+	public static edu.cmu.cs.dennisc.pattern.Tuple2<? extends org.lgna.project.ast.AbstractType<?, ?, ?>, java.util.Set<org.lgna.common.Resource>> readType( String path ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
 		return readType( new java.io.File( path ) );
 	}
 
@@ -260,24 +279,29 @@ public abstract class IoUtilities {
 			public String getName() {
 				return VERSION_ENTRY_NAME;
 			}
+
 			public void write( java.io.OutputStream os ) throws java.io.IOException {
 				os.write( org.lgna.project.Version.getCurrentVersionText().getBytes() );
 			}
 		} );
 	}
+
 	private static void writeXML( final org.w3c.dom.Document xmlDocument, java.util.zip.ZipOutputStream zos, final String entryName ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 			public String getName() {
 				return entryName;
 			}
+
 			public void write( java.io.OutputStream os ) throws java.io.IOException {
 				edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, os );
 			}
 		} );
 	}
-	private static void writeType( org.lgna.project.ast.AbstractType<?,?,?> type, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
+
+	private static void writeType( org.lgna.project.ast.AbstractType<?, ?, ?> type, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
 		writeXML( type.encode(), zos, entryName );
 	}
+
 	private static void writeDataSources( java.util.zip.ZipOutputStream zos, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		for( edu.cmu.cs.dennisc.java.util.zip.DataSource dataSource : dataSources ) {
 			edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, dataSource );
@@ -288,7 +312,8 @@ public abstract class IoUtilities {
 		//todo
 		return name;
 	}
-	private static String generateEntryName( org.lgna.common.Resource resource, java.util.Set< String > usedEntryNames ) {
+
+	private static String generateEntryName( org.lgna.common.Resource resource, java.util.Set<String> usedEntryNames ) {
 		String validFilename = getValidName( resource.getOriginalFileName() );
 		final String DESIRED_DIRECTORY_NAME = "resources";
 		int i = 1;
@@ -308,7 +333,8 @@ public abstract class IoUtilities {
 			}
 		}
 	}
-	private static void writeResources( java.util.zip.ZipOutputStream zos, java.util.Set< org.lgna.common.Resource > resources ) throws java.io.IOException {
+
+	private static void writeResources( java.util.zip.ZipOutputStream zos, java.util.Set<org.lgna.common.Resource> resources ) throws java.io.IOException {
 		if( resources.isEmpty() ) {
 			//pass
 		} else {
@@ -316,7 +342,7 @@ public abstract class IoUtilities {
 			org.w3c.dom.Element xmlRootElement = xmlDocument.createElement( "root" );
 			xmlDocument.appendChild( xmlRootElement );
 			synchronized( resources ) {
-				java.util.Set< String > usedEntryNames = new java.util.HashSet< String >();
+				java.util.Set<String> usedEntryNames = new java.util.HashSet<String>();
 				for( org.lgna.common.Resource resource : resources ) {
 					org.w3c.dom.Element xmlElement = xmlDocument.createElement( XML_RESOURCE_TAG_NAME );
 					resource.encodeAttributes( xmlElement );
@@ -334,7 +360,7 @@ public abstract class IoUtilities {
 			}
 			writeXML( xmlDocument, zos, RESOURCES_ENTRY_NAME );
 			synchronized( resources ) {
-				java.util.Set< String > usedEntryNames = new java.util.HashSet< String >();
+				java.util.Set<String> usedEntryNames = new java.util.HashSet<String>();
 				for( org.lgna.common.Resource resource : resources ) {
 					String entryName = generateEntryName( resource, usedEntryNames );
 					usedEntryNames.add( entryName );
@@ -347,9 +373,9 @@ public abstract class IoUtilities {
 	public static void writeProject( java.io.OutputStream os, final org.lgna.project.Project project, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
 		writeVersion( zos );
-		org.lgna.project.ast.AbstractType<?,?,?> programType = project.getProgramType();
+		org.lgna.project.ast.AbstractType<?, ?, ?> programType = project.getProgramType();
 		writeType( programType, zos, PROGRAM_TYPE_ENTRY_NAME );
-		final java.util.Set< org.lgna.project.properties.PropertyKey<Object> > propertyKeys = project.getPropertyKeys();
+		final java.util.Set<org.lgna.project.properties.PropertyKey<Object>> propertyKeys = project.getPropertyKeys();
 		if( propertyKeys.isEmpty() ) {
 			//pass
 		} else {
@@ -357,6 +383,7 @@ public abstract class IoUtilities {
 				public String getName() {
 					return PROPERTIES_ENTRY_NAME;
 				}
+
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder binaryEncoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
 					binaryEncoder.encode( org.lgna.project.Version.getCurrentVersionText() );
@@ -370,15 +397,15 @@ public abstract class IoUtilities {
 		}
 		writeDataSources( zos, dataSources );
 
-		java.util.Set< org.lgna.common.Resource > resources = project.getResources();
+		java.util.Set<org.lgna.common.Resource> resources = project.getResources();
 
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression >( org.lgna.project.ast.ResourceExpression.class ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ResourceExpression> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ResourceExpression>( org.lgna.project.ast.ResourceExpression.class ) {
 			@Override
 			protected boolean isAcceptable( org.lgna.project.ast.ResourceExpression resourceExpression ) {
 				return true;
 			}
 		};
-		programType.crawl( crawler, true );
+		programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE );
 
 		for( org.lgna.project.ast.ResourceExpression resourceExpression : crawler.getList() ) {
 			org.lgna.common.Resource resource = resourceExpression.resource.getValue();
@@ -395,6 +422,7 @@ public abstract class IoUtilities {
 		zos.flush();
 		zos.close();
 	}
+
 	public static void writeProject( java.io.File file, org.lgna.project.Project project, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		writeProject( new java.io.FileOutputStream( file ), project, dataSources );
@@ -404,20 +432,20 @@ public abstract class IoUtilities {
 		writeProject( new java.io.File( path ), project, dataSources );
 	}
 
-	public static void writeType( java.io.OutputStream os, org.lgna.project.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
+	public static void writeType( java.io.OutputStream os, org.lgna.project.ast.AbstractType<?, ?, ?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
 		writeVersion( zos );
 		writeType( type, zos, TYPE_ENTRY_NAME );
 		writeDataSources( zos, dataSources );
 
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< org.lgna.project.ast.ResourceExpression >( org.lgna.project.ast.ResourceExpression.class ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ResourceExpression> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.ResourceExpression>( org.lgna.project.ast.ResourceExpression.class ) {
 			@Override
 			protected boolean isAcceptable( org.lgna.project.ast.ResourceExpression resourceExpression ) {
 				return true;
 			}
 		};
-		type.crawl( crawler, false );
-		java.util.Set< org.lgna.common.Resource > resources = new java.util.HashSet< org.lgna.common.Resource >();
+		type.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+		java.util.Set<org.lgna.common.Resource> resources = new java.util.HashSet<org.lgna.common.Resource>();
 		for( org.lgna.project.ast.ResourceExpression resourceExpression : crawler.getList() ) {
 			resources.add( resourceExpression.resource.getValue() );
 		}
@@ -426,18 +454,21 @@ public abstract class IoUtilities {
 		zos.flush();
 		zos.close();
 	}
-	public static void writeType( java.io.File file, org.lgna.project.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
+
+	public static void writeType( java.io.File file, org.lgna.project.ast.AbstractType<?, ?, ?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		writeType( new java.io.FileOutputStream( file ), type, dataSources );
 	}
-	public static void writeType( String path, org.lgna.project.ast.AbstractType<?,?,?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
+
+	public static void writeType( String path, org.lgna.project.ast.AbstractType<?, ?, ?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		writeType( new java.io.File( path ), type, dataSources );
 	}
 
-	public static <N extends org.lgna.project.ast.Node > N decodeNode( org.lgna.project.Project project, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public static <N extends org.lgna.project.ast.Node> N decodeNode( org.lgna.project.Project project, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		java.util.UUID id = binaryDecoder.decodeId();
 		return (N)org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
 	}
+
 	public static void encodeNode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.project.ast.Node node ) {
 		binaryEncoder.encode( node.getId() );
 	}

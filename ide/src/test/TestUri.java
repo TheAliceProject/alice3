@@ -59,13 +59,13 @@ public class TestUri {
 		System.out.println( new java.io.File( new java.net.URI( uri.toASCIIString() ) ) );
 
 		//java.net.URLEncoder.encode converts everything which is not what we want
-//		System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toString(), "utf-8" ) );
-//		System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toASCIIString(), "utf-8" ) );
-//		
-//		java.net.URI uri2 = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( uri.toString() );
-//		System.out.println( "uri2: " + uri2 );
-//		System.out.flush();
-//		//java.net.URI uri = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( "file:///C:\\Program Files (x86)\\Git\\Git Bash" );
-//		System.out.println( new java.io.File( uri2 ) );
+		//		System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toString(), "utf-8" ) );
+		//		System.out.println( "encoded: " + java.net.URLEncoder.encode( uri.toASCIIString(), "utf-8" ) );
+		//		
+		//		java.net.URI uri2 = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( uri.toString() );
+		//		System.out.println( "uri2: " + uri2 );
+		//		System.out.flush();
+		//		//java.net.URI uri = edu.cmu.cs.dennisc.java.net.UriUtilities.getUri( "file:///C:\\Program Files (x86)\\Git\\Git Bash" );
+		//		System.out.println( new java.io.File( uri2 ) );
 	}
 }

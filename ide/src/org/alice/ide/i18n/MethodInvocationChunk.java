@@ -42,18 +42,20 @@
  */
 package org.alice.ide.i18n;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class MethodInvocationChunk extends Chunk {
 	private String methodName;
+
 	public MethodInvocationChunk( String methodNamePlusParens ) {
-		this.methodName = methodNamePlusParens.substring( 0, methodNamePlusParens.length()-2 );
+		this.methodName = methodNamePlusParens.substring( 0, methodNamePlusParens.length() - 2 );
 	}
+
 	public String getMethodName() {
 		return this.methodName;
 	}
+
 	@Override
 	protected StringBuilder updateRepr( StringBuilder rv ) {
 		rv.append( "methodName=" );

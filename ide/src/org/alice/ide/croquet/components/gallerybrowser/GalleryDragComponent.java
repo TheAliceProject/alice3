@@ -46,27 +46,34 @@ package org.alice.ide.croquet.components.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent< org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel > {
+public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent<org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel> {
+	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
+
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model );
 		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setText( model.getText() );
-		label.setIcon( model.getLargeIcon() );
+		org.lgna.croquet.icon.IconFactory iconFactory = model.getIconFactory();
+		label.setIcon( iconFactory != null ? iconFactory.getIcon( DEFAULT_LARGE_ICON_SIZE ) : null );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.internalAddComponent( label );
 		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
 		this.setMaximumSizeClampedToPreferredSize( true );
+		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 	}
+
 	@Override
 	protected int getInsetTop() {
 		return 4;
 	}
+
 	@Override
 	protected int getInsetRight() {
 		return 4;
 	}
+
 	@Override
 	protected int getInsetBottom() {
 		return 4;
@@ -76,20 +83,24 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	protected int getDockInsetLeft() {
 		return 0;
 	}
+
 	@Override
 	protected int getInternalInsetLeft() {
 		return 4;
 	}
+
 	@Override
 	protected java.awt.geom.RoundRectangle2D.Float createShape( int x, int y, int width, int height ) {
-		return new java.awt.geom.RoundRectangle2D.Float( x, y, width-1, height-1, 8, 8 );
+		return new java.awt.geom.RoundRectangle2D.Float( x, y, width - 1, height - 1, 8, 8 );
 	}
+
 	@Override
-	protected void fillBounds(java.awt.Graphics2D g2, int x, int y, int width, int height) {
-		g2.fill( this.createShape(x, y, width, height));
+	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.fill( this.createShape( x, y, width, height ) );
 	}
+
 	@Override
-	protected void paintPrologue(java.awt.Graphics2D g2, int x, int y, int width, int height) {
+	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		g2.fill( this.createShape( x, y, width, height ) );
 	}
 }

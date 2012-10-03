@@ -47,41 +47,52 @@ package edu.cmu.cs.dennisc.ziptree;
  */
 public class FileZipTreeNode extends ZipTreeNode {
 	private byte[] bytes;
+
 	public FileZipTreeNode( String path, byte[] bytes ) {
 		super( path );
 		this.bytes = bytes;
 	}
+
 	public java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>> iterator() {
 		return new java.util.Iterator<edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String>>() {
 			public boolean hasNext() {
 				return false;
 			}
+
 			public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> next() {
 				return null;
 			}
+
 			public void remove() {
 				throw new UnsupportedOperationException();
 			}
 		};
 	}
+
 	public boolean getAllowsChildren() {
 		return false;
 	}
-	public java.util.Enumeration< ZipTreeNode > children() {
+
+	public java.util.Enumeration<ZipTreeNode> children() {
 		return null;
 	}
-	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt(int childIndex) {
+
+	public edu.cmu.cs.dennisc.javax.swing.models.TreeNode<String> getChildAt( int childIndex ) {
 		return null;
 	}
+
 	public int getChildCount() {
 		return 0;
 	}
+
 	public boolean isLeaf() {
 		return true;
 	}
-	public int getIndex(javax.swing.tree.TreeNode node) {
+
+	public int getIndex( javax.swing.tree.TreeNode node ) {
 		return -1;
 	}
+
 	public byte[] getBytes() {
 		return this.bytes;
 	}

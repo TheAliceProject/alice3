@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum MaleChildHairCloseCrop implements MaleChildHair {
 	BLACK,
- 	BLOND,
- 	BROWN,
- 	RED;
+	BLOND,
+	BROWN,
+	RED;
 }

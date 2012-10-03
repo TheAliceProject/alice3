@@ -53,12 +53,15 @@ public enum MessageType {
 	QUESTION( javax.swing.JOptionPane.QUESTION_MESSAGE ),
 	PLAIN( javax.swing.JOptionPane.PLAIN_MESSAGE );
 	private final int internal;
+
 	MessageType( int internal ) {
 		this.internal = internal;
 	}
-	/*package-private*/ int getInternal() {
+
+	/* package-private */int getInternal() {
 		return this.internal;
 	}
+
 	public static MessageType getInstance( int internal ) {
 		for( MessageType value : MessageType.values() ) {
 			if( value.internal == internal ) {

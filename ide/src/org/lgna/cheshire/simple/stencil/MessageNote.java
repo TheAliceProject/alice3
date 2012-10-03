@@ -48,17 +48,21 @@ package org.lgna.cheshire.simple.stencil;
  */
 public class MessageNote extends Note {
 	private final String text;
+
 	public MessageNote( String text ) {
 		this.text = text;
 	}
+
 	@Override
 	protected String getText() {
 		return this.text;
 	}
+
 	@Override
 	public boolean isWhatWeveBeenWaitingFor( org.lgna.croquet.history.event.Event<?> event ) {
 		return false;
 	}
+
 	@Override
 	public boolean isGoodToGo() {
 		return true;

@@ -50,16 +50,18 @@ public class JointIcon extends ShapeIcon {
 	private final java.awt.Stroke jointOutlineStroke;
 	private final float jointWidth;
 	private final float jointHeight;
+
 	public JointIcon( java.awt.Dimension size ) {
 		super( size );
 		int n = Math.min( size.width, size.height );
-		boneStroke = new java.awt.BasicStroke( n/12.0f );
+		boneStroke = new java.awt.BasicStroke( n / 12.0f );
 		jointOutlineStroke = new java.awt.BasicStroke( 1.0f );
 		jointHeight = n * 0.25f;
 		jointWidth = jointHeight;
 	}
+
 	private void drawJoint( java.awt.Graphics2D g2, float x, float y, java.awt.Paint fillPaint, java.awt.Paint outlinePaint ) {
-		java.awt.geom.Ellipse2D.Float ellipse = new java.awt.geom.Ellipse2D.Float( x-this.jointWidth*0.5f, y-this.jointHeight*0.5f, this.jointWidth, this.jointHeight );
+		java.awt.geom.Ellipse2D.Float ellipse = new java.awt.geom.Ellipse2D.Float( x - ( this.jointWidth * 0.5f ), y - ( this.jointHeight * 0.5f ), this.jointWidth, this.jointHeight );
 		if( fillPaint != null ) {
 			g2.setPaint( fillPaint );
 			g2.fill( ellipse );
@@ -69,8 +71,9 @@ public class JointIcon extends ShapeIcon {
 			g2.draw( ellipse );
 		}
 	}
+
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		final float INSET_X = this.jointWidth;
 		final float INSET_Y = this.jointHeight;
 		final float JOINT_A_X = INSET_X;
@@ -81,7 +84,6 @@ public class JointIcon extends ShapeIcon {
 		final float JOINT_C_Y = height - INSET_Y;
 
 		java.awt.Stroke prevStroke = g2.getStroke();
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		try {
 			g2.setStroke( boneStroke );
 			drawLine( g2, JOINT_A_X, JOINT_A_Y, JOINT_B_X, JOINT_B_Y );

@@ -44,7 +44,7 @@ package org.lgna.story;
 
 /**
  * @author dculyba
- *
+ * 
  */
 public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory
 		extends DurationAnimationStyleArgumentFactory {
@@ -52,16 +52,19 @@ public class DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColo
 	protected DurationAnimationStyleFontTextColorBubbleFillColorBubbleOutlineColorArgumentFactory() {
 		super();
 	}
-//	public static TextFont font( Font font ) {
-//		return new TextFont(font);
-//	}
+
+	//	public static TextFont font( Font font ) {
+	//		return new TextFont(font);
+	//	}
 	public static TextColor fontColor( Color color ) {
-		return new TextColor(color);
+		return new TextColor( color );
 	}
-	public static BubbleFillColor bubbleFillColor( Color color) {
-		return new BubbleFillColor(color);
+
+	public static BubbleFillColor bubbleFillColor( Color color ) {
+		return new BubbleFillColor( color );
 	}
-	public static BubbleOutlineColor bubbleOutlineColor( Color color) {
-		return new BubbleOutlineColor(color);
+
+	public static BubbleOutlineColor bubbleOutlineColor( Color color ) {
+		return new BubbleOutlineColor( color );
 	}
 }

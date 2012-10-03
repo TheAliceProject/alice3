@@ -51,12 +51,12 @@ public class ImageUtilities {
 	public static final String JPEG_CODEC_NAME = "jpeg";
 	public static final String BMP_CODEC_NAME = "bmp";
 	public static final String GIF_CODEC_NAME = "gif";
-//	public static final String TIFF_CODEC_NAME = "tiff";
+	//	public static final String TIFF_CODEC_NAME = "tiff";
 	public static final String TGA_CODEC_NAME = "tga";
 
-	private static final String[] s_codecNames = { PNG_CODEC_NAME, JPEG_CODEC_NAME, BMP_CODEC_NAME, GIF_CODEC_NAME, /*TIFF_CODEC_NAME,*/ TGA_CODEC_NAME };
-	private static java.util.HashMap< String, String[] > s_codecNameToExtensionsMap = null;
-	private static java.util.HashMap< String, String > s_extensionToCodecNameMap = null;
+	private static final String[] s_codecNames = { PNG_CODEC_NAME, JPEG_CODEC_NAME, BMP_CODEC_NAME, GIF_CODEC_NAME, /* TIFF_CODEC_NAME, */TGA_CODEC_NAME };
+	private static java.util.HashMap<String, String[]> s_codecNameToExtensionsMap = null;
+	private static java.util.HashMap<String, String> s_extensionToCodecNameMap = null;
 
 	static {
 		String[] pngExtensions = { "png" };
@@ -65,7 +65,7 @@ public class ImageUtilities {
 		String[] gifExtensions = { "gif" };
 		// String[] tiffExtensions = { "tiff", "tif" };
 		String[] tgaExtensions = { "tga" };
-		s_codecNameToExtensionsMap = new java.util.HashMap< String, String[] >();
+		s_codecNameToExtensionsMap = new java.util.HashMap<String, String[]>();
 		s_codecNameToExtensionsMap.put( PNG_CODEC_NAME, pngExtensions );
 		s_codecNameToExtensionsMap.put( JPEG_CODEC_NAME, jpegExtensions );
 		s_codecNameToExtensionsMap.put( BMP_CODEC_NAME, bmpExtensions );
@@ -73,11 +73,11 @@ public class ImageUtilities {
 		//s_codecNameToExtensionsMap.put(TIFF_CODEC_NAME, tiffExtensions);
 		s_codecNameToExtensionsMap.put( TGA_CODEC_NAME, tgaExtensions );
 
-		s_extensionToCodecNameMap = new java.util.HashMap< String, String >();
+		s_extensionToCodecNameMap = new java.util.HashMap<String, String>();
 		for( String key : s_codecNameToExtensionsMap.keySet() ) {
 			String[] value = s_codecNameToExtensionsMap.get( key );
-			for( int i = 0; i < value.length; i++ ) {
-				s_extensionToCodecNameMap.put( value[ i ], key );
+			for( String element : value ) {
+				s_extensionToCodecNameMap.put( element, key );
 			}
 		}
 	}
@@ -98,9 +98,9 @@ public class ImageUtilities {
 			sb.append( "Image (" );
 			for( String key : s_codecNameToExtensionsMap.keySet() ) {
 				String[] value = s_codecNameToExtensionsMap.get( key );
-				for( int i = 0; i < value.length; i++ ) {
+				for( String element : value ) {
 					sb.append( "*." );
-					sb.append( value[ i ] );
+					sb.append( element );
 					sb.append( ";" );
 				}
 			}
@@ -168,6 +168,7 @@ public class ImageUtilities {
 			throw new RuntimeException( "Could not find codec for extension: " + extension );
 		}
 	}
+
 	public static java.awt.image.BufferedImage read( java.net.URL url ) {
 		return read( url, null );
 	}
@@ -241,7 +242,7 @@ public class ImageUtilities {
 		;
 		int high = 0xFF & array[ offset + 1 ];
 		high <<= 8;
-		return (short)(low | high);
+		return (short)( low | high );
 	}
 
 	private static int getPixel( byte[] array, int offset, int bytesPerPixel ) {
@@ -286,8 +287,8 @@ public class ImageUtilities {
 		final byte VERTICAL_FLIP_MASK = 0x1 << 5;
 		// final byte ALPHA_BITS_MASK = 0xF;
 
-		boolean isHorizontalFlipped = (descriptor & HORIZONTAL_FLIP_MASK) != 0;
-		boolean isVerticalFlipped = (descriptor & VERTICAL_FLIP_MASK) != 0;
+		boolean isHorizontalFlipped = ( descriptor & HORIZONTAL_FLIP_MASK ) != 0;
+		boolean isVerticalFlipped = ( descriptor & VERTICAL_FLIP_MASK ) != 0;
 
 		if( isHorizontalFlipped ) {
 			throw new RuntimeException( "TODO: isHorizontalFlipped" );
@@ -345,7 +346,7 @@ public class ImageUtilities {
 		for( int y = 0; y < height; y++ ) {
 			for( int x = 0; x < width; x++ ) {
 				int pixel = getPixel( pixels, offset, bytesPerPixel );
-				bufferedImage.setRGB( x, (height - 1) - y, pixel );
+				bufferedImage.setRGB( x, ( height - 1 ) - y, pixel );
 				offset += bytesPerPixel;
 			}
 		}
@@ -521,7 +522,7 @@ public class ImageUtilities {
 		} catch( InterruptedException ie ) {
 			throw new RuntimeException( ie );
 		}
-		if( (pg.getStatus() & java.awt.image.ImageObserver.ABORT) != 0 ) {
+		if( ( pg.getStatus() & java.awt.image.ImageObserver.ABORT ) != 0 ) {
 			throw new RuntimeException( "image fetch aborted or errored" );
 		}
 		return pixels;
@@ -542,7 +543,7 @@ public class ImageUtilities {
 		g.dispose();
 		return bi;
 	}
-	
+
 	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter painter, float alpha ) {
 		int width = getWidth( image );
 		int height = getHeight( image );
@@ -554,12 +555,13 @@ public class ImageUtilities {
 		java.awt.Graphics2D ag2 = alphaImage.createGraphics();
 		painter.paint( ag2, width, height );
 		ag2.dispose();
-		
+
 		g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.DST_IN, alpha ) );
 		g2.drawImage( alphaImage, 0, 0, null );
 		g2.dispose();
 		return rv;
 	}
+
 	public static java.awt.image.BufferedImage createAlphaMaskedImage( java.awt.Image image, edu.cmu.cs.dennisc.java.awt.Painter painter ) {
 		return createAlphaMaskedImage( image, painter, 1.0f );
 	}

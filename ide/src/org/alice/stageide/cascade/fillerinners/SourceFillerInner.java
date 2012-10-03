@@ -46,25 +46,29 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SourceFillerInner< R extends org.lgna.common.Resource > extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+public abstract class SourceFillerInner<R extends org.lgna.common.Resource> extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
 	private final Class<R> resourceCls;
+
 	public SourceFillerInner( Class<?> cls, Class<R> resourceCls ) {
 		super( cls );
 		this.resourceCls = resourceCls;
 	}
-	protected abstract org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation,? > getResourceFillIn( R resource );
-	protected abstract org.lgna.croquet.CascadeFillIn< org.lgna.project.ast.InstanceCreation,? > getImportFillIn();
+
+	protected abstract org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.InstanceCreation, ?> getResourceFillIn( R resource );
+
+	protected abstract org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.InstanceCreation, ?> getImportFillIn();
+
 	@Override
-	public void appendItems( java.util.List< org.lgna.croquet.CascadeBlankChild > items, org.lgna.project.annotations.ValueDetails< ? > details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.util.Set< org.lgna.common.Resource > resources = ide.getResources();
-		if( resources != null && resources.isEmpty() == false ) {
+		java.util.Set<org.lgna.common.Resource> resources = ide.getResources();
+		if( ( resources != null ) && ( resources.isEmpty() == false ) ) {
 			int prevRvSize = items.size();
 			synchronized( resources ) {
 				for( org.lgna.common.Resource resource : resources ) {
 					if( this.resourceCls.isAssignableFrom( resource.getClass() ) ) {
 						R r = (R)resource;
-						items.add( this.getResourceFillIn( r ) ); 
+						items.add( this.getResourceFillIn( r ) );
 					}
 				}
 			}

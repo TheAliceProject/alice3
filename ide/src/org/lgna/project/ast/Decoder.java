@@ -50,29 +50,37 @@ public class Decoder {
 	private static class ClassReflectionProxyAndMethodName {
 		private final ClassReflectionProxy classReflectionProxy;
 		private final String name;
+
 		public ClassReflectionProxyAndMethodName( ClassReflectionProxy classReflectionProxy, String name ) {
 			this.classReflectionProxy = classReflectionProxy;
 			this.name = name;
 		}
+
 		public ClassReflectionProxy getClassReflectionProxy() {
 			return this.classReflectionProxy;
 		}
+
 		public String getName() {
 			return this.name;
 		}
 	}
-	private static final edu.cmu.cs.dennisc.map.MapToMap< ClassReflectionProxy, String, ClassReflectionProxyAndMethodName > betweenClassesMethodMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static final edu.cmu.cs.dennisc.map.MapToMap< ClassReflectionProxy, String, String > intraClassMethodMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	private static final java.util.Map< String, String > mapClassNameToClassName = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private static final edu.cmu.cs.dennisc.map.MapToMap<ClassReflectionProxy, String, ClassReflectionProxyAndMethodName> betweenClassesMethodMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final edu.cmu.cs.dennisc.map.MapToMap<ClassReflectionProxy, String, String> intraClassMethodMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final java.util.Map<String, String> mapClassNameToClassName = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static void addMethodFilterWithinClass( ClassReflectionProxy classReflectionProxy, String prevName, String nextName ) {
 		Decoder.intraClassMethodMap.put( classReflectionProxy, prevName, nextName );
 	}
+
 	public static void addMethodFilterWithinClass( Class<?> cls, String prevName, String nextName ) {
 		addMethodFilterWithinClass( JavaType.getInstance( cls ).getClassReflectionProxy(), prevName, nextName );
 	}
+
 	public static void addMethodFilterBetweenClasses( ClassReflectionProxy prevClassReflectionProxy, String prevName, ClassReflectionProxy nextClassReflectionProxy, String nextName ) {
 		Decoder.betweenClassesMethodMap.put( prevClassReflectionProxy, prevName, new ClassReflectionProxyAndMethodName( nextClassReflectionProxy, nextName ) );
 	}
+
 	public static void addMethodFilterBetweenClasses( Class<?> prevCls, String prevName, Class<?> nextCls, String nextName ) {
 		addMethodFilterBetweenClasses( JavaType.getInstance( prevCls ).getClassReflectionProxy(), prevName, JavaType.getInstance( nextCls ).getClassReflectionProxy(), nextName );
 	}
@@ -80,9 +88,11 @@ public class Decoder {
 	public static void addClassFilter( ClassReflectionProxy prevClassReflectionProxy, ClassReflectionProxy nextClassReflectionProxy ) {
 		Decoder.mapClassNameToClassName.put( prevClassReflectionProxy.getName(), nextClassReflectionProxy.getName() );
 	}
+
 	public static void addClassFilter( ClassReflectionProxy prevClassReflectionProxy, Class<?> nextCls ) {
 		addClassFilter( prevClassReflectionProxy, JavaType.getInstance( nextCls ).getClassReflectionProxy() );
 	}
+
 	public static void addClassFilter( Class<?> prevCls, Class<?> nextCls ) {
 		addClassFilter( JavaType.getInstance( prevCls ).getClassReflectionProxy(), JavaType.getInstance( nextCls ).getClassReflectionProxy() );
 	}
@@ -96,15 +106,16 @@ public class Decoder {
 		}
 		return rv;
 	}
-//	private static String filterMethodNameIfNecessary( ClassReflectionProxy classReflectionProxy, String name ) {
-//		String rv = Decoder.intraClassMethodMap.get( classReflectionProxy, name );
-//		if( rv != null ) {
-//			//pass
-//		} else {
-//			rv = name;
-//		}
-//		return rv;
-//	}
+
+	//	private static String filterMethodNameIfNecessary( ClassReflectionProxy classReflectionProxy, String name ) {
+	//		String rv = Decoder.intraClassMethodMap.get( classReflectionProxy, name );
+	//		if( rv != null ) {
+	//			//pass
+	//		} else {
+	//			rv = name;
+	//		}
+	//		return rv;
+	//	}
 
 	private String srcVersion;
 	private String dstVersion;
@@ -119,6 +130,7 @@ public class Decoder {
 	private static ClassReflectionProxy createClassReflectionProxy( String clsName ) {
 		return new ClassReflectionProxy( filterClassNameIfNecessary( clsName ) );
 	}
+
 	private String getClassName( org.w3c.dom.Element xmlElement ) {
 		String rv = xmlElement.getAttribute( CodecConstants.TYPE_ATTRIBUTE );
 		if( this.srcVersion.contains( "alpha" ) ) {
@@ -128,19 +140,22 @@ public class Decoder {
 		}
 		return rv;
 	}
+
 	private ClassReflectionProxy getJavaClassInfo( org.w3c.dom.Element xmlElement ) {
 		return createClassReflectionProxy( getClassName( xmlElement ) );
 	}
+
 	//todo: investigate
-	private Class< ? > getCls( org.w3c.dom.Element xmlElement ) {
+	private Class<?> getCls( org.w3c.dom.Element xmlElement ) {
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( getClassName( xmlElement ) );
 	}
+
 	//todo: investigate
 	private Object newInstance( org.w3c.dom.Element xmlElement ) {
 		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( getClassName( xmlElement ) );
 	}
 
-	public Object decodeValue( org.w3c.dom.Element xmlValue, java.util.Map< Integer, AbstractDeclaration > map ) {
+	public Object decodeValue( org.w3c.dom.Element xmlValue, java.util.Map<Integer, AbstractDeclaration> map ) {
 		Object rv;
 		if( xmlValue.hasAttribute( "isNull" ) ) {
 			rv = null;
@@ -162,14 +177,14 @@ public class Decoder {
 					collection.add( decodeValue( xmlItem, map ) );
 				}
 				rv = collection;
-//			} else if( tagName.equals( "resource" ) ) {
-//				String uuidText = xmlValue.getAttribute( CodecConstants.UUID_ATTRIBUTE );
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "uuidText", uuidText );
-//				java.util.UUID uuid = java.util.UUID.fromString( uuidText );
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "uuid", uuid );
-//				rv = org.alice.virtualmachine.Resource.get( uuid );
+				//			} else if( tagName.equals( "resource" ) ) {
+				//				String uuidText = xmlValue.getAttribute( CodecConstants.UUID_ATTRIBUTE );
+				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "uuidText", uuidText );
+				//				java.util.UUID uuid = java.util.UUID.fromString( uuidText );
+				//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "uuid", uuid );
+				//				rv = org.alice.virtualmachine.Resource.get( uuid );
 			} else if( tagName.equals( "value" ) ) {
-				Class< ? > cls = getCls( xmlValue );
+				Class<?> cls = getCls( xmlValue );
 				String textContent = xmlValue.getTextContent();
 				if( cls.equals( String.class ) ) {
 					rv = textContent;
@@ -192,13 +207,14 @@ public class Decoder {
 		}
 		return rv;
 	}
+
 	private ClassReflectionProxy decodeType( org.w3c.dom.Element xmlElement, String nodeName ) {
 		org.w3c.dom.Element xmlClass = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, nodeName );
 		String clsName = xmlClass.getAttribute( "name" );
 		return createClassReflectionProxy( clsName );
 	}
 
-	private UserArrayType decodeUserArrayType( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+	private UserArrayType decodeUserArrayType( org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "leafType" );
 		org.w3c.dom.Element xmlDimensionCount = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "dimensionCount" );
 		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlLeafType, "node" );
@@ -206,7 +222,8 @@ public class Decoder {
 		int dimensionCount = Integer.parseInt( xmlDimensionCount.getTextContent() );
 		return UserArrayType.getInstance( leafType, dimensionCount );
 	}
-	private AnonymousUserConstructor decodeAnonymousConstructor( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+
+	private AnonymousUserConstructor decodeAnonymousConstructor( org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "anonymousType" );
 		org.w3c.dom.Element xmlLeafTypeNode = (org.w3c.dom.Element)xmlLeafType.getChildNodes().item( 0 );
 		AnonymousUserType anonymousType = (AnonymousUserType)decode( xmlLeafTypeNode, map );
@@ -216,21 +233,24 @@ public class Decoder {
 	private ClassReflectionProxy decodeDeclaringClass( org.w3c.dom.Element xmlElement ) {
 		return decodeType( xmlElement, "declaringClass" );
 	}
+
 	private ClassReflectionProxy[] decodeParameters( org.w3c.dom.Element xmlElement ) {
 		org.w3c.dom.Element xmlParameters = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "parameters" );
-		java.util.List< org.w3c.dom.Element> xmlTypes = edu.cmu.cs.dennisc.xml.XMLUtilities.getChildElementsByTagName( xmlParameters, "type" );
+		java.util.List<org.w3c.dom.Element> xmlTypes = edu.cmu.cs.dennisc.xml.XMLUtilities.getChildElementsByTagName( xmlParameters, "type" );
 		ClassReflectionProxy[] rv = new ClassReflectionProxy[ xmlTypes.size() ];
 		for( int i = 0; i < rv.length; i++ ) {
 			rv[ i ] = createClassReflectionProxy( xmlTypes.get( i ).getAttribute( "name" ) );
 		}
 		return rv;
 	}
+
 	private FieldReflectionProxy decodeField( org.w3c.dom.Element xmlParent, String nodeName ) {
 		org.w3c.dom.Element xmlField = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlField );
 		String name = xmlField.getAttribute( "name" );
 		return new FieldReflectionProxy( declaringCls, name );
 	}
+
 	private ConstructorReflectionProxy decodeConstructor( org.w3c.dom.Element xmlParent, String nodeName ) {
 		org.w3c.dom.Element xmlConstructor = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlConstructor );
@@ -238,11 +258,12 @@ public class Decoder {
 		boolean isVarArgs = Boolean.parseBoolean( xmlConstructor.getAttribute( "isVarArgs" ) );
 		return new ConstructorReflectionProxy( declaringCls, parameterClses, isVarArgs );
 	}
+
 	private MethodReflectionProxy decodeMethod( org.w3c.dom.Element xmlParent, String nodeName ) {
 		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlMethod );
 		String name = xmlMethod.getAttribute( "name" );
-		
+
 		String potentialReplacement = Decoder.intraClassMethodMap.get( declaringCls, name );
 		if( potentialReplacement != null ) {
 			name = potentialReplacement;
@@ -253,13 +274,14 @@ public class Decoder {
 				name = classReflectionProxyAndMethodName.getName();
 			}
 		}
-		
-//		name = filterMethodNameIfNecessary( declaringCls, name );
+
+		//		name = filterMethodNameIfNecessary( declaringCls, name );
 		ClassReflectionProxy[] parameterClses = decodeParameters( xmlMethod );
 		boolean isVarArgs = Boolean.parseBoolean( xmlMethod.getAttribute( "isVarArgs" ) );
 		return new MethodReflectionProxy( declaringCls, name, parameterClses, isVarArgs );
 	}
-	public AbstractNode decode( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+
+	public AbstractNode decode( org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
 		AbstractNode rv;
 		if( xmlElement.hasAttribute( CodecConstants.TYPE_ATTRIBUTE ) ) {
 			String clsName = getClassName( xmlElement );
@@ -282,7 +304,7 @@ public class Decoder {
 				JavaConstructor constructorDeclaredInJava = (JavaConstructor)decodeValue( xmlConstructor, map );
 				org.w3c.dom.Element xmlIndex = (org.w3c.dom.Element)nodeList.item( 1 );
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
-				
+
 				final int REQUIRED_N = constructorDeclaredInJava.getRequiredParameters().size();
 				if( index < REQUIRED_N ) {
 					rv = constructorDeclaredInJava.getRequiredParameters().get( index );

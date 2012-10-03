@@ -46,34 +46,50 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class AssignmentExpression extends Expression {
-	public DeclarationProperty<AbstractType<?,?,?>> expressionType = new DeclarationProperty<AbstractType<?,?,?>>( this );
+	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public ExpressionProperty leftHandSide = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return AssignmentExpression.this.expressionType.getValue();
 		}
 	};
+
 	public enum Operator {
-		ASSIGN, PLUS_ASSIGN, MINUS_ASSIGN, TIMES_ASSIGN, DIVIDE_ASSIGN, BIT_AND_ASSIGN, BIT_OR_ASSIGN, BIT_XOR_ASSIGN, REMAINDER_ASSIGN, LEFT_SHIFT_ASSIGN, RIGHT_SHIFT_SIGNED_ASSIGN, RIGHT_SHIFT_UNSIGNED_ASSIGN;
+		ASSIGN,
+		PLUS_ASSIGN,
+		MINUS_ASSIGN,
+		TIMES_ASSIGN,
+		DIVIDE_ASSIGN,
+		BIT_AND_ASSIGN,
+		BIT_OR_ASSIGN,
+		BIT_XOR_ASSIGN,
+		REMAINDER_ASSIGN,
+		LEFT_SHIFT_ASSIGN,
+		RIGHT_SHIFT_SIGNED_ASSIGN,
+		RIGHT_SHIFT_UNSIGNED_ASSIGN;
 	}
-	public edu.cmu.cs.dennisc.property.InstanceProperty< Operator > operator = new edu.cmu.cs.dennisc.property.InstanceProperty< Operator >( this, null );
+
+	public edu.cmu.cs.dennisc.property.InstanceProperty<Operator> operator = new edu.cmu.cs.dennisc.property.InstanceProperty<Operator>( this, null );
 	//todo: new name
 	public ExpressionProperty rightHandSide = new ExpressionProperty( this ) {
 		@Override
-		public AbstractType<?,?,?> getExpressionType() {
+		public AbstractType<?, ?, ?> getExpressionType() {
 			return AssignmentExpression.this.expressionType.getValue();
 		}
 	};
+
 	public AssignmentExpression() {
 	}
-	public AssignmentExpression( AbstractType<?,?,?> expressionType, Expression leftHandSide, Operator operator, Expression rightHandSide ) {
+
+	public AssignmentExpression( AbstractType<?, ?, ?> expressionType, Expression leftHandSide, Operator operator, Expression rightHandSide ) {
 		this.expressionType.setValue( expressionType );
 		this.leftHandSide.setValue( leftHandSide );
 		this.operator.setValue( operator );
 		this.rightHandSide.setValue( rightHandSide );
 	}
+
 	@Override
-	public AbstractType<?,?,?> getType() {
+	public AbstractType<?, ?, ?> getType() {
 		return JavaType.VOID_TYPE;
 	}
 }

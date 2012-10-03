@@ -46,8 +46,9 @@ package org.alice.ide.croquet.models.cascade.arithmetic;
 /**
  * @author Dennis Cosgrove
  */
-public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks< org.lgna.project.ast.ArithmeticInfixExpression > {
-	private static java.util.Map< org.lgna.project.ast.ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.alice.ide.croquet.models.cascade.PreviousExpressionBasedFillInWithoutBlanks<org.lgna.project.ast.ArithmeticInfixExpression> {
+	private static java.util.Map<org.lgna.project.ast.ArithmeticInfixExpression.Operator, ReplaceOperatorInPreviousArithmeticExpressionFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static ReplaceOperatorInPreviousArithmeticExpressionFillIn getInstance( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		synchronized( map ) {
 			ReplaceOperatorInPreviousArithmeticExpressionFillIn rv = map.get( operator );
@@ -60,15 +61,18 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.ali
 			return rv;
 		}
 	}
+
 	private final org.lgna.project.ast.ArithmeticInfixExpression.Operator operator;
+
 	private ReplaceOperatorInPreviousArithmeticExpressionFillIn( org.lgna.project.ast.ArithmeticInfixExpression.Operator operator ) {
 		super( java.util.UUID.fromString( "7699fe5b-b1bc-4bc2-9632-eace7166bdb6" ) );
 		this.operator = operator;
 	}
-//	@Override
-//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ArithmeticInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
-//		return previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
-//	}
+
+	//	@Override
+	//	protected boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep< org.lgna.project.ast.ArithmeticInfixExpression, Void > context, org.lgna.project.ast.Expression previousExpression ) {
+	//		return previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
+	//	}
 	@Override
 	protected org.lgna.project.ast.ArithmeticInfixExpression createValue( org.lgna.project.ast.Expression previousExpression ) {
 		assert previousExpression instanceof org.lgna.project.ast.ArithmeticInfixExpression;
@@ -77,7 +81,6 @@ public class ReplaceOperatorInPreviousArithmeticExpressionFillIn extends org.ali
 				previousArithmetic.leftOperand.getValue(),
 				this.operator,
 				previousArithmetic.rightOperand.getValue(),
-				previousArithmetic.expressionType.getValue()
-		);
+				previousArithmetic.expressionType.getValue() );
 	}
 }

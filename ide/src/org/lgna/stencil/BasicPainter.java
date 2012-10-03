@@ -48,31 +48,34 @@ package org.lgna.stencil;
 public class BasicPainter implements Painter {
 	private final java.awt.BasicStroke stroke;
 	private final java.awt.Paint paint;
-	public BasicPainter(java.awt.BasicStroke stroke, java.awt.Paint paint) {
+
+	public BasicPainter( java.awt.BasicStroke stroke, java.awt.Paint paint ) {
 		this.stroke = stroke;
 		this.paint = paint;
 	}
+
 	public java.awt.Rectangle getBounds( java.awt.Shape shape ) {
 		java.awt.Rectangle bounds = shape.getBounds();
 		//todo?
-		int pad = (int)(this.stroke.getLineWidth()*0.5)+1;
+		int pad = (int)( this.stroke.getLineWidth() * 0.5 ) + 1;
 		edu.cmu.cs.dennisc.java.awt.RectangleUtilities.grow( bounds, pad );
 		return bounds;
 	}
+
 	public void paint( java.awt.Graphics2D g2, java.awt.Shape shape ) {
 		java.awt.Stroke prevStroke = g2.getStroke();
 		java.awt.Paint prevPaint = g2.getPaint();
-		
+
 		try {
 			g2.setStroke( this.stroke );
 			g2.setPaint( this.paint );
-			
+
 			g2.draw( shape );
-			
+
 		} finally {
 			g2.setPaint( prevPaint );
 			g2.setStroke( prevStroke );
 		}
-		
+
 	}
 }

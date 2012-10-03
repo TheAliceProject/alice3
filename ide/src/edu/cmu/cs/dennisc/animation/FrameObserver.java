@@ -47,6 +47,7 @@ package edu.cmu.cs.dennisc.animation;
  */
 public interface FrameObserver {
 	public void update( double tCurrent );
+
 	//todo: better name
 	public void complete();
 }

@@ -46,7 +46,7 @@ package org.alice.interact.manipulator;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 public interface TargetManipulator {
-	
+
 	public AffineMatrix4x4 getTargetTransformation();
 
 }

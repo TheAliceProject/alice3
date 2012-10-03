@@ -50,8 +50,10 @@ public abstract class SingleComponentPanel extends Panel {
 	protected static abstract class SingleComponentLayoutManager implements java.awt.LayoutManager {
 		public void addLayoutComponent( String name, java.awt.Component comp ) {
 		}
+
 		public void removeLayoutComponent( java.awt.Component comp ) {
 		}
+
 		private java.awt.Dimension layoutSize( java.awt.Container parent ) {
 			if( parent.getComponentCount() > 0 ) {
 				return parent.getComponent( 0 ).getPreferredSize();
@@ -59,19 +61,24 @@ public abstract class SingleComponentPanel extends Panel {
 				return new java.awt.Dimension();
 			}
 		}
+
 		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
 			return this.layoutSize( parent );
 		}
+
 		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 			return this.layoutSize( parent );
 		}
+
 		protected abstract void layoutComponent( java.awt.Container parent, java.awt.Component component );
+
 		public final void layoutContainer( java.awt.Container parent ) {
 			if( parent.getComponentCount() > 0 ) {
 				this.layoutComponent( parent, parent.getComponent( 0 ) );
 			}
 		}
 	}
+
 	public SingleComponentPanel( Component<?> component ) {
 		this.internalAddComponent( component );
 	}

@@ -50,8 +50,8 @@ import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
-import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
 import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
+import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -67,87 +67,82 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 	protected void setUpControls() {
 		MovementKey[] movementKeys = {
 				//Up
-				new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), .35d),
-				new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), .35d),
+				new MovementKey( KeyEvent.VK_PAGE_UP, new MovementDescription( MovementDirection.DOWN, MovementType.STOOD_UP ), .1d ),
+				new MovementKey( KeyEvent.VK_UP, new MovementDescription( MovementDirection.DOWN, MovementType.STOOD_UP ), .1d ),
 				//Down
-				new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), .35d),
-				new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), .35d),
+				new MovementKey( KeyEvent.VK_PAGE_DOWN, new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ), .1d ),
+				new MovementKey( KeyEvent.VK_DOWN, new MovementDescription( MovementDirection.UP, MovementType.STOOD_UP ), .1d ),
 		};
-		
+
 		MovementKey[] zoomKeys = {
 				//Zoom out
-				new MovementKey(KeyEvent.VK_MINUS, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
-				new MovementKey(KeyEvent.VK_SUBTRACT, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
+				new MovementKey( KeyEvent.VK_MINUS, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
+				new MovementKey( KeyEvent.VK_SUBTRACT, new MovementDescription( MovementDirection.BACKWARD, MovementType.LOCAL ) ),
 				//Zoom in
-				new MovementKey(KeyEvent.VK_EQUALS, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
-				new MovementKey(KeyEvent.VK_ADD, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
+				new MovementKey( KeyEvent.VK_EQUALS, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ) ),
+				new MovementKey( KeyEvent.VK_ADD, new MovementDescription( MovementDirection.FORWARD, MovementType.LOCAL ) ),
 		};
-		
+
 		MovementKey[] turnKeys = {
 				//Left
-				new MovementKey(KeyEvent.VK_OPEN_BRACKET, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), -25.0d),
-				new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), -25.0d),
+				new MovementKey( KeyEvent.VK_OPEN_BRACKET, new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), -25.0d ),
+				new MovementKey( KeyEvent.VK_LEFT, new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), -25.0d ),
 				//Right
-				new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), 25.0d),
-				new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), 25.0d),
+				new MovementKey( KeyEvent.VK_CLOSE_BRACKET, new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), 25.0d ),
+				new MovementKey( KeyEvent.VK_RIGHT, new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE ), 25.0d ),
 		};
-		
+
 		CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator( movementKeys );
 		cameraTranslateManip.addKeys( zoomKeys );
 		ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet( cameraTranslateManip );
-		for (int i=0; i<movementKeys.length; i++)
-		{
-			cameraTranslate.addCondition( new KeyPressCondition( movementKeys[i].keyValue ) );
+		for( MovementKey movementKey : movementKeys ) {
+			cameraTranslate.addCondition( new KeyPressCondition( movementKey.keyValue ) );
 		}
-		for (int i=0; i<zoomKeys.length; i++)
-		{
-			cameraTranslate.addCondition( new KeyPressCondition( zoomKeys[i].keyValue ) );
+		for( MovementKey zoomKey : zoomKeys ) {
+			cameraTranslate.addCondition( new KeyPressCondition( zoomKey.keyValue ) );
 		}
 		this.manipulators.add( cameraTranslate );
-		
-		
+
 		ManipulatorConditionSet objectRotate = new ManipulatorConditionSet( new ObjectRotateKeyManipulator( turnKeys ) );
-		for (int i=0; i<turnKeys.length; i++)
-		{
-			objectRotate.addCondition( new KeyPressCondition( turnKeys[i].keyValue ) );
+		for( MovementKey turnKey : turnKeys ) {
+			objectRotate.addCondition( new KeyPressCondition( turnKey.keyValue ) );
 		}
 		this.manipulators.add( objectRotate );
-		
-		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(MovementDirection.UP) );
-		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.ANYTHING));
+
+		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator( MovementDirection.UP ) );
+		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.ANYTHING ) );
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.manipulators.add( mouseRotateObjectLeftRight );
 
-		for (int i=0; i<this.manipulators.size(); i++)
+		for( int i = 0; i < this.manipulators.size(); i++ )
 		{
 			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
 		}
 	}
-	
+
 	@Override
 	public void setSGCamera( AbstractCamera camera )
 	{
 		super.setSGCamera( camera );
 		AxisAlignedBox cameraBounds = new AxisAlignedBox();
 		Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation.backward;
-		
-		Point3 cameraMin = new Point3(camera.getAbsoluteTransformation().translation);
-		Point3 cameraMax = new Point3(cameraMin);
+
+		Point3 cameraMin = new Point3( camera.getAbsoluteTransformation().translation );
+		Point3 cameraMax = new Point3( cameraMin );
 		double originalY = cameraMin.y;
-		cameraMin.add( Vector3.createMultiplication( cameraBackwards, 1.5d) );
+		cameraMin.add( Vector3.createMultiplication( cameraBackwards, 1.5d ) );
 		cameraMin.y = .25d;
-		cameraMax.subtract( Vector3.createMultiplication( cameraBackwards, 4.5d) );
+		cameraMax.subtract( Vector3.createMultiplication( cameraBackwards, 4.5d ) );
 		cameraMax.y = originalY + 1.5d;
 		cameraBounds.setMinimum( cameraMin );
 		cameraBounds.setMaximum( cameraMax );
-		for (int i=0; i<this.manipulators.size(); i++)
+		for( int i = 0; i < this.manipulators.size(); i++ )
 		{
-			if (this.manipulators.get( i ).getManipulator() instanceof CameraTranslateKeyManipulator)
+			if( this.manipulators.get( i ).getManipulator() instanceof CameraTranslateKeyManipulator )
 			{
-				((CameraTranslateKeyManipulator)this.manipulators.get( i ).getManipulator()).setBounds( cameraBounds );
+				( (CameraTranslateKeyManipulator)this.manipulators.get( i ).getManipulator() ).setBounds( cameraBounds );
 			}
 		}
 	}
-	
 
 }

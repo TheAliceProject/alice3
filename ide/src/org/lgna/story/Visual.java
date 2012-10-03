@@ -48,9 +48,12 @@ package org.lgna.story;
  */
 public interface Visual {
 	public Paint getPaint();
+
 	public void setPaint( Paint paint, SetPaint.Detail... details );
+
 	public Double getOpacity();
+
 	public void setOpacity( Number opacity, SetOpacity.Detail... details );
-//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener );
-//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener );
+	//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener );
+	//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener );
 }

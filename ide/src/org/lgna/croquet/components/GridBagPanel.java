@@ -50,15 +50,17 @@ public class GridBagPanel extends Panel {
 	public GridBagPanel() {
 		this( null );
 	}
+
 	public GridBagPanel( org.lgna.croquet.Composite composite ) {
 		super( composite );
 	}
+
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridBagLayout();
 	}
-	
-	public void addComponent( Component< ? > component, java.awt.GridBagConstraints gbc ) {
+
+	public void addComponent( Component<?> component, java.awt.GridBagConstraints gbc ) {
 		this.internalAddComponent( component, gbc );
 	}
 }

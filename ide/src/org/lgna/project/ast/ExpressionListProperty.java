@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListProperty extends NodeListProperty< Expression > {
+public class ExpressionListProperty extends NodeListProperty<Expression> {
 	public ExpressionListProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		super( owner );
 	}

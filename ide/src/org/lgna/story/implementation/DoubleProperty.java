@@ -46,12 +46,13 @@ package org.lgna.story.implementation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DoubleProperty extends Property< Double > {
+public abstract class DoubleProperty extends Property<Double> {
 	public DoubleProperty( EntityImp owner ) {
 		super( owner, Double.class );
 	}
+
 	@Override
 	protected Double interpolate( Double a, Double b, double portion ) {
-		return a + ((b-a)*portion);
+		return a + ( ( b - a ) * portion );
 	}
 }

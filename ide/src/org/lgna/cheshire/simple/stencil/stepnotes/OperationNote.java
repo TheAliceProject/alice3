@@ -50,6 +50,7 @@ public abstract class OperationNote extends CompletionNote<org.lgna.croquet.Oper
 	public OperationNote( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Operation> step ) {
 		super( step );
 	}
+
 	@Override
 	protected void addFeatures( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Operation> step ) {
 		this.addFeature( new org.lgna.cheshire.simple.stencil.features.Hole( new org.lgna.cheshire.simple.stencil.resolvers.ModelFirstComponentResolver( step ), org.lgna.cheshire.simple.Feature.ConnectionPreference.EAST_WEST ) );

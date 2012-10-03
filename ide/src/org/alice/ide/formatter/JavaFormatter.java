@@ -49,37 +49,45 @@ public class JavaFormatter extends Formatter {
 	private static class SingletonHolder {
 		private static JavaFormatter instance = new JavaFormatter();
 	}
+
 	public static JavaFormatter getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private JavaFormatter() {
 		super( new java.util.Locale( "en", "US", "java" ), "Java" );
 	}
+
 	@Override
-	protected String getTextForCls(Class<?> cls) {
+	protected String getTextForCls( Class<?> cls ) {
 		return cls.getSimpleName();
 	}
+
 	@Override
 	public String getTextForNull() {
 		return "null";
 	}
+
 	@Override
 	public String getTextForThis() {
 		return "this";
 	}
+
 	@Override
 	protected String getTextForJavaParameter( org.lgna.project.ast.JavaParameter javaParameter ) {
 		return javaParameter.getName();
 	}
+
 	@Override
 	protected String getTextForMethodReflectionProxy( org.lgna.project.ast.MethodReflectionProxy methodReflectionProxy ) {
 		return methodReflectionProxy.getName();
 	}
+
 	@Override
 	public boolean isTypeExpressionDesired() {
 		return true;
 	}
-	
+
 	@Override
 	public String getNameForField( java.lang.reflect.Field fld ) {
 		return fld.getName();

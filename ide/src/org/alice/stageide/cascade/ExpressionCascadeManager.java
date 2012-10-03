@@ -76,7 +76,7 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType< ?, ?, ? > interfaceType ) {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getEnumTypeForInterfaceType( org.lgna.project.ast.AbstractType<?, ?, ?> interfaceType ) {
 		if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Style.class ) ) {
 			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.AnimationStyle.class );
 		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.EyeColor.class ) ) {
@@ -96,9 +96,9 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 			return super.areEnumConstantsDesired( enumType );
 		}
 	}
-	
+
 	@Override
-	protected org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> createPartMenuModel( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType< ?, ?, ? > desiredType, org.lgna.project.ast.AbstractType< ?, ?, ? > expressionType, boolean isOwnedByCascadeItemMenuCombo ) {
+	protected org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.Expression> createPartMenuModel( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType, boolean isOwnedByCascadeItemMenuCombo ) {
 		if( expressionType.isAssignableTo( org.lgna.story.SJointedModel.class ) ) {
 			if( desiredType.isAssignableFrom( org.lgna.story.SJoint.class ) ) {
 				if( org.alice.stageide.ast.JointedTypeInfo.isJointed( expressionType ) ) {
@@ -109,9 +109,9 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 		}
 		return null;
 	}
-	
+
 	@Override
-	protected boolean isApplicableForPartFillIn( org.lgna.project.ast.AbstractType<?,?,?> desiredType, org.lgna.project.ast.AbstractType<?,?,?> expressionType ) {
+	protected boolean isApplicableForPartFillIn( org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType ) {
 		return desiredType.isAssignableFrom( org.lgna.story.SJoint.class ) && expressionType.isAssignableTo( org.lgna.story.SJointedModel.class );
 	}
 }

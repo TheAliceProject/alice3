@@ -54,33 +54,37 @@ public class MetaDeclarationFauxState {
 	private static class SingletonHolder {
 		private static MetaDeclarationFauxState instance = new MetaDeclarationFauxState();
 	}
+
 	public static MetaDeclarationFauxState getInstance() {
 		return SingletonHolder.instance;
 	}
-	
-	private final java.util.List< ValueListener > valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.ProjectPerspective > perspectiveListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.perspectives.ProjectPerspective >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.perspectives.ProjectPerspective > state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
+
+	private final java.util.List<ValueListener> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective> perspectiveListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.perspectives.ProjectPerspective>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.perspectives.ProjectPerspective > state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.perspectives.ProjectPerspective> state, org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue, boolean isAdjusting ) {
 			MetaDeclarationFauxState.this.handleIsSceneEditorExpandedChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite > declarationTabListener = new org.lgna.croquet.State.ValueListener< org.alice.ide.declarationseditor.DeclarationComposite >() {
-		public void changing( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationTabListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 		}
-		public void changed( org.lgna.croquet.State< org.alice.ide.declarationseditor.DeclarationComposite > state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
 			MetaDeclarationFauxState.this.handleDeclarationTabChanged();
 		}
 	};
 
 	private org.lgna.project.ast.AbstractDeclaration prevDeclaration;
+
 	private MetaDeclarationFauxState() {
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().addValueListener( this.perspectiveListener );
 		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addValueListener( this.declarationTabListener );
 		this.prevDeclaration = this.getValue();
 	}
-	
+
 	public org.lgna.project.ast.AbstractDeclaration getValue() {
 		IDE ide = IDE.getActiveInstance();
 		if( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() == org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ) {
@@ -90,13 +94,14 @@ public class MetaDeclarationFauxState {
 			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
 		}
 	}
-	public org.lgna.project.ast.AbstractType< ?,?,? > getType() {
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		org.lgna.project.ast.AbstractDeclaration declaration = this.getValue();
 		if( declaration != null ) {
-			if( declaration instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {
-				org.lgna.project.ast.AbstractType< ?,?,? > type = (org.lgna.project.ast.AbstractType< ?,?,? >)declaration;
+			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+				org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 				return type;
-			} else if( declaration instanceof org.lgna.project.ast.AbstractMember ) { 
+			} else if( declaration instanceof org.lgna.project.ast.AbstractMember ) {
 				org.lgna.project.ast.AbstractMember member = (org.lgna.project.ast.AbstractMember)declaration;
 				return member.getDeclaringType();
 			} else {
@@ -107,18 +112,21 @@ public class MetaDeclarationFauxState {
 			return null;
 		}
 	}
-	
+
 	public void addValueListener( ValueListener valueListener ) {
 		this.valueListeners.add( valueListener );
 	}
+
 	public void addAndInvokeValueListener( ValueListener valueListener ) {
 		this.addValueListener( valueListener );
 		//note: same value for prev and next
 		valueListener.changed( this.prevDeclaration, this.getValue() );
 	}
+
 	public void removeValueListener( ValueListener valueListener ) {
 		this.valueListeners.remove( valueListener );
 	}
+
 	private void fireChanged() {
 		org.lgna.project.ast.AbstractDeclaration nextValue = this.getValue();
 		if( this.prevDeclaration != nextValue ) {
@@ -128,9 +136,11 @@ public class MetaDeclarationFauxState {
 			this.prevDeclaration = nextValue;
 		}
 	}
+
 	private void handleIsSceneEditorExpandedChanged() {
 		this.fireChanged();
 	}
+
 	private void handleDeclarationTabChanged() {
 		this.fireChanged();
 	}

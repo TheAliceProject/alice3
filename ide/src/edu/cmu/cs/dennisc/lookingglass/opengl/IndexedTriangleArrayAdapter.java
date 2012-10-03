@@ -43,26 +43,29 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_TRIANGLES;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IndexedTriangleArrayAdapter extends IndexedPolygonArrayAdapter< edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray > {
+public class IndexedTriangleArrayAdapter extends IndexedPolygonArrayAdapter<edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray> {
 	@Override
 	protected int getMode() {
 		return GL_TRIANGLES;
 	}
+
 	@Override
 	protected int getIndicesPerPolygon() {
 		return 3;
 	}
+
 	@Override
 	protected void renderPolygon( RenderContext rc, int[] polygonData, int i ) {
 		rc.renderVertex( accessVertexAt( polygonData[ i ] ) );
 		rc.renderVertex( accessVertexAt( polygonData[ i + 1 ] ) );
 		rc.renderVertex( accessVertexAt( polygonData[ i + 2 ] ) );
 	}
+
 	@Override
 	protected void pickPolygon( PickContext pc, int[] polygonData, int i ) {
 		pc.pickVertex( accessVertexAt( polygonData[ i ] ) );

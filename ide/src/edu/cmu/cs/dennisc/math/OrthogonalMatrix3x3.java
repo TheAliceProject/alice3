@@ -47,31 +47,38 @@ package edu.cmu.cs.dennisc.math;
  */
 public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orientation {
 	private static final OrthogonalMatrix3x3 IDENTITY = new OrthogonalMatrix3x3();
+
 	public static OrthogonalMatrix3x3 accessIdentity() {
 		IDENTITY.setIdentity();
 		return IDENTITY;
 	}
+
 	//todo: reduce visibility to private
 	public OrthogonalMatrix3x3() {
 		//todo: setNaN();
 		setIdentity();
 	}
-		
+
 	public OrthogonalMatrix3x3( OrthogonalMatrix3x3 other ) {
 		setValue( other );
 	}
+
 	public OrthogonalMatrix3x3( UnitQuaternion other ) {
 		setValue( other );
 	}
+
 	public OrthogonalMatrix3x3( AxisRotation other ) {
 		setValue( other );
 	}
+
 	public OrthogonalMatrix3x3( EulerAngles other ) {
 		setValue( other );
 	}
+
 	public OrthogonalMatrix3x3( ForwardAndUpGuide other ) {
 		setValue( other );
 	}
+
 	public OrthogonalMatrix3x3( Vector3 right, Vector3 up, Vector3 backward ) {
 		set( right, up, backward );
 	}
@@ -79,15 +86,19 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 	public OrthogonalMatrix3x3 createOrthogonalMatrix3x3() {
 		return new OrthogonalMatrix3x3( this );
 	}
+
 	public UnitQuaternion createUnitQuaternion() {
 		return new UnitQuaternion( this );
 	}
+
 	public AxisRotation createAxisRotation() {
 		return new AxisRotation( this );
 	}
+
 	public EulerAngles createEulerAngles() {
 		return new EulerAngles( this );
 	}
+
 	public ForwardAndUpGuide createForwardAndUpGuide() {
 		return new ForwardAndUpGuide( this );
 	}
@@ -96,23 +107,26 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		rv.setValue( this );
 		return rv;
 	}
+
 	public UnitQuaternion getValue( UnitQuaternion rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public AxisRotation getValue( AxisRotation rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public EulerAngles getValue( EulerAngles rv ) {
 		rv.setValue( this );
 		return rv;
 	}
+
 	public ForwardAndUpGuide getValue( ForwardAndUpGuide rv ) {
 		rv.setValue( this );
 		return rv;
 	}
-	
 
 	public void setValue( OrthogonalMatrix3x3 other ) {
 		super.setValue( other );
@@ -120,7 +134,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 
 	public void setValue( UnitQuaternion q ) {
 		//todo: assert unit
-		
+
 		//double ww = q.w * q.w;
 		double wx = q.w * q.x;
 		double wy = q.w * q.y;
@@ -135,23 +149,29 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 
 		double zz = q.z * q.z;
 
-		right.x = 1 - 2 * ( yy + zz );   up.x = 2 * ( xy - wz );       backward.x = 2 * ( xz + wy );
-		right.y = 2 * ( xy + wz );       up.y = 1 - 2 * ( xx + zz );   backward.y = 2 * ( yz - wx );
-		right.z = 2 * ( xz - wy );       up.z = 2 * ( yz + wx );       backward.z = 1 - 2 * ( xx + yy );
+		right.x = 1 - ( 2 * ( yy + zz ) );
+		up.x = 2 * ( xy - wz );
+		backward.x = 2 * ( xz + wy );
+		right.y = 2 * ( xy + wz );
+		up.y = 1 - ( 2 * ( xx + zz ) );
+		backward.y = 2 * ( yz - wx );
+		right.z = 2 * ( xz - wy );
+		up.z = 2 * ( yz + wx );
+		backward.z = 1 - ( 2 * ( xx + yy ) );
 	}
 
 	public void setValue( AxisRotation aa ) {
-		
+
 		//todo: optimize for special axes
-		
+
 		double thetaInRadians = aa.angle.getAsRadians();
 		double c = Math.cos( thetaInRadians );
 		double s = Math.sin( thetaInRadians );
 		double t = 1 - c;
 
-		right.x = c + aa.axis.x * aa.axis.x * t;
-		up.y = c + aa.axis.y * aa.axis.y * t;
-		backward.z = c + aa.axis.z * aa.axis.z * t;
+		right.x = c + ( aa.axis.x * aa.axis.x * t );
+		up.y = c + ( aa.axis.y * aa.axis.y * t );
+		backward.z = c + ( aa.axis.z * aa.axis.z * t );
 
 		double xyt = aa.axis.x * aa.axis.y * t;
 		double zs = aa.axis.z * s;
@@ -183,11 +203,11 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 			double sinPsi = Math.sin( psi );
 
 			right.x = cosPsi * cosTheta;
-			up.x = cosPsi * sinTheta * sinPhi - sinPsi * cosPhi;
-			backward.x = cosPsi * sinTheta * cosPhi + sinPsi * sinPhi;
+			up.x = ( cosPsi * sinTheta * sinPhi ) - ( sinPsi * cosPhi );
+			backward.x = ( cosPsi * sinTheta * cosPhi ) + ( sinPsi * sinPhi );
 			right.y = sinPsi * cosTheta;
-			up.y = sinPsi * sinTheta * sinPhi + cosPsi * cosPhi;
-			backward.y = sinPsi * sinTheta * cosPhi - cosPsi * sinPhi;
+			up.y = ( sinPsi * sinTheta * sinPhi ) + ( cosPsi * cosPhi );
+			backward.y = ( sinPsi * sinTheta * cosPhi ) - ( cosPsi * sinPhi );
 			right.z = -sinTheta;
 			up.z = cosTheta * sinPhi;
 			backward.z = cosTheta * cosPhi;
@@ -195,7 +215,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 			ea.order.setReturnValueToPitchYawRoll( this, ea.pitch, ea.yaw, ea.roll );
 		}
 	}
-	
+
 	public void setValue( edu.cmu.cs.dennisc.math.ForwardAndUpGuide faug ) {
 		assert faug.forward.isNaN() == false;
 
@@ -206,7 +226,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 			if( faug.upGuide.isNaN() == false ) {
 				upGuide = faug.upGuide;
 			} else {
-				if( faug.forward.x == 0 && faug.forward.z == 0 ) {
+				if( ( faug.forward.x == 0 ) && ( faug.forward.z == 0 ) ) {
 					upGuide = Vector3.accessPositiveXAxis();
 				} else {
 					upGuide = Vector3.accessPositiveYAxis();
@@ -241,7 +261,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 			assert isNaN() == false;
 		}
 	}
-	
+
 	public static OrthogonalMatrix3x3 createNaN() {
 		return (OrthogonalMatrix3x3)setReturnValueToNaN( new OrthogonalMatrix3x3() );
 	}
@@ -261,16 +281,17 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		rv.setToRotationAboutYAxis( angle );
 		return rv;
 	}
+
 	public static OrthogonalMatrix3x3 createFromRotationAboutZAxis( Angle angle ) {
 		OrthogonalMatrix3x3 rv = new OrthogonalMatrix3x3();
 		rv.setToRotationAboutZAxis( angle );
 		return rv;
 	}
-	
+
 	public static OrthogonalMatrix3x3 createFromForwardAndUpGuide( Vector3 forward, Vector3 upGuide ) {
 		return new OrthogonalMatrix3x3( new ForwardAndUpGuide( forward, upGuide ) );
 	}
-	
+
 	public static OrthogonalMatrix3x3 setReturnValueToRotationAboutArbitraryAxis( OrthogonalMatrix3x3 rv, Vector3 axis, Angle angle ) {
 		double angleInRadians = angle.getAsRadians();
 		double c = Math.cos( angleInRadians );
@@ -285,12 +306,13 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		double y = axis.y / w;
 		double z = axis.z / w;
 
-		rv.right.set(    t * x * x + c,     t * x * y + s * z, t * x * z - s * y );
-		rv.up.set(       t * x * y - s * z, t * y * y + c,     t * y * z + s * x );
-		rv.backward.set( t * x * z + s * y, t * y * z - s * x, t * z * z + c );
+		rv.right.set( ( t * x * x ) + c, ( t * x * y ) + ( s * z ), ( t * x * z ) - ( s * y ) );
+		rv.up.set( ( t * x * y ) - ( s * z ), ( t * y * y ) + c, ( t * y * z ) + ( s * x ) );
+		rv.backward.set( ( t * x * z ) + ( s * y ), ( t * y * z ) - ( s * x ), ( t * z * z ) + c );
 
 		return rv;
 	}
+
 	public void setToRotationAboutArbitraryAxis( Vector3 axis, Angle angle ) {
 		setReturnValueToRotationAboutArbitraryAxis( this, axis, angle );
 	}
@@ -310,116 +332,124 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		rv.backward.normalize();
 		return rv;
 	}
+
 	public static OrthogonalMatrix3x3 createNormalizedColumns( AbstractMatrix3x3 m ) {
 		return setReturnValueToNormalizedColumns( new OrthogonalMatrix3x3(), m );
 	}
+
 	public void setToNormalizedColumns( AbstractMatrix3x3 m ) {
 		setReturnValueToNormalizedColumns( this, m );
 	}
+
 	public void normalizeColumns() {
 		setToNormalizedColumns( this );
 	}
-	
-//	public static OrthogonalMatrix3x3 setReturnValueToStandUp( OrthogonalMatrix3x3 rv, OrthogonalMatrix3x3 m ) {
-//		Vector3 zAxis = new Vector3( m.backward );
-//		if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.y, 0 ) ) {
-//			rv.setValue( m );
-//			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "do nothing" );
-//		} else {
-//			if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.x, 0 ) && EpsilonUtilities.isWithinReasonableEpsilon( zAxis.z, 0 ) ) {
-//				rv.setValue( m );
-//				rv.applyRotationAboutXAxis( new AngleInRevolutions( 0.25 ) );
-//				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "rotate about x" );
-//			} else {
-//				zAxis.y = 0;
-//				zAxis.normalize();
-//
-//				Vector3 yAxis = Vector3.accessPositiveYAxis();
-//				Vector3 xAxis = Vector3.createCrossProduct( yAxis, zAxis );
-//				//xAxis.normalize();
-//
-//				rv.right.set( xAxis );
-//				rv.up.set( yAxis );
-//				rv.backward.set( zAxis );
-//			}
-//		}
-//		return rv;
-//	}
+
+	//	public static OrthogonalMatrix3x3 setReturnValueToStandUp( OrthogonalMatrix3x3 rv, OrthogonalMatrix3x3 m ) {
+	//		Vector3 zAxis = new Vector3( m.backward );
+	//		if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.y, 0 ) ) {
+	//			rv.setValue( m );
+	//			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "do nothing" );
+	//		} else {
+	//			if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.x, 0 ) && EpsilonUtilities.isWithinReasonableEpsilon( zAxis.z, 0 ) ) {
+	//				rv.setValue( m );
+	//				rv.applyRotationAboutXAxis( new AngleInRevolutions( 0.25 ) );
+	//				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "rotate about x" );
+	//			} else {
+	//				zAxis.y = 0;
+	//				zAxis.normalize();
+	//
+	//				Vector3 yAxis = Vector3.accessPositiveYAxis();
+	//				Vector3 xAxis = Vector3.createCrossProduct( yAxis, zAxis );
+	//				//xAxis.normalize();
+	//
+	//				rv.right.set( xAxis );
+	//				rv.up.set( yAxis );
+	//				rv.backward.set( zAxis );
+	//			}
+	//		}
+	//		return rv;
+	//	}
 	public static OrthogonalMatrix3x3 setReturnValueToStandUp( OrthogonalMatrix3x3 rv, OrthogonalMatrix3x3 m ) {
-        Vector3 zAxis = new Vector3( m.backward );
-        if( EpsilonUtilities.isWithinReasonableEpsilon( m.up.y, 1.0 ) ) {
-            rv.setValue( m );
-        } else {
-            if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.x, 0 ) && EpsilonUtilities.isWithinReasonableEpsilon( zAxis.z, 0 ) ) {
-                rv.setValue( m );
-                double theta;
-                if( zAxis.y < 0.0 ) {
-                    theta = -0.25;
-                } else {
-                    theta = +0.25;
-                }
-                rv.applyRotationAboutXAxis( new AngleInRevolutions( theta ) );
-//                edu.cmu.cs.dennisc.print.PrintUtilities.println( "rotate about x" );
-            } else {
-                if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.y, 0.0 ) ) {
-                    //pass
-                } else {
-                    zAxis.y = 0;
-                    zAxis.normalize();
-                }
+		Vector3 zAxis = new Vector3( m.backward );
+		if( EpsilonUtilities.isWithinReasonableEpsilon( m.up.y, 1.0 ) ) {
+			rv.setValue( m );
+		} else {
+			if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.x, 0 ) && EpsilonUtilities.isWithinReasonableEpsilon( zAxis.z, 0 ) ) {
+				rv.setValue( m );
+				double theta;
+				if( zAxis.y < 0.0 ) {
+					theta = -0.25;
+				} else {
+					theta = +0.25;
+				}
+				rv.applyRotationAboutXAxis( new AngleInRevolutions( theta ) );
+				//                edu.cmu.cs.dennisc.print.PrintUtilities.println( "rotate about x" );
+			} else {
+				if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.y, 0.0 ) ) {
+					//pass
+				} else {
+					zAxis.y = 0;
+					zAxis.normalize();
+				}
 
-                Vector3 yAxis = Vector3.accessPositiveYAxis();
-                Vector3 xAxis = Vector3.createCrossProduct( yAxis, zAxis );
-                //xAxis.normalize();
+				Vector3 yAxis = Vector3.accessPositiveYAxis();
+				Vector3 xAxis = Vector3.createCrossProduct( yAxis, zAxis );
+				//xAxis.normalize();
 
-                rv.right.set( xAxis );
-                rv.up.set( yAxis );
-                rv.backward.set( zAxis );
-            }
-        }
-        return rv;
-    }
+				rv.right.set( xAxis );
+				rv.up.set( yAxis );
+				rv.backward.set( zAxis );
+			}
+		}
+		return rv;
+	}
+
 	public static OrthogonalMatrix3x3 createFromStandUp( OrthogonalMatrix3x3 m ) {
 		return setReturnValueToStandUp( new OrthogonalMatrix3x3(), m );
 	}
 
-//	public void setToOrientationComponentOf( Matrix4x4 m ) {
-//		this.right.x = m.right.x;
-//		this.up.x = m.up.x;
-//		this.backward.x = m.backward.x;
-//		this.right.y = m.right.y;
-//		this.up.y = m.up.y;
-//		this.backward.y = m.backward.y;
-//		this.right.z = m.right.z;
-//		this.up.z = m.up.z;
-//		this.backward.z = m.backward.z;
-//	}
+	//	public void setToOrientationComponentOf( Matrix4x4 m ) {
+	//		this.right.x = m.right.x;
+	//		this.up.x = m.up.x;
+	//		this.backward.x = m.backward.x;
+	//		this.right.y = m.right.y;
+	//		this.up.y = m.up.y;
+	//		this.backward.y = m.backward.y;
+	//		this.right.z = m.right.z;
+	//		this.up.z = m.up.z;
+	//		this.backward.z = m.backward.z;
+	//	}
 
 	public void setToMultiplication( OrthogonalMatrix3x3 a, OrthogonalMatrix3x3 b ) {
 		super.setToMultiplication( a, b );
 	}
+
 	public void applyMultiplication( OrthogonalMatrix3x3 b ) {
 		super.applyMultiplication( b );
 	}
-	
+
 	//todo
 	public void applyRotationAboutXAxis( Angle theta ) {
 		OrthogonalMatrix3x3 other = new OrthogonalMatrix3x3();
 		other.setToRotationAboutXAxis( theta );
 		applyMultiplication( other );
 	}
+
 	//todo
 	public void applyRotationAboutYAxis( Angle theta ) {
 		OrthogonalMatrix3x3 other = new OrthogonalMatrix3x3();
 		other.setToRotationAboutYAxis( theta );
 		applyMultiplication( other );
 	}
+
 	//todo
 	public void applyRotationAboutZAxis( Angle theta ) {
 		OrthogonalMatrix3x3 other = new OrthogonalMatrix3x3();
 		other.setToRotationAboutZAxis( theta );
 		applyMultiplication( other );
 	}
+
 	//todo
 	public void applyRotationAboutArbitraryAxis( Vector3 axis, Angle theta ) {
 		OrthogonalMatrix3x3 other = new OrthogonalMatrix3x3();
@@ -441,6 +471,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		up.z = +s;
 		backward.z = +c;
 	}
+
 	public void setToRotationAboutYAxis( Angle theta ) {
 		double thetaInRadians = theta.getAsRadians();
 		double s = Math.sin( thetaInRadians );
@@ -455,6 +486,7 @@ public final class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orie
 		up.z = 0;
 		backward.z = +c;
 	}
+
 	public void setToRotationAboutZAxis( Angle theta ) {
 		double thetaInRadians = theta.getAsRadians();
 		double s = Math.sin( thetaInRadians );

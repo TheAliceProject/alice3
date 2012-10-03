@@ -43,24 +43,30 @@
 
 package org.lgna.croquet.cascade;
 
-import org.lgna.croquet.*;
+import org.lgna.croquet.AbstractCascadeMenuModel;
+import org.lgna.croquet.CascadeBlank;
+import org.lgna.croquet.CascadeBlankChild;
+import org.lgna.croquet.CascadeCancel;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.croquet.CascadeItem;
+import org.lgna.croquet.CascadeSeparator;
+import org.lgna.croquet.CascadeUnfilledInCancel;
 
 /**
  * @author Dennis Cosgrove
  */
-class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.BlankNode< B > > {
+class RtBlank<B> extends RtNode<CascadeBlank<B>, org.lgna.croquet.cascade.BlankNode<B>> {
 	private RtItem[] rtItems;
 	private boolean isAutomaticallyDetermined;
-	private RtItem< B, ?, ?, ? > rtSelectedFillIn;
-	
+	private RtItem<B, ?, ?, ?> rtSelectedFillIn;
 
-	public RtBlank( CascadeBlank< B > element ) {
+	public RtBlank( CascadeBlank<B> element ) {
 		super( element, BlankNode.createInstance( element ) );
 		this.getNode().setRtBlank( this );
 	}
 
 	@Override
-	public RtBlank< ? > getNearestBlank() {
+	public RtBlank<?> getNearestBlank() {
 		return this;
 	}
 
@@ -76,7 +82,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 			return null;
 		}
 	}
-	
+
 	private RtFillIn getOneAndOnlyOneFillInIfAppropriate() {
 		RtFillIn rv = null;
 		RtItem[] children = this.getItemChildren();
@@ -108,15 +114,15 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		if( this.rtItems != null ) {
 			//pass
 		} else {
-			java.util.List< RtItem > baseRtItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<RtItem> baseRtItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( CascadeBlankChild blankChild : this.getElement().getFilteredChildren( this.getNode() ) ) {
 				final int N = blankChild.getItemCount();
 				for( int i = 0; i < N; i++ ) {
 					CascadeItem item = blankChild.getItemAt( i );
 					RtItem rtItem;
-					if( item instanceof CascadeMenuModel ) {
-						CascadeMenuModel menu = (CascadeMenuModel)item;
-						rtItem = new RtMenu< B >( menu, blankChild, i );
+					if( item instanceof AbstractCascadeMenuModel ) {
+						AbstractCascadeMenuModel menu = (AbstractCascadeMenuModel)item;
+						rtItem = new RtMenu( menu, blankChild, i );
 					} else if( item instanceof CascadeFillIn ) {
 						CascadeFillIn fillIn = (CascadeFillIn)item;
 						rtItem = new RtFillIn( fillIn, blankChild, i );
@@ -152,7 +158,7 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 			this.updateParentsAndNextSiblings( this.rtItems );
 
 			RtFillIn rtFillIn = this.getOneAndOnlyOneFillInIfAppropriate();
-			if( rtFillIn != null && rtFillIn.isAutomaticallySelectedWhenSoleOption() ) {
+			if( ( rtFillIn != null ) && rtFillIn.isAutomaticallySelectedWhenSoleOption() ) {
 				this.rtSelectedFillIn = rtFillIn;
 				this.isAutomaticallyDetermined = true;
 			} else {
@@ -162,11 +168,11 @@ class RtBlank<B> extends RtNode< CascadeBlank< B >, org.lgna.croquet.cascade.Bla
 		return this.rtItems;
 	}
 
-	public void setSelectedFillIn( RtItem< B, ?, ?, ? > item ) {
+	public void setSelectedFillIn( RtItem<B, ?, ?, ?> item ) {
 		this.rtSelectedFillIn = item;
 		RtNode parent = this.getParent();
-		if( parent instanceof RtFillIn< ?, ? > ) {
-			RtFillIn< ?, ? > parentFillIn = (RtFillIn< ?, ? >)parent;
+		if( parent instanceof RtFillIn<?, ?> ) {
+			RtFillIn<?, ?> parentFillIn = (RtFillIn<?, ?>)parent;
 			for( RtBlank blank : parentFillIn.getBlankChildren() ) {
 				if( blank.rtSelectedFillIn != null ) {
 					//pass

@@ -41,10 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitSundress implements FemaleAdultFullBodyOutfit {
-	BLUEFLORAL ,
- 	CELADONVASE ,
- 	NAVYPIPING ,
- 	PINKSUNNY ,
- 	REDISLANDS ;
+	BLUEFLORAL,
+	CELADONVASE,
+	NAVYPIPING,
+	PINKSUNNY,
+	REDISLANDS;
 }

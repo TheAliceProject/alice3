@@ -50,9 +50,11 @@ public class AppearanceProceduresComposite extends org.alice.ide.member.NameFilt
 	private static class SingletonHolder {
 		private static AppearanceProceduresComposite instance = new AppearanceProceduresComposite();
 	}
+
 	public static AppearanceProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private AppearanceProceduresComposite() {
 		super( java.util.UUID.fromString( "81b3d777-09d5-4310-bf75-af9a8bc45672" ), "setPaint", "setBackPaint", "setFloorPaint", "setWallPaint", "setCeilingPaint", "setOpacity" );
 	}

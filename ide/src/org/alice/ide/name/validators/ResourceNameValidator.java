@@ -45,12 +45,15 @@ package org.alice.ide.name.validators;
 
 public class ResourceNameValidator extends org.alice.ide.name.NameValidator {
 	private org.lgna.common.Resource resource;
+
 	public org.lgna.common.Resource getResource() {
 		return this.resource;
 	}
+
 	public void setResource( org.lgna.common.Resource resource ) {
 		this.resource = resource;
 	}
+
 	@Override
 	public boolean isNameAvailable( String name ) {
 		if( this.resource != null ) {
@@ -62,6 +65,7 @@ public class ResourceNameValidator extends org.alice.ide.name.NameValidator {
 		}
 		return true;
 	}
+
 	@Override
 	public boolean isNameValid( String name ) {
 		//todo?

@@ -46,17 +46,20 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CascadeItemMenuCombo<F> implements CascadeBlankChild< F > {
-	private final CascadeItem< F, ? > item;
-	private final CascadeItem< F, ? > menu;
-	public CascadeItemMenuCombo( CascadeItem< F, ? > item, CascadeItem< F, ? > menu ) {
+public class CascadeItemMenuCombo<F> implements CascadeBlankChild<F> {
+	private final CascadeItem<F, ?> item;
+	private final CascadeItem<F, ?> menu;
+
+	public CascadeItemMenuCombo( CascadeItem<F, ?> item, CascadeItem<F, ?> menu ) {
 		this.item = item;
 		this.menu = menu;
 	}
+
 	public int getItemCount() {
 		return 2;
 	}
-	public org.lgna.croquet.CascadeItem< F, ? > getItemAt( int index ) {
+
+	public org.lgna.croquet.CascadeItem<F, ?> getItemAt( int index ) {
 		switch( index ) {
 		case 0:
 			return this.item;

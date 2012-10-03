@@ -45,8 +45,9 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayComposite< org.lgna.project.ast.ForEachInArrayLoop > {
-	private static java.util.Map< org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayComposite<org.lgna.project.ast.ForEachInArrayLoop> {
+	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertForEachInArrayLoopComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized InsertForEachInArrayLoopComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		assert blockStatementIndexPair != null;
 		InsertForEachInArrayLoopComposite rv = map.get( blockStatementIndexPair );
@@ -58,17 +59,18 @@ public final class InsertForEachInArrayLoopComposite extends InsertEachInArrayCo
 		}
 		return rv;
 	}
+
 	private InsertForEachInArrayLoopComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "4341639b-4123-419a-b06f-16987fb7d356" ), blockStatementIndexPair );
 	}
+
 	@Override
 	protected org.lgna.project.ast.ForEachInArrayLoop createStatement( org.lgna.project.ast.UserLocal item, org.lgna.project.ast.Expression initializer ) {
 		return new org.lgna.project.ast.ForEachInArrayLoop(
 				item,
-				initializer, 
-				new org.lgna.project.ast.BlockStatement() 
-		);
+				initializer,
+				new org.lgna.project.ast.BlockStatement() );
 	}
-	
-	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( this.createKey( "EPIC_HACK_externalErrorStatus" ) ); 
+
+	public final ErrorStatus EPIC_HACK_externalErrorStatus = this.createErrorStatus( this.createKey( "EPIC_HACK_externalErrorStatus" ) );
 }

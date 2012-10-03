@@ -52,6 +52,7 @@ public abstract class AffineMatrix4x4Animation extends edu.cmu.cs.dennisc.animat
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_m0;
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_m1;
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_mBuffer;
+
 	public AffineMatrix4x4Animation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m1 ) {
 		super( duration, style );
 		m_q0 = m0.orientation.createUnitQuaternion();
@@ -62,12 +63,14 @@ public abstract class AffineMatrix4x4Animation extends edu.cmu.cs.dennisc.animat
 		m_m1 = m1;
 		m_mBuffer = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createNaN();
 	}
-	
+
 	protected abstract void updateValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 value );
+
 	@Override
 	protected void prologue() {
 		updateValue( m_m0 );
 	}
+
 	@Override
 	protected void setPortion( double portion ) {
 		m_mBuffer.translation.setToInterpolation( m_m0.translation, m_m1.translation, portion );
@@ -75,6 +78,7 @@ public abstract class AffineMatrix4x4Animation extends edu.cmu.cs.dennisc.animat
 		m_mBuffer.orientation.setValue( m_qBuffer );
 		updateValue( m_mBuffer );
 	}
+
 	@Override
 	protected void epilogue() {
 		updateValue( m_m1 );

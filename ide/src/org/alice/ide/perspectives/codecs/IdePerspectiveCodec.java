@@ -46,20 +46,22 @@ package org.alice.ide.perspectives.codecs;
 /**
  * @author Dennis Cosgrove
  */
-public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec< org.alice.ide.perspectives.ProjectPerspective > {
+public enum IdePerspectiveCodec implements org.lgna.croquet.ItemCodec<org.alice.ide.perspectives.ProjectPerspective> {
 	SINGLETON;
-	public Class< org.alice.ide.perspectives.ProjectPerspective > getValueClass() {
+	public Class<org.alice.ide.perspectives.ProjectPerspective> getValueClass() {
 		return org.alice.ide.perspectives.ProjectPerspective.class;
 	}
+
 	public org.alice.ide.perspectives.ProjectPerspective decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		org.lgna.croquet.resolvers.Resolver< org.alice.ide.perspectives.ProjectPerspective > resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
+		org.lgna.croquet.resolvers.Resolver<org.alice.ide.perspectives.ProjectPerspective> resolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		return resolver.getResolved();
 	}
-	public void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.perspectives.ProjectPerspective value ) {
 		binaryEncoder.encode( value.getResolver() );
 	}
-	public StringBuilder appendRepresentation(StringBuilder rv, org.alice.ide.perspectives.ProjectPerspective value) {
-		rv.append( value );
-		return rv;
+
+	public void appendRepresentation( StringBuilder sb, org.alice.ide.perspectives.ProjectPerspective value ) {
+		sb.append( value );
 	}
 }

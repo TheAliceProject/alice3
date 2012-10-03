@@ -69,7 +69,9 @@ public class FieldReferenceSearchTreeNode {
 	private static FieldReferenceSearchTreeNode root = new FieldReferenceSearchTreeNode( null );
 
 	public enum NodeType {
-		FIELD, HEADER_FIELD, ROOT;
+		FIELD,
+		HEADER_FIELD,
+		ROOT;
 	}
 
 	public static FieldReferenceSearchTreeNode getRoot() {
@@ -83,6 +85,7 @@ public class FieldReferenceSearchTreeNode {
 		parent.addChild( rv );
 		return rv;
 	}
+
 	private static FieldReferenceSearchTreeNode createHeaderNodeNode( FieldReferenceSearchTreeNode parent, NodeType type ) {
 		FieldReferenceSearchTreeNode rv = new FieldReferenceSearchTreeNode( parent );
 		rv.type = type;
@@ -99,7 +102,7 @@ public class FieldReferenceSearchTreeNode {
 	}
 
 	private void addChild( FieldReferenceSearchTreeNode child ) {
-		if( !(type == NodeType.ROOT) ) {
+		if( !( type == NodeType.ROOT ) ) {
 			if( type == NodeType.FIELD ) {
 				if( child.type == NodeType.FIELD ) {
 					getFields().addChild( child );
@@ -115,6 +118,7 @@ public class FieldReferenceSearchTreeNode {
 			children.add( child );
 		}
 	}
+
 	private FieldReferenceSearchTreeNode getFields() {
 		if( this.type == NodeType.HEADER_FIELD ) {
 			return this;
@@ -149,22 +153,24 @@ public class FieldReferenceSearchTreeNode {
 	public Icon getIcon() {
 		return null;
 	}
+
 	public static ItemCodec<FieldReferenceSearchTreeNode> getNewItemCodec() {
 		return new ItemCodec<FieldReferenceSearchTreeNode>() {
 
 			public Class<FieldReferenceSearchTreeNode> getValueClass() {
-				return null;
+				return FieldReferenceSearchTreeNode.class;
 			}
 
 			public FieldReferenceSearchTreeNode decodeValue( BinaryDecoder binaryDecoder ) {
-				return null;
+				throw new RuntimeException( "todo" );
 			}
 
 			public void encodeValue( BinaryEncoder binaryEncoder, FieldReferenceSearchTreeNode value ) {
+				throw new RuntimeException( "todo" );
 			}
 
-			public StringBuilder appendRepresentation( StringBuilder rv, FieldReferenceSearchTreeNode value ) {
-				return null;
+			public void appendRepresentation( StringBuilder sb, FieldReferenceSearchTreeNode value ) {
+				sb.append( value );
 			}
 
 		};
@@ -192,7 +198,7 @@ public class FieldReferenceSearchTreeNode {
 
 	private boolean find( LinkedList<FieldReferenceSearchTreeNode> alreadyVisited, FieldReferenceSearchTreeNode child ) {
 		for( FieldReferenceSearchTreeNode node : alreadyVisited ) {
-			if( node.field != null && child.field != null ) {
+			if( ( node.field != null ) && ( child.field != null ) ) {
 				if( node.field.getValueType() == child.field.getValueType() ) {
 					if( node.field.getName() == child.field.getName() ) {
 						if( node.field.getDeclaringType() == child.field.getDeclaringType() ) {
@@ -211,15 +217,16 @@ public class FieldReferenceSearchTreeNode {
 
 	private static void makeChildren( FieldReferenceSearchTreeNode parentNode, UserField userField ) {
 		FieldReferenceSearchTreeNode childNode = createFieldNode( parentNode, userField );
-		for( UserField field : ((NamedUserType)userField.getValueType()).fields ) {
+		for( UserField field : ( (NamedUserType)userField.getValueType() ).fields ) {
 			if( field.getValueType() instanceof NamedUserType ) {
 				if( root.find( field ) == null ) {
 					makeChildren( childNode, field );
 				} else {
 					childNode.addChild( root.find( field ) );
 				}
-			} else
+			} else {
 				createFieldNode( childNode, field );
+			}
 		}
 	}
 
@@ -238,8 +245,9 @@ public class FieldReferenceSearchTreeNode {
 	}
 
 	public void addReference( FieldAccess access ) {
-		if( !this.references.contains( access ) )
+		if( !this.references.contains( access ) ) {
 			this.references.add( access );
+		}
 	}
 
 	public List<FieldAccess> getReferences() {

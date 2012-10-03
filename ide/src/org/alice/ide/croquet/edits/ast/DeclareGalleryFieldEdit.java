@@ -55,13 +55,14 @@ public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
 		this.doStatements = doStatements;
 		this.undoStatements = undoStatements;
 	}
+
 	public DeclareGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		assert false : "todo";
 		this.doStatements = null;
 		this.undoStatements = null;
 	}
-	
+
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );

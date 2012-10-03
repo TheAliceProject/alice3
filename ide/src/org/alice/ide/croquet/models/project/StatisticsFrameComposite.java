@@ -42,7 +42,6 @@
  */
 package org.alice.ide.croquet.models.project;
 
-
 import org.alice.ide.ProjectApplication;
 import org.alice.ide.croquet.models.project.views.StatisticsFrameView;
 import org.lgna.croquet.FrameComposite;
@@ -75,7 +74,7 @@ public class StatisticsFrameComposite extends FrameComposite<StatisticsFrameView
 	protected StatisticsFrameView createView() {
 		StatisticsFlowControlFrequencyComposite flowControlFrequencyTab = new StatisticsFlowControlFrequencyComposite();
 		StatisticsMethodFrequencyTabComposite methodTab = new StatisticsMethodFrequencyTabComposite();
-		tabState = this.createTabSelectionState( this.createKey( "tabState" ), SimpleTabComposite.class, 0, flowControlFrequencyTab, methodTab );
+		tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, flowControlFrequencyTab, methodTab );
 		return new StatisticsFrameView( this );
 	}
 

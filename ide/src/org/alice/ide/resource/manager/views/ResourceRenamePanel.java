@@ -50,12 +50,14 @@ public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.Ren
 	private static final int SIZE = 128;
 	private final org.lgna.croquet.components.BorderPanel centerPanel = new org.lgna.croquet.components.BorderPanel();
 	private final org.alice.ide.croquet.ImageView imageView = new org.alice.ide.croquet.ImageView();
+
 	public ResourceRenamePanel( org.alice.ide.resource.manager.RenameResourceComposite composite ) {
 		super( composite );
 		this.centerPanel.setMinimumPreferredHeight( SIZE );
-		this.centerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,0,0,0 ) );
+		this.centerPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
 		this.addCenterComponent( this.centerPanel );
 	}
+
 	public void setResource( org.lgna.common.Resource resource ) {
 		this.centerPanel.forgetAndRemoveAllComponents();
 		java.awt.Component awtComponent;
@@ -63,7 +65,7 @@ public class ResourceRenamePanel extends org.alice.ide.ast.rename.components.Ren
 		if( resource instanceof org.lgna.common.resources.ImageResource ) {
 			org.lgna.common.resources.ImageResource imageResource = (org.lgna.common.resources.ImageResource)resource;
 			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
-			imageView.setBufferedImage(bufferedImage);
+			imageView.setBufferedImage( bufferedImage );
 			awtComponent = imageView.getAwtComponent();
 			constraint = java.awt.BorderLayout.CENTER;
 		} else if( resource instanceof org.lgna.common.resources.AudioResource ) {

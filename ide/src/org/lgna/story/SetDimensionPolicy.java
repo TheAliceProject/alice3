@@ -51,18 +51,22 @@ public enum SetDimensionPolicy implements SetWidth.Detail, SetHeight.Detail, Set
 	PRESERVE_NOTHING( false, false );
 	private final boolean isVolumePreserved;
 	private final boolean isAspectRatioPreserved;
+
 	SetDimensionPolicy( boolean isVolumePreserved, boolean isAspectRatioPreserved ) {
 		this.isVolumePreserved = isVolumePreserved;
 		this.isAspectRatioPreserved = isAspectRatioPreserved;
 	}
-	/*package-private*/ boolean isVolumePreserved() {
+
+	/* package-private */boolean isVolumePreserved() {
 		return this.isVolumePreserved;
 	}
-	/*package-private*/ boolean isAspectRatioPreserved() {
+
+	/* package-private */boolean isAspectRatioPreserved() {
 		return this.isAspectRatioPreserved;
 	}
 
 	private static final SetDimensionPolicy DEFAULT_VALUE = SetDimensionPolicy.PRESERVE_ASPECT_RATIO;
+
 	private static SetDimensionPolicy getValue( Object[] details, SetDimensionPolicy defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof SetDimensionPolicy ) {
@@ -72,7 +76,8 @@ public enum SetDimensionPolicy implements SetWidth.Detail, SetHeight.Detail, Set
 		}
 		return defaultValue;
 	}
-	/*package-private*/ static SetDimensionPolicy getValue( Object[] details ) {
+
+	/* package-private */static SetDimensionPolicy getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
 }

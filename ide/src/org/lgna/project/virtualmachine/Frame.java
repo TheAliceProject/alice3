@@ -47,10 +47,20 @@ package org.lgna.project.virtualmachine;
  */
 public interface Frame extends LgnaStackTraceElement {
 	public Frame getOwner();
+
 	public UserInstance getThis();
-	public Object lookup( org.lgna.project.ast.AbstractParameter parameter );
+
+	public boolean isValidParameter( org.lgna.project.ast.UserParameter parameter );
+
+	public boolean isValidLocal( org.lgna.project.ast.UserLocal local );
+
+	public Object lookup( org.lgna.project.ast.UserParameter parameter );
+
 	public Object get( org.lgna.project.ast.UserLocal local );
+
 	public void set( org.lgna.project.ast.UserLocal local, Object value );
+
 	public void push( org.lgna.project.ast.UserLocal local, Object value );
+
 	public void pop( org.lgna.project.ast.UserLocal local );
 }

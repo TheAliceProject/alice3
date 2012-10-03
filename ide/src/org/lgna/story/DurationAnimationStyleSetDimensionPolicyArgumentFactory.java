@@ -50,6 +50,7 @@ public class DurationAnimationStyleSetDimensionPolicyArgumentFactory extends Dur
 	protected DurationAnimationStyleSetDimensionPolicyArgumentFactory() {
 		super();
 	}
+
 	public static SetDimensionPolicy policy( SetDimensionPolicy policy ) {
 		return policy;
 	}

@@ -49,9 +49,11 @@ public class ShowSnapGridState extends BooleanState {
 	private static class SingletonHolder {
 		private static ShowSnapGridState instance = new ShowSnapGridState();
 	}
+
 	public static ShowSnapGridState getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private ShowSnapGridState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6537de4c-f4e9-475d-86ae-5d1ca873923e" ), true );
 	}

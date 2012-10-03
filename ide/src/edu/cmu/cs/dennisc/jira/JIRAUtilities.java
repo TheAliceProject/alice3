@@ -57,12 +57,14 @@ public class JIRAUtilities {
 			throw new RuntimeException();
 		}
 	}
+
 	public static String getPriority() {
 		return "6"; //Unspecified
 	}
+
 	public static String ensureStringWithinLimit( String s, int limit ) {
 		if( s.length() > limit ) {
-			return s.substring( 0, limit+1 );
+			return s.substring( 0, limit + 1 );
 		} else {
 			return s;
 		}

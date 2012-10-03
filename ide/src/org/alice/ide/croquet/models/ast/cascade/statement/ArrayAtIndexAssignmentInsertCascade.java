@@ -47,16 +47,18 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public abstract class ArrayAtIndexAssignmentInsertCascade extends StatementInsertCascade {
-	private final org.lgna.project.ast.AbstractType< ?,?,? > arrayType;
-	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id,  org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractType< ?,?,? > arrayType, org.lgna.project.annotations.ValueDetails< ? > parameterDetails ) {
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> arrayType;
+
+	public ArrayAtIndexAssignmentInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.AbstractType<?, ?, ?> arrayType, org.lgna.project.annotations.ValueDetails<?> parameterDetails ) {
 		super( id, blockStatementIndexPair, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE, arrayType.getComponentType() ) );
 		this.arrayType = arrayType;
 	}
+
 	@Override
 	protected java.util.List<org.lgna.project.ast.Expression> extractExpressionsForFillInGeneration( org.lgna.project.ast.Statement statement ) {
 		assert statement instanceof org.lgna.project.ast.ExpressionStatement : statement;
 		org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-		
+
 		org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 		assert expression instanceof org.lgna.project.ast.AssignmentExpression : expression;
 		org.lgna.project.ast.AssignmentExpression assignmentExpression = (org.lgna.project.ast.AssignmentExpression)expression;
@@ -64,25 +66,27 @@ public abstract class ArrayAtIndexAssignmentInsertCascade extends StatementInser
 		org.lgna.project.ast.Expression leftExpression = assignmentExpression.leftHandSide.getValue();
 		assert leftExpression instanceof org.lgna.project.ast.ArrayAccess : leftExpression;
 		org.lgna.project.ast.ArrayAccess arrayAccess = (org.lgna.project.ast.ArrayAccess)leftExpression;
-		
+
 		return edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
 				arrayAccess.index.getValue(),
-				assignmentExpression.rightHandSide.getValue() 
-		);
+				assignmentExpression.rightHandSide.getValue()
+				);
 	}
-	protected abstract org.lgna.project.ast.Expression createAccessExpression(); 
+
+	protected abstract org.lgna.project.ast.Expression createAccessExpression();
+
 	@Override
 	protected final org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions ) {
 		org.lgna.project.ast.AssignmentExpression assignmentExpression = new org.lgna.project.ast.AssignmentExpression(
-				this.arrayType.getComponentType(), 
-				new org.lgna.project.ast.ArrayAccess( 
-						this.arrayType, 
-						this.createAccessExpression(), 
+				this.arrayType.getComponentType(),
+				new org.lgna.project.ast.ArrayAccess(
+						this.arrayType,
+						this.createAccessExpression(),
 						expressions[ 0 ]
-				), 
-				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN, 
+				),
+				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
 				expressions[ 1 ]
-		);
+				);
 		return new org.lgna.project.ast.ExpressionStatement( assignmentExpression );
 	}
 }

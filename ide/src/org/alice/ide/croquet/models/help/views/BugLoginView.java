@@ -47,41 +47,44 @@ import java.util.List;
 import org.alice.ide.croquet.models.help.BugLoginComposite;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.LabeledSpringRow;
-import org.lgna.croquet.components.RowSpringPanel;
-import org.lgna.croquet.components.SpringRow;
+import org.lgna.croquet.components.FormPanel;
+import org.lgna.croquet.components.LabeledFormRow;
 
 /**
  * @author Matt May
  */
-public class BugLoginView extends RowSpringPanel {
+public class BugLoginView extends FormPanel {
 	private final ValueListener<Boolean> isPasswordExposedListener = new ValueListener<Boolean>() {
 		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
+
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			passwordField.setExposed( nextValue );
 		}
 	};
 	private final org.lgna.croquet.components.PasswordField passwordField;
+
 	public BugLoginView( BugLoginComposite bugLoginComposite ) {
 		super( bugLoginComposite );
 		this.passwordField = bugLoginComposite.getPasswordState().createPasswordField();
 		this.setMinimumPreferredHeight( 240 );
 	}
+
 	@Override
-	protected void appendRows( List<SpringRow> rows ) {
+	protected void appendRows( List<LabeledFormRow> rows ) {
 		BugLoginComposite bugLoginComposite = (BugLoginComposite)this.getComposite();
-		rows.add( new LabeledSpringRow( bugLoginComposite.getUserNameState().getSidekickLabel(), bugLoginComposite.getUserNameState().createTextField() ) );
-		rows.add( new LabeledSpringRow( bugLoginComposite.getPasswordState().getSidekickLabel(), passwordField ) );
-		rows.add( new LabeledSpringRow( null, bugLoginComposite.getDisplayPasswordValue().createCheckBox() ) );
+		rows.add( new LabeledFormRow( bugLoginComposite.getUserNameState().getSidekickLabel(), bugLoginComposite.getUserNameState().createTextField() ) );
+		rows.add( new LabeledFormRow( bugLoginComposite.getPasswordState().getSidekickLabel(), passwordField ) );
+		rows.add( new LabeledFormRow( null, bugLoginComposite.getDisplayPasswordValue().createCheckBox() ) );
 	}
+
 	@Override
 	protected void handleDisplayable() {
 		BugLoginComposite bugLoginComposite = (BugLoginComposite)this.getComposite();
 		bugLoginComposite.getDisplayPasswordValue().addAndInvokeValueListener( this.isPasswordExposedListener );
 		super.handleDisplayable();
 	}
+
 	@Override
 	protected void handleUndisplayable() {
 		super.handleUndisplayable();

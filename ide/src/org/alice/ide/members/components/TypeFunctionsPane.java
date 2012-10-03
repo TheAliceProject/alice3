@@ -46,17 +46,20 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 public class TypeFunctionsPane extends AbstractTypeMethodsPane {
-	public TypeFunctionsPane( org.lgna.project.ast.AbstractType<?,?,?> type ) {
+	public TypeFunctionsPane( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		super( type );
 	}
+
 	@Override
-	protected edu.cmu.cs.dennisc.property.ListProperty< ? extends org.lgna.project.ast.UserMember >[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
+	protected edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember>[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type ) {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods, type.constructors };
 	}
+
 	@Override
 	protected org.lgna.croquet.components.Button createDeclareMemberButton( org.lgna.project.ast.NamedUserType type ) {
 		return org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getOperation().createButton();
 	}
+
 	@Override
 	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
 		org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
@@ -66,12 +69,14 @@ public class TypeFunctionsPane extends AbstractTypeMethodsPane {
 			return null;
 		}
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createFunctionTemplate( org.lgna.project.ast.AbstractMethod method ) {
+	protected org.lgna.croquet.components.Component<?> createFunctionTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		return org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
 	}
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createProcedureTemplate( org.lgna.project.ast.AbstractMethod method ) {
+	protected org.lgna.croquet.components.Component<?> createProcedureTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		return null;
 	}
 }

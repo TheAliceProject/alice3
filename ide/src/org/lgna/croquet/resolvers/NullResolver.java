@@ -46,16 +46,20 @@ package org.lgna.croquet.resolvers;
 /**
  * @author Dennis Cosgrove
  */
-public final class NullResolver<T> implements Resolver< T > {
+public final class NullResolver<T> implements Resolver<T> {
 	public NullResolver() {
 	}
+
 	public NullResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 	}
+
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
+
 	public T getResolved() {
 		return null;
 	}
+
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 	}
 }

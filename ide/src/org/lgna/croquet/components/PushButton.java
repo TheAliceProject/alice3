@@ -46,11 +46,13 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PushButton extends BooleanStateButton< javax.swing.JButton > {
+public class PushButton extends BooleanStateButton<javax.swing.JButton> {
 	private java.awt.Color selectedColor = java.awt.Color.YELLOW;
+
 	public PushButton( org.lgna.croquet.BooleanState model ) {
 		super( model );
 	}
+
 	@Override
 	protected javax.swing.JButton createAwtComponent() {
 		javax.swing.JButton rv = new javax.swing.JButton() {
@@ -86,6 +88,7 @@ public class PushButton extends BooleanStateButton< javax.swing.JButton > {
 	public java.awt.Color getSelectedColor() {
 		return this.selectedColor;
 	}
+
 	public void setSelectedColor( java.awt.Color selectedColor ) {
 		this.selectedColor = selectedColor;
 		this.repaint();

@@ -50,9 +50,11 @@ public class OrientationProceduresComposite extends org.alice.ide.member.NameFil
 	private static class SingletonHolder {
 		private static OrientationProceduresComposite instance = new OrientationProceduresComposite();
 	}
+
 	public static OrientationProceduresComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private OrientationProceduresComposite() {
 		super( java.util.UUID.fromString( "2233c56a-156c-48ce-9403-67ce5278727d" ), "turn", "roll", "turnToFace", "orientTo", "orientToUpright", "pointAt" );
 	}

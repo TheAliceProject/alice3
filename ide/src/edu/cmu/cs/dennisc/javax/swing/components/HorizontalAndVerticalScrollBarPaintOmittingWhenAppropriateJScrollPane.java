@@ -50,6 +50,7 @@ public class HorizontalAndVerticalScrollBarPaintOmittingWhenAppropriateJScrollPa
 	public javax.swing.JScrollBar createHorizontalScrollBar() {
 		return new PaintOmittingJScrollBar( javax.swing.JScrollBar.HORIZONTAL );
 	}
+
 	@Override
 	public javax.swing.JScrollBar createVerticalScrollBar() {
 		return new PaintOmittingJScrollBar( javax.swing.JScrollBar.VERTICAL );

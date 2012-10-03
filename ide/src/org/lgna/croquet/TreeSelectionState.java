@@ -46,9 +46,10 @@ class TreeNodeUtilities {
 	private TreeNodeUtilities() {
 		throw new AssertionError();
 	}
-	public static <T> java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode, TreeSelectionState< T > model, T node ) {
+
+	public static <T> java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode, TreeSelectionState<T> model, T node ) {
 		for( T childNode : model.getChildren( node ) ) {
-			CascadeBlankChild< T > child = model.getBlankChildFor( childNode );
+			CascadeBlankChild<T> child = model.getBlankChildFor( childNode );
 			if( child != null ) {
 				rv.add( child );
 			}
@@ -58,128 +59,138 @@ class TreeNodeUtilities {
 
 }
 
-class TreeNodeFillIn<T> extends CascadeFillIn< T, Void > {
-	private static edu.cmu.cs.dennisc.map.MapToMap< TreeSelectionState, Object, TreeNodeFillIn > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+class TreeNodeFillIn<T> extends CascadeFillIn<T, Void> {
+	private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, TreeNodeFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized <T> TreeNodeFillIn< T > getInstance( TreeSelectionState< T > model, T node ) {
-		TreeNodeFillIn< T > rv = mapToMap.get( model, node );
+	public static synchronized <T> TreeNodeFillIn<T> getInstance( TreeSelectionState<T> model, T node ) {
+		TreeNodeFillIn<T> rv = mapToMap.get( model, node );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new TreeNodeFillIn< T >( model, node );
+			rv = new TreeNodeFillIn<T>( model, node );
 			mapToMap.put( model, node, rv );
 		}
 		return rv;
 	}
 
-	private final TreeSelectionState< T > model;
+	private final TreeSelectionState<T> model;
 	private final T node;
 
-	private TreeNodeFillIn( TreeSelectionState< T > model, T node ) {
+	private TreeNodeFillIn( TreeSelectionState<T> model, T node ) {
 		super( java.util.UUID.fromString( "db052fcb-b0e3-482a-aad9-13b9a2efc370" ) );
 		this.model = model;
 		this.node = node;
 	}
+
 	@Override
-	public T getTransientValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
+	public T getTransientValue( org.lgna.croquet.cascade.ItemNode<? super T, Void> node ) {
 		return this.node;
 	}
+
 	@Override
-	public T createValue( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+	public T createValue( org.lgna.croquet.cascade.ItemNode<? super T, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
 		return this.node;
 	}
+
 	@Override
-	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
+	public String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super T, Void> node ) {
 		return this.model.getTextForNode( this.node );
 	}
+
 	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
+	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super T, Void> node ) {
 		return this.model.getIconForNode( this.node );
 	}
+
 	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode< ? super T, Void > node ) {
+	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super T, Void> node ) {
 		throw new AssertionError();
 	}
+
 	@Override
 	protected String getTutorialItemText() {
 		return this.node.toString();
 	}
 }
 
-class TreeNodeMenu<T> extends CascadeMenuModel< T > {
-	private static edu.cmu.cs.dennisc.map.MapToMap< TreeSelectionState, Object, TreeNodeMenu > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+class TreeNodeMenu<T> extends CascadeMenuModel<T> {
+	private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, TreeNodeMenu> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized <T> TreeNodeMenu< T > getInstance( TreeSelectionState< T > model, T node ) {
-		TreeNodeMenu< T > rv = mapToMap.get( model, node );
+	public static synchronized <T> TreeNodeMenu<T> getInstance( TreeSelectionState<T> model, T node ) {
+		TreeNodeMenu<T> rv = mapToMap.get( model, node );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new TreeNodeMenu< T >( model, node );
+			rv = new TreeNodeMenu<T>( model, node );
 			mapToMap.put( model, node, rv );
 		}
 		return rv;
 	}
 
-	private final TreeSelectionState< T > model;
+	private final TreeSelectionState<T> model;
 	private final T node;
 
-	private TreeNodeMenu( TreeSelectionState< T > model, T node ) {
+	private TreeNodeMenu( TreeSelectionState<T> model, T node ) {
 		super( java.util.UUID.fromString( "3836e893-73c9-4490-9a2a-1cb8a50311e0" ) );
 		this.model = model;
 		this.node = node;
 	}
+
 	@Override
 	protected String findDefaultLocalizedText() {
 		return null;
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateBlankChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
 		return TreeNodeUtilities.updateBlankChildren( rv, blankNode, this.model, this.node );
 	}
 
 }
 
-class TreeBlank<T> extends CascadeBlank< T > {
-	private final TreeSelectionState< T > model;
+class TreeBlank<T> extends CascadeBlank<T> {
+	private final TreeSelectionState<T> model;
 	private final T node;
 
-	public TreeBlank( TreeSelectionState< T > model, T node ) {
+	public TreeBlank( TreeSelectionState<T> model, T node ) {
 		super( java.util.UUID.fromString( "7c277038-5aa8-4429-9642-8dc3890aee5b" ) );
 		this.model = model;
 		this.node = node;
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< T > blankNode ) {
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
 		return TreeNodeUtilities.updateBlankChildren( rv, blankNode, this.model, this.node );
 	}
 }
 
-class TreeNodeCascade<T> extends Cascade< T > {
-	private static edu.cmu.cs.dennisc.map.MapToMap< TreeSelectionState, Object, TreeNodeCascade > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+class TreeNodeCascade<T> extends Cascade<T> {
+	private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, TreeNodeCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static <T> TreeNodeCascade< T > getInstance( TreeSelectionState< T > model, T node ) {
+	public static <T> TreeNodeCascade<T> getInstance( TreeSelectionState<T> model, T node ) {
 		synchronized( mapToMap ) {
-			TreeNodeCascade< T > rv = mapToMap.get( model, node );
+			TreeNodeCascade<T> rv = mapToMap.get( model, node );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new TreeNodeCascade< T >( model, node );
+				rv = new TreeNodeCascade<T>( model, node );
 				mapToMap.put( model, node, rv );
 			}
 			return rv;
 		}
 	}
 
-	private final TreeSelectionState< T > model;
+	private final TreeSelectionState<T> model;
 	private final T node;
 
-	public TreeNodeCascade( TreeSelectionState< T > model, T node ) {
-		super( model.getGroup(), java.util.UUID.fromString( "dcbf42f7-cd25-4061-a8f6-abcb1b47fe41" ), model.getItemCodec().getValueClass(), new TreeBlank< T >( model, node ) );
+	public TreeNodeCascade( TreeSelectionState<T> model, T node ) {
+		super( model.getGroup(), java.util.UUID.fromString( "dcbf42f7-cd25-4061-a8f6-abcb1b47fe41" ), model.getItemCodec().getValueClass(), new TreeBlank<T>( model, node ) );
 		this.model = model;
 		this.node = node;
 	}
+
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep< org.lgna.croquet.Cascade< T >> completionStep, T[] values ) {
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
 		assert values.length == 1;
 		this.model.setValue( values[ 0 ] );
 		return null;
@@ -190,15 +201,16 @@ class TreeNodeCascade<T> extends Cascade< T > {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeSelectionState<T> extends ItemState< T > {
+public abstract class TreeSelectionState<T> extends ItemState<T> {
 	private static final class InternalTreeNodeSelectionOperation<T> extends ActionOperation {
-		private static edu.cmu.cs.dennisc.map.MapToMap< TreeSelectionState, Object, InternalTreeNodeSelectionOperation > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-		/*package-private*/ static <T> InternalTreeNodeSelectionOperation<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode ) {
-			InternalTreeNodeSelectionOperation<T> rv = mapToMap.get(treeSelectionState, treeNode);
+		private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, InternalTreeNodeSelectionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
+		/* package-private */static <T> InternalTreeNodeSelectionOperation<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode ) {
+			InternalTreeNodeSelectionOperation<T> rv = mapToMap.get( treeSelectionState, treeNode );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new InternalTreeNodeSelectionOperation<T>(treeSelectionState, treeNode);
+				rv = new InternalTreeNodeSelectionOperation<T>( treeSelectionState, treeNode );
 				mapToMap.put( treeSelectionState, treeNode, rv );
 			}
 			return rv;
@@ -206,7 +218,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 
 		private final TreeSelectionState<T> treeSelectionState;
 		private final T treeNode;
-		
+
 		private InternalTreeNodeSelectionOperation( TreeSelectionState<T> treeSelectionState, T treeNode ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ca407baf-13b1-4530-bf35-67764efbf5f0" ) );
 			this.treeSelectionState = treeSelectionState;
@@ -219,6 +231,7 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 			this.setName( this.treeSelectionState.getTextForNode( this.treeNode ) );
 			this.setSmallIcon( this.treeSelectionState.getIconForNode( this.treeNode ) );
 		}
+
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
@@ -230,14 +243,18 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 
 	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
 	}
+
 	public class SwingModel {
 		private final SingleTreeSelectionModel treeSelectionModel = new SingleTreeSelectionModel();
+
 		private SwingModel() {
 		}
+
 		public javax.swing.tree.TreeSelectionModel getTreeSelectionModel() {
 			return this.treeSelectionModel;
 		}
 	}
+
 	private final SwingModel swingModel = new SwingModel();
 	private final javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
 		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
@@ -249,30 +266,36 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 		}
 	};
 
-	public TreeSelectionState( Group group, java.util.UUID id, ItemCodec< T > itemCodec ) {
+	public TreeSelectionState( Group group, java.util.UUID id, ItemCodec<T> itemCodec ) {
 		super( group, id, null, itemCodec );
 		this.swingModel.treeSelectionModel.addTreeSelectionListener( this.treeSelectionListener );
 	}
 
 	@Override
-	public Iterable< ? extends PrepModel > getPotentialRootPrepModels() {
+	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
 		return java.util.Collections.emptyList();
 	}
 
 	public SwingModel getSwingModel() {
 		return this.swingModel;
 	}
-	
+
 	@Override
 	protected void localize() {
 	}
+
 	protected abstract String getTextForNode( T node );
+
 	protected abstract javax.swing.Icon getIconForNode( T node );
-	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > getTreeModel();
-	public abstract void refresh( T node ); 
-	public final void refreshAll() { 
+
+	public abstract edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel();
+
+	public abstract void refresh( T node );
+
+	public final void refreshAll() {
 		this.refresh( this.getTreeModel().getRoot() );
 	}
+
 	public T getSelectedNode() {
 		javax.swing.tree.TreePath path = this.swingModel.treeSelectionModel.getSelectionPath();
 		if( path != null ) {
@@ -281,56 +304,66 @@ public abstract class TreeSelectionState<T> extends ItemState< T > {
 			return null;
 		}
 	}
+
 	private void setSelectedNode( T e ) {
 		this.swingModel.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
 	}
+
 	@Override
 	protected T getActualValue() {
 		return this.getSelectedNode();
 	}
 
 	@Override
-	protected void updateSwingModel(T nextValue) {
+	protected void updateSwingModel( T nextValue ) {
 		this.setSelectedNode( nextValue );
 	}
 
-	public java.util.List< T > getChildren( T node ) {
-		edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel = this.getTreeModel();
+	public java.util.List<T> getChildren( T node ) {
+		edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = this.getTreeModel();
 		final int N = treeModel.getChildCount( node );
-		java.util.List< T > rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( N );
+		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( N );
 		for( int i = 0; i < N; i++ ) {
 			rv.add( treeModel.getChild( node, i ) );
 		}
 		return rv;
 	}
+
 	public boolean isLeaf( T node ) {
-		edu.cmu.cs.dennisc.javax.swing.models.TreeModel< T > treeModel = this.getTreeModel();
+		edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = this.getTreeModel();
 		return treeModel.isLeaf( node );
+	}
+
+	public T getParent( T node ) {
+		edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = this.getTreeModel();
+		javax.swing.tree.TreePath treePath = treeModel.getTreePath( node );
+		return (T)treePath.getParentPath().getLastPathComponent();
 	}
 
 	protected boolean isComboDesired( T childNode ) {
 		return this.isLeaf( childNode ) == false;
 	}
-	protected CascadeBlankChild< T > getBlankChildFor( T childNode ) {
-		CascadeBlankChild< T > blankChild;
-		TreeNodeFillIn< T > fillIn = TreeNodeFillIn.getInstance( this, childNode );
+
+	protected CascadeBlankChild<T> getBlankChildFor( T childNode ) {
+		CascadeBlankChild<T> blankChild;
+		TreeNodeFillIn<T> fillIn = TreeNodeFillIn.getInstance( this, childNode );
 		if( this.isComboDesired( childNode ) ) {
-			blankChild = new CascadeItemMenuCombo< T >( fillIn, TreeNodeMenu.getInstance( this, childNode ) );
+			blankChild = new CascadeItemMenuCombo<T>( fillIn, TreeNodeMenu.getInstance( this, childNode ) );
 		} else {
 			blankChild = fillIn;
 		}
 		return blankChild;
 	}
-	public Cascade< T > getCascadeFor( T node ) {
+
+	public Cascade<T> getCascadeFor( T node ) {
 		return TreeNodeCascade.getInstance( this, node );
 	}
+
 	public ActionOperation getSelectionOperationFor( T node ) {
 		return InternalTreeNodeSelectionOperation.getInstance( this, node );
 	}
-	public java.util.List< T > getChildrenOfSelectedValue() {
-		return this.getChildren( this.getValue() );
-	}
-	public org.lgna.croquet.components.Tree< T > createTree() {
-		return new org.lgna.croquet.components.Tree< T >( this );
+
+	public org.lgna.croquet.components.Tree<T> createTree() {
+		return new org.lgna.croquet.components.Tree<T>( this );
 	}
 }

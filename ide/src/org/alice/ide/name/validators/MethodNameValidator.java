@@ -47,9 +47,11 @@ public class MethodNameValidator extends MemberNameValidator {
 	public MethodNameValidator( org.lgna.project.ast.UserMethod method ) {
 		super( method, method.getDeclaringType() );
 	}
+
 	public MethodNameValidator( org.lgna.project.ast.UserType<?> type ) {
 		super( null, type );
 	}
+
 	@Override
 	public boolean isNameAvailable( String name ) {
 		org.lgna.project.ast.Node node = this.getNode();

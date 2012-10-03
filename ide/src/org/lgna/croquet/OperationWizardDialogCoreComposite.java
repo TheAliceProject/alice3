@@ -46,24 +46,30 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.components.BorderPanel> {
+public abstract class OperationWizardDialogCoreComposite extends WizardDialogCoreComposite implements OperationOwningComposite<org.lgna.croquet.components.Panel> {
 	private final OwnedByCompositeOperation operation;
+
 	public OperationWizardDialogCoreComposite( java.util.UUID migrationId, Group operationGroup, WizardPageComposite<?>... wizardPages ) {
 		super( migrationId, wizardPages );
 		this.operation = new OwnedByCompositeOperation( operationGroup, this );
 	}
+
 	public OwnedByCompositeOperation getOperation() {
 		return this.operation;
 	}
+
 	@Override
 	protected String getName() {
 		return this.getOperation().getName();
 	}
+
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
+
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
 			@Override
 			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+				super.handlePostHideDialog( completionStep );
 				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
 				if( isCommited != null ) { // close button condition
 					if( isCommited ) {

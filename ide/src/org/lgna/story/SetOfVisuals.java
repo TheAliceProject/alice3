@@ -45,12 +45,14 @@ package org.lgna.story;
 /**
  * @author Matt May
  */
-public class SetOfVisuals implements AddMouseButtonListener.Detail {
+public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail {
 	private static final Visual[] DEFAULT_VALUE = null;
 	private final Visual[] value;
+
 	public SetOfVisuals( Visual... value ) {
-		this.value = value; 
+		this.value = value;
 	}
+
 	private static Visual[] getValue( Object[] details, Visual[] defaultValue ) {
 		for( Object detail : details ) {
 			if( detail instanceof SetOfVisuals ) {
@@ -60,7 +62,8 @@ public class SetOfVisuals implements AddMouseButtonListener.Detail {
 		}
 		return defaultValue;
 	}
-	/*package-private*/ static Visual[] getValue( Object[] details ) {
+
+	/* package-private */static Visual[] getValue( Object[] details ) {
 		return getValue( details, DEFAULT_VALUE );
 	}
 }

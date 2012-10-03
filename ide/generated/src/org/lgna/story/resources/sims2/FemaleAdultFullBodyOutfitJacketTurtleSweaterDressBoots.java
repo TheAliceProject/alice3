@@ -41,9 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.lgna.story.resources.sims2;
+
 public enum FemaleAdultFullBodyOutfitJacketTurtleSweaterDressBoots implements FemaleAdultFullBodyOutfit {
-	BLACKCREAM ,
- 	BLACKGREY ,
- 	BLACKDKBLUE ,
- 	BLACKRED ;
+	BLACKCREAM,
+	BLACKGREY,
+	BLACKDKBLUE,
+	BLACKRED;
 }

@@ -46,10 +46,11 @@ package edu.cmu.cs.dennisc.color.animation;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Color4fAnimation extends edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation< edu.cmu.cs.dennisc.color.Color4f > {
+public abstract class Color4fAnimation extends edu.cmu.cs.dennisc.animation.interpolation.InterpolationAnimation<edu.cmu.cs.dennisc.color.Color4f> {
 	public Color4fAnimation( Number duration, edu.cmu.cs.dennisc.animation.Style style, edu.cmu.cs.dennisc.color.Color4f c0, edu.cmu.cs.dennisc.color.Color4f c1 ) {
 		super( duration, style, c0, c1 );
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f newE( edu.cmu.cs.dennisc.color.Color4f other ) {
 		if( other != null ) {
@@ -58,6 +59,7 @@ public abstract class Color4fAnimation extends edu.cmu.cs.dennisc.animation.inte
 			return null;
 		}
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f interpolate( edu.cmu.cs.dennisc.color.Color4f rv, edu.cmu.cs.dennisc.color.Color4f v0, edu.cmu.cs.dennisc.color.Color4f v1, double portion ) {
 		assert rv == null;

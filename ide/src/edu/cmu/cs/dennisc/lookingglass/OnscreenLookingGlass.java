@@ -47,5 +47,6 @@ package edu.cmu.cs.dennisc.lookingglass;
  */
 public interface OnscreenLookingGlass extends LookingGlass {
 	public java.awt.Component getAWTComponent();
+
 	public void repaint();
 }

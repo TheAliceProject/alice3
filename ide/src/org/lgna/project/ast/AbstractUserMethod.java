@@ -47,52 +47,59 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractUserMethod extends AbstractMethod implements UserCode {
-	public edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel > accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty< AccessLevel >( this, AccessLevel.PUBLIC );
+	public edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSynchronized = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
-	public DeclarationProperty< AbstractType<?,?,?> > returnType = new DeclarationProperty< AbstractType<?,?,?> >( this );
-	public NodeListProperty< UserParameter > requiredParameters = new NodeListProperty< UserParameter >( this );
-	public NodeProperty< BlockStatement > body = new NodeProperty< BlockStatement >( this );
-	public edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel > managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty< ManagementLevel >( this, ManagementLevel.NONE );
+	public DeclarationProperty<AbstractType<?, ?, ?>> returnType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
+	public NodeListProperty<UserParameter> requiredParameters = new NodeListProperty<UserParameter>( this );
+	public NodeProperty<BlockStatement> body = new NodeProperty<BlockStatement>( this );
+	public edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel> managementLevel = new edu.cmu.cs.dennisc.property.EnumProperty<ManagementLevel>( this, ManagementLevel.NONE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isSignatureLocked = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isDeletionAllowed = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
 	public AbstractUserMethod() {
 	}
-	public AbstractUserMethod( AbstractType<?,?,?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
+
+	public AbstractUserMethod( AbstractType<?, ?, ?> returnType, UserParameter[] requiredParameters, BlockStatement body ) {
 		this.returnType.setValue( returnType );
 		this.requiredParameters.add( requiredParameters );
 		this.body.setValue( body );
 	}
 
 	@Override
-	public UserType< ? > getDeclaringType() {
-		return (UserType< ? >)super.getDeclaringType();
+	public UserType<?> getDeclaringType() {
+		return (UserType<?>)super.getDeclaringType();
 	}
-	
+
 	@Override
 	public final org.lgna.project.annotations.Visibility getVisibility() {
 		return org.lgna.project.annotations.Visibility.PRIME_TIME;
 	}
+
 	public final org.lgna.project.ast.ManagementLevel getManagementLevel() {
 		return this.managementLevel.getValue();
 	}
 
-	public final NodeProperty< BlockStatement > getBodyProperty() {
+	public final NodeProperty<BlockStatement> getBodyProperty() {
 		return this.body;
 	}
-	public final NodeListProperty< UserParameter > getRequiredParamtersProperty() {
+
+	public final NodeListProperty<UserParameter> getRequiredParamtersProperty() {
 		return this.requiredParameters;
 	}
-	public final AbstractType<?,?,?> getReturnType() {
+
+	public final AbstractType<?, ?, ?> getReturnType() {
 		return returnType.getValue();
 	}
-	public final java.util.ArrayList< ? extends AbstractParameter > getRequiredParameters() {
+
+	public final java.util.ArrayList<? extends AbstractParameter> getRequiredParameters() {
 		return requiredParameters.getValue();
 	}
+
 	public final org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
 		return null;
 	}
+
 	public final org.lgna.project.ast.AbstractParameter getKeyedParameter() {
 		return null;
 	}
@@ -101,11 +108,12 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 	public final AbstractCode getNextLongerInChain() {
 		return null;
 	}
+
 	@Override
 	public final AbstractCode getNextShorterInChain() {
 		return null;
 	}
-	
+
 	@Override
 	public final boolean isSignatureLocked() {
 		return this.isSignatureLocked.getValue();
@@ -115,14 +123,17 @@ public abstract class AbstractUserMethod extends AbstractMethod implements UserC
 	public final AccessLevel getAccessLevel() {
 		return this.accessLevel.getValue();
 	}
+
 	@Override
 	public final boolean isNative() {
 		return false;
 	}
+
 	@Override
 	public final boolean isSynchronized() {
 		return this.isSynchronized.getValue();
 	}
+
 	@Override
 	public final boolean isStrictFloatingPoint() {
 		return this.isStrictFloatingPoint.getValue();

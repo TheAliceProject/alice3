@@ -51,18 +51,23 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> 
 		public int getChildCount( Object parent ) {
 			return CustomTreeSelectionState.this.getChildCount( (T)parent );
 		}
+
 		public T getChild( Object parent, int index ) {
 			return CustomTreeSelectionState.this.getChild( (T)parent, index );
 		}
+
 		public int getIndexOfChild( Object parent, Object child ) {
 			return CustomTreeSelectionState.this.getIndexOfChild( (T)parent, (T)child );
 		}
+
 		public T getRoot() {
 			return CustomTreeSelectionState.this.getRoot();
 		}
+
 		public boolean isLeaf( Object node ) {
 			return CustomTreeSelectionState.this.isLeaf( (T)node );
 		}
+
 		private Object[] getPathToRoot( T node ) {
 			java.util.List<T> collection = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			T n = node;
@@ -81,6 +86,7 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> 
 			}
 			return collection.toArray();
 		}
+
 		public javax.swing.tree.TreePath getTreePath( Object node ) {
 			Object[] nodes = this.getPathToRoot( (T)node );
 			javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
@@ -92,17 +98,23 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> 
 		super( group, id, itemCodec );
 		this.setValueTransactionlessly( initialSelection );
 	}
+
 	protected abstract int getChildCount( T parent );
+
 	protected abstract T getChild( T parent, int index );
+
 	protected abstract int getIndexOfChild( T parent, T child );
+
 	protected abstract T getRoot();
-	protected abstract T getParent( T node );
+
 	@Override
 	public abstract boolean isLeaf( T node );
+
 	@Override
 	public edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> getTreeModel() {
 		return this.treeModel;
 	}
+
 	@Override
 	public void refresh( T node ) {
 		this.treeModel.reload( node );

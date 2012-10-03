@@ -54,24 +54,25 @@ import org.lgna.croquet.components.LineAxisPanel;
  * @author Dennis Cosgrove
  */
 public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation {
-	public static final org.lgna.croquet.history.Step.Key< org.lgna.croquet.components.Container< ? > > INPUT_PANEL_KEY = org.lgna.croquet.history.Step.Key.createInstance( "InputDialogOperation.INPUT_PANEL_KEY" );
+	public static final org.lgna.croquet.history.Step.Key<org.lgna.croquet.components.Container<?>> INPUT_PANEL_KEY = org.lgna.croquet.history.Step.Key.createInstance( "InputDialogOperation.INPUT_PANEL_KEY" );
 
-	public InputDialogOperation(Group group, java.util.UUID individualId) {
-		super(group, individualId);
+	public InputDialogOperation( Group group, java.util.UUID individualId ) {
+		super( group, individualId );
 	}
+
 	@Override
-	protected Component< ? > createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog ) {
+	protected Component<?> createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, Dialog dialog ) {
 		Button okButton = this.getCompleteOperation().createButton();
-		Button cancelButton; 
+		Button cancelButton;
 		if( this.isCancelDesired() ) {
 			cancelButton = this.getCancelOperation().createButton();
 		} else {
 			cancelButton = null;
 		}
-		
+
 		LineAxisPanel rv = new LineAxisPanel();
 		rv.addComponent( BoxUtilities.createHorizontalGlue() );
-		
+
 		if( cancelButton != null ) {
 			Button leadingButton;
 			Button trailingButton;
@@ -88,7 +89,7 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 		} else {
 			rv.addComponent( okButton );
 		}
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		dialog.setDefaultButton( okButton );
 		return rv;
 	}
@@ -97,24 +98,26 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 		return true;
 	}
 
-	protected abstract JComponent< ? > prologue( org.lgna.croquet.history.CompletionStep<?> step );
+	protected abstract JComponent<?> prologue( org.lgna.croquet.history.CompletionStep<?> step );
+
 	protected abstract void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isCommit );
-	
+
 	@Override
-	protected org.lgna.croquet.components.Component< ? > createMainPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.JComponent< javax.swing.JLabel > explanationLabel ) {
-		JComponent< ? > child = this.prologue( step );
+	protected org.lgna.croquet.components.Component<?> createMainPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.JComponent<javax.swing.JLabel> explanationLabel ) {
+		JComponent<?> child = this.prologue( step );
 		if( child != null ) {
 			step.putEphemeralDataFor( INPUT_PANEL_KEY, child );
 			BorderPanel rv = new BorderPanel.Builder()
-				.center( child )
-				.pageEnd( explanationLabel )
-			.build();
+					.center( child )
+					.pageEnd( explanationLabel )
+					.build();
 			rv.setBackgroundColor( child.getBackgroundColor() );
 			return rv;
 		} else {
 			return null;
 		}
 	}
+
 	@Override
 	protected void release( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, boolean isCompleted ) {
 		this.epilogue( step, isCompleted );
@@ -123,13 +126,17 @@ public abstract class InputDialogOperation<T> extends GatedCommitDialogOperation
 	protected String getInternalExplanation( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return null;
 	}
+
 	public static interface ExternalCommitButtonDisabler {
 		public String getExplanationIfCommitButtonShouldBeDisabled( org.lgna.croquet.history.CompletionStep<?> step );
 	}
+
 	private ExternalCommitButtonDisabler externalCommitButtonDisabler;
+
 	public ExternalCommitButtonDisabler getExternalCommitButtonDisabler() {
 		return this.externalCommitButtonDisabler;
 	}
+
 	public void setExternalCommitButtonDisabler( ExternalCommitButtonDisabler externalCommitButtonDisabler ) {
 		this.externalCommitButtonDisabler = externalCommitButtonDisabler;
 	}

@@ -47,15 +47,18 @@ package org.lgna.story;
  * @author Dennis Cosgrove
  */
 public class Place extends DurationAnimationStyleArgumentFactory {
-	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls=Place.class )
+	@org.lgna.project.annotations.ClassTemplate( keywordFactoryCls = Place.class )
 	public static interface Detail {
 	}
+
 	private Place() {
 		super();
 	}
+
 	public static PathStyle pathStyle( PathStyle pathStyle ) {
 		return pathStyle;
 	}
+
 	public static AlongAxisOffset alongAxisOffset( Number value ) {
 		return new AlongAxisOffset( value );
 	}

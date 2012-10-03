@@ -46,11 +46,12 @@ package org.lgna.story.annotation;
 /**
  * @author Dennis Cosgrove
  */
-public enum GroundSurfaceAppearanceDetails implements org.lgna.project.annotations.PublicStaticFieldValueDetails< org.lgna.story.ImagePaint > {
+public enum GroundSurfaceAppearanceDetails implements org.lgna.project.annotations.PublicStaticFieldValueDetails<org.lgna.story.ImagePaint> {
 	SINGLETON;
-	public Class< org.lgna.story.ImagePaint > getSupportedCls() {
+	public Class<org.lgna.story.ImagePaint> getSupportedCls() {
 		return org.lgna.story.ImagePaint.class;
 	}
+
 	public java.lang.reflect.Field[] getFlds() {
 		return org.lgna.story.SGround.SurfaceAppearance.class.getFields();
 	}

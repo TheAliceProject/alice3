@@ -49,67 +49,78 @@ package org.lgna.croquet.components;
 public class FlowPanel extends Panel {
 	public enum Alignment {
 		CENTER( java.awt.FlowLayout.CENTER ),
-		
+
 		LEFT( java.awt.FlowLayout.LEFT ),
 		LEADING( java.awt.FlowLayout.LEADING ),
-		
+
 		RIGHT( java.awt.FlowLayout.RIGHT ),
 		TRAILING( java.awt.FlowLayout.TRAILING );
-		
+
 		private int internal;
+
 		private Alignment( int internal ) {
 			this.internal = internal;
 		}
 	}
+
 	private final Alignment alignment;
 	private final int hgap;
 	private final int vgap;
+
 	public FlowPanel() {
 		this( (org.lgna.croquet.Composite)null );
 	}
+
 	public FlowPanel( Alignment alignment ) {
 		this( null, alignment );
 	}
+
 	public FlowPanel( Alignment alignment, int hgap, int vgap ) {
 		this( null, alignment, hgap, vgap );
 	}
+
 	public FlowPanel( org.lgna.croquet.Composite composite ) {
 		this( composite, Alignment.CENTER );
 	}
+
 	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment ) {
 		this( composite, alignment, 0, 0 );
 	}
+
 	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, int hgap, int vgap ) {
 		super( composite );
 		this.alignment = alignment;
 		this.hgap = hgap;
 		this.vgap = vgap;
 	}
-//	@Override
-//	protected javax.swing.JPanel createJPanel() {
-//		class FlowJPanel extends DefaultJPanel {
-////			@Override
-////			public java.awt.Dimension getPreferredSize() {
-////				java.awt.Dimension rv = super.getPreferredSize();
-////				rv.width = this.getWidth();
-////				return rv;
-////			}
-//			@Override
-//			public java.awt.Dimension getMaximumSize() {
-//				return this.getPreferredSize();
-//			}
-//		};
-//		FlowJPanel rv = new FlowJPanel();
-////		rv.setPreferredSize( new java.awt.Dimension( 256, 1 ) );
-//		return rv;
-//	}
+
+	//	@Override
+	//	protected javax.swing.JPanel createJPanel() {
+	//		class FlowJPanel extends DefaultJPanel {
+	////			@Override
+	////			public java.awt.Dimension getPreferredSize() {
+	////				java.awt.Dimension rv = super.getPreferredSize();
+	////				rv.width = this.getWidth();
+	////				return rv;
+	////			}
+	//			@Override
+	//			public java.awt.Dimension getMaximumSize() {
+	//				return this.getPreferredSize();
+	//			}
+	//		};
+	//		FlowJPanel rv = new FlowJPanel();
+	////		rv.setPreferredSize( new java.awt.Dimension( 256, 1 ) );
+	//		return rv;
+	//	}
 	protected java.awt.FlowLayout createFlowLayout( int alignment, int hgap, int vgap ) {
 		return new java.awt.FlowLayout( alignment, hgap, vgap );
 	}
+
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return this.createFlowLayout( this.alignment.internal, this.hgap, this.vgap );
 	}
+
 	public void addComponent( Component<?> component ) {
 		this.internalAddComponent( component );
 	}

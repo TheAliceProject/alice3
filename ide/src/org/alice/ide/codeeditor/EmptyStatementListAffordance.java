@@ -45,41 +45,45 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyStatementListAffordance extends org.lgna.croquet.components.JComponent< javax.swing.JLabel > {
+public class EmptyStatementListAffordance extends org.lgna.croquet.components.JComponent<javax.swing.JLabel> {
 	private static final java.awt.Stroke SOLID_STROKE = new java.awt.BasicStroke( 2.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 220 );
 	private static java.awt.Color SHADOW_COLOR = new java.awt.Color( 63, 63, 63 );
 	private static java.awt.Color TOP_COLOR = new java.awt.Color( 0, 0, 0, 63 );
 	private static java.awt.Color BOTTOM_COLOR = new java.awt.Color( 191, 191, 191, 63 );
 
-	private static final java.awt.Stroke DASHED_STROKE = new java.awt.BasicStroke(1.0f, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_BEVEL, 0, new float[] { 9.0f, 3.0f }, 0);
+	private static final java.awt.Stroke DASHED_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_BEVEL, 0, new float[] { 9.0f, 3.0f }, 0 );
 
 	private boolean isDrawingDesired = true;
-	
+
 	private final org.alice.ide.x.AstI18nFactory factory;
-//	private org.lgna.project.ast.StatementListProperty statementListProperty;
+	//	private org.lgna.project.ast.StatementListProperty statementListProperty;
 	private org.lgna.project.ast.StatementListProperty alternateListProperty;
+
 	public EmptyStatementListAffordance( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty statementListProperty, org.lgna.project.ast.StatementListProperty alternateListProperty ) {
 		this.factory = factory;
-//		this.statementListProperty = statementListProperty;
+		//		this.statementListProperty = statementListProperty;
 		this.alternateListProperty = alternateListProperty;
 	}
-	
+
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
 		javax.swing.JLabel rv = new javax.swing.JLabel() {
 			@Override
-			public void paint(java.awt.Graphics g) {
+			public void paint( java.awt.Graphics g ) {
 				if( isDrawingDesired ) {
-					super.paint(g);
+					super.paint( g );
 				}
 			}
+
 			private boolean isDashed() {
-				return ( alternateListProperty != null && alternateListProperty.size() > 0 );
+				return ( ( alternateListProperty != null ) && ( alternateListProperty.size() > 0 ) );
 			}
+
 			private boolean isEditable() {
 				return EmptyStatementListAffordance.this.factory instanceof org.alice.ide.x.ProjectEditorAstI18nFactory;
 			}
+
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				if( this.isEditable() ) {
@@ -90,36 +94,38 @@ public class EmptyStatementListAffordance extends org.lgna.croquet.components.JC
 						java.awt.Paint prevPaint = g2.getPaint();
 
 						java.awt.Dimension size = this.getSize();
-						java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, size.width-1, size.height-1, 8, 8 );
+						java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, size.width - 1, size.height - 1, 8, 8 );
 						g2.setPaint( new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, size.height, BOTTOM_COLOR ) );
 						g2.fill( rr );
 
-						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle(g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE);
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle( g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE );
 						g2.setPaint( prevPaint );
 					}
 					super.paintComponent( g );
 				}
 			}
+
 			@Override
-			protected void paintBorder(java.awt.Graphics g) {
+			protected void paintBorder( java.awt.Graphics g ) {
 				if( this.isEditable() ) {
-					super.paintBorder(g);
+					super.paintBorder( g );
 					if( this.isDashed() ) {
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-						g2.setColor(java.awt.Color.GRAY);
-						g2.setStroke(DASHED_STROKE);
-						java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 1, 1, this.getWidth()-3, this.getHeight()-3, 8, 8 );
-						g2.draw(rr);
+						g2.setColor( java.awt.Color.GRAY );
+						g2.setStroke( DASHED_STROKE );
+						java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 1, 1, this.getWidth() - 3, this.getHeight() - 3, 8, 8 );
+						g2.draw( rr );
 					}
 				}
 			}
 		};
-		rv.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 16, 8, 48));
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
 		rv.setText( "drop statement here" );
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont(rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.EXTRA_LIGHT);
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.EXTRA_LIGHT );
 		return rv;
 	}
-	public void setDrawingDesired(boolean isDrawingDesired) {
+
+	public void setDrawingDesired( boolean isDrawingDesired ) {
 		this.isDrawingDesired = isDrawingDesired;
 		this.repaint();
 	}

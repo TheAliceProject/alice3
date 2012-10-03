@@ -44,16 +44,17 @@ package org.alice.stageide.croquet.components.declaration;
 
 /**
  * @author dculyba
- *
+ * 
  */
-public class MarkerDeclarationPanel<T extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation > extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<T> {
+public class MarkerDeclarationPanel<T extends org.alice.stageide.croquet.models.declaration.MarkerFieldDeclarationOperation> extends org.alice.ide.croquet.components.declaration.FieldDeclarationPanel<T> {
 	public MarkerDeclarationPanel( final T model ) {
 		super( model );
 	}
+
 	@Override
-	protected java.util.List< org.lgna.croquet.components.Component< ? >[] > updateComponentRows( java.util.List< org.lgna.croquet.components.Component< ? >[] > rv, T model ) {
+	protected java.util.List<org.lgna.croquet.components.Component<?>[]> updateComponentRows( java.util.List<org.lgna.croquet.components.Component<?>[]> rv, T model ) {
 		super.updateComponentRows( rv, model );
-		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getColorFieldLabel()+":", model.getColorIdState().createEditor( this.getFactory() ) ) );
+		rv.add( org.lgna.croquet.components.SpringUtilities.createLabeledRow( model.getColorFieldLabel() + ":", model.getColorIdState().createEditor( this.getFactory() ) ) );
 		return rv;
 	}
 }

@@ -43,16 +43,16 @@
 
 package org.lgna.croquet.cascade;
 
-import org.lgna.croquet.*;
+import org.lgna.croquet.Element;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class RtNode<E extends Element, N extends CascadeNode< ?,E >> {
+abstract class RtNode<E extends Element, N extends CascadeNode<?, E>> {
 	private final E element;
 	private final N node;
-	private RtNode< ?, ? > parent;
-	private RtNode< ?, ? > nextSibling;
+	private RtNode<?, ?> parent;
+	private RtNode<?, ?> nextSibling;
 
 	public RtNode( E element, N node ) {
 		assert element != null;
@@ -60,36 +60,43 @@ abstract class RtNode<E extends Element, N extends CascadeNode< ?,E >> {
 		assert node != null : element;
 		this.node = node;
 	}
+
 	public E getElement() {
 		return this.element;
 	}
+
 	public N getNode() {
 		return this.node;
 	}
-	public RtRoot< ?, ? > getRtRoot() {
+
+	public RtRoot<?, ?> getRtRoot() {
 		return this.parent.getRtRoot();
 	}
 
-	protected RtNode< ?, ? > getParent() {
+	protected RtNode<?, ?> getParent() {
 		return this.parent;
 	}
-	protected RtNode< ?, ? > getNextSibling() {
+
+	protected RtNode<?, ?> getNextSibling() {
 		return this.nextSibling;
 	}
-	public void setParent( RtNode< ?, ? > parent ) {
+
+	public void setParent( RtNode<?, ?> parent ) {
 		this.parent = parent;
 	}
-	public void setNextSibling( RtNode< ?, ? > nextSibling ) {
+
+	public void setNextSibling( RtNode<?, ?> nextSibling ) {
 		this.nextSibling = nextSibling;
 	}
-	protected void updateParentsAndNextSiblings( RtNode< ?, ? >[] rtNodes ) {
-		for( RtNode< ?, ? > rtNode : rtNodes ) {
+
+	protected void updateParentsAndNextSiblings( RtNode<?, ?>[] rtNodes ) {
+		for( RtNode<?, ?> rtNode : rtNodes ) {
 			rtNode.setParent( this );
 		}
 		if( rtNodes.length > 0 ) {
-			RtNode< ?, ? > rtNodeA = rtNodes[ 0 ];
+			RtNode<?, ?> rtNodeA = rtNodes[ 0 ];
 			for( int i = 1; i < rtNodes.length; i++ ) {
-				RtNode< ?, ? > rtNodeB = rtNodes[ i ];
+				RtNode<?, ?> rtNodeB = rtNodes[ i ];
 				rtNodeA.setNextSibling( rtNodeB );
 				rtNodeA = rtNodeB;
 			}
@@ -97,9 +104,10 @@ abstract class RtNode<E extends Element, N extends CascadeNode< ?,E >> {
 		}
 	}
 
-	public abstract RtBlank< ? > getNearestBlank();
-	public RtBlank< ? > getNextBlank() {
-		RtBlank< ? > blank = this.getNearestBlank();
+	public abstract RtBlank<?> getNearestBlank();
+
+	public RtBlank<?> getNextBlank() {
+		RtBlank<?> blank = this.getNearestBlank();
 		if( blank != null ) {
 			RtBlank<?> nextSibling = (RtBlank<?>)blank.getNextSibling();
 			if( nextSibling != null ) {
@@ -111,25 +119,25 @@ abstract class RtNode<E extends Element, N extends CascadeNode< ?,E >> {
 		} else {
 			return null;
 		}
-//		RtBlank< ? > rv = null;
-//		RtBlank< ? > blank = this.getNearestBlank();
-//		if( blank != null ) {
-//			RtBlank<?> nextSibling = (RtBlank<?>)blank.getNextSibling();
-//			if( nextSibling != null ) {
-//				rv = nextSibling;
-//			}
-//		}
-//		if( rv != null ) {
-//			if( this.parent != null ) {
-//				rv = this.parent.getNextBlank();
-//			}
-//		}
-//		if( rv != null ) {
-//			if( rv.isAutomaticallyDetermined() ) {
-//				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
-//			}
-//		}
-//		return rv;
+		//		RtBlank< ? > rv = null;
+		//		RtBlank< ? > blank = this.getNearestBlank();
+		//		if( blank != null ) {
+		//			RtBlank<?> nextSibling = (RtBlank<?>)blank.getNextSibling();
+		//			if( nextSibling != null ) {
+		//				rv = nextSibling;
+		//			}
+		//		}
+		//		if( rv != null ) {
+		//			if( this.parent != null ) {
+		//				rv = this.parent.getNextBlank();
+		//			}
+		//		}
+		//		if( rv != null ) {
+		//			if( rv.isAutomaticallyDetermined() ) {
+		//				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
+		//			}
+		//		}
+		//		return rv;
 	}
 
 	@Override

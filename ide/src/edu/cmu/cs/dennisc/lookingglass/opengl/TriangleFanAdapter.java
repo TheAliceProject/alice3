@@ -43,22 +43,24 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL.GL_TRIANGLE_FAN;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TriangleFanAdapter extends VertexGeometryAdapter< edu.cmu.cs.dennisc.scenegraph.TriangleFan > {
+public class TriangleFanAdapter extends VertexGeometryAdapter<edu.cmu.cs.dennisc.scenegraph.TriangleFan> {
 	@Override
 	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
-    	renderPrimative( rc, GL_TRIANGLE_FAN );
-    }
+		renderPrimative( rc, GL_TRIANGLE_FAN );
+	}
+
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-    	pickPrimative( pc, GL_TRIANGLE_FAN );
-	}    
+		pickPrimative( pc, GL_TRIANGLE_FAN );
+	}
+
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		//todo
 		rv.setNaN();
 		return rv;

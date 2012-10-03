@@ -47,7 +47,8 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class FieldAccessDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map< org.lgna.project.ast.AbstractField, FieldAccessDragModel > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static java.util.Map<org.lgna.project.ast.AbstractField, FieldAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
 	public static synchronized FieldAccessDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
 		FieldAccessDragModel rv = map.get( field );
 		if( rv != null ) {
@@ -58,23 +59,29 @@ public class FieldAccessDragModel extends AbstractExpressionDragModel {
 		}
 		return rv;
 	}
+
 	private org.lgna.project.ast.AbstractField field;
+
 	private FieldAccessDragModel( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "55de38ae-a90e-4c6a-9208-4a83f3f303d9" ) );
 		this.field = field;
 	}
+
 	@Override
-	public org.lgna.project.ast.AbstractType< ?, ?, ? > getType() {
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return this.field.getValueType();
 	}
+
 	@Override
 	public boolean isPotentialStatementCreator() {
 		return false;
 	}
+
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		throw new AssertionError();
 	}
+
 	@Override
 	protected org.lgna.croquet.Model getDropModel( org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		return org.alice.ide.croquet.models.ast.cascade.expression.FieldAccessOperation.getInstance( this.field, expressionProperty );

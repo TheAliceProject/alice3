@@ -51,6 +51,7 @@ public class MemberInfo<D extends org.lgna.project.ast.Member> extends Declarati
 		private final java.util.List<FieldInfo> fieldInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private final java.util.List<MethodInfo> methodInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		private final java.util.List<ConstructorInfo> constructorInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable == MemberInfo.this.getDeclaration() ) {
 				//pass
@@ -77,6 +78,7 @@ public class MemberInfo<D extends org.lgna.project.ast.Member> extends Declarati
 				}
 			}
 		}
+
 		public String getToolTipText() {
 			StringBuilder sb = new StringBuilder();
 			for( TypeInfo info : this.typeInfos ) {
@@ -98,17 +100,21 @@ public class MemberInfo<D extends org.lgna.project.ast.Member> extends Declarati
 			return sb.toString();
 		}
 	}
+
 	private TypeInfo declaringTypeInfo;
 	private Dependencies dependencies;
+
 	public MemberInfo( ProjectInfo projectInfo, D declaration ) {
 		super( projectInfo, declaration );
 	}
-	/*package-private*/ void updateDependencies() {
+
+	/* package-private */void updateDependencies() {
 		this.dependencies = new Dependencies();
 		this.declaringTypeInfo = this.getProjectInfo().getInfoForType( (org.lgna.project.ast.UserType<?>)this.getDeclaration().getDeclaringType() );
-		this.getDeclaration().crawl( this.dependencies, org.lgna.project.ast.CrawlPolicy.INCLUDE_REFERENCES_BUT_DO_NOT_TUNNEL );
+		this.getDeclaration().crawl( this.dependencies, org.lgna.project.ast.CrawlPolicy.INCLUDE_REFERENCES_BUT_DO_NOT_TUNNEL, null );
 		this.getCheckBox().setToolTipText( this.dependencies.getToolTipText() );
 	}
+
 	@Override
 	protected void addRequired( java.util.Set<org.alice.ide.ast.export.DeclarationInfo<?>> visited ) {
 		super.addRequired( visited );

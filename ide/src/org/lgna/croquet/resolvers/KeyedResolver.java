@@ -42,23 +42,23 @@
  */
 package org.lgna.croquet.resolvers;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KeyedResolver<T> implements Resolver< T > {
+public abstract class KeyedResolver<T> implements Resolver<T> {
 	private transient T instance;
-	
+
 	private Class<T> instanceCls;
 	private Class<?>[] parameterTypes;
 	private Object[] arguments;
-	
+
 	public KeyedResolver( T instance, Class<?>[] parameterTypes, Object[] arguments ) {
 		this.instance = instance;
 		this.instanceCls = (Class<T>)this.instance.getClass();
 		this.parameterTypes = parameterTypes;
 		this.arguments = arguments;
 	}
+
 	public KeyedResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder decoder ) {
 		this.instance = null;
 		this.instanceCls = this.decodeInstanceClass( decoder );
@@ -69,7 +69,8 @@ public abstract class KeyedResolver<T> implements Resolver< T > {
 	protected Object[] getArguments() {
 		return this.arguments;
 	}
-	protected final Class<?> decodeClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) { 
+
+	protected final Class<?> decodeClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		String clsName = binaryDecoder.decodeString();
 		try {
 			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( clsName );
@@ -77,50 +78,58 @@ public abstract class KeyedResolver<T> implements Resolver< T > {
 			throw new RuntimeException( clsName, cnfe );
 		}
 	}
+
 	protected Class<T> decodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return (Class<T>)decodeClass( binaryDecoder );
 	}
-	private Class< ? >[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+
+	private Class<?>[] decodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		final int N = binaryDecoder.decodeInt();
 		Class<?>[] rv = new Class<?>[ N ];
-		for( int i=0; i<N; i++ ) {
+		for( int i = 0; i < N; i++ ) {
 			rv[ i ] = this.decodeClass( binaryDecoder );
 		}
 		return rv;
 	}
+
 	protected abstract Object[] decodeArguments( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-	
+
 	protected final void encodeClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class<?> cls ) {
 		binaryEncoder.encode( cls.getName() );
 	}
-	
+
 	protected void encodeInstanceClass( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Class<T> cls ) {
 		this.encodeClass( binaryEncoder, cls );
 	}
+
 	private void encodeParameterTypes( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.parameterTypes.length );
-		for( Class< ? > parameterType : this.parameterTypes ) {
+		for( Class<?> parameterType : this.parameterTypes ) {
 			this.encodeClass( binaryEncoder, parameterType );
 		}
 	}
+
 	protected abstract void encodeArguments( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, Object[] arguments );
+
 	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		this.encodeInstanceClass( binaryEncoder, (Class<T>)this.instance.getClass() );
 		this.encodeParameterTypes( binaryEncoder );
 		this.encodeArguments( binaryEncoder, this.arguments );
 	}
-//	private void ensureValidity() {
-//		if( this.instanceCls != null ) {
-//			//pass
-//		} else {
-//			edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder();
-//			this.encode( encoder );
-//			edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = encoder.createDecoder();
-//			this.decode( decoder );
-//		}
-//	}
-	
+
+	//	private void ensureValidity() {
+	//		if( this.instanceCls != null ) {
+	//			//pass
+	//		} else {
+	//			edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder();
+	//			this.encode( encoder );
+	//			edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = encoder.createDecoder();
+	//			this.decode( decoder );
+	//		}
+	//	}
+
 	protected abstract T resolve( Class<T> instanceCls, Class<?>[] parameterTypes, Object[] arguments );
+
 	public T getResolved() {
 		if( this.instance != null ) {
 			return this.instance;
@@ -129,8 +138,9 @@ public abstract class KeyedResolver<T> implements Resolver< T > {
 			return this.instance;
 		}
 	}
+
 	public final void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		for( int i=0; i<this.arguments.length; i++ ) {
+		for( int i = 0; i < this.arguments.length; i++ ) {
 			this.arguments[ i ] = retargeter.retarget( this.arguments[ i ] );
 		}
 		this.instance = null;

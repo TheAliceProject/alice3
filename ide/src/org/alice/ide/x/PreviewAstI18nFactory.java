@@ -50,13 +50,16 @@ public class PreviewAstI18nFactory extends ImmutableAstI18nFactory {
 	private static class SingletonHolder {
 		private static PreviewAstI18nFactory instance = new PreviewAstI18nFactory();
 	}
+
 	public static PreviewAstI18nFactory getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private PreviewAstI18nFactory() {
 	}
+
 	@Override
-	protected org.lgna.project.ast.AbstractType< ?, ?, ? > getFallBackTypeForThisExpression() {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getFallBackTypeForThisExpression() {
 		return null;
 	}
 }

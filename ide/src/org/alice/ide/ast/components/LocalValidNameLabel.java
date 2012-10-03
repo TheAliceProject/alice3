@@ -42,7 +42,6 @@
  */
 package org.alice.ide.ast.components;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -50,8 +49,9 @@ public class LocalValidNameLabel extends DeclarationNameLabel {
 	public LocalValidNameLabel( org.lgna.project.ast.UserLocal local ) {
 		super( local );
 	}
+
 	@Override
 	protected String getTextForNullName() {
-		return ((org.lgna.project.ast.UserLocal)getDeclaration()).getValidName();
+		return ( (org.lgna.project.ast.UserLocal)getDeclaration() ).getValidName();
 	}
 }

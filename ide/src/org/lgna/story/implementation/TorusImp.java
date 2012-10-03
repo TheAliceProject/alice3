@@ -48,14 +48,16 @@ package org.lgna.story.implementation;
 public class TorusImp extends ShapeImp {
 	private final edu.cmu.cs.dennisc.scenegraph.Torus sgTorus = new edu.cmu.cs.dennisc.scenegraph.Torus();
 	private final org.lgna.story.STorus abstraction;
-	
+
 	private static final double MINIMUM_VALUE = 0.01; //todo
 	public final DoubleProperty innerRadius = new DoubleProperty( TorusImp.this ) {
 		private double value = 0.25;
+
 		@Override
 		public Double getValue() {
 			return this.value;
 		}
+
 		@Override
 		protected void handleSetValue( Double value ) {
 			this.value = value;
@@ -69,10 +71,12 @@ public class TorusImp extends ShapeImp {
 	};
 	public final DoubleProperty outerRadius = new DoubleProperty( TorusImp.this ) {
 		private double value = 0.5;
+
 		@Override
 		public Double getValue() {
 			return this.value;
 		}
+
 		@Override
 		protected void handleSetValue( Double value ) {
 			this.value = value;
@@ -87,18 +91,22 @@ public class TorusImp extends ShapeImp {
 		this.abstraction = abstraction;
 		this.getSgVisuals()[ 0 ].geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgTorus } );
 	}
+
 	@Override
 	public org.lgna.story.STorus getAbstraction() {
 		return this.abstraction;
 	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.property.InstanceProperty[] getScaleProperties() {
 		return new edu.cmu.cs.dennisc.property.InstanceProperty[] { this.sgTorus.majorRadius, this.sgTorus.minorRadius };
 	}
+
 	@Override
 	public Resizer[] getResizers() {
 		return new Resizer[] { Resizer.XZ_PLANE, Resizer.Y_AXIS };
 	}
+
 	@Override
 	public double getValueForResizer( Resizer resizer ) {
 		if( resizer == Resizer.XZ_PLANE ) {
@@ -110,6 +118,7 @@ public class TorusImp extends ShapeImp {
 			return Double.NaN;
 		}
 	}
+
 	@Override
 	public void setValueForResizer( Resizer resizer, double value ) {
 		if( resizer == Resizer.XZ_PLANE ) {
@@ -120,15 +129,15 @@ public class TorusImp extends ShapeImp {
 			assert false : resizer;
 		}
 	}
-	
+
 	@Override
 	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe("getScale shouldn't be called on "+this.getClass().getSimpleName());
-		return new edu.cmu.cs.dennisc.math.Dimension3(1,1,1);
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "getScale shouldn't be called on " + this.getClass().getSimpleName() );
+		return new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 );
 	}
-	
+
 	@Override
-	public void setSize(edu.cmu.cs.dennisc.math.Dimension3 size) {
+	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "setSize", size, this );
 		this.outerRadius.setValue( size.x * .5 );
 	}

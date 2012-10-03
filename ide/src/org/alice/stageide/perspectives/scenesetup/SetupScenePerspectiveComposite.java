@@ -43,6 +43,8 @@
 
 package org.alice.stageide.perspectives.scenesetup;
 
+import org.alice.stageide.gallerybrowser.GalleryComposite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,34 +52,36 @@ public class SetupScenePerspectiveComposite extends org.lgna.croquet.SplitCompos
 	private static class SingletonHolder {
 		private static SetupScenePerspectiveComposite instance = new SetupScenePerspectiveComposite();
 	}
+
 	public static SetupScenePerspectiveComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
 	private SetupScenePerspectiveComposite() {
 		super( java.util.UUID.fromString( "aa47fc0f-0500-4e9a-b710-b481b802f8c5" ),
 				SceneLayoutComposite.getInstance(),
-				GalleryComposite.getInstance()
-		);
+				GalleryComposite.getInstance() );
 	}
+
 	@Override
 	protected org.lgna.croquet.components.SplitPane createView() {
 		org.lgna.croquet.components.SplitPane rv = this.createVerticalSplitPane();
 		rv.setResizeWeight( 1.0 );
 		return rv;
 	}
-//	@Override
-//	public void handlePreActivation() {
-////		this.setLeadingComposite( SceneLayoutComposite.getInstance() );
-//		super.handlePreActivation();
-////		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-////			public void run() {
-////				SetupScenePerspectiveComposite.this.getView().setDividerLocation( 200 );
-////			}
-////		} );
-//	}
-//	@Override
-//	public void handlePostDectivation() {
-//		super.handlePostDectivation();
-////		this.setLeadingComposite( null );
-//	}
+	//	@Override
+	//	public void handlePreActivation() {
+	////		this.setLeadingComposite( SceneLayoutComposite.getInstance() );
+	//		super.handlePreActivation();
+	////		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+	////			public void run() {
+	////				SetupScenePerspectiveComposite.this.getView().setDividerLocation( 200 );
+	////			}
+	////		} );
+	//	}
+	//	@Override
+	//	public void handlePostDectivation() {
+	//		super.handlePostDectivation();
+	////		this.setLeadingComposite( null );
+	//	}
 }

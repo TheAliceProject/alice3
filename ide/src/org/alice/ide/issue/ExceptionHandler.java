@@ -45,87 +45,40 @@ package org.alice.ide.issue;
 /**
  * @author Dennis Cosgrove
  */
-public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
-	private static final String SILENTLY_FAIL_TEXT = "Silently Fail";
-	private static final String CONTINUE_TEXT = "Continue";
-	private boolean isBugReportSubmissionPaneDesired = true;
-	private int count = 0;
-	private String title = "";
-	private String applicationName = "Alice";
-	public void setTitle( String title ) {
-		this.title = title;
-	}
-	public void setApplicationName( String applicationName ) {
-		this.applicationName = applicationName;
-	}
-	public void uncaughtException( Thread thread, Throwable throwable ) {
-		throwable.printStackTrace();
-		if( throwable instanceof org.lgna.project.virtualmachine.LgnaException ) {
-			org.lgna.project.virtualmachine.LgnaException lgnaException = (org.lgna.project.virtualmachine.LgnaException)throwable;
-			
-			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-			application.showMessageDialog( lgnaException.getFormattedString(), lgnaException.getClass().getSimpleName() );
-		} else {
-			this.count ++;
-			if( this.isBugReportSubmissionPaneDesired ) {
-				try {
-					org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();
-					bugReportPane.setThreadAndThrowable( thread, throwable );
-//					javax.swing.JFrame frame = org.alice.ide.IDE.getActiveInstance().getFrame();
-//					if( frame != null ) {
-//						//pass
-//					} else {
-//						frame = new javax.swing.JFrame();
-//					}
-					java.awt.Component owner = org.alice.ide.IDE.getActiveInstance().getFrame().getAwtComponent();
-//					while( true ) {
-						javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-						dialog.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
-						dialog.setVisible( true );
+public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandler {
+	protected abstract boolean handleLgnaRuntimeException( Thread thread, org.lgna.common.LgnaRuntimeException lgnare );
 
-						if( bugReportPane.isSubmitAttempted() ) {
-							if( bugReportPane.isSubmitBackgrounded() ) {
-								//javax.swing.JOptionPane.showMessageDialog( frame, "Thank you for submitting a bug report." );
-							} else {
-								if( bugReportPane.isSubmitSuccessful() ) {
-									javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report has been successfully submitted.  Thank you." );
-								} else {
-									javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report FAILED to submit.  Thank you for trying." );
-								}
-							}
-//							break;
-						} else {
-							if( this.count > 1 ) {
-								Object[] options = { CONTINUE_TEXT, SILENTLY_FAIL_TEXT };
-								String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + this.applicationName + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
-								String title = "Multiple Exceptions Detected";
-								int result = javax.swing.JOptionPane.showOptionDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
-								if( result == javax.swing.JOptionPane.NO_OPTION ) {
-									this.isBugReportSubmissionPaneDesired = false;
-								}
-							}
-//							int result = javax.swing.JOptionPane.showConfirmDialog( frame,
-//									"NOTE: You do not actually have to fill in any of the fields to submit a bug report.\n\nWould you like to submit this bug?\n\n(If you wish to not see this dialog again during this session, press cancel.  NOTE: Alice may silently fail under these conditions.)",
-//									"Bug report NOT submitted", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
-//							if( result == javax.swing.JOptionPane.YES_OPTION ) {
-//								//pass
-//							} else {
-//								if( result == javax.swing.JOptionPane.CANCEL_OPTION ) {
-//									this.isBugReportSubmissionPaneDesired = false;
-//								}
-//								break;
-//							}
-						}
-//					}
-				} catch( Throwable t ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
+	protected abstract boolean handleGlException( Thread thread, javax.media.opengl.GLException gle );
+
+	protected abstract void handleThrowable( Thread thread, Throwable throwable );
+
+	public final void uncaughtException( Thread thread, Throwable throwable ) {
+		throwable.printStackTrace();
+		if( throwable instanceof RuntimeException ) {
+			RuntimeException runtimeException = (RuntimeException)throwable;
+			Throwable cause = runtimeException.getCause();
+			if( cause instanceof java.lang.reflect.InvocationTargetException ) {
+				java.lang.reflect.InvocationTargetException invocationTargetException = (java.lang.reflect.InvocationTargetException)cause;
+				Throwable targetException = invocationTargetException.getTargetException();
+				if( targetException instanceof org.lgna.common.LgnaRuntimeException ) {
+					throwable = targetException;
 				}
 			}
 		}
-	}
-	
-	public static void main( String[] args ) {
-		Thread.setDefaultUncaughtExceptionHandler( new ExceptionHandler() );
-		throw new RuntimeException();
+		boolean isHandled;
+		if( throwable instanceof org.lgna.common.LgnaRuntimeException ) {
+			org.lgna.common.LgnaRuntimeException lgnare = (org.lgna.common.LgnaRuntimeException)throwable;
+			isHandled = this.handleLgnaRuntimeException( thread, lgnare );
+		} else if( throwable instanceof javax.media.opengl.GLException ) {
+			javax.media.opengl.GLException gle = (javax.media.opengl.GLException)throwable;
+			isHandled = this.handleGlException( thread, gle );
+		} else {
+			isHandled = false;
+		}
+		if( isHandled ) {
+			//pass
+		} else {
+			this.handleThrowable( thread, throwable );
+		}
 	}
 }

@@ -61,6 +61,7 @@ class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPa
 			this.add( exposed, EXPOSED_KEY );
 			this.exposed.setDocument( this.hidden.getDocument() );
 		}
+
 		public void toggle() {
 			if( this.isExposed ) {
 				this.show( HIDDEN_KEY );
@@ -85,6 +86,7 @@ class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPa
 		this.add( passwordCardPane );
 		this.add( checkBox );
 	}
+
 	public String getPassword() {
 		return passwordCardPane.exposed.getText();
 	}
@@ -95,11 +97,13 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 		public TestLogInOperation() {
 			super( java.util.UUID.fromString( "cf700b82-c80b-4fb4-8886-2d170503a253" ) );
 		}
+
 		@Override
 		protected void localize() {
 			super.localize();
 			this.setName( "Log In" );
 		}
+
 		@Override
 		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 			try {
@@ -130,16 +134,18 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 	private PasswordPane passwordPane = new PasswordPane();
 	//todo: remove. rely only on operations.
 	private javax.swing.JButton logInButton = new TestLogInOperation().createButton().getAwtComponent();
+
 	private java.awt.Component createLabel( String text ) {
 		javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
 	}
+
 	public LogInPane() {
 		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane rowsPane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 8, 4 ) {
 			@Override
-			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
+			protected java.util.List<java.awt.Component[]> addComponentRows( java.util.List<java.awt.Component[]> rv ) {
 				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "Username:" ), textUsername ) );
 				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "Password:" ), passwordPane ) );
 				return rv;
@@ -148,23 +154,8 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 
 		edu.cmu.cs.dennisc.javax.swing.components.JPane signUpPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
 		signUpPane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Not a member?" ) );
-		org.alice.ide.browser.BrowserOperation hyperlinkOperation = new org.alice.ide.browser.BrowserOperation( java.util.UUID.fromString( "450727b2-d86a-4812-a77c-99eb785e10b2" ) ) {
-			@Override
-			protected java.net.URL getUrl() {
-				String path = "http://bugs.alice.org:8080/secure/Signup!default.jspa";
-				try {
-					return new java.net.URL( path );
-				} catch( java.net.MalformedURLException murle ) {
-					throw new RuntimeException( path, murle );
-				}
-			}
-			@Override
-			protected void localize() {
-				super.localize();
-				this.setName( "Sign up" );
-			}
-		};
-		signUpPane.add( hyperlinkOperation.createHyperlink().getAwtComponent() );
+		org.alice.ide.croquet.models.help.SignUpOperation signUpOperation = new org.alice.ide.croquet.models.help.SignUpOperation();
+		signUpPane.add( signUpOperation.createHyperlink().getAwtComponent() );
 		signUpPane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "for an account." ) );
 
 		edu.cmu.cs.dennisc.javax.swing.components.JPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
@@ -182,20 +173,21 @@ class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane 
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 32, 8, 32 ) );
 	}
-	
+
 	public javax.swing.JButton getLogInButton() {
 		return this.logInButton;
 	}
 }
 
-
 public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.JCardPane {
 	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
+
 	class LogInOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 		public LogInOperation() {
 			super( java.util.UUID.fromString( "f2d620ad-9b18-42e7-8b77-240e7a829b03" ) );
 			this.setName( "Log In... (Optional)" );
 		}
+
 		@Override
 		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 			LogInPane pane = new LogInPane();
@@ -218,6 +210,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			super( java.util.UUID.fromString( "73bf08cc-3666-463d-86da-3d483a4d8f2b" ) );
 			this.setName( "Log Out" );
 		}
+
 		@Override
 		protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
 			edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
@@ -236,17 +229,20 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			this.add( logInButton );
 		}
 	}
+
 	class OnPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 		private javax.swing.JLabel nameLabel = new javax.swing.JLabel( "Full Name" ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 			}
+
 			@Override
 			public java.awt.Dimension getMaximumSize() {
 				return this.getPreferredSize();
 			}
 		};
+
 		public OnPane() {
 			this.refresh();
 			this.nameLabel.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
@@ -256,6 +252,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( logOutButton );
 		}
+
 		public void refresh() {
 			edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			if( accountInformation != null ) {
@@ -264,8 +261,10 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			}
 		}
 	}
+
 	private OffPane offPane = new OffPane();
 	private OnPane onPane = new OnPane();
+
 	public LogInStatusPane() {
 		this.add( this.offPane, OFF_KEY );
 		this.add( this.onPane, ON_KEY );
@@ -275,11 +274,11 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 		}
 	}
 
-//	@Override
-//	public void show( String key ) {
-//		super.show( key );
-//		this.revalidate();
-//	}
+	//	@Override
+	//	public void show( String key ) {
+	//		super.show( key );
+	//		this.revalidate();
+	//	}
 	public static void main( String[] args ) {
 		LogInStatusPane pane = new LogInStatusPane();
 		//LogInPane pane = new LogInPane();

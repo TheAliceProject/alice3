@@ -45,13 +45,15 @@ package org.alice.ide.x.components;
 /**
  * @author Dennis Cosgrove
  */
-public class InstancePropertyLabelView extends org.alice.ide.croquet.components.AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty< Object >, Object > {
+public class InstancePropertyLabelView extends org.alice.ide.croquet.components.AbstractPropertyPane<edu.cmu.cs.dennisc.property.InstanceProperty<Object>, Object> {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-	public InstancePropertyLabelView( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.InstanceProperty< Object > property ) {
+
+	public InstancePropertyLabelView( org.alice.ide.x.AstI18nFactory factory, edu.cmu.cs.dennisc.property.InstanceProperty<Object> property ) {
 		super( factory, property, javax.swing.BoxLayout.LINE_AXIS );
 		this.addComponent( this.label );
 		this.refreshLater();
 	}
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();

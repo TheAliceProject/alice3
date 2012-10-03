@@ -49,12 +49,15 @@ package org.alice.stageide.operations.ast.oneshot;
 public class LocalTransformationEdit extends MethodInvocationEdit {
 	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
 	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
+
 	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
+
 	public LocalTransformationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
+
 	@Override
 	protected void preserveUndoInfo( Object instance, boolean isDo ) {
 		if( instance instanceof org.lgna.story.STurnable ) {
@@ -67,9 +70,10 @@ public class LocalTransformationEdit extends MethodInvocationEdit {
 			this.m = null;
 		}
 	}
+
 	@Override
 	protected void undoInternal() {
-		if( this.transformable != null && this.m != null ) {
+		if( ( this.transformable != null ) && ( this.m != null ) ) {
 			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.PARENT, this.m );
 		}
 	}
