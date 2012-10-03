@@ -65,7 +65,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 	protected boolean handleLgnaRuntimeException( Thread thread, org.lgna.common.LgnaRuntimeException lgnare ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		if( application != null ) {
-			application.showMessageDialog( lgnare.getFormattedString(), lgnare.getClass().getSimpleName(), org.lgna.croquet.MessageType.ERROR );
+			new LgnaExceptionComposite( thread, lgnare ).getOperation().fire();
 			return true;
 		} else {
 			return false;
@@ -146,8 +146,8 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
 		Thread.setDefaultUncaughtExceptionHandler( new DefaultExceptionHandler() );
-		throw new javax.media.opengl.GLException();
+		//throw new javax.media.opengl.GLException();
 		//throw new RuntimeException();
-		//throw new org.lgna.common.LgnaIllegalArgumentException( "test", 0, null );
+		throw new org.lgna.common.LgnaIllegalArgumentException( "test", 0, null );
 	}
 }

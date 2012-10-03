@@ -72,6 +72,13 @@ public class Label extends JComponent<javax.swing.JLabel> {
 		this.changeFont( textAttributes );
 	}
 
+	public Label( String text, javax.swing.Icon icon, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this.setText( text );
+		this.setIcon( icon );
+		this.scaleFont( fontScalar );
+		this.changeFont( textAttributes );
+	}
+
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
 		return new javax.swing.JLabel();
