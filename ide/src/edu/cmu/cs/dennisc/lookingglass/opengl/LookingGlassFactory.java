@@ -82,10 +82,10 @@ class WaitingRunnable implements Runnable {
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
 	static {
 		try {
-			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
-			//todo: jogl2
-			//			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-			//			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+			//jogl1
+			//javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
+			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
 		} catch( UnsatisfiedLinkError ule ) {
 			String platformText = System.getProperty( "os.name" ) + "-" + System.getProperty( "os.arch" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "platform:", platformText );
@@ -152,17 +152,16 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 
 	//private GLCapabilities glCapabilities;
 	/* package-private */static javax.media.opengl.GLCapabilities createDesiredGLCapabilities( int desiredSampleCount ) {
-		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
-		boolean isMultisamplingDesired = desiredSampleCount >= 2;
-		rv.setSampleBuffers( isMultisamplingDesired );
-		if( isMultisamplingDesired ) {
-			rv.setNumSamples( desiredSampleCount );
-		}
-		//todo: jogl2
-		//		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
-		//		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
-
-		//		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
+		//jogl1
+		//		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
+		//		boolean isMultisamplingDesired = desiredSampleCount >= 2;
+		//		rv.setSampleBuffers( isMultisamplingDesired );
+		//		if( isMultisamplingDesired ) {
+		//			rv.setNumSamples( desiredSampleCount );
+		//		}
+		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
+		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
 		//		if( chooser instanceof edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
 		//			rv.setHardwareAccelerated( false );
 		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
@@ -191,12 +190,12 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return 1;
 	}
 
-	/* package-private */javax.media.opengl.GLCanvas createGLCanvas() {
-		return new javax.media.opengl.GLCanvas( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null, null );
+	/* package-private */javax.media.opengl.awt.GLCanvas createGLCanvas() {
+		return new javax.media.opengl.awt.GLCanvas( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null, null );
 	}
 
-	/* package-private */javax.media.opengl.GLJPanel createGLJPanel() {
-		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null );
+	/* package-private */javax.media.opengl.awt.GLJPanel createGLJPanel() {
+		return new javax.media.opengl.awt.GLJPanel( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null );
 	}
 
 	//	/*package-private*/ boolean canCreateExternalGLDrawable() {
@@ -213,14 +212,16 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	//	}
 
 	/* package-private */boolean canCreateGLPbuffer() {
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		return glDrawableFactory.canCreateGLPbuffer();
+		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+		return glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() );
 	}
 
 	/* package-private */javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if( glDrawableFactory.canCreateGLPbuffer() ) {
-			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share );
+		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() ) ) {
+			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share );
 
 			// This is a work around for Linux users.
 			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
@@ -231,16 +232,9 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 
 			return buffer;
 		} else {
+			//			throw new RuntimeException("cannot create pbuffer");
 			return null;
 		}
-		//todo: jogl2
-		//		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-		//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
-		//		if (glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() )) {
-		//			return glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), createDesiredGLCapabilities(), getGLCapabilitiesChooser(), width, height, share);
-		//		} else {
-		//			throw new RuntimeException("cannot create pbuffer");
-		//		}
 	}
 
 	private static boolean isDisplayDesired( OnscreenLookingGlass lg ) {

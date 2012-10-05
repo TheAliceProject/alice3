@@ -43,29 +43,29 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_ABGR_EXT;
-import static javax.media.opengl.GL.GL_CLAMP;
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
-import static javax.media.opengl.GL.GL_COLOR_MATERIAL;
 import static javax.media.opengl.GL.GL_CULL_FACE;
-import static javax.media.opengl.GL.GL_DEPTH_COMPONENT;
 import static javax.media.opengl.GL.GL_DEPTH_TEST;
-import static javax.media.opengl.GL.GL_DIFFUSE;
 import static javax.media.opengl.GL.GL_FLOAT;
-import static javax.media.opengl.GL.GL_FOG;
-import static javax.media.opengl.GL.GL_FOG_COLOR;
-import static javax.media.opengl.GL.GL_LIGHT0;
-import static javax.media.opengl.GL.GL_LIGHTING;
-import static javax.media.opengl.GL.GL_LIGHT_MODEL_AMBIENT;
-import static javax.media.opengl.GL.GL_NORMALIZE;
 import static javax.media.opengl.GL.GL_NO_ERROR;
 import static javax.media.opengl.GL.GL_REPEAT;
 import static javax.media.opengl.GL.GL_SCISSOR_TEST;
-import static javax.media.opengl.GL.GL_SPECULAR;
 import static javax.media.opengl.GL.GL_TEXTURE_2D;
 import static javax.media.opengl.GL.GL_TEXTURE_WRAP_S;
 import static javax.media.opengl.GL.GL_TEXTURE_WRAP_T;
 import static javax.media.opengl.GL.GL_UNSIGNED_BYTE;
+import static javax.media.opengl.GL2.GL_ABGR_EXT;
+import static javax.media.opengl.GL2.GL_CLAMP;
+import static javax.media.opengl.GL2ES1.GL_FOG;
+import static javax.media.opengl.GL2ES1.GL_FOG_COLOR;
+import static javax.media.opengl.GL2ES1.GL_LIGHT_MODEL_AMBIENT;
+import static javax.media.opengl.GL2ES2.GL_DEPTH_COMPONENT;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_COLOR_MATERIAL;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 
 /**
  * @author Dennis Cosgrove
@@ -222,7 +222,7 @@ public class RenderContext extends Context {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to capture back buffer:", description );
 				}
 			}
-			com.sun.opengl.util.ImageUtil.flipImageVertically( rvColor );
+			com.jogamp.opengl.util.awt.ImageUtil.flipImageVertically( rvColor );
 		} else {
 			throw new RuntimeException( "todo" );
 		}

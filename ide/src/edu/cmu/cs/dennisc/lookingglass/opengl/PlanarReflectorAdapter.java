@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_CLIP_PLANE0;
+import static javax.media.opengl.GL2ES1.GL_CLIP_PLANE0;
 
 /**
  * @author Dennis Cosgrove

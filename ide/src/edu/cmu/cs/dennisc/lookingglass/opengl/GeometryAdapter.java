@@ -43,8 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_COMPILE_AND_EXECUTE;
 import static javax.media.opengl.GL.GL_LINES;
+import static javax.media.opengl.GL2.GL_COMPILE_AND_EXECUTE;
 
 /**
  * @author Dennis Cosgrove

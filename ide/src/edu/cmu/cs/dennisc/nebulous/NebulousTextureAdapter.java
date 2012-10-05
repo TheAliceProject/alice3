@@ -70,7 +70,7 @@ public class NebulousTextureAdapter extends TextureAdapter<edu.cmu.cs.dennisc.ne
 	}
 
 	@Override
-	protected com.sun.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.sun.opengl.util.texture.TextureData currentTextureData ) {
+	protected com.jogamp.opengl.util.texture.TextureData newTextureData( javax.media.opengl.GL gl, com.jogamp.opengl.util.texture.TextureData currentTextureData ) {
 		throw new RuntimeException( "NOT SUPPORTED" );
 	}
 

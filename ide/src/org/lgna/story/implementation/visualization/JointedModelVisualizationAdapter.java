@@ -43,10 +43,10 @@
 
 package org.lgna.story.implementation.visualization;
 
-import static javax.media.opengl.GL.GL_LIGHTING;
 import static javax.media.opengl.GL.GL_LINES;
 import static javax.media.opengl.GL.GL_LINE_LOOP;
 import static javax.media.opengl.GL.GL_TEXTURE_2D;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 
 /**
  * @author Dennis Cosgrove
@@ -207,12 +207,12 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 		}
 	}
 
-	private void pushOffset( javax.media.opengl.GL gl ) {
+	private void pushOffset( javax.media.opengl.GL2 gl ) {
 		gl.glPushMatrix();
 		//		gl.glTranslated( 1,0,0 );		
 	}
 
-	private void popOffset( javax.media.opengl.GL gl ) {
+	private void popOffset( javax.media.opengl.GL2 gl ) {
 		gl.glPopMatrix();
 	}
 

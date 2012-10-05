@@ -43,14 +43,14 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_AMBIENT;
-import static javax.media.opengl.GL.GL_CONSTANT_ATTENUATION;
-import static javax.media.opengl.GL.GL_LINEAR_ATTENUATION;
-import static javax.media.opengl.GL.GL_POSITION;
-import static javax.media.opengl.GL.GL_QUADRATIC_ATTENUATION;
-import static javax.media.opengl.GL.GL_SPOT_CUTOFF;
-import static javax.media.opengl.GL.GL_SPOT_DIRECTION;
-import static javax.media.opengl.GL.GL_SPOT_EXPONENT;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_CONSTANT_ATTENUATION;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_LINEAR_ATTENUATION;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_QUADRATIC_ATTENUATION;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_CUTOFF;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_DIRECTION;
+import static javax.media.opengl.fixedfunc.GLLightingFunc.GL_SPOT_EXPONENT;
 
 /**
  * @author Dennis Cosgrove

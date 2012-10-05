@@ -43,7 +43,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_QUAD_STRIP;
+import static javax.media.opengl.GL2.GL_QUAD_STRIP;
 
 /**
  * @author Dennis Cosgrove

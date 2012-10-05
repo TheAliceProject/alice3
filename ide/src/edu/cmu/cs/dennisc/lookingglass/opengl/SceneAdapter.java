@@ -46,19 +46,19 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 import static javax.media.opengl.GL.GL_ALWAYS;
 import static javax.media.opengl.GL.GL_BLEND;
 import static javax.media.opengl.GL.GL_CCW;
-import static javax.media.opengl.GL.GL_CLIP_PLANE0;
 import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_CW;
 import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_DEPTH_TEST;
 import static javax.media.opengl.GL.GL_EQUAL;
 import static javax.media.opengl.GL.GL_KEEP;
-import static javax.media.opengl.GL.GL_MODELVIEW;
 import static javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA;
 import static javax.media.opengl.GL.GL_REPLACE;
 import static javax.media.opengl.GL.GL_SRC_ALPHA;
 import static javax.media.opengl.GL.GL_STENCIL_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_STENCIL_TEST;
+import static javax.media.opengl.GL2ES1.GL_CLIP_PLANE0;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
 
 /**
  * @author Dennis Cosgrove

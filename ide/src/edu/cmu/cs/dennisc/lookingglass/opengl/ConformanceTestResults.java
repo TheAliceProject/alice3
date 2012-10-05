@@ -48,14 +48,14 @@ import static javax.media.opengl.GL.GL_DEPTH_BUFFER_BIT;
 import static javax.media.opengl.GL.GL_DEPTH_TEST;
 import static javax.media.opengl.GL.GL_EXTENSIONS;
 import static javax.media.opengl.GL.GL_LEQUAL;
-import static javax.media.opengl.GL.GL_MODELVIEW;
-import static javax.media.opengl.GL.GL_PROJECTION;
-import static javax.media.opengl.GL.GL_QUAD_STRIP;
-import static javax.media.opengl.GL.GL_RENDER;
 import static javax.media.opengl.GL.GL_RENDERER;
-import static javax.media.opengl.GL.GL_SELECT;
 import static javax.media.opengl.GL.GL_VENDOR;
 import static javax.media.opengl.GL.GL_VERSION;
+import static javax.media.opengl.GL2.GL_QUAD_STRIP;
+import static javax.media.opengl.GL2.GL_RENDER;
+import static javax.media.opengl.GL2.GL_SELECT;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_MODELVIEW;
+import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 /**
  * @author Dennis Cosgrove
@@ -93,28 +93,28 @@ public class ConformanceTestResults {
 	private boolean isValid;
 
 	private ConformanceTestResults() {
-		javax.media.opengl.GLDrawableFactory factory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if( factory.canCreateGLPbuffer() ) {
-			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities();
-			javax.media.opengl.GLPbuffer glPbuffer = factory.createGLPbuffer( glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
-			//todo: jogl2
-			//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getDesktopFactory();
-			//		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() ) ) {
-			//			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-			//			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities( glProfile );
-			//			javax.media.opengl.GLPbuffer glPbuffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
+		//javax.media.opengl.GLDrawableFactory factory = javax.media.opengl.GLDrawableFactory.getFactory();
+		//jogl1
+		//if( factory.canCreateGLPbuffer() ) {
+		//javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities();
+		//javax.media.opengl.GLPbuffer glPbuffer = factory.createGLPbuffer( glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getDesktopFactory();
+		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() ) ) {
+			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities( glProfile );
+			javax.media.opengl.GLPbuffer glPbuffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
 
 			javax.media.opengl.GLContext glContext = glPbuffer.getContext();
 			glContext.makeCurrent();
-			inititialize( glPbuffer.getGL() );
+			inititialize( glPbuffer.getGL().getGL2() );
 		}
 	}
 
-	public ConformanceTestResults( javax.media.opengl.GL gl ) {
+	public ConformanceTestResults( javax.media.opengl.GL2 gl ) {
 		inititialize( gl );
 	}
 
-	private void inititialize( javax.media.opengl.GL gl ) {
+	private void inititialize( javax.media.opengl.GL2 gl ) {
 		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer();
 		timer.start();
 		timer.mark( gl );
