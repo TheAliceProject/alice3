@@ -60,6 +60,8 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 	protected double deltaSinceLastFrame = Double.NaN;
 	private boolean isDone = true;
 
+	private final Object syncLock = new Object();
+
 	public TargetBasedFrameObserver() {
 		speed = DEFAULT_SPEED;
 	}
@@ -77,14 +79,18 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 	}
 
 	public TargetBasedFrameObserver( E currentValue, E targetValue, double speed ) {
-		this.currentValue = this.newE( currentValue );
-		this.targetValue = this.newE( targetValue );
-		this.speed = speed;
+		synchronized( syncLock ) {
+			this.currentValue = this.newE( currentValue );
+			this.targetValue = this.newE( targetValue );
+			this.speed = speed;
+		}
 	}
 
 	public void setTarget( E target ) {
-		this.targetValue = this.newE( target );
-		this.isDone = this.isDone();
+		synchronized( syncLock ) {
+			this.targetValue = this.newE( target );
+			this.isDone = this.isDone();
+		}
 	}
 
 	public E getCurrentValue()
@@ -93,12 +99,16 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 	}
 
 	public void setCurrentValue( E value ) {
-		this.currentValue = this.newE( value );
-		this.isDone = this.isDone();
+		synchronized( syncLock ) {
+			this.currentValue = this.newE( value );
+			this.isDone = this.isDone();
+		}
 	}
 
 	public void setSpeed( double speed ) {
-		this.speed = speed;
+		synchronized( syncLock ) {
+			this.speed = speed;
+		}
 	}
 
 	public double getSpeed() {
@@ -116,12 +126,16 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 	protected abstract E newE( E other );
 
 	public void forceValueUpdate() {
-		this.updateValue( this.currentValue );
+		synchronized( syncLock ) {
+			this.updateValue( this.currentValue );
+		}
 	}
 
 	public void complete() {
-		this.currentValue = newE( targetValue );
-		this.updateValue( this.currentValue );
+		synchronized( syncLock ) {
+			this.currentValue = newE( targetValue );
+			this.updateValue( this.currentValue );
+		}
 	}
 
 	public void update( double tCurrent ) {
@@ -129,20 +143,22 @@ public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 			deltaSinceLastFrame = 0.0d;
 		} else {
 			deltaSinceLastFrame = tCurrent - timeOfLastFrame;
-			timeOfLastFrame = tCurrent;
 		}
+		timeOfLastFrame = tCurrent;
 		if( !this.isDone ) {
-			if( !Double.isNaN( deltaSinceLastFrame ) ) {
-				if( deltaSinceLastFrame > MAX_FRAME_LENGTH ) {
-					deltaSinceLastFrame = MAX_FRAME_LENGTH;
+			synchronized( syncLock ) {
+				if( !Double.isNaN( deltaSinceLastFrame ) ) {
+					if( deltaSinceLastFrame > MAX_FRAME_LENGTH ) {
+						deltaSinceLastFrame = MAX_FRAME_LENGTH;
+					}
+					this.currentValue = this.interpolate( this.currentValue, this.targetValue, deltaSinceLastFrame );
 				}
-				this.currentValue = this.interpolate( this.currentValue, this.targetValue, deltaSinceLastFrame );
+				if( this.isCloseEnoughToBeDone() ) {
+					this.currentValue = newE( this.targetValue );
+				}
+				this.updateValue( this.currentValue );
+				this.isDone = this.isDone();
 			}
-			if( this.isCloseEnoughToBeDone() ) {
-				this.currentValue = newE( this.targetValue );
-			}
-			this.updateValue( this.currentValue );
-			this.isDone = this.isDone();
 		}
 	}
 
