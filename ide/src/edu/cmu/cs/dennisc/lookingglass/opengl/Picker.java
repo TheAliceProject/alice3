@@ -91,7 +91,6 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 			private javax.media.opengl.GLPbuffer glPixelBuffer;
 
-			@Override
 			public void initialize( jogamp.opengl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext ) {
 				if( this.glPixelBuffer != null ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
@@ -129,7 +128,6 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			};
 			private jogamp.opengl.GLDrawableHelper drawableHelper;
 
-			@Override
 			public void initialize( jogamp.opengl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext ) {
 				if( this.glDrawable != null ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
