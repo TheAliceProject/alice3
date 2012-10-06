@@ -82,10 +82,7 @@ class WaitingRunnable implements Runnable {
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
 	static {
 		try {
-			//jogl1
-			//javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
-			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+			javax.media.opengl.GLProfile unused = javax.media.opengl.GLProfile.getDefault();
 		} catch( UnsatisfiedLinkError ule ) {
 			String platformText = System.getProperty( "os.name" ) + "-" + System.getProperty( "os.arch" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "platform:", platformText );
@@ -198,18 +195,21 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return new javax.media.opengl.awt.GLJPanel( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null );
 	}
 
-	//	/*package-private*/ boolean canCreateExternalGLDrawable() {
-	//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-	//		return glDrawableFactory.canCreateExternalGLDrawable();
-	//	}
-	//	/*package-private*/ javax.media.opengl.GLDrawable createExternalGLDrawable() {
-	//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-	//		if( glDrawableFactory.canCreateExternalGLDrawable() ) {
-	//			return glDrawableFactory.createExternalGLDrawable();
-	//		} else {
-	//			return null;
-	//		}
-	//	}
+	/* package-private */boolean canCreateExternalGLDrawable() {
+		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
+		return glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() );
+	}
+
+	/* package-private */javax.media.opengl.GLDrawable createExternalGLDrawable() {
+		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
+		if( glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() ) ) {
+			return glDrawableFactory.createExternalGLDrawable();
+		} else {
+			return null;
+		}
+	}
 
 	/* package-private */boolean canCreateGLPbuffer() {
 		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();

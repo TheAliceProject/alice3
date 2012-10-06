@@ -150,24 +150,29 @@ public class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				//pass
 			} else {
 				javax.media.opengl.GLContext shareContext = null;
-				if( LookingGlassFactory.getInstance().canCreateGLPbuffer() ) {
-					javax.media.opengl.GLPbuffer glPixelBuffer = LookingGlassFactory.getInstance().createGLPbuffer( 1, 1, LookingGlassFactory.getSampleCountForDisabledMultisampling(), shareContext );
-					;
-					this.glContext = glPixelBuffer.getContext();
-					this.glDrawable = glPixelBuffer;
+				if( LookingGlassFactory.getInstance().canCreateExternalGLDrawable() ) {
+					javax.media.opengl.GLDrawable glDrawable = LookingGlassFactory.getInstance().createExternalGLDrawable();
+					this.glContext = glDrawable.createContext( shareContext );
+					this.glDrawable = glDrawable;
 				} else {
-					javax.media.opengl.GLCapabilitiesImmutable glCapabilitiesImmutable = shareDrawable.getChosenGLCapabilities();
+					if( LookingGlassFactory.getInstance().canCreateGLPbuffer() ) {
+						javax.media.opengl.GLPbuffer glPixelBuffer = LookingGlassFactory.getInstance().createGLPbuffer( 1, 1, LookingGlassFactory.getSampleCountForDisabledMultisampling(), shareContext );
+						this.glContext = glPixelBuffer.getContext();
+						this.glDrawable = glPixelBuffer;
+					} else {
+						javax.media.opengl.GLCapabilitiesImmutable glCapabilitiesImmutable = shareDrawable.getChosenGLCapabilities();
 
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: investigate setDoubleBuffered( false )" );
-					//					javax.media.opengl.GLCapabilities glCapabilities = new javax.media.opengl.GLCapabilities( glCapabilitiesImmutable );
-					//					glCapabilities.setDoubleBuffered( false );
-					javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-					javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
-					this.glDrawable = jogamp.opengl.GLDrawableFactoryImpl.getFactoryImpl( glProfile ).createOffscreenDrawable( glDrawableFactory.getDefaultDevice(), glCapabilitiesImmutable, LookingGlassFactory.getGLCapabilitiesChooser(), 1, 1 );
-					this.glContext = this.glDrawable.createContext( shareContext );
-					this.glContext.setGLDebugSynchronous( true );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: investigate setDoubleBuffered( false )" );
+						//					javax.media.opengl.GLCapabilities glCapabilities = new javax.media.opengl.GLCapabilities( glCapabilitiesImmutable );
+						//					glCapabilities.setDoubleBuffered( false );
+						javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
+						javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+						this.glDrawable = jogamp.opengl.GLDrawableFactoryImpl.getFactoryImpl( glProfile ).createOffscreenDrawable( glDrawableFactory.getDefaultDevice(), glCapabilitiesImmutable, LookingGlassFactory.getGLCapabilitiesChooser(), 1, 1 );
+						this.glContext = this.glDrawable.createContext( shareContext );
+						this.glContext.setGLDebugSynchronous( true );
+					}
+					//						this.prevShareContext = shareContext;
 				}
-				//						this.prevShareContext = shareContext;
 			}
 			//				}
 			//			}
