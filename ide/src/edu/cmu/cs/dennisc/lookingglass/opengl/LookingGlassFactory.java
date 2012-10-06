@@ -196,6 +196,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	}
 
 	/* package-private */boolean canCreateExternalGLDrawable() {
+
 		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
 		return glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() );
@@ -206,6 +207,16 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
 		if( glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() ) ) {
 			return glDrawableFactory.createExternalGLDrawable();
+		} else {
+			return null;
+		}
+	}
+
+	/* package-private */javax.media.opengl.GLContext createExternalGLContext() {
+		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
+		if( glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() ) ) {
+			return glDrawableFactory.createExternalGLContext();
 		} else {
 			return null;
 		}
