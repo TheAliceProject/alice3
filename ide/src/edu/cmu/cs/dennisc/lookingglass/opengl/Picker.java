@@ -181,8 +181,6 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 		private PickParameters pickParameters;
 
-		private ConformanceTestResults conformanceTestResults;
-
 		public ActualPicker() {
 			final int SIZEOF_INT = 4;
 			java.nio.ByteBuffer byteBuffer = java.nio.ByteBuffer.allocateDirect( SIZEOF_INT * SELECTION_CAPACITY );
@@ -194,35 +192,6 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			this.glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
 			this.glFactory = com.sun.opengl.impl.GLDrawableFactoryImpl.getFactoryImpl();
 			this.glShareContext = null;
-		}
-
-		public ConformanceTestResults getConformanceTestResults() {
-			if( this.conformanceTestResults != null ) {
-				//pass
-			} else {
-				Impl impl = this.getImpl();
-				if( this.pickContext.gl != null ) {
-					//pass
-				} else {
-					impl.display();
-				}
-
-				if( this.pickContext.gl != null ) {
-					this.conformanceTestResults = new ConformanceTestResults( this.glFactory.canCreateGLPbuffer(), impl.isHardwareAccelerated(), this.pickContext.gl );
-					if( this.conformanceTestResults.isPickFunctioningCorrectly() ) {
-						//pass
-					} else {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl isHardwareAccelerated:", conformanceTestResults.isPickFunctioningCorrectly() );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl isPickFunctioningCorrectly:", conformanceTestResults.isPickFunctioningCorrectly() );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl version:", conformanceTestResults.getVersion() );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl vendor:", conformanceTestResults.getVendor() );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl renderer:", conformanceTestResults.getRenderer() );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl extensions:", conformanceTestResults.getExtensions() );
-					}
-				}
-			}
-			return this.conformanceTestResults;
-
 		}
 
 		public void setPickParameters( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int x, int y, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
@@ -267,7 +236,9 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 		private void performPick( javax.media.opengl.GL gl ) {
 			this.pickContext.gl = gl;
-			ConformanceTestResults conformanceTestResults = this.getConformanceTestResults();
+			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( this.glFactory.canCreateGLPbuffer(), this.impl instanceof PixelBufferImpl, gl );
+
+			ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
 
 			if( pickParameters != null ) {
 				edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver = pickParameters.getPickObserver();
@@ -287,7 +258,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass = pickParameters.getLookingGlass();
 				java.awt.Rectangle actualViewport = lookingGlass.getActualViewport( sgCamera );
 				this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
-				cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport, conformanceTestResults );
+				cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport, ConformanceTestResults.SINGLETON );
 				this.pickContext.gl.glFlush();
 
 				this.selectionAsIntBuffer.rewind();
@@ -304,7 +275,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 						offset += 7;
 					}
 
-					if( conformanceTestResults.isPickFunctioningCorrectly() ) {
+					if( pickDetails.isPickFunctioningCorrectly() ) {
 						double x = pickParameters.getX();
 						double y = pickParameters.getFlippedY( actualViewport );
 
@@ -368,7 +339,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 						//					}
 						//				}
 						java.util.Comparator<SelectionBufferInfo> comparator;
-						if( conformanceTestResults.isPickFunctioningCorrectly() ) {
+						if( pickDetails.isPickFunctioningCorrectly() ) {
 							comparator = new java.util.Comparator<SelectionBufferInfo>() {
 								public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
 									return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
@@ -434,10 +405,6 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 	}
 
 	private static ActualPicker sharedActualPicker = new ActualPicker();
-
-	/* package-protected */static ConformanceTestResults getConformanceTestResults() {
-		return sharedActualPicker.getConformanceTestResults();
-	}
 
 	private final AbstractLookingGlass lookingGlass;
 

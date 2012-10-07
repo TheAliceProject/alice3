@@ -330,6 +330,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "initialize", drawable );
 		assert drawable == this.drawable;
 		javax.media.opengl.GL gl = drawable.getGL();
+		ConformanceTestResults.SINGLETON.updateRenderInformationIfNecessary( gl );
 
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
 

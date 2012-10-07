@@ -53,16 +53,17 @@ public class ShowGraphicsPropertiesView extends org.lgna.croquet.components.Form
 
 	@Override
 	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults conformanceTestResults = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getConformanceTestResults();
-		if( conformanceTestResults != null ) {
-			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "renderer:" ), new org.lgna.croquet.components.Label( conformanceTestResults.getRenderer() ) ) );
-			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "vendor:" ), new org.lgna.croquet.components.Label( conformanceTestResults.getVendor() ) ) );
-
-			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is reporting pick can be hardware accelerated:" ), new org.lgna.croquet.components.Label( Boolean.toString( conformanceTestResults.isReportingPickCanBeHardwareAccelerated() ) ) ) );
-			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is pick actually hardware accelerated:" ), new org.lgna.croquet.components.Label( Boolean.toString( conformanceTestResults.isPickActuallyHardwareAccelerated() ) ) ) );
-			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is pick functioning correctly:" ), new org.lgna.croquet.components.Label( Boolean.toString( conformanceTestResults.isPickFunctioningCorrectly() ) ) ) );
-
-			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "version:" ), new org.lgna.croquet.components.Label( conformanceTestResults.getVersion() ) ) );
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
+		if( sharedDetails != null ) {
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "renderer:" ), new org.lgna.croquet.components.Label( sharedDetails.getRenderer() ) ) );
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "vendor:" ), new org.lgna.croquet.components.Label( sharedDetails.getVendor() ) ) );
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "version:" ), new org.lgna.croquet.components.Label( sharedDetails.getVersion() ) ) );
+		}
+		if( pickDetails != null ) {
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is reporting pick can be hardware accelerated:" ), new org.lgna.croquet.components.Label( Boolean.toString( pickDetails.isReportingPickCanBeHardwareAccelerated() ) ) ) );
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is pick actually hardware accelerated:" ), new org.lgna.croquet.components.Label( Boolean.toString( pickDetails.isPickActuallyHardwareAccelerated() ) ) ) );
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is pick functioning correctly:" ), new org.lgna.croquet.components.Label( Boolean.toString( pickDetails.isPickFunctioningCorrectly() ) ) ) );
 		}
 	}
 }
