@@ -61,15 +61,6 @@ import static javax.media.opengl.GL.GL_VERSION;
  * @author Dennis Cosgrove
  */
 public class ConformanceTestResults {
-	//	private static ConformanceTestResults singleton;
-	//	public static ConformanceTestResults getSingleton() {
-	//		if( singleton != null ) {
-	//			//pass
-	//		} else {
-	//			ConformanceTestResults.singleton = new ConformanceTestResults(); 
-	//		}
-	//		return ConformanceTestResults.singleton;
-	//	}
 	private static final long FISHY_PICK_VALUE = ( PickContext.MAX_UNSIGNED_INTEGER / 2 ) + 1;
 
 	private static long convertZValueToLong( int zValue ) {
@@ -84,37 +75,19 @@ public class ConformanceTestResults {
 		return zFront;
 	}
 
-	private String version;
-	private String vendor;
-	private String renderer;
-	private String[] extensions;
+	private final String version;
+	private final String vendor;
+	private final String renderer;
+	private final String[] extensions;
 
-	private boolean isPickFunctioningCorrectly;
-	private boolean isValid;
+	private final boolean isReportingPickCanBeHardwareAccelerated;
+	private final boolean isPickActuallyHardwareAccelerated;
+	private final boolean isPickFunctioningCorrectly;
+	private final boolean isValid;
 
-	private ConformanceTestResults() {
-		javax.media.opengl.GLDrawableFactory factory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if( factory.canCreateGLPbuffer() ) {
-			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities();
-			javax.media.opengl.GLPbuffer glPbuffer = factory.createGLPbuffer( glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
-			//todo: jogl2
-			//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getDesktopFactory();
-			//		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() ) ) {
-			//			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-			//			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities( glProfile );
-			//			javax.media.opengl.GLPbuffer glPbuffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
-
-			javax.media.opengl.GLContext glContext = glPbuffer.getContext();
-			glContext.makeCurrent();
-			inititialize( glPbuffer.getGL() );
-		}
-	}
-
-	public ConformanceTestResults( javax.media.opengl.GL gl ) {
-		inititialize( gl );
-	}
-
-	private void inititialize( javax.media.opengl.GL gl ) {
+	public ConformanceTestResults( boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated, javax.media.opengl.GL gl ) {
+		this.isReportingPickCanBeHardwareAccelerated = isReportingPickCanBeHardwareAccelerated;
+		this.isPickActuallyHardwareAccelerated = isPickActuallyHardwareAccelerated;
 		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer();
 		timer.start();
 		timer.mark( gl );
@@ -181,6 +154,7 @@ public class ConformanceTestResults {
 		selectionAsIntBuffer.rewind();
 		int length = gl.glRenderMode( GL_RENDER );
 
+		boolean isFunctioning = false;
 		if( length == 1 ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println("length", length);
 			int nameCount = selectionAsIntBuffer.get( 0 );
@@ -209,7 +183,7 @@ public class ConformanceTestResults {
 				if( nameCount == 1 ) {
 					int key = selectionAsIntBuffer.get( 3 );
 					if( key == KEY ) {
-						this.isPickFunctioningCorrectly = true;
+						isFunctioning = true;
 						//						edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: remove setting isPickFunctioningCorrectly = false");
 						//						this.isPickFunctioningCorrectly = false;
 					}
@@ -218,7 +192,16 @@ public class ConformanceTestResults {
 		}
 		timer.mark( "processed" );
 		//timer.stopAndPrintResults();
+		this.isPickFunctioningCorrectly = isFunctioning;
 		this.isValid = true;
+	}
+
+	public boolean isReportingPickCanBeHardwareAccelerated() {
+		return this.isReportingPickCanBeHardwareAccelerated;
+	}
+
+	public boolean isPickActuallyHardwareAccelerated() {
+		return this.isPickActuallyHardwareAccelerated;
 	}
 
 	public boolean isValid() {
@@ -243,17 +226,5 @@ public class ConformanceTestResults {
 
 	public String[] getExtensions() {
 		return this.extensions;
-	}
-
-	public static void main( String[] args ) {
-		//ConformanceTestResults conformanceTestResults = ConformanceTestResults.getSingleton();
-		ConformanceTestResults conformanceTestResults = new ConformanceTestResults();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isValid:", conformanceTestResults.isValid() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isPickFunctioningCorrectly:", conformanceTestResults.isPickFunctioningCorrectly() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "version:", conformanceTestResults.getVersion() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "vendor:", conformanceTestResults.getVendor() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "renderer:", conformanceTestResults.getRenderer() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "extensions:", conformanceTestResults.getExtensions() );
-		System.exit( 0 );
 	}
 }

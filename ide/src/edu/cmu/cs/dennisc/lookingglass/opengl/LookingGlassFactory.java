@@ -459,4 +459,8 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		}
 		return height;
 	}
+
+	public static ConformanceTestResults getConformanceTestResults() {
+		return Picker.getConformanceTestResults();
+	}
 }

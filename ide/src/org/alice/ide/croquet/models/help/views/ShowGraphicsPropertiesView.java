@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,43 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.help.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HelpMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.help.HelpComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.help.ReportBugComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.SuggestImprovementComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.RequestNewFeatureComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.warning.WarningDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ShowSystemPropertiesComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.ShowGraphicsPropertiesComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.help.BrowseReleaseNotesOperation.getInstance().getMenuItemPrepModel()
-				);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			list.add( org.alice.stageide.about.AboutComposite.getInstance().getOperation().getMenuItemPrepModel() );
+public class ShowGraphicsPropertiesView extends org.lgna.croquet.components.FormPanel {
+	public ShowGraphicsPropertiesView( org.alice.ide.croquet.models.help.ShowGraphicsPropertiesComposite composite ) {
+		super( composite );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+	}
+
+	@Override
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults conformanceTestResults = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getConformanceTestResults();
+		if( conformanceTestResults != null ) {
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "renderer:" ), new org.lgna.croquet.components.Label( conformanceTestResults.getRenderer() ) ) );
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "vendor:" ), new org.lgna.croquet.components.Label( conformanceTestResults.getVendor() ) ) );
+
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is reporting pick can be hardware accelerated:" ), new org.lgna.croquet.components.Label( Boolean.toString( conformanceTestResults.isReportingPickCanBeHardwareAccelerated() ) ) ) );
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is pick actually hardware accelerated:" ), new org.lgna.croquet.components.Label( Boolean.toString( conformanceTestResults.isPickActuallyHardwareAccelerated() ) ) ) );
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is pick functioning correctly:" ), new org.lgna.croquet.components.Label( Boolean.toString( conformanceTestResults.isPickFunctioningCorrectly() ) ) ) );
+
+			rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "version:" ), new org.lgna.croquet.components.Label( conformanceTestResults.getVersion() ) ) );
 		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
-	}
-
-	private static class SingletonHolder {
-		private static HelpMenuModel instance = new HelpMenuModel();
-	}
-
-	public static HelpMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private HelpMenuModel() {
-		super( java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), createMenuItemPrepModels() );
 	}
 }
