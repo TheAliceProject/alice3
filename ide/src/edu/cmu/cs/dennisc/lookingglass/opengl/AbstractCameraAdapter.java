@@ -125,7 +125,7 @@ public abstract class AbstractCameraAdapter<E extends edu.cmu.cs.dennisc.scenegr
 		}
 	}
 
-	public void performPick( PickContext pc, PickParameters pickParameters, java.awt.Rectangle actualViewport, ConformanceTestResults conformanceTestResults ) {
+	public void performPick( PickContext pc, PickParameters pickParameters, java.awt.Rectangle actualViewport ) {
 		SceneAdapter sceneAdapter = getSceneAdapter();
 		if( sceneAdapter != null ) {
 
@@ -144,7 +144,7 @@ public abstract class AbstractCameraAdapter<E extends edu.cmu.cs.dennisc.scenegr
 
 			setupProjection( pc, actualViewport );
 
-			pc.pickScene( this, sceneAdapter, pickParameters, conformanceTestResults );
+			pc.pickScene( this, sceneAdapter, pickParameters );
 		}
 	}
 
@@ -157,7 +157,7 @@ public abstract class AbstractCameraAdapter<E extends edu.cmu.cs.dennisc.scenegr
 	}
 
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+	public void pick( PickContext pc, PickParameters pickParameters ) {
 	}
 
 	@Override

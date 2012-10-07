@@ -217,7 +217,7 @@ public class JointedModelVisualizationAdapter extends edu.cmu.cs.dennisc.looking
 	}
 
 	@Override
-	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters, edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults conformanceTestResults ) {
+	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters ) {
 		this.pushOffset( pc.gl );
 		org.lgna.story.implementation.JointedModelImp implementation = this.m_element.getImplementation();
 		pc.gl.glPushName( -1 ); // visual
