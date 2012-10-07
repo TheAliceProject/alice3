@@ -232,8 +232,18 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 	@Override
 	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 		if( isActuallyShowing() && ( isEthereal() == false ) ) {
+			boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired();
 
-			boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired() || ( conformanceTestResults.isPickFunctioningCorrectly() == false );
+			if( isSubElementActuallyRequired ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
+				if( pickDetails != null ) {
+					isSubElementActuallyRequired = pickDetails.isPickFunctioningCorrectly() == false;
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+				}
+			}
 
 			if( m_isScaleIdentity ) {
 				//pass

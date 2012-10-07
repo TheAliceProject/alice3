@@ -60,200 +60,209 @@ import static javax.media.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 /**
  * @author Dennis Cosgrove
  */
-public class ConformanceTestResults {
-	//	private static ConformanceTestResults singleton;
-	//	public static ConformanceTestResults getSingleton() {
-	//		if( singleton != null ) {
-	//			//pass
-	//		} else {
-	//			ConformanceTestResults.singleton = new ConformanceTestResults(); 
-	//		}
-	//		return ConformanceTestResults.singleton;
-	//	}
-	private static final long FISHY_PICK_VALUE = ( PickContext.MAX_UNSIGNED_INTEGER / 2 ) + 1;
+public enum ConformanceTestResults {
+	SINGLETON;
 
-	private static long convertZValueToLong( int zValue ) {
-		long rv = zValue;
-		rv &= PickContext.MAX_UNSIGNED_INTEGER;
-		return rv;
-	}
+	public static class SharedDetails {
+		private final String version;
+		private final String vendor;
+		private final String renderer;
+		private final String[] extensions;
 
-	private static float convertZValueToFloat( long zValue ) {
-		float zFront = (float)zValue;
-		zFront /= (float)PickContext.MAX_UNSIGNED_INTEGER;
-		return zFront;
-	}
+		private SharedDetails( javax.media.opengl.GL gl ) {
+			this.version = gl.glGetString( GL_VERSION );
+			this.vendor = gl.glGetString( GL_VENDOR );
+			this.renderer = gl.glGetString( GL_RENDERER );
 
-	private String version;
-	private String vendor;
-	private String renderer;
-	private String[] extensions;
+			String extensionsText = gl.glGetString( GL_EXTENSIONS );
+			if( extensionsText != null ) {
+				this.extensions = extensionsText.split( " " );
+			} else {
+				this.extensions = new String[] {};
+			}
+		}
 
-	private boolean isPickFunctioningCorrectly;
-	private boolean isValid;
+		public String getVersion() {
+			return this.version;
+		}
 
-	private ConformanceTestResults() {
-		//javax.media.opengl.GLDrawableFactory factory = javax.media.opengl.GLDrawableFactory.getFactory();
-		//jogl1
-		//if( factory.canCreateGLPbuffer() ) {
-		//javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities();
-		//javax.media.opengl.GLPbuffer glPbuffer = factory.createGLPbuffer( glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getDesktopFactory();
-		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() ) ) {
-			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-			javax.media.opengl.GLCapabilities glDesiredCapabilities = new javax.media.opengl.GLCapabilities( glProfile );
-			javax.media.opengl.GLPbuffer glPbuffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glDesiredCapabilities, new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
+		public String getVendor() {
+			return this.vendor;
+		}
 
-			javax.media.opengl.GLContext glContext = glPbuffer.getContext();
-			glContext.makeCurrent();
-			inititialize( glPbuffer.getGL().getGL2() );
+		public String getRenderer() {
+			return this.renderer;
+		}
+
+		public String[] getExtensions() {
+			return this.extensions;
 		}
 	}
 
-	public ConformanceTestResults( javax.media.opengl.GL2 gl ) {
-		inititialize( gl );
-	}
+	public static class PickDetails {
+		private static final long FISHY_PICK_VALUE = ( PickContext.MAX_UNSIGNED_INTEGER / 2 ) + 1;
 
-	private void inititialize( javax.media.opengl.GL2 gl ) {
-		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer();
-		timer.start();
-		timer.mark( gl );
-
-		this.version = gl.glGetString( GL_VERSION );
-		this.vendor = gl.glGetString( GL_VENDOR );
-		this.renderer = gl.glGetString( GL_RENDERER );
-
-		String extensionsText = gl.glGetString( GL_EXTENSIONS );
-		if( extensionsText != null ) {
-			this.extensions = extensionsText.split( " " );
-		} else {
-			this.extensions = new String[] {};
+		private static long convertZValueToLong( int zValue ) {
+			long rv = zValue;
+			rv &= PickContext.MAX_UNSIGNED_INTEGER;
+			return rv;
 		}
 
-		//int n = GetUtilities.getInteger(gl, GL_NUM_EXTENSIONS);
+		private static float convertZValueToFloat( long zValue ) {
+			float zFront = (float)zValue;
+			zFront /= (float)PickContext.MAX_UNSIGNED_INTEGER;
+			return zFront;
+		}
 
-		final int SELECTION_CAPACITY = 256;
-		final int SIZEOF_INT = 4;
-		java.nio.ByteBuffer byteBuffer = java.nio.ByteBuffer.allocateDirect( SIZEOF_INT * SELECTION_CAPACITY );
-		byteBuffer.order( java.nio.ByteOrder.nativeOrder() );
-		java.nio.IntBuffer selectionAsIntBuffer = byteBuffer.asIntBuffer();
+		private final boolean isReportingPickCanBeHardwareAccelerated;
+		private final boolean isPickActuallyHardwareAccelerated;
+		private final boolean isPickFunctioningCorrectly;
 
-		final float XY = 2.0f;
-		final float Z = 0.5f;
-		final int KEY = 11235;
+		private PickDetails( boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated, javax.media.opengl.GL2 gl ) {
+			this.isReportingPickCanBeHardwareAccelerated = isReportingPickCanBeHardwareAccelerated;
+			this.isPickActuallyHardwareAccelerated = isPickActuallyHardwareAccelerated;
 
-		gl.glSelectBuffer( SELECTION_CAPACITY, selectionAsIntBuffer );
-		gl.glRenderMode( GL_SELECT );
+			//int n = GetUtilities.getInteger(gl, GL_NUM_EXTENSIONS);
 
-		gl.glClearDepth( 1.0f );
-		gl.glDepthFunc( GL_LEQUAL );
-		gl.glEnable( GL_DEPTH_TEST );
+			final int SELECTION_CAPACITY = 256;
+			final int SIZEOF_INT = 4;
+			java.nio.ByteBuffer byteBuffer = java.nio.ByteBuffer.allocateDirect( SIZEOF_INT * SELECTION_CAPACITY );
+			byteBuffer.order( java.nio.ByteOrder.nativeOrder() );
+			java.nio.IntBuffer selectionAsIntBuffer = byteBuffer.asIntBuffer();
 
-		gl.glDisable( GL_CULL_FACE );
+			final float XY = 2.0f;
+			final float Z = 0.5f;
+			final int KEY = 11235;
 
-		gl.glClear( GL_DEPTH_BUFFER_BIT );
-		gl.glInitNames();
+			gl.glSelectBuffer( SELECTION_CAPACITY, selectionAsIntBuffer );
+			gl.glRenderMode( GL_SELECT );
 
-		gl.glMatrixMode( GL_PROJECTION );
-		gl.glLoadIdentity();
-		gl.glOrtho( -1, +1, -1, +1, -1, +1 );
-		gl.glViewport( 0, 0, 1, 1 );
+			gl.glClearDepth( 1.0f );
+			gl.glDepthFunc( GL_LEQUAL );
+			gl.glEnable( GL_DEPTH_TEST );
 
-		gl.glLoadIdentity();
-		gl.glMatrixMode( GL_MODELVIEW );
-		gl.glLoadIdentity();
+			gl.glDisable( GL_CULL_FACE );
 
-		gl.glPushName( KEY );
+			gl.glClear( GL_DEPTH_BUFFER_BIT );
+			gl.glInitNames();
 
-		gl.glBegin( GL_QUAD_STRIP );
-		gl.glVertex3f( -XY, -XY, Z );
-		gl.glVertex3f( +XY, -XY, Z );
-		gl.glVertex3f( +XY, +XY, Z );
-		gl.glVertex3f( -XY, +XY, Z );
-		gl.glEnd();
+			gl.glMatrixMode( GL_PROJECTION );
+			gl.glLoadIdentity();
+			gl.glOrtho( -1, +1, -1, +1, -1, +1 );
+			gl.glViewport( 0, 0, 1, 1 );
 
-		gl.glFlush();
+			gl.glLoadIdentity();
+			gl.glMatrixMode( GL_MODELVIEW );
+			gl.glLoadIdentity();
 
-		gl.glPopName();
+			gl.glPushName( KEY );
 
-		timer.mark( "picked" );
+			gl.glBegin( GL_QUAD_STRIP );
+			gl.glVertex3f( -XY, -XY, Z );
+			gl.glVertex3f( +XY, -XY, Z );
+			gl.glVertex3f( +XY, +XY, Z );
+			gl.glVertex3f( -XY, +XY, Z );
+			gl.glEnd();
 
-		selectionAsIntBuffer.rewind();
-		int length = gl.glRenderMode( GL_RENDER );
+			gl.glFlush();
 
-		if( length == 1 ) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println("length", length);
-			int nameCount = selectionAsIntBuffer.get( 0 );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println("nameCount", nameCount);
+			gl.glPopName();
 
-			int zFrontAsInt = selectionAsIntBuffer.get( 1 );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsInt", "0x"+Integer.toHexString(zFrontAsInt));
-			long zFrontAsLong = convertZValueToLong( zFrontAsInt );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsLong", "0x"+Long.toHexString(zFrontAsLong));
+			selectionAsIntBuffer.rewind();
+			int length = gl.glRenderMode( GL_RENDER );
 
-			if( ( zFrontAsLong != FISHY_PICK_VALUE ) && ( zFrontAsLong != PickContext.MAX_UNSIGNED_INTEGER ) && ( zFrontAsLong != 0 ) ) {
-				//float zFront = convertZValueToFloat( zFrontAsLong );;
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFront", zFront);
+			boolean isFunctioning = false;
+			if( length == 1 ) {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println("length", length);
+				int nameCount = selectionAsIntBuffer.get( 0 );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println("nameCount", nameCount);
 
-				boolean IS_BACK_VALUE_OF_CONCERN = false;
-				if( IS_BACK_VALUE_OF_CONCERN ) {
-					int zBackAsInt = selectionAsIntBuffer.get( 2 );
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsInt", "0x"+Integer.toHexString(zBackAsInt));
-					long zBackAsLong = convertZValueToLong( zBackAsInt );
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsLong", "0x"+Long.toHexString(zBackAsLong));
-					float zBack = convertZValueToFloat( zBackAsLong );
-					;
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
-				}
+				int zFrontAsInt = selectionAsIntBuffer.get( 1 );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsInt", "0x"+Integer.toHexString(zFrontAsInt));
+				long zFrontAsLong = convertZValueToLong( zFrontAsInt );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsLong", "0x"+Long.toHexString(zFrontAsLong));
 
-				if( nameCount == 1 ) {
-					int key = selectionAsIntBuffer.get( 3 );
-					if( key == KEY ) {
-						this.isPickFunctioningCorrectly = true;
-						//						edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: remove setting isPickFunctioningCorrectly = false");
-						//						this.isPickFunctioningCorrectly = false;
+				if( ( zFrontAsLong != FISHY_PICK_VALUE ) && ( zFrontAsLong != PickContext.MAX_UNSIGNED_INTEGER ) && ( zFrontAsLong != 0 ) ) {
+					//float zFront = convertZValueToFloat( zFrontAsLong );;
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFront", zFront);
+
+					boolean IS_BACK_VALUE_OF_CONCERN = false;
+					if( IS_BACK_VALUE_OF_CONCERN ) {
+						int zBackAsInt = selectionAsIntBuffer.get( 2 );
+						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsInt", "0x"+Integer.toHexString(zBackAsInt));
+						long zBackAsLong = convertZValueToLong( zBackAsInt );
+						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsLong", "0x"+Long.toHexString(zBackAsLong));
+						float zBack = convertZValueToFloat( zBackAsLong );
+						;
+						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
+					}
+
+					if( nameCount == 1 ) {
+						int key = selectionAsIntBuffer.get( 3 );
+						if( key == KEY ) {
+							isFunctioning = true;
+							//						edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: remove setting isPickFunctioningCorrectly = false");
+							//						this.isPickFunctioningCorrectly = false;
+						}
 					}
 				}
 			}
+			this.isPickFunctioningCorrectly = isFunctioning;
+
+			//			if( this.isPickFunctioningCorrectly ) {
+			//				//pass
+			//			} else {
+			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl isHardwareAccelerated:", conformanceTestResults.isPickFunctioningCorrectly() );
+			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl isPickFunctioningCorrectly:", conformanceTestResults.isPickFunctioningCorrectly() );
+			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl version:", conformanceTestResults.getVersion() );
+			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl vendor:", conformanceTestResults.getVendor() );
+			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl renderer:", conformanceTestResults.getRenderer() );
+			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "opengl extensions:", conformanceTestResults.getExtensions() );
+			//			}
 		}
-		timer.mark( "processed" );
-		//timer.stopAndPrintResults();
-		this.isValid = true;
+
+		public boolean isReportingPickCanBeHardwareAccelerated() {
+			return this.isReportingPickCanBeHardwareAccelerated;
+		}
+
+		public boolean isPickActuallyHardwareAccelerated() {
+			return this.isPickActuallyHardwareAccelerated;
+		}
+
+		public boolean isPickFunctioningCorrectly() {
+			return this.isPickFunctioningCorrectly;
+		}
 	}
 
-	public boolean isValid() {
-		return this.isValid;
+	private SharedDetails sharedDetails;
+	private PickDetails pickDetails;
+
+	private void updateSharedDetailsfNecessary( javax.media.opengl.GL gl ) {
+		if( this.sharedDetails != null ) {
+			//pass
+		} else {
+			this.sharedDetails = new SharedDetails( gl );
+		}
 	}
 
-	public boolean isPickFunctioningCorrectly() {
-		return this.isPickFunctioningCorrectly;
+	public void updateRenderInformationIfNecessary( javax.media.opengl.GL gl ) {
+		this.updateSharedDetailsfNecessary( gl );
 	}
 
-	public String getVersion() {
-		return this.version;
+	public void updatePickInformationIfNecessary( boolean isReportingPickCanBeHardwareAccelerated, boolean isPickActuallyHardwareAccelerated, javax.media.opengl.GL2 gl ) {
+		this.updateSharedDetailsfNecessary( gl );
+		if( this.pickDetails != null ) {
+			//pass
+		} else {
+			this.pickDetails = new PickDetails( isReportingPickCanBeHardwareAccelerated, isPickActuallyHardwareAccelerated, gl );
+		}
 	}
 
-	public String getVendor() {
-		return this.vendor;
+	public SharedDetails getSharedDetails() {
+		return this.sharedDetails;
 	}
 
-	public String getRenderer() {
-		return this.renderer;
-	}
-
-	public String[] getExtensions() {
-		return this.extensions;
-	}
-
-	public static void main( String[] args ) {
-		//ConformanceTestResults conformanceTestResults = ConformanceTestResults.getSingleton();
-		ConformanceTestResults conformanceTestResults = new ConformanceTestResults();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isValid:", conformanceTestResults.isValid() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isPickFunctioningCorrectly:", conformanceTestResults.isPickFunctioningCorrectly() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "version:", conformanceTestResults.getVersion() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "vendor:", conformanceTestResults.getVendor() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "renderer:", conformanceTestResults.getRenderer() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "extensions:", conformanceTestResults.getExtensions() );
-		System.exit( 0 );
+	public PickDetails getPickDetails() {
+		return this.pickDetails;
 	}
 }
