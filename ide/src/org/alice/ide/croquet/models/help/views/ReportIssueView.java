@@ -78,7 +78,8 @@ public class ReportIssueView extends BorderPanel {
 
 	public ReportIssueView( final ReportIssueComposite reportIssueComposite ) {
 		final org.lgna.croquet.components.TextArea environmentTextArea = reportIssueComposite.getEnvironmentState().createTextArea();
-		environmentTextArea.getAwtComponent().setEditable( false );
+		//environmentTextArea.getAwtComponent().setEditable( false );
+		//environmentTextArea.setToolTipText( edu.cmu.cs.dennisc.toolkit.issue.IssueReportPane.getEnvironmentShortDescription() );
 		FormPanel centerComponent = new FormPanel() {
 			@Override
 			protected void appendRows( List<LabeledFormRow> rows ) {

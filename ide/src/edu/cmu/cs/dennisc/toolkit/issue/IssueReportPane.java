@@ -52,14 +52,34 @@ import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
 public abstract class IssueReportPane extends javax.swing.JPanel implements ReportGenerator {
 	protected abstract ReportSubmissionConfiguration getReportSubmissionConfiguration();
 
-	public Iterable<String> getSystemPropertiesForEnvironmentField() {
-		java.util.List<String> rv = new java.util.LinkedList<String>();
-		rv.add( "java.version" );
-		rv.add( "os.name" );
-		rv.add( "os.arch" );
-		rv.add( "os.version" );
-		rv.add( "sun.arch.data.model" );
-		return rv;
+	private static final java.util.List<String> systemPropertiesForEnnvironmentField = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "java.version", "os.name", "os.arch" ) );
+
+	public static java.util.List<String> getSystemPropertiesForEnvironmentField() {
+		return systemPropertiesForEnnvironmentField;
+	}
+
+	public static final String getEnvironmentLongDescription() {
+		StringBuilder sb = new StringBuilder();
+		String intersticial = "";
+		for( String propertyName : systemPropertiesForEnnvironmentField ) {
+			sb.append( intersticial );
+			sb.append( propertyName );
+			sb.append( ": " );
+			sb.append( System.getProperty( propertyName ) );
+			intersticial = "\n";
+		}
+		return sb.toString();
+	}
+
+	public static final String getEnvironmentShortDescription() {
+		StringBuilder sb = new StringBuilder();
+		String intersticial = "";
+		for( String propertyName : systemPropertiesForEnnvironmentField ) {
+			sb.append( intersticial );
+			sb.append( System.getProperty( propertyName ) );
+			intersticial = ";";
+		}
+		return sb.toString();
 	}
 
 	class SubmitAction extends javax.swing.AbstractAction {

@@ -257,7 +257,7 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 
 	@Override
 	protected String getEnvironmentText() {
-		return null;
+		return getEnvironmentShortDescription();
 	}
 
 	@Override
