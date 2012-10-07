@@ -230,7 +230,7 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 	}
 
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+	public void pick( PickContext pc, PickParameters pickParameters ) {
 		if( isActuallyShowing() && ( isEthereal() == false ) ) {
 			boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired();
 

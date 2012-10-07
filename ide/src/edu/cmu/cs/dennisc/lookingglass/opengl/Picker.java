@@ -258,7 +258,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass = pickParameters.getLookingGlass();
 				java.awt.Rectangle actualViewport = lookingGlass.getActualViewport( sgCamera );
 				this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
-				cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport, ConformanceTestResults.SINGLETON );
+				cameraAdapter.performPick( this.pickContext, pickParameters, actualViewport );
 				this.pickContext.gl.glFlush();
 
 				this.selectionAsIntBuffer.rewind();
