@@ -170,7 +170,7 @@ public class BlockStatementGenerator {
 						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
 					}
 				} else {
-					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: handle statement " + statement );
+					throw new UnsupportedNodeGenerationException( statement );
 				}
 				if( methodInvocation != null ) {
 					org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade moreCascade = org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( methodInvocation );

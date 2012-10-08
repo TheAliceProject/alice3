@@ -107,8 +107,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 				org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation statementInsertOperation = (org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation)dropModel;
 				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, statementInsertOperation, dropTrigger, null );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropModel );
-				//			assert false : dropModel;
+				throw new org.lgna.cheshire.ast.UnsupportedNodeGenerationException( statement );
 			}
 			org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
 			if( completionStep != null ) {

@@ -132,6 +132,11 @@ public class ExpressionFillInGenerator {
 		} else {
 			fillIn = null;
 		}
+		if( fillIn != null ) {
+			//pass
+		} else {
+			throw new UnsupportedNodeGenerationException( expression );
+		}
 		return fillIn;
 	}
 }
