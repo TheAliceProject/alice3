@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,18 +45,19 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface OperationOwningComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
-	public OwnedByCompositeOperation getOperation();
+public class UnsupportedGenerationException extends Exception {
+	public UnsupportedGenerationException() {
+	}
 
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	public UnsupportedGenerationException( String message ) {
+		super( message );
+	}
 
-	public boolean isSubTransactionHistoryRequired();
+	public UnsupportedGenerationException( String message, Throwable cause ) {
+		super( message, cause );
+	}
 
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
-
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException;
-
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException;
-
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
+	public UnsupportedGenerationException( Throwable cause ) {
+		super( cause );
+	}
 }

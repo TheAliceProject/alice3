@@ -71,7 +71,7 @@ public class BlockStatementGenerator {
 		return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( nextBlockStatement, nextIndex );
 	}
 
-	public static void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) {
+	public static void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) throws org.lgna.croquet.UnsupportedGenerationException {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
 			if( statement.isEnabled.getValue() ) {
 				StatementGenerator statementGenerator;
