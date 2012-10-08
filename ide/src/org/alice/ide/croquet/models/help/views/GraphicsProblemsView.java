@@ -40,42 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.croquet.models.help.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.BrowserOperation {
-	private static class SingletonHolder {
-		private static SearchForGraphicsDriversOperation instance = new SearchForGraphicsDriversOperation();
-	}
-
-	public static SearchForGraphicsDriversOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SearchForGraphicsDriversOperation() {
-		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ) );
-	}
-
-	@Override
-	protected java.net.URL getUrl() {
+public class GraphicsProblemsView extends org.lgna.croquet.components.PageAxisPanel {
+	private static String getSystemInformation() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "http://www.google.com/search?q=+graphics+driver" );
+		sb.append( "System information: " );
+		sb.append( System.getProperty( "os.name" ) );
+		sb.append( " " );
+		sb.append( System.getProperty( "sun.arch.data.model" ) );
+		sb.append( "-bit" );
+		return sb.toString();
+	}
+
+	private static String getGraphicsInformation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Graphics information: " );
 		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
 		if( sharedDetails != null ) {
-			String renderer = sharedDetails.getRenderer();
-			if( renderer != null ) {
-				sb.append( "+" );
-				sb.append( renderer.replaceAll( " ", "+" ) );
-			}
+			sb.append( sharedDetails.getRenderer() );
+		} else {
+			sb.append( "unknown" );
 		}
-		String spec = sb.toString();
-		this.setToolTipText( spec );
-		try {
-			return new java.net.URL( spec );
-		} catch( java.net.MalformedURLException murle ) {
-			throw new RuntimeException( spec, murle );
-		}
+		return sb.toString();
+	}
+
+	public GraphicsProblemsView() {
+		this.addComponent( new org.lgna.croquet.components.Label( "NOTE: If you are having display problems you may need to update your video driver.", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+		this.addComponent( new org.lgna.croquet.components.Label( getSystemInformation() ) );
+		this.addComponent( new org.lgna.croquet.components.Label( getGraphicsInformation() ) );
+		this.addComponent( new org.lgna.croquet.components.Label( "Where to go for help:" ) );
+		this.addComponent( org.alice.ide.croquet.models.help.SearchForGraphicsDriversOperation.getInstance().createHyperlink() );
+		this.addComponent( org.alice.ide.issue.GraphicsDriverHelpOperation.getInstance().createHyperlink() );
 	}
 }

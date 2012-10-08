@@ -40,42 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ShowGraphicsPropertiesComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.ShowGraphicsPropertiesView> {
+public class GraphicsDriverHelpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
 	private static class SingletonHolder {
-		private static ShowGraphicsPropertiesComposite instance = new ShowGraphicsPropertiesComposite();
+		private static GraphicsDriverHelpOperation instance = new GraphicsDriverHelpOperation();
 	}
 
-	public static ShowGraphicsPropertiesComposite getInstance() {
+	public static GraphicsDriverHelpOperation getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.PlainStringValue whereToGoForHelp = this.createStringValue( this.createKey( "whereToGoForHelp" ) );
-
-	private ShowGraphicsPropertiesComposite() {
-		super( java.util.UUID.fromString( "cb7742ba-7de4-4083-aadd-41d640510cab" ), org.lgna.croquet.Application.INFORMATION_GROUP );
-	}
-
-	@Override
-	protected org.alice.ide.croquet.models.help.views.ShowGraphicsPropertiesView createView() {
-		return new org.alice.ide.croquet.models.help.views.ShowGraphicsPropertiesView( this );
-	}
-
-	public org.lgna.croquet.PlainStringValue getWhereToGoForHelp() {
-		return this.whereToGoForHelp;
-	}
-
-	public org.lgna.croquet.Operation getDriverSearchOperation() {
-		return SearchForGraphicsDriversOperation.getInstance();
-	}
-
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
-		ShowGraphicsPropertiesComposite.getInstance().getOperation().fire();
-		System.exit( 0 );
+	private GraphicsDriverHelpOperation() {
+		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), "http://help.alice.org/w/page/54959364/Updating%20Video%20Drivers" );
 	}
 }

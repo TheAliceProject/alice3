@@ -40,13 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DisplayDriverHelpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	public DisplayDriverHelpOperation() {
-		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), "http://help.alice.org/w/page/54959364/Updating%20Video%20Drivers" );
+public class GraphicsPropertiesComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.GraphicsPropertiesView> {
+	private static class SingletonHolder {
+		private static GraphicsPropertiesComposite instance = new GraphicsPropertiesComposite();
+	}
+
+	public static GraphicsPropertiesComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private GraphicsPropertiesComposite() {
+		super( java.util.UUID.fromString( "cb7742ba-7de4-4083-aadd-41d640510cab" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	}
+
+	@Override
+	protected org.alice.ide.croquet.models.help.views.GraphicsPropertiesView createView() {
+		return new org.alice.ide.croquet.models.help.views.GraphicsPropertiesView( this );
+	}
+
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
+		GraphicsPropertiesComposite.getInstance().getOperation().fire();
+		System.exit( 0 );
 	}
 }

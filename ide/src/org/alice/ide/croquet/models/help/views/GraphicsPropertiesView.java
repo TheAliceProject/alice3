@@ -45,30 +45,49 @@ package org.alice.ide.croquet.models.help.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ShowGraphicsPropertiesView extends org.lgna.croquet.components.PageAxisPanel {
-	public ShowGraphicsPropertiesView( org.alice.ide.croquet.models.help.ShowGraphicsPropertiesComposite composite ) {
+public class GraphicsPropertiesView extends org.lgna.croquet.components.PageAxisPanel {
+	public GraphicsPropertiesView( org.alice.ide.croquet.models.help.GraphicsPropertiesComposite composite ) {
 		super( composite );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
 		this.addComponent( new org.lgna.croquet.components.FormPanel() {
+			private org.lgna.croquet.components.LabeledFormRow createRow( String a, String b ) {
+				return org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( a ), new org.lgna.croquet.components.Label( b ) );
+			}
+
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
 				edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
-				edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
 				if( sharedDetails != null ) {
-					rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "renderer:" ), new org.lgna.croquet.components.Label( sharedDetails.getRenderer() ) ) );
-					rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "vendor:" ), new org.lgna.croquet.components.Label( sharedDetails.getVendor() ) ) );
-					rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "version:" ), new org.lgna.croquet.components.Label( sharedDetails.getVersion() ) ) );
-				}
-				if( pickDetails != null ) {
-					rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is reporting pick can be hardware accelerated:" ), new org.lgna.croquet.components.Label( Boolean.toString( pickDetails.isReportingPickCanBeHardwareAccelerated() ) ) ) );
-					rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is pick actually hardware accelerated:" ), new org.lgna.croquet.components.Label( Boolean.toString( pickDetails.isPickActuallyHardwareAccelerated() ) ) ) );
-					rows.add( org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( "is pick functioning correctly:" ), new org.lgna.croquet.components.Label( Boolean.toString( pickDetails.isPickFunctioningCorrectly() ) ) ) );
+					rows.add( this.createRow( "renderer:", sharedDetails.getRenderer() ) );
+					rows.add( this.createRow( "vendor:", sharedDetails.getVendor() ) );
+					rows.add( this.createRow( "version:", sharedDetails.getVersion() ) );
 				}
 			}
 		} );
 
-		this.addComponent( composite.getWhereToGoForHelp().createImmutableTextArea() );
-		this.addComponent( composite.getDriverSearchOperation().createHyperlink() );
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
+		StringBuilder sb = new StringBuilder();
+		if( pickDetails != null ) {
+			if( pickDetails.isPickFunctioningCorrectly() ) {
+				sb.append( "Clicking into the scene appears to be functioning correctly" );
+				if( pickDetails.isPickActuallyHardwareAccelerated() ) {
+					sb.append( " in hardware" );
+				} else {
+					sb.append( " in software (updating your video drivers might help)" );
+					if( pickDetails.isReportingPickCanBeHardwareAccelerated() ) {
+						sb.append( "(video card reports hardware support but fails)" );
+					}
+				}
+			} else {
+				sb.append( "Clicking into the scene appears to be suboptimal (updating your video drivers might help)" );
+			}
+		} else {
+			sb.append( "There is no information on clicking into the scene" );
+		}
+		sb.append( "." );
+		this.addComponent( new org.lgna.croquet.components.Label( sb.toString() ) );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
+		this.addComponent( new GraphicsProblemsView() );
 	}
 }

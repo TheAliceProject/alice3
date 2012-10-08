@@ -54,8 +54,6 @@ public class GlExceptionComposite extends org.lgna.croquet.PlainDialogOperationC
 		return SingletonHolder.instance;
 	}
 
-	private final DisplayDriverHelpOperation displayDriverHelpOperation = new DisplayDriverHelpOperation();
-
 	private GlExceptionComposite() {
 		super( java.util.UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 	}
@@ -65,7 +63,7 @@ public class GlExceptionComposite extends org.lgna.croquet.PlainDialogOperationC
 		return new org.alice.ide.issue.views.GlExceptionView( this );
 	}
 
-	public DisplayDriverHelpOperation getDisplayDriverHelpOperation() {
-		return this.displayDriverHelpOperation;
+	public org.lgna.croquet.Operation getDisplayDriverHelpOperation() {
+		return GraphicsDriverHelpOperation.getInstance();
 	}
 }
