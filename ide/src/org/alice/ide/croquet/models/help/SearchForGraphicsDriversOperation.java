@@ -45,37 +45,34 @@ package org.alice.ide.croquet.models.help;
 /**
  * @author Dennis Cosgrove
  */
-public class ShowGraphicsPropertiesComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.ShowGraphicsPropertiesView> {
+public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.BrowserOperation {
 	private static class SingletonHolder {
-		private static ShowGraphicsPropertiesComposite instance = new ShowGraphicsPropertiesComposite();
+		private static SearchForGraphicsDriversOperation instance = new SearchForGraphicsDriversOperation();
 	}
 
-	public static ShowGraphicsPropertiesComposite getInstance() {
+	public static SearchForGraphicsDriversOperation getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.PlainStringValue whereToGoForHelp = this.createStringValue( this.createKey( "whereToGoForHelp" ) );
-
-	private ShowGraphicsPropertiesComposite() {
-		super( java.util.UUID.fromString( "cb7742ba-7de4-4083-aadd-41d640510cab" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+	private SearchForGraphicsDriversOperation() {
+		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ) );
 	}
 
 	@Override
-	protected org.alice.ide.croquet.models.help.views.ShowGraphicsPropertiesView createView() {
-		return new org.alice.ide.croquet.models.help.views.ShowGraphicsPropertiesView( this );
-	}
-
-	public org.lgna.croquet.PlainStringValue getWhereToGoForHelp() {
-		return this.whereToGoForHelp;
-	}
-
-	public org.lgna.croquet.Operation getDriverSearchOperation() {
-		return SearchForGraphicsDriversOperation.getInstance();
-	}
-
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
-		ShowGraphicsPropertiesComposite.getInstance().getOperation().fire();
-		System.exit( 0 );
+	protected java.net.URL getUrl() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "http://www.google.com/search?q=graphics+drivers" );
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		if( sharedDetails != null ) {
+			sb.append( "+" );
+			String renderer = sharedDetails.getRenderer();
+			sb.append( renderer.replaceAll( " ", "+" ) );
+		}
+		String spec = sb.toString();
+		try {
+			return new java.net.URL( spec );
+		} catch( java.net.MalformedURLException murle ) {
+			throw new RuntimeException( spec, murle );
+		}
 	}
 }
