@@ -318,7 +318,7 @@ public class TypeManager {
 	}
 
 	public static java.util.List<org.lgna.project.ast.NamedUserType> getNamedUserTypesFromSuperTypes( java.util.List<org.lgna.project.ast.JavaType> superTypes ) {
-		java.util.ArrayList<org.lgna.project.ast.NamedUserType> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( superTypes.size() );
+		java.util.ArrayList<org.lgna.project.ast.NamedUserType> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( superTypes.size() );
 		for( org.lgna.project.ast.JavaType superType : superTypes ) {
 			rv.add( getNamedUserTypeFromSuperType( superType ) );
 		}
