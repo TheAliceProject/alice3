@@ -60,6 +60,8 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 
 	private Class<T> valueCls;
 
+	private java.util.Map<T, String> mapValueToLocalization;
+
 	private EnumCodec( Class<T> valueCls ) {
 		this.valueCls = valueCls;
 	}
@@ -77,6 +79,37 @@ public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<
 	}
 
 	public final void appendRepresentation( StringBuilder sb, T value ) {
-		sb.append( value );
+		if( value != null ) {
+			if( this.mapValueToLocalization != null ) {
+				//pass
+			} else {
+				this.mapValueToLocalization = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+				String bundleName = this.valueCls.getPackage().getName() + ".croquet";
+				try {
+					java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleName, javax.swing.JComponent.getDefaultLocale() );
+					String clsName = this.valueCls.getSimpleName();
+					for( T enumConstant : this.valueCls.getEnumConstants() ) {
+						String localizationKey = clsName + "." + enumConstant.name();
+						try {
+							String localizationValue = resourceBundle.getString( localizationKey );
+							this.mapValueToLocalization.put( enumConstant, localizationValue );
+						} catch( java.util.MissingResourceException mre ) {
+							//pass
+						}
+					}
+				} catch( java.util.MissingResourceException mre ) {
+					//pass
+				}
+			}
+			String text = this.mapValueToLocalization.get( value );
+			if( text != null ) {
+				//pass
+			} else {
+				text = value.toString();
+			}
+			sb.append( text );
+		} else {
+			sb.append( value );
+		}
 	}
 }

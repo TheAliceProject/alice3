@@ -48,15 +48,18 @@ package org.lgna.croquet.components;
 public class LabeledFormRow implements FormRow {
 	private final Label label;
 	private final org.lgna.croquet.PlainStringValue labelStringValue;
-	private final org.lgna.croquet.components.JComponent<?> component;
+	private final org.lgna.croquet.components.JComponent<?> trailingComponent;
 	private final org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment;
 	private final boolean isFillHorizontal;
 
-	private LabeledFormRow( org.lgna.croquet.components.Label label, org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.components.JComponent<?> component, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
+	private LabeledFormRow( org.lgna.croquet.components.Label label, org.lgna.croquet.PlainStringValue labelStringValue, org.lgna.croquet.components.JComponent<?> trailingComponent, org.lgna.croquet.components.VerticalAlignment labelVerticalAlignment, boolean isFillHorizontal ) {
 		this.label = label;
 		this.labelStringValue = labelStringValue;
-		this.component = component;
+		this.trailingComponent = trailingComponent;
 		this.labelVerticalAlignment = labelVerticalAlignment;
+		if( this.label != null ) {
+			this.label.setVerticalAlignment( this.labelVerticalAlignment );
+		}
 		this.isFillHorizontal = isFillHorizontal;
 	}
 
@@ -87,36 +90,46 @@ public class LabeledFormRow implements FormRow {
 			if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.CENTER ) {
 				return textField;
 			} else {
-				org.lgna.croquet.components.BorderPanel.Constraint constraint;
-				if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.TOP ) {
-					constraint = org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START;
-				} else {
-					constraint = org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END;
-				}
-				org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
-				rv.addComponent( textField, constraint );
-				rv.setMaximumSizeClampedToPreferredSize( true );
-				return rv;
+				//				org.lgna.croquet.components.BorderPanel.Constraint constraint;
+				//				if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.TOP ) {
+				//					constraint = org.lgna.croquet.components.BorderPanel.Constraint.PAGE_START;
+				//				} else {
+				//					constraint = org.lgna.croquet.components.BorderPanel.Constraint.PAGE_END;
+				//				}
+				//				org.lgna.croquet.components.BorderPanel rv = new org.lgna.croquet.components.BorderPanel();
+				//				rv.addComponent( textField, constraint );
+				//				textField.makeStandOut();
+				//				//				textField.setMaximumSizeClampedToPreferredSize( true );
+				//				return rv;
+				return textField;
 			}
 		} else {
 			return new org.lgna.croquet.components.Label();
 		}
 	}
 
-	public org.lgna.croquet.components.JComponent<?>[] createComponentArray() {
-		org.lgna.croquet.components.JComponent<?> trailingComponent;
-		if( this.isFillHorizontal ) {
-			trailingComponent = this.component;
+	public void addComponents( org.lgna.croquet.components.FormPanel formPanel ) {
+		JComponent<?> leadingComponent;
+		if( this.label != null ) {
+			leadingComponent = this.label;
 		} else {
-			trailingComponent = new BorderPanel.Builder()
-					.lineStart( this.component )
-					.build();
+			leadingComponent = this.createImmutableTextField();
+		}
+		StringBuilder sbTrailing = new StringBuilder();
+		if( this.isFillHorizontal ) {
+			sbTrailing.append( "grow, " );
+		}
+		sbTrailing.append( "wrap" );
+
+		StringBuilder sbLeading = new StringBuilder();
+		if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.CENTER ) {
+			//pass
+		} else {
+			sbLeading.append( "aligny " );
+			sbLeading.append( this.labelVerticalAlignment.toString().toLowerCase() );
 		}
 
-		JComponent<?> leadingComponent = this.label != null ? this.label : this.createImmutableTextField();
-		return new org.lgna.croquet.components.JComponent<?>[] {
-				leadingComponent,
-				trailingComponent
-		};
+		formPanel.addComponent( leadingComponent, sbLeading.toString() );
+		formPanel.addComponent( this.trailingComponent, sbTrailing.toString() );
 	}
 }
