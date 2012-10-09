@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.fillerinners;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends ConcatenationFillerInner {
-	public static String[] getLiterals() {
-		return new String[] { "hello" };
+public class UnsupportedGenerationException extends Exception {
+	public UnsupportedGenerationException() {
 	}
 
-	public StringFillerInner() {
-		super( String.class );
+	public UnsupportedGenerationException( String message ) {
+		super( message );
 	}
 
-	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		String[] literals = getLiterals();
-		for( String s : literals ) {
-			items.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( s ) );
-		}
-		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		//rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
-		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		this.addConcatenationItems( items, details, isTop, prevExpression );
+	public UnsupportedGenerationException( String message, Throwable cause ) {
+		super( message, cause );
+	}
+
+	public UnsupportedGenerationException( Throwable cause ) {
+		super( cause );
 	}
 }

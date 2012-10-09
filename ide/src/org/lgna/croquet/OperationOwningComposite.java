@@ -54,9 +54,9 @@ public interface OperationOwningComposite<V extends org.lgna.croquet.components.
 
 	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
 
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit );
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException;
 
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit );
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException;
 
 	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
 }

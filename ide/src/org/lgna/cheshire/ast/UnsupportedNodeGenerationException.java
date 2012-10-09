@@ -40,13 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue;
+package org.lgna.cheshire.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DisplayDriverHelpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	public DisplayDriverHelpOperation() {
-		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), "http://help.alice.org/w/page/54959364/Updating%20Video%20Drivers" );
+public class UnsupportedNodeGenerationException extends org.lgna.croquet.UnsupportedGenerationException {
+	private final org.lgna.project.ast.Node node;
+
+	public UnsupportedNodeGenerationException( org.lgna.project.ast.Node node ) {
+		this.node = node;
+	}
+
+	public org.lgna.project.ast.Node getNode() {
+		return this.node;
 	}
 }

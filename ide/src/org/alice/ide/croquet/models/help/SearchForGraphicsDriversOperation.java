@@ -61,14 +61,17 @@ public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.Bro
 	@Override
 	protected java.net.URL getUrl() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "http://www.google.com/search?q=graphics+drivers" );
+		sb.append( "http://www.google.com/search?q=+graphics+driver" );
 		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
 		if( sharedDetails != null ) {
-			sb.append( "+" );
 			String renderer = sharedDetails.getRenderer();
-			sb.append( renderer.replaceAll( " ", "+" ) );
+			if( renderer != null ) {
+				sb.append( "+" );
+				sb.append( renderer.replaceAll( " ", "+" ) );
+			}
 		}
 		String spec = sb.toString();
+		this.setToolTipText( spec );
 		try {
 			return new java.net.URL( spec );
 		} catch( java.net.MalformedURLException murle ) {

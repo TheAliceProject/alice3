@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.croquet.models.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends ConcatenationFillerInner {
-	public static String[] getLiterals() {
-		return new String[] { "hello" };
+public class GraphicsPropertiesComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.croquet.models.help.views.GraphicsPropertiesView> {
+	private static class SingletonHolder {
+		private static GraphicsPropertiesComposite instance = new GraphicsPropertiesComposite();
 	}
 
-	public StringFillerInner() {
-		super( String.class );
+	public static GraphicsPropertiesComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private GraphicsPropertiesComposite() {
+		super( java.util.UUID.fromString( "cb7742ba-7de4-4083-aadd-41d640510cab" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 	}
 
 	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		String[] literals = getLiterals();
-		for( String s : literals ) {
-			items.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( s ) );
-		}
-		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		//rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
-		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		this.addConcatenationItems( items, details, isTop, prevExpression );
+	protected org.alice.ide.croquet.models.help.views.GraphicsPropertiesView createView() {
+		return new org.alice.ide.croquet.models.help.views.GraphicsPropertiesView( this );
+	}
+
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
+		GraphicsPropertiesComposite.getInstance().getOperation().fire();
+		System.exit( 0 );
 	}
 }

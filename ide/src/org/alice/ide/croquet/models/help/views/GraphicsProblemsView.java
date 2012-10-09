@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.croquet.models.help.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends ConcatenationFillerInner {
-	public static String[] getLiterals() {
-		return new String[] { "hello" };
+public class GraphicsProblemsView extends org.lgna.croquet.components.PageAxisPanel {
+	private static String getSystemInformation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "System information: " );
+		sb.append( System.getProperty( "os.name" ) );
+		sb.append( " " );
+		sb.append( System.getProperty( "sun.arch.data.model" ) );
+		sb.append( "-bit" );
+		return sb.toString();
 	}
 
-	public StringFillerInner() {
-		super( String.class );
-	}
-
-	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		String[] literals = getLiterals();
-		for( String s : literals ) {
-			items.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( s ) );
+	private static String getGraphicsInformation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Graphics information: " );
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		if( sharedDetails != null ) {
+			sb.append( sharedDetails.getRenderer() );
+		} else {
+			sb.append( "unknown" );
 		}
-		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		//rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
-		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );
-		this.addConcatenationItems( items, details, isTop, prevExpression );
+		return sb.toString();
+	}
+
+	public GraphicsProblemsView() {
+		this.addComponent( new org.lgna.croquet.components.Label( "NOTE: If you are having display problems you may need to update your video driver.", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ) );
+		this.addComponent( new org.lgna.croquet.components.Label( getSystemInformation() ) );
+		this.addComponent( new org.lgna.croquet.components.Label( getGraphicsInformation() ) );
+		this.addComponent( new org.lgna.croquet.components.Label( "Where to go for help:" ) );
+		this.addComponent( org.alice.ide.croquet.models.help.SearchForGraphicsDriversOperation.getInstance().createHyperlink() );
+		this.addComponent( org.alice.ide.issue.GraphicsDriverHelpOperation.getInstance().createHyperlink() );
 	}
 }
