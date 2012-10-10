@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,51 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass {
-	private javax.media.opengl.awt.GLCanvas m_glCanvas;
-
-	/* package-private */HeavyweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
-		super( lookingGlassFactory );
-		m_glCanvas = LookingGlassFactory.createGLCanvas();
-		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
-		//m_glCanvas.setAutoSwapBufferMode( false );
-		m_glCanvas.addComponentListener( new java.awt.event.ComponentListener() {
-			public void componentShown( java.awt.event.ComponentEvent e ) {
-			}
-
-			public void componentHidden( java.awt.event.ComponentEvent e ) {
-			}
-
-			public void componentMoved( java.awt.event.ComponentEvent e ) {
-			}
-
-			public void componentResized( java.awt.event.ComponentEvent e ) {
-				m_glCanvas.setMinimumSize( new java.awt.Dimension( 0, 0 ) );
-				m_glCanvas.repaint();
-			}
-		} );
-	}
-
-	public void repaint() {
-		getAWTComponent().repaint();
-	}
-
-	public java.awt.Component getAWTComponent() {
-		return m_glCanvas;
-	}
-
-	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
-		return getAWTComponent().getSize( rv );
+public class FileChooser extends ViewController<javax.swing.JFileChooser, org.lgna.croquet.FileSelectionState> {
+	public FileChooser( org.lgna.croquet.FileSelectionState model ) {
+		super( model );
 	}
 
 	@Override
-	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		return m_glCanvas;
+	protected javax.swing.JFileChooser createAwtComponent() {
+		return this.getModel().getSwingModel().getJFileChooser();
 	}
 }
