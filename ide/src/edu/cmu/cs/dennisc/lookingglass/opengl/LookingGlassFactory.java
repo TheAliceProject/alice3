@@ -191,11 +191,11 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return 1;
 	}
 
-	/* package-private */javax.media.opengl.GLCanvas createGLCanvas() {
+	/* package-private */static javax.media.opengl.GLCanvas createGLCanvas() {
 		return new javax.media.opengl.GLCanvas( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null, null );
 	}
 
-	/* package-private */javax.media.opengl.GLJPanel createGLJPanel() {
+	/* package-private */static javax.media.opengl.GLJPanel createGLJPanel() {
 		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null );
 	}
 
@@ -212,12 +212,12 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	//		}
 	//	}
 
-	/* package-private */boolean canCreateGLPbuffer() {
+	/* package-private */static boolean canCreateGLPbuffer() {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 		return glDrawableFactory.canCreateGLPbuffer();
 	}
 
-	/* package-private */javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
+	/* package-private */static javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 		if( glDrawableFactory.canCreateGLPbuffer() ) {
 			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share );
@@ -442,7 +442,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return this.offscreenLookingGlasses;
 	}
 
-	public static int getGLPbufferWidth( javax.media.opengl.GLDrawable drawable ) {
+	/* package-private */static int getGLPbufferWidth( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getWidth ALWAYS returns 0
 		int width = drawable.getWidth();
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() && ( width == 0 ) ) {
@@ -451,7 +451,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return width;
 	}
 
-	public static int getGLPbufferHeight( javax.media.opengl.GLDrawable drawable ) {
+	/* package-private */static int getGLPbufferHeight( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getHeight ALWAYS returns 0
 		int height = drawable.getHeight();
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() && ( height == 0 ) ) {
