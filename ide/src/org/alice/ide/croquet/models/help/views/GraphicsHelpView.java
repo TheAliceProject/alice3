@@ -45,29 +45,33 @@ package org.alice.ide.croquet.models.help.views;
 /**
  * @author Dennis Cosgrove
  */
-public class GraphicsPropertiesView extends org.lgna.croquet.components.PageAxisPanel {
-	public GraphicsPropertiesView( org.alice.ide.croquet.models.help.GraphicsPropertiesComposite composite ) {
-		super( composite );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+public class GraphicsHelpView extends org.lgna.croquet.components.MigPanel {
+	private static String getSystemInformation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "System information: " );
+		sb.append( System.getProperty( "os.name" ) );
+		sb.append( " " );
+		sb.append( System.getProperty( "sun.arch.data.model" ) );
+		sb.append( "-bit" );
+		return sb.toString();
+	}
 
-		this.addComponent( new org.lgna.croquet.components.FormPanel() {
-			private org.lgna.croquet.components.LabeledFormRow createRow( String a, String b ) {
-				return org.lgna.croquet.components.LabeledFormRow.createFromLabel( new org.lgna.croquet.components.Label( a ), new org.lgna.croquet.components.Label( b ) );
-			}
+	private static String getGraphicsInformation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Graphics information: " );
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		if( sharedDetails != null ) {
+			sb.append( sharedDetails.getRenderer() );
+		} else {
+			sb.append( "<unknown>" );
+		}
+		return sb.toString();
+	}
 
-			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-				edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
-				if( sharedDetails != null ) {
-					rows.add( this.createRow( "renderer:", sharedDetails.getRenderer() ) );
-					rows.add( this.createRow( "vendor:", sharedDetails.getVendor() ) );
-					rows.add( this.createRow( "version:", sharedDetails.getVersion() ) );
-				}
-			}
-		} );
-
+	public GraphicsHelpView() {
 		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.PickDetails pickDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getPickDetails();
 		StringBuilder sb = new StringBuilder();
+		sb.append( "FYI: " );
 		if( pickDetails != null ) {
 			if( pickDetails.isPickFunctioningCorrectly() ) {
 				sb.append( "Clicking into the scene appears to be functioning correctly" );
@@ -86,8 +90,15 @@ public class GraphicsPropertiesView extends org.lgna.croquet.components.PageAxis
 			sb.append( "There is no information on clicking into the scene" );
 		}
 		sb.append( "." );
-		this.addComponent( new org.lgna.croquet.components.Label( sb.toString() ) );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ) );
-		this.addComponent( new GraphicsProblemsView() );
+		final int LEVEL_1 = 16;
+		final int LEVEL_2 = 32;
+		this.addComponent( new org.lgna.croquet.components.Label( "The most common way to fix graphics problems is to update your video driver.", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
+		this.addComponent( new org.lgna.croquet.components.Label( "Where to go for help:" ), "wrap, gapleft " + LEVEL_1 );
+		this.addComponent( org.alice.ide.croquet.models.help.SearchForGraphicsDriversOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( org.alice.ide.issue.GraphicsDriverHelpOperation.getInstance().createHyperlink(), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( new org.lgna.croquet.components.Label( "About your computer:" ), "wrap, gaptop 16, gapleft " + LEVEL_1 );
+		this.addComponent( new org.lgna.croquet.components.Label( getGraphicsInformation() ), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( new org.lgna.croquet.components.Label( getSystemInformation() ), "wrap, gapleft " + LEVEL_2 );
+		this.addComponent( new org.lgna.croquet.components.Label( sb.toString() ), "wrap, gaptop 24" );
 	}
 }
