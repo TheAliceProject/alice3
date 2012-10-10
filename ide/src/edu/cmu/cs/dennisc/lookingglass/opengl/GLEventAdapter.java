@@ -60,9 +60,6 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	private java.awt.image.BufferedImage rvColorBuffer = null;
 	private java.nio.FloatBuffer rvDepthBuffer = null;
 
-	private static final int SELECTION_CAPACITY = 256;
-	private final java.nio.IntBuffer selectionAsIntBuffer;
-
 	private boolean isDisplayIgnoredDueToPreviousException = false;
 
 	private static class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent {
@@ -89,11 +86,6 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	public GLEventAdapter( AbstractLookingGlass lookingGlass ) {
 		this.lookingGlass = lookingGlass;
 		this.reusableLookingGlassRenderEvent = new ReusableLookingGlassRenderEvent( this.lookingGlass, new Graphics2D( this.renderContext ) );
-
-		final int SIZEOF_INT = 4;
-		java.nio.ByteBuffer byteBuffer = java.nio.ByteBuffer.allocateDirect( SIZEOF_INT * SELECTION_CAPACITY );
-		byteBuffer.order( java.nio.ByteOrder.nativeOrder() );
-		this.selectionAsIntBuffer = byteBuffer.asIntBuffer();
 	}
 
 	private boolean isListening;
