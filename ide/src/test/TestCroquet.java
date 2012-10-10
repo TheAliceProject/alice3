@@ -105,6 +105,14 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		}
 
 		TestOperation operation = new TestOperation();
+
+		class TestFileSelectionState extends org.lgna.croquet.FileSelectionState {
+			public TestFileSelectionState() {
+				super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7b183ea9-914f-4296-a96b-93d95af9c98f" ), null );
+			}
+		}
+		TestFileSelectionState fileSelectionState = new TestFileSelectionState();
+
 		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane(
 				0, 2,
 				integerState.createSlider(), integerState.createSpinner(),
@@ -113,7 +121,11 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 				operation.createButton(), new org.lgna.croquet.components.Label()
 				);
 
-		testCroquet.getFrame().getContentPanel().addCenterComponent( gridPanel );
+		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+				.center( fileSelectionState.getOneAndOnlyOneFileChooser() )
+				.build();
+
+		testCroquet.getFrame().getContentPanel().addCenterComponent( borderPanel );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );
