@@ -45,7 +45,7 @@ package org.lgna.story;
 /**
  * @author Matt May
  */
-public class SetOfVisuals implements AddMouseButtonListener.Detail {
+public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail {
 	private static final Visual[] DEFAULT_VALUE = null;
 	private final Visual[] value;
 

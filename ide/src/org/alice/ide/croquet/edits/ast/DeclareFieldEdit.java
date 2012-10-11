@@ -46,11 +46,11 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclareFieldEdit<M extends org.alice.ide.croquet.models.declaration.FieldDeclarationOperation> extends org.lgna.croquet.edits.Edit<M> {
+public abstract class DeclareFieldEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.project.ast.UserType<?> declaringType;
 	private final org.lgna.project.ast.UserField field;
 
-	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep<M> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
+	public DeclareFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
 		super( step );
 		this.declaringType = declaringType;
 		this.field = field;

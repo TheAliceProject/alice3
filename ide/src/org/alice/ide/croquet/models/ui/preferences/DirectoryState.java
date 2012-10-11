@@ -72,7 +72,11 @@ public abstract class DirectoryState extends org.lgna.croquet.preferences.Prefer
 
 	public java.io.File getDirectoryEnsuringExistance() {
 		java.io.File rv = this.getDirectory();
-		rv.mkdirs();
+		try {
+			rv.mkdirs();
+		} catch( Throwable t ) {
+			t.printStackTrace();
+		}
 		return rv;
 	}
 }

@@ -72,8 +72,7 @@ public enum DeclarationCompositeCodec implements org.lgna.croquet.ItemCodec<org.
 		}
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.declarationseditor.DeclarationComposite value ) {
-		rv.append( value != null ? value.getDeclaration().getName() : value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, org.alice.ide.declarationseditor.DeclarationComposite value ) {
+		sb.append( value != null ? value.getDeclaration().getName() : value );
 	}
 }

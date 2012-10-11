@@ -62,7 +62,7 @@ public abstract class VirtualMachine {
 
 	protected abstract void popFrame();
 
-	protected abstract Object lookup( org.lgna.project.ast.AbstractParameter parameter );
+	protected abstract Object lookup( org.lgna.project.ast.UserParameter parameter );
 
 	protected abstract void pushLocal( org.lgna.project.ast.UserLocal local, Object value );
 
@@ -403,7 +403,7 @@ public abstract class VirtualMachine {
 		if( ( 0 <= index ) && ( index < length ) ) {
 			//pass
 		} else {
-			throw new LgnaArrayIndexOutOfBoundsException( this, index, length );
+			throw new LgnaVmArrayIndexOutOfBoundsException( this, index, length );
 		}
 	}
 
@@ -452,7 +452,7 @@ public abstract class VirtualMachine {
 			if( method.isProcedure() ) {
 				return null;
 			} else {
-				throw new LgnaNoReturnException( this );
+				throw new LgnaVmNoReturnException( this );
 			}
 		} catch( ReturnException re ) {
 			return re.getValue();
@@ -603,7 +603,19 @@ public abstract class VirtualMachine {
 	protected Boolean evaluateRelationalInfixExpression( org.lgna.project.ast.RelationalInfixExpression relationalInfixExpression ) {
 		Object leftOperand = UserInstance.getJavaInstanceIfNecessary( this.evaluate( relationalInfixExpression.leftOperand.getValue() ) );
 		Object rightOperand = UserInstance.getJavaInstanceIfNecessary( this.evaluate( relationalInfixExpression.rightOperand.getValue() ) );
-		return relationalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+		if( leftOperand != null ) {
+			if( rightOperand != null ) {
+				return relationalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+			} else {
+				throw new LgnaVmNullPointerException( "right operand is null.", this );
+			}
+		} else {
+			if( rightOperand != null ) {
+				throw new LgnaVmNullPointerException( "left operand is null.", this );
+			} else {
+				throw new LgnaVmNullPointerException( "left and right operands are both null.", this );
+			}
+		}
 	}
 
 	protected Object evaluateShiftInfixExpression( org.lgna.project.ast.ShiftInfixExpression shiftInfixExpression ) {

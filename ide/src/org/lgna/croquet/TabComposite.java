@@ -134,4 +134,7 @@ public abstract class TabComposite<V extends org.lgna.croquet.components.View<?,
 
 	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
 	}
+
+	public void TEMPORARY_HACK_handleSelected() {
+	}
 }

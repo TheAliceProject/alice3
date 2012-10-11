@@ -107,8 +107,6 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> 
 
 	protected abstract T getRoot();
 
-	protected abstract T getParent( T node );
-
 	@Override
 	public abstract boolean isLeaf( T node );
 

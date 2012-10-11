@@ -45,7 +45,7 @@ package org.lgna.project.migration;
 /**
  * @author Dennis Cosgrove
  */
-public class TextMigration implements Migration {
+public class TextMigration extends AbstractMigration {
 	private static final boolean IS_SANITY_CHECKING_DESIRED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.lgna.project.migration.TextMigration.isSanityCheckingDesired", false );
 
 	private static class Pair {
@@ -93,14 +93,10 @@ public class TextMigration implements Migration {
 		}
 	}
 
-	private final org.lgna.project.Version minimumVersion;
-	private final org.lgna.project.Version resultVersion;
-
 	private final Pair[] pairs;
 
 	public TextMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion, String... values ) {
-		this.minimumVersion = minimumVersion;
-		this.resultVersion = resultVersion;
+		super( minimumVersion, resultVersion );
 		assert ( values.length % 2 ) == 0 : values.length;
 		this.pairs = new Pair[ values.length / 2 ];
 		for( int i = 0; i < this.pairs.length; i++ ) {
@@ -119,21 +115,6 @@ public class TextMigration implements Migration {
 					}
 				}
 			}
-		}
-	}
-
-	public org.lgna.project.Version getResultVersion() {
-		return this.resultVersion;
-	}
-
-	public boolean isApplicable( org.lgna.project.Version version ) {
-		if( ( this.minimumVersion != null ) && ( this.resultVersion != null ) ) {
-			return ( this.minimumVersion.compareTo( version ) <= 0 )
-					&&
-					( this.resultVersion.compareTo( version ) > 0 );
-		} else {
-			//todo?
-			return false;
 		}
 	}
 

@@ -46,14 +46,10 @@ package org.alice.interact.manipulator;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode;
-import org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode;
 import org.alice.interact.InputState;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.lgna.croquet.components.DragComponent;
-import org.lgna.project.ast.AbstractField;
-import org.lgna.project.ast.JavaType;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
@@ -210,23 +206,17 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 			org.lgna.croquet.DragModel dragModel = dragStep.getModel();
 			DragComponent dragSource = dragStep.getDragSource();
 			dragSource.hideDragProxy();
-			edu.cmu.cs.dennisc.math.AxisAlignedBox box = null;
-			if( dragModel instanceof TypeGalleryNode )
-			{
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = ( (TypeGalleryNode)dragModel ).getDeclaration();
-				JavaType javaType = type.getFirstEncounteredJavaType();
-				box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( javaType.getClassReflectionProxy().getReification() );
+			edu.cmu.cs.dennisc.math.AxisAlignedBox box;
+			if( dragModel instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel ) {
+				org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel galleryDragModel = (org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel)dragModel;
+				box = galleryDragModel.getBoundingBox();
+			} else {
+				box = null;
 			}
-			else if( dragModel instanceof FieldGalleryNode )
-			{
-				AbstractField field = ( (FieldGalleryNode)dragModel ).getDeclaration();
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
-				JavaType javaType = type.getFirstEncounteredJavaType();
-				String name = field.getName();
-				box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( javaType.getClassReflectionProxy().getReification(), name );
-			}
-			if( box == null )
-			{
+
+			if( box != null ) {
+				//pass
+			} else {
 				box = new AxisAlignedBox( new Point3( -.5, 0, -.5 ), new Point3( .5, 1, .5 ) );
 			}
 

@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class ChangeResourceMenuModel extends org.lgna.croquet.CascadeMenuModel<org.lgna.project.ast.InstanceCreation> {
+public class ChangeResourceMenuModel extends org.lgna.croquet.AbstractCascadeMenuModel<org.lgna.project.ast.InstanceCreation, org.alice.stageide.modelresource.ResourceNode> {
 	private static class SingletonHolder {
 		private static ChangeResourceMenuModel instance = new ChangeResourceMenuModel();
 	}
@@ -60,14 +60,30 @@ public class ChangeResourceMenuModel extends org.lgna.croquet.CascadeMenuModel<o
 	}
 
 	@Override
-	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.InstanceCreation> blankNode ) {
-		java.util.List<org.lgna.project.ast.JavaType> topLevelTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
-		for( org.lgna.project.ast.JavaType type : topLevelTypes ) {
-			rv.add( GalleryResourceTypeFillIn.getInstance( type ) );
-			//rv.add( GalleryResourceMenu.getInstance( type.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType() ) );
+	protected org.lgna.project.ast.InstanceCreation convertValue( org.alice.stageide.modelresource.ResourceNode value ) {
+		return value.getResourceKey().createInstanceCreation();
+	}
+
+	@Override
+	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.alice.stageide.modelresource.ResourceNode> blankNode ) {
+		org.alice.stageide.modelresource.ResourceNode root = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
+		for( org.alice.stageide.modelresource.ResourceNode child : root.getNodeChildren() ) {
+			org.lgna.croquet.CascadeBlankChild blankChild = child.getAddFieldBlankChild();
+			assert blankChild != null : child;
+			rv.add( blankChild );
 		}
 		return rv;
 	}
+	//	@Override
+	//	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.InstanceCreation> blankNode ) {
+	//		java.util.List<org.lgna.project.ast.JavaType> topLevelTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
+	//		for( org.lgna.project.ast.JavaType type : topLevelTypes ) {
+	//			rv.add( GalleryResourceTypeFillIn.getInstance( type ) );
+	//			//rv.add( GalleryResourceMenu.getInstance( type.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType() ) );
+	//		}
+	//		return rv;
+	//	}
+
 	//	@Override
 	//	protected org.lgna.project.ast.InstanceCreation createValue( org.lgna.project.ast.Expression[] expressions ) {
 	//		org.alice.ide.typemanager.TypeManager.getNamedUserTypeFor( ancestorType, argumentField );

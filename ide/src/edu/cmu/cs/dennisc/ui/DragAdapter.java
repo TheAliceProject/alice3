@@ -71,29 +71,9 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 		return m_eventInterceptors;
 	}
 
-	//	private static java.awt.Robot s_robot;
-	//	private java.util.Queue< java.awt.Point > m_cursorWarps = new java.util.LinkedList< java.awt.Point >();
-	//
-	//	protected void warpCursor( java.awt.Point p ) {
-	//		if( s_robot != null ) {
-	//			System.out.println( "warp " + p );
-	//			assert m_cursorWarps.offer( p );
-	//			int x = p.x + m_awtComponent.getLocationOnScreen().x;
-	//			int y = p.y + m_awtComponent.getLocationOnScreen().y;
-	//			System.out.println( "s_robot.mouseMove " + x + " " + y );
-	//			s_robot.mouseMove( x, y );
-	//		}
-	//	}
-	//	
 	//	private static final java.awt.Cursor NULL_CURSOR;
 	//	
 	//	static {
-	//		try {
-	//			s_robot = new java.awt.Robot();
-	//		} catch( java.awt.AWTException awte ) {
-	//			//todo?
-	//			s_robot = null;
-	//		}
 	//
 	//		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
 	//		final int WIDTH = 16;

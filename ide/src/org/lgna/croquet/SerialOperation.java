@@ -45,14 +45,15 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public abstract class SerialOperation extends SingleThreadOperation {
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 		for( Operation operation : this.getOperations() ) {
 			//todo?
-			org.lgna.croquet.history.CompletionStep<?> subStep = operation.handleFire( step.getTrigger() );
-			if( subStep.isCanceled() ) {
+			org.lgna.croquet.history.CompletionStep<?> subStep = operation.fire( step.getTrigger() );
+			if( ( subStep == null ) || subStep.isCanceled() ) {
 				break;
 			}
 		}

@@ -106,6 +106,8 @@ public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.casc
 						return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, argumentExpressions );
 					}
 				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( expression );
 			}
 		}
 		return null;

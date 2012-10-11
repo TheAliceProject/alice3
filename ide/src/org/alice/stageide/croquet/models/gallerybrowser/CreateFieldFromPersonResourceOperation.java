@@ -55,35 +55,35 @@ public class CreateFieldFromPersonResourceOperation extends org.alice.ide.croque
 		return SingletonHolder.instance;
 	}
 
+	private org.lgna.story.resources.sims2.PersonResource personResource;
+
 	private CreateFieldFromPersonResourceOperation() {
 		super(
 				java.util.UUID.fromString( "3ac22606-3b37-4b75-9613-89994c873782" ),
 				null );
 	}
 
+	public void setPersonResource( org.lgna.story.resources.sims2.PersonResource personResource ) {
+		this.personResource = personResource;
+	}
+
 	@Override
 	protected org.alice.ide.croquet.components.declaration.DeclarationPanel<?> prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.history.CompletionStep<?> subStep = CreatePersonResourceOperation.getInstance().fire();
-		if( subStep.containsEphemeralDataFor( PersonResourceOperation.VALUE_KEY ) ) {
-			org.lgna.story.resources.sims2.PersonResource personResource = subStep.getEphemeralDataFor( PersonResourceOperation.VALUE_KEY );
-			try {
-				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
+		org.alice.ide.croquet.components.declaration.DeclarationPanel<?> rv = super.prologue( step );
+		try {
+			org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( this.personResource );
 
-				org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource( personResource );
+			org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource( this.personResource );
 
-				org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation(
-						type.getDeclaredConstructors().get( 0 ),
-						//						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
-						argumentExpression
-						);
-				org.alice.ide.croquet.components.declaration.DeclarationPanel<?> rv = super.prologue( step );
-				this.getInitializerState().setValueTransactionlessly( expression );
-				return rv;
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-				throw new RuntimeException( ccee );
-			}
-		} else {
-			return null;
+			org.lgna.project.ast.InstanceCreation expression = org.lgna.project.ast.AstUtilities.createInstanceCreation(
+					type.getDeclaredConstructors().get( 0 ),
+					//						new Class<?>[] { org.lgna.story.resources.BipedResource.class }, 
+					argumentExpression
+					);
+			this.getInitializerState().setValueTransactionlessly( expression );
+		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			throw new RuntimeException( ccee );
 		}
+		return rv;
 	}
 }

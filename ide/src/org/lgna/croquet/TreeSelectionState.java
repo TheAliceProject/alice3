@@ -322,7 +322,7 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	public java.util.List<T> getChildren( T node ) {
 		edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = this.getTreeModel();
 		final int N = treeModel.getChildCount( node );
-		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( N );
+		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( N );
 		for( int i = 0; i < N; i++ ) {
 			rv.add( treeModel.getChild( node, i ) );
 		}
@@ -332,6 +332,12 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	public boolean isLeaf( T node ) {
 		edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = this.getTreeModel();
 		return treeModel.isLeaf( node );
+	}
+
+	public T getParent( T node ) {
+		edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = this.getTreeModel();
+		javax.swing.tree.TreePath treePath = treeModel.getTreePath( node );
+		return (T)treePath.getParentPath().getLastPathComponent();
 	}
 
 	protected boolean isComboDesired( T childNode ) {
@@ -355,10 +361,6 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 
 	public ActionOperation getSelectionOperationFor( T node ) {
 		return InternalTreeNodeSelectionOperation.getInstance( this, node );
-	}
-
-	public java.util.List<T> getChildrenOfSelectedValue() {
-		return this.getChildren( this.getValue() );
 	}
 
 	public org.lgna.croquet.components.Tree<T> createTree() {

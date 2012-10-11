@@ -56,6 +56,6 @@ public abstract class AffectorAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Af
 	}
 
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+	public void pick( PickContext pc, PickParameters pickParameters ) {
 	}
 }

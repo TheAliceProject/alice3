@@ -245,18 +245,48 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
-	private int projectHistoryInsertionIndexOfCurrentFile = 0;
+	//todo: investigate
+	private static final int PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL = 0;
 
-	private boolean isProjectChanged() {
-		if( this.getProjectHistory() == null ) {
-			return false;
+	private int projectHistoryIndexFile = 0;
+	private int projectHistoryIndexSceneSetUp = 0;
+
+	public boolean isProjectUpToDateWithFile() {
+		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		if( history == null ) {
+			return true;
 		} else {
-			return this.projectHistoryInsertionIndexOfCurrentFile != this.getProjectHistory().getInsertionIndex();
+			return this.projectHistoryIndexFile == history.getInsertionIndex();
 		}
 	}
 
-	public boolean isProjectUpToDateWithFile() {
-		return isProjectChanged() == false;
+	protected boolean isProjectUpToDateWithSceneSetUp() {
+		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		if( history == null ) {
+			return true;
+		} else {
+			return this.projectHistoryIndexSceneSetUp == history.getInsertionIndex();
+		}
+	}
+
+	private void updateHistoryIndexFileSync() {
+		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		if( history != null ) {
+			this.projectHistoryIndexFile = history.getInsertionIndex();
+		} else {
+			this.projectHistoryIndexFile = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
+		}
+		this.updateHistoryIndexSceneSetUpSync();
+		this.updateTitle();
+	}
+
+	protected void updateHistoryIndexSceneSetUpSync() {
+		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		if( history != null ) {
+			this.projectHistoryIndexSceneSetUp = history.getInsertionIndex();
+		} else {
+			this.projectHistoryIndexSceneSetUp = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
+		}
 	}
 
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
@@ -276,7 +306,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			}
 			rv.append( " " );
 		}
-		if( this.isProjectChanged() ) {
+		if( this.isProjectUpToDateWithFile() ) {
+			//pass
+		} else {
 			rv.append( "*" );
 		}
 		return rv;
@@ -286,11 +318,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		StringBuffer sb = new StringBuffer();
 		this.updateTitle( sb );
 		this.getFrame().setTitle( sb.toString() );
-	}
-
-	private void updateHistoryLengthAtLastFileOperation() {
-		this.projectHistoryInsertionIndexOfCurrentFile = this.getProjectHistory().getInsertionIndex();
-		this.updateTitle();
 	}
 
 	@Override
@@ -317,7 +344,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	public void loadProjectFrom( java.net.URI uri ) {
 		setUri( uri );
-		this.updateHistoryLengthAtLastFileOperation();
+		this.updateHistoryIndexFileSync();
 		this.updateUndoRedoEnabled();
 	}
 
@@ -327,10 +354,6 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	public final void loadProjectFrom( String path ) {
 		loadProjectFrom( new java.io.File( path ) );
-	}
-
-	public void createProjectFromBootstrap() {
-		throw new RuntimeException( "todo" );
 	}
 
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
@@ -363,7 +386,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
 		this.uri = file.toURI();
-		this.updateHistoryLengthAtLastFileOperation();
+		this.updateHistoryIndexFileSync();
 	}
 
 	public void saveProjectTo( String path ) throws java.io.IOException {

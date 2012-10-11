@@ -231,7 +231,7 @@ public abstract class AbstractElement implements Element {
 	private static final int NULL_MNEMONIC = 0;
 	private static final int NULL_ACCELERATOR_MASK = 0;
 
-	protected static javax.swing.KeyStroke getKeyStroke( String acceleratorText ) {
+	private static javax.swing.KeyStroke getKeyStroke( String acceleratorText ) {
 		if( acceleratorText != null ) {
 			String[] array = acceleratorText.split( "," );
 			if( array.length > 0 ) {

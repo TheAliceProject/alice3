@@ -46,74 +46,13 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadeMenuModel<FB> extends CascadeBlankOwner<FB, FB> {
-	private class InternalBlank extends CascadeBlank<FB> {
-		public InternalBlank() {
-			super( java.util.UUID.fromString( "2f562397-a298-46da-bf8d-01a4bb86da3a" ) );
-		}
-
-		@Override
-		protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<FB> blankNode ) {
-			CascadeMenuModel.this.updateBlankChildren( rv, blankNode );
-			return rv;
-		}
-	}
-
-	private final InternalBlank blank = new InternalBlank();
-	private String menuItemText;
-
+public abstract class CascadeMenuModel<FB> extends AbstractCascadeMenuModel<FB, FB> {
 	public CascadeMenuModel( java.util.UUID id ) {
 		super( id );
-		this.addBlank( this.blank );
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		this.menuItemText = this.findDefaultLocalizedText();
-	}
-
-	protected abstract java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<FB> blankNode );
-
-	private org.lgna.croquet.cascade.AbstractItemNode<FB, FB, ?> getSelectedFillInContext( org.lgna.croquet.cascade.ItemNode<? super FB, ?> itemNode ) {
-		org.lgna.croquet.cascade.BlankNode<?> blankNode = itemNode.getBlankStepAt( 0 );
-		return blankNode.getSelectedFillInContext();
-	}
-
-	@Override
-	public FB getTransientValue( org.lgna.croquet.cascade.ItemNode<? super FB, FB> itemNode ) {
-		return this.getSelectedFillInContext( itemNode ).getTransientValue();
-	}
-
-	@Override
-	public FB createValue( org.lgna.croquet.cascade.ItemNode<? super FB, FB> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		return this.getSelectedFillInContext( itemNode ).createValue( transactionHistory );
-	}
-
-	protected boolean isBackedByIconProxy() {
-		return true;
-	}
-
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super FB, FB> itemNode ) {
-		return new javax.swing.JLabel( this.menuItemText );
-	}
-
-	@Override
-	public java.lang.String getMenuItemText( org.lgna.croquet.cascade.ItemNode<? super FB, FB> node ) {
-		if( this.isBackedByIconProxy() ) {
-			return super.getMenuItemText( node );
-		} else {
-			return this.menuItemText;
-		}
-	}
-
-	@Override
-	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super FB, FB> node ) {
-		if( this.isBackedByIconProxy() ) {
-			return super.getMenuItemIcon( node );
-		} else {
-			return null;
-		}
+	protected FB convertValue( FB value ) {
+		return value;
 	}
 }

@@ -48,7 +48,19 @@ package org.lgna.croquet.triggers;
  */
 @Deprecated
 public class NullTrigger extends Trigger {
-	public NullTrigger( Origin origin ) {
+	public static NullTrigger createUserInstance() {
+		return new NullTrigger( Origin.USER );
+	}
+
+	public static NullTrigger createGeneratorInstance() {
+		return new NullTrigger( Origin.GENERATOR );
+	}
+
+	public static NullTrigger createRecoveryInstance() {
+		return new NullTrigger( Origin.RECOVERY );
+	}
+
+	private NullTrigger( Origin origin ) {
 		super( origin );
 	}
 

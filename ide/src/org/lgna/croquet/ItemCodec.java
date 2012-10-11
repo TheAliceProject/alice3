@@ -80,5 +80,5 @@ public interface ItemCodec<T> {
 
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value );
 
-	public StringBuilder appendRepresentation( StringBuilder rv, T value );
+	public void appendRepresentation( StringBuilder sb, T value );
 }

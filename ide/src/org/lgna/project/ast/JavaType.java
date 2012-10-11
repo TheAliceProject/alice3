@@ -114,7 +114,12 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			if( otherTypeDeclaredInJava != null ) {
 				Class<?> cls = this.getClassReflectionProxy().getReification();
 				Class<?> otherCls = otherTypeDeclaredInJava.getClassReflectionProxy().getReification();
-				return cls.isAssignableFrom( otherCls );
+				if( ( cls != null ) && ( otherCls != null ) ) {
+					return cls.isAssignableFrom( otherCls );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, cls, otherTypeDeclaredInJava, otherCls );
+					return false;
+				}
 			} else {
 				return false;
 			}

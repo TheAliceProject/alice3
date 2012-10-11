@@ -43,11 +43,7 @@
 
 package org.alice.interact.manipulator;
 
-import java.awt.AWTException;
 import java.awt.Point;
-import java.awt.Robot;
-
-import javax.swing.SwingUtilities;
 
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.InputState;
@@ -431,12 +427,8 @@ public class MouseRelativeObjectDragManipulator extends AbstractManipulator impl
 
 			Point3 pointInCamera = this.camera.transformFrom_New( new3DPoint, this.camera.getRoot() );
 			Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
-			SwingUtilities.convertPointToScreen( awtPoint, this.getOnscreenLookingGlass().getAWTComponent() );
-			Robot mouseMover = new Robot();
-			mouseMover.mouseMove( awtPoint.x, awtPoint.y );
-		} catch( AWTException e ) {
-		} finally
-		{
+			edu.cmu.cs.dennisc.java.awt.RobotUtilities.mouseMove( this.getOnscreenLookingGlass().getAWTComponent(), awtPoint );
+		} finally {
 			CursorUtilities.popAndSet( this.getOnscreenLookingGlass().getAWTComponent() );
 		}
 	}

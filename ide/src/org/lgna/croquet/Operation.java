@@ -136,53 +136,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.swingModel.action.setEnabled( isEnabled );
 	}
 
-	@Override
-	public final org.lgna.croquet.history.CompletionStep<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		if( this.isEnabled() ) {
-			return this.handleFire( trigger );
-		} else {
-			return null;
-		}
-	}
-
-	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.ActionEvent e, org.lgna.croquet.components.ViewController<?, ?> viewController ) {
-		return this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( viewController, e ) );
-	}
-
-	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e, org.lgna.croquet.components.ViewController<?, ?> viewController ) {
-		return this.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( viewController, e ) );
-	}
-
-	@Deprecated
-	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.MouseEvent e ) {
-		return fire( e, null );
-	}
-
-	@Deprecated
-	public final org.lgna.croquet.history.CompletionStep<?> fire( java.awt.event.ActionEvent e ) {
-		return fire( e, null );
-	}
-
-	@Deprecated
-	public final org.lgna.croquet.history.CompletionStep<?> fire() {
-		return fire( new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER ) );
-	}
-
-	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
-
-	protected org.lgna.croquet.history.CompletionStep<?> perform( org.lgna.croquet.history.TransactionHistory history, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-		this.perform( transaction, trigger );
-		return transaction.getCompletionStep();
-	}
-
-	/* package-private */final org.lgna.croquet.history.CompletionStep<?> handleFire( org.lgna.croquet.triggers.Trigger trigger ) {
-		//todo: move up to Model
-		this.initializeIfNecessary();
-		org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-		return this.perform( history, trigger );
-	}
-
 	public final String getName() {
 		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
 	}
@@ -319,9 +272,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	public org.lgna.croquet.components.Hyperlink createHyperlink() {
-		org.lgna.croquet.components.Hyperlink rv = new org.lgna.croquet.components.Hyperlink( this );
-		rv.scaleFont( 1.2f );
-		return rv;
+		return new org.lgna.croquet.components.Hyperlink( this );
 	}
 
 	public org.lgna.croquet.components.ButtonWithRightClickCascade createButtonWithRightClickCascade( Cascade<?> cascade ) {

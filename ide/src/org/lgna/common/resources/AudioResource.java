@@ -78,6 +78,10 @@ public class AudioResource extends org.lgna.common.Resource {
 		};
 	}
 
+	public static javax.swing.filechooser.FileFilter createFileFilter( boolean areDirectoriesAccepted ) {
+		return new edu.cmu.cs.dennisc.javax.swing.filechooser.ExtensionFileFilter( "audio file", areDirectoriesAccepted, "mp3", "wav", "au" );
+	}
+
 	private static java.util.Map<java.util.UUID, AudioResource> uuidToResourceMap = new java.util.HashMap<java.util.UUID, AudioResource>();
 
 	private static AudioResource get( java.util.UUID uuid ) {

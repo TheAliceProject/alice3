@@ -101,9 +101,8 @@ public abstract class StringState extends State<String> {
 	}
 
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, String value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, String value ) {
+		sb.append( value );
 	}
 
 	@Override

@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ImmutableTextField extends ImmutableTextComponent<javax.swing.JTextField> {
-	public ImmutableTextField( org.lgna.croquet.PlainStringValue value ) {
-		super( value );
+	public ImmutableTextField( org.lgna.croquet.PlainStringValue value, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		super( value, fontScalar, textAttributes );
 	}
 
 	//	public HorizontalAlignment getHorizontalAlignment() {

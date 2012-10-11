@@ -53,9 +53,7 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 
 	public abstract String getText();
 
-	public abstract javax.swing.Icon getSmallIcon();
-
-	public abstract javax.swing.Icon getLargeIcon();
+	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();
 
 	public abstract org.lgna.croquet.Model getLeftButtonClickModel();
 
@@ -85,4 +83,6 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 	@Override
 	public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
 	}
+
+	public abstract edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox();
 }

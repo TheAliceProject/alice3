@@ -77,7 +77,7 @@ public class RecentProjectsListData extends org.lgna.croquet.AbstractListData<ja
 
 	private void addFile( java.io.File file ) {
 		if( file != null ) {
-			final int N = org.alice.ide.croquet.models.openproject.RecentProjectCountState.getInstance().getValue();
+			final int N = org.alice.ide.projecturi.RecentProjectCountState.getInstance().getValue();
 			if( N > 0 ) {
 				java.net.URI uri = file.toURI();
 				if( this.list.contains( uri ) ) {

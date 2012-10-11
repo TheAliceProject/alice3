@@ -46,54 +46,6 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.IteratingOperation {
-	private static final org.lgna.croquet.history.Step.Key<Stage> STAGE_KEY = org.lgna.croquet.history.Step.Key.createInstance( "DeclareFieldFromImportedTypeOperation.STAGE_KEY" );
-
-	private static enum Stage {
-		REQUESTING_URI {
-			@Override
-			public Stage getNextStage() {
-				return DECLARING_FIELD;
-			}
-
-			@Override
-			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.CompletionStep<?> step ) {
-				return TypeFromUriProducer.getInstance();
-			}
-		},
-		DECLARING_FIELD {
-			@Override
-			public Stage getNextStage() {
-				return null;
-			}
-
-			@Override
-			public org.lgna.croquet.Model getModel( org.lgna.croquet.history.CompletionStep<?> step ) {
-				org.lgna.croquet.history.TransactionHistory transactionHistory = step.getTransactionHistory();
-				org.lgna.croquet.history.Transaction transaction = transactionHistory.getTransactionAt( 0 );
-				org.lgna.croquet.history.CompletionStep valueProducerStep = transaction.getCompletionStep();
-				org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType> valueProducer = (org.lgna.croquet.ValueProducer<org.lgna.project.ast.NamedUserType>)valueProducerStep.getModel();
-				org.lgna.project.ast.NamedUserType type = valueProducer.getValue( valueProducerStep );
-				if( type != null ) {
-					org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
-					java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
-					org.lgna.croquet.DropSite dropSite = null;
-					if( requiredParameters.size() > 0 ) {
-						org.lgna.project.ast.AbstractType<?, ?, ?> parameterType = requiredParameters.get( 0 ).getValueType();
-						return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType, dropSite );
-					} else {
-						org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( constructor );
-						return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( argumentField, dropSite );
-					}
-				} else {
-					return null;
-				}
-			}
-		};
-		public abstract Stage getNextStage();
-
-		public abstract org.lgna.croquet.Model getModel( org.lgna.croquet.history.CompletionStep<?> step );
-	}
-
 	private static class SingletonHolder {
 		private static DeclareFieldFromImportedTypeOperation instance = new DeclareFieldFromImportedTypeOperation();
 	}
@@ -107,25 +59,39 @@ public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.Iter
 	}
 
 	@Override
-	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step ) {
-		Stage nextStage;
-		if( step.containsEphemeralDataFor( STAGE_KEY ) ) {
-			Stage prevStage = step.getEphemeralDataFor( STAGE_KEY );
-			nextStage = prevStage.getNextStage();
-		} else {
-			nextStage = Stage.REQUESTING_URI;
-		}
-		step.putEphemeralDataFor( STAGE_KEY, nextStage );
-		return nextStage != null;
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+		return subSteps.size() < 2;
 	}
 
 	@Override
-	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step ) {
-		Stage stage = step.getEphemeralDataFor( STAGE_KEY );
-		if( stage != null ) {
-			return stage.getModel( step );
-		} else {
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+		switch( subSteps.size() ) {
+		case 0:
+			return TypeFromUriProducer.getInstance();
+		case 1:
+			org.lgna.croquet.history.CompletionStep<?> valueCreatorStep = (org.lgna.croquet.history.CompletionStep<?>)subSteps.get( 0 );
+			org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)valueCreatorStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
+			if( type != null ) {
+				org.lgna.project.ast.AbstractConstructor constructor = type.getDeclaredConstructors().get( 0 );
+				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
+				org.lgna.croquet.DropSite dropSite = null;
+				if( requiredParameters.size() > 0 ) {
+					org.lgna.project.ast.AbstractType<?, ?, ?> parameterType = requiredParameters.get( 0 ).getValueType();
+					return org.alice.ide.croquet.models.gallerybrowser.ResourceCascade.getInstance( parameterType, dropSite );
+				} else {
+					org.lgna.project.ast.JavaField argumentField = org.alice.ide.typemanager.ConstructorArgumentUtilities.getArgumentField( constructor );
+					return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( argumentField, dropSite );
+				}
+			} else {
+				return null;
+			}
+		default:
 			return null;
 		}
+	}
+
+	@Override
+	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+		step.finish();
 	}
 }

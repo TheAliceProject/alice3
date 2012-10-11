@@ -76,7 +76,12 @@ public class GalleryResourceUtilities {
 			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
 				org.lgna.project.ast.AbstractType<?, ?, ?> childType = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
 				if( childType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
-					rv.add( GalleryPersonResourceFillIn.getInstance( childType ) );
+					boolean isInitializer = false; //todo
+					if( isInitializer ) {
+						rv.add( org.alice.stageide.personresource.RandomPersonResourceComposite.getInstance().getExpressionValueCreator().getFillIn() );
+					} else {
+						rv.add( GalleryPersonResourceFillIn.getInstance( childType ) );
+					}
 					rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 				} else {
 					rv.add( GalleryResourceMenu.getInstance( childType ) );

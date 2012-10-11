@@ -64,14 +64,16 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 		return rv;
 	}
 
-	public void setSize( int width, int height ) {
+	public boolean setSize( int width, int height ) {
 		assert width > 0;
 		assert height > 0;
+		boolean resized = false;
 		if( this.glPbuffer != null ) {
 			if( ( width != LookingGlassFactory.getGLPbufferWidth( this.glPbuffer ) ) || ( height != LookingGlassFactory.getGLPbufferHeight( this.glPbuffer ) ) ) {
+				resized = true;
 				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
 				this.glPbuffer.destroy();
-				this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
+				this.glPbuffer = LookingGlassFactory.createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
 				if( this.glPbuffer != null ) {
 					//pass
 				} else {
@@ -79,14 +81,16 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 				}
 			}
 		} else {
+			resized = true;
 			javax.media.opengl.GLContext share;
 			if( this.lookingGlassToShareContextWith != null ) {
 				share = this.lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
 			} else {
 				share = null;
 			}
-			this.glPbuffer = LookingGlassFactory.getInstance().createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
+			this.glPbuffer = LookingGlassFactory.createGLPbuffer( width, height, LookingGlassFactory.getSampleCountForDisabledMultisampling(), share );
 		}
+		return resized;
 	}
 
 	public void clearAndRenderOffscreen() {

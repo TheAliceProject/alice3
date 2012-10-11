@@ -51,7 +51,7 @@ public class SphereIcon extends ShapeIcon {
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		int diameter = Math.min( width, height );
 		int x = ( width - diameter ) / 2;
 		int y = ( height - diameter ) / 2;

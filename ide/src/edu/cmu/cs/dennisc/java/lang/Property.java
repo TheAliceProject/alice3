@@ -65,4 +65,16 @@ public class Property implements Comparable<Property> {
 	public String getValue() {
 		return this.value;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.key );
+		sb.append( ":" );
+		sb.append( this.value );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }

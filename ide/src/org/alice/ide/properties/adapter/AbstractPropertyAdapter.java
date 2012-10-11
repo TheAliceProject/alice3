@@ -128,9 +128,11 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	public void addValueChangeObserver( ValueChangeObserver<P> observer )
 	{
-		if( !this.valueChangeObservers.contains( observer ) )
-		{
-			this.valueChangeObservers.add( observer );
+		synchronized( this.valueChangeObservers ) {
+			if( !this.valueChangeObservers.contains( observer ) )
+			{
+				this.valueChangeObservers.add( observer );
+			}
 		}
 	}
 
@@ -142,7 +144,9 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	public void removeValueChangeObserver( ValueChangeObserver<P> observer )
 	{
-		this.valueChangeObservers.remove( observer );
+		synchronized( this.valueChangeObservers ) {
+			this.valueChangeObservers.remove( observer );
+		}
 	}
 
 	public void setExpressionState( StandardExpressionState expressionState )
@@ -153,7 +157,9 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	public void clearListeners()
 	{
-		this.valueChangeObservers.clear();
+		synchronized( this.valueChangeObservers ) {
+			this.valueChangeObservers.clear();
+		}
 	}
 
 	public StandardExpressionState getExpressionState()
@@ -243,9 +249,11 @@ public abstract class AbstractPropertyAdapter<P, O>
 		{
 			this.setExpressionValue( newValue );
 		}
-		for( ValueChangeObserver<P> observer : this.valueChangeObservers )
-		{
-			observer.valueChanged( newValue );
+		synchronized( this.valueChangeObservers ) {
+			for( ValueChangeObserver<P> observer : this.valueChangeObservers )
+			{
+				observer.valueChanged( newValue );
+			}
 		}
 	}
 

@@ -4,7 +4,7 @@ package org.lgna.cheshire.ast;
  * @author Kyle J. Harms
  */
 public class TransactionHistoryGenerator {
-	public org.lgna.croquet.history.TransactionHistory generate( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.MethodInvocation methodInvocation, org.lgna.project.ast.UserMethod destinationMethod, org.lgna.project.ast.UserField field ) {
+	public org.lgna.croquet.history.TransactionHistory generate( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.MethodInvocation methodInvocation, org.lgna.project.ast.UserMethod destinationMethod, org.lgna.project.ast.UserField field ) throws org.lgna.croquet.UnsupportedGenerationException {
 		org.lgna.croquet.history.TransactionHistory history = new org.lgna.croquet.history.TransactionHistory();
 
 		//we add the new method to the same class as the method we add the invocation to

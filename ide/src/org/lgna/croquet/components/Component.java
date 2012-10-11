@@ -288,7 +288,9 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	public final void changeFont( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		this.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( this.getAwtComponent(), textAttributes ) );
+		if( textAttributes.length > 0 ) {
+			this.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( this.getAwtComponent(), textAttributes ) );
+		}
 	}
 
 	protected java.awt.Dimension constrainPreferredSizeIfNecessary( java.awt.Dimension rv ) {

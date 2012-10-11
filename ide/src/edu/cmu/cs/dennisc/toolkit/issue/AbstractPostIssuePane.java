@@ -79,17 +79,9 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 
 	public AbstractPostIssuePane() {
 		this.textEnvironment.setBorder( new TextComponentBorder() );
-		StringBuffer sb = new StringBuffer();
-
-		String intersticial = "";
-		for( String propertyName : this.getSystemPropertiesForEnvironmentField() ) {
-			sb.append( intersticial );
-			sb.append( propertyName );
-			sb.append( ": " );
-			sb.append( System.getProperty( propertyName ) );
-			intersticial = "\n";
-		}
-		this.textEnvironment.setText( sb.toString() );
+		this.textEnvironment.setText( getEnvironmentLongDescription() );
+		this.textEnvironment.setToolTipText( getEnvironmentShortDescription() );
+		this.textEnvironment.setEditable( false );
 		this.scrollEnvironment.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
 		this.centerPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 12, 12, 12 ) );

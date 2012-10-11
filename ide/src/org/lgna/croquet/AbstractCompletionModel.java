@@ -80,6 +80,38 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return this.group;
 	}
 
+	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
+
+	@Deprecated
+	protected Model getSurrogateModel() {
+		return null;
+	}
+
+	@Override
+	public final org.lgna.croquet.history.CompletionStep<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
+		Model surrogateModel = this.getSurrogateModel();
+		if( surrogateModel != null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: end use of surrogate", this );
+			org.lgna.croquet.history.Step<?> step = surrogateModel.fire( trigger );
+			return step.getOwnerTransaction().getCompletionStep();
+		} else {
+			if( this.isEnabled() ) {
+				this.initializeIfNecessary();
+				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+				this.perform( transaction, trigger );
+				return transaction.getCompletionStep();
+			} else {
+				return null;
+			}
+		}
+	}
+
+	@Deprecated
+	public final org.lgna.croquet.history.CompletionStep<?> fire() {
+		return fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+	}
+
 	public synchronized PlainStringValue getSidekickLabel() {
 		if( this.sidekickLabel != null ) {
 			//pass
@@ -141,10 +173,10 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	protected void addGeneratedPrepSteps( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 
-	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException {
 	}
 
-	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException {
 	}
 
 	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
@@ -153,7 +185,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 
-	public final org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit ) {
+	public final org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException {
 		this.pushGeneratedContexts( edit );
 		try {
 			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( ownerTransactionHistory );

@@ -73,10 +73,8 @@ public class Collections {
 		return rv;
 	}
 
-	public static <E> java.util.ArrayList<E> newArrayListWithMinimumCapacity( int minCapacity ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList<E>();
-		rv.ensureCapacity( minCapacity );
-		return rv;
+	public static <E> java.util.ArrayList<E> newArrayListWithInitialCapacity( int initialCapacity ) {
+		return new java.util.ArrayList<E>( initialCapacity );
 	}
 
 	public static <E> java.util.ArrayList<E> newArrayList() {
@@ -93,6 +91,90 @@ public class Collections {
 		java.util.ArrayList<E> rv = new java.util.ArrayList<E>();
 		rv.addAll( other );
 		return rv;
+	}
+
+	public static java.util.List<Byte> newList( byte[] array ) {
+		if( array != null ) {
+			java.util.ArrayList<Byte> rv = newArrayListWithInitialCapacity( array.length );
+			for( byte item : array ) {
+				rv.add( item );
+			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	public static java.util.List<Short> newList( short[] array ) {
+		if( array != null ) {
+			java.util.ArrayList<Short> rv = newArrayListWithInitialCapacity( array.length );
+			for( short item : array ) {
+				rv.add( item );
+			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	public static java.util.List<Integer> newList( int[] array ) {
+		if( array != null ) {
+			java.util.ArrayList<Integer> rv = newArrayListWithInitialCapacity( array.length );
+			for( int item : array ) {
+				rv.add( item );
+			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	public static java.util.List<Long> newList( long[] array ) {
+		if( array != null ) {
+			java.util.ArrayList<Long> rv = newArrayListWithInitialCapacity( array.length );
+			for( long item : array ) {
+				rv.add( item );
+			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	public static java.util.List<Float> newList( float[] array ) {
+		if( array != null ) {
+			java.util.ArrayList<Float> rv = newArrayListWithInitialCapacity( array.length );
+			for( float item : array ) {
+				rv.add( item );
+			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	public static java.util.List<Character> newList( char[] array ) {
+		if( array != null ) {
+			java.util.ArrayList<Character> rv = newArrayListWithInitialCapacity( array.length );
+			for( char item : array ) {
+				rv.add( item );
+			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	public static java.util.List<Double> newList( double[] array ) {
+		if( array != null ) {
+			java.util.ArrayList<Double> rv = newArrayListWithInitialCapacity( array.length );
+			for( double item : array ) {
+				rv.add( item );
+			}
+			return rv;
+		} else {
+			return java.util.Collections.emptyList();
+		}
 	}
 
 	public static <E> java.util.Vector<E> newVector() {

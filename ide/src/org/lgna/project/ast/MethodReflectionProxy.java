@@ -126,13 +126,17 @@ public final class MethodReflectionProxy extends InvocableReflectionProxy<java.l
 				} else {
 					if( parameterTypes.length > 0 ) {
 						Class<?> lastParameterType = parameterTypes[ parameterTypes.length - 1 ];
-						if( lastParameterType.isArray() ) {
-							Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length - 1 ];
-							System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
-							rv = findVarArgsVersion( cls, name, trimmedParameterTypes );
-							if( rv != null ) {
-								edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
+						if( lastParameterType != null ) {
+							if( lastParameterType.isArray() ) {
+								Class<?>[] trimmedParameterTypes = new Class[ parameterTypes.length - 1 ];
+								System.arraycopy( parameterTypes, 0, trimmedParameterTypes, 0, trimmedParameterTypes.length );
+								rv = findVarArgsVersion( cls, name, trimmedParameterTypes );
+								if( rv != null ) {
+									edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rv );
+								}
 							}
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 						}
 					}
 				}

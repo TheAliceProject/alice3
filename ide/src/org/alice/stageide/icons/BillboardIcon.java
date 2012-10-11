@@ -51,7 +51,7 @@ public class BillboardIcon extends ShapeIcon {
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		float h = width / (float)edu.cmu.cs.dennisc.math.GoldenRatio.PHI;
 		java.awt.Shape shape = new java.awt.geom.Rectangle2D.Float( 0, ( height - h ) * 0.5f, width, h );
 		g2.setPaint( fillPaint );

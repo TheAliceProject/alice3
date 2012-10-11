@@ -46,7 +46,7 @@ package org.alice.stageide.about;
 /**
  * @author Dennis Cosgrove
  */
-public class MainSiteBrowserOperation extends org.alice.ide.browser.BrowserOperation {
+public class MainSiteBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
 	private static class SingletonHolder {
 		private static MainSiteBrowserOperation instance = new MainSiteBrowserOperation();
 	}
@@ -56,16 +56,6 @@ public class MainSiteBrowserOperation extends org.alice.ide.browser.BrowserOpera
 	}
 
 	private MainSiteBrowserOperation() {
-		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ) );
-	}
-
-	@Override
-	protected java.net.URL getUrl() {
-		String path = "http://www.alice.org";
-		try {
-			return new java.net.URL( path );
-		} catch( java.net.MalformedURLException murle ) {
-			throw new RuntimeException( path, murle );
-		}
+		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ), "http://www.alice.org" );
 	}
 }

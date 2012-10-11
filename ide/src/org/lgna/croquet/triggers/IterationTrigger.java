@@ -46,7 +46,19 @@ package org.lgna.croquet.triggers;
  * @author Dennis Cosgrove
  */
 public class IterationTrigger extends Trigger {
-	public IterationTrigger( Origin origin ) {
+	public static IterationTrigger createUserInstance() {
+		return new IterationTrigger( Origin.USER );
+	}
+
+	public static IterationTrigger createGeneratorInstance() {
+		return new IterationTrigger( Origin.GENERATOR );
+	}
+
+	public static IterationTrigger createRecoveryInstance() {
+		return new IterationTrigger( Origin.RECOVERY );
+	}
+
+	private IterationTrigger( Origin origin ) {
 		super( origin );
 	}
 

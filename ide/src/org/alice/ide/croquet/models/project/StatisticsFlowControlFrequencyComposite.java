@@ -64,11 +64,9 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 		super( java.util.UUID.fromString( "b12770d1-e65e-430f-92a1-dc3159a85a7b" ) );
 		methodToConstructMap = Collections.newHashMap();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
-
 		StatementCountCrawler crawler = new StatementCountCrawler();
+		ide.crawlFilteredProgramType( crawler );
 		List<UserMethod> a = new LinkedList<UserMethod>();
-		programType.crawl( crawler, true );
 		for( UserMethod method : methodToConstructMap.keySet() ) {
 			a.add( method );
 		}
