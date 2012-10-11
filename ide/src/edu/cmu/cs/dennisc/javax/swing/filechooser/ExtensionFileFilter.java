@@ -50,8 +50,21 @@ public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter {
 	private final boolean isAcceptDirectories;
 	private final java.util.Collection<String> extensions;
 
-	public ExtensionFileFilter( String description, boolean isAcceptDirectories, String... extensions ) {
-		this.description = description;
+	public ExtensionFileFilter( String name, boolean isAcceptDirectories, String... extensions ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( name );
+		if( extensions.length > 0 ) {
+			sb.append( " (" );
+			String prefix = "";
+			for( String extenstion : extensions ) {
+				sb.append( prefix );
+				sb.append( "*." );
+				sb.append( extenstion );
+				prefix = ", ";
+			}
+			sb.append( ")" );
+		}
+		this.description = sb.toString();
 		this.isAcceptDirectories = isAcceptDirectories;
 		this.extensions = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( extensions );
 	}

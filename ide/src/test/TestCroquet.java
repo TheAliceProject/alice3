@@ -112,8 +112,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 			}
 		}
 
-		//javax.swing.filechooser.FileFilter fileFilter = org.lgna.common.resources.AudioResource.createFilenameFilter( true );
-		edu.cmu.cs.dennisc.javax.swing.filechooser.ExtensionFileFilter fileFilter = new edu.cmu.cs.dennisc.javax.swing.filechooser.ExtensionFileFilter( "audio file (*.mp3, *.wav, *.au)", true, "mp3", "au", "wav" );
+		javax.swing.filechooser.FileFilter fileFilter = org.lgna.common.resources.AudioResource.createFileFilter( true );
 		TestFileSelectionState fileSelectionState = new TestFileSelectionState();
 		fileSelectionState.addChoosableFileFilter( fileFilter );
 		fileSelectionState.setFileFilter( fileFilter );
