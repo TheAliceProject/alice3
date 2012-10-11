@@ -46,7 +46,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.alice.media.components.ImageRecordView;
-import org.alice.media.encoder.ImagesToQuickTimeEncoder;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
 import org.lgna.croquet.State;
@@ -58,7 +57,6 @@ import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SScene;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.matt.EventManager;
 import edu.cmu.cs.dennisc.matt.EventScript;
 import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
@@ -72,7 +70,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
-	private ImagesToQuickTimeEncoder encoder;
+	//	private ImagesToQuickTimeEncoder encoder;
+	private MattsMovieEncoder encoder;
+	//	private ANIMWriter encoder;
 	private Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
 	private Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
 
@@ -87,9 +87,16 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
 
 	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( this.createKey( "frameRate" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
+	private File tempFile;
 
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
+		try {
+			tempFile = File.createTempFile( "temp", ".mov" );
+			encoder = new MattsMovieEncoder( tempFile );
+		} catch( IOException e ) {
+			e.printStackTrace();
+		}
 		this.owner = owner;
 		this.isRecordingState.setIconForBothTrueAndFalse( new IsRecordingIcon() );
 	}
@@ -109,6 +116,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 					//pass
 				} else {
 					image = lookingGlass.createBufferedImageForUseAsColorBuffer();
+					//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
 				}
 				if( image != null ) {
 					image = lookingGlass.getColorBuffer( image );
@@ -131,31 +139,43 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	public void setRecording( boolean isRecording ) {
+		System.out.println( "setRecording" );
+		System.out.println( isRecording );
+		System.out.println( this.isRecording );
 		if( this.isRecording != isRecording ) {
 			if( this.isRecording ) {
 				programContext.getProgramImp().stopAnimator();
 				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
-			}
-			this.isRecording = isRecording;
-			if( this.isRecording ) {
-				programContext.getProgramImp().startAnimator();
-				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
-				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
-				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
-				encoder.start();
-				if( true ) {
-					try {
-						encoder.setOutput( File.createTempFile( "temp", ".mov" ) );
-					} catch( IOException e ) {
-						e.printStackTrace();
-					}
-				} else {
-					encoder.setOutput( new File( FileUtilities.getDefaultDirectory(), "test.mov" ) );
-				}
-			} else {
 				encoder.stop();
 				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
+			} else {
+				//				programContext.getProgramImp().startAnimator();
+				//				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
+				//				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
+				//				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
+				//				encoder.start();
+				//				if( true ) {
+				//					try {
+				//						encoder.setOutput( File.createTempFile( "temp", ".mov" ) );
+				//					} catch( IOException e ) {
+				//						e.printStackTrace();
+				//					}
+				//				} else {
+				//					encoder.setOutput( new File( FileUtilities.getDefaultDirectory(), "test.mov" ) );
+				//				}
+				//			} else {
+				//				encoder.stop();
+				//				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
+				//			}
+				programContext.getProgramImp().startAnimator();
+				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
+				//				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
+				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
+				encoder.setFrameRate( frameRate.getValue() );
+				encoder.start();
 			}
+
+			this.isRecording = isRecording;
 		}
 	}
 
@@ -206,8 +226,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		this.setRecording( false );
 		programContext.cleanUpProgram();
-		if( ( encoder != null ) && ( encoder.getOutputFile() != null ) ) {
-			owner.setFile( encoder.getOutputFile() );
+		if( ( encoder != null ) && ( tempFile != null ) ) {
+			owner.setFile( tempFile );
 		}
 		super.handlePostDeactivation();
 	}
@@ -223,7 +243,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		if( isRecording ) {
 			System.out.println( "isRecording: " + errorIsRecording.getText() );
 			return errorIsRecording;
-		} else if( ( encoder == null ) || ( encoder.getOutputFile() == null ) ) {
+		} else if( ( encoder == null ) || ( tempFile == null ) ) {
 			System.out.println( "no file found: " + errorHasNotYetRecorded.getText() );
 			return errorHasNotYetRecorded;
 		}

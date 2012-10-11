@@ -50,6 +50,7 @@ import java.io.IOException;
 
 import org.alice.media.components.MoviePlayerView;
 import org.monte.media.anim.ANIMPlayer;
+import org.monte.media.anim.ANIMWriter;
 import org.monte.media.iff.IFFOutputStream;
 
 /**
@@ -61,6 +62,7 @@ public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<Movie
 	//	private QuickTimePlayer player;
 	private ANIMPlayer animPlayer;
 	private MoviePlayerView view;
+	private ANIMWriter encoder;
 
 	public MoviePlayerComposite( File file ) {
 		super( java.util.UUID.fromString( "28ea7f67-1f3f-443f-a3fb-130676779b5f" ) );
@@ -80,6 +82,13 @@ public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<Movie
 	}
 
 	public void setMovie( File file ) {
+		File temp = new File( file.getAbsolutePath() + "temp" );
+		try {
+			System.out.println( "try" );
+			encoder.finish();
+			System.out.println( "finish" );
+		} catch( IOException e1 ) {
+		}
 		System.out.println( "setMovie" );
 		FileInputStream fStream = null;
 		//		QuickTimeInputStream stream = null;

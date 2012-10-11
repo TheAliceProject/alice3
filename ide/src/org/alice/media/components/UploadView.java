@@ -133,6 +133,7 @@ public class UploadView extends BorderPanel {
 	}
 
 	public void setMovie( File file ) {
+		System.out.println( "file: " + file );
 		moviePlayerComposite.setMovie( file );
 	}
 }
