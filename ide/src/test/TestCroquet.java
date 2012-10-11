@@ -111,15 +111,20 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 				super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7b183ea9-914f-4296-a96b-93d95af9c98f" ), null );
 			}
 		}
-		TestFileSelectionState fileSelectionState = new TestFileSelectionState();
 
-		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane(
-				0, 2,
-				integerState.createSlider(), integerState.createSpinner(),
-				doubleState.createSlider(), doubleState.createSpinner(),
-				booleanState.createRadioButton(), booleanState.createCheckBox(),
-				operation.createButton(), new org.lgna.croquet.components.Label()
-				);
+		//javax.swing.filechooser.FileFilter fileFilter = org.lgna.common.resources.AudioResource.createFilenameFilter( true );
+		edu.cmu.cs.dennisc.javax.swing.filechooser.ExtensionFileFilter fileFilter = new edu.cmu.cs.dennisc.javax.swing.filechooser.ExtensionFileFilter( "audio file (*.mp3, *.wav, *.au)", true, "mp3", "au", "wav" );
+		TestFileSelectionState fileSelectionState = new TestFileSelectionState();
+		fileSelectionState.addChoosableFileFilter( fileFilter );
+		fileSelectionState.setFileFilter( fileFilter );
+
+		//		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane(
+		//				0, 2,
+		//				integerState.createSlider(), integerState.createSpinner(),
+		//				doubleState.createSlider(), doubleState.createSpinner(),
+		//				booleanState.createRadioButton(), booleanState.createCheckBox(),
+		//				operation.createButton(), new org.lgna.croquet.components.Label()
+		//				);
 
 		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
 				.center( fileSelectionState.getOneAndOnlyOneFileChooser() )

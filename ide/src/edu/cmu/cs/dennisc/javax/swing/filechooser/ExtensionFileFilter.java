@@ -40,69 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package edu.cmu.cs.dennisc.javax.swing.filechooser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FileSelectionState extends ItemState<java.io.File> {
-	public static class SwingModel {
-		private final javax.swing.JFileChooser jFileChooser = new javax.swing.JFileChooser();
+public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter {
+	private final String description;
+	private final boolean isAcceptDirectories;
+	private final java.util.Collection<String> extensions;
 
-		private SwingModel() {
-			this.jFileChooser.setControlButtonsAreShown( false );
-		}
-
-		public javax.swing.JFileChooser getJFileChooser() {
-			return this.jFileChooser;
-		}
-	}
-
-	private final SwingModel swingModel = new SwingModel();
-	private final org.lgna.croquet.components.FileChooser oneAndOnlyOneFileChooser = new org.lgna.croquet.components.FileChooser( this );
-
-	public FileSelectionState( Group group, java.util.UUID migrationId, java.io.File initialValue ) {
-		super( group, migrationId, initialValue, org.lgna.croquet.codecs.FileCodec.SINGLETON );
+	public ExtensionFileFilter( String description, boolean isAcceptDirectories, String... extensions ) {
+		this.description = description;
+		this.isAcceptDirectories = isAcceptDirectories;
+		this.extensions = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( extensions );
 	}
 
 	@Override
-	protected void localize() {
-	}
-
-	@Override
-	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
-		return java.util.Collections.emptyList();
-	}
-
-	@Override
-	protected java.io.File getActualValue() {
-		return this.swingModel.jFileChooser.getSelectedFile();
-	}
-
-	@Override
-	protected void updateSwingModel( java.io.File nextValue ) {
-		if( this.swingModel != null ) {
-			this.swingModel.jFileChooser.setSelectedFile( nextValue );
+	public boolean accept( java.io.File file ) {
+		if( file.isDirectory() ) {
+			return this.isAcceptDirectories;
+		} else {
+			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
+			if( extension != null ) {
+				return this.extensions.contains( extension.toLowerCase() );
+			} else {
+				return false;
+			}
 		}
 	}
 
-	public SwingModel getSwingModel() {
-		return this.swingModel;
-	}
-
-	public org.lgna.croquet.components.FileChooser getOneAndOnlyOneFileChooser() {
-		return this.oneAndOnlyOneFileChooser;
-	}
-
-	public void addChoosableFileFilter( javax.swing.filechooser.FileFilter fileFilter ) {
-		this.swingModel.jFileChooser.addChoosableFileFilter( fileFilter );
-	}
-
-	public void removeChoosableFileFilter( javax.swing.filechooser.FileFilter fileFilter ) {
-		this.swingModel.jFileChooser.addChoosableFileFilter( fileFilter );
-	}
-
-	public void setFileFilter( javax.swing.filechooser.FileFilter fileFilter ) {
-		this.swingModel.jFileChooser.setFileFilter( fileFilter );
+	@Override
+	public String getDescription() {
+		return this.description;
 	}
 }
