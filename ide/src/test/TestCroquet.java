@@ -116,6 +116,14 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		TestFileSelectionState fileSelectionState = new TestFileSelectionState();
 		fileSelectionState.addChoosableFileFilter( fileFilter );
 		fileSelectionState.setFileFilter( fileFilter );
+		fileSelectionState.addValueListener( new org.lgna.croquet.State.ValueListener<java.io.File>() {
+			public void changing( org.lgna.croquet.State<java.io.File> state, java.io.File prevValue, java.io.File nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( org.lgna.croquet.State<java.io.File> state, java.io.File prevValue, java.io.File nextValue, boolean isAdjusting ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue );
+			}
+		} );
 
 		//		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane(
 		//				0, 2,
