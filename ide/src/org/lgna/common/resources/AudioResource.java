@@ -78,7 +78,7 @@ public class AudioResource extends org.lgna.common.Resource {
 		};
 	}
 
-	public static javax.swing.filechooser.FileFilter createFileFilter( final boolean areDirectoriesAccepted ) {
+	public static javax.swing.filechooser.FileFilter createFileFilter( boolean areDirectoriesAccepted ) {
 		return new edu.cmu.cs.dennisc.javax.swing.filechooser.ExtensionFileFilter( "audio file", areDirectoriesAccepted, "mp3", "wav", "au" );
 	}
 

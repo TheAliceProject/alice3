@@ -47,10 +47,10 @@ package edu.cmu.cs.dennisc.javax.swing.filechooser;
  */
 public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter {
 	private final String description;
-	private final boolean isAcceptDirectories;
+	private final boolean areDirectoriesAccepted;
 	private final java.util.Collection<String> extensions;
 
-	public ExtensionFileFilter( String name, boolean isAcceptDirectories, String... extensions ) {
+	public ExtensionFileFilter( String name, boolean areDirectoriesAccepted, String... extensions ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( name );
 		if( extensions.length > 0 ) {
@@ -65,14 +65,14 @@ public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter {
 			sb.append( ")" );
 		}
 		this.description = sb.toString();
-		this.isAcceptDirectories = isAcceptDirectories;
+		this.areDirectoriesAccepted = areDirectoriesAccepted;
 		this.extensions = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( extensions );
 	}
 
 	@Override
 	public boolean accept( java.io.File file ) {
 		if( file.isDirectory() ) {
-			return this.isAcceptDirectories;
+			return this.areDirectoriesAccepted;
 		} else {
 			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
 			if( extension != null ) {
