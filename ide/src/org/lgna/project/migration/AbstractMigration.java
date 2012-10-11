@@ -68,4 +68,16 @@ public abstract class AbstractMigration implements Migration {
 			return false;
 		}
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.minimumVersion );
+		sb.append( ";" );
+		sb.append( this.resultVersion );
+		sb.append( "]" );
+		return sb.toString();
+	}
 }
