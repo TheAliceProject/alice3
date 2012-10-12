@@ -40,44 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMigration implements Migration {
-	private final org.lgna.project.Version minimumVersion;
-	private final org.lgna.project.Version resultVersion;
-
-	public AbstractMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
-		this.minimumVersion = minimumVersion;
-		this.resultVersion = resultVersion;
+public class PropertyChangeEventTrigger extends EventObjectTrigger<java.beans.PropertyChangeEvent> {
+	public static PropertyChangeEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
+		return new PropertyChangeEventTrigger( Origin.USER, viewController, propertyChangeEvent );
 	}
 
-	public org.lgna.project.Version getResultVersion() {
-		return this.resultVersion;
+	public static PropertyChangeEventTrigger createGeneratorInstance() {
+		return new PropertyChangeEventTrigger( Origin.GENERATOR, null, null );
 	}
 
-	public boolean isApplicable( org.lgna.project.Version version ) {
-		if( ( this.minimumVersion != null ) && ( this.resultVersion != null ) ) {
-			return ( this.minimumVersion.compareTo( version ) <= 0 )
-					&&
-					( this.resultVersion.compareTo( version ) > 0 );
-		} else {
-			//todo?
-			return false;
-		}
+	private PropertyChangeEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
+		super( origin, viewController, propertyChangeEvent );
+	}
+
+	public PropertyChangeEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.minimumVersion );
-		sb.append( ";" );
-		sb.append( this.resultVersion );
-		sb.append( "]" );
-		return sb.toString();
+	protected java.awt.Point getPoint() {
+		return null;
+	}
+
+	@Override
+	public String getNoteText() {
+		return "Click";
 	}
 }

@@ -40,44 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package edu.cmu.cs.dennisc.javax.swing.filechooser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMigration implements Migration {
-	private final org.lgna.project.Version minimumVersion;
-	private final org.lgna.project.Version resultVersion;
+public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter {
+	private final String description;
+	private final boolean areDirectoriesAccepted;
+	private final java.util.Collection<String> extensions;
 
-	public AbstractMigration( org.lgna.project.Version minimumVersion, org.lgna.project.Version resultVersion ) {
-		this.minimumVersion = minimumVersion;
-		this.resultVersion = resultVersion;
+	public ExtensionFileFilter( String name, boolean areDirectoriesAccepted, String... extensions ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( name );
+		if( extensions.length > 0 ) {
+			sb.append( " (" );
+			String prefix = "";
+			for( String extenstion : extensions ) {
+				sb.append( prefix );
+				sb.append( "*." );
+				sb.append( extenstion );
+				prefix = ", ";
+			}
+			sb.append( ")" );
+		}
+		this.description = sb.toString();
+		this.areDirectoriesAccepted = areDirectoriesAccepted;
+		this.extensions = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( extensions );
 	}
 
-	public org.lgna.project.Version getResultVersion() {
-		return this.resultVersion;
-	}
-
-	public boolean isApplicable( org.lgna.project.Version version ) {
-		if( ( this.minimumVersion != null ) && ( this.resultVersion != null ) ) {
-			return ( this.minimumVersion.compareTo( version ) <= 0 )
-					&&
-					( this.resultVersion.compareTo( version ) > 0 );
+	@Override
+	public boolean accept( java.io.File file ) {
+		if( file.isDirectory() ) {
+			return this.areDirectoriesAccepted;
 		} else {
-			//todo?
-			return false;
+			String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
+			if( extension != null ) {
+				return this.extensions.contains( extension.toLowerCase() );
+			} else {
+				return false;
+			}
 		}
 	}
 
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( this.getClass().getSimpleName() );
-		sb.append( "[" );
-		sb.append( this.minimumVersion );
-		sb.append( ";" );
-		sb.append( this.resultVersion );
-		sb.append( "]" );
-		return sb.toString();
+	public String getDescription() {
+		return this.description;
 	}
 }

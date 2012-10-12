@@ -66,7 +66,7 @@ public class TextMigration extends AbstractMigration {
 				String rv = matcher.replaceAll( this.replacement );
 				//				java.util.regex.Matcher postMatcher = this.pattern.matcher( rv );
 				//				assert postMatcher.find() == false : rv;
-				//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( rv );
 				return rv;
 			} else {
 				return source;

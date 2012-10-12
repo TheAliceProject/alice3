@@ -54,7 +54,22 @@ public class GraphicsDriverHelpOperation extends org.alice.ide.browser.Immutable
 		return SingletonHolder.instance;
 	}
 
+	private static String getSpec() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "http://help.alice.org/w/page/" );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			sb.append( "59839091/Updating%20Video%20Drivers%20for%20Windows" );
+		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			sb.append( "59838915/Updating%20Video%20Drivers%20for%20Mac%20OS%20X" );
+		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			sb.append( "59839254/Updating%20Video%20Drivers%20for%20Linux" );
+		} else {
+			sb.append( "54959364/Updating%20Video%20Drivers" );
+		}
+		return sb.toString();
+	}
+
 	private GraphicsDriverHelpOperation() {
-		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), "http://help.alice.org/w/page/54959364/Updating%20Video%20Drivers" );
+		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), getSpec() );
 	}
 }

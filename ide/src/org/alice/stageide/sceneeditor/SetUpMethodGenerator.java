@@ -410,7 +410,7 @@ public class SetUpMethodGenerator {
 										new org.lgna.project.ast.Expression[] { getJointExpression }
 										);
 							} catch( Throwable t ) {
-								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t, jointGetter );
+								edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "set up method generator failed:", jointGetter );
 								values = new Object[ 0 ];
 							}
 							for( Object o : values ) {
