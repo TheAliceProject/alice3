@@ -74,13 +74,22 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 
 	@Override
 	protected boolean handleGlException( Thread thread, javax.media.opengl.GLException gle ) {
-		//GlExceptionComposite.getInstance().getOperation().fire();
-		return false;
+		final boolean IS_READY_FOR_PRIME_TIME = false;
+		if( IS_READY_FOR_PRIME_TIME ) {
+			javax.swing.JDialog dialog = new javax.swing.JDialog();
+			dialog.getContentPane().add( new GlExceptionComposite( gle ).getView().getAwtComponent() );
+			dialog.pack();
+			dialog.setVisible( true );
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
-	protected void handleThrowable( Thread thread, Throwable throwable ) {
+	protected synchronized void handleThrowable( Thread thread, Throwable throwable ) {
 		this.count++;
+		this.isBugReportSubmissionPaneDesired = false;
 		if( this.isBugReportSubmissionPaneDesired ) {
 			try {
 				org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();
@@ -146,8 +155,8 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
 		Thread.setDefaultUncaughtExceptionHandler( new DefaultExceptionHandler() );
-		//throw new javax.media.opengl.GLException();
+		throw new javax.media.opengl.GLException();
 		//throw new RuntimeException();
-		throw new org.lgna.common.LgnaIllegalArgumentException( "test", 0, null );
+		//throw new org.lgna.common.LgnaIllegalArgumentException( "test", 0, null );
 	}
 }

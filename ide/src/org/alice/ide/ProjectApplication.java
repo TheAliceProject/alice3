@@ -84,10 +84,19 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	private void updateUndoRedoEnabled() {
 		org.lgna.croquet.undo.UndoHistory historyManager = this.getProjectHistory( org.alice.ide.IDE.PROJECT_GROUP );
-		int index = historyManager.getInsertionIndex();
-		int size = historyManager.getStack().size();
-		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( index > 0 );
-		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( index < size );
+		boolean isUndoEnabled;
+		boolean isRedoEnabled;
+		if( historyManager != null ) {
+			int index = historyManager.getInsertionIndex();
+			int size = historyManager.getStack().size();
+			isUndoEnabled = index > 0;
+			isRedoEnabled = index < size;
+		} else {
+			isUndoEnabled = false;
+			isRedoEnabled = false;
+		}
+		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( isUndoEnabled );
+		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( isRedoEnabled );
 	}
 
 	protected void handleInsertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {

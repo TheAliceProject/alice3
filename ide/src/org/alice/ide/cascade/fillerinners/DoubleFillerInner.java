@@ -46,6 +46,14 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class DoubleFillerInner extends AbstractNumberFillerInner {
+	public static double[] getLiterals( org.lgna.project.annotations.ValueDetails<?> details ) {
+		if( details instanceof org.lgna.project.annotations.NumberValueDetails ) {
+			return ( (org.lgna.project.annotations.NumberValueDetails)details ).getLiterals();
+		} else {
+			return new double[] { 0.25, 0.5, 1.0, 2.0, 10.0 };
+		}
+	}
+
 	public DoubleFillerInner() {
 		super( Double.class );
 	}
@@ -53,12 +61,7 @@ public class DoubleFillerInner extends AbstractNumberFillerInner {
 	@Override
 	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		super.appendItems( items, details, isTop, prevExpression );
-		double[] literals;
-		if( details instanceof org.lgna.project.annotations.NumberValueDetails ) {
-			literals = ( (org.lgna.project.annotations.NumberValueDetails)details ).getLiterals();
-		} else {
-			literals = new double[] { 0.25, 0.5, 1.0, 2.0, 10.0 };
-		}
+		double[] literals = getLiterals( details );
 		for( double d : literals ) {
 			items.add( org.alice.ide.croquet.models.cascade.literals.DoubleLiteralFillIn.getInstance( d ) );
 		}

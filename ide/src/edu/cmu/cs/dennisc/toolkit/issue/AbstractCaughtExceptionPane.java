@@ -105,8 +105,7 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 			}
 
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				java.util.List<edu.cmu.cs.dennisc.java.lang.Property> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertyList();
-				java.util.Collections.sort( propertyList );
+				java.util.List<edu.cmu.cs.dennisc.java.lang.Property> propertyList = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getSortedPropertyList();
 				StringBuilder sb = new StringBuilder();
 				sb.append( "<html>" );
 				sb.append( "<body>" );
@@ -258,7 +257,7 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 
 	@Override
 	protected String getEnvironmentText() {
-		return null;
+		return getEnvironmentShortDescription();
 	}
 
 	@Override

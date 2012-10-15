@@ -173,10 +173,10 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	protected void addGeneratedPrepSteps( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 
-	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException {
 	}
 
-	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException {
 	}
 
 	protected void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
@@ -185,7 +185,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 	protected void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> edit ) {
 	}
 
-	public final org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit ) {
+	public final org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException {
 		this.pushGeneratedContexts( edit );
 		try {
 			org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( ownerTransactionHistory );

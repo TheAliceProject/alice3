@@ -40,13 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue;
+package org.lgna.croquet.triggers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DisplayDriverHelpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
-	public DisplayDriverHelpOperation() {
-		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), "http://help.alice.org/w/page/54959364/Updating%20Video%20Drivers" );
+public class PropertyChangeEventTrigger extends EventObjectTrigger<java.beans.PropertyChangeEvent> {
+	public static PropertyChangeEventTrigger createUserInstance( org.lgna.croquet.components.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
+		return new PropertyChangeEventTrigger( Origin.USER, viewController, propertyChangeEvent );
+	}
+
+	public static PropertyChangeEventTrigger createGeneratorInstance() {
+		return new PropertyChangeEventTrigger( Origin.GENERATOR, null, null );
+	}
+
+	private PropertyChangeEventTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.beans.PropertyChangeEvent propertyChangeEvent ) {
+		super( origin, viewController, propertyChangeEvent );
+	}
+
+	public PropertyChangeEventTrigger( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+
+	@Override
+	protected java.awt.Point getPoint() {
+		return null;
+	}
+
+	@Override
+	public String getNoteText() {
+		return "Click";
 	}
 }

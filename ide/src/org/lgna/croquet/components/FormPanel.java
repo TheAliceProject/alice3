@@ -67,10 +67,7 @@ public abstract class FormPanel extends MigPanel {
 			this.rows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.appendRows( this.rows );
 			for( FormRow row : rows ) {
-				Component<?>[] components = row.createComponentArray();
-				assert components.length == 2 : components.length;
-				this.addComponent( components[ 0 ] );
-				this.addComponent( components[ 1 ], "grow, wrap" );
+				row.addComponents( this );
 			}
 		}
 	}

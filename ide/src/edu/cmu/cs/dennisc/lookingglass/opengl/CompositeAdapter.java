@@ -127,10 +127,10 @@ public abstract class CompositeAdapter<E extends edu.cmu.cs.dennisc.scenegraph.C
 	}
 
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+	public void pick( PickContext pc, PickParameters pickParameters ) {
 		synchronized( m_componentAdapters ) {
 			for( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component> childAdapter : m_componentAdapters ) {
-				childAdapter.pick( pc, pickParameters, conformanceTestResults );
+				childAdapter.pick( pc, pickParameters );
 			}
 		}
 	}

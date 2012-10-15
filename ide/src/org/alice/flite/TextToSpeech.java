@@ -71,7 +71,8 @@ public class TextToSpeech
 	{
 		try
 		{
-			System.loadLibrary( "jni_flite" );
+			String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryName( "jni_flite" );
+			System.loadLibrary( platformSpecificLibraryName );
 		} catch( Exception e )
 		{
 			e.printStackTrace();

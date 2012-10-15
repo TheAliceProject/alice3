@@ -86,15 +86,15 @@ public class ScalableAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegr
 	}
 
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+	public void pick( PickContext pc, PickParameters pickParameters ) {
 		if( this.isIdentity ) {
-			super.pick( pc, pickParameters, conformanceTestResults );
+			super.pick( pc, pickParameters );
 		} else {
 			pc.gl.glPushMatrix();
 			pc.incrementScaledCount();
 			try {
 				pc.gl.glScaled( this.x, this.y, this.z );
-				super.pick( pc, pickParameters, conformanceTestResults );
+				super.pick( pc, pickParameters );
 			} finally {
 				pc.decrementScaledCount();
 				pc.gl.glPopMatrix();

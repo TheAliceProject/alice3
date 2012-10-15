@@ -328,12 +328,11 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 	{
 		if( this.camera instanceof SymmetricPerspectiveCamera )
 		{
-
 			this.currentX += direction * X_CHANGE_PER_CLICK;
 			Point3 targetPosition = getNewPointForX( this.currentX );
 			OrthogonalMatrix3x3 targetOrientation = this.getOrientationTargetForX( this.currentX );
 			AffineMatrix4x4 targetTransform = new AffineMatrix4x4( targetOrientation, targetPosition );
-			animateToTarget( targetTransform );
+			this.cameraAnimation.setTarget( new QuaternionAndTranslation( targetTransform ) );
 		}
 		else
 		{
@@ -357,15 +356,6 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 				this.dragAdapter.triggerManipulationEvent( event, zoomAmount >= 0.0d );
 			}
 		}
-	}
-
-	private void animateToTarget( AffineMatrix4x4 targetTransform )
-	{
-		//		if (this.cameraAnimation == null)
-		//		{
-		//			System.out.println("NUUL");
-		//		}
-		this.cameraAnimation.setTarget( new QuaternionAndTranslation( targetTransform ) );
 	}
 
 	@Override
@@ -401,7 +391,8 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 				protected void updateValue( QuaternionAndTranslation value ) {
 					if( CameraZoomMouseWheelManipulator.this.camera != null )
 					{
-						manipulatedTransformable.setTransformation( value.getAffineMatrix(), AsSeenBy.SCENE );
+						AffineMatrix4x4 m = value.getAffineMatrix();
+						manipulatedTransformable.setTransformation( m, AsSeenBy.SCENE );
 					}
 				}
 			};

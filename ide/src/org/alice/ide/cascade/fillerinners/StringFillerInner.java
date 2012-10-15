@@ -46,13 +46,20 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class StringFillerInner extends ConcatenationFillerInner {
+	public static String[] getLiterals() {
+		return new String[] { "hello" };
+	}
+
 	public StringFillerInner() {
 		super( String.class );
 	}
 
 	@Override
 	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( "hello" ) );
+		String[] literals = getLiterals();
+		for( String s : literals ) {
+			items.add( org.alice.ide.croquet.models.cascade.literals.StringLiteralFillIn.getInstance( s ) );
+		}
 		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		//rv.add( org.alice.ide.croquet.models.custom.CustomStringInputDialogOperation.getInstance().getFillIn() );
 		items.add( org.alice.ide.custom.StringCustomExpressionCreatorComposite.getInstance().getValueCreator().getFillIn() );

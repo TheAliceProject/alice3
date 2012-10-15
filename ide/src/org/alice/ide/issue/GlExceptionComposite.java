@@ -46,18 +46,15 @@ package org.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class GlExceptionComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.views.GlExceptionView> {
-	private static class SingletonHolder {
-		private static GlExceptionComposite instance = new GlExceptionComposite();
-	}
+	private final javax.media.opengl.GLException glException;
 
-	public static GlExceptionComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final DisplayDriverHelpOperation displayDriverHelpOperation = new DisplayDriverHelpOperation();
-
-	private GlExceptionComposite() {
+	public GlExceptionComposite( javax.media.opengl.GLException glException ) {
 		super( java.util.UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		this.glException = glException;
+	}
+
+	public javax.media.opengl.GLException getGlException() {
+		return this.glException;
 	}
 
 	@Override
@@ -65,7 +62,7 @@ public class GlExceptionComposite extends org.lgna.croquet.PlainDialogOperationC
 		return new org.alice.ide.issue.views.GlExceptionView( this );
 	}
 
-	public DisplayDriverHelpOperation getDisplayDriverHelpOperation() {
-		return this.displayDriverHelpOperation;
+	public org.lgna.croquet.Operation getDisplayDriverHelpOperation() {
+		return GraphicsDriverHelpOperation.getInstance();
 	}
 }
