@@ -100,6 +100,9 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 
 			private boolean loadLibrary( String libraryName, boolean isIgnoringError, boolean isPlatformAttemptedFirst ) {
 				String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryName( libraryName );
+				if( libraryName.contentEquals( "jawt" ) ) {
+					isPlatformAttemptedFirst = false;
+				}
 				if( isPlatformAttemptedFirst ) {
 					try {
 						return this.loadLibrary( platformSpecificLibraryName, isIgnoringError );
