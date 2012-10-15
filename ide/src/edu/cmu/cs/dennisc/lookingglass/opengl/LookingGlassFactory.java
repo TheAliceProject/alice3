@@ -82,22 +82,56 @@ class WaitingRunnable implements Runnable {
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
 	static {
 		com.sun.opengl.impl.NativeLibLoader.setLoadingAction( new com.sun.opengl.impl.NativeLibLoader.LoaderAction() {
-			private void loadPlatformSpecificLibrary( String libraryName ) {
-				String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryName( libraryName );
-				System.loadLibrary( platformSpecificLibraryName );
+			private final java.util.Set<String> loaded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+
+			private boolean loadLibrary( String libraryName, boolean isIgnoringError ) {
+				try {
+					System.loadLibrary( libraryName );
+				} catch( UnsatisfiedLinkError ule ) {
+					String message = ule.getMessage();
+					if( isIgnoringError || ( ( message != null ) && message.contains( "already loaded" ) ) ) {
+						return false;
+					} else {
+						throw ule;
+					}
+				}
+				return true;
 			}
 
-			public void loadLibrary( String libname, String[] preloadLibraryNames, boolean doPreload, boolean ignoreError ) {
+			private boolean loadLibrary( String libraryName, boolean isIgnoringError, boolean isPlatformAttemptedFirst ) {
+				String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryName( libraryName );
+				if( isPlatformAttemptedFirst ) {
+					try {
+						return this.loadLibrary( platformSpecificLibraryName, isIgnoringError );
+					} catch( UnsatisfiedLinkError ule ) {
+						return this.loadLibrary( libraryName, isIgnoringError );
+					}
+				} else {
+					try {
+						return this.loadLibrary( libraryName, isIgnoringError );
+					} catch( UnsatisfiedLinkError ule ) {
+						return this.loadLibrary( platformSpecificLibraryName, isIgnoringError );
+					}
+				}
+			}
+
+			public void loadLibrary( String libname, String[] preloadLibraryNames, boolean doPreload, boolean isIgnoringError ) {
 				if( doPreload ) {
 					for( String preloadLibraryName : preloadLibraryNames ) {
-						try {
-							System.loadLibrary( preloadLibraryName );
-						} catch( UnsatisfiedLinkError ule ) {
-							this.loadPlatformSpecificLibrary( preloadLibraryName );
+						if( loaded.contains( preloadLibraryName ) ) {
+							//pass
+						} else {
+							this.loadLibrary( preloadLibraryName, isIgnoringError, false );
+							this.loaded.add( preloadLibraryName );
 						}
 					}
 				}
-				this.loadPlatformSpecificLibrary( libname );
+				if( loaded.contains( libname ) ) {
+					//pass
+				} else {
+					this.loadLibrary( libname, isIgnoringError, true );
+					this.loaded.add( libname );
+				}
 			}
 		} );
 
