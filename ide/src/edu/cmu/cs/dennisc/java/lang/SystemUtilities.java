@@ -163,36 +163,40 @@ public class SystemUtilities {
 		}
 	}
 
-	public static String getPlatformSpecificLibraryName( String libraryName ) {
-		StringBuilder sb = new StringBuilder();
-		if( isMac() ) {
-			sb.append( "macosx-universal/" );
-		} else {
-			if( isWindows() ) {
-				sb.append( "windows-" );
-			} else if( isLinux() ) {
-				sb.append( "linux-" );
+	public static String getPlatformSpecificLibraryNameIfAppropriate( String libraryName ) {
+		if( isWindows() ) {
+			StringBuilder sb = new StringBuilder();
+			if( isMac() ) {
+				sb.append( "macosx-universal/" );
 			} else {
-				throw new RuntimeException( System.getProperty( "os.name" ) );
-			}
-			Integer bitCount = getBitCount();
-			if( bitCount != null ) {
-				switch( bitCount ) {
-				case 32:
-					sb.append( "i586/" );
-					break;
-				case 64:
-					sb.append( "amd64/" );
-					break;
-				default:
+				if( isWindows() ) {
+					sb.append( "windows-" );
+				} else if( isLinux() ) {
+					sb.append( "linux-" );
+				} else {
+					throw new RuntimeException( System.getProperty( "os.name" ) );
+				}
+				Integer bitCount = getBitCount();
+				if( bitCount != null ) {
+					switch( bitCount ) {
+					case 32:
+						sb.append( "i586/" );
+						break;
+					case 64:
+						sb.append( "amd64/" );
+						break;
+					default:
+						throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+					}
+				} else {
 					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
 				}
-			} else {
-				throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
 			}
+			sb.append( libraryName );
+			return sb.toString();
+		} else {
+			return libraryName;
 		}
-		sb.append( libraryName );
-		return sb.toString();
 	}
 
 	public static boolean areIconsDisplayedInMenus() {
