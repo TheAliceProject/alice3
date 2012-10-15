@@ -87,8 +87,9 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 	}
 
 	@Override
-	protected void handleThrowable( Thread thread, Throwable throwable ) {
+	protected synchronized void handleThrowable( Thread thread, Throwable throwable ) {
 		this.count++;
+		this.isBugReportSubmissionPaneDesired = false;
 		if( this.isBugReportSubmissionPaneDesired ) {
 			try {
 				org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();

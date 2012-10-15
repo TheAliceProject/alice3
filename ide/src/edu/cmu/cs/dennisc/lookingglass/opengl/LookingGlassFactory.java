@@ -81,6 +81,72 @@ class WaitingRunnable implements Runnable {
  */
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
 	static {
+		com.jogamp.common.jvm.JNILibLoaderBase.setLoadingAction( new com.jogamp.common.jvm.JNILibLoaderBase.LoaderAction() {
+			private final java.util.Set<String> loaded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+
+			private boolean loadLibrary( String libraryName, boolean isIgnoringError ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( libraryName, java.util.Arrays.toString( edu.cmu.cs.dennisc.java.lang.SystemUtilities.getLibraryPath() ) );
+				try {
+					System.loadLibrary( libraryName );
+				} catch( UnsatisfiedLinkError ule ) {
+					String message = ule.getMessage();
+					if( isIgnoringError || ( ( message != null ) && message.contains( "already loaded" ) ) ) {
+						return false;
+					} else {
+						throw ule;
+					}
+				}
+				return true;
+			}
+
+			private boolean loadLibrary( String libraryName, boolean isIgnoringError, boolean isPlatformAttemptedFirst ) {
+				synchronized( this.loaded ) {
+					boolean isSuccessful;
+					if( this.loaded.contains( libraryName ) ) {
+						isSuccessful = true;
+					} else {
+						String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryName( libraryName );
+
+						if( libraryName.contentEquals( "jawt" ) ) {
+							isPlatformAttemptedFirst = false;
+						}
+						if( isPlatformAttemptedFirst ) {
+							try {
+								isSuccessful = this.loadLibrary( platformSpecificLibraryName, isIgnoringError );
+							} catch( UnsatisfiedLinkError ule ) {
+								isSuccessful = this.loadLibrary( libraryName, isIgnoringError );
+							}
+						} else {
+							try {
+								isSuccessful = this.loadLibrary( libraryName, isIgnoringError );
+							} catch( UnsatisfiedLinkError ule ) {
+								isSuccessful = this.loadLibrary( platformSpecificLibraryName, isIgnoringError );
+							}
+						}
+						if( isSuccessful ) {
+							this.loaded.add( libraryName );
+						}
+					}
+					return isSuccessful;
+				}
+			}
+
+			@Override
+			public boolean loadLibrary( String libname, boolean isIgnoringError, ClassLoader classLoader ) {
+				return this.loadLibrary( libname, isIgnoringError, true );
+			}
+
+			@Override
+			public void loadLibrary( String libname, String[] preloadLibraryNames, boolean isIgnoringError, ClassLoader classLoader ) {
+				if( preloadLibraryNames != null ) {
+					for( String preloadLibraryName : preloadLibraryNames ) {
+						this.loadLibrary( preloadLibraryName, isIgnoringError, false );
+					}
+				}
+				this.loadLibrary( libname, isIgnoringError, true );
+			}
+		} );
+
 		try {
 			javax.media.opengl.GLProfile unused = javax.media.opengl.GLProfile.getDefault();
 		} catch( UnsatisfiedLinkError ule ) {
