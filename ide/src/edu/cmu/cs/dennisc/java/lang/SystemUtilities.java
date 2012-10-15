@@ -163,8 +163,13 @@ public class SystemUtilities {
 		}
 	}
 
+	public static boolean isPlatformSpecificLibraryLoadingDesired() {
+		//return isWindows();
+		return false;
+	}
+
 	public static String getPlatformSpecificLibraryNameIfAppropriate( String libraryName ) {
-		if( isWindows() ) {
+		if( isPlatformSpecificLibraryLoadingDesired() ) {
 			StringBuilder sb = new StringBuilder();
 			if( isMac() ) {
 				sb.append( "macosx-universal/" );

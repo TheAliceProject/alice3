@@ -81,7 +81,7 @@ class WaitingRunnable implements Runnable {
  */
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
 	static {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPlatformSpecificLibraryLoadingDesired() ) {
 			com.sun.opengl.impl.NativeLibLoader.setLoadingAction( new com.sun.opengl.impl.NativeLibLoader.LoaderAction() {
 				private final java.util.Set<String> loaded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
