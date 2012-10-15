@@ -81,6 +81,26 @@ class WaitingRunnable implements Runnable {
  */
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
 	static {
+		com.sun.opengl.impl.NativeLibLoader.setLoadingAction( new com.sun.opengl.impl.NativeLibLoader.LoaderAction() {
+			private void loadPlatformSpecificLibrary( String libraryName ) {
+				String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryName( libraryName );
+				System.loadLibrary( platformSpecificLibraryName );
+			}
+
+			public void loadLibrary( String libname, String[] preloadLibraryNames, boolean doPreload, boolean ignoreError ) {
+				if( doPreload ) {
+					for( String preloadLibraryName : preloadLibraryNames ) {
+						try {
+							System.loadLibrary( preloadLibraryName );
+						} catch( UnsatisfiedLinkError ule ) {
+							this.loadPlatformSpecificLibrary( preloadLibraryName );
+						}
+					}
+				}
+				this.loadPlatformSpecificLibrary( libname );
+			}
+		} );
+
 		try {
 			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
 			//todo: jogl2
