@@ -62,7 +62,7 @@ public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpr
 	@Override
 	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {
 		org.lgna.project.ast.Expression[] argumentExpressions = new org.lgna.project.ast.Expression[ expressions.length - 1 ];
-		System.arraycopy( expressions, 0, argumentExpressions, 0, argumentExpressions.length );
+		System.arraycopy( expressions, 1, argumentExpressions, 0, argumentExpressions.length );
 		return org.lgna.project.ast.AstUtilities.createMethodInvocation( expressions[ 0 ], this.transientValue.method.getValue(), argumentExpressions );
 	}
 
