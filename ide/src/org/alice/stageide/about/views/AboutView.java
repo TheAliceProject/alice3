@@ -75,9 +75,9 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 
 		org.lgna.croquet.components.FormPanel formPanel = new org.lgna.croquet.components.FormPanel() {
 			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
+			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
 				for( org.alice.stageide.about.EulaComposite eulaComposite : new org.alice.stageide.about.EulaComposite[] { org.alice.stageide.about.SystemEulaComposite.getInstance(), org.alice.stageide.about.SimsArtAssetsEulaComposite.getInstance() } ) {
-					rows.add( new org.lgna.croquet.components.LabeledSpringRow( eulaComposite.getOperation().getSidekickLabel(), eulaComposite.getOperation().createButton() ) );
+					rows.add( new org.lgna.croquet.components.LabeledFormRow( eulaComposite.getOperation().getSidekickLabel(), eulaComposite.getOperation().createButton() ) );
 				}
 			}
 		};

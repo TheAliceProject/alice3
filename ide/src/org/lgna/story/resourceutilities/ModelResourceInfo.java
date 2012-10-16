@@ -67,6 +67,7 @@ public class ModelResourceInfo {
 	private final java.util.List<ModelResourceInfo> subResources = new java.util.LinkedList<ModelResourceInfo>();
 
 	private final String[] tags;
+	private final String[] groupTags;
 
 	private static AxisAlignedBox getBoundingBoxFromXML( Element bboxElement )
 	{
@@ -118,14 +119,21 @@ public class ModelResourceInfo {
 				tagList.add( tagNodeList.item( i ).getTextContent() );
 			}
 			String[] tags = tagList.toArray( new String[ tagList.size() ] );
-			ModelResourceInfo resource = new ModelResourceInfo( parent, resourceName, null, -1, bbox, tags, modelName, textureName );
+
+			LinkedList<String> groupTagList = new LinkedList<String>();
+			NodeList groupTagNodeList = resourceElement.getElementsByTagName( "GroupTag" );
+			for( int i = 0; i < groupTagNodeList.getLength(); i++ ) {
+				groupTagList.add( groupTagNodeList.item( i ).getTextContent() );
+			}
+			String[] groupTags = groupTagList.toArray( new String[ groupTagList.size() ] );
+			ModelResourceInfo resource = new ModelResourceInfo( parent, resourceName, null, -1, bbox, tags, groupTags, modelName, textureName );
 			return resource;
 		}
 
 		return null;
 	}
 
-	public ModelResourceInfo( ModelResourceInfo parent, String resourceName, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String modelName, String textureName ) {
+	public ModelResourceInfo( ModelResourceInfo parent, String resourceName, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String[] groupTags, String modelName, String textureName ) {
 		this.parentInfo = parent;
 		this.resourceName = resourceName;
 		this.creator = creator;
@@ -134,6 +142,7 @@ public class ModelResourceInfo {
 		this.tags = tags;
 		this.textureName = textureName;
 		this.modelName = modelName;
+		this.groupTags = groupTags;
 	}
 
 	private static java.util.List<Element> getImmediateChildElementsByTagName( Element node, String tagName ) {
@@ -179,6 +188,16 @@ public class ModelResourceInfo {
 			}
 		}
 		this.tags = tagList.toArray( new String[ tagList.size() ] );
+
+		LinkedList<String> groupTagList = new LinkedList<String>();
+		java.util.List<Element> groupTagsElementList = getImmediateChildElementsByTagName( modelElement, "GroupTags" );
+		for( Element groupTagsElement : groupTagsElementList ) {
+			java.util.List<Element> groupTagElementList = getImmediateChildElementsByTagName( groupTagsElement, "GroupTag" );
+			for( Element grouptagElement : groupTagElementList ) {
+				groupTagList.add( grouptagElement.getTextContent() );
+			}
+		}
+		this.groupTags = groupTagList.toArray( new String[ groupTagList.size() ] );
 
 		java.util.List<Element> subResourcesList = getImmediateChildElementsByTagName( modelElement, "Resource" );
 		for( Element subResourceElement : subResourcesList ) {
@@ -249,6 +268,20 @@ public class ModelResourceInfo {
 			return allTags;
 		}
 		return tags;
+	}
+
+	public String[] getGroupTags() {
+		if( this.parentInfo != null ) {
+			String[] allTags = new String[ this.groupTags.length + this.parentInfo.groupTags.length ];
+			if( this.parentInfo.groupTags.length > 0 ) {
+				System.arraycopy( this.parentInfo.groupTags, 0, allTags, 0, this.parentInfo.groupTags.length );
+			}
+			if( this.tags.length > 0 ) {
+				System.arraycopy( this.groupTags, 0, allTags, this.parentInfo.groupTags.length, this.groupTags.length );
+			}
+			return allTags;
+		}
+		return groupTags;
 	}
 
 	public ModelResourceInfo getSubResource( String modelName, String textureName ) {

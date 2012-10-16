@@ -84,10 +84,19 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	private void updateUndoRedoEnabled() {
 		org.lgna.croquet.undo.UndoHistory historyManager = this.getProjectHistory( org.alice.ide.IDE.PROJECT_GROUP );
-		int index = historyManager.getInsertionIndex();
-		int size = historyManager.getStack().size();
-		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( index > 0 );
-		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( index < size );
+		boolean isUndoEnabled;
+		boolean isRedoEnabled;
+		if( historyManager != null ) {
+			int index = historyManager.getInsertionIndex();
+			int size = historyManager.getStack().size();
+			isUndoEnabled = index > 0;
+			isRedoEnabled = index < size;
+		} else {
+			isUndoEnabled = false;
+			isRedoEnabled = false;
+		}
+		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( isUndoEnabled );
+		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( isRedoEnabled );
 	}
 
 	protected void handleInsertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
@@ -245,6 +254,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 	}
 
+	//todo: investigate
+	private static final int PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL = 0;
+
 	private int projectHistoryIndexFile = 0;
 	private int projectHistoryIndexSceneSetUp = 0;
 
@@ -267,13 +279,23 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private void updateHistoryIndexFileSync() {
-		this.projectHistoryIndexFile = this.getProjectHistory().getInsertionIndex();
+		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		if( history != null ) {
+			this.projectHistoryIndexFile = history.getInsertionIndex();
+		} else {
+			this.projectHistoryIndexFile = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
+		}
 		this.updateHistoryIndexSceneSetUpSync();
 		this.updateTitle();
 	}
 
 	protected void updateHistoryIndexSceneSetUpSync() {
-		this.projectHistoryIndexSceneSetUp = this.getProjectHistory().getInsertionIndex();
+		org.lgna.croquet.undo.UndoHistory history = this.getProjectHistory();
+		if( history != null ) {
+			this.projectHistoryIndexSceneSetUp = history.getInsertionIndex();
+		} else {
+			this.projectHistoryIndexSceneSetUp = PROJECT_HISTORY_INDEX_IF_PROJECT_HISTORY_IS_NULL;
+		}
 	}
 
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {

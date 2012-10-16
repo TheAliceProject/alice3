@@ -91,7 +91,8 @@ public abstract class DragComponent<J extends javax.swing.AbstractButton, M exte
 
 	@Override
 	protected boolean isMouseListeningDesired() {
-		return super.isMouseListeningDesired() || ( this.getModel() != null );
+		org.lgna.croquet.DragModel dragModel = this.getModel();
+		return super.isMouseListeningDesired() || ( dragModel != null );
 	}
 
 	public JComponent<?> getSubject() {
@@ -120,7 +121,8 @@ public abstract class DragComponent<J extends javax.swing.AbstractButton, M exte
 	}
 
 	private boolean isActuallyPotentiallyDraggable() {
-		boolean rv = this.getModel() != null;
+		org.lgna.croquet.DragModel dragModel = this.getModel();
+		boolean rv = dragModel != null;
 		if( rv ) {
 			if( this.dragProxy != null ) {
 				//pass
@@ -185,20 +187,23 @@ public abstract class DragComponent<J extends javax.swing.AbstractButton, M exte
 	private org.lgna.croquet.history.DragStep step;
 
 	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
-		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-		application.setDragInProgress( true );
-		this.updateProxySizes();
-		this.updateProxyPosition( e );
+		org.lgna.croquet.DragModel dragModel = this.getModel();
+		if( dragModel != null ) {
+			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+			application.setDragInProgress( true );
+			this.updateProxySizes();
+			this.updateProxyPosition( e );
 
-		javax.swing.JLayeredPane layeredPane = getLayeredPane();
-		layeredPane.add( this.dragProxy, new Integer( 1 ) );
-		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
+			javax.swing.JLayeredPane layeredPane = getLayeredPane();
+			layeredPane.add( this.dragProxy, new Integer( 1 ) );
+			layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
-		this.step = org.lgna.croquet.history.TransactionManager.addDragStep( this.getModel(), org.lgna.croquet.triggers.DragTrigger.createUserInstance( this, this.getLeftButtonPressedEvent() ) );
-		this.step.setLatestMouseEvent( e );
-		this.step.fireDragStarted();
-		this.getModel().handleDragStarted( this.step );
-		this.showDragProxy();
+			this.step = org.lgna.croquet.history.TransactionManager.addDragStep( dragModel, org.lgna.croquet.triggers.DragTrigger.createUserInstance( this, this.getLeftButtonPressedEvent() ) );
+			this.step.setLatestMouseEvent( e );
+			this.step.fireDragStarted();
+			dragModel.handleDragStarted( this.step );
+			this.showDragProxy();
+		}
 	}
 
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {

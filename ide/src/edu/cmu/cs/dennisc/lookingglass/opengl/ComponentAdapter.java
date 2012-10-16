@@ -177,6 +177,6 @@ public abstract class ComponentAdapter<E extends edu.cmu.cs.dennisc.scenegraph.C
 
 	public abstract void setup( RenderContext rc );
 
-	public abstract void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults );
+	public abstract void pick( PickContext pc, PickParameters pickParameters );
 
 }

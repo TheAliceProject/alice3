@@ -1,7 +1,9 @@
 package org.lgna.story.resourceutilities;
 import java.io.File;
 
-import org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode;
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.alice.stageide.modelresource.ResourceKey;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
@@ -181,7 +183,7 @@ public class GalleryWebpageGenerator {
 				sb.append( node.getResourceClass().getName().replace( ".", "/" ) );
 				sb.append( ".png" );
 				try {
-					image = javax.imageio.ImageIO.read(TypeGalleryNode.class.getResource( sb.toString() ));
+					image = javax.imageio.ImageIO.read(org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel.class.getResource( sb.toString() ));
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -320,7 +322,21 @@ public class GalleryWebpageGenerator {
 			}
 			tagString += s;
 		}
-		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(modelResource, resourceName);
+		ResourceKey key;
+		
+		if( node.getJavaField() != null ) {
+			try {
+				key = new EnumConstantResourceKey( (Enum<? extends org.lgna.story.resources.ModelResource>)node.getJavaField().getFieldReflectionProxy().getReification().get( null ) );
+			} catch( IllegalAccessException iae ) {
+				throw new RuntimeException( iae );
+			}
+		} else {
+			key = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)modelResource );
+		}
+		
+		
+		
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(key);
 		String bboxString = getBBoxString(bbox);
 		String creator = org.lgna.story.implementation.alice.AliceResourceUtilties.getCreator(modelResource, resourceName);
 		if (creator == null) { creator = ""; }

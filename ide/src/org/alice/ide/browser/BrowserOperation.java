@@ -53,14 +53,8 @@ public abstract class BrowserOperation extends org.alice.ide.operations.Inconseq
 	protected abstract java.net.URL getUrl();
 
 	@Override
-	protected void localize() {
-		java.net.URL url = this.getUrl();
-		this.setName( url.toString() );
-		super.localize();
-	}
-
-	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		//try {
 		java.net.URL url = this.getUrl();
 		try {
 			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
@@ -68,5 +62,8 @@ public abstract class BrowserOperation extends org.alice.ide.operations.Inconseq
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( url.toString() );
 			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." );
 		}
+		//} catch( java.net.MalformedURLException murle ) {
+		//	throw new RuntimeException( this.getClass().getName(), murle );
+		//}
 	}
 }

@@ -52,7 +52,7 @@ public class PortionCustomExpressionCreatorView extends RowBasedCustomExpression
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledSpringRow> rows ) {
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
 		org.alice.ide.custom.PortionCustomExpressionCreatorComposite composite = (org.alice.ide.custom.PortionCustomExpressionCreatorComposite)this.getComposite();
 		org.lgna.croquet.components.Slider slider = composite.getValueState().createSlider();
 
@@ -65,6 +65,6 @@ public class PortionCustomExpressionCreatorView extends RowBasedCustomExpression
 		slider.setMajorTickSpacing( 10 );
 		slider.setPaintTicks( true );
 
-		rows.add( new org.lgna.croquet.components.LabeledSpringRow( composite.getValueLabel(), slider ) );
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getValueLabel(), slider ) );
 	}
 }

@@ -185,8 +185,9 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 		}
 
 		@Override
-		public void setVehicle( EntityImp vehicle ) {
-			this.internalJointImp.setVehicle( vehicle );
+		protected void postCheckSetVehicle( org.lgna.story.implementation.EntityImp vehicle ) {
+			//todo?
+			internalJointImp.postCheckSetVehicle( vehicle );
 		}
 
 		@Override

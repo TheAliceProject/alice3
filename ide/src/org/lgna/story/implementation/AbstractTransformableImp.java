@@ -84,11 +84,10 @@ public abstract class AbstractTransformableImp extends EntityImp {
 	}
 
 	@Override
-	public void setVehicle( EntityImp vehicle ) {
-		assert vehicle != this;
+	protected void postCheckSetVehicle( EntityImp vehicle ) {
 		SceneImp scene = this.getScene();
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 absTransform = scene != null ? this.getTransformation( scene ) : null;
-		super.setVehicle( vehicle );
+		super.postCheckSetVehicle( vehicle );
 		if( ( vehicle != null ) && ( scene != null ) ) {
 			this.setTransformation( scene, absTransform );
 		}

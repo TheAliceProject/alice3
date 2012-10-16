@@ -42,10 +42,6 @@
  */
 package org.alice.ide.croquet.models.help;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.alice.ide.browser.BrowserOperation;
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
 import org.alice.ide.issue.CurrentProjectAttachment;
 import org.alice.ide.issue.ReportSubmissionConfiguration;
@@ -65,7 +61,7 @@ import edu.cmu.cs.dennisc.jira.JIRAReport;
  */
 public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposite<ReportIssueView> {
 	private final edu.cmu.cs.dennisc.jira.JIRAReport.Type type;
-	private final String environment = getEnvironment();
+	private final String environment = edu.cmu.cs.dennisc.toolkit.issue.IssueReportPane.getEnvironmentLongDescription();
 
 	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type type ) {
 		super( migrationId, ISSUE_GROUP );
@@ -113,18 +109,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	private final StringState stepsState = createStringState( this.createKey( "stepsState" ) );
 	private final StringState environmentState = createStringState( this.createKey( "environmentState" ), environment );
 	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, BugSubmitAttachment.YES );
-	private final BrowserOperation operation = new BrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ) ) {
-
-		@Override
-		protected URL getUrl() {
-			try {
-				return new URL( "http://bugs.alice.org:8080/" );
-			} catch( MalformedURLException e ) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-	};
+	private final org.lgna.croquet.Operation operation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 
 	private ActionOperation submitBugOperation = createActionOperation( this.createKey( "submitBugOperation" ), new Action() {
 
@@ -196,32 +181,8 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		return new ReportIssueView( this );
 	}
 
-	public BrowserOperation getBrowserOperation() {
+	public org.lgna.croquet.Operation getBrowserOperation() {
 		return this.operation;
-	}
-
-	private String getEnvironment() {
-		StringBuffer sb = new StringBuffer();
-
-		String intersticial = "";
-		for( String propertyName : this.getSystemPropertiesForEnvironmentField() ) {
-			sb.append( intersticial );
-			sb.append( propertyName );
-			sb.append( ": " );
-			sb.append( System.getProperty( propertyName ) );
-			intersticial = "\n";
-		}
-		return sb.toString();
-	}
-
-	public Iterable<String> getSystemPropertiesForEnvironmentField() {
-		java.util.List<String> rv = new java.util.LinkedList<String>();
-		rv.add( "java.version" );
-		rv.add( "os.name" );
-		rv.add( "os.arch" );
-		rv.add( "os.version" );
-		rv.add( "sun.arch.data.model" );
-		return rv;
 	}
 
 	protected String getJIRAProjectKey() {
@@ -238,7 +199,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		rv.setType( typeState.getSelectedItem() );
 		rv.setSummary( summaryState.getValue() );
 		rv.setDescription( descriptionState.getValue() );
-		rv.setEnvironment( environmentState.getValue() );
+		rv.setEnvironment( edu.cmu.cs.dennisc.toolkit.issue.IssueReportPane.getEnvironmentShortDescription() );
 		rv.setSteps( stepsState.getValue() );
 		rv.setException( "" );
 		rv.setAffectsVersions( new String[] { org.lgna.project.Version.getCurrentVersionText() } );

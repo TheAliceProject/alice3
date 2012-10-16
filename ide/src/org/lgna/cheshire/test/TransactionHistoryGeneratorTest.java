@@ -116,7 +116,11 @@ public class TransactionHistoryGeneratorTest {
 		org.lgna.project.ast.UserMethod methodToGenerate = (org.lgna.project.ast.UserMethod)this.reuseMethod;
 		org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), methodToGenerate );
 		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
-		this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation, myFirstMethod, field );
+		try {
+			this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation, myFirstMethod, field );
+		} catch( org.lgna.croquet.UnsupportedGenerationException uge ) {
+			javax.swing.JOptionPane.showMessageDialog( null, uge.toString() );
+		}
 
 		if( TEMPORARY_HACK_isStoringDesired ) {
 			try {
