@@ -266,7 +266,6 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 					try {
 						impl.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
 					} catch( javax.media.opengl.GLException gle ) {
-						gle.printStackTrace();
 						try {
 							impl.destroy();
 						} catch( Throwable t ) {
