@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
-	private static final boolean IS_HARDWARE_ACCELERATION_DESIRED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "jogl.gljpanel.nohw", false ) == false;
+	private static final boolean IS_HARDWARE_ACCELERATION_DESIRED = true;//edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "jogl.gljpanel.nohw", false ) == false;
 
 	private static class ActualPicker {
 
@@ -138,9 +138,14 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 			public void initialize( jogamp.opengl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext ) {
 				assert this.glDrawable == null : this;
-				//					javax.media.opengl.GLCapabilities glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
-				//					glCapabilities.setHardwareAccelerated( false );
-				this.glDrawable = (jogamp.opengl.GLDrawableImpl)glFactory.createOffscreenDrawable( null, glRequestedCapabilities, glCapabilitiesChooser, 1, 1 );
+				javax.media.opengl.GLCapabilities glCapabilities;
+				if( IS_HARDWARE_ACCELERATION_DESIRED ) {
+					glCapabilities = glRequestedCapabilities;
+				} else {
+					glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
+					glCapabilities.setHardwareAccelerated( false );
+				}
+				this.glDrawable = (jogamp.opengl.GLDrawableImpl)glFactory.createOffscreenDrawable( null, glCapabilities, glCapabilitiesChooser, 1, 1 );
 				this.glDrawable.setRealized( true );
 				this.glContext = (jogamp.opengl.GLContextImpl)this.glDrawable.createContext( glShareContext );
 				//this.glContext.setSynchronized( true );
@@ -170,6 +175,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 					this.drawableHelper = new jogamp.opengl.GLDrawableHelper();
 				}
 				if( ( this.glDrawable != null ) && ( this.glContext != null ) && ( this.displayAdapter != null ) && ( this.initAdapter != null ) ) {
+					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.glContext );
 					this.drawableHelper.invokeGL( this.glDrawable, this.glContext, this.displayAdapter, this.initAdapter );
 				} else {
 					StringBuilder sb = new StringBuilder();
