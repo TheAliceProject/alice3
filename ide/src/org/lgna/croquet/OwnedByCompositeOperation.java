@@ -101,13 +101,13 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	protected void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException {
 		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
 		this.composite.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
 	}
 
 	@Override
-	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException {
 		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
 		this.composite.addGeneratedPostTransactions( ownerTransactionHistory, edit );
 	}

@@ -50,7 +50,11 @@ public interface Frame extends LgnaStackTraceElement {
 
 	public UserInstance getThis();
 
-	public Object lookup( org.lgna.project.ast.AbstractParameter parameter );
+	public boolean isValidParameter( org.lgna.project.ast.UserParameter parameter );
+
+	public boolean isValidLocal( org.lgna.project.ast.UserLocal local );
+
+	public Object lookup( org.lgna.project.ast.UserParameter parameter );
 
 	public Object get( org.lgna.project.ast.UserLocal local );
 

@@ -1018,11 +1018,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 
 	private PickResult pickIntoScene( Point mouseLocation )
 	{
-		//		PrintUtilities.println(System.currentTimeMillis()+": Picking object");
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
 		assert onscreenLookingGlass != null;
 		edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = onscreenLookingGlass.getPicker().pickFrontMost( mouseLocation.x, mouseLocation.y, edu.cmu.cs.dennisc.lookingglass.PickSubElementPolicy.NOT_REQUIRED );
-		//		PrintUtilities.println(System.currentTimeMillis()+": Done picking object");
 		return pickResult;
 	}
 
@@ -1048,7 +1046,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				//Don't pick into the scene if a mouse button is already down 
 				if( !this.currentInputState.isAnyMouseButtonDown() )
 				{
-					this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+					try {
+						PickResult pr = pickIntoScene( e.getPoint() );
+						this.currentInputState.setRolloverPickResult( pr );
+					} catch( javax.media.opengl.GLException gle ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
+					}
 				}
 			}
 			else
@@ -1143,7 +1146,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			this.currentInputState.setMouseLocation( e.getPoint() );
 			if( e.getComponent() == this.lookingGlassComponent )
 			{
-				this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+				try {
+					PickResult pr = pickIntoScene( e.getPoint() );
+					this.currentInputState.setRolloverPickResult( pr );
+				} catch( javax.media.opengl.GLException gle ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
+				}
 			}
 			else
 			{

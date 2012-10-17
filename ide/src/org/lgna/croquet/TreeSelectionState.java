@@ -322,7 +322,7 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	public java.util.List<T> getChildren( T node ) {
 		edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel = this.getTreeModel();
 		final int N = treeModel.getChildCount( node );
-		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( N );
+		java.util.List<T> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( N );
 		for( int i = 0; i < N; i++ ) {
 			rv.add( treeModel.getChild( node, i ) );
 		}

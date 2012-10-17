@@ -37,8 +37,10 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 	@Override
 	protected void nameOfFireCall( Object listener, MouseClickEvent event ) {
 		if( listener instanceof MouseClickOnObjectListener ) {
-			MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;
-			mouseCOOL.mouseClicked( new MouseClickOnObjectEvent( event ) );
+			if( event.getModelAtMouseLocation() != null ) {
+				MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;
+				mouseCOOL.mouseClicked( new MouseClickOnObjectEvent( event ) );
+			}
 		} else if( listener instanceof MouseClickOnScreenListener ) {
 			MouseClickOnScreenListener mouseCOSL = (MouseClickOnScreenListener)listener;
 			mouseCOSL.mouseClicked();
@@ -122,7 +124,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 					map.put( target, list );
 				}
 			}
-		} else {
+		} else if( listener instanceof MouseClickOnScreenListener ) {
 			map.get( empty ).add( listener );
 		}
 	}

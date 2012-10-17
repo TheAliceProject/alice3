@@ -112,7 +112,7 @@ public abstract class AbstractTransformableAdapter<E extends edu.cmu.cs.dennisc.
 	}
 
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+	public void pick( PickContext pc, PickParameters pickParameters ) {
 		pc.gl.glPushMatrix();
 		try {
 			pc.gl.glMultMatrixd( accessLocalTransformationAsBuffer() );
@@ -120,7 +120,7 @@ public abstract class AbstractTransformableAdapter<E extends edu.cmu.cs.dennisc.
 			if( isUnscaling ) {
 				pc.pushScaledCountAndSetToZero();
 			}
-			super.pick( pc, pickParameters, conformanceTestResults );
+			super.pick( pc, pickParameters );
 			if( isUnscaling ) {
 				pc.popAndRestoreScaledCount();
 			}

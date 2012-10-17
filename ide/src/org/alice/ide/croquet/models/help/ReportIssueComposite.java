@@ -61,7 +61,7 @@ import edu.cmu.cs.dennisc.jira.JIRAReport;
  */
 public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposite<ReportIssueView> {
 	private final edu.cmu.cs.dennisc.jira.JIRAReport.Type type;
-	private final String environment = getEnvironment();
+	private final String environment = org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentLongDescription();
 
 	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type type ) {
 		super( migrationId, ISSUE_GROUP );
@@ -185,30 +185,6 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		return this.operation;
 	}
 
-	private String getEnvironment() {
-		StringBuffer sb = new StringBuffer();
-
-		String intersticial = "";
-		for( String propertyName : this.getSystemPropertiesForEnvironmentField() ) {
-			sb.append( intersticial );
-			sb.append( propertyName );
-			sb.append( ": " );
-			sb.append( System.getProperty( propertyName ) );
-			intersticial = "\n";
-		}
-		return sb.toString();
-	}
-
-	public Iterable<String> getSystemPropertiesForEnvironmentField() {
-		java.util.List<String> rv = new java.util.LinkedList<String>();
-		rv.add( "java.version" );
-		rv.add( "os.name" );
-		rv.add( "os.arch" );
-		rv.add( "os.version" );
-		rv.add( "sun.arch.data.model" );
-		return rv;
-	}
-
 	protected String getJIRAProjectKey() {
 		if( this.getVisibilityState().getValue().equals( BugSubmitVisibility.PUBLIC ) ) {
 			return "AIII";
@@ -223,7 +199,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		rv.setType( typeState.getSelectedItem() );
 		rv.setSummary( summaryState.getValue() );
 		rv.setDescription( descriptionState.getValue() );
-		rv.setEnvironment( environmentState.getValue() );
+		rv.setEnvironment( org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentShortDescription() );
 		rv.setSteps( stepsState.getValue() );
 		rv.setException( "" );
 		rv.setAffectsVersions( new String[] { org.lgna.project.Version.getCurrentVersionText() } );
@@ -293,7 +269,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		this.reportSubmissionConfiguration = new ReportSubmissionConfiguration() {
 			@Override
 			public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane.BUGS_ALICE_ORG_KEY );
+				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
 						public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
@@ -307,7 +283,7 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 
 			@Override
 			public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane.BUGS_ALICE_ORG_KEY );
+				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
 						public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {

@@ -48,13 +48,18 @@ package org.lgna.project.virtualmachine;
  */
 public abstract class LgnaVmException extends org.lgna.common.LgnaRuntimeException {
 	private final Thread thread;
-	private VirtualMachine vm;
-	private LgnaStackTraceElement[] stackTrace;
+	private final VirtualMachine vm;
+	private final LgnaStackTraceElement[] stackTrace;
 
-	public LgnaVmException( VirtualMachine vm ) {
+	public LgnaVmException( String message, VirtualMachine vm ) {
+		super( message );
 		this.vm = vm;
 		this.thread = Thread.currentThread();
 		this.stackTrace = this.vm.getStackTrace( this.thread );
+	}
+
+	public LgnaVmException( VirtualMachine vm ) {
+		this( null, vm );
 	}
 
 	public VirtualMachine getVirtualMachine() {
@@ -68,7 +73,7 @@ public abstract class LgnaVmException extends org.lgna.common.LgnaRuntimeExcepti
 	protected abstract void appendDescription( StringBuilder sb );
 
 	@Override
-	protected void appendFormattedString( java.lang.StringBuilder sb ) {
+	protected final void appendFormattedString( java.lang.StringBuilder sb ) {
 		sb.append( "<html>" );
 		sb.append( "<h1>" );
 		this.appendDescription( sb );

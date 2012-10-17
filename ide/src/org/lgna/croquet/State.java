@@ -252,7 +252,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
 	}
 
-	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) {
+	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) throws UnsupportedGenerationException {
 		return this.addGeneratedTransaction( history, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ) );
 	}
 }

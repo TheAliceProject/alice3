@@ -42,6 +42,9 @@
  */
 package org.alice.ide.issue;
 
+import org.alice.ide.issue.croquet.GlExceptionComposite;
+import org.alice.ide.issue.croquet.LgnaExceptionComposite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,7 +68,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 	protected boolean handleLgnaRuntimeException( Thread thread, org.lgna.common.LgnaRuntimeException lgnare ) {
 		org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
 		if( application != null ) {
-			application.showMessageDialog( lgnare.getFormattedString(), lgnare.getClass().getSimpleName(), org.lgna.croquet.MessageType.ERROR );
+			new LgnaExceptionComposite( thread, lgnare ).getOperation().fire();
 			return true;
 		} else {
 			return false;
@@ -74,16 +77,24 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 
 	@Override
 	protected boolean handleGlException( Thread thread, javax.media.opengl.GLException gle ) {
-		//GlExceptionComposite.getInstance().getOperation().fire();
-		return false;
+		final boolean IS_READY_FOR_PRIME_TIME = false;
+		if( IS_READY_FOR_PRIME_TIME ) {
+			javax.swing.JDialog dialog = new javax.swing.JDialog();
+			dialog.getContentPane().add( new GlExceptionComposite( gle ).getView().getAwtComponent() );
+			dialog.pack();
+			dialog.setVisible( true );
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
-	protected void handleThrowable( Thread thread, Throwable throwable ) {
+	protected synchronized void handleThrowable( Thread thread, Throwable throwable ) {
 		this.count++;
 		if( this.isBugReportSubmissionPaneDesired ) {
 			try {
-				org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();
+				org.alice.ide.issue.swing.views.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.swing.views.CaughtExceptionPane();
 				bugReportPane.setThreadAndThrowable( thread, throwable );
 
 				java.awt.Component owner;
