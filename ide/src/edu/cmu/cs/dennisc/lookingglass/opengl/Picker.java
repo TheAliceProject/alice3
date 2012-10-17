@@ -47,6 +47,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
+	private static final boolean IS_HARDWARE_ACCELERATION_DESIRED = com.sun.opengl.impl.Debug.isPropertyDefined( "jogl.gljpanel.nohw" ) == false;
+
 	private static class ActualPicker {
 
 		private static interface Impl {
@@ -244,7 +246,6 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			if( this.glImpl != null ) {
 				//pass
 			} else {
-				final boolean IS_HARDWARE_ACCELERATION_DESIRED = true;
 				Impl impl = null;
 				if( IS_HARDWARE_ACCELERATION_DESIRED && this.glFactory.canCreateGLPbuffer() ) {
 					impl = new PixelBufferImpl();
