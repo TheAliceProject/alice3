@@ -95,7 +95,7 @@ public class Manager {
 			}
 			if( isLicenseAccepted ) {
 				userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
-				String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryName( "jni_nebulous" );
+				String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryNameIfAppropriate( "jni_nebulous" );
 				System.loadLibrary( platformSpecificLibraryName );
 				for( java.io.File directory : Manager.getPendingBundles() ) {
 					Manager.addBundlePath( directory.getAbsolutePath() );

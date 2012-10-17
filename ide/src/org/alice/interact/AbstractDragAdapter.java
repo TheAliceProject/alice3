@@ -1050,7 +1050,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 						PickResult pr = pickIntoScene( e.getPoint() );
 						this.currentInputState.setRolloverPickResult( pr );
 					} catch( javax.media.opengl.GLException gle ) {
-						//						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Error picking into scene", gle );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
 					}
 				}
 			}
@@ -1150,7 +1150,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 					PickResult pr = pickIntoScene( e.getPoint() );
 					this.currentInputState.setRolloverPickResult( pr );
 				} catch( javax.media.opengl.GLException gle ) {
-					//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Error picking into scene", gle );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "Error picking into scene", gle );
 				}
 			}
 			else

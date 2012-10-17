@@ -47,6 +47,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
+	private static final boolean IS_HARDWARE_ACCELERATION_DESIRED = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "jogl.gljpanel.nohw", false ) == false;
+
 	private static class ActualPicker {
 
 		private static interface Impl {
@@ -135,16 +137,18 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			private jogamp.opengl.GLDrawableHelper drawableHelper;
 
 			public void initialize( jogamp.opengl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext ) {
-				if( this.glDrawable != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-				} else {
-					this.glDrawable = (jogamp.opengl.GLDrawableImpl)glFactory.createOffscreenDrawable( null, glRequestedCapabilities, glCapabilitiesChooser, 1, 1 );
-					this.glDrawable.setRealized( true );
-					this.glContext = (jogamp.opengl.GLContextImpl)this.glDrawable.createContext( glShareContext );
-				}
+				assert this.glDrawable == null : this;
+				//					javax.media.opengl.GLCapabilities glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
+				//					glCapabilities.setHardwareAccelerated( false );
+				this.glDrawable = (jogamp.opengl.GLDrawableImpl)glFactory.createOffscreenDrawable( null, glRequestedCapabilities, glCapabilitiesChooser, 1, 1 );
+				this.glDrawable.setRealized( true );
+				this.glContext = (jogamp.opengl.GLContextImpl)this.glDrawable.createContext( glShareContext );
+				//this.glContext.setSynchronized( true );
+				assert this.glContext != null : this;
 			}
 
 			public void destroy() {
+				assert false;
 				if( this.glContext != null ) {
 					this.glContext.destroy();
 					this.glContext = null;
@@ -165,7 +169,32 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				} else {
 					this.drawableHelper = new jogamp.opengl.GLDrawableHelper();
 				}
-				this.drawableHelper.invokeGL( this.glDrawable, this.glContext, displayAdapter, initAdapter );
+				if( ( this.glDrawable != null ) && ( this.glContext != null ) && ( this.displayAdapter != null ) && ( this.initAdapter != null ) ) {
+					this.drawableHelper.invokeGL( this.glDrawable, this.glContext, this.displayAdapter, this.initAdapter );
+				} else {
+					StringBuilder sb = new StringBuilder();
+					if( this.glDrawable != null ) {
+						//pass
+					} else {
+						sb.append( "glDrawable is null;" );
+					}
+					if( this.glContext != null ) {
+						//pass
+					} else {
+						sb.append( "glContext is null;" );
+					}
+					if( this.displayAdapter != null ) {
+						//pass
+					} else {
+						sb.append( "displayAdapter is null;" );
+					}
+					if( this.initAdapter != null ) {
+						//pass
+					} else {
+						sb.append( "initAdapter is null;" );
+					}
+					throw new javax.media.opengl.GLException( sb.toString() );
+				}
 			}
 
 			public boolean isHardwareAccelerated() {
@@ -214,33 +243,50 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			return this.pickParameters.accessFrontMostPickResult();
 		}
 
-		private Impl impl;
+		private Impl glImpl;
 
-		private Impl getImpl() {
-			if( this.impl != null ) {
+		private synchronized Impl getImpl() {
+			if( this.glImpl != null ) {
 				//pass
 			} else {
-				if( this.glFactory.canCreateGLPbuffer( null ) ) {
-					this.impl = new PixelBufferImpl();
+				Impl impl = null;
+				if( IS_HARDWARE_ACCELERATION_DESIRED && this.glFactory.canCreateGLPbuffer( null ) ) {
+					impl = new PixelBufferImpl();
 					try {
-						this.impl.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
+						impl.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
 					} catch( javax.media.opengl.GLException gle ) {
-						this.impl = null;
+						try {
+							impl.destroy();
+						} catch( Throwable t ) {
+							//pass
+						}
+						impl = null;
 					}
 				}
-				if( this.impl != null ) {
+				if( impl != null ) {
 					//pass
 				} else {
-					this.impl = new OffscreenImpl();
-					this.impl.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
+					impl = new OffscreenImpl();
+					try {
+						impl.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
+					} catch( javax.media.opengl.GLException gle ) {
+						try {
+							impl.destroy();
+						} catch( Throwable t ) {
+							//pass
+						}
+						impl = null;
+						throw gle;
+					}
 				}
+				this.glImpl = impl;
 			}
-			return this.impl;
+			return this.glImpl;
 		}
 
 		private void performPick( javax.media.opengl.GL2 gl ) {
 			this.pickContext.gl = gl;
-			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( this.glFactory.canCreateGLPbuffer( null ), this.impl instanceof PixelBufferImpl, gl );
+			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( this.glFactory.canCreateGLPbuffer( null ), this.glImpl instanceof PixelBufferImpl, gl );
 
 			ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
 
