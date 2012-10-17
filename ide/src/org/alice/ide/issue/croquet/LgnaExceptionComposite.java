@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue.croquet;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+/**
+ * @author Dennis Cosgrove
+ */
+public class LgnaExceptionComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.LgnaExceptionView> {
+	private final Thread thread;
+	private final org.lgna.common.LgnaRuntimeException lgnaRuntimeException;
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+	public LgnaExceptionComposite( Thread thread, org.lgna.common.LgnaRuntimeException lgnaRuntimeException ) {
+		super( java.util.UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		this.thread = thread;
+		this.lgnaRuntimeException = lgnaRuntimeException;
+	}
 
-	//	public MailReport generateIssueForSMTP();
+	@Override
+	protected org.alice.ide.issue.croquet.views.LgnaExceptionView createView() {
+		return new org.alice.ide.issue.croquet.views.LgnaExceptionView( this );
+	}
+
+	public Thread getThread() {
+		return this.thread;
+	}
+
+	public org.lgna.common.LgnaRuntimeException getLgnaRuntimeException() {
+		return this.lgnaRuntimeException;
+	}
+
+	@Override
+	protected java.lang.String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return this.lgnaRuntimeException.getClass().getSimpleName();
+	}
 }

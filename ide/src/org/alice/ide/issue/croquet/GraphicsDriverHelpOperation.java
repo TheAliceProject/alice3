@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue.croquet;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+/**
+ * @author Dennis Cosgrove
+ */
+public class GraphicsDriverHelpOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
+	private static class SingletonHolder {
+		private static GraphicsDriverHelpOperation instance = new GraphicsDriverHelpOperation();
+	}
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+	public static GraphicsDriverHelpOperation getInstance() {
+		return SingletonHolder.instance;
+	}
 
-	//	public MailReport generateIssueForSMTP();
+	private static String getSpec() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "http://help.alice.org/w/page/" );
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			sb.append( "59839091/Updating%20Video%20Drivers%20for%20Windows" );
+		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			sb.append( "59838915/Updating%20Video%20Drivers%20for%20Mac%20OS%20X" );
+		} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			sb.append( "59839254/Updating%20Video%20Drivers%20for%20Linux" );
+		} else {
+			sb.append( "54959364/Updating%20Video%20Drivers" );
+		}
+		return sb.toString();
+	}
+
+	private GraphicsDriverHelpOperation() {
+		super( java.util.UUID.fromString( "652d34f0-7f39-4b63-a15c-d95090d0b3e9" ), getSpec() );
+	}
 }

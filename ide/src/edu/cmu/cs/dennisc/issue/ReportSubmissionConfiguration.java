@@ -51,9 +51,9 @@ public interface ReportSubmissionConfiguration {
 
 	public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator();
 
-	public String getMailServer();
-
-	public edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator();
-
-	public String getMailRecipient();
+	//	public String getMailServer();
+	//
+	//	public edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator();
+	//
+	//	public String getMailRecipient();
 }
