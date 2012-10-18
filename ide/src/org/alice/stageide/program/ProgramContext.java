@@ -79,6 +79,8 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionStartListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionEndListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
+
+		org.alice.ide.issue.UserProgramRunningStateUtilities.setUserProgramRunning( true );
 		this.programInstance = this.createProgramInstance( programType );
 	}
 
@@ -135,6 +137,7 @@ public abstract class ProgramContext {
 	}
 
 	public void cleanUpProgram() {
+		org.alice.ide.issue.UserProgramRunningStateUtilities.setUserProgramRunning( false );
 		this.getProgramImp().shutDown();
 		if( this.rendering != null ) {
 			org.alice.stageide.perspectives.PerspectiveState.getInstance().enableRendering();
