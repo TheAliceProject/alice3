@@ -83,15 +83,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 
 	private class SubmitAction extends org.alice.ide.issue.swing.SubmitReportAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			if( IssueReportPane.this.isClearedToSubmit() ) {
-				IssueReportPane.this.isSubmitAttempted = true;
-				IssueReportPane.this.isSubmitSuccessful = IssueReportPane.this.submit();
-				java.awt.Component root = javax.swing.SwingUtilities.getRoot( IssueReportPane.this );
-				root.setVisible( false );
-				//				if( IssueReportPane.this.window != null ) {
-				//					IssueReportPane.this.window.setVisible( false );
-				//				}
-			}
+			IssueReportPane.this.submit();
 		}
 	}
 
@@ -290,15 +282,15 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 
 	private boolean isSubmitAttempted = false;
 	private boolean isSubmitSuccessful = false;
-	private boolean isSubmitBackgrounded = false;
+	private boolean isSubmitDone = false;
 	private java.net.URL urlResult = null;
 
 	public boolean isSubmitAttempted() {
 		return this.isSubmitAttempted;
 	}
 
-	public boolean isSubmitBackgrounded() {
-		return this.isSubmitBackgrounded;
+	public boolean isSubmitDone() {
+		return this.isSubmitDone;
 	}
 
 	public boolean isSubmitSuccessful() {
@@ -309,46 +301,18 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		return this.urlResult;
 	}
 
-	protected abstract boolean isClearedToSubmit();
-
-	protected boolean submit() {
+	protected void submit() {
+		this.isSubmitSuccessful = false;
+		this.isSubmitDone = false;
+		this.urlResult = null;
+		this.isSubmitAttempted = true;
 		ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( this, this.getReportSubmissionConfiguration() );
-		if( this.isSubmitBackgrounded ) {
-			//pass
-		} else {
-			this.isSubmitBackgrounded = progressPane.isBackgrounded();
-		}
-
 		this.urlResult = progressPane.getURLResult();
-
-		return progressPane.isSuccessful();
-
-		//		ProgressPane progressPane = new ProgressPane();
-		//		progressPane.initializeAndExecuteWorker( this, this.getReportSubmissionConfiguration() );
-		//
-		//		this.isSubmitBackgrounded = false;
-		//		javax.swing.JFrame frame = new javax.swing.JFrame();
-		//		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
-		//		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
-		//			@Override
-		//			public void windowClosing( java.awt.event.WindowEvent e ) {
-		//				IssueReportPane.this.isSubmitBackgrounded = true;
-		//				e.getComponent().setVisible( false );
-		//			}
-		//		} );
-		//		dialog.getContentPane().add( progressPane );
-		//		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		//		dialog.pack();
-		//		dialog.setVisible( true );
-		//
-		//		if( this.isSubmitBackgrounded ) {
-		//			//pass
-		//		} else {
-		//			this.isSubmitBackgrounded = progressPane.isBackgrounded();
-		//		}
-		//
-		//		this.urlResult = progressPane.getURLResult();
-		//
-		//		return progressPane.isSuccessful();
+		this.isSubmitSuccessful = progressPane.isSuccessful();
+		this.isSubmitDone = progressPane.isDone();
+		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
+		if( root != null ) {
+			root.setVisible( false );
+		}
 	}
 }

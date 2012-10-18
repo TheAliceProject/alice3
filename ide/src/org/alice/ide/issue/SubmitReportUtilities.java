@@ -54,20 +54,33 @@ public class SubmitReportUtilities {
 		org.alice.ide.issue.swing.views.ProgressPane progressPane = new org.alice.ide.issue.swing.views.ProgressPane();
 		progressPane.initializeAndExecuteWorker( issueReportGenerator, reportSubmissionConfiguration );
 
-		//this.isSubmitBackgrounded = false;
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
-		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
-			@Override
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				//				IssueReportPane.this.isSubmitBackgrounded = true;
-				//				e.getComponent().setVisible( false );
-			}
-		} );
-		dialog.getContentPane().add( progressPane );
-		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		dialog.pack();
-		dialog.setVisible( true );
+		java.awt.Component owner = null;
+		String title = "Uploading Bug Report";
+		String text = "run in background";
+		int result = javax.swing.JOptionPane.showOptionDialog( owner, progressPane, title, javax.swing.JOptionPane.DEFAULT_OPTION, javax.swing.JOptionPane.PLAIN_MESSAGE, null, new String[] { text }, text );
+		switch( result ) {
+		case javax.swing.JOptionPane.OK_OPTION:
+			System.out.println( "background" );
+			break;
+		case javax.swing.JOptionPane.CLOSED_OPTION:
+			System.out.println( "closed" );
+			break;
+		}
+
+		//		//this.isSubmitBackgrounded = false;
+		//		javax.swing.JFrame frame = new javax.swing.JFrame();
+		//		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
+		//		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
+		//			@Override
+		//			public void windowClosing( java.awt.event.WindowEvent e ) {
+		//				//				IssueReportPane.this.isSubmitBackgrounded = true;
+		//				//				e.getComponent().setVisible( false );
+		//			}
+		//		} );
+		//		dialog.getContentPane().add( progressPane );
+		//		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
+		//		dialog.pack();
+		//		dialog.setVisible( true );
 
 		//		if( this.isSubmitBackgrounded ) {
 		//			//pass
