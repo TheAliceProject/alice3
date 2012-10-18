@@ -81,11 +81,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		return sb.toString();
 	}
 
-	class SubmitAction extends javax.swing.AbstractAction {
-		public SubmitAction() {
-			super( "submit bug report" );
-		}
-
+	private class SubmitAction extends org.alice.ide.issue.swing.SubmitReportAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			if( IssueReportPane.this.isClearedToSubmit() ) {
 				IssueReportPane.this.isSubmitAttempted = true;
@@ -99,7 +95,9 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		}
 	}
 
-	private javax.swing.JButton submitButton = new javax.swing.JButton( new SubmitAction() );
+	private final javax.swing.Action submitAction = new SubmitAction();
+
+	private javax.swing.JButton submitButton = new javax.swing.JButton( submitAction );
 
 	protected abstract int getPreferredDescriptionHeight();
 
@@ -108,6 +106,10 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	private static final String SUMMARY_SUGGESTIVE_TEXT = "please fill in a one line synopsis";
 	private static final String DESCRIPTION_SUGGESTIVE_TEXT = "please fill in a detailed description";
 	private static final String STEPS_SUGGESTIVE_TEXT = "please fill in the steps required to reproduce the bug";
+
+	protected javax.swing.Action getSubmitAction() {
+		return this.submitAction;
+	}
 
 	protected abstract boolean isSummaryRequired();
 
@@ -310,24 +312,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	protected abstract boolean isClearedToSubmit();
 
 	protected boolean submit() {
-		ProgressPane progressPane = new ProgressPane();
-		progressPane.initializeAndExecuteWorker( this, this.getReportSubmissionConfiguration() );
-
-		this.isSubmitBackgrounded = false;
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
-		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
-			@Override
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				IssueReportPane.this.isSubmitBackgrounded = true;
-				e.getComponent().setVisible( false );
-			}
-		} );
-		dialog.getContentPane().add( progressPane );
-		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		dialog.pack();
-		dialog.setVisible( true );
-
+		ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( this, this.getReportSubmissionConfiguration() );
 		if( this.isSubmitBackgrounded ) {
 			//pass
 		} else {
@@ -337,5 +322,33 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		this.urlResult = progressPane.getURLResult();
 
 		return progressPane.isSuccessful();
+
+		//		ProgressPane progressPane = new ProgressPane();
+		//		progressPane.initializeAndExecuteWorker( this, this.getReportSubmissionConfiguration() );
+		//
+		//		this.isSubmitBackgrounded = false;
+		//		javax.swing.JFrame frame = new javax.swing.JFrame();
+		//		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
+		//		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
+		//			@Override
+		//			public void windowClosing( java.awt.event.WindowEvent e ) {
+		//				IssueReportPane.this.isSubmitBackgrounded = true;
+		//				e.getComponent().setVisible( false );
+		//			}
+		//		} );
+		//		dialog.getContentPane().add( progressPane );
+		//		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
+		//		dialog.pack();
+		//		dialog.setVisible( true );
+		//
+		//		if( this.isSubmitBackgrounded ) {
+		//			//pass
+		//		} else {
+		//			this.isSubmitBackgrounded = progressPane.isBackgrounded();
+		//		}
+		//
+		//		this.urlResult = progressPane.getURLResult();
+		//
+		//		return progressPane.isSuccessful();
 	}
 }

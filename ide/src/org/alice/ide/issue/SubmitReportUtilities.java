@@ -40,13 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.swing;
+package org.alice.ide.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SubmitReportAction extends javax.swing.AbstractAction {
-	public SubmitReportAction() {
-		super( "submit bug report" );
+public class SubmitReportUtilities {
+	private SubmitReportUtilities() {
+		throw new AssertionError();
+	}
+
+	public static org.alice.ide.issue.swing.views.ProgressPane submitReport( edu.cmu.cs.dennisc.issue.ReportGenerator issueReportGenerator, edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration reportSubmissionConfiguration ) {
+		org.alice.ide.issue.swing.views.ProgressPane progressPane = new org.alice.ide.issue.swing.views.ProgressPane();
+		progressPane.initializeAndExecuteWorker( issueReportGenerator, reportSubmissionConfiguration );
+
+		//this.isSubmitBackgrounded = false;
+		javax.swing.JFrame frame = new javax.swing.JFrame();
+		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
+		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing( java.awt.event.WindowEvent e ) {
+				//				IssueReportPane.this.isSubmitBackgrounded = true;
+				//				e.getComponent().setVisible( false );
+			}
+		} );
+		dialog.getContentPane().add( progressPane );
+		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
+		dialog.pack();
+		dialog.setVisible( true );
+
+		//		if( this.isSubmitBackgrounded ) {
+		//			//pass
+		//		} else {
+		//			this.isSubmitBackgrounded = progressPane.isBackgrounded();
+		//		}
+		//
+		//		this.urlResult = progressPane.getURLResult();
+
+		return progressPane;
 	}
 }

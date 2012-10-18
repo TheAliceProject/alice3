@@ -55,7 +55,6 @@ import org.lgna.croquet.history.CompletionStep;
  * @author Dennis Cosgrove
  */
 public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
-
 	private ActionOperation logoutOperation = createActionOperation( createKey( "logoutOperation" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
@@ -85,6 +84,6 @@ public final class LogOutCard extends org.lgna.croquet.SimpleComposite<org.lgna.
 				this,
 				org.lgna.croquet.components.FlowPanel.Alignment.TRAILING,
 				this.usernameLabel,
-				logoutOperation.createButton() );
+				this.logoutOperation.createButton() );
 	}
 }
