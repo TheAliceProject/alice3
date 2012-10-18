@@ -40,12 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue.swing.views;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+public class HeaderPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+	public HeaderPane() {
+		this.setBackground( java.awt.Color.DARK_GRAY );
+		this.setOpaque( true );
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink hyperlink = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://bugs.alice.org:8080/" );
+		hyperlink.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( HeaderPane.class.getResource( "images/logo.png" ) ) );
+		hyperlink.setDefaultColor( java.awt.Color.LIGHT_GRAY );
+		hyperlink.setArmedColor( java.awt.Color.YELLOW );
+		hyperlink.setForeground( hyperlink.getDefaultColor() );
+		hyperlink.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
+		hyperlink.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
+		this.add( hyperlink );
+		this.add( javax.swing.Box.createHorizontalStrut( 32 ) );
+		this.add( javax.swing.Box.createHorizontalGlue() );
+		this.add( new org.alice.ide.issue.swing.views.LogInStatusPane() );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 6, 8, 12 ) );
+	}
 
-	//	public MailReport generateIssueForSMTP();
+	public static void main( String[] args ) {
+		HeaderPane pane = new HeaderPane();
+		//LogInPane pane = new LogInPane();
+		//PasswordPane pane = new PasswordPane();
+		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, null, "", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		edu.cmu.cs.dennisc.java.awt.WindowUtilities.setLocationOnScreenToCenteredWithin( dialog, null );
+		dialog.setVisible( true );
+	}
 }

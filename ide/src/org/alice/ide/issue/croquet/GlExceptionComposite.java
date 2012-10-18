@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue.croquet;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+/**
+ * @author Dennis Cosgrove
+ */
+public class GlExceptionComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.GlExceptionView> {
+	private final javax.media.opengl.GLException glException;
 
-	//	public MailReport generateIssueForSMTP();
+	public GlExceptionComposite( javax.media.opengl.GLException glException ) {
+		super( java.util.UUID.fromString( "430294d2-f4e4-4a69-93af-93fc2f7a89ba" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		this.glException = glException;
+	}
+
+	public javax.media.opengl.GLException getGlException() {
+		return this.glException;
+	}
+
+	@Override
+	protected org.alice.ide.issue.croquet.views.GlExceptionView createView() {
+		return new org.alice.ide.issue.croquet.views.GlExceptionView( this );
+	}
+
+	public org.lgna.croquet.Operation getDisplayDriverHelpOperation() {
+		return GraphicsDriverHelpOperation.getInstance();
+	}
 }

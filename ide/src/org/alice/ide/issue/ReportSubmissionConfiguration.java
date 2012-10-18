@@ -59,15 +59,15 @@ public class ReportSubmissionConfiguration implements edu.cmu.cs.dennisc.issue.R
 		return new org.alice.ide.issue.jira.soap.Authenticator();
 	}
 
-	public String getMailServer() {
-		return "haru.pc.cc.cmu.edu";
-	}
-
-	public edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator() {
-		return new org.alice.ide.issue.mail.Authenticator();
-	}
-
-	public String getMailRecipient() {
-		return "alice.bugs.3.beta.xxxx@gmail.com";
-	}
+	//	public String getMailServer() {
+	//		return "haru.pc.cc.cmu.edu";
+	//	}
+	//
+	//	public edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator() {
+	//		return new org.alice.ide.issue.mail.Authenticator();
+	//	}
+	//
+	//	public String getMailRecipient() {
+	//		return "alice.bugs.3.beta.xxxx@gmail.com";
+	//	}
 }
