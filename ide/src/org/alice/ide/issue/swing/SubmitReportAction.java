@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue.swing;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
-
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
-
-	//	public MailReport generateIssueForSMTP();
+/**
+ * @author Dennis Cosgrove
+ */
+public class SubmitReportAction extends javax.swing.AbstractAction {
+	public void actionPerformed( java.awt.event.ActionEvent e ) {
+	}
 }

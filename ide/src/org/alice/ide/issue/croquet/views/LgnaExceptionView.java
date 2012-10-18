@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue.croquet.views;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+/**
+ * @author Dennis Cosgrove
+ */
+public class LgnaExceptionView extends org.lgna.croquet.components.MigPanel {
+	private static final javax.swing.Icon ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GlExceptionView.class.getResource( "images/alice.png" ) );
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+	public LgnaExceptionView( org.alice.ide.issue.croquet.LgnaExceptionComposite composite ) {
+		super( composite, "", "", "[top][top]" );
 
-	//	public MailReport generateIssueForSMTP();
+		org.lgna.common.LgnaRuntimeException lgnaRuntimeException = composite.getLgnaRuntimeException();
+		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( lgnaRuntimeException.getFormattedString(), javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ) );
+		label.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
+		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
+
+		this.addComponent( new org.lgna.croquet.components.Label( ICON ), "span 1 2" );
+		this.addComponent( new org.lgna.croquet.components.Label( "Alice has encountered a problem in your program", javax.swing.UIManager.getIcon( "OptionPane.errorIcon" ), 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "wrap" );
+		this.addComponent( new org.lgna.croquet.components.Label( lgnaRuntimeException.getFormattedString() ) );
+
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+	}
 }

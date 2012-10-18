@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -42,10 +42,11 @@
  */
 package edu.cmu.cs.dennisc.issue;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+/**
+ * @author Dennis Cosgrove
+ */
+public interface WorkerListener {
+	public void process( java.util.List<String> chunks );
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
-
-	//	public MailReport generateIssueForSMTP();
+	public void done( boolean isSuccessful, java.net.URL urlResult );
 }

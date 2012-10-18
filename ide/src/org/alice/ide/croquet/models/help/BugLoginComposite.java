@@ -43,6 +43,7 @@
 package org.alice.ide.croquet.models.help;
 
 import org.alice.ide.croquet.models.help.views.BugLoginView;
+import org.alice.ide.issue.swing.views.LogInStatusPane;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
@@ -51,7 +52,6 @@ import org.lgna.croquet.history.CompletionStep;
 
 import com.atlassian.jira.rpc.soap.client.RemoteUser;
 
-import edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane;
 
 /**
  * @author Matt May

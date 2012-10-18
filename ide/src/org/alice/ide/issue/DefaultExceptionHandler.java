@@ -42,6 +42,9 @@
  */
 package org.alice.ide.issue;
 
+import org.alice.ide.issue.croquet.GlExceptionComposite;
+import org.alice.ide.issue.croquet.LgnaExceptionComposite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -91,7 +94,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 		this.count++;
 		if( this.isBugReportSubmissionPaneDesired ) {
 			try {
-				org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();
+				org.alice.ide.issue.swing.views.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.swing.views.CaughtExceptionPane();
 				bugReportPane.setThreadAndThrowable( thread, throwable );
 
 				java.awt.Component owner;
