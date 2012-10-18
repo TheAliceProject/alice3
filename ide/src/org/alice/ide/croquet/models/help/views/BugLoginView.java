@@ -62,10 +62,12 @@ public class BugLoginView extends FormPanel {
 			passwordField.setExposed( nextValue );
 		}
 	};
+	private final org.lgna.croquet.components.TextField userNameField;
 	private final org.lgna.croquet.components.PasswordField passwordField;
 
 	public BugLoginView( BugLoginComposite bugLoginComposite ) {
 		super( bugLoginComposite );
+		this.userNameField = bugLoginComposite.getUserNameState().createTextField();
 		this.passwordField = bugLoginComposite.getPasswordState().createPasswordField();
 		this.setMinimumPreferredHeight( 240 );
 	}
@@ -73,8 +75,8 @@ public class BugLoginView extends FormPanel {
 	@Override
 	protected void appendRows( List<LabeledFormRow> rows ) {
 		BugLoginComposite bugLoginComposite = (BugLoginComposite)this.getComposite();
-		rows.add( new LabeledFormRow( bugLoginComposite.getUserNameState().getSidekickLabel(), bugLoginComposite.getUserNameState().createTextField() ) );
-		rows.add( new LabeledFormRow( bugLoginComposite.getPasswordState().getSidekickLabel(), passwordField ) );
+		rows.add( new LabeledFormRow( bugLoginComposite.getUserNameState().getSidekickLabel(), this.userNameField ) );
+		rows.add( new LabeledFormRow( bugLoginComposite.getPasswordState().getSidekickLabel(), this.passwordField ) );
 		rows.add( new LabeledFormRow( null, bugLoginComposite.getDisplayPasswordValue().createCheckBox() ) );
 	}
 
@@ -82,6 +84,7 @@ public class BugLoginView extends FormPanel {
 	protected void handleDisplayable() {
 		BugLoginComposite bugLoginComposite = (BugLoginComposite)this.getComposite();
 		bugLoginComposite.getDisplayPasswordValue().addAndInvokeValueListener( this.isPasswordExposedListener );
+		this.userNameField.requestFocus();
 		super.handleDisplayable();
 	}
 
