@@ -169,7 +169,7 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 
 		org.lgna.croquet.simple.SimpleApplication application = new org.lgna.croquet.simple.SimpleApplication();
 		Thread.setDefaultUncaughtExceptionHandler( new DefaultExceptionHandler() );
-		throw new javax.media.opengl.GLException();
+		throw new javax.media.opengl.GLException( "DELETE ME" );
 		//		//throw new RuntimeException();
 		//		//throw new org.lgna.common.LgnaIllegalArgumentException( "test", 0, null );
 	}
