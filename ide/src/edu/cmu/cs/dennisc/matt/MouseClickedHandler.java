@@ -1,7 +1,8 @@
 package edu.cmu.cs.dennisc.matt;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
@@ -14,7 +15,7 @@ import org.lgna.story.event.MouseClickOnScreenListener;
 
 public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClickEvent> {
 
-	HashMap<Object, LinkedList<Object>> map = new HashMap<Object, LinkedList<Object>>();
+	Map<Object, CopyOnWriteArrayList<Object>> map = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
 	Object empty = new Object();
 
 	private boolean isMouseButtonListenerInExistence() {
@@ -51,7 +52,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 	}
 
 	public MouseClickedHandler() {
-		map.put( empty, new LinkedList<Object>() );
+		map.put( empty, new CopyOnWriteArrayList<Object>() );
 	}
 
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote, SScene scene ) {
@@ -94,7 +95,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 	public void fireAllTargeted( org.lgna.story.event.MouseClickEvent event ) {
 		if( shouldFire ) {
 			if( event != null ) {
-				LinkedList<Object> listeners = new LinkedList<Object>();
+				CopyOnWriteArrayList<Object> listeners = new CopyOnWriteArrayList<Object>();
 				listeners.addAll( map.get( empty ) );
 				SModel modelAtMouseLocation = event.getModelAtMouseLocation();
 				if( modelAtMouseLocation != null ) {
@@ -119,7 +120,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 				if( map.get( target ) != null ) {
 					map.get( target ).add( listener );
 				} else {
-					LinkedList<Object> list = new LinkedList<Object>();
+					CopyOnWriteArrayList<Object> list = new CopyOnWriteArrayList<Object>();
 					list.add( listener );
 					map.put( target, list );
 				}

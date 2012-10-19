@@ -42,9 +42,10 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
@@ -56,7 +57,7 @@ import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.EndCollisionEvent;
 import org.lgna.story.event.StartCollisionEvent;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 import edu.cmu.cs.dennisc.java.util.logging.Logger;
 
 /**
@@ -69,7 +70,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 	public void addCollisionListener( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
 		registerIsFiringMap( collisionListener );
 		registerPolicyMap( collisionListener, MultipleEventPolicy.IGNORE );
-		List<SThing> allObserving = Collections.newArrayList( groupOne );
+		List<SThing> allObserving = Collections.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( SThing m : allObserving ) {
 			if( !modelList.contains( m ) ) {
@@ -98,19 +99,19 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 
 	private class CollisionEventHandler {
 
-		HashMap<SThing, LinkedList<SThing>> checkMap = new HashMap<SThing, LinkedList<SThing>>();
-		HashMap<SThing, HashMap<SThing, LinkedList<Object>>> eventMap = new HashMap<SThing, HashMap<SThing, LinkedList<Object>>>();
-		HashMap<SThing, HashMap<SThing, Boolean>> wereTouchingMap = new HashMap<SThing, HashMap<SThing, Boolean>>();
+		Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = new ConcurrentHashMap<SThing, CopyOnWriteArrayList<SThing>>();
+		Map<SThing, Map<SThing, CopyOnWriteArrayList<Object>>> eventMap = new ConcurrentHashMap<SThing, Map<SThing, CopyOnWriteArrayList<Object>>>();
+		Map<SThing, Map<SThing, Boolean>> wereTouchingMap = new ConcurrentHashMap<SThing, Map<SThing, Boolean>>();
 
 		public void check( SThing changedEntity ) {
 			for( SThing m : checkMap.get( changedEntity ) ) {
-				LinkedList<Object> listenerList = eventMap.get( changedEntity ).get( m );
+				CopyOnWriteArrayList<Object> listenerList = eventMap.get( changedEntity ).get( m );
 				if( ( listenerList == null ) || ( listenerList.size() == 0 ) ) {
 					return;
 				}
 				for( Object colList : listenerList ) {
 					if( check( colList, m, changedEntity ) ) {
-						LinkedList<SThing> models = new LinkedList<SThing>();
+						CopyOnWriteArrayList<SThing> models = new CopyOnWriteArrayList<SThing>();
 						models.add( changedEntity );
 						models.add( m );
 						if( colList instanceof CollisionStartListener ) {
@@ -139,13 +140,13 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 		public void register( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
 			for( SThing m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SThing, LinkedList<Object>>() );
-					wereTouchingMap.put( m, new HashMap<SThing, Boolean>() );
-					checkMap.put( m, new LinkedList<SThing>() );
+					eventMap.put( m, new ConcurrentHashMap<SThing, CopyOnWriteArrayList<Object>>() );
+					wereTouchingMap.put( m, new ConcurrentHashMap<SThing, Boolean>() );
+					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
 				}
 				for( SThing t : groupTwo ) {
 					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new LinkedList<Object>() );
+						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( collisionListener );
@@ -158,13 +159,13 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 			}
 			for( SThing m : groupTwo ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SThing, LinkedList<Object>>() );
-					wereTouchingMap.put( m, new HashMap<SThing, Boolean>() );
-					checkMap.put( m, new LinkedList<SThing>() );
+					eventMap.put( m, new ConcurrentHashMap<SThing, CopyOnWriteArrayList<Object>>() );
+					wereTouchingMap.put( m, new ConcurrentHashMap<SThing, Boolean>() );
+					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
 				}
 				for( SThing t : groupOne ) {
 					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new LinkedList<Object>() );
+						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( collisionListener );
