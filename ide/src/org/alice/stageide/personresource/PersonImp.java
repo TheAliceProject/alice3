@@ -68,7 +68,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		}
 	}
 
-	public void clear() {
+	public void unload() {
 		for( java.util.Map.Entry<org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person> entry : this.mapLifeStageToNebPerson.entrySet() ) {
 			entry.getValue().unload();
 		}
