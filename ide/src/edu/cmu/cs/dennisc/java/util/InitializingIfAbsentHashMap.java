@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ClearanceCheckingExitOperation extends PotentialClearanceIteratingOperation {
-	private static class SingletonHolder {
-		private static ClearanceCheckingExitOperation instance = new ClearanceCheckingExitOperation();
-	}
-
-	public static ClearanceCheckingExitOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ClearanceCheckingExitOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), ExitOperation.getInstance() );
-	}
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		step.finish();
+public class InitializingIfAbsentHashMap<K, V> extends java.util.HashMap<K, V> implements InitializingIfAbsentMap<K, V> {
+	public synchronized final V getInitializingIfAbsent( K key, Initializer<K, V> initializer ) {
+		if( this.containsKey( key ) ) {
+			return this.get( key );
+		} else {
+			V value = initializer.initialize( key );
+			this.put( key, value );
+			return value;
+		}
 	}
 }
