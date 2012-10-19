@@ -239,6 +239,14 @@ public class Collections {
 		return new java.util.WeakHashMap<K, V>();
 	}
 
+	public static <K, V> InitializingIfAbsentMap<K, V> newInitializingIfAbsentHashMap() {
+		return new InitializingIfAbsentHashMap<K, V>();
+	}
+
+	public static <K, E> InitializingIfAbsentListHashMap<K, E> newInitializingIfAbsentListHashMap() {
+		return new InitializingIfAbsentListHashMap<K, E>();
+	}
+
 	public static <A, B> java.util.HashMap<B, A> newInverseHashMap( java.util.Map<A, B> map ) {
 		java.util.HashMap<B, A> rv = newHashMap();
 		for( A a : map.keySet() ) {

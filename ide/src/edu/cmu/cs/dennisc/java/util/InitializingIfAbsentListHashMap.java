@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ClearanceCheckingExitOperation extends PotentialClearanceIteratingOperation {
-	private static class SingletonHolder {
-		private static ClearanceCheckingExitOperation instance = new ClearanceCheckingExitOperation();
+public class InitializingIfAbsentListHashMap<K, E> extends InitializingIfAbsentHashMap<K, java.util.List<E>> {
+	public java.util.List<E> getInitializingIfAbsentToLinkedList( K key ) {
+		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.List<E>>() {
+			public java.util.List<E> initialize( K key ) {
+				return Collections.newLinkedList();
+			}
+		} );
 	}
 
-	public static ClearanceCheckingExitOperation getInstance() {
-		return SingletonHolder.instance;
+	public java.util.List<E> getInitializingIfAbsentToArrayList( K key ) {
+		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.List<E>>() {
+			public java.util.List<E> initialize( K key ) {
+				return Collections.newArrayList();
+			}
+		} );
 	}
 
-	private ClearanceCheckingExitOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), ExitOperation.getInstance() );
-	}
-
-	@Override
-	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		step.finish();
+	public java.util.List<E> getInitializingIfAbsentToCopyOnWriteArrayList( K key ) {
+		return this.getInitializingIfAbsent( key, new Initializer<K, java.util.List<E>>() {
+			public java.util.List<E> initialize( K key ) {
+				return edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+			}
+		} );
 	}
 }
