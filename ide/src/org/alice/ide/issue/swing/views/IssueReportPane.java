@@ -78,6 +78,10 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 			sb.append( System.getProperty( propertyName ) );
 			intersticial = ";";
 		}
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			sb.append( ";" );
+			sb.append( System.getProperty( "os.version" ) );
+		}
 		return sb.toString();
 	}
 
@@ -239,6 +243,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		if( this.isInclusionOfCompleteSystemPropertiesDesired() ) {
 			rv.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
 		}
+		rv.addAttachment( new edu.cmu.cs.dennisc.issue.GraphicsPropertiesAttachment() );
 		return rv;
 	}
 

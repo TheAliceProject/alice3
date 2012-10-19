@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue;
+package org.alice.ide.issue.swing.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandler {
-	protected abstract boolean handleLgnaRuntimeException( Thread thread, org.lgna.common.LgnaRuntimeException lgnare );
+public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane {
+	public CaughtGlExceptionPane() {
+	}
 
-	protected abstract void handleThrowable( Thread thread, Throwable throwable );
+	@Override
+	public void setThreadAndThrowable( java.lang.Thread thread, java.lang.Throwable throwable ) {
+		if( throwable instanceof javax.media.opengl.GLException ) {
+			javax.media.opengl.GLException glException = (javax.media.opengl.GLException)throwable;
+			this.add( new org.alice.ide.issue.croquet.GlExceptionComposite( glException ).getView().getAwtComponent(), java.awt.BorderLayout.NORTH );
+		}
+		super.setThreadAndThrowable( thread, throwable );
+	}
 
-	public final void uncaughtException( Thread thread, Throwable throwable ) {
-		throwable.printStackTrace();
-		if( throwable instanceof RuntimeException ) {
-			RuntimeException runtimeException = (RuntimeException)throwable;
-			Throwable cause = runtimeException.getCause();
-			if( cause instanceof java.lang.reflect.InvocationTargetException ) {
-				java.lang.reflect.InvocationTargetException invocationTargetException = (java.lang.reflect.InvocationTargetException)cause;
-				Throwable targetException = invocationTargetException.getTargetException();
-				if( targetException instanceof org.lgna.common.LgnaRuntimeException ) {
-					throwable = targetException;
-				}
-			}
-		}
-		boolean isHandled;
-		if( throwable instanceof org.lgna.common.LgnaRuntimeException ) {
-			org.lgna.common.LgnaRuntimeException lgnare = (org.lgna.common.LgnaRuntimeException)throwable;
-			isHandled = this.handleLgnaRuntimeException( thread, lgnare );
+	@Override
+	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
+		return new org.alice.ide.issue.ReportSubmissionConfiguration();
+	}
+
+	@Override
+	protected String getEnvironmentText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( super.getEnvironmentText() );
+		sb.append( ";" );
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		if( sharedDetails != null ) {
+			sb.append( sharedDetails.getRenderer() );
 		} else {
-			isHandled = false;
+			sb.append( "<unknown>" );
 		}
-		if( isHandled ) {
-			//pass
-		} else {
-			this.handleThrowable( thread, throwable );
-		}
+		return sb.toString();
+	}
+
+	@Override
+	protected String getJIRAProjectKey() {
+		return "AIIIP";
+	}
+
+	@Override
+	protected String[] getAffectsVersions() {
+		return new String[] { org.lgna.project.Version.getCurrentVersionText() };
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
+		rv = super.addAttachments( rv );
+		rv.addAttachment( new edu.cmu.cs.dennisc.issue.GraphicsPropertiesAttachment() );
+		return rv;
 	}
 }

@@ -42,7 +42,6 @@
  */
 package org.alice.ide.issue;
 
-import org.alice.ide.issue.croquet.GlExceptionComposite;
 import org.alice.ide.issue.croquet.LgnaExceptionComposite;
 
 /**
@@ -76,26 +75,18 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 	}
 
 	@Override
-	protected boolean handleGlException( Thread thread, javax.media.opengl.GLException gle ) {
-		final boolean IS_READY_FOR_PRIME_TIME = false;
-		if( IS_READY_FOR_PRIME_TIME ) {
-			javax.swing.JDialog dialog = new javax.swing.JDialog();
-			dialog.getContentPane().add( new GlExceptionComposite( gle ).getView().getAwtComponent() );
-			dialog.pack();
-			dialog.setVisible( true );
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
 	protected synchronized void handleThrowable( Thread thread, Throwable throwable ) {
 		this.count++;
 		if( this.isBugReportSubmissionPaneDesired ) {
 			try {
-				org.alice.ide.issue.swing.views.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.swing.views.CaughtExceptionPane();
-				bugReportPane.setThreadAndThrowable( thread, throwable );
+				org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane exceptionPane;
+				if( throwable instanceof javax.media.opengl.GLException ) {
+					exceptionPane = new org.alice.ide.issue.swing.views.CaughtGlExceptionPane();
+				} else {
+					exceptionPane = new org.alice.ide.issue.swing.views.CaughtExceptionPane();
+				}
+
+				exceptionPane.setThreadAndThrowable( thread, throwable );
 
 				java.awt.Component owner;
 				org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
@@ -110,13 +101,13 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 					owner = null;
 				}
 
-				javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-				dialog.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
+				javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( exceptionPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+				dialog.getRootPane().setDefaultButton( exceptionPane.getSubmitButton() );
 				dialog.setVisible( true );
 
-				if( bugReportPane.isSubmitAttempted() ) {
-					if( bugReportPane.isSubmitDone() ) {
-						if( bugReportPane.isSubmitSuccessful() ) {
+				if( exceptionPane.isSubmitAttempted() ) {
+					if( exceptionPane.isSubmitDone() ) {
+						if( exceptionPane.isSubmitSuccessful() ) {
 							javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report has been successfully submitted.  Thank you." );
 						} else {
 							javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report FAILED to submit.  Thank you for trying." );
