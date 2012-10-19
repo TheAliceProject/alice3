@@ -49,6 +49,7 @@ import org.alice.ide.issue.ReportSubmissionConfiguration;
  * @author Dennis Cosgrove
  */
 public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane {
+	private static final String APPLICATION_NAME = "Alice";
 	private static final float FONT_SCALE = 1.15f;
 	private static final javax.swing.Icon MEAN_QUEEN_ICON;
 
@@ -76,11 +77,15 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 
 		if( org.alice.ide.issue.UserProgramRunningStateUtilities.isUserProgramRunning() ) {
 			sb.append( " during the running of your program.<p>" );
-			sb.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in Alice.<p>" );
+			sb.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
+			sb.append( APPLICATION_NAME );
+			sb.append( ".<p>" );
 		} else {
 			sb.append( ".<p>" );
 		}
-		sb.append( "<p>Please accept our apologies and press the \"submit bug report\" button.<p>" );
+		sb.append( "<p>Please accept our apologies and press the \"" );
+		sb.append( this.getSubmitAction().getValue( javax.swing.Action.NAME ) );
+		sb.append( "\" button.<p>" );
 		sb.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
 		sb.append( "</html>" );
 
@@ -135,13 +140,10 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 	private boolean isClearedToAttachCurrentProject = false;
 
 	@Override
-	protected boolean isClearedToSubmit() {
-		boolean rv = super.isClearedToSubmit();
-		if( rv ) {
-			int option = javax.swing.JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the Alice team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the Alice team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_OPTION );
-			this.isClearedToAttachCurrentProject = option == javax.swing.JOptionPane.YES_OPTION;
-		}
-		return rv;
+	protected void submit() {
+		int option = javax.swing.JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the " + APPLICATION_NAME + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + APPLICATION_NAME + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_OPTION );
+		this.isClearedToAttachCurrentProject = option == javax.swing.JOptionPane.YES_OPTION;
+		super.submit();
 	}
 
 	@Override

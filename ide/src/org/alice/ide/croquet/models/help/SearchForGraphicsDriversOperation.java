@@ -58,6 +58,14 @@ public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.Bro
 		super( java.util.UUID.fromString( "c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea" ) );
 	}
 
+	private static String getRendererSearchTerm( String renderer ) {
+		if( renderer.toLowerCase().contains( "geforce" ) ) {
+			return "GeForce";
+		} else {
+			return renderer;
+		}
+	}
+
 	@Override
 	protected java.net.URL getUrl() {
 		StringBuilder sb = new StringBuilder();
@@ -66,6 +74,7 @@ public class SearchForGraphicsDriversOperation extends org.alice.ide.browser.Bro
 		if( sharedDetails != null ) {
 			String renderer = sharedDetails.getRenderer();
 			if( renderer != null ) {
+				renderer = getRendererSearchTerm( renderer );
 				sb.append( "+" );
 				sb.append( renderer.replaceAll( " ", "+" ) );
 			}

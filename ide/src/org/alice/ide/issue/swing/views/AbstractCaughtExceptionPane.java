@@ -266,11 +266,6 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 	}
 
 	@Override
-	protected boolean isClearedToSubmit() {
-		return true;
-	}
-
-	@Override
 	protected int getPreferredDescriptionHeight() {
 		return 64;
 	}

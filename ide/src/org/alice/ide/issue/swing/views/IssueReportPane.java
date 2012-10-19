@@ -78,28 +78,22 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 			sb.append( System.getProperty( propertyName ) );
 			intersticial = ";";
 		}
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+			sb.append( ";" );
+			sb.append( System.getProperty( "os.version" ) );
+		}
 		return sb.toString();
 	}
 
-	class SubmitAction extends javax.swing.AbstractAction {
-		public SubmitAction() {
-			super( "submit bug report" );
-		}
-
+	private class SubmitAction extends org.alice.ide.issue.swing.SubmitReportAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			if( IssueReportPane.this.isClearedToSubmit() ) {
-				IssueReportPane.this.isSubmitAttempted = true;
-				IssueReportPane.this.isSubmitSuccessful = IssueReportPane.this.submit();
-				java.awt.Component root = javax.swing.SwingUtilities.getRoot( IssueReportPane.this );
-				root.setVisible( false );
-				//				if( IssueReportPane.this.window != null ) {
-				//					IssueReportPane.this.window.setVisible( false );
-				//				}
-			}
+			IssueReportPane.this.submit();
 		}
 	}
 
-	private javax.swing.JButton submitButton = new javax.swing.JButton( new SubmitAction() );
+	private final javax.swing.Action submitAction = new SubmitAction();
+
+	private javax.swing.JButton submitButton = new javax.swing.JButton( submitAction );
 
 	protected abstract int getPreferredDescriptionHeight();
 
@@ -108,6 +102,10 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	private static final String SUMMARY_SUGGESTIVE_TEXT = "please fill in a one line synopsis";
 	private static final String DESCRIPTION_SUGGESTIVE_TEXT = "please fill in a detailed description";
 	private static final String STEPS_SUGGESTIVE_TEXT = "please fill in the steps required to reproduce the bug";
+
+	protected javax.swing.Action getSubmitAction() {
+		return this.submitAction;
+	}
 
 	protected abstract boolean isSummaryRequired();
 
@@ -288,15 +286,15 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 
 	private boolean isSubmitAttempted = false;
 	private boolean isSubmitSuccessful = false;
-	private boolean isSubmitBackgrounded = false;
+	private boolean isSubmitDone = false;
 	private java.net.URL urlResult = null;
 
 	public boolean isSubmitAttempted() {
 		return this.isSubmitAttempted;
 	}
 
-	public boolean isSubmitBackgrounded() {
-		return this.isSubmitBackgrounded;
+	public boolean isSubmitDone() {
+		return this.isSubmitDone;
 	}
 
 	public boolean isSubmitSuccessful() {
@@ -307,35 +305,18 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		return this.urlResult;
 	}
 
-	protected abstract boolean isClearedToSubmit();
-
-	protected boolean submit() {
-		ProgressPane progressPane = new ProgressPane();
-		progressPane.initializeAndExecuteWorker( this, this.getReportSubmissionConfiguration() );
-
-		this.isSubmitBackgrounded = false;
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
-		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
-			@Override
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				IssueReportPane.this.isSubmitBackgrounded = true;
-				e.getComponent().setVisible( false );
-			}
-		} );
-		dialog.getContentPane().add( progressPane );
-		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		dialog.pack();
-		dialog.setVisible( true );
-
-		if( this.isSubmitBackgrounded ) {
-			//pass
-		} else {
-			this.isSubmitBackgrounded = progressPane.isBackgrounded();
-		}
-
+	protected void submit() {
+		this.isSubmitSuccessful = false;
+		this.isSubmitDone = false;
+		this.urlResult = null;
+		this.isSubmitAttempted = true;
+		ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( this, this.getReportSubmissionConfiguration() );
 		this.urlResult = progressPane.getURLResult();
-
-		return progressPane.isSuccessful();
+		this.isSubmitSuccessful = progressPane.isSuccessful();
+		this.isSubmitDone = progressPane.isDone();
+		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
+		if( root != null ) {
+			root.setVisible( false );
+		}
 	}
 }

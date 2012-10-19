@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.ide.issue.swing.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
-	private final BugLoginComposite loginDialogComposite = BugLoginComposite.getInstance();
-
-	public LogInCard() {
-		super( java.util.UUID.fromString( "7229bd12-7078-46b6-9bd3-509edd2dc203" ) );
+public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane {
+	public CaughtGlExceptionPane() {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new org.lgna.croquet.components.FlowPanel(
-				this,
-				org.lgna.croquet.components.FlowPanel.Alignment.TRAILING,
-				loginDialogComposite.getOperation().createButton() );
+	public void setThreadAndThrowable( java.lang.Thread thread, java.lang.Throwable throwable ) {
+		if( throwable instanceof javax.media.opengl.GLException ) {
+			javax.media.opengl.GLException glException = (javax.media.opengl.GLException)throwable;
+			this.add( new org.alice.ide.issue.croquet.GlExceptionComposite( glException ).getView().getAwtComponent(), java.awt.BorderLayout.NORTH );
+		}
+		super.setThreadAndThrowable( thread, throwable );
 	}
 
-	public BugLoginComposite getLoginDialogComposite() {
-		return this.loginDialogComposite;
+	@Override
+	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
+		return new org.alice.ide.issue.ReportSubmissionConfiguration();
+	}
+
+	@Override
+	protected String getEnvironmentText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( super.getEnvironmentText() );
+		sb.append( ";" );
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		if( sharedDetails != null ) {
+			sb.append( sharedDetails.getRenderer() );
+		} else {
+			sb.append( "<unknown>" );
+		}
+		return sb.toString();
+	}
+
+	@Override
+	protected String getJIRAProjectKey() {
+		return "AIIIP";
+	}
+
+	@Override
+	protected String[] getAffectsVersions() {
+		return new String[] { org.lgna.project.Version.getCurrentVersionText() };
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
+		rv = super.addAttachments( rv );
+		rv.addAttachment( new edu.cmu.cs.dennisc.issue.GraphicsPropertiesAttachment() );
+		return rv;
 	}
 }

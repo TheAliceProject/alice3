@@ -20,6 +20,7 @@
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/google-collect-1.0-rc1.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/youtube.jar"/>
+	<classpathentry kind="lib" path="lib/mail/lib/mailapi.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
