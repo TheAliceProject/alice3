@@ -243,7 +243,6 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		if( this.isInclusionOfCompleteSystemPropertiesDesired() ) {
 			rv.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
 		}
-		rv.addAttachment( new edu.cmu.cs.dennisc.issue.GraphicsPropertiesAttachment() );
 		return rv;
 	}
 
