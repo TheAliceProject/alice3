@@ -40,12 +40,78 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+package org.alice.ide.issue.swing.views;
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+import edu.cmu.cs.dennisc.issue.IssueReportWorker;
+import edu.cmu.cs.dennisc.issue.ReportGenerator;
+import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
+import edu.cmu.cs.dennisc.issue.WorkerListener;
 
-	//	public MailReport generateIssueForSMTP();
+/**
+ * @author Dennis Cosgrove
+ */
+public class ProgressPane extends javax.swing.JPanel {
+	private javax.swing.JTextPane console = new javax.swing.JTextPane();
+	private IssueReportWorker issueReportWorker;
+	private boolean isDone = false;
+	private boolean isSuccessful = false;
+	private java.net.URL urlResult = null;
+
+	public ProgressPane() {
+		this.console.setPreferredSize( new java.awt.Dimension( 400, 240 ) );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( new javax.swing.JScrollPane( this.console ), java.awt.BorderLayout.CENTER );
+	}
+
+	public void initializeAndExecuteWorker( ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
+		this.issueReportWorker = new IssueReportWorker( new WorkerListener() {
+			public void process( java.util.List<String> chunks ) {
+				handleProcess( chunks );
+			}
+
+			public void done( boolean isSuccessful, java.net.URL urlResult ) {
+				handleDone( isSuccessful, urlResult );
+			}
+		}, issueReportGenerator, reportSubmissionConfiguration );
+		this.issueReportWorker.execute();
+	}
+
+	private void hideRoot() {
+		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
+		if( root != null ) {
+			root.setVisible( false );
+		}
+	}
+
+	public void handleProcess( java.util.List<String> chunks ) {
+		for( String chunk : chunks ) {
+			javax.swing.text.Document document = ProgressPane.this.console.getDocument();
+			try {
+				document.insertString( document.getLength(), chunk, null );
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
+			}
+			System.out.print( chunk );
+		}
+	}
+
+	public void handleDone( boolean isSuccessful, java.net.URL urlResult ) {
+		this.isDone = true;
+		this.isSuccessful = isSuccessful;
+		this.urlResult = urlResult;
+		this.hideRoot();
+	}
+
+	public boolean isDone() {
+		return this.isDone;
+	}
+
+	public boolean isSuccessful() {
+		return this.isSuccessful;
+	}
+
+	public java.net.URL getURLResult() {
+		return this.urlResult;
+	}
 }

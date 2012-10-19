@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package edu.cmu.cs.dennisc.javax.swing.components;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+/**
+ * @author Dennis Cosgrove
+ */
+public class JMigPane extends JPane {
+	private static final String DEFAULT_CONSTRAINT = "";
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+	public JMigPane( String layoutConstraints, String columnConstraints, String rowConstraints ) {
+		net.miginfocom.swing.MigLayout layout = new net.miginfocom.swing.MigLayout();
+		layout.setLayoutConstraints( layoutConstraints );
+		layout.setColumnConstraints( columnConstraints );
+		layout.setRowConstraints( rowConstraints );
+		this.setLayout( layout );
+	}
 
-	//	public MailReport generateIssueForSMTP();
+	public JMigPane( String layoutConstraints, String columnConstraints ) {
+		this( layoutConstraints, columnConstraints, DEFAULT_CONSTRAINT );
+	}
+
+	public JMigPane( String layoutConstraints ) {
+		this( layoutConstraints, DEFAULT_CONSTRAINT );
+	}
+
+	public JMigPane() {
+		this( DEFAULT_CONSTRAINT );
+	}
 }

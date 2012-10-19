@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+/**
+ * @author Dennis Cosgrove
+ */
+public class UserProgramRunningStateUtilities {
+	private UserProgramRunningStateUtilities() {
+		throw new AssertionError();
+	}
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+	private static boolean isUserProgramRunning;
 
-	//	public MailReport generateIssueForSMTP();
+	public static boolean isUserProgramRunning() {
+		return isUserProgramRunning;
+	}
+
+	public static void setUserProgramRunning( boolean isUserProgramRunning ) {
+		UserProgramRunningStateUtilities.isUserProgramRunning = isUserProgramRunning;
+	}
+
 }

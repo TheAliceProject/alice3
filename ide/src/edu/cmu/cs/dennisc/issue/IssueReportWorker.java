@@ -43,28 +43,25 @@
 
 package edu.cmu.cs.dennisc.issue;
 
-import edu.cmu.cs.dennisc.jira.JIRAReport;
-import edu.cmu.cs.dennisc.mail.MailReport;
-
 /**
  * @author Dennis Cosgrove
  */
-public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Boolean, String> {
-	private ProgressPane progressPane;
-	private ReportGenerator issueReportGenerator;
-	private ReportSubmissionConfiguration reportSubmissionConfiguration;
+public final class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Boolean, String> {
+	private final WorkerListener workerListener;
+	private final ReportGenerator issueReportGenerator;
+	private final ReportSubmissionConfiguration reportSubmissionConfiguration;
 	private String key = null;
 
-	public IssueReportWorker( ProgressPane progressPane, ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
-		assert progressPane != null;
-		this.progressPane = progressPane;
+	public IssueReportWorker( WorkerListener workerListener, ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
+		assert workerListener != null;
+		this.workerListener = workerListener;
 		this.issueReportGenerator = issueReportGenerator;
 		this.reportSubmissionConfiguration = reportSubmissionConfiguration;
 	}
 
 	@Override
 	protected void process( java.util.List<String> chunks ) {
-		this.progressPane.handleProcess( chunks );
+		this.workerListener.process( chunks );
 	}
 
 	private void process( String... chunks ) {
@@ -72,7 +69,7 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Bool
 	}
 
 	protected boolean uploadToJIRAViaSOAP() throws Exception {
-		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
+		edu.cmu.cs.dennisc.jira.JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
 		if( jiraReport != null ) {
 			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
@@ -100,7 +97,7 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Bool
 	}
 
 	protected void uploadToJIRAViaRPC() throws Exception {
-		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
+		edu.cmu.cs.dennisc.jira.JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
 		if( jiraReport != null ) {
 			final boolean STREAM_MESSAGES = true;
 			redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( this.reportSubmissionConfiguration.getJIRAViaRPCServer(), STREAM_MESSAGES );
@@ -116,15 +113,15 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Bool
 		}
 	}
 
-	protected void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride ) throws Exception {
-		MailReport mailReport = this.issueReportGenerator.generateIssueForSMTP();
-		if( mailReport != null ) {
-			edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.reportSubmissionConfiguration.getMailServer(), this.reportSubmissionConfiguration.getMailAuthenticator(), mailReport.getReplyTo(), mailReport.getReplyToPersonal(), this.reportSubmissionConfiguration.getMailRecipient(), mailReport.getSubject(), mailReport.getBody(), mailReport.getAttachments() );
-			this.key = null;
-		} else {
-			throw new Exception( "pass" );
-		}
-	}
+	//	protected void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride ) throws Exception {
+	//		MailReport mailReport = this.issueReportGenerator.generateIssueForSMTP();
+	//		if( mailReport != null ) {
+	//			edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.reportSubmissionConfiguration.getMailServer(), this.reportSubmissionConfiguration.getMailAuthenticator(), mailReport.getReplyTo(), mailReport.getReplyToPersonal(), this.reportSubmissionConfiguration.getMailRecipient(), mailReport.getSubject(), mailReport.getBody(), mailReport.getAttachments() );
+	//			this.key = null;
+	//		} else {
+	//			throw new Exception( "pass" );
+	//		}
+	//	}
 
 	@Override
 	protected Boolean doInBackground() throws Exception {
@@ -135,15 +132,16 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Bool
 			if( isSuccessAttachment ) {
 				this.process( "SUCCEEDED.\n" );
 			} else {
-				this.process( "PARTIALLY SUCCEEDED (attachments failed).\n" );
-				this.process( "* sending mail (on smtp port)... " );
-				try {
-					this.sendMail( false, null );
-					this.process( "SUCCEEDED.\n" );
-				} catch( Exception eC ) {
-					eC.printStackTrace();
-					this.process( "FAILED.\n" );
-				}
+				//				this.process( "PARTIALLY SUCCEEDED (attachments failed).\n" );
+				//				this.process( "* sending mail (on smtp port)... " );
+				//				try {
+				//					this.sendMail( false, null );
+				//					this.process( "SUCCEEDED.\n" );
+				//				} catch( Exception eC ) {
+				//					eC.printStackTrace();
+				//					this.process( "FAILED.\n" );
+				//				}
+				this.process( "FAILED.\n" );
 			}
 		} catch( Exception eA ) {
 			eA.printStackTrace();
@@ -155,31 +153,31 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Bool
 			} catch( Exception eB ) {
 				eB.printStackTrace();
 				this.process( "FAILED.\n" );
-				this.process( "* sending mail (on smtp port)... " );
-				try {
-					this.sendMail( false, null );
-					this.process( "SUCCEEDED.\n" );
-				} catch( Exception eC ) {
-					eC.printStackTrace();
-					this.process( "FAILED.\n" );
-					//					this.process( "* sending secure mail (on secure smtp port)... " );
-					//					try {
-					//						this.sendMail( true, null );
-					//						this.process( "SUCCEEDED.\n" );
-					//					} catch( Exception eD ) {
-					//						eD.printStackTrace();
-					//						this.process( "FAILED.\n" );
-					//						this.process( "* sending secure mail (on http port)... " );
-					//						try {
-					//							this.sendMail( true, 80 );
-					//							this.process( "SUCCEEDED.\n" );
-					//						} catch( Exception eE ) {
-					//							eE.printStackTrace();
-					this.process( "FAILED.\n" );
-					return false;
-					//						}
-					//					}
-				}
+				//				this.process( "* sending mail (on smtp port)... " );
+				//				try {
+				//					this.sendMail( false, null );
+				//					this.process( "SUCCEEDED.\n" );
+				//				} catch( Exception eC ) {
+				//					eC.printStackTrace();
+				//					this.process( "FAILED.\n" );
+				//					//					this.process( "* sending secure mail (on secure smtp port)... " );
+				//					//					try {
+				//					//						this.sendMail( true, null );
+				//					//						this.process( "SUCCEEDED.\n" );
+				//					//					} catch( Exception eD ) {
+				//					//						eD.printStackTrace();
+				//					//						this.process( "FAILED.\n" );
+				//					//						this.process( "* sending secure mail (on http port)... " );
+				//					//						try {
+				//					//							this.sendMail( true, 80 );
+				//					//							this.process( "SUCCEEDED.\n" );
+				//					//						} catch( Exception eE ) {
+				//					//							eE.printStackTrace();
+				//					this.process( "FAILED.\n" );
+				//					return false;
+				//					//						}
+				//					//					}
+				//				}
 			}
 		}
 		return true;
@@ -201,7 +199,7 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker<Bool
 				} else {
 					urlResult = null;
 				}
-				this.progressPane.handleDone( isSuccessful, urlResult );
+				this.workerListener.done( isSuccessful, urlResult );
 			} else {
 				System.out.println( "IssueReportWorker: isSuccessful is null." );
 			}

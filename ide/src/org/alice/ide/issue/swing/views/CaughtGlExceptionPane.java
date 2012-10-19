@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue.swing.views;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+/**
+ * @author Dennis Cosgrove
+ */
+public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane {
+	public CaughtGlExceptionPane() {
+	}
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+	@Override
+	public void setThreadAndThrowable( java.lang.Thread thread, java.lang.Throwable throwable ) {
+		if( throwable instanceof javax.media.opengl.GLException ) {
+			javax.media.opengl.GLException glException = (javax.media.opengl.GLException)throwable;
+			this.add( new org.alice.ide.issue.croquet.GlExceptionComposite( glException ).getView().getAwtComponent(), java.awt.BorderLayout.NORTH );
+		}
+		super.setThreadAndThrowable( thread, throwable );
+	}
 
-	//	public MailReport generateIssueForSMTP();
+	@Override
+	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
+		return new org.alice.ide.issue.ReportSubmissionConfiguration();
+	}
+
+	@Override
+	protected String getEnvironmentText() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( super.getEnvironmentText() );
+		sb.append( ";" );
+		edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SharedDetails sharedDetails = edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults.SINGLETON.getSharedDetails();
+		if( sharedDetails != null ) {
+			sb.append( sharedDetails.getRenderer() );
+		} else {
+			sb.append( "<unknown>" );
+		}
+		return sb.toString();
+	}
+
+	@Override
+	protected String getJIRAProjectKey() {
+		return "AIIIP";
+	}
+
+	@Override
+	protected String[] getAffectsVersions() {
+		return new String[] { org.lgna.project.Version.getCurrentVersionText() };
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
+		rv = super.addAttachments( rv );
+		rv.addAttachment( new edu.cmu.cs.dennisc.issue.GraphicsPropertiesAttachment() );
+		return rv;
+	}
 }

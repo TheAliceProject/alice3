@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue.croquet;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+/**
+ * @author Dennis Cosgrove
+ */
+public class CaughtThrowableComposite extends StrangeCircumstanceComposite {
+	private final Throwable throwable;
 
-	//	public MailReport generateIssueForSMTP();
+	public CaughtThrowableComposite( Throwable throwable ) {
+		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ) );
+		this.throwable = throwable;
+	}
+
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		try {
+			throw new IllegalArgumentException( "test" );
+		} catch( IllegalArgumentException iae ) {
+			new CaughtThrowableComposite( iae ).getOperation().fire();
+		}
+	}
 }

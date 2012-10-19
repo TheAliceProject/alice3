@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.issue;
+package org.alice.ide.issue;
 
-public interface ReportGenerator {
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP();
+/**
+ * @author Dennis Cosgrove
+ */
+public class SubmitReportUtilities {
+	private SubmitReportUtilities() {
+		throw new AssertionError();
+	}
 
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC();
+	public static org.alice.ide.issue.swing.views.ProgressPane submitReport( edu.cmu.cs.dennisc.issue.ReportGenerator issueReportGenerator, edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration reportSubmissionConfiguration ) {
+		org.alice.ide.issue.swing.views.ProgressPane progressPane = new org.alice.ide.issue.swing.views.ProgressPane();
+		progressPane.initializeAndExecuteWorker( issueReportGenerator, reportSubmissionConfiguration );
 
-	//	public MailReport generateIssueForSMTP();
+		java.awt.Component owner = null;
+		String title = "Uploading Bug Report";
+		String text = "run in background";
+		int result = javax.swing.JOptionPane.showOptionDialog( owner, progressPane, title, javax.swing.JOptionPane.DEFAULT_OPTION, javax.swing.JOptionPane.PLAIN_MESSAGE, null, new String[] { text }, text );
+		switch( result ) {
+		case javax.swing.JOptionPane.OK_OPTION:
+			System.out.println( "background" );
+			break;
+		case javax.swing.JOptionPane.CLOSED_OPTION:
+			System.out.println( "closed" );
+			break;
+		}
+
+		//		//this.isSubmitBackgrounded = false;
+		//		javax.swing.JFrame frame = new javax.swing.JFrame();
+		//		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
+		//		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
+		//			@Override
+		//			public void windowClosing( java.awt.event.WindowEvent e ) {
+		//				//				IssueReportPane.this.isSubmitBackgrounded = true;
+		//				//				e.getComponent().setVisible( false );
+		//			}
+		//		} );
+		//		dialog.getContentPane().add( progressPane );
+		//		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
+		//		dialog.pack();
+		//		dialog.setVisible( true );
+
+		//		if( this.isSubmitBackgrounded ) {
+		//			//pass
+		//		} else {
+		//			this.isSubmitBackgrounded = progressPane.isBackgrounded();
+		//		}
+		//
+		//		this.urlResult = progressPane.getURLResult();
+
+		return progressPane;
+	}
 }

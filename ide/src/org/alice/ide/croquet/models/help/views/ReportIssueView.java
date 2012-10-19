@@ -48,7 +48,7 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
-import org.alice.ide.issue.HeaderPane;
+import org.alice.ide.issue.swing.views.HeaderPane;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.FlowPanel;
 import org.lgna.croquet.components.FormPanel;
@@ -83,7 +83,7 @@ public class ReportIssueView extends BorderPanel {
 		FormPanel centerComponent = new FormPanel() {
 			@Override
 			protected void appendRows( List<LabeledFormRow> rows ) {
-				rows.add( new LabeledFormRow( reportIssueComposite.getVisibilityState().getSidekickLabel(), reportIssueComposite.getVisibilityState().createHorizontalDefaultRadioButtons() ) );
+				rows.add( new LabeledFormRow( reportIssueComposite.getVisibilityState().getSidekickLabel(), reportIssueComposite.getVisibilityState().createVerticalDefaultRadioButtons(), VerticalAlignment.TOP ) );
 				rows.add( new LabeledFormRow( reportIssueComposite.getTypeState().getSidekickLabel(), reportIssueComposite.getTypeState().getPrepModel().createComboBox(), VerticalAlignment.CENTER, false ) );
 				rows.add( new LabeledFormRow( reportIssueComposite.getSummaryState().getSidekickLabel(), reportIssueComposite.getSummaryState().createTextField() ) );
 				rows.add( new LabeledFormRow( reportIssueComposite.getDescriptionState().getSidekickLabel(), createScrollPaneTextArea( reportIssueComposite.getDescriptionState() ), VerticalAlignment.TOP ) );
