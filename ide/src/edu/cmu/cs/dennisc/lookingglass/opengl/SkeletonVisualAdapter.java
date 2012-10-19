@@ -184,6 +184,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 					rc.gl.glEnable( GL_CULL_FACE );
 				}
 			}
+
 		}
 	}
 
