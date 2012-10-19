@@ -243,7 +243,7 @@ public class Collections {
 		return new InitializingIfAbsentHashMap<K, V>();
 	}
 
-	public static <K, E> InitializingIfAbsentMap<K, java.util.List<E>> newInitializingIfAbsentListHashMap() {
+	public static <K, E> InitializingIfAbsentListHashMap<K, E> newInitializingIfAbsentListHashMap() {
 		return new InitializingIfAbsentListHashMap<K, E>();
 	}
 
