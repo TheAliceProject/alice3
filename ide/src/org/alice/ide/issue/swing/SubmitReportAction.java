@@ -45,7 +45,8 @@ package org.alice.ide.issue.swing;
 /**
  * @author Dennis Cosgrove
  */
-public class SubmitReportAction extends javax.swing.AbstractAction {
-	public void actionPerformed( java.awt.event.ActionEvent e ) {
+public abstract class SubmitReportAction extends javax.swing.AbstractAction {
+	public SubmitReportAction() {
+		super( "submit bug report" );
 	}
 }
