@@ -47,19 +47,14 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public class AddUnmanagedFieldComposite extends AddFieldComposite {
-	private static java.util.Map<org.lgna.project.ast.UserType<?>, AddUnmanagedFieldComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddUnmanagedFieldComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static AddUnmanagedFieldComposite getInstance( org.lgna.project.ast.UserType<?> declarationType ) {
-		synchronized( map ) {
-			AddUnmanagedFieldComposite rv = map.get( declarationType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new AddUnmanagedFieldComposite( declarationType );
-				map.put( declarationType, rv );
+	public static AddUnmanagedFieldComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
+		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddUnmanagedFieldComposite>() {
+			public AddUnmanagedFieldComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
+				return new AddUnmanagedFieldComposite( declaringType );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private final org.lgna.project.ast.UserType<?> declaringType;

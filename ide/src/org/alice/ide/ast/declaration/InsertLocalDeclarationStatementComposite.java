@@ -46,19 +46,14 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public class InsertLocalDeclarationStatementComposite extends InsertStatementComposite<org.lgna.project.ast.LocalDeclarationStatement> {
-	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertLocalDeclarationStatementComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertLocalDeclarationStatementComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static InsertLocalDeclarationStatementComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		synchronized( map ) {
-			InsertLocalDeclarationStatementComposite rv = map.get( blockStatementIndexPair );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new InsertLocalDeclarationStatementComposite( blockStatementIndexPair );
-				map.put( blockStatementIndexPair, rv );
+	public static synchronized InsertLocalDeclarationStatementComposite getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		return map.getInitializingIfAbsent( blockStatementIndexPair, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, InsertLocalDeclarationStatementComposite>() {
+			public InsertLocalDeclarationStatementComposite initialize( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+				return new InsertLocalDeclarationStatementComposite( blockStatementIndexPair );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private InsertLocalDeclarationStatementComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

@@ -46,19 +46,14 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class AddFunctionComposite extends AddMethodComposite {
-	private static java.util.Map<org.lgna.project.ast.UserType<?>, AddFunctionComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddFunctionComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static AddFunctionComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
-		synchronized( map ) {
-			AddFunctionComposite rv = map.get( declaringType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new AddFunctionComposite( declaringType );
-				map.put( declaringType, rv );
+		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddFunctionComposite>() {
+			public AddFunctionComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
+				return new AddFunctionComposite( declaringType );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private AddFunctionComposite( org.lgna.project.ast.UserType<?> declaringType ) {
