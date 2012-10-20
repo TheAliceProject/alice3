@@ -47,20 +47,17 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class FieldArrayLengthDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map<org.lgna.project.ast.AbstractField, FieldArrayLengthDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractField, FieldArrayLengthDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static synchronized FieldArrayLengthDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		FieldArrayLengthDragModel rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldArrayLengthDragModel( field );
-			map.put( field, rv );
-		}
-		return rv;
+	public static FieldArrayLengthDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
+		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractField, FieldArrayLengthDragModel>() {
+			public FieldArrayLengthDragModel initialize( org.lgna.project.ast.AbstractField field ) {
+				return new FieldArrayLengthDragModel( field );
+			}
+		} );
 	}
 
-	private org.lgna.project.ast.AbstractField field;
+	private final org.lgna.project.ast.AbstractField field;
 
 	private FieldArrayLengthDragModel( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "eecd3065-72bf-489a-8338-6c9aad3582ea" ) );

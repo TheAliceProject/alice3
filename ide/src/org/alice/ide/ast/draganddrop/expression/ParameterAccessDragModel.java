@@ -47,20 +47,17 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map<org.lgna.project.ast.UserParameter, ParameterAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserParameter, ParameterAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static synchronized ParameterAccessDragModel getInstance( org.lgna.project.ast.UserParameter parameter ) {
-		ParameterAccessDragModel rv = map.get( parameter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterAccessDragModel( parameter );
-			map.put( parameter, rv );
-		}
-		return rv;
+	public static ParameterAccessDragModel getInstance( org.lgna.project.ast.UserParameter parameter ) {
+		return map.getInitializingIfAbsent( parameter, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserParameter, ParameterAccessDragModel>() {
+			public ParameterAccessDragModel initialize( org.lgna.project.ast.UserParameter parameter ) {
+				return new ParameterAccessDragModel( parameter );
+			}
+		} );
 	}
 
-	private org.lgna.project.ast.UserParameter parameter;
+	private final org.lgna.project.ast.UserParameter parameter;
 
 	private ParameterAccessDragModel( org.lgna.project.ast.UserParameter parameter ) {
 		super( java.util.UUID.fromString( "5b79d910-bbeb-4f9c-9593-28c0697f4036" ) );
