@@ -2491,7 +2491,15 @@ public class MigrationManager {
 
 					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener",
 					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnObjectListener"
-			)
+			),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.39.0.0" ),
+					new org.lgna.project.Version( "3.1.48.0.0" ),
+
+					"BILLY_GOAT",
+					"BIG_HORNS"
+			),
+
 	};
 	private static final AstMigration[] astMigrations = {
 			new org.lgna.project.migration.MethodInvocationAstMigration(
