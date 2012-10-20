@@ -40,34 +40,56 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package edu.cmu.cs.dennisc.map;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public abstract class AbstractMapToMap<A, B, V> {
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>> outerMap = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static ParameterArrayLengthOperation getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		assert parameter != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation>() {
-			public ParameterArrayLengthOperation initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-				return new ParameterArrayLengthOperation( parameter, expressionProperty );
+	public static interface Initializer<A, B, V> {
+		public V initialize( A a, B b );
+	}
+
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>> mapInitializer = new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>>() {
+		public edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V> initialize( A key ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+		}
+	};
+
+	public V get( A a, B b ) {
+		java.util.Map<B, V> innerMap = this.outerMap.get( a );
+		if( innerMap != null ) {
+			return innerMap.get( b );
+		} else {
+			return null;
+		}
+	}
+
+	public final synchronized V getInitializingIfAbsent( final A a, B b, final Initializer<A, B, V> initializer ) {
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V> innerMap = this.outerMap.getInitializingIfAbsent( a, this.mapInitializer );
+		return innerMap.getInitializingIfAbsent( b, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<B, V>() {
+			public V initialize( B key ) {
+				return initializer.initialize( a, key );
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserParameter parameter;
-
-	private ParameterArrayLengthOperation( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
-		this.parameter = parameter;
+	public final void put( A a, B b, V value ) {
+		java.util.Map<B, V> innerMap = this.outerMap.getInitializingIfAbsent( a, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<A, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V>>() {
+			public edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<B, V> initialize( A key ) {
+				return edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+			}
+		} );
+		innerMap.put( b, value );
 	}
 
-	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	public final java.util.Collection<V> values() {
+		java.util.List<V> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( java.util.Map<B, V> innerMap : this.outerMap.values() ) {
+			rv.addAll( innerMap.values() );
+		}
+		return rv;
 	}
 }

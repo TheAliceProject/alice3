@@ -47,19 +47,16 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class ParameterAccessMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFillIn> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static ParameterAccessMethodInvocationFillIn getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		synchronized( map ) {
-			ParameterAccessMethodInvocationFillIn rv = map.get( parameter, method );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ParameterAccessMethodInvocationFillIn( parameter, method );
-				map.put( parameter, method, rv );
+		assert parameter != null;
+		assert method != null;
+		return mapToMap.getInitializingIfAbsent( parameter, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessMethodInvocationFillIn>() {
+			public ParameterAccessMethodInvocationFillIn initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+				return new ParameterAccessMethodInvocationFillIn( parameter, method );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private ParameterAccessMethodInvocationFillIn( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {

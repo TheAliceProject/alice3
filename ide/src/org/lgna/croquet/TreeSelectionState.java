@@ -63,14 +63,11 @@ class TreeNodeFillIn<T> extends CascadeFillIn<T, Void> {
 	private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, TreeNodeFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static synchronized <T> TreeNodeFillIn<T> getInstance( TreeSelectionState<T> model, T node ) {
-		TreeNodeFillIn<T> rv = mapToMap.get( model, node );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new TreeNodeFillIn<T>( model, node );
-			mapToMap.put( model, node, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( model, node, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<TreeSelectionState, Object, TreeNodeFillIn>() {
+			public TreeNodeFillIn<T> initialize( TreeSelectionState model, Object node ) {
+				return new TreeNodeFillIn<T>( model, (T)node );
+			}
+		} );
 	}
 
 	private final TreeSelectionState<T> model;
@@ -117,14 +114,11 @@ class TreeNodeMenu<T> extends CascadeMenuModel<T> {
 	private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, TreeNodeMenu> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static synchronized <T> TreeNodeMenu<T> getInstance( TreeSelectionState<T> model, T node ) {
-		TreeNodeMenu<T> rv = mapToMap.get( model, node );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new TreeNodeMenu<T>( model, node );
-			mapToMap.put( model, node, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( model, node, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<TreeSelectionState, Object, TreeNodeMenu>() {
+			public TreeNodeMenu<T> initialize( TreeSelectionState model, Object node ) {
+				return new TreeNodeMenu<T>( model, (T)node );
+			}
+		} );
 	}
 
 	private final TreeSelectionState<T> model;
@@ -168,16 +162,11 @@ class TreeNodeCascade<T> extends Cascade<T> {
 	private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, TreeNodeCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static <T> TreeNodeCascade<T> getInstance( TreeSelectionState<T> model, T node ) {
-		synchronized( mapToMap ) {
-			TreeNodeCascade<T> rv = mapToMap.get( model, node );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new TreeNodeCascade<T>( model, node );
-				mapToMap.put( model, node, rv );
+		return mapToMap.getInitializingIfAbsent( model, node, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<TreeSelectionState, Object, TreeNodeCascade>() {
+			public TreeNodeCascade<T> initialize( TreeSelectionState model, Object node ) {
+				return new TreeNodeCascade<T>( model, (T)node );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private final TreeSelectionState<T> model;
@@ -205,15 +194,12 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	private static final class InternalTreeNodeSelectionOperation<T> extends ActionOperation {
 		private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, InternalTreeNodeSelectionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-		/* package-private */static <T> InternalTreeNodeSelectionOperation<T> getInstance( TreeSelectionState<T> treeSelectionState, T treeNode ) {
-			InternalTreeNodeSelectionOperation<T> rv = mapToMap.get( treeSelectionState, treeNode );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new InternalTreeNodeSelectionOperation<T>( treeSelectionState, treeNode );
-				mapToMap.put( treeSelectionState, treeNode, rv );
-			}
-			return rv;
+		/* package-private */static <T> InternalTreeNodeSelectionOperation<T> getInstance( TreeSelectionState<T> model, T node ) {
+			return mapToMap.getInitializingIfAbsent( model, node, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<TreeSelectionState, Object, InternalTreeNodeSelectionOperation>() {
+				public InternalTreeNodeSelectionOperation<T> initialize( TreeSelectionState model, Object node ) {
+					return new InternalTreeNodeSelectionOperation<T>( model, (T)node );
+				}
+			} );
 		}
 
 		private final TreeSelectionState<T> treeSelectionState;

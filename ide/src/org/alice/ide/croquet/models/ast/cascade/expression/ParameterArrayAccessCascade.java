@@ -47,19 +47,16 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class ParameterArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayAccessCascade> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayAccessCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized ParameterArrayAccessCascade getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static ParameterArrayAccessCascade getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert parameter != null;
 		assert expressionProperty != null;
-		ParameterArrayAccessCascade rv = map.get( parameter, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterArrayAccessCascade( parameter, expressionProperty );
-			map.put( parameter, expressionProperty, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayAccessCascade>() {
+			public ParameterArrayAccessCascade initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+				return new ParameterArrayAccessCascade( parameter, expressionProperty );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.UserParameter parameter;

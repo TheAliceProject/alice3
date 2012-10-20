@@ -44,7 +44,7 @@
 package org.alice.ide.ast.code;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 	private static edu.cmu.cs.dennisc.map.MapToMapToMap<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, org.lgna.project.ast.Statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, MoveStatementOperation> map = edu.cmu.cs.dennisc.map.MapToMapToMap.newInstance();

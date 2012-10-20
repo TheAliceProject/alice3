@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,34 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.expression;
+package edu.cmu.cs.dennisc.map;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class MapToListValueMap<A, B, E> extends AbstractMapToMap<A, B, java.util.List<E>> {
+	public static <A, B, E> MapToListValueMap<A, B, E> newInstance() {
+		return new MapToListValueMap<A, B, E>();
+	}
 
-	public static ParameterArrayLengthOperation getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		assert parameter != null;
-		assert expressionProperty != null;
-		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation>() {
-			public ParameterArrayLengthOperation initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-				return new ParameterArrayLengthOperation( parameter, expressionProperty );
+	public java.util.List<E> getInitializingIfAbsentToLinkedList( A a, B b ) {
+		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, java.util.List<E>>() {
+			public java.util.List<E> initialize( A a, B b ) {
+				return edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			}
 		} );
 	}
 
-	private final org.lgna.project.ast.UserParameter parameter;
-
-	private ParameterArrayLengthOperation( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
-		super( java.util.UUID.fromString( "becb523c-7af9-433d-8c63-3cda63a45680" ), expressionProperty );
-		this.parameter = parameter;
+	public java.util.List<E> getInitializingIfAbsentToArrayList( A a, B b ) {
+		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, java.util.List<E>>() {
+			public java.util.List<E> initialize( A a, B b ) {
+				return edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			}
+		} );
 	}
 
-	@Override
-	protected org.lgna.project.ast.Expression createAccessExpression() {
-		return new org.lgna.project.ast.ParameterAccess( this.parameter );
+	public java.util.List<E> getInitializingIfAbsentToCopyOnWriteArrayList( A a, B b ) {
+		return this.getInitializingIfAbsent( a, b, new Initializer<A, B, java.util.List<E>>() {
+			public java.util.List<E> initialize( A a, B b ) {
+				return edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+			}
+		} );
 	}
 }
