@@ -83,7 +83,7 @@ public class AddUnmanagedFieldComposite extends AddFieldComposite {
 
 	@Override
 	protected boolean isFieldFinal() {
-		return false;
+		return this.getIsFinalState().getValue();
 	}
 
 	@Override

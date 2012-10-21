@@ -48,10 +48,46 @@ package org.alice.ide.common;
 
 public class LocalDeclarationPane extends TypedDeclarationPane {
 	private org.lgna.project.ast.UserLocal userLocal;
+	private org.lgna.croquet.components.Label finalLabel = new org.lgna.croquet.components.Label();
 
 	public LocalDeclarationPane( org.lgna.project.ast.UserLocal userLocal, org.lgna.croquet.components.Component<?> component ) {
 		this.userLocal = userLocal;
+		if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
+			this.addComponent( finalLabel );
+		}
 		this.addComponent( org.alice.ide.common.TypeComponent.createInstance( this.userLocal.valueType.getValue() ) );
 		this.addComponent( component );
+	}
+
+	private void updateFinalLabel() {
+		String text;
+		if( userLocal.isFinal.getValue() ) {
+			text = "permanently set ";
+		} else {
+			text = "initialize ";
+		}
+		this.finalLabel.setText( text );
+	}
+
+	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		}
+
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			updateFinalLabel();
+		}
+	};
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.updateFinalLabel();
+		this.userLocal.isFinal.addPropertyListener( this.propertyListener );
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		this.userLocal.isFinal.addPropertyListener( this.propertyListener );
+		super.handleUndisplayable();
 	}
 }
