@@ -48,12 +48,20 @@ package org.alice.ide.ast.declaration;
  */
 public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna.project.ast.UserField> {
 	public static class FieldDetailsBuilder {
+		private ApplicabilityStatus isFinalStatus = ApplicabilityStatus.NOT_APPLICABLE;
+		private boolean inFinalInitialValue;
 		private ApplicabilityStatus valueComponentTypeStatus;
 		private org.lgna.project.ast.AbstractType<?, ?, ?> valueComponentTypeInitialValue;
 		private ApplicabilityStatus valueIsArrayTypeStatus;
 		private boolean valueIsArrayTypeInitialValue;
 		private ApplicabilityStatus initializerStatus;
 		private org.lgna.project.ast.Expression initializerInitialValue;
+
+		public FieldDetailsBuilder isFinal( ApplicabilityStatus status, boolean initialValue ) {
+			this.isFinalStatus = status;
+			this.inFinalInitialValue = initialValue;
+			return this;
+		}
 
 		public FieldDetailsBuilder valueComponentType( ApplicabilityStatus status, org.lgna.project.ast.AbstractType<?, ?, ?> initialValue ) {
 			this.valueComponentTypeStatus = status;
@@ -78,6 +86,7 @@ public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna
 			assert this.valueIsArrayTypeStatus != null : this;
 			assert this.initializerStatus != null : this;
 			return new Details()
+					.isFinal( this.isFinalStatus, this.inFinalInitialValue )
 					.valueComponentType( this.valueComponentTypeStatus, this.valueComponentTypeInitialValue )
 					.valueIsArrayType( this.valueIsArrayTypeStatus, this.valueIsArrayTypeInitialValue )
 					.name( ApplicabilityStatus.EDITABLE )

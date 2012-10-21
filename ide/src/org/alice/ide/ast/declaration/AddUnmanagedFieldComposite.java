@@ -63,6 +63,7 @@ public class AddUnmanagedFieldComposite extends AddFieldComposite {
 		super(
 				java.util.UUID.fromString( "2fad5034-db17-48b2-9e47-4415deb1cbd8" ),
 				new FieldDetailsBuilder()
+						.isFinal( ApplicabilityStatus.EDITABLE, false )
 						.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 						.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
 						.initializer( ApplicabilityStatus.EDITABLE, null )

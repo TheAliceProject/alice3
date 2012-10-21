@@ -58,6 +58,7 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
 
 	private InsertLocalDeclarationStatementComposite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( java.util.UUID.fromString( "1c257483-36c6-41d8-9d65-4a49bfa11009" ), new Details()
+				.isFinal( ApplicabilityStatus.EDITABLE, false )
 				.valueComponentType( ApplicabilityStatus.EDITABLE, null )
 				.valueIsArrayType( ApplicabilityStatus.EDITABLE, false )
 				.name( ApplicabilityStatus.EDITABLE )
@@ -67,7 +68,7 @@ public class InsertLocalDeclarationStatementComposite extends InsertStatementCom
 
 	@Override
 	protected org.lgna.project.ast.LocalDeclarationStatement createStatement() {
-		boolean isFinal = false;
+		boolean isFinal = this.getIsFinalState().getValue();
 		org.lgna.project.ast.UserLocal variable = new org.lgna.project.ast.UserLocal( this.getDeclarationLikeSubstanceName(), this.getValueType(), isFinal );
 		return new org.lgna.project.ast.LocalDeclarationStatement( variable, this.getInitializer() );
 	}
