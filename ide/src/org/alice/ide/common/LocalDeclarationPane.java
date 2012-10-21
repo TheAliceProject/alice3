@@ -62,9 +62,9 @@ public class LocalDeclarationPane extends TypedDeclarationPane {
 	private void updateFinalLabel() {
 		String text;
 		if( userLocal.isFinal.getValue() ) {
-			text = "permanently set ";
+			text = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getFinalText() + " ";
 		} else {
-			text = "initialize ";
+			text = "";
 		}
 		this.finalLabel.setText( text );
 	}

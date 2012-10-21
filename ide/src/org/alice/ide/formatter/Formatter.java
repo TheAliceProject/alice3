@@ -106,6 +106,8 @@ public abstract class Formatter {
 		}
 	}
 
+	public abstract String getFinalText();
+
 	@Override
 	public String toString() {
 		return this.repr;
