@@ -143,7 +143,6 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				glCapabilities.setHardwareAccelerated( false );
 				this.glDrawable = (com.sun.opengl.impl.GLDrawableImpl)glFactory.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser );
 				this.glDrawable.setSize( 1, 1 );
-				this.glDrawable.setRealized( true );
 				this.glContext = (com.sun.opengl.impl.GLContextImpl)this.glDrawable.createContext( glShareContext );
 				this.glContext.setSynchronized( true );
 				assert this.glContext != null : this;
