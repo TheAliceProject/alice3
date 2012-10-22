@@ -47,20 +47,14 @@ package org.alice.stageide.operations.ast.oneshot;
  * @author Dennis Cosgrove
  */
 public class LocalTransformationMethodInvocationFillIn extends MethodInvocationFillIn {
-	//private static java.util.Map< org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-		synchronized( map ) {
-			LocalTransformationMethodInvocationFillIn rv = map.get( instanceFactory, method );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new LocalTransformationMethodInvocationFillIn( instanceFactory, method );
-				map.put( instanceFactory, method, rv );
+		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn>() {
+			public LocalTransformationMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+				return new LocalTransformationMethodInvocationFillIn( instanceFactory, method );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {

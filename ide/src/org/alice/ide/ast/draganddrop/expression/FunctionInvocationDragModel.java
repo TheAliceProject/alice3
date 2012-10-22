@@ -47,20 +47,17 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class FunctionInvocationDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map<org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static synchronized FunctionInvocationDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
-		FunctionInvocationDragModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FunctionInvocationDragModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+	public static FunctionInvocationDragModel getInstance( org.lgna.project.ast.AbstractMethod method ) {
+		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractMethod, FunctionInvocationDragModel>() {
+			public FunctionInvocationDragModel initialize( org.lgna.project.ast.AbstractMethod method ) {
+				return new FunctionInvocationDragModel( method );
+			}
+		} );
 	}
 
-	private org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.AbstractMethod method;
 
 	private FunctionInvocationDragModel( org.lgna.project.ast.AbstractMethod method ) {
 		super( java.util.UUID.fromString( "ba2ea332-c7e1-4153-b8d9-39d524b19362" ) );

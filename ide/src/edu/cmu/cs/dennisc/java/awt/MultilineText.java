@@ -89,27 +89,29 @@ public class MultilineText {
 		if( ( this.lines == null ) || ( this.aggregateSize == null ) || ( this.fm != fm ) || ( this.wrapWidth != wrapWidth ) ) {
 			this.lines = new java.util.LinkedList<Line>();
 			for( String paragraph : paragraphs ) {
-				java.text.AttributedString as = new java.text.AttributedString( paragraph );
-				as.addAttribute( java.awt.font.TextAttribute.FONT, g.getFont() );
-				java.text.AttributedCharacterIterator aci = as.getIterator();
+				if( paragraph.length() > 0 ) {
+					java.text.AttributedString as = new java.text.AttributedString( paragraph );
+					as.addAttribute( java.awt.font.TextAttribute.FONT, g.getFont() );
+					java.text.AttributedCharacterIterator aci = as.getIterator();
 
-				java.awt.font.LineBreakMeasurer lineBreakMeasurer = new java.awt.font.LineBreakMeasurer( aci, frc );
-				while( lineBreakMeasurer.getPosition() < paragraph.length() ) {
-					int start = lineBreakMeasurer.getPosition();
-					java.awt.font.TextLayout textLayout = lineBreakMeasurer.nextLayout( wrapWidth );
-					int end = lineBreakMeasurer.getPosition();
-					this.lines.add( new Line( paragraph, textLayout, start, end ) );
+					java.awt.font.LineBreakMeasurer lineBreakMeasurer = new java.awt.font.LineBreakMeasurer( aci, frc );
+					while( lineBreakMeasurer.getPosition() < paragraph.length() ) {
+						int start = lineBreakMeasurer.getPosition();
+						java.awt.font.TextLayout textLayout = lineBreakMeasurer.nextLayout( wrapWidth );
+						int end = lineBreakMeasurer.getPosition();
+						this.lines.add( new Line( paragraph, textLayout, start, end ) );
+					}
 				}
 			}
-			assert this.lines.size() > 0;
-			this.aggregateSize = new java.awt.Dimension( 0, 0 );
-			for( Line line : this.lines ) {
-				java.awt.geom.Rectangle2D rect = line.textLayout.getBounds();
-				double width = Math.max( aggregateSize.getWidth(), rect.getWidth() );
-				double height = aggregateSize.getHeight() + line.textLayout.getAscent() + line.textLayout.getDescent() + line.textLayout.getLeading();
-				aggregateSize.setSize( width, height );
+			this.aggregateSize = new java.awt.Dimension( 1, 1 );
+			if( this.lines.size() > 0 ) {
+				for( Line line : this.lines ) {
+					java.awt.geom.Rectangle2D rect = line.textLayout.getBounds();
+					double width = Math.max( aggregateSize.getWidth(), rect.getWidth() );
+					double height = aggregateSize.getHeight() + line.textLayout.getAscent() + line.textLayout.getDescent() + line.textLayout.getLeading();
+					aggregateSize.setSize( width, height );
+				}
 			}
-
 			this.fm = fm;
 			this.wrapWidth = wrapWidth;
 		}

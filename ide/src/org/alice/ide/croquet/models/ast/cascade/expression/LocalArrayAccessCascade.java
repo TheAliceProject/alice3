@@ -47,19 +47,16 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class LocalArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayAccessCascade> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayAccessCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized LocalArrayAccessCascade getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static LocalArrayAccessCascade getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert local != null;
 		assert expressionProperty != null;
-		LocalArrayAccessCascade rv = map.get( local, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalArrayAccessCascade( local, expressionProperty );
-			map.put( local, expressionProperty, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayAccessCascade>() {
+			public LocalArrayAccessCascade initialize( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+				return new LocalArrayAccessCascade( local, expressionProperty );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.UserLocal local;

@@ -47,17 +47,14 @@ package org.alice.ide.ast.delete;
  * @author Dennis Cosgrove
  */
 public class DeleteStatementOperation extends DeleteDeclarationLikeSubstanceOperation<org.lgna.project.ast.Statement> {
-	private static java.util.Map<org.lgna.project.ast.Statement, DeleteStatementOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.Statement, DeleteStatementOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static synchronized DeleteStatementOperation getInstance( org.lgna.project.ast.Statement statement ) {
-		DeleteStatementOperation rv = map.get( statement );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new DeleteStatementOperation( statement );
-			map.put( statement, rv );
-		}
-		return rv;
+	public static DeleteStatementOperation getInstance( org.lgna.project.ast.Statement statement ) {
+		return map.getInitializingIfAbsent( statement, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.Statement, DeleteStatementOperation>() {
+			public DeleteStatementOperation initialize( org.lgna.project.ast.Statement statement ) {
+				return new DeleteStatementOperation( statement );
+			}
+		} );
 	}
 
 	private DeleteStatementOperation( org.lgna.project.ast.Statement statement ) {

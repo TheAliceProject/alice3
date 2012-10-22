@@ -47,19 +47,16 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class FunctionInvocationCascade extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.ExpressionProperty, FunctionInvocationCascade> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.ExpressionProperty, FunctionInvocationCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized FunctionInvocationCascade getInstance( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static FunctionInvocationCascade getInstance( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert method != null;
 		assert expressionProperty != null;
-		FunctionInvocationCascade rv = map.get( method, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FunctionInvocationCascade( method, expressionProperty );
-			map.put( method, expressionProperty, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( method, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractMethod, org.lgna.project.ast.ExpressionProperty, FunctionInvocationCascade>() {
+			public FunctionInvocationCascade initialize( org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+				return new FunctionInvocationCascade( method, expressionProperty );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.AbstractMethod method;

@@ -51,17 +51,12 @@ public class SJoint extends STurnable {
 	private static final edu.cmu.cs.dennisc.map.MapToMap<SJointedModel, org.lgna.story.resources.JointId, SJoint> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	/* package-private */static SJoint getJoint( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
-		synchronized( mapToMap ) {
-			SJoint rv = mapToMap.get( jointedModel, jointId );
-			if( rv != null ) {
-				//pass
-			} else {
+		return mapToMap.getInitializingIfAbsent( jointedModel, jointId, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<SJointedModel, org.lgna.story.resources.JointId, SJoint>() {
+			public SJoint initialize( SJointedModel jointedModel, org.lgna.story.resources.JointId jointId ) {
 				org.lgna.story.implementation.JointedModelImp jointedModelImplementation = ImplementationAccessor.getImplementation( jointedModel );
-				rv = org.lgna.story.SJoint.getInstance( jointedModelImplementation, jointId );
-				mapToMap.put( jointedModel, jointId, rv );
+				return org.lgna.story.SJoint.getInstance( jointedModelImplementation, jointId );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private static SJoint getInstance( org.lgna.story.implementation.JointedModelImp jointedModelImplementation, org.lgna.story.resources.JointId jointId ) {

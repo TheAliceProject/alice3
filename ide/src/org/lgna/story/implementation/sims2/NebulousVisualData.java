@@ -87,4 +87,13 @@ public class NebulousVisualData<M extends edu.cmu.cs.dennisc.nebulous.Model> imp
 		return nebModel.getSGParent();
 	}
 
+	public void unload() {
+		if( this.nebModel instanceof edu.cmu.cs.dennisc.nebulous.Person ) {
+			( (edu.cmu.cs.dennisc.nebulous.Person)this.nebModel ).unload();
+		}
+		else if( this.nebModel instanceof edu.cmu.cs.dennisc.nebulous.Thing ) {
+			( (edu.cmu.cs.dennisc.nebulous.Thing)this.nebModel ).unload();
+		}
+	}
+
 }

@@ -146,6 +146,7 @@ public class ModelResourceExporter {
 	private boolean forceRebuildCode = false;
 	private boolean forceRebuildXML = false;
 	private Date lastEdited = null;
+	private boolean shouldRecenter = false;
 
 	private String attributionName;
 	private String attributionYear;
@@ -201,6 +202,14 @@ public class ModelResourceExporter {
 
 	public void setHasNewData( boolean hasNewData ) {
 		this.hasNewData = hasNewData;
+	}
+
+	public void setShouldRecenter( boolean shouldRecenter ) {
+		this.shouldRecenter = shouldRecenter;
+	}
+
+	public boolean shouldRecenter() {
+		return this.shouldRecenter;
 	}
 
 	public boolean hasNewData() {

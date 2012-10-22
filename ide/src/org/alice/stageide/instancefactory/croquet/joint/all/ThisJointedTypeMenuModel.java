@@ -55,6 +55,7 @@ public class ThisJointedTypeMenuModel extends JointedTypeMenuModel {
 	}
 
 	private static ThisJointedTypeMenuModel getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> value, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		//todo
 		synchronized( mapToMap ) {
 			ThisJointedTypeMenuModel rv = mapToMap.get( value, index );
 			if( rv != null ) {

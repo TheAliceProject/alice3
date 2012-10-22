@@ -442,6 +442,8 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		public void setPortion( double portion ) {
 			edu.cmu.cs.dennisc.math.UnitQuaternion q0 = this.getQ0();
 			edu.cmu.cs.dennisc.math.UnitQuaternion q1 = this.getQ1();
+			assert q0.isNaN() == false : this;
+			assert q1.isNaN() == false : this;
 			this.setQ( edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( q0, q1, portion ) );
 		}
 
@@ -605,8 +607,15 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			edu.cmu.cs.dennisc.math.Point3 t0 = m0.translation;
 			edu.cmu.cs.dennisc.math.Point3 t1 = target.getTransformation( upAsSeenBy ).translation;
 			edu.cmu.cs.dennisc.math.Vector3 forward = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( t1, t0 );
-			edu.cmu.cs.dennisc.math.ForwardAndUpGuide fowardAndUpGuide = new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( forward, null );
-			return new OrientToPointAtData( subject, m0.orientation, fowardAndUpGuide.createOrthogonalMatrix3x3(), upAsSeenBy );
+			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 o1;
+			if( forward.isZero() ) {
+				o1 = m0.orientation;
+				//no op
+			} else {
+				edu.cmu.cs.dennisc.math.ForwardAndUpGuide fowardAndUpGuide = new edu.cmu.cs.dennisc.math.ForwardAndUpGuide( forward, null );
+				o1 = fowardAndUpGuide.createOrthogonalMatrix3x3();
+			}
+			return new OrientToPointAtData( subject, m0.orientation, o1, upAsSeenBy );
 		}
 
 		private OrientToPointAtData( AbstractTransformableImp subject, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation0, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation1, ReferenceFrame upAsSeenBy ) {

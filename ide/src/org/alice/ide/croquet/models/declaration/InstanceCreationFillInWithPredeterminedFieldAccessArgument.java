@@ -47,17 +47,14 @@ package org.alice.ide.croquet.models.declaration;
  * @author Dennis Cosgrove
  */
 public class InstanceCreationFillInWithPredeterminedFieldAccessArgument extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.InstanceCreation> {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractConstructor, org.lgna.project.ast.AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractConstructor, org.lgna.project.ast.AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static synchronized InstanceCreationFillInWithPredeterminedFieldAccessArgument getInstance( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {
-		InstanceCreationFillInWithPredeterminedFieldAccessArgument rv = map.get( constructor, field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new InstanceCreationFillInWithPredeterminedFieldAccessArgument( constructor, field );
-			map.put( constructor, field, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( constructor, field, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractConstructor, org.lgna.project.ast.AbstractField, InstanceCreationFillInWithPredeterminedFieldAccessArgument>() {
+			public InstanceCreationFillInWithPredeterminedFieldAccessArgument initialize( org.lgna.project.ast.AbstractConstructor constructor, org.lgna.project.ast.AbstractField field ) {
+				return new InstanceCreationFillInWithPredeterminedFieldAccessArgument( constructor, field );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.AbstractField field;

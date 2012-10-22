@@ -50,16 +50,11 @@ public class ResourceCascade extends org.lgna.croquet.Cascade<org.lgna.project.a
 	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.croquet.DropSite, ResourceCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static ResourceCascade getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.croquet.DropSite dropSite ) {
-		synchronized( mapToMap ) {
-			ResourceCascade rv = mapToMap.get( type, dropSite );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ResourceCascade( type, dropSite );
-				mapToMap.put( type, dropSite, rv );
+		return mapToMap.getInitializingIfAbsent( type, dropSite, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.croquet.DropSite, ResourceCascade>() {
+			public ResourceCascade initialize( org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.croquet.DropSite dropSite ) {
+				return new ResourceCascade( type, dropSite );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private final org.lgna.croquet.DropSite dropSite;

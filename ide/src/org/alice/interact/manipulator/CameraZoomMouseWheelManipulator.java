@@ -326,13 +326,19 @@ public class CameraZoomMouseWheelManipulator extends CameraManipulator implement
 
 	private void zoomCamera( int direction )
 	{
+
 		if( this.camera instanceof SymmetricPerspectiveCamera )
 		{
 			this.currentX += direction * X_CHANGE_PER_CLICK;
-			Point3 targetPosition = getNewPointForX( this.currentX );
-			OrthogonalMatrix3x3 targetOrientation = this.getOrientationTargetForX( this.currentX );
-			AffineMatrix4x4 targetTransform = new AffineMatrix4x4( targetOrientation, targetPosition );
-			this.cameraAnimation.setTarget( new QuaternionAndTranslation( targetTransform ) );
+			if( this.cameraAnimation != null ) {
+				Point3 targetPosition = getNewPointForX( this.currentX );
+				OrthogonalMatrix3x3 targetOrientation = this.getOrientationTargetForX( this.currentX );
+				AffineMatrix4x4 targetTransform = new AffineMatrix4x4( targetOrientation, targetPosition );
+				this.cameraAnimation.setTarget( new QuaternionAndTranslation( targetTransform ) );
+			}
+			else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Mouse Wheel Camera Zoom: null cameraAnimation." );
+			}
 		}
 		else
 		{
