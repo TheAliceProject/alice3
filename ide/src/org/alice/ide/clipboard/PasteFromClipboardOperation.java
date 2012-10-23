@@ -62,6 +62,11 @@ public class PasteFromClipboardOperation extends FromClipboardOperation {
 	}
 
 	private PasteFromClipboardOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "4dea691b-af8f-4991-80e2-3db880f1883f" ), blockStatementIndexPair, false );
+		super( java.util.UUID.fromString( "4dea691b-af8f-4991-80e2-3db880f1883f" ), blockStatementIndexPair );
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement ) {
+		return new org.alice.ide.clipboard.edits.PasteFromClipboardEdit( step, statement, this.getBlockStatementIndexPair() );
 	}
 }
