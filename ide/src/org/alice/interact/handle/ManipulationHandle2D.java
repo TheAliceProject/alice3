@@ -106,6 +106,11 @@ public abstract class ManipulationHandle2D extends org.lgna.croquet.components.L
 		}
 	}
 
+	public void clear()
+	{
+		this.setManipulatedObject( null );
+	}
+
 	public void setVisualsShowing( boolean showing )
 	{
 		//Do nothing

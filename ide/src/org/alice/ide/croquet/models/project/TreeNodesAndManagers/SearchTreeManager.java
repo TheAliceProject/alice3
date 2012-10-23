@@ -182,9 +182,10 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 		AbstractMethod parentMethod = parent.getContent();
 		if( methodParentMap.get( parentMethod ) != null ) {
 			for( MethodInvocation methodInvocation : methodParentMap.get( parentMethod ) ) {
-				//				AbstractMethod childMethod = (AbstractMethod)methodInvocation.method.getValue();
 				SearchTreeNode node = addNode( parent, methodInvocation );
-				addTunnelling( node );
+				if( ( methodParentMap.get( methodInvocation ) != null ) && ( methodParentMap.get( methodInvocation ).size() > 0 ) ) {
+					addTunnelling( node );
+				}
 			}
 		}
 	}

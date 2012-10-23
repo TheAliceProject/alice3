@@ -205,10 +205,12 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				} catch( RuntimeException re ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "rendering will be disabled due to exception" );
 					this.isDisplayIgnoredDueToPreviousException = true;
+					re.printStackTrace();
 					throw re;
 				} catch( Error er ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "rendering will be disabled due to exception" );
 					this.isDisplayIgnoredDueToPreviousException = true;
+					er.printStackTrace();
 					throw er;
 				}
 			}

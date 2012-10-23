@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,34 +40,69 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ast.InsertStatementCompletionModel {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
+public abstract class PixelBufferOffscreenDrawable implements OffscreenDrawable {
+	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
+		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
+		}
 
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id );
-		this.blockStatementIndexPair = blockStatementIndexPair;
+		public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		}
+
+		public void display( javax.media.opengl.GLAutoDrawable drawable ) {
+			Throwable throwable = null;
+			try {
+				drawable.getGL();
+				drawable.getContext().makeCurrent();
+			} catch( Throwable t ) {
+				throwable = t;
+			}
+			if( throwable != null ) {
+				if( throwable instanceof NullPointerException ) {
+					NullPointerException nullPointerException = (NullPointerException)throwable;
+					edu.cmu.cs.dennisc.java.util.logging.Logger.info( nullPointerException );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
+				}
+			} else {
+				actuallyDisplay( drawable.getGL().getGL2() );
+			}
+		}
+
+		public void dispose( javax.media.opengl.GLAutoDrawable drawable ) {
+		}
+	};
+
+	private javax.media.opengl.GLPbuffer glPixelBuffer;
+
+	protected abstract void actuallyDisplay( javax.media.opengl.GL2 gl );
+
+	public void initialize( jogamp.opengl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext ) {
+		if( this.glPixelBuffer != null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		} else {
+			this.glPixelBuffer = glFactory.createGLPbuffer( null, glRequestedCapabilities, glCapabilitiesChooser, 1, 1, glShareContext );
+			this.glPixelBuffer.addGLEventListener( glEventListener );
+		}
+		//				throw new javax.media.opengl.GLException();
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
+	public void destroy() {
+		if( this.glPixelBuffer != null ) {
+			this.glPixelBuffer.destroy();
+			this.glPixelBuffer = null;
+		}
 	}
 
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
+	public void display() {
+		this.glPixelBuffer.display();
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step );
-
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep step = transaction.createAndSetCompletionStep( this, trigger );
-		step.commitAndInvokeDo( this.createEdit( step ) );
+	public boolean isHardwareAccelerated() {
+		return true;
 	}
 }

@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass {
+	private final AbstractLookingGlass lookingGlassToShareContextWith;
 	private javax.media.opengl.GLPbuffer glPbuffer;
-	private AbstractLookingGlass lookingGlassToShareContextWith;
 
 	/* package-private */OffscreenLookingGlass( LookingGlassFactory lookingGlassFactory, AbstractLookingGlass lookingGlassToShareContextWith ) {
 		super( lookingGlassFactory );
@@ -107,8 +107,11 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 
 	@Override
 	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		assert this.glPbuffer != null;
-		return this.glPbuffer;
+		if( this.glPbuffer != null ) {
+			return this.glPbuffer;
+		} else {
+			throw new javax.media.opengl.GLException();
+		}
 	}
 
 	@Override
