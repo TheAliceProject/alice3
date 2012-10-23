@@ -47,25 +47,19 @@ package org.alice.ide.clipboard;
  * @author Dennis Cosgrove
  */
 public abstract class FromClipboardOperation extends org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertOperation {
-	private final boolean isCopy;
-
-	public FromClipboardOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, boolean isCopy ) {
+	public FromClipboardOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
 		super( id, blockStatementIndexPair );
-		this.isCopy = isCopy;
 	}
 
+	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement );
+
 	@Override
-	protected final org.lgna.project.ast.Statement createStatement() {
+	protected final org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step ) {
 		org.lgna.project.ast.AbstractNode node = Clipboard.SINGLETON.peek();
 		//todo: recast if necessary
 		if( node instanceof org.lgna.project.ast.Statement ) {
 			org.lgna.project.ast.Statement statement = (org.lgna.project.ast.Statement)node;
-			if( isCopy ) {
-				return org.alice.ide.IDE.getActiveInstance().createCopy( statement );
-			} else {
-				Clipboard.SINGLETON.pop();
-				return statement;
-			}
+			return this.createEdit( step, statement );
 		} else {
 			throw new org.lgna.croquet.CancelException();
 		}

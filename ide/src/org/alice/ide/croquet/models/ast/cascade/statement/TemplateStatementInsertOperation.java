@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,34 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ast.InsertStatementCompletionModel {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
-
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id );
-		this.blockStatementIndexPair = blockStatementIndexPair;
+public abstract class TemplateStatementInsertOperation extends StatementInsertOperation {
+	public TemplateStatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( id, blockStatementIndexPair );
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
-	}
+	protected abstract org.lgna.project.ast.Statement createStatement();
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
-	}
-
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step );
-
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep step = transaction.createAndSetCompletionStep( this, trigger );
-		step.commitAndInvokeDo( this.createEdit( step ) );
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step ) {
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit<StatementInsertOperation>( step, this.getBlockStatementIndexPair(), this.createStatement() );
 	}
 }

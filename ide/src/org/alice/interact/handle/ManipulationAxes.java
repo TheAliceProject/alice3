@@ -132,7 +132,7 @@ public class ManipulationAxes extends ManipulationHandle3D {
 	@Override
 	public void resizeToObject()
 	{
-		if( this.getParentTransformable() != null )
+		if( ( this.getParentTransformable() != null ) && ( this.manipulatedObject != null ) )
 		{
 			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
 			double diagonal = boundingBox.getDiagonal();

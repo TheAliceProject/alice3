@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,34 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast.cascade.statement;
+package org.alice.ide.clipboard.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementInsertOperation extends org.lgna.croquet.ActionOperation implements org.alice.ide.croquet.models.ast.InsertStatementCompletionModel {
+public abstract class ClipboardEdit extends org.lgna.croquet.edits.Edit {
+	private final org.lgna.project.ast.Statement statement;
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 
-	public StatementInsertOperation( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id );
+	public ClipboardEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		super( completionStep );
+		this.statement = statement;
 		this.blockStatementIndexPair = blockStatementIndexPair;
 	}
 
-	public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
-		return this.blockStatementIndexPair;
+	public ClipboardEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.project.Project project = ide.getProject();
+		java.util.UUID statementId = binaryDecoder.decodeId();
+		this.statement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, statementId );
+		this.blockStatementIndexPair = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		binaryEncoder.encode( this.statement.getId() );
+		binaryEncoder.encode( this.blockStatementIndexPair );
 	}
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step );
+	protected void pushAndRemove() {
+		org.alice.ide.clipboard.Clipboard.SINGLETON.push( this.statement );
+		this.blockStatementIndexPair.getBlockStatement().statements.remove( this.blockStatementIndexPair.getIndex() );
+	}
 
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep step = transaction.createAndSetCompletionStep( this, trigger );
-		step.commitAndInvokeDo( this.createEdit( step ) );
+	protected void popAndAdd() {
+		org.alice.ide.clipboard.Clipboard.SINGLETON.pop();
+		this.blockStatementIndexPair.getBlockStatement().statements.add( this.blockStatementIndexPair.getIndex(), this.statement );
 	}
 }
