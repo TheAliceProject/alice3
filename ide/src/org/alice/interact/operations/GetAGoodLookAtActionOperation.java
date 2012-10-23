@@ -58,6 +58,16 @@ public class GetAGoodLookAtActionOperation extends org.lgna.croquet.ActionOperat
 		this.toLookAt = toLookAt;
 	}
 
+	public static boolean IsValidOperation( org.lgna.story.SCamera camera, org.lgna.story.SThing toLookAt )
+	{
+		org.lgna.project.ast.UserField cameraField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( camera );
+		org.lgna.project.ast.UserField toLookAtField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( toLookAt );
+		if( ( cameraField == null ) || ( toLookAtField == null ) || ( cameraField == toLookAtField ) ) {
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );

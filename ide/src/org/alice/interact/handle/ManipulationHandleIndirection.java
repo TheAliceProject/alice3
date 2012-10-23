@@ -294,6 +294,16 @@ public class ManipulationHandleIndirection implements ManipulationListener, Mani
 		}
 	}
 
+	public void clear()
+	{
+		if( this.currentHandle != null ) {
+			this.currentHandle.clear();
+		}
+		if( this.nextHandle != null ) {
+			this.nextHandle.clear();
+		}
+	}
+
 	@Override
 	public String toString()
 	{
