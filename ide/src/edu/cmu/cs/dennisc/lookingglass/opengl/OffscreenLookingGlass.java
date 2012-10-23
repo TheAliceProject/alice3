@@ -107,8 +107,11 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 
 	@Override
 	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		assert this.glPbuffer != null;
-		return this.glPbuffer;
+		if( this.glPbuffer != null ) {
+			return this.glPbuffer;
+		} else {
+			throw new javax.media.opengl.GLException();
+		}
 	}
 
 	@Override
