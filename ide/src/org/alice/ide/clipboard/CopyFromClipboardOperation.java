@@ -62,6 +62,12 @@ public class CopyFromClipboardOperation extends FromClipboardOperation {
 	}
 
 	private CopyFromClipboardOperation( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( java.util.UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair, true );
+		super( java.util.UUID.fromString( "fc162a45-2175-4ccf-a5f2-d3de969692c3" ), blockStatementIndexPair );
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.Statement statement ) {
+		org.lgna.project.ast.Statement copy = org.alice.ide.IDE.getActiveInstance().createCopy( statement );
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit<CopyFromClipboardOperation>( step, this.getBlockStatementIndexPair(), copy );
 	}
 }

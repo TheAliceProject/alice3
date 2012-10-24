@@ -53,28 +53,15 @@ import edu.cmu.cs.dennisc.issue.WorkerListener;
  */
 public class ProgressPane extends javax.swing.JPanel {
 	private javax.swing.JTextPane console = new javax.swing.JTextPane();
-	private javax.swing.JButton background = new javax.swing.JButton( "run in background" );
 	private IssueReportWorker issueReportWorker;
 	private boolean isDone = false;
 	private boolean isSuccessful = false;
-	private boolean isBackgrounded = false;
 	private java.net.URL urlResult = null;
 
 	public ProgressPane() {
 		this.console.setPreferredSize( new java.awt.Dimension( 400, 240 ) );
-
-		this.background.addActionListener( new java.awt.event.ActionListener() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				ProgressPane.this.handleRunInBackground( e );
-			}
-		} );
-		javax.swing.JPanel buttonPane = new javax.swing.JPanel();
-		buttonPane.setLayout( new java.awt.FlowLayout() );
-		buttonPane.add( this.background );
-
 		this.setLayout( new java.awt.BorderLayout() );
 		this.add( new javax.swing.JScrollPane( this.console ), java.awt.BorderLayout.CENTER );
-		this.add( new javax.swing.JScrollPane( buttonPane ), java.awt.BorderLayout.SOUTH );
 	}
 
 	public void initializeAndExecuteWorker( ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
@@ -95,11 +82,6 @@ public class ProgressPane extends javax.swing.JPanel {
 		if( root != null ) {
 			root.setVisible( false );
 		}
-	}
-
-	private void handleRunInBackground( java.awt.event.ActionEvent e ) {
-		this.isBackgrounded = true;
-		this.hideRoot();
 	}
 
 	public void handleProcess( java.util.List<String> chunks ) {
@@ -123,10 +105,6 @@ public class ProgressPane extends javax.swing.JPanel {
 
 	public boolean isDone() {
 		return this.isDone;
-	}
-
-	public boolean isBackgrounded() {
-		return this.isBackgrounded;
 	}
 
 	public boolean isSuccessful() {

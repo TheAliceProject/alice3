@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,39 +45,8 @@ package edu.cmu.cs.dennisc.map;
 /**
  * @author Dennis Cosgrove
  */
-public class MapToMap<A, B, E> {
-	private java.util.Map<A, java.util.Map<B, E>> m_outerMap = new java.util.HashMap<A, java.util.Map<B, E>>();
-
-	public static <A, B, E> MapToMap<A, B, E> newInstance() {
-		return new MapToMap<A, B, E>();
-	}
-
-	//todo: add addtional map methods
-	public E get( A a, B b ) {
-		java.util.Map<B, E> innerMap = m_outerMap.get( a );
-		if( innerMap != null ) {
-			return innerMap.get( b );
-		} else {
-			return null;
-		}
-	}
-
-	public void put( A a, B b, E value ) {
-		java.util.Map<B, E> innerMap = m_outerMap.get( a );
-		if( innerMap != null ) {
-			//pass
-		} else {
-			innerMap = new java.util.HashMap<B, E>();
-			m_outerMap.put( a, innerMap );
-		}
-		innerMap.put( b, value );
-	}
-
-	public java.util.Collection<E> values() {
-		java.util.List<E> rv = new java.util.LinkedList<E>();
-		for( java.util.Map<B, E> innerMap : m_outerMap.values() ) {
-			rv.addAll( innerMap.values() );
-		}
-		return rv;
+public class MapToMap<A, B, V> extends AbstractMapToMap<A, B, V> {
+	public static <A, B, V> MapToMap<A, B, V> newInstance() {
+		return new MapToMap<A, B, V>();
 	}
 }

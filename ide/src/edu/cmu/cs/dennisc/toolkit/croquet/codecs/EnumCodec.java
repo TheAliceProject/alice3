@@ -46,19 +46,17 @@ package edu.cmu.cs.dennisc.toolkit.croquet.codecs;
  * @author Dennis Cosgrove
  */
 public class EnumCodec<T extends Enum<T>> implements org.lgna.croquet.ItemCodec<T> {
-	private static java.util.Map<Class<?>, EnumCodec<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<Class, EnumCodec> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static synchronized <T extends Enum<T>> EnumCodec<T> getInstance( Class<T> valueCls ) {
-		EnumCodec<?> rv = map.get( valueCls );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new EnumCodec<T>( valueCls );
-		}
-		return (EnumCodec<T>)rv;
+		return map.getInitializingIfAbsent( (Class)valueCls, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<Class, EnumCodec>() {
+			public EnumCodec initialize( Class valueCls ) {
+				return new EnumCodec( valueCls );
+			}
+		} );
 	}
 
-	private Class<T> valueCls;
+	private final Class<T> valueCls;
 
 	private java.util.Map<T, String> mapValueToLocalization;
 

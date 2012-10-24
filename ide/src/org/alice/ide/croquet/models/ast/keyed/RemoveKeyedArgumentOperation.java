@@ -47,17 +47,14 @@ package org.alice.ide.croquet.models.ast.keyed;
  * @author Dennis Cosgrove
  */
 public class RemoveKeyedArgumentOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.KeyedArgumentListProperty, org.lgna.project.ast.JavaKeyedArgument, RemoveKeyedArgumentOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.KeyedArgumentListProperty, org.lgna.project.ast.JavaKeyedArgument, RemoveKeyedArgumentOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized RemoveKeyedArgumentOperation getInstance( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
-		RemoveKeyedArgumentOperation rv = map.get( argumentListProperty, argument );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new RemoveKeyedArgumentOperation( argumentListProperty, argument );
-			map.put( argumentListProperty, argument, rv );
-		}
-		return rv;
+	public static RemoveKeyedArgumentOperation getInstance( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
+		return mapToMap.getInitializingIfAbsent( argumentListProperty, argument, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.KeyedArgumentListProperty, org.lgna.project.ast.JavaKeyedArgument, RemoveKeyedArgumentOperation>() {
+			public RemoveKeyedArgumentOperation initialize( org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty, org.lgna.project.ast.JavaKeyedArgument argument ) {
+				return new RemoveKeyedArgumentOperation( argumentListProperty, argument );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.KeyedArgumentListProperty argumentListProperty;

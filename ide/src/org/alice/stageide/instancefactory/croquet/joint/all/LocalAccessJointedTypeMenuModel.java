@@ -55,6 +55,7 @@ public class LocalAccessJointedTypeMenuModel extends JointedTypeMenuModel {
 	}
 
 	private static LocalAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserLocal value, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		//todo
 		synchronized( mapToMap ) {
 			LocalAccessJointedTypeMenuModel rv = mapToMap.get( value, index );
 			if( rv != null ) {

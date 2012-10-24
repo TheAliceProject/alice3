@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
 /**
  * @author Dennis Cosgrove
  */
-public class DoInOrderInsertOperation extends StatementInsertOperation {
+public class DoInOrderInsertOperation extends TemplateStatementInsertOperation {
 	private static java.util.Map<org.alice.ide.ast.draganddrop.BlockStatementIndexPair, DoInOrderInsertOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized DoInOrderInsertOperation getInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {

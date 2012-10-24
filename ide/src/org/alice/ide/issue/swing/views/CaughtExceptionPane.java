@@ -49,46 +49,76 @@ import org.alice.ide.issue.ReportSubmissionConfiguration;
  * @author Dennis Cosgrove
  */
 public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane {
+	private static final String APPLICATION_NAME = "Alice";
+	private static final float FONT_SCALE = 1.15f;
+	private static final javax.swing.Icon MEAN_QUEEN_ICON;
+
+	static {
+		javax.swing.Icon icon = null;
+		try {
+			icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( CaughtExceptionPane.class.getResource( "images/meanQueen.png" ) );
+		} catch( Throwable t ) {
+			t.printStackTrace();
+		}
+		MEAN_QUEEN_ICON = icon;
+	}
+
+	private static javax.swing.JLabel createLabel( String text ) {
+		javax.swing.JLabel rv = new javax.swing.JLabel( text );
+		rv.setForeground( java.awt.Color.WHITE );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( rv, FONT_SCALE );
+		return rv;
+	}
+
 	public CaughtExceptionPane() {
 		StringBuffer sb = new StringBuffer();
-		//sb.append( "\n" );
-		sb.append( "An exception has been caught:\n\n" );
-		sb.append( "  If you were running your program then:\n    it could be either a bug(error) in Alice or your code.\n\n" );
-		sb.append( "  If you were building your program then:\n    it is a bug in Alice.\n\n" );
-		sb.append( "Please press the \"submit bug report\" button." );
+		sb.append( "<html>" );
+		sb.append( "An exception has been caught" );
 
-		javax.swing.JTextArea message = new javax.swing.JTextArea( sb.toString() ) {
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				return this.getPreferredSize();
-			}
+		if( org.alice.ide.issue.UserProgramRunningStateUtilities.isUserProgramRunning() ) {
+			sb.append( " during the running of your program.<p>" );
+			sb.append( "<p>While this <em>could</em> be the result of a problem in your code,<br>it is likely a bug in " );
+			sb.append( APPLICATION_NAME );
+			sb.append( ".<p>" );
+		} else {
+			sb.append( ".<p>" );
+		}
+		sb.append( "<p>Please accept our apologies and press the \"" );
+		sb.append( this.getSubmitAction().getValue( javax.swing.Action.NAME ) );
+		sb.append( "\" button.<p>" );
+		sb.append( "<p>We will do our best to fix the problem and make a new release.<p>" );
+		sb.append( "</html>" );
 
+		javax.swing.JLabel message = createLabel( sb.toString() );
+
+		javax.swing.JButton hyperlink = new javax.swing.JButton( new org.alice.ide.issue.swing.CheckForNewAliceVersionAction() ) {
 			@Override
-			public boolean contains( int x, int y ) {
-				return false;
+			public void updateUI() {
+				edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI hyperlinkUi = new edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI();
+				this.setUI( hyperlinkUi );
 			}
 		};
-		message.setEditable( false );
-		//message.setOpaque( false );
-		message.setBackground( java.awt.Color.DARK_GRAY );
-		message.setForeground( java.awt.Color.WHITE );
-		//		header.setLineWrap( false );
-		//		header.setWrapStyleWord( true );
-		java.awt.Font font = message.getFont();
-		font = font.deriveFont( (float)(int)( font.getSize() * 1.15f ) );
-		font = font.deriveFont( java.awt.Font.BOLD );
-		message.setFont( font );
-		message.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 16 ) );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( hyperlink, FONT_SCALE );
+		hyperlink.setForeground( java.awt.Color.WHITE );
+		hyperlink.setOpaque( false );
+		hyperlink.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
-		javax.swing.ImageIcon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( CaughtExceptionPane.class.getResource( "images/meanQueen.png" ) );
-		javax.swing.JLabel meanQueen = new javax.swing.JLabel( icon );
+		edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane bottomPane = new edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane(
+				createLabel( "Note: it is possible this bug has already been fixed." ),
+				new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane(
+						createLabel( "Check:  " ),
+						hyperlink,
+						createLabel( "  for the latest release." )
+				)
+				);
 
-		//		message.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-		//		label.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-
-		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( meanQueen, javax.swing.Box.createHorizontalStrut( 16 ), message );
-		pane.setBackground( message.getBackground() );
+		edu.cmu.cs.dennisc.javax.swing.components.JMigPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JMigPane( "insets 16 0 0 32", "[]16[]", "[top][bottom]" );
+		pane.add( new javax.swing.JLabel( MEAN_QUEEN_ICON ), "span 1 2" );
+		pane.add( message, "wrap, growy" );
+		pane.add( bottomPane, "wrap" );
+		pane.setBackground( java.awt.Color.DARK_GRAY );
 		pane.setOpaque( true );
+
 		this.add( pane, java.awt.BorderLayout.NORTH );
 	}
 
@@ -110,13 +140,14 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 	private boolean isClearedToAttachCurrentProject = false;
 
 	@Override
-	protected boolean isClearedToSubmit() {
-		boolean rv = super.isClearedToSubmit();
-		if( rv ) {
-			int option = javax.swing.JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the Alice team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the Alice team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_OPTION );
+	protected void submit() {
+		int option = javax.swing.JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the " + APPLICATION_NAME + " team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the " + APPLICATION_NAME + " team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
+		if( option == javax.swing.JOptionPane.CANCEL_OPTION ) {
+			//pass
+		} else {
 			this.isClearedToAttachCurrentProject = option == javax.swing.JOptionPane.YES_OPTION;
+			super.submit();
 		}
-		return rv;
 	}
 
 	@Override
@@ -129,6 +160,8 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 	}
 
 	public static void main( String[] args ) {
+		org.alice.ide.issue.UserProgramRunningStateUtilities.setUserProgramRunning( true );
+
 		CaughtExceptionPane pane = new CaughtExceptionPane();
 
 		try {

@@ -46,18 +46,15 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 public class MembersView extends org.lgna.croquet.components.BorderPanel {
-	private static edu.cmu.cs.dennisc.map.MapToMap<Class<?>, org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.croquet.components.Component<?>> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<Class<?>, org.lgna.project.ast.AbstractType<?, ?, ?>, org.alice.ide.common.TypeComponent> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	public static final byte PROTOTYPE = 0;
 
-	public static org.lgna.croquet.components.Component<?> getComponentFor( Class<?> cls, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		org.lgna.croquet.components.Component<?> rv = map.get( cls, type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = org.alice.ide.common.TypeComponent.createInstance( type );
-			map.put( cls, type, rv );
-		}
-		return rv;
+	public static org.alice.ide.common.TypeComponent getComponentFor( Class<?> cls, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		return mapToMap.getInitializingIfAbsent( cls, type, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<Class<?>, org.lgna.project.ast.AbstractType<?, ?, ?>, org.alice.ide.common.TypeComponent>() {
+			public org.alice.ide.common.TypeComponent initialize( Class<?> cls, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+				return org.alice.ide.common.TypeComponent.createInstance( type );
+			}
+		} );
 	}
 
 	public MembersView( org.alice.ide.members.MembersComposite composite ) {

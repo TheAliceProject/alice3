@@ -51,155 +51,6 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 	private static class ActualPicker {
 
-		private static interface Impl {
-			public void initialize( com.sun.opengl.impl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext );
-
-			public void destroy();
-
-			public void display();
-
-			public boolean isHardwareAccelerated();
-		}
-
-		private static class PixelBufferImpl implements Impl {
-			private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
-				public void init( javax.media.opengl.GLAutoDrawable drawable ) {
-				}
-
-				public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
-				}
-
-				public void display( javax.media.opengl.GLAutoDrawable drawable ) {
-					Throwable throwable = null;
-					try {
-						drawable.getGL();
-						drawable.getContext().makeCurrent();
-					} catch( Throwable t ) {
-						throwable = t;
-					}
-					if( throwable != null ) {
-						if( throwable instanceof NullPointerException ) {
-							NullPointerException nullPointerException = (NullPointerException)throwable;
-							edu.cmu.cs.dennisc.java.util.logging.Logger.info( nullPointerException );
-						} else {
-							edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
-						}
-					} else {
-						sharedActualPicker.performPick( drawable.getGL() );
-					}
-				}
-
-				public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
-				}
-			};
-
-			private javax.media.opengl.GLPbuffer glPixelBuffer;
-
-			public void initialize( com.sun.opengl.impl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext ) {
-				if( this.glPixelBuffer != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-				} else {
-					this.glPixelBuffer = glFactory.createGLPbuffer( glRequestedCapabilities, glCapabilitiesChooser, 1, 1, glShareContext );
-					this.glPixelBuffer.addGLEventListener( glEventListener );
-				}
-				//				throw new javax.media.opengl.GLException();
-			}
-
-			public void destroy() {
-				if( this.glPixelBuffer != null ) {
-					this.glPixelBuffer.destroy();
-					this.glPixelBuffer = null;
-				}
-			}
-
-			public void display() {
-				this.glPixelBuffer.display();
-			}
-
-			public boolean isHardwareAccelerated() {
-				return true;
-			}
-		}
-
-		private static class OffscreenImpl implements Impl {
-			private com.sun.opengl.impl.GLDrawableImpl glDrawable;
-			private com.sun.opengl.impl.GLContextImpl glContext;
-
-			private final Runnable displayAdapter = new Runnable() {
-				public void run() {
-					sharedActualPicker.performPick( glContext.getGL() );
-				}
-			};
-			private final Runnable initAdapter = new Runnable() {
-				public void run() {
-				}
-			};
-			private com.sun.opengl.impl.GLDrawableHelper drawableHelper;
-
-			public void initialize( com.sun.opengl.impl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext ) {
-				assert this.glDrawable == null : this;
-				//this.glDrawable = (com.sun.opengl.impl.GLDrawableImpl)com.sun.opengl.impl.GLDrawableFactoryImpl.getFactoryImpl().createOffscreenDrawable( glRequestedCapabilities, glCapabilitiesChooser );
-				javax.media.opengl.GLCapabilities glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
-				glCapabilities.setHardwareAccelerated( false );
-				this.glDrawable = (com.sun.opengl.impl.GLDrawableImpl)glFactory.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser );
-				this.glDrawable.setSize( 1, 1 );
-				this.glDrawable.setRealized( true );
-				this.glContext = (com.sun.opengl.impl.GLContextImpl)this.glDrawable.createContext( glShareContext );
-				this.glContext.setSynchronized( true );
-				assert this.glContext != null : this;
-			}
-
-			public void destroy() {
-				assert false;
-				if( this.glContext != null ) {
-					this.glContext.destroy();
-					this.glContext = null;
-				}
-				if( this.glDrawable != null ) {
-					this.glDrawable.setRealized( false );
-					this.glDrawable = null;
-				}
-			}
-
-			public void display() {
-				if( this.drawableHelper != null ) {
-					//pass
-				} else {
-					this.drawableHelper = new com.sun.opengl.impl.GLDrawableHelper();
-				}
-				if( ( this.glDrawable != null ) && ( this.glContext != null ) && ( this.displayAdapter != null ) && ( this.initAdapter != null ) ) {
-					this.drawableHelper.invokeGL( this.glDrawable, this.glContext, this.displayAdapter, this.initAdapter );
-				} else {
-					StringBuilder sb = new StringBuilder();
-					if( this.glDrawable != null ) {
-						//pass
-					} else {
-						sb.append( "glDrawable is null;" );
-					}
-					if( this.glContext != null ) {
-						//pass
-					} else {
-						sb.append( "glContext is null;" );
-					}
-					if( this.displayAdapter != null ) {
-						//pass
-					} else {
-						sb.append( "displayAdapter is null;" );
-					}
-					if( this.initAdapter != null ) {
-						//pass
-					} else {
-						sb.append( "initAdapter is null;" );
-					}
-					throw new javax.media.opengl.GLException( sb.toString() );
-				}
-			}
-
-			public boolean isHardwareAccelerated() {
-				return false;
-			}
-		}
-
 		private static final int SELECTION_CAPACITY = 256;
 		private final PickContext pickContext = new PickContext();
 		private final java.nio.IntBuffer selectionAsIntBuffer;
@@ -240,50 +91,60 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			return this.pickParameters.accessFrontMostPickResult();
 		}
 
-		private Impl glImpl;
+		private OffscreenDrawable glOffscreenDrawable;
 
-		private synchronized Impl getImpl() {
-			if( this.glImpl != null ) {
+		private synchronized OffscreenDrawable getOffscreenDrawable() {
+			if( this.glOffscreenDrawable != null ) {
 				//pass
 			} else {
-				Impl impl = null;
+				OffscreenDrawable od = null;
 				if( IS_HARDWARE_ACCELERATION_DESIRED && this.glFactory.canCreateGLPbuffer() ) {
-					impl = new PixelBufferImpl();
+					od = new PixelBufferOffscreenDrawable() {
+						@Override
+						protected void actuallyDisplay( javax.media.opengl.GL gl ) {
+							sharedActualPicker.performPick( gl );
+						}
+					};
 					try {
-						impl.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
+						od.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
 					} catch( javax.media.opengl.GLException gle ) {
 						try {
-							impl.destroy();
+							od.destroy();
 						} catch( Throwable t ) {
 							//pass
 						}
-						impl = null;
+						od = null;
 					}
 				}
-				if( impl != null ) {
+				if( od != null ) {
 					//pass
 				} else {
-					impl = new OffscreenImpl();
+					od = new SoftwareOffscreenDrawable() {
+						@Override
+						protected void actuallyDisplay( javax.media.opengl.GL gl ) {
+							sharedActualPicker.performPick( gl );
+						}
+					};
 					try {
-						impl.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
+						od.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
 					} catch( javax.media.opengl.GLException gle ) {
 						try {
-							impl.destroy();
+							od.destroy();
 						} catch( Throwable t ) {
 							//pass
 						}
-						impl = null;
+						od = null;
 						throw gle;
 					}
 				}
-				this.glImpl = impl;
+				this.glOffscreenDrawable = od;
 			}
-			return this.glImpl;
+			return this.glOffscreenDrawable;
 		}
 
 		private void performPick( javax.media.opengl.GL gl ) {
 			this.pickContext.gl = gl;
-			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( this.glFactory.canCreateGLPbuffer(), this.glImpl instanceof PixelBufferImpl, gl );
+			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( this.glFactory.canCreateGLPbuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable, gl );
 
 			ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
 
@@ -416,7 +277,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 		private edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAtPixel( xPixel, yPixel );
-			Impl impl = this.getImpl();
+			OffscreenDrawable impl = this.getOffscreenDrawable();
 			if( impl != null ) {
 				this.setPickParameters( lookingGlass, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
 				try {
@@ -434,7 +295,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 		private java.util.List<edu.cmu.cs.dennisc.lookingglass.PickResult> pickAll( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAtPixel( xPixel, yPixel );
-			Impl impl = this.getImpl();
+			OffscreenDrawable impl = this.getOffscreenDrawable();
 			if( impl != null ) {
 				this.setPickParameters( lookingGlass, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
 				try {

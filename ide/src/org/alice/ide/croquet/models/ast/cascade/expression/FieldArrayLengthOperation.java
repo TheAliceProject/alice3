@@ -47,19 +47,16 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class FieldArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayLengthOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayLengthOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized FieldArrayLengthOperation getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static FieldArrayLengthOperation getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert field != null;
 		assert expressionProperty != null;
-		FieldArrayLengthOperation rv = map.get( field, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldArrayLengthOperation( field, expressionProperty );
-			map.put( field, expressionProperty, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayLengthOperation>() {
+			public FieldArrayLengthOperation initialize( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+				return new FieldArrayLengthOperation( field, expressionProperty );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.AbstractField field;
