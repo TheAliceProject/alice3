@@ -330,7 +330,7 @@ public abstract class ExpressionCascadeManager {
 		return true;
 	}
 
-	protected boolean isNullLiteralAllowedForType( org.lgna.project.ast.AbstractType<?, ?, ?> type, int itemCount ) {
+	protected boolean isNullLiteralAllowedForType( org.lgna.project.ast.AbstractType<?, ?, ?> type, java.util.List<org.lgna.croquet.CascadeBlankChild> items ) {
 		return false;
 	}
 
@@ -384,7 +384,7 @@ public abstract class ExpressionCascadeManager {
 				items.add( org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( type.getComponentType() ).getFillIn() );
 				//rv.add( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( type ).getValueCreator().getFillIn() );
 			}
-			if( this.isNullLiteralAllowedForType( enumType, items.size() ) ) {
+			if( this.isNullLiteralAllowedForType( type, items ) ) {
 				items.add( org.alice.ide.croquet.models.cascade.literals.NullLiteralFillIn.getInstance() );
 			}
 		} else {
