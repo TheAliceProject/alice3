@@ -106,7 +106,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 						}
 					};
 					try {
-						od.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
+						od.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
 					} catch( javax.media.opengl.GLException gle ) {
 						try {
 							od.destroy();
@@ -126,7 +126,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 						}
 					};
 					try {
-						od.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext );
+						od.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
 					} catch( javax.media.opengl.GLException gle ) {
 						try {
 							od.destroy();

@@ -45,12 +45,26 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */interface OffscreenDrawable {
-	public void initialize( com.sun.opengl.impl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext );
+/* package-private */abstract class OffscreenDrawable {
+	public abstract void initialize( com.sun.opengl.impl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height );
 
-	public void destroy();
+	public abstract void destroy();
 
-	public void display();
+	public abstract void display();
 
-	public boolean isHardwareAccelerated();
+	public final java.awt.Dimension getSize( java.awt.Dimension rv ) {
+		javax.media.opengl.GLDrawable glDrawable = this.getGlDrawable();
+		if( glDrawable != null ) {
+			rv.width = GlDrawableUtilities.getGLPbufferHeight( glDrawable );
+			rv.height = GlDrawableUtilities.getGLPbufferHeight( glDrawable );
+		} else {
+			//todo?
+			throw new javax.media.opengl.GLException();
+		}
+		return rv;
+	}
+
+	public abstract boolean isHardwareAccelerated();
+
+	protected abstract javax.media.opengl.GLDrawable getGlDrawable();
 }
