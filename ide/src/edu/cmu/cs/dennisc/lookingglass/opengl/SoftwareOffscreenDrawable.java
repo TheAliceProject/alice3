@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SoftwareOffscreenDrawable implements OffscreenDrawable {
+public abstract class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	private jogamp.opengl.GLDrawableImpl glDrawable;
 	private jogamp.opengl.GLContextImpl glContext;
 
@@ -62,7 +62,13 @@ public abstract class SoftwareOffscreenDrawable implements OffscreenDrawable {
 
 	protected abstract void actuallyDisplay( javax.media.opengl.GL2 gl );
 
-	public void initialize( jogamp.opengl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext ) {
+	@Override
+	protected javax.media.opengl.GLDrawable getGlDrawable() {
+		return this.glDrawable;
+	}
+
+	@Override
+	public void initialize( jogamp.opengl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
 		assert this.glDrawable == null : this;
 		javax.media.opengl.GLCapabilities glCapabilities;
 		if( Picker.IS_HARDWARE_ACCELERATION_DESIRED ) {
@@ -71,13 +77,13 @@ public abstract class SoftwareOffscreenDrawable implements OffscreenDrawable {
 			glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
 			glCapabilities.setHardwareAccelerated( false );
 		}
-		this.glDrawable = (jogamp.opengl.GLDrawableImpl)glFactory.createOffscreenDrawable( null, glCapabilities, glCapabilitiesChooser, 1, 1 );
+		this.glDrawable = (jogamp.opengl.GLDrawableImpl)glFactory.createOffscreenDrawable( null, glCapabilities, glCapabilitiesChooser, width, height );
 		this.glDrawable.setRealized( true );
 		this.glContext = (jogamp.opengl.GLContextImpl)this.glDrawable.createContext( glShareContext );
 		//this.glContext.setSynchronized( true );
-		assert this.glContext != null : this;
 	}
 
+	@Override
 	public void destroy() {
 		assert false;
 		if( this.glContext != null ) {
@@ -94,6 +100,7 @@ public abstract class SoftwareOffscreenDrawable implements OffscreenDrawable {
 		}
 	}
 
+	@Override
 	public void display() {
 		if( this.drawableHelper != null ) {
 			//pass
@@ -129,6 +136,7 @@ public abstract class SoftwareOffscreenDrawable implements OffscreenDrawable {
 		}
 	}
 
+	@Override
 	public boolean isHardwareAccelerated() {
 		return false;
 	}

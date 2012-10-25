@@ -40,31 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.alice.ide.croquet.models.cascade.literals;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */abstract class OffscreenDrawable {
-	public abstract void initialize( jogamp.opengl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height );
-
-	public abstract void destroy();
-
-	public abstract void display();
-
-	public final java.awt.Dimension getSize( java.awt.Dimension rv ) {
-		javax.media.opengl.GLDrawable glDrawable = this.getGlDrawable();
-		if( glDrawable != null ) {
-			rv.width = GlDrawableUtilities.getGLPbufferHeight( glDrawable );
-			rv.height = GlDrawableUtilities.getGLPbufferHeight( glDrawable );
-		} else {
-			//todo?
-			throw new javax.media.opengl.GLException();
-		}
-		return rv;
+public class NullLiteralFillIn extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<org.lgna.project.ast.NullLiteral> {
+	private static class SingletonHolder {
+		private static NullLiteralFillIn instance = new NullLiteralFillIn();
 	}
 
-	public abstract boolean isHardwareAccelerated();
+	public static NullLiteralFillIn getInstance() {
+		return SingletonHolder.instance;
+	}
 
-	protected abstract javax.media.opengl.GLDrawable getGlDrawable();
+	private final org.lgna.project.ast.NullLiteral transientValue = new org.lgna.project.ast.NullLiteral();
+
+	private NullLiteralFillIn() {
+		super( java.util.UUID.fromString( "e2cfad91-ac53-441e-8ac8-cb0d1c26520f" ) );
+	}
+
+	@Override
+	public org.lgna.project.ast.NullLiteral getTransientValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.NullLiteral, Void> node ) {
+		return this.transientValue;
+	}
+
+	@Override
+	public org.lgna.project.ast.NullLiteral createValue( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.NullLiteral, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
+		return new org.lgna.project.ast.NullLiteral();
+	}
+
+	@Override
+	protected String getTutorialItemText() {
+		return "null";
+	}
 }
