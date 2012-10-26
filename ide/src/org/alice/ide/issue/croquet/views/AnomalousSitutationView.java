@@ -40,26 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.croquet;
-
+package org.alice.ide.issue.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CaughtThrowableComposite extends StrangeCircumstanceComposite {
-	private final Throwable throwable;
+public class AnomalousSitutationView extends org.lgna.croquet.components.MigPanel {
+	private static final javax.swing.Icon ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( org.alice.ide.croquet.models.information.RestartRequiredOperation.TWEEDLEDUM_AND_TWEEDLEDEE_ICON, 0.5f );
 
-	public CaughtThrowableComposite( Throwable throwable ) {
-		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ) );
-		this.throwable = throwable;
-	}
-
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		try {
-			throw new IllegalArgumentException( "test" );
-		} catch( IllegalArgumentException iae ) {
-			new CaughtThrowableComposite( iae ).getOperation().fire();
-		}
+	public AnomalousSitutationView( org.alice.ide.issue.croquet.AnomalousSituationComposite composite ) {
+		super( composite );
+		this.addComponent( new org.lgna.croquet.components.Label( ICON ) );
+		Throwable throwable = composite.getThrowable();
+		this.addComponent( new org.lgna.croquet.components.Label( throwable.toString() ) );
 	}
 }

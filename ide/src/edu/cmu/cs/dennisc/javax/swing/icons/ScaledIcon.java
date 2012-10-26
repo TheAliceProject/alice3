@@ -49,25 +49,35 @@ public class ScaledIcon implements javax.swing.Icon {
 	private final javax.swing.Icon icon;
 	private final int width;
 	private final int height;
+	private final float factor;
 
 	public ScaledIcon( javax.swing.Icon icon, int width, int height ) {
 		assert icon != null;
 		this.icon = icon;
 		this.width = width;
 		this.height = height;
+		this.factor = Float.NaN;
+	}
+
+	public ScaledIcon( javax.swing.Icon icon, float factor ) {
+		assert icon != null;
+		this.icon = icon;
+		this.width = -1;
+		this.height = -1;
+		this.factor = factor;
 	}
 
 	public int getIconWidth() {
-		return this.width;
+		return Float.isNaN( this.factor ) ? this.width : (int)( this.icon.getIconWidth() * this.factor );
 	}
 
 	public int getIconHeight() {
-		return this.height;
+		return Float.isNaN( this.factor ) ? this.height : (int)( this.icon.getIconHeight() * this.factor );
 	}
 
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		double xScale = this.width / (double)this.icon.getIconWidth();
-		double yScale = this.height / (double)this.icon.getIconHeight();
+		double xScale = Float.isNaN( this.factor ) ? this.width / (double)this.icon.getIconWidth() : this.factor;
+		double yScale = Float.isNaN( this.factor ) ? this.height / (double)this.icon.getIconHeight() : this.factor;
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
 		//		java.awt.geom.AffineTransform transform = new java.awt.geom.AffineTransform();

@@ -45,14 +45,34 @@ package org.alice.ide.issue.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StrangeCircumstanceComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.StrangeCircumstanceView> {
-	public StrangeCircumstanceComposite( java.util.UUID migrationId ) {
-		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
+public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.AnomalousSitutationView> {
+	public static AnomalousSituationComposite createInstance( String message ) {
+		try {
+			throw new RuntimeException( "test" );
+		} catch( RuntimeException re ) {
+			return new AnomalousSituationComposite( re );
+		}
+	}
+
+	private final Throwable throwable;
+
+	private AnomalousSituationComposite( Throwable throwable ) {
+		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		this.throwable = throwable;
+	}
+
+	public Throwable getThrowable() {
+		return this.throwable;
 	}
 
 	@Override
-	protected org.alice.ide.issue.croquet.views.StrangeCircumstanceView createView() {
-		return new org.alice.ide.issue.croquet.views.StrangeCircumstanceView( this );
+	protected org.alice.ide.issue.croquet.views.AnomalousSitutationView createView() {
+		return new org.alice.ide.issue.croquet.views.AnomalousSitutationView( this );
 	}
 
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		AnomalousSituationComposite.createInstance( "test" ).getOperation().fire();
+		System.exit( 0 );
+	}
 }
