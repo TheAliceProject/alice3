@@ -48,7 +48,7 @@ package org.alice.ide.issue.croquet;
 public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.AnomalousSitutationView> {
 	public static AnomalousSituationComposite createInstance( String message ) {
 		try {
-			throw new RuntimeException( "test" );
+			throw new RuntimeException( message );
 		} catch( RuntimeException re ) {
 			return new AnomalousSituationComposite( re );
 		}
@@ -72,7 +72,7 @@ public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDia
 
 	public static void main( String[] args ) {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		AnomalousSituationComposite.createInstance( "test" ).getOperation().fire();
+		AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent." ).getOperation().fire();
 		System.exit( 0 );
 	}
 }

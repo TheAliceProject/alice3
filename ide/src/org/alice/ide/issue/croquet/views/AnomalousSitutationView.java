@@ -50,8 +50,21 @@ public class AnomalousSitutationView extends org.lgna.croquet.components.MigPane
 
 	public AnomalousSitutationView( org.alice.ide.issue.croquet.AnomalousSituationComposite composite ) {
 		super( composite );
-		this.addComponent( new org.lgna.croquet.components.Label( ICON ) );
 		Throwable throwable = composite.getThrowable();
-		this.addComponent( new org.lgna.croquet.components.Label( throwable.toString() ) );
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "<body>" );
+		sb.append( "<h2>" );
+		sb.append( throwable.getMessage() );
+		sb.append( "</h2>" );
+		sb.append( "<h3>" );
+		sb.append( "We are aware that this problem exists, but we are unable to reproduce it in the lab.<br>" );
+		sb.append( "If you could describe what you were doing that may have triggered this bug, we would greatly appreciate it." );
+		sb.append( "</h3>" );
+		sb.append( "</body>" );
+		sb.append( "<html>" );
+		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( sb.toString(), ICON );
+		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
+		this.addComponent( label );
 	}
 }
