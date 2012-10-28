@@ -40,32 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.croquet.views;
+package org.alice.ide.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AnomalousSitutationView extends org.lgna.croquet.components.MigPanel {
-	private static final javax.swing.Icon ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( org.alice.ide.croquet.models.information.RestartRequiredOperation.TWEEDLEDUM_AND_TWEEDLEDEE_ICON, 0.5f );
+public class ImageAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
+	private final byte[] bytes;
+	private final String fileName;
 
-	public AnomalousSitutationView( org.alice.ide.issue.croquet.AnomalousSituationComposite composite ) {
-		super( composite );
-		Throwable throwable = composite.getThrowable();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "<body>" );
-		sb.append( "<h2>" );
-		sb.append( throwable.getMessage() );
-		sb.append( "</h2>" );
-		sb.append( "<h3>" );
-		sb.append( "We are aware that this problem exists.  However, we are unable to reproduce it in the lab.<br>" );
-		sb.append( "If you could describe what you were doing that may have triggered this bug, we would greatly appreciate it." );
-		sb.append( "</h3>" );
-		sb.append( "</body>" );
-		sb.append( "<html>" );
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( sb.toString(), ICON );
-		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
-		this.addComponent( label, "wrap" );
-		this.addComponent( composite.getShowApplicationContentPanelImageOperation().createHyperlink() );
+	public ImageAttachment( java.awt.Image image, String baseName ) {
+		this.bytes = edu.cmu.cs.dennisc.image.ImageUtilities.writeToByteArray( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, image );
+		this.fileName = baseName + ".png";
+	}
+
+	public byte[] getBytes() {
+		return this.bytes;
+	}
+
+	public String getMIMEType() {
+		return "image/png";
+	}
+
+	public String getFileName() {
+		return this.fileName;
 	}
 }

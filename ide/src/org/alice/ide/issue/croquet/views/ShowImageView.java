@@ -45,27 +45,9 @@ package org.alice.ide.issue.croquet.views;
 /**
  * @author Dennis Cosgrove
  */
-public class AnomalousSitutationView extends org.lgna.croquet.components.MigPanel {
-	private static final javax.swing.Icon ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( org.alice.ide.croquet.models.information.RestartRequiredOperation.TWEEDLEDUM_AND_TWEEDLEDEE_ICON, 0.5f );
-
-	public AnomalousSitutationView( org.alice.ide.issue.croquet.AnomalousSituationComposite composite ) {
+public class ShowImageView extends org.lgna.croquet.components.BorderPanel {
+	public ShowImageView( org.alice.ide.issue.croquet.ShowImageComposite composite ) {
 		super( composite );
-		Throwable throwable = composite.getThrowable();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "<body>" );
-		sb.append( "<h2>" );
-		sb.append( throwable.getMessage() );
-		sb.append( "</h2>" );
-		sb.append( "<h3>" );
-		sb.append( "We are aware that this problem exists.  However, we are unable to reproduce it in the lab.<br>" );
-		sb.append( "If you could describe what you were doing that may have triggered this bug, we would greatly appreciate it." );
-		sb.append( "</h3>" );
-		sb.append( "</body>" );
-		sb.append( "<html>" );
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( sb.toString(), ICON );
-		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
-		this.addComponent( label, "wrap" );
-		this.addComponent( composite.getShowApplicationContentPanelImageOperation().createHyperlink() );
+		this.addCenterComponent( new org.lgna.croquet.components.Label( new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( new javax.swing.ImageIcon( composite.getImage() ), 0.5f ) ) );
 	}
 }

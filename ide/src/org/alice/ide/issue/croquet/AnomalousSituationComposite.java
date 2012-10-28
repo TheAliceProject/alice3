@@ -55,14 +55,43 @@ public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDia
 	}
 
 	private final Throwable throwable;
+	private final java.awt.image.BufferedImage applicationContentPanelImage;
+
+	//	private final org.lgna.croquet.Operation showApplicationFrameImageOperation = this.createActionOperation( this.createKey( "showApplicationFrameImageOperation" ), new Action() {
+	//		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+	//			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "message" );
+	//			return null;
+	//		}
+	//	} );
+	private final org.lgna.croquet.Operation showApplicationContentPanelImageOperation = new ShowImageComposite( java.util.UUID.fromString( "f8455aee-e131-417c-b539-b8a9ad7bdc73" ) ) {
+		@Override
+		public java.awt.Image getImage() {
+			return applicationContentPanelImage;
+		}
+	}.getOperation();
 
 	private AnomalousSituationComposite( Throwable throwable ) {
 		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ), org.lgna.croquet.Application.INFORMATION_GROUP );
 		this.throwable = throwable;
+
+		org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
+		org.lgna.croquet.components.Frame frame = app.getFrame();
+		org.lgna.croquet.components.Panel contentPanel = frame.getContentPanel();
+
+		this.applicationContentPanelImage = new java.awt.image.BufferedImage( contentPanel.getWidth(), contentPanel.getHeight(), java.awt.image.BufferedImage.TYPE_INT_RGB );
+		java.awt.Graphics g = applicationContentPanelImage.getGraphics();
+		g.setColor( contentPanel.getBackgroundColor() );
+		g.fillRect( 0, 0, this.applicationContentPanelImage.getWidth(), this.applicationContentPanelImage.getHeight() );
+		contentPanel.getAwtComponent().paintAll( g );
+		g.dispose();
 	}
 
 	public Throwable getThrowable() {
 		return this.throwable;
+	}
+
+	public org.lgna.croquet.Operation getShowApplicationContentPanelImageOperation() {
+		return this.showApplicationContentPanelImageOperation;
 	}
 
 	@Override
@@ -70,9 +99,18 @@ public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDia
 		return new org.alice.ide.issue.croquet.views.AnomalousSitutationView( this );
 	}
 
-	public static void main( String[] args ) {
+	public static void main( String[] args ) throws Exception {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent." ).getOperation().fire();
-		System.exit( 0 );
+		app.initialize( args );
+		app.getFrame().getContentPanel().addCenterComponent( new org.lgna.croquet.components.Label( "hello" ) );
+		app.getFrame().pack();
+		app.getFrame().setVisible( true );
+		Thread.sleep( 1000 );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent." ).getOperation().fire();
+				System.exit( 0 );
+			}
+		} );
 	}
 }
