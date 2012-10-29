@@ -53,18 +53,20 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		public org.lgna.croquet.edits.Edit<?> perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			submitBugOperation.setEnabled( false );
 			try {
-				org.alice.ide.issue.swing.views.ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( AbstractIssueComposite.this, createReportSubmissionConfiguration() );
-				org.lgna.croquet.components.AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
-				if( root != null ) {
-					if( progressPane.isDone() ) {
-						if( progressPane.isSuccessful() ) {
-							javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you." );
-							root.setVisible( false );
+				if( isClearedToSubmitBug() ) {
+					org.alice.ide.issue.swing.views.ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( AbstractIssueComposite.this, createReportSubmissionConfiguration() );
+					org.lgna.croquet.components.AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
+					if( root != null ) {
+						if( progressPane.isDone() ) {
+							if( progressPane.isSuccessful() ) {
+								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you." );
+								root.setVisible( false );
+							} else {
+								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying." );
+							}
 						} else {
-							javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying." );
+							root.setVisible( false );
 						}
-					} else {
-						root.setVisible( false );
 					}
 				}
 			} finally {
@@ -81,6 +83,8 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 	public org.lgna.croquet.Operation getSubmitBugOperation() {
 		return this.submitBugOperation;
 	}
+
+	protected abstract boolean isClearedToSubmitBug();
 
 	protected abstract boolean isPublic();
 

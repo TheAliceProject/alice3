@@ -124,6 +124,11 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		return new org.alice.ide.issue.croquet.views.AnomalousSitutationView( this );
 	}
 
+	@Override
+	protected boolean isClearedToSubmitBug() {
+		return true;
+	}
+
 	public static void main( String[] args ) throws Exception {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		app.initialize( args );
