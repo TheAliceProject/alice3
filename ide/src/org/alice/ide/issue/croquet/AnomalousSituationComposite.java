@@ -57,12 +57,6 @@ public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDia
 	private final Throwable throwable;
 	private final java.awt.image.BufferedImage applicationContentPanelImage;
 
-	//	private final org.lgna.croquet.Operation showApplicationFrameImageOperation = this.createActionOperation( this.createKey( "showApplicationFrameImageOperation" ), new Action() {
-	//		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-	//			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "message" );
-	//			return null;
-	//		}
-	//	} );
 	private final org.lgna.croquet.Operation showApplicationContentPanelImageOperation = new ShowImageComposite( java.util.UUID.fromString( "f8455aee-e131-417c-b539-b8a9ad7bdc73" ) ) {
 		@Override
 		public java.awt.Image getImage() {
@@ -82,7 +76,7 @@ public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDia
 		java.awt.Graphics g = applicationContentPanelImage.getGraphics();
 		g.setColor( contentPanel.getBackgroundColor() );
 		g.fillRect( 0, 0, this.applicationContentPanelImage.getWidth(), this.applicationContentPanelImage.getHeight() );
-		contentPanel.getAwtComponent().paintAll( g );
+		contentPanel.getAwtComponent().printAll( g );
 		g.dispose();
 	}
 

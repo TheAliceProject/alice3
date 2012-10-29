@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.ui.debug;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class RaiseAnomalousSituationOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
+		private static RaiseAnomalousSituationOperation instance = new RaiseAnomalousSituationOperation();
 	}
 
-	public static InternalTestingMenuModel getInstance() {
+	public static RaiseAnomalousSituationOperation getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.RaiseAnomalousSituationOperation.getInstance().getMenuItemPrepModel(),
-				SEPARATOR,
-				org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.video.ProofOfConceptRecordVideoOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel(),
-				new org.lgna.cheshire.test.IsShowingHackTutorialState().getMenuItemPrepModel(),
-				new org.alice.ide.highlight.ShowMeOperation().getMenuItemPrepModel() );
+	private RaiseAnomalousSituationOperation() {
+		super( java.util.UUID.fromString( "d7129c6f-b7e1-40cb-9036-401f034d982b" ) );
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setName( "Raise Anomalous Situation..." );
+	}
+
+	@Override
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		new Thread() {
+			@Override
+			public void run() {
+				org.lgna.project.ast.Statement statement = new org.lgna.project.ast.Comment( "delete me" );
+				org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel().fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+			}
+		}.start();
 	}
 }
