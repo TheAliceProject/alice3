@@ -66,7 +66,8 @@ public class DialogUtilities {
 				owner = application.getFrame().getContentPanel();
 			}
 		}
-		final org.lgna.croquet.components.Dialog dialog = new org.lgna.croquet.components.Dialog( owner );
+		boolean isModal = dialogOwner.isModal();
+		final org.lgna.croquet.components.Dialog dialog = new org.lgna.croquet.components.Dialog( owner, dialogOwner.isModal() );
 		step.putEphemeralDataFor( DIALOG_KEY, dialog );
 		class DialogWindowListener implements java.awt.event.WindowListener {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
@@ -119,13 +120,22 @@ public class DialogUtilities {
 			dialogOwner.handlePreShowDialog( step );
 			application.pushWindow( dialog );
 			dialog.setVisible( true );
-			dialogOwner.handlePostHideDialog( step );
-			dialog.removeWindowListener( dialogWindowListener );
-			dialogOwner.releaseView( step, view );
-			dialog.getAwtComponent().dispose();
+
+			if( isModal ) {
+				dialogOwner.handlePostHideDialog( step );
+				dialog.removeWindowListener( dialogWindowListener );
+				dialogOwner.releaseView( step, view );
+				dialog.getAwtComponent().dispose();
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
+			}
 		} finally {
-			application.popWindow();
-			dialogOwner.handleFinally( step, dialog );
+			if( isModal ) {
+				application.popWindow();
+				dialogOwner.handleFinally( step, dialog );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );
+			}
 		}
 
 	}

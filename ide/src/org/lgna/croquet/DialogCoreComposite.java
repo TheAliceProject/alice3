@@ -263,7 +263,7 @@ public abstract class DialogCoreComposite<V extends org.lgna.croquet.components.
 	private final InternalCancelOperation cancelOperation = new InternalCancelOperation( this );
 
 	public DialogCoreComposite( java.util.UUID migrationId ) {
-		super( migrationId );
+		super( migrationId, true );
 	}
 
 	protected abstract CC getDialogContentComposite();

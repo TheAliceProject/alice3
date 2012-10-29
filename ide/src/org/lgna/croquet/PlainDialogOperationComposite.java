@@ -48,9 +48,13 @@ package org.lgna.croquet;
 public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
 	private final OwnedByCompositeOperation operation;
 
-	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup ) {
-		super( migrationId );
+	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
+		super( migrationId, isModal );
 		this.operation = new OwnedByCompositeOperation( operationGroup, this );
+	}
+
+	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup ) {
+		this( migrationId, operationGroup, true );
 	}
 
 	public OwnedByCompositeOperation getOperation() {
