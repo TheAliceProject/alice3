@@ -40,26 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.croquet;
-
+package org.alice.ide.croquet.models.help.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CaughtThrowableComposite extends StrangeCircumstanceComposite {
-	private final Throwable throwable;
-
-	public CaughtThrowableComposite( Throwable throwable ) {
-		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ) );
-		this.throwable = throwable;
+public class AbstractIssueView extends org.lgna.croquet.components.BorderPanel {
+	protected static org.lgna.croquet.components.JComponent<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
+		org.lgna.croquet.components.TextArea textArea = stringState.createTextArea();
+		textArea.getAwtComponent().setLineWrap( true );
+		textArea.getAwtComponent().setWrapStyleWord( true );
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane( textArea );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setMinimumPreferredHeight( 128 );
+		return rv;
 	}
 
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		try {
-			throw new IllegalArgumentException( "test" );
-		} catch( IllegalArgumentException iae ) {
-			new CaughtThrowableComposite( iae ).getOperation().fire();
-		}
+	public AbstractIssueView( org.alice.ide.croquet.models.help.AbstractIssueComposite<?> composite ) {
+		super( composite );
+
+		org.lgna.croquet.components.Button submitButton = composite.getSubmitBugOperation().createButton();
+		submitButton.scaleFont( 1.6f );
+		submitButton.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+
+		org.lgna.croquet.components.FlowPanel submitPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER );
+		submitPanel.addComponent( submitButton );
+
+		org.lgna.croquet.components.PageAxisPanel pageEndPanel = new org.lgna.croquet.components.PageAxisPanel( new org.lgna.croquet.components.HorizontalSeparator(), org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), submitPanel );
+		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+
+		this.addPageEndComponent( pageEndPanel );
 	}
+
 }

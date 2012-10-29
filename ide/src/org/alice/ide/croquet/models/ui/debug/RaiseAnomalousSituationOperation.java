@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,42 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing.icons;
+package org.alice.ide.croquet.models.ui.debug;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ScaledIcon extends AbstractScaledIcon {
-	private final javax.swing.Icon sourceIcon;
-
-	public ScaledIcon( javax.swing.Icon sourceIcon, int width, int height ) {
-		super( width, height );
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
+public class RaiseAnomalousSituationOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private static class SingletonHolder {
+		private static RaiseAnomalousSituationOperation instance = new RaiseAnomalousSituationOperation();
 	}
 
-	public ScaledIcon( javax.swing.Icon sourceIcon, float factor ) {
-		super( factor );
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
+	public static RaiseAnomalousSituationOperation getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	public javax.swing.Icon getSourceIcon() {
-		return this.sourceIcon;
+	private RaiseAnomalousSituationOperation() {
+		super( java.util.UUID.fromString( "d7129c6f-b7e1-40cb-9036-401f034d982b" ) );
 	}
 
 	@Override
-	protected int getSourceWidth() {
-		return this.sourceIcon.getIconWidth();
+	protected void localize() {
+		super.localize();
+		this.setName( "Raise Anomalous Situation..." );
 	}
 
 	@Override
-	protected int getSourceHeight() {
-		return this.sourceIcon.getIconHeight();
-	}
-
-	@Override
-	protected void paintSource( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		this.sourceIcon.paintIcon( c, g, 0, 0 );
+	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
+		new Thread() {
+			@Override
+			public void run() {
+				org.lgna.project.ast.Statement statement = new org.lgna.project.ast.Comment( "delete me" );
+				org.alice.ide.croquet.models.ast.StatementContextMenu.getInstance( statement ).getPopupPrepModel().fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+			}
+		}.start();
 	}
 }

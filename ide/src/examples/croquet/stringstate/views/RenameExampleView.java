@@ -40,13 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.croquet.views;
+package examples.croquet.stringstate.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StrangeCircumstanceView extends org.lgna.croquet.components.BorderPanel {
-	public StrangeCircumstanceView( org.alice.ide.issue.croquet.StrangeCircumstanceComposite composite ) {
+public class RenameExampleView extends org.lgna.croquet.components.FormPanel {
+	public RenameExampleView( examples.croquet.rename.RenameExampleComposite composite ) {
 		super( composite );
+	}
+
+	@Override
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+		examples.croquet.rename.RenameExampleComposite composite = (examples.croquet.rename.RenameExampleComposite)this.getComposite();
+		org.lgna.croquet.StringState nameState = composite.getNameState();
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( nameState.getSidekickLabel(), nameState.createTextField() ) );
 	}
 }

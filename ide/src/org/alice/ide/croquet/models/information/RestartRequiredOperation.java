@@ -46,6 +46,8 @@ package org.alice.ide.croquet.models.information;
  * @author Dennis Cosgrove
  */
 public class RestartRequiredOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	public static final javax.swing.Icon TWEEDLEDUM_AND_TWEEDLEDEE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RestartRequiredOperation.class.getResource( "images/restartRequired.png" ) );
+
 	private static class SingletonHolder {
 		private static RestartRequiredOperation instance = new RestartRequiredOperation();
 	}
@@ -60,6 +62,6 @@ public class RestartRequiredOperation extends org.alice.ide.operations.Inconsequ
 
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Exiting and restarting Alice is required.", "Restart Is Required", org.lgna.croquet.MessageType.INFORMATION, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RestartRequiredOperation.class.getResource( "images/restartRequired.png" ) ) );
+		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Exiting and restarting Alice is required.", "Restart Is Required", org.lgna.croquet.MessageType.INFORMATION, TWEEDLEDUM_AND_TWEEDLEDEE_ICON );
 	}
 }

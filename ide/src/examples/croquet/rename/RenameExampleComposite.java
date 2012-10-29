@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,42 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing.icons;
+package examples.croquet.rename;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ScaledIcon extends AbstractScaledIcon {
-	private final javax.swing.Icon sourceIcon;
+public class RenameExampleComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<examples.croquet.stringstate.views.RenameExampleView> {
+	private static final String INITIAL_VALUE = "fred";
 
-	public ScaledIcon( javax.swing.Icon sourceIcon, int width, int height ) {
-		super( width, height );
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
+	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ), INITIAL_VALUE );
+
+	public RenameExampleComposite() {
+		super( java.util.UUID.fromString( "73adadcf-e434-4dfc-a8fd-507b741f5d58" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP );
 	}
 
-	public ScaledIcon( javax.swing.Icon sourceIcon, float factor ) {
-		super( factor );
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
-	}
-
-	public javax.swing.Icon getSourceIcon() {
-		return this.sourceIcon;
+	public org.lgna.croquet.StringState getNameState() {
+		return this.nameState;
 	}
 
 	@Override
-	protected int getSourceWidth() {
-		return this.sourceIcon.getIconWidth();
+	protected examples.croquet.stringstate.views.RenameExampleView createView() {
+		return new examples.croquet.stringstate.views.RenameExampleView( this );
 	}
 
 	@Override
-	protected int getSourceHeight() {
-		return this.sourceIcon.getIconHeight();
+	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	protected void paintSource( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		this.sourceIcon.paintIcon( c, g, 0, 0 );
+	protected org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return null;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.nameState.setValueTransactionlessly( INITIAL_VALUE );
+		this.nameState.selectAll();
+		this.nameState.requestFocus();
+	}
+
+	public static void main( String[] args ) {
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		new RenameExampleComposite().getOperation().fire();
+		System.exit( 0 );
 	}
 }

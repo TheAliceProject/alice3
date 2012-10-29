@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,42 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.javax.swing.icons;
+package org.alice.ide.issue.croquet.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ScaledIcon extends AbstractScaledIcon {
-	private final javax.swing.Icon sourceIcon;
+public class AnomalousSitutationView extends org.alice.ide.croquet.models.help.views.AbstractIssueView {
+	private static final javax.swing.Icon ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( org.alice.ide.croquet.models.information.RestartRequiredOperation.TWEEDLEDUM_AND_TWEEDLEDEE_ICON, 0.5f );
 
-	public ScaledIcon( javax.swing.Icon sourceIcon, int width, int height ) {
-		super( width, height );
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
-	}
+	public AnomalousSitutationView( org.alice.ide.issue.croquet.AnomalousSituationComposite composite ) {
+		super( composite );
+		Throwable throwable = composite.getThrowable();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html>" );
+		sb.append( "<body>" );
+		sb.append( "<h2>" );
+		sb.append( throwable.getMessage() );
+		sb.append( "</h2>" );
+		sb.append( "<h3>" );
+		sb.append( "We are aware that this problem exists.  However, we are unable to reproduce it in the lab.<br>" );
+		sb.append( "If you could describe what you were doing that may have triggered this bug, we would greatly appreciate it." );
+		sb.append( "</h3>" );
+		sb.append( "</body>" );
+		sb.append( "<html>" );
+		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( sb.toString(), ICON );
+		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
+		this.addPageStartComponent( label );
 
-	public ScaledIcon( javax.swing.Icon sourceIcon, float factor ) {
-		super( factor );
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
-	}
-
-	public javax.swing.Icon getSourceIcon() {
-		return this.sourceIcon;
-	}
-
-	@Override
-	protected int getSourceWidth() {
-		return this.sourceIcon.getIconWidth();
-	}
-
-	@Override
-	protected int getSourceHeight() {
-		return this.sourceIcon.getIconHeight();
-	}
-
-	@Override
-	protected void paintSource( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		this.sourceIcon.paintIcon( c, g, 0, 0 );
+		this.addCenterComponent( composite.getShowApplicationContentPanelImageOperation().createHyperlink() );
 	}
 }

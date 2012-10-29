@@ -91,7 +91,14 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		rv.add( org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement ).getMenuItemPrepModel() );
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
+
+		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)statement.getParent();
+		if( blockStatement != null ) {
+			rv.add( org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
+		} else {
+			//org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Somehow a popup menu has been presented for a statement that does not have a parent." ).getBooleanState().setValue( true );
+			//throw new org.lgna.croquet.CancelException();
+		}
 		if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
 			org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
 			rv.add( org.alice.ide.croquet.models.ast.DissolveStatementWithBodyOperation.getInstance( statementWithBody ).getMenuItemPrepModel() );

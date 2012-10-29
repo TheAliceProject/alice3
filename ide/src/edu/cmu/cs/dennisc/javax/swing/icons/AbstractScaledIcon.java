@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,37 +45,45 @@ package edu.cmu.cs.dennisc.javax.swing.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class ScaledIcon extends AbstractScaledIcon {
-	private final javax.swing.Icon sourceIcon;
+public abstract class AbstractScaledIcon implements javax.swing.Icon {
+	private final int width;
+	private final int height;
+	private final float factor;
 
-	public ScaledIcon( javax.swing.Icon sourceIcon, int width, int height ) {
-		super( width, height );
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
+	public AbstractScaledIcon( int width, int height ) {
+		this.width = width;
+		this.height = height;
+		this.factor = Float.NaN;
 	}
 
-	public ScaledIcon( javax.swing.Icon sourceIcon, float factor ) {
-		super( factor );
-		assert sourceIcon != null;
-		this.sourceIcon = sourceIcon;
+	public AbstractScaledIcon( float factor ) {
+		this.width = -1;
+		this.height = -1;
+		this.factor = factor;
 	}
 
-	public javax.swing.Icon getSourceIcon() {
-		return this.sourceIcon;
+	public final int getIconWidth() {
+		return Float.isNaN( this.factor ) ? this.width : (int)( this.getSourceWidth() * this.factor );
 	}
 
-	@Override
-	protected int getSourceWidth() {
-		return this.sourceIcon.getIconWidth();
+	public final int getIconHeight() {
+		return Float.isNaN( this.factor ) ? this.height : (int)( this.getSourceHeight() * this.factor );
 	}
 
-	@Override
-	protected int getSourceHeight() {
-		return this.sourceIcon.getIconHeight();
-	}
+	protected abstract int getSourceWidth();
 
-	@Override
-	protected void paintSource( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		this.sourceIcon.paintIcon( c, g, 0, 0 );
+	protected abstract int getSourceHeight();
+
+	protected abstract void paintSource( java.awt.Component c, java.awt.Graphics g, int x, int y );
+
+	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		double xScale = Float.isNaN( this.factor ) ? this.width / (double)this.getSourceWidth() : this.factor;
+		double yScale = Float.isNaN( this.factor ) ? this.height / (double)this.getSourceHeight() : this.factor;
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+		g2.translate( x, y );
+		g2.scale( xScale, yScale );
+		this.paintSource( c, g2, 0, 0 );
+		g2.setTransform( prevTransform );
 	}
 }
