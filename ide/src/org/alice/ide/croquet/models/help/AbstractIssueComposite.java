@@ -157,12 +157,20 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		return rv;
 	}
 
+	protected void addAttachments( edu.cmu.cs.dennisc.jira.JIRAReport report ) {
+		report.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
+		Throwable throwable = this.getThrowable();
+		if( throwable != null ) {
+			report.addAttachment( new edu.cmu.cs.dennisc.issue.StackTraceAttachment( throwable ) );
+		}
+		if( this.isProjectAttachmentDesired() ) {
+			report.addAttachment( new org.alice.ide.issue.CurrentProjectAttachment() );
+		}
+	}
+
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
-		rv.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
-		if( this.isProjectAttachmentDesired() ) {
-			rv.addAttachment( new org.alice.ide.issue.CurrentProjectAttachment() );
-		}
+		this.addAttachments( rv );
 		return rv;
 	}
 

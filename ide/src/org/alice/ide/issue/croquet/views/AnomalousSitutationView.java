@@ -73,7 +73,11 @@ public class AnomalousSitutationView extends org.alice.ide.croquet.models.help.v
 		org.lgna.croquet.components.MigPanel centerPanel = new org.lgna.croquet.components.MigPanel();
 		centerPanel.addComponent( new org.lgna.croquet.components.Label( sb.toString() ), "wrap" );
 		centerPanel.addComponent( createScrollPaneTextArea( composite.getStepsState() ), "wrap, growx" );
-		centerPanel.addComponent( composite.getShowApplicationContentPanelImageOperation().createHyperlink(), "wrap" );
+		centerPanel.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+				composite.getAreProjectAndImageAttachmentsDesired().createCheckBox(),
+				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+				composite.getShowApplicationContentPanelImageOperation().createHyperlink()
+				), "wrap" );
 		centerPanel.addComponent( new org.lgna.croquet.components.Label( "<html><h3>We apologize for the inconvenience and will try to fix this bug as soon as possible.</h3></html>" ) );
 
 		this.addCenterComponent( centerPanel );

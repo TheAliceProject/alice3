@@ -71,7 +71,7 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 		return this.statement;
 	}
 
-	private java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> updatePopupOperations( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv, org.lgna.project.ast.Statement statement ) {
+	private java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> updatePopupOperations( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv, final org.lgna.project.ast.Statement statement ) {
 		if( statement instanceof org.lgna.project.ast.Comment ) {
 			//pass
 		} else {
@@ -98,7 +98,16 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 		} else {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent." ).getOperation().fire();
+					StringBuilder sb = new StringBuilder();
+					try {
+						java.util.Locale locale = null;
+						sb.append( statement.getRepr( locale ) );
+					} catch( Throwable t ) {
+						sb.append( statement );
+					}
+					sb.append( ";" );
+					sb.append( statement.getId() );
+					org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", sb.toString() ).getOperation().fire();
 				}
 			} );
 			//throw new org.lgna.croquet.CancelException();
