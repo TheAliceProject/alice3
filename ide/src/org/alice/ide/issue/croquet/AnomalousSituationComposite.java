@@ -45,7 +45,7 @@ package org.alice.ide.issue.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.AnomalousSitutationView> {
+public final class AnomalousSituationComposite extends org.alice.ide.croquet.models.help.AbstractIssueComposite<org.alice.ide.issue.croquet.views.AnomalousSitutationView> {
 	public static AnomalousSituationComposite createInstance( String message ) {
 		try {
 			throw new RuntimeException( message );
@@ -65,7 +65,7 @@ public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDia
 	}.getOperation();
 
 	private AnomalousSituationComposite( Throwable throwable ) {
-		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ), org.lgna.croquet.Application.INFORMATION_GROUP );
+		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ) );
 		this.throwable = throwable;
 
 		org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
@@ -80,8 +80,39 @@ public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDia
 		g.dispose();
 	}
 
+	@Override
 	public Throwable getThrowable() {
 		return this.throwable;
+	}
+
+	@Override
+	protected boolean isPublic() {
+		return false;
+	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getReportType() {
+		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG;
+	}
+
+	@Override
+	protected String getSummaryText() {
+		return this.throwable.getMessage();
+	}
+
+	@Override
+	protected String getDescriptionText() {
+		return "";
+	}
+
+	@Override
+	protected String getStepsText() {
+		return "";
+	}
+
+	@Override
+	protected boolean isProjectAttachmentDesired() {
+		return true;
 	}
 
 	public org.lgna.croquet.Operation getShowApplicationContentPanelImageOperation() {
@@ -102,8 +133,8 @@ public final class AnomalousSituationComposite extends org.lgna.croquet.PlainDia
 		Thread.sleep( 1000 );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent." ).getOperation().fire();
-				System.exit( 0 );
+				AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent." ).getBooleanState().setValue( true );
+				//System.exit( 0 );
 			}
 		} );
 	}

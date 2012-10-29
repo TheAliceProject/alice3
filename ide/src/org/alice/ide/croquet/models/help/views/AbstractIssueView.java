@@ -40,33 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.croquet.views;
+package org.alice.ide.croquet.models.help.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AnomalousSitutationView extends org.alice.ide.croquet.models.help.views.AbstractIssueView {
-	private static final javax.swing.Icon ICON = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( org.alice.ide.croquet.models.information.RestartRequiredOperation.TWEEDLEDUM_AND_TWEEDLEDEE_ICON, 0.5f );
-
-	public AnomalousSitutationView( org.alice.ide.issue.croquet.AnomalousSituationComposite composite ) {
-		super( composite );
-		Throwable throwable = composite.getThrowable();
-		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		sb.append( "<body>" );
-		sb.append( "<h2>" );
-		sb.append( throwable.getMessage() );
-		sb.append( "</h2>" );
-		sb.append( "<h3>" );
-		sb.append( "We are aware that this problem exists.  However, we are unable to reproduce it in the lab.<br>" );
-		sb.append( "If you could describe what you were doing that may have triggered this bug, we would greatly appreciate it." );
-		sb.append( "</h3>" );
-		sb.append( "</body>" );
-		sb.append( "<html>" );
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( sb.toString(), ICON );
-		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
-		this.addPageStartComponent( label );
-
-		this.addCenterComponent( composite.getShowApplicationContentPanelImageOperation().createHyperlink() );
+public class AbstractIssueView extends org.lgna.croquet.components.BorderPanel {
+	protected static org.lgna.croquet.components.JComponent<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
+		org.lgna.croquet.components.TextArea textArea = stringState.createTextArea();
+		textArea.getAwtComponent().setLineWrap( true );
+		textArea.getAwtComponent().setWrapStyleWord( true );
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane( textArea );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setMinimumPreferredHeight( 128 );
+		return rv;
 	}
+
+	public AbstractIssueView( org.alice.ide.croquet.models.help.AbstractIssueComposite<?> composite ) {
+		super( composite );
+
+		org.lgna.croquet.components.Button submitButton = composite.getSubmitBugOperation().createButton();
+		submitButton.scaleFont( 1.6f );
+		submitButton.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+
+		org.lgna.croquet.components.FlowPanel submitPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER );
+		submitPanel.addComponent( submitButton );
+
+		org.lgna.croquet.components.PageAxisPanel pageEndPanel = new org.lgna.croquet.components.PageAxisPanel( new org.lgna.croquet.components.HorizontalSeparator(), org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), submitPanel );
+		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+
+		this.addPageEndComponent( pageEndPanel );
+	}
+
 }
