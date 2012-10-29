@@ -80,9 +80,9 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	};
 
 	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type initialReportTypeValue ) {
-		super( migrationId );
+		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
-		this.reportTypeState = createListSelectionStateForEnum( createKey( "typeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
+		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
 		this.environmentState.setEnabled( false );
 	}
 

@@ -65,7 +65,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 	}.getOperation();
 
 	private AnomalousSituationComposite( Throwable throwable ) {
-		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ) );
+		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ), true );
 		this.throwable = throwable;
 
 		org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
@@ -138,7 +138,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		Thread.sleep( 1000 );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent." ).getBooleanState().setValue( true );
+				AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent." ).getOperation().fire();
 				//System.exit( 0 );
 			}
 		} );
