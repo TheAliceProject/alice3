@@ -106,11 +106,6 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 	}
 
 	@Override
-	protected String getStepsText() {
-		return "";
-	}
-
-	@Override
 	protected boolean isProjectAttachmentDesired() {
 		return true;
 	}
