@@ -42,29 +42,37 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import org.lgna.croquet.StringState;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.models.help.views.AbstractIssueView> extends org.lgna.croquet.FrameComposite<V> implements edu.cmu.cs.dennisc.issue.ReportGenerator {
+public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.models.help.views.AbstractIssueView> extends org.lgna.croquet.PlainDialogOperationComposite<V> implements edu.cmu.cs.dennisc.issue.ReportGenerator {
 	public static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
+
+	private final org.lgna.croquet.StringState stepsState = createStringState( this.createKey( "stepsState" ) );
+
+	private final org.lgna.croquet.StringState environmentState = createStringState( this.createKey( "environmentState" ), org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentLongDescription() );
 
 	private final org.lgna.croquet.Operation submitBugOperation = createActionOperation( this.createKey( "submitBugOperation" ), new Action() {
 
 		public org.lgna.croquet.edits.Edit<?> perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			submitBugOperation.setEnabled( false );
 			try {
-				org.alice.ide.issue.swing.views.ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( AbstractIssueComposite.this, createReportSubmissionConfiguration() );
-				org.lgna.croquet.components.AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
-				if( root != null ) {
-					if( progressPane.isDone() ) {
-						if( progressPane.isSuccessful() ) {
-							javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you." );
-							root.setVisible( false );
+				if( isClearedToSubmitBug() ) {
+					org.alice.ide.issue.swing.views.ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( AbstractIssueComposite.this, createReportSubmissionConfiguration() );
+					org.lgna.croquet.components.AbstractWindow<?> root = AbstractIssueComposite.this.getView().getRoot();
+					if( root != null ) {
+						if( progressPane.isDone() ) {
+							if( progressPane.isSuccessful() ) {
+								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you." );
+								root.setVisible( false );
+							} else {
+								javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying." );
+							}
 						} else {
-							javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying." );
+							root.setVisible( false );
 						}
-					} else {
-						root.setVisible( false );
 					}
 				}
 			} finally {
@@ -74,13 +82,28 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		}
 	} );
 
-	public AbstractIssueComposite( java.util.UUID migrationId ) {
-		super( migrationId, ISSUE_GROUP );
+	public AbstractIssueComposite( java.util.UUID migrationId, boolean isModal ) {
+		super( migrationId, ISSUE_GROUP, isModal );
+		this.environmentState.setEnabled( false );
+	}
+
+	private String getStepsText() {
+		return this.stepsState.getValue();
+	}
+
+	public StringState getStepsState() {
+		return this.stepsState;
+	}
+
+	public StringState getEnvironmentState() {
+		return this.environmentState;
 	}
 
 	public org.lgna.croquet.Operation getSubmitBugOperation() {
 		return this.submitBugOperation;
 	}
+
+	protected abstract boolean isClearedToSubmitBug();
 
 	protected abstract boolean isPublic();
 
@@ -98,8 +121,6 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 
 	protected abstract String getDescriptionText();
 
-	protected abstract String getStepsText();
-
 	protected abstract Throwable getThrowable();
 
 	private String getExceptionText() {
@@ -112,6 +133,11 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 	}
 
 	protected abstract boolean isProjectAttachmentDesired();
+
+	@Override
+	protected GoldenRatioPolicy getGoldenRatioPolicy() {
+		return GoldenRatioPolicy.WIDTH_LONG_SIDE;
+	}
 
 	private edu.cmu.cs.dennisc.jira.JIRAReport generateIssue() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport();
@@ -131,12 +157,20 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		return rv;
 	}
 
+	protected void addAttachments( edu.cmu.cs.dennisc.jira.JIRAReport report ) {
+		report.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
+		Throwable throwable = this.getThrowable();
+		if( throwable != null ) {
+			report.addAttachment( new edu.cmu.cs.dennisc.issue.StackTraceAttachment( throwable ) );
+		}
+		if( this.isProjectAttachmentDesired() ) {
+			report.addAttachment( new org.alice.ide.issue.CurrentProjectAttachment() );
+		}
+	}
+
 	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
-		rv.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
-		if( this.isProjectAttachmentDesired() ) {
-			rv.addAttachment( new org.alice.ide.issue.CurrentProjectAttachment() );
-		}
+		this.addAttachments( rv );
 		return rv;
 	}
 

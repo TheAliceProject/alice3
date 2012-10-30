@@ -50,6 +50,10 @@ public class AnomalousSitutationView extends org.alice.ide.croquet.models.help.v
 
 	public AnomalousSitutationView( org.alice.ide.issue.croquet.AnomalousSituationComposite composite ) {
 		super( composite );
+		org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( ICON );
+		iconLabel.setVerticalAlignment( org.lgna.croquet.components.VerticalAlignment.TOP );
+		this.addLineStartComponent( iconLabel );
+
 		Throwable throwable = composite.getThrowable();
 		StringBuilder sb = new StringBuilder();
 		sb.append( "<html>" );
@@ -58,15 +62,24 @@ public class AnomalousSitutationView extends org.alice.ide.croquet.models.help.v
 		sb.append( throwable.getMessage() );
 		sb.append( "</h2>" );
 		sb.append( "<h3>" );
-		sb.append( "We are aware that this problem exists.  However, we are unable to reproduce it in the lab.<br>" );
-		sb.append( "If you could describe what you were doing that may have triggered this bug, we would greatly appreciate it." );
+		sb.append( "We are aware that this problem exists.  However, we are unable to reproduce it in the lab." );
+		sb.append( "</h3>" );
+		sb.append( "<h3>" );
+		sb.append( "If you can, please describe what you were doing when this bug was triggered." );
 		sb.append( "</h3>" );
 		sb.append( "</body>" );
 		sb.append( "<html>" );
-		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( sb.toString(), ICON );
-		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.TOP );
-		this.addPageStartComponent( label );
 
-		this.addCenterComponent( composite.getShowApplicationContentPanelImageOperation().createHyperlink() );
+		org.lgna.croquet.components.MigPanel centerPanel = new org.lgna.croquet.components.MigPanel();
+		centerPanel.addComponent( new org.lgna.croquet.components.Label( sb.toString() ), "wrap" );
+		centerPanel.addComponent( createScrollPaneTextArea( composite.getStepsState() ), "wrap, growx" );
+		centerPanel.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+				composite.getAreProjectAndImageAttachmentsDesired().createCheckBox(),
+				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+				composite.getShowApplicationContentPanelImageOperation().createHyperlink()
+				), "wrap" );
+		centerPanel.addComponent( new org.lgna.croquet.components.Label( "<html><h3>We apologize for the inconvenience and will try to fix this bug as soon as possible.</h3></html>" ) );
+
+		this.addCenterComponent( centerPanel );
 	}
 }

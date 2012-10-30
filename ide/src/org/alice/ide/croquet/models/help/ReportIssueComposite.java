@@ -60,10 +60,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	private final ListSelectionState<JIRAReport.Type> reportTypeState;
 	private final StringState summaryState = createStringState( this.createKey( "summaryState" ) );
 	private final StringState descriptionState = createStringState( this.createKey( "descriptionState" ) );
-	private final StringState stepsState = createStringState( this.createKey( "stepsState" ) );
-
-	private final StringState environmentState = createStringState( this.createKey( "environmentState" ), org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentLongDescription() );
-	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, BugSubmitAttachment.YES );
+	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, null );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 
 	private final LogInOutCardOwnerComposite logInOutCardComposite = new LogInOutCardOwnerComposite();
@@ -80,16 +77,9 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	};
 
 	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type initialReportTypeValue ) {
-		super( migrationId );
+		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
-		this.reportTypeState = createListSelectionStateForEnum( createKey( "typeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
-		initAdapter();
-		environmentState.setEnabled( false );
-	}
-
-	private void initAdapter() {
-		summaryState.addValueListener( adapter );
-		adapter.changed( null, "", "", true );
+		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
 	}
 
 	@Override
@@ -133,19 +123,6 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		return this.descriptionState;
 	}
 
-	@Override
-	protected String getStepsText() {
-		return this.stepsState.getValue();
-	}
-
-	public StringState getStepsState() {
-		return this.stepsState;
-	}
-
-	public StringState getEnvironmentState() {
-		return this.environmentState;
-	}
-
 	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
 	}
@@ -169,17 +146,40 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	}
 
 	@Override
+	protected boolean isClearedToSubmitBug() {
+		boolean rv;
+		if( this.attachmentState.getValue() != null ) {
+			rv = true;
+		} else {
+			org.lgna.croquet.YesNoCancelOption option = org.lgna.croquet.Application.getActiveInstance().showYesNoCancelConfirmDialog( "Is your current project relevant to this issue report?", "Attach current project?", org.lgna.croquet.MessageType.QUESTION );
+			if( option == org.lgna.croquet.YesNoCancelOption.YES ) {
+				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
+				rv = true;
+			} else if( option == org.lgna.croquet.YesNoCancelOption.NO ) {
+				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.NO );
+				rv = true;
+			} else {
+				rv = false;
+			}
+		}
+		return rv;
+	}
+
+	@Override
 	public void handlePreActivation() {
+		this.summaryState.setValueTransactionlessly( "" );
 		this.descriptionState.setValueTransactionlessly( "" );
-		this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
 		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
+		this.attachmentState.setValueTransactionlessly( null );
 		this.reportTypeState.setValue( this.initialReportTypeValue );
 		this.logInOutCardComposite.handlePreActivation();
+		this.summaryState.addAndInvokeValueListener( this.adapter );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
+		this.summaryState.removeValueListener( this.adapter );
 		this.logInOutCardComposite.handlePostDeactivation();
 		super.handlePostDeactivation();
 	}
