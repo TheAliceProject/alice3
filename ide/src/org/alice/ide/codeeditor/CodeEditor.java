@@ -476,118 +476,17 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		return null;
 	}
 
-	//	public int print(java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex) throws java.awt.print.PrinterException {
-	//		if( pageIndex > 0 ) {
-	//			return NO_SUCH_PAGE;
-	//		} else {
-	//			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-	//			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
-	//			int width = Math.max( component0.getAwtComponent().getPreferredSize().width, this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().width );
-	//			int height = this.scrollPane.getY() + this.scrollPane.getViewportView().getAwtComponent().getPreferredSize().height;
-	//			double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale(pageFormat, width, height);
-	//			g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-	//			if( scale > 1.0 ) {
-	//				g2.scale( 1.0/scale, 1.0/scale );
-	//			}
-	//			component0.getAwtComponent().printAll( g2 );
-	//			g2.translate( this.scrollPane.getX(), this.scrollPane.getY() );
-	//			this.scrollPane.getViewportView().getAwtComponent().printAll( g2 );
-	//			return PAGE_EXISTS;
-	//		}
-	//	}
-
 	@Override
 	protected org.lgna.croquet.components.Component<?> getAsSeenBy() {
 		return this.getScrollPane().getViewportView();
 	}
 
 	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-		if( pageIndex > 0 ) {
-			return NO_SUCH_PAGE;
-		} else {
-			org.lgna.croquet.components.ScrollPane scrollPane = this.getScrollPane();
-			org.lgna.croquet.components.Component<?> lineStart = this.getLineStartComponent();
-			org.lgna.croquet.components.Component<?> lineEnd = this.getLineEndComponent();
-			org.lgna.croquet.components.Component<?> pageStart = this.getPageStartComponent();
-			org.lgna.croquet.components.Component<?> pageEnd = this.getPageEndComponent();
-
-			//todo: this code will not suffice in the limit
-			java.awt.Dimension scrollSize = scrollPane.getViewportView().getAwtComponent().getPreferredSize();
-			int width = scrollSize.width;
-			int height = scrollSize.height;
-			for( org.lgna.croquet.components.Component<?> component : new org.lgna.croquet.components.Component[] { lineStart, lineEnd } ) {
-				if( component != null ) {
-					java.awt.Dimension componentSize = component.getAwtComponent().getPreferredSize();
-					width += componentSize.width;
-					height = Math.max( height, componentSize.height );
-				}
-			}
-			for( org.lgna.croquet.components.Component<?> component : new org.lgna.croquet.components.Component[] { pageStart, pageEnd } ) {
-				if( component != null ) {
-					java.awt.Dimension componentSize = component.getAwtComponent().getPreferredSize();
-					width = Math.max( width, componentSize.width );
-					height += componentSize.height;
-				}
-			}
-
-			java.awt.Insets insets = this.getInsets();
-			width += insets.left + insets.right;
-			height += insets.top + insets.bottom;
-
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
-			try {
-				double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );
-				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
-				if( scale > 1.0 ) {
-					g2.scale( 1.0 / scale, 1.0 / scale );
-				}
-
-				g2.setPaint( this.getBackgroundColor() );
-				g2.fillRect( 0, 0, width, height );
-
-				if( pageStart != null ) {
-					int x = pageStart.getX();
-					int y = pageStart.getY();
-					g2.translate( x, y );
-					try {
-						pageStart.getAwtComponent().printAll( g2 );
-					} finally {
-						g2.translate( -x, -y );
-					}
-				}
-				if( lineStart != null ) {
-					int x = lineStart.getX();
-					int y = lineStart.getY();
-					g2.translate( x, y );
-					try {
-						lineStart.getAwtComponent().printAll( g2 );
-					} finally {
-						g2.translate( -x, -y );
-					}
-				}
-				int x = scrollPane.getX();
-				int y = scrollPane.getY();
-				g2.translate( x, y );
-				try {
-					scrollPane.getViewportView().getAwtComponent().printAll( g2 );
-				} finally {
-					g2.translate( -x, -y );
-				}
-
-				if( lineEnd != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( lineEnd );
-				}
-
-				if( pageEnd != null ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( pageEnd );
-				}
-
-			} finally {
-				g2.setTransform( prevTransform );
-			}
-			return PAGE_EXISTS;
-		}
+		return new edu.cmu.cs.dennisc.java.awt.PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
+				.center( this.getScrollPane().getAwtComponent() )
+				.pageStart( this.getPageStartComponent().getAwtComponent() )
+				.build()
+				.print( g, pageFormat, pageIndex );
 	}
 
 }
