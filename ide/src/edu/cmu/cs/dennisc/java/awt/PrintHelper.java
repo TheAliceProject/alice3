@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.java.awt;
 /**
  * @author Dennis Cosgrove
  */
-public class PrintHelper {
+public class PrintHelper implements java.awt.print.Printable {
 	public static class Builder {
 		private final java.awt.Insets insets;
 		private final java.awt.Paint clearPaint;
