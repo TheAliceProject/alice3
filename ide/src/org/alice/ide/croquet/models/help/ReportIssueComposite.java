@@ -60,9 +60,6 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	private final ListSelectionState<JIRAReport.Type> reportTypeState;
 	private final StringState summaryState = createStringState( this.createKey( "summaryState" ) );
 	private final StringState descriptionState = createStringState( this.createKey( "descriptionState" ) );
-	private final StringState stepsState = createStringState( this.createKey( "stepsState" ) );
-
-	private final StringState environmentState = createStringState( this.createKey( "environmentState" ), org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentLongDescription() );
 	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, null );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 
@@ -83,7 +80,6 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
 		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
-		this.environmentState.setEnabled( false );
 	}
 
 	@Override
@@ -125,19 +121,6 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 
 	public StringState getDescriptionState() {
 		return this.descriptionState;
-	}
-
-	@Override
-	protected String getStepsText() {
-		return this.stepsState.getValue();
-	}
-
-	public StringState getStepsState() {
-		return this.stepsState;
-	}
-
-	public StringState getEnvironmentState() {
-		return this.environmentState;
 	}
 
 	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {

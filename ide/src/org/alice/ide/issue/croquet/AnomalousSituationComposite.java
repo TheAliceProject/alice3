@@ -46,17 +46,18 @@ package org.alice.ide.issue.croquet;
  * @author Dennis Cosgrove
  */
 public final class AnomalousSituationComposite extends org.alice.ide.croquet.models.help.AbstractIssueComposite<org.alice.ide.issue.croquet.views.AnomalousSitutationView> {
-	public static AnomalousSituationComposite createInstance( String message ) {
+	public static AnomalousSituationComposite createInstance( String message, String description ) {
 		try {
 			throw new RuntimeException( message );
 		} catch( RuntimeException re ) {
-			return new AnomalousSituationComposite( re );
+			return new AnomalousSituationComposite( re, description );
 		}
 	}
 
 	private final Throwable throwable;
 	private final java.awt.image.BufferedImage applicationContentPanelImage;
 
+	private final org.lgna.croquet.BooleanState areProjectAndImageAttachmentsDesired = this.createBooleanState( this.createKey( "areProjectAndImageAttachmentsDesired" ), true );
 	private final org.lgna.croquet.Operation showApplicationContentPanelImageOperation = new ShowImageComposite( java.util.UUID.fromString( "f8455aee-e131-417c-b539-b8a9ad7bdc73" ) ) {
 		@Override
 		public java.awt.Image getImage() {
@@ -64,9 +65,12 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		}
 	}.getOperation();
 
-	private AnomalousSituationComposite( Throwable throwable ) {
+	private final String description;
+
+	private AnomalousSituationComposite( Throwable throwable, String description ) {
 		super( java.util.UUID.fromString( "f6516c45-2ed6-4d7b-a12d-97726f655bab" ), true );
 		this.throwable = throwable;
+		this.description = description;
 
 		org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 		org.lgna.croquet.components.Frame frame = app.getFrame();
@@ -102,17 +106,16 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 
 	@Override
 	protected String getDescriptionText() {
-		return "";
+		return this.description;
 	}
 
-	@Override
-	protected String getStepsText() {
-		return "";
+	public org.lgna.croquet.BooleanState getAreProjectAndImageAttachmentsDesired() {
+		return this.areProjectAndImageAttachmentsDesired;
 	}
 
 	@Override
 	protected boolean isProjectAttachmentDesired() {
-		return true;
+		return this.areProjectAndImageAttachmentsDesired.getValue();
 	}
 
 	public org.lgna.croquet.Operation getShowApplicationContentPanelImageOperation() {
@@ -129,6 +132,14 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		return true;
 	}
 
+	@Override
+	protected void addAttachments( edu.cmu.cs.dennisc.jira.JIRAReport report ) {
+		super.addAttachments( report );
+		if( this.areProjectAndImageAttachmentsDesired.getValue() ) {
+			report.addAttachment( new org.alice.ide.issue.ImageAttachment( this.applicationContentPanelImage, "snapshot" ) );
+		}
+	}
+
 	public static void main( String[] args ) throws Exception {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		app.initialize( args );
@@ -138,7 +149,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		Thread.sleep( 1000 );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent." ).getOperation().fire();
+				AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", "description" ).getOperation().fire();
 				//System.exit( 0 );
 			}
 		} );

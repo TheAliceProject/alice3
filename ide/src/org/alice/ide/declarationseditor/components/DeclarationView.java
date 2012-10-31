@@ -46,12 +46,12 @@ package org.alice.ide.declarationseditor.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationView extends org.lgna.croquet.components.BorderPanel implements java.awt.print.Printable {
+public abstract class DeclarationView extends org.lgna.croquet.components.BorderPanel {
 	public DeclarationView( org.alice.ide.declarationseditor.DeclarationComposite composite ) {
 		super( composite );
 	}
 
-	public abstract boolean isPrintSupported();
+	public abstract java.awt.print.Printable getPrintable();
 
 	public abstract void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel );
 }
