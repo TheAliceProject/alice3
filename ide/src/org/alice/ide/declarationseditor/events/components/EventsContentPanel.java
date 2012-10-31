@@ -119,8 +119,92 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		return null;
 	}
 
-	public int print( java.awt.Graphics graphics, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
-		return 0;
+	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
+		if( pageIndex > 0 ) {
+			return NO_SUCH_PAGE;
+		} else {
+			//org.lgna.croquet.components.ScrollPane scrollPane = this.getScrollPane();
+			org.lgna.croquet.components.Component<?> lineStart = this.getLineStartComponent();
+			org.lgna.croquet.components.Component<?> lineEnd = this.getLineEndComponent();
+			org.lgna.croquet.components.Component<?> pageStart = this.getPageStartComponent();
+			org.lgna.croquet.components.Component<?> pageEnd = this.getPageEndComponent();
+
+			//todo: this code will not suffice in the limit
+			java.awt.Dimension scrollSize = this.rootPane.getAwtComponent().getPreferredSize();
+			int width = scrollSize.width;
+			int height = scrollSize.height;
+			for( org.lgna.croquet.components.Component<?> component : new org.lgna.croquet.components.Component[] { lineStart, lineEnd } ) {
+				if( component != null ) {
+					java.awt.Dimension componentSize = component.getAwtComponent().getPreferredSize();
+					width += componentSize.width;
+					height = Math.max( height, componentSize.height );
+				}
+			}
+			for( org.lgna.croquet.components.Component<?> component : new org.lgna.croquet.components.Component[] { pageStart, pageEnd } ) {
+				if( component != null ) {
+					java.awt.Dimension componentSize = component.getAwtComponent().getPreferredSize();
+					width = Math.max( width, componentSize.width );
+					height += componentSize.height;
+				}
+			}
+
+			java.awt.Insets insets = this.getInsets();
+			width += insets.left + insets.right;
+			height += insets.top + insets.bottom;
+
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+			try {
+				double scale = edu.cmu.cs.dennisc.java.awt.print.PageFormatUtilities.calculateScale( pageFormat, width, height );
+				g2.translate( pageFormat.getImageableX(), pageFormat.getImageableY() );
+				if( scale > 1.0 ) {
+					g2.scale( 1.0 / scale, 1.0 / scale );
+				}
+
+				g2.setPaint( this.getBackgroundColor() );
+				g2.fillRect( 0, 0, width, height );
+
+				if( pageStart != null ) {
+					int x = pageStart.getX();
+					int y = pageStart.getY();
+					g2.translate( x, y );
+					try {
+						pageStart.getAwtComponent().printAll( g2 );
+					} finally {
+						g2.translate( -x, -y );
+					}
+				}
+				if( lineStart != null ) {
+					int x = lineStart.getX();
+					int y = lineStart.getY();
+					g2.translate( x, y );
+					try {
+						lineStart.getAwtComponent().printAll( g2 );
+					} finally {
+						g2.translate( -x, -y );
+					}
+				}
+				int x = this.rootPane.getX();
+				int y = this.rootPane.getY();
+				g2.translate( x, y );
+				try {
+					this.rootPane.getAwtComponent().printAll( g2 );
+				} finally {
+					g2.translate( -x, -y );
+				}
+
+				if( lineEnd != null ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( lineEnd );
+				}
+
+				if( pageEnd != null ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.todo( pageEnd );
+				}
+
+			} finally {
+				g2.setTransform( prevTransform );
+			}
+			return PAGE_EXISTS;
+		}
 	}
 }
