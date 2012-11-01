@@ -64,9 +64,35 @@ public abstract class ImagesToFFmpegEncoder {
 		this.listeners.remove( listener );
 	}
 
+	//<alice>
+	private static String getFfmpegPath() {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			return null;
+		} else {
+			String installPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
+			java.io.File installDir = new java.io.File( installPath );
+			java.io.File ffmpegFile = new java.io.File( installDir.getParent(), "lib/ffmpeg" );
+			StringBuilder sb = new StringBuilder();
+			sb.append( ffmpegFile.getAbsolutePath() );
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				sb.append( "/windows" );
+			} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+				sb.append( "/macosx" );
+			} else {
+				throw new RuntimeException();
+			}
+			return sb.toString();
+		}
+	}
+
+	//</alice>
+
 	private void setFFmpegCommand() {
 		// Find the ffmpeg process
-		String nativePath = edu.wustl.cse.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
+		//<alice>
+		//String nativePath = edu.wustl.cse.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
+		String nativePath = getFfmpegPath();
+		//</alice>
 		if( nativePath == null ) {
 			// Hope it's on the system path
 			this.ffmpegCommand = "ffmpeg";
@@ -211,5 +237,9 @@ public abstract class ImagesToFFmpegEncoder {
 		} catch( java.io.IOException e ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to read ffmpeg error", e );
 		}
+	}
+
+	public static void main( String[] args ) {
+		System.out.println( ImagesToFFmpegEncoder.getFfmpegPath() );
 	}
 }
