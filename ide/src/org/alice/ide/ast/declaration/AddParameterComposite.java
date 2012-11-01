@@ -46,19 +46,14 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class AddParameterComposite extends AddDeclarationComposite<org.lgna.project.ast.UserParameter> {
-	private static java.util.Map<org.lgna.project.ast.UserCode, AddParameterComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserCode, AddParameterComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static AddParameterComposite getInstance( org.lgna.project.ast.UserCode code ) {
-		synchronized( map ) {
-			AddParameterComposite rv = map.get( code );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new AddParameterComposite( code );
-				map.put( code, rv );
+		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserCode, AddParameterComposite>() {
+			public org.alice.ide.ast.declaration.AddParameterComposite initialize( org.lgna.project.ast.UserCode key ) {
+				return new AddParameterComposite( key );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private final org.lgna.croquet.BooleanState isRequirementToUpdateInvocationsUnderstoodState = this.createBooleanState( this.createKey( "isRequirementToUpdateInvocationsUnderstoodState" ), false );

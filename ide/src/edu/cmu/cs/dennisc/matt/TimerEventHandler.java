@@ -10,17 +10,17 @@ import org.lgna.story.event.TimeEvent;
 import org.lgna.story.event.TimeListener;
 import org.lgna.story.event.WhileContingencyListener;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent;
 import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener;
 import edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory;
 
 public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEvent> implements SceneActivationListener {
 
-	private Map<TimeListener, Double> freqMap = Collections.newHashMap();
-	private List<TimeListener> timerList = Collections.newArrayList();
-	private double currentTime;
-	private Map<TimeListener, Double> mostRecentFire = Collections.newHashMap();
+	private Map<TimeListener, Double> freqMap = Collections.newConcurrentHashMap();
+	private List<TimeListener> timerList = Collections.newCopyOnWriteArrayList();
+	private Double currentTime;
+	private Map<TimeListener, Double> mostRecentFire = Collections.newConcurrentHashMap();
 
 	private final AutomaticDisplayListener automaticDisplayListener = new AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( AutomaticDisplayEvent e ) {
@@ -30,7 +30,7 @@ public class TimerEventHandler extends AbstractEventHandler<TimeListener, TimeEv
 	};
 	private boolean isEnabled = false;
 	private boolean isActivated = false;
-	private Map<TimeListener, Boolean> activationMap = Collections.newHashMap();
+	private Map<TimeListener, Boolean> activationMap = Collections.newConcurrentHashMap();
 
 	public void enable() {
 		isEnabled = true;

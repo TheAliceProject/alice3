@@ -252,6 +252,12 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return scalable;
 	}
 
+	public void clear()
+	{
+		this.setManipulatedObject( null );
+		this.setParent( null );
+	}
+
 	/**
 	 * @param manipulatedObject the manipulatedObject to set
 	 */
@@ -751,6 +757,9 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getParentTransformable()
 	{
+		if( this.manipulatedObject == null ) {
+			return null;
+		}
 		Composite parent = this.getParent();
 		if( parent instanceof edu.cmu.cs.dennisc.scenegraph.AbstractTransformable )
 		{

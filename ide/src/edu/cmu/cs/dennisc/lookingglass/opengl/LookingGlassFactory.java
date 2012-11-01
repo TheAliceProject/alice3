@@ -81,11 +81,68 @@ class WaitingRunnable implements Runnable {
  */
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
 	static {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPlatformSpecificLibraryLoadingDesired() ) {
+			com.sun.opengl.impl.NativeLibLoader.setLoadingAction( new com.sun.opengl.impl.NativeLibLoader.LoaderAction() {
+				private final java.util.Set<String> loaded = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+
+				private boolean loadLibrary( String libraryName, boolean isIgnoringError ) {
+					try {
+						System.loadLibrary( libraryName );
+					} catch( UnsatisfiedLinkError ule ) {
+						String message = ule.getMessage();
+						if( isIgnoringError || ( ( message != null ) && message.contains( "already loaded" ) ) ) {
+							return false;
+						} else {
+							throw ule;
+						}
+					}
+					return true;
+				}
+
+				private boolean loadLibrary( String libraryName, boolean isIgnoringError, boolean isPlatformAttemptedFirst ) {
+					boolean isSuccessful;
+					synchronized( this.loaded ) {
+						if( this.loaded.contains( libraryName ) ) {
+							isSuccessful = true;
+						} else {
+							String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryNameIfAppropriate( libraryName );
+							if( libraryName.contentEquals( "jawt" ) ) {
+								isPlatformAttemptedFirst = false;
+							}
+							if( isPlatformAttemptedFirst ) {
+								try {
+									isSuccessful = this.loadLibrary( platformSpecificLibraryName, isIgnoringError );
+								} catch( UnsatisfiedLinkError ule ) {
+									isSuccessful = this.loadLibrary( libraryName, isIgnoringError );
+								}
+							} else {
+								try {
+									isSuccessful = this.loadLibrary( libraryName, isIgnoringError );
+								} catch( UnsatisfiedLinkError ule ) {
+									isSuccessful = this.loadLibrary( platformSpecificLibraryName, isIgnoringError );
+								}
+							}
+							if( isSuccessful ) {
+								this.loaded.add( libraryName );
+							}
+						}
+					}
+					return isSuccessful;
+				}
+
+				public void loadLibrary( String libname, String[] preloadLibraryNames, boolean doPreload, boolean isIgnoringError ) {
+					if( doPreload ) {
+						for( String preloadLibraryName : preloadLibraryNames ) {
+							this.loadLibrary( preloadLibraryName, isIgnoringError, false );
+						}
+					}
+					this.loadLibrary( libname, isIgnoringError, true );
+				}
+			} );
+		}
+
 		try {
-			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
-			//todo: jogl2
-			//			javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-			//			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
+			com.sun.opengl.impl.NativeLibLoader.loadCore();
 		} catch( UnsatisfiedLinkError ule ) {
 			String platformText = System.getProperty( "os.name" ) + "-" + System.getProperty( "os.arch" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "platform:", platformText );
@@ -117,8 +174,6 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return SingletonHolder.instance;
 	}
 
-	private static final java.util.Map<javax.media.opengl.GLDrawable, java.awt.Dimension> drawableSizeMap = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
-
 	private final java.util.List<LightweightOnscreenLookingGlass> lightweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List<HeavyweightOnscreenLookingGlass> heavyweightOnscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.List<OffscreenLookingGlass> offscreenLookingGlasses = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
@@ -149,99 +204,6 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 
 	//todo: just force start and stop? or rename methods
 	private int automaticDisplayCount = 0;
-
-	//private GLCapabilities glCapabilities;
-	/* package-private */static javax.media.opengl.GLCapabilities createDesiredGLCapabilities( int desiredSampleCount ) {
-		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
-		boolean isMultisamplingDesired = desiredSampleCount >= 2;
-		rv.setSampleBuffers( isMultisamplingDesired );
-		if( isMultisamplingDesired ) {
-			rv.setNumSamples( desiredSampleCount );
-		}
-		//todo: jogl2
-		//		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
-		//		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
-
-		//		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
-		//		if( chooser instanceof edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
-		//			rv.setHardwareAccelerated( false );
-		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
-		//			rv.setDepthBits( 32 );
-		//		}
-		return rv;
-	}
-
-	private static javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
-
-	/* package-private */static javax.media.opengl.GLCapabilitiesChooser getGLCapabilitiesChooser() {
-		if( glCapabilitiesChooser != null ) {
-			//pass
-		} else {
-			//todo?
-			glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
-		}
-		return glCapabilitiesChooser;
-	}
-
-	/* package-private */static int getSampleCountForDisabledMultisampling() {
-		return 1;
-	}
-
-	/* package-private */static int getDesiredOnscreenSampleCount() {
-		return 1;
-	}
-
-	/* package-private */static javax.media.opengl.GLCanvas createGLCanvas() {
-		return new javax.media.opengl.GLCanvas( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null, null );
-	}
-
-	/* package-private */static javax.media.opengl.GLJPanel createGLJPanel() {
-		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null );
-	}
-
-	//	/*package-private*/ boolean canCreateExternalGLDrawable() {
-	//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-	//		return glDrawableFactory.canCreateExternalGLDrawable();
-	//	}
-	//	/*package-private*/ javax.media.opengl.GLDrawable createExternalGLDrawable() {
-	//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-	//		if( glDrawableFactory.canCreateExternalGLDrawable() ) {
-	//			return glDrawableFactory.createExternalGLDrawable();
-	//		} else {
-	//			return null;
-	//		}
-	//	}
-
-	/* package-private */static boolean canCreateGLPbuffer() {
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		return glDrawableFactory.canCreateGLPbuffer();
-	}
-
-	/* package-private */static javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
-		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
-		if( glDrawableFactory.canCreateGLPbuffer() ) {
-			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share );
-
-			// This is a work around for Linux users.
-			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
-			// return 0 for information about a drawable, include getWidth and getHeight even though the drawable is the correct size.
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-				LookingGlassFactory.drawableSizeMap.put( buffer, new java.awt.Dimension( width, height ) );
-			}
-
-			return buffer;
-		} else {
-			return null;
-		}
-		//todo: jogl2
-		//		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-		//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
-		//		if (glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() )) {
-		//			return glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), createDesiredGLCapabilities(), getGLCapabilitiesChooser(), width, height, share);
-		//		} else {
-		//			throw new RuntimeException("cannot create pbuffer");
-		//		}
-	}
 
 	private static boolean isDisplayDesired( OnscreenLookingGlass lg ) {
 		if( lg.isRenderingEnabled() ) {
@@ -440,23 +402,5 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 
 	public Iterable<? extends edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass> getOffscreenLookingGlasses() {
 		return this.offscreenLookingGlasses;
-	}
-
-	/* package-private */static int getGLPbufferWidth( javax.media.opengl.GLDrawable drawable ) {
-		// Bug in linux opengl, getWidth ALWAYS returns 0
-		int width = drawable.getWidth();
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() && ( width == 0 ) ) {
-			width = drawableSizeMap.get( drawable ).width;
-		}
-		return width;
-	}
-
-	/* package-private */static int getGLPbufferHeight( javax.media.opengl.GLDrawable drawable ) {
-		// Bug in linux opengl, getHeight ALWAYS returns 0
-		int height = drawable.getHeight();
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() && ( height == 0 ) ) {
-			height = drawableSizeMap.get( drawable ).height;
-		}
-		return height;
 	}
 }

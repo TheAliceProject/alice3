@@ -527,6 +527,9 @@ public class ThumbnailMaker {
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
 		}
+		if( visualData instanceof org.lgna.story.implementation.sims2.NebulousVisualData<?> ) {
+			( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
+		}
 		return returnImage;
 	}
 

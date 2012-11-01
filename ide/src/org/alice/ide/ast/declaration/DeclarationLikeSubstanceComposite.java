@@ -71,6 +71,8 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 
 	protected static class Details {
+		private ApplicabilityStatus isFinalStatus = ApplicabilityStatus.NOT_APPLICABLE;
+		private boolean inFinalInitialValue;
 		private ApplicabilityStatus valueComponentTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private org.lgna.project.ast.AbstractType<?, ?, ?> valueComponentTypeInitialValue;
 		private ApplicabilityStatus valueIsArrayTypeStatus = ApplicabilityStatus.NOT_APPLICABLE;
@@ -79,6 +81,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		private String nameInitialValue;
 		private ApplicabilityStatus initializerStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private org.lgna.project.ast.Expression initializerInitialValue;
+
+		public Details isFinal( ApplicabilityStatus status, boolean initialValue ) {
+			this.isFinalStatus = status;
+			this.inFinalInitialValue = initialValue;
+			return this;
+		}
 
 		public Details valueComponentType( ApplicabilityStatus status, org.lgna.project.ast.AbstractType<?, ?, ?> initialValue ) {
 			this.valueComponentTypeStatus = status;
@@ -109,6 +117,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 	}
 
+	private final org.lgna.croquet.BooleanState isFinalState;
 	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> valueComponentTypeState;
 	private final org.lgna.croquet.BooleanState valueIsArrayTypeState;
 	private final org.lgna.croquet.StringState nameState;
@@ -160,6 +169,15 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		super( migrationId, org.alice.ide.IDE.PROJECT_GROUP );
 
 		this.details = details;
+
+		if( details.isFinalStatus.isApplicable() ) {
+			this.isFinalState = this.createBooleanState( this.createKey( "isFinalState" ), details.inFinalInitialValue );
+			if( details.isFinalStatus.isDisplayed() ) {
+				this.isFinalState.setEnabled( details.valueComponentTypeStatus.isEditable() );
+			}
+		} else {
+			this.isFinalState = null;
+		}
 
 		if( details.valueComponentTypeStatus.isApplicable() ) {
 			this.valueComponentTypeState = this.createCustomItemState( this.createKey( "valueComponentTypeState" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), details.valueComponentTypeInitialValue, new ValueComponentTypeCustomizer() );
@@ -222,6 +240,10 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 	protected final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> createInitializerState( org.lgna.project.ast.Expression initialValue ) {
 		return this.createCustomItemState( this.createKey( "initializerState" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), initialValue, this.createInitializerCustomizer() );
+	}
+
+	public org.lgna.croquet.BooleanState getIsFinalState() {
+		return this.isFinalState;
 	}
 
 	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> getValueComponentTypeState() {

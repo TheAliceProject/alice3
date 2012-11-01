@@ -55,6 +55,7 @@ public class ThisFieldAccessJointedTypeMenuModel extends JointedTypeMenuModel {
 	}
 
 	private static ThisFieldAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserField value, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		//todo
 		synchronized( mapToMap ) {
 			ThisFieldAccessJointedTypeMenuModel rv = mapToMap.get( value, index );
 			if( rv != null ) {

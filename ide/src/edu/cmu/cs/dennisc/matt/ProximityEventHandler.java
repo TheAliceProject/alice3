@@ -43,9 +43,9 @@
 package edu.cmu.cs.dennisc.matt;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
@@ -57,7 +57,7 @@ import org.lgna.story.event.ProximityEnterListener;
 import org.lgna.story.event.ProximityEvent;
 import org.lgna.story.event.ProximityExitListener;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
 /**
  * @author Matt May
@@ -69,7 +69,7 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 	public void addProximityEventListener( Object pEList, List<SThing> groupOne, List<SThing> groupTwo, Double distance ) {
 		registerIsFiringMap( pEList );
 		registerPolicyMap( pEList, MultipleEventPolicy.IGNORE );
-		List<SThing> allObserving = Collections.newArrayList( groupOne );
+		List<SThing> allObserving = Collections.newCopyOnWriteArrayList( groupOne );
 		allObserving.addAll( groupTwo );
 		for( SThing m : allObserving ) {
 			if( !modelList.contains( m ) ) {
@@ -98,8 +98,8 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 
 	protected class ProximityEventManager {
 
-		Map<SThing, LinkedList<SThing>> checkMap = new HashMap<SThing, LinkedList<SThing>>();
-		Map<SThing, HashMap<SThing, LinkedList<Object>>> eventMap = new HashMap<SThing, HashMap<SThing, LinkedList<Object>>>();
+		Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = new HashMap<SThing, CopyOnWriteArrayList<SThing>>();
+		Map<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>> eventMap = new HashMap<SThing, HashMap<SThing, CopyOnWriteArrayList<Object>>>();
 		Map<Object, HashMap<SThing, HashMap<SThing, Boolean>>> wereClose = new HashMap<Object, HashMap<SThing, HashMap<SThing, Boolean>>>();
 		Map<Object, Double> distMap = new HashMap<Object, Double>();
 
@@ -107,7 +107,7 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 			for( SThing m : checkMap.get( changedEntity ) ) {
 				for( Object proxList : eventMap.get( changedEntity ).get( m ) ) {
 					if( check( proxList, m, changedEntity, distMap.get( proxList ) ) ) {
-						LinkedList<SThing> models = new LinkedList<SThing>();
+						CopyOnWriteArrayList<SThing> models = new CopyOnWriteArrayList<SThing>();
 						models.add( changedEntity );
 						models.add( m );
 						if( proxList instanceof ProximityEnterListener ) {
@@ -137,13 +137,13 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 			wereClose.put( proximityEventListener, new HashMap<SThing, HashMap<SThing, Boolean>>() );
 			for( SThing m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SThing, LinkedList<Object>>() );
-					checkMap.put( m, new LinkedList<SThing>() );
+					eventMap.put( m, new HashMap<SThing, CopyOnWriteArrayList<Object>>() );
+					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
 				}
 				wereClose.get( proximityEventListener ).put( m, new HashMap<SThing, Boolean>() );
 				for( SThing t : groupTwo ) {
 					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new LinkedList<Object>() );
+						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( proximityEventListener );
@@ -154,13 +154,13 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 			}
 			for( SThing m : groupTwo ) {
 				if( eventMap.get( m ) == null ) {
-					eventMap.put( m, new HashMap<SThing, LinkedList<Object>>() );
-					checkMap.put( m, new LinkedList<SThing>() );
+					eventMap.put( m, new HashMap<SThing, CopyOnWriteArrayList<Object>>() );
+					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
 				}
 				wereClose.get( proximityEventListener ).put( m, new HashMap<SThing, Boolean>() );
 				for( SThing t : groupOne ) {
 					if( eventMap.get( m ).get( t ) == null ) {
-						eventMap.get( m ).put( t, new LinkedList<Object>() );
+						eventMap.get( m ).put( t, new CopyOnWriteArrayList<Object>() );
 					}
 					if( !m.equals( t ) ) {
 						eventMap.get( m ).get( t ).add( proximityEventListener );

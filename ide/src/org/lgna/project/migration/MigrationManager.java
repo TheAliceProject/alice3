@@ -2479,15 +2479,27 @@ public class MigrationManager {
 					"org.lgna.story.resources.marinemammal.WalrusResource"
 			),
 			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.35.0.0" ),
+					new org.lgna.project.Version( "3.1.38.0.0" )
+			),
+			new org.lgna.project.migration.TextMigration(
 					new org.lgna.project.Version( "3.1.38.0.0" ),
 					new org.lgna.project.Version( "3.1.39.0.0" ),
 
-					"org.lgna.story.event.MouseClickOnScreenListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener$Detail;",
-					"org.lgna.story.event.MouseClickOnScreenListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnScreenListener$Detail;",
+					"org.lgna.story.event.MouseClickOnScreenListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener",
+					"org.lgna.story.event.MouseClickOnScreenListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnScreenListener",
 
-					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener$Detail;",
-					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnObjectListener$Detail;"
-			)
+					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener",
+					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnObjectListener"
+			),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.39.0.0" ),
+					new org.lgna.project.Version( "3.1.48.0.0" ),
+
+					"BILLY_GOAT",
+					"BIG_HORNS"
+			),
+
 	};
 	private static final AstMigration[] astMigrations = {
 			new org.lgna.project.migration.MethodInvocationAstMigration(
@@ -2535,6 +2547,7 @@ public class MigrationManager {
 		String rv = source;
 		for( TextMigration textMigration : textMigrations ) {
 			if( textMigration.isApplicable( version ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
 				rv = textMigration.migrate( rv );
 				version = textMigration.getResultVersion();
 			}

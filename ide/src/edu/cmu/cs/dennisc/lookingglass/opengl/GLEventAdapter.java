@@ -205,10 +205,12 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				} catch( RuntimeException re ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "rendering will be disabled due to exception" );
 					this.isDisplayIgnoredDueToPreviousException = true;
+					re.printStackTrace();
 					throw re;
 				} catch( Error er ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "rendering will be disabled due to exception" );
 					this.isDisplayIgnoredDueToPreviousException = true;
+					er.printStackTrace();
 					throw er;
 				}
 			}
@@ -217,10 +219,10 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
-			if( ( this.width != LookingGlassFactory.getGLPbufferWidth( this.drawable ) ) || ( this.height != LookingGlassFactory.getGLPbufferHeight( this.drawable ) ) ) {
+			if( ( this.width != GlDrawableUtilities.getGLPbufferWidth( this.drawable ) ) || ( this.height != GlDrawableUtilities.getGLPbufferHeight( this.drawable ) ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
-				this.width = LookingGlassFactory.getGLPbufferWidth( this.drawable );
-				this.height = LookingGlassFactory.getGLPbufferHeight( this.drawable );
+				this.width = GlDrawableUtilities.getGLPbufferWidth( this.drawable );
+				this.height = GlDrawableUtilities.getGLPbufferHeight( this.drawable );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
@@ -342,7 +344,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 		this.renderContext.setGL( gl );
 		this.pickContext.setGL( gl );
-		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, LookingGlassFactory.getGLPbufferWidth( this.drawable ), LookingGlassFactory.getGLPbufferHeight( this.drawable ) ) );
+		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGLPbufferWidth( this.drawable ), GlDrawableUtilities.getGLPbufferHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked

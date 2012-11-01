@@ -51,14 +51,11 @@ public class ThisFieldAccessMethodInvocationFactory extends MethodInvocationFact
 
 	public static synchronized ThisFieldAccessMethodInvocationFactory getInstance( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
 		assert field != null;
-		ThisFieldAccessMethodInvocationFactory rv = mapToMap.get( field, method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ThisFieldAccessMethodInvocationFactory( field, method );
-			mapToMap.put( field, method, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( field, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserField, org.lgna.project.ast.AbstractMethod, ThisFieldAccessMethodInvocationFactory>() {
+			public ThisFieldAccessMethodInvocationFactory initialize( org.lgna.project.ast.UserField field, org.lgna.project.ast.AbstractMethod method ) {
+				return new ThisFieldAccessMethodInvocationFactory( field, method );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.UserField field;

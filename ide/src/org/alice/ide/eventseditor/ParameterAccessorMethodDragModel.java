@@ -84,14 +84,11 @@ public class ParameterAccessorMethodDragModel extends org.alice.ide.ast.dragandd
 	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessorMethodDragModel> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static synchronized ParameterAccessorMethodDragModel getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
-		ParameterAccessorMethodDragModel rv = mapToMap.get( parameter, method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterAccessorMethodDragModel( parameter, method );
-			mapToMap.put( parameter, method, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( parameter, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.AbstractMethod, ParameterAccessorMethodDragModel>() {
+			public ParameterAccessorMethodDragModel initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.AbstractMethod method ) {
+				return new ParameterAccessorMethodDragModel( parameter, method );
+			}
+		} );
 	}
 
 	//	private final InternalComposite composite = new InternalComposite( this );

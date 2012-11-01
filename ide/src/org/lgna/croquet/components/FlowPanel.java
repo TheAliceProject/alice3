@@ -67,31 +67,34 @@ public class FlowPanel extends Panel {
 	private final int hgap;
 	private final int vgap;
 
-	public FlowPanel() {
-		this( (org.lgna.croquet.Composite)null );
+	public FlowPanel( Component<?>... components ) {
+		this( (org.lgna.croquet.Composite)null, components );
 	}
 
-	public FlowPanel( Alignment alignment ) {
-		this( null, alignment );
+	public FlowPanel( Alignment alignment, Component<?>... components ) {
+		this( null, alignment, components );
 	}
 
-	public FlowPanel( Alignment alignment, int hgap, int vgap ) {
-		this( null, alignment, hgap, vgap );
+	public FlowPanel( Alignment alignment, int hgap, int vgap, Component<?>... components ) {
+		this( null, alignment, hgap, vgap, components );
 	}
 
-	public FlowPanel( org.lgna.croquet.Composite composite ) {
-		this( composite, Alignment.CENTER );
+	public FlowPanel( org.lgna.croquet.Composite composite, Component<?>... components ) {
+		this( composite, Alignment.CENTER, components );
 	}
 
-	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment ) {
-		this( composite, alignment, 0, 0 );
+	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, Component<?>... components ) {
+		this( composite, alignment, 0, 0, components );
 	}
 
-	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, int hgap, int vgap ) {
+	public FlowPanel( org.lgna.croquet.Composite composite, Alignment alignment, int hgap, int vgap, Component<?>... components ) {
 		super( composite );
 		this.alignment = alignment;
 		this.hgap = hgap;
 		this.vgap = vgap;
+		for( Component<?> component : components ) {
+			this.addComponent( component );
+		}
 	}
 
 	//	@Override

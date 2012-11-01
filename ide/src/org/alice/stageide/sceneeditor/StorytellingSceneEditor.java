@@ -669,9 +669,19 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		{
 			EntityImp entityImp = EntityImp.getInstance( element );
 			SThing entity = entityImp.getAbstraction();
-			UserField field = this.getFieldForInstanceInJavaVM( entity );
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
-			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
+			UserField field;
+			if( entity != null ) {
+				field = this.getFieldForInstanceInJavaVM( entity );
+			} else {
+				//todo: handle camera
+				field = null;
+			}
+			if( field != null ) {
+				org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
+				org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( entityImp );
+			}
 		}
 	}
 
@@ -1083,6 +1093,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		if( this.onscreenLookingGlass != null ) {
 			this.onscreenLookingGlass.forgetAllCachedItems();
 			edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
+		}
+		org.alice.stageide.personresource.PreviewComposite.getInstance().unloadPerson();
+		if( this.globalDragAdapter != null ) {
+			this.globalDragAdapter.clear();
 		}
 		super.handleProjectOpened( nextProject );
 	}

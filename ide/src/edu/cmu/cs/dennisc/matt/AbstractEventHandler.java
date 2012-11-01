@@ -1,8 +1,8 @@
 ﻿package edu.cmu.cs.dennisc.matt;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lgna.common.ComponentThread;
 import org.lgna.story.MultipleEventPolicy;
@@ -10,20 +10,22 @@ import org.lgna.story.Visual;
 import org.lgna.story.event.AbstractEvent;
 import org.lgna.story.implementation.SceneImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
 public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 
 	protected boolean shouldFire = true;
 	protected Integer count = 0;
-	protected Map<Object, MultipleEventPolicy> policyMap = Collections.newHashMap();
-	protected Map<Object, HashMap<Object, Boolean>> isFiringMap = Collections.newHashMap();
-	private LinkedList<E> queue = new LinkedList<E>();
+	protected Map<Object, MultipleEventPolicy> policyMap = Collections.newConcurrentHashMap();
+	protected Map<Object, Map<Object, Boolean>> isFiringMap = Collections.newConcurrentHashMap();
+	private CopyOnWriteArrayList<E> queue = new CopyOnWriteArrayList<E>();
+	private Object NULL_OBJECT = new Object();
 	protected SceneImp scene;
 
-	protected void fireEvent( final L listener, final E event, final Object o ) {
+	protected void fireEvent( final L listener, final E event, final Object object ) {
+		final Object o = object == null ? NULL_OBJECT : object;
 		if( isFiringMap.get( listener ) == null ) {
-			isFiringMap.put( listener, new HashMap<Object, Boolean>() );
+			isFiringMap.put( listener, new ConcurrentHashMap<Object, Boolean>() );
 		}
 		if( isFiringMap.get( listener ).get( o ) == null ) {
 			isFiringMap.get( listener ).put( o, false );
@@ -51,22 +53,18 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	}
 
 	protected void enqueue( E event ) {
-		synchronized( queue ) {
-			queue.addLast( event );
-		}
+		queue.add( event );
 	}
 
 	protected void fireDequeue( L listener ) {
-		LinkedList<E> internalQueue;
-		synchronized( queue ) {
-			if( queue.size() == 0 ) {
-				return;
-			}
-			internalQueue = new LinkedList<E>( queue );
-			queue.clear();
+		CopyOnWriteArrayList<E> internalQueue;
+		if( queue.size() == 0 ) {
+			return;
 		}
+		internalQueue = new CopyOnWriteArrayList<E>( queue );
+		queue.clear();
 		while( internalQueue.size() > 0 ) {
-			fire( listener, internalQueue.removeFirst() );
+			fire( listener, internalQueue.remove( 0 ) );
 		}
 		fireDequeue( listener );
 	}
@@ -86,12 +84,12 @@ public abstract class AbstractEventHandler<L, E extends AbstractEvent> {
 	}
 
 	protected void registerIsFiringMap( Object eventListener ) {
-		isFiringMap.put( eventListener, new HashMap<Object, Boolean>() );
+		isFiringMap.put( eventListener, new ConcurrentHashMap<Object, Boolean>() );
 		isFiringMap.get( eventListener ).put( eventListener, false );
 	}
 
 	protected void registerIsFiringMap( Object eventListener, Visual[] targets ) {
-		isFiringMap.put( eventListener, new HashMap<Object, Boolean>() );
+		isFiringMap.put( eventListener, new ConcurrentHashMap<Object, Boolean>() );
 		if( ( targets != null ) && ( targets.length > 0 ) ) {
 			for( Visual target : targets ) {
 				isFiringMap.get( eventListener ).put( target, false );

@@ -431,4 +431,58 @@ public abstract class BooleanState extends State<Boolean> {
 		return this.falseOperation;
 	}
 
+	private class InternalRadioButton extends org.lgna.croquet.components.OperationButton<javax.swing.JRadioButton, Operation> {
+		public InternalRadioButton( Operation operation ) {
+			super( operation );
+		}
+
+		@Override
+		protected javax.swing.JRadioButton createAwtComponent() {
+			return new javax.swing.JRadioButton();
+		}
+	}
+
+	private class RadioButtonsPanel extends org.lgna.croquet.components.Panel {
+		private final int axis;
+
+		public RadioButtonsPanel( boolean isVertical, boolean isTrueFirst ) {
+			this.axis = isVertical ? javax.swing.BoxLayout.PAGE_AXIS : javax.swing.BoxLayout.LINE_AXIS;
+			InternalRadioButton trueButton = new InternalRadioButton( getSetToTrueOperation() );
+			InternalRadioButton falseButton = new InternalRadioButton( getSetToFalseOperation() );
+			if( isTrueFirst ) {
+				this.internalAddComponent( trueButton );
+				this.internalAddComponent( falseButton );
+			} else {
+				this.internalAddComponent( falseButton );
+				this.internalAddComponent( trueButton );
+			}
+			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+			buttonGroup.add( trueButton.getAwtComponent() );
+			buttonGroup.add( falseButton.getAwtComponent() );
+			InternalRadioButton selected = getValue() ? trueButton : falseButton;
+			buttonGroup.setSelected( selected.getAwtComponent().getModel(), true );
+		}
+
+		@Override
+		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+			return new javax.swing.BoxLayout( jPanel, axis );
+		}
+	}
+
+	public org.lgna.croquet.components.Panel createVerticalRadioButtons( boolean isTrueFirst ) {
+		return new RadioButtonsPanel( true, isTrueFirst );
+	}
+
+	public org.lgna.croquet.components.Panel createHorizontalRadioButtons( boolean isTrueFirst ) {
+		return new RadioButtonsPanel( false, isTrueFirst );
+	}
+
+	public org.lgna.croquet.components.Panel createVerticalRadioButtons() {
+		return this.createVerticalRadioButtons( true );
+	}
+
+	public org.lgna.croquet.components.Panel createHorizontalRadioButtons() {
+		return this.createHorizontalRadioButtons( true );
+	}
+
 }

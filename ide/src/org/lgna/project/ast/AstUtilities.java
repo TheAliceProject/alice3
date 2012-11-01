@@ -320,11 +320,14 @@ public class AstUtilities {
 	}
 
 	public static MethodInvocation createMethodInvocation( Expression instanceExpression, AbstractMethod method, Expression... argumentExpressions ) {
+		java.util.ArrayList<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+		assert requiredParameters.size() == argumentExpressions.length : method;
+
 		MethodInvocation rv = new MethodInvocation();
 		rv.expression.setValue( instanceExpression );
 		rv.method.setValue( method );
 		int i = 0;
-		for( AbstractParameter parameter : method.getRequiredParameters() ) {
+		for( AbstractParameter parameter : requiredParameters ) {
 			SimpleArgument argument = new SimpleArgument( parameter, argumentExpressions[ i ] );
 			rv.requiredArguments.add( argument );
 			i++;

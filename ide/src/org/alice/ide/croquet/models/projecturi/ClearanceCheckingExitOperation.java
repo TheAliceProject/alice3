@@ -55,12 +55,11 @@ public class ClearanceCheckingExitOperation extends PotentialClearanceIteratingO
 	}
 
 	private ClearanceCheckingExitOperation() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), null );
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), ExitOperation.getInstance() );
 	}
 
 	@Override
 	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
 		step.finish();
-		System.exit( 0 );
 	}
 }

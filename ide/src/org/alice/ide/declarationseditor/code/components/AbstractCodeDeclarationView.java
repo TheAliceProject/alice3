@@ -54,12 +54,8 @@ public abstract class AbstractCodeDeclarationView extends org.alice.ide.declarat
 	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodePanelWithDropReceptor();
 
 	@Override
-	public boolean isPrintSupported() {
-		return true;
-	}
-
-	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-		return this.getCodePanelWithDropReceptor().print( g, pageFormat, pageIndex );
+	public java.awt.print.Printable getPrintable() {
+		return this.getCodePanelWithDropReceptor().getPrintable();
 	}
 
 	@Override

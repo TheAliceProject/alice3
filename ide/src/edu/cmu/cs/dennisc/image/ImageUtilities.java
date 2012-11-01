@@ -481,6 +481,16 @@ public class ImageUtilities {
 		// }
 	}
 
+	public static byte[] writeToByteArray( String codecName, java.awt.Image image, javax.imageio.ImageReadParam imageWriteParam ) {
+		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+		write( codecName, baos, image, imageWriteParam );
+		return baos.toByteArray();
+	}
+
+	public static byte[] writeToByteArray( String codecName, java.awt.Image image ) {
+		return writeToByteArray( codecName, image, null );
+	}
+
 	private static java.awt.MediaTracker s_mediaTracker = new java.awt.MediaTracker( new java.awt.Panel() );
 
 	private static java.awt.image.ImageObserver s_imageObserver = new java.awt.image.ImageObserver() {

@@ -1,6 +1,6 @@
 package edu.cmu.cs.dennisc.matt;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.lgna.story.MultipleEventPolicy;
 import org.lgna.story.SModel;
@@ -36,28 +36,28 @@ public class TimerContingencyManager {
 		this.timer = timer;
 	}
 
-	public void register( WhileCollisionListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double frequency, MultipleEventPolicy policy ) {
+	public void register( WhileCollisionListener listener, List<SThing> groupOne, List<SThing> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addCollisionStartListener( newStartCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 		scene.addCollisionEndListener( newEndCollisionAdapter( listener ), toArray( groupOne ), toArray( groupTwo ) );
 	}
 
-	public void register( WhileProximityListener listener, ArrayList<SThing> groupOne, ArrayList<SThing> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy ) {
+	public void register( WhileProximityListener listener, List<SThing> groupOne, List<SThing> groupTwo, Double dist, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addProximityEnterListener( newEnterProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 		scene.addProximityExitListener( newExitProximityAdapter( listener ), toArray( groupOne ), toArray( groupTwo ), dist );
 	}
 
-	public void register( WhileOcclusionListener listener, ArrayList<SModel> groupOne, ArrayList<SModel> groupTwo, Double frequency, MultipleEventPolicy policy ) {
+	public void register( WhileOcclusionListener listener, List<SModel> groupOne, List<SModel> groupTwo, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addOcclusionStartListener( newEnterOcclusionAdapter( listener ), (SModel[])toArray( groupOne ), (SModel[])toArray( groupTwo ) );
 		scene.addOcclusionEndListener( newExitOcclusionAdapter( listener ), (SModel[])toArray( groupOne ), (SModel[])toArray( groupTwo ) );
 	}
 
-	public void register( WhileInViewListener listener, ArrayList<SModel> group, Double frequency, MultipleEventPolicy policy ) {
+	public void register( WhileInViewListener listener, List<SModel> group, Double frequency, MultipleEventPolicy policy ) {
 		timer.addListener( listener, frequency, policy );
 		timer.deactivate( listener );
 		scene.addViewEnterListener( newEnterViewAdapter( listener ), (SModel[])toArray( group ) );
@@ -128,7 +128,7 @@ public class TimerContingencyManager {
 		};
 	}
 
-	private SThing[] toArray( ArrayList<? extends SThing> arr ) {
+	private SThing[] toArray( List<? extends SThing> arr ) {
 		SThing[] rv = new SThing[ arr.size() ];
 		for( int i = 0; i != arr.size(); ++i ) {
 			rv[ i ] = arr.get( i );

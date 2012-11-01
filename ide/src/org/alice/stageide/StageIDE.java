@@ -146,7 +146,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				Class<?> resourceClass = ( (org.lgna.project.ast.JavaType)field.getValueType() ).getClassReflectionProxy().getReification();
 				java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( resourceClass, field.getName() );
 				if( thumbnail != null ) {
-					return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon( thumbnail, 20, 20 );
+					return edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon.createSafeInstanceInPixels( thumbnail, 20, 20 );
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( resourceClass, field.getName() );
 					return null;

@@ -92,4 +92,9 @@ public class JavaFormatter extends Formatter {
 	public String getNameForField( java.lang.reflect.Field fld ) {
 		return fld.getName();
 	}
+
+	@Override
+	public String getFinalText() {
+		return "final";
+	}
 }
