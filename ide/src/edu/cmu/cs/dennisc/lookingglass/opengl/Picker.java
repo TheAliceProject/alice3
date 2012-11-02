@@ -98,7 +98,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				//pass
 			} else {
 				OffscreenDrawable od = null;
-				if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtilities.canCreateGlPixelbuffer() ) {
+				if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtilities.canCreateGlPixelBuffer() ) {
 					od = new PixelBufferOffscreenDrawable() {
 						@Override
 						protected void actuallyDisplay( javax.media.opengl.GL gl ) {
@@ -144,7 +144,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 		private void performPick( javax.media.opengl.GL gl ) {
 			this.pickContext.gl = gl;
-			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( GlDrawableUtilities.canCreateGlPixelbuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable, gl );
+			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( GlDrawableUtilities.canCreateGlPixelBuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable, gl );
 
 			ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
 

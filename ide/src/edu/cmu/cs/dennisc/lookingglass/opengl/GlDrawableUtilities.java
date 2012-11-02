@@ -114,12 +114,12 @@ public class GlDrawableUtilities {
 	//		}
 	//	}
 
-	/* package-private */static boolean canCreateGlPixelbuffer() {
+	/* package-private */static boolean canCreateGlPixelBuffer() {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 		return glDrawableFactory.canCreateGLPbuffer();
 	}
 
-	/* package-private */static javax.media.opengl.GLPbuffer createGlPixelbuffer( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, javax.media.opengl.GLContext share ) {
+	/* package-private */static javax.media.opengl.GLPbuffer createGlPixelBuffer( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 		if( glDrawableFactory.canCreateGLPbuffer() ) {
 			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( glCapabilities, glCapabilitiesChooser, width, height, share );
@@ -142,7 +142,7 @@ public class GlDrawableUtilities {
 		return (com.sun.opengl.impl.GLDrawableImpl)glDrawableFactory.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser );
 	}
 
-	/* package-private */static int getGLPbufferWidth( javax.media.opengl.GLDrawable drawable ) {
+	/* package-private */static int getGlPixelBufferWidth( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getWidth ALWAYS returns 0
 		int width = drawable.getWidth();
 		if( width == 0 ) {
@@ -159,7 +159,7 @@ public class GlDrawableUtilities {
 		return width;
 	}
 
-	/* package-private */static int getGLPbufferHeight( javax.media.opengl.GLDrawable drawable ) {
+	/* package-private */static int getGlPixelBufferHeight( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getHeight ALWAYS returns 0
 		int height = drawable.getHeight();
 		if( height == 0 ) {

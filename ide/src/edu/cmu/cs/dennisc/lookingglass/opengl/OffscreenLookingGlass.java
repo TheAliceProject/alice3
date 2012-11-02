@@ -57,7 +57,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 
 	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		if( this.glPbuffer != null ) {
-			rv.setSize( GlDrawableUtilities.getGLPbufferWidth( this.glPbuffer ), GlDrawableUtilities.getGLPbufferHeight( this.glPbuffer ) );
+			rv.setSize( GlDrawableUtilities.getGlPixelBufferWidth( this.glPbuffer ), GlDrawableUtilities.getGlPixelBufferHeight( this.glPbuffer ) );
 		} else {
 			rv.setSize( 0, 0 );
 		}
@@ -69,11 +69,11 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 		assert height > 0;
 		boolean resized = false;
 		if( this.glPbuffer != null ) {
-			if( ( width != GlDrawableUtilities.getGLPbufferWidth( this.glPbuffer ) ) || ( height != GlDrawableUtilities.getGLPbufferHeight( this.glPbuffer ) ) ) {
+			if( ( width != GlDrawableUtilities.getGlPixelBufferWidth( this.glPbuffer ) ) || ( height != GlDrawableUtilities.getGlPixelBufferHeight( this.glPbuffer ) ) ) {
 				resized = true;
 				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
 				this.glPbuffer.destroy();
-				this.glPbuffer = GlDrawableUtilities.createGlPixelbuffer( GlDrawableUtilities.createPerhapsMultisampledGlCapabilities(), GlDrawableUtilities.getGLCapabilitiesChooser(), width, height, share );
+				this.glPbuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createPerhapsMultisampledGlCapabilities(), GlDrawableUtilities.getGLCapabilitiesChooser(), width, height, share );
 				if( this.glPbuffer != null ) {
 					//pass
 				} else {
@@ -88,7 +88,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 			} else {
 				share = null;
 			}
-			this.glPbuffer = GlDrawableUtilities.createGlPixelbuffer( GlDrawableUtilities.createPerhapsMultisampledGlCapabilities(), GlDrawableUtilities.getGLCapabilitiesChooser(), width, height, share );
+			this.glPbuffer = GlDrawableUtilities.createGlPixelBuffer( GlDrawableUtilities.createPerhapsMultisampledGlCapabilities(), GlDrawableUtilities.getGLCapabilitiesChooser(), width, height, share );
 		}
 		return resized;
 	}
