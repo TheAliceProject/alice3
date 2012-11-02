@@ -29,5 +29,6 @@
 	<classpathentry kind="lib" path="lib/mail/lib/mailapi.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="lib" path="lib/mig_layout/miglayout-4.0-swing.jar"/>
+	<classpathentry kind="lib" path="lib/mmsc/mmsc.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
