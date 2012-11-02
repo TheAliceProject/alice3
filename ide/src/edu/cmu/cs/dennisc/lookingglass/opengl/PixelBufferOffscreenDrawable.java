@@ -87,11 +87,11 @@ public abstract class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 	}
 
 	@Override
-	public void initialize( jogamp.opengl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
+	public void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
 		if( this.glPixelBuffer != null ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		} else {
-			this.glPixelBuffer = glFactory.createGLPbuffer( null, glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext );
+			this.glPixelBuffer = GlDrawableUtilities.createGlPixelbuffer( glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext );
 			this.glPixelBuffer.addGLEventListener( glEventListener );
 		}
 	}
