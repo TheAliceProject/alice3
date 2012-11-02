@@ -59,7 +59,7 @@ public class GlDrawableUtilities {
 		throw new AssertionError();
 	}
 
-	/* package-private */static javax.media.opengl.GLCapabilities createDesiredGLCapabilities( int desiredSampleCount ) {
+	private static javax.media.opengl.GLCapabilities createGLCapabilities( int desiredSampleCount ) {
 		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
 		boolean isMultisamplingDesired = desiredSampleCount >= 2;
 		rv.setSampleBuffers( isMultisamplingDesired );
@@ -74,11 +74,11 @@ public class GlDrawableUtilities {
 	}
 
 	/* package-private */static javax.media.opengl.GLCapabilities createPerhapsMultisampledGlCapabilities() {
-		return createDesiredGLCapabilities( getDesiredOnscreenSampleCount() );
+		return createGLCapabilities( getDesiredOnscreenSampleCount() );
 	}
 
 	/* package-private */static javax.media.opengl.GLCapabilities createDisabledMultisamplingGlCapabilities() {
-		return createDesiredGLCapabilities( 1 );
+		return createGLCapabilities( 1 );
 	}
 
 	private static javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
