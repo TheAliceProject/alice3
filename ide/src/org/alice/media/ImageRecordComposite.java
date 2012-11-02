@@ -71,8 +71,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
 	private boolean isRecording;
 	//	private ImagesToQuickTimeEncoder encoder;
-	private MattsMovieEncoder encoder;
-	//	private ANIMWriter encoder;
+	//	private MattsMovieEncoder encoder;
+	private WebmAdapter encoder;
 	private Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
 	private Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
 
@@ -93,7 +93,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
 		try {
 			tempFile = File.createTempFile( "temp", ".mov" );
-			encoder = new MattsMovieEncoder( tempFile );
+			//			encoder = new MattsMovieEncoder( tempFile );
 		} catch( IOException e ) {
 			e.printStackTrace();
 		}
@@ -167,11 +167,12 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				//				encoder.stop();
 				//				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 				//			}
+				encoder.setFrameRate( frameRate.getValue() );
+				encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
 				programContext.getProgramImp().startAnimator();
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 				//				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
 				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
-				encoder.setFrameRate( frameRate.getValue() );
 				encoder.start();
 			}
 
