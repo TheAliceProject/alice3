@@ -92,8 +92,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
 		try {
-			tempFile = File.createTempFile( "temp", ".mov" );
+			tempFile = File.createTempFile( "temp", ".webm" );
 			//			encoder = new MattsMovieEncoder( tempFile );
+			encoder = new WebmAdapter( tempFile );
 		} catch( IOException e ) {
 			e.printStackTrace();
 		}
