@@ -73,7 +73,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 				resized = true;
 				javax.media.opengl.GLContext share = this.glPbuffer.getContext();
 				this.glPbuffer.destroy();
-				this.glPbuffer = GlDrawableUtilities.createGLPbuffer( width, height, GlDrawableUtilities.getSampleCountForDisabledMultisampling(), share );
+				this.glPbuffer = GlDrawableUtilities.createGlPixelbuffer( GlDrawableUtilities.createPerhapsMultisampledGlCapabilities(), GlDrawableUtilities.getGLCapabilitiesChooser(), width, height, share );
 				if( this.glPbuffer != null ) {
 					//pass
 				} else {
@@ -88,7 +88,7 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 			} else {
 				share = null;
 			}
-			this.glPbuffer = GlDrawableUtilities.createGLPbuffer( width, height, GlDrawableUtilities.getSampleCountForDisabledMultisampling(), share );
+			this.glPbuffer = GlDrawableUtilities.createGlPixelbuffer( GlDrawableUtilities.createPerhapsMultisampledGlCapabilities(), GlDrawableUtilities.getGLCapabilitiesChooser(), width, height, share );
 		}
 		return resized;
 	}

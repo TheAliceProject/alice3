@@ -57,7 +57,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 		private final javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
 		private final javax.media.opengl.GLCapabilities glRequestedCapabilities;
-		private final com.sun.opengl.impl.GLDrawableFactoryImpl glFactory;
+		//		private final com.sun.opengl.impl.GLDrawableFactoryImpl glFactory;
 		private final javax.media.opengl.GLContext glShareContext;
 
 		private PickParameters pickParameters;
@@ -71,7 +71,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			this.glRequestedCapabilities = new javax.media.opengl.GLCapabilities();
 			this.glRequestedCapabilities.setDoubleBuffered( false );
 			this.glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
-			this.glFactory = com.sun.opengl.impl.GLDrawableFactoryImpl.getFactoryImpl();
+			//			this.glFactory = com.sun.opengl.impl.GLDrawableFactoryImpl.getFactoryImpl();
 			this.glShareContext = null;
 		}
 
@@ -98,7 +98,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 				//pass
 			} else {
 				OffscreenDrawable od = null;
-				if( IS_HARDWARE_ACCELERATION_DESIRED && this.glFactory.canCreateGLPbuffer() ) {
+				if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtilities.canCreateGlPixelbuffer() ) {
 					od = new PixelBufferOffscreenDrawable() {
 						@Override
 						protected void actuallyDisplay( javax.media.opengl.GL gl ) {
@@ -106,7 +106,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 						}
 					};
 					try {
-						od.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
+						od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
 					} catch( javax.media.opengl.GLException gle ) {
 						try {
 							od.destroy();
@@ -126,7 +126,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 						}
 					};
 					try {
-						od.initialize( glFactory, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
+						od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
 					} catch( javax.media.opengl.GLException gle ) {
 						try {
 							od.destroy();
@@ -144,7 +144,7 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 
 		private void performPick( javax.media.opengl.GL gl ) {
 			this.pickContext.gl = gl;
-			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( this.glFactory.canCreateGLPbuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable, gl );
+			ConformanceTestResults.SINGLETON.updatePickInformationIfNecessary( GlDrawableUtilities.canCreateGlPixelbuffer(), this.glOffscreenDrawable instanceof PixelBufferOffscreenDrawable, gl );
 
 			ConformanceTestResults.PickDetails pickDetails = ConformanceTestResults.SINGLETON.getPickDetails();
 
