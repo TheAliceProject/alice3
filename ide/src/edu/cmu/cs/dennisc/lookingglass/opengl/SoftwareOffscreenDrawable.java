@@ -68,11 +68,11 @@ public abstract class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	}
 
 	@Override
-	public void initialize( com.sun.opengl.impl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
+	public void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
 		assert this.glDrawable == null : this;
 		javax.media.opengl.GLCapabilities glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
 		glCapabilities.setHardwareAccelerated( false );
-		this.glDrawable = (com.sun.opengl.impl.GLDrawableImpl)glFactory.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser );
+		this.glDrawable = (com.sun.opengl.impl.GLDrawableImpl)GlDrawableUtilities.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser );
 		this.glDrawable.setSize( width, height );
 		this.glContext = (com.sun.opengl.impl.GLContextImpl)this.glDrawable.createContext( glShareContext );
 		this.glContext.setSynchronized( true );
