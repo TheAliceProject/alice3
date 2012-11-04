@@ -311,12 +311,16 @@ public class StageIDE extends org.alice.ide.IDE {
 		return false == edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( javaType.getClassReflectionProxy().getReification(), org.lgna.story.SScene.class, org.lgna.story.SCamera.class );
 	}
 
-	private static final int THUMBNAIL_WIDTH = org.lgna.story.resourceutilities.ThumbnailMaker.THUMBNAIL_WIDTH;
-	private static final int THUMBNAIL_HEIGHT = org.lgna.story.resourceutilities.ThumbnailMaker.THUMBNAIL_HEIGHT;
+	private org.alice.stageide.sceneeditor.ThumbnailGenerator thumbnailGenerator;
 
 	@Override
 	protected java.awt.image.BufferedImage createThumbnail() throws Throwable {
-		return org.alice.stageide.sceneeditor.ThumbnailGenerator.createThumbnail( THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT );
+		if( thumbnailGenerator != null ) {
+			//pass
+		} else {
+			thumbnailGenerator = new org.alice.stageide.sceneeditor.ThumbnailGenerator( org.lgna.story.resourceutilities.ThumbnailMaker.THUMBNAIL_WIDTH, org.lgna.story.resourceutilities.ThumbnailMaker.THUMBNAIL_HEIGHT );
+		}
+		return this.thumbnailGenerator.createThumbnail();
 	}
 
 	@Override
