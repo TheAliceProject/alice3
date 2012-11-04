@@ -45,13 +45,13 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SoftwareOffscreenDrawable extends OffscreenDrawable {
+public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	private com.sun.opengl.impl.GLDrawableImpl glDrawable;
 	private com.sun.opengl.impl.GLContextImpl glContext;
 
 	private final Runnable displayAdapter = new Runnable() {
 		public void run() {
-			actuallyDisplay( glContext.getGL() );
+			fireDisplay( glContext.getGL() );
 		}
 	};
 	private final Runnable initAdapter = new Runnable() {
@@ -60,7 +60,9 @@ public abstract class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	};
 	private com.sun.opengl.impl.GLDrawableHelper drawableHelper;
 
-	protected abstract void actuallyDisplay( javax.media.opengl.GL gl );
+	public SoftwareOffscreenDrawable( DisplayCallback callback ) {
+		super( callback );
+	}
 
 	@Override
 	protected javax.media.opengl.GLDrawable getGlDrawable() {

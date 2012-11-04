@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PixelBufferOffscreenDrawable extends OffscreenDrawable {
+public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
 		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
 		}
@@ -69,7 +69,7 @@ public abstract class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
 				}
 			} else {
-				actuallyDisplay( drawable.getGL() );
+				fireDisplay( drawable.getGL() );
 			}
 		}
 
@@ -79,7 +79,9 @@ public abstract class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 
 	private javax.media.opengl.GLPbuffer glPixelBuffer;
 
-	protected abstract void actuallyDisplay( javax.media.opengl.GL gl );
+	public PixelBufferOffscreenDrawable( DisplayCallback callback ) {
+		super( callback );
+	}
 
 	@Override
 	protected javax.media.opengl.GLDrawable getGlDrawable() {

@@ -47,8 +47,6 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
-	private static final boolean IS_HARDWARE_ACCELERATION_DESIRED = com.sun.opengl.impl.Debug.isPropertyDefined( "jogl.gljpanel.nohw" ) == false;
-
 	private static class ActualPicker {
 
 		private static final int SELECTION_CAPACITY = 256;
@@ -97,47 +95,11 @@ public final class Picker implements edu.cmu.cs.dennisc.lookingglass.Picker {
 			if( this.glOffscreenDrawable != null ) {
 				//pass
 			} else {
-				OffscreenDrawable od = null;
-				if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtilities.canCreateGlPixelBuffer() ) {
-					od = new PixelBufferOffscreenDrawable() {
-						@Override
-						protected void actuallyDisplay( javax.media.opengl.GL gl ) {
-							sharedActualPicker.performPick( gl );
-						}
-					};
-					try {
-						od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
-					} catch( javax.media.opengl.GLException gle ) {
-						try {
-							od.destroy();
-						} catch( Throwable t ) {
-							//pass
-						}
-						od = null;
+				this.glOffscreenDrawable = OffscreenDrawable.createInstance( new OffscreenDrawable.DisplayCallback() {
+					public void display( javax.media.opengl.GL gl ) {
+						sharedActualPicker.performPick( gl );
 					}
-				}
-				if( od != null ) {
-					//pass
-				} else {
-					od = new SoftwareOffscreenDrawable() {
-						@Override
-						protected void actuallyDisplay( javax.media.opengl.GL gl ) {
-							sharedActualPicker.performPick( gl );
-						}
-					};
-					try {
-						od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
-					} catch( javax.media.opengl.GLException gle ) {
-						try {
-							od.destroy();
-						} catch( Throwable t ) {
-							//pass
-						}
-						od = null;
-						throw gle;
-					}
-				}
-				this.glOffscreenDrawable = od;
+				}, glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
 			}
 			return this.glOffscreenDrawable;
 		}

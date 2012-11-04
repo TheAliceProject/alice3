@@ -46,6 +46,53 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 /* package-private */abstract class OffscreenDrawable {
+	private static final boolean IS_HARDWARE_ACCELERATION_DESIRED = com.sun.opengl.impl.Debug.isPropertyDefined( "jogl.gljpanel.nohw" ) == false;
+
+	public static interface DisplayCallback {
+		public void display( javax.media.opengl.GL gl );
+	}
+
+	public static OffscreenDrawable createInstance( DisplayCallback callback, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
+		OffscreenDrawable od = null;
+		if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtilities.canCreateGlPixelBuffer() ) {
+			od = new PixelBufferOffscreenDrawable( callback );
+			try {
+				od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
+			} catch( javax.media.opengl.GLException gle ) {
+				try {
+					od.destroy();
+				} catch( Throwable t ) {
+					//pass
+				}
+				od = null;
+			}
+		}
+		if( od != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( callback );
+			od = new SoftwareOffscreenDrawable( callback );
+			try {
+				od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
+			} catch( javax.media.opengl.GLException gle ) {
+				try {
+					od.destroy();
+				} catch( Throwable t ) {
+					//pass
+				}
+				od = null;
+				throw gle;
+			}
+		}
+		return od;
+	}
+
+	private final DisplayCallback callback;
+
+	public OffscreenDrawable( DisplayCallback callback ) {
+		this.callback = callback;
+	}
+
 	public abstract void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height );
 
 	public abstract void destroy();
@@ -67,4 +114,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 	public abstract boolean isHardwareAccelerated();
 
 	protected abstract javax.media.opengl.GLDrawable getGlDrawable();
+
+	protected final void fireDisplay( javax.media.opengl.GL gl ) {
+		this.callback.display( gl );
+	}
 }
