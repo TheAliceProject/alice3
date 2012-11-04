@@ -93,6 +93,10 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 		this.callback = callback;
 	}
 
+	public DisplayCallback getCallback() {
+		return this.callback;
+	}
+
 	public abstract void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height );
 
 	public abstract void destroy();
@@ -116,6 +120,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 	protected abstract javax.media.opengl.GLDrawable getGlDrawable();
 
 	protected final void fireDisplay( javax.media.opengl.GL2 gl ) {
-		this.callback.display( gl );
+		if( this.callback != null ) {
+			this.callback.display( gl );
+		}
 	}
 }

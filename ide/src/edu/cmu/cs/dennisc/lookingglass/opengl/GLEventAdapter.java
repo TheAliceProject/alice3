@@ -51,7 +51,6 @@ import static javax.media.opengl.GL.GL_COLOR_BUFFER_BIT;
 class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	private final AbstractLookingGlass lookingGlass;
 	private final RenderContext renderContext = new RenderContext();
-	private final PickContext pickContext = new PickContext();
 
 	private javax.media.opengl.GLAutoDrawable drawable;
 	private int width;
@@ -343,7 +342,6 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		this.height = drawable.getHeight();
 
 		this.renderContext.setGL( gl );
-		this.pickContext.setGL( gl );
 		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGlPixelBufferWidth( this.drawable ), GlDrawableUtilities.getGlPixelBufferHeight( this.drawable ) ) );
 	}
 
@@ -356,11 +354,10 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == this.drawable;
-
 		//this.lookingGlass.commitAnyPendingChanges();
 		//todo?
 		javax.media.opengl.GL2 gl = drawable.getGL().getGL2();
-		if( ( this.renderContext.gl != null ) || ( this.pickContext.gl != null ) ) {
+		if( this.renderContext.gl != null ) {
 			//pass
 		} else {
 			initialize( drawable );
