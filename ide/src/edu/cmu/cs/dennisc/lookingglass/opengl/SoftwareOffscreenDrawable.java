@@ -45,13 +45,13 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SoftwareOffscreenDrawable extends OffscreenDrawable {
+public final class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	private jogamp.opengl.GLDrawableImpl glDrawable;
 	private jogamp.opengl.GLContextImpl glContext;
 
 	private final Runnable displayAdapter = new Runnable() {
 		public void run() {
-			actuallyDisplay( glContext.getGL().getGL2() );
+			fireDisplay( glContext.getGL().getGL2() );
 		}
 	};
 	private final Runnable initAdapter = new Runnable() {
@@ -60,7 +60,9 @@ public abstract class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	};
 	private jogamp.opengl.GLDrawableHelper drawableHelper;
 
-	protected abstract void actuallyDisplay( javax.media.opengl.GL2 gl );
+	public SoftwareOffscreenDrawable( DisplayCallback callback ) {
+		super( callback );
+	}
 
 	@Override
 	protected javax.media.opengl.GLDrawable getGlDrawable() {
@@ -71,7 +73,7 @@ public abstract class SoftwareOffscreenDrawable extends OffscreenDrawable {
 	public void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
 		assert this.glDrawable == null : this;
 		javax.media.opengl.GLCapabilities glCapabilities;
-		if( Picker.IS_HARDWARE_ACCELERATION_DESIRED ) {
+		if( IS_HARDWARE_ACCELERATION_DESIRED ) {
 			glCapabilities = glRequestedCapabilities;
 		} else {
 			glCapabilities = (javax.media.opengl.GLCapabilities)glRequestedCapabilities.clone();
