@@ -55,7 +55,7 @@ public interface LookingGlassFactory {
 
 	public HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass();
 
-	public OffscreenLookingGlass createOffscreenLookingGlass( LookingGlass lookingGlassToShareContextWith );
+	public OffscreenLookingGlass createOffscreenLookingGlass( int width, int height, LookingGlass lookingGlassToShareContextWith );
 
 	//todo:
 	public Iterable<? extends LightweightOnscreenLookingGlass> getLightweightOnscreenLookingGlasses();
