@@ -84,7 +84,7 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 	}
 
 	@Override
-	protected javax.media.opengl.GLDrawable getGlDrawable() {
+	protected javax.media.opengl.GLPbuffer getGlDrawable() {
 		return this.glPixelBuffer;
 	}
 
@@ -94,7 +94,9 @@ public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		} else {
 			this.glPixelBuffer = GlDrawableUtilities.createGlPixelBuffer( glRequestedCapabilities, glCapabilitiesChooser, 1, 1, glShareContext );
-			this.glPixelBuffer.addGLEventListener( glEventListener );
+			if( this.getCallback() != null ) {
+				this.glPixelBuffer.addGLEventListener( glEventListener );
+			}
 		}
 	}
 
