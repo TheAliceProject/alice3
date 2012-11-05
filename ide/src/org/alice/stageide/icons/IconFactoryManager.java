@@ -195,7 +195,8 @@ public class IconFactoryManager {
 				try {
 					java.awt.image.BufferedImage image = org.lgna.story.resourceutilities.ThumbnailMaker.getInstance().createThumbnailFromPersonResource( personResource );
 					return new org.lgna.croquet.icon.ImageIconFactory( image );
-				} catch( Exception e ) {
+				} catch( Throwable t ) {
+					t.printStackTrace();
 					return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
 				}
 			} else {
