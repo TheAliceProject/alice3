@@ -96,7 +96,16 @@ package org.lgna.project.ast;
 	}
 
 	/* package-private */void appendString( String s ) {
-		sb.append( s );
+		this.sb.append( s );
+	}
+
+	/* package-private */void appendTypeName( AbstractType<?, ?, ?> type ) {
+		if( type instanceof JavaType ) {
+			JavaType javaType = (JavaType)type;
+			this.appendTodo( javaType.getPackage() );
+		}
+		//todo: handle imports
+		this.appendString( type.getName() );
 	}
 
 	/* package-private */void appendExpression( Expression expression ) {

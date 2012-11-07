@@ -102,7 +102,7 @@ public class ArrayInstanceCreation extends Expression {
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
 		context.appendString( "new " );
-		context.appendString( this.arrayType.getValue().getComponentType().getName() );
+		context.appendTypeName( this.arrayType.getValue().getComponentType() );
 		context.appendChar( '[' );
 		context.appendTodo( this.lengths );
 		context.appendChar( ']' );
