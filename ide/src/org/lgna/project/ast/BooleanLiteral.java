@@ -70,4 +70,9 @@ public class BooleanLiteral extends AbstractValueLiteral {
 	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
 		return this.value;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendBoolean( this.value.getValue() );
+	}
 }

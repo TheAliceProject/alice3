@@ -80,4 +80,11 @@ public class StringConcatenation extends Expression {
 		NodeUtilities.safeAppendRepr( rv, this.rightOperand.getValue(), locale );
 		return rv;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendExpression( this.leftOperand.getValue() );
+		context.appendChar( '+' );
+		context.appendExpression( this.rightOperand.getValue() );
+	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LambdaExpression extends Expression {
-	public DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>( this ) {
-		//todo?
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
-
-	public LambdaExpression() {
-	}
-
-	public LambdaExpression( Lambda value ) {
-		this.value.setValue( value );
-	}
-
-	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		Lambda lambda = this.value.getValue();
-		if( lambda != null ) {
-			return lambda.getReturnType();
-		} else {
-			return null;
-		}
-	}
-
+public abstract class FauxExpression extends Expression {
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTodo( this );
+		throw new RuntimeException();
 	}
 }

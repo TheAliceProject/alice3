@@ -69,4 +69,10 @@ public class TypeExpression extends Expression {
 	public boolean isValid() {
 		return this.value.getValue() != null;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendTypeName( this.value.getValue() );
+		context.appendString( ".class" );
+	}
 }

@@ -67,4 +67,9 @@ public class NullLiteral extends AbstractLiteral {
 	public boolean isValid() {
 		return true;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendString( "null" );
+	}
 }

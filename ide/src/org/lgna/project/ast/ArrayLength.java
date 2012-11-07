@@ -82,4 +82,10 @@ public class ArrayLength extends Expression {
 			return false;
 		}
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendExpression( this.array.getValue() );
+		context.appendString( ".length" );
+	}
 }

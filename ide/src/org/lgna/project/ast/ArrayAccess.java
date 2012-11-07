@@ -98,4 +98,12 @@ public class ArrayAccess extends Expression {
 			return false;
 		}
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendExpression( this.array.getValue() );
+		context.appendChar( '[' );
+		context.appendExpression( this.index.getValue() );
+		context.appendChar( ']' );
+	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,85 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LambdaExpression extends Expression {
-	public DeclarationProperty<Lambda> value = new DeclarationProperty<Lambda>( this ) {
-		//todo?
-		@Override
-		public boolean isReference() {
-			return false;
-		}
-	};
+/* package-private */class JavaCodeGenerationContext {
+	private final StringBuilder sb = new StringBuilder();
 
-	public LambdaExpression() {
+	/* package-private */JavaCodeGenerationContext() {
+
 	}
 
-	public LambdaExpression( Lambda value ) {
-		this.value.setValue( value );
+	/* package-private */void appendBoolean( boolean b ) {
+		this.sb.append( b );
 	}
 
-	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		Lambda lambda = this.value.getValue();
-		if( lambda != null ) {
-			return lambda.getReturnType();
+	/* package-private */void appendChar( char c ) {
+		this.sb.append( c );
+	}
+
+	/* package-private */void appendInt( int n ) {
+		if( n == Integer.MAX_VALUE ) {
+			this.appendString( "Integer.MAX_VALUE" );
+		} else if( n == Integer.MIN_VALUE ) {
+			this.appendString( "Integer.MIN_VALUE" );
 		} else {
-			return null;
+			this.sb.append( n );
 		}
 	}
 
-	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTodo( this );
+	/* package-private */void appendFloat( float f ) {
+		if( Float.isNaN( f ) ) {
+			this.appendString( "Float.NaN" );
+		} else if( f == Float.POSITIVE_INFINITY ) {
+			this.appendString( "Float.POSITIVE_INFINITY" );
+		} else if( f == Float.NEGATIVE_INFINITY ) {
+			this.appendString( "Float.NEGATIVE_INFINITY" );
+		} else {
+			this.sb.append( f );
+			this.appendChar( 'f' );
+		}
+	}
+
+	/* package-private */void appendDouble( double d ) {
+		if( Double.isNaN( d ) ) {
+			this.appendString( "Double.NaN" );
+		} else if( d == Double.POSITIVE_INFINITY ) {
+			this.appendString( "Double.POSITIVE_INFINITY" );
+		} else if( d == Double.NEGATIVE_INFINITY ) {
+			this.appendString( "Double.NEGATIVE_INFINITY" );
+		} else {
+			this.sb.append( d );
+		}
+	}
+
+	/* package-private */void appendString( String s ) {
+		this.sb.append( s );
+	}
+
+	/* package-private */void appendTypeName( AbstractType<?, ?, ?> type ) {
+		if( type instanceof JavaType ) {
+			JavaType javaType = (JavaType)type;
+			this.appendTodo( javaType.getPackage() );
+		}
+		//todo: handle imports
+		this.appendString( type.getName() );
+	}
+
+	/* package-private */void appendExpression( Expression expression ) {
+		expression.appendJava( this );
+	}
+
+	/* package-private */void appendArguments( ArgumentOwner argumentOwner ) {
+		this.appendTodo( argumentOwner );
+	}
+
+	@Deprecated
+	/* package-private */void appendTodo( Object o ) {
+		sb.append( "todo" );
+		sb.append( o );
 	}
 }

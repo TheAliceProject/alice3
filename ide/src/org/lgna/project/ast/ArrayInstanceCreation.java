@@ -98,4 +98,16 @@ public class ArrayInstanceCreation extends Expression {
 			return false;
 		}
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendString( "new " );
+		context.appendTypeName( this.arrayType.getValue().getComponentType() );
+		context.appendChar( '[' );
+		context.appendTodo( this.lengths );
+		context.appendChar( ']' );
+		context.appendChar( '{' );
+		context.appendTodo( this.expressions );
+		context.appendChar( '}' );
+	}
 }

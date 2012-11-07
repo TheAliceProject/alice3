@@ -71,4 +71,9 @@ public class ThisExpression extends Expression {
 		//todo
 		return true;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendString( "this" );
+	}
 }
