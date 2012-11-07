@@ -76,4 +76,10 @@ public class LogicalComplement extends Expression {
 			return false;
 		}
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendChar( '!' );
+		context.appendExpression( this.operand.getValue() );
+	}
 }

@@ -81,4 +81,9 @@ public class ParameterAccess extends Expression {
 			return false;
 		}
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendString( this.parameter.getValue().getName() );
+	}
 }

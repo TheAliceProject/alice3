@@ -159,4 +159,14 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 		return rv;
 	}
 
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendExpression( this.expression.getValue() );
+		context.appendChar( '.' );
+		context.appendString( this.method.getValue().getName() );
+		context.appendChar( '(' );
+		context.appendArguments( this );
+		context.appendChar( ')' );
+	}
+
 }

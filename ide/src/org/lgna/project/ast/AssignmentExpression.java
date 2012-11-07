@@ -92,4 +92,9 @@ public class AssignmentExpression extends Expression {
 	public AbstractType<?, ?, ?> getType() {
 		return JavaType.VOID_TYPE;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendTodo( this );
+	}
 }

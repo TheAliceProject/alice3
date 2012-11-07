@@ -113,4 +113,9 @@ public class FieldAccess extends Expression {
 		NodeUtilities.safeAppendRepr( rv, this.field.getValue(), locale );
 		return rv;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendString( this.field.getValue().getName() );
+	}
 }
