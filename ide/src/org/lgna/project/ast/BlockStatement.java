@@ -55,4 +55,13 @@ public class BlockStatement extends Statement {
 	public BlockStatement( Statement... statements ) {
 		this.statements.add( statements );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendChar( '{' );
+		for( Statement statement : this.statements ) {
+			statement.appendJava( context );
+		}
+		context.appendChar( '}' );
+	}
 }

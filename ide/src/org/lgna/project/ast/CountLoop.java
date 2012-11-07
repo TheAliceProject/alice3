@@ -82,4 +82,9 @@ public class CountLoop extends AbstractLoop {
 		NodeUtilities.safeAppendRepr( rv, this.count.getValue(), locale );
 		return super.appendRepr( rv, locale );
 	}
+
+	@Override
+	protected void appendJavaLoopPrefix( JavaCodeGenerationContext context ) {
+		context.appendTodo( this );
+	}
 }

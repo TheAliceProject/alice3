@@ -57,4 +57,11 @@ public class ThisConstructorInvocationStatement extends ConstructorInvocationSta
 	public ThisConstructorInvocationStatement( NamedUserConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
 		super( constructor, requiredArguments, variableArguments, keyedArguments );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendString( "this(" );
+		context.appendArguments( this );
+		context.appendChar( ')' );
+	}
 }

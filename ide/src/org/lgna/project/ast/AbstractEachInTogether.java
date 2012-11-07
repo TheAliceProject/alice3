@@ -67,4 +67,9 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 	public DeclarationProperty<UserLocal> getItemProperty() {
 		return this.item;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendTodo( this );
+	}
 }

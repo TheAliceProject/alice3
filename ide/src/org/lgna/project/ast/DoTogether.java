@@ -59,4 +59,9 @@ public class DoTogether extends AbstractStatementWithBody {
 		rv.append( "do together" );
 		return super.appendRepr( rv, locale );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendTodo( this );
+	}
 }

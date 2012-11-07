@@ -62,4 +62,11 @@ public class ReturnStatement extends Statement {
 		this.expressionType.setValue( expressionType );
 		this.expression.setValue( expression );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendString( "return " );
+		context.appendExpression( this.expression.getValue() );
+		context.appendSemicolon();
+	}
 }

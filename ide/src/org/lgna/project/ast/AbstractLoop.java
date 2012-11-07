@@ -53,4 +53,12 @@ public abstract class AbstractLoop extends AbstractStatementWithBody {
 	public AbstractLoop( BlockStatement body ) {
 		super( body );
 	}
+
+	protected abstract void appendJavaLoopPrefix( JavaCodeGenerationContext context );
+
+	@Override
+	/* package-private */final void appendJava( JavaCodeGenerationContext context ) {
+		this.appendJavaLoopPrefix( context );
+		this.body.getValue().appendJava( context );
+	}
 }

@@ -66,4 +66,10 @@ public class ExpressionStatement extends Statement {
 		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 		return rv;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendExpression( this.expression.getValue() );
+		context.appendSemicolon();
+	}
 }

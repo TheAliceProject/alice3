@@ -116,6 +116,14 @@ package org.lgna.project.ast;
 		this.appendTodo( argumentOwner );
 	}
 
+	/* package-private */void appendSemicolon() {
+		this.appendChar( ';' );
+	}
+
+	/* package-private */void appendNewline() {
+		this.appendChar( '\n' );
+	}
+
 	@Deprecated
 	/* package-private */void appendTodo( Object o ) {
 		sb.append( "todo" );

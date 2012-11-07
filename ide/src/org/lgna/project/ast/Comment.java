@@ -55,4 +55,12 @@ public class Comment extends Statement {
 	public Comment( String text ) {
 		this.text.setValue( text );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendNewline();
+		context.appendString( "//" );
+		context.appendString( this.text.getValue() );
+		context.appendNewline();
+	}
 }

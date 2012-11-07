@@ -68,4 +68,12 @@ public class WhileLoop extends AbstractLoop {
 		NodeUtilities.safeAppendRepr( rv, this.conditional.getValue(), locale );
 		return super.appendRepr( rv, locale );
 	}
+
+	@Override
+	protected void appendJavaLoopPrefix( JavaCodeGenerationContext context ) {
+		context.appendString( "while (" );
+		context.appendExpression( this.conditional.getValue() );
+		context.appendString( ")" );
+	}
+
 }

@@ -67,4 +67,15 @@ public class LocalDeclarationStatement extends Statement {
 		this.local.setValue( local );
 		this.initializer.setValue( initializer );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		UserLocal localValue = this.local.getValue();
+		context.appendTypeName( localValue.getValueType() );
+		context.appendChar( ' ' );
+		context.appendString( localValue.getValidName() );
+		context.appendChar( '=' );
+		context.appendExpression( this.initializer.getValue() );
+		context.appendSemicolon();
+	}
 }
