@@ -73,6 +73,6 @@ public class NumberLiteral extends AbstractValueLiteral {
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTodo( this );
+		context.todo( this );
 	}
 }

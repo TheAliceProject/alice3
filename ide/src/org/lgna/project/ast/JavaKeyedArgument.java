@@ -82,4 +82,9 @@ public class JavaKeyedArgument extends AbstractArgument {
 		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 		return rv;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.todo( this );
+	}
 }

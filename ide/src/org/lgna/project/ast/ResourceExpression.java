@@ -68,6 +68,6 @@ public class ResourceExpression extends Expression {
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTodo( this );
+		context.todo( this );
 	}
 }

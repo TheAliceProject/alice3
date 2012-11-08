@@ -72,7 +72,7 @@ public class LocalDeclarationStatement extends Statement {
 	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
 		UserLocal localValue = this.local.getValue();
 		context.appendTypeName( localValue.getValueType() );
-		context.appendChar( ' ' );
+		context.appendSpace();
 		context.appendString( localValue.getValidName() );
 		context.appendChar( '=' );
 		context.appendExpression( this.initializer.getValue() );

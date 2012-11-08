@@ -104,10 +104,10 @@ public class ArrayInstanceCreation extends Expression {
 		context.appendString( "new " );
 		context.appendTypeName( this.arrayType.getValue().getComponentType() );
 		context.appendChar( '[' );
-		context.appendTodo( this.lengths );
+		context.todo( this.lengths );
 		context.appendChar( ']' );
 		context.appendChar( '{' );
-		context.appendTodo( this.expressions );
+		context.todo( this.expressions );
 		context.appendChar( '}' );
 	}
 }

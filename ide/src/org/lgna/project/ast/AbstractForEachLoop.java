@@ -74,7 +74,7 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 		UserLocal itemValue = this.item.getValue();
 		context.appendString( "for(" );
 		context.appendTypeName( itemValue.getValueType() );
-		context.appendChar( ' ' );
+		context.appendSpace();
 		context.appendString( itemValue.getValidName() );
 		context.appendChar( ':' );
 		context.appendExpression( this.getArrayOrIterableProperty().getValue() );

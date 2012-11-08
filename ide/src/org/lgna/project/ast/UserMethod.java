@@ -88,6 +88,7 @@ public class UserMethod extends AbstractUserMethod {
 	public boolean isFinal() {
 		return this.isFinal.getValue();
 	}
+
 	//	@Override
 	//	public boolean isOverride() {
 	//		//todo: this will need to be updated when you can inherit from other TypesDeclaredInAlice
@@ -107,4 +108,16 @@ public class UserMethod extends AbstractUserMethod {
 	//		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( clsDeclaredInJava, this.getName(), parameterClses );
 	//		return mthd != null;
 	//	}
+
+	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+		context.appendTypeName( this.returnType.getValue() );
+		context.appendSpace();
+		context.appendString( this.name.getValue() );
+		context.appendChar( '(' );
+		for( UserParameter parameter : this.requiredParameters ) {
+			context.todo( parameter );
+		}
+		context.appendChar( ')' );
+		this.body.getValue().appendJava( context );
+	}
 }

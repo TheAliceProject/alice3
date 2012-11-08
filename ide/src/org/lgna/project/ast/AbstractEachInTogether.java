@@ -70,6 +70,6 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTodo( this );
+		context.todo( this );
 	}
 }

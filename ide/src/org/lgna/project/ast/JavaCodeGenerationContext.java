@@ -46,18 +46,19 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 /* package-private */class JavaCodeGenerationContext {
-	private final StringBuilder sb = new StringBuilder();
+	private final StringBuilder codeStringBuilder = new StringBuilder();
+	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
 	/* package-private */JavaCodeGenerationContext() {
 
 	}
 
 	/* package-private */void appendBoolean( boolean b ) {
-		this.sb.append( b );
+		this.codeStringBuilder.append( b );
 	}
 
 	/* package-private */void appendChar( char c ) {
-		this.sb.append( c );
+		this.codeStringBuilder.append( c );
 	}
 
 	/* package-private */void appendInt( int n ) {
@@ -66,7 +67,7 @@ package org.lgna.project.ast;
 		} else if( n == Integer.MIN_VALUE ) {
 			this.appendString( "Integer.MIN_VALUE" );
 		} else {
-			this.sb.append( n );
+			this.codeStringBuilder.append( n );
 		}
 	}
 
@@ -78,7 +79,7 @@ package org.lgna.project.ast;
 		} else if( f == Float.NEGATIVE_INFINITY ) {
 			this.appendString( "Float.NEGATIVE_INFINITY" );
 		} else {
-			this.sb.append( f );
+			this.codeStringBuilder.append( f );
 			this.appendChar( 'f' );
 		}
 	}
@@ -91,18 +92,22 @@ package org.lgna.project.ast;
 		} else if( d == Double.NEGATIVE_INFINITY ) {
 			this.appendString( "Double.NEGATIVE_INFINITY" );
 		} else {
-			this.sb.append( d );
+			this.codeStringBuilder.append( d );
 		}
 	}
 
 	/* package-private */void appendString( String s ) {
-		this.sb.append( s );
+		this.codeStringBuilder.append( s );
 	}
 
 	/* package-private */void appendTypeName( AbstractType<?, ?, ?> type ) {
 		if( type instanceof JavaType ) {
 			JavaType javaType = (JavaType)type;
-			this.appendTodo( javaType.getPackage() );
+			if( javaType.isPrimitive() ) {
+				//pass
+			} else {
+				this.typesToImport.add( javaType );
+			}
 		}
 		//todo: handle imports
 		this.appendString( type.getName() );
@@ -113,7 +118,19 @@ package org.lgna.project.ast;
 	}
 
 	/* package-private */void appendArguments( ArgumentOwner argumentOwner ) {
-		this.appendTodo( argumentOwner );
+		for( SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty() ) {
+			argument.appendJava( this );
+		}
+		for( SimpleArgument argument : argumentOwner.getVariableArgumentsProperty() ) {
+			argument.appendJava( this );
+		}
+		for( JavaKeyedArgument argument : argumentOwner.getKeyedArgumentsProperty() ) {
+			argument.appendJava( this );
+		}
+	}
+
+	/* package-private */void appendSpace() {
+		this.appendChar( ' ' );
 	}
 
 	/* package-private */void appendSemicolon() {
@@ -125,8 +142,30 @@ package org.lgna.project.ast;
 	}
 
 	@Deprecated
-	/* package-private */void appendTodo( Object o ) {
-		sb.append( "todo" );
-		sb.append( o );
+	/* package-private */void todo( Object o ) {
+		codeStringBuilder.append( "todo" );
+		codeStringBuilder.append( o );
+	}
+
+	/* package-private */String getText() {
+		StringBuilder rvStringBuilder = new StringBuilder();
+		for( JavaType typeToImport : this.typesToImport ) {
+			JavaPackage _package = typeToImport.getPackage();
+			if( _package != null ) {
+				if( "java.lang".contentEquals( _package.getName() ) ) {
+					//pass
+				} else {
+					rvStringBuilder.append( "import " );
+					rvStringBuilder.append( typeToImport.getPackage().getName() );
+					rvStringBuilder.append( '.' );
+					rvStringBuilder.append( typeToImport.getName() );
+					rvStringBuilder.append( ';' );
+				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( typeToImport );
+			}
+		}
+		rvStringBuilder.append( this.codeStringBuilder );
+		return rvStringBuilder.toString();
 	}
 }

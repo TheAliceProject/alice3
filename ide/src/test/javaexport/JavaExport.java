@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,28 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package test.javaexport;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogether extends AbstractStatementWithBody {
-	public DoTogether() {
-	}
-
-	public DoTogether( BlockStatement body ) {
-		super( body );
-	}
-
-	@Override
-	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
-		rv.append( "do together" );
-		return super.appendRepr( rv, locale );
-	}
-
-	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.todo( this );
+public class JavaExport {
+	public static void main( String[] args ) throws Exception {
+		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
+		for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
+			System.out.println( namedUserType.generateJavaCode() );
+		}
 	}
 }

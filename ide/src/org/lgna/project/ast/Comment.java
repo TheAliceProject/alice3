@@ -58,9 +58,11 @@ public class Comment extends Statement {
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendNewline();
-		context.appendString( "//" );
-		context.appendString( this.text.getValue() );
-		context.appendNewline();
+		String[] lines = this.text.getValue().split( "\n" );
+		for( String line : lines ) {
+			context.appendString( "//" );
+			context.appendString( line );
+			context.appendNewline();
+		}
 	}
 }
