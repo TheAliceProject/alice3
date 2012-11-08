@@ -44,10 +44,7 @@ package test;
 
 import java.awt.Component;
 
-import org.lgna.story.AddKeyPressListener;
 import org.lgna.story.Color;
-import org.lgna.story.Duration;
-import org.lgna.story.HeldKeyPolicy;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.Move;
 import org.lgna.story.MoveDirection;
@@ -63,12 +60,9 @@ import org.lgna.story.SSphere;
 import org.lgna.story.SSun;
 import org.lgna.story.SThing;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.KeyEvent;
-import org.lgna.story.event.KeyPressListener;
+import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
-import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -87,9 +81,11 @@ class MyBiped extends SBiped {
 }
 
 class MyOgre extends MyBiped {
+
 	public MyOgre( org.lgna.story.resources.biped.OgreResource resource ) {
 		super( resource );
 	}
+
 }
 
 class MyArmoire extends SProp {
@@ -134,7 +130,7 @@ class DesertScene extends SScene {
 		this.billboard.setPaint( Color.RED );
 		this.billboard.setBackPaint( Color.BLUE );
 
-		this.ogre.move( MoveDirection.LEFT, 1.0 );
+		this.ogre.move( MoveDirection.RIGHT, 1.0 );
 		this.fellowLaborer.move( MoveDirection.RIGHT, 1.0 );
 
 		this.desert.setPaint( SGround.SurfaceAppearance.SAND );
@@ -186,15 +182,17 @@ class SnowScene extends SScene {
 	private void performGeneratedSetup() {
 		// this code is automatically generated
 		// edit performCustomSetup instead
-		//		this.snow.setVehicle( this );
+		this.snow.setVehicle( this );
 		this.sun.setVehicle( this );
-		//		this.redCone.setVehicle( this );
-		//		this.greenCone.setVehicle( this );
-		//		this.blueCone.setVehicle( this );
-		this.armoire.setVehicle( this );
+		this.redCone.setVehicle( this );
+		this.greenCone.setVehicle( this );
+		this.blueCone.setVehicle( this );
+		//		this.armoire.setVehicle( this );
 		this.camera.setVehicle( this );
-		//		this.susan.setVehicle( this );
+		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
+		this.ogre.move( MoveDirection.BACKWARD, 1 );
+		this.ogre.move( MoveDirection.RIGHT, 1 );
 
 		this.redCone.setPaint( Color.RED );
 		this.greenCone.setPaint( Color.GREEN );
@@ -243,24 +241,32 @@ class SnowScene extends SScene {
 		} );
 		SThing[] groupOne = { ogre };
 		SThing[] groupTwo = { susan };
-		this.addCollisionStartListener( new CollisionStartListener() {
+		this.addMouseClickOnScreenListener( new MouseClickOnScreenListener() {
 
-			public void collisionStarted( StartCollisionEvent e ) {
-				System.out.println( e.getModels()[ 0 ] );
-				System.out.println( e.getModels()[ 1 ] );
+			public void mouseClicked() {
+				ogre.touch( susan.getNeck() );
 			}
-		}, groupOne, groupTwo );
-		this.addKeyPressListener( new KeyPressListener() {
-
-			public void keyPressed( KeyEvent e ) {
-				susan.turn( TurnDirection.RIGHT, .1, new Duration( .1 ) );
-			}
-		}, AddKeyPressListener.heldKeyPolicy( HeldKeyPolicy.FIRE_MULTIPLE ) );
+		} );
+		//		this.addCollisionStartListener( new CollisionStartListener() {
+		//
+		//			public void collisionStarted( StartCollisionEvent e ) {
+		//				System.out.println( e.getModels()[ 0 ] );
+		//				System.out.println( e.getModels()[ 1 ] );
+		//			}
+		//		}, groupOne, groupTwo );
+		//		this.addKeyPressListener( new KeyPressListener() {
+		//
+		//			public void keyPressed( KeyEvent e ) {
+		//				susan.turn( TurnDirection.RIGHT, .1, new Duration( .1 ) );
+		//			}
+		//		}, AddKeyPressListener.heldKeyPolicy( HeldKeyPolicy.FIRE_MULTIPLE ) );
 		addObjectMoverFor( ogre );
 	}
 
+	int zero = 0;
+
 	public void chillInSkiChalet() {
-		while( true ) {
+		while( 1 < zero ) {
 			//			this.susan.getRightShoulder().roll( RollDirection.LEFT, 0.25 );
 			//			this.susan.getLeftKnee().turn( TurnDirection.BACKWARD, 0.25 );
 			this.ogre.delay( 1 );
@@ -306,12 +312,12 @@ class RagsToRichesStory extends SProgram {
 	public void playOutStory() {
 		//		this.setActiveScene( this.desertScene );
 		//		this.desertScene.turnBigRocksIntoLittleRocks();
-		org.lgna.story.implementation.JointedModelImp<?, ?> susanImp = ImplementationAccessor.getImplementation( susan );
-		susanImp.opacity.setValue( 0.25f );
-		susanImp.showVisualization();
-		org.lgna.story.implementation.JointedModelImp<?, ?> ogreImp = ImplementationAccessor.getImplementation( ogre );
-		ogreImp.opacity.setValue( 0.25f );
-		ogreImp.showVisualization();
+		//		org.lgna.story.implementation.JointedModelImp<?, ?> susanImp = ImplementationAccessor.getImplementation( susan );
+		//		susanImp.opacity.setValue( 0.25f );
+		//		susanImp.showVisualization();
+		//		org.lgna.story.implementation.JointedModelImp<?, ?> ogreImp = ImplementationAccessor.getImplementation( ogre );
+		//		ogreImp.opacity.setValue( 0.25f );
+		//		ogreImp.showVisualization();
 		this.setActiveScene( this.snowScene );
 		this.snowScene.chillInSkiChalet();
 	}

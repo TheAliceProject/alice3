@@ -116,7 +116,7 @@ class IkProgram extends SProgram {
 	////	private List<Constraint> activeConstraints = new ArrayList<Constraint>();
 	//	Constraints constraints = new Constraints();
 
-	private boolean useTightIkEnforcer = true;
+	private boolean useTightIkEnforcer = false;
 	private PositionConstraint myPositionConstraint;
 
 	//	protected java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> currentSpeeds;

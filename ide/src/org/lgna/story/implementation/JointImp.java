@@ -43,6 +43,7 @@
 
 package org.lgna.story.implementation;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -125,5 +126,9 @@ public abstract class JointImp extends AbstractTransformableImp {
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		super.appendRepr( sb );
 		sb.append( this.getJointId().toString() );
+	}
+
+	public JointedModelImp<?, ?> getJointedModelImplementation() {
+		return jointedModelImplementation;
 	}
 }
