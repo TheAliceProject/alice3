@@ -114,8 +114,13 @@ public class UserMethod extends AbstractUserMethod {
 		context.appendSpace();
 		context.appendString( this.name.getValue() );
 		context.appendChar( '(' );
+		String prefix = "";
 		for( UserParameter parameter : this.requiredParameters ) {
-			context.todo( parameter );
+			context.appendString( prefix );
+			context.appendTypeName( parameter.getValueType() );
+			context.appendSpace();
+			context.appendString( parameter.getName() );
+			prefix = ",";
 		}
 		context.appendChar( ')' );
 		this.body.getValue().appendJava( context );

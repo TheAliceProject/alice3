@@ -118,14 +118,21 @@ package org.lgna.project.ast;
 	}
 
 	/* package-private */void appendArguments( ArgumentOwner argumentOwner ) {
+		String prefix = "";
 		for( SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty() ) {
+			this.appendString( prefix );
 			argument.appendJava( this );
+			prefix = ",";
 		}
 		for( SimpleArgument argument : argumentOwner.getVariableArgumentsProperty() ) {
+			this.appendString( prefix );
 			argument.appendJava( this );
+			prefix = ",";
 		}
 		for( JavaKeyedArgument argument : argumentOwner.getKeyedArgumentsProperty() ) {
+			this.appendString( prefix );
 			argument.appendJava( this );
+			prefix = ",";
 		}
 	}
 
