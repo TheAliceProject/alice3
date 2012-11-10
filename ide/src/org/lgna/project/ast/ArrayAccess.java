@@ -100,10 +100,10 @@ public class ArrayAccess extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendExpression( this.array.getValue() );
-		context.appendChar( '[' );
-		context.appendExpression( this.index.getValue() );
-		context.appendChar( ']' );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.array.getValue() );
+		generator.appendChar( '[' );
+		generator.appendExpression( this.index.getValue() );
+		generator.appendChar( ']' );
 	}
 }

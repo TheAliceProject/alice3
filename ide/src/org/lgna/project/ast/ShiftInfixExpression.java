@@ -67,8 +67,8 @@ public class ShiftInfixExpression extends Expression {
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendString( "<<" );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( "<<" );
 			}
 		},
 		RIGHT_SHIFT_SIGNED() {
@@ -91,8 +91,8 @@ public class ShiftInfixExpression extends Expression {
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendString( ">>" );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( ">>" );
 			}
 		},
 		RIGHT_SHIFT_UNSIGNED() {
@@ -115,14 +115,14 @@ public class ShiftInfixExpression extends Expression {
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendString( ">>>" );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( ">>>" );
 			}
 
 		};
 		public abstract Object operate( Object leftOperand, Object rightOperand );
 
-		/* package-private */abstract void appendJava( JavaCodeGenerationContext context );
+		/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 	}
 
 	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
@@ -161,9 +161,9 @@ public class ShiftInfixExpression extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendJava( context );
-		context.appendExpression( this.rightOperand.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.leftOperand.getValue() );
+		this.operator.getValue().appendJava( generator );
+		generator.appendExpression( this.rightOperand.getValue() );
 	}
 }

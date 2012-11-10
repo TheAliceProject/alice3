@@ -84,8 +84,8 @@ public class ArrayLength extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendExpression( this.array.getValue() );
-		context.appendString( ".length" );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.array.getValue() );
+		generator.appendString( ".length" );
 	}
 }

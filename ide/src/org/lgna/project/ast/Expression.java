@@ -54,5 +54,5 @@ public abstract class Expression extends AbstractNode {
 		return true;
 	}
 
-	/* package-private */abstract void appendJava( JavaCodeGenerationContext context );
+	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 }

@@ -68,8 +68,8 @@ public class ExpressionStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendExpression( this.expression.getValue() );
-		context.appendSemicolon();
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.expression.getValue() );
+		generator.appendSemicolon();
 	}
 }

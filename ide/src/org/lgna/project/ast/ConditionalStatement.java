@@ -59,17 +59,17 @@ public class ConditionalStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		String text = "if";
 		for( BooleanExpressionBodyPair booleanExpressionBodyPair : this.booleanExpressionBodyPairs ) {
-			context.appendString( text );
-			context.appendString( "(" );
-			context.appendExpression( booleanExpressionBodyPair.expression.getValue() );
-			context.appendString( ")" );
-			booleanExpressionBodyPair.body.getValue().appendJava( context );
+			generator.appendString( text );
+			generator.appendString( "(" );
+			generator.appendExpression( booleanExpressionBodyPair.expression.getValue() );
+			generator.appendString( ")" );
+			booleanExpressionBodyPair.body.getValue().appendJava( generator );
 			text = "else if";
 		}
-		context.appendString( "else" );
-		this.elseBody.getValue().appendJava( context );
+		generator.appendString( "else" );
+		this.elseBody.getValue().appendJava( generator );
 	}
 }

@@ -140,12 +140,12 @@ public class UserField extends AbstractField implements UserMember {
 		return this.isStatic.getValue();
 	}
 
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTypeName( this.valueType.getValue() );
-		context.appendSpace();
-		context.appendString( this.name.getValue() );
-		context.appendChar( '=' );
-		context.appendExpression( this.initializer.getValue() );
-		context.appendSemicolon();
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendTypeName( this.valueType.getValue() );
+		generator.appendSpace();
+		generator.appendString( this.name.getValue() );
+		generator.appendChar( '=' );
+		generator.appendExpression( this.initializer.getValue() );
+		generator.appendSemicolon();
 	}
 }

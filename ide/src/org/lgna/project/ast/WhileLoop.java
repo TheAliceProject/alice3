@@ -70,10 +70,10 @@ public class WhileLoop extends AbstractLoop {
 	}
 
 	@Override
-	protected void appendJavaLoopPrefix( JavaCodeGenerationContext context ) {
-		context.appendString( "while (" );
-		context.appendExpression( this.conditional.getValue() );
-		context.appendString( ")" );
+	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
+		generator.appendString( "while (" );
+		generator.appendExpression( this.conditional.getValue() );
+		generator.appendString( ")" );
 	}
 
 }

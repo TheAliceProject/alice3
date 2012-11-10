@@ -59,9 +59,9 @@ public class SuperConstructorInvocationStatement extends ConstructorInvocationSt
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendString( "super(" );
-		context.appendArguments( this );
-		context.appendChar( ')' );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "super(" );
+		generator.appendArguments( this );
+		generator.appendChar( ')' );
 	}
 }

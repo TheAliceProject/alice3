@@ -57,11 +57,11 @@ public class BlockStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendChar( '{' );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendChar( '{' );
 		for( Statement statement : this.statements ) {
-			statement.appendJava( context );
+			statement.appendJava( generator );
 		}
-		context.appendChar( '}' );
+		generator.appendChar( '}' );
 	}
 }

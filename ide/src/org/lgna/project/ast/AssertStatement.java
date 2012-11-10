@@ -69,14 +69,14 @@ public class AssertStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendString( "assert " );
-		context.appendExpression( this.expression.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "assert " );
+		generator.appendExpression( this.expression.getValue() );
 		Expression messageValue = this.message.getValue();
 		if( messageValue != null ) {
-			context.appendChar( ':' );
-			context.appendExpression( messageValue );
+			generator.appendChar( ':' );
+			generator.appendExpression( messageValue );
 		}
-		context.appendSemicolon();
+		generator.appendSemicolon();
 	}
 }

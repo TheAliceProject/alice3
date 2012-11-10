@@ -109,20 +109,20 @@ public class UserMethod extends AbstractUserMethod {
 	//		return mthd != null;
 	//	}
 
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTypeName( this.returnType.getValue() );
-		context.appendSpace();
-		context.appendString( this.name.getValue() );
-		context.appendChar( '(' );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendTypeName( this.returnType.getValue() );
+		generator.appendSpace();
+		generator.appendString( this.name.getValue() );
+		generator.appendChar( '(' );
 		String prefix = "";
 		for( UserParameter parameter : this.requiredParameters ) {
-			context.appendString( prefix );
-			context.appendTypeName( parameter.getValueType() );
-			context.appendSpace();
-			context.appendString( parameter.getName() );
+			generator.appendString( prefix );
+			generator.appendTypeName( parameter.getValueType() );
+			generator.appendSpace();
+			generator.appendString( parameter.getName() );
 			prefix = ",";
 		}
-		context.appendChar( ')' );
-		this.body.getValue().appendJava( context );
+		generator.appendChar( ')' );
+		this.body.getValue().appendJava( generator );
 	}
 }

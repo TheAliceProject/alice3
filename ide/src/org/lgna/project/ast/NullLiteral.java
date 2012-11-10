@@ -69,7 +69,7 @@ public class NullLiteral extends AbstractLiteral {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendString( "null" );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "null" );
 	}
 }

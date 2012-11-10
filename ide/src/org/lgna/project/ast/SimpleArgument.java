@@ -66,7 +66,7 @@ public class SimpleArgument extends AbstractArgument {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendExpression( this.expression.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.expression.getValue() );
 	}
 }

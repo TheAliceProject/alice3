@@ -115,9 +115,9 @@ public class FieldAccess extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendExpression( this.expression.getValue() );
-		context.appendChar( '.' );
-		context.appendString( this.field.getValue().getName() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.expression.getValue() );
+		generator.appendChar( '.' );
+		generator.appendString( this.field.getValue().getName() );
 	}
 }

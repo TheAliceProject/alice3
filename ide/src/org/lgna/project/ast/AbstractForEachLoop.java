@@ -70,14 +70,14 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 	protected abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
-	protected void appendJavaLoopPrefix( JavaCodeGenerationContext context ) {
+	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
 		UserLocal itemValue = this.item.getValue();
-		context.appendString( "for(" );
-		context.appendTypeName( itemValue.getValueType() );
-		context.appendSpace();
-		context.appendString( itemValue.getValidName() );
-		context.appendChar( ':' );
-		context.appendExpression( this.getArrayOrIterableProperty().getValue() );
-		context.appendChar( ')' );
+		generator.appendString( "for(" );
+		generator.appendTypeName( itemValue.getValueType() );
+		generator.appendSpace();
+		generator.appendString( itemValue.getValidName() );
+		generator.appendChar( ':' );
+		generator.appendExpression( this.getArrayOrIterableProperty().getValue() );
+		generator.appendChar( ')' );
 	}
 }

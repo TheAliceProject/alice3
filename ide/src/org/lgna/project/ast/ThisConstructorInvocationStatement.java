@@ -59,9 +59,9 @@ public class ThisConstructorInvocationStatement extends ConstructorInvocationSta
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendString( "this(" );
-		context.appendArguments( this );
-		context.appendChar( ')' );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "this(" );
+		generator.appendArguments( this );
+		generator.appendChar( ')' );
 	}
 }

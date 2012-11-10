@@ -73,8 +73,8 @@ public class LambdaExpression extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendString( "null" );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "null" );
 
 	}
 }

@@ -107,11 +107,11 @@ public class InstanceCreation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendString( "new " );
-		context.appendTypeName( this.constructor.getValue().getDeclaringType() );
-		context.appendChar( '(' );
-		context.appendArguments( this );
-		context.appendChar( ')' );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "new " );
+		generator.appendTypeName( this.constructor.getValue().getDeclaringType() );
+		generator.appendChar( '(' );
+		generator.appendArguments( this );
+		generator.appendChar( ')' );
 	}
 }

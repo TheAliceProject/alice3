@@ -49,5 +49,5 @@ package org.lgna.project.ast;
 public abstract class Statement extends AbstractNode {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isEnabled = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
-	/* package-private */abstract void appendJava( JavaCodeGenerationContext context );
+	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 }

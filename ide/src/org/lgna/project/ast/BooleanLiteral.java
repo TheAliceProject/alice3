@@ -72,7 +72,7 @@ public class BooleanLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendBoolean( this.value.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendBoolean( this.value.getValue() );
 	}
 }

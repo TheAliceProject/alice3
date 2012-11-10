@@ -71,7 +71,7 @@ public class TypeExpression extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTypeName( this.value.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendTypeName( this.value.getValue() );
 	}
 }

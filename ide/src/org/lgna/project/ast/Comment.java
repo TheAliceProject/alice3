@@ -57,12 +57,12 @@ public class Comment extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		String[] lines = this.text.getValue().split( "\n" );
 		for( String line : lines ) {
-			context.appendString( "//" );
-			context.appendString( line );
-			context.appendNewline();
+			generator.appendString( "//" );
+			generator.appendString( line );
+			generator.appendNewline();
 		}
 	}
 }

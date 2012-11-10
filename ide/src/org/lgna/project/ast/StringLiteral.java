@@ -74,9 +74,9 @@ public class StringLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendChar( '"' );
-		context.appendString( this.value.getValue() );
-		context.appendChar( '"' );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendChar( '"' );
+		generator.appendString( this.value.getValue() );
+		generator.appendChar( '"' );
 	}
 }

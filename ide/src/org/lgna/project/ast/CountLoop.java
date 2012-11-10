@@ -84,7 +84,7 @@ public class CountLoop extends AbstractLoop {
 	}
 
 	@Override
-	protected void appendJavaLoopPrefix( JavaCodeGenerationContext context ) {
-		context.todo( this );
+	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
+		generator.todo( this );
 	}
 }

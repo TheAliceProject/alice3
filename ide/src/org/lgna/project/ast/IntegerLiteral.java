@@ -72,14 +72,14 @@ public class IntegerLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		int n = this.value.getValue();
 		if( n == Integer.MAX_VALUE ) {
-			context.appendString( "Integer.MAX_VALUE" );
+			generator.appendString( "Integer.MAX_VALUE" );
 		} else if( n == Integer.MIN_VALUE ) {
-			context.appendString( "Integer.MIN_VALUE" );
+			generator.appendString( "Integer.MIN_VALUE" );
 		} else {
-			context.appendInt( n );
+			generator.appendInt( n );
 		}
 	}
 }

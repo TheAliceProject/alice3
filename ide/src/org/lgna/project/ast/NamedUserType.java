@@ -115,23 +115,23 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 	}
 
 	public String generateJavaCode() {
-		JavaCodeGenerationContext context = new JavaCodeGenerationContext();
+		JavaCodeGenerator generator = new JavaCodeGenerator();
 
-		context.appendString( "class " );
-		context.appendTypeName( this );
-		context.appendString( " extends " );
-		context.appendTypeName( this.superType.getValue() );
-		context.appendString( "{" );
+		generator.appendString( "class " );
+		generator.appendTypeName( this );
+		generator.appendString( " extends " );
+		generator.appendTypeName( this.superType.getValue() );
+		generator.appendString( "{" );
 
 		for( UserField field : this.fields ) {
-			field.appendJava( context );
+			field.appendJava( generator );
 		}
 		for( UserMethod method : this.methods ) {
-			method.appendJava( context );
+			method.appendJava( generator );
 		}
 
-		context.appendString( "}" );
+		generator.appendString( "}" );
 
-		return context.getText();
+		return generator.getText();
 	}
 }

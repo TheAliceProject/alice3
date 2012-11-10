@@ -65,5 +65,5 @@ public abstract class AbstractArgument extends AbstractNode {
 
 	protected abstract AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType );
 
-	/* package-private */abstract void appendJava( JavaCodeGenerationContext context );
+	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 }

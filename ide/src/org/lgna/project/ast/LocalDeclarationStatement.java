@@ -69,13 +69,13 @@ public class LocalDeclarationStatement extends Statement {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		UserLocal localValue = this.local.getValue();
-		context.appendTypeName( localValue.getValueType() );
-		context.appendSpace();
-		context.appendString( localValue.getValidName() );
-		context.appendChar( '=' );
-		context.appendExpression( this.initializer.getValue() );
-		context.appendSemicolon();
+		generator.appendTypeName( localValue.getValueType() );
+		generator.appendSpace();
+		generator.appendString( localValue.getValidName() );
+		generator.appendChar( '=' );
+		generator.appendExpression( this.initializer.getValue() );
+		generator.appendSemicolon();
 	}
 }
