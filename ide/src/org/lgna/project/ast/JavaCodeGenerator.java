@@ -46,11 +46,18 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 /* package-private */class JavaCodeGenerator {
+	private final boolean isLambaSupported;
 	private final StringBuilder codeStringBuilder = new StringBuilder();
 	private final java.util.Set<JavaType> typesToImport = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
-	/* package-private */JavaCodeGenerator() {
+	private final java.util.Stack<AbstractType<?, ?, ?>> typeForLambdaStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
+	/* package-private */JavaCodeGenerator( boolean isLambaSupported ) {
+		this.isLambaSupported = isLambaSupported;
+	}
+
+	/* package-private */boolean isLambaSupported() {
+		return this.isLambaSupported;
 	}
 
 	/* package-private */void appendBoolean( boolean b ) {
@@ -126,21 +133,64 @@ package org.lgna.project.ast;
 		accessLevel.appendJava( this );
 	}
 
+	/* package-private */AbstractType<?, ?, ?> peekTypeForLambda() {
+		return this.typeForLambdaStack.peek();
+	}
+
+	private void appendArgument( AbstractArgument argument ) {
+		AbstractParameter parameter = argument.parameter.getValue();
+		AbstractType<?, ?, ?> type = argument.getExpressionTypeForParameterType( parameter.getValueType() );
+		this.typeForLambdaStack.push( type );
+		try {
+			argument.appendJava( this );
+		} finally {
+			assert this.typeForLambdaStack.pop() == type;
+		}
+	}
+
+	/* package-private */void appendParameters( AbstractMethod method ) {
+		this.appendChar( '(' );
+		String prefix = "";
+		int i = 0;
+		for( AbstractParameter parameter : method.getRequiredParameters() ) {
+			this.appendString( prefix );
+			this.appendTypeName( parameter.getValueType() );
+			this.appendSpace();
+			String parameterName = parameter.getValidName();
+			this.appendString( parameterName != null ? parameterName : "p" + i );
+			prefix = ",";
+			i += 1;
+		}
+		this.appendChar( ')' );
+	}
+
+	/* package-private */void appendMethodHeader( AbstractMethod method ) {
+		AbstractMethod overridenMethod = AstUtilities.getOverridenMethod( method );
+		if( overridenMethod != null ) {
+			this.appendString( "@Override " );
+		}
+		this.appendAccessLevel( method.getAccessLevel() );
+		this.appendTypeName( method.getReturnType() );
+		this.appendSpace();
+		this.appendString( method.getName() );
+		this.appendParameters( method );
+	}
+
 	/* package-private */void appendArguments( ArgumentOwner argumentOwner ) {
 		String prefix = "";
 		for( SimpleArgument argument : argumentOwner.getRequiredArgumentsProperty() ) {
 			this.appendString( prefix );
-			argument.appendJava( this );
+			this.appendArgument( argument );
 			prefix = ",";
 		}
 		for( SimpleArgument argument : argumentOwner.getVariableArgumentsProperty() ) {
 			this.appendString( prefix );
-			argument.appendJava( this );
+			this.appendArgument( argument );
 			prefix = ",";
 		}
 		for( JavaKeyedArgument argument : argumentOwner.getKeyedArgumentsProperty() ) {
 			this.appendString( prefix );
-			argument.appendJava( this );
+			this.appendArgument( argument );
 			prefix = ",";
 		}
 	}

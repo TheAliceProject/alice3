@@ -480,11 +480,16 @@ public class AstUtilities {
 		return rv;
 	}
 
-	public static UserLambda createUserLambda( AbstractType<?, ?, ?> type ) {
+	public static AbstractMethod getSingleAbstractMethod( AbstractType<?, ?, ?> type ) {
 		java.util.ArrayList<? extends AbstractMethod> methods = type.getDeclaredMethods();
 		assert methods.size() == 1;
 		AbstractMethod singleAbstractMethod = methods.get( 0 );
 		assert singleAbstractMethod.isAbstract() : singleAbstractMethod;
+		return singleAbstractMethod;
+	}
+
+	public static UserLambda createUserLambda( AbstractType<?, ?, ?> type ) {
+		AbstractMethod singleAbstractMethod = getSingleAbstractMethod( type );
 		java.util.ArrayList<? extends AbstractParameter> srcRequiredParameters = singleAbstractMethod.getRequiredParameters();
 		UserParameter[] dstRequiredParameters = new UserParameter[ srcRequiredParameters.size() ];
 		for( int i = 0; i < dstRequiredParameters.length; i++ ) {

@@ -110,24 +110,7 @@ public class UserMethod extends AbstractUserMethod {
 	//	}
 
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		AbstractMethod overridenMethod = AstUtilities.getOverridenMethod( this );
-		if( overridenMethod != null ) {
-			generator.appendString( "@Override " );
-		}
-		generator.appendAccessLevel( this.getAccessLevel() );
-		generator.appendTypeName( this.returnType.getValue() );
-		generator.appendSpace();
-		generator.appendString( this.name.getValue() );
-		generator.appendChar( '(' );
-		String prefix = "";
-		for( UserParameter parameter : this.requiredParameters ) {
-			generator.appendString( prefix );
-			generator.appendTypeName( parameter.getValueType() );
-			generator.appendSpace();
-			generator.appendString( parameter.getName() );
-			prefix = ",";
-		}
-		generator.appendChar( ')' );
+		generator.appendMethodHeader( this );
 		this.body.getValue().appendJava( generator );
 	}
 }
