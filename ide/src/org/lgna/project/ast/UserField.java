@@ -141,6 +141,10 @@ public class UserField extends AbstractField implements UserMember {
 	}
 
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendAccessLevel( this.getAccessLevel() );
+		if( this.isFinal() ) {
+			generator.appendString( "final " );
+		}
 		generator.appendTypeName( this.valueType.getValue() );
 		generator.appendSpace();
 		generator.appendString( this.name.getValue() );

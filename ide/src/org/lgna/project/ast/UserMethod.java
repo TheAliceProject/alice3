@@ -110,6 +110,7 @@ public class UserMethod extends AbstractUserMethod {
 	//	}
 
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendAccessLevel( this.getAccessLevel() );
 		generator.appendTypeName( this.returnType.getValue() );
 		generator.appendSpace();
 		generator.appendString( this.name.getValue() );
