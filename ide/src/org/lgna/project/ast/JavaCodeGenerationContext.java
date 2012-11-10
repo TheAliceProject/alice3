@@ -106,7 +106,12 @@ package org.lgna.project.ast;
 			if( javaType.isPrimitive() ) {
 				//pass
 			} else {
-				this.typesToImport.add( javaType );
+				if( javaType.getPackage() != null ) {
+					this.typesToImport.add( javaType );
+				} else {
+					// should be covered already by the primitive check
+				}
+
 			}
 		}
 		//todo: handle imports
@@ -157,19 +162,20 @@ package org.lgna.project.ast;
 	/* package-private */String getText() {
 		StringBuilder rvStringBuilder = new StringBuilder();
 		for( JavaType typeToImport : this.typesToImport ) {
-			JavaPackage _package = typeToImport.getPackage();
-			if( _package != null ) {
-				if( "java.lang".contentEquals( _package.getName() ) ) {
-					//pass
-				} else {
-					rvStringBuilder.append( "import " );
-					rvStringBuilder.append( typeToImport.getPackage().getName() );
-					rvStringBuilder.append( '.' );
-					rvStringBuilder.append( typeToImport.getName() );
-					rvStringBuilder.append( ';' );
-				}
+			JavaPackage pack = typeToImport.getPackage();
+			if( "java.lang".contentEquals( pack.getName() ) ) {
+				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( typeToImport );
+				rvStringBuilder.append( "import " );
+				rvStringBuilder.append( typeToImport.getPackage().getName() );
+				rvStringBuilder.append( '.' );
+				JavaType enclosingType = typeToImport.getEnclosingType();
+				if( enclosingType != null ) {
+					rvStringBuilder.append( enclosingType.getName() );
+					rvStringBuilder.append( '.' );
+				}
+				rvStringBuilder.append( typeToImport.getName() );
+				rvStringBuilder.append( ';' );
 			}
 		}
 		rvStringBuilder.append( this.codeStringBuilder );

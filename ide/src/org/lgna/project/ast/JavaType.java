@@ -481,6 +481,12 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		return this.classReflectionProxy.isArray();
 	}
 
+	public JavaType getEnclosingType() {
+		Class<?> cls = this.classReflectionProxy.getReification();
+		assert cls != null;
+		return JavaType.getInstance( cls.getEnclosingClass() );
+	}
+
 	@Override
 	public JavaType getComponentType() {
 		return JavaType.getInstance( this.classReflectionProxy.getComponentClassReflectionProxy() );
