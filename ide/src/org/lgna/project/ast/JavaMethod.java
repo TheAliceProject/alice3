@@ -51,7 +51,7 @@ public class JavaMethod extends AbstractMethod {
 
 	private final MethodReflectionProxy methodReflectionProxy;
 	private final java.util.ArrayList<JavaMethodParameter> requiredParameters;
-	private final AbstractParameter variableOrKeyedParameter;
+	private final JavaMethodParameter variableOrKeyedParameter;
 
 	public static JavaMethod getInstance( MethodReflectionProxy methodReflectionProxy ) {
 		if( methodReflectionProxy != null ) {
@@ -129,7 +129,7 @@ public class JavaMethod extends AbstractMethod {
 		return this.requiredParameters;
 	}
 
-	public org.lgna.project.ast.AbstractParameter getKeyedParameter() {
+	public JavaMethodParameter getKeyedParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
 				return this.variableOrKeyedParameter;
@@ -141,7 +141,7 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 
-	public org.lgna.project.ast.AbstractParameter getVariableLengthParameter() {
+	public JavaMethodParameter getVariableLengthParameter() {
 		if( this.variableOrKeyedParameter != null ) {
 			if( variableOrKeyedParameter.getValueType().getComponentType().getKeywordFactoryType() != null ) {
 				return null;

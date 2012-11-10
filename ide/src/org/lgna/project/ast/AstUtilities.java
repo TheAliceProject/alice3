@@ -548,4 +548,32 @@ public class AstUtilities {
 		}
 		return null;
 	}
+
+	private static AbstractType<?, ?, ?>[] getParameterTypes( AbstractMethod method ) {
+		AbstractParameter[] parameters = method.getAllParameters();
+		AbstractType<?, ?, ?>[] rv = new AbstractType<?, ?, ?>[ parameters.length ];
+		for( int i = 0; i < parameters.length; i++ ) {
+			rv[ i ] = parameters[ i ].getValueType();
+		}
+		return rv;
+	}
+
+	private static AbstractMethod getOverridenMethod( AbstractType<?, ?, ?> type, String methodName, AbstractType<?, ?, ?>[] parameterTypes ) {
+		if( type != null ) {
+			AbstractMethod rv = type.getDeclaredMethod( methodName, parameterTypes );
+			if( rv != null ) {
+				return rv;
+			} else {
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( type, methodName, java.util.Arrays.toString( parameterTypes ) );
+				return getOverridenMethod( type.getSuperType(), methodName, parameterTypes );
+			}
+		} else {
+			return null;
+		}
+	}
+
+	public static AbstractMethod getOverridenMethod( AbstractMethod method ) {
+		AbstractType<?, ?, ?> type = method.getDeclaringType();
+		return getOverridenMethod( type.getSuperType(), method.getName(), getParameterTypes( method ) );
+	}
 }
