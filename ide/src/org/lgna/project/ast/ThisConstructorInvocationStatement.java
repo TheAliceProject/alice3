@@ -62,6 +62,6 @@ public class ThisConstructorInvocationStatement extends ConstructorInvocationSta
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( "this(" );
 		generator.appendArguments( this );
-		generator.appendChar( ')' );
+		generator.appendString( ");" );
 	}
 }

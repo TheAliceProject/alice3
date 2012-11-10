@@ -148,11 +148,11 @@ package org.lgna.project.ast;
 		}
 	}
 
-	/* package-private */void appendParameters( AbstractMethod method ) {
+	/* package-private */void appendParameters( Code code ) {
 		this.appendChar( '(' );
 		String prefix = "";
 		int i = 0;
-		for( AbstractParameter parameter : method.getRequiredParameters() ) {
+		for( AbstractParameter parameter : code.getRequiredParameters() ) {
 			this.appendString( prefix );
 			this.appendTypeName( parameter.getValueType() );
 			this.appendSpace();
@@ -170,6 +170,9 @@ package org.lgna.project.ast;
 			this.appendString( "@Override " );
 		}
 		this.appendAccessLevel( method.getAccessLevel() );
+		if( method.isStatic() ) {
+			this.appendString( "static " );
+		}
 		this.appendTypeName( method.getReturnType() );
 		this.appendSpace();
 		this.appendString( method.getName() );

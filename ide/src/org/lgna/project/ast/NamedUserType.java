@@ -126,6 +126,9 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 		for( UserField field : this.fields ) {
 			field.appendJava( generator );
 		}
+		for( NamedUserConstructor constructor : this.constructors ) {
+			constructor.appendJava( generator );
+		}
 		for( UserMethod method : this.methods ) {
 			method.appendJava( generator );
 		}

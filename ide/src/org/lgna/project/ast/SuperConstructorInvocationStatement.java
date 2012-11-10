@@ -62,6 +62,6 @@ public class SuperConstructorInvocationStatement extends ConstructorInvocationSt
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( "super(" );
 		generator.appendArguments( this );
-		generator.appendChar( ')' );
+		generator.appendString( ");" );
 	}
 }

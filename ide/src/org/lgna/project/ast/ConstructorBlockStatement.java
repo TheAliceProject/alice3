@@ -57,4 +57,10 @@ public class ConstructorBlockStatement extends BlockStatement {
 		super( statements );
 		this.constructorInvocationStatement.setValue( constructorInvocationStatement );
 	}
+
+	@Override
+	/* package-private */void appendBody( org.lgna.project.ast.JavaCodeGenerator generator ) {
+		this.constructorInvocationStatement.getValue().appendJava( generator );
+		super.appendBody( generator );
+	}
 }

@@ -56,12 +56,16 @@ public class BlockStatement extends Statement {
 		this.statements.add( statements );
 	}
 
-	@Override
-	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.appendChar( '{' );
+	/* package-private */void appendBody( JavaCodeGenerator generator ) {
 		for( Statement statement : this.statements ) {
 			statement.appendJava( generator );
 		}
+	}
+
+	@Override
+	/* package-private */final void appendJava( JavaCodeGenerator generator ) {
+		generator.appendChar( '{' );
+		this.appendBody( generator );
 		generator.appendChar( '}' );
 	}
 }
