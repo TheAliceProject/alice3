@@ -387,7 +387,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
 	private void handleMthd( java.lang.reflect.Method mthd ) {
 		int modifiers = mthd.getModifiers();
-		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) /* && isNotMask( modifiers, java.lang.reflect.Modifier.STATIC ) */) {
+		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) || isMask( modifiers, java.lang.reflect.Modifier.PROTECTED ) ) {
 			JavaMethod methodDeclaredInJava = JavaMethod.getInstance( mthd );
 			if( mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
 				org.lgna.project.annotations.MethodTemplate methodTemplate = mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
