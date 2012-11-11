@@ -55,18 +55,27 @@ public class AssignmentExpression extends Expression {
 	};
 
 	public enum Operator {
-		ASSIGN,
-		PLUS_ASSIGN,
-		MINUS_ASSIGN,
-		TIMES_ASSIGN,
-		DIVIDE_ASSIGN,
-		BIT_AND_ASSIGN,
-		BIT_OR_ASSIGN,
-		BIT_XOR_ASSIGN,
-		REMAINDER_ASSIGN,
-		LEFT_SHIFT_ASSIGN,
-		RIGHT_SHIFT_SIGNED_ASSIGN,
-		RIGHT_SHIFT_UNSIGNED_ASSIGN;
+		ASSIGN( "=" ),
+		PLUS_ASSIGN( "+=" ),
+		MINUS_ASSIGN( "-=" ),
+		TIMES_ASSIGN( "*=" ),
+		DIVIDE_ASSIGN( "/=" ),
+		BIT_AND_ASSIGN( "&=" ),
+		BIT_OR_ASSIGN( "|=" ),
+		BIT_XOR_ASSIGN( "^=" ),
+		REMAINDER_ASSIGN( "%=" ),
+		LEFT_SHIFT_ASSIGN( "<<=" ),
+		RIGHT_SHIFT_SIGNED_ASSIGN( ">>=" ),
+		RIGHT_SHIFT_UNSIGNED_ASSIGN( ">>>=" );
+		private final String text;
+
+		private Operator( String text ) {
+			this.text = text;
+		}
+
+		/* package-private */void appendJava( JavaCodeGenerator generator ) {
+			generator.appendString( this.text );
+		}
 	}
 
 	public edu.cmu.cs.dennisc.property.InstanceProperty<Operator> operator = new edu.cmu.cs.dennisc.property.InstanceProperty<Operator>( this, null );
@@ -94,7 +103,9 @@ public class AssignmentExpression extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTodo( this );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.leftHandSide.getValue() );
+		this.operator.getValue().appendJava( generator );
+		generator.appendExpression( this.rightHandSide.getValue() );
 	}
 }

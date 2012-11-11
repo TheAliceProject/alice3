@@ -78,8 +78,8 @@ public class LogicalComplement extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendChar( '!' );
-		context.appendExpression( this.operand.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendChar( '!' );
+		generator.appendExpression( this.operand.getValue() );
 	}
 }

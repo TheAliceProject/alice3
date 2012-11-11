@@ -67,4 +67,9 @@ public class EachInArrayTogether extends AbstractEachInTogether implements EachI
 	public ExpressionProperty getArrayProperty() {
 		return this.array;
 	}
+
+	@Override
+	protected ExpressionProperty getArrayOrIterableProperty() {
+		return this.getArrayProperty();
+	}
 }

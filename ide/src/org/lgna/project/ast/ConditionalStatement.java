@@ -57,4 +57,19 @@ public class ConditionalStatement extends Statement {
 		this.booleanExpressionBodyPairs.add( booleanExpressionBodyPairs );
 		this.elseBody.setValue( elseBody );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		String text = "if";
+		for( BooleanExpressionBodyPair booleanExpressionBodyPair : this.booleanExpressionBodyPairs ) {
+			generator.appendString( text );
+			generator.appendString( "(" );
+			generator.appendExpression( booleanExpressionBodyPair.expression.getValue() );
+			generator.appendString( ")" );
+			booleanExpressionBodyPair.body.getValue().appendJava( generator );
+			text = "else if";
+		}
+		generator.appendString( "else" );
+		this.elseBody.getValue().appendJava( generator );
+	}
 }

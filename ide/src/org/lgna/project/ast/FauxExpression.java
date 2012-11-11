@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  */
 public abstract class FauxExpression extends Expression {
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		throw new RuntimeException();
 	}
 }

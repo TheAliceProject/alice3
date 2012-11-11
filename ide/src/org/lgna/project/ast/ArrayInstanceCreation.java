@@ -100,14 +100,21 @@ public class ArrayInstanceCreation extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendString( "new " );
-		context.appendTypeName( this.arrayType.getValue().getComponentType() );
-		context.appendChar( '[' );
-		context.appendTodo( this.lengths );
-		context.appendChar( ']' );
-		context.appendChar( '{' );
-		context.appendTodo( this.expressions );
-		context.appendChar( '}' );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "new " );
+		generator.appendTypeName( this.arrayType.getValue().getComponentType() );
+
+		//todo: lengths
+		generator.appendChar( '[' );
+		generator.appendChar( ']' );
+
+		generator.appendChar( '{' );
+		String prefix = "";
+		for( Expression expression : this.expressions ) {
+			generator.appendString( prefix );
+			generator.appendExpression( expression );
+			prefix = ",";
+		}
+		generator.appendChar( '}' );
 	}
 }

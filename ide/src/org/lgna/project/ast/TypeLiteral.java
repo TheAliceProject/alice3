@@ -77,7 +77,8 @@ public class TypeLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendTypeName( this.value.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendTypeName( this.value.getValue() );
+		generator.appendString( ".class" );
 	}
 }

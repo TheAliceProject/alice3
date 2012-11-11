@@ -113,4 +113,28 @@ public class NamedUserType extends UserType<NamedUserConstructor> {
 	public boolean isStrictFloatingPoint() {
 		return this.isStrictFloatingPoint.getValue();
 	}
+
+	public String generateJavaCode( boolean isLambaSupported ) {
+		JavaCodeGenerator generator = new JavaCodeGenerator( isLambaSupported );
+
+		generator.appendString( "class " );
+		generator.appendTypeName( this );
+		generator.appendString( " extends " );
+		generator.appendTypeName( this.superType.getValue() );
+		generator.appendString( "{" );
+
+		for( UserField field : this.fields ) {
+			field.appendJava( generator );
+		}
+		for( NamedUserConstructor constructor : this.constructors ) {
+			constructor.appendJava( generator );
+		}
+		for( UserMethod method : this.methods ) {
+			method.appendJava( generator );
+		}
+
+		generator.appendString( "}" );
+
+		return generator.getText();
+	}
 }

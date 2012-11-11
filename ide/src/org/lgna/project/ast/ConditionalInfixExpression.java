@@ -54,8 +54,8 @@ public class ConditionalInfixExpression extends InfixExpression<ConditionalInfix
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendString( "&&" );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( "&&" );
 			}
 		},
 		OR() {
@@ -65,13 +65,13 @@ public class ConditionalInfixExpression extends InfixExpression<ConditionalInfix
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendString( "||" );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( "||" );
 			}
 		};
 		public abstract Boolean operate( Boolean leftOperand, Boolean rightOperand );
 
-		/* package-private */abstract void appendJava( JavaCodeGenerationContext context );
+		/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 	}
 
 	public ConditionalInfixExpression() {
@@ -103,9 +103,9 @@ public class ConditionalInfixExpression extends InfixExpression<ConditionalInfix
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendJava( context );
-		context.appendExpression( this.rightOperand.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.leftOperand.getValue() );
+		this.operator.getValue().appendJava( generator );
+		generator.appendExpression( this.rightOperand.getValue() );
 	}
 }

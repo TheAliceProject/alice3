@@ -73,8 +73,8 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendChar( '+' );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '+' );
 			}
 		},
 		MINUS() {
@@ -101,8 +101,8 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendChar( '-' );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '-' );
 			}
 		},
 		TIMES() {
@@ -129,8 +129,8 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendChar( '*' );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '*' );
 			}
 		},
 		REAL_DIVIDE() {
@@ -157,8 +157,8 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendChar( '/' );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '/' );
 			}
 		},
 		INTEGER_DIVIDE() {
@@ -185,8 +185,8 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendChar( '/' );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '/' );
 			}
 		},
 		REAL_REMAINDER() {
@@ -213,8 +213,8 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendChar( '%' );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '%' );
 			}
 		},
 		INTEGER_REMAINDER() {
@@ -241,13 +241,13 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 			}
 
 			@Override
-			/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-				context.appendChar( '%' );
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '%' );
 			}
 		};
 		public abstract Number operate( Number leftOperand, Number rightOperand );
 
-		/* package-private */abstract void appendJava( JavaCodeGenerationContext context );
+		/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 	}
 
 	public ArithmeticInfixExpression() {
@@ -284,9 +284,9 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendExpression( this.leftOperand.getValue() );
-		this.operator.getValue().appendJava( context );
-		context.appendExpression( this.rightOperand.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.leftOperand.getValue() );
+		this.operator.getValue().appendJava( generator );
+		generator.appendExpression( this.rightOperand.getValue() );
 	}
 }

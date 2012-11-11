@@ -72,7 +72,7 @@ public class FloatLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	public void appendJava( JavaCodeGenerationContext context ) {
-		context.appendFloat( this.value.getValue() );
+	public void appendJava( JavaCodeGenerator generator ) {
+		generator.appendFloat( this.value.getValue() );
 	}
 }

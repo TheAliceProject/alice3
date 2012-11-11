@@ -64,4 +64,9 @@ public class EachInIterableTogether extends AbstractEachInTogether implements Ea
 	public ExpressionProperty getIterableProperty() {
 		return this.iterable;
 	}
+
+	@Override
+	protected ExpressionProperty getArrayOrIterableProperty() {
+		return this.getIterableProperty();
+	}
 }

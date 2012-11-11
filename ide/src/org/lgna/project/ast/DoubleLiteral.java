@@ -72,7 +72,7 @@ public class DoubleLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendDouble( this.value.getValue() );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendDouble( this.value.getValue() );
 	}
 }

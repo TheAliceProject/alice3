@@ -65,7 +65,7 @@ public class SuperExpression extends Expression {
 	}
 
 	@Override
-	/* package-private */void appendJava( JavaCodeGenerationContext context ) {
-		context.appendString( "super" );
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "super" );
 	}
 }

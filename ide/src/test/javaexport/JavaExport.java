@@ -40,85 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.ast;
+package test.javaexport;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class JavaCodeGenerationContext {
-	private final StringBuilder sb = new StringBuilder();
-
-	/* package-private */JavaCodeGenerationContext() {
-
-	}
-
-	/* package-private */void appendBoolean( boolean b ) {
-		this.sb.append( b );
-	}
-
-	/* package-private */void appendChar( char c ) {
-		this.sb.append( c );
-	}
-
-	/* package-private */void appendInt( int n ) {
-		if( n == Integer.MAX_VALUE ) {
-			this.appendString( "Integer.MAX_VALUE" );
-		} else if( n == Integer.MIN_VALUE ) {
-			this.appendString( "Integer.MIN_VALUE" );
-		} else {
-			this.sb.append( n );
+public class JavaExport {
+	public static void main( String[] args ) throws Exception {
+		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
+		java.io.File outDirectory = new java.io.File( args[ 1 ] );
+		boolean isLambdaSupported = true;
+		for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
+			java.io.File file = new java.io.File( outDirectory, namedUserType.getName() + ".java" );
+			edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( file, namedUserType.generateJavaCode( isLambdaSupported ) );
 		}
-	}
-
-	/* package-private */void appendFloat( float f ) {
-		if( Float.isNaN( f ) ) {
-			this.appendString( "Float.NaN" );
-		} else if( f == Float.POSITIVE_INFINITY ) {
-			this.appendString( "Float.POSITIVE_INFINITY" );
-		} else if( f == Float.NEGATIVE_INFINITY ) {
-			this.appendString( "Float.NEGATIVE_INFINITY" );
-		} else {
-			this.sb.append( f );
-			this.appendChar( 'f' );
-		}
-	}
-
-	/* package-private */void appendDouble( double d ) {
-		if( Double.isNaN( d ) ) {
-			this.appendString( "Double.NaN" );
-		} else if( d == Double.POSITIVE_INFINITY ) {
-			this.appendString( "Double.POSITIVE_INFINITY" );
-		} else if( d == Double.NEGATIVE_INFINITY ) {
-			this.appendString( "Double.NEGATIVE_INFINITY" );
-		} else {
-			this.sb.append( d );
-		}
-	}
-
-	/* package-private */void appendString( String s ) {
-		this.sb.append( s );
-	}
-
-	/* package-private */void appendTypeName( AbstractType<?, ?, ?> type ) {
-		if( type instanceof JavaType ) {
-			JavaType javaType = (JavaType)type;
-			this.appendTodo( javaType.getPackage() );
-		}
-		//todo: handle imports
-		this.appendString( type.getName() );
-	}
-
-	/* package-private */void appendExpression( Expression expression ) {
-		expression.appendJava( this );
-	}
-
-	/* package-private */void appendArguments( ArgumentOwner argumentOwner ) {
-		this.appendTodo( argumentOwner );
-	}
-
-	@Deprecated
-	/* package-private */void appendTodo( Object o ) {
-		sb.append( "todo" );
-		sb.append( o );
 	}
 }
