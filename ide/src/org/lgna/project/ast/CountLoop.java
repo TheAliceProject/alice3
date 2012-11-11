@@ -85,6 +85,29 @@ public class CountLoop extends AbstractLoop {
 
 	@Override
 	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
-		generator.todo( this );
+		Expression countValue = this.count.getValue();
+		String variableName = this.variable.getValue().getValidName();
+		String constantName = this.constant.getValue().getValidName();
+		boolean isInline;
+		if( countValue instanceof IntegerLiteral ) {
+			IntegerLiteral integerLiteral = (IntegerLiteral)countValue;
+			isInline = true;
+		} else {
+			isInline = false;
+		}
+		if( isInline ) {
+			//pass
+		} else {
+			generator.todo( this );
+		}
+		generator.appendString( "for( int " );
+		generator.appendString( variableName );
+		generator.appendString( "=0;" );
+		generator.appendString( variableName );
+		generator.appendString( "<" );
+		generator.appendExpression( countValue );
+		generator.appendString( ";" );
+		generator.appendString( variableName );
+		generator.appendString( "++ )" );
 	}
 }

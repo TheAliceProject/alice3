@@ -85,6 +85,6 @@ public class JavaKeyedArgument extends AbstractArgument {
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.todo( this );
+		generator.appendExpression( this.expression.getValue() );
 	}
 }

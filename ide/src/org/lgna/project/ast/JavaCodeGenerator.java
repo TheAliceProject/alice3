@@ -212,7 +212,7 @@ package org.lgna.project.ast;
 
 	@Deprecated
 	/* package-private */void todo( Object o ) {
-		codeStringBuilder.append( "todo" );
+		codeStringBuilder.append( "todo_" );
 		codeStringBuilder.append( o );
 	}
 
