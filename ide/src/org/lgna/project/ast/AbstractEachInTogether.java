@@ -68,8 +68,39 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 		return this.item;
 	}
 
+	protected abstract ExpressionProperty getArrayOrIterableProperty();
+
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.todo( this );
+		UserLocal itemValue = this.item.getValue();
+		AbstractType<?, ?, ?> itemType = itemValue.getValueType();
+		generator.appendTypeName( JavaType.getInstance( org.lgna.common.ThreadUtilities.class ) );
+		generator.appendString( ".eachInTogether(" );
+		generator.appendExpression( this.getArrayOrIterableProperty().getValue() );
+		generator.appendString( "," );
+		if( generator.isLambaSupported() ) {
+			generator.appendString( "(" );
+			generator.appendTypeName( itemType );
+			generator.appendSpace();
+			generator.appendString( itemValue.getName() );
+			generator.appendString( ")->" );
+		} else {
+			generator.appendString( "new " );
+			generator.appendTypeName( JavaType.getInstance( org.lgna.common.EachInTogetherRunnable.class ) );
+			generator.appendString( "<" );
+			generator.appendTypeName( itemType );
+			generator.appendString( ">() { public void run(" );
+			generator.appendTypeName( itemType );
+			generator.appendSpace();
+			generator.appendString( itemValue.getName() );
+			generator.appendString( ")" );
+		}
+		this.body.getValue().appendJava( generator );
+		if( generator.isLambaSupported() ) {
+			//pass
+		} else {
+			generator.appendString( "}" );
+		}
+		generator.appendString( ");" );
 	}
 }
