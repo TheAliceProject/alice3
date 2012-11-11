@@ -62,6 +62,28 @@ public class DoTogether extends AbstractStatementWithBody {
 
 	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
-		generator.todo( this );
+		generator.appendTypeName( JavaType.getInstance( org.lgna.common.ThreadUtilities.class ) );
+		generator.appendString( ".doTogether(" );
+		String prefix = "";
+		for( Statement statement : this.body.getValue().statements ) {
+			generator.appendString( prefix );
+			if( generator.isLambaSupported() ) {
+				generator.appendString( "()-> {" );
+			} else {
+				generator.appendString( "new Runnable() { public void run() {" );
+			}
+			if( statement instanceof DoInOrder ) {
+				DoInOrder doInOrder = (DoInOrder)statement;
+				statement = doInOrder.body.getValue();
+			}
+			statement.appendJava( generator );
+			if( generator.isLambaSupported() ) {
+				generator.appendString( "}" );
+			} else {
+				generator.appendString( "}}" );
+			}
+			prefix = ",";
+		}
+		generator.appendString( ");" );
 	}
 }

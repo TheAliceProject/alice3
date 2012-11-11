@@ -90,22 +90,36 @@ public class CountLoop extends AbstractLoop {
 		String constantName = this.constant.getValue().getValidName();
 		boolean isInline;
 		if( countValue instanceof IntegerLiteral ) {
-			IntegerLiteral integerLiteral = (IntegerLiteral)countValue;
+			isInline = true;
+		} else if( countValue instanceof ParameterAccess ) {
+			isInline = true;
+		} else if( countValue instanceof LocalAccess ) {
+			LocalAccess access = (LocalAccess)countValue;
+			isInline = access.local.getValue().isFinal.getValue();
+		} else if( countValue instanceof FieldAccess ) {
+			FieldAccess access = (FieldAccess)countValue;
+			isInline = access.field.getValue().isFinal();
+		} else if( countValue instanceof ArrayLength ) {
+			//todo?
 			isInline = true;
 		} else {
+			generator.appendString( "final int " );
+			generator.appendString( constantName );
+			generator.appendString( "=" );
+			generator.appendExpression( countValue );
+			generator.appendSemicolon();
 			isInline = false;
-		}
-		if( isInline ) {
-			//pass
-		} else {
-			generator.todo( this );
 		}
 		generator.appendString( "for( int " );
 		generator.appendString( variableName );
 		generator.appendString( "=0;" );
 		generator.appendString( variableName );
 		generator.appendString( "<" );
-		generator.appendExpression( countValue );
+		if( isInline ) {
+			generator.appendExpression( countValue );
+		} else {
+			generator.appendString( constantName );
+		}
 		generator.appendString( ";" );
 		generator.appendString( variableName );
 		generator.appendString( "++ )" );
