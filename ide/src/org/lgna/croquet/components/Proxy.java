@@ -97,12 +97,7 @@ package org.lgna.croquet.components;
 		int y = 0;
 		int width = subject.getWidth();
 		int height = subject.getHeight();
-		if( subject instanceof Widget ) {
-			Widget component = (Widget)subject;
-			component.fillBounds( g2, x, y, width, height );
-		} else {
-			g2.fillRect( x, y, width, height );
-		}
+		g2.fillRect( x, y, width, height );
 	}
 
 	protected abstract void paintProxy( java.awt.Graphics2D g2 );
