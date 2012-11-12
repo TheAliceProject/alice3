@@ -307,7 +307,13 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 	public org.lgna.project.ast.Expression getInitializer() {
 		if( this.initializerState != null ) {
-			return this.initializerState.getValue();
+			org.lgna.project.ast.Expression rv = this.initializerState.getValue();
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new org.lgna.project.ast.NullLiteral();
+			}
+			return rv;
 		} else {
 			return null;
 		}
