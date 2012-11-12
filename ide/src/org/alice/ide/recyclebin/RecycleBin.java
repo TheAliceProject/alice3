@@ -53,7 +53,7 @@ public class RecycleBin extends org.lgna.croquet.components.JComponent<javax.swi
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
-				org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON.paintIcon( this, g, 0, 0 );
+				RecycleBinIcon.SINGLETON.paintIcon( this, g, 0, 0 );
 			}
 
 			@Override

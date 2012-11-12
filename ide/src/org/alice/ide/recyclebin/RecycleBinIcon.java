@@ -68,5 +68,24 @@ public enum RecycleBinIcon implements javax.swing.Icon {
 
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		org.alice.ide.icons.Icons.TRASH_CAN_EMPTY_ICON.paintIcon( c, g, x, y );
+		java.awt.Paint paint;
+		final int ALPHA = 15;
+		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
+			paint = new java.awt.Color( 255, 255, 0, ALPHA );
+		} else {
+			//paint = new java.awt.Color( 0, 255, 0, ALPHA );
+			paint = null;
+		}
+		if( paint != null ) {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Paint prevPaint = g2.getPaint();
+			g2.setPaint( paint );
+			float xCenter = x + ( this.getIconWidth() * 0.5f );
+			float yCenter = y + ( this.getIconHeight() * 0.5f );
+			for( float radius = 4.0f; radius <= 16.0f; radius += 1.0f ) {
+				g2.fill( new java.awt.geom.Ellipse2D.Float( xCenter - radius, yCenter - radius, radius + radius, radius + radius ) );
+			}
+			g2.setPaint( prevPaint );
+		}
 	}
 }
