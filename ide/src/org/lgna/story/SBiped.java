@@ -43,7 +43,7 @@
 
 package org.lgna.story;
 
-import org.lgna.ik.enforcer.IKMagicWand;
+import org.lgna.ik.enforcer.IKMagicWand.Limb;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 
@@ -64,12 +64,16 @@ public class SBiped extends SJointedModel implements Articulable {
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void walkTo( SThing entity ) {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo: walkTo" );
+		implementation.walkTo( entity );
 	}
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public void touch( SThing entity ) {
-		implementation.reachFor( IKMagicWand.LIMB.RIGHT_ARM, entity );
+		reachFor( entity, Limb.RIGHT_ARM );
+	}
+
+	public void reachFor( SThing target, Limb limb ) {
+		implementation.reachFor( target, limb );
 	}
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )

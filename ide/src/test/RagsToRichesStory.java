@@ -191,6 +191,7 @@ class SnowScene extends SScene {
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
+		this.ogre.getRightElbow().turn( TurnDirection.LEFT, .25 );
 		this.ogre.move( MoveDirection.BACKWARD, 1 );
 		this.ogre.move( MoveDirection.RIGHT, 1 );
 
@@ -244,7 +245,7 @@ class SnowScene extends SScene {
 		this.addMouseClickOnScreenListener( new MouseClickOnScreenListener() {
 
 			public void mouseClicked() {
-				ogre.touch( susan.getNeck() );
+				susan.walkTo( ogre );
 			}
 		} );
 		//		this.addCollisionStartListener( new CollisionStartListener() {
