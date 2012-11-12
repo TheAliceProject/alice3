@@ -65,4 +65,9 @@ public class ResourceExpression extends Expression {
 	public AbstractType<?, ?, ?> getType() {
 		return type.getValue();
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.todo( this );
+	}
 }

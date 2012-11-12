@@ -46,39 +46,36 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ThumbnailGenerator {
-	private ThumbnailGenerator() {
-		throw new AssertionError();
+public final class ThumbnailGenerator {
+	private final edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
+
+	public ThumbnailGenerator( int width, int height ) {
+		this.offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( width, height, null );
 	}
 
-	private static edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
-
-	public static synchronized java.awt.image.BufferedImage createThumbnail( int width, int height ) {
-		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
-		if( sgCamera != null ) {
-			if( offscreenLookingGlass != null ) {
-				//pass
-			} else {
-				offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( null );
-			}
-			boolean isClearingAndAddingRequired = offscreenLookingGlass.setSize( width, height );
-			if( offscreenLookingGlass.getCameraCount() == 1 ) {
-				if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {
-					//pass
+	public java.awt.image.BufferedImage createThumbnail() {
+		synchronized( this.offscreenLookingGlass ) {
+			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
+			if( sgCamera != null ) {
+				boolean isClearingAndAddingRequired;
+				if( offscreenLookingGlass.getCameraCount() == 1 ) {
+					if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {
+						isClearingAndAddingRequired = false;
+					} else {
+						isClearingAndAddingRequired = true;
+					}
 				} else {
 					isClearingAndAddingRequired = true;
 				}
+				if( isClearingAndAddingRequired ) {
+					offscreenLookingGlass.clearCameras();
+					offscreenLookingGlass.addCamera( sgCamera );
+				}
+				return offscreenLookingGlass.getColorBuffer();
 			} else {
-				isClearingAndAddingRequired = true;
+				return null;
 			}
-			if( isClearingAndAddingRequired ) {
-				offscreenLookingGlass.clearCameras();
-				offscreenLookingGlass.addCamera( sgCamera );
-			}
-			return offscreenLookingGlass.getColorBuffer();
-		} else {
-			return null;
 		}
 	}
 

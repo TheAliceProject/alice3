@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Code extends Member {
-	public AbstractParameter[] getAllParameters();
-
-	public java.util.ArrayList<? extends AbstractParameter> getRequiredParameters();
-
-	public AbstractParameter getVariableLengthParameter();
-
-	public AbstractParameter getKeyedParameter();
+public abstract class FauxExpression extends Expression {
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		throw new RuntimeException();
+	}
 }

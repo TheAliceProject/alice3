@@ -15,6 +15,7 @@ import org.lgna.story.event.MouseClickOnScreenListener;
 
 public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClickEvent> {
 
+	public static final Visual[] ALL_VISUALS = new Visual[ 0 ];
 	Map<Object, CopyOnWriteArrayList<Object>> map = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
 	Object empty = new Object();
 
@@ -53,6 +54,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 
 	public MouseClickedHandler() {
 		map.put( empty, new CopyOnWriteArrayList<Object>() );
+		map.put( ALL_VISUALS, new CopyOnWriteArrayList<Object>() );
 	}
 
 	public void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, /* int quoteClickCountUnquote, */SScene scene ) {
@@ -99,6 +101,7 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 				listeners.addAll( map.get( empty ) );
 				SModel modelAtMouseLocation = event.getModelAtMouseLocation();
 				if( modelAtMouseLocation != null ) {
+					listeners.addAll( map.get( ALL_VISUALS ) );
 					if( map.get( modelAtMouseLocation ) != null ) {
 						listeners.addAll( map.get( modelAtMouseLocation ) );
 					}
@@ -115,7 +118,9 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 	public void addListener( Object listener, MultipleEventPolicy eventPolicy, Visual[] targets ) {
 		registerIsFiringMap( listener, targets );
 		registerPolicyMap( listener, eventPolicy );
-		if( ( targets != null ) && ( targets.length > 0 ) ) {
+		if( listener instanceof MouseClickOnScreenListener ) {
+			map.get( empty ).add( listener );
+		} else if( targets.length > 0 ) {//targets should not be null
 			for( Visual target : targets ) {
 				if( map.get( target ) != null ) {
 					map.get( target ).add( listener );
@@ -125,8 +130,8 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 					map.put( target, list );
 				}
 			}
-		} else if( listener instanceof MouseClickOnScreenListener ) {
-			map.get( empty ).add( listener );
+		} else {
+			map.get( ALL_VISUALS ).add( listener );
 		}
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,18 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package test.javaexport;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Code extends Member {
-	public AbstractParameter[] getAllParameters();
-
-	public java.util.ArrayList<? extends AbstractParameter> getRequiredParameters();
-
-	public AbstractParameter getVariableLengthParameter();
-
-	public AbstractParameter getKeyedParameter();
+public class JavaExport {
+	public static void main( String[] args ) throws Exception {
+		org.lgna.project.Project project = org.lgna.project.io.IoUtilities.readProject( args[ 0 ] );
+		java.io.File outDirectory = new java.io.File( args[ 1 ] );
+		boolean isLambdaSupported = true;
+		for( org.lgna.project.ast.NamedUserType namedUserType : project.getNamedUserTypes() ) {
+			java.io.File file = new java.io.File( outDirectory, namedUserType.getName() + ".java" );
+			edu.cmu.cs.dennisc.java.io.TextFileUtilities.write( file, namedUserType.generateJavaCode( isLambdaSupported ) );
+		}
+	}
 }

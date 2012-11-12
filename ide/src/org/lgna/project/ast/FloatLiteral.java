@@ -70,4 +70,9 @@ public class FloatLiteral extends AbstractValueLiteral {
 	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
 		return this.value;
 	}
+
+	@Override
+	public void appendJava( JavaCodeGenerator generator ) {
+		generator.appendFloat( this.value.getValue() );
+	}
 }

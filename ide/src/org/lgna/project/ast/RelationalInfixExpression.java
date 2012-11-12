@@ -136,6 +136,11 @@ public class RelationalInfixExpression extends InfixExpression<RelationalInfixEx
 					throw new RuntimeException();
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '<' );
+			}
 		},
 		LESS_EQUALS() {
 			@Override
@@ -163,6 +168,11 @@ public class RelationalInfixExpression extends InfixExpression<RelationalInfixEx
 				} else {
 					throw new RuntimeException();
 				}
+			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( "<=" );
 			}
 		},
 		GREATER() {
@@ -192,6 +202,11 @@ public class RelationalInfixExpression extends InfixExpression<RelationalInfixEx
 					throw new RuntimeException();
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '>' );
+			}
 		},
 		GREATER_EQUALS() {
 			@Override
@@ -219,6 +234,11 @@ public class RelationalInfixExpression extends InfixExpression<RelationalInfixEx
 				} else {
 					throw new RuntimeException();
 				}
+			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( ">=" );
 			}
 		},
 		EQUALS() {
@@ -248,6 +268,11 @@ public class RelationalInfixExpression extends InfixExpression<RelationalInfixEx
 					return leftOperand == rightOperand;
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( "==" );
+			}
 		},
 		NOT_EQUALS() {
 			@Override
@@ -276,8 +301,15 @@ public class RelationalInfixExpression extends InfixExpression<RelationalInfixEx
 					return leftOperand != rightOperand;
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( "!=" );
+			}
 		};
 		public abstract Boolean operate( Object leftOperand, Object rightOperand );
+
+		/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 	}
 
 	public DeclarationProperty<AbstractType<?, ?, ?>> leftOperandType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
@@ -321,4 +353,10 @@ public class RelationalInfixExpression extends InfixExpression<RelationalInfixEx
 		this.rightOperandType.setValue( (AbstractType<?, ?, ?>)value );
 	}
 
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.leftOperand.getValue() );
+		this.operator.getValue().appendJava( generator );
+		generator.appendExpression( this.rightOperand.getValue() );
+	}
 }

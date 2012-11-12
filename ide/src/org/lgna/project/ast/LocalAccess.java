@@ -79,4 +79,9 @@ public class LocalAccess extends Expression {
 			return false;
 		}
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( this.local.getValue().getValidName() );
+	}
 }

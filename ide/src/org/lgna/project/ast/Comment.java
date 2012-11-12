@@ -55,4 +55,14 @@ public class Comment extends Statement {
 	public Comment( String text ) {
 		this.text.setValue( text );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		String[] lines = this.text.getValue().split( "\n" );
+		for( String line : lines ) {
+			generator.appendString( "//" );
+			generator.appendString( line );
+			generator.appendNewline();
+		}
+	}
 }

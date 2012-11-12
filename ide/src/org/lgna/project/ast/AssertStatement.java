@@ -67,4 +67,16 @@ public class AssertStatement extends Statement {
 		this.expression.setValue( expression );
 		this.message.setValue( message );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "assert " );
+		generator.appendExpression( this.expression.getValue() );
+		Expression messageValue = this.message.getValue();
+		if( messageValue != null ) {
+			generator.appendChar( ':' );
+			generator.appendExpression( messageValue );
+		}
+		generator.appendSemicolon();
+	}
 }
