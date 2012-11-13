@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.icons;
+package org.alice.ide.recyclebin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Icons {
-	private Icons() {
-		throw new AssertionError();
+public enum RecycleBinIcon implements javax.swing.Icon {
+	SINGLETON;
+
+	private static final javax.swing.Icon[] ICONS = { org.alice.ide.icons.Icons.TRASH_CAN_EMPTY_ICON, org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON };
+
+	public int getIconWidth() {
+		int rv = 0;
+		for( javax.swing.Icon icon : ICONS ) {
+			rv = Math.max( rv, icon.getIconWidth() );
+		}
+		return rv;
 	}
 
-	public static final int SMALL_WIDTH = 24;
-	public static final int SMALL_HEIGHT = 24;
+	public int getIconHeight() {
+		int rv = 0;
+		for( javax.swing.Icon icon : ICONS ) {
+			rv = Math.max( rv, icon.getIconHeight() );
+		}
+		return rv;
+	}
 
-	public static final javax.swing.Icon EMPTY_HEIGHT_ICON_SMALL = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, SMALL_HEIGHT );
-	public static final javax.swing.Icon BOOKMARK_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/256x256/bookmark.png" ) );
-	public static final javax.swing.Icon BOOKMARK_ICON_SMALL = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( BOOKMARK_ICON_LARGE, SMALL_WIDTH, SMALL_HEIGHT );
-
-	public static final javax.swing.Icon FOLDER_ICON_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/folder.png" ) );
-	public static final javax.swing.Icon FOLDER_BACK_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderBack.png" ) );
-	public static final javax.swing.Icon FOLDER_FRONT_ICON_LARGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/160x120/folderFront.png" ) );
-
-	public static final java.awt.Dimension FOLDER_ICON_LARGE_SIZE = new java.awt.Dimension( FOLDER_BACK_ICON_LARGE.getIconWidth(), FOLDER_BACK_ICON_LARGE.getIconHeight() );
-
-	public static final javax.swing.Icon NEXT_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-next.png" ) );
-	public static final javax.swing.Icon PREVIOUS_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-previous.png" ) );
-
-	public static final javax.swing.Icon TRASH_CAN_FULL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/fulltrash.png" ) );
-	public static final javax.swing.Icon TRASH_CAN_EMPTY_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/emptytrash.png" ) );
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		org.alice.ide.icons.Icons.TRASH_CAN_EMPTY_ICON.paintIcon( c, g, x, y );
+		java.awt.Paint paint;
+		final int ALPHA = 15;
+		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
+			paint = new java.awt.Color( 255, 255, 0, ALPHA );
+		} else {
+			//paint = new java.awt.Color( 0, 255, 0, ALPHA );
+			paint = null;
+		}
+		if( paint != null ) {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Paint prevPaint = g2.getPaint();
+			g2.setPaint( paint );
+			float xCenter = x + ( this.getIconWidth() * 0.5f );
+			float yCenter = y + ( this.getIconHeight() * 0.5f );
+			for( float radius = 4.0f; radius <= 16.0f; radius += 1.0f ) {
+				g2.fill( new java.awt.geom.Ellipse2D.Float( xCenter - radius, yCenter - radius, radius + radius, radius + radius ) );
+			}
+			g2.setPaint( prevPaint );
+		}
+	}
 }

@@ -126,7 +126,6 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 
 	public ClipboardDragComponent( org.lgna.croquet.DragModel dragModel ) {
 		super( dragModel );
-		this.setMinimumPreferredWidth( 40 );
 	}
 
 	public org.lgna.croquet.DropReceptor getDropReceptor() {
@@ -173,7 +172,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 40 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 32 );
 			}
 
 			@Override
