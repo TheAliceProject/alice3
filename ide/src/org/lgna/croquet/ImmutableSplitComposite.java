@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,22 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitPane extends AbstractSplitPane<org.lgna.croquet.ImmutableSplitComposite> {
-	protected SplitPane( org.lgna.croquet.ImmutableSplitComposite splitComposite, int orientation ) {
-		super( splitComposite, orientation );
+public abstract class ImmutableSplitComposite extends AbstractSplitComposite<org.lgna.croquet.components.SplitPane> {
+	public ImmutableSplitComposite( java.util.UUID id ) {
+		super( id );
 	}
 
 	@Override
-	protected javax.swing.JSplitPane createJSplitPane( int orientation ) {
-		org.lgna.croquet.ImmutableSplitComposite composite = this.getComposite();
-		org.lgna.croquet.Composite<?> leadingComposite = composite.getLeadingComposite();
-		org.lgna.croquet.Composite<?> trailingComposite = composite.getTrailingComposite();
-		return new javax.swing.JSplitPane( orientation, leadingComposite != null ? leadingComposite.getView().getAwtComponent() : null, trailingComposite != null ? trailingComposite.getView().getAwtComponent() : null );
+	protected final org.lgna.croquet.components.HorizontalSplitPane createHorizontalSplitPane() {
+		return new org.lgna.croquet.components.HorizontalSplitPane( this );
+	}
+
+	@Override
+	protected final org.lgna.croquet.components.VerticalSplitPane createVerticalSplitPane() {
+		return new org.lgna.croquet.components.VerticalSplitPane( this );
 	}
 }

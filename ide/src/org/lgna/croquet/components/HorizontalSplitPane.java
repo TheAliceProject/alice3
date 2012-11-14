@@ -47,7 +47,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class HorizontalSplitPane extends SplitPane {
-	public HorizontalSplitPane( org.lgna.croquet.SplitComposite splitComposite ) {
+	public HorizontalSplitPane( org.lgna.croquet.ImmutableSplitComposite splitComposite ) {
 		super( splitComposite, javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	}
 }

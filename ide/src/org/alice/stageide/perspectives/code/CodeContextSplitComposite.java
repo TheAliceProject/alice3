@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives.code;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
+public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitComposite {
 	private static class SingletonHolder {
 		private static CodeContextSplitComposite instance = new CodeContextSplitComposite();
 	}
@@ -54,6 +54,15 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 	public static CodeContextSplitComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			CodeContextSplitComposite.this.handleTypeStateChanged( nextValue );
+		}
+	};
 
 	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
 		public void propertyChange( java.beans.PropertyChangeEvent e ) {
@@ -76,13 +85,42 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 			}
 		}
 	};
+
+	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
+		org.lgna.croquet.Composite<?> composite;
+		if( nextValue != null ) {
+			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
+				composite = org.alice.stageide.typecontext.SceneTypeComposite.getInstance();
+			} else {
+				composite = org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance();
+			}
+			//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
+			//			if( view instanceof NonSceneTypeView ) {
+			//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
+			//				nonSceneTypeView.handlePreShow();
+			//			}
+		} else {
+			composite = null;
+		}
+		this.sceneOrNonSceneComposite.showCard( composite );
+	}
+
+	private final org.lgna.croquet.CardOwnerComposite sceneOrNonSceneComposite;
 	private int ignoreDividerChangeCount = 0;
 
 	private CodeContextSplitComposite() {
-		super(
-				java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ),
-				org.alice.stageide.typecontext.SceneOrNonSceneCardOwnerComposite.getInstance(),
-				TypeOrCodeCardOwnerComposite.getInstance() );
+		super( java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ) );
+		this.sceneOrNonSceneComposite = this.createCardOwnerComposite( org.alice.stageide.typecontext.SceneTypeComposite.getInstance(), org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance() );
+	}
+
+	@Override
+	public org.lgna.croquet.Composite<?> getLeadingComposite() {
+		return this.sceneOrNonSceneComposite;
+	}
+
+	@Override
+	public org.lgna.croquet.Composite<?> getTrailingComposite() {
+		return TypeOrCodeCardOwnerComposite.getInstance();
 	}
 
 	public void incrementIgnoreDividerLocationChangeCount() {
@@ -99,5 +137,17 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 		rv.addDividerLocationChangeListener( this.dividerLocationListener );
 		rv.setResizeWeight( 0.0 );
 		return rv;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
+		super.handlePostDeactivation();
 	}
 }
