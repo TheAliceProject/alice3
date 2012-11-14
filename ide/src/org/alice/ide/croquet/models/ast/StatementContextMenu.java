@@ -71,7 +71,7 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 		return this.statement;
 	}
 
-	private java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> updatePopupOperations( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv, org.lgna.project.ast.Statement statement ) {
+	private java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> updatePopupOperations( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv, final org.lgna.project.ast.Statement statement ) {
 		if( statement instanceof org.lgna.project.ast.Comment ) {
 			//pass
 		} else {
@@ -91,7 +91,27 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
 		rv.add( org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement ).getMenuItemPrepModel() );
 		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
+
+		org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)statement.getParent();
+		if( blockStatement != null ) {
+			rv.add( org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement ).getMenuItemPrepModel() );
+		} else {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					StringBuilder sb = new StringBuilder();
+					try {
+						java.util.Locale locale = null;
+						sb.append( statement.getRepr( locale ) );
+					} catch( Throwable t ) {
+						sb.append( statement );
+					}
+					sb.append( ";" );
+					sb.append( statement.getId() );
+					org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", sb.toString() ).getOperation().fire();
+				}
+			} );
+			//throw new org.lgna.croquet.CancelException();
+		}
 		if( statement instanceof org.lgna.project.ast.AbstractStatementWithBody ) {
 			org.lgna.project.ast.AbstractStatementWithBody statementWithBody = (org.lgna.project.ast.AbstractStatementWithBody)statement;
 			rv.add( org.alice.ide.croquet.models.ast.DissolveStatementWithBodyOperation.getInstance( statementWithBody ).getMenuItemPrepModel() );

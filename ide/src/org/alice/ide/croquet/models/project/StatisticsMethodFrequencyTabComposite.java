@@ -144,10 +144,8 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 		super( java.util.UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ) );
 
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.NamedUserType programType = ide.getStrippedProgramType();
-
 		MethodInvocationCrawler crawler = new MethodInvocationCrawler();
-		programType.crawl( crawler, true );
+		ide.crawlFilteredProgramType( crawler );
 
 		for( AbstractMethod method : crawler.getMethods() ) {
 			List<MethodInvocation> invocations = crawler.getInvocationsFor( method );

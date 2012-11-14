@@ -1,8 +1,9 @@
 package edu.cmu.cs.dennisc.matt;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lgna.common.ComponentThread;
 import org.lgna.story.HeldKeyPolicy;
@@ -15,29 +16,29 @@ import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.NumberKeyEvent;
 import org.lgna.story.event.NumberKeyPressListener;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
 public class KeyPressedHandler extends AbstractEventHandler<Object, KeyEvent> {
 
-	HashMap<Object, LinkedList<Object>> map = new HashMap<Object, LinkedList<Object>>();
+	Map<Object, CopyOnWriteArrayList<Object>> map = new ConcurrentHashMap<Object, CopyOnWriteArrayList<Object>>();
 	Object empty = new Object();
-	private HashMap<Object, HeldKeyPolicy> heldKeyMap = Collections.newHashMap();
-	private HashMap<Object, HashMap<Key, Boolean>> firePolicyMap = Collections.newHashMap();
+	private Map<Object, HeldKeyPolicy> heldKeyMap = Collections.newConcurrentHashMap();
+	private Map<Object, Map<Key, Boolean>> firePolicyMap = Collections.newConcurrentHashMap();
 	private long sleepTime = 500;
 
 	public KeyPressedHandler() {
-		map.put( empty, new LinkedList<Object>() );
+		map.put( empty, new CopyOnWriteArrayList<Object>() );
 	}
 
 	private void internalAddListener( Object keyList, MultipleEventPolicy policy, List<Key> validKeys, HeldKeyPolicy heldKeyPolicy ) {
 		heldKeyMap.put( keyList, heldKeyPolicy );
-		firePolicyMap.put( keyList, new HashMap<Key, Boolean>() );
+		firePolicyMap.put( keyList, new ConcurrentHashMap<Key, Boolean>() );
 		if( validKeys == null ) {
 			map.get( empty ).add( keyList );
 		} else {
 			for( Key k : validKeys ) {
 				if( map.get( k ) == null ) {
-					map.put( k, new LinkedList<Object>() );
+					map.put( k, new CopyOnWriteArrayList<Object>() );
 				}
 				map.get( k ).add( keyList );
 			}

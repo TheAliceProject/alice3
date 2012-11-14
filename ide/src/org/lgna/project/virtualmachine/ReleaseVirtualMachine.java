@@ -47,6 +47,7 @@ import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserParameter;
 
 /**
  * @author Dennis Cosgrove
@@ -54,7 +55,10 @@ import org.lgna.project.ast.UserMethod;
 public class ReleaseVirtualMachine extends VirtualMachine {
 	protected static abstract class AbstractFrame implements Frame {
 		private final Frame owner;
-		private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
+		private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+		//note: concurrent hashmaps cannot contain null
+		//private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
 
 		public AbstractFrame( Frame owner ) {
 			this.owner = owner;
@@ -68,12 +72,32 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 			return this.mapLocalToValue.containsKey( local );
 		}
 
+		public boolean isValidLocal( org.lgna.project.ast.UserLocal local ) {
+			if( this.contains( local ) ) {
+				return true;
+			} else {
+				if( this.owner != null ) {
+					return this.owner.isValidLocal( local );
+				} else {
+					return false;
+				}
+			}
+		}
+
+		public boolean isValidParameter( org.lgna.project.ast.UserParameter parameter ) {
+			if( this.owner != null ) {
+				return this.owner.isValidParameter( parameter );
+			} else {
+				return false;
+			}
+		}
+
 		public void push( UserLocal local, Object value ) {
 			this.mapLocalToValue.put( local, value );
 		}
 
 		public Object get( UserLocal local ) {
-			if( contains( local ) ) {
+			if( this.contains( local ) ) {
 				return this.mapLocalToValue.get( local );
 			} else {
 				if( this.owner != null ) {
@@ -94,7 +118,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 
 		public void pop( UserLocal local ) {
-			assert contains( local );
+			assert this.contains( local );
 			synchronized( this.mapLocalToValue ) {
 				this.mapLocalToValue.remove( local );
 			}
@@ -102,7 +126,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 
 		public abstract UserInstance getThis();
 
-		public abstract Object lookup( AbstractParameter parameter );
+		public abstract Object lookup( UserParameter parameter );
 
 		protected abstract void appendRepr( StringBuilder sb, boolean isFormatted );
 
@@ -140,7 +164,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 
 		@Override
-		public Object lookup( org.lgna.project.ast.AbstractParameter parameter ) {
+		public Object lookup( UserParameter parameter ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( parameter );
 			return null;
 		}
@@ -155,7 +179,12 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 
 		@Override
-		public Object lookup( AbstractParameter parameter ) {
+		public boolean isValidParameter( org.lgna.project.ast.UserParameter parameter ) {
+			return this.mapParameterToValue.containsKey( parameter );
+		}
+
+		@Override
+		public Object lookup( UserParameter parameter ) {
 			if( this.mapParameterToValue.containsKey( parameter ) ) {
 				return this.mapParameterToValue.get( parameter );
 			} else {
@@ -294,7 +323,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 		}
 
 		@Override
-		public Object lookup( AbstractParameter parameter ) {
+		public Object lookup( UserParameter parameter ) {
 			Frame owner = this.getOwner();
 			assert owner != null;
 			if( owner != null ) {
@@ -392,12 +421,22 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 
 	@Override
 	protected void setLocal( org.lgna.project.ast.UserLocal local, Object value ) {
-		getCurrentFrame().set( local, value );
+		Frame frame = this.getCurrentFrame();
+		if( frame.isValidLocal( local ) ) {
+			frame.set( local, value );
+		} else {
+			throw new LgnaVmIllegalLocalAssignmentException( this, local );
+		}
 	}
 
 	@Override
 	protected Object getLocal( org.lgna.project.ast.UserLocal local ) {
-		return getCurrentFrame().get( local );
+		Frame frame = this.getCurrentFrame();
+		if( frame.isValidLocal( local ) ) {
+			return frame.get( local );
+		} else {
+			throw new LgnaVmIllegalLocalAccessException( this, local );
+		}
 	}
 
 	@Override
@@ -413,8 +452,13 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	@Override
-	protected Object lookup( AbstractParameter parameter ) {
-		return getCurrentFrame().lookup( parameter );
+	protected Object lookup( UserParameter parameter ) {
+		Frame frame = this.getCurrentFrame();
+		if( frame.isValidParameter( parameter ) ) {
+			return frame.lookup( parameter );
+		} else {
+			throw new LgnaVmIllegalParameterAccessException( this, parameter );
+		}
 	}
 
 	@Override

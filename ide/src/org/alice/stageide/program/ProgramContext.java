@@ -79,6 +79,8 @@ public abstract class ProgramContext {
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionStartListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionEndListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
 		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
+
+		org.alice.ide.issue.UserProgramRunningStateUtilities.setUserProgramRunning( true );
 		this.programInstance = this.createProgramInstance( programType );
 	}
 
@@ -115,10 +117,7 @@ public abstract class ProgramContext {
 
 	protected void disableRendering() {
 		this.rendering = org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN;
-		org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
-		if( ide != null ) {
-			ide.getPerspectiveState().getValue().disableRendering( rendering );
-		}
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().disableRendering( rendering );
 	}
 
 	public void setActiveScene() {
@@ -138,12 +137,10 @@ public abstract class ProgramContext {
 	}
 
 	public void cleanUpProgram() {
+		org.alice.ide.issue.UserProgramRunningStateUtilities.setUserProgramRunning( false );
 		this.getProgramImp().shutDown();
 		if( this.rendering != null ) {
-			org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
-			if( ide != null ) {
-				ide.getPerspectiveState().getValue().enableRendering();
-			}
+			org.alice.stageide.perspectives.PerspectiveState.getInstance().enableRendering();
 			this.rendering = null;
 		}
 	}

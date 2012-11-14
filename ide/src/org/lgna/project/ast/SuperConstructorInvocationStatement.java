@@ -57,4 +57,11 @@ public class SuperConstructorInvocationStatement extends ConstructorInvocationSt
 	public SuperConstructorInvocationStatement( AbstractConstructor constructor, SimpleArgument[] requiredArguments, SimpleArgument[] variableArguments, JavaKeyedArgument[] keyedArguments ) {
 		super( constructor, requiredArguments, variableArguments, keyedArguments );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "super(" );
+		generator.appendArguments( this );
+		generator.appendString( ");" );
+	}
 }

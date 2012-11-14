@@ -50,20 +50,17 @@ public class ArgumentFieldSpecifiedManagedFieldDeclarationOperation extends Init
 	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.croquet.DropSite, ArgumentFieldSpecifiedManagedFieldDeclarationOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static ArgumentFieldSpecifiedManagedFieldDeclarationOperation getInstance( org.lgna.project.ast.AbstractField field, org.lgna.croquet.DropSite dropSite ) {
-		ArgumentFieldSpecifiedManagedFieldDeclarationOperation rv = mapToMap.get( field, dropSite );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ArgumentFieldSpecifiedManagedFieldDeclarationOperation( field, dropSite );
-			mapToMap.put( field, dropSite, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( field, dropSite, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractField, org.lgna.croquet.DropSite, ArgumentFieldSpecifiedManagedFieldDeclarationOperation>() {
+			public ArgumentFieldSpecifiedManagedFieldDeclarationOperation initialize( org.lgna.project.ast.AbstractField field, org.lgna.croquet.DropSite dropSite ) {
+				return new ArgumentFieldSpecifiedManagedFieldDeclarationOperation( field, dropSite );
+			}
+		} );
 	}
 
 	private static org.lgna.project.ast.InstanceCreation createInstanceCreation( org.lgna.project.ast.AbstractField argumentField ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = argumentField.getValueType();
-		org.lgna.project.ast.AbstractConstructor bogusConstructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( valueType );
-		org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( bogusConstructor.getDeclaringType().getFirstEncounteredJavaType(), (org.lgna.project.ast.JavaField)argumentField );
+		org.lgna.project.ast.JavaType abstractionType = org.alice.stageide.modelresource.EnumConstantResourceKey.getAbstractionTypeForResourceType( valueType );
+		org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( abstractionType, (org.lgna.project.ast.JavaField)argumentField );
 		org.lgna.project.ast.AbstractConstructor constructor = namedUserType.constructors.get( 0 );
 		return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField ) );
 	}

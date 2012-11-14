@@ -97,7 +97,16 @@ public abstract class TreeDirectoryViewController<T> extends PanelViewController
 	protected abstract JComponent<?> getComponentFor( T value );
 
 	protected java.util.List<T> getChildren() {
-		return this.getModel().getChildrenOfSelectedValue();
+		org.lgna.croquet.TreeSelectionState<T> model = this.getModel();
+		T node = model.getSelectedNode();
+		if( node != null ) {
+			if( model.isLeaf( node ) ) {
+				node = model.getParent( node );
+			}
+			return model.getChildren( node );
+		} else {
+			return java.util.Collections.emptyList();
+		}
 	}
 
 	protected void handleSelectionChange( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {

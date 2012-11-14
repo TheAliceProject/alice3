@@ -93,8 +93,7 @@ public class SingletonCodec<T> implements org.lgna.croquet.ItemCodec<T> {
 		}
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, T value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, T value ) {
+		sb.append( value );
 	}
 }

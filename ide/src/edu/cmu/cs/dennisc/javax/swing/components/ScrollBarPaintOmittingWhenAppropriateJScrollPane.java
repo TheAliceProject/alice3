@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.javax.swing.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends javax.swing.JScrollPane {
+public abstract class ScrollBarPaintOmittingWhenAppropriateJScrollPane extends JScrollPaneCoveringLinuxPaintBug {
 	private static boolean isPaintRequiredFor( javax.swing.JScrollBar jScrollBar ) {
 		if( jScrollBar != null ) {
 			return ( jScrollBar.getMinimum() != jScrollBar.getValue() ) || ( jScrollBar.getMaximum() != jScrollBar.getVisibleAmount() );

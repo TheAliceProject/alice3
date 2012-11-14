@@ -43,12 +43,14 @@
 
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.gallerybrowser.views.GalleryView;
+
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceTab extends GalleryTab {
-	public static final javax.swing.Icon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryBrowser.class.getResource( "images/create_person.png" ) );
-	public static final javax.swing.Icon CREATE_PERSON_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryBrowser.class.getResource( "images/create_person_24.png" ) );
+public class ResourceTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ResourceTabView> {
+	public static final javax.swing.ImageIcon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryView.class.getResource( "images/create_person.png" ) );
+	public static final javax.swing.ImageIcon CREATE_PERSON_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( GalleryView.class.getResource( "images/create_person_24.png" ) );
 
 	private static class SingletonHolder {
 		private static ResourceTab instance = new ResourceTab();
@@ -69,79 +71,87 @@ public class ResourceTab extends GalleryTab {
 	}
 
 	@Override
-	protected org.lgna.croquet.components.View<?, ?> createView() {
-		final int PAD = 4;
-		class ResourceView extends org.lgna.croquet.components.BorderPanel {
-			public ResourceView() {
-				super( PAD, 0 );
-				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
-				org.lgna.croquet.components.TextField filterTextField = FilterState.getInstance().createTextField();
-				filterTextField.setMinimumPreferredWidth( 320 );
-				filterTextField.setMaximumSizeClampedToPreferredSize( true );
-				filterTextField.scaleFont( 1.5f );
-
-				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-						.lineStart( new org.lgna.croquet.components.TreePathViewController( org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState.getInstance() ) )
-						.lineEnd( filterTextField )
-						.build();
-
-				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( new GalleryDirectoryViewController() ) {
-					@Override
-					protected javax.swing.JScrollPane createAwtComponent() {
-						return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
-					}
-				};
-				scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-				scrollPane.setBorder( null );
-				scrollPane.setBothScrollBarIncrements( 16, 160 );
-
-				org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 0, 2 );
-
-				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getOperation().createButton() );
-				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite.getInstance().getOperation().createButton() );
-
-				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddConeManagedFieldComposite.getInstance().getOperation().createButton() );
-				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite.getInstance().getOperation().createButton() );
-
-				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getOperation().createButton() );
-				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddAxesManagedFieldComposite.getInstance().getOperation().createButton() );
-
-				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddSphereManagedFieldComposite.getInstance().getOperation().createButton() );
-				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getOperation().createButton() );
-
-				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite.getInstance().getOperation().createButton() );
-				//gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
-
-				for( java.awt.Component awtComponent : gridPanel.getAwtComponent().getComponents() ) {
-					if( awtComponent instanceof javax.swing.JButton ) {
-						javax.swing.JButton jButton = (javax.swing.JButton)awtComponent;
-						jButton.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-					}
-				}
-
-				org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-						.pageStart( gridPanel )
-						.build();
-
-				if( org.alice.ide.croquet.models.ast.ExportTypeOperation.IS_READY_FOR_PRIME_TIME ) {
-					lineEndPanel.addPageEndComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton() );
-				}
-
-				org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
-						.vgap( PAD )
-						.pageStart( topPanel )
-						.center( scrollPane )
-						.build();
-
-				this.addCenterComponent( panel );
-				this.addLineEndComponent( lineEndPanel );
-
-				//todo
-				panel.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-				this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-				scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
-			}
-		}
-		return new ResourceView();
+	protected org.alice.stageide.gallerybrowser.views.ResourceTabView createView() {
+		return new org.alice.stageide.gallerybrowser.views.ResourceTabView( this );
 	}
+	//	@Override
+	//	protected org.lgna.croquet.components.View<?, ?> createView() {
+	//		final int PAD = 4;
+	//		class ResourceView extends org.lgna.croquet.components.BorderPanel {
+	//			public ResourceView() {
+	//				super( PAD, 0 );
+	//				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD, PAD, PAD, PAD ) );
+	//				org.lgna.croquet.components.TextField filterTextField = FilterState.getInstance().createTextField();
+	//				filterTextField.setMinimumPreferredWidth( 320 );
+	//				filterTextField.setMaximumSizeClampedToPreferredSize( true );
+	//				filterTextField.scaleFont( 1.5f );
+	//
+	//				org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = org.alice.stageide.modelresource.ResourceNodeTreeSelectionState.getInstance();
+	//
+	//				org.alice.stageide.modelresource.views.ModelResourceDirectoryView view = new org.alice.stageide.modelresource.views.ModelResourceDirectoryView( state );
+	//				view.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+	//				org.lgna.croquet.components.BorderPanel topPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+	//						.lineStart( new org.lgna.croquet.components.TreePathViewController( state ) )
+	//						.lineEnd( filterTextField )
+	//						.build();
+	//
+	//				org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
+	//					@Override
+	//					protected javax.swing.JScrollPane createAwtComponent() {
+	//						return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
+	//					}
+	//				};
+	//				scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
+	//				scrollPane.setBorder( null );
+	//				scrollPane.setBothScrollBarIncrements( 16, 160 );
+	//
+	//				org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 0, 2 );
+	//
+	//				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getOperation().createButton() );
+	//				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite.getInstance().getOperation().createButton() );
+	//
+	//				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddConeManagedFieldComposite.getInstance().getOperation().createButton() );
+	//				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite.getInstance().getOperation().createButton() );
+	//
+	//				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getOperation().createButton() );
+	//				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddAxesManagedFieldComposite.getInstance().getOperation().createButton() );
+	//
+	//				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddSphereManagedFieldComposite.getInstance().getOperation().createButton() );
+	//				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getOperation().createButton() );
+	//
+	//				gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite.getInstance().getOperation().createButton() );
+	//				//gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
+	//
+	//				for( java.awt.Component awtComponent : gridPanel.getAwtComponent().getComponents() ) {
+	//					if( awtComponent instanceof javax.swing.JButton ) {
+	//						javax.swing.JButton jButton = (javax.swing.JButton)awtComponent;
+	//						jButton.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+	//					}
+	//				}
+	//
+	//				org.lgna.croquet.components.BorderPanel lineEndPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+	//						.pageStart( gridPanel )
+	//						.build();
+	//
+	//				if( org.alice.ide.croquet.models.ast.ExportTypeOperation.IS_READY_FOR_PRIME_TIME ) {
+	//					lineEndPanel.addPageEndComponent( org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromImportedTypeOperation.getInstance().createButton() );
+	//				}
+	//
+	//				org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
+	//						.vgap( PAD )
+	//						.pageStart( topPanel )
+	//						.center( scrollPane )
+	//						.build();
+	//
+	//				this.addCenterComponent( panel );
+	//				this.addLineEndComponent( lineEndPanel );
+	//
+	//				//todo
+	//				panel.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+	//				this.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+	//				scrollPane.setBackgroundColor( GalleryBrowser.BACKGROUND_COLOR );
+	//			}
+	//		}
+	//		return new ResourceView();
+	//	}
 }

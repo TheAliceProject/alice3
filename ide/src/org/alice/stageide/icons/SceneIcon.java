@@ -50,6 +50,7 @@ public class SceneIcon extends org.lgna.croquet.icon.AbstractIcon {
 		super( size );
 	}
 
+	private org.alice.stageide.sceneeditor.ThumbnailGenerator thumbnailGenerator;
 	private boolean isDirty = true;
 	private java.awt.image.BufferedImage image = null;
 
@@ -59,10 +60,15 @@ public class SceneIcon extends org.lgna.croquet.icon.AbstractIcon {
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2 ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		if( this.isDirty ) {
 			try {
-				this.image = org.alice.stageide.sceneeditor.ThumbnailGenerator.createThumbnail( this.getIconWidth(), this.getIconHeight() );
+				if( this.thumbnailGenerator != null ) {
+					//pass
+				} else {
+					this.thumbnailGenerator = new org.alice.stageide.sceneeditor.ThumbnailGenerator( this.getIconWidth(), this.getIconHeight() );
+				}
+				this.image = this.thumbnailGenerator.createThumbnail();
 			} catch( Throwable t ) {
 				this.image = null;
 				t.printStackTrace();

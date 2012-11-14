@@ -88,13 +88,18 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 
 		@Override
 		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step ) {
-			org.alice.ide.common.AbstractStatementPane pane = (org.alice.ide.common.AbstractStatementPane)step.getDragSource();
-			org.lgna.project.ast.Statement statement = pane.getStatement();
-			boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
-			if( isCopy ) {
-				return org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement );
+			org.lgna.croquet.DragModel dragModel = step.getModel();
+			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
+				org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
+				org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
+				boolean isCopy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( step.getLatestMouseEvent() );
+				if( isCopy ) {
+					return org.alice.ide.clipboard.CopyToClipboardOperation.getInstance( statement );
+				} else {
+					return org.alice.ide.clipboard.CutToClipboardOperation.getInstance( statement );
+				}
 			} else {
-				return org.alice.ide.clipboard.CutToClipboardOperation.getInstance( statement );
+				return null;
 			}
 		}
 
@@ -121,7 +126,6 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 
 	public ClipboardDragComponent( org.lgna.croquet.DragModel dragModel ) {
 		super( dragModel );
-		this.setMinimumPreferredWidth( 40 );
 	}
 
 	public org.lgna.croquet.DropReceptor getDropReceptor() {
@@ -168,7 +172,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 40 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 32 );
 			}
 
 			@Override

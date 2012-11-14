@@ -2477,8 +2477,61 @@ public class MigrationManager {
 
 					"org.lgna.story.resources.marinemammal.Walrus",
 					"org.lgna.story.resources.marinemammal.WalrusResource"
-			)
+			),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.35.0.0" ),
+					new org.lgna.project.Version( "3.1.38.0.0" )
+			),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.38.0.0" ),
+					new org.lgna.project.Version( "3.1.39.0.0" ),
+
+					"org.lgna.story.event.MouseClickOnScreenListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener",
+					"org.lgna.story.event.MouseClickOnScreenListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnScreenListener",
+
+					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseButtonListener",
+					"org.lgna.story.event.MouseClickOnObjectListener\"/><type name=\"\\[Lorg.lgna.story.AddMouseClickOnObjectListener"
+			),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.39.0.0" ),
+					new org.lgna.project.Version( "3.1.48.0.0" ),
+
+					"BILLY_GOAT",
+					"BIG_HORNS"
+			),
+
 	};
+	private static final AstMigration[] astMigrations = {
+			new org.lgna.project.migration.MethodInvocationAstMigration(
+					new org.lgna.project.Version( "3.1.38.0.0" ),
+					new org.lgna.project.Version( "3.1.39.0.0" )
+			) {
+				@Override
+				protected void migrate( org.lgna.project.ast.MethodInvocation methodInvocation ) {
+					org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
+					if( method instanceof org.lgna.project.ast.JavaMethod ) {
+						org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
+						if( javaMethod.getDeclaringType() == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SScene.class ) ) {
+							String methodName = javaMethod.getName();
+							if( methodName.equals( "addMouseClickOnScreenListener" ) ) {
+								for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
+									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
+								}
+								methodInvocation.keyedArguments.clear();
+								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD );
+							} else if( methodName.equals( "addMouseClickOnObjectListener" ) ) {
+								for( org.lgna.project.ast.AbstractArgument argument : methodInvocation.keyedArguments ) {
+									edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "ALERT: migration removing", argument );
+								}
+								methodInvocation.keyedArguments.clear();
+								methodInvocation.method.setValue( org.alice.ide.declarationseditor.events.MouseEventListenerMenu.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD );
+							}
+						}
+					}
+				}
+			}
+	};
+
 	private static final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections
 			.newCopyOnWriteArrayList();
 
@@ -2494,16 +2547,21 @@ public class MigrationManager {
 		String rv = source;
 		for( TextMigration textMigration : textMigrations ) {
 			if( textMigration.isApplicable( version ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
 				rv = textMigration.migrate( rv );
 				version = textMigration.getResultVersion();
 			}
 		}
-
-		for( Migration versionIndependentMigration : versionIndependentMigrations ) {
-			rv = versionIndependentMigration.migrate( rv );
-		}
-
 		return rv;
+	}
+
+	public static void migrate( org.lgna.project.ast.NamedUserType programType, org.lgna.project.Version version ) {
+		for( AstMigration astMigration : astMigrations ) {
+			if( astMigration.isApplicable( version ) ) {
+				astMigration.migrate( programType );
+				version = astMigration.getResultVersion();
+			}
+		}
 	}
 
 	public static void addVersionIndependentMigration( Migration migration ) {

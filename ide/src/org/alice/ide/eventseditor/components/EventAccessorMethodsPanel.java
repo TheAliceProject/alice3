@@ -46,13 +46,13 @@ package org.alice.ide.eventseditor.components;
  * @author Dennis Cosgrove
  */
 public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineAxisPanel {
-	public EventAccessorMethodsPanel( org.lgna.project.ast.AbstractCode code ) {
-		for( org.lgna.project.ast.AbstractParameter parameter : code.getRequiredParameters() ) {
+	public EventAccessorMethodsPanel( org.lgna.project.ast.UserCode code ) {
+		for( org.lgna.project.ast.UserParameter parameter : code.getRequiredParamtersProperty() ) {
 			this.addComponentsForParameter( parameter );
 		}
 	}
 
-	private void addComponentsForParameter( org.lgna.project.ast.AbstractParameter parameter ) {
+	private void addComponentsForParameter( org.lgna.project.ast.UserParameter parameter ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = parameter.getValueType();
 		while( type != null ) {
 			for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
@@ -68,5 +68,4 @@ public class EventAccessorMethodsPanel extends org.lgna.croquet.components.LineA
 			}
 		}
 	}
-
 }

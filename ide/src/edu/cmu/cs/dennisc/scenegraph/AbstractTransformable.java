@@ -126,7 +126,7 @@ public abstract class AbstractTransformable extends Composite {
 			//			applyTransformation( transformation, asSeenBy, affectMask );
 		} else {
 			Composite vehicle = getVehicle();
-			assert vehicle != null;
+			assert vehicle != null : this;
 
 			//todo: optimize
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = new edu.cmu.cs.dennisc.math.AffineMatrix4x4( vehicle.getInverseAbsoluteTransformation() );

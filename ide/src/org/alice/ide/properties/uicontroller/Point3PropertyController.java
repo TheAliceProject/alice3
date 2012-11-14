@@ -290,7 +290,7 @@ public class Point3PropertyController extends AbstractAdapterController<Point3>
 					{
 						SetValueOperation<Point3> operation = new SetPoint3Operation( this.propertyAdapter, newPoint );
 						operation.setName( newPoint.toString() );
-						operation.fire( e );
+						operation.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 					}
 				}
 			}

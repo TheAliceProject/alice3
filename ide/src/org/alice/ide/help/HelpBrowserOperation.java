@@ -45,18 +45,8 @@ package org.alice.ide.help;
 /**
  * @author Dennis Cosgrove
  */
-public final class HelpBrowserOperation extends org.alice.ide.browser.BrowserOperation {
+public final class HelpBrowserOperation extends org.alice.ide.browser.ImmutableBrowserOperation {
 	public HelpBrowserOperation() {
-		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ) );
-	}
-
-	@Override
-	protected java.net.URL getUrl() {
-		String path = "http://help.alice.org/";
-		try {
-			return new java.net.URL( path );
-		} catch( java.net.MalformedURLException murle ) {
-			throw new RuntimeException( path, murle );
-		}
+		super( java.util.UUID.fromString( "5a1b1db2-da93-4c85-bca5-e1796bd07d00" ), "http://help.alice.org/" );
 	}
 }

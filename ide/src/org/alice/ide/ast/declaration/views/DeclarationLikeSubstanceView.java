@@ -58,10 +58,31 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 
 	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {
 		final org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<?>)this.getComposite();
-		return new org.lgna.croquet.components.RowSpringPanel() {
+		org.lgna.croquet.components.FormPanel rv = new org.lgna.croquet.components.FormPanel() {
 			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.SpringRow> rows ) {
+			protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+				java.awt.LayoutManager rv = super.createLayoutManager( jPanel );
+				if( rv instanceof net.miginfocom.swing.MigLayout ) {
+					net.miginfocom.swing.MigLayout migLayout = (net.miginfocom.swing.MigLayout)rv;
+					migLayout.setRowConstraints( "[]20[]10[]" );
+				}
+				return rv;
+			}
+
+			@Override
+			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
 				org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
+
+				org.lgna.croquet.BooleanState isFinalState = composite.getIsFinalState();
+				if( isFinalState != null ) {
+					rows.add( new org.lgna.croquet.components.LabeledFormRow(
+							isFinalState.getSidekickLabel(),
+							isFinalState.createVerticalRadioButtons( false ),
+							org.lgna.croquet.components.VerticalAlignment.TOP
+							)
+							);
+				}
+
 				if( composite.isValueComponentTypeDisplayed() ) {
 					org.lgna.croquet.CustomItemState<org.lgna.project.ast.AbstractType> valueComponentTypeState = composite.getValueComponentTypeState();
 					org.lgna.croquet.BooleanState valueIsArrayTypeState = composite.getValueIsArrayTypeState();
@@ -84,7 +105,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 								component = new org.alice.ide.croquet.components.TypeView( valueComponentTypeState, valueIsArrayTypeState.getValue() );
 							}
 						}
-						rows.add( new org.lgna.croquet.components.LabeledSpringRow(
+						rows.add( new org.lgna.croquet.components.LabeledFormRow(
 								valueComponentTypeState.getSidekickLabel(),
 								component,
 								false
@@ -95,7 +116,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 				org.lgna.croquet.StringState nameState = composite.getNameState();
 				if( nameState != null ) {
 					nameTextField = nameState.createTextField();
-					rows.add( new org.lgna.croquet.components.LabeledSpringRow(
+					rows.add( new org.lgna.croquet.components.LabeledFormRow(
 							nameState.getSidekickLabel(),
 							nameTextField
 							) );
@@ -110,7 +131,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 						} else {
 							component = factory.createExpressionPane( initializerState.getValue() );
 						}
-						rows.add( new org.lgna.croquet.components.LabeledSpringRow(
+						rows.add( new org.lgna.croquet.components.LabeledFormRow(
 								initializerState.getSidekickLabel(),
 								component,
 								false
@@ -119,12 +140,13 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 				}
 			}
 		};
+		return rv;
 	}
 
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
-		return new org.lgna.croquet.components.BorderPanel.Builder().
-				pageStart( this.createPageStartComponent() )
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+				.pageStart( this.createPageStartComponent() )
 				.build();
 
 	}

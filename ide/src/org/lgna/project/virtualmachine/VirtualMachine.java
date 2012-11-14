@@ -62,7 +62,7 @@ public abstract class VirtualMachine {
 
 	protected abstract void popFrame();
 
-	protected abstract Object lookup( org.lgna.project.ast.AbstractParameter parameter );
+	protected abstract Object lookup( org.lgna.project.ast.UserParameter parameter );
 
 	protected abstract void pushLocal( org.lgna.project.ast.UserLocal local, Object value );
 
@@ -403,7 +403,7 @@ public abstract class VirtualMachine {
 		if( ( 0 <= index ) && ( index < length ) ) {
 			//pass
 		} else {
-			throw new LgnaArrayIndexOutOfBoundsException( this, index, length );
+			throw new LgnaVmArrayIndexOutOfBoundsException( this, index, length );
 		}
 	}
 
@@ -452,7 +452,7 @@ public abstract class VirtualMachine {
 			if( method.isProcedure() ) {
 				return null;
 			} else {
-				throw new LgnaNoReturnException( this );
+				throw new LgnaVmNoReturnException( this );
 			}
 		} catch( ReturnException re ) {
 			return re.getValue();
@@ -483,16 +483,21 @@ public abstract class VirtualMachine {
 			assert adapterCls != null;
 			mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( adapterCls, mthd.getName(), mthd.getParameterTypes() );
 		}
-		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( mthd );
-		//		try {
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, mthd, arguments );
-		//		} catch( RuntimeException re ) {
-		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: could not invoke ", method );
-		//			for( Object argument : arguments ) {
-		//				edu.cmu.cs.dennisc.print.PrintUtilities.println( argument );
-		//			}
-		//			return null;
-		//		}
+		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( mthd ) : mthd;
+
+		try {
+			return mthd.invoke( instance, arguments );
+		} catch( IllegalAccessException iae ) {
+			throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), iae );
+		} catch( java.lang.reflect.InvocationTargetException ite ) {
+			Throwable throwable = ite.getTargetException();
+			if( throwable instanceof RuntimeException ) {
+				RuntimeException re = (RuntimeException)throwable;
+				throw re;
+			} else {
+				throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), throwable );
+			}
+		}
 	}
 
 	protected Object invoke( Object instance, org.lgna.project.ast.AbstractMethod method, Object... arguments ) {
@@ -603,7 +608,19 @@ public abstract class VirtualMachine {
 	protected Boolean evaluateRelationalInfixExpression( org.lgna.project.ast.RelationalInfixExpression relationalInfixExpression ) {
 		Object leftOperand = UserInstance.getJavaInstanceIfNecessary( this.evaluate( relationalInfixExpression.leftOperand.getValue() ) );
 		Object rightOperand = UserInstance.getJavaInstanceIfNecessary( this.evaluate( relationalInfixExpression.rightOperand.getValue() ) );
-		return relationalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+		if( leftOperand != null ) {
+			if( rightOperand != null ) {
+				return relationalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+			} else {
+				throw new LgnaVmNullPointerException( "right operand is null.", this );
+			}
+		} else {
+			if( rightOperand != null ) {
+				throw new LgnaVmNullPointerException( "left operand is null.", this );
+			} else {
+				throw new LgnaVmNullPointerException( "left and right operands are both null.", this );
+			}
+		}
 	}
 
 	protected Object evaluateShiftInfixExpression( org.lgna.project.ast.ShiftInfixExpression shiftInfixExpression ) {

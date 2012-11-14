@@ -71,8 +71,7 @@ public enum KeyCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.Key> {
 		}
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.story.Key value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, org.lgna.story.Key value ) {
+		sb.append( value );
 	}
 }

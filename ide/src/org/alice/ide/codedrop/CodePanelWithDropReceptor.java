@@ -51,7 +51,7 @@ import org.alice.ide.x.components.StatementListPropertyView;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.components.BorderPanel implements java.awt.print.Printable {
+public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.components.BorderPanel {
 	protected class InternalDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
 
@@ -406,5 +406,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 	public abstract org.lgna.project.ast.AbstractCode getCode();
 
 	public abstract org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite );
+
+	public abstract java.awt.print.Printable getPrintable();
 
 }

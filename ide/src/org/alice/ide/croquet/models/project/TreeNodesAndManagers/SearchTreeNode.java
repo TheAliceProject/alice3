@@ -150,18 +150,19 @@ public class SearchTreeNode implements Comparable<SearchTreeNode> {
 		return new ItemCodec<SearchTreeNode>() {
 
 			public Class<SearchTreeNode> getValueClass() {
-				return null;
+				return SearchTreeNode.class;
 			}
 
 			public SearchTreeNode decodeValue( BinaryDecoder binaryDecoder ) {
-				return null;
+				throw new RuntimeException( "todo" );
 			}
 
 			public void encodeValue( BinaryEncoder binaryEncoder, SearchTreeNode value ) {
+				throw new RuntimeException( "todo" );
 			}
 
-			public StringBuilder appendRepresentation( StringBuilder rv, SearchTreeNode value ) {
-				return null;
+			public void appendRepresentation( StringBuilder sb, SearchTreeNode value ) {
+				sb.append( value );
 			}
 
 		};

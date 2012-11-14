@@ -62,18 +62,20 @@ public enum AccessLevel {
 	//		}
 	//		return rv;
 	//	}
-	PUBLIC( java.lang.reflect.Modifier.PUBLIC ),
-	PROTECTED( java.lang.reflect.Modifier.PROTECTED ),
-	PRIVATE( java.lang.reflect.Modifier.PRIVATE ),
-	PACKAGE();
-	private int[] m_modifiers;
+	PUBLIC( "public ", java.lang.reflect.Modifier.PUBLIC ),
+	PROTECTED( "protected ", java.lang.reflect.Modifier.PROTECTED ),
+	PRIVATE( "private ", java.lang.reflect.Modifier.PRIVATE ),
+	PACKAGE( "/*package-private*/ " );
+	private final String text;
+	private final int[] modifiers;
 
-	AccessLevel( int... modifiers ) {
-		m_modifiers = modifiers;
+	AccessLevel( String text, int... modifiers ) {
+		this.text = text;
+		this.modifiers = modifiers;
 	}
 
 	public java.util.Collection<Integer> updateModifiers( java.util.Collection<Integer> rv ) {
-		for( int modifier : m_modifiers ) {
+		for( int modifier : this.modifiers ) {
 			rv.add( modifier );
 		}
 		return rv;
@@ -91,4 +93,9 @@ public enum AccessLevel {
 			return AccessLevel.PACKAGE;
 		}
 	}
+
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( this.text );
+	}
+
 }

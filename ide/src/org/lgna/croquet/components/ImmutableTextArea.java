@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ImmutableTextArea extends ImmutableTextComponent<javax.swing.JTextArea> {
-	public ImmutableTextArea( org.lgna.croquet.PlainStringValue value ) {
-		super( value );
+	public ImmutableTextArea( org.lgna.croquet.PlainStringValue value, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		super( value, fontScalar, textAttributes );
 	}
 
 	@Override

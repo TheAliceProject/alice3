@@ -47,19 +47,14 @@ package org.alice.stageide.cascade;
  * @author Dennis Cosgrove
  */
 public class JointExpressionFillIn extends org.alice.ide.croquet.models.cascade.MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.Expression, org.lgna.project.ast.AbstractMethod, JointExpressionFillIn> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.Expression, org.lgna.project.ast.AbstractMethod, JointExpressionFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static JointExpressionFillIn getInstance( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
-		synchronized( map ) {
-			JointExpressionFillIn rv = map.get( expression, method );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new JointExpressionFillIn( expression, method );
-				map.put( expression, method, rv );
+		return mapToMap.getInitializingIfAbsent( expression, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.Expression, org.lgna.project.ast.AbstractMethod, JointExpressionFillIn>() {
+			public JointExpressionFillIn initialize( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {
+				return new JointExpressionFillIn( expression, method );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private JointExpressionFillIn( org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractMethod method ) {

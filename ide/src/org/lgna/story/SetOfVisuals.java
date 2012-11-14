@@ -42,11 +42,13 @@
  */
 package org.lgna.story;
 
+import edu.cmu.cs.dennisc.matt.MouseClickedHandler;
+
 /**
  * @author Matt May
  */
-public class SetOfVisuals implements AddMouseButtonListener.Detail {
-	private static final Visual[] DEFAULT_VALUE = null;
+public class SetOfVisuals implements AddMouseClickOnObjectListener.Detail {
+	private static final Visual[] DEFAULT_VALUE = MouseClickedHandler.ALL_VISUALS;
 	private final Visual[] value;
 
 	public SetOfVisuals( Visual... value ) {

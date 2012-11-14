@@ -63,4 +63,20 @@ public class PerspectiveState extends org.lgna.croquet.DefaultListSelectionState
 				0,
 				org.alice.stageide.perspectives.CodePerspective.getInstance(), SetupScenePerspective.getInstance() );
 	}
+
+	private java.util.Stack<org.alice.ide.ReasonToDisableSomeAmountOfRendering> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+
+	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+		this.stack.push( reasonToDisableSomeAmountOfRendering );
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().disableRendering( reasonToDisableSomeAmountOfRendering );
+	}
+
+	public void enableRendering() {
+		if( this.stack.isEmpty() ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		} else {
+			org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = this.stack.pop();
+			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().enableRendering( reasonToDisableSomeAmountOfRendering );
+		}
+	}
 }

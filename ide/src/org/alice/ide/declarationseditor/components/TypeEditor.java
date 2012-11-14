@@ -120,11 +120,19 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 			;
 		}
 
+		backwardFowardComponent.setMaximumSizeClampedToPreferredSize( true );
+
 		org.lgna.croquet.components.LineAxisPanel headerTrailingComponent = new org.lgna.croquet.components.LineAxisPanel(
 				backwardFowardComponent,
 				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
 				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
 				);
+
+		final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
+		if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
+			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBin() );
+		}
+		headerTrailingComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 0, 2 ) );
 		this.tabbedPane = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().createFolderTabbedPane();
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
 		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();

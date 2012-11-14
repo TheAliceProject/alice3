@@ -60,9 +60,12 @@ import org.lgna.story.SSphere;
 import org.lgna.story.SSun;
 import org.lgna.story.SThing;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.event.MouseClickOnScreenListener;
+import org.lgna.story.event.CollisionStartListener;
+import org.lgna.story.event.MouseClickOnObjectEvent;
+import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
+import org.lgna.story.event.StartCollisionEvent;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.sims2.AdultPersonResource;
 import org.lgna.story.resources.sims2.BaseEyeColor;
@@ -241,12 +244,21 @@ class SnowScene extends SScene {
 		} );
 		SThing[] groupOne = { ogre };
 		SThing[] groupTwo = { susan };
-		this.addMouseClickOnScreenListener( new MouseClickOnScreenListener() {
+		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
 
-			public void mouseClicked() {
-				ogre.touch( susan.getNeck() );
+			public void mouseClicked( MouseClickOnObjectEvent e ) {
+				e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
+				e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
 			}
 		} );
+		this.addCollisionStartListener( new CollisionStartListener() {
+
+			public void collisionStarted( StartCollisionEvent e ) {
+				System.out.println( e.getModels()[ 0 ] );
+				System.out.println( e.getModels()[ 1 ] );
+			}
+		}, groupOne, groupTwo );
+
 		//		this.addCollisionStartListener( new CollisionStartListener() {
 		//
 		//			public void collisionStarted( StartCollisionEvent e ) {

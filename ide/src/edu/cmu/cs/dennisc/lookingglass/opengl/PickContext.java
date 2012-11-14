@@ -79,13 +79,13 @@ public class PickContext extends Context {
 		gl.glVertex3d( vertex.position.x, vertex.position.y, vertex.position.z );
 	}
 
-	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
+	public void pickScene( AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapter, SceneAdapter sceneAdapter, PickParameters pickParameters ) {
 		gl.glMatrixMode( GL_MODELVIEW );
 		synchronized( cameraAdapter ) {
 			gl.glLoadMatrixd( cameraAdapter.accessInverseAbsoluteTransformationAsBuffer() );
 		}
 		m_pickNameMap.clear();
-		sceneAdapter.pick( this, pickParameters, conformanceTestResults );
+		sceneAdapter.pick( this, pickParameters );
 	}
 
 	@Override

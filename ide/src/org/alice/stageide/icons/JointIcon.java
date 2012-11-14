@@ -73,7 +73,7 @@ public class JointIcon extends ShapeIcon {
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		final float INSET_X = this.jointWidth;
 		final float INSET_Y = this.jointHeight;
 		final float JOINT_A_X = INSET_X;

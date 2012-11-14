@@ -46,19 +46,14 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class AddProcedureComposite extends AddMethodComposite {
-	private static java.util.Map<org.lgna.project.ast.UserType<?>, AddProcedureComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddProcedureComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static AddProcedureComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
-		synchronized( map ) {
-			AddProcedureComposite rv = map.get( declaringType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new AddProcedureComposite( declaringType );
-				map.put( declaringType, rv );
+		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddProcedureComposite>() {
+			public AddProcedureComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
+				return new AddProcedureComposite( declaringType );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private AddProcedureComposite( org.lgna.project.ast.UserType<?> declaringType ) {
@@ -118,7 +113,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 	}
 
 	@Override
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
 		assert ownerEdit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : ownerEdit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)ownerEdit;
 		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
@@ -129,7 +124,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 	}
 
 	@Override
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws org.lgna.croquet.UnsupportedGenerationException {
 		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
 		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : edit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;

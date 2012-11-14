@@ -55,6 +55,6 @@ public class IsExposingReassignableStatusState extends org.lgna.croquet.preferen
 	}
 
 	private IsExposingReassignableStatusState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "81c41ccf-657e-4e95-ae96-67c90b7075b5" ), false );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "81c41ccf-657e-4e95-ae96-67c90b7075b5" ), true );
 	}
 }

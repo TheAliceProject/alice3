@@ -48,10 +48,6 @@ package test.ik.croquet.codecs;
  */
 public enum BoneCodec implements org.lgna.croquet.ItemCodec<org.lgna.ik.solver.Bone> {
 	SINGLETON;
-	public StringBuilder appendRepresentation( StringBuilder rv, org.lgna.ik.solver.Bone value ) {
-		return rv;
-	}
-
 	public org.lgna.ik.solver.Bone decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		throw new RuntimeException();
 	}
@@ -62,5 +58,9 @@ public enum BoneCodec implements org.lgna.croquet.ItemCodec<org.lgna.ik.solver.B
 
 	public java.lang.Class<org.lgna.ik.solver.Bone> getValueClass() {
 		return org.lgna.ik.solver.Bone.class;
+	}
+
+	public void appendRepresentation( StringBuilder sb, org.lgna.ik.solver.Bone value ) {
+		sb.append( value );
 	}
 }

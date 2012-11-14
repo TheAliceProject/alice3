@@ -465,7 +465,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) {
+		public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) throws org.lgna.croquet.UnsupportedGenerationException {
 			org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
 			CascadeFillIn<T, ?> fillIn = this.customizer.getFillInFor( nextValue );
 			if( fillIn != null ) {
@@ -508,6 +508,12 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 			}
 			rv.setResizeWeight( this.resizeWeight );
 			return rv;
+		}
+	}
+
+	private static final class InternalCardOwnerComposite extends CardOwnerComposite {
+		private InternalCardOwnerComposite( Composite<?>... cards ) {
+			super( java.util.UUID.fromString( "3a6b3b22-9c35-473b-96cf-f69640176948" ), cards );
 		}
 	}
 
@@ -566,6 +572,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	private java.util.Map<Key, InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalCustomItemState> mapKeyToItemState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	//	private java.util.Map<Key, InternalCardOwnerComposite> mapKeyToCardOwnerComposite = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private void localizeSidekicks( java.util.Map<Key, ? extends AbstractCompletionModel>... maps ) {
 		for( java.util.Map<Key, ? extends AbstractCompletionModel> map : maps ) {
@@ -745,5 +753,9 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 	protected SplitComposite createVerticalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
 		return new InternalSplitComposite( leadingComposite, trailingComposite, false, resizeWeight );
+	}
+
+	protected CardOwnerComposite createCardOwnerComposite( Composite<?>... cards ) {
+		return new InternalCardOwnerComposite( cards );
 	}
 }

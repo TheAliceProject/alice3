@@ -265,7 +265,7 @@ public abstract class Note extends org.lgna.croquet.components.JComponent<javax.
 			if( e.getClickCount() == 2 ) {
 				org.lgna.croquet.Operation nextOperation = getNextOperation();
 				if( nextOperation != null ) {
-					nextOperation.fire( e );
+					nextOperation.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
 				}
 			}
 		}

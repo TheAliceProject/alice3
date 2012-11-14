@@ -43,6 +43,14 @@
 
 package org.alice.stageide.typecontext;
 
+enum SceneTypeCallable implements java.util.concurrent.Callable<org.lgna.project.ast.NamedUserType> {
+	SINGLEON() {
+		public org.lgna.project.ast.NamedUserType call() throws java.lang.Exception {
+			return org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
+		}
+	};
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,6 +65,10 @@ public class NonSceneTypeComposite extends org.lgna.croquet.SimpleComposite<org.
 
 	private NonSceneTypeComposite() {
 		super( java.util.UUID.fromString( "866337e5-9309-4f31-9214-c319056e705d" ) );
+	}
+
+	public org.lgna.croquet.Operation getSelectSceneTypeOperation() {
+		return org.alice.ide.declarationseditor.TypeState.getInstance().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
 	}
 
 	@Override

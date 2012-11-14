@@ -81,8 +81,8 @@ public abstract class JointImp extends AbstractTransformableImp {
 	public abstract boolean isFreeInZ();
 
 	@Override
-	public void setVehicle( EntityImp vehicle ) {
-		assert vehicle != this;
+	protected void postCheckSetVehicle( org.lgna.story.implementation.EntityImp vehicle ) {
+		//note: do not call super
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
 	}
 

@@ -202,6 +202,13 @@ public class HandleManager implements ManipulationListener {
 		return true;
 	}
 
+	public void clear() {
+		for( ManipulationHandle handle : this.handles )
+		{
+			handle.clear();
+		}
+	}
+
 	public void setSelectedObject( AbstractTransformable selectedObject )
 	{
 		//		PrintUtilities.println("Setting handle selected object to "+selectedObject);

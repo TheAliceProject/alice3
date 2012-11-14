@@ -50,6 +50,33 @@ public class IconFactoryManager {
 		public org.lgna.croquet.icon.IconFactory createIconFactory();
 	}
 
+	private static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> setOfClassesWithIcons = edu.cmu.cs.dennisc.java.util.Collections.newHashSet(
+			org.lgna.story.resources.BipedResource.class,
+			org.lgna.story.resources.FishResource.class,
+			org.lgna.story.resources.FlyerResource.class,
+			org.lgna.story.resources.PropResource.class,
+			org.lgna.story.resources.QuadrupedResource.class,
+			org.lgna.story.resources.SwimmerResource.class,
+			org.lgna.story.resources.MarineMammalResource.class
+			);
+
+	public static java.util.Set<Class<? extends org.lgna.story.resources.JointedModelResource>> getSetOfClassesWithIcons() {
+		return setOfClassesWithIcons;
+	}
+
+	private static javax.swing.ImageIcon getIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "images/" );
+		sb.append( cls.getName().replace( ".", "/" ) );
+		sb.append( ".png" );
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel.class.getResource( sb.toString() ) );
+	}
+
+	private static javax.swing.ImageIcon getIcon( Class<?> cls ) {
+		return getIcon( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	}
+
 	private static abstract class UrlResourceDeclaration implements ResourceDeclaration {
 		protected abstract Class<? extends org.lgna.story.resources.ModelResource> getModelResourceClass();
 
@@ -61,14 +88,19 @@ public class IconFactoryManager {
 			if( modelResourceName != null ) {
 				//pass
 			} else {
-				if( org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode.getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
-					javax.swing.ImageIcon imageIcon = org.alice.ide.croquet.models.gallerybrowser.TypeGalleryNode.getIcon( modelResourceCls );
-					return new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
+				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
+					javax.swing.ImageIcon imageIcon = getIcon( modelResourceCls );
+					return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
 				}
 			}
 			java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
 			if( url != null ) {
-				return new org.lgna.croquet.icon.ImageIconFactory( url );
+				org.lgna.croquet.icon.IconFactory iconFactory = new org.lgna.croquet.icon.ImageIconFactory( url );
+				if( modelResourceName != null ) {
+					return iconFactory;
+				} else {
+					return new FolderIconFactory( iconFactory );
+				}
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
 				return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
@@ -163,7 +195,8 @@ public class IconFactoryManager {
 				try {
 					java.awt.image.BufferedImage image = org.lgna.story.resourceutilities.ThumbnailMaker.getInstance().createThumbnailFromPersonResource( personResource );
 					return new org.lgna.croquet.icon.ImageIconFactory( image );
-				} catch( Exception e ) {
+				} catch( Throwable t ) {
+					t.printStackTrace();
 					return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
 				}
 			} else {

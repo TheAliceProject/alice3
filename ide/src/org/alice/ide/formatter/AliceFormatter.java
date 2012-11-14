@@ -139,4 +139,9 @@ public class AliceFormatter extends Formatter {
 	public String getNameForField( java.lang.reflect.Field fld ) {
 		return fld.getName();
 	}
+
+	@Override
+	public String getFinalText() {
+		return "permanently set";
+	}
 }

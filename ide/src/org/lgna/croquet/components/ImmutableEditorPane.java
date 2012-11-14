@@ -47,8 +47,8 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ImmutableEditorPane extends ImmutableTextComponent<javax.swing.JEditorPane> {
-	public ImmutableEditorPane( org.lgna.croquet.HtmlStringValue value ) {
-		super( value );
+	public ImmutableEditorPane( org.lgna.croquet.HtmlStringValue value, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		super( value, fontScalar, textAttributes );
 	}
 
 	@Override

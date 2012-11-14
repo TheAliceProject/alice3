@@ -50,16 +50,11 @@ public class RelationalExpressionLeftAndRightOperandsFillIn extends ExpressionFi
 	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> operandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {
-		synchronized( mapToMap ) {
-			RelationalExpressionLeftAndRightOperandsFillIn rv = mapToMap.get( operandType, operator );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new RelationalExpressionLeftAndRightOperandsFillIn( operandType, operator );
-				mapToMap.put( operandType, operator, rv );
+		return mapToMap.getInitializingIfAbsent( operandType, operator, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.RelationalInfixExpression.Operator, RelationalExpressionLeftAndRightOperandsFillIn>() {
+			public RelationalExpressionLeftAndRightOperandsFillIn initialize( org.lgna.project.ast.AbstractType<?, ?, ?> operandType, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {
+				return new RelationalExpressionLeftAndRightOperandsFillIn( operandType, operator );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	public static RelationalExpressionLeftAndRightOperandsFillIn getInstance( Class<?> operandCls, org.lgna.project.ast.RelationalInfixExpression.Operator operator ) {

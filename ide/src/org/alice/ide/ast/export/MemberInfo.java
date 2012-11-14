@@ -111,7 +111,7 @@ public class MemberInfo<D extends org.lgna.project.ast.Member> extends Declarati
 	/* package-private */void updateDependencies() {
 		this.dependencies = new Dependencies();
 		this.declaringTypeInfo = this.getProjectInfo().getInfoForType( (org.lgna.project.ast.UserType<?>)this.getDeclaration().getDeclaringType() );
-		this.getDeclaration().crawl( this.dependencies, org.lgna.project.ast.CrawlPolicy.INCLUDE_REFERENCES_BUT_DO_NOT_TUNNEL );
+		this.getDeclaration().crawl( this.dependencies, org.lgna.project.ast.CrawlPolicy.INCLUDE_REFERENCES_BUT_DO_NOT_TUNNEL, null );
 		this.getCheckBox().setToolTipText( this.dependencies.getToolTipText() );
 	}
 

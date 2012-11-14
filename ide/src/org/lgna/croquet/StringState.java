@@ -48,12 +48,17 @@ package org.lgna.croquet;
 public abstract class StringState extends State<String> {
 	public class SwingModel {
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
+		private final javax.swing.text.DefaultCaret caret = new javax.swing.text.DefaultCaret();
 
 		private SwingModel() {
 		}
 
 		public javax.swing.text.Document getDocument() {
 			return this.document;
+		}
+
+		public javax.swing.text.DefaultCaret getCaret() {
+			return this.caret;
 		}
 	}
 
@@ -101,9 +106,8 @@ public abstract class StringState extends State<String> {
 	}
 
 	@Override
-	public StringBuilder appendRepresentation( StringBuilder rv, String value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, String value ) {
+		sb.append( value );
 	}
 
 	@Override
@@ -200,11 +204,15 @@ public abstract class StringState extends State<String> {
 	}
 
 	public void selectAll() {
-		for( org.lgna.croquet.components.Component component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
-			if( component instanceof org.lgna.croquet.components.TextComponent ) {
-				org.lgna.croquet.components.TextComponent textComponent = (org.lgna.croquet.components.TextComponent)component;
-				textComponent.selectAll();
-			}
+		javax.swing.text.DefaultCaret caret = this.swingModel.getCaret();
+		caret.setDot( 0 );
+		caret.moveDot( this.swingModel.getDocument().getLength() );
+	}
+
+	public void requestFocus() {
+		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+			//todo: find the most appropriate candidate?
+			component.requestFocus();
 		}
 	}
 }

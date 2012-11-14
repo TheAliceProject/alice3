@@ -463,7 +463,7 @@ public class StorytellingResources {
 		return rootTypes;
 	}
 
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getGalleryResourceParentFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public org.lgna.project.ast.JavaType getGalleryResourceParentFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		TreeNode<JavaType> child = this.getGalleryResourceTreeNodeForJavaType( type );
 		if( child != null ) {
 			ModelResourceTreeNode parent = (ModelResourceTreeNode)child.getParent();

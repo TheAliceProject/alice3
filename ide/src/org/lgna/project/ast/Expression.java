@@ -53,4 +53,6 @@ public abstract class Expression extends AbstractNode {
 	public boolean isValid() {
 		return true;
 	}
+
+	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 }

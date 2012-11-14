@@ -61,6 +61,8 @@ import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
 import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
@@ -137,8 +139,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			org.lgna.croquet.DragModel model = step.getModel();
 			DragComponent dragSource = step.getDragSource();
 			dragSource.showDragProxy();
-			if( model instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryNode ) {
-				org.alice.ide.croquet.models.gallerybrowser.GalleryNode galleryNode = (org.alice.ide.croquet.models.gallerybrowser.GalleryNode)model;
+			if( model instanceof org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel ) {
+				org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel galleryDragModel = (org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel)model;
 				System.err.println( "galleryNode.setDesiredTransformation(null);" );
 				//galleryNode.setDesiredTransformation(null);
 			}
@@ -667,9 +669,19 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		{
 			EntityImp entityImp = EntityImp.getInstance( element );
 			SThing entity = entityImp.getAbstraction();
-			UserField field = this.getFieldForInstanceInJavaVM( entity );
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
-			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
+			UserField field;
+			if( entity != null ) {
+				field = this.getFieldForInstanceInJavaVM( entity );
+			} else {
+				//todo: handle camera
+				field = null;
+			}
+			if( field != null ) {
+				org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
+				org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( entityImp );
+			}
 		}
 	}
 
@@ -736,13 +748,14 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN );
 
-			this.expandButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ).createButton();
+			org.alice.stageide.perspectives.PerspectiveState perspectiveState = org.alice.stageide.perspectives.PerspectiveState.getInstance();
+			this.expandButton = perspectiveState.getItemSelectionOperation( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ).createButton();
 			this.expandButton.setIcon( EXPAND_ICON );
 			//todo: tool tip text
 			//this.expandButton.getAwtComponent().setText( null );
 			this.expandButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 
-			this.contractButton = org.alice.ide.perspectives.ChangePerspectiveOperation.getInstance( org.alice.stageide.perspectives.CodePerspective.getInstance() ).createButton();
+			this.contractButton = perspectiveState.getItemSelectionOperation( org.alice.stageide.perspectives.CodePerspective.getInstance() ).createButton();
 			this.contractButton.setIcon( CONTRACT_ICON );
 			this.contractButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
@@ -895,9 +908,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 					}
 				}
 				if( !alreadyHasIt ) {
-					if( marker.getVehicle() != null ) {
-						marker.setVehicle( null );
-					}
 					marker.setVehicle( sceneImp );
 				}
 			}
@@ -1043,7 +1053,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
 			JavaType javaType = type.getFirstEncounteredJavaType();
 			Class<?> cls = javaType.getClassReflectionProxy().getReification();
-			AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( cls );
+
+			ResourceKey childKey = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
+
+			AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( childKey );
 			double y = box != null ? -box.getXMinimum() : 0;
 			Point3 location = new Point3( 0, y, 0 );
 			initialTransform = new AffineMatrix4x4( OrthogonalMatrix3x3.createIdentity(), location );
@@ -1080,6 +1093,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		if( this.onscreenLookingGlass != null ) {
 			this.onscreenLookingGlass.forgetAllCachedItems();
 			edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
+		}
+		org.alice.stageide.personresource.PreviewComposite.getInstance().unloadPerson();
+		if( this.globalDragAdapter != null ) {
+			this.globalDragAdapter.clear();
 		}
 		super.handleProjectOpened( nextProject );
 	}

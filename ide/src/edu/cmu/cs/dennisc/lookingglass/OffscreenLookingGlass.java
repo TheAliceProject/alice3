@@ -46,8 +46,6 @@ package edu.cmu.cs.dennisc.lookingglass;
  * @author Dennis Cosgrove
  */
 public interface OffscreenLookingGlass extends LookingGlass {
-	public void setSize( int width, int height );
-
 	public void clearAndRenderOffscreen();
 
 	public void release();

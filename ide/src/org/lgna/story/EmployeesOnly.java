@@ -54,4 +54,19 @@ public class EmployeesOnly {
 		scene.handleActiveChanged( isActive, activationCount );
 	}
 
+	public static double checkArgumentDoubleValuePositive( Number value, int index ) {
+		double rv = value.doubleValue();
+		if( rv <= 0.0 ) {
+			throw new org.lgna.common.LgnaIllegalArgumentException( "value must be > 0.0", index, value );
+		}
+		return rv;
+	}
+
+	public static <T> T checkArgumentNotNull( T value, int index ) {
+		if( value != null ) {
+			return value;
+		} else {
+			throw new org.lgna.common.LgnaIllegalArgumentException( "value must not be null", index, value );
+		}
+	}
 }

@@ -47,19 +47,16 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class LocalAccessOperation extends org.alice.ide.croquet.models.ast.cascade.ProjectExpressionPropertyOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalAccessOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalAccessOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized LocalAccessOperation getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static LocalAccessOperation getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert local != null;
 		assert expressionProperty != null;
-		LocalAccessOperation rv = map.get( local, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalAccessOperation( local, expressionProperty );
-			map.put( local, expressionProperty, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalAccessOperation>() {
+			public LocalAccessOperation initialize( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+				return new LocalAccessOperation( local, expressionProperty );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.UserLocal local;

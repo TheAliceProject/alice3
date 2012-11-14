@@ -62,8 +62,9 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 	protected java.awt.print.Printable getPrintable() {
 		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
 		org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
-		if( view.isPrintSupported() ) {
-			return view;
+		java.awt.print.Printable printable = view.getPrintable();
+		if( printable != null ) {
+			return printable;
 		} else {
 			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Print not supported for " + composite, "Print not supported", org.lgna.croquet.MessageType.INFORMATION );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "print not supported for:", composite );

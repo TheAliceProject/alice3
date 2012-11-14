@@ -60,8 +60,7 @@ public enum ProjectDocumentCodec implements org.lgna.croquet.ItemCodec<org.alice
 		return org.alice.ide.ProjectDocument.class;
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.ProjectDocument value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, org.alice.ide.ProjectDocument value ) {
+		sb.append( value );
 	}
 }

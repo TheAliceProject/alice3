@@ -47,17 +47,21 @@ package org.alice.ide.croquet.components.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent<org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel> {
+	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
+
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model );
 		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setText( model.getText() );
-		label.setIcon( model.getLargeIcon() );
+		org.lgna.croquet.icon.IconFactory iconFactory = model.getIconFactory();
+		label.setIcon( iconFactory != null ? iconFactory.getIcon( DEFAULT_LARGE_ICON_SIZE ) : null );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.internalAddComponent( label );
 		this.setBackgroundColor( new java.awt.Color( 0xf7e4b6 ) );
 		this.setMaximumSizeClampedToPreferredSize( true );
+		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 	}
 
 	@Override

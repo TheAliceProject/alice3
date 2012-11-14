@@ -1,3 +1,7 @@
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
@@ -45,12 +49,12 @@
  * @author Dennis Cosgrove
  */
 public class MigrationBuilder {
-	private static void output( java.util.Set<Class<?>> set, org.alice.ide.croquet.models.gallerybrowser.GalleryNode node ) {
+	private static void output( java.util.Set<Class<?>> set, org.alice.stageide.modelresource.ResourceNode node ) {
 		org.lgna.project.ast.JavaType type;
-		if( node instanceof org.alice.ide.croquet.models.gallerybrowser.ArgumentTypeGalleryNode ) {
-			type = (org.lgna.project.ast.JavaType) ((org.alice.ide.croquet.models.gallerybrowser.ArgumentTypeGalleryNode)node).getDeclaration();
-		} else if( node instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
-			type = (org.lgna.project.ast.JavaType) ((org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)node).getDeclaration().getDeclaringType();
+		if( node.getResourceKey() instanceof org.alice.stageide.modelresource.ClassResourceKey ) {
+			type = (org.lgna.project.ast.JavaType) ((org.alice.stageide.modelresource.ClassResourceKey)node.getResourceKey()).getType();
+		} else if( node.getResourceKey() instanceof org.alice.stageide.modelresource.EnumConstantResourceKey ) {
+			type = (org.lgna.project.ast.JavaType) ((org.alice.stageide.modelresource.EnumConstantResourceKey)node.getResourceKey()).getField().getDeclaringType();
 		} else {
 			type = null;
 		}
@@ -68,23 +72,24 @@ public class MigrationBuilder {
 				set.add( cls );
 			}
 		}
-		final int N = node.getChildCount();
-		for( int i=0; i<N; i++ ) {
-			output( set, node.getChild( i ) );
+		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
+			output( set, child );
 		}
 	}
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
-		org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode rootGalleryNode = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance();
+		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
 		
 		java.util.Set<Class<?>> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		
-		int i = 0;
-		output( set, rootGalleryNode.getChild( i++ ) );
-		output( set, rootGalleryNode.getChild( i++ ) );
-		output( set, rootGalleryNode.getChild( i++ ) );
-		output( set, rootGalleryNode.getChild( i++ ) );
-		output( set, rootGalleryNode.getChild( i++ ) );
+		for( org.alice.stageide.modelresource.ResourceNode child : rootGalleryNode.getNodeChildren() ) {
+			ResourceKey key = child.getResourceKey();
+			if (key instanceof ClassResourceKey) {
+				ClassResourceKey classKey = (ClassResourceKey)key;
+				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getCls());
+				output( set, child );
+			}
+		}
 	}
 }

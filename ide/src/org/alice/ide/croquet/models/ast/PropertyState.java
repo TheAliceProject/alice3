@@ -47,17 +47,14 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static synchronized PropertyState getInstanceForSetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
-		PropertyState rv = map.get( group, setter );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new PropertyState( group, setter );
-			map.put( group, setter, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( group, setter, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState>() {
+			public PropertyState initialize( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
+				return new PropertyState( group, setter );
+			}
+		} );
 	}
 
 	public static synchronized PropertyState getInstanceForGetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod getter ) {

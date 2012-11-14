@@ -50,9 +50,9 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public static final org.lgna.croquet.Group EXPORT_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "624d4db6-2e1a-43c2-b1df-c0bfd6407b35" ), "EXPORT_GROUP" );
 
 	public static final String DEBUG_PROPERTY_KEY = "org.alice.ide.DebugMode";
-	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
+	private static org.alice.ide.issue.DefaultExceptionHandler exceptionHandler;
 	static {
-		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
+		IDE.exceptionHandler = new org.alice.ide.issue.DefaultExceptionHandler();
 
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isSupressionOfExceptionHandlerDesired" ) ) {
 			//pass
@@ -151,16 +151,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public abstract org.lgna.project.ast.UserMethod getPerformEditorGeneratedSetUpMethod();
 
-	private boolean isSetupMethodCleared = false;
+	protected abstract edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.project.ast.Declaration> getDeclarationFilter();
 
-	public org.lgna.project.ast.NamedUserType getStrippedProgramType() {
-		org.lgna.project.ast.NamedUserType rv = this.getProgramType();
-		if( rv != null ) {
-			org.lgna.project.ast.UserMethod setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
-			setUpMethod.body.getValue().statements.clear();
-			this.isSetupMethodCleared = true;
+	public void crawlFilteredProgramType( edu.cmu.cs.dennisc.pattern.Crawler crawler ) {
+		org.lgna.project.ast.NamedUserType programType = this.getProgramType();
+		if( programType != null ) {
+			programType.crawl( crawler, org.lgna.project.ast.CrawlPolicy.COMPLETE, this.getDeclarationFilter() );
 		}
-		return rv;
 	}
 
 	private static class UnacceptableFieldAccessCrawler extends edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.FieldAccess> {
@@ -257,10 +254,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void ensureProjectCodeUpToDate() {
 		org.lgna.project.Project project = this.getProject();
 		if( project != null ) {
-			if( this.isSetupMethodCleared || ( this.isProjectUpToDateWithFile() == false ) ) {
+			if( this.isProjectUpToDateWithSceneSetUp() == false ) {
 				synchronized( project.getLock() ) {
 					this.generateCodeForSceneSetUp();
 					this.reorganizeFieldsIfNecessary();
+					this.updateHistoryIndexSceneSetUpSync();
 				}
 			}
 		}
@@ -276,18 +274,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public java.util.List<org.lgna.project.ast.FieldAccess> getFieldAccesses( final org.lgna.project.ast.AbstractField field ) {
-		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
-		return org.lgna.project.ProgramTypeUtilities.getFieldAccesses( programType, field );
+		return org.lgna.project.ProgramTypeUtilities.getFieldAccesses( this.getProgramType(), field, this.getDeclarationFilter() );
 	}
 
 	public java.util.List<org.lgna.project.ast.MethodInvocation> getMethodInvocations( final org.lgna.project.ast.AbstractMethod method ) {
-		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
-		return org.lgna.project.ProgramTypeUtilities.getMethodInvocations( programType, method );
+		return org.lgna.project.ProgramTypeUtilities.getMethodInvocations( this.getProgramType(), method, this.getDeclarationFilter() );
 	}
 
 	public java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> getArgumentLists( final org.lgna.project.ast.UserCode code ) {
-		org.lgna.project.ast.NamedUserType programType = this.getStrippedProgramType();
-		return org.lgna.project.ProgramTypeUtilities.getArgumentLists( programType, code );
+		return org.lgna.project.ProgramTypeUtilities.getArgumentLists( this.getProgramType(), code, this.getDeclarationFilter() );
 	}
 
 	public boolean isDropDownDesiredFor( org.lgna.project.ast.Expression expression ) {
@@ -385,7 +380,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
-		this.isSetupMethodCleared = false;
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {
 			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
@@ -537,7 +531,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		bodyStatementsProperty.clear();
 		bodyStatementsProperty.add( new org.lgna.project.ast.Comment( GENERATED_CODE_WARNING ) );
 		this.getSceneEditor().generateCodeForSetUp( bodyStatementsProperty );
-		this.isSetupMethodCleared = false;
 	}
 
 	public org.lgna.project.ast.NamedUserType getProgramType() {

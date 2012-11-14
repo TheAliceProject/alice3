@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFromUriProducer extends UriProducer<org.lgna.project.ast.NamedUserType> {
+public class TypeFromUriProducer extends UriCreator<org.lgna.project.ast.NamedUserType> {
 	private static class SingletonHolder {
 		private static TypeFromUriProducer instance = new TypeFromUriProducer();
 	}
@@ -55,7 +55,7 @@ public class TypeFromUriProducer extends UriProducer<org.lgna.project.ast.NamedU
 	}
 
 	private TypeFromUriProducer() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "4ab159a0-7fee-4c0f-8b71-25591fda2b0d" ) );
+		super( java.util.UUID.fromString( "4ab159a0-7fee-4c0f-8b71-25591fda2b0d" ) );
 	}
 
 	@Override

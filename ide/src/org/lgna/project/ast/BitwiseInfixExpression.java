@@ -65,6 +65,11 @@ public class BitwiseInfixExpression extends Expression {
 					throw new RuntimeException();
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '&' );
+			}
 		},
 		OR() {
 			@Override
@@ -83,6 +88,11 @@ public class BitwiseInfixExpression extends Expression {
 				} else {
 					throw new RuntimeException();
 				}
+			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '|' );
 			}
 		},
 		XOR() {
@@ -103,8 +113,15 @@ public class BitwiseInfixExpression extends Expression {
 					throw new RuntimeException();
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '^' );
+			}
 		};
 		public abstract Object operate( Object leftOperand, Object rightOperand );
+
+		/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 	}
 
 	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
@@ -140,5 +157,12 @@ public class BitwiseInfixExpression extends Expression {
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return this.expressionType.getValue();
+	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.leftOperand.getValue() );
+		this.operator.getValue().appendJava( generator );
+		generator.appendExpression( this.rightOperand.getValue() );
 	}
 }

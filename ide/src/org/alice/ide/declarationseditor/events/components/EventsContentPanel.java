@@ -119,8 +119,10 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		return null;
 	}
 
-	public int print( java.awt.Graphics graphics, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
-		return 0;
+	@Override
+	public java.awt.print.Printable getPrintable() {
+		return new edu.cmu.cs.dennisc.java.awt.PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
+				.center( this.rootPane.getAwtComponent() )
+				.build();
 	}
 }

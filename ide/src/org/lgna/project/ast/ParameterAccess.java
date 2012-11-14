@@ -47,12 +47,12 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class ParameterAccess extends Expression {
-	public DeclarationProperty<AbstractParameter> parameter = new DeclarationProperty<AbstractParameter>( this );
+	public DeclarationProperty<UserParameter> parameter = new DeclarationProperty<UserParameter>( this );
 
 	public ParameterAccess() {
 	}
 
-	public ParameterAccess( AbstractParameter parameter ) {
+	public ParameterAccess( UserParameter parameter ) {
 		this.parameter.setValue( parameter );
 	}
 
@@ -80,5 +80,10 @@ public class ParameterAccess extends Expression {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( this.parameter.getValue().getName() );
 	}
 }

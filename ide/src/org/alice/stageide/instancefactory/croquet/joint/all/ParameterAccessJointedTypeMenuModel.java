@@ -55,6 +55,7 @@ public class ParameterAccessJointedTypeMenuModel extends JointedTypeMenuModel {
 	}
 
 	private static ParameterAccessJointedTypeMenuModel getInstance( org.lgna.project.ast.UserParameter value, java.util.List<org.alice.stageide.ast.JointedTypeInfo> jointedTypeInfos, int index ) {
+		//todo
 		synchronized( mapToMap ) {
 			ParameterAccessJointedTypeMenuModel rv = mapToMap.get( value, index );
 			if( rv != null ) {

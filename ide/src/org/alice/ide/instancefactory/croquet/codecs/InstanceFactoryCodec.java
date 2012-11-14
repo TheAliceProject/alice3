@@ -61,8 +61,7 @@ public enum InstanceFactoryCodec implements org.lgna.croquet.ItemCodec<org.alice
 		binaryEncoder.encode( value.getResolver() );
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, org.alice.ide.instancefactory.InstanceFactory value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, org.alice.ide.instancefactory.InstanceFactory value ) {
+		sb.append( value );
 	}
 }

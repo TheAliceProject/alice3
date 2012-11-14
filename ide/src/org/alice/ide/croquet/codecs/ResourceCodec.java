@@ -88,8 +88,7 @@ public class ResourceCodec<R extends org.lgna.common.Resource> implements org.lg
 		}
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, R value ) {
-		rv.append( value );
-		return rv;
+	public void appendRepresentation( StringBuilder sb, R value ) {
+		sb.append( value );
 	}
 }

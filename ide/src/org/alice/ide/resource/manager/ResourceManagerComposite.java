@@ -95,7 +95,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project;
 		if( ide != null ) {
-			project = ide.getUpToDateProject();
+			project = ide.getProject();
 		} else {
 			project = null;
 		}
@@ -107,7 +107,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.Project project;
 		if( ide != null ) {
-			project = ide.getUpToDateProject();
+			project = ide.getProject();
 			if( project != null ) {
 				project.addResourceListener( this.resourceListener );
 			}
@@ -123,7 +123,7 @@ public final class ResourceManagerComposite extends org.lgna.croquet.PlainDialog
 	public void handlePostDeactivation() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
-			org.lgna.project.Project project = ide.getUpToDateProject();
+			org.lgna.project.Project project = ide.getProject();
 			if( project != null ) {
 				project.removeResourceListener( this.resourceListener );
 			}

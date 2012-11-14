@@ -114,7 +114,12 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 			if( otherTypeDeclaredInJava != null ) {
 				Class<?> cls = this.getClassReflectionProxy().getReification();
 				Class<?> otherCls = otherTypeDeclaredInJava.getClassReflectionProxy().getReification();
-				return cls.isAssignableFrom( otherCls );
+				if( ( cls != null ) && ( otherCls != null ) ) {
+					return cls.isAssignableFrom( otherCls );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, cls, otherTypeDeclaredInJava, otherCls );
+					return false;
+				}
 			} else {
 				return false;
 			}
@@ -382,7 +387,7 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 
 	private void handleMthd( java.lang.reflect.Method mthd ) {
 		int modifiers = mthd.getModifiers();
-		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) /* && isNotMask( modifiers, java.lang.reflect.Modifier.STATIC ) */) {
+		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) || isMask( modifiers, java.lang.reflect.Modifier.PROTECTED ) ) {
 			JavaMethod methodDeclaredInJava = JavaMethod.getInstance( mthd );
 			if( mthd.isAnnotationPresent( org.lgna.project.annotations.MethodTemplate.class ) ) {
 				org.lgna.project.annotations.MethodTemplate methodTemplate = mthd.getAnnotation( org.lgna.project.annotations.MethodTemplate.class );
@@ -474,6 +479,12 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 	@Override
 	public boolean isArray() {
 		return this.classReflectionProxy.isArray();
+	}
+
+	public JavaType getEnclosingType() {
+		Class<?> cls = this.classReflectionProxy.getReification();
+		assert cls != null;
+		return JavaType.getInstance( cls.getEnclosingClass() );
 	}
 
 	@Override

@@ -53,6 +53,10 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 			this.composite = composite;
 		}
 
+		public boolean isModal() {
+			return this.composite.isModal;
+		}
+
 		public org.lgna.croquet.components.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 			return this.composite.allocateView( step );
 		}
@@ -98,10 +102,12 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 		}
 	}
 
+	private final boolean isModal;
 	private String title;
 
-	public AbstractDialogComposite( java.util.UUID migrationId ) {
+	public AbstractDialogComposite( java.util.UUID migrationId, boolean isModal ) {
 		super( migrationId );
+		this.isModal = isModal;
 	}
 
 	@Override

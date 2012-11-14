@@ -193,9 +193,24 @@ public abstract class EntityImp implements ReferenceFrame {
 		}
 	}
 
-	public void setVehicle( EntityImp vehicle ) {
-		assert vehicle != this;
+	protected void postCheckSetVehicle( EntityImp vehicle ) {
 		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
+	}
+
+	public final void setVehicle( EntityImp vehicle ) {
+		//		if( vehicle == null ) {
+		//			throw new org.lgna.common.LgnaIllegalArgumentException( "vehicle argument is null", 0, null );
+		//		}
+		if( vehicle != null ) {
+			if( vehicle == this ) {
+				throw new org.lgna.common.LgnaIllegalArgumentException( "vehicle argument \"" + vehicle.getAbstraction() + "\" is the same as the instance \"" + this.getAbstraction() + "\"", 0, vehicle.getAbstraction() );
+			}
+			if( vehicle.isDescendantOf( this ) ) {
+				throw new org.lgna.common.LgnaIllegalArgumentException( "vehicle argument \"" + vehicle.getAbstraction() + "\" is descendant of the instance \"" + this.getAbstraction() + "\" which would cause a cycle", 0, vehicle.getAbstraction() );
+			}
+		}
+
+		this.postCheckSetVehicle( vehicle );
 	}
 
 	public boolean isDescendantOf( EntityImp candidateAncestor ) {

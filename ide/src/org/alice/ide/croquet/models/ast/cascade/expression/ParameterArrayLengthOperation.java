@@ -47,19 +47,16 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class ParameterArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized ParameterArrayLengthOperation getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static ParameterArrayLengthOperation getInstance( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert parameter != null;
 		assert expressionProperty != null;
-		ParameterArrayLengthOperation rv = map.get( parameter, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ParameterArrayLengthOperation( parameter, expressionProperty );
-			map.put( parameter, expressionProperty, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( parameter, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserParameter, org.lgna.project.ast.ExpressionProperty, ParameterArrayLengthOperation>() {
+			public ParameterArrayLengthOperation initialize( org.lgna.project.ast.UserParameter parameter, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+				return new ParameterArrayLengthOperation( parameter, expressionProperty );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.UserParameter parameter;

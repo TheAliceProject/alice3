@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class ClearanceCheckingExitOperation extends ClearanceRequiringUriSerialOperation {
+public class ClearanceCheckingExitOperation extends PotentialClearanceIteratingOperation {
 	private static class SingletonHolder {
 		private static ClearanceCheckingExitOperation instance = new ClearanceCheckingExitOperation();
 	}
@@ -55,6 +55,11 @@ public class ClearanceCheckingExitOperation extends ClearanceRequiringUriSerialO
 	}
 
 	private ClearanceCheckingExitOperation() {
-		super( java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), SystemExitOperation.getInstance() );
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), ExitOperation.getInstance() );
+	}
+
+	@Override
+	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+		step.finish();
 	}
 }

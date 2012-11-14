@@ -55,8 +55,8 @@ public class ParameterPane extends TransientPane {
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ParameterAccess.class ) );
 		if( this.parametersProperty != null ) {
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, parameter );
-			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, parameter );
-			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, parameter );
+			final org.alice.ide.ast.code.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.ast.code.ForwardShiftParameterOperation( this.parametersProperty, parameter );
+			final org.alice.ide.ast.code.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.ast.code.BackwardShiftParameterOperation( this.parametersProperty, parameter );
 			this.setPopupPrepModel( new org.lgna.croquet.MenuModel( java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
 				public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {

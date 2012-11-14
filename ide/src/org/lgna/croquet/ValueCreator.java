@@ -107,7 +107,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 
 		@Override
 		public final F createValue( org.lgna.croquet.cascade.ItemNode<? super F, Void> node, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-			org.lgna.croquet.triggers.Trigger trigger = new org.lgna.croquet.triggers.NullTrigger( org.lgna.croquet.triggers.Trigger.Origin.USER );
+			org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.NullTrigger.createUserInstance();
 			org.lgna.croquet.history.Step<?> step = this.valueCreator.fire( trigger );
 			if( step != null ) {
 				return (F)step.getEphemeralDataFor( VALUE_KEY );
@@ -155,14 +155,20 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 	protected abstract T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
 	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		this.initializeIfNecessary();
-		org.lgna.croquet.history.Transaction transaction = org.alice.ide.IDE.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		T value = this.createValue( transaction, trigger );
-		org.lgna.croquet.history.CompletionStep<?> rv = transaction.getCompletionStep();
-		if( rv != null ) {
-			rv.putEphemeralDataFor( VALUE_KEY, value );
+		org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
+		if( completionStep != null ) {
+			completionStep.putEphemeralDataFor( VALUE_KEY, value );
 		}
-		return rv;
+	}
+
+	public T fireAndGetValue( org.lgna.croquet.triggers.Trigger trigger ) throws CancelException {
+		org.lgna.croquet.history.CompletionStep<?> step = this.fire( trigger );
+		if( step.isSuccessfullyCompleted() ) {
+			return (T)step.getEphemeralDataFor( VALUE_KEY );
+		} else {
+			throw new CancelException();
+		}
 	}
 }

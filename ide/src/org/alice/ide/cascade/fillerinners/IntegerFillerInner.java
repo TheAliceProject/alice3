@@ -46,6 +46,14 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class IntegerFillerInner extends AbstractNumberFillerInner {
+	public static int[] getLiterals( org.lgna.project.annotations.ValueDetails<?> details ) {
+		if( details instanceof org.lgna.project.annotations.IntegerValueDetails ) {
+			return ( (org.lgna.project.annotations.IntegerValueDetails)details ).getLiterals();
+		} else {
+			return new int[] { 0, 1, 2, 3 };
+		}
+	}
+
 	public IntegerFillerInner() {
 		super( Integer.class );
 	}
@@ -53,12 +61,7 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 	@Override
 	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
 		super.appendItems( items, details, isTop, prevExpression );
-		int[] literals;
-		if( details instanceof org.lgna.project.annotations.IntegerValueDetails ) {
-			literals = ( (org.lgna.project.annotations.IntegerValueDetails)details ).getLiterals();
-		} else {
-			literals = new int[] { 0, 1, 2, 3 };
-		}
+		int[] literals = getLiterals( details );
 		for( int i : literals ) {
 			items.add( org.alice.ide.croquet.models.cascade.literals.IntegerLiteralFillIn.getInstance( i ) );
 		}

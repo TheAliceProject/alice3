@@ -51,13 +51,12 @@ public enum LocaleCodec implements org.lgna.croquet.ItemCodec<java.util.Locale> 
 		return java.util.Locale.class;
 	}
 
-	public StringBuilder appendRepresentation( StringBuilder rv, java.util.Locale value ) {
+	public void appendRepresentation( StringBuilder sb, java.util.Locale value ) {
 		if( value != null ) {
-			rv.append( value.getDisplayName() );
+			sb.append( value.getDisplayName() );
 		} else {
-			rv.append( value );
+			sb.append( value );
 		}
-		return rv;
 	}
 
 	public java.util.Locale decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {

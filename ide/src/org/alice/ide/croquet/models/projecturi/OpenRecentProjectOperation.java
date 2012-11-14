@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class OpenRecentProjectOperation extends ClearanceRequiringUriSerialOperation {
+public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOperation {
 	private static java.util.Map<java.net.URI, OpenRecentProjectOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized OpenRecentProjectOperation getInstance( java.net.URI uri ) {
@@ -59,9 +59,22 @@ public class OpenRecentProjectOperation extends ClearanceRequiringUriSerialOpera
 		return rv;
 	}
 
+	private final java.net.URI uri;
+
 	private OpenRecentProjectOperation( java.net.URI uri ) {
-		super( java.util.UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), new LoadProjectOperation( uri ) );
-		java.io.File file = new java.io.File( uri );
+		super( java.util.UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), null );
+		this.uri = uri;
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		java.io.File file = new java.io.File( this.uri );
 		this.setName( file.getAbsolutePath() );
+	}
+
+	@Override
+	protected java.net.URI getURI( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+		return this.uri;
 	}
 }

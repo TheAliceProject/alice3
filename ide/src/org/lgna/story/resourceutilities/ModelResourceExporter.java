@@ -89,6 +89,8 @@ import edu.cmu.cs.dennisc.xml.XMLUtilities;
 
 public class ModelResourceExporter {
 
+	private static boolean REMOVE_ROOT_JOINTS = false;
+
 	private static String COPYRIGHT_COMMENT = null;
 	private static final String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
 
@@ -131,6 +133,7 @@ public class ModelResourceExporter {
 	private String resourceName;
 	private String className;
 	private List<String> tags = new LinkedList<String>();
+	private List<String> groupTags = new LinkedList<String>();
 	private Map<String, AxisAlignedBox> boundingBoxes = new HashMap<String, AxisAlignedBox>();
 	private File xmlFile;
 	private File javaFile;
@@ -143,6 +146,7 @@ public class ModelResourceExporter {
 	private boolean forceRebuildCode = false;
 	private boolean forceRebuildXML = false;
 	private Date lastEdited = null;
+	private boolean shouldRecenter = false;
 
 	private String attributionName;
 	private String attributionYear;
@@ -198,6 +202,14 @@ public class ModelResourceExporter {
 
 	public void setHasNewData( boolean hasNewData ) {
 		this.hasNewData = hasNewData;
+	}
+
+	public void setShouldRecenter( boolean shouldRecenter ) {
+		this.shouldRecenter = shouldRecenter;
+	}
+
+	public boolean shouldRecenter() {
+		return this.shouldRecenter;
 	}
 
 	public boolean hasNewData() {
@@ -325,15 +337,21 @@ public class ModelResourceExporter {
 		return sourceList;
 	}
 
+	private static boolean isRootJoint( String jointName ) {
+		return jointName.equalsIgnoreCase( "root" );
+	}
+
 	private List<Tuple2<String, String>> makeCodeReadyTree( List<Tuple2<String, String>> sourceList ) {
 		if( sourceList != null ) {
 			List<Tuple2<String, String>> cleaned = new ArrayList<Tuple2<String, String>>();
 			for( Tuple2<String, String> entry : sourceList ) {
-				if( entry.getA().equalsIgnoreCase( "root" ) && ( ( entry.getB() == null ) || ( entry.getB().length() == 0 ) ) ) {
-					continue;
-				}
-				else if( ( entry.getB() != null ) && entry.getB().equalsIgnoreCase( "root" ) ) {
-					entry.setB( null );
+				if( REMOVE_ROOT_JOINTS ) {
+					if( isRootJoint( entry.getA() ) && ( ( entry.getB() == null ) || ( entry.getB().length() == 0 ) ) ) {
+						continue;
+					}
+					else if( ( entry.getB() != null ) && isRootJoint( entry.getB() ) ) {
+						entry.setB( null );
+					}
 				}
 				cleaned.add( entry );
 			}
@@ -385,6 +403,18 @@ public class ModelResourceExporter {
 		}
 	}
 
+	public void addSubResourceGroupTags( String modelName, String textureName, String... tags ) {
+		if( ( tags != null ) && ( tags.length > 0 ) ) {
+			for( ModelSubResourceExporter subResource : this.subResources ) {
+				if( subResource.getModelName().equalsIgnoreCase( modelName ) ) {
+					if( ( textureName == null ) || subResource.getTextureName().equalsIgnoreCase( textureName ) ) {
+						subResource.addGroupTags( tags );
+					}
+				}
+			}
+		}
+	}
+
 	public void addAttribution( String name, String year )
 	{
 		this.attributionName = name;
@@ -395,6 +425,14 @@ public class ModelResourceExporter {
 		if( tags != null ) {
 			for( String s : tags ) {
 				this.tags.add( s );
+			}
+		}
+	}
+
+	public void addGroupTags( String... tags ) {
+		if( tags != null ) {
+			for( String s : tags ) {
+				this.groupTags.add( s );
 			}
 		}
 	}
@@ -478,6 +516,17 @@ public class ModelResourceExporter {
 		return tagsElement;
 	}
 
+	private static org.w3c.dom.Element createGroupTagsElement( Document doc, List<String> tagList )
+	{
+		org.w3c.dom.Element tagsElement = doc.createElement( "GroupTags" );
+		for( String tag : tagList ) {
+			org.w3c.dom.Element tagElement = doc.createElement( "GroupTag" );
+			tagElement.setTextContent( tag );
+			tagsElement.appendChild( tagElement );
+		}
+		return tagsElement;
+	}
+
 	private static org.w3c.dom.Element createSubResourceElement( Document doc, ModelSubResourceExporter subResource, ModelResourceExporter parentMRE )
 	{
 		org.w3c.dom.Element resourceElement = doc.createElement( "Resource" );
@@ -498,6 +547,18 @@ public class ModelResourceExporter {
 			}
 			if( !uniqueTags.isEmpty() ) {
 				resourceElement.appendChild( createTagsElement( doc, uniqueTags ) );
+			}
+		}
+
+		if( subResource.getGroupTags().size() > 0 ) {
+			List<String> uniqueTags = new ArrayList<String>();
+			for( String t : subResource.getGroupTags() ) {
+				if( ( parentMRE.groupTags == null ) || !parentMRE.groupTags.contains( t ) ) {
+					uniqueTags.add( t );
+				}
+			}
+			if( !uniqueTags.isEmpty() ) {
+				resourceElement.appendChild( createGroupTagsElement( doc, uniqueTags ) );
 			}
 		}
 		return resourceElement;
@@ -528,6 +589,7 @@ public class ModelResourceExporter {
 			}
 			modelRoot.appendChild( createBoundingBoxElement( doc, this.boundingBoxes.get( this.className ) ) );
 			modelRoot.appendChild( createTagsElement( doc, this.tags ) );
+			modelRoot.appendChild( createGroupTagsElement( doc, this.groupTags ) );
 
 			for( ModelSubResourceExporter subResource : this.subResources ) {
 				if( !subResource.getModelName().equalsIgnoreCase( this.className ) && this.boundingBoxes.containsKey( subResource.getModelName() ) ) {
@@ -744,6 +806,9 @@ public class ModelResourceExporter {
 
 	private boolean shouldSuppressJoint( String jointString ) {
 		if( this.jointIdsToSuppress.contains( jointString ) ) {
+			return true;
+		}
+		if( isRootJoint( jointString ) ) {
 			return true;
 		}
 		return false;
@@ -1075,7 +1140,15 @@ public class ModelResourceExporter {
 	public static BufferedImage createClassThumb( BufferedImage imgSrc ) {
 		ColorConvertOp colorConvert =
 				new ColorConvertOp( ColorSpace.getInstance( ColorSpace.CS_GRAY ), null );
-		colorConvert.filter( imgSrc, imgSrc );
+		if( imgSrc == null ) {
+			System.out.println( "NULL!" );
+		}
+		try {
+			colorConvert.filter( imgSrc, imgSrc );
+		} catch( NullPointerException e ) {
+			e.printStackTrace();
+			throw e;
+		}
 		return imgSrc;
 	}
 

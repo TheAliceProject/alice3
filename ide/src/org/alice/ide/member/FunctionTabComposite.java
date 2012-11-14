@@ -93,7 +93,7 @@ public final class FunctionTabComposite extends MemberTabComposite {
 
 		java.util.List<org.lgna.project.ast.AbstractType<?, ?, ?>> types = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( map.keySet() );
 		java.util.Collections.sort( types, org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTypeComparator() );
-		java.util.List<MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithMinimumCapacity( types.size() );
+		java.util.List<MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( types.size() );
 		for( org.lgna.project.ast.AbstractType<?, ?, ?> type : types ) {
 			FunctionsOfReturnTypeSubComposite subComposite = FunctionsOfReturnTypeSubComposite.getInstance( type );
 			subComposite.setMethods( map.get( type ) );
