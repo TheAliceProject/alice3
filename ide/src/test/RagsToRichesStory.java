@@ -60,6 +60,8 @@ import org.lgna.story.SSphere;
 import org.lgna.story.SSun;
 import org.lgna.story.SThing;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.event.KeyEvent;
+import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
@@ -191,6 +193,7 @@ class SnowScene extends SScene {
 		this.camera.setVehicle( this );
 		this.susan.setVehicle( this );
 		this.ogre.setVehicle( this );
+		//		this.susan.turn( TurnDirection.LEFT, .25 );
 		this.ogre.getRightElbow().turn( TurnDirection.LEFT, .25 );
 		this.ogre.move( MoveDirection.BACKWARD, 1 );
 		this.ogre.move( MoveDirection.RIGHT, 1 );
@@ -242,10 +245,18 @@ class SnowScene extends SScene {
 		} );
 		SThing[] groupOne = { ogre };
 		SThing[] groupTwo = { susan };
+		this.addDefaultModelManipulation();
 		this.addMouseClickOnScreenListener( new MouseClickOnScreenListener() {
 
 			public void mouseClicked() {
 				susan.walkTo( ogre );
+				ogre.touch( redCone );
+			}
+		} );
+		this.addKeyPressListener( new KeyPressListener() {
+
+			public void keyPressed( KeyEvent e ) {
+				susan.straightenOutJoints();
 			}
 		} );
 		//		this.addCollisionStartListener( new CollisionStartListener() {

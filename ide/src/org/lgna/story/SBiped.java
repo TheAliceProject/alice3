@@ -43,7 +43,7 @@
 
 package org.lgna.story;
 
-import org.lgna.ik.enforcer.IKMagicWand.Limb;
+import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
 

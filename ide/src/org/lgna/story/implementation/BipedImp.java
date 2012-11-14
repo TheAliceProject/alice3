@@ -43,8 +43,8 @@
 
 package org.lgna.story.implementation;
 
-import org.lgna.ik.enforcer.IKMagicWand;
-import org.lgna.ik.enforcer.IKMagicWand.Limb;
+import org.lgna.ik.walkandtouch.IKMagicWand;
+import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SThing;
 import org.lgna.story.resources.JointId;
@@ -100,7 +100,7 @@ public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.l
 		IKMagicWand.moveChainToPointInSceneSpace( anchor, end, ImplementationAccessor.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
 	}
 
-	public void walkTo( SThing entity ) {
-		IKMagicWand.stride( this, entity, Limb.RIGHT_LEG );
+	public void walkTo( final SThing entity ) {
+		IKMagicWand.walkTo( this, entity );
 	}
 }

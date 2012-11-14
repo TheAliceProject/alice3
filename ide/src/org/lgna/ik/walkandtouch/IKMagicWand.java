@@ -40,11 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.enforcer;
+package org.lgna.ik.walkandtouch;
 
 import org.lgna.ik.IkConstants;
+import org.lgna.ik.enforcer.JointedModelIkEnforcer;
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.MoveDirection;
 import org.lgna.story.SThing;
+import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
@@ -93,7 +96,7 @@ public class IKMagicWand {
 			//			final JointId eeId = test.ik.croquet.EndJointIdState.getInstance().getValue();
 			//			final JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
 
-			double maxLinearSpeedForEe = .1;//IkConstants.MAX_LINEAR_SPEED_FOR_EE;
+			double maxLinearSpeedForEe = IkConstants.MAX_LINEAR_SPEED_FOR_EE;
 
 			double deltaTime = IkConstants.DESIRED_DELTA_TIME;
 			if( enforcer.hasActiveChain() && ( isLinearEnabled || isAngularEnabled ) ) {
@@ -134,100 +137,152 @@ public class IKMagicWand {
 	public static void moveChainToPointSelfSpace( JointImp anchor, JointImp end, Point3 target ) {
 
 		JointedModelImp<?, ?> jointedParent = anchor.getJointedModelImplementation();
-		JointedModelIkEnforcer enforcer = new JointedModelIkEnforcer( jointedParent );
-		enforcer.addFullBodyDefaultPoseUsingCurrentPose();
-		enforcer.setDefaultJointWeight( 1 );
-		enforcer.setJointWeight( org.lgna.story.resources.BipedResource.RIGHT_ELBOW, 1 );
-		JointId anchorId = anchor.getJointId();
-		JointId eeId = end.getJointId();
-		enforcer.setChainBetween( anchorId, eeId );
-		Point3 currTransformation = end.getTransformation( jointedParent ).translation;
-		Point3 prevTransformation = new Point3( Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE );
-		double delta = .001;//arbitrary
-		while( Point3.calculateDistanceBetween( currTransformation, prevTransformation ) > delta ) {
-			prevTransformation = currTransformation;
-			//solver has the chain. can also have multiple chains. 
-			//I can tell solver, for this chain this is the linear target, etc. 
-			//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
+		Point3 targetPrime = jointedParent.getTransformation( AsSeenBy.SCENE ).createTransformed( target );
+		moveChainToPointInSceneSpace( anchor, end, targetPrime );
+		//		return;
+		//		JointedModelIkEnforcer enforcer = new JointedModelIkEnforcer( jointedParent );
+		//		enforcer.addFullBodyDefaultPoseUsingCurrentPose();
+		//		enforcer.setDefaultJointWeight( 1 );
+		//		enforcer.setJointWeight( org.lgna.story.resources.BipedResource.RIGHT_ELBOW, 1 );
+		//		JointId anchorId = anchor.getJointId();
+		//		JointId eeId = end.getJointId();
+		//		enforcer.setChainBetween( anchorId, eeId );
+		//		Point3 currTransformation = end.getTransformation( jointedParent ).translation;
+		//		Point3 prevTransformation = new Point3( Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE );
+		//		double delta = .001;//arbitrary
+		//		while( Point3.calculateDistanceBetween( currTransformation, prevTransformation ) > delta ) {
+		//			prevTransformation = currTransformation;
+		//			//solver has the chain. can also have multiple chains. 
+		//			//I can tell solver, for this chain this is the linear target, etc. 
+		//			//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
+		//
+		//			java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.solver.Bone.Axis, Double>();
+		//
+		//			//not bad concurrent programming practice
+		//			boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
+		//			boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
+		//
+		//			//these could be multiple. in this app it is one pair.
+		//			//			final JointId eeId = test.ik.croquet.EndJointIdState.getInstance().getValue();
+		//			//			final JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
+		//
+		//			double maxLinearSpeedForEe = .025;//IkConstants.MAX_LINEAR_SPEED_FOR_EE;
+		//			double maxAngularSpeedForEe = IkConstants.MAX_ANGULAR_SPEED_FOR_EE;
+		//
+		//			double deltaTime = IkConstants.DESIRED_DELTA_TIME;
+		//			if( enforcer.hasActiveChain() && ( isLinearEnabled || isAngularEnabled ) ) {
+		//				//I could make chain setter not race with this
+		//				//However, racing is fine, as long as the old chain is still valid. It is.  
+		//				//				if( isLinearEnabled ) {
+		//				enforcer.setEeDesiredPosition( eeId, target, maxLinearSpeedForEe );
+		//				//				}
+		//
+		//				//				if( isAngularEnabled ) {
+		//				//					enforcer.setEeDesiredOrientation( eeId, targetTransformation.orientation, maxAngularSpeedForEe );
+		//				//				}
+		//
+		//				enforcer.advanceTime( deltaTime );
+		//
+		//				//this is for display of gazi's sphere's only
+		//				//				Point3 ep = enforcer.getEndEffectorPosition( eeId );
+		//				//				Point3 ap = enforcer.getAnchorPosition( anchorId );
+		//				//				scene.anchor.setPositionRelativeToVehicle( new Position( ap.x, ap.y, ap.z ) );
+		//				//				scene.ee.setPositionRelativeToVehicle( new Position( ep.x, ep.y, ep.z ) );
+		//
+		//				//force bone reprint
+		//				//this should be fine even if the chain is not valid anymore.
+		//				//						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		//				//							public void run() {
+		//				//								//this would prevent me from selecting the list
+		//				////								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
+		//				//								//this would throw java.lang.IllegalStateException: Attempt to mutate in notification
+		//				////								updateInfo();
+		//				//							}
+		//				//						});
+		//			}
+		//
+		//			currTransformation = end.getTransformation( jointedParent ).translation;
+		//		}
+	}
 
-			java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.solver.Bone.Axis, Double>();
-
-			//not bad concurrent programming practice
-			boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
-			boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
-
-			//these could be multiple. in this app it is one pair.
-			//			final JointId eeId = test.ik.croquet.EndJointIdState.getInstance().getValue();
-			//			final JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
-
-			double maxLinearSpeedForEe = .1;//IkConstants.MAX_LINEAR_SPEED_FOR_EE;
-			double maxAngularSpeedForEe = IkConstants.MAX_ANGULAR_SPEED_FOR_EE;
-
-			double deltaTime = IkConstants.DESIRED_DELTA_TIME;
-			if( enforcer.hasActiveChain() && ( isLinearEnabled || isAngularEnabled ) ) {
-				//I could make chain setter not race with this
-				//However, racing is fine, as long as the old chain is still valid. It is.  
-				//				if( isLinearEnabled ) {
-				enforcer.setEeDesiredPosition( eeId, target, maxLinearSpeedForEe );
-				//				}
-
-				//				if( isAngularEnabled ) {
-				//					enforcer.setEeDesiredOrientation( eeId, targetTransformation.orientation, maxAngularSpeedForEe );
-				//				}
-
-				enforcer.advanceTime( deltaTime );
-
-				//this is for display of gazi's sphere's only
-				//				Point3 ep = enforcer.getEndEffectorPosition( eeId );
-				//				Point3 ap = enforcer.getAnchorPosition( anchorId );
-				//				scene.anchor.setPositionRelativeToVehicle( new Position( ap.x, ap.y, ap.z ) );
-				//				scene.ee.setPositionRelativeToVehicle( new Position( ep.x, ep.y, ep.z ) );
-
-				//force bone reprint
-				//this should be fine even if the chain is not valid anymore.
-				//						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-				//							public void run() {
-				//								//this would prevent me from selecting the list
-				////								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
-				//								//this would throw java.lang.IllegalStateException: Attempt to mutate in notification
-				////								updateInfo();
-				//							}
-				//						});
-			}
-
-			currTransformation = end.getTransformation( jointedParent ).translation;
-		}
+	private static void straighten( BipedImp walker ) {
 	}
 
 	/**
 	 * bipedStrides
+	 * 
+	 * @return
 	 */
-	public static void stride( BipedImp bipedImp, SThing target, Limb limb ) {
-		JointImp anchor;
-		JointImp end;
+	public static double stride( BipedImp bipedImp, Limb limb, boolean shouldBackStep ) {
+		final JointImp anchor;
+		final JointImp rightEnd;
+		final JointImp leftEnd;
 		if( limb == Limb.RIGHT_LEG ) {
-			anchor = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getRightHip() );
-			end = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getRightFoot() );
-			for( int i = 0; i != 2; ++i ) {
-				double legLength = calcLength( anchor, end );
-				moveChainToPointSelfSpace( anchor, end, new Point3( legLength * 0.25, 0, legLength * 0.25 ) );
-				moveChainToPointSelfSpace( anchor, end, new Point3( legLength * -0.25, 0, legLength * -0.25 ) );
+			anchor = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getPelvis() );
+			rightEnd = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getRightAnkle() );
+			leftEnd = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getLeftAnkle() );
+			double legLength = anchor.getDistanceTo( rightEnd );
+			Thread backThread = new Thread() {
+				@Override
+				public void run() {
+					moveChainToPointSelfSpace( anchor, leftEnd, new Point3( 0, 0, 0.5 ) );
+				};
+			};
+			Thread leftStep = new Thread() {
+				@Override
+				public void run() {
+					moveChainToPointSelfSpace( anchor, rightEnd, new Point3( 0, 0, -0.5 ) );
+				};
+			};
+			leftStep.start();
+			if( shouldBackStep ) {
+				backThread.start();
+				bipedImp.getAbstraction().move( MoveDirection.FORWARD, 1 );
 			}
+			return .5;
 		}
 		if( limb == Limb.LEFT_LEG ) {
+			anchor = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getPelvis() );
+			rightEnd = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getRightAnkle() );
+			leftEnd = ImplementationAccessor.getImplementation( bipedImp.getAbstraction().getLeftAnkle() );
+			double legLength = anchor.getDistanceTo( rightEnd );
+			Thread backThread = new Thread() {
+				@Override
+				public void run() {
+					moveChainToPointSelfSpace( anchor, rightEnd, new Point3( 0, 0, 0.5 ) );
+				};
+			};
+			Thread leftStep = new Thread() {
+				@Override
+				public void run() {
+					moveChainToPointSelfSpace( anchor, leftEnd, new Point3( 0, 0, -0.5 ) );
+				};
+			};
+			leftStep.start();
+			if( shouldBackStep ) {
+				backThread.start();
+				bipedImp.getAbstraction().move( MoveDirection.FORWARD, 1 );
+			}
+			return .5;
 		}
-
+		return 0;
 	}
 
 	private static double calcLength( JointImp anchor, JointImp end ) {
 		if( end.equals( anchor ) ) {
 			return 0;
 		}
-		System.out.println( "end:	" + end );
-		System.out.println( "anchor:	" + anchor );
 		Point3 endPoint = end.getAbsoluteTransformation().translation;
 		Point3 parentPoint = end.getVehicle().getAbsoluteTransformation().translation;
 		double dist = Point3.calculateDistanceBetween( endPoint, parentPoint );
 		return dist + calcLength( anchor, (JointImp)end.getVehicle() );
 	}
+
+	public static void walkTo( final BipedImp walker, SThing target ) {
+		IKMagicWand.stride( walker, Limb.RIGHT_LEG, false );
+		IKMagicWand.stride( walker, Limb.LEFT_LEG, true );
+		IKMagicWand.stride( walker, Limb.RIGHT_LEG, true );
+		IKMagicWand.straighten( walker );
+	}
+
 }
