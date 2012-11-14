@@ -43,8 +43,8 @@
 
 package org.lgna.story.implementation;
 
-import org.lgna.ik.enforcer.IKMagicWand;
-import org.lgna.ik.enforcer.IKMagicWand.LIMB;
+import org.lgna.ik.walkandtouch.IKMagicWand;
+import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SThing;
 import org.lgna.story.resources.JointId;
@@ -53,6 +53,7 @@ import org.lgna.story.resources.JointId;
  * @author Dennis Cosgrove
  */
 public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.lgna.story.resources.BipedResource> {
+
 	public BipedImp( org.lgna.story.SBiped abstraction, JointImplementationAndVisualDataFactory<org.lgna.story.resources.BipedResource> factory ) {
 		super( abstraction, factory );
 	}
@@ -72,7 +73,7 @@ public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.l
 		return this.getFrontOffsetForJoint( this.getJointImplementation( org.lgna.story.resources.BipedResource.MOUTH ) );
 	}
 
-	public void reachFor( LIMB reachingLimb, SThing entity ) {
+	public void reachFor( SThing entity, Limb reachingLimb ) {
 		JointImp anchor;
 		JointImp end;
 		switch( reachingLimb ) {
@@ -96,6 +97,10 @@ public final class BipedImp extends JointedModelImp<org.lgna.story.SBiped, org.l
 			System.out.println( "Unhandled LIMB: " + reachingLimb );
 			return;
 		}
-		IKMagicWand.moveChainToPoint( anchor, end, ImplementationAccessor.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
+		IKMagicWand.moveChainToPointInSceneSpace( anchor, end, ImplementationAccessor.getImplementation( entity ).getTransformation( AsSeenBy.SCENE ).translation );
+	}
+
+	public void walkTo( final SThing entity ) {
+		IKMagicWand.walkTo( this, entity );
 	}
 }
