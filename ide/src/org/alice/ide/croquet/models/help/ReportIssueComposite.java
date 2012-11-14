@@ -80,6 +80,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
 		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
+		this.registerSubComposite( this.logInOutCardComposite );
 	}
 
 	@Override
@@ -172,7 +173,6 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
 		this.attachmentState.setValueTransactionlessly( null );
 		this.reportTypeState.setValue( this.initialReportTypeValue );
-		this.logInOutCardComposite.handlePreActivation();
 		this.summaryState.addAndInvokeValueListener( this.adapter );
 		super.handlePreActivation();
 	}
@@ -180,7 +180,6 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	@Override
 	public void handlePostDeactivation() {
 		this.summaryState.removeValueListener( this.adapter );
-		this.logInOutCardComposite.handlePostDeactivation();
 		super.handlePostDeactivation();
 	}
 }

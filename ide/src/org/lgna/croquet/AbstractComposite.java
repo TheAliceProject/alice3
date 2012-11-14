@@ -555,11 +555,27 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		this.view = null;
 	}
 
+	private final java.util.List<Composite<?>> subComposites = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	protected void registerSubComposite( Composite<?> subComposite ) {
+		this.subComposites.add( subComposite );
+	}
+
+	protected void unregisterSubComposite( Composite<?> subComposite ) {
+		this.subComposites.remove( subComposite );
+	}
+
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
+		for( Composite<?> subComposite : this.subComposites ) {
+			subComposite.handlePreActivation();
+		}
 	}
 
 	public void handlePostDeactivation() {
+		for( Composite<?> subComposite : this.subComposites ) {
+			subComposite.handlePostDeactivation();
+		}
 	}
 
 	private java.util.Map<Key, AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
