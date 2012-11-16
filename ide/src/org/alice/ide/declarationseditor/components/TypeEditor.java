@@ -67,12 +67,10 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
 	private final org.lgna.croquet.components.PopupButton popupButton;
 
-	private final org.alice.ide.declarationseditor.BackwardForwardComposite backwardForwardComposite = new org.alice.ide.declarationseditor.BackwardForwardComposite();
-
 	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
 		super( composite );
 		org.lgna.croquet.components.LineAxisPanel headerTrailingComponent = new org.lgna.croquet.components.LineAxisPanel(
-				this.backwardForwardComposite.getView(),
+				composite.getControlsComposite().getView(),
 				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
 				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
 				);
