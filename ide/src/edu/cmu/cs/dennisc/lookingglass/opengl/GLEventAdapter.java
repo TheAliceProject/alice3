@@ -218,10 +218,10 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
-			if( ( this.width != GlDrawableUtilities.getGlPixelBufferWidth( this.drawable ) ) || ( this.height != GlDrawableUtilities.getGlPixelBufferHeight( this.drawable ) ) ) {
+			if( ( this.width != GlDrawableUtilities.getGlDrawableWidth( this.drawable ) ) || ( this.height != GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
-				this.width = GlDrawableUtilities.getGlPixelBufferWidth( this.drawable );
-				this.height = GlDrawableUtilities.getGlPixelBufferHeight( this.drawable );
+				this.width = GlDrawableUtilities.getGlDrawableWidth( this.drawable );
+				this.height = GlDrawableUtilities.getGlDrawableHeight( this.drawable );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
@@ -342,7 +342,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		this.height = drawable.getHeight();
 
 		this.renderContext.setGL( gl );
-		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGlPixelBufferWidth( this.drawable ), GlDrawableUtilities.getGlPixelBufferHeight( this.drawable ) ) );
+		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
 	}
 
 	//todo: investigate not being invoked
@@ -366,8 +366,8 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
 			//pass
 		} else {
-			int nextWidth = drawable.getWidth();
-			int nextHeight = drawable.getHeight();
+			int nextWidth = GlDrawableUtilities.getGlDrawableWidth( drawable );
+			int nextHeight = GlDrawableUtilities.getGlDrawableHeight( drawable );
 			if( ( this.width != nextWidth ) || ( this.height != nextHeight ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, nextWidth, nextHeight );
 				this.width = nextWidth;
