@@ -60,15 +60,10 @@ import org.lgna.story.SSphere;
 import org.lgna.story.SSun;
 import org.lgna.story.SThing;
 import org.lgna.story.TurnDirection;
-<<<<<<< HEAD
 import org.lgna.story.event.CollisionStartListener;
-import org.lgna.story.event.MouseClickOnObjectEvent;
-import org.lgna.story.event.MouseClickOnObjectListener;
-=======
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
 import org.lgna.story.event.MouseClickOnScreenListener;
->>>>>>> 59b0c7605ec039ea5e1e1d1e205bf11435f00d4d
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.StartCollisionEvent;

@@ -42,33 +42,103 @@
  */
 package org.lgna.ik.walkandtouch;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SBiped;
 import org.lgna.story.implementation.BipedImp;
 import org.lgna.story.implementation.JointImp;
+import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
 public class IKBipedPose {
 
-	public JointPositionPair DEFAULT = new JointPositionPair( null, null );
+	public static final JointPositionPair DEFAULT = new JointPositionPair( null, null );
+	//	private InitializingIfAbsentListHashMap<IKMagicWand.Limb, JointPositionPair> map = new InitializingIfAbsentListHashMap<IKMagicWand.Limb, JointPositionPair>();
+	private Map<IKMagicWand.Limb, JointPositionPair> limbToJointPosition = Collections.newHashMap();
+	private BipedImp model;
+	private static ArrayList<JointId> rightArmJoints;
+	private static ArrayList<JointId> leftArmJoints;
+	private static ArrayList<JointId> rightLegJoints;
+	private static ArrayList<JointId> leftLegJoints;
 
-	//	private InitializingIfAbsentListHashMap<IKMagicWand.Limb, JointPositionPair> map = new InitializingIfAbsentListHashMap()
-
-	public class JointPositionPair {
-
-		public JointImp joint;
-		public Point3 point;
-
-		public JointPositionPair( JointImp joint, Point3 point ) {
-			this.joint = joint;
-			this.point = point;
+	public IKBipedPose( BipedImp model, JointPositionPair... limbPositionPairs ) {
+		assert limbPositionPairs.length < 5;
+		this.model = model;
+		if( leftLegJoints == null ) {
+			initJointArr( model );
+		}
+		for( JointPositionPair joint : limbPositionPairs ) {
+			if( rightArmJoints.contains( joint.joint ) ) {
+				assert limbToJointPosition.get( Limb.RIGHT_ARM ) == null;
+				limbToJointPosition.put( Limb.RIGHT_ARM, joint );
+			}
+			if( rightLegJoints.contains( joint.joint ) ) {
+				assert limbToJointPosition.get( Limb.RIGHT_LEG ) == null;
+				limbToJointPosition.put( Limb.RIGHT_LEG, joint );
+			}
+			if( leftArmJoints.contains( joint.joint ) ) {
+				assert limbToJointPosition.get( Limb.LEFT_ARM ) == null;
+				limbToJointPosition.put( Limb.LEFT_ARM, joint );
+			}
+			if( leftLegJoints.contains( joint.joint ) ) {
+				assert limbToJointPosition.get( Limb.LEFT_LEG ) == null;
+				limbToJointPosition.put( Limb.LEFT_LEG, joint );
+			}
+		}
+		if( limbToJointPosition.get( Limb.RIGHT_ARM ) == null ) {
+			limbToJointPosition.put( Limb.RIGHT_ARM, DEFAULT );
+		}
+		if( limbToJointPosition.get( Limb.RIGHT_LEG ) == null ) {
+			limbToJointPosition.put( Limb.RIGHT_LEG, DEFAULT );
+		}
+		if( limbToJointPosition.get( Limb.LEFT_ARM ) == null ) {
+			limbToJointPosition.put( Limb.LEFT_ARM, DEFAULT );
+		}
+		if( limbToJointPosition.get( Limb.LEFT_LEG ) == null ) {
+			limbToJointPosition.put( Limb.LEFT_LEG, DEFAULT );
 		}
 	}
 
-	public IKBipedPose( BipedImp model, JointPositionPair... limbPositionPairs ) {
-		//		for(model.get)
+	private void initJointArr( BipedImp model ) {
+		SBiped abstraction = model.getAbstraction();
+		rightArmJoints = new ArrayList<JointId>();
+		leftArmJoints = new ArrayList<JointId>();
+		rightLegJoints = new ArrayList<JointId>();
+		leftLegJoints = new ArrayList<JointId>();
+		rightArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getRightClavicle() ) ).getJointId() );
+		rightArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getRightShoulder() ) ).getJointId() );
+		rightArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getRightShoulder() ) ).getJointId() );
+		rightArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getRightWrist() ) ).getJointId() );
+		rightArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getRightHand() ) ).getJointId() );
+		leftArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getLeftClavicle() ) ).getJointId() );
+		leftArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getLeftShoulder() ) ).getJointId() );
+		leftArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getLeftShoulder() ) ).getJointId() );
+		leftArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getLeftWrist() ) ).getJointId() );
+		leftArmJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getLeftHand() ) ).getJointId() );
+		rightLegJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getRightHip() ) ).getJointId() );
+		rightLegJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getRightKnee() ) ).getJointId() );
+		rightLegJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getRightAnkle() ) ).getJointId() );
+		rightLegJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getRightFoot() ) ).getJointId() );
+		leftLegJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getLeftHip() ) ).getJointId() );
+		leftLegJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getLeftKnee() ) ).getJointId() );
+		leftLegJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getLeftAnkle() ) ).getJointId() );
+		leftLegJoints.add( ( (JointImp)ImplementationAccessor.getImplementation( abstraction.getLeftFoot() ) ).getJointId() );
 	}
 
+	public JointPositionPair getPairForLimb( Limb limb ) {
+		JointPositionPair rv = limbToJointPosition.get( limb );
+		assert rv != null;
+		return rv;
+	}
+
+	public BipedImp getModel() {
+		return this.model;
+	}
 }
