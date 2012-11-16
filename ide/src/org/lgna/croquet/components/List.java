@@ -66,6 +66,31 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 		this.setSelectionModel( model.getSwingModel().getListSelectionModel() );
 	}
 
+	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
+		@Override
+		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+			if( quoteClickCountUnquote == 2 ) {
+				AbstractWindow<?> window = List.this.getRoot();
+				if( window != null ) {
+					org.lgna.croquet.components.Button defaultButton = window.getDefaultButton();
+					if( defaultButton != null ) {
+						defaultButton.doClick();
+					}
+				}
+			}
+		}
+	};
+
+	public void enableClickingDefaultButtonOnDoubleClick() {
+		this.addMouseListener( this.mouseAdapter );
+		this.addMouseMotionListener( this.mouseAdapter );
+	}
+
+	public void disableClickingDefaultButtonOnDoubleClick() {
+		this.removeMouseMotionListener( this.mouseAdapter );
+		this.removeMouseListener( this.mouseAdapter );
+	}
+
 	@Override
 	protected javax.swing.JList createAwtComponent() {
 		return new javax.swing.JList();
