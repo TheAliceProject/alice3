@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,99 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.declarationseditor.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croquet.components.CardPanel> {
-	private final java.util.List<Composite<?>> cards;
-	private Composite<?> showingCard;
+public class BackwardForwardView extends org.lgna.croquet.components.MigPanel {
+	public BackwardForwardView( org.alice.ide.declarationseditor.BackwardForwardComposite composite ) {
+		super( composite, "insets 0", "[]0[]", "" );
+		// note:
+		// trigger side effect to initialize isEnabled
+		org.alice.ide.declarationseditor.DeclarationCompositeHistory.getInstance();
 
-	public CardOwnerComposite( java.util.UUID id, Composite<?>... cards ) {
-		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
-	}
+		int y = 0;
+		int x = 2;
+		javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( y, x, y, x );
 
-	public void addCard( Composite<?> card ) {
-		this.cards.add( card );
-		org.lgna.croquet.components.CardPanel view = this.peekView();
-		if( view != null ) {
-			view.addComposite( card );
-		}
-	}
+		org.lgna.croquet.components.Button backwardButton = org.alice.ide.declarationseditor.BackwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.BackwardCascade.getInstance() );
+		org.lgna.croquet.components.Button forwardButton = org.alice.ide.declarationseditor.ForwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.ForwardCascade.getInstance() );
 
-	public void removeCard( Composite<?> card ) {
-		this.cards.remove( card );
-	}
+		forwardButton.setBorder( border );
 
-	public Composite<?> getShowingCard() {
-		return this.showingCard;
-	}
+		final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
+		if( ARE_CASCADE_BUTTONS_DESIRED ) {
+			org.lgna.croquet.components.PopupButton backwardPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
+			org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
-	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
-		if( super.contains( model ) ) {
-			return true;
+			backwardPopupButton.setBorder( border );
+			forwardPopupButton.setBorder( border );
+
+			org.lgna.croquet.components.BorderPanel backwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+					.center( backwardButton )
+					.lineEnd( backwardPopupButton )
+					.build();
+			org.lgna.croquet.components.BorderPanel forwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+					.center( forwardButton )
+					.lineEnd( forwardPopupButton )
+					.build();
+
+			this.addComponent( backwardPanel );
+			this.addComponent( forwardPanel, "growy" );
 		} else {
-			for( Composite<?> card : this.cards ) {
-				//todo
-				if( card.contains( model ) ) {
-					return true;
-				}
-			}
-			return false;
+			this.addComponent( backwardButton );
+			this.addComponent( forwardButton, "growy" );
 		}
-	}
-
-	public java.util.List<Composite<?>> getCards() {
-		return this.cards;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.CardPanel createView() {
-		return new org.lgna.croquet.components.CardPanel( this );
-	}
-
-	@Override
-	public void releaseView() {
-		for( Composite<?> card : this.cards ) {
-			card.releaseView();
-		}
-		super.releaseView();
-	}
-
-	public void showCard( Composite<?> card ) {
-		//todo
-		//		org.lgna.croquet.Composite<?> prevCard = this.getShowingCard();
-		//		if( prevCard != nextCard ) {
-		synchronized( this.getView().getTreeLock() ) {
-			if( this.showingCard != null ) {
-				this.showingCard.handlePostDeactivation();
-			}
-			this.showingCard = card;
-			if( this.showingCard != null ) {
-				this.showingCard.handlePreActivation();
-			}
-			this.getView().showComposite( this.showingCard );
-		}
-		//		}
-	}
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDeactivation();
-		}
-		super.handlePostDeactivation();
+		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 }

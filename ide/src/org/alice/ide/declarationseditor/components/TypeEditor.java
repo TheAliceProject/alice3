@@ -47,14 +47,6 @@ package org.alice.ide.declarationseditor.components;
  * @author Dennis Cosgrove
  */
 public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
-	private static class SingletonHolder {
-		private static TypeEditor instance = new TypeEditor();
-	}
-
-	public static TypeEditor getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final org.lgna.croquet.State.ValueListener<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
@@ -75,55 +67,10 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
 	private final org.lgna.croquet.components.PopupButton popupButton;
 
-	private TypeEditor() {
-		// note:
-		// trigger side effect to initialize isEnabled
-		org.alice.ide.declarationseditor.DeclarationCompositeHistory.getInstance();
-
-		int y = 0;
-		int x = 2;
-		javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( y, x, y, x );
-
-		org.lgna.croquet.components.Button backwardButton = org.alice.ide.declarationseditor.BackwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.BackwardCascade.getInstance() );
-		org.lgna.croquet.components.Button forwardButton = org.alice.ide.declarationseditor.ForwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.ForwardCascade.getInstance() );
-
-		forwardButton.setBorder( border );
-
-		final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
-		org.lgna.croquet.components.JComponent<?> backwardFowardComponent;
-		if( ARE_CASCADE_BUTTONS_DESIRED ) {
-			org.lgna.croquet.components.PopupButton backwardPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
-			org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
-
-			backwardPopupButton.setBorder( border );
-			forwardPopupButton.setBorder( border );
-
-			org.lgna.croquet.components.BorderPanel backwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-					.center( backwardButton )
-					.lineEnd( backwardPopupButton )
-					.build();
-			org.lgna.croquet.components.BorderPanel forwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-					.center( forwardButton )
-					.lineEnd( forwardPopupButton )
-					.build();
-
-			backwardFowardComponent = new org.lgna.croquet.components.LineAxisPanel(
-					backwardPanel,
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 3 ),
-					forwardPanel
-					);
-		} else {
-			backwardFowardComponent = new org.lgna.croquet.components.BorderPanel.Builder()
-					.center( backwardButton )
-					.lineEnd( forwardButton )
-					.build();
-			;
-		}
-
-		backwardFowardComponent.setMaximumSizeClampedToPreferredSize( true );
-
+	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
+		super( composite );
 		org.lgna.croquet.components.LineAxisPanel headerTrailingComponent = new org.lgna.croquet.components.LineAxisPanel(
-				backwardFowardComponent,
+				composite.getControlsComposite().getView(),
 				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
 				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
 				);

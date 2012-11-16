@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,99 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croquet.components.CardPanel> {
-	private final java.util.List<Composite<?>> cards;
-	private Composite<?> showingCard;
-
-	public CardOwnerComposite( java.util.UUID id, Composite<?>... cards ) {
-		super( id );
-		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
-	}
-
-	public void addCard( Composite<?> card ) {
-		this.cards.add( card );
-		org.lgna.croquet.components.CardPanel view = this.peekView();
-		if( view != null ) {
-			view.addComposite( card );
-		}
-	}
-
-	public void removeCard( Composite<?> card ) {
-		this.cards.remove( card );
-	}
-
-	public Composite<?> getShowingCard() {
-		return this.showingCard;
+public class BackwardForwardComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.declarationseditor.components.BackwardForwardView> {
+	public BackwardForwardComposite() {
+		super( java.util.UUID.fromString( "47fbe002-73ba-4e9a-b415-da81acc11b4c" ) );
 	}
 
 	@Override
-	public final boolean contains( org.lgna.croquet.Model model ) {
-		if( super.contains( model ) ) {
-			return true;
-		} else {
-			for( Composite<?> card : this.cards ) {
-				//todo
-				if( card.contains( model ) ) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	public java.util.List<Composite<?>> getCards() {
-		return this.cards;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.CardPanel createView() {
-		return new org.lgna.croquet.components.CardPanel( this );
-	}
-
-	@Override
-	public void releaseView() {
-		for( Composite<?> card : this.cards ) {
-			card.releaseView();
-		}
-		super.releaseView();
-	}
-
-	public void showCard( Composite<?> card ) {
-		//todo
-		//		org.lgna.croquet.Composite<?> prevCard = this.getShowingCard();
-		//		if( prevCard != nextCard ) {
-		synchronized( this.getView().getTreeLock() ) {
-			if( this.showingCard != null ) {
-				this.showingCard.handlePostDeactivation();
-			}
-			this.showingCard = card;
-			if( this.showingCard != null ) {
-				this.showingCard.handlePreActivation();
-			}
-			this.getView().showComposite( this.showingCard );
-		}
-		//		}
-	}
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( this.showingCard != null ) {
-			this.showingCard.handlePreActivation();
-		}
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		if( this.showingCard != null ) {
-			this.showingCard.handlePostDeactivation();
-		}
-		super.handlePostDeactivation();
+	protected org.alice.ide.declarationseditor.components.BackwardForwardView createView() {
+		return new org.alice.ide.declarationseditor.components.BackwardForwardView( this );
 	}
 }

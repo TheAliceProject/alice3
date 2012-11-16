@@ -53,7 +53,7 @@ public abstract class AbstractCodePerspective extends org.alice.ide.perspectives
 
 	@Override
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance().getCodeDropReceptorInFocus();
+		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getView().getCodeDropReceptorInFocus();
 	}
 
 	@Override
