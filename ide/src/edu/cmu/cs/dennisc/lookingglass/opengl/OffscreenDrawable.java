@@ -106,8 +106,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 	public final java.awt.Dimension getSize( java.awt.Dimension rv ) {
 		javax.media.opengl.GLDrawable glDrawable = this.getGlDrawable();
 		if( glDrawable != null ) {
-			rv.width = GlDrawableUtilities.getGlPixelBufferHeight( glDrawable );
-			rv.height = GlDrawableUtilities.getGlPixelBufferHeight( glDrawable );
+			rv.width = GlDrawableUtilities.getGlDrawableHeight( glDrawable );
+			rv.height = GlDrawableUtilities.getGlDrawableHeight( glDrawable );
 		} else {
 			//todo?
 			throw new javax.media.opengl.GLException();

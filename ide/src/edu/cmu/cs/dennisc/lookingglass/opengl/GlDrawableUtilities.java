@@ -170,7 +170,7 @@ public class GlDrawableUtilities {
 		return (jogamp.opengl.GLDrawableImpl)glDrawableFactory.createOffscreenDrawable( null, glCapabilities, glCapabilitiesChooser, width, height );
 	}
 
-	/* package-private */static int getGlPixelBufferWidth( javax.media.opengl.GLDrawable drawable ) {
+	/* package-private */static int getGlDrawableWidth( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getWidth ALWAYS returns 0
 		int width = drawable.getWidth();
 		if( width == 0 ) {
@@ -187,7 +187,7 @@ public class GlDrawableUtilities {
 		return width;
 	}
 
-	/* package-private */static int getGlPixelBufferHeight( javax.media.opengl.GLDrawable drawable ) {
+	/* package-private */static int getGlDrawableHeight( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getHeight ALWAYS returns 0
 		int height = drawable.getHeight();
 		if( height == 0 ) {
