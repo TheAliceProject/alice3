@@ -61,7 +61,7 @@ public class BackwardForwardView extends org.lgna.croquet.components.MigPanel {
 
 		forwardButton.setBorder( border );
 
-		final boolean ARE_CASCADE_BUTTONS_DESIRED = true;
+		final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
 		if( ARE_CASCADE_BUTTONS_DESIRED ) {
 			org.lgna.croquet.components.PopupButton backwardPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 			org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();

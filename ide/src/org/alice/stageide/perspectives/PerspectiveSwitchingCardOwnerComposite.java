@@ -55,11 +55,35 @@ public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.cr
 		}
 	};
 
+	public static class MapBuilder {
+		private org.lgna.croquet.Composite<?> codePerspecitiveCard;
+		private org.lgna.croquet.Composite<?> setupScenePerspecitiveCard;
+
+		public void codePerspecitive( org.lgna.croquet.Composite<?> codePerspecitiveCard ) {
+			this.codePerspecitiveCard = codePerspecitiveCard;
+		}
+
+		public void setupScene( org.lgna.croquet.Composite<?> setupScenePerspecitiveCard ) {
+			this.setupScenePerspecitiveCard = setupScenePerspecitiveCard;
+		}
+
+		public java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> build() {
+			java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> rv = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			rv.put( CodePerspective.getInstance(), this.codePerspecitiveCard );
+			rv.put( CodePerspective.getInstance(), this.setupScenePerspecitiveCard );
+			return rv;
+		}
+	}
+
 	private final java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> map;
 
-	public PerspectiveSwitchingCardOwnerComposite( java.util.UUID migrationId, java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> map ) {
+	private PerspectiveSwitchingCardOwnerComposite( java.util.UUID migrationId, java.util.Map<org.alice.ide.perspectives.ProjectPerspective, org.lgna.croquet.Composite<?>> map ) {
 		super( migrationId );
 		this.map = map;
+	}
+
+	public PerspectiveSwitchingCardOwnerComposite( java.util.UUID migrationId, MapBuilder mapBuilder ) {
+		this( migrationId, mapBuilder.build() );
 	}
 
 	private void handlePerspectiveChanged( org.alice.ide.perspectives.ProjectPerspective prevValue, org.alice.ide.perspectives.ProjectPerspective nextValue ) {
