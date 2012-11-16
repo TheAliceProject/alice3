@@ -47,14 +47,6 @@ package org.alice.ide.declarationseditor.components;
  * @author Dennis Cosgrove
  */
 public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
-	private static class SingletonHolder {
-		private static TypeEditor instance = new TypeEditor();
-	}
-
-	public static TypeEditor getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final org.lgna.croquet.State.ValueListener<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
@@ -75,7 +67,8 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
 	private final org.lgna.croquet.components.PopupButton popupButton;
 
-	private TypeEditor() {
+	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
+		super( composite );
 		// note:
 		// trigger side effect to initialize isEnabled
 		org.alice.ide.declarationseditor.DeclarationCompositeHistory.getInstance();

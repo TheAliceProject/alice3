@@ -61,6 +61,6 @@ public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposit
 
 	@Override
 	protected org.alice.ide.declarationseditor.components.TypeEditor createView() {
-		return org.alice.ide.declarationseditor.components.TypeEditor.getInstance();
+		return new org.alice.ide.declarationseditor.components.TypeEditor( this );
 	}
 }
