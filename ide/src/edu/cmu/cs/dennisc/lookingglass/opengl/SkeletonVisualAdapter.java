@@ -43,8 +43,10 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import static javax.media.opengl.GL.GL_ALPHA_TEST;
 import static javax.media.opengl.GL.GL_BACK;
 import static javax.media.opengl.GL.GL_CULL_FACE;
+import static javax.media.opengl.GL.GL_GREATER;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -117,24 +119,77 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementActuallyRequired )
 	{
+
+		//TODO: Enable gl.glEnable( GL_TEXTURE_2D ) alpha test picking 
+
 		initializeDataIfNecessary();
 		if( this.skeletonIsDirty )
 		{
 			this.processWeightedMesh();
 		}
-		super.pickGeometry( pc, isSubElementActuallyRequired );
-
-		int i = this.m_element.geometries.getLength();
-		for( Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
+		int i = 0;
+		for( Entry<Integer, TexturedAppearanceAdapter> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
 		{
-			for( WeightedMeshControl wmc : controlEntry.getValue() )
+			WeightedMeshControl[] weightedMeshControls = appearanceIdToMeshControllersMap.get( appearanceEntry.getKey() );
+			if( weightedMeshControls != null ) {
+				for( WeightedMeshControl wmc : weightedMeshControls )
+				{
+					pc.gl.glPushName( i++ );
+					if( !wmc.weightedMesh.cullBackfaces.getValue() )
+					{
+						pc.gl.glDisable( GL_CULL_FACE );
+					}
+					else
+					{
+						pc.gl.glEnable( GL_CULL_FACE );
+						pc.gl.glCullFace( GL_BACK );
+					}
+					if( wmc.weightedMesh.useAlphaTest.getValue() )
+					{
+						pc.gl.glEnable( GL_ALPHA_TEST );
+						pc.gl.glAlphaFunc( GL_GREATER, .1f );
+					}
+					else
+					{
+						pc.gl.glDisable( GL_ALPHA_TEST );
+					}
+					wmc.pickGeometry( pc, isSubElementActuallyRequired );
+					pc.gl.glEnable( GL_CULL_FACE );
+					pc.gl.glDisable( GL_ALPHA_TEST );
+					pc.gl.glPopName();
+				}
+			}
+			MeshAdapter<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
+			if( meshAdapters != null )
 			{
-				pc.gl.glPushName( i++ );
-				wmc.pickGeometry( pc, isSubElementActuallyRequired );
-				pc.gl.glPopName();
+				for( MeshAdapter<Mesh> ma : meshAdapters )
+				{
+					pc.gl.glPushName( i++ );
+					if( !( (Mesh)ma.m_element ).cullBackfaces.getValue() )
+					{
+						pc.gl.glDisable( GL_CULL_FACE );
+					}
+					else
+					{
+						pc.gl.glEnable( GL_CULL_FACE );
+						pc.gl.glCullFace( GL_BACK );
+					}
+					if( ( (Mesh)ma.m_element ).useAlphaTest.getValue() )
+					{
+						pc.gl.glEnable( GL_ALPHA_TEST );
+						pc.gl.glAlphaFunc( GL_GREATER, .1f );
+					}
+					else
+					{
+						pc.gl.glDisable( GL_ALPHA_TEST );
+					}
+					ma.pickGeometry( pc, isSubElementActuallyRequired );
+					pc.gl.glEnable( GL_CULL_FACE );
+					pc.gl.glDisable( GL_ALPHA_TEST );
+					pc.gl.glPopName();
+				}
 			}
 		}
-
 	}
 
 	@Override
@@ -162,14 +217,24 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 						rc.gl.glEnable( GL_CULL_FACE );
 						rc.gl.glCullFace( GL_BACK );
 					}
+					if( wmc.weightedMesh.useAlphaTest.getValue() )
+					{
+						rc.gl.glEnable( GL_ALPHA_TEST );
+						rc.gl.glAlphaFunc( GL_GREATER, .1f );
+					}
+					else
+					{
+						rc.gl.glDisable( GL_ALPHA_TEST );
+					}
 					wmc.renderGeometry( rc );
 					rc.gl.glEnable( GL_CULL_FACE );
+					rc.gl.glDisable( GL_ALPHA_TEST );
 				}
 			}
-			MeshAdapter[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
+			MeshAdapter<Mesh>[] meshAdapters = this.appearanceIdToGeometryAdapaters.get( appearanceEntry.getKey() );
 			if( meshAdapters != null )
 			{
-				for( MeshAdapter ma : meshAdapters )
+				for( MeshAdapter<Mesh> ma : meshAdapters )
 				{
 					if( !( (Mesh)ma.m_element ).cullBackfaces.getValue() )
 					{
@@ -180,8 +245,18 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 						rc.gl.glEnable( GL_CULL_FACE );
 						rc.gl.glCullFace( GL_BACK );
 					}
+					if( ( (Mesh)ma.m_element ).useAlphaTest.getValue() )
+					{
+						rc.gl.glEnable( GL_ALPHA_TEST );
+						rc.gl.glAlphaFunc( GL_GREATER, .1f );
+					}
+					else
+					{
+						rc.gl.glDisable( GL_ALPHA_TEST );
+					}
 					ma.render( rc );
 					rc.gl.glEnable( GL_CULL_FACE );
+					rc.gl.glDisable( GL_ALPHA_TEST );
 				}
 			}
 
@@ -235,7 +310,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 			for( Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
 			{
 				TexturedAppearanceAdapter ta = appearanceIdToAdapterMap.get( controlEntry.getKey() );
-				if( ( ta != null ) && ta.isActuallyShowing() )
+				if( ( ta != null ) && ta.isActuallyShowing() && ta.isAlphaBlended() )
 				{
 					return true;
 				}

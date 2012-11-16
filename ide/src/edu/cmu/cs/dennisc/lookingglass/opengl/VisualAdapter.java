@@ -43,12 +43,10 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import static javax.media.opengl.GL.GL_ALPHA_TEST;
 import static javax.media.opengl.GL.GL_BACK;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_FRONT;
 import static javax.media.opengl.GL.GL_FRONT_AND_BACK;
-import static javax.media.opengl.GL.GL_GREATER;
 
 /**
  * @author Dennis Cosgrove
@@ -164,10 +162,6 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			rc.gl.glMultMatrixd( m_scaleBuffer );
 			rc.incrementScaledCount();
 		}
-
-		rc.gl.glEnable( GL_ALPHA_TEST );
-		rc.gl.glAlphaFunc( GL_GREATER, .1f );
-
 		if( m_frontFacingAppearanceAdapter == m_backFacingAppearanceAdapter ) {
 			if( m_frontFacingAppearanceAdapter != null ) {
 				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT_AND_BACK );
@@ -189,8 +183,6 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 				this.renderGeometry( rc );
 			}
 		}
-
-		rc.gl.glDisable( GL_ALPHA_TEST );
 
 		if( m_isScaleIdentity ) {
 			//pass
