@@ -366,8 +366,8 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		if( ( this.width > 0 ) && ( this.height > 0 ) ) {
 			//pass
 		} else {
-			int nextWidth = drawable.getWidth();
-			int nextHeight = drawable.getHeight();
+			int nextWidth = GlDrawableUtilities.getGlPixelBufferWidth( drawable );
+			int nextHeight = GlDrawableUtilities.getGlPixelBufferHeight( drawable );
 			if( ( this.width != nextWidth ) || ( this.height != nextHeight ) ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.width, this.height, nextWidth, nextHeight );
 				this.width = nextWidth;
