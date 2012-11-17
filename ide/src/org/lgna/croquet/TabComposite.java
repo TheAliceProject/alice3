@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BodyOrHeadTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
-	public BodyOrHeadTabComposite( java.util.UUID id ) {
-		super( id, IsCloseable.FALSE );
-	}
+public interface TabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
+	public boolean isCloseable();
 
-	@Override
-	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
-		return null;
-	}
+	public javax.swing.Action getSwingActionForLocalization();
 }

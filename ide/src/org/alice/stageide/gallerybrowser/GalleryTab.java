@@ -48,12 +48,7 @@ package org.alice.stageide.gallerybrowser;
  */
 public abstract class GalleryTab<V extends org.lgna.croquet.components.Panel> extends org.lgna.croquet.SimpleTabComposite<V> {
 	public GalleryTab( java.util.UUID id ) {
-		super( id );
-	}
-
-	@Override
-	public final boolean isCloseable() {
-		return false;
+		super( id, IsCloseable.FALSE );
 	}
 
 	@Override

@@ -77,7 +77,6 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 		return this.getDeclaration().isValid();
 	}
 
-	@Override
 	public boolean isCloseable() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {

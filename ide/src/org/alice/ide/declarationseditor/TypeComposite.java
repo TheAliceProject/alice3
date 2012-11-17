@@ -95,7 +95,6 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 		button.scaleFont( 1.6f );
 	}
 
-	@Override
 	public boolean isCloseable() {
 		return false;
 	}

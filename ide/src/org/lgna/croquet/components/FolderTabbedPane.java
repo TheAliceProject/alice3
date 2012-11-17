@@ -56,7 +56,7 @@ import org.lgna.croquet.Operation;
 	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane, ScrollPane scrollPane ) {
 		super( state, item, folderTabbedPane, scrollPane );
 		this.folderTabbedPane = folderTabbedPane;
-		this.cardPanelKey = folderTabbedPane.getCardPanel().createKey( this.getRootComponent(), this.getTabId() );
+		this.cardPanelKey = folderTabbedPane.getCardPanel().createKey( this.getRootComponent(), this.getItem().getCardId() );
 	}
 
 	public CardPanel.Key getCardPanelKey() {

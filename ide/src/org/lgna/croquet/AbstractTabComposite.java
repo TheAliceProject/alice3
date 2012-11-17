@@ -46,23 +46,19 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
-	private String titleText;
-	private javax.swing.Icon titleIcon;
-
+public abstract class AbstractTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
 	private org.lgna.croquet.BooleanState booleanState;
 	//todo: remove
 	private org.lgna.croquet.components.BooleanStateButton<?> button = null;
 
+	private final javax.swing.Action actionForLocalization = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		}
+	};
+
 	public AbstractTabComposite( java.util.UUID id ) {
 		super( id );
 	}
-
-	public java.util.UUID getTabId() {
-		return this.getMigrationId();
-	}
-
-	public abstract boolean isCloseable();
 
 	public org.lgna.croquet.components.ScrollPane createScrollPane() {
 		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
@@ -77,21 +73,25 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 		this.setTitleText( this.findDefaultLocalizedText() );
 	}
 
+	public javax.swing.Action getSwingActionForLocalization() {
+		return this.actionForLocalization;
+	}
+
 	public String getTitleText() {
-		return this.titleText;
+		return (String)this.actionForLocalization.getValue( javax.swing.Action.NAME );
 	}
 
 	protected void setTitleText( String titleText ) {
-		this.titleText = titleText;
+		this.actionForLocalization.putValue( javax.swing.Action.NAME, titleText );
 		this.updateTitleText();
 	}
 
 	public javax.swing.Icon getTitleIcon() {
-		return this.titleIcon;
+		return (javax.swing.Icon)this.actionForLocalization.getValue( javax.swing.Action.SMALL_ICON );
 	}
 
 	public void setTitleIcon( javax.swing.Icon titleIcon ) {
-		this.titleIcon = titleIcon;
+		this.actionForLocalization.putValue( javax.swing.Action.SMALL_ICON, titleIcon );
 		this.updateTitleIcon();
 	}
 

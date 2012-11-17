@@ -48,16 +48,11 @@ package org.alice.ide.projecturi;
  */
 public abstract class ContentTab<V extends org.alice.ide.projecturi.views.TabContentPanel> extends org.lgna.croquet.SimpleTabComposite<V> {
 	public ContentTab( java.util.UUID id ) {
-		super( id );
+		super( id, IsCloseable.FALSE );
 	}
 
 	public final java.net.URI getSelectedUri() {
 		return getView().getSelectedUri();
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
 	}
 
 	protected abstract void refresh();

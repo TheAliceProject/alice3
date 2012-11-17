@@ -85,11 +85,6 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 		}
 	}
 
-	@Override
-	public java.util.UUID getTabId() {
-		return this.declaration.getId();
-	}
-
 	public D getDeclaration() {
 		return this.declaration;
 	}

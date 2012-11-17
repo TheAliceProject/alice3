@@ -47,7 +47,24 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class SimpleTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractTabComposite<V> {
-	public SimpleTabComposite( java.util.UUID migrationId ) {
+	protected static enum IsCloseable {
+		TRUE( true ),
+		FALSE( false );
+		private final boolean value;
+
+		private IsCloseable( boolean value ) {
+			this.value = value;
+		}
+	}
+
+	private final IsCloseable isCloseable;
+
+	public SimpleTabComposite( java.util.UUID migrationId, IsCloseable isCloseable ) {
 		super( migrationId );
+		this.isCloseable = isCloseable;
+	}
+
+	public final boolean isCloseable() {
+		return this.isCloseable.value;
 	}
 }

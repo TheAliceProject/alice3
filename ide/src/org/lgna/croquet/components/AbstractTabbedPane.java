@@ -56,10 +56,6 @@ package org.lgna.croquet.components;
 		}
 	}
 
-	public java.util.UUID getTabId() {
-		return this.getItem().getTabId();
-	}
-
 	public View<?, ?> getMainView() {
 		return this.getItem().getView();
 	}
