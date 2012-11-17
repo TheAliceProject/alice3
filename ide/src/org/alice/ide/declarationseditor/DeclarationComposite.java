@@ -78,7 +78,7 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 
 				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 					String nextName = (String)e.getValue();
-					DeclarationComposite.this.setTitleText( nextName );
+					org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );
 				}
 			};
 			nameProperty.addPropertyListener( nameListener );

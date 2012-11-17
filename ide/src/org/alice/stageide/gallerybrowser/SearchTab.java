@@ -62,12 +62,6 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 		super( java.util.UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setTitleIcon( org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON );
-	}
-
 	public org.lgna.croquet.StringState getFilterState() {
 		return this.filterState;
 	}

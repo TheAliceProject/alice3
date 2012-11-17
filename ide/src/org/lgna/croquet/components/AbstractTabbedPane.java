@@ -122,7 +122,6 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 			closeButtonActionListener = null;
 		}
 		BooleanStateButton<?> rv = this.createTitleButton( item, itemSelectedState, closeButtonActionListener );
-		rv.setAction( item.getSwingActionForLocalization() );
 		this.customizeTitleComponent( itemSelectedState, rv, item );
 		return rv;
 

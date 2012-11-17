@@ -61,6 +61,13 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
 	}
 
+	@Override
+	protected void localize() {
+		super.localize();
+		this.tabState.getItemSelectedState( ResourceTab.getInstance() ).setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
+		this.tabState.getItemSelectedState( SearchTab.getInstance() ).setIconForBothTrueAndFalse( org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON );
+	}
+
 	public org.lgna.croquet.TabSelectionState<GalleryTab> getTabState() {
 		return this.tabState;
 	}

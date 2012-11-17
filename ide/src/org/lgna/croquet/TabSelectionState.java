@@ -65,11 +65,11 @@ public class TabSelectionState<T extends AbstractTabComposite<?>> extends Defaul
 
 	public org.lgna.croquet.components.FolderTabbedPane<T> createFolderTabbedPane() {
 		return new org.lgna.croquet.components.FolderTabbedPane<T>( this );
-	};
+	}
 
 	public org.lgna.croquet.components.ToolPaletteTabbedPane<T> createToolPaletteTabbedPane() {
 		return new org.lgna.croquet.components.ToolPaletteTabbedPane<T>( this );
-	};
+	}
 
 	public org.lgna.croquet.components.JComponent<?> getMainComponentFor( T item ) {
 		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );

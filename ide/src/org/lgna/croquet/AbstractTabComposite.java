@@ -47,10 +47,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
-	private final javax.swing.Action actionForLocalization = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-		}
-	};
+	private String titleText;
 
 	public AbstractTabComposite( java.util.UUID id ) {
 		super( id );
@@ -66,32 +63,12 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setTitleText( this.findDefaultLocalizedText() );
-	}
-
-	public javax.swing.Action getSwingActionForLocalization() {
-		return this.actionForLocalization;
-	}
-
-	private String getTitleText() {
-		return (String)this.actionForLocalization.getValue( javax.swing.Action.NAME );
-	}
-
-	protected void setTitleText( String titleText ) {
-		this.actionForLocalization.putValue( javax.swing.Action.NAME, titleText );
-	}
-
-	private javax.swing.Icon getTitleIcon() {
-		return (javax.swing.Icon)this.actionForLocalization.getValue( javax.swing.Action.SMALL_ICON );
-	}
-
-	public void setTitleIcon( javax.swing.Icon titleIcon ) {
-		this.actionForLocalization.putValue( javax.swing.Action.SMALL_ICON, titleIcon );
+		this.titleText = this.findDefaultLocalizedText();
 	}
 
 	@Override
 	public void appendUserRepr( StringBuilder userRepr ) {
-		userRepr.append( this.getTitleText() );
+		userRepr.append( this.titleText );
 	}
 
 	@Override
