@@ -49,4 +49,10 @@ public interface TabComposite<V extends org.lgna.croquet.components.View<?, ?>> 
 	public boolean isCloseable();
 
 	public javax.swing.Action getSwingActionForLocalization();
+
+	public org.lgna.croquet.components.ScrollPane createScrollPane();
+
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button );
+
+	public void TEMPORARY_HACK_handleSelected();
 }

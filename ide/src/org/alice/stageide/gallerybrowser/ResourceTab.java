@@ -62,12 +62,7 @@ public class ResourceTab extends GalleryTab<org.alice.stageide.gallerybrowser.vi
 
 	private ResourceTab() {
 		super( java.util.UUID.fromString( "811380db-5339-4a2e-84e3-695b502188af" ) );
-	}
-
-	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponent( booleanState, button );
-		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
+		this.setTitleIcon( org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
 	}
 
 	@Override

@@ -43,7 +43,7 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/abstract class TabItemDetails<E extends org.lgna.croquet.AbstractTabComposite<?>> extends ItemDetails<E> {
+/*package-private*/abstract class TabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends ItemDetails<E> {
 	private ScrollPane scrollPane;
 
 	public TabItemDetails( org.lgna.croquet.ItemState<E> state, E item, AbstractTabbedPane<E, ?> tabbedPane, ScrollPane scrollPane ) {
@@ -76,7 +76,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabbedPane<E extends org.lgna.croquet.AbstractTabComposite<?>, TID extends TabItemDetails<E>> extends ItemSelectablePanel<E, TID> {
+public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite<?>, TID extends TabItemDetails<E>> extends ItemSelectablePanel<E, TID> {
 	public AbstractTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
@@ -90,11 +90,10 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.AbstractTabC
 	}
 
 	protected void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, BooleanStateButton<?> button, E item ) {
-		item.customizeTitleComponent( booleanState, button );
+		item.customizeTitleComponentAppearance( button );
 	}
 
 	protected void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, BooleanStateButton<?> button, E item ) {
-		item.releaseTitleComponent( booleanState, button );
 	}
 
 	protected ScrollPane createScrollPane( E item ) {
@@ -123,7 +122,8 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.AbstractTabC
 			closeButtonActionListener = null;
 		}
 		BooleanStateButton<?> rv = this.createTitleButton( item, itemSelectedState, closeButtonActionListener );
-		item.customizeTitleComponent( itemSelectedState, rv );
+		rv.setAction( item.getSwingActionForLocalization() );
+		this.customizeTitleComponent( itemSelectedState, rv, item );
 		return rv;
 
 	}

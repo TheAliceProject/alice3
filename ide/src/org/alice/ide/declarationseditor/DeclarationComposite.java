@@ -78,11 +78,16 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 
 				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 					String nextName = (String)e.getValue();
-					DeclarationTabState.getInstance().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );
+					DeclarationComposite.this.setTitleText( nextName );
 				}
 			};
 			nameProperty.addPropertyListener( nameListener );
 		}
+	}
+
+	@Override
+	protected String findDefaultLocalizedText() {
+		return this.declaration.getName();
 	}
 
 	public D getDeclaration() {
@@ -92,11 +97,6 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 	public abstract org.lgna.project.ast.AbstractType<?, ?, ?> getType();
 
 	public abstract boolean isValid();
-
-	@Override
-	public String getTitleText() {
-		return this.declaration.getName();
-	}
 
 	@Override
 	public org.lgna.croquet.components.ScrollPane createScrollPane() {

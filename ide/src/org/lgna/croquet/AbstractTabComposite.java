@@ -47,10 +47,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
-	private org.lgna.croquet.BooleanState booleanState;
-	//todo: remove
-	private org.lgna.croquet.components.BooleanStateButton<?> button = null;
-
 	private final javax.swing.Action actionForLocalization = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
@@ -77,34 +73,20 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 		return this.actionForLocalization;
 	}
 
-	public String getTitleText() {
+	private String getTitleText() {
 		return (String)this.actionForLocalization.getValue( javax.swing.Action.NAME );
 	}
 
 	protected void setTitleText( String titleText ) {
 		this.actionForLocalization.putValue( javax.swing.Action.NAME, titleText );
-		this.updateTitleText();
 	}
 
-	public javax.swing.Icon getTitleIcon() {
+	private javax.swing.Icon getTitleIcon() {
 		return (javax.swing.Icon)this.actionForLocalization.getValue( javax.swing.Action.SMALL_ICON );
 	}
 
 	public void setTitleIcon( javax.swing.Icon titleIcon ) {
 		this.actionForLocalization.putValue( javax.swing.Action.SMALL_ICON, titleIcon );
-		this.updateTitleIcon();
-	}
-
-	private void updateTitleText() {
-		if( this.button != null ) {
-			this.booleanState.setTextForBothTrueAndFalse( this.getTitleText() );
-		}
-	}
-
-	private void updateTitleIcon() {
-		if( this.button != null ) {
-			this.button.getAwtComponent().setIcon( this.getTitleIcon() );
-		}
 	}
 
 	@Override
@@ -124,15 +106,7 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 		return sb.toString();
 	}
 
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		this.initializeIfNecessary();
-		this.booleanState = booleanState;
-		this.button = button;
-		this.updateTitleText();
-		this.updateTitleIcon();
-	}
-
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
 	}
 
 	public void TEMPORARY_HACK_handleSelected() {
