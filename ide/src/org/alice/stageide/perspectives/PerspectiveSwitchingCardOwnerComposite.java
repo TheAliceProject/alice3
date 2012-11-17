@@ -63,7 +63,7 @@ public abstract class PerspectiveSwitchingCardOwnerComposite extends org.lgna.cr
 			this.codePerspecitiveCard = codePerspecitiveCard;
 		}
 
-		public void setupScene( org.lgna.croquet.Composite<?> setupScenePerspecitiveCard ) {
+		public void setupScenePerspective( org.lgna.croquet.Composite<?> setupScenePerspecitiveCard ) {
 			this.setupScenePerspecitiveCard = setupScenePerspecitiveCard;
 		}
 
