@@ -48,12 +48,7 @@ package org.alice.stageide.personresource;
  */
 public abstract class BodyOrHeadTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
 	public BodyOrHeadTabComposite( java.util.UUID id ) {
-		super( id );
-	}
-
-	@Override
-	public final boolean isCloseable() {
-		return false;
+		super( id, IsCloseable.FALSE );
 	}
 
 	@Override

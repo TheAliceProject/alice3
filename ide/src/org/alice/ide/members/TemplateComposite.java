@@ -50,7 +50,7 @@ public abstract class TemplateComposite<V extends org.lgna.croquet.components.Vi
 	private String name;
 
 	public TemplateComposite( java.util.UUID id ) {
-		super( id );
+		super( id, IsCloseable.FALSE );
 	}
 
 	@Override
@@ -66,10 +66,5 @@ public abstract class TemplateComposite<V extends org.lgna.croquet.components.Vi
 	}
 
 	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton<?, org.lgna.croquet.BooleanState> button ) {
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
 	}
 }

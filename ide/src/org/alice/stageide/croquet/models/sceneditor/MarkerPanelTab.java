@@ -54,16 +54,11 @@ public class MarkerPanelTab extends org.lgna.croquet.SimpleTabComposite<org.alic
 	}
 
 	private MarkerPanelTab() {
-		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
+		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ), IsCloseable.FALSE );
 	}
 
 	@Override
 	protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
 		return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
 	}
 }

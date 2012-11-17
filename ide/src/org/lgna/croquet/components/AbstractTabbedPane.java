@@ -56,10 +56,6 @@ package org.lgna.croquet.components;
 		}
 	}
 
-	public java.util.UUID getTabId() {
-		return this.getItem().getTabId();
-	}
-
 	public View<?, ?> getMainView() {
 		return this.getItem().getView();
 	}
@@ -94,11 +90,10 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 	}
 
 	protected void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, BooleanStateButton<?> button, E item ) {
-		item.customizeTitleComponent( booleanState, button );
+		item.customizeTitleComponentAppearance( button );
 	}
 
 	protected void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, BooleanStateButton<?> button, E item ) {
-		item.releaseTitleComponent( booleanState, button );
 	}
 
 	protected ScrollPane createScrollPane( E item ) {
@@ -127,7 +122,7 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 			closeButtonActionListener = null;
 		}
 		BooleanStateButton<?> rv = this.createTitleButton( item, itemSelectedState, closeButtonActionListener );
-		item.customizeTitleComponent( itemSelectedState, rv );
+		this.customizeTitleComponent( itemSelectedState, rv, item );
 		return rv;
 
 	}

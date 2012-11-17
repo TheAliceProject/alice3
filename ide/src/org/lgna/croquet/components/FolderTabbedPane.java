@@ -49,14 +49,14 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
 
-/*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
+/*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.AbstractTabComposite<?>> extends TabItemDetails<E> {
 	private final CardPanel.Key cardPanelKey;
 	private final FolderTabbedPane<E> folderTabbedPane;
 
 	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane, ScrollPane scrollPane ) {
 		super( state, item, folderTabbedPane, scrollPane );
 		this.folderTabbedPane = folderTabbedPane;
-		this.cardPanelKey = folderTabbedPane.getCardPanel().createKey( this.getRootComponent(), this.getTabId() );
+		this.cardPanelKey = folderTabbedPane.getCardPanel().createKey( this.getRootComponent(), this.getItem().getCardId() );
 	}
 
 	public CardPanel.Key getCardPanelKey() {
@@ -76,7 +76,7 @@ import org.lgna.croquet.Operation;
 /**
  * @author Dennis Cosgrove
  */
-public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E, FolderTabItemDetails<E>> {
+public class FolderTabbedPane<E extends org.lgna.croquet.AbstractTabComposite<?>> extends AbstractTabbedPane<E, FolderTabItemDetails<E>> {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 
@@ -124,7 +124,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		//		}
 	}
 
-	private static class JFolderTabTitle extends javax.swing.JRadioButton {
+	private static class JFolderTabTitle extends javax.swing.JToggleButton {
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged( java.awt.event.ItemEvent e ) {
 				JFolderTabTitle.this.revalidate();

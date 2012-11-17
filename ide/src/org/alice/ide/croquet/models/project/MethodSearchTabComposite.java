@@ -57,7 +57,7 @@ public class MethodSearchTabComposite extends SimpleTabComposite<MethodSearchTab
 	MethodReferencesComposite referencesComposite = new MethodReferencesComposite( searchComposite );
 
 	public MethodSearchTabComposite() {
-		super( java.util.UUID.fromString( "46b72f34-c4db-4139-b430-8f4385d599d1" ) );
+		super( java.util.UUID.fromString( "46b72f34-c4db-4139-b430-8f4385d599d1" ), IsCloseable.FALSE );
 		this.getView().getAwtComponent().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
 	}
 
@@ -68,11 +68,6 @@ public class MethodSearchTabComposite extends SimpleTabComposite<MethodSearchTab
 			referencesComposite.changed( searchComposite.getManager(), searchComposite.getManager().getSelectedNode(), searchComposite.getManager().getSelectedNode(), true );
 		}
 	};
-
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
 
 	private final SplitComposite splitComposite = this.createHorizontalSplitComposite( searchComposite, referencesComposite, 0.5 );
 

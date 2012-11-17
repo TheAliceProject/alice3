@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSelectionState<T> {
+public class TabSelectionState<T extends AbstractTabComposite<?>> extends DefaultListSelectionState<T> {
 	public TabSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex ) {
 		super( group, id, codec, selectionIndex );
 	}
@@ -65,11 +65,11 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 
 	public org.lgna.croquet.components.FolderTabbedPane<T> createFolderTabbedPane() {
 		return new org.lgna.croquet.components.FolderTabbedPane<T>( this );
-	};
+	}
 
 	public org.lgna.croquet.components.ToolPaletteTabbedPane<T> createToolPaletteTabbedPane() {
 		return new org.lgna.croquet.components.ToolPaletteTabbedPane<T>( this );
-	};
+	}
 
 	public org.lgna.croquet.components.JComponent<?> getMainComponentFor( T item ) {
 		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
@@ -96,5 +96,9 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 		} else {
 			return null;
 		}
+	}
+
+	public void setItemIconForBothTrueAndFalse( T item, javax.swing.Icon icon ) {
+		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
 	}
 }

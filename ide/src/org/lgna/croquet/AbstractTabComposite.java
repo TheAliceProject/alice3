@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,17 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface TabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
-	public boolean isCloseable();
+public abstract class AbstractTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
+	private String titleText;
 
-	public org.lgna.croquet.components.ScrollPane createScrollPane();
+	public AbstractTabComposite( java.util.UUID id ) {
+		super( id );
+	}
 
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button );
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setBothScrollBarIncrements( 12, 24 );
+		return rv;
+	}
 
-	public void TEMPORARY_HACK_handleSelected();
+	@Override
+	protected void localize() {
+		super.localize();
+		this.titleText = this.findDefaultLocalizedText();
+	}
+
+	@Override
+	public void appendUserRepr( StringBuilder userRepr ) {
+		userRepr.append( this.titleText );
+	}
+
+	@Override
+	protected final void appendRepr( StringBuilder repr ) {
+		this.appendUserRepr( repr );
+	}
+
+	@Override
+	protected String createRepr() {
+		StringBuilder sb = new StringBuilder();
+		this.appendRepr( sb );
+		return sb.toString();
+	}
+
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	}
+
+	public void TEMPORARY_HACK_handleSelected() {
+	}
 }
