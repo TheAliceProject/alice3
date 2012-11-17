@@ -49,7 +49,7 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
 
-/*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
+/*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.AbstractTabComposite<?>> extends TabItemDetails<E> {
 	private final CardPanel.Key cardPanelKey;
 	private final FolderTabbedPane<E> folderTabbedPane;
 
@@ -76,7 +76,7 @@ import org.lgna.croquet.Operation;
 /**
  * @author Dennis Cosgrove
  */
-public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E, FolderTabItemDetails<E>> {
+public class FolderTabbedPane<E extends org.lgna.croquet.AbstractTabComposite<?>> extends AbstractTabbedPane<E, FolderTabItemDetails<E>> {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 

@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimpleTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends TabComposite<V> {
+public abstract class SimpleTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractTabComposite<V> {
 	public SimpleTabComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}

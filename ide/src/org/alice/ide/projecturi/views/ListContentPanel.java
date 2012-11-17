@@ -59,7 +59,7 @@ public abstract class ListContentPanel<M extends org.alice.ide.projecturi.UriSel
 		this.revalidateAndRepaint();
 	}
 
-	public ListContentPanel( org.lgna.croquet.TabComposite<?> composite, M state ) {
+	public ListContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite, M state ) {
 		super( composite );
 		this.state = state;
 		org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();

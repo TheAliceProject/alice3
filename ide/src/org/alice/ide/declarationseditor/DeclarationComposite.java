@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationComposite<D extends org.lgna.project.ast.AbstractDeclaration, V extends org.alice.ide.declarationseditor.components.DeclarationView> extends org.lgna.croquet.TabComposite<V> {
+public abstract class DeclarationComposite<D extends org.lgna.project.ast.AbstractDeclaration, V extends org.alice.ide.declarationseditor.components.DeclarationView> extends org.lgna.croquet.AbstractTabComposite<V> {
 	@Deprecated
 	public static synchronized DeclarationComposite<?, ?> getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {

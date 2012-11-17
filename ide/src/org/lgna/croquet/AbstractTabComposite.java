@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
+public abstract class AbstractTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
 	private String titleText;
 	private javax.swing.Icon titleIcon;
 
@@ -54,7 +54,7 @@ public abstract class TabComposite<V extends org.lgna.croquet.components.View<?,
 	//todo: remove
 	private org.lgna.croquet.components.BooleanStateButton<?> button = null;
 
-	public TabComposite( java.util.UUID id ) {
+	public AbstractTabComposite( java.util.UUID id ) {
 		super( id );
 	}
 
