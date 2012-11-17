@@ -97,4 +97,8 @@ public class TabSelectionState<T extends AbstractTabComposite<?>> extends Defaul
 			return null;
 		}
 	}
+
+	public void setItemIconForBothTrueAndFalse( T item, javax.swing.Icon icon ) {
+		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
+	}
 }

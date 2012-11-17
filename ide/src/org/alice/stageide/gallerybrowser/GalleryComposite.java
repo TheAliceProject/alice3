@@ -64,8 +64,8 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 	@Override
 	protected void localize() {
 		super.localize();
-		this.tabState.getItemSelectedState( ResourceTab.getInstance() ).setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-		this.tabState.getItemSelectedState( SearchTab.getInstance() ).setIconForBothTrueAndFalse( org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON );
+		this.tabState.setItemIconForBothTrueAndFalse( ResourceTab.getInstance(), org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
+		this.tabState.setItemIconForBothTrueAndFalse( SearchTab.getInstance(), org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON );
 	}
 
 	public org.lgna.croquet.TabSelectionState<GalleryTab> getTabState() {
