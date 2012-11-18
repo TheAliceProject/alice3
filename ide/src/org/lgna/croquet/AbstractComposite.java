@@ -570,9 +570,15 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		for( Composite<?> subComposite : this.subComposites ) {
 			subComposite.handlePreActivation();
 		}
+		for( TabSelectionState<?> tabSelectionState : this.mapKeyToTabSelectionState.values() ) {
+			tabSelectionState.handlePreActivation();
+		}
 	}
 
 	public void handlePostDeactivation() {
+		for( TabSelectionState<?> tabSelectionState : this.mapKeyToTabSelectionState.values() ) {
+			tabSelectionState.handlePostDeactivation();
+		}
 		for( Composite<?> subComposite : this.subComposites ) {
 			subComposite.handlePostDeactivation();
 		}

@@ -101,4 +101,38 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 	public void setItemIconForBothTrueAndFalse( T item, javax.swing.Icon icon ) {
 		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
 	}
+
+	private boolean isActive;
+
+	public void handlePreActivation() {
+		this.initializeIfNecessary();
+		TabComposite<?> selected = this.getSelectedItem();
+		if( selected != null ) {
+			selected.handlePreActivation();
+		}
+		this.isActive = true;
+	}
+
+	@Override
+	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
+		if( this.isActive ) {
+			if( prevValue != null ) {
+				prevValue.handlePostDeactivation();
+			}
+		}
+		super.fireChanged( prevValue, nextValue, isAdjusting );
+		if( this.isActive ) {
+			if( nextValue != null ) {
+				nextValue.handlePreActivation();
+			}
+		}
+	}
+
+	public void handlePostDeactivation() {
+		this.isActive = false;
+		TabComposite<?> selected = this.getSelectedItem();
+		if( selected != null ) {
+			selected.handlePostDeactivation();
+		}
+	}
 }
