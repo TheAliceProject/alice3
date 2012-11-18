@@ -60,14 +60,19 @@ public class PrintCurrentCodeOperation extends PrintOperation {
 
 	@Override
 	protected java.awt.print.Printable getPrintable() {
-		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
-		org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
-		java.awt.print.Printable printable = view.getPrintable();
+		org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+		java.awt.print.Printable printable = null;
+		if( declarationComposite != null ) {
+			org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
+			if( view != null ) {
+				printable = view.getPrintable();
+			}
+		}
 		if( printable != null ) {
 			return printable;
 		} else {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Print not supported for " + composite, "Print not supported", org.lgna.croquet.MessageType.INFORMATION );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "print not supported for:", composite );
+			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Print not supported for " + declarationComposite, "Print not supported", org.lgna.croquet.MessageType.INFORMATION );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "print not supported for:", declarationComposite );
 			return null;
 		}
 	}

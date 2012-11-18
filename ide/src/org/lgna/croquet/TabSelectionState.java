@@ -115,15 +115,22 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 
 	@Override
 	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
-		if( this.isActive ) {
-			if( prevValue != null ) {
-				prevValue.handlePostDeactivation();
-			}
-		}
-		super.fireChanged( prevValue, nextValue, isAdjusting );
-		if( this.isActive ) {
-			if( nextValue != null ) {
-				nextValue.handlePreActivation();
+		if( isAdjusting ) {
+			//pass
+		} else {
+			if( prevValue != nextValue ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( prevValue, nextValue );
+				if( this.isActive ) {
+					if( prevValue != null ) {
+						prevValue.handlePostDeactivation();
+					}
+				}
+				super.fireChanged( prevValue, nextValue, isAdjusting );
+				if( this.isActive ) {
+					if( nextValue != null ) {
+						nextValue.handlePreActivation();
+					}
+				}
 			}
 		}
 	}

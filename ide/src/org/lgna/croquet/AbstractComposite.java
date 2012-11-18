@@ -565,6 +565,14 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		this.subComposites.remove( subComposite );
 	}
 
+	protected void registerTabSelectionState( TabSelectionState<?> tabSelectionState ) {
+		this.registeredTabSelectionStates.add( tabSelectionState );
+	}
+
+	protected void unregisterTabSelectionState( TabSelectionState<?> tabSelectionState ) {
+		this.registeredTabSelectionStates.remove( tabSelectionState );
+	}
+
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
 		for( Composite<?> subComposite : this.subComposites ) {
@@ -573,9 +581,15 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		for( TabSelectionState<?> tabSelectionState : this.mapKeyToTabSelectionState.values() ) {
 			tabSelectionState.handlePreActivation();
 		}
+		for( TabSelectionState<?> tabSelectionState : this.registeredTabSelectionStates ) {
+			tabSelectionState.handlePreActivation();
+		}
 	}
 
 	public void handlePostDeactivation() {
+		for( TabSelectionState<?> tabSelectionState : this.registeredTabSelectionStates ) {
+			tabSelectionState.handlePostDeactivation();
+		}
 		for( TabSelectionState<?> tabSelectionState : this.mapKeyToTabSelectionState.values() ) {
 			tabSelectionState.handlePostDeactivation();
 		}
@@ -594,6 +608,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	private java.util.Map<Key, InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalCustomItemState> mapKeyToItemState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private java.util.Set<TabSelectionState> registeredTabSelectionStates = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
 	//	private java.util.Map<Key, InternalCardOwnerComposite> mapKeyToCardOwnerComposite = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 

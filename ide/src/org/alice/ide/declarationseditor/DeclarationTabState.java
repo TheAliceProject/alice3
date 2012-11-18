@@ -49,14 +49,6 @@ import org.alice.stageide.StageIDE;
  * @author Dennis Cosgrove
  */
 public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<DeclarationComposite> {
-	private static class SingletonHolder {
-		private static DeclarationTabState instance = new DeclarationTabState();
-	}
-
-	public static DeclarationTabState getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod> methodsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod>() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<org.lgna.project.ast.UserMethod> e ) {
 		}
@@ -114,7 +106,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<Decl
 
 	private org.lgna.project.ast.NamedUserType type;
 
-	private DeclarationTabState() {
+	public DeclarationTabState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
 		TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueListener( this.isEmphasizingClassesListener );
