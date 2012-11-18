@@ -77,7 +77,7 @@ public class DeclarationCompositeHistory {
 
 	private DeclarationCompositeHistory() {
 		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectListener );
-		DeclarationTabState.getInstance().addValueListener( this.declarationListener );
+		DeclarationsEditorComposite.getInstance().getTabState().addValueListener( this.declarationListener );
 		this.resetStack();
 	}
 
@@ -150,7 +150,7 @@ public class DeclarationCompositeHistory {
 	private void resetStack() {
 		this.history.clear();
 		this.index = -1;
-		this.appendIfAppropriate( DeclarationTabState.getInstance().getValue() );
+		this.appendIfAppropriate( DeclarationsEditorComposite.getInstance().getTabState().getValue() );
 		this.update();
 	}
 

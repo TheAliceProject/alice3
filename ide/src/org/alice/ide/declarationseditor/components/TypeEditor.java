@@ -80,14 +80,15 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBin() );
 		}
 		headerTrailingComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 0, 2 ) );
-		this.tabbedPane = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().createFolderTabbedPane();
+		this.tabbedPane = composite.getTabState().createFolderTabbedPane();
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
 		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
 		this.addCenterComponent( tabbedPane );
 	}
 
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		org.alice.ide.declarationseditor.DeclarationComposite item = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getSelectedItem();
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite composite = (org.alice.ide.declarationseditor.DeclarationsEditorComposite)this.getComposite();
+		org.alice.ide.declarationseditor.DeclarationComposite item = composite.getTabState().getSelectedItem();
 		if( item != null ) {
 			org.lgna.croquet.components.JComponent<?> component = this.tabbedPane.getMainComponentFor( item );
 			if( component instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {

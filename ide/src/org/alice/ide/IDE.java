@@ -501,12 +501,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			if( type instanceof org.lgna.project.ast.NamedUserType ) {
 				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
 			}
-			if( org.alice.ide.declarationseditor.DeclarationTabState.getInstance().containsItem( declarationComposite ) ) {
+			org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+			if( tabState.containsItem( declarationComposite ) ) {
 				//pass
 			} else {
-				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addItem( declarationComposite );
+				tabState.addItem( declarationComposite );
 			}
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setValueTransactionlessly( declarationComposite );
+			tabState.setValueTransactionlessly( declarationComposite );
 		}
 	}
 
