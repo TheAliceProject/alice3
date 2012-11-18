@@ -68,6 +68,11 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 
 	@Override
 	public void appendUserRepr( StringBuilder userRepr ) {
+		if( this.titleText != null ) {
+			//pass
+		} else {
+			this.initializeIfNecessary();
+		}
 		userRepr.append( this.titleText );
 	}
 
