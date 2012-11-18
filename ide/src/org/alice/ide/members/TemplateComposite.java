@@ -56,5 +56,6 @@ public abstract class TemplateComposite<V extends org.lgna.croquet.components.Vi
 		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.5f );
 		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
 	}
 }
