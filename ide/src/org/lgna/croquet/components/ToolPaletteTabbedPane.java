@@ -43,7 +43,7 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/class ToolPaletteTabItemDetails<E extends org.lgna.croquet.AbstractTabComposite<?>> extends TabItemDetails<E> {
+/*package-private*/class ToolPaletteTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
 	private final ToolPaletteTabbedPane<E> toolPaletteTabbedPane;
 
 	public ToolPaletteTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, ToolPaletteTabbedPane<E> toolPaletteTabbedPane, ScrollPane scrollPane ) {
@@ -64,7 +64,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ToolPaletteTabbedPane<E extends org.lgna.croquet.AbstractTabComposite<?>> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>> {
+public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>> {
 	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
