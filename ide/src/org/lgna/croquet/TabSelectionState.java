@@ -119,7 +119,6 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 			//pass
 		} else {
 			if( prevValue != nextValue ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( prevValue, nextValue );
 				if( this.isActive ) {
 					if( prevValue != null ) {
 						prevValue.handlePostDeactivation();
