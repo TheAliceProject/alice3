@@ -41,18 +41,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.lgna.croquet.components;
+package org.lgna.cheshire.simple.stencil;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CardPanel extends Panel {
+@Deprecated
+public class OldCardPanel extends org.lgna.croquet.components.Panel {
 	private final java.awt.CardLayout cardLayout;
 
-	public CardPanel( org.lgna.croquet.CardOwnerComposite composite, int hgap, int vgap ) {
+	public OldCardPanel( org.lgna.croquet.CardOwnerComposite composite, int hgap, int vgap ) {
 		super( composite );
 		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
-		java.awt.Color color = FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
+		java.awt.Color color = org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR;
 		if( composite != null ) {
 			java.util.List<org.lgna.croquet.Composite<?>> cards = composite.getCards();
 			for( org.lgna.croquet.Composite<?> card : cards ) {
@@ -65,8 +66,18 @@ public class CardPanel extends Panel {
 		this.setBackgroundColor( color );
 	}
 
-	public CardPanel( org.lgna.croquet.CardOwnerComposite composite ) {
+	public OldCardPanel( org.lgna.croquet.CardOwnerComposite composite ) {
 		this( composite, 0, 0 );
+	}
+
+	@Deprecated
+	public OldCardPanel() {
+		this( null );
+	}
+
+	@Deprecated
+	public OldCardPanel( int hgap, int vgap ) {
+		this( null, hgap, vgap );
 	}
 
 	@Override
@@ -74,35 +85,99 @@ public class CardPanel extends Panel {
 		return this.cardLayout;
 	}
 
-	private static final String NULL_KEY = "null";
+	public static final class Key {
+		private final org.lgna.croquet.components.JComponent<?> view;
+		private final java.util.UUID id;
 
-	private Label nullLabel;
+		private Key( org.lgna.croquet.components.JComponent<?> view, java.util.UUID id ) {
+			this.view = view;
+			this.id = id;
+		}
 
-	private static String getKey( org.lgna.croquet.Composite<?> composite ) {
-		return composite != null ? composite.getCardId().toString() : NULL_KEY;
+		public java.util.UUID getId() {
+			return this.id;
+		}
+
+		public org.lgna.croquet.components.JComponent<?> getView() {
+			return this.view;
+		}
+	}
+
+	private java.util.Map<java.util.UUID, Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private Key nullKey;
+
+	@Deprecated
+	public Key createKey( org.lgna.croquet.components.JComponent<?> child, java.util.UUID id ) {
+		if( map.containsKey( id ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "CardPanel replacing key", id );
+		}
+		Key rv = new Key( child, id );
+		this.map.put( id, rv );
+		return rv;
+	}
+
+	@Deprecated
+	public Key getKey( java.util.UUID id ) {
+		return this.map.get( id );
+	}
+
+	@Deprecated
+	public void addComponent( Key key ) {
+		this.internalAddComponent( key.view, key.id.toString() );
+	}
+
+	@Deprecated
+	public void removeComponent( Key key ) {
+		this.internalRemoveComponent( key.view );
+	}
+
+	@Deprecated
+	public void showKey( Key key ) {
+		if( key != null ) {
+			//pass
+		} else {
+			if( this.nullKey != null ) {
+				//pass
+			} else {
+				org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
+				//label.setText( "unset" );
+				label.setBackgroundColor( null );
+				label.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.CENTER );
+				this.nullKey = this.createKey( label, java.util.UUID.randomUUID() );
+				this.addComponent( this.nullKey );
+			}
+			key = this.nullKey;
+		}
+		this.cardLayout.show( this.getAwtComponent(), key.id.toString() );
+	}
+
+	private Key getKey( org.lgna.croquet.Composite<?> composite ) {
+		if( composite != null ) {
+			java.util.UUID id = composite.getCardId();
+			Key key = this.getKey( id );
+			if( key != null ) {
+				//pass
+			} else {
+				key = this.createKey( composite.getView(), id );
+			}
+			return key;
+		} else {
+			return null;
+		}
 	}
 
 	public void addComposite( org.lgna.croquet.Composite<?> composite ) {
-		assert composite != null : this;
-		this.internalAddComponent( composite.getView(), getKey( composite ) );
+		assert composite != null;
+		this.addComponent( this.getKey( composite ) );
 	}
 
 	public void removeComposite( org.lgna.croquet.Composite<?> composite ) {
-		assert composite != null : this;
-		this.internalRemoveComponent( composite.getView() );
+		assert composite != null;
+		this.removeComponent( this.getKey( composite ) );
 	}
 
 	public void showComposite( org.lgna.croquet.Composite<?> composite ) {
-		if( composite != null ) {
-			//pass
-		} else {
-			if( this.nullLabel != null ) {
-				//pass
-			} else {
-				this.nullLabel = new Label();
-				this.internalAddComponent( this.nullLabel, NULL_KEY );
-			}
-		}
-		this.cardLayout.show( this.getAwtComponent(), getKey( composite ) );
+		this.showKey( this.getKey( composite ) );
 	}
+
 }

@@ -50,24 +50,18 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
 
 /*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
-	private final CardPanel.Key cardPanelKey;
 	private final FolderTabbedPane<E> folderTabbedPane;
 
 	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane, ScrollPane scrollPane ) {
 		super( state, item, folderTabbedPane, scrollPane );
 		this.folderTabbedPane = folderTabbedPane;
-		this.cardPanelKey = folderTabbedPane.getCardPanel().createKey( this.getRootComponent(), this.getItem().getCardId() );
-	}
-
-	public CardPanel.Key getCardPanelKey() {
-		return this.cardPanelKey;
 	}
 
 	@Override
 	public void setSelected( boolean isSelected ) {
 		super.setSelected( isSelected );
 		if( isSelected ) {
-			this.folderTabbedPane.getCardPanel().showKey( this.cardPanelKey );
+			this.folderTabbedPane.getCardPanel().showComposite( this.getItem() );
 			this.folderTabbedPane.getCardPanel().revalidateAndRepaint();
 		}
 	}
@@ -572,7 +566,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	@Override
 	protected void addItem( FolderTabItemDetails<E> folderTabItemDetails ) {
 		this.titlesPanel.addComponent( folderTabItemDetails.getButton() );
-		this.cardComposite.getView().addComponent( folderTabItemDetails.getCardPanelKey() );
+		this.cardComposite.getView().addComposite( folderTabItemDetails.getItem() );
 	}
 
 	@Override
