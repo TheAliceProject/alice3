@@ -61,7 +61,7 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 	}
 
 	@Override
-	protected void localize() {
+	protected final void localize() {
 		super.localize();
 		this.titleText = this.findDefaultLocalizedText();
 	}
