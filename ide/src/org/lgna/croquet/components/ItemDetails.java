@@ -52,7 +52,13 @@ public class ItemDetails<E> {
 	private final BooleanStateButton<?> button;
 	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged( java.awt.event.ItemEvent e ) {
-			state.setValue( item );
+			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+				if( e.getItem() == button.getAwtComponent() ) {
+					state.setValue( item );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( e );
+				}
+			}
 		}
 	};
 
