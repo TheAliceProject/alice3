@@ -188,7 +188,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
-	public class SwingModel {
+	public static class SwingModel<T> {
 		private final ComboBoxModel<T> comboBoxModel;
 		private final ListSelectionModel<T> listSelectionModel;
 
@@ -206,7 +206,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 	}
 
-	private final SwingModel swingModel = new SwingModel( new ComboBoxModel<T>( this ), new ListSelectionModel<T>( this ) );
+	private final SwingModel<T> swingModel = new SwingModel<T>( new ComboBoxModel<T>( this ), new ListSelectionModel<T>( this ) );
 	private int index = -1;
 
 	public ListSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex, T... data ) {
