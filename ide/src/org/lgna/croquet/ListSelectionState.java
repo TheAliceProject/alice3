@@ -188,6 +188,80 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
+	protected static abstract class Data<T> {
+		private final ItemCodec<T> itemCodec;
+
+		public Data( ItemCodec<T> itemCodec ) {
+			this.itemCodec = itemCodec;
+		}
+
+		public ItemCodec<T> getItemCodec() {
+			return this.itemCodec;
+		}
+
+		public abstract T getItemAt( int index );
+
+		public abstract int getSize();
+	}
+
+	protected static class ImmutableData<T> extends Data<T> {
+		private final T[] values;
+
+		public ImmutableData( ItemCodec<T> itemCodec, T[] values ) {
+			super( itemCodec );
+			this.values = values;
+		}
+
+		@Override
+		public T getItemAt( int index ) {
+			return this.values[ index ];
+		}
+
+		@Override
+		public int getSize() {
+			return this.values.length;
+		}
+	}
+
+	protected static class MutableData<T> extends Data<T> {
+		private final java.util.concurrent.CopyOnWriteArrayList<T> values;
+
+		public MutableData( ItemCodec<T> itemCodec ) {
+			super( itemCodec );
+			this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+		}
+
+		public MutableData( ItemCodec<T> itemCodec, T[] values ) {
+			super( itemCodec );
+			this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( values );
+		}
+
+		public MutableData( ItemCodec<T> itemCodec, java.util.Collection<T> values ) {
+			super( itemCodec );
+			this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( values );
+		}
+
+		@Override
+		public T getItemAt( int index ) {
+			return this.values.get( index );
+		}
+
+		@Override
+		public int getSize() {
+			return this.values.size();
+		}
+	}
+
+	private static class DataIndexPair<T> {
+		private final Data<T> data;
+		private int index;
+
+		public DataIndexPair( Data<T> data, int index ) {
+			this.data = data;
+			this.index = index;
+		}
+	}
+
 	public static class SwingModel<T> {
 		private final ComboBoxModel<T> comboBoxModel;
 		private final ListSelectionModel<T> listSelectionModel;
@@ -207,14 +281,28 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	private final SwingModel<T> swingModel = new SwingModel<T>( new ComboBoxModel<T>( this ), new ListSelectionModel<T>( this ) );
-	private int index = -1;
+	private final DataIndexPair<T> dataIndexPair;
 
-	public ListSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex ) {
-		super( group, id, null, codec );
-		this.index = selectionIndex;
+	private static <T> T getItemAt( Data<T> data, int index ) {
+		if( index != -1 ) {
+			final boolean IS_READY_FOR_PRIME_TIME = false;
+			if( IS_READY_FOR_PRIME_TIME ) {
+				return data.getItemAt( index );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( data, index );
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
-	public SwingModel getSwingModel() {
+	public ListSelectionState( Group group, java.util.UUID id, Data<T> data, int selectionIndex ) {
+		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
+		this.dataIndexPair = new DataIndexPair<T>( data, selectionIndex );
+	}
+
+	public SwingModel<T> getSwingModel() {
 		return this.swingModel;
 	}
 
@@ -224,7 +312,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	/* package-private */void setSelectionIndexFromSwing( int index, org.lgna.croquet.triggers.Trigger trigger ) {
 		this.pushAtomic( trigger );
-		this.index = index;
+		this.dataIndexPair.index = index;
 		this.popAtomic();
 	}
 
@@ -234,7 +322,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	/* package-private */void setSelectionFromSwing( T item, org.lgna.croquet.triggers.Trigger trigger ) {
 		this.pushAtomic( trigger );
-		this.index = this.indexOf( item );
+		this.dataIndexPair.index = this.indexOf( item );
 		this.popAtomic();
 	}
 
@@ -264,12 +352,12 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	public T getSelectedItem() {
-		if( this.index >= 0 ) {
-			if( this.index < this.getItemCount() ) {
-				return this.getItemAt( index );
+		if( this.dataIndexPair.index >= 0 ) {
+			if( this.dataIndexPair.index < this.getItemCount() ) {
+				return this.getItemAt( this.dataIndexPair.index );
 			} else {
 				//				throw new IndexOutOfBoundsException( this.index + " " + this.getItemCount() + " " + this );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "item selection out of bounds", this.index, this.getItemCount(), this );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "item selection out of bounds", this.dataIndexPair.index, this.getItemCount(), this );
 				return null;
 			}
 		} else {
@@ -300,12 +388,12 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	public int getSelectedIndex() {
-		return this.index;
+		return this.dataIndexPair.index;
 	}
 
 	public void setSelectedIndex( int nextIndex ) {
 		this.pushAtomic();
-		this.index = nextIndex;
+		this.dataIndexPair.index = nextIndex;
 		this.popAtomic();
 	}
 
@@ -450,7 +538,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			this.internalSetItems( items );
 
 			//			if( items.contains( previousSelectedValue ) ) {
-			this.index = this.indexOf( previousSelectedValue );
+			this.dataIndexPair.index = this.indexOf( previousSelectedValue );
 			//			} else {
 			//				this.index = -1;
 			//			}
@@ -472,8 +560,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	@Override
 	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
 		super.fireChanging( prevValue, nextValue, isAdjusting );
-		this.swingModel.listSelectionModel.fireListSelectionChanged( this.index, this.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
-		this.fireContentsChanged( this.index, this.index );
+		this.swingModel.listSelectionModel.fireListSelectionChanged( this.dataIndexPair.index, this.dataIndexPair.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
+		this.fireContentsChanged( this.dataIndexPair.index, this.dataIndexPair.index );
 	}
 
 	protected void fireContentsChanged( int index0, int index1 ) {

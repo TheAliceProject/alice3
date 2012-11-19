@@ -45,11 +45,11 @@ package edu.cmu.cs.dennisc.toolkit.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantSelectionState<T extends Enum<T>> extends org.lgna.croquet.ListSelectionState<T> {
+public class EnumConstantSelectionState<T extends Enum<T>> extends org.lgna.croquet.ImmutableDataListSelectionState<T> {
 	private final T[] constants;
 
 	public EnumConstantSelectionState( org.lgna.croquet.Group group, java.util.UUID id, int selectionIndex, Class<T> cls ) {
-		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ), selectionIndex );
+		super( group, id, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( cls ), cls.getEnumConstants(), selectionIndex );
 		constants = cls.getEnumConstants();
 	}
 

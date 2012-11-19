@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,78 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultListSelectionState<E> extends MutableDataListSelectionState<E> {
-	private final java.util.concurrent.CopyOnWriteArrayList<E> data = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
-	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec, int selectionIndex ) {
-		super( group, id, codec, selectionIndex );
-	}
-
-	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec ) {
-		this( group, id, codec, -1 );
-	}
-
-	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec, int selectionIndex, java.util.Collection<E> data ) {
-		this( group, id, codec, selectionIndex );
-		this.data.addAll( data );
-	}
-
-	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec, int selectionIndex, E... data ) {
-		this( group, id, codec, selectionIndex, java.util.Arrays.asList( data ) );
-	}
-
-	public java.util.Iterator<E> iterator() {
-		return this.data.iterator();
-	}
-
-	@Override
-	public int indexOf( E item ) {
-		return this.data.indexOf( item );
-	}
-
-	@Override
-	public E getItemAt( int index ) {
-		if( index >= 0 ) {
-			return this.data.get( index );
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public int getItemCount() {
-		return this.data.size();
-	}
-
-	@Override
-	public E[] toArray( Class<E> componentType ) {
-		E[] rv = (E[])java.lang.reflect.Array.newInstance( componentType, this.getItemCount() );
-		this.data.toArray( rv );
-		//		for( int i = 0; i < rv.length; i++ ) {
-		//			rv[ i ] = this.getItemAt( i );
-		//		}
-		return rv;
-	}
-
-	@Override
-	protected void internalAddItem( E item ) {
-		this.data.add( item );
-	}
-
-	@Override
-	protected void internalRemoveItem( E item ) {
-		this.data.remove( item );
-	}
-
-	@Override
-	protected void internalSetItems( java.util.Collection<E> items ) {
-		this.data.clear();
-		this.data.addAll( items );
+public abstract class MutableDataListSelectionState<T> extends ListSelectionState<T> {
+	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
+		super( group, migrationId, new MutableData<T>( itemCodec ), selectionIndex );
 	}
 }

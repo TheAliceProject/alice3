@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredListPropertySelectionState<E> extends org.lgna.croquet.ListSelectionState<E> {
+public abstract class FilteredListPropertySelectionState<E> extends org.lgna.croquet.MutableDataListSelectionState<E> {
 	private final edu.cmu.cs.dennisc.property.ListProperty<E> listProperty;
 
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>() {

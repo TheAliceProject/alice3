@@ -46,7 +46,7 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.ListSelectionState<E> {
+public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.MutableDataListSelectionState<E> {
 	private boolean isRefreshNecessary = true;
 	private E[] array;
 
