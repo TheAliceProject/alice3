@@ -209,7 +209,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	private final SwingModel<T> swingModel = new SwingModel<T>( new ComboBoxModel<T>( this ), new ListSelectionModel<T>( this ) );
 	private int index = -1;
 
-	public ListSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex, T... data ) {
+	public ListSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex ) {
 		super( group, id, null, codec );
 		this.index = selectionIndex;
 	}
