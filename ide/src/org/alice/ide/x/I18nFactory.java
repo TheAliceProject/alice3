@@ -204,11 +204,11 @@ public abstract class I18nFactory {
 		org.lgna.croquet.components.JComponent<?> rv;
 		if( owner != null ) {
 			Class<?> cls = owner.getClass();
-			String value = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
+			String value = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.formatter.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getLocale() );
 			org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
 			rv = createComponent( page, owner );
 		} else {
-			rv = new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull() );
+			rv = new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getTextForNull() );
 		}
 		return rv;
 	}

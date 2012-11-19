@@ -304,7 +304,8 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 	}
 
 	private void handleMousePressed( java.awt.event.MouseEvent e ) {
-		this.getModel().setSelectedItem( null );
+		//todo?
+		this.getModel().getSwingModel().getComboBoxModel().setSelectedItem( null );
 	}
 
 	public java.awt.Color getSelectedBackgroundColor() {

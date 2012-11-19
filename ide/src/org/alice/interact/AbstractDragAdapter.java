@@ -499,7 +499,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 
 	private void updateHandleSelection( AbstractTransformableImp selected ) {
 		PickHint pickHint = PickUtilities.getPickTypeForImp( selected );
-		org.alice.stageide.sceneeditor.HandleStyle currentHandleStyle = org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().getSelectedItem();
+		org.alice.stageide.sceneeditor.HandleStyle currentHandleStyle = org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().getValue();
 		InteractionGroup selectedState = this.mapHandleStyleToInteractionGroup.get( currentHandleStyle );
 		if( selectedState != null ) { //Sometimes we don't support handles--like in the create-a-sim editor
 			if( !selectedState.canUseIteractionGroup( pickHint ) ) {
@@ -508,7 +508,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 					InteractionGroup interactionState = this.mapHandleStyleToInteractionGroup.get( handleStyle );
 					if( interactionState.canUseIteractionGroup( pickHint ) )
 					{
-						org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().setSelectedItem( handleStyle );
+						org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().setValueTransactionlessly( handleStyle );
 						break;
 					}
 				}

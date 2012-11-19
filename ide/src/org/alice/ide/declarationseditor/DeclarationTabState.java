@@ -182,7 +182,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<Decl
 				}
 			}
 			if( isTypeRemovalNecessary ) {
-				DeclarationComposite selectedItem = this.getSelectedItem();
+				DeclarationComposite selectedItem = this.getValue();
 				int selectionIndex = -1;
 				java.util.List<DeclarationComposite> nextItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				for( DeclarationComposite item : items ) {

@@ -168,7 +168,7 @@ public class PreferenceManager {
 
 	private static <E> org.lgna.croquet.ListSelectionState<E> decodeSelection( org.lgna.croquet.ListSelectionState<E> rv, java.util.prefs.Preferences userPreferences ) {
 		org.lgna.croquet.ItemCodec<E> codec = rv.getItemCodec();
-		E defaultValue = rv.getSelectedItem();
+		E defaultValue = rv.getValue();
 		byte[] defaultEncoding = encodeItem( defaultValue, codec );
 		String key = getKey( rv );
 		byte[] encoding = userPreferences.getByteArray( key, defaultEncoding );
@@ -176,7 +176,7 @@ public class PreferenceManager {
 			//pass
 		} else {
 			E value = decodeItem( encoding, codec );
-			rv.setSelectedItem( value );
+			rv.setValueTransactionlessly( value );
 		}
 		return rv;
 	}
@@ -198,7 +198,7 @@ public class PreferenceManager {
 
 	private static <E> void encodeSelection( org.lgna.croquet.ListSelectionState<E> listSelectionState, java.util.prefs.Preferences userPreferences ) {
 		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getItemCodec();
-		E value = listSelectionState.getSelectedItem();
+		E value = listSelectionState.getValue();
 		byte[] encoding = encodeItem( value, codec );
 		String key = getKey( listSelectionState );
 		userPreferences.putByteArray( key, encoding );

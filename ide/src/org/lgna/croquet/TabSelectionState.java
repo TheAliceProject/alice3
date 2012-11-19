@@ -106,7 +106,7 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
-		TabComposite<?> selected = this.getSelectedItem();
+		TabComposite<?> selected = this.getValue();
 		if( selected != null ) {
 			selected.handlePreActivation();
 		}
@@ -136,7 +136,7 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 
 	public void handlePostDeactivation() {
 		this.isActive = false;
-		TabComposite<?> selected = this.getSelectedItem();
+		TabComposite<?> selected = this.getValue();
 		if( selected != null ) {
 			selected.handlePostDeactivation();
 		}
