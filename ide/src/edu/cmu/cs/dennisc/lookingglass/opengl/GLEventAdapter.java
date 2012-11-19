@@ -338,8 +338,8 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			}
 		}
 
-		this.width = drawable.getWidth();
-		this.height = drawable.getHeight();
+		this.width = GlDrawableUtilities.getGlDrawableWidth( drawable );
+		this.height = GlDrawableUtilities.getGlDrawableHeight( drawable );
 
 		this.renderContext.setGL( gl );
 		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, GlDrawableUtilities.getGlDrawableWidth( this.drawable ), GlDrawableUtilities.getGlDrawableHeight( this.drawable ) ) );
