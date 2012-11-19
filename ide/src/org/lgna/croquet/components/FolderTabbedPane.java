@@ -74,7 +74,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 
-	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
+	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicToggleButtonUI {
 		@Override
 		public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
@@ -101,7 +101,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			if( button.getComponentCount() > 0 ) {
 				for( java.awt.Component component : button.getComponents() ) {
 					//if( component.isVisible() ) {
-					bounds.width += 2;
+					bounds.width += 4;
 					bounds.width += component.getPreferredSize().width;
 					//}
 				}
@@ -130,6 +130,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			this.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+			this.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 			this.setLayout( new javax.swing.SpringLayout() );
 		}
 
@@ -179,7 +180,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 				} else {
 					horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
 				}
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 4 );
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 2 );
 			}
 		}
 
