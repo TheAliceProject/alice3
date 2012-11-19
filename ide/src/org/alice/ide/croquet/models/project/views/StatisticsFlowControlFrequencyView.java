@@ -89,7 +89,7 @@ public class StatisticsFlowControlFrequencyView extends BorderPanel {
 		ListSelectionState<UserMethod> userMethodList = composite.getUserMethodList();
 		ControlDisplay statsDisplay = new ControlDisplay( userMethodList );
 		statsDisplay.setMaximum();
-		userMethodList.setSelectedItem( StatisticsFlowControlFrequencyComposite.dummy );
+		userMethodList.setValueTransactionlessly( StatisticsFlowControlFrequencyComposite.dummy );
 		userMethodList.addValueListener( statsDisplay );
 		statsDisplay.update( StatisticsFlowControlFrequencyComposite.dummy );
 		gridPanel.addComponent( statsDisplay.getLayout() );

@@ -373,7 +373,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for( E item : FolderTabbedPane.this.getModel() ) {
 				javax.swing.JCheckBoxMenuItem checkBox = new javax.swing.JCheckBoxMenuItem( getActionFor( item ) );
-				checkBox.setSelected( FolderTabbedPane.this.getModel().getSelectedItem() == item );
+				checkBox.setSelected( FolderTabbedPane.this.getModel().getValue() == item );
 				popupMenu.add( checkBox );
 				buttonGroup.add( checkBox );
 			}

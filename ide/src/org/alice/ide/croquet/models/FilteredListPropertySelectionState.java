@@ -122,7 +122,7 @@ public abstract class FilteredListPropertySelectionState<E> extends org.lgna.cro
 		}
 
 		if( isDataChanged ) {
-			E selectedItem = this.getSelectedItem();
+			E selectedItem = this.getValue();
 			this.setListData( list.indexOf( selectedItem ), list );
 		}
 	}

@@ -48,7 +48,7 @@ package org.alice.ide.projecturi;
 public class UriMetaState extends org.lgna.croquet.MetaState<java.net.URI> {
 	@Override
 	protected java.net.URI getValue() {
-		ContentTab contentTab = org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().getSelectedItem();
+		ContentTab contentTab = org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().getValue();
 		if( contentTab != null ) {
 			return contentTab.getSelectedUri();
 		} else {

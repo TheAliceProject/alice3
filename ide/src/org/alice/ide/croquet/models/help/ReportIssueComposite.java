@@ -166,7 +166,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 
 	@Override
 	protected boolean isProjectAttachmentDesired() {
-		return this.attachmentState.getSelectedItem().equals( BugSubmitAttachment.YES );
+		return this.attachmentState.getValue().equals( BugSubmitAttachment.YES );
 	}
 
 	@Override

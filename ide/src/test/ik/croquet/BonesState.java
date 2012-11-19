@@ -60,7 +60,7 @@ public class BonesState extends org.lgna.croquet.DefaultListSelectionState<org.l
 	}
 
 	public void setChain( org.lgna.ik.Chain chain ) {
-		org.lgna.ik.Bone prevBone = this.getSelectedItem();
+		org.lgna.ik.Bone prevBone = this.getValue();
 		org.lgna.ik.Bone[] bones = chain.getBones();
 		int selectionIndex = -1;
 		if( prevBone != null ) {

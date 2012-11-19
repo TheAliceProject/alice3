@@ -84,6 +84,6 @@ public abstract class ListContentPanel<M extends org.alice.ide.projecturi.UriSel
 
 	@Override
 	public java.net.URI getSelectedUri() {
-		return this.state.getSelectedItem();
+		return this.state.getValue();
 	}
 }

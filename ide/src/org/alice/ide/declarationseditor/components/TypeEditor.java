@@ -88,7 +88,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite composite = (org.alice.ide.declarationseditor.DeclarationsEditorComposite)this.getComposite();
-		org.alice.ide.declarationseditor.DeclarationComposite item = composite.getTabState().getSelectedItem();
+		org.alice.ide.declarationseditor.DeclarationComposite item = composite.getTabState().getValue();
 		if( item != null ) {
 			org.lgna.croquet.components.JComponent<?> component = this.tabbedPane.getMainComponentFor( item );
 			if( component instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {

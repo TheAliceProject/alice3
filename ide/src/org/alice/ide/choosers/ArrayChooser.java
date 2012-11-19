@@ -74,7 +74,7 @@ public class ArrayChooser extends AbstractRowsPaneChooser<org.lgna.project.ast.A
 		if( arrayComponentType.isAssignableFrom( Object.class ) ) {
 			this.components = new org.lgna.croquet.components.Component<?>[] { this.typePane, this.arrayInitializerPane };
 		} else {
-			org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+			org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue();
 			String typeName = formatter.getTextForType( arrayComponentType ) + " [ ]";
 			org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label( typeName );
 

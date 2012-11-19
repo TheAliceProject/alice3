@@ -115,7 +115,7 @@ class IkProgram extends SProgram {
 	}
 
 	private void updateInfo() {
-		org.lgna.ik.Bone bone = test.ik.croquet.BonesState.getInstance().getSelectedItem();
+		org.lgna.ik.Bone bone = test.ik.croquet.BonesState.getInstance().getValue();
 
 		StringBuilder sb = new StringBuilder();
 		if( bone != null ) {

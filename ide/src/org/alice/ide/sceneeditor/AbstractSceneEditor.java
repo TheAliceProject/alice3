@@ -136,7 +136,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	public org.lgna.project.ast.UserField getActiveSceneField() {
-		return SceneFieldListSelectionState.getInstance().getSelectedItem();
+		return SceneFieldListSelectionState.getInstance().getValue();
 	}
 
 	public org.lgna.project.ast.UserField getFieldForInstanceInJavaVM( Object javaInstance ) {
@@ -292,7 +292,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 
 	public org.lgna.project.virtualmachine.UserInstance getActiveSceneInstance()
 	{
-		org.lgna.project.ast.UserField activeSceneField = SceneFieldListSelectionState.getInstance().getSelectedItem();
+		org.lgna.project.ast.UserField activeSceneField = SceneFieldListSelectionState.getInstance().getValue();
 		return this.mapSceneFieldToInstance.get( activeSceneField );
 	}
 
