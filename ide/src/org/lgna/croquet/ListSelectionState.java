@@ -42,8 +42,6 @@
  */
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.ComponentManager;
-
 /*package-private*/class ComboBoxModel<T> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState<T> listSelectionState;
 
@@ -347,11 +345,11 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	private T prevAtomicSelectedValue;
 	private org.lgna.croquet.triggers.Trigger trigger;
 
-	public boolean isInMidstOfAtomic() {
+	private boolean isInMidstOfAtomic() {
 		return this.pushCount > 0;
 	}
 
-	public void pushAtomic( org.lgna.croquet.triggers.Trigger trigger ) {
+	private void pushAtomic( org.lgna.croquet.triggers.Trigger trigger ) {
 		if( this.isInMidstOfAtomic() ) {
 			//pass
 		} else {
@@ -361,11 +359,11 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		this.pushCount++;
 	}
 
-	public void pushAtomic() {
+	private void pushAtomic() {
 		this.pushAtomic( null );
 	}
 
-	public void popAtomic() {
+	private void popAtomic() {
 		this.pushCount--;
 		if( this.pushCount == 0 ) {
 			T nextSelectedValue = this.getValue();
@@ -557,7 +555,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item ) {
-		org.lgna.croquet.components.ItemSelectable<?, T, ?> itemSelectable = ComponentManager.getFirstComponent( this, org.lgna.croquet.components.ItemSelectable.class );
+		org.lgna.croquet.components.ItemSelectable<?, T, ?> itemSelectable = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.ItemSelectable.class );
 		if( itemSelectable != null ) {
 			return itemSelectable.getTrackableShapeFor( item );
 		} else {
