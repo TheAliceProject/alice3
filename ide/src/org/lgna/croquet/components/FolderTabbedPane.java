@@ -352,7 +352,9 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	//private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.Action getActionFor( E item ) {
-		return FolderTabbedPane.this.getModel().createActionForItem( item );
+		Operation operation = this.getModel().getItemSelectionOperation( item );
+		operation.initializeIfNecessary();
+		return operation.getSwingModel().getAction();
 	}
 
 	//todo: PopupOperation

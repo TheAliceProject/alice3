@@ -260,29 +260,9 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		return java.util.Collections.emptyList();
 	}
 
-	public javax.swing.Action createActionForItem( final T item ) {
-		javax.swing.Action action = new javax.swing.AbstractAction() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				ListSelectionState.this.setSelectionFromSwing( item, org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
-				ListSelectionState.this.swingModel.listSelectionModel.fireListSelectionChanged( ListSelectionState.this.index, ListSelectionState.this.index, ListSelectionState.this.swingModel.listSelectionModel.getValueIsAdjusting() );
-			}
-		};
-		action.putValue( javax.swing.Action.NAME, getMenuText( item ) );
-		action.putValue( javax.swing.Action.SMALL_ICON, getMenuSmallIcon( item ) );
-		return action;
-	}
-
 	@Override
 	protected T getActualValue() {
 		return this.getSelectedItem();
-	}
-
-	public void addListDataListener( javax.swing.event.ListDataListener listener ) {
-		this.swingModel.comboBoxModel.addListDataListener( listener );
-	}
-
-	public void removeListDataListener( javax.swing.event.ListDataListener listener ) {
-		this.swingModel.comboBoxModel.removeListDataListener( listener );
 	}
 
 	public T getSelectedItem() {
@@ -633,7 +613,9 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			super.handleShowing( menuItemContainer, e );
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for( final Object item : this.listSelectionState ) {
-				javax.swing.Action action = this.listSelectionState.createActionForItem( (T)item );
+				Operation operation = this.listSelectionState.getItemSelectionOperation( (T)item );
+				operation.initializeIfNecessary();
+				javax.swing.Action action = operation.getSwingModel().getAction();
 				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
 				buttonGroup.add( jMenuItem );
 				jMenuItem.setSelected( this.listSelectionState.getSelectedItem() == item );
