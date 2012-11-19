@@ -45,7 +45,7 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public class HairState extends AbstractListSelectionState<org.lgna.story.resources.sims2.Hair> {
+public class HairState extends IngredientListSelectionState<org.lgna.story.resources.sims2.Hair> {
 	private static class SingletonHolder {
 		private static HairState instance = new HairState();
 	}

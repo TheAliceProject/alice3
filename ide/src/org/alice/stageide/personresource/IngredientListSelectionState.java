@@ -45,8 +45,8 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractListSelectionState<E> extends org.lgna.croquet.DefaultListSelectionState<E> {
-	public AbstractListSelectionState( java.util.UUID individualId, org.lgna.croquet.ItemCodec<E> codec, E... elements ) {
+public abstract class IngredientListSelectionState<E> extends org.lgna.croquet.DefaultListSelectionState<E> {
+	public IngredientListSelectionState( java.util.UUID individualId, org.lgna.croquet.ItemCodec<E> codec, E... elements ) {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
 	}
 }

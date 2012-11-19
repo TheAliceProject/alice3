@@ -45,7 +45,7 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitState extends AbstractListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> {
+public class FullBodyOutfitState extends IngredientListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> {
 	private static class SingletonHolder {
 		private static FullBodyOutfitState instance = new FullBodyOutfitState();
 	}

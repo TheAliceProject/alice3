@@ -45,7 +45,7 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameState extends AbstractListSelectionState<String> {
+public class HairColorNameState extends IngredientListSelectionState<String> {
 	private static class SingletonHolder {
 		private static HairColorNameState instance = new HairColorNameState();
 	}
