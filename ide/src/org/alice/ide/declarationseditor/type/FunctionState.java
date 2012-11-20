@@ -61,11 +61,6 @@ public class FunctionState extends MethodState {
 	}
 
 	private FunctionState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "042cf23a-65e6-4df8-b9cd-2964e44c7a34" ), type );
-	}
-
-	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		return super.isAcceptableItem( value ) && value.isFunction();
+		super( java.util.UUID.fromString( "042cf23a-65e6-4df8-b9cd-2964e44c7a34" ), new org.alice.ide.declarationseditor.type.data.FunctionData( type ) );
 	}
 }

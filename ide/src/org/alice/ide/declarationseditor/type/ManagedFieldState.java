@@ -61,6 +61,6 @@ public class ManagedFieldState extends AbstractManagedFieldState {
 	}
 
 	private ManagedFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), type );
+		super( java.util.UUID.fromString( "23fc9ecb-3f89-44ef-baca-c1ad9ce1fbbe" ), new org.alice.ide.declarationseditor.type.data.ManagedFieldData( type ) );
 	}
 }

@@ -238,7 +238,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		this.dataIndexPair = new DataIndexPair<T>( data, selectionIndex );
 	}
 
-	protected org.lgna.croquet.data.ListData<T> getData() {
+	public org.lgna.croquet.data.ListData<T> getData() {
 		return this.dataIndexPair.data;
 	}
 

@@ -42,7 +42,6 @@
  */
 package org.alice.ide.declarationseditor.type;
 
-import org.lgna.story.CameraMarker;
 
 /**
  * @author dculyba
@@ -63,11 +62,6 @@ public class ManagedCameraMarkerFieldState extends AbstractManagedFieldState {
 	}
 
 	private ManagedCameraMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "47af4b71-b8db-458f-a698-e3550c921c14" ), type );
-	}
-
-	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableTo( CameraMarker.class ) && ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED );
+		super( java.util.UUID.fromString( "47af4b71-b8db-458f-a698-e3550c921c14" ), new org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData( type ) );
 	}
 }

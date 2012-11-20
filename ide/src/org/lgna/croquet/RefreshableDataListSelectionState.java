@@ -46,15 +46,35 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class RefreshableDataListSelectionState<T> extends ListSelectionState<T> {
+	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+			fireContentsChanged( e.getIndex0(), e.getIndex1() );
+		}
+
+		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+			fireIntervalAdded( e.getIndex0(), e.getIndex1() );
+		}
+
+		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+			fireIntervalRemoved( e.getIndex0(), e.getIndex1() );
+		}
+	};
+
 	public RefreshableDataListSelectionState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
 		super( group, migrationId, data, selectionIndex );
+		data.addListener( this.listDataListener );
 	}
 
-	public final void refresh() {
-		//todo: track selection
-		boolean isDataChanged = ( (org.lgna.croquet.data.RefreshableListData<T>)this.getData() ).refresh();
-		if( isDataChanged ) {
-			this.fireContentsChanged( 0, this.getItemCount() );
-		}
+	@Override
+	public org.lgna.croquet.data.RefreshableListData<T> getData() {
+		return (org.lgna.croquet.data.RefreshableListData<T>)super.getData();
 	}
+
+	//	public final void refresh() {
+	//		//todo: track selection
+	//		boolean isDataChanged = ( (org.lgna.croquet.data.RefreshableListData<T>)this.getData() ).refresh();
+	//		if( isDataChanged ) {
+	//			this.fireContentsChanged( 0, this.getItemCount() );
+	//		}
+	//	}
 }

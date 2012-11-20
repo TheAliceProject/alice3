@@ -53,7 +53,7 @@ public abstract class RefreshableListContentPanel<M extends org.lgna.croquet.Ref
 	};
 
 	private void refreshState() {
-		this.getState().refresh();
+		this.getState().getData().refresh();
 		this.revalidateAndRepaint();
 	}
 

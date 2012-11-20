@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListDataComposite<T> extends AbstractComposite<org.lgna.croquet.components.ListDataView> {
+public abstract class ListDataComposite<T, V extends org.lgna.croquet.components.ListDataView<T>> extends AbstractComposite<V> {
 	private final org.lgna.croquet.data.ListData<T> data;
 
 	public ListDataComposite( java.util.UUID migrationId, org.lgna.croquet.data.ListData<T> data ) {
@@ -55,10 +55,5 @@ public abstract class ListDataComposite<T> extends AbstractComposite<org.lgna.cr
 
 	public org.lgna.croquet.data.ListData<T> getData() {
 		return this.data;
-	}
-
-	@Override
-	protected org.lgna.croquet.components.ListDataView createView() {
-		return new org.lgna.croquet.components.ListDataView( this );
 	}
 }
