@@ -188,7 +188,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
-	protected static abstract class Data<T> {
+	protected static abstract class Data<T> implements Iterable<T> {
 		private final ItemCodec<T> itemCodec;
 
 		public Data( ItemCodec<T> itemCodec ) {
@@ -201,7 +201,19 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 		public abstract T getItemAt( int index );
 
-		public abstract int getSize();
+		public abstract int getItemCount();
+
+		public abstract int indexOf( T item );
+
+		protected abstract void internalAddItem( T item );
+
+		protected abstract void internalRemoveItem( T item );
+
+		protected abstract void internalSetItems( java.util.Collection<T> items );
+
+		public abstract java.util.Iterator<T> iterator();
+
+		public abstract T[] toArray( Class<T> componentType );
 	}
 
 	protected static class ImmutableData<T> extends Data<T> {
@@ -218,8 +230,39 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		@Override
-		public int getSize() {
+		public int getItemCount() {
 			return this.values.length;
+		}
+
+		@Override
+		public int indexOf( T item ) {
+			return java.util.Arrays.asList( this.values ).indexOf( item );
+		}
+
+		@Override
+		protected void internalAddItem( T item ) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		protected void internalRemoveItem( T item ) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		protected void internalSetItems( java.util.Collection<T> items ) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public java.util.Iterator<T> iterator() {
+			return java.util.Arrays.asList( this.values ).iterator();
+		}
+
+		@Override
+		public T[] toArray( Class<T> componentType ) {
+			//todo?
+			return this.values;
 		}
 	}
 
@@ -242,13 +285,53 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		@Override
-		public T getItemAt( int index ) {
-			return this.values.get( index );
+		public E getItemAt( int index ) {
+			if( index >= 0 ) {
+				return this.values.get( index );
+			} else {
+				return null;
+			}
 		}
 
 		@Override
-		public int getSize() {
+		public int getItemCount() {
 			return this.values.size();
+		}
+
+		@Override
+		public java.util.Iterator<T> iterator() {
+			return this.values.iterator();
+		}
+
+		@Override
+		public int indexOf( T item ) {
+			return this.values.indexOf( item );
+		}
+
+		@Override
+		public T[] toArray( Class<T> componentType ) {
+			T[] rv = (T[])java.lang.reflect.Array.newInstance( componentType, this.getItemCount() );
+			this.values.toArray( rv );
+			//		for( int i = 0; i < rv.length; i++ ) {
+			//			rv[ i ] = this.getItemAt( i );
+			//		}
+			return rv;
+		}
+
+		@Override
+		protected void internalAddItem( T item ) {
+			this.values.add( item );
+		}
+
+		@Override
+		protected void internalRemoveItem( T item ) {
+			this.values.remove( item );
+		}
+
+		@Override
+		protected void internalSetItems( java.util.Collection<T> items ) {
+			this.values.clear();
+			this.values.addAll( items );
 		}
 	}
 
@@ -343,6 +426,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	@Override
 	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+		//todo: 
 		return java.util.Collections.emptyList();
 	}
 
@@ -401,20 +485,32 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		this.setSelectedIndex( -1 );
 	}
 
-	public abstract T getItemAt( int index );
+	public final T getItemAt( int index ) {
+		return this.dataIndexPair.data.getItemAt( index );
+	}
 
-	public abstract int getItemCount();
+	public final int getItemCount() {
+		return this.dataIndexPair.data.getItemCount();
+	}
 
-	public abstract T[] toArray( Class<T> componentType );
+	public final T[] toArray( Class<T> componentType ) {
+		return this.dataIndexPair.data.toArray( componentType );
+	}
 
 	public final T[] toArray() {
 		return this.toArray( this.getItemCodec().getValueClass() );
 	}
 
-	public abstract int indexOf( T item );
+	public final int indexOf( T item ) {
+		return this.dataIndexPair.data.indexOf( item );
+	}
 
-	public boolean containsItem( T item ) {
+	public final boolean containsItem( T item ) {
 		return indexOf( item ) != -1;
+	}
+
+	public final java.util.Iterator<T> iterator() {
+		return this.dataIndexPair.data.iterator();
 	}
 
 	protected void handleItemAdded( T item ) {
@@ -423,11 +519,17 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	protected void handleItemRemoved( T item ) {
 	}
 
-	protected abstract void internalAddItem( T item );
+	protected final void internalAddItem( T item ) {
+		this.dataIndexPair.data.internalAddItem( item );
+	}
 
-	protected abstract void internalRemoveItem( T item );
+	protected final void internalRemoveItem( T item ) {
+		this.dataIndexPair.data.internalRemoveItem( item );
+	}
 
-	protected abstract void internalSetItems( java.util.Collection<T> items );
+	protected final void internalSetItems( java.util.Collection<T> items ) {
+		this.dataIndexPair.data.internalSetItems( items );
+	}
 
 	private int pushCount = 0;
 	private T prevAtomicSelectedValue;
