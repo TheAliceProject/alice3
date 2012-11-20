@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.projecturi.views;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryListContentPanel extends RefreshableListContentPanel<org.alice.ide.projecturi.DirectoryUriSelectionState> {
-	public DirectoryListContentPanel( org.alice.ide.projecturi.ContentTab<?> composite, org.alice.ide.projecturi.DirectoryUriSelectionState state ) {
-		super( composite, state );
+public abstract class RefreshableListContentPanel<M extends org.alice.ide.projecturi.UriSelectionState> extends ListContentPanel<M> {
+	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			RefreshableListContentPanel.this.refreshState();
+		}
+	};
+
+	private void refreshState() {
+		this.getState().refresh();
+		this.revalidateAndRepaint();
 	}
 
-	@Override
-	protected String getTextForZeroProjects() {
-		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.getState().getDirectory() );
-		return "there are no projects in " + path;
+	public RefreshableListContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite, M state ) {
+		super( composite, state );
+		this.getList().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,20 +40,85 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi.views;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryListContentPanel extends RefreshableListContentPanel<org.alice.ide.projecturi.DirectoryUriSelectionState> {
-	public DirectoryListContentPanel( org.alice.ide.projecturi.ContentTab<?> composite, org.alice.ide.projecturi.DirectoryUriSelectionState state ) {
-		super( composite, state );
+public abstract class RefreshableDataListSelectionState<T> extends ListSelectionState<T> {
+	private final static class RefreshableData<T> extends Data<T> {
+		private boolean isRefreshNecessary = true;
+		private T[] array;
+
+		public RefreshableData( ItemCodec<T> itemCodec ) {
+			super( itemCodec );
+		}
+
+		private void refreshIfNecessary() {
+			if( this.isRefreshNecessary ) {
+				this.array = (T[])java.lang.reflect.Array.newInstance( this.getItemCodec().getValueClass(), 0 );
+				//this.setItems( this.array );
+				//			this.fireContentsChanged( 0, this.array.length - 1 );
+				this.isRefreshNecessary = false;
+			}
+		}
+
+		public final void refresh() {
+			this.isRefreshNecessary = true;
+			this.refreshIfNecessary();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
+		}
+
+		@Override
+		public final T getItemAt( int index ) {
+			return this.array[ index ];
+		}
+
+		@Override
+		public final int getItemCount() {
+			this.refreshIfNecessary();
+			return this.array.length;
+		}
+
+		@Override
+		public final int indexOf( T item ) {
+			return java.util.Arrays.asList( this.array ).indexOf( item );
+		}
+
+		@Override
+		protected final void internalAddItem( T item ) {
+			throw new AssertionError();
+		}
+
+		@Override
+		protected final void internalRemoveItem( T item ) {
+			throw new AssertionError();
+		}
+
+		@Override
+		protected final void internalSetItems( java.util.Collection<T> items ) {
+		}
+
+		@Override
+		public final java.util.Iterator<T> iterator() {
+			this.refreshIfNecessary();
+			return java.util.Arrays.asList( this.array ).iterator();
+		}
+
+		@Override
+		public final T[] toArray( Class<T> componentType ) {
+			this.refreshIfNecessary();
+			return this.array;
+		}
 	}
 
-	@Override
-	protected String getTextForZeroProjects() {
-		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.getState().getDirectory() );
-		return "there are no projects in " + path;
+	public RefreshableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
+		super( group, migrationId, new RefreshableData<T>( itemCodec ), selectionIndex );
+	}
+
+	protected abstract T[] createArray();
+
+	public final void refresh() {
+		( (RefreshableData<T>)this.getData() ).refresh();
 	}
 }

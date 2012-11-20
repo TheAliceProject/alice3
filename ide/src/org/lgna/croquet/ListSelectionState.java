@@ -390,6 +390,10 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		this.dataIndexPair = new DataIndexPair<T>( data, selectionIndex );
 	}
 
+	protected Data<T> getData() {
+		return this.dataIndexPair.data;
+	}
+
 	public SwingModel<T> getSwingModel() {
 		return this.swingModel;
 	}

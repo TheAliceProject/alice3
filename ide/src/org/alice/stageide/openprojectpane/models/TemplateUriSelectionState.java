@@ -46,7 +46,7 @@ package org.alice.stageide.openprojectpane.models;
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateUriSelectionState extends org.alice.ide.projecturi.UriSelectionState {
+public class TemplateUriSelectionState extends org.lgna.croquet.ImmutableDataListSelectionState<java.net.URI> {
 	public static Template getSurfaceAppearance( java.net.URI uri ) {
 		return Template.valueOf( uri.getFragment() );
 	}
@@ -175,6 +175,15 @@ public class TemplateUriSelectionState extends org.alice.ide.projecturi.UriSelec
 		}
 	};
 
+	private static java.net.URI[] createArray() {
+		Template[] values = Template.values();
+		java.net.URI[] array = new java.net.URI[ values.length ];
+		for( int i = 0; i < array.length; i++ ) {
+			array[ i ] = values[ i ].getUri();
+		}
+		return array;
+	}
+
 	private static class SingletonHolder {
 		private static TemplateUriSelectionState instance = new TemplateUriSelectionState();
 	}
@@ -183,19 +192,7 @@ public class TemplateUriSelectionState extends org.alice.ide.projecturi.UriSelec
 		return SingletonHolder.instance;
 	}
 
-	private final java.net.URI[] array;
-
 	private TemplateUriSelectionState() {
-		super( java.util.UUID.fromString( "53c45c6f-e14f-4a88-ae90-1942ed3f3483" ) );
-		Template[] values = Template.values();
-		this.array = new java.net.URI[ values.length ];
-		for( int i = 0; i < this.array.length; i++ ) {
-			this.array[ i ] = values[ i ].getUri();
-		}
-	}
-
-	@Override
-	protected java.net.URI[] createArray() {
-		return this.array;
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "53c45c6f-e14f-4a88-ae90-1942ed3f3483" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, createArray(), -1 );
 	}
 }

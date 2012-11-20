@@ -46,30 +46,30 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.ImmutableDataListSelectionState<E> {
-	private boolean isRefreshNecessary = true;
-	private E[] array;
-
+public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.RefreshableDataListSelectionState<E> {
+	//	private boolean isRefreshNecessary = true;
+	//	private E[] array;
+	//
 	public ArrayBasedListSelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<E> itemCodec, int selectionIndex ) {
-		super( group, id, itemCodec, (E[])java.lang.reflect.Array.newInstance( itemCodec.getValueClass(), 0 ), selectionIndex );
+		super( group, id, itemCodec, selectionIndex );
 	}
 
-	protected abstract E[] createArray();
-
-	private void refreshIfNecessary() {
-		if( this.isRefreshNecessary ) {
-			this.array = this.createArray();
-			this.setItems( this.array );
-			//			this.fireContentsChanged( 0, this.array.length - 1 );
-			this.isRefreshNecessary = false;
-		}
-	}
-
-	public final void refresh() {
-		this.isRefreshNecessary = true;
-		this.refreshIfNecessary();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
-	}
+	//	protected abstract E[] createArray();
+	//
+	//	private void refreshIfNecessary() {
+	//		if( this.isRefreshNecessary ) {
+	//			this.array = this.createArray();
+	//			this.setItems( this.array );
+	//			//			this.fireContentsChanged( 0, this.array.length - 1 );
+	//			this.isRefreshNecessary = false;
+	//		}
+	//	}
+	//
+	//	public final void refresh() {
+	//		this.isRefreshNecessary = true;
+	//		this.refreshIfNecessary();
+	//		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
+	//	}
 
 	//	@Override
 	//	public final E getItemAt( int index ) {
