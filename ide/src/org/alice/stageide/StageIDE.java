@@ -318,7 +318,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		if( thumbnailGenerator != null ) {
 			//pass
 		} else {
-			thumbnailGenerator = new org.alice.stageide.sceneeditor.ThumbnailGenerator( org.lgna.story.resourceutilities.ThumbnailMaker.THUMBNAIL_WIDTH, org.lgna.story.resourceutilities.ThumbnailMaker.THUMBNAIL_HEIGHT );
+			thumbnailGenerator = new org.alice.stageide.sceneeditor.ThumbnailGenerator( org.lgna.story.resourceutilities.AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, org.lgna.story.resourceutilities.AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT );
 		}
 		return this.thumbnailGenerator.createThumbnail();
 	}
