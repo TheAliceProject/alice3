@@ -47,7 +47,26 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public abstract class FilteredMemberState<T extends org.lgna.project.ast.AbstractMember> extends org.alice.ide.croquet.models.FilteredListPropertySelectionState<T> {
-	public FilteredMemberState( org.lgna.croquet.Group group, java.util.UUID id, Class<T> cls, edu.cmu.cs.dennisc.property.ListProperty<T> listProperty ) {
-		super( group, id, org.alice.ide.croquet.codecs.NodeCodec.getInstance( cls ), -1, listProperty );
+	protected final static class FilteredMemberData<T extends org.lgna.project.ast.AbstractMember> extends FilteredRefreshableData<T> {
+		public FilteredMemberData( Class<T> cls, edu.cmu.cs.dennisc.property.ListProperty<T> listProperty ) {
+			super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( cls ), listProperty );
+		}
+
+		private FilteredMemberState<T> state;
+
+		@Override
+		protected boolean isAcceptableItem( T item ) {
+			return state.isAcceptableItem( item );
+		}
 	}
+
+	public FilteredMemberState( org.lgna.croquet.Group group, java.util.UUID id, Class<T> cls, edu.cmu.cs.dennisc.property.ListProperty<T> listProperty ) {
+		super( group, id, new FilteredMemberData<T>( cls, listProperty ), -1 );
+
+		//todo:
+		FilteredMemberData<T> data = (FilteredMemberData<T>)this.getData();
+		data.state = this;
+	}
+
+	protected abstract boolean isAcceptableItem( T item );
 }

@@ -42,11 +42,10 @@
  */
 package org.alice.ide.projecturi.views;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RefreshableListContentPanel<M extends org.alice.ide.projecturi.UriSelectionState> extends ListContentPanel<M> {
+public abstract class RefreshableListContentPanel<M extends org.lgna.croquet.RefreshableDataListSelectionState<java.net.URI>> extends ListContentPanel<M> {
 	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			RefreshableListContentPanel.this.refreshState();

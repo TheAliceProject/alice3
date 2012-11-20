@@ -46,7 +46,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class RefreshableDataListSelectionState<T> extends ListSelectionState<T> {
-	private final static class RefreshableData<T> extends Data<T> {
+	protected static abstract class RefreshableData<T> extends Data<T> {
 		private boolean isRefreshNecessary = true;
 		private T[] array;
 
@@ -56,17 +56,20 @@ public abstract class RefreshableDataListSelectionState<T> extends ListSelection
 
 		private void refreshIfNecessary() {
 			if( this.isRefreshNecessary ) {
-				this.array = (T[])java.lang.reflect.Array.newInstance( this.getItemCodec().getValueClass(), 0 );
+				//this.array = (T[])java.lang.reflect.Array.newInstance( this.getItemCodec().getValueClass(), 0 );
 				//this.setItems( this.array );
+				this.array = this.createArray();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
 				//			this.fireContentsChanged( 0, this.array.length - 1 );
 				this.isRefreshNecessary = false;
 			}
 		}
 
+		protected abstract T[] createArray();
+
 		public final void refresh() {
 			this.isRefreshNecessary = true;
 			this.refreshIfNecessary();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
 		}
 
 		@Override
@@ -112,11 +115,9 @@ public abstract class RefreshableDataListSelectionState<T> extends ListSelection
 		}
 	}
 
-	public RefreshableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
-		super( group, migrationId, new RefreshableData<T>( itemCodec ), selectionIndex );
+	public RefreshableDataListSelectionState( Group group, java.util.UUID migrationId, RefreshableData<T> data, int selectionIndex ) {
+		super( group, migrationId, data, selectionIndex );
 	}
-
-	protected abstract T[] createArray();
 
 	public final void refresh() {
 		( (RefreshableData<T>)this.getData() ).refresh();

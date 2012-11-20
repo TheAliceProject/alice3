@@ -47,8 +47,6 @@ package org.alice.ide.croquet.models;
  * @author Dennis Cosgrove
  */
 public abstract class FilteredListPropertySelectionState<E> extends org.lgna.croquet.RefreshableDataListSelectionState<E> {
-	private final edu.cmu.cs.dennisc.property.ListProperty<E> listProperty;
-
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<E> e ) {
 		}
@@ -87,47 +85,89 @@ public abstract class FilteredListPropertySelectionState<E> extends org.lgna.cro
 		}
 	};
 
+	protected abstract static class FilteredRefreshableData<E> extends RefreshableData<E> {
+		private final edu.cmu.cs.dennisc.property.ListProperty<E> listProperty;
+
+		public FilteredRefreshableData( org.lgna.croquet.ItemCodec<E> itemCodec, edu.cmu.cs.dennisc.property.ListProperty<E> listProperty ) {
+			super( itemCodec );
+			this.listProperty = listProperty;
+		}
+
+		protected abstract boolean isAcceptableItem( E item );
+
+		@Override
+		protected E[] createArray() {
+			java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+			for( E item : this.listProperty ) {
+				if( this.isAcceptableItem( item ) ) {
+					list.add( item );
+				}
+			}
+
+			return list.toArray( (E[])java.lang.reflect.Array.newInstance( this.getItemCodec().getValueClass(), list.size() ) );
+			//		boolean isDataChanged = false;
+			//		if( list.size() == this.data.size() ) {
+			//			final int N = list.size();
+			//			for( int i = 0; i < N; i++ ) {
+			//				if( list.get( i ) != this.data.get( i ) ) {
+			//					isDataChanged = true;
+			//					break;
+			//				}
+			//			}
+			//		} else {
+			//			isDataChanged = true;
+			//		}
+			//
+			//		if( isDataChanged ) {
+			//			E selectedItem = this.getValue();
+			//			this.setListData( list.indexOf( selectedItem ), list );
+			//		}
+		}
+
+		public edu.cmu.cs.dennisc.property.ListProperty<E> getListProperty() {
+			return this.listProperty;
+		}
+	}
+
 	//private final java.util.List<E> data = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-	public FilteredListPropertySelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<E> codec, int selectionIndex, edu.cmu.cs.dennisc.property.ListProperty<E> listProperty ) {
-		super( group, id, codec, selectionIndex );
-		this.listProperty = listProperty;
-		this.listProperty.addPropertyListener( this.propertyListener );
-		this.listProperty.addListPropertyListener( this.listPropertyListener );
+	public FilteredListPropertySelectionState( org.lgna.croquet.Group group, java.util.UUID id, FilteredRefreshableData<E> data, int selectionIndex ) {
+		super( group, id, data, selectionIndex );
+		data.getListProperty().addPropertyListener( this.propertyListener );
+		data.getListProperty().addListPropertyListener( this.listPropertyListener );
 		//this.updateData();
 	}
 
-	protected abstract boolean isAcceptableItem( E item );
-
-	@Override
-	protected E[] createArray() {
-		java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-
-		for( E item : this.listProperty ) {
-			if( this.isAcceptableItem( item ) ) {
-				list.add( item );
-			}
-		}
-
-		return list.toArray( (E[])java.lang.reflect.Array.newInstance( this.getItemCodec().getClass(), list.size() ) );
-		//		boolean isDataChanged = false;
-		//		if( list.size() == this.data.size() ) {
-		//			final int N = list.size();
-		//			for( int i = 0; i < N; i++ ) {
-		//				if( list.get( i ) != this.data.get( i ) ) {
-		//					isDataChanged = true;
-		//					break;
-		//				}
-		//			}
-		//		} else {
-		//			isDataChanged = true;
-		//		}
-		//
-		//		if( isDataChanged ) {
-		//			E selectedItem = this.getValue();
-		//			this.setListData( list.indexOf( selectedItem ), list );
-		//		}
-	}
+	//	@Override
+	//	protected E[] createArray() {
+	//		java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//
+	//		for( E item : this.listProperty ) {
+	//			if( this.isAcceptableItem( item ) ) {
+	//				list.add( item );
+	//			}
+	//		}
+	//
+	//		return list.toArray( (E[])java.lang.reflect.Array.newInstance( this.getItemCodec().getClass(), list.size() ) );
+	//		//		boolean isDataChanged = false;
+	//		//		if( list.size() == this.data.size() ) {
+	//		//			final int N = list.size();
+	//		//			for( int i = 0; i < N; i++ ) {
+	//		//				if( list.get( i ) != this.data.get( i ) ) {
+	//		//					isDataChanged = true;
+	//		//					break;
+	//		//				}
+	//		//			}
+	//		//		} else {
+	//		//			isDataChanged = true;
+	//		//		}
+	//		//
+	//		//		if( isDataChanged ) {
+	//		//			E selectedItem = this.getValue();
+	//		//			this.setListData( list.indexOf( selectedItem ), list );
+	//		//		}
+	//	}
 	//	private void updateData() {
 	//		java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	//
