@@ -47,7 +47,7 @@ package org.lgna.croquet;
  */
 public abstract class MutableDataListSelectionState<T> extends ListSelectionState<T> {
 	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
-		super( group, migrationId, new MutableData<T>( itemCodec ), selectionIndex );
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec ), selectionIndex );
 	}
 
 	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec ) {
@@ -55,10 +55,10 @@ public abstract class MutableDataListSelectionState<T> extends ListSelectionStat
 	}
 
 	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, java.util.Collection<T> data ) {
-		super( group, migrationId, new MutableData<T>( itemCodec, data ), selectionIndex );
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
 	}
 
 	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, T... data ) {
-		super( group, migrationId, new MutableData<T>( itemCodec, data ), selectionIndex );
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,76 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ListData<T> {
-	public static interface Listener<T> {
-		//todo
-		public void changed();
+public final class MutableListData<T> extends AbstractMutableListData<T> {
+	private final java.util.concurrent.CopyOnWriteArrayList<T> values;
+
+	public MutableListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+		super( itemCodec );
+		this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	}
 
-	public ItemCodec<T> getItemCodec();
+	public MutableListData( org.lgna.croquet.ItemCodec<T> itemCodec, T[] values ) {
+		super( itemCodec );
+		this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( values );
+	}
 
-	public int getSize();
+	public MutableListData( org.lgna.croquet.ItemCodec<T> itemCodec, java.util.Collection<T> values ) {
+		super( itemCodec );
+		this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( values );
+	}
 
-	public T get( int index );
+	@Override
+	public T getItemAt( int index ) {
+		if( index >= 0 ) {
+			if( index < this.getItemCount() ) {
+				return this.values.get( index );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( index );
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
 
-	public void addListener( Listener<T> listener );
+	@Override
+	public int getItemCount() {
+		return this.values.size();
+	}
 
-	public void removeListener( Listener<T> listener );
+	@Override
+	public java.util.Iterator<T> iterator() {
+		return this.values.iterator();
+	}
+
+	@Override
+	public int indexOf( T item ) {
+		return this.values.indexOf( item );
+	}
+
+	@Override
+	public T[] toArray( Class<T> componentType ) {
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.values, componentType );
+	}
+
+	@Override
+	public void internalAddItem( T item ) {
+		this.values.add( item );
+	}
+
+	@Override
+	public void internalRemoveItem( T item ) {
+		this.values.remove( item );
+	}
+
+	@Override
+	public void internalSetItems( java.util.Collection<T> items ) {
+		this.values.clear();
+		this.values.addAll( items );
+	}
 }

@@ -40,21 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RefreshableDataListSelectionState<T> extends ListSelectionState<T> {
-	public RefreshableDataListSelectionState( Group group, java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
-		super( group, migrationId, data, selectionIndex );
-	}
-
-	public final void refresh() {
-		//todo: track selection
-		boolean isDataChanged = ( (org.lgna.croquet.data.RefreshableListData<T>)this.getData() ).refresh();
-		if( isDataChanged ) {
-			this.fireContentsChanged( 0, this.getItemCount() );
-		}
+public class ListDataView extends PageAxisPanel {
+	public ListDataView( org.lgna.croquet.ListDataComposite composite ) {
+		super( composite );
 	}
 }

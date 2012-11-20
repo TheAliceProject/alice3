@@ -50,7 +50,7 @@ public abstract class DirectoryUriSelectionState extends org.lgna.croquet.Refres
 	private final java.io.File directory;
 
 	public DirectoryUriSelectionState( java.util.UUID migrationId, final java.io.File directory ) {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, migrationId, new RefreshableData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, migrationId, new org.lgna.croquet.data.RefreshableListData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
 			@Override
 			protected java.util.List<java.net.URI> createValues() {
 				if( directory != null ) {

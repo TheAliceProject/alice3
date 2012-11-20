@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,98 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractListData<T> implements ListData<T> {
-	private final java.util.List<Listener<T>> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+public abstract class RefreshableListData<T> extends org.lgna.croquet.data.AbstractMutableListData<T> {
+	private boolean isRefreshNecessary = true;
+	private java.util.List<T> values;
 
-	public final void addListener( Listener<T> listener ) {
-		this.listeners.add( listener );
+	public RefreshableListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+		super( itemCodec );
 	}
 
-	public final void removeListener( Listener<T> listener ) {
-		this.listeners.remove( listener );
-	}
+	private boolean refreshIfNecessary() {
+		if( this.isRefreshNecessary ) {
+			java.util.List<T> nextValues = this.createValues();
 
-	protected void fireChanged() {
-		for( Listener<T> listener : this.listeners ) {
-			listener.changed();
+			assert nextValues != null : this;
+
+			boolean isDataChanged = false;
+			if( this.values != null ) {
+				if( nextValues.size() == this.values.size() ) {
+					final int N = nextValues.size();
+					for( int i = 0; i < N; i++ ) {
+						if( nextValues.get( i ) != this.values.get( i ) ) {
+							isDataChanged = true;
+							break;
+						}
+					}
+				} else {
+					isDataChanged = true;
+				}
+			} else {
+				isDataChanged = true;
+			}
+
+			if( isDataChanged ) {
+				this.values = nextValues;
+			}
+			this.isRefreshNecessary = false;
+			return isDataChanged;
+		} else {
+			return false;
 		}
+	}
+
+	protected abstract java.util.List<T> createValues();
+
+	public final boolean refresh() {
+		this.isRefreshNecessary = true;
+		return this.refreshIfNecessary();
+	}
+
+	@Override
+	public final T getItemAt( int index ) {
+		return this.values.get( index );
+	}
+
+	@Override
+	public final int getItemCount() {
+		this.refreshIfNecessary();
+		return this.values.size();
+	}
+
+	@Override
+	public final int indexOf( T item ) {
+		return this.values.indexOf( item );
+	}
+
+	@Override
+	public final void internalAddItem( T item ) {
+		throw new AssertionError();
+	}
+
+	@Override
+	public final void internalRemoveItem( T item ) {
+		throw new AssertionError();
+	}
+
+	@Override
+	public final void internalSetItems( java.util.Collection<T> items ) {
+	}
+
+	@Override
+	public final java.util.Iterator<T> iterator() {
+		this.refreshIfNecessary();
+		return this.values.iterator();
+	}
+
+	@Override
+	public final T[] toArray( Class<T> componentType ) {
+		this.refreshIfNecessary();
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.values, componentType );
 	}
 }

@@ -85,7 +85,7 @@ public abstract class FilteredListPropertySelectionState<E> extends org.lgna.cro
 		}
 	};
 
-	protected abstract static class FilteredRefreshableData<E> extends RefreshableData<E> {
+	protected abstract static class FilteredRefreshableData<E> extends org.lgna.croquet.data.RefreshableListData<E> {
 		private final edu.cmu.cs.dennisc.property.ListProperty<E> listProperty;
 
 		public FilteredRefreshableData( org.lgna.croquet.ItemCodec<E> itemCodec, edu.cmu.cs.dennisc.property.ListProperty<E> listProperty ) {

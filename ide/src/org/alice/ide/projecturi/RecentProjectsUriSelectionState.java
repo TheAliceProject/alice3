@@ -43,6 +43,8 @@
 
 package org.alice.ide.projecturi;
 
+import org.lgna.croquet.data.RefreshableListData;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -56,20 +58,25 @@ public class RecentProjectsUriSelectionState extends org.lgna.croquet.Refreshabl
 	}
 
 	//	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private org.lgna.croquet.ListData.Listener<java.net.URI> listener = new org.lgna.croquet.ListData.Listener<java.net.URI>() {
-		public void changed() {
-			RecentProjectsUriSelectionState.this.refresh();
+	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+		}
+
+		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+		}
+
+		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 		}
 	};
 
 	private RecentProjectsUriSelectionState() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), new RefreshableData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), new RefreshableListData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
 			@Override
 			protected java.util.List<java.net.URI> createValues() {
-				return org.alice.ide.recentprojects.RecentProjectsListData.getInstance().getValues();
+				return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.recentprojects.RecentProjectsListData.getInstance().toArray() );
 			}
 		}, -1 );
 		org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeDataOnlyOfListSelectionState( this );
-		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().addListener( this.listener );
+		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().addListener( this.listDataListener );
 	}
 }

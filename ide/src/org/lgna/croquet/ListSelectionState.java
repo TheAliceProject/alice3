@@ -42,6 +42,7 @@
  */
 package org.lgna.croquet;
 
+
 /*package-private*/class ComboBoxModel<T> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState<T> listSelectionState;
 
@@ -188,163 +189,11 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
-	protected static abstract class Data<T> implements Iterable<T> {
-		private final ItemCodec<T> itemCodec;
-
-		public Data( ItemCodec<T> itemCodec ) {
-			this.itemCodec = itemCodec;
-		}
-
-		public ItemCodec<T> getItemCodec() {
-			return this.itemCodec;
-		}
-
-		public abstract T getItemAt( int index );
-
-		public abstract int getItemCount();
-
-		public abstract int indexOf( T item );
-
-		protected abstract void internalAddItem( T item );
-
-		protected abstract void internalRemoveItem( T item );
-
-		protected abstract void internalSetItems( java.util.Collection<T> items );
-
-		public abstract java.util.Iterator<T> iterator();
-
-		public abstract T[] toArray( Class<T> componentType );
-	}
-
-	protected static class ImmutableData<T> extends Data<T> {
-		private final T[] values;
-
-		public ImmutableData( ItemCodec<T> itemCodec, T[] values ) {
-			super( itemCodec );
-			this.values = values;
-		}
-
-		@Override
-		public T getItemAt( int index ) {
-			return this.values[ index ];
-		}
-
-		@Override
-		public int getItemCount() {
-			return this.values.length;
-		}
-
-		@Override
-		public int indexOf( T item ) {
-			return java.util.Arrays.asList( this.values ).indexOf( item );
-		}
-
-		@Override
-		protected void internalAddItem( T item ) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		protected void internalRemoveItem( T item ) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		protected void internalSetItems( java.util.Collection<T> items ) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public java.util.Iterator<T> iterator() {
-			return java.util.Arrays.asList( this.values ).iterator();
-		}
-
-		@Override
-		public T[] toArray( Class<T> componentType ) {
-			//todo?
-			return this.values;
-		}
-	}
-
-	protected static class MutableData<T> extends Data<T> {
-		private final java.util.concurrent.CopyOnWriteArrayList<T> values;
-
-		public MutableData( ItemCodec<T> itemCodec ) {
-			super( itemCodec );
-			this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-		}
-
-		public MutableData( ItemCodec<T> itemCodec, T[] values ) {
-			super( itemCodec );
-			this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( values );
-		}
-
-		public MutableData( ItemCodec<T> itemCodec, java.util.Collection<T> values ) {
-			super( itemCodec );
-			this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( values );
-		}
-
-		@Override
-		public T getItemAt( int index ) {
-			if( index >= 0 ) {
-				if( index < this.getItemCount() ) {
-					return this.values.get( index );
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( index );
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-
-		@Override
-		public int getItemCount() {
-			return this.values.size();
-		}
-
-		@Override
-		public java.util.Iterator<T> iterator() {
-			return this.values.iterator();
-		}
-
-		@Override
-		public int indexOf( T item ) {
-			return this.values.indexOf( item );
-		}
-
-		@Override
-		public T[] toArray( Class<T> componentType ) {
-			T[] rv = (T[])java.lang.reflect.Array.newInstance( componentType, this.getItemCount() );
-			this.values.toArray( rv );
-			//		for( int i = 0; i < rv.length; i++ ) {
-			//			rv[ i ] = this.getItemAt( i );
-			//		}
-			return rv;
-		}
-
-		@Override
-		protected void internalAddItem( T item ) {
-			this.values.add( item );
-		}
-
-		@Override
-		protected void internalRemoveItem( T item ) {
-			this.values.remove( item );
-		}
-
-		@Override
-		protected void internalSetItems( java.util.Collection<T> items ) {
-			this.values.clear();
-			this.values.addAll( items );
-		}
-	}
-
 	private static class DataIndexPair<T> {
-		private final Data<T> data;
+		private final org.lgna.croquet.data.ListData<T> data;
 		private int index;
 
-		public DataIndexPair( Data<T> data, int index ) {
+		public DataIndexPair( org.lgna.croquet.data.ListData<T> data, int index ) {
 			this.data = data;
 			this.index = index;
 		}
@@ -371,7 +220,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	private final SwingModel<T> swingModel = new SwingModel<T>( new ComboBoxModel<T>( this ), new ListSelectionModel<T>( this ) );
 	private final DataIndexPair<T> dataIndexPair;
 
-	private static <T> T getItemAt( Data<T> data, int index ) {
+	private static <T> T getItemAt( org.lgna.croquet.data.ListData<T> data, int index ) {
 		if( index != -1 ) {
 			final boolean IS_READY_FOR_PRIME_TIME = true;
 			if( IS_READY_FOR_PRIME_TIME ) {
@@ -385,12 +234,12 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 	}
 
-	public ListSelectionState( Group group, java.util.UUID id, Data<T> data, int selectionIndex ) {
+	public ListSelectionState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair<T>( data, selectionIndex );
 	}
 
-	protected Data<T> getData() {
+	protected org.lgna.croquet.data.ListData<T> getData() {
 		return this.dataIndexPair.data;
 	}
 
