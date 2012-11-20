@@ -47,22 +47,19 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public class DefaultListSelectionState<E> extends MutableDataListSelectionState<E> {
-	private final java.util.concurrent.CopyOnWriteArrayList<E> data = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
 	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec, int selectionIndex ) {
 		super( group, id, codec, selectionIndex );
 	}
 
 	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec ) {
-		this( group, id, codec, -1 );
+		super( group, id, codec );
 	}
 
 	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec, int selectionIndex, java.util.Collection<E> data ) {
-		this( group, id, codec, selectionIndex );
-		this.data.addAll( data );
+		super( group, id, codec, selectionIndex, data );
 	}
 
 	public DefaultListSelectionState( Group group, java.util.UUID id, ItemCodec<E> codec, int selectionIndex, E... data ) {
-		this( group, id, codec, selectionIndex, java.util.Arrays.asList( data ) );
+		super( group, id, codec, selectionIndex, data );
 	}
 }

@@ -46,12 +46,12 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.ListSelectionState<E> {
+public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.ImmutableDataListSelectionState<E> {
 	private boolean isRefreshNecessary = true;
 	private E[] array;
 
 	public ArrayBasedListSelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<E> itemCodec, int selectionIndex ) {
-		super( group, id, itemCodec, selectionIndex );
+		super( group, id, itemCodec, (E[])java.lang.reflect.Array.newInstance( itemCodec.getValueClass(), 0 ), selectionIndex );
 	}
 
 	protected abstract E[] createArray();
@@ -59,7 +59,8 @@ public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.L
 	private void refreshIfNecessary() {
 		if( this.isRefreshNecessary ) {
 			this.array = this.createArray();
-			this.fireContentsChanged( 0, this.array.length - 1 );
+			this.setItems( this.array );
+			//			this.fireContentsChanged( 0, this.array.length - 1 );
 			this.isRefreshNecessary = false;
 		}
 	}
@@ -70,44 +71,44 @@ public abstract class ArrayBasedListSelectionState<E> extends org.lgna.croquet.L
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
 	}
 
-	@Override
-	public final E getItemAt( int index ) {
-		return this.array[ index ];
-	}
-
-	@Override
-	public final int getItemCount() {
-		this.refreshIfNecessary();
-		return this.array.length;
-	}
-
-	@Override
-	public final int indexOf( E item ) {
-		return java.util.Arrays.asList( this.array ).indexOf( item );
-	}
-
-	@Override
-	protected final void internalAddItem( E item ) {
-		throw new AssertionError();
-	}
-
-	@Override
-	protected final void internalRemoveItem( E item ) {
-		throw new AssertionError();
-	}
-
-	@Override
-	protected final void internalSetItems( java.util.Collection<E> items ) {
-	}
-
-	public final java.util.Iterator<E> iterator() {
-		this.refreshIfNecessary();
-		return java.util.Arrays.asList( this.array ).iterator();
-	}
-
-	@Override
-	public final E[] toArray( Class<E> componentType ) {
-		this.refreshIfNecessary();
-		return this.array;
-	}
+	//	@Override
+	//	public final E getItemAt( int index ) {
+	//		return this.array[ index ];
+	//	}
+	//
+	//	@Override
+	//	public final int getItemCount() {
+	//		this.refreshIfNecessary();
+	//		return this.array.length;
+	//	}
+	//
+	//	@Override
+	//	public final int indexOf( E item ) {
+	//		return java.util.Arrays.asList( this.array ).indexOf( item );
+	//	}
+	//
+	//	@Override
+	//	protected final void internalAddItem( E item ) {
+	//		throw new AssertionError();
+	//	}
+	//
+	//	@Override
+	//	protected final void internalRemoveItem( E item ) {
+	//		throw new AssertionError();
+	//	}
+	//
+	//	@Override
+	//	protected final void internalSetItems( java.util.Collection<E> items ) {
+	//	}
+	//
+	//	public final java.util.Iterator<E> iterator() {
+	//		this.refreshIfNecessary();
+	//		return java.util.Arrays.asList( this.array ).iterator();
+	//	}
+	//
+	//	@Override
+	//	public final E[] toArray( Class<E> componentType ) {
+	//		this.refreshIfNecessary();
+	//		return this.array;
+	//	}
 }

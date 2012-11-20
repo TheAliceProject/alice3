@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredListPropertySelectionState<E> extends org.lgna.croquet.ListSelectionState<E> {
+public abstract class FilteredListPropertySelectionState<E> extends org.lgna.croquet.ImmutableDataListSelectionState<E> {
 	private final edu.cmu.cs.dennisc.property.ListProperty<E> listProperty;
 
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> listPropertyListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<E>() {
@@ -90,7 +90,7 @@ public abstract class FilteredListPropertySelectionState<E> extends org.lgna.cro
 	private final java.util.List<E> data = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	public FilteredListPropertySelectionState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<E> codec, int selectionIndex, edu.cmu.cs.dennisc.property.ListProperty<E> listProperty ) {
-		super( group, id, codec, selectionIndex );
+		super( group, id, codec, (E[])java.lang.reflect.Array.newInstance( codec.getValueClass(), 0 ), selectionIndex );
 		this.listProperty = listProperty;
 		this.listProperty.addPropertyListener( this.propertyListener );
 		this.listProperty.addListPropertyListener( this.listPropertyListener );
@@ -127,45 +127,45 @@ public abstract class FilteredListPropertySelectionState<E> extends org.lgna.cro
 		}
 	}
 
-	@Override
-	public E getItemAt( int index ) {
-		return this.data.get( index );
-	}
-
-	@Override
-	public int getItemCount() {
-		return this.data.size();
-	}
-
-	@Override
-	public int indexOf( E item ) {
-		return this.data.indexOf( item );
-	}
-
-	@Override
-	public java.util.Iterator<E> iterator() {
-		return this.data.iterator();
-	}
-
-	@Override
-	public E[] toArray( Class<E> componentType ) {
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.data, componentType );
-	}
-
-	@Override
-	protected void internalAddItem( E item ) {
-		this.data.add( item );
-	}
-
-	@Override
-	protected void internalRemoveItem( E item ) {
-		int index = this.data.indexOf( item );
-		this.data.remove( index );
-	}
-
-	@Override
-	protected void internalSetItems( java.util.Collection<E> items ) {
-		this.data.clear();
-		this.data.addAll( 0, items );
-	}
+	//	@Override
+	//	public E getItemAt( int index ) {
+	//		return this.data.get( index );
+	//	}
+	//
+	//	@Override
+	//	public int getItemCount() {
+	//		return this.data.size();
+	//	}
+	//
+	//	@Override
+	//	public int indexOf( E item ) {
+	//		return this.data.indexOf( item );
+	//	}
+	//
+	//	@Override
+	//	public java.util.Iterator<E> iterator() {
+	//		return this.data.iterator();
+	//	}
+	//
+	//	@Override
+	//	public E[] toArray( Class<E> componentType ) {
+	//		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.data, componentType );
+	//	}
+	//
+	//	@Override
+	//	protected void internalAddItem( E item ) {
+	//		this.data.add( item );
+	//	}
+	//
+	//	@Override
+	//	protected void internalRemoveItem( E item ) {
+	//		int index = this.data.indexOf( item );
+	//		this.data.remove( index );
+	//	}
+	//
+	//	@Override
+	//	protected void internalSetItems( java.util.Collection<E> items ) {
+	//		this.data.clear();
+	//		this.data.addAll( 0, items );
+	//	}
 }

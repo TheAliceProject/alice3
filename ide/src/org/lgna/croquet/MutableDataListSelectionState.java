@@ -49,4 +49,16 @@ public abstract class MutableDataListSelectionState<T> extends ListSelectionStat
 	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
 		super( group, migrationId, new MutableData<T>( itemCodec ), selectionIndex );
 	}
+
+	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec ) {
+		this( group, migrationId, itemCodec, -1 );
+	}
+
+	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, java.util.Collection<T> data ) {
+		super( group, migrationId, new MutableData<T>( itemCodec, data ), selectionIndex );
+	}
+
+	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, T... data ) {
+		super( group, migrationId, new MutableData<T>( itemCodec, data ), selectionIndex );
+	}
 }
