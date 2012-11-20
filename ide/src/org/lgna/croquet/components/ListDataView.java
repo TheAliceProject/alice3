@@ -45,8 +45,47 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ListDataView extends PageAxisPanel {
-	public ListDataView( org.lgna.croquet.ListDataComposite composite ) {
+public class ListDataView<T> extends PageAxisPanel {
+	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+			refreshLater();
+		}
+
+		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+			refreshLater();
+		}
+
+		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+			refreshLater();
+		}
+	};
+
+	public ListDataView( org.lgna.croquet.ListDataComposite<T> composite ) {
 		super( composite );
+	}
+
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		org.lgna.croquet.ListDataComposite<T> composite = (org.lgna.croquet.ListDataComposite<T>)this.getComposite();
+
+		this.forgetAndRemoveAllComponents();
+		for( T item : composite.getData() ) {
+			this.addComponent( new Label( item.toString() ) );
+		}
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		org.lgna.croquet.ListDataComposite<T> composite = (org.lgna.croquet.ListDataComposite<T>)this.getComposite();
+		composite.getData().addListener( this.listDataListener );
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		org.lgna.croquet.ListDataComposite<T> composite = (org.lgna.croquet.ListDataComposite<T>)this.getComposite();
+		composite.getData().removeListener( this.listDataListener );
+		super.handleUndisplayable();
 	}
 }

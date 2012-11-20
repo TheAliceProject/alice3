@@ -130,7 +130,7 @@ public abstract class RefreshableListData<T> extends org.lgna.croquet.data.Abstr
 	}
 
 	@Override
-	public final T[] toArray( Class<T> componentType ) {
+	protected final T[] toArray( Class<T> componentType ) {
 		this.refreshIfNecessary();
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.values, componentType );
 	}

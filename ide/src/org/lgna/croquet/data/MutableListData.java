@@ -93,7 +93,7 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 	}
 
 	@Override
-	public T[] toArray( Class<T> componentType ) {
+	protected final T[] toArray( Class<T> componentType ) {
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.values, componentType );
 	}
 

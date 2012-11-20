@@ -69,7 +69,7 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 
 		@Override
 		protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
-			T[] items = this.state.toArray( this.getComponentType() );
+			T[] items = this.state.toArray();
 			items[ this.index ] = values[ 0 ];
 			int selectedIndex = this.state.getSelectedIndex();
 			this.state.setListData( selectedIndex, items );

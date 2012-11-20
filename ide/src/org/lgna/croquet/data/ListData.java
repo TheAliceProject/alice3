@@ -47,7 +47,7 @@ import org.lgna.croquet.ItemCodec;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListData<T> {
+public abstract class ListData<T> implements Iterable<T> {
 	private final ItemCodec<T> itemCodec;
 
 	public ListData( ItemCodec<T> itemCodec ) {
@@ -76,7 +76,7 @@ public abstract class ListData<T> {
 
 	public abstract java.util.Iterator<T> iterator();
 
-	public abstract T[] toArray( Class<T> componentType );
+	protected abstract T[] toArray( Class<T> componentType );
 
 	public T[] toArray() {
 		return this.toArray( this.itemCodec.getValueClass() );

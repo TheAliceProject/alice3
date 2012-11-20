@@ -97,8 +97,9 @@ public final class ImmutableListData<T> extends ListData<T> {
 	}
 
 	@Override
-	public T[] toArray( Class<T> componentType ) {
-		//todo?
+	protected final T[] toArray( Class<T> componentType ) {
+		//todo: check type
+		//todo: copy?
 		return this.values;
 	}
 }

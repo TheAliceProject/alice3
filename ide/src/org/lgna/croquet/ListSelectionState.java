@@ -42,7 +42,6 @@
  */
 package org.lgna.croquet;
 
-
 /*package-private*/class ComboBoxModel<T> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 	private final ListSelectionState<T> listSelectionState;
 
@@ -351,12 +350,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		return this.dataIndexPair.data.getItemCount();
 	}
 
-	public final T[] toArray( Class<T> componentType ) {
-		return this.dataIndexPair.data.toArray( componentType );
-	}
-
 	public final T[] toArray() {
-		return this.toArray( this.getItemCodec().getValueClass() );
+		return this.dataIndexPair.data.toArray();
 	}
 
 	public final int indexOf( T item ) {
