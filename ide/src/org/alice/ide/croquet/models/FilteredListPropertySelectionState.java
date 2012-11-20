@@ -96,7 +96,7 @@ public abstract class FilteredListPropertySelectionState<E> extends org.lgna.cro
 		protected abstract boolean isAcceptableItem( E item );
 
 		@Override
-		protected E[] createArray() {
+		protected java.util.List<E> createValues() {
 			java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 			for( E item : this.listProperty ) {
@@ -105,24 +105,7 @@ public abstract class FilteredListPropertySelectionState<E> extends org.lgna.cro
 				}
 			}
 
-			return list.toArray( (E[])java.lang.reflect.Array.newInstance( this.getItemCodec().getValueClass(), list.size() ) );
-			//		boolean isDataChanged = false;
-			//		if( list.size() == this.data.size() ) {
-			//			final int N = list.size();
-			//			for( int i = 0; i < N; i++ ) {
-			//				if( list.get( i ) != this.data.get( i ) ) {
-			//					isDataChanged = true;
-			//					break;
-			//				}
-			//			}
-			//		} else {
-			//			isDataChanged = true;
-			//		}
-			//
-			//		if( isDataChanged ) {
-			//			E selectedItem = this.getValue();
-			//			this.setListData( list.indexOf( selectedItem ), list );
-			//		}
+			return list;
 		}
 
 		public edu.cmu.cs.dennisc.property.ListProperty<E> getListProperty() {

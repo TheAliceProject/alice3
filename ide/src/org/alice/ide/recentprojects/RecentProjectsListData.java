@@ -71,8 +71,12 @@ public class RecentProjectsListData extends org.lgna.croquet.AbstractListData<ja
 		return this.list.get( index );
 	}
 
-	public java.net.URI[] createArray() {
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.list, java.net.URI.class );
+	//	public java.net.URI[] createArray() {
+	//		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.list, java.net.URI.class );
+	//	}
+
+	public java.util.List<java.net.URI> getValues() {
+		return this.list;
 	}
 
 	private void addFile( java.io.File file ) {

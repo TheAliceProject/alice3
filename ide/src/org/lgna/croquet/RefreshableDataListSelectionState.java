@@ -48,44 +48,66 @@ package org.lgna.croquet;
 public abstract class RefreshableDataListSelectionState<T> extends ListSelectionState<T> {
 	protected static abstract class RefreshableData<T> extends Data<T> {
 		private boolean isRefreshNecessary = true;
-		private T[] array;
+		private java.util.List<T> values;
 
 		public RefreshableData( ItemCodec<T> itemCodec ) {
 			super( itemCodec );
 		}
 
-		private void refreshIfNecessary() {
+		private boolean refreshIfNecessary() {
 			if( this.isRefreshNecessary ) {
-				//this.array = (T[])java.lang.reflect.Array.newInstance( this.getItemCodec().getValueClass(), 0 );
-				//this.setItems( this.array );
-				this.array = this.createArray();
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "this.fireListDataChange();" );
-				//			this.fireContentsChanged( 0, this.array.length - 1 );
+				java.util.List<T> nextValues = this.createValues();
+
+				assert nextValues != null : this;
+
+				boolean isDataChanged = false;
+				if( this.values != null ) {
+					if( nextValues.size() == this.values.size() ) {
+						final int N = nextValues.size();
+						for( int i = 0; i < N; i++ ) {
+							if( nextValues.get( i ) != this.values.get( i ) ) {
+								isDataChanged = true;
+								break;
+							}
+						}
+					} else {
+						isDataChanged = true;
+					}
+				} else {
+					isDataChanged = true;
+				}
+
+				if( isDataChanged ) {
+					this.values = nextValues;
+				}
 				this.isRefreshNecessary = false;
+				return isDataChanged;
+			} else {
+				return false;
 			}
 		}
 
-		protected abstract T[] createArray();
+		protected abstract java.util.List<T> createValues();
 
-		public final void refresh() {
+		public final boolean refresh() {
 			this.isRefreshNecessary = true;
-			this.refreshIfNecessary();
+			return this.refreshIfNecessary();
 		}
 
 		@Override
 		public final T getItemAt( int index ) {
-			return this.array[ index ];
+			return this.values.get( index );
 		}
 
 		@Override
 		public final int getItemCount() {
 			this.refreshIfNecessary();
-			return this.array.length;
+			return this.values.size();
 		}
 
 		@Override
 		public final int indexOf( T item ) {
-			return java.util.Arrays.asList( this.array ).indexOf( item );
+			return this.values.indexOf( item );
 		}
 
 		@Override
@@ -105,13 +127,13 @@ public abstract class RefreshableDataListSelectionState<T> extends ListSelection
 		@Override
 		public final java.util.Iterator<T> iterator() {
 			this.refreshIfNecessary();
-			return java.util.Arrays.asList( this.array ).iterator();
+			return this.values.iterator();
 		}
 
 		@Override
 		public final T[] toArray( Class<T> componentType ) {
 			this.refreshIfNecessary();
-			return this.array;
+			return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.values, componentType );
 		}
 	}
 
@@ -120,6 +142,10 @@ public abstract class RefreshableDataListSelectionState<T> extends ListSelection
 	}
 
 	public final void refresh() {
-		( (RefreshableData<T>)this.getData() ).refresh();
+		//todo: track selection
+		boolean isDataChanged = ( (RefreshableData<T>)this.getData() ).refresh();
+		if( isDataChanged ) {
+			this.fireContentsChanged( 0, this.getItemCount() );
+		}
 	}
 }

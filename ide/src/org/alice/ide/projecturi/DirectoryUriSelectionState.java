@@ -52,23 +52,23 @@ public abstract class DirectoryUriSelectionState extends org.lgna.croquet.Refres
 	public DirectoryUriSelectionState( java.util.UUID migrationId, final java.io.File directory ) {
 		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, migrationId, new RefreshableData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
 			@Override
-			protected java.net.URI[] createArray() {
-				java.net.URI[] rv;
+			protected java.util.List<java.net.URI> createValues() {
 				if( directory != null ) {
+					java.net.URI[] uris;
 					java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( directory );
 					final int N = files.length;
-					rv = new java.net.URI[ N ];
+					uris = new java.net.URI[ N ];
 					for( int i = 0; i < N; i++ ) {
 						if( files[ i ] != null ) {
-							rv[ i ] = files[ i ].toURI();
+							uris[ i ] = files[ i ].toURI();
 						} else {
-							rv[ i ] = null;
+							uris[ i ] = null;
 						}
 					}
+					return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( uris );
 				} else {
-					rv = new java.net.URI[ 0 ];
+					return java.util.Collections.emptyList();
 				}
-				return rv;
 			}
 		}, -1 );
 		this.directory = directory;

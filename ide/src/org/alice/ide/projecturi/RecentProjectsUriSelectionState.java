@@ -65,8 +65,8 @@ public class RecentProjectsUriSelectionState extends org.lgna.croquet.Refreshabl
 	private RecentProjectsUriSelectionState() {
 		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), new RefreshableData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
 			@Override
-			protected java.net.URI[] createArray() {
-				return org.alice.ide.recentprojects.RecentProjectsListData.getInstance().createArray();
+			protected java.util.List<java.net.URI> createValues() {
+				return org.alice.ide.recentprojects.RecentProjectsListData.getInstance().getValues();
 			}
 		}, -1 );
 		org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeDataOnlyOfListSelectionState( this );
