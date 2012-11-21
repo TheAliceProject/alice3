@@ -78,6 +78,9 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 	}
 
 	public synchronized java.awt.image.BufferedImage createThumbnailFromPersonResource( org.lgna.story.resources.sims2.PersonResource resource ) throws Exception {
+
+		System.out.println( "\n\n\nMAKING THUMBNAIL" );
+
 		org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory factory = org.lgna.story.implementation.sims2.JointImplementationAndVisualDataFactory.getInstance( resource );
 		org.lgna.story.implementation.JointedModelImp.VisualData visualData = factory.createVisualData();
 		visualData.setSGParent( this.getModelTransformable() );
@@ -92,6 +95,10 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		if( visualData instanceof org.lgna.story.implementation.sims2.NebulousVisualData<?> ) {
 			( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
 		}
+		//		Manager.unloadUnusedNebulousTextureData( gl )
+		this.clear();
+		System.out.println( "\n\n\nDONE MAKING THUMBNAIL" );
+
 		return returnImage;
 	}
 
