@@ -95,7 +95,6 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		if( visualData instanceof org.lgna.story.implementation.sims2.NebulousVisualData<?> ) {
 			( (org.lgna.story.implementation.sims2.NebulousVisualData<?>)visualData ).unload();
 		}
-		//		Manager.unloadUnusedNebulousTextureData( gl )
 		this.clear();
 		System.out.println( "\n\n\nDONE MAKING THUMBNAIL" );
 
