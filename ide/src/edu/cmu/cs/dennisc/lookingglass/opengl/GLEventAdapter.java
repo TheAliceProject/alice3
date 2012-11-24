@@ -401,4 +401,10 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			this.renderContext.forgetAllCachedItems();
 		}
 	}
+
+	public void clearUnusedTextures() {
+		if( this.renderContext != null ) {
+			this.renderContext.clearUnusedTextures();
+		}
+	}
 }

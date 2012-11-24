@@ -489,6 +489,10 @@ public class RenderContext extends Context {
 		this.forgetAllTextureAdapters();
 	}
 
+	public void clearUnusedTextures() {
+		edu.cmu.cs.dennisc.nebulous.Manager.unloadUnusedNebulousTextureData( gl );
+	}
+
 	//	//todo: better name
 	//	public void put( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > textureAdapter, com.sun.opengl.util.texture.Texture glTexture ) {
 	//		this.textureBindingMap.put( textureAdapter, glTexture );
