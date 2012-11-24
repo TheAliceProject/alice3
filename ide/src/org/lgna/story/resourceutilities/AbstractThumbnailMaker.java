@@ -97,6 +97,7 @@ public abstract class AbstractThumbnailMaker {
 	protected void clear()
 	{
 		this.offscreenLookingGlass.forgetAllCachedItems();
+		this.offscreenLookingGlass.clearUnusedTextures();
 	}
 
 	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform ) throws Exception {
