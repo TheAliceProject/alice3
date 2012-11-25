@@ -65,7 +65,7 @@ public class FindFieldsFrameComposite extends FindFrameComposite {
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		InstanceSearchTreeManager treeManager = fieldSearchComposite.treeComposite.getManager();
-		treeManager.setValue( treeManager.find( field ) );
+		treeManager.setValueTransactionlessly( treeManager.find( field ) );
 		fieldSearchComposite.disableTree();
 		this.getState().setSelectedIndex( 1 );
 	}

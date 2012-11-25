@@ -195,7 +195,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		this.descriptionState.setValueTransactionlessly( "" );
 		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
 		this.attachmentState.setValueTransactionlessly( null );
-		this.reportTypeState.setValue( this.initialReportTypeValue );
+		this.reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
 
 		this.summaryState.addAndInvokeValueListener( this.adapter );
 		this.logInCard.getLoginDialogComposite().getIsLoggedIn().addAndInvokeValueListener( this.isLoggedInAdapter );

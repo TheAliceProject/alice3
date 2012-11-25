@@ -474,7 +474,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		org.lgna.project.ast.AbstractType<?, ?, ?> nextType = this.getValueType();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "restore:", nextType );
 		org.lgna.project.ast.Expression nextInitializer = this.mapTypeToInitializer.get( nextType );
-		this.initializerState.setValue( nextInitializer );
+		this.initializerState.setValueTransactionlessly( nextInitializer );
 
 		this.getView().handleValueTypeChanged( nextType );
 	}

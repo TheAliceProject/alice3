@@ -51,7 +51,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( InternalButton.this.instanceFactory );
+				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( InternalButton.this.instanceFactory );
 			}
 
 		};

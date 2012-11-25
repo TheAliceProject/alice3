@@ -99,7 +99,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		} catch( CannotCreateExpressionException ccee ) {
 			ccee.printStackTrace();
 		}
-		this.getNameState().setValue( initialMarkerName );
+		this.getNameState().setValueTransactionlessly( initialMarkerName );
 	}
 
 	public void setSelectedField( UserField field ) {

@@ -365,7 +365,7 @@ public abstract class DeclarationLikeSubstanceOperation<T extends org.lgna.proje
 		org.lgna.project.ast.AbstractType<?, ?, ?> nextType = this.getValueType();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "restore:", nextType );
 		org.lgna.project.ast.Expression nextInitializer = this.mapTypeToInitializer.get( nextType );
-		this.initializerState.setValue( nextInitializer );
+		this.initializerState.setValueTransactionlessly( nextInitializer );
 	}
 
 	protected abstract org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.AbstractType<?, ?, ?> valueType, String declarationName, org.lgna.project.ast.Expression initializer );

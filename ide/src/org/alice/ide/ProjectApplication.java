@@ -335,7 +335,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private void setDocument( ProjectDocument document ) {
-		org.alice.ide.project.ProjectDocumentState.getInstance().setValue( document );
+		org.alice.ide.project.ProjectDocumentState.getInstance().setValueTransactionlessly( document );
 	}
 
 	public org.lgna.project.Project getProject() {

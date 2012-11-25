@@ -320,11 +320,11 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	}
 
 	public void showStencilsPresentation() {
-		this.setValue( true );
+		this.setValueTransactionlessly( true );
 	}
 
 	public void hideStencilsPresentation() {
-		this.setValue( false );
+		this.setValueTransactionlessly( false );
 	}
 
 	protected abstract void handleStateChange( boolean isVisible );

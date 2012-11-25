@@ -136,7 +136,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<Decl
 			if( missingItem != null ) {
 				org.lgna.project.ast.NamedUserType missingItemType = (org.lgna.project.ast.NamedUserType)missingItem.getType();
 				if( missingItemType != TypeState.getInstance().getValue() ) {
-					TypeState.getInstance().setValue( missingItemType );
+					TypeState.getInstance().setValueTransactionlessly( missingItemType );
 				}
 			}
 		}
