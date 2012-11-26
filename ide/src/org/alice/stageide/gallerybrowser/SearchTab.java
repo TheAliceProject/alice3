@@ -84,10 +84,4 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 		super.customizeTitleComponentAppearance( button );
 		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
 	}
-
-	@Override
-	public void TEMPORARY_HACK_handleSelected() {
-		super.TEMPORARY_HACK_handleSelected();
-		this.getView().TEMPORARY_HACK_handleSelected();
-	}
 }

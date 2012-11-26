@@ -179,26 +179,18 @@ public class SearchTabView extends GalleryTabView {
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
+	public void handleCompositePreActivation() {
+		super.handleCompositePreActivation();
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
 		composite.getFilterState().addAndInvokeValueListener( this.filterListener );
+		this.filterTextField.requestFocusLater();
 	}
 
 	@Override
-	protected void handleUndisplayable() {
+	public void handleCompositePostDeactivation() {
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
 		composite.getFilterState().removeValueListener( this.filterListener );
-		super.handleUndisplayable();
-	}
-
-	public void TEMPORARY_HACK_handleSelected() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				filterTextField.requestFocus();
-			}
-		} );
-		//		this.filterTextField.requestFocus();
+		super.handleCompositePostDeactivation();
 	}
 
 	private void handleFilterChanged( String filter ) {

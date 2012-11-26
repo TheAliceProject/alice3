@@ -51,6 +51,4 @@ public interface TabComposite<V extends org.lgna.croquet.components.View<?, ?>> 
 	public org.lgna.croquet.components.ScrollPane createScrollPane();
 
 	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button );
-
-	public void TEMPORARY_HACK_handleSelected();
 }

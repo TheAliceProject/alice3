@@ -575,6 +575,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
+		this.getView().handleCompositePreActivation();
 		for( Composite<?> subComposite : this.subComposites ) {
 			subComposite.handlePreActivation();
 		}
@@ -587,6 +588,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	}
 
 	public void handlePostDeactivation() {
+		this.getView().handleCompositePostDeactivation();
 		for( TabSelectionState<?> tabSelectionState : this.registeredTabSelectionStates ) {
 			tabSelectionState.handlePostDeactivation();
 		}

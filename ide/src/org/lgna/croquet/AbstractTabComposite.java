@@ -90,7 +90,4 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 
 	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
 	}
-
-	public void TEMPORARY_HACK_handleSelected() {
-	}
 }

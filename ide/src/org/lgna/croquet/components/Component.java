@@ -536,6 +536,14 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		this.getAwtComponent().requestFocus();
 	}
 
+	public void requestFocusLater() {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				requestFocus();
+			}
+		} );
+	}
+
 	@Deprecated
 	public void addHierarchyListener( java.awt.event.HierarchyListener listener ) {
 		this.getAwtComponent().addHierarchyListener( listener );
