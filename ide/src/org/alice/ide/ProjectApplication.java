@@ -112,7 +112,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	public static final String getVersionText() {
-		return org.lgna.project.Version.getCurrentVersionText();
+		return org.lgna.project.ProjectVersion.getCurrentVersionText();
 	}
 
 	public static final String getVersionAdornment() {

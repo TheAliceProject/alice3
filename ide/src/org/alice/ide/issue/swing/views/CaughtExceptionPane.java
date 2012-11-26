@@ -134,7 +134,7 @@ public class CaughtExceptionPane extends org.alice.ide.issue.swing.views.Abstrac
 
 	@Override
 	protected String[] getAffectsVersions() {
-		return new String[] { org.lgna.project.Version.getCurrentVersionText() };
+		return new String[] { org.lgna.project.ProjectVersion.getCurrentVersionText() };
 	}
 
 	private boolean isClearedToAttachCurrentProject = false;
