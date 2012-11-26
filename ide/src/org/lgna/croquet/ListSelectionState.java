@@ -413,12 +413,11 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
 				//pass
 			} else {
-				boolean isAdjusting = false;
-				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
+				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
 				if( this.isAppropriateToComplete() ) {
-					this.commitStateEdit( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting, this.trigger );
+					this.commitStateEdit( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE, this.trigger );
 				}
-				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, isAdjusting );
+				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
 				this.trigger = null;
 			}
 		}
@@ -513,7 +512,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	//todo
 	@Override
-	protected void fireChanging( T prevValue, T nextValue, boolean isAdjusting ) {
+	protected void fireChanging( T prevValue, T nextValue, IsAdjusting isAdjusting ) {
 		super.fireChanging( prevValue, nextValue, isAdjusting );
 		this.swingModel.listSelectionModel.fireListSelectionChanged( this.dataIndexPair.index, this.dataIndexPair.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
 		this.fireContentsChanged( this.dataIndexPair.index, this.dataIndexPair.index );

@@ -226,10 +226,19 @@ public abstract class BooleanState extends State<Boolean> {
 		return this.swingModel;
 	}
 
+	private boolean isItemStateChangedToBeIgnored = false;
+
 	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
-		if( this.isAppropriateToComplete() ) {
-			boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-			this.commitStateEdit( !nextValue, nextValue, false, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
+		if( this.isItemStateChangedToBeIgnored ) {
+			//pass
+		} else {
+			if( this.isAppropriateToComplete() ) {
+				boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+				if( nextValue ) {
+					//this.commitStateEdit( !nextValue, nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
+					this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
+				}
+			}
 		}
 	}
 
@@ -274,11 +283,15 @@ public abstract class BooleanState extends State<Boolean> {
 
 	@Override
 	protected void updateSwingModel( Boolean nextValue ) {
-		this.swingModel.buttonModel.removeItemListener( this.itemListener );
-		try {
-			this.swingModel.buttonModel.setSelected( nextValue );
-		} finally {
-			this.swingModel.buttonModel.addItemListener( this.itemListener );
+		if( this.swingModel.buttonModel.isSelected() != nextValue ) {
+			//pass
+		} else {
+			this.isItemStateChangedToBeIgnored = true;
+			try {
+				this.swingModel.buttonModel.setSelected( nextValue );
+			} finally {
+				this.isItemStateChangedToBeIgnored = false;
+			}
 		}
 	}
 

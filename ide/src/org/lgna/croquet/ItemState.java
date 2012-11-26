@@ -115,6 +115,21 @@ public abstract class ItemState<T> extends State<T> {
 			this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 			this.setTextForBothTrueAndFalse( sb.toString() );
 		}
+
+		@Override
+		protected org.lgna.croquet.edits.StateEdit<Boolean> createEdit( org.lgna.croquet.history.CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
+			if( nextValue ) {
+				this.state.setValue( getItem( this.itemCallable ) );
+			}
+			return null;
+		}
+
+		@Override
+		protected void appendRepr( StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";item=" );
+			this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+		}
 	}
 
 	private static class InternalSelectItemOperation<T> extends ActionOperation {
@@ -139,8 +154,8 @@ public abstract class ItemState<T> extends State<T> {
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			this.state.setValueTransactionlessly( getItem( this.itemCallable ) );
 			step.finish();
+			this.state.setValue( getItem( this.itemCallable ) );
 		}
 	}
 

@@ -114,8 +114,8 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 	}
 
 	@Override
-	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
-		if( isAdjusting ) {
+	protected void fireChanged( T prevValue, T nextValue, IsAdjusting isAdjusting ) {
+		if( isAdjusting.getValue() ) {
 			//pass
 		} else {
 			if( prevValue != nextValue ) {

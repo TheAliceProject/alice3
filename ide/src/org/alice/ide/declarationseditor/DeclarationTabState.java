@@ -114,7 +114,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<Decl
 	}
 
 	@Override
-	protected void fireChanged( org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	protected void fireChanged( org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, IsAdjusting isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			//pass

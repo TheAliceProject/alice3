@@ -99,7 +99,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 		org.lgna.story.Key nextValue = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
 		org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.KeyEventTrigger.createUserInstance( viewController, e );
 		this.value = nextValue;
-		this.changeValueFromSwing( this.value, false, trigger );
+		this.changeValueFromSwing( this.value, IsAdjusting.FALSE, trigger );
 		this.updateViewControllers();
 	}
 

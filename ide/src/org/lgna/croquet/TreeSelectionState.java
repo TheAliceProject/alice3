@@ -245,10 +245,9 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	private final javax.swing.event.TreeSelectionListener treeSelectionListener = new javax.swing.event.TreeSelectionListener() {
 		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 			T nextValue = getSelectedNode();
-			boolean isAdjusting = false;
-			TreeSelectionState.this.changeValueFromSwing( nextValue, isAdjusting, org.lgna.croquet.triggers.TreeSelectionEventTrigger.createUserInstance( e ) );
+			TreeSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.TreeSelectionEventTrigger.createUserInstance( e ) );
 			T prevValue = getValue();
-			fireChanged( prevValue, nextValue, false );
+			fireChanged( prevValue, nextValue, IsAdjusting.FALSE );
 		}
 	};
 

@@ -68,8 +68,7 @@ public abstract class StringState extends State<String> {
 			try {
 				javax.swing.text.Document document = e.getDocument();
 				String nextValue = document.getText( 0, document.getLength() );
-				boolean isAdjusting = false;
-				StringState.this.changeValueFromSwing( nextValue, isAdjusting, org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
+				StringState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
 			} catch( javax.swing.text.BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
