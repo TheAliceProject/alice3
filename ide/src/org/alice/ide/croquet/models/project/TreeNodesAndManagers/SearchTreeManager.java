@@ -73,7 +73,7 @@ public class SearchTreeManager extends CustomTreeSelectionState<SearchTreeNode> 
 	protected Tree<SearchTreeNode> owner;
 
 	public SearchTreeManager( UUID id ) {
-		super( Application.INFORMATION_GROUP, id, SearchCodec.getSingleton(), null );
+		super( Application.INFORMATION_GROUP, id, null, SearchCodec.getSingleton() );
 		UserMethod rootMethod = new UserMethod();
 		rootMethod.setName( "Project" );
 		root = new SearchTreeNode( null, rootMethod );

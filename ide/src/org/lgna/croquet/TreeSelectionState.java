@@ -251,8 +251,8 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 		}
 	};
 
-	public TreeSelectionState( Group group, java.util.UUID id, ItemCodec<T> itemCodec ) {
-		super( group, id, null, itemCodec );
+	public TreeSelectionState( Group group, java.util.UUID id, T initialValue, ItemCodec<T> itemCodec ) {
+		super( group, id, initialValue, itemCodec );
 		this.swingModel.treeSelectionModel.addTreeSelectionListener( this.treeSelectionListener );
 	}
 
