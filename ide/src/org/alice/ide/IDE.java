@@ -356,7 +356,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-		org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
+		org.lgna.project.ast.NamedUserType type;
+		if( rootField != null ) {
+			type = (org.lgna.project.ast.NamedUserType)rootField.getValueType();
+		} else {
+			type = null;
+		}
+		org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();

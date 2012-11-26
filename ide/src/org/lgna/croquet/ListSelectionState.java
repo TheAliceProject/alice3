@@ -325,7 +325,10 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	@Override
 	protected void updateSwingModel( T nextValue ) {
-		this.setSelectedItem( nextValue );
+		//this.setSelectedItem( nextValue );
+		this.dataIndexPair.index = this.indexOf( nextValue );
+		this.swingModel.listSelectionModel.fireListSelectionChanged( this.dataIndexPair.index, this.dataIndexPair.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
+		this.fireContentsChanged( this.dataIndexPair.index, this.dataIndexPair.index );
 	}
 
 	public int getSelectedIndex() {
@@ -414,7 +417,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 				//pass
 			} else {
 				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
-				if( this.isAppropriateToComplete() ) {
+				if( this.isAppropriateToChange() ) {
 					this.commitStateEdit( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE, this.trigger );
 				}
 				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
@@ -424,8 +427,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	@Override
-	protected boolean isAppropriateToComplete() {
-		return super.isAppropriateToComplete() && ( this.isInMidstOfAtomic() == false );
+	protected boolean isAppropriateToChange() {
+		return super.isAppropriateToChange() && ( this.isInMidstOfAtomic() == false );
 	}
 
 	public final void addItem( T item ) {
@@ -508,14 +511,6 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		} finally {
 			this.popAtomic();
 		}
-	}
-
-	//todo
-	@Override
-	protected void fireChanging( T prevValue, T nextValue, IsAdjusting isAdjusting ) {
-		super.fireChanging( prevValue, nextValue, isAdjusting );
-		this.swingModel.listSelectionModel.fireListSelectionChanged( this.dataIndexPair.index, this.dataIndexPair.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
-		this.fireContentsChanged( this.dataIndexPair.index, this.dataIndexPair.index );
 	}
 
 	protected void fireContentsChanged( int index0, int index1 ) {

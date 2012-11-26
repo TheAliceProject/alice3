@@ -228,17 +228,12 @@ public abstract class BooleanState extends State<Boolean> {
 
 	private boolean isItemStateChangedToBeIgnored = false;
 
-	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
+	protected void handleItemStateChanged( java.awt.event.ItemEvent e ) {
 		if( this.isItemStateChangedToBeIgnored ) {
 			//pass
 		} else {
-			if( this.isAppropriateToComplete() ) {
-				boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-				if( nextValue ) {
-					//this.commitStateEdit( !nextValue, nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
-					this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
-				}
-			}
+			boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+			this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
 		}
 	}
 

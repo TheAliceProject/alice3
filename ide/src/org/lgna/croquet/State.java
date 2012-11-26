@@ -125,16 +125,19 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return this.addGeneratedTransaction( history, org.lgna.croquet.triggers.ChangeEventTrigger.createGeneratorInstance(), new org.lgna.croquet.edits.StateEdit( null, prevValue, nextValue ) );
 	}
 
+	private boolean isInTheMidstOfFiringChanging;
+	private T valueInTheMidstOfFiringChanging;
+
 	protected void fireChanging( T prevValue, T nextValue, IsAdjusting isAdjusting ) {
-		this.isInTheMidstOfChanging = true;
-		this.prevValueForChanging = prevValue;
+		this.isInTheMidstOfFiringChanging = true;
+		this.valueInTheMidstOfFiringChanging = prevValue;
 		try {
 			for( ValueListener<T> valueListener : this.valueListeners ) {
 				valueListener.changing( this, prevValue, nextValue, isAdjusting.value );
 			}
 		} finally {
-			this.prevValueForChanging = null;
-			this.isInTheMidstOfChanging = false;
+			this.isInTheMidstOfFiringChanging = false;
+			this.valueInTheMidstOfFiringChanging = null;
 		}
 	}
 
@@ -224,43 +227,62 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	protected abstract void updateSwingModel( T nextValue );
 
-	private boolean isInTheMidstOfChanging = false;
 	private T prevValue;
 
+	private int ignoreCount = 0;
+
+	protected void pushIgnore() {
+		this.ignoreCount++;
+	}
+
+	protected void popIgnore() {
+		this.ignoreCount--;
+		assert this.ignoreCount >= 0;
+	}
+
+	protected boolean isAppropriateToChange() {
+		return true;//this.ignoreCount == 0;
+	}
+
+	private boolean isInTheMidstOfChange = false;
+
 	private void changeValue( T nextValue, IsAdjusting isAdjusting, IsFromSwing isFromSwing, IsFromEdit isFromEdit, org.lgna.croquet.triggers.Trigger trigger ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValue, nextValue ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "areEquivalent:", this, this.prevValue, nextValue );
-			//pass
-		} else {
-			if( isAdjusting.value ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isAdjusting:", this, isAdjusting );
-			} else {
-				if( this.isInTheMidstOfChanging ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isInTheMidstOfChanging:", this, isInTheMidstOfChanging );
+		if( this.isAppropriateToChange() ) {
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValue, nextValue ) ) {
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "areEquivalent:", this, this.prevValue, nextValue );
+				if( isFromSwing.value ) {
+					//pass
 				} else {
-					if( this instanceof TabSelectionState ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "change:", this, nextValue, isAdjusting, isFromSwing, isFromEdit );
-					}
-					this.isInTheMidstOfChanging = true;
-					try {
-						T prevValue = this.prevValue;
-						this.prevValue = nextValue;
-						this.fireChanging( prevValue, nextValue, isAdjusting );
-						if( isFromSwing.value ) {
-							//pass
-						} else {
-							this.updateSwingModel( nextValue );
-						}
-						if( isFromEdit.value ) {
-							//pass
-						} else {
-							if( this.isAppropriateToComplete() ) {
+					this.updateSwingModel( nextValue );
+				}
+				//pass
+			} else {
+				if( isAdjusting.value ) {
+					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isAdjusting:", this, isAdjusting );
+				} else {
+					if( this.isInTheMidstOfChange ) {
+						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isInTheMidstOfChanging:", this, isInTheMidstOfChanging );
+					} else {
+						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "change:", this, nextValue, isAdjusting, isFromSwing, isFromEdit );
+						this.isInTheMidstOfChange = true;
+						try {
+							T prevValue = this.prevValue;
+							this.fireChanging( prevValue, nextValue, isAdjusting );
+							if( isFromSwing.value ) {
+								//pass
+							} else {
+								this.updateSwingModel( nextValue );
+							}
+							if( isFromEdit.value ) {
+								//pass
+							} else {
 								this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
 							}
+							this.fireChanged( prevValue, nextValue, isAdjusting );
+							this.prevValue = nextValue;
+						} finally {
+							this.isInTheMidstOfChange = false;
 						}
-						this.fireChanged( prevValue, nextValue, isAdjusting );
-					} finally {
-						this.isInTheMidstOfChanging = false;
 					}
 				}
 			}
@@ -271,13 +293,11 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		this.changeValue( nextValue, isAdjusting, IsFromSwing.TRUE, IsFromEdit.FALSE, trigger );
 	}
 
-	private T prevValueForChanging;
-
 	protected abstract T getActualValue();
 
 	public final T getValue() {
-		if( this.isInTheMidstOfChanging ) {
-			return this.prevValueForChanging;
+		if( this.isInTheMidstOfFiringChanging ) {
+			return this.valueInTheMidstOfFiringChanging;
 		} else {
 			return this.getActualValue();
 		}

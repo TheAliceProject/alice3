@@ -93,14 +93,8 @@ public abstract class TableRowSelectionState<T> extends ItemState<T> {
 	}
 
 	private void handleListSelectionChanged( javax.swing.event.ListSelectionEvent e ) {
-		T prevValue = null;
-		T nextValue = this.getValue();
 		org.lgna.croquet.triggers.Trigger trigger = null;
-		this.fireChanging( prevValue, nextValue, IsAdjusting.FALSE );
-		if( this.isAppropriateToComplete() ) {
-			this.commitStateEdit( prevValue, nextValue, IsAdjusting.FALSE, trigger );
-		}
-		this.fireChanged( prevValue, nextValue, IsAdjusting.FALSE );
+		this.changeValueFromSwing( this.getActualValue(), IsAdjusting.valueOf( e.getValueIsAdjusting() ), trigger );
 	}
 
 	@Override

@@ -85,14 +85,14 @@ public class ItemDetails<E> {
 		return this.button;
 	}
 
-	public void add( javax.swing.ButtonGroup buttonGroup ) {
+	public final void add( javax.swing.ButtonGroup buttonGroup ) {
 		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
 		//		jButton.addItemListener( this.itemListener );
 		buttonGroup.add( jButton );
 	}
 
 	// note: does not seem to be called
-	public void remove( javax.swing.ButtonGroup buttonGroup ) {
+	public final void remove( javax.swing.ButtonGroup buttonGroup ) {
 		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
 		//note: should already be removed by removeAllComponents()
 		assert jButton.getParent() == null;
