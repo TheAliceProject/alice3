@@ -117,11 +117,11 @@ public class Decoder {
 	//		return rv;
 	//	}
 
-	private String srcVersion;
-	private String dstVersion;
-	private boolean isIdDecodingDesired;
+	private final org.lgna.project.Version srcVersion;
+	private final org.lgna.project.Version dstVersion;
+	private final boolean isIdDecodingDesired;
 
-	public Decoder( String srcVersion, String dstVersion, boolean isIdDecodingDesired ) {
+	public Decoder( org.lgna.project.Version srcVersion, org.lgna.project.Version dstVersion, boolean isIdDecodingDesired ) {
 		this.srcVersion = srcVersion;
 		this.dstVersion = dstVersion;
 		this.isIdDecodingDesired = isIdDecodingDesired;
@@ -133,11 +133,6 @@ public class Decoder {
 
 	private String getClassName( org.w3c.dom.Element xmlElement ) {
 		String rv = xmlElement.getAttribute( CodecConstants.TYPE_ATTRIBUTE );
-		if( this.srcVersion.contains( "alpha" ) ) {
-			if( this.dstVersion.contains( "beta" ) ) {
-				//todo
-			}
-		}
 		return rv;
 	}
 

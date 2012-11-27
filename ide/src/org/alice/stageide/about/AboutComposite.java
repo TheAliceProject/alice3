@@ -55,7 +55,7 @@ public final class AboutComposite extends org.lgna.croquet.PlainDialogOperationC
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.HtmlStringValue versionLabel = this.createUnlocalizedHtmlStringValue( "current version: " + org.lgna.project.Version.getCurrentVersionText() );
+	private final org.lgna.croquet.HtmlStringValue versionLabel = this.createUnlocalizedHtmlStringValue( "current version: " + org.lgna.project.ProjectVersion.getCurrentVersionText() );
 	private final org.lgna.croquet.HtmlStringValue supportedByLabel;
 	private final org.lgna.croquet.HtmlStringValue dedicationLabel = this.createUnlocalizedHtmlStringValue( "Alice 3 is dedicated to Randy." );
 

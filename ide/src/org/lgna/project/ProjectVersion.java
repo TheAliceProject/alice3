@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,23 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.project.migration;
+package org.lgna.project;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface MigrationManager {
-	public static final String NO_REPLACEMENT = null;
+public class ProjectVersion {
+	private static final String TEXT;
+	private static final Version CURRENT;
+	static {
+		TEXT = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( Version.class.getResourceAsStream( "Version.txt" ) ).trim();
+		CURRENT = new Version( TEXT );
+	}
 
-	public org.lgna.project.Version getCurrentVersion();
+	public static String getCurrentVersionText() {
+		return TEXT;
+	}
 
-	public boolean isDevoidOfVersionIndependentMigrations();
-
-	public String migrate( String source, org.lgna.project.Version version );
-
-	public void migrate( org.lgna.project.ast.NamedUserType programType, org.lgna.project.Version version );
-
-	public void addVersionIndependentMigration( Migration migration );
-
-	public void removeVersionIndependentMigration( Migration migration );
+	public static Version getCurrentVersion() {
+		return CURRENT;
+	}
 }

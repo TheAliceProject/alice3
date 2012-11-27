@@ -84,7 +84,7 @@ public class CaughtGlExceptionPane extends org.alice.ide.issue.swing.views.Abstr
 
 	@Override
 	protected String[] getAffectsVersions() {
-		return new String[] { org.lgna.project.Version.getCurrentVersionText() };
+		return new String[] { org.lgna.project.ProjectVersion.getCurrentVersionText() };
 	}
 
 	@Override

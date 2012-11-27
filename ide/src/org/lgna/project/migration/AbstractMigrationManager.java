@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,18 +45,53 @@ package org.lgna.project.migration;
 /**
  * @author Dennis Cosgrove
  */
-public interface MigrationManager {
-	public static final String NO_REPLACEMENT = null;
+public abstract class AbstractMigrationManager implements MigrationManager {
+	private final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	public org.lgna.project.Version getCurrentVersion();
+	private final org.lgna.project.Version currentVersion;
 
-	public boolean isDevoidOfVersionIndependentMigrations();
+	public AbstractMigrationManager( org.lgna.project.Version currentVersion ) {
+		this.currentVersion = currentVersion;
+	}
 
-	public String migrate( String source, org.lgna.project.Version version );
+	protected abstract TextMigration[] getTextMigrations();
 
-	public void migrate( org.lgna.project.ast.NamedUserType programType, org.lgna.project.Version version );
+	protected abstract AstMigration[] getAstMigrations();
 
-	public void addVersionIndependentMigration( Migration migration );
+	public org.lgna.project.Version getCurrentVersion() {
+		return this.currentVersion;
+	}
 
-	public void removeVersionIndependentMigration( Migration migration );
+	public boolean isDevoidOfVersionIndependentMigrations() {
+		return versionIndependentMigrations.size() == 0;
+	}
+
+	public String migrate( String source, org.lgna.project.Version version ) {
+		String rv = source;
+		for( TextMigration textMigration : this.getTextMigrations() ) {
+			if( textMigration.isApplicable( version ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
+				rv = textMigration.migrate( rv );
+				version = textMigration.getResultVersion();
+			}
+		}
+		return rv;
+	}
+
+	public void migrate( org.lgna.project.ast.NamedUserType programType, org.lgna.project.Version version ) {
+		for( AstMigration astMigration : this.getAstMigrations() ) {
+			if( astMigration.isApplicable( version ) ) {
+				astMigration.migrate( programType );
+				version = astMigration.getResultVersion();
+			}
+		}
+	}
+
+	public void addVersionIndependentMigration( Migration migration ) {
+		versionIndependentMigrations.add( migration );
+	}
+
+	public void removeVersionIndependentMigration( Migration migration ) {
+		versionIndependentMigrations.remove( migration );
+	}
 }
