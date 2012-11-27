@@ -58,13 +58,6 @@ public class MoviePlayerView extends BorderPanel {
 		this.setPreferredSize( new Dimension( 320 + 10, 180 + 30 ) );
 	}
 
-	public void update( MoviePlayerComposite composite ) {
-		this.getAwtComponent().add( composite.getAnimPlayer().getVisualComponent(), BorderLayout.CENTER );
-		this.getAwtComponent().add( composite.getAnimPlayer().getControlPanelComponent(), BorderLayout.PAGE_END );
-		this.refreshLater();
-	}
-
-	@Deprecated
 	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
 		assert visualComponent != null;
 		assert controlComponent != null;
