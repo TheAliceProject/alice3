@@ -45,7 +45,7 @@ package examples.croquet.rename;
 /**
  * @author Dennis Cosgrove
  */
-public class RenameExampleComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<examples.croquet.stringstate.views.RenameExampleView> {
+public class RenameExampleComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<examples.croquet.rename.views.RenameExampleView> {
 	private static final String INITIAL_VALUE = "fred";
 
 	private final org.lgna.croquet.StringState nameState = this.createStringState( this.createKey( "nameState" ), INITIAL_VALUE );
@@ -59,8 +59,8 @@ public class RenameExampleComposite extends org.lgna.croquet.OperationInputDialo
 	}
 
 	@Override
-	protected examples.croquet.stringstate.views.RenameExampleView createView() {
-		return new examples.croquet.stringstate.views.RenameExampleView( this );
+	protected examples.croquet.rename.views.RenameExampleView createView() {
+		return new examples.croquet.rename.views.RenameExampleView( this );
 	}
 
 	@Override

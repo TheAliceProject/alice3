@@ -57,7 +57,9 @@ public class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeS
 	}
 
 	private ResourceNodeTreeSelectionState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c37c9803-2482-4f1b-9731-b110f1f6fde7" ), ResourceNodeCodec.SINGLETON, TreeUtilities.getTreeBasedOnClassHierarchy() );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c37c9803-2482-4f1b-9731-b110f1f6fde7" ), null, ResourceNodeCodec.SINGLETON );
+		//todo
+		this.updateSwingModel( TreeUtilities.getTreeBasedOnClassHierarchy() );
 	}
 
 	@Override

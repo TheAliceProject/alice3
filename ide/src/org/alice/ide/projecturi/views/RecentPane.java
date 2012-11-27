@@ -43,7 +43,7 @@
 
 package org.alice.ide.projecturi.views;
 
-public class RecentPane extends ListContentPanel<org.alice.ide.projecturi.RecentProjectsUriSelectionState> {
+public class RecentPane extends RefreshableListContentPanel<org.alice.ide.projecturi.RecentProjectsUriSelectionState> {
 	public RecentPane( org.alice.ide.projecturi.RecentProjectsTab composite ) {
 		super( composite, org.alice.ide.projecturi.RecentProjectsUriSelectionState.getInstance() );
 	}

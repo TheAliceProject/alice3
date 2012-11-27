@@ -63,7 +63,21 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, null );
 	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 
-	private final LogInOutCardOwnerComposite logInOutCardComposite = new LogInOutCardOwnerComposite();
+	private final LogInCard logInCard = new LogInCard();
+	private final LogOutCard logOutCard = new LogOutCard();
+
+	private final org.lgna.croquet.CardOwnerComposite logInOutComposite = this.createCardOwnerComposite( this.logInCard, this.logOutCard );
+
+	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
+
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			updateLogInOutComposite();
+		}
+
+	};
 
 	private final ValueListener<String> adapter = new ValueListener<String>() {
 
@@ -80,11 +94,21 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
 		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
+		this.registerSubComposite( this.logInOutComposite );
 	}
 
 	@Override
 	protected Throwable getThrowable() {
 		return null;
+	}
+
+	private void updateLogInOutComposite() {
+		if( this.logInCard.getLoginDialogComposite().getIsLoggedIn().getValue() ) {
+			logOutCard.updateWelcomeString();
+			this.logInOutComposite.showCard( this.logOutCard );
+		} else {
+			this.logInOutComposite.showCard( this.logInCard );
+		}
 	}
 
 	@Override
@@ -127,8 +151,8 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		return this.attachmentState;
 	}
 
-	public LogInOutCardOwnerComposite getLogInOutCardComposite() {
-		return this.logInOutCardComposite;
+	public org.lgna.croquet.CardOwnerComposite getLogInOutCardComposite() {
+		return this.logInOutComposite;
 	}
 
 	@Override
@@ -142,7 +166,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 
 	@Override
 	protected boolean isProjectAttachmentDesired() {
-		return this.attachmentState.getSelectedItem().equals( BugSubmitAttachment.YES );
+		return this.attachmentState.getValue().equals( BugSubmitAttachment.YES );
 	}
 
 	@Override
@@ -171,16 +195,17 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		this.descriptionState.setValueTransactionlessly( "" );
 		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
 		this.attachmentState.setValueTransactionlessly( null );
-		this.reportTypeState.setValue( this.initialReportTypeValue );
-		this.logInOutCardComposite.handlePreActivation();
+		this.reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
+
 		this.summaryState.addAndInvokeValueListener( this.adapter );
+		this.logInCard.getLoginDialogComposite().getIsLoggedIn().addAndInvokeValueListener( this.isLoggedInAdapter );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		this.summaryState.removeValueListener( this.adapter );
-		this.logInOutCardComposite.handlePostDeactivation();
 		super.handlePostDeactivation();
+		this.logInCard.getLoginDialogComposite().getIsLoggedIn().removeValueListener( this.isLoggedInAdapter );
+		this.summaryState.removeValueListener( this.adapter );
 	}
 }

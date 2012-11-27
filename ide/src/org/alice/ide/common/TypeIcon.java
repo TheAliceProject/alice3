@@ -71,7 +71,7 @@ public class TypeIcon implements javax.swing.Icon {
 	}
 
 	private String getText() {
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue();
 		return formatter.getTextForType( this.type );
 	}
 

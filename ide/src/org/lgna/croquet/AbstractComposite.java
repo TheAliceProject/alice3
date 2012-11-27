@@ -555,11 +555,49 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		this.view = null;
 	}
 
+	private final java.util.List<Composite<?>> subComposites = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	protected void registerSubComposite( Composite<?> subComposite ) {
+		this.subComposites.add( subComposite );
+	}
+
+	protected void unregisterSubComposite( Composite<?> subComposite ) {
+		this.subComposites.remove( subComposite );
+	}
+
+	protected void registerTabSelectionState( TabSelectionState<?> tabSelectionState ) {
+		this.registeredTabSelectionStates.add( tabSelectionState );
+	}
+
+	protected void unregisterTabSelectionState( TabSelectionState<?> tabSelectionState ) {
+		this.registeredTabSelectionStates.remove( tabSelectionState );
+	}
+
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
+		this.getView().handleCompositePreActivation();
+		for( Composite<?> subComposite : this.subComposites ) {
+			subComposite.handlePreActivation();
+		}
+		for( TabSelectionState<?> tabSelectionState : this.mapKeyToTabSelectionState.values() ) {
+			tabSelectionState.handlePreActivation();
+		}
+		for( TabSelectionState<?> tabSelectionState : this.registeredTabSelectionStates ) {
+			tabSelectionState.handlePreActivation();
+		}
 	}
 
 	public void handlePostDeactivation() {
+		this.getView().handleCompositePostDeactivation();
+		for( TabSelectionState<?> tabSelectionState : this.registeredTabSelectionStates ) {
+			tabSelectionState.handlePostDeactivation();
+		}
+		for( TabSelectionState<?> tabSelectionState : this.mapKeyToTabSelectionState.values() ) {
+			tabSelectionState.handlePostDeactivation();
+		}
+		for( Composite<?> subComposite : this.subComposites ) {
+			subComposite.handlePostDeactivation();
+		}
 	}
 
 	private java.util.Map<Key, AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -572,6 +610,8 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	private java.util.Map<Key, InternalActionOperation> mapKeyToActionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalCustomItemState> mapKeyToItemState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private java.util.Set<TabSelectionState> registeredTabSelectionStates = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
 	//	private java.util.Map<Key, InternalCardOwnerComposite> mapKeyToCardOwnerComposite = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 

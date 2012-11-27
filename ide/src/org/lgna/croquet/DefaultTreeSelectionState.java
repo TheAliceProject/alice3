@@ -50,9 +50,8 @@ public class DefaultTreeSelectionState<T> extends TreeSelectionState<T> {
 	private final edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel;
 
 	public DefaultTreeSelectionState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialSelection, edu.cmu.cs.dennisc.javax.swing.models.TreeModel<T> treeModel ) {
-		super( group, id, itemCodec );
+		super( group, id, initialSelection, itemCodec );
 		this.treeModel = treeModel;
-		this.setValueTransactionlessly( initialSelection );
 	}
 
 	@Override

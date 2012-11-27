@@ -64,7 +64,7 @@ public class ControlFlowStatementTemplate extends org.alice.ide.templates.Statem
 			//pass
 		} else {
 			Class<?> cls = this.incompleteStatement.getClass();
-			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.controlflow.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getLocale() );
+			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.controlflow.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getLocale() );
 		}
 		return this.labelText;
 	}

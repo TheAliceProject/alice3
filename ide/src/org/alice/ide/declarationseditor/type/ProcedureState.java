@@ -61,11 +61,6 @@ public class ProcedureState extends MethodState {
 	}
 
 	private ProcedureState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "ce34123a-1e8a-4f95-8e90-77a1477609d7" ), type );
-	}
-
-	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		return super.isAcceptableItem( value ) && value.isProcedure();
+		super( java.util.UUID.fromString( "ce34123a-1e8a-4f95-8e90-77a1477609d7" ), new org.alice.ide.declarationseditor.type.data.ProcedureData( type ) );
 	}
 }

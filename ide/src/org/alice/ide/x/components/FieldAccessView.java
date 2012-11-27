@@ -61,7 +61,7 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 		} else {
 			boolean isExpressionDesired;
 			if( fieldAccess.expression.getValue() instanceof org.lgna.project.ast.TypeExpression ) {
-				isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired();
+				isExpressionDesired = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().isTypeExpressionDesired();
 			} else {
 				isExpressionDesired = true;
 			}

@@ -63,7 +63,7 @@ public class MethodsSubView extends org.lgna.croquet.components.PageAxisPanel {
 			org.lgna.croquet.components.JComponent<?> component;
 			if( method.isUserAuthored() ) {
 				org.alice.ide.declarationseditor.CodeComposite codeComposite = org.alice.ide.declarationseditor.CodeComposite.getInstance( method );
-				org.lgna.croquet.BooleanState isSelectedState = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectedState( codeComposite );
+				org.lgna.croquet.BooleanState isSelectedState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectedState( codeComposite );
 				org.lgna.croquet.components.ToggleButton button = isSelectedState.createToggleButton();
 				button.getAwtComponent().setText( "edit" );
 				component = new org.lgna.croquet.components.LineAxisPanel( button, dragComponent );

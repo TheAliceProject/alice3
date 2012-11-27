@@ -97,12 +97,24 @@ public abstract class ItemState<T> extends State<T> {
 		}
 	}
 
+	private static class InternalItemSelectedStateButtonModel<T> extends javax.swing.JToggleButton.ToggleButtonModel {
+		private final java.util.concurrent.Callable<T> itemCallable;
+
+		public InternalItemSelectedStateButtonModel( java.util.concurrent.Callable<T> itemCallable ) {
+			this.itemCallable = itemCallable;
+		}
+
+		public java.util.concurrent.Callable<T> getItemCallable() {
+			return this.itemCallable;
+		}
+	}
+
 	private static class InternalItemSelectedState<T> extends BooleanState {
 		private final ItemState<T> state;
 		private final java.util.concurrent.Callable<T> itemCallable;
 
 		private InternalItemSelectedState( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable ) {
-			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ) );
+			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ), new InternalItemSelectedStateButtonModel<T>( itemCallable ) );
 			assert state != null;
 			this.state = state;
 			this.itemCallable = itemCallable;
@@ -114,6 +126,31 @@ public abstract class ItemState<T> extends State<T> {
 			StringBuilder sb = new StringBuilder();
 			this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 			this.setTextForBothTrueAndFalse( sb.toString() );
+		}
+
+		@Override
+		protected org.lgna.croquet.edits.StateEdit<Boolean> createEdit( org.lgna.croquet.history.CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
+			return null;
+		}
+
+		@Override
+		protected void handleItemStateChanged( java.awt.event.ItemEvent e ) {
+			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+				InternalItemSelectedStateButtonModel<T> buttonModel = (InternalItemSelectedStateButtonModel<T>)e.getItem();
+				T item = getItem( this.itemCallable );
+				if( getItem( this.itemCallable ) == getItem( buttonModel.getItemCallable() ) ) {
+					this.state.setValue( item );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+				}
+			}
+		}
+
+		@Override
+		protected void appendRepr( StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";item=" );
+			this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 		}
 	}
 
@@ -139,8 +176,8 @@ public abstract class ItemState<T> extends State<T> {
 		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			this.state.setValueTransactionlessly( getItem( this.itemCallable ) );
 			step.finish();
+			this.state.setValue( getItem( this.itemCallable ) );
 		}
 	}
 

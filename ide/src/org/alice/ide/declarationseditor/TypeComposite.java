@@ -90,12 +90,11 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 	}
 
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponent( booleanState, button );
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.6f );
 	}
 
-	@Override
 	public boolean isCloseable() {
 		return false;
 	}

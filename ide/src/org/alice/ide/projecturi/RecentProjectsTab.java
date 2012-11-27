@@ -61,7 +61,7 @@ public class RecentProjectsTab extends ContentTab<org.alice.ide.projecturi.views
 
 	@Override
 	protected void refresh() {
-		org.alice.ide.projecturi.RecentProjectsUriSelectionState.getInstance().refresh();
+		org.alice.ide.projecturi.RecentProjectsUriSelectionState.getInstance().getData().refresh();
 	}
 
 	@Override

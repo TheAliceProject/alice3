@@ -52,7 +52,6 @@ import org.lgna.croquet.history.CompletionStep;
 
 import com.atlassian.jira.rpc.soap.client.RemoteUser;
 
-
 /**
  * @author Matt May
  */
@@ -109,7 +108,7 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 					try {
 						remoteUser = service.getUser( token, username );
 						edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
-						isLoggedIn.setValue( true );
+						isLoggedIn.setValueTransactionlessly( true );
 					} finally {
 						service.logout( token );
 					}
@@ -159,6 +158,6 @@ public class BugLoginComposite extends OperationInputDialogCoreComposite<BugLogi
 
 	public void logout() {
 		edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
-		isLoggedIn.setValue( false );
+		isLoggedIn.setValueTransactionlessly( false );
 	}
 }

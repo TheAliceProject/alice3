@@ -49,7 +49,7 @@ package org.alice.ide.x.components;
 public class ThisExpressionLikeView extends AbstractExpressionView<org.lgna.project.ast.Expression> {
 	private ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.Expression expression ) {
 		super( factory, expression );
-		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForThis() ) );
+		this.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getTextForThis() ) );
 	}
 
 	public ThisExpressionLikeView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.ThisExpression thisExpression ) {

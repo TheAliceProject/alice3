@@ -138,7 +138,7 @@ public abstract class DeclarationPanel<M extends org.alice.ide.croquet.models.de
 			if( ( jTextField.getSelectionStart() == 0 ) && ( jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) ) {
 				M model = this.getModel();
 				String name = generateNameFromInitializer();
-				model.getNameState().setValue( name );
+				model.getNameState().setValueTransactionlessly( name );
 				this.nameTextField.requestFocus();
 				this.nameTextField.selectAll();
 				this.nameTextField.repaint();

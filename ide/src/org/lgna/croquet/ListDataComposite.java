@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,54 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
-
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class LogInOutCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
-	private final LogInCard logInCard = new LogInCard();
-	private final LogOutCard logOutCard = new LogOutCard();
+public abstract class ListDataComposite<T, V extends org.lgna.croquet.components.ListDataView<T>> extends AbstractComposite<V> {
+	private final org.lgna.croquet.data.ListData<T> data;
 
-	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
-
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			updateCard();
-		}
-
-	};
-
-	public LogInOutCardOwnerComposite() {
-		super( java.util.UUID.fromString( "05bfed8e-d09d-4928-9b20-1c758600bfe0" ) );
-		this.addCard( this.logInCard );
-		this.addCard( this.logOutCard );
-		this.getView().setBackgroundColor( null );
+	public ListDataComposite( java.util.UUID migrationId, org.lgna.croquet.data.ListData<T> data ) {
+		super( migrationId );
+		this.data = data;
 	}
 
-	private void updateCard() {
-		if( this.logInCard.getLoginDialogComposite().getIsLoggedIn().getValue() ) {
-			logOutCard.updateWelcomeString();
-			this.showCard( this.logOutCard );
-		} else {
-			this.showCard( this.logInCard );
-		}
-	}
-
-	@Override
-	public void handlePreActivation() {
-		this.logInCard.getLoginDialogComposite().getIsLoggedIn().addAndInvokeValueListener( this.isLoggedInAdapter );
-		super.handlePreActivation();
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		this.logInCard.getLoginDialogComposite().getIsLoggedIn().removeValueListener( this.isLoggedInAdapter );
-		super.handlePostDeactivation();
+	public org.lgna.croquet.data.ListData<T> getData() {
+		return this.data;
 	}
 }

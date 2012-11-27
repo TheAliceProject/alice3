@@ -102,9 +102,8 @@ public abstract class MemberTemplateComposite<V extends org.lgna.croquet.compone
 	}
 
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton<?, org.lgna.croquet.BooleanState> button ) {
-		super.customizeTitleComponent( booleanState, button );
-		//booleanState.setIconForBothTrueAndFalse( ICON );
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
 		button.getAwtComponent().setIcon( ICON );
 	}
 }

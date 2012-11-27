@@ -140,7 +140,7 @@ public final class AddParameterComposite extends AddDeclarationComposite<org.lgn
 	@Override
 	public void handlePreActivation() {
 		java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
-		this.isRequirementToUpdateInvocationsUnderstoodState.setValue( argumentLists.size() == 0 );
+		this.isRequirementToUpdateInvocationsUnderstoodState.setValueTransactionlessly( argumentLists.size() == 0 );
 		super.handlePreActivation();
 	}
 

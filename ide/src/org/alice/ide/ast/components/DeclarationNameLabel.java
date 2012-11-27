@@ -97,12 +97,12 @@ public class DeclarationNameLabel extends org.lgna.croquet.components.Label {
 	}
 
 	protected String getNameText() {
-		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue();
 		return formatter.getNameForDeclaration( this.declaration );
 	}
 
 	protected String getTextForNullName() {
-		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getTextForNull();
+		return org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getTextForNull();
 	}
 
 	protected final String getTextForBlankName() {

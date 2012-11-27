@@ -83,11 +83,6 @@ public class ControlFlowComposite extends org.alice.ide.members.TemplateComposit
 	}
 
 	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-
-	@Override
 	protected org.alice.ide.controlflow.components.ControlFlowPanel createView() {
 		return new org.alice.ide.controlflow.components.ControlFlowPanel( this );
 	}

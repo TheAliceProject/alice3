@@ -148,7 +148,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 		rv.setEnvironment( org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentShortDescription() );
 		rv.setSteps( this.getStepsText() );
 		rv.setException( this.getExceptionText() );
-		rv.setAffectsVersions( new String[] { org.lgna.project.Version.getCurrentVersionText() } );
+		rv.setAffectsVersions( new String[] { org.lgna.project.ProjectVersion.getCurrentVersionText() } );
 		return rv;
 	}
 

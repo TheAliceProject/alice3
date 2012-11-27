@@ -25,6 +25,8 @@ public class Manager {
 
 	private static native void unloadActiveModelData();
 
+	private static native void unloadUnusedTextures( javax.media.opengl.GL gl );
+
 	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 
 	private static void doInitializationIfNecessary() {
@@ -51,6 +53,12 @@ public class Manager {
 	public static void unloadNebulousModelData() {
 		if( isInitialized() ) {
 			unloadActiveModelData();
+		}
+	}
+
+	public static void unloadUnusedNebulousTextureData( javax.media.opengl.GL gl ) {
+		if( isInitialized() ) {
+			unloadUnusedTextures( gl );
 		}
 	}
 

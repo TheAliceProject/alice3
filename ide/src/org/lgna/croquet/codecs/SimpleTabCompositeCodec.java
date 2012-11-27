@@ -91,6 +91,10 @@ public class SimpleTabCompositeCodec<C extends org.lgna.croquet.SimpleTabComposi
 		if( value != null ) {
 			value.initializeIfNecessary();
 		}
-		sb.append( value != null ? value.getTitleText() : null );
+		if( value != null ) {
+			value.appendUserRepr( sb );
+		} else {
+			sb.append( "null" );
+		}
 	}
 }

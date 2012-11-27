@@ -48,7 +48,6 @@ package org.lgna.croquet;
  */
 public abstract class AbstractCompletionModel extends AbstractModel implements CompletionModel {
 	private final Group group;
-	private int ignoreCount = 0;
 
 	private static final class SidekickLabel extends PlainStringValue {
 		private final AbstractCompletionModel completionModel;
@@ -124,19 +123,6 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 
 	public StringValue peekSidekickLabel() {
 		return this.sidekickLabel;
-	}
-
-	protected void pushIgnore() {
-		this.ignoreCount++;
-	}
-
-	protected void popIgnore() {
-		this.ignoreCount--;
-		assert this.ignoreCount >= 0;
-	}
-
-	protected boolean isAppropriateToComplete() {
-		return ( Manager.isInTheMidstOfUndoOrRedo() == false ) && ( this.ignoreCount == 0 );
 	}
 
 	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep<?> step ) {

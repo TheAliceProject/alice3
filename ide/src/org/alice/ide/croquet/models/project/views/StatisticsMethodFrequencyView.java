@@ -144,7 +144,7 @@ public class StatisticsMethodFrequencyView extends BorderPanel {
 			}
 
 			public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				update( listSelectionState.getSelectedItem() );
+				update( listSelectionState.getValue() );
 			}
 
 		};

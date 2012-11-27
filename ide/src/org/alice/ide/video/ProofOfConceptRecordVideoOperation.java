@@ -75,7 +75,7 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 
 	@Override
 	protected org.lgna.croquet.components.Component<?> createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
-		IsRecordingState.getInstance().setValue( false );
+		IsRecordingState.getInstance().setValueTransactionlessly( false );
 		IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}

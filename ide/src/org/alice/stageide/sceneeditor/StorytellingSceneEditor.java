@@ -584,7 +584,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				this.lookingGlassPanel.setSouthComponent( this.mainCameraNavigatorWidget );
 
 				if( this.savedSceneEditorViewSelection != null ) {
-					this.mainCameraMarkerList.setSelectedItem( this.savedSceneEditorViewSelection );
+					this.mainCameraMarkerList.setValueTransactionlessly( this.savedSceneEditorViewSelection );
 				}
 			}
 			else
@@ -594,8 +594,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 				this.lookingGlassPanel.setSouthEastComponent( this.expandButton );
 				this.lookingGlassPanel.setSouthComponent( null );
 
-				this.savedSceneEditorViewSelection = this.mainCameraMarkerList.getSelectedItem();
-				this.mainCameraMarkerList.setSelectedItem( View.STARTING_CAMERA_VIEW );
+				this.savedSceneEditorViewSelection = this.mainCameraMarkerList.getValue();
+				this.mainCameraMarkerList.setValueTransactionlessly( View.STARTING_CAMERA_VIEW );
 			}
 			this.mainCameraViewSelector.setVisible( isExpanded );
 		}
@@ -809,11 +809,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	public void setSelectedObjectMarker( UserField objectMarkerField ) {
-		ManagedObjectMarkerFieldState.getInstance( (NamedUserType)getActiveSceneInstance().getType() ).setSelectedItem( objectMarkerField );
+		ManagedObjectMarkerFieldState.getInstance( (NamedUserType)getActiveSceneInstance().getType() ).setValueTransactionlessly( objectMarkerField );
 	}
 
 	public void setSelectedCameraMarker( UserField cameraMarkerField ) {
-		ManagedCameraMarkerFieldState.getInstance( (NamedUserType)getActiveSceneInstance().getType() ).setSelectedItem( cameraMarkerField );
+		ManagedCameraMarkerFieldState.getInstance( (NamedUserType)getActiveSceneInstance().getType() ).setValueTransactionlessly( cameraMarkerField );
 	}
 
 	@Override
@@ -921,7 +921,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			sceneEditorViewTransform.applyRotationAboutXAxis( new AngleInDegrees( -40 ) );
 			this.sceneViewMarkerImp.setLocalTransformation( sceneEditorViewTransform );
 
-			this.mainCameraViewTracker.startTrackingCameraView( this.mainCameraMarkerList.getSelectedItem() );
+			this.mainCameraViewTracker.startTrackingCameraView( this.mainCameraMarkerList.getValue() );
 
 		}
 
@@ -969,7 +969,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		org.lgna.story.implementation.EntityImp fieldImp = getImplementation( field );
 		AffineMatrix4x4 originalTransform = fieldImp.getAbsoluteTransformation();
 		super.setFieldToState( field, statements );
-		if( ( fieldImp == this.sceneCameraImp ) && ( this.mainCameraMarkerList.getSelectedItem() != View.STARTING_CAMERA_VIEW ) ) {
+		if( ( fieldImp == this.sceneCameraImp ) && ( this.mainCameraMarkerList.getValue() != View.STARTING_CAMERA_VIEW ) ) {
 			AffineMatrix4x4 revertedTransform = fieldImp.getAbsoluteTransformation();
 			this.openingSceneMarkerImp.setTransformation( this.openingSceneMarkerImp.getScene(), revertedTransform );
 			this.sceneCameraImp.setTransformation( this.sceneCameraImp.getScene(), originalTransform );

@@ -106,7 +106,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 
 			@Override
 			protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-				booleanState.setValue( !booleanState.getValue() );
+				booleanState.setValueTransactionlessly( !booleanState.getValue() );
 			}
 		}
 

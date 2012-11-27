@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.project.migration;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ListData<T> {
-	public static interface Listener<T> {
-		//todo
-		public void changed();
+public abstract class AbstractMigrationManager implements MigrationManager {
+	private final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	private final org.lgna.project.Version currentVersion;
+
+	public AbstractMigrationManager( org.lgna.project.Version currentVersion ) {
+		this.currentVersion = currentVersion;
 	}
 
-	public ItemCodec<T> getItemCodec();
+	protected abstract TextMigration[] getTextMigrations();
 
-	public int getSize();
+	protected abstract AstMigration[] getAstMigrations();
 
-	public T get( int index );
+	public org.lgna.project.Version getCurrentVersion() {
+		return this.currentVersion;
+	}
 
-	public void addListener( Listener<T> listener );
+	public boolean isDevoidOfVersionIndependentMigrations() {
+		return versionIndependentMigrations.size() == 0;
+	}
 
-	public void removeListener( Listener<T> listener );
+	public String migrate( String source, org.lgna.project.Version version ) {
+		String rv = source;
+		for( TextMigration textMigration : this.getTextMigrations() ) {
+			if( textMigration.isApplicable( version ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
+				rv = textMigration.migrate( rv );
+				version = textMigration.getResultVersion();
+			}
+		}
+		return rv;
+	}
+
+	public void migrate( org.lgna.project.ast.NamedUserType programType, org.lgna.project.Version version ) {
+		for( AstMigration astMigration : this.getAstMigrations() ) {
+			if( astMigration.isApplicable( version ) ) {
+				astMigration.migrate( programType );
+				version = astMigration.getResultVersion();
+			}
+		}
+	}
+
+	public void addVersionIndependentMigration( Migration migration ) {
+		versionIndependentMigrations.add( migration );
+	}
+
+	public void removeVersionIndependentMigration( Migration migration ) {
+		versionIndependentMigrations.remove( migration );
+	}
 }

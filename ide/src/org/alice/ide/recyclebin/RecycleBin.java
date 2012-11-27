@@ -47,29 +47,21 @@ package org.alice.ide.recyclebin;
  * @author Dennis Cosgrove
  */
 public class RecycleBin extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
-	private static final java.awt.Image OPEN_IMAGE;
-	private static final java.awt.Image CLOSED_IMAGE;
-	static {
-		OPEN_IMAGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RecycleBin.class.getResource( "images/open.png" ) ).getImage();
-		CLOSED_IMAGE = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RecycleBin.class.getResource( "images/closed.png" ) ).getImage();
-	}
-
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		return new javax.swing.JComponent() {
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
-				g.drawImage( CLOSED_IMAGE, 0, 0, this );
+				RecycleBinIcon.SINGLETON.paintIcon( this, g, 0, 0 );
 			}
 
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return new java.awt.Dimension( 24, 40 );
+				return new java.awt.Dimension( org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON.getIconWidth(), org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON.getIconHeight() );
 			}
 		};
 	}
-
 	//	public static void main( String[] args ) {
 	//		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
 	//			@Override

@@ -46,35 +46,35 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryUriSelectionState extends UriSelectionState {
+public abstract class DirectoryUriSelectionState extends org.lgna.croquet.RefreshableDataListSelectionState<java.net.URI> {
 	private final java.io.File directory;
 
-	public DirectoryUriSelectionState( java.util.UUID id, java.io.File directory ) {
-		super( id );
+	public DirectoryUriSelectionState( java.util.UUID migrationId, final java.io.File directory ) {
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, migrationId, new org.lgna.croquet.data.RefreshableListData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
+			@Override
+			protected java.util.List<java.net.URI> createValues() {
+				if( directory != null ) {
+					java.net.URI[] uris;
+					java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( directory );
+					final int N = files.length;
+					uris = new java.net.URI[ N ];
+					for( int i = 0; i < N; i++ ) {
+						if( files[ i ] != null ) {
+							uris[ i ] = files[ i ].toURI();
+						} else {
+							uris[ i ] = null;
+						}
+					}
+					return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( uris );
+				} else {
+					return java.util.Collections.emptyList();
+				}
+			}
+		}, -1 );
 		this.directory = directory;
 	}
 
 	public java.io.File getDirectory() {
 		return this.directory;
-	}
-
-	@Override
-	protected java.net.URI[] createArray() {
-		java.net.URI[] rv;
-		if( directory != null ) {
-			java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( this.directory );
-			final int N = files.length;
-			rv = new java.net.URI[ N ];
-			for( int i = 0; i < N; i++ ) {
-				if( files[ i ] != null ) {
-					rv[ i ] = files[ i ].toURI();
-				} else {
-					rv[ i ] = null;
-				}
-			}
-		} else {
-			rv = new java.net.URI[ 0 ];
-		}
-		return rv;
 	}
 }

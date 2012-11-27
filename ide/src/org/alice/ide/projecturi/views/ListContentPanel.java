@@ -46,46 +46,28 @@ package org.alice.ide.projecturi.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel<M extends org.alice.ide.projecturi.UriSelectionState> extends TabContentPanel {
+public abstract class ListContentPanel<M extends org.lgna.croquet.ListSelectionState<java.net.URI>> extends TabContentPanel {
 	private final M state;
-	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			ListContentPanel.this.refreshState();
-		}
-	};
-	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
-		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
-			if( quoteClickCountUnquote == 2 ) {
-				org.lgna.croquet.components.Button defaultButton = ListContentPanel.this.getRoot().getDefaultButton();
-				if( defaultButton != null ) {
-					defaultButton.doClick();
-				}
-			}
-		}
-	};
+	private final org.lgna.croquet.components.List<java.net.URI> list;
 
-	private void refreshState() {
-		this.state.refresh();
-		this.revalidateAndRepaint();
-	}
-
-	public ListContentPanel( org.lgna.croquet.TabComposite<?> composite, M state ) {
+	public ListContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite, M state ) {
 		super( composite );
 		this.state = state;
-		org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
-		list.setBackgroundColor( null );
-		list.setCellRenderer( this.createListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		list.setVisibleRowCount( -1 );
-		list.addMouseListener( this.mouseAdapter );
-		list.addMouseMotionListener( this.mouseAdapter );
-		list.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
+		this.list = this.state.createList();
+		this.list.setBackgroundColor( null );
+		this.list.setCellRenderer( this.createListCellRenderer() );
+		this.list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
+		this.list.setVisibleRowCount( -1 );
+		this.list.enableClickingDefaultButtonOnDoubleClick();
 		this.addCenterComponent( list );
 	}
 
 	protected M getState() {
 		return this.state;
+	}
+
+	public org.lgna.croquet.components.List<java.net.URI> getList() {
+		return this.list;
 	}
 
 	protected javax.swing.ListCellRenderer createListCellRenderer() {
@@ -96,6 +78,6 @@ public abstract class ListContentPanel<M extends org.alice.ide.projecturi.UriSel
 
 	@Override
 	public java.net.URI getSelectedUri() {
-		return this.state.getSelectedItem();
+		return this.state.getValue();
 	}
 }

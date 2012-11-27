@@ -356,7 +356,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-		org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
+		org.lgna.project.ast.NamedUserType type;
+		if( rootField != null ) {
+			type = (org.lgna.project.ast.NamedUserType)rootField.getValueType();
+		} else {
+			type = null;
+		}
+		org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
@@ -367,7 +373,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 						i--;
 						org.lgna.project.ast.UserField field = sceneType.fields.get( i );
 						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-							org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+							org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
 							break;
 						}
 					}
@@ -501,12 +507,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			if( type instanceof org.lgna.project.ast.NamedUserType ) {
 				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
 			}
-			if( org.alice.ide.declarationseditor.DeclarationTabState.getInstance().containsItem( declarationComposite ) ) {
+			org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+			if( tabState.containsItem( declarationComposite ) ) {
 				//pass
 			} else {
-				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addItem( declarationComposite );
+				tabState.addItem( declarationComposite );
 			}
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().setValueTransactionlessly( declarationComposite );
+			tabState.setValueTransactionlessly( declarationComposite );
 		}
 	}
 

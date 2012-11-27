@@ -65,11 +65,11 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 
 	public org.lgna.croquet.components.FolderTabbedPane<T> createFolderTabbedPane() {
 		return new org.lgna.croquet.components.FolderTabbedPane<T>( this );
-	};
+	}
 
 	public org.lgna.croquet.components.ToolPaletteTabbedPane<T> createToolPaletteTabbedPane() {
 		return new org.lgna.croquet.components.ToolPaletteTabbedPane<T>( this );
-	};
+	}
 
 	public org.lgna.croquet.components.JComponent<?> getMainComponentFor( T item ) {
 		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
@@ -95,6 +95,50 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 			return tabbedPane.getRootComponentFor( item );
 		} else {
 			return null;
+		}
+	}
+
+	public void setItemIconForBothTrueAndFalse( T item, javax.swing.Icon icon ) {
+		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
+	}
+
+	private boolean isActive;
+
+	public void handlePreActivation() {
+		this.initializeIfNecessary();
+		TabComposite<?> selected = this.getValue();
+		if( selected != null ) {
+			selected.handlePreActivation();
+		}
+		this.isActive = true;
+	}
+
+	@Override
+	protected void fireChanged( T prevValue, T nextValue, IsAdjusting isAdjusting ) {
+		if( isAdjusting.getValue() ) {
+			//pass
+		} else {
+			if( prevValue != nextValue ) {
+				if( this.isActive ) {
+					if( prevValue != null ) {
+						prevValue.handlePostDeactivation();
+					}
+				}
+				super.fireChanged( prevValue, nextValue, isAdjusting );
+				if( this.isActive ) {
+					if( nextValue != null ) {
+						nextValue.handlePreActivation();
+					}
+				}
+			}
+		}
+	}
+
+	public void handlePostDeactivation() {
+		this.isActive = false;
+		TabComposite<?> selected = this.getValue();
+		if( selected != null ) {
+			selected.handlePostDeactivation();
 		}
 	}
 }

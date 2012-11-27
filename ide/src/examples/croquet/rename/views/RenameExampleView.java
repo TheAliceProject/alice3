@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package examples.croquet.rename.views;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractListSelectionState<E> extends org.lgna.croquet.DefaultListSelectionState<E> {
-	public AbstractListSelectionState( java.util.UUID individualId, org.lgna.croquet.ItemCodec<E> codec, E... elements ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
+public class RenameExampleView extends org.lgna.croquet.components.FormPanel {
+	public RenameExampleView( examples.croquet.rename.RenameExampleComposite composite ) {
+		super( composite );
+	}
+
+	@Override
+	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+		examples.croquet.rename.RenameExampleComposite composite = (examples.croquet.rename.RenameExampleComposite)this.getComposite();
+		org.lgna.croquet.StringState nameState = composite.getNameState();
+		rows.add( new org.lgna.croquet.components.LabeledFormRow( nameState.getSidekickLabel(), nameState.createTextField() ) );
 	}
 }

@@ -40,20 +40,100 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package examples.croquet.stringstate.views;
+package org.lgna.croquet.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RenameExampleView extends org.lgna.croquet.components.FormPanel {
-	public RenameExampleView( examples.croquet.rename.RenameExampleComposite composite ) {
-		super( composite );
+public abstract class RefreshableListData<T> extends org.lgna.croquet.data.AbstractMutableListData<T> {
+	private boolean isRefreshNecessary = true;
+	private java.util.List<T> values;
+
+	public RefreshableListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+		super( itemCodec );
+	}
+
+	private boolean refreshIfNecessary() {
+		if( this.isRefreshNecessary ) {
+			java.util.List<T> nextValues = this.createValues();
+
+			assert nextValues != null : this;
+
+			boolean isDataChanged = false;
+			if( this.values != null ) {
+				if( nextValues.size() == this.values.size() ) {
+					final int N = nextValues.size();
+					for( int i = 0; i < N; i++ ) {
+						if( nextValues.get( i ) != this.values.get( i ) ) {
+							isDataChanged = true;
+							break;
+						}
+					}
+				} else {
+					isDataChanged = true;
+				}
+			} else {
+				isDataChanged = true;
+			}
+
+			if( isDataChanged ) {
+				this.values = nextValues;
+			}
+			this.isRefreshNecessary = false;
+			return isDataChanged;
+		} else {
+			return false;
+		}
+	}
+
+	protected abstract java.util.List<T> createValues();
+
+	public final void refresh() {
+		this.isRefreshNecessary = true;
+		if( this.refreshIfNecessary() ) {
+			this.fireContentsChanged();
+		}
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-		examples.croquet.rename.RenameExampleComposite composite = (examples.croquet.rename.RenameExampleComposite)this.getComposite();
-		org.lgna.croquet.StringState nameState = composite.getNameState();
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( nameState.getSidekickLabel(), nameState.createTextField() ) );
+	public final T getItemAt( int index ) {
+		return this.values.get( index );
+	}
+
+	@Override
+	public final int getItemCount() {
+		this.refreshIfNecessary();
+		return this.values.size();
+	}
+
+	@Override
+	public final int indexOf( T item ) {
+		return this.values.indexOf( item );
+	}
+
+	@Override
+	public final void internalAddItem( T item ) {
+		throw new AssertionError();
+	}
+
+	@Override
+	public final void internalRemoveItem( T item ) {
+		throw new AssertionError();
+	}
+
+	@Override
+	public final void internalSetItems( java.util.Collection<T> items ) {
+	}
+
+	@Override
+	public final java.util.Iterator<T> iterator() {
+		this.refreshIfNecessary();
+		return this.values.iterator();
+	}
+
+	@Override
+	protected final T[] toArray( Class<T> componentType ) {
+		this.refreshIfNecessary();
+		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( this.values, componentType );
 	}
 }

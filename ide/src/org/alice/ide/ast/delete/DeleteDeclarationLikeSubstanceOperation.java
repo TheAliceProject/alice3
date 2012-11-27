@@ -74,7 +74,7 @@ public abstract class DeleteDeclarationLikeSubstanceOperation<N extends org.lgna
 			if( subCompletionStep.isSuccessfullyCompleted() ) {
 				org.lgna.croquet.BooleanState findFrameState = this.getFindModel();
 				if( findFrameState != null ) {
-					findFrameState.setValue( true );
+					findFrameState.setValueTransactionlessly( true );
 				}
 			}
 		} else {

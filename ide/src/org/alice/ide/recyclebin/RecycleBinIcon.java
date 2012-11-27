@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.alice.ide.recyclebin;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UriSelectionState extends ArrayBasedListSelectionState<java.net.URI> {
-	public UriSelectionState( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, org.alice.ide.croquet.codecs.UriCodec.SINGLETON, -1 );
+public enum RecycleBinIcon implements javax.swing.Icon {
+	SINGLETON;
+
+	private static final javax.swing.Icon[] ICONS = { org.alice.ide.icons.Icons.TRASH_CAN_EMPTY_ICON, org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON };
+
+	public int getIconWidth() {
+		int rv = 0;
+		for( javax.swing.Icon icon : ICONS ) {
+			rv = Math.max( rv, icon.getIconWidth() );
+		}
+		return rv;
+	}
+
+	public int getIconHeight() {
+		int rv = 0;
+		for( javax.swing.Icon icon : ICONS ) {
+			rv = Math.max( rv, icon.getIconHeight() );
+		}
+		return rv;
+	}
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		org.alice.ide.icons.Icons.TRASH_CAN_EMPTY_ICON.paintIcon( c, g, x, y );
+		java.awt.Paint paint;
+		final int ALPHA = 15;
+		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
+			paint = new java.awt.Color( 255, 255, 0, ALPHA );
+		} else {
+			//paint = new java.awt.Color( 0, 255, 0, ALPHA );
+			paint = null;
+		}
+		if( paint != null ) {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Paint prevPaint = g2.getPaint();
+			g2.setPaint( paint );
+			float xCenter = x + ( this.getIconWidth() * 0.5f );
+			float yCenter = y + ( this.getIconHeight() * 0.5f );
+			for( float radius = 4.0f; radius <= 16.0f; radius += 1.0f ) {
+				g2.fill( new java.awt.geom.Ellipse2D.Float( xCenter - radius, yCenter - radius, radius + radius, radius + radius ) );
+			}
+			g2.setPaint( prevPaint );
+		}
 	}
 }

@@ -45,22 +45,7 @@ package org.lgna.project;
 /**
  * @author Dennis Cosgrove
  */
-public class Version implements Comparable<Version> {
-	private static final String TEXT;
-	private static final Version CURRENT;
-	static {
-		TEXT = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( Version.class.getResourceAsStream( "Version.txt" ) ).trim();
-		CURRENT = new Version( TEXT );
-	}
-
-	public static String getCurrentVersionText() {
-		return TEXT;
-	}
-
-	public static Version getCurrentVersion() {
-		return CURRENT;
-	}
-
+public final class Version implements Comparable<Version> {
 	private int[] subNumbers;
 
 	public Version( String text ) {
@@ -133,10 +118,5 @@ public class Version implements Comparable<Version> {
 			separator = ".";
 		}
 		return sb.toString();
-	}
-
-	public static void main( String[] args ) {
-		System.out.println( new Version( "3.1.beta.0.0" ) );
-		System.out.println( new Version( "3.1.20.0.0" ).compareTo( new Version( "3.1.beta.0.0.0" ) ) );
 	}
 }

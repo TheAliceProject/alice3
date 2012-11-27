@@ -115,9 +115,9 @@ public abstract class IoUtilities {
 		}
 	}
 
-	private static String readVersion( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
+	private static org.lgna.project.Version readVersion( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException {
 		assert zipEntryContainer != null;
-		java.io.InputStream is = zipEntryContainer.getInputStream( VERSION_ENTRY_NAME );
+		java.io.InputStream is = zipEntryContainer.getInputStream( entryName );
 		if( is != null ) {
 			//todo?
 			java.util.ArrayList<Byte> buffer = new java.util.ArrayList<Byte>( 32 );
@@ -134,9 +134,9 @@ public abstract class IoUtilities {
 			for( Byte b : buffer ) {
 				array[ i++ ] = b;
 			}
-			return new String( array );
+			return new org.lgna.project.Version( new String( array ) );
 		} else {
-			throw new java.io.IOException( zipEntryContainer.toString() + " does not contain entry " + VERSION_ENTRY_NAME );
+			throw new java.io.IOException( zipEntryContainer.toString() + " does not contain entry " + entryName );
 		}
 	}
 
@@ -155,29 +155,72 @@ public abstract class IoUtilities {
 		return rv;
 	}
 
-	public static org.w3c.dom.Document readXML( java.io.InputStream is, org.lgna.project.Version version ) throws java.io.IOException {
-		if( ( org.lgna.project.Version.getCurrentVersion().compareTo( version ) == 0 ) && org.lgna.project.migration.MigrationManager.isDevoidOfVersionIndependentMigrations() ) {
-			//pass
-		} else {
-			String text = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is );
-			text = org.lgna.project.migration.MigrationManager.migrate( text, version );
-			is = new java.io.ByteArrayInputStream( text.getBytes() );
+	private static final class MigrationManagerDecodedVersionPair {
+		private final org.lgna.project.migration.MigrationManager migrationManager;
+		private final org.lgna.project.Version decodedVersion;
+
+		public MigrationManagerDecodedVersionPair( org.lgna.project.migration.MigrationManager migrationManager, org.lgna.project.Version decodedVersion ) {
+			this.migrationManager = migrationManager;
+			this.decodedVersion = decodedVersion;
+		}
+
+		public org.lgna.project.migration.MigrationManager getMigrationManager() {
+			return this.migrationManager;
+		}
+
+		public org.lgna.project.Version getDecodedVersion() {
+			return this.decodedVersion;
+		}
+	}
+
+	public static org.w3c.dom.Document readXML( java.io.InputStream is, MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs ) throws java.io.IOException {
+		String modifiedText = null;
+		for( MigrationManagerDecodedVersionPair migrationManagerDecodedVersionPair : migrationManagerDecodedVersionPairs ) {
+			org.lgna.project.migration.MigrationManager migrationManager = migrationManagerDecodedVersionPair.getMigrationManager();
+			org.lgna.project.Version decodedVersion = migrationManagerDecodedVersionPair.getDecodedVersion();
+			if( ( migrationManager.getCurrentVersion().compareTo( decodedVersion ) == 0 ) && migrationManager.isDevoidOfVersionIndependentMigrations() ) {
+				//pass
+			} else {
+				if( modifiedText != null ) {
+					//pass
+				} else {
+					modifiedText = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( is );
+				}
+				modifiedText = migrationManager.migrate( modifiedText, decodedVersion );
+			}
+		}
+		if( modifiedText != null ) {
+			is = new java.io.ByteArrayInputStream( modifiedText.getBytes() );
 		}
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( is );
 	}
 
-	private static org.w3c.dom.Document readXML( ZipEntryContainer zipEntryContainer, String entryName, org.lgna.project.Version version ) throws java.io.IOException {
+	private static org.w3c.dom.Document readXML( ZipEntryContainer zipEntryContainer, String entryName, MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs ) throws java.io.IOException {
 		assert zipEntryContainer != null;
 		java.io.InputStream is = zipEntryContainer.getInputStream( entryName );
-		return readXML( is, version );
+		return readXML( is, migrationManagerDecodedVersionPairs );
 	}
 
 	private static org.lgna.project.ast.NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
-		String projectVersion = readVersion( zipEntryContainer );
-		org.lgna.project.Version version = new org.lgna.project.Version( projectVersion );
-		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, version );
-		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, projectVersion );
-		org.lgna.project.migration.MigrationManager.migrate( rv, version );
+		org.lgna.project.Version decodedProjectVersion = readVersion( zipEntryContainer, VERSION_ENTRY_NAME );
+
+		MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs = {
+				new MigrationManagerDecodedVersionPair( org.lgna.project.migration.ProjectMigrationManager.getInstance(), decodedProjectVersion )
+		};
+
+		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, migrationManagerDecodedVersionPairs );
+		org.lgna.project.ast.NamedUserType rv = (org.lgna.project.ast.NamedUserType)org.lgna.project.ast.AbstractNode.decode( xmlDocument, decodedProjectVersion );
+
+		for( MigrationManagerDecodedVersionPair migrationManagerDecodedVersionPair : migrationManagerDecodedVersionPairs ) {
+			org.lgna.project.migration.MigrationManager migrationManager = migrationManagerDecodedVersionPair.getMigrationManager();
+			org.lgna.project.Version decodedVersion = migrationManagerDecodedVersionPair.getDecodedVersion();
+			if( ( migrationManager.getCurrentVersion().compareTo( decodedVersion ) == 0 ) && migrationManager.isDevoidOfVersionIndependentMigrations() ) {
+				//pass
+			} else {
+				migrationManager.migrate( rv, decodedVersion );
+			}
+		}
+
 		return rv;
 	}
 
@@ -274,16 +317,20 @@ public abstract class IoUtilities {
 		return readType( new java.io.File( path ) );
 	}
 
-	private static void writeVersion( java.util.zip.ZipOutputStream zos ) throws java.io.IOException {
+	private static void writeVersion( java.util.zip.ZipOutputStream zos, final String entryName, final org.lgna.project.Version version ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.java.util.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.java.util.zip.DataSource() {
 			public String getName() {
-				return VERSION_ENTRY_NAME;
+				return entryName;
 			}
 
 			public void write( java.io.OutputStream os ) throws java.io.IOException {
-				os.write( org.lgna.project.Version.getCurrentVersionText().getBytes() );
+				os.write( version.toString().getBytes() );
 			}
 		} );
+	}
+
+	private static void writeVersions( java.util.zip.ZipOutputStream zos ) throws java.io.IOException {
+		writeVersion( zos, VERSION_ENTRY_NAME, org.lgna.project.ProjectVersion.getCurrentVersion() );
 	}
 
 	private static void writeXML( final org.w3c.dom.Document xmlDocument, java.util.zip.ZipOutputStream zos, final String entryName ) throws java.io.IOException {
@@ -372,7 +419,7 @@ public abstract class IoUtilities {
 
 	public static void writeProject( java.io.OutputStream os, final org.lgna.project.Project project, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
-		writeVersion( zos );
+		writeVersions( zos );
 		org.lgna.project.ast.AbstractType<?, ?, ?> programType = project.getProgramType();
 		writeType( programType, zos, PROGRAM_TYPE_ENTRY_NAME );
 		final java.util.Set<org.lgna.project.properties.PropertyKey<Object>> propertyKeys = project.getPropertyKeys();
@@ -386,7 +433,7 @@ public abstract class IoUtilities {
 
 				public void write( java.io.OutputStream os ) throws java.io.IOException {
 					edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder binaryEncoder = new edu.cmu.cs.dennisc.codec.OutputStreamBinaryEncoder( os );
-					binaryEncoder.encode( org.lgna.project.Version.getCurrentVersionText() );
+					binaryEncoder.encode( org.lgna.project.ProjectVersion.getCurrentVersionText() );
 					binaryEncoder.encode( propertyKeys.size() );
 					for( org.lgna.project.properties.PropertyKey<Object> propertyKey : propertyKeys ) {
 						propertyKey.encodeIdAndValue( project, binaryEncoder );
@@ -434,7 +481,7 @@ public abstract class IoUtilities {
 
 	public static void writeType( java.io.OutputStream os, org.lgna.project.ast.AbstractType<?, ?, ?> type, edu.cmu.cs.dennisc.java.util.zip.DataSource... dataSources ) throws java.io.IOException {
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
-		writeVersion( zos );
+		writeVersions( zos );
 		writeType( type, zos, TYPE_ENTRY_NAME );
 		writeDataSources( zos, dataSources );
 

@@ -94,9 +94,8 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> 
 		}
 	};
 
-	public CustomTreeSelectionState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialSelection ) {
-		super( group, id, itemCodec );
-		this.setValueTransactionlessly( initialSelection );
+	public CustomTreeSelectionState( Group group, java.util.UUID id, T initialSelection, ItemCodec<T> itemCodec ) {
+		super( group, id, initialSelection, itemCodec );
 	}
 
 	protected abstract int getChildCount( T parent );

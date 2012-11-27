@@ -66,7 +66,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		}
 
 		public void propertyChanged( PropertyEvent e ) {
-			localize();
+			//localize();
 		}
 	};
 
@@ -99,7 +99,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		} catch( CannotCreateExpressionException ccee ) {
 			ccee.printStackTrace();
 		}
-		this.getNameState().setValue( initialMarkerName );
+		this.getNameState().setValueTransactionlessly( initialMarkerName );
 	}
 
 	public void setSelectedField( UserField field ) {
@@ -110,7 +110,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		if( this.selectedField != null ) {
 			this.selectedField.name.addPropertyListener( this.nameChangeListener );
 		}
-		this.localize();
+		//this.localize();
 	}
 
 	@Override

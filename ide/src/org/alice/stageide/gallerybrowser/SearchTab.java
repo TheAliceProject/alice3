@@ -75,24 +75,13 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 	}
 
 	@Override
-	public javax.swing.Icon getTitleIcon() {
-		return org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON;
-	}
-
-	@Override
 	protected org.alice.stageide.gallerybrowser.views.SearchTabView createView() {
 		return new org.alice.stageide.gallerybrowser.views.SearchTabView( this );
 	}
 
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponent( booleanState, button );
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
 		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
-	}
-
-	@Override
-	public void TEMPORARY_HACK_handleSelected() {
-		super.TEMPORARY_HACK_handleSelected();
-		this.getView().TEMPORARY_HACK_handleSelected();
 	}
 }

@@ -61,7 +61,7 @@ public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldRef
 	private FieldReferenceSearchTreeNode root = FieldReferenceSearchTreeNode.getRoot();
 
 	public InstanceSearchTreeManager( FieldReferenceSearchTreeNode initialSelection ) {
-		super( ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "d8242fe1-3ca6-444f-8608-3e593043b18e" ), FieldReferenceSearchTreeNode.getNewItemCodec(), initialSelection );
+		super( ProjectApplication.INFORMATION_GROUP, java.util.UUID.fromString( "d8242fe1-3ca6-444f-8608-3e593043b18e" ), initialSelection, FieldReferenceSearchTreeNode.getNewItemCodec() );
 		refresh();
 	}
 

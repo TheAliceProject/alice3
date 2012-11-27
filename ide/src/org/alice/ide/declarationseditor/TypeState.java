@@ -94,7 +94,7 @@ public class TypeState extends org.lgna.croquet.DefaultCustomItemState<org.lgna.
 	}
 
 	@Override
-	protected void fireChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+	protected void fireChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, IsAdjusting isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		if( prevValue != nextValue ) {
 			if( prevValue != null ) {

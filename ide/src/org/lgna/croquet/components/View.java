@@ -67,4 +67,10 @@ public abstract class View<J extends javax.swing.JComponent, C extends org.lgna.
 		rv.append( composite );
 		return rv;
 	}
+
+	public void handleCompositePreActivation() {
+	}
+
+	public void handleCompositePostDeactivation() {
+	}
 }

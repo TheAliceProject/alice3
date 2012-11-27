@@ -53,7 +53,7 @@ public abstract class AddMethodComposite extends AddDeclarationComposite<org.lgn
 		// <kjh/> Should we use meta-context factories instead?
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
-			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationTabState.getInstance() );
+			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState() );
 		} else {
 			this.getOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
 			this.getOperation().addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );

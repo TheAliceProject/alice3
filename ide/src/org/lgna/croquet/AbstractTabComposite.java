@@ -40,25 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractListData<T> implements ListData<T> {
-	private final java.util.List<Listener<T>> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+public abstract class AbstractTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
+	private String titleText;
 
-	public final void addListener( Listener<T> listener ) {
-		this.listeners.add( listener );
+	public AbstractTabComposite( java.util.UUID id ) {
+		super( id );
 	}
 
-	public final void removeListener( Listener<T> listener ) {
-		this.listeners.remove( listener );
+	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setBothScrollBarIncrements( 12, 24 );
+		return rv;
 	}
 
-	protected void fireChanged() {
-		for( Listener<T> listener : this.listeners ) {
-			listener.changed();
+	@Override
+	protected final void localize() {
+		super.localize();
+		this.titleText = this.findDefaultLocalizedText();
+	}
+
+	@Override
+	public void appendUserRepr( StringBuilder userRepr ) {
+		if( this.titleText != null ) {
+			//pass
+		} else {
+			this.initializeIfNecessary();
 		}
+		userRepr.append( this.titleText );
+	}
+
+	@Override
+	protected final void appendRepr( StringBuilder repr ) {
+		this.appendUserRepr( repr );
+	}
+
+	@Override
+	protected String createRepr() {
+		StringBuilder sb = new StringBuilder();
+		this.appendRepr( sb );
+		return sb.toString();
+	}
+
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
 	}
 }
