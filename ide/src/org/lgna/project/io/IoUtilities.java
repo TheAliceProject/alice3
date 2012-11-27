@@ -205,7 +205,7 @@ public abstract class IoUtilities {
 		org.lgna.project.Version decodedProjectVersion = readVersion( zipEntryContainer, VERSION_ENTRY_NAME );
 
 		MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs = {
-				new MigrationManagerDecodedVersionPair( org.lgna.project.migration.ProjectMigrationManager.SINGLETON, decodedProjectVersion )
+				new MigrationManagerDecodedVersionPair( org.lgna.project.migration.ProjectMigrationManager.getInstance(), decodedProjectVersion )
 		};
 
 		org.w3c.dom.Document xmlDocument = readXML( zipEntryContainer, entryName, migrationManagerDecodedVersionPairs );

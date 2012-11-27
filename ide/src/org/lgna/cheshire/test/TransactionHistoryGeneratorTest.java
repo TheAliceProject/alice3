@@ -40,7 +40,7 @@ public class TransactionHistoryGeneratorTest {
 
 		// We need to "convert" lgp to a3p... this hack will suffice
 		org.lgna.project.Version VERSION_INDEPENDENT = null;
-		org.lgna.project.migration.ProjectMigrationManager.SINGLETON.addVersionIndependentMigration( new org.lgna.project.migration.TextMigration(
+		org.lgna.project.migration.ProjectMigrationManager.getInstance().addVersionIndependentMigration( new org.lgna.project.migration.TextMigration(
 				VERSION_INDEPENDENT,
 				VERSION_INDEPENDENT,
 				"edu.wustl.cse.lookingglass.ast.ThisInstanceExpression",
