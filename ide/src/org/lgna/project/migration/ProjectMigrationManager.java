@@ -45,8 +45,7 @@ package org.lgna.project.migration;
 /**
  * @author Dennis Cosgrove
  */
-public enum ProjectMigrationManager implements MigrationManager {
-	SINGLETON;
+public class ProjectMigrationManager extends AbstractMigrationManager {
 	private static String createMoreSpecificFieldString( String fieldName, String clsName ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "name=\"" );
@@ -2531,42 +2530,25 @@ public enum ProjectMigrationManager implements MigrationManager {
 			}
 	};
 
-	private final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
-	public org.lgna.project.Version getCurrentVersion() {
-		return org.lgna.project.ProjectVersion.getCurrentVersion();
+	private static class SingletonHolder {
+		private static ProjectMigrationManager instance = new ProjectMigrationManager();
 	}
 
-	public boolean isDevoidOfVersionIndependentMigrations() {
-		return versionIndependentMigrations.size() == 0;
+	public static ProjectMigrationManager getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	public String migrate( String source, org.lgna.project.Version version ) {
-		String rv = source;
-		for( TextMigration textMigration : textMigrations ) {
-			if( textMigration.isApplicable( version ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
-				rv = textMigration.migrate( rv );
-				version = textMigration.getResultVersion();
-			}
-		}
-		return rv;
+	private ProjectMigrationManager() {
+		super( org.lgna.project.ProjectVersion.getCurrentVersion() );
 	}
 
-	public void migrate( org.lgna.project.ast.NamedUserType programType, org.lgna.project.Version version ) {
-		for( AstMigration astMigration : astMigrations ) {
-			if( astMigration.isApplicable( version ) ) {
-				astMigration.migrate( programType );
-				version = astMigration.getResultVersion();
-			}
-		}
+	@Override
+	protected org.lgna.project.migration.TextMigration[] getTextMigrations() {
+		return this.textMigrations;
 	}
 
-	public void addVersionIndependentMigration( Migration migration ) {
-		versionIndependentMigrations.add( migration );
-	}
-
-	public void removeVersionIndependentMigration( Migration migration ) {
-		versionIndependentMigrations.remove( migration );
+	@Override
+	protected org.lgna.project.migration.AstMigration[] getAstMigrations() {
+		return this.astMigrations;
 	}
 }
