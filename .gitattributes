@@ -13,6 +13,7 @@
 *.rb text
 *.txt text
 *.xml text
+*.md text
 
 # eol=lf
 .gitattributes eol=lf
@@ -27,6 +28,7 @@
 *.sh.in eol=lf
 *.spec eol=lf
 *.sub eol=lf
+*.md eol=lf
 configure eol=lf
 install-sh eol=lf
 missing eol=lf
