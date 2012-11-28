@@ -50,7 +50,7 @@ public abstract class TabContentPanel extends org.lgna.croquet.components.Border
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 191, 191, 255 );
 
 	//	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
-	public TabContentPanel( org.lgna.croquet.TabComposite<?> composite ) {
+	public TabContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite ) {
 		super( composite );
 		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		final int INSET = 8;

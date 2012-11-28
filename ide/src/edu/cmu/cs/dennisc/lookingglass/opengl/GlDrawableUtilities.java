@@ -59,7 +59,7 @@ public class GlDrawableUtilities {
 		throw new AssertionError();
 	}
 
-	/* package-private */static javax.media.opengl.GLCapabilities createDesiredGLCapabilities( int desiredSampleCount ) {
+	private static javax.media.opengl.GLCapabilities createGLCapabilities( int desiredSampleCount ) {
 		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
 		boolean isMultisamplingDesired = desiredSampleCount >= 2;
 		rv.setSampleBuffers( isMultisamplingDesired );
@@ -67,6 +67,18 @@ public class GlDrawableUtilities {
 			rv.setNumSamples( desiredSampleCount );
 		}
 		return rv;
+	}
+
+	private static int getDesiredOnscreenSampleCount() {
+		return 1;
+	}
+
+	/* package-private */static javax.media.opengl.GLCapabilities createPerhapsMultisampledGlCapabilities() {
+		return createGLCapabilities( getDesiredOnscreenSampleCount() );
+	}
+
+	/* package-private */static javax.media.opengl.GLCapabilities createDisabledMultisamplingGlCapabilities() {
+		return createGLCapabilities( 1 );
 	}
 
 	private static javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
@@ -81,20 +93,12 @@ public class GlDrawableUtilities {
 		return glCapabilitiesChooser;
 	}
 
-	/* package-private */static int getSampleCountForDisabledMultisampling() {
-		return 1;
-	}
-
-	/* package-private */static int getDesiredOnscreenSampleCount() {
-		return 1;
-	}
-
 	/* package-private */static javax.media.opengl.GLCanvas createGLCanvas() {
-		return new javax.media.opengl.GLCanvas( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null, null );
+		return new javax.media.opengl.GLCanvas( createPerhapsMultisampledGlCapabilities(), getGLCapabilitiesChooser(), null, null );
 	}
 
 	/* package-private */static javax.media.opengl.GLJPanel createGLJPanel() {
-		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities( getDesiredOnscreenSampleCount() ), getGLCapabilitiesChooser(), null );
+		return new javax.media.opengl.GLJPanel( createPerhapsMultisampledGlCapabilities(), getGLCapabilitiesChooser(), null );
 	}
 
 	//	/*package-private*/ boolean canCreateExternalGLDrawable() {
@@ -110,15 +114,15 @@ public class GlDrawableUtilities {
 	//		}
 	//	}
 
-	/* package-private */static boolean canCreateGLPbuffer() {
+	/* package-private */static boolean canCreateGlPixelBuffer() {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 		return glDrawableFactory.canCreateGLPbuffer();
 	}
 
-	/* package-private */static javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, int desiredSampleCount, javax.media.opengl.GLContext share ) {
+	/* package-private */static javax.media.opengl.GLPbuffer createGlPixelBuffer( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, int width, int height, javax.media.opengl.GLContext share ) {
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 		if( glDrawableFactory.canCreateGLPbuffer() ) {
-			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( createDesiredGLCapabilities( desiredSampleCount ), getGLCapabilitiesChooser(), width, height, share );
+			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( glCapabilities, glCapabilitiesChooser, width, height, share );
 
 			// This is a work around for Linux users.
 			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
@@ -131,17 +135,14 @@ public class GlDrawableUtilities {
 		} else {
 			return null;
 		}
-		//todo: jogl2
-		//		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
-		//		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
-		//		if (glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() )) {
-		//			return glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), createDesiredGLCapabilities(), getGLCapabilitiesChooser(), width, height, share);
-		//		} else {
-		//			throw new RuntimeException("cannot create pbuffer");
-		//		}
 	}
 
-	/* package-private */static int getGLPbufferWidth( javax.media.opengl.GLDrawable drawable ) {
+	/* package-private */static com.sun.opengl.impl.GLDrawableImpl createOffscreenDrawable( javax.media.opengl.GLCapabilities glCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser ) {
+		com.sun.opengl.impl.GLDrawableFactoryImpl glDrawableFactory = com.sun.opengl.impl.GLDrawableFactoryImpl.getFactoryImpl();
+		return (com.sun.opengl.impl.GLDrawableImpl)glDrawableFactory.createOffscreenDrawable( glCapabilities, glCapabilitiesChooser );
+	}
+
+	/* package-private */static int getGlDrawableWidth( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getWidth ALWAYS returns 0
 		int width = drawable.getWidth();
 		if( width == 0 ) {
@@ -158,7 +159,7 @@ public class GlDrawableUtilities {
 		return width;
 	}
 
-	/* package-private */static int getGLPbufferHeight( javax.media.opengl.GLDrawable drawable ) {
+	/* package-private */static int getGlDrawableHeight( javax.media.opengl.GLDrawable drawable ) {
 		// Bug in linux opengl, getHeight ALWAYS returns 0
 		int height = drawable.getHeight();
 		if( height == 0 ) {

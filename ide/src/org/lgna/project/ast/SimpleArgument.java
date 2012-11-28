@@ -64,4 +64,9 @@ public class SimpleArgument extends AbstractArgument {
 		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 		return rv;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.expression.getValue() );
+	}
 }

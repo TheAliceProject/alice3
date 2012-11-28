@@ -336,9 +336,9 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return holg;
 	}
 
-	public edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass createOffscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlassToShareContextWith ) {
+	public edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass createOffscreenLookingGlass( int width, int height, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlassToShareContextWith ) {
 		assert ( lookingGlassToShareContextWith == null ) || ( lookingGlassToShareContextWith instanceof AbstractLookingGlass );
-		OffscreenLookingGlass olg = new OffscreenLookingGlass( this, (AbstractLookingGlass)lookingGlassToShareContextWith );
+		OffscreenLookingGlass olg = new OffscreenLookingGlass( this, width, height, (AbstractLookingGlass)lookingGlassToShareContextWith );
 		olg.addReleaseListener( this );
 		this.offscreenLookingGlasses.add( olg );
 		return olg;

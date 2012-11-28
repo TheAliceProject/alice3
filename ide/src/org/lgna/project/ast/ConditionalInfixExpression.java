@@ -52,14 +52,26 @@ public class ConditionalInfixExpression extends InfixExpression<ConditionalInfix
 			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
 				return leftOperand && rightOperand;
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( "&&" );
+			}
 		},
 		OR() {
 			@Override
 			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
 				return leftOperand || rightOperand;
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendString( "||" );
+			}
 		};
 		public abstract Boolean operate( Boolean leftOperand, Boolean rightOperand );
+
+		/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 	}
 
 	public ConditionalInfixExpression() {
@@ -88,5 +100,12 @@ public class ConditionalInfixExpression extends InfixExpression<ConditionalInfix
 	protected void handleMissingProperty( String propertyName, Object value ) {
 		assert propertyName.equals( "expressionType" );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( propertyName, value );
+	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.leftOperand.getValue() );
+		this.operator.getValue().appendJava( generator );
+		generator.appendExpression( this.rightOperand.getValue() );
 	}
 }

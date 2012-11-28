@@ -56,7 +56,7 @@ import org.lgna.croquet.State.ValueListener;
 public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabView> {
 
 	public FieldSearchTabCompsoite() {
-		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ) );
+		super( java.util.UUID.fromString( "becc337c-cb71-497a-a754-e95bc44c7d47" ), IsCloseable.FALSE );
 		this.getView().getAwtComponent().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW );
 	}
 
@@ -70,11 +70,6 @@ public class FieldSearchTabCompsoite extends SimpleTabComposite<FieldSearchTabVi
 
 	public FieldReferenceTreeComposite treeComposite = new FieldReferenceTreeComposite();
 	public FieldReferenceComposite referenceComposite = new FieldReferenceComposite( this );
-
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
 
 	private SplitComposite splitComposite = createHorizontalSplitComposite( treeComposite, referenceComposite, .5 );
 

@@ -47,29 +47,15 @@ package org.alice.ide.members;
  * @author Dennis Cosgrove
  */
 public abstract class TemplateComposite<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
-	private String name;
-
 	public TemplateComposite( java.util.UUID id ) {
-		super( id );
+		super( id, IsCloseable.FALSE );
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		this.name = this.findDefaultLocalizedText();
-	}
-
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton<?, org.lgna.croquet.BooleanState> button ) {
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.5f );
 		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-		booleanState.setTextForBothTrueAndFalse( this.name );
-	}
-
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.AbstractButton<?, org.lgna.croquet.BooleanState> button ) {
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
+		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
 	}
 }

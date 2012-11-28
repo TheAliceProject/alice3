@@ -63,7 +63,7 @@ public abstract class MembersContentPanel extends org.lgna.croquet.components.Pa
 		}
 	};
 
-	public MembersContentPanel( org.lgna.croquet.TabComposite<?> composite ) {
+	public MembersContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite ) {
 		super( composite );
 	}
 

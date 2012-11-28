@@ -64,7 +64,7 @@ public class TypeFunctionsPane extends AbstractTypeMethodsPane {
 	protected org.lgna.croquet.components.Button createEditConstructorButton( org.lgna.project.ast.NamedUserType type ) {
 		org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
 		if( constructor != null ) {
-			return org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectionOperation( constructor ).createButton();
+			return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectionOperation( constructor ).createButton();
 		} else {
 			return null;
 		}

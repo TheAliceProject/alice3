@@ -72,4 +72,11 @@ public class StringLiteral extends AbstractValueLiteral {
 	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
 		return this.value;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendChar( '"' );
+		generator.appendString( this.value.getValue() );
+		generator.appendChar( '"' );
+	}
 }

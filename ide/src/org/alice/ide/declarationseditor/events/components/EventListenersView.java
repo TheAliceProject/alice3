@@ -74,7 +74,9 @@ public class EventListenersView extends org.alice.ide.declarationseditor.code.co
 		java.awt.Color color = this.eventsPanel.getBackgroundColor();
 		this.setBackgroundColor( color );
 		scroll.setBackgroundColor( color );
-		this.addPageEndComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView() );
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			this.addPageEndComponent( ControlFlowComposite.getInstance( composite.getDeclaration() ).getView() );
+		}
 	}
 
 	private void handleStatementsChanged( boolean isScrollDesired ) {

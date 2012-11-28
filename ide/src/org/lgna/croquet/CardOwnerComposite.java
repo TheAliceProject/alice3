@@ -53,17 +53,25 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 	public CardOwnerComposite( java.util.UUID id, Composite<?>... cards ) {
 		super( id );
 		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
+		if( this.cards.size() > 0 ) {
+			this.showingCard = this.cards.get( 0 );
+		}
 	}
 
 	public void addCard( Composite<?> card ) {
+		assert card != null : this;
 		this.cards.add( card );
 		org.lgna.croquet.components.CardPanel view = this.peekView();
 		if( view != null ) {
 			view.addComposite( card );
 		}
+		if( this.cards.size() == 1 ) {
+			this.showingCard = card;
+		}
 	}
 
 	public void removeCard( Composite<?> card ) {
+		assert card != null : this;
 		this.cards.remove( card );
 	}
 
@@ -104,15 +112,18 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 	}
 
 	public void showCard( Composite<?> card ) {
-		synchronized( this.getView().getTreeLock() ) {
-			if( this.showingCard != null ) {
-				this.showingCard.handlePostDeactivation();
+		org.lgna.croquet.Composite<?> prevCard = this.getShowingCard();
+		if( prevCard != card ) {
+			synchronized( this.getView().getTreeLock() ) {
+				if( this.showingCard != null ) {
+					this.showingCard.handlePostDeactivation();
+				}
+				this.showingCard = card;
+				if( this.showingCard != null ) {
+					this.showingCard.handlePreActivation();
+				}
+				this.getView().showComposite( this.showingCard );
 			}
-			this.showingCard = card;
-			if( this.showingCard != null ) {
-				this.showingCard.handlePreActivation();
-			}
-			this.getView().showComposite( this.showingCard );
 		}
 	}
 

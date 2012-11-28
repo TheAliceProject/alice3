@@ -46,17 +46,29 @@ package edu.cmu.cs.dennisc.javax.swing.icons;
  * @author Dennis Cosgrove
  */
 public class ScaledImageIcon implements javax.swing.Icon {
-	private java.awt.Image image;
+	private final java.awt.Image sourceImage;
 	private int width;
 	private int height;
 
-	public ScaledImageIcon( java.awt.Image image, int width, int height ) {
-		if( image != null ) {
-			//pass
+	public static javax.swing.Icon createSafeInstanceInPixels( java.awt.Image sourceImage, int width, int height ) {
+		if( sourceImage != null ) {
+			int sourceWidth = edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( sourceImage );
+			int sourceHeight = edu.cmu.cs.dennisc.image.ImageUtilities.getWidth( sourceImage );
+			if( ( sourceWidth > 0 ) && ( sourceHeight > 0 ) ) {
+				return new ScaledImageIcon( sourceImage, width, height );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "source image size is", sourceWidth, ",", sourceHeight );
+				return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, width, height );
+			}
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "image is null", this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "source image is null" );
+			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, width, height );
 		}
-		this.image = image;
+	}
+
+	private ScaledImageIcon( java.awt.Image sourceImage, int width, int height ) {
+		assert sourceImage != null : this;
+		this.sourceImage = sourceImage;
 		this.width = width;
 		this.height = height;
 	}
@@ -69,33 +81,20 @@ public class ScaledImageIcon implements javax.swing.Icon {
 		return this.height;
 	}
 
-	public java.awt.Image getImage() {
-		return this.image;
-	}
-
-	private void paintErrorCondition( java.awt.Graphics2D g2, int x, int y ) {
-		java.awt.Paint prevPaint = g2.getPaint();
-		g2.setColor( java.awt.Color.RED );
-		g2.fillRect( x, y, this.width, this.height );
-		g2.setPaint( prevPaint );
+	public java.awt.Image getSourceImage() {
+		return this.sourceImage;
 	}
 
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		if( this.image != null ) {
-			int imageWidth = this.image.getWidth( c );
-			int imageHeight = this.image.getHeight( c );
+		if( this.sourceImage != null ) {
+			int imageWidth = this.sourceImage.getWidth( c );
+			int imageHeight = this.sourceImage.getHeight( c );
 			if( ( imageWidth > 0 ) && ( imageHeight > 0 ) ) {
 				g2.translate( x, y );
-				g2.drawImage( this.image, 0, 0, this.width, this.height, 0, 0, imageWidth, imageHeight, c );
+				g2.drawImage( this.sourceImage, 0, 0, this.width, this.height, 0, 0, imageWidth, imageHeight, c );
 				g2.translate( -x, -y );
-			} else {
-				this.paintErrorCondition( g2, x, y );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "image size is 0,0", this );
 			}
-		} else {
-			this.paintErrorCondition( g2, x, y );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "image is null", this );
 		}
 	}
 }

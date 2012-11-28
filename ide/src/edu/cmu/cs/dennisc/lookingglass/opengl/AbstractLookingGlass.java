@@ -575,4 +575,10 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 			m_glEventAdapter.forgetAllCachedItems();
 		}
 	}
+
+	public void clearUnusedTextures() {
+		if( m_glEventAdapter != null ) {
+			m_glEventAdapter.clearUnusedTextures();
+		}
+	}
 }

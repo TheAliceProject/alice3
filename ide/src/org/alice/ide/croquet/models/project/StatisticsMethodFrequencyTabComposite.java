@@ -141,7 +141,7 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 	}
 
 	public StatisticsMethodFrequencyTabComposite() {
-		super( java.util.UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ) );
+		super( java.util.UUID.fromString( "93b531e2-69a3-4721-b2c8-d2793181a41c" ), IsCloseable.FALSE );
 
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		MethodInvocationCrawler crawler = new MethodInvocationCrawler();
@@ -224,11 +224,6 @@ public class StatisticsMethodFrequencyTabComposite extends SimpleTabComposite<St
 				return o1.getName().compareTo( o2.getName() );
 			}
 		} );
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
 	}
 
 	@Override

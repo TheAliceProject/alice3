@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,54 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
-
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
+package org.alice.ide.croquet.models.help.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class LogInOutCardOwnerComposite extends org.lgna.croquet.CardOwnerComposite {
-	private final LogInCard logInCard = new LogInCard();
-	private final LogOutCard logOutCard = new LogOutCard();
-
-	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
-
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			updateCard();
-		}
-
-	};
-
-	public LogInOutCardOwnerComposite() {
-		super( java.util.UUID.fromString( "05bfed8e-d09d-4928-9b20-1c758600bfe0" ) );
-		this.addCard( this.logInCard );
-		this.addCard( this.logOutCard );
-		this.getView().setBackgroundColor( null );
+public class AbstractIssueView extends org.lgna.croquet.components.BorderPanel {
+	protected static org.lgna.croquet.components.JComponent<?> createScrollPaneTextArea( org.lgna.croquet.StringState stringState ) {
+		org.lgna.croquet.components.TextArea textArea = stringState.createTextArea();
+		textArea.getAwtComponent().setLineWrap( true );
+		textArea.getAwtComponent().setWrapStyleWord( true );
+		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane( textArea );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setMinimumPreferredHeight( 128 );
+		return rv;
 	}
 
-	private void updateCard() {
-		if( this.logInCard.getLoginDialogComposite().getIsLoggedIn().getValue() ) {
-			logOutCard.updateWelcomeString();
-			this.showCard( this.logOutCard );
-		} else {
-			this.showCard( this.logInCard );
-		}
+	public AbstractIssueView( org.alice.ide.croquet.models.help.AbstractIssueComposite<?> composite ) {
+		super( composite );
+
+		org.lgna.croquet.components.Button submitButton = composite.getSubmitBugOperation().createButton();
+		submitButton.scaleFont( 1.6f );
+		submitButton.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+
+		org.lgna.croquet.components.FlowPanel submitPanel = new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.CENTER );
+		submitPanel.addComponent( submitButton );
+
+		org.lgna.croquet.components.PageAxisPanel pageEndPanel = new org.lgna.croquet.components.PageAxisPanel( new org.lgna.croquet.components.HorizontalSeparator(), org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 8 ), submitPanel );
+		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+
+		this.addPageEndComponent( pageEndPanel );
 	}
 
-	@Override
-	public void handlePreActivation() {
-		this.logInCard.getLoginDialogComposite().getIsLoggedIn().addAndInvokeValueListener( this.isLoggedInAdapter );
-		super.handlePreActivation();
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		this.logInCard.getLoginDialogComposite().getIsLoggedIn().removeValueListener( this.isLoggedInAdapter );
-		super.handlePostDeactivation();
-	}
 }

@@ -40,19 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.issue.croquet;
+package org.alice.ide.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StrangeCircumstanceComposite extends org.lgna.croquet.PlainDialogOperationComposite<org.alice.ide.issue.croquet.views.StrangeCircumstanceView> {
-	public StrangeCircumstanceComposite( java.util.UUID migrationId ) {
-		super( migrationId, org.lgna.croquet.Application.INFORMATION_GROUP );
+public class ImageAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
+	private final byte[] bytes;
+	private final String fileName;
+
+	public ImageAttachment( java.awt.Image image, String baseName ) {
+		this.bytes = edu.cmu.cs.dennisc.image.ImageUtilities.writeToByteArray( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, image );
+		this.fileName = baseName + ".png";
 	}
 
-	@Override
-	protected org.alice.ide.issue.croquet.views.StrangeCircumstanceView createView() {
-		return new org.alice.ide.issue.croquet.views.StrangeCircumstanceView( this );
+	public byte[] getBytes() {
+		return this.bytes;
 	}
 
+	public String getMIMEType() {
+		return "image/png";
+	}
+
+	public String getFileName() {
+		return this.fileName;
+	}
 }

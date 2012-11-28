@@ -105,4 +105,13 @@ public class InstanceCreation extends Expression implements ArgumentOwner {
 		//todo
 		return true;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "new " );
+		generator.appendTypeName( this.constructor.getValue().getDeclaringType() );
+		generator.appendChar( '(' );
+		generator.appendArguments( this );
+		generator.appendChar( ')' );
+	}
 }

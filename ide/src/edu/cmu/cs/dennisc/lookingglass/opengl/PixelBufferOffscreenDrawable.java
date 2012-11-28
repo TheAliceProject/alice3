@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PixelBufferOffscreenDrawable implements OffscreenDrawable {
+public final class PixelBufferOffscreenDrawable extends OffscreenDrawable {
 	private final javax.media.opengl.GLEventListener glEventListener = new javax.media.opengl.GLEventListener() {
 		public void init( javax.media.opengl.GLAutoDrawable drawable ) {
 		}
@@ -69,7 +69,7 @@ public abstract class PixelBufferOffscreenDrawable implements OffscreenDrawable 
 					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
 				}
 			} else {
-				actuallyDisplay( drawable.getGL() );
+				fireDisplay( drawable.getGL() );
 			}
 		}
 
@@ -79,18 +79,28 @@ public abstract class PixelBufferOffscreenDrawable implements OffscreenDrawable 
 
 	private javax.media.opengl.GLPbuffer glPixelBuffer;
 
-	protected abstract void actuallyDisplay( javax.media.opengl.GL gl );
+	public PixelBufferOffscreenDrawable( DisplayCallback callback ) {
+		super( callback );
+	}
 
-	public void initialize( com.sun.opengl.impl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext ) {
+	@Override
+	protected javax.media.opengl.GLPbuffer getGlDrawable() {
+		return this.glPixelBuffer;
+	}
+
+	@Override
+	public void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
 		if( this.glPixelBuffer != null ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		} else {
-			this.glPixelBuffer = glFactory.createGLPbuffer( glRequestedCapabilities, glCapabilitiesChooser, 1, 1, glShareContext );
-			this.glPixelBuffer.addGLEventListener( glEventListener );
+			this.glPixelBuffer = GlDrawableUtilities.createGlPixelBuffer( glRequestedCapabilities, glCapabilitiesChooser, width, height, glShareContext );
+			if( this.getCallback() != null ) {
+				this.glPixelBuffer.addGLEventListener( glEventListener );
+			}
 		}
-		//				throw new javax.media.opengl.GLException();
 	}
 
+	@Override
 	public void destroy() {
 		if( this.glPixelBuffer != null ) {
 			this.glPixelBuffer.destroy();
@@ -98,10 +108,12 @@ public abstract class PixelBufferOffscreenDrawable implements OffscreenDrawable 
 		}
 	}
 
+	@Override
 	public void display() {
 		this.glPixelBuffer.display();
 	}
 
+	@Override
 	public boolean isHardwareAccelerated() {
 		return true;
 	}

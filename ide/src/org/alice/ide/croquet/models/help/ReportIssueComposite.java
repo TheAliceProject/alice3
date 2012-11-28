@@ -43,10 +43,6 @@
 package org.alice.ide.croquet.models.help;
 
 import org.alice.ide.croquet.models.help.views.ReportIssueView;
-import org.alice.ide.issue.CurrentProjectAttachment;
-import org.alice.ide.issue.ReportSubmissionConfiguration;
-import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.CancelException;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -57,47 +53,31 @@ import edu.cmu.cs.dennisc.jira.JIRAReport;
 /**
  * @author Matt May
  */
-public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposite<ReportIssueView> implements edu.cmu.cs.dennisc.issue.ReportGenerator {
-	public static final org.lgna.croquet.Group ISSUE_GROUP = org.lgna.croquet.Group.getInstance( java.util.UUID.fromString( "af49d17b-9299-4a0d-b931-0a18a8abf0dd" ), "ISSUE_GROUP" );
-
-	private final edu.cmu.cs.dennisc.jira.JIRAReport.Type type;
+public abstract class ReportIssueComposite extends AbstractIssueComposite<ReportIssueView> {
 	private final ListSelectionState<BugSubmitVisibility> visibilityState = createListSelectionStateForEnum( this.createKey( "visibilityState" ), BugSubmitVisibility.class, BugSubmitVisibility.PRIVATE );
-	private final ListSelectionState<JIRAReport.Type> typeState = createListSelectionStateForEnum( createKey( "typeState" ), JIRAReport.Type.class, JIRAReport.Type.BUG );
+
+	private final edu.cmu.cs.dennisc.jira.JIRAReport.Type initialReportTypeValue;
+	private final ListSelectionState<JIRAReport.Type> reportTypeState;
 	private final StringState summaryState = createStringState( this.createKey( "summaryState" ) );
 	private final StringState descriptionState = createStringState( this.createKey( "descriptionState" ) );
-	private final StringState stepsState = createStringState( this.createKey( "stepsState" ) );
+	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, null );
+	private final org.lgna.croquet.Operation browserOperation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
 
-	private final StringState environmentState = createStringState( this.createKey( "environmentState" ), org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentLongDescription() );
-	private final ListSelectionState<BugSubmitAttachment> attachmentState = createListSelectionStateForEnum( this.createKey( "attachmentState" ), BugSubmitAttachment.class, BugSubmitAttachment.YES );
-	private final org.lgna.croquet.Operation operation = new org.alice.ide.browser.ImmutableBrowserOperation( java.util.UUID.fromString( "55806b33-8b8a-43e0-ad5a-823d733be2f8" ), "http://bugs.alice.org:8080/" );
+	private final LogInCard logInCard = new LogInCard();
+	private final LogOutCard logOutCard = new LogOutCard();
 
-	private ActionOperation submitBugOperation = createActionOperation( this.createKey( "submitBugOperation" ), new Action() {
+	private final org.lgna.croquet.CardOwnerComposite logInOutComposite = this.createCardOwnerComposite( this.logInCard, this.logOutCard );
 
-		public org.lgna.croquet.edits.Edit<?> perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			submitBugOperation.setEnabled( false );
-			try {
-				org.alice.ide.issue.swing.views.ProgressPane progressPane = org.alice.ide.issue.SubmitReportUtilities.submitReport( ReportIssueComposite.this, createReportSubmissionConfiguration() );
-				org.lgna.croquet.components.AbstractWindow<?> root = ReportIssueComposite.this.getView().getRoot();
-				if( root != null ) {
-					if( progressPane.isDone() ) {
-						if( progressPane.isSuccessful() ) {
-							javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report has been successfully submitted.  Thank you." );
-							root.setVisible( false );
-						} else {
-							javax.swing.JOptionPane.showMessageDialog( root.getAwtComponent(), "Your bug report FAILED to submit.  Thank you for trying." );
-						}
-					} else {
-						root.setVisible( false );
-					}
-				}
-			} finally {
-				submitBugOperation.setEnabled( true );
-			}
-			return null;
+	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
+
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
-	} );
 
-	private final LogInOutCardOwnerComposite logInOutCardComposite = new LogInOutCardOwnerComposite();
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			updateLogInOutComposite();
+		}
+
+	};
 
 	private final ValueListener<String> adapter = new ValueListener<String>() {
 
@@ -105,57 +85,74 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 		}
 
 		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			submitBugOperation.setEnabled( summaryState.getValue().length() > 0 );
+			getSubmitBugOperation().setEnabled( summaryState.getValue().length() > 0 );
 		}
 
 	};
 
-	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type type ) {
-		super( migrationId, ISSUE_GROUP );
-		this.type = type;
-		initAdapter();
-		environmentState.setEnabled( false );
+	public ReportIssueComposite( java.util.UUID migrationId, edu.cmu.cs.dennisc.jira.JIRAReport.Type initialReportTypeValue ) {
+		super( migrationId, false );
+		this.initialReportTypeValue = initialReportTypeValue;
+		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
+		this.registerSubComposite( this.logInOutComposite );
 	}
 
-	private void initAdapter() {
-		summaryState.addValueListener( adapter );
-		adapter.changed( null, "", "", true );
+	@Override
+	protected Throwable getThrowable() {
+		return null;
+	}
+
+	private void updateLogInOutComposite() {
+		if( this.logInCard.getLoginDialogComposite().getIsLoggedIn().getValue() ) {
+			logOutCard.updateWelcomeString();
+			this.logInOutComposite.showCard( this.logOutCard );
+		} else {
+			this.logInOutComposite.showCard( this.logInCard );
+		}
+	}
+
+	@Override
+	protected boolean isPublic() {
+		return this.getVisibilityState().getValue().equals( BugSubmitVisibility.PUBLIC );
 	}
 
 	public ListSelectionState<BugSubmitVisibility> getVisibilityState() {
 		return this.visibilityState;
 	}
 
-	public ListSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> getTypeState() {
-		return this.typeState;
+	@Override
+	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getReportType() {
+		return this.reportTypeState.getValue();
+	}
+
+	public ListSelectionState<edu.cmu.cs.dennisc.jira.JIRAReport.Type> getReportTypeState() {
+		return this.reportTypeState;
+	}
+
+	@Override
+	protected String getSummaryText() {
+		return this.summaryState.getValue();
 	}
 
 	public StringState getSummaryState() {
 		return this.summaryState;
 	}
 
+	@Override
+	protected String getDescriptionText() {
+		return this.descriptionState.getValue();
+	}
+
 	public StringState getDescriptionState() {
 		return this.descriptionState;
-	}
-
-	public StringState getStepsState() {
-		return this.stepsState;
-	}
-
-	public StringState getEnvironmentState() {
-		return this.environmentState;
 	}
 
 	public ListSelectionState<BugSubmitAttachment> getAttachmentState() {
 		return this.attachmentState;
 	}
 
-	public LogInOutCardOwnerComposite getLogInOutCardComposite() {
-		return this.logInOutCardComposite;
-	}
-
-	public ActionOperation getSubmitBugOperation() {
-		return this.submitBugOperation;
+	public org.lgna.croquet.CardOwnerComposite getLogInOutCardComposite() {
+		return this.logInOutComposite;
 	}
 
 	@Override
@@ -164,89 +161,51 @@ public abstract class ReportIssueComposite extends org.lgna.croquet.FrameComposi
 	}
 
 	public org.lgna.croquet.Operation getBrowserOperation() {
-		return this.operation;
+		return this.browserOperation;
 	}
 
-	protected String getJIRAProjectKey() {
-		if( this.getVisibilityState().getValue().equals( BugSubmitVisibility.PUBLIC ) ) {
-			return "AIII";
+	@Override
+	protected boolean isProjectAttachmentDesired() {
+		return this.attachmentState.getSelectedItem().equals( BugSubmitAttachment.YES );
+	}
+
+	@Override
+	protected boolean isClearedToSubmitBug() {
+		boolean rv;
+		if( this.attachmentState.getValue() != null ) {
+			rv = true;
 		} else {
-			return "AIIIP";
-		}
-	}
-
-	public JIRAReport generateIssue() {
-		JIRAReport rv = new JIRAReport();
-		rv.setProjectKey( getJIRAProjectKey() );
-		rv.setType( typeState.getSelectedItem() );
-		rv.setSummary( summaryState.getValue() );
-		rv.setDescription( descriptionState.getValue() );
-		rv.setEnvironment( org.alice.ide.issue.swing.views.IssueReportPane.getEnvironmentShortDescription() );
-		rv.setSteps( stepsState.getValue() );
-		rv.setException( "" );
-		rv.setAffectsVersions( new String[] { org.lgna.project.Version.getCurrentVersionText() } );
-		return rv;
-	}
-
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForRPC() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
-		return rv;
-	}
-
-	public edu.cmu.cs.dennisc.jira.JIRAReport generateIssueForSOAP() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
-		rv.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
-		if( attachmentState.getSelectedItem().equals( BugSubmitAttachment.YES ) ) {
-			rv.addAttachment( new CurrentProjectAttachment() );
+			org.lgna.croquet.YesNoCancelOption option = org.lgna.croquet.Application.getActiveInstance().showYesNoCancelConfirmDialog( "Is your current project relevant to this issue report?", "Attach current project?", org.lgna.croquet.MessageType.QUESTION );
+			if( option == org.lgna.croquet.YesNoCancelOption.YES ) {
+				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
+				rv = true;
+			} else if( option == org.lgna.croquet.YesNoCancelOption.NO ) {
+				this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.NO );
+				rv = true;
+			} else {
+				rv = false;
+			}
 		}
 		return rv;
 	}
 
 	@Override
 	public void handlePreActivation() {
+		this.summaryState.setValueTransactionlessly( "" );
 		this.descriptionState.setValueTransactionlessly( "" );
-		this.attachmentState.setValueTransactionlessly( BugSubmitAttachment.YES );
 		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
-		this.typeState.setValue( this.type );
-		this.logInOutCardComposite.handlePreActivation();
+		this.attachmentState.setValueTransactionlessly( null );
+		this.reportTypeState.setValue( this.initialReportTypeValue );
+
+		this.summaryState.addAndInvokeValueListener( this.adapter );
+		this.logInCard.getLoginDialogComposite().getIsLoggedIn().addAndInvokeValueListener( this.isLoggedInAdapter );
 		super.handlePreActivation();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		this.logInOutCardComposite.handlePostDeactivation();
 		super.handlePostDeactivation();
-	}
-
-	private ReportSubmissionConfiguration createReportSubmissionConfiguration() {
-		return new ReportSubmissionConfiguration() {
-			@Override
-			public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
-				if( accountInformation != null ) {
-					return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
-						public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
-							return edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.logIn( client, accountInformation.getID(), accountInformation.getPassword() );
-						}
-					};
-				} else {
-					return super.getJIRAViaRPCAuthenticator();
-				}
-			}
-
-			@Override
-			public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
-				if( accountInformation != null ) {
-					return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
-						public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
-							return service.login( accountInformation.getID(), accountInformation.getPassword() );
-						}
-					};
-				} else {
-					return super.getJIRAViaSOAPAuthenticator();
-				}
-			}
-		};
+		this.logInCard.getLoginDialogComposite().getIsLoggedIn().removeValueListener( this.isLoggedInAdapter );
+		this.summaryState.removeValueListener( this.adapter );
 	}
 }

@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ForEachInIterableLoop extends AbstractForEachLoop implements EachInIterableStatement {
+public class ForEachInIterableLoop extends AbstractForEachLoop implements EachInIterableStatement {
 	public ExpressionProperty iterable = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
@@ -64,6 +64,11 @@ public abstract class ForEachInIterableLoop extends AbstractForEachLoop implemen
 
 	public ExpressionProperty getIterableProperty() {
 		return this.iterable;
+	}
+
+	@Override
+	protected org.lgna.project.ast.ExpressionProperty getArrayOrIterableProperty() {
+		return this.getIterableProperty();
 	}
 
 	@Override

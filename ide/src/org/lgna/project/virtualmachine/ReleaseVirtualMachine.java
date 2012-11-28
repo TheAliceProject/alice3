@@ -55,7 +55,10 @@ import org.lgna.project.ast.UserParameter;
 public class ReleaseVirtualMachine extends VirtualMachine {
 	protected static abstract class AbstractFrame implements Frame {
 		private final Frame owner;
-		private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
+		private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+		//note: concurrent hashmaps cannot contain null
+		//private final java.util.Map<UserLocal, Object> mapLocalToValue = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newConcurrentHashMap();
 
 		public AbstractFrame( Frame owner ) {
 			this.owner = owner;

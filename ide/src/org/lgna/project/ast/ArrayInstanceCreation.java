@@ -98,4 +98,23 @@ public class ArrayInstanceCreation extends Expression {
 			return false;
 		}
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "new " );
+		generator.appendTypeName( this.arrayType.getValue().getComponentType() );
+
+		//todo: lengths
+		generator.appendChar( '[' );
+		generator.appendChar( ']' );
+
+		generator.appendChar( '{' );
+		String prefix = "";
+		for( Expression expression : this.expressions ) {
+			generator.appendString( prefix );
+			generator.appendExpression( expression );
+			prefix = ",";
+		}
+		generator.appendChar( '}' );
+	}
 }

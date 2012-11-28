@@ -45,12 +45,83 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */interface OffscreenDrawable {
-	public void initialize( com.sun.opengl.impl.GLDrawableFactoryImpl glFactory, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext );
+/* package-private */abstract class OffscreenDrawable {
+	private static final boolean IS_HARDWARE_ACCELERATION_DESIRED = com.sun.opengl.impl.Debug.isPropertyDefined( "jogl.gljpanel.nohw" ) == false;
 
-	public void destroy();
+	public static interface DisplayCallback {
+		public void display( javax.media.opengl.GL gl );
+	}
 
-	public void display();
+	public static OffscreenDrawable createInstance( DisplayCallback callback, javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height ) {
+		OffscreenDrawable od = null;
+		if( IS_HARDWARE_ACCELERATION_DESIRED && GlDrawableUtilities.canCreateGlPixelBuffer() ) {
+			od = new PixelBufferOffscreenDrawable( callback );
+			try {
+				od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
+			} catch( javax.media.opengl.GLException gle ) {
+				try {
+					od.destroy();
+				} catch( Throwable t ) {
+					//pass
+				}
+				od = null;
+			}
+		}
+		if( od != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( callback );
+			od = new SoftwareOffscreenDrawable( callback );
+			try {
+				od.initialize( glRequestedCapabilities, glCapabilitiesChooser, glShareContext, 1, 1 );
+			} catch( javax.media.opengl.GLException gle ) {
+				try {
+					od.destroy();
+				} catch( Throwable t ) {
+					//pass
+				}
+				od = null;
+				throw gle;
+			}
+		}
+		return od;
+	}
 
-	public boolean isHardwareAccelerated();
+	private final DisplayCallback callback;
+
+	public OffscreenDrawable( DisplayCallback callback ) {
+		this.callback = callback;
+	}
+
+	public DisplayCallback getCallback() {
+		return this.callback;
+	}
+
+	public abstract void initialize( javax.media.opengl.GLCapabilities glRequestedCapabilities, javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser, javax.media.opengl.GLContext glShareContext, int width, int height );
+
+	public abstract void destroy();
+
+	public abstract void display();
+
+	public final java.awt.Dimension getSize( java.awt.Dimension rv ) {
+		javax.media.opengl.GLDrawable glDrawable = this.getGlDrawable();
+		if( glDrawable != null ) {
+			rv.width = GlDrawableUtilities.getGlDrawableHeight( glDrawable );
+			rv.height = GlDrawableUtilities.getGlDrawableHeight( glDrawable );
+		} else {
+			//todo?
+			throw new javax.media.opengl.GLException();
+		}
+		return rv;
+	}
+
+	public abstract boolean isHardwareAccelerated();
+
+	protected abstract javax.media.opengl.GLDrawable getGlDrawable();
+
+	protected final void fireDisplay( javax.media.opengl.GL gl ) {
+		if( this.callback != null ) {
+			this.callback.display( gl );
+		}
+	}
 }

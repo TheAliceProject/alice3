@@ -71,7 +71,7 @@ public class IsStatementEnabledState extends org.lgna.croquet.BooleanState {
 
 			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 				IsStatementEnabledState.this.statement.isEnabled.setValue( nextValue );
-				org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
+				org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
 			}
 		} );
 	}

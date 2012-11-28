@@ -98,4 +98,12 @@ public class ArrayAccess extends Expression {
 			return false;
 		}
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.array.getValue() );
+		generator.appendChar( '[' );
+		generator.appendExpression( this.index.getValue() );
+		generator.appendChar( ']' );
+	}
 }

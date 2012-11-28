@@ -61,7 +61,7 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 	public static UserMethod dummy = new UserMethod();
 
 	public StatisticsFlowControlFrequencyComposite() {
-		super( java.util.UUID.fromString( "b12770d1-e65e-430f-92a1-dc3159a85a7b" ) );
+		super( java.util.UUID.fromString( "b12770d1-e65e-430f-92a1-dc3159a85a7b" ), IsCloseable.FALSE );
 		methodToConstructMap = Collections.newHashMap();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		StatementCountCrawler crawler = new StatementCountCrawler();
@@ -83,11 +83,6 @@ public class StatisticsFlowControlFrequencyComposite extends SimpleTabComposite<
 			getUserMethodList().addItem( method );
 		}
 		dummy.setName( "Project" );
-	}
-
-	@Override
-	public boolean isCloseable() {
-		return false;
 	}
 
 	@Override

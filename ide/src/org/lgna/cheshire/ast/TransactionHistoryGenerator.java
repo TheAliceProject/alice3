@@ -16,7 +16,7 @@ public class TransactionHistoryGenerator {
 		//cheshire cat does not recover since the procedure invocation drag model is found (albeit with the wrong state).  curses.
 		//so we manually place ide in correct configuration.
 		org.alice.ide.declarationseditor.TypeState.getInstance().addGeneratedStateChangeTransaction( history, null, (org.lgna.project.ast.NamedUserType)destinationMethod.getDeclaringType() );
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addGeneratedStateChangeTransaction( history, null, org.alice.ide.declarationseditor.DeclarationComposite.getInstance( destinationMethod ) );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addGeneratedStateChangeTransaction( history, null, org.alice.ide.declarationseditor.DeclarationComposite.getInstance( destinationMethod ) );
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		org.lgna.project.ast.Expression instanceExpression;

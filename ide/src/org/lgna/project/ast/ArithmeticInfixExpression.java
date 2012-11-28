@@ -71,6 +71,11 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 					throw new RuntimeException();
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '+' );
+			}
 		},
 		MINUS() {
 			@Override
@@ -93,6 +98,11 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 				} else {
 					throw new RuntimeException();
 				}
+			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '-' );
 			}
 		},
 		TIMES() {
@@ -117,6 +127,11 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 					throw new RuntimeException();
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '*' );
+			}
 		},
 		REAL_DIVIDE() {
 			@Override
@@ -139,6 +154,11 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 				} else {
 					throw new RuntimeException();
 				}
+			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '/' );
 			}
 		},
 		INTEGER_DIVIDE() {
@@ -163,6 +183,11 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 					throw new RuntimeException();
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '/' );
+			}
 		},
 		REAL_REMAINDER() {
 			@Override
@@ -185,6 +210,11 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 				} else {
 					throw new RuntimeException();
 				}
+			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '%' );
 			}
 		},
 		INTEGER_REMAINDER() {
@@ -209,8 +239,15 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 					throw new RuntimeException();
 				}
 			}
+
+			@Override
+			/* package-private */void appendJava( JavaCodeGenerator generator ) {
+				generator.appendChar( '%' );
+			}
 		};
 		public abstract Number operate( Number leftOperand, Number rightOperand );
+
+		/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 	}
 
 	public ArithmeticInfixExpression() {
@@ -244,5 +281,12 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return this.expressionType.getValue();
+	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendExpression( this.leftOperand.getValue() );
+		this.operator.getValue().appendJava( generator );
+		generator.appendExpression( this.rightOperand.getValue() );
 	}
 }
