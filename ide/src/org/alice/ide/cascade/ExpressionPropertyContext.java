@@ -62,11 +62,16 @@ public class ExpressionPropertyContext implements ExpressionCascadeContext {
 			org.lgna.project.ast.Node node = (org.lgna.project.ast.Node)owner;
 			org.lgna.project.ast.Statement statement = node.getFirstAncestorAssignableTo( org.lgna.project.ast.Statement.class, true );
 			if( statement != null ) {
-				org.lgna.project.ast.Node parent = statement.getParent();
-				if( parent instanceof org.lgna.project.ast.BlockStatement ) {
-					org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
-					int index = blockStatement.statements.indexOf( statement );
-					return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
+				if( statement instanceof org.lgna.project.ast.ConstructorInvocationStatement ) {
+					//todo
+					return null;
+				} else {
+					org.lgna.project.ast.Node parent = statement.getParent();
+					if( parent instanceof org.lgna.project.ast.BlockStatement ) {
+						org.lgna.project.ast.BlockStatement blockStatement = (org.lgna.project.ast.BlockStatement)parent;
+						int index = blockStatement.statements.indexOf( statement );
+						return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( blockStatement, index );
+					}
 				}
 			}
 		}

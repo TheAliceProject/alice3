@@ -50,14 +50,18 @@ public class StatementDragModel extends AbstractStatementDragModel {
 	private static java.util.Map<org.lgna.project.ast.Statement, StatementDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized StatementDragModel getInstance( org.lgna.project.ast.Statement statement ) {
-		StatementDragModel rv = map.get( statement );
-		if( rv != null ) {
-			//pass
+		if( statement instanceof org.lgna.project.ast.ConstructorInvocationStatement ) {
+			return null;
 		} else {
-			rv = new StatementDragModel( statement );
-			map.put( statement, rv );
+			StatementDragModel rv = map.get( statement );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new StatementDragModel( statement );
+				map.put( statement, rv );
+			}
+			return rv;
 		}
-		return rv;
 	}
 
 	private org.lgna.project.ast.Statement statement;

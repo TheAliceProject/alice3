@@ -50,38 +50,8 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	private static final int INTRASTICIAL_MIDDLE = 1;
 	public static final int INTRASTICIAL_PAD = ( INTRASTICIAL_MIDDLE * 2 ) + 1;
 
-	//	private static final int INTRASTICIAL_PAD = 0;
 	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property ) {
 		super( factory, property, javax.swing.BoxLayout.PAGE_AXIS );
-		//		this.addMouseListener( new java.awt.event.MouseListener() {
-		//			public void mouseClicked( final java.awt.event.MouseEvent e ) {
-		//				final alice.ide.IDE ide = alice.ide.IDE.getActiveInstance();
-		//				if( ide != null ) {
-		//					//final StatementListPropertyPane statementListPropertyPane = getStatementListPropertyPaneUnder( e, createStatementListPropertyPaneInfos( null ) );
-		//					final StatementListPropertyPane statementListPropertyPane = StatementListPropertyPane.this;
-		//					if( statementListPropertyPane != null ) {
-		//						ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Statement >() {
-		//							public void handleCompletion( org.lgna.project.ast.Statement statement ) {
-		//								java.awt.Point p = e.getPoint();
-		//								//p = javax.swing.SwingUtilities.convertPoint( e.getComponent(), p, statementListPropertyPane );
-		//								statementListPropertyPane.getProperty().add( statementListPropertyPane.calculateIndex( p ), statement );
-		//								ide.markChanged( "statement" );
-		//							}
-		//							public void handleCancelation() {
-		//							}
-		//						} );
-		//					}
-		//				}
-		//			}
-		//			public void mouseEntered( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mouseExited( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mousePressed( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mouseReleased( java.awt.event.MouseEvent e ) {
-		//			}
-		//		} );
 	}
 
 	public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
@@ -161,40 +131,6 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return -1;
 	}
 
-	//	@Override
-	//	protected javax.swing.JPanel createJPanel() {
-	//		class StatementListJPanel extends edu.cmu.cs.dennisc.croquet.Panel.DefaultJPanel {
-	//			@Override
-	//			protected void paintChildren( java.awt.Graphics g ) {
-	//				if( StatementListPropertyPane.this.currentPotentialDropIndex != -1 ) {
-	//					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-	//					final int N = this.getComponentCount();
-	//					int heightAvailable = this.getHeight();
-	//					int heightAllocatedToDrop = StatementListPropertyPane.this.getAvailableDropProxyHeight();
-	//					int heightAllocatedToThis = heightAvailable - heightAllocatedToDrop;
-	//					double yScale = heightAllocatedToThis/(double)heightAvailable;
-	//					java.awt.geom.AffineTransform m = g2.getTransform();
-	//					try {
-	//						int i = StatementListPropertyPane.this.currentPotentialDropIndex;
-	//						if( i == 0 || i == N ) {
-	//							if( i == 0 ) {
-	//								g2.translate( 0, heightAllocatedToDrop );
-	//							}
-	//							g2.scale( 1.0, yScale );
-	//							super.paintChildren( g );
-	//						} else {
-	//							super.paintChildren( g );
-	//						}
-	//					} finally {
-	//						g2.setTransform( m );
-	//					}
-	//				} else {
-	//					super.paintChildren( g );
-	//				}
-	//			}
-	//		}
-	//		return new StatementListJPanel();
-	//	}
 	private java.awt.Dimension dropSize = new java.awt.Dimension( 0, 0 );
 	private int currentPotentialDropIndex = -1;
 
@@ -362,31 +298,6 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		}
 	}
 
-	//	public java.awt.Rectangle updateYBounds( java.awt.Rectangle rv, int index ) {
-	//		if( isFigurativelyEmpty() ) {
-	//			//pass
-	//		} else {
-	//			int yMinimum;
-	//			int yMaximum;
-	//			final int N = this.getComponentCount();
-	//			if( index == Short.MAX_VALUE ) {
-	//				index = N;
-	//			}
-	//			if( index == 0 ) {
-	//				yMinimum = rv.y;
-	//			} else {
-	//				yMinimum = rv.y + this.getCenterYOfComponentAt( index-1 );
-	//			}
-	//			if( index == N ) {
-	//				yMaximum = rv.y + rv.height;
-	//			} else {
-	//				yMaximum = rv.y + this.getCenterYOfComponentAt( index );
-	//			}
-	//			rv.y = yMinimum;
-	//			rv.height = yMaximum-yMinimum-1;
-	//		}
-	//		return rv;
-	//	}
 	public static class BoundInformation {
 		public Integer yMinimum;
 		public Integer yMaximum;
