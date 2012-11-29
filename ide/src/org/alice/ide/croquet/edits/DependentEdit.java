@@ -92,7 +92,7 @@ public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> ext
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		this.getResponsibleModel().appendDescription( rv, descriptionStyle == DescriptionStyle.DETAILED );
+		this.getResponsibleModel().appendDescription( rv, descriptionStyle.isDetailed() );
 	}
 
 	@Override

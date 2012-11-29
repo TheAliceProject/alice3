@@ -184,8 +184,24 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 	}
 
 	protected static enum DescriptionStyle {
-		TERSE,
-		DETAILED
+		TERSE( false, false ),
+		DETAILED( true, false ),
+		LOG( true, true );
+		private final boolean isDetailed;
+		private final boolean isLog;
+
+		private DescriptionStyle( boolean isDetailed, boolean isLog ) {
+			this.isDetailed = isDetailed;
+			this.isLog = isLog;
+		}
+
+		public boolean isDetailed() {
+			return this.isDetailed;
+		}
+
+		public boolean isLog() {
+			return this.isLog;
+		}
 	}
 
 	protected abstract void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle );
@@ -218,6 +234,14 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		sb.append( this.getClass().getName() );
 		sb.append( ": " );
 		this.appendDescription( sb, DescriptionStyle.DETAILED );
+		return sb.toString();
+	}
+
+	public final String getLogDescription() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( ": " );
+		this.appendDescription( sb, DescriptionStyle.LOG );
 		return sb.toString();
 	}
 
