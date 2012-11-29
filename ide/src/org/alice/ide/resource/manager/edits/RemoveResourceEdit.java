@@ -62,9 +62,8 @@ public final class RemoveResourceEdit extends AddOrRemoveResourceEdit {
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "remove resource" );
 		rv.append( edu.cmu.cs.dennisc.pattern.NameableUtilities.safeGetName( this.getResource() ) );
-		return rv;
 	}
 }

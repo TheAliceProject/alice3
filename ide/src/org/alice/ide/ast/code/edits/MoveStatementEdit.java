@@ -121,11 +121,9 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	}
 
 	@Override
-	public StringBuilder updatePresentation( StringBuilder rv ) {
-		//super.updatePresentation( rv, locale );
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "move: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 
 	@Override

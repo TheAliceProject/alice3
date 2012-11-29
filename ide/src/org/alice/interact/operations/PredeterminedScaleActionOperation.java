@@ -118,9 +118,8 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 			}
 
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv ) {
+			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 				rv.append( editPresentationKey );
-				return rv;
 			}
 		} );
 	}

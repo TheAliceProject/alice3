@@ -67,9 +67,8 @@ public class RemoveKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.ali
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "add: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getModel().getArgument(), org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 }
