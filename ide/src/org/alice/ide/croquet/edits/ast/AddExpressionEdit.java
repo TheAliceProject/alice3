@@ -82,9 +82,8 @@ public class AddExpressionEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "add: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.expression, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 }

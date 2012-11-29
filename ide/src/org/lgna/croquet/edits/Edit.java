@@ -138,45 +138,6 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		}
 	}
 
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder title ) {
-		return title;
-	}
-
-	public final String getTutorialTransactionTitle() {
-		StringBuilder sb = new StringBuilder();
-		this.updateTutorialTransactionTitle( sb );
-		if( sb.length() == 0 ) {
-			return null;
-		} else {
-			return sb.toString();
-		}
-	}
-
-	protected abstract StringBuilder updatePresentation( StringBuilder rv );
-
-	public final String getPresentation() {
-		StringBuilder sb = new StringBuilder();
-		this.updatePresentation( sb );
-		if( sb.length() == 0 ) {
-			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
-		}
-		return sb.toString();
-	}
-
-	public String getRedoPresentation() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Redo:" );
-		this.updatePresentation( sb );
-		return sb.toString();
-	}
-
-	public String getUndoPresentation() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Undo:" );
-		this.updatePresentation( sb );
-		return sb.toString();
-	}
-
 	public ReplacementAcceptability getReplacementAcceptability( Edit<?> replacementCandidate ) {
 		if( replacementCandidate != null ) {
 			return ReplacementAcceptability.PERFECT_MATCH;
@@ -209,12 +170,64 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		return null;
 	}
 
-	@Override
-	public String toString() {
+	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
+	}
+
+	public final String getTutorialTransactionTitle() {
+		StringBuilder sb = new StringBuilder();
+		this.appendTutorialTransactionTitle( sb );
+		if( sb.length() == 0 ) {
+			return null;
+		} else {
+			return sb.toString();
+		}
+	}
+
+	protected static enum DescriptionStyle {
+		TERSE,
+		DETAILED
+	}
+
+	protected abstract void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle );
+
+	public String getRedoPresentation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Redo:" );
+		this.appendDescription( sb, DescriptionStyle.TERSE );
+		return sb.toString();
+	}
+
+	public String getUndoPresentation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Undo:" );
+		this.appendDescription( sb, DescriptionStyle.TERSE );
+		return sb.toString();
+	}
+
+	public final String getTerseDescription() {
+		StringBuilder sb = new StringBuilder();
+		this.appendDescription( sb, DescriptionStyle.TERSE );
+		if( sb.length() == 0 ) {
+			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
+		}
+		return sb.toString();
+	}
+
+	public final String getDetailedDescription() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );
 		sb.append( ": " );
-		this.updatePresentation( sb );
+		this.appendDescription( sb, DescriptionStyle.DETAILED );
 		return sb.toString();
+	}
+
+	@Deprecated
+	public final String getPresentation() {
+		return this.getTerseDescription();
+	}
+
+	@Override
+	public String toString() {
+		return this.getDetailedDescription();
 	}
 }

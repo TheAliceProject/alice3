@@ -106,11 +106,9 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		//		}
 	}
 
-	public StringBuilder updatePresentation( StringBuilder rv ) {
-		//super.updatePresentation( rv, locale );
+	public void appendDescription( StringBuilder rv, boolean isDetailed ) {
 		rv.append( "create: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
