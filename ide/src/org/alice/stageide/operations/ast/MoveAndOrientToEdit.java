@@ -95,8 +95,9 @@ public class MoveAndOrientToEdit extends Edit {
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
-		return null;
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
+		rv.append( "move and orient to:" );
+		//todo
 	}
 
 }

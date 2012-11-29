@@ -100,9 +100,8 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 			}
 
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv ) {
+			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 				rv.append( getEditPresentationName() );
-				return rv;
 			}
 		} );
 	}

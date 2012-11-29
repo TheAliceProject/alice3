@@ -77,15 +77,14 @@ public class AddKeyedArgumentEdit extends org.lgna.croquet.edits.Edit<org.alice.
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "add detail " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.keyedArgument, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 
 	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
-		return this.updatePresentation( rv );
+	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
+		this.appendDescription( sbTitle, DescriptionStyle.TERSE );
 	}
 
 	@Override

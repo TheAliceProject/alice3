@@ -94,9 +94,8 @@ public abstract class MethodInvocationEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "one shot " );
 		rv.append( this.method );
-		return rv;
 	}
 }
