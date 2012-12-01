@@ -51,6 +51,8 @@ public interface Composite<V extends org.lgna.croquet.components.View<?, ?>> ext
 
 	public V getView();
 
+	public org.lgna.croquet.components.JComponent<?> getRootView();
+
 	public void releaseView();
 
 	public void handlePreActivation();
