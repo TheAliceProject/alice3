@@ -551,6 +551,10 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return this.view;
 	}
 
+	public org.lgna.croquet.components.JComponent<?> getRootView() {
+		return this.getView();
+	}
+
 	public void releaseView() {
 		this.view = null;
 	}
