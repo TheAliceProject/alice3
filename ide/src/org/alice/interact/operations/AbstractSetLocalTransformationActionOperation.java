@@ -63,8 +63,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 
 	protected abstract String getEditPresentationName();
 
-	private void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
-		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
+	private void setLocalTransformation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
 		if( this.animator != null ) {
 			edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( sgTransformable, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, lt );
 			povAnimation.setDuration( 0.5 );
@@ -75,11 +74,38 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 		}
 	}
 
+	private static final java.text.NumberFormat MILLI_FORMAT = new java.text.DecimalFormat( "0.000" );
+
+	private static void appendPosition( StringBuilder sb, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+		sb.append( "(" );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( m.translation.x, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( m.translation.y, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( m.translation.z, MILLI_FORMAT ) );
+		sb.append( ")" );
+	}
+
+	private static void appendOrientation( StringBuilder sb, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+		edu.cmu.cs.dennisc.math.UnitQuaternion q = m.orientation.createUnitQuaternion();
+		sb.append( "(" );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.x, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.y, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.z, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.w, MILLI_FORMAT ) );
+		sb.append( ")" );
+	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
+
 		assert prevLT != null;
 		assert nextLT != null;
 		assert prevLT.isNaN() == false;
@@ -90,19 +116,36 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 				if( isDo && ( isDoRequired == false ) ) {
 					//pass
 				} else {
-					setLocalTransformation( nextLT );
+					setLocalTransformation( sgTransformable, nextLT );
 				}
 			}
 
 			@Override
 			protected final void undoInternal() {
-				setLocalTransformation( prevLT );
+				setLocalTransformation( sgTransformable, prevLT );
 			}
 
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv ) {
-				rv.append( getEditPresentationName() );
-				return rv;
+			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
+				String name = getEditPresentationName();
+				rv.append( name );
+				if( descriptionStyle.isDetailed() ) {
+					org.lgna.story.SThing thing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( sgTransformable );
+					rv.append( " " );
+					rv.append( thing );
+					if( name.contains( "Move" ) ) {
+						rv.append( " " );
+						appendPosition( rv, prevLT );
+						rv.append( " -> " );
+						appendPosition( rv, nextLT );
+					}
+					if( name.contains( "Rotate" ) ) {
+						rv.append( " " );
+						appendOrientation( rv, prevLT );
+						rv.append( " -> " );
+						appendOrientation( rv, nextLT );
+					}
+				}
 			}
 		} );
 	}

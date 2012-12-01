@@ -78,10 +78,9 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 					}
 
 					@Override
-					protected StringBuilder updatePresentation( StringBuilder rv ) {
+					protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 						//todo
 						rv.append( TransformableFieldTileActionOperation.this.getName() );
-						return rv;
 					}
 				} );
 			}

@@ -73,10 +73,9 @@ public class RevertFieldEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "declare:" );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, field, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 
 	@Override

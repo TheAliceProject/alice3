@@ -114,7 +114,7 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		org.alice.ide.croquet.models.ast.cascade.MoreCascade model = (org.alice.ide.croquet.models.ast.cascade.MoreCascade)this.getModel();
 		org.lgna.project.ast.MethodInvocation nextMethodInvocation = model.getNextMethodInvocation();
 		if( nextMethodInvocation != null ) {
@@ -125,6 +125,5 @@ public class FillInMoreEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet
 			org.lgna.project.ast.AbstractArgument argument = nextMethodInvocation.requiredArguments.get( N - 1 );
 			org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, argument, org.lgna.croquet.Application.getLocale() );
 		}
-		return rv;
 	}
 }

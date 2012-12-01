@@ -157,9 +157,8 @@ public final class ReloadContentResourceOperation extends SelectedResourceOperat
 					}
 
 					@Override
-					protected StringBuilder updatePresentation( StringBuilder rv ) {
+					protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 						rv.append( "reload content" );
-						return rv;
 					}
 				};
 			} else {
