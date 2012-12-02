@@ -47,6 +47,6 @@ package org.alice.ide.projecturi.views;
  */
 public class SelectProjectUriPanel extends org.lgna.croquet.components.BorderPanel {
 	public SelectProjectUriPanel() {
-		this.addCenterComponent( org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().createFolderTabbedPane() );
+		this.addCenterComponent( org.alice.ide.projecturi.SelectProjectUriWithPreviewComposite.getInstance().getTabState().createFolderTabbedPane() );
 	}
 }
