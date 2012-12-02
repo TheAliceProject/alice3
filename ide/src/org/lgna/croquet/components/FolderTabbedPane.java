@@ -52,8 +52,8 @@ import org.lgna.croquet.Operation;
 /*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
 	private final FolderTabbedPane<E> folderTabbedPane;
 
-	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane, ScrollPane scrollPane ) {
-		super( state, item, folderTabbedPane, scrollPane );
+	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane ) {
+		super( state, item, folderTabbedPane );
 		this.folderTabbedPane = folderTabbedPane;
 	}
 
@@ -544,8 +544,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	@Override
-	protected FolderTabItemDetails<E> createTabItemDetails( E item, ScrollPane scrollPane ) {
-		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this.getModel(), item, this, scrollPane );
+	protected FolderTabItemDetails<E> createTabItemDetails( E item ) {
+		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this.getModel(), item, this );
 		rv.getRootComponent().setVisible( false );
 		return rv;
 	};

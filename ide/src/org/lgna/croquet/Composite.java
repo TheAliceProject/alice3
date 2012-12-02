@@ -51,7 +51,9 @@ public interface Composite<V extends org.lgna.croquet.components.View<?, ?>> ext
 
 	public V getView();
 
-	public org.lgna.croquet.components.JComponent<?> getRootView();
+	public org.lgna.croquet.components.ScrollPane getScrollPaneIfItExists();
+
+	public org.lgna.croquet.components.JComponent<?> getRootComponent();
 
 	public void releaseView();
 

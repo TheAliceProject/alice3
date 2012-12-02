@@ -60,6 +60,11 @@ public class FileSystemTab extends ContentTab<org.alice.ide.projecturi.views.Fil
 	}
 
 	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
+	@Override
 	protected void refresh() {
 	}
 

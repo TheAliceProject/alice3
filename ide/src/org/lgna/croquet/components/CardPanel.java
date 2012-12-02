@@ -84,12 +84,12 @@ public class CardPanel extends Panel {
 
 	public void addComposite( org.lgna.croquet.Composite<?> composite ) {
 		assert composite != null : this;
-		this.internalAddComponent( composite.getRootView(), getKey( composite ) );
+		this.internalAddComponent( composite.getRootComponent(), getKey( composite ) );
 	}
 
 	public void removeComposite( org.lgna.croquet.Composite<?> composite ) {
 		assert composite != null : this;
-		this.internalRemoveComponent( composite.getRootView() );
+		this.internalRemoveComponent( composite.getRootComponent() );
 	}
 
 	public void showComposite( org.lgna.croquet.Composite<?> composite ) {

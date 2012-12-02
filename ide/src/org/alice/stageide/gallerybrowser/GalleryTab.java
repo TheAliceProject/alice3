@@ -52,7 +52,7 @@ public abstract class GalleryTab<V extends org.lgna.croquet.components.Panel> ex
 	}
 
 	@Override
-	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
