@@ -69,7 +69,9 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	public abstract void appendRepresentation( StringBuilder sb, T value );
 
 	public void addValueListener( ValueListener<T> valueListener ) {
-		assert this.valueListeners.contains( valueListener ) == false : valueListener;
+		if( this.valueListeners.contains( valueListener ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, valueListener );
+		}
 		this.valueListeners.add( valueListener );
 	}
 
@@ -184,7 +186,12 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
 		T prevValue = this.getValue();
-		return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevValue, nextValue ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextValue );
+			return null;
+		} else {
+			return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
+		}
 	}
 
 	protected static enum IsAdjusting {
