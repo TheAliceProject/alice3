@@ -93,11 +93,11 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 	}
 
 	@Override
-	public org.lgna.croquet.components.JComponent<?> getRootView() {
+	public org.lgna.croquet.components.JComponent<?> getRootComponent() {
 		if( this.scrollPane != null ) {
 			return this.scrollPane;
 		} else {
-			return super.getRootView();
+			return super.getRootComponent();
 		}
 	}
 
