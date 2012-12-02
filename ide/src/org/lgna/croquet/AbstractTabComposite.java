@@ -48,19 +48,16 @@ package org.lgna.croquet;
  */
 public abstract class AbstractTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> implements TabComposite<V> {
 	private String titleText;
-	private org.lgna.croquet.components.ScrollPane scrollPane;
 
 	public AbstractTabComposite( java.util.UUID id ) {
 		super( id );
 	}
 
-	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		rv.setBothScrollBarIncrements( 12, 24 );
-
-		this.scrollPane = rv;
-
 		return rv;
 	}
 
@@ -90,15 +87,6 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 		StringBuilder sb = new StringBuilder();
 		this.appendRepr( sb );
 		return sb.toString();
-	}
-
-	@Override
-	public org.lgna.croquet.components.JComponent<?> getRootComponent() {
-		if( this.scrollPane != null ) {
-			return this.scrollPane;
-		} else {
-			return super.getRootComponent();
-		}
 	}
 
 	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {

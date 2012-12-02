@@ -61,6 +61,11 @@ public class MenuBarComposite extends AbstractComposite<org.lgna.croquet.compone
 		}
 	}
 
+	@Override
+	protected final org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
 	public void addItem( StandardMenuItemPrepModel item ) {
 		this.items.add( item );
 	}

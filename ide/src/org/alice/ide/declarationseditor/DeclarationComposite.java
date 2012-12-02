@@ -99,7 +99,7 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 	public abstract boolean isValid();
 
 	@Override
-	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

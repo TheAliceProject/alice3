@@ -519,8 +519,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 	private java.util.UUID cardId;
 
+	private V view;
+
+	private final org.lgna.croquet.components.ScrollPane scrollPane;
+
 	public AbstractComposite( java.util.UUID id ) {
 		super( id );
+		this.scrollPane = this.createScrollPaneIfDesired();
 		Manager.registerComposite( this );
 	}
 
@@ -533,7 +538,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return this.cardId;
 	}
 
-	private V view;
+	protected abstract org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired();
 
 	protected abstract V createView();
 
@@ -547,12 +552,23 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		} else {
 			this.view = this.createView();
 			assert this.view != null : this;
+			if( this.scrollPane != null ) {
+				this.scrollPane.setViewportView( this.view );
+			}
 		}
 		return this.view;
 	}
 
-	public org.lgna.croquet.components.JComponent<?> getRootComponent() {
-		return this.getView();
+	public final org.lgna.croquet.components.ScrollPane getScrollPaneIfItExists() {
+		return this.scrollPane;
+	}
+
+	public final org.lgna.croquet.components.JComponent<?> getRootComponent() {
+		if( this.scrollPane != null ) {
+			return this.scrollPane;
+		} else {
+			return this.getView();
+		}
 	}
 
 	public void releaseView() {
