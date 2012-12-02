@@ -52,7 +52,7 @@ public abstract class BodyOrHeadTabComposite<V extends org.lgna.croquet.componen
 	}
 
 	@Override
-	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

@@ -58,11 +58,10 @@ public abstract class ContentTab<V extends org.alice.ide.projecturi.views.TabCon
 	protected abstract void refresh();
 
 	@Override
-	public org.lgna.croquet.components.ScrollPane createScrollPane() {
-		org.lgna.croquet.components.ScrollPane rv = super.createScrollPane();
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		org.lgna.croquet.components.ScrollPane rv = super.createScrollPaneIfDesired();
 		rv.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 		rv.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
-		rv.setBothScrollBarIncrements( 12, 24 );
 		return rv;
 	}
 }

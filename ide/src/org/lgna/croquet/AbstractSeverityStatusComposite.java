@@ -94,4 +94,9 @@ public abstract class AbstractSeverityStatusComposite<V extends org.lgna.croquet
 	public AbstractSeverityStatusComposite( java.util.UUID id ) {
 		super( id );
 	}
+
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
 }
