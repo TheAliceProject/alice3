@@ -55,8 +55,24 @@ public class MembersComposite extends org.lgna.croquet.SimpleComposite<org.alice
 		return SingletonHolder.instance;
 	}
 
+	private final org.alice.ide.member.ProcedureTabComposite procedureTabComposite = new org.alice.ide.member.ProcedureTabComposite();
+	private final org.alice.ide.member.FunctionTabComposite functionTabComposite = new org.alice.ide.member.FunctionTabComposite();
+	private final org.alice.ide.member.SearchTabComposite searchTabComposite = new org.alice.ide.member.SearchTabComposite();
+	private final org.lgna.croquet.TabSelectionState<org.alice.ide.member.MemberTabComposite> tabState;
+
 	private MembersComposite() {
 		super( java.util.UUID.fromString( "10225a3f-f05d-42f3-baaf-f6bd0f8a7c68" ) );
+		org.alice.ide.member.MemberTabComposite[] tabComposites;
+		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
+			tabComposites = new org.alice.ide.member.MemberTabComposite[] { this.procedureTabComposite, this.functionTabComposite, this.searchTabComposite };
+		} else {
+			tabComposites = new org.alice.ide.member.MemberTabComposite[] { this.procedureTabComposite, this.functionTabComposite, this.searchTabComposite, null };
+		}
+		this.tabState = this.createTabSelectionState( this.createKey( "tabState" ), org.alice.ide.member.MemberTabComposite.class, 0, tabComposites );
+	}
+
+	public org.lgna.croquet.TabSelectionState<org.alice.ide.member.MemberTabComposite> getTabState() {
+		return this.tabState;
 	}
 
 	@Override

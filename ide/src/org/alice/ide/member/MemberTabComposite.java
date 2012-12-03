@@ -83,8 +83,6 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 
 	public MemberTabComposite( java.util.UUID migrationId ) {
 		super( migrationId, IsCloseable.FALSE );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handlePreActivation tab composites" );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 	}
 
 	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
@@ -97,4 +95,16 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 	}
 
 	public abstract java.util.List<MethodsSubComposite> getSubComposites();
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactorySelectionObserver );
+		super.handlePostDeactivation();
+	}
 }
