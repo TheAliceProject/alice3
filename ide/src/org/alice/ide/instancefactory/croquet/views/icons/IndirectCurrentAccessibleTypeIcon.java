@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,23 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.members;
+package org.alice.ide.instancefactory.croquet.views.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTemplateComposite<V extends org.lgna.croquet.components.View<?, ?>> extends TemplateComposite<V> {
-	public MemberTemplateComposite( java.util.UUID id ) {
-		super( id );
+public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
+	SINGLTON;
+
+	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 32, 24 );
+
+	private org.lgna.croquet.icon.IconFactory getCurrentAccessibleTypeIconFactory() {
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		if( instanceFactory != null ) {
+			org.lgna.croquet.icon.IconFactory rv = null;
+			if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+				org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
+				rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( thisFieldAccessFactory.getField() );
+			}
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( instanceFactory.getValueType() );
+			}
+			return rv;
+		} else {
+			return null;
+		}
 	}
 
-	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		final boolean IS_ICON_DESIRED = false;
-		if( IS_ICON_DESIRED ) {
-			button.getAwtComponent().setIcon( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
+	public int getIconWidth() {
+		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+		if( iconFactory != null ) {
+			return SIZE.width;
+		} else {
+			return 0;
+		}
+	}
+
+	public int getIconHeight() {
+		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+		if( iconFactory != null ) {
+			return SIZE.height;
+		} else {
+			return 0;
+		}
+	}
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+		if( iconFactory != null ) {
+			iconFactory.getIcon( SIZE ).paintIcon( c, g, x, y );
 		}
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,23 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.members;
+package org.alice.ide.member.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTemplateComposite<V extends org.lgna.croquet.components.View<?, ?>> extends TemplateComposite<V> {
-	public MemberTemplateComposite( java.util.UUID id ) {
-		super( id );
-	}
-
-	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		final boolean IS_ICON_DESIRED = false;
-		if( IS_ICON_DESIRED ) {
-			button.getAwtComponent().setIcon( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
-		}
+public class ControlFlowTabView extends org.lgna.croquet.components.BorderPanel {
+	public ControlFlowTabView( org.alice.ide.member.ControlFlowTabComposite composite ) {
+		this.addCenterComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( null ).getView() );
 	}
 }
