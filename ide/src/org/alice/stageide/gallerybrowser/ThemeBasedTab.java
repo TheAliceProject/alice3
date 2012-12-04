@@ -40,61 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PersonResourceKey extends ResourceKey {
-
-	private static final org.lgna.croquet.icon.IconFactory ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( org.alice.stageide.gallerybrowser.ResourceBasedTab.CREATE_PERSON_LARGE_ICON.getImage() );
-
+public class ThemeBasedTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ThemeBasedTabView> {
 	private static class SingletonHolder {
-		private static PersonResourceKey instance = new PersonResourceKey();
+		private static ThemeBasedTab instance = new ThemeBasedTab();
 	}
 
-	public static PersonResourceKey getInstance() {
+	public static ThemeBasedTab getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private PersonResourceKey() {
+	private ThemeBasedTab() {
+		super( java.util.UUID.fromString( "9f620eca-b4a8-4b8b-879d-4d39f44aff7b" ) );
 	}
 
 	@Override
-	public String getDisplayText() {
-		return "Person";
+	protected org.alice.stageide.gallerybrowser.views.ThemeBasedTabView createView() {
+		return new org.alice.stageide.gallerybrowser.views.ThemeBasedTabView( this );
 	}
 
-	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return ICON_FACTORY;
-	}
-
-	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		org.lgna.story.resources.sims2.PersonResource personResource = org.alice.stageide.personresource.RandomPersonResourceComposite.getInstance().getValueCreator().fireAndGetValue( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
-		org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource( personResource );
-		org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
-		try {
-			org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, argumentExpression );
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-			throw new RuntimeException( ccee );
-		}
-	}
-
-	@Override
-	public String[] getTags() {
-		return null;
-	}
-
-	@Override
-	public boolean isLeaf() {
-		return true;
-	}
-
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.getDisplayText() );
-	}
 }
