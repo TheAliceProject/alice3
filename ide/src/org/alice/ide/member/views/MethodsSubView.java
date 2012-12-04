@@ -62,7 +62,7 @@ public class MethodsSubView extends org.lgna.croquet.components.PageAxisPanel {
 		composite.updateTabTitle();
 
 		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			org.lgna.croquet.components.DragComponent<?, ?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
+			org.lgna.croquet.components.DragComponent<?, ?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getMethodInvocationTemplate( method );
 			org.lgna.croquet.components.JComponent<?> component;
 			if( method.isUserAuthored() ) {
 				org.alice.ide.declarationseditor.CodeComposite codeComposite = org.alice.ide.declarationseditor.CodeComposite.getInstance( method );
