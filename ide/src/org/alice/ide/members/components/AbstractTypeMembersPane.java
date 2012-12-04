@@ -112,27 +112,27 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 	protected abstract edu.cmu.cs.dennisc.property.ListProperty<? extends org.lgna.project.ast.UserMember>[] getListPropertiesToListenTo( org.lgna.project.ast.NamedUserType type );
 
 	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
-		if( member instanceof org.lgna.project.ast.AbstractMethod ) {
-			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
-			if( method.isStatic() ) {
+		if( member != null ) {
+			if( member instanceof org.lgna.project.ast.AbstractMethod ) {
+				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
+				if( method.isStatic() ) {
+					return false;
+				}
+			} else if( member instanceof org.lgna.project.ast.AbstractField ) {
+				org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)member;
+				if( field.isStatic() ) {
+					return false;
+				}
+			}
+			if( member.isPublicAccess() || member.isUserAuthored() ) {
+				org.lgna.project.annotations.Visibility visibility = member.getVisibility();
+				return ( visibility == null ) || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
+			} else {
 				return false;
 			}
-		} else if( member instanceof org.lgna.project.ast.AbstractField ) {
-			org.lgna.project.ast.AbstractField field = (org.lgna.project.ast.AbstractField)member;
-			if( field.isStatic() ) {
-				return false;
-			}
-		}
-		if( member.isPublicAccess() || member.isUserAuthored() ) {
-			org.lgna.project.annotations.Visibility visibility = member.getVisibility();
-			return ( visibility == null ) || visibility.equals( org.lgna.project.annotations.Visibility.PRIME_TIME );
 		} else {
 			return false;
 		}
-	}
-
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getActiveInstance();
 	}
 
 	protected abstract Iterable<org.lgna.croquet.components.Component<?>> createTemplates( org.lgna.project.ast.JavaGetterSetterPair getterSetterPair );
@@ -147,26 +147,34 @@ public abstract class AbstractTypeMembersPane extends org.lgna.croquet.component
 		this.removeAllComponents();
 		org.lgna.croquet.components.PageAxisPanel page = new org.lgna.croquet.components.PageAxisPanel();
 		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
-			if( isInclusionDesired( field ) ) {
-				Iterable<org.lgna.croquet.components.Component<?>> templates = this.createTemplates( field );
-				if( templates != null ) {
-					for( org.lgna.croquet.components.Component<?> template : templates ) {
-						page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
-						page.addComponent( template );
+			if( field != null ) {
+				if( isInclusionDesired( field ) ) {
+					Iterable<org.lgna.croquet.components.Component<?>> templates = this.createTemplates( field );
+					if( templates != null ) {
+						for( org.lgna.croquet.components.Component<?> template : templates ) {
+							page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
+							page.addComponent( template );
+						}
 					}
 				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( type );
 			}
 		}
 		for( org.lgna.project.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-			if( isInclusionDesired( method ) ) {
-				method = (org.lgna.project.ast.AbstractMethod)method.getShortestInChain();
-				Iterable<org.lgna.croquet.components.Component<?>> templates = this.createTemplates( method );
-				if( templates != null ) {
-					for( org.lgna.croquet.components.Component<?> template : templates ) {
-						page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
-						page.addComponent( template );
+			if( method != null ) {
+				if( isInclusionDesired( method ) ) {
+					method = (org.lgna.project.ast.AbstractMethod)method.getShortestInChain();
+					Iterable<org.lgna.croquet.components.Component<?>> templates = this.createTemplates( method );
+					if( templates != null ) {
+						for( org.lgna.croquet.components.Component<?> template : templates ) {
+							page.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 1 ) );
+							page.addComponent( template );
+						}
 					}
 				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( type );
 			}
 		}
 		if( this.type instanceof org.lgna.project.ast.JavaType ) {

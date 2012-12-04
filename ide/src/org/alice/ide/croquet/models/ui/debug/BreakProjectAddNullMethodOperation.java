@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.ui.debug;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+public class BreakProjectAddNullMethodOperation extends org.lgna.croquet.ActionOperation {
 	private static class SingletonHolder {
-		private static InternalTestingMenuModel instance = new InternalTestingMenuModel();
+		private static BreakProjectAddNullMethodOperation instance = new BreakProjectAddNullMethodOperation();
 	}
 
-	public static InternalTestingMenuModel getInstance() {
+	public static BreakProjectAddNullMethodOperation getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private InternalTestingMenuModel() {
-		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.debug.RaiseAnomalousSituationOperation.getInstance().getMenuItemPrepModel(),
-				SEPARATOR,
-				org.alice.ide.croquet.models.ui.debug.BreakProjectAddNullMethodOperation.getInstance().getMenuItemPrepModel(),
-				SEPARATOR,
-				org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.video.ProofOfConceptRecordVideoOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel(),
-				new org.lgna.cheshire.test.IsShowingHackTutorialState().getMenuItemPrepModel(),
-				new org.alice.ide.highlight.ShowMeOperation().getMenuItemPrepModel() );
+	private BreakProjectAddNullMethodOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "06927780-2f06-41ba-a32c-2bfefd2188e9" ) );
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setName( "Break Project Add Null Method" );
+	}
+
+	@Override
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.project.ast.UserMethod method = null;
+		org.alice.ide.IDE.getActiveInstance().getSceneType().methods.add( method );
 	}
 }
