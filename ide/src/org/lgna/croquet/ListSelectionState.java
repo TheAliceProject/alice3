@@ -221,13 +221,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	private static <T> T getItemAt( org.lgna.croquet.data.ListData<T> data, int index ) {
 		if( index != -1 ) {
-			final boolean IS_READY_FOR_PRIME_TIME = true;
-			if( IS_READY_FOR_PRIME_TIME ) {
-				return data.getItemAt( index );
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( data, index );
-				return null;
-			}
+			return data.getItemAt( index );
 		} else {
 			return null;
 		}

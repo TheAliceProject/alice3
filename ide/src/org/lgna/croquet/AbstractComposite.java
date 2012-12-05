@@ -281,7 +281,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		private final Key key;
 
 		public InternalTabSelectionState( Class<T> cls, int selectionIndex, T[] data, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), cls, selectionIndex, data );
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), cls, data, selectionIndex );
 			this.key = key;
 		}
 

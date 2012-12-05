@@ -136,12 +136,7 @@ package org.alice.ide.members;
 
 public abstract class TemplatesTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<TemplateComposite> {
 	public TemplatesTabSelectionState( java.util.UUID id, TemplateComposite... composites ) {
-		super(
-				org.alice.ide.IDE.DOCUMENT_UI_GROUP,
-				id,
-				TemplateComposite.class,
-				0,
-				composites );
+		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, id, TemplateComposite.class, composites, 0 );
 	}
 
 	public abstract org.lgna.croquet.components.AbstractTabbedPane<?, ?> createTabbedPane();

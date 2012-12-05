@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimpleTabSelectionState<C extends SimpleTabComposite<?>> extends ImmutableDataTabSelectionState<C> {
-	public SimpleTabSelectionState( Group group, java.util.UUID migrationId, Class<C> cls, C[] values, int selectionIndex ) {
-		super( group, migrationId, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), values, selectionIndex );
+public class ImmutableDataTabSelectionState<T extends TabComposite<?>> extends TabSelectionState<T> {
+	public ImmutableDataTabSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, T[] values, int selectionIndex ) {
+		super( group, migrationId, new org.lgna.croquet.data.ImmutableListData<T>( itemCodec, values ), selectionIndex );
 	}
 }

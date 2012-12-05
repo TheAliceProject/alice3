@@ -59,8 +59,8 @@ public class PropertyAndMarkerPanelSelectionState extends org.lgna.croquet.Simpl
 				org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP,
 				java.util.UUID.fromString( "96044656-6e0b-442a-ad4d-549dccc3e657" ),
 				org.lgna.croquet.SimpleTabComposite.class,
-				0,
-				ObjectPropertiesTab.getInstance(), MarkerPanelTab.getInstance() );
+				new org.lgna.croquet.SimpleTabComposite[] { ObjectPropertiesTab.getInstance(), MarkerPanelTab.getInstance() },
+				0 );
 	}
 
 	//    private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
