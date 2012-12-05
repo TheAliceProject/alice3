@@ -46,7 +46,7 @@ package org.alice.ide.sceneeditor;
  * @author dculyba
  * 
  */
-public class SceneFieldListSelectionState extends org.lgna.croquet.DefaultListSelectionState<org.lgna.project.ast.UserField> {
+public class SceneFieldListSelectionState extends org.lgna.croquet.MutableDataListSelectionState<org.lgna.project.ast.UserField> {
 	private static class SingletonHolder {
 		private static SceneFieldListSelectionState instance = new SceneFieldListSelectionState();
 	}

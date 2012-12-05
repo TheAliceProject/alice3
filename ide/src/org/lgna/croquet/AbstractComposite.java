@@ -254,7 +254,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
-	private static final class InternalDefaultListSelectionState<T> extends DefaultListSelectionState<T> {
+	private static final class InternalDefaultListSelectionState<T> extends MutableDataListSelectionState<T> {
 		private final Key key;
 
 		private InternalDefaultListSelectionState( ItemCodec<T> codec, int selectionIndex, T[] data, Key key ) {
