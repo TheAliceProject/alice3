@@ -125,6 +125,8 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 				//return ResourceCascade.getInstance( classResourceKey.getType(), dropSite );
 				return new AddFieldCascade( this, dropSite );
 			}
+		} else if( this.resourceKey instanceof GroupTagKey ) {
+			return new AddFieldCascade( this, dropSite );
 		} else {
 			return null;
 		}
