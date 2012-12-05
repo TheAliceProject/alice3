@@ -46,15 +46,7 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class ThemeBasedTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ThemeBasedTabView> {
-	private static class SingletonHolder {
-		private static ThemeBasedTab instance = new ThemeBasedTab();
-	}
-
-	public static ThemeBasedTab getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ThemeBasedTab() {
+	public ThemeBasedTab() {
 		super( java.util.UUID.fromString( "9f620eca-b4a8-4b8b-879d-4d39f44aff7b" ) );
 	}
 

@@ -46,19 +46,11 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.SearchTabView> {
-	private static class SingletonHolder {
-		private static SearchTab instance = new SearchTab();
-	}
-
-	public static SearchTab getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
 	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( this.createKey( "noMatchesLabel" ) );
 	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( this.createKey( "noEntryLabel" ) );
 
-	private SearchTab() {
+	public SearchTab() {
 		super( java.util.UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
 	}
 
