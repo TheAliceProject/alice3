@@ -286,7 +286,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		return this.getSelectedItem();
 	}
 
-	public T getSelectedItem() {
+	/* package-private */T getSelectedItem() {
 		if( this.dataIndexPair.index >= 0 ) {
 			if( this.dataIndexPair.index < this.getItemCount() ) {
 				return this.getItemAt( this.dataIndexPair.index );
@@ -303,7 +303,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	protected void handleMissingItem( T missingItem ) {
 	}
 
-	public void setSelectedItem( T selectedItem ) {
+	private void setSelectedItem( T selectedItem ) {
 		int index;
 		if( selectedItem != null ) {
 			index = this.indexOf( selectedItem );
