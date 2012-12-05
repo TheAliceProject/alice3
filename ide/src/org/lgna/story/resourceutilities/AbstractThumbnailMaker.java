@@ -102,7 +102,7 @@ public abstract class AbstractThumbnailMaker {
 
 	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform ) throws Exception {
 		getSGCameraVehicle().setLocalTransformation( cameraTransform );
-		offscreenLookingGlass.clearAndRenderOffscreen();
+		//offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
 		Image returnImage;
 		if( this.antAliasFactor != 0 ) {
