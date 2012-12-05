@@ -182,7 +182,7 @@ public abstract class StringState extends State<String> {
 	//		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
 	//	}
 	@Override
-	protected String getActualValue() {
+	protected String getValueFromSwing() {
 		try {
 			return this.swingModel.document.getText( 0, this.swingModel.document.getLength() );
 		} catch( javax.swing.text.BadLocationException ble ) {

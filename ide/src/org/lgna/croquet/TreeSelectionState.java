@@ -295,7 +295,7 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	}
 
 	@Override
-	protected T getActualValue() {
+	protected T getValueFromSwing() {
 		return this.getSelectedNode();
 	}
 

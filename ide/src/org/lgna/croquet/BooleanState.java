@@ -272,7 +272,7 @@ public abstract class BooleanState extends State<Boolean> {
 	}
 
 	@Override
-	protected Boolean getActualValue() {
+	protected Boolean getValueFromSwing() {
 		return this.swingModel.buttonModel.isSelected();
 	}
 

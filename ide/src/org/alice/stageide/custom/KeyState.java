@@ -65,7 +65,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 	}
 
 	@Override
-	protected org.lgna.story.Key getActualValue() {
+	protected org.lgna.story.Key getValueFromSwing() {
 		return this.value;
 	}
 

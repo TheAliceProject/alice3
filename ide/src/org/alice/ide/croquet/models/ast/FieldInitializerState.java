@@ -68,7 +68,7 @@ public class FieldInitializerState extends org.lgna.croquet.CustomItemStateWithI
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getActualValue() {
+	protected org.lgna.project.ast.Expression getValueFromSwing() {
 		return this.field.initializer.getValue();
 	}
 

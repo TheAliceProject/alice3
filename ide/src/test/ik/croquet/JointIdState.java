@@ -54,7 +54,7 @@ public abstract class JointIdState extends org.lgna.croquet.CustomItemStateWithI
 	}
 
 	@Override
-	protected org.lgna.story.resources.JointId getActualValue() {
+	protected org.lgna.story.resources.JointId getValueFromSwing() {
 		return value;
 	}
 

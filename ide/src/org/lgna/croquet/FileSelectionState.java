@@ -83,7 +83,7 @@ public abstract class FileSelectionState extends ItemState<java.io.File> {
 	}
 
 	@Override
-	protected java.io.File getActualValue() {
+	protected java.io.File getValueFromSwing() {
 		return this.swingModel.jFileChooser.getSelectedFile();
 	}
 

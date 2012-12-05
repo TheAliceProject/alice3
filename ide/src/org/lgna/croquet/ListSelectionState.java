@@ -282,7 +282,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	@Override
-	protected T getActualValue() {
+	protected T getValueFromSwing() {
 		return this.getSelectedItem();
 	}
 

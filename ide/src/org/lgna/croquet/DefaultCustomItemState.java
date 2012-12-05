@@ -59,7 +59,7 @@ public abstract class DefaultCustomItemState<T> extends org.lgna.croquet.CustomI
 	}
 
 	@Override
-	protected T getActualValue() {
+	protected T getValueFromSwing() {
 		return this.value;
 	}
 
