@@ -74,12 +74,20 @@ public class TemplateFactory {
 	public static org.lgna.croquet.components.DragComponent getFunctionInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
 		org.lgna.croquet.components.DragComponent rv = mapMethodToFunctionInvocationTemplate.get( method );
 		if( rv != null ) {
-
+			//pass
 		} else {
 			rv = new org.alice.ide.members.components.templates.FunctionInvocationTemplate( method );
 			mapMethodToFunctionInvocationTemplate.put( method, rv );
 		}
 		return rv;
+	}
+
+	public static org.lgna.croquet.components.DragComponent getMethodInvocationTemplate( org.lgna.project.ast.AbstractMethod method ) {
+		if( method.isProcedure() ) {
+			return getProcedureInvocationTemplate( method );
+		} else {
+			return getFunctionInvocationTemplate( method );
+		}
 	}
 
 	public static org.lgna.croquet.components.DragComponent getAccessorTemplate( org.lgna.project.ast.AbstractField field ) {

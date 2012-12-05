@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ui.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsAlwaysShowingBlocksState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsAlwaysShowingBlocksState {
 	private static class SingletonHolder {
 		private static IsAlwaysShowingBlocksState instance = new IsAlwaysShowingBlocksState();
 	}
@@ -56,6 +56,9 @@ public class IsAlwaysShowingBlocksState extends org.lgna.croquet.preferences.Pre
 	}
 
 	private IsAlwaysShowingBlocksState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "addf0a81-5fc1-4ee6-8ab5-cbb07051a154" ), true );
+	}
+
+	public final boolean getValue() {
+		return true;
 	}
 }

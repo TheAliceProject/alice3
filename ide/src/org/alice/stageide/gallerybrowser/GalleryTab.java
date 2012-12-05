@@ -52,13 +52,13 @@ public abstract class GalleryTab<V extends org.lgna.croquet.components.Panel> ex
 	}
 
 	@Override
-	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
 	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
 		super.customizeTitleComponentAppearance( button );
-		button.scaleFont( 1.5f );
+		button.scaleFont( 1.2f );
 	}
 }

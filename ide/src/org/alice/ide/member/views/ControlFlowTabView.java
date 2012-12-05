@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.alice.ide.member.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<ContentTab> {
-	private static class SingletonHolder {
-		private static ProjectTabSelectionState instance = new ProjectTabSelectionState();
-	}
-
-	public static ProjectTabSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ProjectTabSelectionState() {
-		super(
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ),
-				ContentTab.class,
-				-1,
-				TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance() );
-	}
-
-	public void refresh() {
-		for( ContentTab contentTab : this.toArray() ) {
-			contentTab.refresh();
-		}
-	}
-
-	public void selectAppropriateTab( boolean isNew ) {
-		ContentTab tab;
-		if( isNew ) {
-			tab = TemplatesTab.getInstance();
-		} else {
-			tab = MyProjectsTab.getInstance(); //todo: recentPane?
-		}
-		this.setValueTransactionlessly( tab );
-		org.lgna.croquet.components.ComponentManager.revalidateAndRepaintAllComponents( this );
+public class ControlFlowTabView extends org.lgna.croquet.components.BorderPanel {
+	public ControlFlowTabView( org.alice.ide.member.ControlFlowTabComposite composite ) {
+		this.addCenterComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( null ).getView() );
 	}
 }

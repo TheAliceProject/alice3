@@ -93,7 +93,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		this.promptForLicenseAgreements();
 
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
-		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueListener( this.isAlwaysShowingBlocksListener );
 	}
 
 	public abstract ApiConfigurationManager getApiConfigurationManager();
@@ -304,14 +303,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 					mapCodeToInstanceFactory.put( code, nextValue );
 				}
 			}
-		}
-	};
-	private final org.lgna.croquet.State.ValueListener<Boolean> isAlwaysShowingBlocksListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "restart required" );
 		}
 	};
 

@@ -46,15 +46,7 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public final class FunctionTabComposite extends MemberTabComposite {
-	private static class SingletonHolder {
-		private static FunctionTabComposite instance = new FunctionTabComposite();
-	}
-
-	public static FunctionTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private FunctionTabComposite() {
+	public FunctionTabComposite() {
 		super( java.util.UUID.fromString( "a2a01f20-37ba-468f-b35b-2b6a2ed94ac7" ) );
 	}
 

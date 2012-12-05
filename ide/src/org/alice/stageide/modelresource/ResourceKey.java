@@ -62,6 +62,8 @@ public abstract class ResourceKey {
 
 	public abstract String[] getTags();
 
+	public abstract String[] getGroupTags();
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

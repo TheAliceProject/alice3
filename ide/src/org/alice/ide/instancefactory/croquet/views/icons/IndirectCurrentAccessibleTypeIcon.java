@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+package org.alice.ide.instancefactory.croquet.views.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MemberTabSelectionState extends org.lgna.croquet.SimpleTabSelectionState<MemberTabComposite> {
-	private static class SingletonHolder {
-		private static MemberTabSelectionState instance = new MemberTabSelectionState();
+public enum IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
+	SINGLTON;
+
+	private static final java.awt.Dimension SIZE = new java.awt.Dimension( 32, 24 );
+
+	private org.lgna.croquet.icon.IconFactory getCurrentAccessibleTypeIconFactory() {
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		if( instanceFactory != null ) {
+			org.lgna.croquet.icon.IconFactory rv = null;
+			if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+				org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
+				rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( thisFieldAccessFactory.getField() );
+			}
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( instanceFactory.getValueType() );
+			}
+			return rv;
+		} else {
+			return null;
+		}
 	}
 
-	public static MemberTabSelectionState getInstance() {
-		return SingletonHolder.instance;
+	public int getIconWidth() {
+		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+		if( iconFactory != null ) {
+			return SIZE.width;
+		} else {
+			return 0;
+		}
 	}
 
-	private MemberTabSelectionState() {
-		super(
-				org.lgna.croquet.Application.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "941e561a-5766-4e0e-bde1-b5f9e67ee7d0" ),
-				MemberTabComposite.class,
-				0,
-				ProcedureTabComposite.getInstance(),
-				FunctionTabComposite.getInstance() );
+	public int getIconHeight() {
+		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+		if( iconFactory != null ) {
+			return SIZE.height;
+		} else {
+			return 0;
+		}
 	}
 
-	public static void main( String[] args ) {
-		MemberTabSelectionState state = new MemberTabSelectionState();
-
-		org.lgna.croquet.Application application = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = application.getFrame();
-		frame.getContentPanel().addCenterComponent( state.createFolderTabbedPane() );
-		frame.getContentPanel().setMinimumPreferredHeight( 800 );
-		frame.pack();
-		frame.setVisible( true );
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
+		if( iconFactory != null ) {
+			iconFactory.getIcon( SIZE ).paintIcon( c, g, x, y );
+		}
 	}
 }

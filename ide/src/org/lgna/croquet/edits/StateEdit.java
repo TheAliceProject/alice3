@@ -86,14 +86,13 @@ public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.cro
 	}
 
 	@Override
-	public final StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
-		rv.append( "select " );
-		this.getModel().appendRepresentation( rv, this.nextValue );
-		return rv;
+	protected void appendTutorialTransactionTitle( java.lang.StringBuilder sbTitle ) {
+		sbTitle.append( "select " );
+		this.getModel().appendRepresentation( sbTitle, this.nextValue );
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "select " );
 		org.lgna.croquet.State<T> state = this.getModel();
 		if( state != null ) {
@@ -107,7 +106,6 @@ public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.cro
 		} else {
 			rv.append( this.nextValue );
 		}
-		return rv;
 	}
 
 	@Override

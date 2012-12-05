@@ -65,8 +65,7 @@ public class PasteFromClipboardEdit extends ClipboardEdit {
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "paste from clipboard" );
-		return rv;
 	}
 }

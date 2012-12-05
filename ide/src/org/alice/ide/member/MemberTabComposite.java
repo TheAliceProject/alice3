@@ -45,7 +45,7 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.ide.member.views.MemberTabView> {
+public abstract class MemberTabComposite extends MemberOrControlFlowTabComposite<org.alice.ide.member.views.MemberTabView> {
 	public static org.alice.ide.member.MethodsSubComposite SEPARATOR = null;
 
 	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
@@ -82,9 +82,7 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 	};
 
 	public MemberTabComposite( java.util.UUID migrationId ) {
-		super( migrationId, IsCloseable.FALSE );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handlePreActivation tab composites" );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+		super( migrationId );
 	}
 
 	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
@@ -97,4 +95,26 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 	}
 
 	public abstract java.util.List<MethodsSubComposite> getSubComposites();
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactorySelectionObserver );
+		super.handlePostDeactivation();
+	}
+
+	@Override
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
+		final boolean IS_ICON_DESIRED = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() == false;
+		if( IS_ICON_DESIRED ) {
+			button.getAwtComponent().setIcon( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
+			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
+		}
+	}
 }

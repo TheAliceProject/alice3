@@ -48,7 +48,5 @@ package org.lgna.croquet;
 public interface TabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
 	public boolean isCloseable();
 
-	public org.lgna.croquet.components.ScrollPane createScrollPane();
-
 	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button );
 }

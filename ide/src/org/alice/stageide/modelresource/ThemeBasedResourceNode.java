@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.alice.stageide.modelresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectTemplateProjectWithPreviewComposite extends SelectProjectUriWithPreviewComposite {
-	public SelectTemplateProjectWithPreviewComposite() {
-		super( java.util.UUID.fromString( "0f98d378-be39-4e4a-8b69-95361b56995e" ), true );
+public final class ThemeBasedResourceNode extends ResourceNode {
+	public ThemeBasedResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
+		super( java.util.UUID.fromString( "ae62639f-2bf2-4eb4-b6aa-ebaf2aff976d" ), resourceKey, children );
+	}
+
+	@Override
+	protected org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getState() {
+		return ThemeBasedResourceNodeTreeSelectionState.getInstance();
 	}
 }

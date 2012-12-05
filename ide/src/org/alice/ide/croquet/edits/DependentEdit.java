@@ -91,8 +91,8 @@ public final class DependentEdit<M extends org.lgna.croquet.CompletionModel> ext
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
-		return this.getResponsibleModel().updatePresentation( rv );
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
+		this.getResponsibleModel().appendDescription( rv, descriptionStyle.isDetailed() );
 	}
 
 	@Override

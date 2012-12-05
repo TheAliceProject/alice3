@@ -75,7 +75,7 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 	};
 
 	private java.util.zip.ZipFile zipFile;
-	private String version;
+	private org.lgna.project.Version version;
 
 	@Override
 	public void initialize( java.lang.String[] args ) {
@@ -189,7 +189,7 @@ public class ProjectFileEditor extends org.lgna.croquet.simple.SimpleApplication
 			
 			java.util.zip.ZipEntry versionEntry = this.zipFile.getEntry( VERSION_ENTRY_NAME );
 			java.io.InputStream versionIs = this.zipFile.getInputStream( versionEntry );
-			this.version = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( versionIs );
+			this.version = new org.lgna.project.Version( edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( versionIs ) );
 
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( path, ioe );

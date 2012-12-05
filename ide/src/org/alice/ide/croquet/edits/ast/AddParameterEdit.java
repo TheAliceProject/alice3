@@ -70,9 +70,8 @@ public class AddParameterEdit extends ParameterEdit {
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "declare:" );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getParameter(), org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 }

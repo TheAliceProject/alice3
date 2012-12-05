@@ -130,6 +130,11 @@ public final class EnumConstantResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public String[] getGroupTags() {
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this.enumConstant.getClass() );
+	}
+
+	@Override
 	public boolean equals( Object o ) {
 		if( this == o ) {
 			return true;
