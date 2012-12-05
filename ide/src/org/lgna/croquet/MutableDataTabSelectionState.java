@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SimpleTabSelectionState<C extends SimpleTabComposite<?>> extends MutableDataTabSelectionState<C> {
-	public SimpleTabSelectionState( Group group, java.util.UUID id, Class<C> cls, int selectionIndex ) {
-		super( group, id, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), selectionIndex );
+public class MutableDataTabSelectionState<T extends TabComposite<?>> extends TabSelectionState<T> {
+	public MutableDataTabSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex ) {
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec ), selectionIndex );
 	}
 
-	public SimpleTabSelectionState( Group group, java.util.UUID id, Class<C> cls ) {
-		super( group, id, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ) );
+	public MutableDataTabSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec ) {
+		this( group, migrationId, itemCodec, -1 );
 	}
 
-	public SimpleTabSelectionState( Group group, java.util.UUID id, Class<C> cls, int selectionIndex, java.util.Collection<C> data ) {
-		super( group, id, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), selectionIndex, data );
+	public MutableDataTabSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, java.util.Collection<T> data ) {
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
 	}
 
-	public SimpleTabSelectionState( Group group, java.util.UUID id, Class<C> cls, int selectionIndex, C... data ) {
-		super( group, id, org.lgna.croquet.codecs.SimpleTabCompositeCodec.getInstance( cls ), selectionIndex, data );
+	public MutableDataTabSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, T... data ) {
+		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
 	}
 }
