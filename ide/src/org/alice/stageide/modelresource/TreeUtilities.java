@@ -121,6 +121,20 @@ public class TreeUtilities {
 		}
 	}
 
+	private static java.util.List<ResourceNode> convert( java.util.List<ResourceNode> srcNodes ) {
+		if( srcNodes != null ) {
+			java.util.List<ResourceNode> dstNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( ResourceNode srcNode : srcNodes ) {
+				java.util.List<ResourceNode> dstChildNodes = convert( srcNode.getNodeChildren() );
+				dstNodes.add( new ThemeBasedResourceNode( srcNode.getResourceKey(), dstChildNodes ) );
+			}
+			java.util.Collections.sort( dstNodes );
+			return java.util.Collections.unmodifiableList( dstNodes );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
 	private static ThemeBasedResourceNode createTreeBasedOnTheme() {
 		ResourceNode rootClassHierarchy = getTreeBasedOnClassHierarchy();
 		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
@@ -129,13 +143,9 @@ public class TreeUtilities {
 		java.util.List<ResourceNode> groupNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( String groupTag : map.keySet() ) {
 			GroupTagKey groupTagKey = new GroupTagKey( groupTag );
-			java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( ResourceNode node : map.get( groupTag ) ) {
-				java.util.List<ResourceNode> empty = java.util.Collections.emptyList();
-				childNodes.add( new ThemeBasedResourceNode( node.getResourceKey(), empty ) );
-			}
-			java.util.Collections.sort( childNodes );
-			groupNodes.add( new ThemeBasedResourceNode( groupTagKey, java.util.Collections.unmodifiableList( childNodes ) ) );
+			java.util.List<ResourceNode> srcChildNodes = map.get( groupTag );
+			java.util.List<ResourceNode> dstChildNodes = convert( srcChildNodes );
+			groupNodes.add( new ThemeBasedResourceNode( groupTagKey, dstChildNodes ) );
 		}
 		java.util.Collections.sort( groupNodes );
 		return new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( groupNodes ) );
