@@ -48,8 +48,11 @@ package org.alice.stageide.modelresource;
 public class GroupTagKey extends ResourceKey {
 	private final String groupTag;
 
+	private final org.lgna.croquet.icon.IconFactory iconFactory;
+
 	public GroupTagKey( String groupTag ) {
 		this.groupTag = groupTag;
+		this.iconFactory = new org.alice.stageide.icons.FolderIconFactory( null );
 	}
 
 	@Override
@@ -59,7 +62,7 @@ public class GroupTagKey extends ResourceKey {
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+		return this.iconFactory;
 	}
 
 	@Override

@@ -59,7 +59,9 @@ public class FolderIcon extends org.lgna.croquet.icon.AbstractIcon {
 		if( b ) {
 			org.alice.ide.icons.Icons.FOLDER_BACK_ICON_LARGE.paintIcon( c, g2, 0, 0 );
 		}
-		this.icon.paintIcon( c, g2, 0, 0 );
+		if( this.icon != null ) {
+			this.icon.paintIcon( c, g2, 0, 0 );
+		}
 		if( b ) {
 			java.awt.Composite prevComposite = g2.getComposite();
 			g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 0.9f ) );
