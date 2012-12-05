@@ -46,6 +46,8 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public class GroupTagKey extends ResourceKey {
+	public static final char SEPARATOR = ':';
+
 	private final String groupTag;
 
 	private final org.lgna.croquet.icon.IconFactory iconFactory;
@@ -55,9 +57,18 @@ public class GroupTagKey extends ResourceKey {
 		this.iconFactory = new org.alice.stageide.icons.FolderIconFactory( null );
 	}
 
+	public String getGroupTag() {
+		return this.groupTag;
+	}
+
 	@Override
 	public String getDisplayText() {
-		return this.groupTag;
+		int lastIndex = groupTag.lastIndexOf( GroupTagKey.SEPARATOR );
+		if( lastIndex != -1 ) {
+			return groupTag.substring( lastIndex + 1 );
+		} else {
+			return this.groupTag;
+		}
 	}
 
 	@Override

@@ -243,7 +243,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	protected void popIgnore() {
 		this.ignoreCount--;
 		if( this.ignoreCount >= 0 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "popIgnore", this );
 		}
 	}
 

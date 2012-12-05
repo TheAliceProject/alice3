@@ -82,6 +82,11 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 		return this.children;
 	}
 
+	public void addNodeChild( int index, ResourceNode nodeChild ) {
+		nodeChild.parent = this;
+		this.children.add( index, nodeChild );
+	}
+
 	@Override
 	public String getText() {
 		return this.resourceKey.getDisplayText();
