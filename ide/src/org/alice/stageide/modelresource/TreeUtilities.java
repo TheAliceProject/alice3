@@ -50,15 +50,16 @@ public class TreeUtilities {
 		throw new AssertionError();
 	}
 
-	private static ResourceNode tree;
+	private static ClassHierarchyBasedResourceNode treeBasedOnClassHierarchy;
+	private static ThemeBasedResourceNode treeBasedOnTheme;
 
-	private static ResourceNode createNode( org.lgna.story.resourceutilities.ModelResourceTreeNode source, ResourceKey key ) {
+	private static ClassHierarchyBasedResourceNode createNode( org.lgna.story.resourceutilities.ModelResourceTreeNode source, ResourceKey key ) {
 		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)key;
 			if( classResourceKey.getCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
 				java.util.List<ResourceNode> emptyList = java.util.Collections.emptyList();
-				childNodes.add( new ResourceNode( PersonResourceKey.getInstance(), emptyList ) );
+				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getInstance(), emptyList ) );
 			}
 		}
 		for( org.lgna.story.resourceutilities.ModelResourceTreeNode childSource : source.childrenList() ) {
@@ -76,22 +77,76 @@ public class TreeUtilities {
 			}
 			childNodes.add( createNode( childSource, childKey ) );
 		}
-		return new ResourceNode( key, java.util.Collections.unmodifiableList( childNodes ) );
+		return new ClassHierarchyBasedResourceNode( key, java.util.Collections.unmodifiableList( childNodes ) );
 	}
 
-	private static ResourceNode createTreeBasedOnClassHierarchy() {
+	private static ClassHierarchyBasedResourceNode createTreeBasedOnClassHierarchy() {
 		org.lgna.story.resourceutilities.StorytellingResources storytellingResources = org.lgna.story.resourceutilities.StorytellingResources.getInstance();
 		org.lgna.story.resourceutilities.ModelResourceTreeNode root = storytellingResources.getGalleryTree();
 		return createNode( root, new RootResourceKey() );
 	}
 
-	public static ResourceNode getTreeBasedOnClassHierarchy() {
-		if( tree != null ) {
+	public static ClassHierarchyBasedResourceNode getTreeBasedOnClassHierarchy() {
+		if( treeBasedOnClassHierarchy != null ) {
 			//pass
 		} else {
-			tree = createTreeBasedOnClassHierarchy();
+			treeBasedOnClassHierarchy = createTreeBasedOnClassHierarchy();
 		}
-		return tree;
+		return treeBasedOnClassHierarchy;
 	}
 
+	private static void buildMap( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map, ResourceNode node ) {
+		ResourceKey resourceKey = node.getResourceKey();
+		if( resourceKey instanceof EnumConstantResourceKey ) {
+			//pass
+		} else {
+			if( resourceKey instanceof RootResourceKey ) {
+				//pass
+			} else {
+				String[] groupTags = node.getResourceKey().getGroupTags();
+				String groupTag0;
+				if( ( groupTags != null ) && ( groupTags.length > 0 ) ) {
+					groupTag0 = groupTags[ 0 ];
+				} else {
+					groupTag0 = null;
+				}
+				if( groupTag0 != null ) {
+					java.util.List<ResourceNode> list = map.getInitializingIfAbsentToLinkedList( groupTag0 );
+					list.add( node );
+				}
+			}
+			for( ResourceNode child : node.getNodeChildren() ) {
+				buildMap( map, child );
+			}
+		}
+	}
+
+	private static ThemeBasedResourceNode createTreeBasedOnTheme() {
+		ResourceNode rootClassHierarchy = getTreeBasedOnClassHierarchy();
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
+		buildMap( map, rootClassHierarchy );
+
+		java.util.List<ResourceNode> groupNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( String groupTag : map.keySet() ) {
+			GroupTagKey groupTagKey = new GroupTagKey( groupTag );
+			java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( ResourceNode node : map.get( groupTag ) ) {
+				java.util.List<ResourceNode> empty = java.util.Collections.emptyList();
+				childNodes.add( new ThemeBasedResourceNode( node.getResourceKey(), empty ) );
+			}
+			java.util.Collections.sort( childNodes );
+			groupNodes.add( new ThemeBasedResourceNode( groupTagKey, java.util.Collections.unmodifiableList( childNodes ) ) );
+		}
+		java.util.Collections.sort( groupNodes );
+		return new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( groupNodes ) );
+	}
+
+	public static ThemeBasedResourceNode getTreeBasedOnTheme() {
+		if( treeBasedOnTheme != null ) {
+			//pass
+		} else {
+			treeBasedOnTheme = createTreeBasedOnTheme();
+		}
+		return treeBasedOnTheme;
+	}
 }

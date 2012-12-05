@@ -45,74 +45,16 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState<ResourceNode> {
-	private static final javax.swing.Icon EMPTY_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height );
-
-	private final ResourceNode root;
-
-	public ResourceNodeTreeSelectionState( java.util.UUID migrationId, ResourceNode root ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, migrationId, null, ResourceNodeCodec.SINGLETON );
-		this.root = root;
-		//todo
-		this.updateSwingModel( root );
+public final class ThemeBasedResourceNodeTreeSelectionState extends ResourceNodeTreeSelectionState {
+	private static class SingletonHolder {
+		private static ThemeBasedResourceNodeTreeSelectionState instance = new ThemeBasedResourceNodeTreeSelectionState();
 	}
 
-	@Override
-	protected void updateSwingModel( org.alice.stageide.modelresource.ResourceNode nextValue ) {
-		super.updateSwingModel( nextValue );
-		if( nextValue.getResourceKey().isLeaf() ) {
-			org.lgna.croquet.Model model = nextValue.getLeftButtonClickModel();
-			if( model != null ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( model );
-				model.fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
-			}
-		}
+	public static ThemeBasedResourceNodeTreeSelectionState getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	@Override
-	protected javax.swing.Icon getIconForNode( ResourceNode node ) {
-		org.lgna.croquet.icon.IconFactory iconFactory = node.getResourceKey().getIconFactory();
-		return iconFactory != null ? iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) : EMPTY_ICON;
-	}
-
-	@Override
-	protected String getTextForNode( ResourceNode node ) {
-		return node.getResourceKey().getDisplayText();
-	}
-
-	@Override
-	protected int getChildCount( ResourceNode parent ) {
-		if( this.isLeaf( parent ) ) {
-			return 0;
-		} else {
-			return parent.getNodeChildren().size();
-		}
-	}
-
-	@Override
-	protected ResourceNode getChild( ResourceNode parent, int index ) {
-		return parent.getNodeChildren().get( index );
-	}
-
-	@Override
-	protected int getIndexOfChild( ResourceNode parent, ResourceNode child ) {
-		return parent.getNodeChildren().indexOf( child );
-	}
-
-	@Override
-	public ResourceNode getParent( ResourceNode node ) {
-		return node.getParent();
-	}
-
-	@Override
-	protected ResourceNode getRoot() {
-		return this.root;
-	}
-
-	@Override
-	public boolean isLeaf( ResourceNode node ) {
-		assert node != null : this;
-		assert node.getResourceKey() != null : node;
-		return node.getResourceKey().isLeaf();
+	private ThemeBasedResourceNodeTreeSelectionState() {
+		super( java.util.UUID.fromString( "a17403a2-da1f-46e8-8d3d-c7dd819c98c8" ), TreeUtilities.getTreeBasedOnTheme() );
 	}
 }

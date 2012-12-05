@@ -89,6 +89,11 @@ public class PersonResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public String[] getGroupTags() {
+		return null;
+	}
+
+	@Override
 	public boolean isLeaf() {
 		return true;
 	}

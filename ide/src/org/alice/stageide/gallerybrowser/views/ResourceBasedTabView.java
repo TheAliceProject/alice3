@@ -60,7 +60,7 @@ public class ResourceBasedTabView extends GalleryTabView {
 	public ResourceBasedTabView( org.alice.stageide.gallerybrowser.ResourceBasedTab composite ) {
 		super( composite );
 
-		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = org.alice.stageide.modelresource.ResourceNodeTreeSelectionState.getInstance();
+		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance();
 
 		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
 
