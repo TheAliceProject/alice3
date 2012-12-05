@@ -156,29 +156,7 @@ public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna
 
 	private String generateNameFromInitializer() {
 		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
-		if( instanceCreation != null ) {
-			java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
-			if( fld != null ) {
-				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
-			} else {
-				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = constructor.getDeclaringType();
-				String typeName = abstractType.getName();
-				if( typeName != null ) {
-					//todo: move to api configuration
-					if( typeName.length() > 1 ) {
-						if( ( typeName.charAt( 0 ) == 'S' ) && Character.isUpperCase( typeName.charAt( 1 ) ) ) {
-							typeName = typeName.substring( 1 );
-						}
-					}
-					return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
-				} else {
-					return "";
-				}
-			}
-		} else {
-			return "";
-		}
+		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
 
 	//	protected void updateNameTextField() {
