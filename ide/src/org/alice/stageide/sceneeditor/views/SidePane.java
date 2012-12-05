@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.views;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -55,6 +55,7 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
 import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.croquet.models.sceneditor.PropertyAndMarkerPanelSelectionState;
+import org.alice.stageide.sceneeditor.HandleStyle;
 import org.alice.stageide.sceneeditor.snap.SnapControlPanel;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.components.DefaultRadioButtons;
@@ -71,7 +72,7 @@ import edu.cmu.cs.dennisc.scenegraph.Component;
 /**
  * @author Dennis Cosgrove
  */
-class SidePane extends org.lgna.croquet.components.GridBagPanel {
+public class SidePane extends org.lgna.croquet.components.GridBagPanel {
 	private boolean isExpanded = false;
 	private SnapControlPanel snapControlPanel = null;
 	private GridBagPanel mainPanel = null;
@@ -156,7 +157,8 @@ class SidePane extends org.lgna.croquet.components.GridBagPanel {
 		}
 	}
 
-	public SidePane() {
+	public SidePane( org.alice.stageide.sceneeditor.SideComposite composite ) {
+		super( composite );
 
 		this.mainPanel = new GridBagPanel();
 		this.snapControlPanel = new SnapControlPanel();

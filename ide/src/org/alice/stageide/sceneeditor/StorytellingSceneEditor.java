@@ -304,7 +304,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private SidePane sidePanel = new SidePane();
 	private javax.swing.JSplitPane propertiesSplitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
@@ -577,7 +576,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			{
 				this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
 				this.propertiesSplitPane.setLeftComponent( this.lookingGlassPanel.getAwtComponent() );
-				this.propertiesSplitPane.setRightComponent( this.sidePanel.getAwtComponent() );
+				this.propertiesSplitPane.setRightComponent( SideComposite.getInstance().getView().getAwtComponent() );
 				this.mainPanel.getAwtComponent().add( this.propertiesSplitPane, java.awt.BorderLayout.CENTER );
 				this.lookingGlassPanel.setSouthEastComponent( this.contractButton );
 
