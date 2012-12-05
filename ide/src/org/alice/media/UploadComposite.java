@@ -224,7 +224,6 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 
 	@Override
 	public void handlePreActivation() {
-		System.out.println( "hi" );
 		super.handlePreActivation();
 		getView().setMovie( owner.getFile() );
 	}

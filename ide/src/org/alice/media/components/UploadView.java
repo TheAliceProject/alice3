@@ -46,6 +46,7 @@ import java.awt.Dimension;
 import java.io.File;
 import java.util.LinkedList;
 
+import org.alice.media.MoviePlayerComposite;
 import org.alice.media.UploadComposite;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.CheckBox;
@@ -63,16 +64,16 @@ import org.lgna.croquet.components.ViewController;
  */
 public class UploadView extends BorderPanel {
 
-	//	private MoviePlayerComposite moviePlayerComposite;
+	private MoviePlayerComposite moviePlayerComposite;
 
 	public UploadView( UploadComposite composite ) {
 		super( composite );
 		this.addComponent( new UserNameAndPasswordComponent( composite ), Constraint.PAGE_START );
-		//		moviePlayerComposite = new MoviePlayerComposite( composite.getFile() );
+		moviePlayerComposite = new MoviePlayerComposite( composite.getFile() );
 		BorderPanel bPanel = new BorderPanel();
-		//		MoviePlayerView panel = moviePlayerComposite.getView();
-		//		bPanel.addComponent( new PreserveAspectRatioPanel( panel, new Dimension( 16, 9 ) ), Constraint.CENTER );
-		bPanel.addComponent( new PreserveAspectRatioPanel( new Label( "Preview Coming Soon!" ), new Dimension( 16, 9 ) ), Constraint.CENTER );
+		MoviePlayerView panel = moviePlayerComposite.getView();
+		bPanel.addComponent( new PreserveAspectRatioPanel( panel, new Dimension( 16, 9 ) ), Constraint.CENTER );
+		//		bPanel.addComponent( new PreserveAspectRatioPanel( new Label( "Preview Coming Soon!" ), new Dimension( 16, 9 ) ), Constraint.CENTER );
 		bPanel.addComponent( new VideoInfoComponent( composite ), Constraint.LINE_END );
 		this.addComponent( bPanel, Constraint.CENTER );
 		this.addComponent( composite.getUploadOperation().createButton(), Constraint.PAGE_END );
@@ -134,6 +135,6 @@ public class UploadView extends BorderPanel {
 
 	public void setMovie( File file ) {
 		System.out.println( "file: " + file );
-		//		moviePlayerComposite.setMovie( file );
+		moviePlayerComposite.setMovie( file );
 	}
 }

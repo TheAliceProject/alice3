@@ -69,7 +69,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
-	private boolean isRecording;
+	//	private boolean isRecording;
 	//	private ImagesToQuickTimeEncoder encoder;
 	//	private MattsMovieEncoder encoder;
 	private WebmAdapter encoder;
@@ -136,15 +136,12 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	};
 
 	public boolean isRecording() {
-		return this.isRecording;
+		return this.isRecordingState.getValue();
 	}
 
 	public void setRecording( boolean isRecording ) {
-		System.out.println( "setRecording" );
-		System.out.println( isRecording );
-		System.out.println( this.isRecording );
-		if( this.isRecording != isRecording ) {
-			if( this.isRecording ) {
+		if( this.isRecordingState.getValue() != isRecording ) {
+			if( !this.isRecordingState.getValue() ) {
 				programContext.getProgramImp().stopAnimator();
 				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
 				encoder.stop();
@@ -176,8 +173,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 				encoder.start();
 			}
-
-			this.isRecording = isRecording;
+		} else {
+			System.out.println( "SHOULD NOT HIT THIS (mmay)" );
 		}
 	}
 
@@ -226,7 +223,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	public void handlePostDeactivation() {
 		this.isRecordingState.removeValueListener( this.isRecordingListener );
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
-		this.setRecording( false );
 		programContext.cleanUpProgram();
 		if( ( encoder != null ) && ( tempFile != null ) ) {
 			owner.setFile( tempFile );
@@ -242,11 +238,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( isRecording ) {
-			System.out.println( "isRecording: " + errorIsRecording.getText() );
+		if( isRecordingState.getValue() ) {
 			return errorIsRecording;
 		} else if( ( encoder == null ) || ( tempFile == null ) ) {
-			System.out.println( "no file found: " + errorHasNotYetRecorded.getText() );
 			return errorHasNotYetRecorded;
 		}
 		return IS_GOOD_TO_GO_STATUS;

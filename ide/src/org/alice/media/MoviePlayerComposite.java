@@ -46,20 +46,33 @@ import java.awt.Component;
 import java.io.File;
 
 import org.alice.media.components.MoviePlayerView;
+import org.lgna.croquet.ActionOperation;
+
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 
 /**
  * @author Matt May
  */
 public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<MoviePlayerView> {
 
-	private MoviePlayer player;
-	//	private QuickTimePlayer player;
 	private MoviePlayerView view;
+	private uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent mediaPlayerComponent;
+	private File videoFile;
+
+	private final ActionOperation playOperation = this.createActionOperation( this.createKey( "playOperation" ), new Action() {
+
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			assert videoFile != null;
+			mediaPlayerComponent.getMediaPlayer().playMedia( videoFile.getAbsolutePath() );
+			return null;
+		}
+	} );
 
 	public MoviePlayerComposite( File file ) {
 		super( java.util.UUID.fromString( "28ea7f67-1f3f-443f-a3fb-130676779b5f" ) );
-		player = new MoviePlayer();
-		player.registerHack( this );
+		com.sun.jna.NativeLibrary.addSearchPath( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), "c:/Program Files/VideoLAN/VLC/" );
+		com.sun.jna.Native.loadLibrary( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), uk.co.caprica.vlcj.binding.LibVlc.class );
+		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 	}
 
 	@Override
@@ -74,11 +87,15 @@ public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<Movie
 	}
 
 	public void setMovie( File file ) {
-		player.setMovie( file );
-		player.init();
+		view.setMovie( file );
+		videoFile = file;
 	}
 
-	public MoviePlayer getPlayer() {
-		return this.player;
+	public EmbeddedMediaPlayerComponent getPlayer() {
+		return this.mediaPlayerComponent;
+	}
+
+	public ActionOperation getPlayOperation() {
+		return playOperation;
 	}
 }

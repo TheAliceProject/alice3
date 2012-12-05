@@ -87,6 +87,7 @@ public class WebmAdapter implements MediaPlayerObserver {
 
 	public void stop() {
 		encoder.stop();
+		encoder.mergeAudio();
 	}
 
 	public void addBufferedImage( BufferedImage image ) {

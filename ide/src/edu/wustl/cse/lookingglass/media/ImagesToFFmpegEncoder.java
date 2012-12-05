@@ -10,7 +10,7 @@ public abstract class ImagesToFFmpegEncoder {
 	private boolean isRunning = false;
 	private boolean success = true;
 
-	private String ffmpegCommand;
+	protected String ffmpegCommand;
 	private Process ffmpegProcess;
 	private java.io.OutputStream ffmpegStdOut;
 	private java.io.BufferedReader ffmpegStdErr;
@@ -155,7 +155,6 @@ public abstract class ImagesToFFmpegEncoder {
 				l.encodingStarted( this.success );
 			}
 		}
-
 		return this.success;
 	}
 
