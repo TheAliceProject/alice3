@@ -52,9 +52,6 @@ import javax.swing.JDialog;
 import org.alice.ide.IDE;
 import org.alice.ide.swing.BasicTreeNodeViewerPanel;
 import org.alice.interact.handle.HandleSet;
-import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
-import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
-import org.alice.stageide.croquet.models.sceneditor.PropertyAndMarkerPanelSelectionState;
 import org.alice.stageide.sceneeditor.HandleStyle;
 import org.alice.stageide.sceneeditor.snap.SnapControlPanel;
 import org.lgna.croquet.ActionOperation;
@@ -340,7 +337,7 @@ public class SidePane extends org.lgna.croquet.components.GridBagPanel {
 		//	            return false;
 		//	        }
 		//	    };
-		ToolPaletteTabbedPane propertyMarkerToolPalette = PropertyAndMarkerPanelSelectionState.getInstance().createToolPaletteTabbedPane();
+		ToolPaletteTabbedPane propertyMarkerToolPalette = composite.getTabState().createToolPaletteTabbedPane();
 
 		//		ScrollPane mainScrollPane = new ScrollPane(this.mainPanel, ScrollPane.VerticalScrollbarPolicy.ALWAYS, ScrollPane.HorizontalScrollbarPolicy.NEVER);
 		//        mainScrollPane.setBorder(null);
@@ -363,9 +360,9 @@ public class SidePane extends org.lgna.croquet.components.GridBagPanel {
 		this.mainPanel.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor() );
 		this.snapControlPanel.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
 
-		ObjectPropertiesTab.getInstance().getView().setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor() );
-		MarkerPanelTab.getInstance().getView().setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor() );
-		MarkerPanelTab.getInstance().getView().setSelectedItemColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor() );
+		composite.getObjectPropertiesTab().getView().setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor() );
+		composite.getMarkerTab().getView().setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor() );
+		composite.getMarkerTab().getView().setSelectedItemColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor() );
 
 		headerPanel.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
 

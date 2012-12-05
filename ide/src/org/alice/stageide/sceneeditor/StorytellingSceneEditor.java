@@ -59,8 +59,6 @@ import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
 import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
-import org.alice.stageide.croquet.models.sceneditor.MarkerPanelTab;
-import org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
@@ -602,17 +600,17 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	private SceneObjectPropertyManagerPanel getPropertyPanel()
 	{
-		return ObjectPropertiesTab.getInstance().getView();
+		return SideComposite.getInstance().getObjectPropertiesTab().getView();
 	}
 
 	private SceneCameraMarkerManagerPanel getCameraMarkerPanel()
 	{
-		return MarkerPanelTab.getInstance().getView().getCameraMarkerPanel();
+		return SideComposite.getInstance().getMarkerTab().getView().getCameraMarkerPanel();
 	}
 
 	private SceneObjectMarkerManagerPanel getObjectMarkerPanel()
 	{
-		return MarkerPanelTab.getInstance().getView().getObjectMarkerPanel();
+		return SideComposite.getInstance().getMarkerTab().getView().getObjectMarkerPanel();
 	}
 
 	private void handleCameraMarkerFieldSelection( UserField cameraMarkerField )
@@ -621,7 +619,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		this.globalDragAdapter.setSelectedCameraMarker( newMarker );
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField( cameraMarkerField );
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField( cameraMarkerField );
-		MarkerPanelTab.getInstance().getView().getCameraMarkerPanel().updateButtons();
+		this.getCameraMarkerPanel().updateButtons();
 	}
 
 	private void handleObjectMarkerFieldSelection( UserField objectMarkerField )
@@ -630,7 +628,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		this.globalDragAdapter.setSelectedObjectMarker( newMarker );
 		MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField( objectMarkerField );
 		MoveMarkerToSelectedObjectActionOperation.getInstance().setMarkerField( objectMarkerField );
-		MarkerPanelTab.getInstance().getView().getObjectMarkerPanel().updateButtons();
+		this.getObjectMarkerPanel().updateButtons();
 	}
 
 	private void handleManipulatorSelection( org.alice.interact.event.SelectionEvent e )

@@ -43,58 +43,13 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-public class PropertyAndMarkerPanelSelectionState extends org.lgna.croquet.SimpleTabSelectionState<org.lgna.croquet.SimpleTabComposite>
-{
-
-	private static class SingletonHolder {
-		private static PropertyAndMarkerPanelSelectionState instance = new PropertyAndMarkerPanelSelectionState();
+public class MarkerTab extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel> {
+	public MarkerTab() {
+		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ), IsCloseable.FALSE );
 	}
 
-	public static PropertyAndMarkerPanelSelectionState getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
+		return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
 	}
-
-	private PropertyAndMarkerPanelSelectionState() {
-		super(
-				org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "96044656-6e0b-442a-ad4d-549dccc3e657" ),
-				org.lgna.croquet.SimpleTabComposite.class,
-				new org.lgna.croquet.SimpleTabComposite[] { ObjectPropertiesTab.getInstance(), MarkerPanelTab.getInstance() },
-				0 );
-	}
-
-	//    private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
-	//        private javax.swing.Icon getCurrentAccessibleTypeIcon() {
-	//            org.lgna.project.ast.Accessible accessible = org.alice.ide.croquet.models.ui.AccessibleListSelectionState.getInstance().getSelectedItem();
-	//            org.lgna.project.ast.AbstractType< ?, ?, ? > type; 
-	//            if( accessible != null ) {
-	//                type = accessible.getValueType();
-	//            } else {
-	//                type = null;
-	//            }
-	//            return org.alice.stageide.gallerybrowser.ResourceManager.getSmallIconForType( type );
-	//        }
-	//        public int getIconHeight() {
-	//            javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-	//            if( icon != null ) {
-	//                return icon.getIconHeight();
-	//            } else {
-	//                return 0;
-	//            }
-	//        }
-	//        public int getIconWidth() {
-	//            javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-	//            if( icon != null ) {
-	//                return icon.getIconWidth();
-	//            } else {
-	//                return 0;
-	//            }
-	//        }
-	//        public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-	//            javax.swing.Icon icon = getCurrentAccessibleTypeIcon();
-	//            if( icon != null ) {
-	//                icon.paintIcon(c, g, x, y);
-	//            }
-	//        }
-	//    }
 }

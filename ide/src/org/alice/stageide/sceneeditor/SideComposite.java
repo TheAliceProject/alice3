@@ -54,8 +54,25 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		return SingletonHolder.instance;
 	}
 
+	private final org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab objectPropertiesTab = new org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab();
+	private final org.alice.stageide.croquet.models.sceneditor.MarkerTab markerTab = new org.alice.stageide.croquet.models.sceneditor.MarkerTab();
+
+	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.markerTab );
+
 	private SideComposite() {
 		super( java.util.UUID.fromString( "f1ae6805-24ec-400b-9459-7101f0663356" ) );
+	}
+
+	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getTabState() {
+		return this.tabState;
+	}
+
+	public org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab getObjectPropertiesTab() {
+		return this.objectPropertiesTab;
+	}
+
+	public org.alice.stageide.croquet.models.sceneditor.MarkerTab getMarkerTab() {
+		return this.markerTab;
 	}
 
 	@Override
