@@ -86,11 +86,27 @@ public enum IdentifierNameGenerator {
 	}
 
 	public String createIdentifierNameFromInstanceCreation( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		String rv = "";
 		if( instanceCreation != null ) {
-			return this.convertFirstCharacterToLowerCase( instanceCreation.constructor.getValue().getDeclaringType().getName() );
-		} else {
-			return "";
+			org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+			if( constructor != null ) {
+				org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
+				if( type != null ) {
+					String typeName = type.getName();
+					if( typeName != null ) {
+						if( type instanceof org.lgna.project.ast.JavaType ) {
+							if( typeName.length() > 1 ) {
+								if( ( typeName.charAt( 0 ) == 'S' ) && Character.isUpperCase( typeName.charAt( 1 ) ) ) {
+									typeName = typeName.substring( 1 );
+								}
+							}
+						}
+						rv = this.convertFirstCharacterToLowerCase( typeName );
+					}
+				}
+			}
 		}
+		return rv;
 		//		if( instanceCreation != null ) {
 		//			java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
 		//			if( fld != null ) {
