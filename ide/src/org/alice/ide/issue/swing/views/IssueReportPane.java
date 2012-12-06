@@ -205,30 +205,6 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		}
 	}
 
-	protected String getSMTPSubject() {
-		return this.getSummaryText();
-	}
-
-	protected String getSMTPBody() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( "affects versions: " );
-		sb.append( java.util.Arrays.toString( this.getAffectsVersions() ) );
-		sb.append( "\n" );
-		sb.append( "description: " );
-		sb.append( this.getDescriptionText() );
-		sb.append( "\n" );
-		sb.append( "environment: " );
-		sb.append( this.getEnvironmentText() );
-		sb.append( "\n" );
-		sb.append( "steps: " );
-		sb.append( this.getStepsText() );
-		sb.append( "\n" );
-		sb.append( "exception: " );
-		sb.append( this.getExceptionText() );
-		sb.append( "\n" );
-		return sb.toString();
-	}
-
 	protected abstract String getSMTPReplyTo();
 
 	protected abstract String getSMTPReplyToPersonal();
@@ -256,6 +232,8 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		rv.setSteps( this.getStepsText() );
 		rv.setException( this.getExceptionText() );
 		rv.setAffectsVersions( this.getAffectsVersions() );
+		rv.setReportedBy( this.getSMTPReplyToPersonal() );
+		rv.setEmailAddress( this.getSMTPReplyTo() );
 		return rv;
 	}
 
