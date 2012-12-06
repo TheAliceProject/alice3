@@ -52,8 +52,8 @@ public class ImagesToWebmEncoder extends ImagesToFFmpegEncoder {
 		String blah = this.getVideoPath();
 		String newPath = blah.substring( 0, blah.length() - 5 );
 		newPath += "1.webm";
-
 		RuntimeUtilities.exec( this.ffmpegCommand, "-i", this.getVideoPath(), "-i", getSoundTrack().getAbsolutePath(), newPath );
+		System.out.println( "soundTrack: " + getSoundTrack().getAbsolutePath() );
 		File oldFile = new File( this.getVideoPath() );
 		oldFile.delete();
 		File newFile = new File( newPath );
