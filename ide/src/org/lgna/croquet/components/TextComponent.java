@@ -54,8 +54,7 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 	public TextComponent( org.lgna.croquet.StringState model ) {
 		super( model );
 		J jTextComponent = this.getAwtComponent();
-		jTextComponent.setDocument( model.getSwingModel().getDocument() );
-		jTextComponent.setCaret( model.getSwingModel().getCaret() );
+		model.getSwingModel().install( this );
 		jTextComponent.setBorder( this.border );
 		jTextComponent.setEnabled( model.isEnabled() );
 		this.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
