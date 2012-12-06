@@ -126,7 +126,7 @@ public abstract class AbstractIssueComposite<V extends org.alice.ide.croquet.mod
 	private String getExceptionText() {
 		Throwable throwable = this.getThrowable();
 		if( throwable != null ) {
-			return throwable.toString();
+			return edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsString( throwable );
 		} else {
 			return "";
 		}
