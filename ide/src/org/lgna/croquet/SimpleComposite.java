@@ -50,4 +50,9 @@ public abstract class SimpleComposite<V extends org.lgna.croquet.components.View
 	public SimpleComposite( java.util.UUID id ) {
 		super( id );
 	}
+
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
 }

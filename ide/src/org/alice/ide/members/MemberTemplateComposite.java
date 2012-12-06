@@ -47,56 +47,6 @@ package org.alice.ide.members;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTemplateComposite<V extends org.lgna.croquet.components.View<?, ?>> extends TemplateComposite<V> {
-	private static class IndirectCurrentAccessibleTypeIcon implements javax.swing.Icon {
-		private static final java.awt.Dimension SIZE = new java.awt.Dimension( 32, 24 );
-
-		private org.lgna.croquet.icon.IconFactory getCurrentAccessibleTypeIconFactory() {
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-			if( instanceFactory != null ) {
-				org.lgna.croquet.icon.IconFactory rv = null;
-				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( thisFieldAccessFactory.getField() );
-				}
-				if( rv != null ) {
-					//pass
-				} else {
-					rv = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( instanceFactory.getValueType() );
-				}
-				return rv;
-			} else {
-				return null;
-			}
-		}
-
-		public int getIconWidth() {
-			org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
-			if( iconFactory != null ) {
-				return SIZE.width;
-			} else {
-				return 0;
-			}
-		}
-
-		public int getIconHeight() {
-			org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
-			if( iconFactory != null ) {
-				return SIZE.height;
-			} else {
-				return 0;
-			}
-		}
-
-		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-			org.lgna.croquet.icon.IconFactory iconFactory = getCurrentAccessibleTypeIconFactory();
-			if( iconFactory != null ) {
-				iconFactory.getIcon( SIZE ).paintIcon( c, g, x, y );
-			}
-		}
-	}
-
-	private static javax.swing.Icon ICON = new IndirectCurrentAccessibleTypeIcon();
-
 	public MemberTemplateComposite( java.util.UUID id ) {
 		super( id );
 	}
@@ -106,7 +56,7 @@ public abstract class MemberTemplateComposite<V extends org.lgna.croquet.compone
 		super.customizeTitleComponentAppearance( button );
 		final boolean IS_ICON_DESIRED = false;
 		if( IS_ICON_DESIRED ) {
-			button.getAwtComponent().setIcon( ICON );
+			button.getAwtComponent().setIcon( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
 		}
 	}
 }

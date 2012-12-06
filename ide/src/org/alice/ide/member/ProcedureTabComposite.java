@@ -46,15 +46,7 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public final class ProcedureTabComposite extends MemberTabComposite {
-	private static class SingletonHolder {
-		private static ProcedureTabComposite instance = new ProcedureTabComposite();
-	}
-
-	public static ProcedureTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ProcedureTabComposite() {
+	public ProcedureTabComposite() {
 		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ) );
 	}
 

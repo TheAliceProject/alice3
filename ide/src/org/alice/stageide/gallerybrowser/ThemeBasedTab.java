@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.projecturi;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectExistingProjectWithPreviewComposite extends SelectProjectUriWithPreviewComposite {
-	public SelectExistingProjectWithPreviewComposite() {
-		super( java.util.UUID.fromString( "ef47cf71-0dc3-4ff6-9fe3-756abfd524de" ), false );
+public class ThemeBasedTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ThemeBasedTabView> {
+	public ThemeBasedTab() {
+		super( java.util.UUID.fromString( "9f620eca-b4a8-4b8b-879d-4d39f44aff7b" ) );
 	}
+
+	@Override
+	protected org.alice.stageide.gallerybrowser.views.ThemeBasedTabView createView() {
+		return new org.alice.stageide.gallerybrowser.views.ThemeBasedTabView( this );
+	}
+
 }

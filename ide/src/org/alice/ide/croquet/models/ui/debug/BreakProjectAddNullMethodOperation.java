@@ -40,19 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.projecturi;
+package org.alice.ide.croquet.models.ui.debug;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UriMetaState extends org.lgna.croquet.MetaState<java.net.URI> {
+public class BreakProjectAddNullMethodOperation extends org.lgna.croquet.ActionOperation {
+	private static class SingletonHolder {
+		private static BreakProjectAddNullMethodOperation instance = new BreakProjectAddNullMethodOperation();
+	}
+
+	public static BreakProjectAddNullMethodOperation getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private BreakProjectAddNullMethodOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "06927780-2f06-41ba-a32c-2bfefd2188e9" ) );
+	}
+
 	@Override
-	protected java.net.URI getValue() {
-		ContentTab contentTab = org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().getValue();
-		if( contentTab != null ) {
-			return contentTab.getSelectedUri();
-		} else {
-			return null;
-		}
+	protected void localize() {
+		super.localize();
+		this.setName( "Break Project Add Null Method" );
+	}
+
+	@Override
+	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.project.ast.UserMethod method = null;
+		org.alice.ide.IDE.getActiveInstance().getSceneType().methods.add( method );
 	}
 }

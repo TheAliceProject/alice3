@@ -55,6 +55,11 @@ public abstract class AbstractSplitComposite<SP extends org.lgna.croquet.compone
 	public abstract Composite<?> getTrailingComposite();
 
 	@Override
+	protected final org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
+	@Override
 	public final boolean contains( org.lgna.croquet.Model model ) {
 		if( super.contains( model ) ) {
 			return true;

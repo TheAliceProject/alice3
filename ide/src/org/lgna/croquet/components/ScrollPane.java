@@ -70,21 +70,27 @@ public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
 	}
 
 	public ScrollPane() {
+		this( null, null, null );
 	}
 
 	public ScrollPane( Component<?> viewportView ) {
-		this.setViewportView( viewportView );
-	}
-
-	public ScrollPane( Component<?> viewportView, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		this.setViewportView( viewportView );
-		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
-		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
+		this( viewportView, null, null );
 	}
 
 	public ScrollPane( VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
-		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
+		this( null, verticalScrollbarPolicy, horizontalScrollbarPolicy );
+	}
+
+	public ScrollPane( Component<?> viewportView, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
+		if( viewportView != null ) {
+			this.setViewportView( viewportView );
+		}
+		if( verticalScrollbarPolicy != null ) {
+			this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
+		}
+		if( horizontalScrollbarPolicy != null ) {
+			this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
+		}
 	}
 
 	protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {

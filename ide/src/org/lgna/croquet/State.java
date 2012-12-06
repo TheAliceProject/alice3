@@ -69,7 +69,9 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	public abstract void appendRepresentation( StringBuilder sb, T value );
 
 	public void addValueListener( ValueListener<T> valueListener ) {
-		assert this.valueListeners.contains( valueListener ) == false : valueListener;
+		if( this.valueListeners.contains( valueListener ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, valueListener );
+		}
 		this.valueListeners.add( valueListener );
 	}
 
@@ -184,6 +186,9 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
 		T prevValue = this.getValue();
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevValue, nextValue ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextValue );
+		}
 		return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
 	}
 
@@ -237,11 +242,13 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	protected void popIgnore() {
 		this.ignoreCount--;
-		assert this.ignoreCount >= 0;
+		if( this.ignoreCount >= 0 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "popIgnore", this );
+		}
 	}
 
 	protected boolean isAppropriateToChange() {
-		return true;//this.ignoreCount == 0;
+		return true;
 	}
 
 	private boolean isInTheMidstOfChange = false;
@@ -276,7 +283,9 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 							if( isFromEdit.value ) {
 								//pass
 							} else {
-								this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
+								if( this.ignoreCount == 0 ) {
+									this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
+								}
 							}
 							this.fireChanged( prevValue, nextValue, isAdjusting );
 							this.prevValue = nextValue;

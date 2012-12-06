@@ -79,9 +79,8 @@ public class SetValueOperation<P> extends org.lgna.croquet.ActionOperation
 			}
 
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv ) {
+			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 				rv.append( SetValueOperation.this.propertyAdapter.getUndoRedoDescription() );
-				return rv;
 			}
 		} );
 	}

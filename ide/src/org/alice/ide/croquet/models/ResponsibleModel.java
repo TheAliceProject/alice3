@@ -53,7 +53,7 @@ public interface ResponsibleModel {
 
 	public void undoInternal();
 
-	public StringBuilder updatePresentation( StringBuilder rv );
+	public void appendDescription( StringBuilder rv, boolean isDetailed );
 
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate );
 

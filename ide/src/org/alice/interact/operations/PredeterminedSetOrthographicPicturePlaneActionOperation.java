@@ -114,9 +114,8 @@ public class PredeterminedSetOrthographicPicturePlaneActionOperation extends org
 			}
 
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv ) {
+			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 				rv.append( editPresentationKey );
-				return rv;
 			}
 		} );
 	}

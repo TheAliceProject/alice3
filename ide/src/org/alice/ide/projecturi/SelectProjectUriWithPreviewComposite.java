@@ -46,19 +46,34 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SelectProjectUriWithPreviewComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, java.net.URI> {
-	private final boolean isNew;
+public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, java.net.URI> {
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
-	private final UriMetaState uriMetaState = new UriMetaState();
+	private final org.lgna.croquet.TabSelectionState<ContentTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), ContentTab.class, -1, TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance() );
 
-	public SelectProjectUriWithPreviewComposite( java.util.UUID individualUUID, boolean isNew ) {
-		super( individualUUID );
-		this.isNew = isNew;
+	private static class SingletonHolder {
+		private static SelectProjectUriWithPreviewComposite instance = new SelectProjectUriWithPreviewComposite();
+	}
+
+	public static SelectProjectUriWithPreviewComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private SelectProjectUriWithPreviewComposite() {
+		super( java.util.UUID.fromString( "3b9ec3fb-3fe5-485c-ac2a-688a5468b0b9" ) );
+	}
+
+	public org.lgna.croquet.TabSelectionState<ContentTab> getTabState() {
+		return this.tabState;
 	}
 
 	@Override
 	protected java.net.URI createValue() {
-		return this.uriMetaState.getValue();
+		ContentTab<?> tab = this.tabState.getValue();
+		if( tab != null ) {
+			return tab.getSelectedUri();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -68,7 +83,7 @@ public abstract class SelectProjectUriWithPreviewComposite extends org.lgna.croq
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.uriMetaState.getValue() != null ) {
+		if( this.createValue() != null ) {
 			return IS_GOOD_TO_GO_STATUS;
 		} else {
 			return this.noSelectionError;
@@ -85,10 +100,26 @@ public abstract class SelectProjectUriWithPreviewComposite extends org.lgna.croq
 		}
 	}
 
+	public void selectAppropriateTab( boolean isNew ) {
+		ContentTab tab;
+		if( isNew ) {
+			tab = TemplatesTab.getInstance();
+		} else {
+			tab = MyProjectsTab.getInstance(); //todo: recentPane?
+		}
+		this.tabState.setValueTransactionlessly( tab );
+		org.lgna.croquet.components.ComponentManager.revalidateAndRepaintAllComponents( this.tabState );
+	}
+
+	private void refresh() {
+		for( ContentTab contentTab : this.tabState ) {
+			contentTab.refresh();
+		}
+	}
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().selectAppropriateTab( this.isNew );
-		org.alice.ide.projecturi.ProjectTabSelectionState.getInstance().refresh();
+		this.refresh();
 		super.handlePreShowDialog( completionStep );
 	}
 }
