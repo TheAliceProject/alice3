@@ -40,59 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media;
+package org.alice.media.audio;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
 
-import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
-import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
-import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
+import org.lgna.common.resources.AudioResource;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class WebmAdapter implements MediaPlayerObserver {
+public class AudioCompiler {
 
-	Integer frameRate;
+	private File destinationFile;
+	private List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
 
-	private ImagesToWebmEncoder encoder;
-	private Dimension dimension;
-
-	private File file;
-
-	public WebmAdapter( File targetFile ) {
-		this.file = targetFile;
+	public AudioCompiler( File destinationFile ) {
+		this.destinationFile = destinationFile;
 	}
 
-	public void playerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
+	public void addAudio( ScheduledAudioStream audio ) {
+		File convertedFile = FFmpegAudioConverter.convertAudioIfNecessary( audio.getAudioResource() );
+		try {
+			audio.setAudioResource( new AudioResource( convertedFile ) );
+			scheduledStreams.add( audio );
+		} catch( IOException e ) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
-	public void setFrameRate( Integer value ) {
-		frameRate = value;
+	public File getDestinationFile() {
+		return this.destinationFile;
 	}
 
-	public void setDimension( Dimension dimension ) {
-		this.dimension = dimension;
+	public List<ScheduledAudioStream> getScheduledStreams() {
+		return this.scheduledStreams;
 	}
 
-	public void start() {
-		assert frameRate != null;
-		assert dimension != null;
-		encoder = new ImagesToWebmEncoder( frameRate, dimension );
-		encoder.setVideoPath( file.getPath() );
-		encoder.start();
-	}
-
-	public void stop() {
-		encoder.stop();
-		encoder.getLength();
-		encoder.mergeAudio();
-	}
-
-	public void addBufferedImage( BufferedImage image ) {
-		encoder.addBufferedImage( image );
+	public File mix( double length ) {
+		if( scheduledStreams.size() > 0 ) {
+			try {
+				File rv = File.createTempFile( "temp", ".wav" );
+				AudioTrackMixer mixer = new AudioTrackMixer( FFmpegAudioConverter.desiredFormat, length );
+				for( ScheduledAudioStream stream : scheduledStreams ) {
+					mixer.addScheduledStream( stream );
+				}
+				FileOutputStream oStream = new FileOutputStream( rv );
+				mixer.write( oStream );
+				return rv;
+			} catch( IOException e ) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return null;
 	}
 
 }
