@@ -413,7 +413,11 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		else if( expression instanceof ThisExpression )
 		{
 			UserField uf = StorytellingSceneEditor.this.getActiveSceneField();
-			StorytellingSceneEditor.this.setSelectedField( uf.getDeclaringType(), uf );
+			if( uf != null ) {
+				StorytellingSceneEditor.this.setSelectedField( uf.getDeclaringType(), uf );
+			} else {
+				StorytellingSceneEditor.this.setSelectedField( null, null );
+			}
 		}
 		getPropertyPanel().setSelectedInstance( instanceFactory );
 	}

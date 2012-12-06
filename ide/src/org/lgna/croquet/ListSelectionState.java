@@ -42,148 +42,6 @@
  */
 package org.lgna.croquet;
 
-/*package-private*/class ComboBoxModel<T> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
-	private final ListSelectionState<T> listSelectionState;
-
-	public ComboBoxModel( ListSelectionState<T> listSelectionState ) {
-		this.listSelectionState = listSelectionState;
-	}
-
-	public T getSelectedItem() {
-		return this.listSelectionState.getSelectedItem();
-	}
-
-	public void setSelectedItem( Object item ) {
-		if( item != this.getSelectedItem() ) {
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, this.getSelectedItem() ) ) {
-				throw new RuntimeException();
-			}
-			this.listSelectionState.setSelectionFromSwing( (T)item );
-			this.fireContentsChanged( this, -1, -1 );
-		}
-	}
-
-	public Object getElementAt( int index ) {
-		return this.listSelectionState.getItemAt( index );
-	}
-
-	public int getSize() {
-		return this.listSelectionState.getItemCount();
-	}
-
-	/* package-private */void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
-		this.fireContentsChanged( source, index0, index1 );
-	}
-
-	/* package-private */void ACCESS_fireIntervalAdded( Object source, int index0, int index1 ) {
-		this.fireIntervalAdded( source, index0, index1 );
-	}
-
-	/* package-private */void ACCESS_fireIntervalRemoved( Object source, int index0, int index1 ) {
-		this.fireIntervalRemoved( source, index0, index1 );
-	}
-}
-
-/* package-private */class ListSelectionModel<T> implements javax.swing.ListSelectionModel {
-	private final ListSelectionState<T> listSelectionState;
-	private java.util.List<javax.swing.event.ListSelectionListener> listSelectionListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private boolean isAdjusting;
-
-	public ListSelectionModel( ListSelectionState<T> listSelectionState ) {
-		this.listSelectionState = listSelectionState;
-	}
-
-	public void addListSelectionListener( javax.swing.event.ListSelectionListener listener ) {
-		this.listSelectionListeners.add( listener );
-	}
-
-	public void removeListSelectionListener( javax.swing.event.ListSelectionListener listener ) {
-		this.listSelectionListeners.remove( listener );
-	}
-
-	/* package-private */void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
-		javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
-		for( javax.swing.event.ListSelectionListener listener : this.listSelectionListeners ) {
-			listener.valueChanged( e );
-		}
-	}
-
-	public int getSelectionMode() {
-		return javax.swing.ListSelectionModel.SINGLE_SELECTION;
-	}
-
-	public void setSelectionMode( int selectionMode ) {
-		assert selectionMode == javax.swing.ListSelectionModel.SINGLE_SELECTION;
-	}
-
-	public boolean getValueIsAdjusting() {
-		return this.isAdjusting;
-	}
-
-	public void setValueIsAdjusting( boolean isAdjusting ) {
-		this.isAdjusting = isAdjusting;
-		this.fireListSelectionChanged( -1, -1, this.isAdjusting );
-	}
-
-	public boolean isSelectedIndex( int index ) {
-		return this.listSelectionState.getSelectedIndex() == index;
-	}
-
-	public boolean isSelectionEmpty() {
-		return this.listSelectionState.getSelectedIndex() < 0;
-	}
-
-	public int getAnchorSelectionIndex() {
-		return this.listSelectionState.getSelectedIndex();
-	}
-
-	public int getLeadSelectionIndex() {
-		return this.listSelectionState.getSelectedIndex();
-	}
-
-	public int getMaxSelectionIndex() {
-		return this.listSelectionState.getSelectedIndex();
-	}
-
-	public int getMinSelectionIndex() {
-		return this.listSelectionState.getSelectedIndex();
-	}
-
-	public void addSelectionInterval( int index0, int index1 ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index0, index1 );
-	}
-
-	public void insertIndexInterval( int index, int length, boolean before ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index, length, before );
-	}
-
-	public void removeIndexInterval( int index0, int index1 ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index0, index1 );
-	}
-
-	public void removeSelectionInterval( int index0, int index1 ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index0, index1 );
-	}
-
-	public void setAnchorSelectionIndex( int index ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index );
-	}
-
-	public void setLeadSelectionIndex( int index ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( index );
-	}
-
-	public void setSelectionInterval( int index0, int index1 ) {
-		assert index0 == index1;
-		this.listSelectionState.setSelectionIndexFromSwing( index0 );
-		this.fireListSelectionChanged( index0, index1, this.isAdjusting );
-	}
-
-	public void clearSelection() {
-		this.setSelectionInterval( -1, -1 );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -199,10 +57,10 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	public static class SwingModel<T> {
-		private final ComboBoxModel<T> comboBoxModel;
-		private final ListSelectionModel<T> listSelectionModel;
+		private final javax.swing.ComboBoxModel comboBoxModel;
+		private final javax.swing.ListSelectionModel listSelectionModel;
 
-		private SwingModel( ComboBoxModel<T> comboBoxModel, ListSelectionModel<T> listSelectionModel ) {
+		private SwingModel( javax.swing.ComboBoxModel comboBoxModel, javax.swing.ListSelectionModel listSelectionModel ) {
 			this.comboBoxModel = comboBoxModel;
 			this.listSelectionModel = listSelectionModel;
 		}
@@ -214,9 +72,28 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		public javax.swing.ListSelectionModel getListSelectionModel() {
 			return this.listSelectionModel;
 		}
+
+		/* package-private */void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
+			//			javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
+			//			for( javax.swing.event.ListSelectionListener listener : this.listSelectionListeners ) {
+			//				listener.valueChanged( e );
+			//			}
+		}
+
+		/* package-private */void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( source, index0, index1 );
+		}
+
+		/* package-private */void ACCESS_fireIntervalAdded( Object source, int index0, int index1 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( source, index0, index1 );
+		}
+
+		/* package-private */void ACCESS_fireIntervalRemoved( Object source, int index0, int index1 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( source, index0, index1 );
+		}
 	}
 
-	private final SwingModel<T> swingModel = new SwingModel<T>( new ComboBoxModel<T>( this ), new ListSelectionModel<T>( this ) );
+	private final SwingModel<T> swingModel = new SwingModel<T>( new javax.swing.DefaultComboBoxModel(), new javax.swing.DefaultListSelectionModel() );
 	private final DataIndexPair<T> dataIndexPair;
 
 	private static <T> T getItemAt( org.lgna.croquet.data.ListData<T> data, int index ) {
@@ -321,7 +198,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	protected void updateSwingModel( T nextValue ) {
 		//this.setSelectedItem( nextValue );
 		this.dataIndexPair.index = this.indexOf( nextValue );
-		this.swingModel.listSelectionModel.fireListSelectionChanged( this.dataIndexPair.index, this.dataIndexPair.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
+		this.swingModel.fireListSelectionChanged( this.dataIndexPair.index, this.dataIndexPair.index, this.swingModel.listSelectionModel.getValueIsAdjusting() );
 		this.fireContentsChanged( this.dataIndexPair.index, this.dataIndexPair.index );
 	}
 
@@ -431,7 +308,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			this.internalAddItem( item );
 
 			int index = this.getItemCount() - 1;
-			this.swingModel.comboBoxModel.ACCESS_fireIntervalAdded( this, index, index );
+			this.swingModel.ACCESS_fireIntervalAdded( this, index, index );
 			this.handleItemAdded( item );
 		} finally {
 			this.popAtomic();
@@ -443,7 +320,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		try {
 			int index = this.indexOf( item );
 			this.internalRemoveItem( item );
-			this.swingModel.comboBoxModel.ACCESS_fireIntervalRemoved( this, index, index );
+			this.swingModel.ACCESS_fireIntervalRemoved( this, index, index );
 			this.handleItemRemoved( item );
 		} finally {
 			this.popAtomic();
@@ -494,7 +371,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			//				this.index = -1;
 			//			}
 
-			this.swingModel.comboBoxModel.ACCESS_fireContentsChanged( this, 0, this.getItemCount() );
+			this.swingModel.ACCESS_fireContentsChanged( this, 0, this.getItemCount() );
 			for( T item : removed ) {
 				this.handleItemRemoved( item );
 			}
@@ -508,15 +385,15 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	protected void fireContentsChanged( int index0, int index1 ) {
-		this.swingModel.comboBoxModel.ACCESS_fireContentsChanged( this, index0, index1 );
+		this.swingModel.ACCESS_fireContentsChanged( this, index0, index1 );
 	}
 
 	protected void fireIntervalAdded( int index0, int index1 ) {
-		this.swingModel.comboBoxModel.ACCESS_fireIntervalAdded( this, index0, index1 );
+		this.swingModel.ACCESS_fireIntervalAdded( this, index0, index1 );
 	}
 
 	protected void fireIntervalRemoved( int index0, int index1 ) {
-		this.swingModel.comboBoxModel.ACCESS_fireIntervalRemoved( this, index0, index1 );
+		this.swingModel.ACCESS_fireIntervalRemoved( this, index0, index1 );
 	}
 
 	public final void setItems( T... items ) {
