@@ -50,12 +50,16 @@ public class NodeUtilities {
 		throw new AssertionError();
 	}
 
-	public static void safeAppendRepr( StringBuilder sb, Node node, java.util.Locale locale ) {
+	public static void safeAppendRepr( StringBuilder sbRepr, Node node, java.util.Locale locale ) {
 		if( node instanceof AbstractNode ) {
-			( (AbstractNode)node ).appendRepr( sb, locale );
+			( (AbstractNode)node ).appendRepr( sbRepr, locale );
 		} else {
 			//todo?
-			sb.append( node );
+			sbRepr.append( node );
 		}
+	}
+
+	public static void safeAppendRepr( StringBuilder sbRepr, Node node ) {
+		safeAppendRepr( sbRepr, node, javax.swing.JComponent.getDefaultLocale() );
 	}
 }

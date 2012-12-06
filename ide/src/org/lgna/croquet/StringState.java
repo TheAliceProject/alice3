@@ -46,19 +46,28 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class StringState extends State<String> {
-	public class SwingModel {
+	public static class SwingModel {
+		private final java.util.List<org.lgna.croquet.components.TextComponent<?>> textComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
-		private final javax.swing.text.DefaultCaret caret = new javax.swing.text.DefaultCaret();
 
 		private SwingModel() {
 		}
 
-		public javax.swing.text.Document getDocument() {
-			return this.document;
+		public void install( org.lgna.croquet.components.TextComponent<?> textComponent ) {
+			this.textComponents.add( textComponent );
+			textComponent.getAwtComponent().setDocument( this.document );
 		}
 
-		public javax.swing.text.DefaultCaret getCaret() {
-			return this.caret;
+		public void deinstall( org.lgna.croquet.components.TextComponent<?> textComponent ) {
+			this.textComponents.remove( textComponent );
+		}
+
+		public Iterable<org.lgna.croquet.components.TextComponent<?>> getTextComponents() {
+			return this.textComponents;
+		}
+
+		public javax.swing.text.Document getDocument() {
+			return this.document;
 		}
 	}
 
@@ -203,9 +212,9 @@ public abstract class StringState extends State<String> {
 	}
 
 	public void selectAll() {
-		javax.swing.text.DefaultCaret caret = this.swingModel.getCaret();
-		caret.setDot( 0 );
-		caret.moveDot( this.swingModel.getDocument().getLength() );
+		for( org.lgna.croquet.components.TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
+			textComponent.selectAll();
+		}
 	}
 
 	public void requestFocus() {
