@@ -2,8 +2,8 @@ package edu.wustl.cse.lookingglass.media;
 
 public abstract class ImagesToFFmpegEncoder {
 
-	private double frameRate;
-	private int frameCount = 0;
+	protected double frameRate;
+	protected int frameCount = 0;
 	private java.awt.Dimension frameDimension;
 	private String videoPath;
 
