@@ -100,8 +100,7 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 				public void run() {
 					StringBuilder sb = new StringBuilder();
 					try {
-						java.util.Locale locale = null;
-						sb.append( statement.getRepr( locale ) );
+						org.lgna.project.ast.NodeUtilities.safeAppendRepr( sb, statement );
 					} catch( Throwable t ) {
 						sb.append( statement );
 					}
