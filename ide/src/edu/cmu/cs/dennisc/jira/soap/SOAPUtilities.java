@@ -75,7 +75,23 @@ public class SOAPUtilities {
 		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = new com.atlassian.jira.rpc.soap.client.RemoteIssue();
 		remoteIssue.setSummary( edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( jiraReport.getSummary(), 254 ) );
 		remoteIssue.setType( Integer.toString( edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( jiraReport.getType() ) ) );
-		remoteIssue.setDescription( jiraReport.getDescription() );
+
+		StringBuilder sb = new StringBuilder();
+		sb.append( jiraReport.getDescription() );
+
+		String reportedBy = jiraReport.getReportedBy();
+		if( ( reportedBy != null ) && ( reportedBy.length() > 0 ) ) {
+			sb.append( "\nreported by: " );
+			sb.append( reportedBy );
+		}
+
+		String emailAddress = jiraReport.getEmailAddress();
+		if( ( emailAddress != null ) && ( emailAddress.length() > 0 ) ) {
+			sb.append( "\nemail address: " );
+			sb.append( emailAddress );
+		}
+
+		remoteIssue.setDescription( sb.toString() );
 
 		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue steps = createCustomField( 10000, jiraReport.getSteps() );
 		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue exception = createCustomField( 10001, jiraReport.getException() );
