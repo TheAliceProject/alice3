@@ -147,9 +147,10 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 		app.getFrame().pack();
 		app.getFrame().setVisible( true );
 		Thread.sleep( 1000 );
+		final AnomalousSituationComposite composite = AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", "description" );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", "description" ).getOperation().fire();
+				composite.getOperation().fire();
 				//System.exit( 0 );
 			}
 		} );

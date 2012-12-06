@@ -68,5 +68,6 @@ public class CutToClipboardEdit extends ClipboardEdit {
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "cut to clipboard" );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getStatement() );
 	}
 }
