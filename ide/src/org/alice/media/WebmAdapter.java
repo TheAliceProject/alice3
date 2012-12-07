@@ -46,6 +46,8 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import org.alice.media.audio.ScheduledAudioStream;
+
 import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
@@ -67,6 +69,12 @@ public class WebmAdapter implements MediaPlayerObserver {
 	}
 
 	public void playerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
+		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
+		if( player instanceof edu.cmu.cs.dennisc.media.jmf.Player ) {
+			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
+			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
+			encoder.addAudio( audioStream );
+		}
 	}
 
 	public void setFrameRate( Integer value ) {
