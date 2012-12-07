@@ -45,6 +45,7 @@ package org.alice.media.audio;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 
 import org.lgna.common.resources.AudioResource;
@@ -58,20 +59,23 @@ public class AudioCompiler {
 
 	private File destinationFile;
 	private List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
+	private HashSet<AudioResource> alreadyConverted = Collections.newHashSet();
 
 	public AudioCompiler( File destinationFile ) {
 		this.destinationFile = destinationFile;
 	}
 
 	public void addAudio( ScheduledAudioStream audio ) {
-		File convertedFile = FFmpegAudioConverter.convertAudioIfNecessary( audio.getAudioResource() );
-		try {
-			audio.setAudioResource( new AudioResource( convertedFile ) );
-			scheduledStreams.add( audio );
-		} catch( IOException e ) {
-			e.printStackTrace();
-			return;
+		if( !alreadyConverted( audio.getAudioResource() ) ) {
+			System.out.println( "newAudio" );
+			alreadyConverted.add( audio.getAudioResource() );
+			audio.setAudioResource( FFmpegAudioConverter.convertAudioIfNecessary( audio.getAudioResource() ) );
 		}
+		scheduledStreams.add( audio );
+	}
+
+	private boolean alreadyConverted( AudioResource resource ) {
+		return alreadyConverted.contains( resource );
 	}
 
 	public File getDestinationFile() {

@@ -111,7 +111,10 @@ public class FFmpegAudioConverter {
 		}
 	}
 
-	public static File convertAudioIfNecessary( AudioResource resource ) {
+	public static AudioResource convertAudioIfNecessary( AudioResource resource ) {
+		if( !AudioResourceConverter.needsConverting( resource, desiredFormat ) ) {
+			return resource;
+		}
 		try {
 			File file = createAudioFileToConvert( resource );
 			File outputFile;
@@ -121,7 +124,7 @@ public class FFmpegAudioConverter {
 			RuntimeUtilities.execSilent( ffmpegCommand, "-i", file.getAbsolutePath(), "-acodec", "pcm_s16le",
 					"-ar", String.valueOf( RATE_44 ), "-ac", "1", path );
 			File convertedFile = new File( path );
-			return convertedFile;
+			return new AudioResource( convertedFile );
 		} catch( IOException e ) {
 			e.printStackTrace();
 		}
