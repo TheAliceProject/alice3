@@ -81,6 +81,11 @@ public class UploadView extends BorderPanel {
 
 	private class UserNameAndPasswordComponent extends BorderPanel {
 		public UserNameAndPasswordComponent( UploadComposite composite ) {
+			GridPanel top = GridPanel.createGridPane( 1, 3 );
+			top.addComponent( new Label() );
+			top.addComponent( composite.getSaveToFileOperation().createButton() );
+			top.addComponent( new Label() );
+			this.addComponent( top, Constraint.PAGE_START );
 			GridPanel bottom = GridPanel.createGridPane( 1, 3 );
 			bottom.addComponent( new Label() );
 			bottom.addComponent( composite.getLoginOperation().createButton() );
@@ -88,12 +93,12 @@ public class UploadView extends BorderPanel {
 			this.addComponent( bottom, Constraint.PAGE_END );
 			TextField userName = composite.getIdState().createTextField();
 			PasswordField password = composite.getPasswordState().createPasswordField();
-			GridPanel top = GridPanel.createGridPane( 2, 2 );
-			top.addComponent( composite.getUsername().createImmutableTextArea() );
-			top.addComponent( userName );
-			top.addComponent( composite.getPasswordLabelValue().createImmutableTextArea() );
-			top.addComponent( password );
-			this.addComponent( top, Constraint.CENTER );
+			GridPanel middle = GridPanel.createGridPane( 2, 2 );
+			middle.addComponent( composite.getUsername().createImmutableTextArea() );
+			middle.addComponent( userName );
+			middle.addComponent( composite.getPasswordLabelValue().createImmutableTextArea() );
+			middle.addComponent( password );
+			this.addComponent( middle, Constraint.CENTER );
 		}
 	}
 

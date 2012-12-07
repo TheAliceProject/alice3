@@ -45,7 +45,7 @@ package org.alice.media.audio;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 
 import org.lgna.common.resources.AudioResource;
@@ -59,7 +59,7 @@ public class AudioCompiler {
 
 	private File destinationFile;
 	private List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
-	private HashSet<AudioResource> alreadyConverted = Collections.newHashSet();
+	private HashMap<AudioResource, AudioResource> alreadyConvertedMap = Collections.newHashMap();
 
 	public AudioCompiler( File destinationFile ) {
 		this.destinationFile = destinationFile;
@@ -67,14 +67,21 @@ public class AudioCompiler {
 
 	public void addAudio( ScheduledAudioStream audio ) {
 		if( !alreadyConverted( audio.getAudioResource() ) ) {
-			alreadyConverted.add( audio.getAudioResource() );
-			audio.setAudioResource( FFmpegAudioConverter.convertAudioIfNecessary( audio.getAudioResource() ) );
+			AudioResource newAudio = FFmpegAudioConverter.convertAudioIfNecessary( audio.getAudioResource() );
+			alreadyConvertedMap.put( audio.getAudioResource(), newAudio );
+			audio.setAudioResource( newAudio );
+		} else {
+			audio.setAudioResource( getResource( audio.getAudioResource() ) );
 		}
 		scheduledStreams.add( audio );
 	}
 
+	private AudioResource getResource( AudioResource audioResource ) {
+		return alreadyConvertedMap.get( audioResource );
+	}
+
 	private boolean alreadyConverted( AudioResource resource ) {
-		return alreadyConverted.contains( resource );
+		return alreadyConvertedMap.containsKey( resource );
 	}
 
 	public File getDestinationFile() {

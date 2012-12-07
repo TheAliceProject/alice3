@@ -69,6 +69,9 @@ import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeNamespace;
 import com.google.gdata.util.AuthenticationException;
 
+import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+
 /**
  * @author Matt May
  */
@@ -89,6 +92,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 	private final StringState descriptionState = this.createStringState( this.createKey( "description" ), "" );
 	private final PlainStringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
 	private final StringState tagState = this.createStringState( this.createKey( "tag" ), "Alice3" );
+
 	private final ActionOperation loginOperation = this.createActionOperation( this.createKey( "login" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			try {
@@ -100,6 +104,19 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 			return null;
 		}
 	} );
+
+	private final ActionOperation saveToFileOperation = this.createActionOperation( this.createKey( "save" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+
+			File file = FileDialogUtilities.showSaveFileDialog( java.util.UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
+					UploadComposite.this.getView().getAwtComponent(), "Save Video", owner.getFile(), titleState.getValue(), FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
+			if( file != null ) {
+				owner.getFile().renameTo( file );
+			}
+			return null;
+		}
+	} );
+
 	private final ActionOperation uploadOperation = this.createActionOperation( this.createKey( "upload" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation src ) throws org.lgna.croquet.CancelException {
 			VideoEntry entry = new VideoEntry();
@@ -124,7 +141,6 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 			mediaGroup.setKeywords( keywords );//tags
 
 			String category = videoCategoryState.getValue().toString().split( "\\s" )[ 0 ].trim();
-			System.out.println( "cat: " + category );
 			mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
 			mediaGroup.setPrivate( isPrivateState.getValue() );//isPrivate
 			try {
@@ -167,6 +183,10 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 
 	public ActionOperation getLoginOperation() {
 		return this.loginOperation;
+	}
+
+	public ActionOperation getSaveToFileOperation() {
+		return this.saveToFileOperation;
 	}
 
 	public PlainStringValue getTitleLabelValue() {

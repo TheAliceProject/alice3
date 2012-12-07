@@ -40,11 +40,13 @@ public class ImagesToWebmEncoder extends ImagesToFFmpegEncoder {
 	}
 
 	public void mergeAudio() {
-		if( getSoundTrack() != null ) {
+		File soundTrack = getSoundTrack();
+		if( soundTrack != null ) {
+			System.out.println( "merge Audio" );
 			String tempVideoPath = this.getVideoPath();
 			String newPath = tempVideoPath.substring( 0, tempVideoPath.length() - 5 );
 			newPath += "1.webm";
-			RuntimeUtilities.execSilent( this.ffmpegCommand, "-i", this.getVideoPath(), "-i", getSoundTrack().getAbsolutePath(), newPath );
+			RuntimeUtilities.execSilent( this.ffmpegCommand, "-i", this.getVideoPath(), "-i", soundTrack.getAbsolutePath(), newPath );
 			File oldFile = new File( this.getVideoPath() );
 			oldFile.delete();
 			File newFile = new File( newPath );
