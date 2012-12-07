@@ -399,21 +399,9 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 
 			propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
 
-			if( selectedField != null ) {
-
-				org.lgna.project.ast.Expression initializer = selectedField.initializer.getValue();
-				if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
-					org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
-					final org.lgna.project.ast.AbstractType<?, ?, ?> parameter0Type = org.alice.ide.typemanager.ConstructorArgumentUtilities.getParameter0Type( instanceCreation.constructor.getValue() );
-					if( parameter0Type != null ) {
-						org.alice.ide.croquet.models.declaration.InitializerState initializeState = new org.alice.ide.croquet.models.declaration.InitializerState( new org.alice.ide.croquet.models.declaration.InitializerStateOwner() {
-							public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
-								return parameter0Type;
-							}
-						}, instanceCreation.requiredArguments.get( 0 ).expression.getValue() );
-						propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, initializeState ) );
-					}
-				}
+			org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
+			if( fieldInitializerState != null ) {
+				propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
 			}
 
 			for( org.lgna.project.ast.JavaMethod getter : getterMethods )
