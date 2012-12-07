@@ -245,66 +245,73 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return true;
 	}
 
+	private void updateSwingModelIfAppropriate( T nextValue, Origin origin ) {
+		if( origin.isFromSwing ) {
+			//pass
+		} else {
+			//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
+			//				//pass
+			//			} else {
+			this.updateSwingModel( nextValue );
+			//			}
+		}
+	}
+
 	private boolean isInTheMidstOfChange = false;
 
 	private void changeValue( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
-		if( this.isAppropriateToChange() ) {
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "areEquivalent:", this, this.prevValue, nextValue );
-				if( origin.isFromSwing ) {
-					//pass
-				} else {
-					this.updateSwingModel( nextValue );
-				}
-				//pass
-			} else {
-				if( isAdjusting.value ) {
-					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isAdjusting:", this, isAdjusting );
-				} else {
-					if( this.isInTheMidstOfChange ) {
-						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isInTheMidstOfChanging:", this, isInTheMidstOfChanging );
-					} else {
-						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "change:", this, nextValue, isAdjusting, isFromSwing, isFromEdit );
-						this.isInTheMidstOfChange = true;
-						try {
-							T prevValue = this.previousValue;
-							this.fireChanging( prevValue, nextValue, isAdjusting );
-							if( origin.isFromSwing ) {
-								//pass
-							} else {
-								this.updateSwingModel( nextValue );
-							}
-							if( origin.isFromEdit ) {
-								//pass
-							} else {
-								if( origin.isFromSetValueTransactionless ) {
-									//pass
-								} else {
-									this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
-								}
-							}
-							this.fireChanged( prevValue, nextValue, isAdjusting );
-							this.previousValue = nextValue;
-						} finally {
-							this.isInTheMidstOfChange = false;
-						}
-					}
-				}
-			}
-		}
+		//		if( this.isAppropriateToChange() ) {
+		//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
+		//				this.updateSwingModelIfAppropriate( nextValue, origin );
+		//			} else {
+		//				if( isAdjusting.value ) {
+		//					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isAdjusting:", this, isAdjusting );
+		//				} else {
+		//					if( this.isInTheMidstOfChange ) {
+		//						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "isInTheMidstOfChanging:", this, isInTheMidstOfChanging );
+		//					} else {
+		//						//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "change:", this, nextValue, isAdjusting, isFromSwing, isFromEdit );
+		//						this.isInTheMidstOfChange = true;
+		//						try {
+		//							T prevValue = this.previousValue;
+		//							this.fireChanging( prevValue, nextValue, isAdjusting );
+		//							this.currentValue = nextValue;
+		//							this.updateSwingModelIfAppropriate( nextValue, origin );
+		//							if( origin.isFromEdit ) {
+		//								//pass
+		//							} else {
+		//								if( origin.isFromSetValueTransactionless ) {
+		//									//pass
+		//								} else {
+		//									this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
+		//								}
+		//							}
+		//							this.fireChanged( prevValue, nextValue, isAdjusting );
+		//							this.previousValue = nextValue;
+		//						} finally {
+		//							this.isInTheMidstOfChange = false;
+		//						}
+		//					}
+		//				}
+		//			}
+		//		}
 	}
 
 	protected final void changeValueFromSwing( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_SWING );
 	}
 
+	protected final void changeValueFromIndirectModel( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+		this.updateSwingModelIfAppropriate( nextValue, Origin.FROM_SET_VALUE );
+	}
+
 	public final T getValue() {
 		return this.currentValue;
 	}
 
-	public final void setValue( T value ) {
-		this.changeValue( value, IsAdjusting.FALSE, NULL_TRIGGER, Origin.FROM_SET_VALUE );
-	}
+	//	public final void setValue( T value ) {
+	//		this.changeValue( value, IsAdjusting.FALSE, NULL_TRIGGER, Origin.FROM_SET_VALUE );
+	//	}
 
 	private void changeValueTransactionlessly( T value, IsAdjusting isAdjusting ) {
 		this.pushIgnore();

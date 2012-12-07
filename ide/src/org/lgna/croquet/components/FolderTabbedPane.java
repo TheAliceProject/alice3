@@ -428,6 +428,12 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
+	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			FolderTabbedPane.this.handleValueChanged( e );
+		}
+	};
+
 	public FolderTabbedPane( ListSelectionState<E> model ) {
 		super( model );
 		this.cardComposite.getView().setBackgroundColor( null );
@@ -470,6 +476,16 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		PopupOperation popupOperation = new PopupOperation();
 		this.setInnerHeaderTrailingComponent( new PopupButton( popupOperation ) );
+
+		model.getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+	}
+
+	private void handleValueChanged( javax.swing.event.ListSelectionEvent e ) {
+		ListSelectionState<E> model = this.getModel();
+		int index = e.getFirstIndex();
+		E card = model.getItemAt( index );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "show card", index, card );
+		this.cardComposite.showCard( card );
 	}
 
 	public JComponent<?> getHeaderLeadingComponent() {

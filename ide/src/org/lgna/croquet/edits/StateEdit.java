@@ -120,7 +120,11 @@ public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.cro
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.getModel().changeValueFromEdit( this.getNextValue() );
+		if( isDo ) {
+			//pass
+		} else {
+			this.getModel().changeValueFromEdit( this.getNextValue() );
+		}
 	}
 
 	@Override

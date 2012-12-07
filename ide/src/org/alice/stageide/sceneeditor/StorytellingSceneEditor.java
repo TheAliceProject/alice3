@@ -848,99 +848,101 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	protected void setActiveScene( org.lgna.project.ast.UserField sceneField ) {
 		super.setActiveScene( sceneField );
 
-		ImplementationAccessor.getImplementation( getProgramInstanceInJava() ).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
+		if( sceneField != null ) {
+			ImplementationAccessor.getImplementation( getProgramInstanceInJava() ).setSimulationSpeedFactor( Double.POSITIVE_INFINITY );
 
-		org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
-		org.lgna.story.SScene sceneJavaInstance = (org.lgna.story.SScene)sceneAliceInstance.getJavaInstance();
+			org.lgna.project.virtualmachine.UserInstance sceneAliceInstance = getActiveSceneInstance();
+			org.lgna.story.SScene sceneJavaInstance = (org.lgna.story.SScene)sceneAliceInstance.getJavaInstance();
 
-		org.lgna.story.SProgram program = getProgramInstanceInJava();
-		org.lgna.story.SScene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.SScene.class );
-		SceneImp ACCEPTABLE_HACK_sceneImp = ImplementationAccessor.getImplementation( scene );
-		ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization();
-		try {
-			program.setActiveScene( sceneJavaInstance );
-		} finally {
-			ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_popPerformMinimalInitialization();
-		}
-		this.getVM().ENTRY_POINT_invoke( sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME ) );
-
-		getPropertyPanel().setSceneInstance( sceneAliceInstance );
-		getObjectMarkerPanel().setType( sceneAliceInstance.getType() );
-		getCameraMarkerPanel().setType( sceneAliceInstance.getType() );
-		this.instanceFactorySelectionPanel.setType( sceneAliceInstance.getType() );
-		for( org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields() )
-		{
-			if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) )
-			{
-				this.sceneCameraImp = getImplementation( field );
-				break;
+			org.lgna.story.SProgram program = getProgramInstanceInJava();
+			org.lgna.story.SScene scene = sceneAliceInstance.getJavaInstance( org.lgna.story.SScene.class );
+			SceneImp ACCEPTABLE_HACK_sceneImp = ImplementationAccessor.getImplementation( scene );
+			ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_pushPerformMinimalInitialization();
+			try {
+				program.setActiveScene( sceneJavaInstance );
+			} finally {
+				ACCEPTABLE_HACK_sceneImp.ACCEPTABLE_HACK_FOR_SCENE_EDITOR_popPerformMinimalInitialization();
 			}
-		}
+			this.getVM().ENTRY_POINT_invoke( sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME ) );
 
-		assert ( ( this.globalDragAdapter != null ) && ( this.sceneCameraImp != null ) && ( this.orthographicCameraImp != null ) );
-		{
-			this.globalDragAdapter.clearCameraViews();
-			this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sceneCameraImp.getSgCamera(), null );
-			this.globalDragAdapter.makeCameraActive( this.sceneCameraImp.getSgCamera() );
-
-			SceneImp sceneImp = this.getActiveSceneImplementation();
-			//Add and set up the snap grid (this needs to happen before setting the camera)
-			sceneImp.getSgComposite().addComponent( this.snapGrid );
-			this.snapGrid.setTranslationOnly( 0, 0, 0, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
-			this.snapGrid.setShowing( SnapState.getInstance().shouldShowSnapGrid() );
-
-			//Initialize stuff that needs a camera
-			this.setCameras( this.sceneCameraImp.getSgCamera(), this.orthographicCameraImp.getSgCamera() );
-			MoveActiveCameraToMarkerActionOperation.getInstance().setCamera( this.sceneCameraImp );
-			MoveMarkerToActiveCameraActionOperation.getInstance().setCamera( this.sceneCameraImp );
-
-			//Add the orthographic camera to this scene
-			sceneImp.getSgComposite().addComponent( this.orthographicCameraImp.getSgCamera().getParent() );
-			//Add the orthographic markers			
-			Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
-			for( View view : this.mainCameraMarkerList )
+			getPropertyPanel().setSceneInstance( sceneAliceInstance );
+			getObjectMarkerPanel().setType( sceneAliceInstance.getType() );
+			getCameraMarkerPanel().setType( sceneAliceInstance.getType() );
+			this.instanceFactorySelectionPanel.setType( sceneAliceInstance.getType() );
+			for( org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields() )
 			{
-				CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker( view );
-				boolean alreadyHasIt = false;
-				for( Component c : existingComponents ) {
-					if( c == marker.getSgComposite() ) {
-						alreadyHasIt = true;
-						break;
+				if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) )
+				{
+					this.sceneCameraImp = getImplementation( field );
+					break;
+				}
+			}
+
+			assert ( ( this.globalDragAdapter != null ) && ( this.sceneCameraImp != null ) && ( this.orthographicCameraImp != null ) );
+			{
+				this.globalDragAdapter.clearCameraViews();
+				this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sceneCameraImp.getSgCamera(), null );
+				this.globalDragAdapter.makeCameraActive( this.sceneCameraImp.getSgCamera() );
+
+				SceneImp sceneImp = this.getActiveSceneImplementation();
+				//Add and set up the snap grid (this needs to happen before setting the camera)
+				sceneImp.getSgComposite().addComponent( this.snapGrid );
+				this.snapGrid.setTranslationOnly( 0, 0, 0, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
+				this.snapGrid.setShowing( SnapState.getInstance().shouldShowSnapGrid() );
+
+				//Initialize stuff that needs a camera
+				this.setCameras( this.sceneCameraImp.getSgCamera(), this.orthographicCameraImp.getSgCamera() );
+				MoveActiveCameraToMarkerActionOperation.getInstance().setCamera( this.sceneCameraImp );
+				MoveMarkerToActiveCameraActionOperation.getInstance().setCamera( this.sceneCameraImp );
+
+				//Add the orthographic camera to this scene
+				sceneImp.getSgComposite().addComponent( this.orthographicCameraImp.getSgCamera().getParent() );
+				//Add the orthographic markers			
+				Component[] existingComponents = sceneImp.getSgComposite().getComponentsAsArray();
+				for( View view : this.mainCameraMarkerList )
+				{
+					CameraMarkerImp marker = this.mainCameraViewTracker.getCameraMarker( view );
+					boolean alreadyHasIt = false;
+					for( Component c : existingComponents ) {
+						if( c == marker.getSgComposite() ) {
+							alreadyHasIt = true;
+							break;
+						}
+					}
+					if( !alreadyHasIt ) {
+						marker.setVehicle( sceneImp );
 					}
 				}
-				if( !alreadyHasIt ) {
-					marker.setVehicle( sceneImp );
-				}
+
+				AffineMatrix4x4 openingViewTransform = this.sceneCameraImp.getAbsoluteTransformation();
+				this.openingSceneMarkerImp.setLocalTransformation( openingViewTransform );
+
+				AffineMatrix4x4 sceneEditorViewTransform = new AffineMatrix4x4( openingViewTransform );
+				sceneEditorViewTransform.applyTranslationAlongYAxis( 12.0 );
+				sceneEditorViewTransform.applyTranslationAlongZAxis( 10.0 );
+				sceneEditorViewTransform.applyRotationAboutXAxis( new AngleInDegrees( -40 ) );
+				this.sceneViewMarkerImp.setLocalTransformation( sceneEditorViewTransform );
+
+				this.mainCameraViewTracker.startTrackingCameraView( this.mainCameraMarkerList.getValue() );
+
 			}
 
-			AffineMatrix4x4 openingViewTransform = this.sceneCameraImp.getAbsoluteTransformation();
-			this.openingSceneMarkerImp.setLocalTransformation( openingViewTransform );
+			ManagedCameraMarkerFieldState.getInstance( (NamedUserType)sceneAliceInstance.getType() ).addAndInvokeValueListener( this.cameraMarkerFieldSelectionObserver );
+			ManagedObjectMarkerFieldState.getInstance( (NamedUserType)sceneAliceInstance.getType() ).addAndInvokeValueListener( this.objectMarkerFieldSelectionObserver );
 
-			AffineMatrix4x4 sceneEditorViewTransform = new AffineMatrix4x4( openingViewTransform );
-			sceneEditorViewTransform.applyTranslationAlongYAxis( 12.0 );
-			sceneEditorViewTransform.applyTranslationAlongZAxis( 10.0 );
-			sceneEditorViewTransform.applyRotationAboutXAxis( new AngleInDegrees( -40 ) );
-			this.sceneViewMarkerImp.setLocalTransformation( sceneEditorViewTransform );
-
-			this.mainCameraViewTracker.startTrackingCameraView( this.mainCameraMarkerList.getValue() );
-
-		}
-
-		ManagedCameraMarkerFieldState.getInstance( (NamedUserType)sceneAliceInstance.getType() ).addAndInvokeValueListener( this.cameraMarkerFieldSelectionObserver );
-		ManagedObjectMarkerFieldState.getInstance( (NamedUserType)sceneAliceInstance.getType() ).addAndInvokeValueListener( this.objectMarkerFieldSelectionObserver );
-
-		for( org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields() )
-		{
-			if( field instanceof UserField )
+			for( org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields() )
 			{
-				UserField userField = (UserField)field;
-				if( userField.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-					this.setInitialCodeStateForField( userField, getCurrentStateCodeForField( userField ) );
+				if( field instanceof UserField )
+				{
+					UserField userField = (UserField)field;
+					if( userField.getManagementLevel() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+						this.setInitialCodeStateForField( userField, getCurrentStateCodeForField( userField ) );
+					}
 				}
 			}
-		}
 
-		ImplementationAccessor.getImplementation( getProgramInstanceInJava() ).setSimulationSpeedFactor( 1.0 );
+			ImplementationAccessor.getImplementation( getProgramInstanceInJava() ).setSimulationSpeedFactor( 1.0 );
+		}
 	}
 
 	@Override

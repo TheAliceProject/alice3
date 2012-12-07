@@ -138,8 +138,9 @@ public abstract class ItemState<T> extends State<T> {
 			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 				InternalItemSelectedStateButtonModel<T> buttonModel = (InternalItemSelectedStateButtonModel<T>)e.getItem();
 				T item = getItem( this.itemCallable );
-				if( getItem( this.itemCallable ) == getItem( buttonModel.getItemCallable() ) ) {
-					this.state.setValue( item );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "handleItemStateChanged", item );
+				if( item == getItem( buttonModel.getItemCallable() ) ) {
+					this.state.changeValueFromIndirectModel( item, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 				}
@@ -177,7 +178,7 @@ public abstract class ItemState<T> extends State<T> {
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			step.finish();
-			this.state.setValue( getItem( this.itemCallable ) );
+			this.state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, trigger );
 		}
 	}
 
