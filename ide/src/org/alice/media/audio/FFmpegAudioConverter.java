@@ -118,7 +118,7 @@ public class FFmpegAudioConverter {
 			outputFile = File.createTempFile( "outputFile", ".wav" );
 			String path = outputFile.getAbsolutePath();
 			outputFile.delete();
-			RuntimeUtilities.exec( ffmpegCommand, "-i", file.getAbsolutePath(), "-acodec", "pcm_s16le",
+			RuntimeUtilities.execSilent( ffmpegCommand, "-i", file.getAbsolutePath(), "-acodec", "pcm_s16le",
 					"-ar", String.valueOf( RATE_44 ), "-ac", "1", path );
 			File convertedFile = new File( path );
 			return convertedFile;
