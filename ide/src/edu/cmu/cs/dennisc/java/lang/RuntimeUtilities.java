@@ -47,25 +47,27 @@ package edu.cmu.cs.dennisc.java.lang;
  * @author Dennis Cosgrove
  */
 class StreamHandler extends Thread {
-	private java.io.InputStream m_is;
-	private java.io.PrintStream m_ps;
+	private final java.io.InputStream is;
+	private final java.io.PrintStream ps;
 
 	public StreamHandler( java.io.InputStream is, java.io.PrintStream ps ) {
-		m_is = is;
-		m_ps = ps;
+		this.is = is;
+		this.ps = ps;
 	}
 
 	@Override
 	public void run() {
-		java.io.InputStreamReader isr = new java.io.InputStreamReader( m_is );
+		java.io.InputStreamReader isr = new java.io.InputStreamReader( this.is );
 		java.io.BufferedReader br = new java.io.BufferedReader( isr );
-		java.io.PrintWriter pw = new java.io.PrintWriter( m_ps );
+		java.io.PrintWriter pw = this.ps != null ? new java.io.PrintWriter( this.ps ) : null;
 		while( true ) {
 			try {
 				String line = br.readLine();
 				if( line != null ) {
-					pw.println( line );
-					pw.flush();
+					if( pw != null ) {
+						pw.println( line );
+						pw.flush();
+					}
 				} else {
 					break;
 				}
@@ -80,6 +82,11 @@ class StreamHandler extends Thread {
  * @author Dennis Cosgrove
  */
 public class RuntimeUtilities {
+
+	//todo: investigate
+	private static final boolean IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT = true;
+
+	//todo: reorder parameters
 	public static int exec( java.io.File workingDirectory, java.util.Map<String, String> environment, String[] cmds, java.io.PrintStream out, java.io.PrintStream err ) {
 		ProcessBuilder processBuilder = new ProcessBuilder( cmds );
 		if( workingDirectory != null ) {
@@ -93,10 +100,14 @@ public class RuntimeUtilities {
 		}
 		try {
 			Process process = processBuilder.start();
-			StreamHandler outputHandler = new StreamHandler( process.getInputStream(), out );
-			StreamHandler errorHandler = new StreamHandler( process.getErrorStream(), err );
-			outputHandler.start();
-			errorHandler.start();
+			if( ( out != null ) || IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT ) {
+				StreamHandler outputHandler = new StreamHandler( process.getInputStream(), out );
+				outputHandler.start();
+			}
+			if( ( err != null ) || IS_READING_FROM_PROCESS_DESIRED_EVEN_WHEN_SILENT ) {
+				StreamHandler errorHandler = new StreamHandler( process.getErrorStream(), err );
+				errorHandler.start();
+			}
 			return process.waitFor();
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
@@ -119,5 +130,17 @@ public class RuntimeUtilities {
 
 	public static int exec( String... cmds ) {
 		return exec( null, cmds );
+	}
+
+	public static int execSilent( java.io.File workingDirectory, java.util.Map<String, String> environment, String... cmds ) {
+		return exec( workingDirectory, environment, cmds, null, null );
+	}
+
+	public static int execSilent( java.io.File workingDirectory, String... cmds ) {
+		return execSilent( workingDirectory, null, cmds );
+	}
+
+	public static int execSilent( String... cmds ) {
+		return execSilent( null, cmds );
 	}
 }
