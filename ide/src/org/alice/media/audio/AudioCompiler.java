@@ -67,7 +67,6 @@ public class AudioCompiler {
 
 	public void addAudio( ScheduledAudioStream audio ) {
 		if( !alreadyConverted( audio.getAudioResource() ) ) {
-			System.out.println( "newAudio" );
 			alreadyConverted.add( audio.getAudioResource() );
 			audio.setAudioResource( FFmpegAudioConverter.convertAudioIfNecessary( audio.getAudioResource() ) );
 		}

@@ -70,11 +70,11 @@ public class UploadView extends BorderPanel {
 		super( composite );
 		this.addComponent( new UserNameAndPasswordComponent( composite ), Constraint.PAGE_START );
 		moviePlayerComposite = new MoviePlayerComposite( composite.getFile() );
-		BorderPanel bPanel = new BorderPanel();
+		GridPanel bPanel = GridPanel.createGridPane( 1, 2 );
 		MoviePlayerView panel = moviePlayerComposite.getView();
-		bPanel.addComponent( new PreserveAspectRatioPanel( panel, new Dimension( 16, 9 ) ), Constraint.CENTER );
+		bPanel.addComponent( new PreserveAspectRatioPanel( panel, new Dimension( 16, 9 ) ) );
 		//		bPanel.addComponent( new PreserveAspectRatioPanel( new Label( "Preview Coming Soon!" ), new Dimension( 16, 9 ) ), Constraint.CENTER );
-		bPanel.addComponent( new VideoInfoComponent( composite ), Constraint.LINE_END );
+		bPanel.addComponent( new VideoInfoComponent( composite ) );
 		this.addComponent( bPanel, Constraint.CENTER );
 		this.addComponent( composite.getUploadOperation().createButton(), Constraint.PAGE_END );
 	}
@@ -119,11 +119,13 @@ public class UploadView extends BorderPanel {
 			BorderPanel topBorder = new BorderPanel();
 			topBorder.addComponent( composite.getDescriptionValue().createImmutableTextArea(), Constraint.PAGE_START );
 			TextArea description = composite.getDescriptionState().createTextArea();
+			description.getAwtComponent().setLineWrap( true );
 			disableable.add( description );
 			topBorder.addComponent( description, Constraint.CENTER );
 			BorderPanel bottomBorder = new BorderPanel();
 			bottomBorder.addComponent( composite.getTagLabel().createImmutableTextArea(), Constraint.PAGE_START );
 			TextArea tags = composite.getTagState().createTextArea();
+			tags.getAwtComponent().setLineWrap( true );
 			disableable.add( tags );
 			bottomBorder.addComponent( tags, Constraint.CENTER );
 			middle.addComponent( topBorder );
@@ -134,7 +136,6 @@ public class UploadView extends BorderPanel {
 	}
 
 	public void setMovie( File file ) {
-		System.out.println( "file: " + file );
 		moviePlayerComposite.setMovie( file );
 	}
 }
