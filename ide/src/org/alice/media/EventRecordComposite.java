@@ -118,7 +118,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	@Override
 	public void handlePostDeactivation() {
 		super.handlePostDeactivation();
-		System.out.println( programContext );
 	}
 
 	public BooleanState getPlayRecordedOperation() {

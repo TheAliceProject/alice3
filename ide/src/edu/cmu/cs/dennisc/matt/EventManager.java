@@ -87,7 +87,6 @@ public class EventManager {
 		public void handleReplayedEvent( MouseEventWrapper e ) {
 			e.translatePoint( scene );
 			MouseClickEvent event = new MouseClickEvent( e.getEvent(), scene.getAbstraction() );
-			System.out.println( event.getModelAtMouseLocation() );
 			mouseQuoteClickedUnquote( e.getEvent(), 0 );
 		}
 	};

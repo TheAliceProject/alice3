@@ -220,7 +220,7 @@ public class AudioResourceConverter implements ControllerListener,
 	}
 
 	public org.lgna.common.resources.AudioResource convertTo( javax.media.format.AudioFormat destFormat ) {
-		System.out.println( "Converting " + this.audioResource.getOriginalFileName() );
+		//		System.out.println( "Converting " + this.audioResource.getOriginalFileName() );
 
 		startTime = System.currentTimeMillis();
 		try {

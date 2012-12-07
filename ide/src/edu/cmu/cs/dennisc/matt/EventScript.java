@@ -67,7 +67,6 @@ public class EventScript {
 		List<Object> rv = Collections.newLinkedList();
 		while( ( list.size() > 0 ) && ( list.get( 0 ).getTime() < time ) ) {
 			rv.add( list.remove( 0 ).getEvent() );
-			System.out.println( rv );
 		}
 		return rv;
 	}
