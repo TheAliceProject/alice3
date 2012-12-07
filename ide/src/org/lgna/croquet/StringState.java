@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StringState extends State<String> {
+public abstract class StringState extends SimpleValueState<String> {
 	private final class DocumentListener implements javax.swing.event.DocumentListener {
 		private void handleUpdate( javax.swing.event.DocumentEvent e ) {
 			if( this.ignoreCount == 0 ) {

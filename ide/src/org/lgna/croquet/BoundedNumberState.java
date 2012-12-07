@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedNumberState<N extends Number> extends State<N> {
+public abstract class BoundedNumberState<N extends Number> extends SimpleValueState<N> {
 	public static class AtomicChange<N extends Number> {
 		private N minimum = null;
 		private N maximum = null;

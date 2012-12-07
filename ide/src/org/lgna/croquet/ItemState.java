@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemState<T> extends State<T> {
+public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend State
 	private final ItemCodec<T> itemCodec;
 
 	public ItemState( Group group, java.util.UUID id, T initialValue, ItemCodec<T> itemCodec ) {
@@ -130,15 +130,16 @@ public abstract class ItemState<T> extends State<T> {
 
 		@Override
 		protected org.lgna.croquet.edits.StateEdit<Boolean> createEdit( org.lgna.croquet.history.CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, nextValue );
 			return null;
 		}
 
 		@Override
 		protected void handleItemStateChanged( java.awt.event.ItemEvent e ) {
+			//note: do not invoke super
 			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 				InternalItemSelectedStateButtonModel<T> buttonModel = (InternalItemSelectedStateButtonModel<T>)e.getItem();
 				T item = getItem( this.itemCallable );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "handleItemStateChanged", item );
 				if( item == getItem( buttonModel.getItemCallable() ) ) {
 					this.state.changeValueFromIndirectModel( item, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
 				} else {
@@ -175,10 +176,13 @@ public abstract class ItemState<T> extends State<T> {
 		}
 
 		@Override
+		protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
+			this.state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+		}
+
+		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			step.finish();
-			this.state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, trigger );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, transaction, trigger );
 		}
 	}
 

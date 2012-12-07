@@ -430,7 +430,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			FolderTabbedPane.this.handleValueChanged( e );
+			FolderTabbedPane.this.handleValueChanged();
 		}
 	};
 
@@ -477,15 +477,28 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		PopupOperation popupOperation = new PopupOperation();
 		this.setInnerHeaderTrailingComponent( new PopupButton( popupOperation ) );
 
-		model.getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
-	private void handleValueChanged( javax.swing.event.ListSelectionEvent e ) {
+	@Override
+	protected void handleDisplayable() {
+		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.handleValueChanged();
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
+	}
+
+	private void handleValueChanged() {
 		ListSelectionState<E> model = this.getModel();
-		int index = e.getFirstIndex();
-		E card = model.getItemAt( index );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "show card", index, card );
+		//int index = e.getFirstIndex();
+		int index = model.getSelectedIndex();
+		E card = index != -1 ? model.getItemAt( index ) : null;
 		this.cardComposite.showCard( card );
+		this.repaint();
 	}
 
 	public JComponent<?> getHeaderLeadingComponent() {

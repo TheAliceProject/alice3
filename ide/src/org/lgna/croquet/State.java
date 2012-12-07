@@ -56,12 +56,10 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	private final java.util.Stack<T> generatorValueStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 
 	private T previousValue;
-	private T currentValue;
 
-	public State( Group group, java.util.UUID id, T initialValue ) {
-		super( group, id );
+	public State( Group group, java.util.UUID migrationId, T initialValue ) {
+		super( group, migrationId );
 		this.previousValue = initialValue;
-		this.currentValue = initialValue;
 	}
 
 	public abstract Class<T> getItemClass();
@@ -72,7 +70,21 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	public abstract void appendRepresentation( StringBuilder sb, T value );
 
+	protected abstract T getCurrentTruthAndBeautyValue();
+
+	protected final T getPreviousTruthAndBeautyValue() {
+		return this.previousValue;
+	}
+
 	protected abstract T getValueFromSwing();
+
+	public final T getValue() {
+		return this.getCurrentTruthAndBeautyValue();
+	}
+
+	private void syncSwingValueWithTruthAndBeauty() {
+
+	}
 
 	protected abstract void updateSwingModel( T nextValue );
 
@@ -213,18 +225,18 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	private static enum Origin {
 		FROM_SWING( true, false, false, false ),
 		FROM_EDIT( false, true, false, false ),
-		FROM_SET_VALUE( false, false, true, false ),
+		FROM_INDIRECT_MODEL( false, false, true, false ),
 		FROM_SET_VALUE_TRANSACTIONLESSLY( false, false, true, false );
 		private final boolean isFromSwing;
 		private final boolean isFromEdit;
-		private final boolean isFromSetValue;
-		private final boolean isFromSetValueTransactionless;
+		private final boolean isFromIndirectModel;
+		private final boolean isFromSetValueTransactionlessly;
 
-		private Origin( boolean isFromSwing, boolean isFromEdit, boolean isFromSetValue, boolean isFromSetValueTransactionless ) {
+		private Origin( boolean isFromSwing, boolean isFromEdit, boolean isFromIndirectModel, boolean isFromSetValueTransactionlessly ) {
 			this.isFromSwing = isFromSwing;
 			this.isFromEdit = isFromEdit;
-			this.isFromSetValue = isFromSetValue;
-			this.isFromSetValueTransactionless = isFromSetValueTransactionless;
+			this.isFromIndirectModel = isFromIndirectModel;
+			this.isFromSetValueTransactionlessly = isFromSetValueTransactionlessly;
 		}
 	}
 
@@ -302,24 +314,11 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	protected final void changeValueFromIndirectModel( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		this.updateSwingModelIfAppropriate( nextValue, Origin.FROM_SET_VALUE );
+		this.updateSwingModelIfAppropriate( nextValue, Origin.FROM_INDIRECT_MODEL );
 	}
-
-	public final T getValue() {
-		return this.currentValue;
-	}
-
-	//	public final void setValue( T value ) {
-	//		this.changeValue( value, IsAdjusting.FALSE, NULL_TRIGGER, Origin.FROM_SET_VALUE );
-	//	}
 
 	private void changeValueTransactionlessly( T value, IsAdjusting isAdjusting ) {
-		this.pushIgnore();
-		try {
-			this.changeValue( value, isAdjusting, NULL_TRIGGER, Origin.FROM_SET_VALUE_TRANSACTIONLESSLY );
-		} finally {
-			this.popIgnore();
-		}
+		this.changeValue( value, isAdjusting, NULL_TRIGGER, Origin.FROM_SET_VALUE_TRANSACTIONLESSLY );
 	}
 
 	public final void setValueTransactionlessly( T value ) {

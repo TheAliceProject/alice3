@@ -119,6 +119,11 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );
 	}
 
+	@Override
+	protected T getCurrentTruthAndBeautyValue() {
+		return getItemAt( this.dataIndexPair.data, this.dataIndexPair.index );
+	}
+
 	public org.lgna.croquet.data.ListData<T> getData() {
 		return this.dataIndexPair.data;
 	}
@@ -206,9 +211,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	@Override
 	protected void updateSwingModel( T nextValue ) {
-		//this.setSelectedItem( nextValue );
 		this.dataIndexPair.index = this.indexOf( nextValue );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.dataIndexPair.index );
 		this.swingModel.listSelectionModel.setSelectionInterval( this.dataIndexPair.index, this.dataIndexPair.index );
 		//this.fireContentsChanged( this.dataIndexPair.index, this.dataIndexPair.index );
 	}

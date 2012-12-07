@@ -348,14 +348,14 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 	protected void addEpilogue() {
 	}
 
-	@Override
-	protected void handleItemSelected( E item ) {
-		super.handleItemSelected( item );
-		for( MutableListItemDetails<E, LC, MC, TC> details : this.getAllItemDetails() ) {
-			boolean isSelected = details.getItem() == item;
-			this.updateSelection( details.getLeadingComponent(), details.getMainComponent(), details.getTrailingComponent(), isSelected );
-		}
-	}
+	//	@Override
+	//	protected void handleItemSelected( E item ) {
+	//		super.handleItemSelected( item );
+	//		for( MutableListItemDetails<E, LC, MC, TC> details : this.getAllItemDetails() ) {
+	//			boolean isSelected = details.getItem() == item;
+	//			this.updateSelection( details.getLeadingComponent(), details.getMainComponent(), details.getTrailingComponent(), isSelected );
+	//		}
+	//	}
 
 	@Override
 	protected void handleDisplayable() {

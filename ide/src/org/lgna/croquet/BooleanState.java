@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BooleanState extends State<Boolean> {
+public abstract class BooleanState extends SimpleValueState<Boolean> {
 	public static final class InternalMenuItemPrepModelResolver extends IndirectResolver<InternalMenuItemPrepModel, BooleanState> {
 		private InternalMenuItemPrepModelResolver( BooleanState indirect ) {
 			super( indirect );

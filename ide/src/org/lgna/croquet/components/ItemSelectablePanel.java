@@ -55,7 +55,6 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 
 	@Override
 	protected void handleDisplayable() {
-		super.handleDisplayable();
 		if( this.isInitialized ) {
 			//pass
 		} else {
@@ -63,6 +62,7 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 			this.setSwingListSelectionModel( this.getModel().getSwingModel().getListSelectionModel() );
 			this.isInitialized = true;
 		}
+		super.handleDisplayable();
 	}
 
 	@Override
@@ -113,11 +113,6 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 
 		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
 			ItemSelectablePanel.this.handleListDataChanged();
-		}
-	};
-	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			ItemSelectablePanel.this.handleListSelectionChanged();
 		}
 	};
 
@@ -199,29 +194,25 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 
 	protected abstract ID createItemDetails( E item );
 
-	protected void handleItemSelected( E item ) {
-		if( item != null ) {
-			ItemDetails<E> itemDetails = this.map.get( item );
-			assert itemDetails != null : item;
-			itemDetails.setSelected( true );
-		} else {
-			//todo: use buttonGroup.clearSelection() when 1.6
-			java.util.Enumeration<javax.swing.AbstractButton> buttonEnum = this.buttonGroup.getElements();
-			while( buttonEnum.hasMoreElements() ) {
-				javax.swing.AbstractButton button = buttonEnum.nextElement();
-				javax.swing.ButtonModel model = button.getModel();
-				if( model.isSelected() ) {
-					this.buttonGroup.remove( button );
-					model.setSelected( false );
-					this.buttonGroup.add( button );
-				}
-			}
-		}
-	}
-
-	private void handleListSelectionChanged() {
-		this.handleItemSelected( (E)this.comboBoxModel.getSelectedItem() );
-	}
+	//	protected void handleItemSelected( E item ) {
+	//		if( item != null ) {
+	//			ItemDetails<E> itemDetails = this.map.get( item );
+	//			assert itemDetails != null : item;
+	//			itemDetails.setSelected( true );
+	//		} else {
+	//			//todo: use buttonGroup.clearSelection() when 1.6
+	//			java.util.Enumeration<javax.swing.AbstractButton> buttonEnum = this.buttonGroup.getElements();
+	//			while( buttonEnum.hasMoreElements() ) {
+	//				javax.swing.AbstractButton button = buttonEnum.nextElement();
+	//				javax.swing.ButtonModel model = button.getModel();
+	//				if( model.isSelected() ) {
+	//					this.buttonGroup.remove( button );
+	//					model.setSelected( false );
+	//					this.buttonGroup.add( button );
+	//				}
+	//			}
+	//		}
+	//	}
 
 	@Override
 	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( E item ) {
@@ -238,18 +229,18 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 	}
 
 	private void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
-		if( this.comboBoxModel != null ) {
-			synchronized( this.comboBoxModel ) {
-				this.comboBoxModel.removeListDataListener( this.listDataListener );
-			}
-		}
+		//		if( this.comboBoxModel != null ) {
+		//			synchronized( this.comboBoxModel ) {
+		//				this.comboBoxModel.removeListDataListener( this.listDataListener );
+		//			}
+		//		}
 		this.comboBoxModel = model;
 		this.handleListDataChanged();
-		if( this.comboBoxModel != null ) {
-			synchronized( this.comboBoxModel ) {
-				this.comboBoxModel.addListDataListener( this.listDataListener );
-			}
-		}
+		//		if( this.comboBoxModel != null ) {
+		//			synchronized( this.comboBoxModel ) {
+		//				this.comboBoxModel.addListDataListener( this.listDataListener );
+		//			}
+		//		}
 	}
 
 	/* package-private */javax.swing.ListSelectionModel getSwingListSelectionModel() {
@@ -257,17 +248,17 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 	}
 
 	private void setSwingListSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
-		if( this.listSelectionModel != null ) {
-			synchronized( this.listSelectionModel ) {
-				this.listSelectionModel.removeListSelectionListener( this.listSelectionListener );
-			}
-		}
+		//		if( this.listSelectionModel != null ) {
+		//			synchronized( this.listSelectionModel ) {
+		//				this.listSelectionModel.removeListSelectionListener( this.listSelectionListener );
+		//			}
+		//		}
 		this.listSelectionModel = listSelectionModel;
-		this.handleListSelectionChanged();
-		if( this.listSelectionModel != null ) {
-			synchronized( this.listSelectionModel ) {
-				this.listSelectionModel.addListSelectionListener( this.listSelectionListener );
-			}
-		}
+		//this.handleListSelectionChanged();
+		//		if( this.listSelectionModel != null ) {
+		//			synchronized( this.listSelectionModel ) {
+		//				this.listSelectionModel.addListSelectionListener( this.listSelectionListener );
+		//			}
+		//		}
 	}
 }
