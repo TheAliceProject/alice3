@@ -69,14 +69,6 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		this.setBackgroundColor( BASE_COLOR );
 		this.setMaximumSizeClampedToPreferredSize( true );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
-
-		if( model instanceof org.alice.stageide.modelresource.ResourceNode ) {
-			org.alice.stageide.modelresource.ResourceNode resourceNode = (org.alice.stageide.modelresource.ResourceNode)model;
-			org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
-			if( resourceKey != null ) {
-				this.setToolTipText( "credit: " + resourceKey.getDisplayText() );
-			}
-		}
 	}
 
 	@Override
