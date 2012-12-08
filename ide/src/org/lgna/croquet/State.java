@@ -70,24 +70,6 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	public abstract void appendRepresentation( StringBuilder sb, T value );
 
-	protected abstract T getCurrentTruthAndBeautyValue();
-
-	protected final T getPreviousTruthAndBeautyValue() {
-		return this.previousValue;
-	}
-
-	protected abstract T getValueFromSwing();
-
-	public final T getValue() {
-		return this.getCurrentTruthAndBeautyValue();
-	}
-
-	private void syncSwingValueWithTruthAndBeauty() {
-
-	}
-
-	protected abstract void updateSwingModel( T nextValue );
-
 	public void addValueListener( ValueListener<T> valueListener ) {
 		if( this.valueListeners.contains( valueListener ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, valueListener );
@@ -202,6 +184,38 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
 	}
 
+	private void updateSwingModelIfAppropriate( T nextValue, Origin origin ) {
+		if( origin.isFromSwing ) {
+			//pass
+		} else {
+			//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
+			//				//pass
+			//			} else {
+			this.updateSwingModel( nextValue );
+			//			}
+		}
+	}
+
+	protected abstract T getCurrentTruthAndBeautyValue();
+
+	protected final T getPreviousTruthAndBeautyValue() {
+		return this.previousValue;
+	}
+
+	protected abstract T getValueFromSwing();
+
+	public final T getValue() {
+		return this.getCurrentTruthAndBeautyValue();
+	}
+
+	protected boolean isAppropriateToChange() {
+		return true;
+	}
+
+	protected abstract void updateSwingModel( T nextValue );
+
+	private boolean isInTheMidstOfChange = false;
+
 	protected static enum IsAdjusting {
 		TRUE( true ),
 		FALSE( false );
@@ -238,40 +252,51 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 			this.isFromIndirectModel = isFromIndirectModel;
 			this.isFromSetValueTransactionlessly = isFromSetValueTransactionlessly;
 		}
+
+		public boolean isUpdatingSwingAppropriate() {
+			return true;
+		}
+
+		public boolean isCommitingEditAppropriate() {
+			return true;
+		}
+
 	}
 
-	private int ignoreCount = 0;
-
 	protected void pushIgnore() {
-		this.ignoreCount++;
 	}
 
 	protected void popIgnore() {
-		this.ignoreCount--;
-		if( this.ignoreCount >= 0 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "popIgnore", this );
-		}
 	}
-
-	protected boolean isAppropriateToChange() {
-		return true;
-	}
-
-	private void updateSwingModelIfAppropriate( T nextValue, Origin origin ) {
-		if( origin.isFromSwing ) {
-			//pass
-		} else {
-			//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
-			//				//pass
-			//			} else {
-			this.updateSwingModel( nextValue );
-			//			}
-		}
-	}
-
-	private boolean isInTheMidstOfChange = false;
 
 	private void changeValue( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
+		if( isAdjusting.value ) {
+			//pass
+		} else {
+			T prevValue = this.previousValue;
+			if( origin.isUpdatingSwingAppropriate() ) {
+				this.updateSwingModel( nextValue );
+			}
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
+				//pass
+			} else {
+				if( this.isInTheMidstOfChange ) {
+					//pass
+				} else {
+					this.isInTheMidstOfChange = true;
+					try {
+						this.fireChanging( prevValue, nextValue, isAdjusting );
+						if( origin.isCommitingEditAppropriate() ) {
+							this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
+						}
+						this.fireChanged( prevValue, nextValue, isAdjusting );
+						this.previousValue = nextValue;
+					} finally {
+						this.isInTheMidstOfChange = false;
+					}
+				}
+			}
+		}
 		//		if( this.isAppropriateToChange() ) {
 		//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
 		//				this.updateSwingModelIfAppropriate( nextValue, origin );
