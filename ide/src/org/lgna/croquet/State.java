@@ -136,11 +136,15 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		throw new UnsupportedOperationException();
 	}
 
+	private org.lgna.croquet.edits.StateEdit<T> createStateEdit( org.lgna.croquet.history.CompletionStep<State<T>> step, T prevValue, T nextValue, boolean isAdjusting ) {
+		return new org.lgna.croquet.edits.StateEdit<T>( step, prevValue, nextValue );
+	}
+
 	protected org.lgna.croquet.edits.StateEdit<T> commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
-		org.lgna.croquet.history.CompletionStep<State<T>> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
-		org.lgna.croquet.edits.StateEdit<T> edit = new org.lgna.croquet.edits.StateEdit( step, prevValue, nextValue );
-		step.commitAndInvokeDo( edit );
+		org.lgna.croquet.history.CompletionStep<State<T>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
+		org.lgna.croquet.edits.StateEdit<T> edit = this.createStateEdit( completionStep, prevValue, nextValue, isAdjusting );
+		completionStep.commitAndInvokeDo( edit );
 		return edit;
 	}
 
@@ -247,9 +251,10 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		}
 	}
 
-	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
+	@Deprecated
+	protected org.lgna.croquet.edits.StateEdit<T> TEMPORARY_HACK_createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
 		T prevValue = this.getValue();
-		return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
+		return this.createStateEdit( completionStep, prevValue, nextValue, false );
 	}
 
 	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) throws UnsupportedGenerationException {

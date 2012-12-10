@@ -100,7 +100,7 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 
 		@Override
 		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
-			return this.state.createEdit( completionStep, values[ 0 ] );
+			return this.state.TEMPORARY_HACK_createEdit( completionStep, values[ 0 ] );
 		}
 	}
 
