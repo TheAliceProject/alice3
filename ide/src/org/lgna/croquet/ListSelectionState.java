@@ -46,13 +46,42 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
-	private static class DataIndexPair<T> {
+	private static class DataIndexPair<T> implements javax.swing.ComboBoxModel {
 		private final org.lgna.croquet.data.ListData<T> data;
 		private int index;
 
 		public DataIndexPair( org.lgna.croquet.data.ListData<T> data, int index ) {
 			this.data = data;
 			this.index = index;
+		}
+
+		public void addListDataListener( javax.swing.event.ListDataListener l ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "addListDataListener", l );
+		}
+
+		public void removeListDataListener( javax.swing.event.ListDataListener l ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "removeListDataListener", l );
+		}
+
+		public int getSize() {
+			return this.data.getItemCount();
+		}
+
+		public T getElementAt( int index ) {
+			return this.data.getItemAt( index );
+		}
+
+		public T getSelectedItem() {
+			if( this.index != -1 ) {
+				return this.getElementAt( this.index );
+			} else {
+				return null;
+			}
+		}
+
+		public void setSelectedItem( Object item ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "setSelectedItem", item );
+			assert false : item;
 		}
 	}
 
@@ -65,10 +94,10 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	};
 
 	public static class SwingModel {
-		private final javax.swing.DefaultComboBoxModel comboBoxModel;
+		private final javax.swing.ComboBoxModel comboBoxModel;
 		private final javax.swing.DefaultListSelectionModel listSelectionModel;
 
-		private SwingModel( javax.swing.DefaultComboBoxModel comboBoxModel, javax.swing.DefaultListSelectionModel listSelectionModel ) {
+		private SwingModel( javax.swing.ComboBoxModel comboBoxModel, javax.swing.DefaultListSelectionModel listSelectionModel ) {
 			this.comboBoxModel = comboBoxModel;
 			this.listSelectionModel = listSelectionModel;
 		}
@@ -101,8 +130,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 	}
 
-	private final SwingModel swingModel;
 	private final DataIndexPair<T> dataIndexPair;
+	private final SwingModel swingModel;
 
 	private static <T> T getItemAt( org.lgna.croquet.data.ListData<T> data, int index ) {
 		if( index != -1 ) {
@@ -114,8 +143,8 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	public ListSelectionState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
-		this.swingModel = new SwingModel( new javax.swing.DefaultComboBoxModel( data.toArray() ), new javax.swing.DefaultListSelectionModel() );
 		this.dataIndexPair = new DataIndexPair<T>( data, selectionIndex );
+		this.swingModel = new SwingModel( this.dataIndexPair, new javax.swing.DefaultListSelectionModel() );
 		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );
 	}
 
@@ -136,25 +165,25 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	protected void localize() {
 	}
 
-	/* package-private */void setSelectionIndexFromSwing( int index, org.lgna.croquet.triggers.Trigger trigger ) {
-		this.pushAtomic( trigger );
-		this.dataIndexPair.index = index;
-		this.popAtomic();
-	}
-
-	/* package-private */void setSelectionIndexFromSwing( int index ) {
-		this.setSelectionIndexFromSwing( index, null );
-	}
-
-	/* package-private */void setSelectionFromSwing( T item, org.lgna.croquet.triggers.Trigger trigger ) {
-		this.pushAtomic( trigger );
-		this.dataIndexPair.index = this.indexOf( item );
-		this.popAtomic();
-	}
-
-	/* package-private */void setSelectionFromSwing( T item ) {
-		this.setSelectionFromSwing( item, null );
-	}
+	//	/* package-private */void setSelectionIndexFromSwing( int index, org.lgna.croquet.triggers.Trigger trigger ) {
+	//		this.pushAtomic( trigger );
+	//		this.dataIndexPair.index = index;
+	//		this.popAtomic();
+	//	}
+	//
+	//	/* package-private */void setSelectionIndexFromSwing( int index ) {
+	//		this.setSelectionIndexFromSwing( index, null );
+	//	}
+	//
+	//	/* package-private */void setSelectionFromSwing( T item, org.lgna.croquet.triggers.Trigger trigger ) {
+	//		this.pushAtomic( trigger );
+	//		this.dataIndexPair.index = this.indexOf( item );
+	//		this.popAtomic();
+	//	}
+	//
+	//	/* package-private */void setSelectionFromSwing( T item ) {
+	//		this.setSelectionFromSwing( item, null );
+	//	}
 
 	private InternalPrepModel<T> prepModel;
 
@@ -221,9 +250,12 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	public void setSelectedIndex( int nextIndex ) {
-		this.pushAtomic();
-		this.dataIndexPair.index = nextIndex;
-		this.popAtomic();
+		this.pushIsInTheMidstOfAtomicChange();
+		try {
+			this.dataIndexPair.index = nextIndex;
+		} finally {
+			this.popIsInTheMidstOfAtomicChange();
+		}
 	}
 
 	public final void clearSelection() {
@@ -272,52 +304,52 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		this.dataIndexPair.data.internalSetItems( items );
 	}
 
-	private int pushCount = 0;
-	private T prevAtomicSelectedValue;
-	private org.lgna.croquet.triggers.Trigger trigger;
+	//	private int pushCount = 0;
+	//	private T prevAtomicSelectedValue;
+	//	private org.lgna.croquet.triggers.Trigger trigger;
+	//
+	//	private boolean isInMidstOfAtomic() {
+	//		return this.pushCount > 0;
+	//	}
+	//
+	//	private void pushAtomic( org.lgna.croquet.triggers.Trigger trigger ) {
+	//		if( this.isInMidstOfAtomic() ) {
+	//			//pass
+	//		} else {
+	//			this.prevAtomicSelectedValue = this.getValue();
+	//			this.trigger = trigger;
+	//		}
+	//		this.pushCount++;
+	//	}
+	//
+	//	private void pushAtomic() {
+	//		this.pushAtomic( null );
+	//	}
+	//
+	//	private void popAtomic() {
+	//		this.pushCount--;
+	//		if( this.pushCount == 0 ) {
+	//			T nextSelectedValue = this.getValue();
+	//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
+	//				//pass
+	//			} else {
+	//				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
+	//				if( this.isAppropriateToChange() ) {
+	//					this.commitStateEdit( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE, this.trigger );
+	//				}
+	//				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
+	//				this.trigger = null;
+	//			}
+	//		}
+	//	}
 
-	private boolean isInMidstOfAtomic() {
-		return this.pushCount > 0;
-	}
-
-	private void pushAtomic( org.lgna.croquet.triggers.Trigger trigger ) {
-		if( this.isInMidstOfAtomic() ) {
-			//pass
-		} else {
-			this.prevAtomicSelectedValue = this.getValue();
-			this.trigger = trigger;
-		}
-		this.pushCount++;
-	}
-
-	private void pushAtomic() {
-		this.pushAtomic( null );
-	}
-
-	private void popAtomic() {
-		this.pushCount--;
-		if( this.pushCount == 0 ) {
-			T nextSelectedValue = this.getValue();
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
-				//pass
-			} else {
-				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
-				if( this.isAppropriateToChange() ) {
-					this.commitStateEdit( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE, this.trigger );
-				}
-				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
-				this.trigger = null;
-			}
-		}
-	}
-
-	@Override
-	protected boolean isAppropriateToChange() {
-		return super.isAppropriateToChange() && ( this.isInMidstOfAtomic() == false );
-	}
+	//	@Override
+	//	protected boolean isAppropriateToChange() {
+	//		return super.isAppropriateToChange() && ( this.isInMidstOfAtomic() == false );
+	//	}
 
 	public final void addItem( T item ) {
-		this.pushAtomic();
+		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			this.internalAddItem( item );
 
@@ -325,19 +357,19 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			this.swingModel.ACCESS_fireIntervalAdded( this, index, index );
 			this.handleItemAdded( item );
 		} finally {
-			this.popAtomic();
+			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 
 	public final void removeItem( T item ) {
-		this.pushAtomic();
+		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			int index = this.indexOf( item );
 			this.internalRemoveItem( item );
 			this.swingModel.ACCESS_fireIntervalRemoved( this, index, index );
 			this.handleItemRemoved( item );
 		} finally {
-			this.popAtomic();
+			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 
@@ -353,7 +385,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	public final void setItems( java.util.Collection<T> items ) {
-		this.pushAtomic();
+		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			java.util.Set<T> previous = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( this.toArray() );
 			java.util.Set<T> next = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( items );
@@ -394,7 +426,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			}
 
 		} finally {
-			this.popAtomic();
+			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 
@@ -421,23 +453,23 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	@Deprecated
 	public void setListData( int selectedIndex, T... items ) {
-		this.pushAtomic();
+		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			this.setItems( items );
 			this.setSelectedIndex( selectedIndex );
 		} finally {
-			this.popAtomic();
+			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 
 	@Deprecated
 	public void setListData( int selectedIndex, java.util.Collection<T> items ) {
-		this.pushAtomic();
+		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			this.setItems( items );
 			this.setSelectedIndex( selectedIndex );
 		} finally {
-			this.popAtomic();
+			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 

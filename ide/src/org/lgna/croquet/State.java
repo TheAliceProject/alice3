@@ -254,45 +254,56 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		}
 
 		public boolean isUpdatingSwingAppropriate() {
-			return true;
+			return this.isFromSwing == false;
 		}
 
 		public boolean isCommitingEditAppropriate() {
-			return true;
+			return ( this.isFromEdit == false ) && ( this.isFromSetValueTransactionlessly == false );
 		}
 
 	}
 
-	protected void pushIgnore() {
+	private int atomicCount;
+
+	protected void pushIsInTheMidstOfAtomicChange() {
+		this.atomicCount++;
 	}
 
-	protected void popIgnore() {
+	protected void popIsInTheMidstOfAtomicChange() {
+		this.atomicCount--;
+		if( this.atomicCount < 0 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.atomicCount );
+		}
 	}
 
 	private void changeValue( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
-		if( isAdjusting.value ) {
+		if( this.atomicCount > 0 ) {
 			//pass
 		} else {
-			T prevValue = this.previousValue;
-			if( origin.isUpdatingSwingAppropriate() ) {
-				this.updateSwingModel( nextValue );
-			}
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
+			if( isAdjusting.value ) {
 				//pass
 			} else {
-				if( this.isInTheMidstOfChange ) {
+				T prevValue = this.previousValue;
+				if( origin.isUpdatingSwingAppropriate() ) {
+					this.updateSwingModel( nextValue );
+				}
+				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
 					//pass
 				} else {
-					this.isInTheMidstOfChange = true;
-					try {
-						this.fireChanging( prevValue, nextValue, isAdjusting );
-						if( origin.isCommitingEditAppropriate() ) {
-							this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
+					if( this.isInTheMidstOfChange ) {
+						//pass
+					} else {
+						this.isInTheMidstOfChange = true;
+						try {
+							this.fireChanging( prevValue, nextValue, isAdjusting );
+							if( origin.isCommitingEditAppropriate() ) {
+								this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
+							}
+							this.fireChanged( prevValue, nextValue, isAdjusting );
+							this.previousValue = nextValue;
+						} finally {
+							this.isInTheMidstOfChange = false;
 						}
-						this.fireChanged( prevValue, nextValue, isAdjusting );
-						this.previousValue = nextValue;
-					} finally {
-						this.isInTheMidstOfChange = false;
 					}
 				}
 			}

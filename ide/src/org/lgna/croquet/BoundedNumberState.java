@@ -158,11 +158,11 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 	}
 
 	public void setAllTransactionlessly( AtomicChange<N> atomicChange ) {
-		this.pushIgnore();
+		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			this.setAll( atomicChange );
 		} finally {
-			this.popIgnore();
+			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 
