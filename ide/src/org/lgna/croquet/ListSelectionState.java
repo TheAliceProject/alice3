@@ -46,6 +46,13 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
+	private static class FiringListSelectionModel extends javax.swing.DefaultListSelectionModel {
+		@Override
+		public void fireValueChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
+			super.fireValueChanged( firstIndex, lastIndex, isAdjusting );
+		}
+	}
+
 	private static class DataIndexPair<T> implements javax.swing.ComboBoxModel {
 		private final org.lgna.croquet.data.ListData<T> data;
 		private int index;
@@ -88,16 +95,21 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
 			int index = e.getFirstIndex();
-			T nextValue = (T)ListSelectionState.this.swingModel.comboBoxModel.getElementAt( index );
+			T nextValue;
+			if( index != -1 ) {
+				nextValue = (T)ListSelectionState.this.swingModel.comboBoxModel.getElementAt( index );
+			} else {
+				nextValue = null;
+			}
 			ListSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 		}
 	};
 
 	public static class SwingModel {
 		private final javax.swing.ComboBoxModel comboBoxModel;
-		private final javax.swing.DefaultListSelectionModel listSelectionModel;
+		private final FiringListSelectionModel listSelectionModel;
 
-		private SwingModel( javax.swing.ComboBoxModel comboBoxModel, javax.swing.DefaultListSelectionModel listSelectionModel ) {
+		private SwingModel( javax.swing.ComboBoxModel comboBoxModel, FiringListSelectionModel listSelectionModel ) {
 			this.comboBoxModel = comboBoxModel;
 			this.listSelectionModel = listSelectionModel;
 		}
@@ -111,10 +123,10 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		/* package-private */void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
-			//			javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
-			//			for( javax.swing.event.ListSelectionListener listener : this.listSelectionListeners ) {
-			//				listener.valueChanged( e );
-			//			}
+			javax.swing.event.ListSelectionEvent e = new javax.swing.event.ListSelectionEvent( this, firstIndex, lastIndex, isAdjusting );
+			for( javax.swing.event.ListSelectionListener listener : this.listSelectionModel.getListSelectionListeners() ) {
+				listener.valueChanged( e );
+			}
 		}
 
 		/* package-private */void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
@@ -144,13 +156,22 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	public ListSelectionState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair<T>( data, selectionIndex );
-		this.swingModel = new SwingModel( this.dataIndexPair, new javax.swing.DefaultListSelectionModel() );
+		this.swingModel = new SwingModel( this.dataIndexPair, new FiringListSelectionModel() );
 		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );
 	}
 
 	@Override
 	protected T getCurrentTruthAndBeautyValue() {
 		return getItemAt( this.dataIndexPair.data, this.dataIndexPair.index );
+	}
+
+	@Override
+	protected void setCurrentTruthAndBeautyValue( T value ) {
+		if( value != null ) {
+			this.dataIndexPair.index = this.dataIndexPair.data.indexOf( value );
+		} else {
+			this.dataIndexPair.index = -1;
+		}
 	}
 
 	public org.lgna.croquet.data.ListData<T> getData() {
@@ -202,11 +223,6 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		return java.util.Collections.emptyList();
 	}
 
-	@Override
-	protected T getSwingValue() {
-		return this.getSelectedItem();
-	}
-
 	/* package-private */T getSelectedItem() {
 		if( this.dataIndexPair.index >= 0 ) {
 			if( this.dataIndexPair.index < this.getItemCount() ) {
@@ -239,10 +255,20 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	@Override
+	protected T getSwingValue() {
+		int index = this.swingModel.listSelectionModel.getLeadSelectionIndex();
+		if( index != -1 ) {
+			return (T)this.swingModel.comboBoxModel.getElementAt( index );
+		} else {
+			return null;
+		}
+	}
+
+	@Override
 	protected void setSwingValue( T nextValue ) {
-		this.dataIndexPair.index = this.indexOf( nextValue );
-		this.swingModel.listSelectionModel.setSelectionInterval( this.dataIndexPair.index, this.dataIndexPair.index );
-		//this.fireContentsChanged( this.dataIndexPair.index, this.dataIndexPair.index );
+		int index = this.dataIndexPair.data.indexOf( nextValue );
+		this.swingModel.listSelectionModel.setSelectionInterval( index, index );
+		this.swingModel.fireListSelectionChanged( index, index, false );
 	}
 
 	public int getSelectedIndex() {

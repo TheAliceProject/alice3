@@ -58,4 +58,10 @@ public abstract class SimpleValueState<T> extends State<T> {
 	protected T getCurrentTruthAndBeautyValue() {
 		return this.currentValue;
 	}
+
+	@Override
+	protected void setCurrentTruthAndBeautyValue( T value ) {
+		this.currentValue = value;
+	}
+
 }

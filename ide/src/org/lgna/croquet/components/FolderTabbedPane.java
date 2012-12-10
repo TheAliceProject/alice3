@@ -430,7 +430,10 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			FolderTabbedPane.this.handleValueChanged();
+			ListSelectionState<E> model = getModel();
+			int index = e.getFirstIndex();
+			E card = index != -1 ? model.getItemAt( index ) : null;
+			FolderTabbedPane.this.handleValueChanged( card );
 		}
 	};
 
@@ -482,7 +485,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	@Override
 	protected void handleDisplayable() {
 		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
-		this.handleValueChanged();
+		this.handleValueChanged( this.getModel().getValue() );
 		super.handleDisplayable();
 	}
 
@@ -492,11 +495,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
 	}
 
-	private void handleValueChanged() {
-		ListSelectionState<E> model = this.getModel();
-		//int index = e.getFirstIndex();
-		int index = model.getSelectedIndex();
-		E card = index != -1 ? model.getItemAt( index ) : null;
+	private void handleValueChanged( E card ) {
 		this.cardComposite.showCard( card );
 		this.repaint();
 	}
