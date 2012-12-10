@@ -40,45 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.fillerinners;
+
+package org.alice.ide.croquet.models.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class SceneEditorUpdatingPropertyState extends org.alice.ide.ast.PropertyState {
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserField, org.lgna.project.ast.JavaMethod, SceneEditorUpdatingPropertyState> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static ConstantsOwningFillerInner getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		synchronized( map ) {
-			ConstantsOwningFillerInner rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ConstantsOwningFillerInner( type );
-				map.put( type, rv );
+	public static synchronized SceneEditorUpdatingPropertyState getInstanceForSetter( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod setter ) {
+		return mapToMap.getInitializingIfAbsent( field, setter, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserField, org.lgna.project.ast.JavaMethod, SceneEditorUpdatingPropertyState>() {
+			public SceneEditorUpdatingPropertyState initialize( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod setter ) {
+				return new SceneEditorUpdatingPropertyState( field, setter );
 			}
-			return rv;
-		}
+		} );
 	}
 
-	public static ConstantsOwningFillerInner getInstance( Class<?> cls ) {
-		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	public static synchronized SceneEditorUpdatingPropertyState getInstanceForGetter( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod getter ) {
+		return getInstanceForSetter( field, org.lgna.project.ast.AstUtilities.getSetterForGetter( getter ) );
 	}
 
-	private ConstantsOwningFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		super( type );
+	private final org.lgna.project.ast.UserField field;
+
+	private SceneEditorUpdatingPropertyState( org.lgna.project.ast.UserField field, org.lgna.project.ast.JavaMethod setter ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), setter );
+		this.field = field;
 	}
 
-	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getType();
-		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
-			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-				//todo: should this be identical? to?
-				if( type.isAssignableFrom( field.getValueType() ) ) {
-					items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
-				}
-			}
-		}
+	public org.lgna.project.ast.UserField getField() {
+		return this.field;
 	}
 }

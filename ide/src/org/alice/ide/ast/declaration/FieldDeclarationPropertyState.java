@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,45 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, ConstantsOwningFillerInner> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class FieldDeclarationPropertyState extends org.alice.ide.ast.PropertyState {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.JavaMethod, FieldDeclarationPropertyState> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static ConstantsOwningFillerInner getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		synchronized( map ) {
-			ConstantsOwningFillerInner rv = map.get( type );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new ConstantsOwningFillerInner( type );
-				map.put( type, rv );
+	public static FieldDeclarationPropertyState getInstanceForSetter( org.lgna.project.ast.JavaMethod setter ) {
+		return map.getInitializingIfAbsent( setter, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaMethod, FieldDeclarationPropertyState>() {
+			public FieldDeclarationPropertyState initialize( org.lgna.project.ast.JavaMethod setter ) {
+				return new FieldDeclarationPropertyState( setter );
 			}
-			return rv;
-		}
+		} );
 	}
 
-	public static ConstantsOwningFillerInner getInstance( Class<?> cls ) {
-		return getInstance( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	public static synchronized FieldDeclarationPropertyState getInstanceForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		return getInstanceForSetter( org.lgna.project.ast.AstUtilities.getSetterForGetter( getter ) );
 	}
 
-	private ConstantsOwningFillerInner( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		super( type );
-	}
-
-	@Override
-	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getType();
-		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
-			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-				//todo: should this be identical? to?
-				if( type.isAssignableFrom( field.getValueType() ) ) {
-					items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
-				}
-			}
-		}
+	private FieldDeclarationPropertyState( org.lgna.project.ast.JavaMethod setter ) {
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "e4cd9f74-3815-46d1-ae68-b5b964f68ebd" ), setter );
 	}
 }

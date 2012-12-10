@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-
-	public static synchronized PropertyState getInstanceForSetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
-		return mapToMap.getInitializingIfAbsent( group, setter, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState>() {
-			public PropertyState initialize( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
-				return new PropertyState( group, setter );
-			}
-		} );
-	}
-
-	public static synchronized PropertyState getInstanceForGetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod getter ) {
-		return getInstanceForSetter( group, org.lgna.project.ast.AstUtilities.getSetterForGetter( getter ) );
-	}
-
+public abstract class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
 	private final org.lgna.project.ast.JavaMethod setter;
 
-	private PropertyState( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
-		super( group, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), null );
+	public PropertyState( org.lgna.croquet.Group group, java.util.UUID migrationId, org.lgna.project.ast.JavaMethod setter ) {
+		super( group, migrationId, null );
 		this.setter = setter;
 	}
 

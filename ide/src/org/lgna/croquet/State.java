@@ -146,12 +146,16 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		throw new UnsupportedOperationException();
 	}
 
+	private org.lgna.croquet.edits.StateEdit<T> createStateEdit( org.lgna.croquet.history.CompletionStep<State<T>> step, T prevValue, T nextValue, IsAdjusting isAdjusting ) {
+		return new org.lgna.croquet.edits.StateEdit<T>( step, prevValue, nextValue );
+	}
+
 	protected org.lgna.croquet.edits.StateEdit<T> commitStateEdit( T prevValue, T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
-		org.lgna.croquet.history.CompletionStep<State<T>> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
-		org.lgna.croquet.edits.StateEdit<T> edit = this.createEdit( step, nextValue );
+		org.lgna.croquet.history.CompletionStep<State<T>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
+		org.lgna.croquet.edits.StateEdit<T> edit = this.createStateEdit( completionStep, prevValue, nextValue, isAdjusting );
 		if( edit != null ) {
-			step.commitAndInvokeDo( edit );
+			completionStep.commitAndInvokeDo( edit );
 		}
 		return edit;
 	}
@@ -374,5 +378,11 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	public final void changeValueFromEdit( T nextValue ) {
 		this.changeValue( nextValue, IsAdjusting.FALSE, NULL_TRIGGER, Origin.FROM_EDIT );
+	}
+
+	@Deprecated
+	protected org.lgna.croquet.edits.StateEdit<T> TEMPORARY_HACK_createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
+		T prevValue = this.getValue();
+		return this.createStateEdit( completionStep, prevValue, nextValue, IsAdjusting.FALSE );
 	}
 }
