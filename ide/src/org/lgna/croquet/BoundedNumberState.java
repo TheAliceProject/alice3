@@ -167,7 +167,7 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 	}
 
 	@Override
-	protected void updateSwingModel( N nextValue ) {
+	protected void setSwingValue( N nextValue ) {
 		this.swingModel.setValue( nextValue );
 	}
 

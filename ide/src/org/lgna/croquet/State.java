@@ -147,6 +147,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	private org.lgna.croquet.edits.StateEdit<T> createStateEdit( org.lgna.croquet.history.CompletionStep<State<T>> step, T prevValue, T nextValue, IsAdjusting isAdjusting ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( prevValue, nextValue );
 		return new org.lgna.croquet.edits.StateEdit<T>( step, prevValue, nextValue );
 	}
 
@@ -188,25 +189,28 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return new org.lgna.croquet.edits.StateEdit<T>( completionStep, prevValue, nextValue );
 	}
 
-	private void updateSwingModelIfAppropriate( T nextValue, Origin origin ) {
-		if( origin.isFromSwing ) {
-			//pass
-		} else {
-			//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
-			//				//pass
-			//			} else {
-			this.updateSwingModel( nextValue );
-			//			}
-		}
-	}
-
 	protected abstract T getCurrentTruthAndBeautyValue();
 
 	protected final T getPreviousTruthAndBeautyValue() {
 		return this.previousValue;
 	}
 
-	protected abstract T getValueFromSwing();
+	protected abstract T getSwingValue();
+
+	protected abstract void setSwingValue( T nextValue );
+
+	private void updateSwingModelIfAppropriate( T nextValue, Origin origin ) {
+		if( origin.isFromSwing ) {
+			//pass
+		} else {
+			T prevSwingValue = this.getSwingValue();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevSwingValue, nextValue ) ) {
+				//pass
+			} else {
+				this.setSwingValue( nextValue );
+			}
+		}
+	}
 
 	public final T getValue() {
 		return this.getCurrentTruthAndBeautyValue();
@@ -215,8 +219,6 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	protected boolean isAppropriateToChange() {
 		return true;
 	}
-
-	protected abstract void updateSwingModel( T nextValue );
 
 	private boolean isInTheMidstOfChange = false;
 
@@ -290,7 +292,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	private void changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
 		if( origin.isUpdatingSwingAppropriate() ) {
-			this.updateSwingModel( nextValue );
+			this.setSwingValue( nextValue );
 		}
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
 			//pass

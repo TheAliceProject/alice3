@@ -203,7 +203,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	@Override
-	protected T getValueFromSwing() {
+	protected T getSwingValue() {
 		return this.getSelectedItem();
 	}
 
@@ -239,7 +239,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	@Override
-	protected void updateSwingModel( T nextValue ) {
+	protected void setSwingValue( T nextValue ) {
 		this.dataIndexPair.index = this.indexOf( nextValue );
 		this.swingModel.listSelectionModel.setSelectionInterval( this.dataIndexPair.index, this.dataIndexPair.index );
 		//this.fireContentsChanged( this.dataIndexPair.index, this.dataIndexPair.index );

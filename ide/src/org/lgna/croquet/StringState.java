@@ -174,7 +174,7 @@ public abstract class StringState extends SimpleValueState<String> {
 	}
 
 	@Override
-	protected void updateSwingModel( String nextValue ) {
+	protected void setSwingValue( String nextValue ) {
 		this.documentListener.pushIgnore();
 		try {
 			this.swingModel.document.remove( 0, this.swingModel.document.getLength() );
@@ -210,7 +210,7 @@ public abstract class StringState extends SimpleValueState<String> {
 	//		org.lgna.croquet.history.TransactionManager.handleDocumentEvent( StringState.this, trigger, prevValue, nextValue );
 	//	}
 	@Override
-	protected String getValueFromSwing() {
+	protected String getSwingValue() {
 		try {
 			return this.swingModel.document.getText( 0, this.swingModel.document.getLength() );
 		} catch( javax.swing.text.BadLocationException ble ) {

@@ -231,12 +231,12 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	}
 
 	@Override
-	protected org.alice.ide.instancefactory.InstanceFactory getValueFromSwing() {
+	protected org.alice.ide.instancefactory.InstanceFactory getSwingValue() {
 		return this.value;
 	}
 
 	@Override
-	protected void updateSwingModel( org.alice.ide.instancefactory.InstanceFactory value ) {
+	protected void setSwingValue( org.alice.ide.instancefactory.InstanceFactory value ) {
 		this.value = value;
 	}
 

@@ -94,7 +94,7 @@ public abstract class TableRowSelectionState<T> extends ItemState<T> {
 
 	private void handleListSelectionChanged( javax.swing.event.ListSelectionEvent e ) {
 		org.lgna.croquet.triggers.Trigger trigger = null;
-		this.changeValueFromSwing( this.getValueFromSwing(), IsAdjusting.valueOf( e.getValueIsAdjusting() ), trigger );
+		this.changeValueFromSwing( this.getSwingValue(), IsAdjusting.valueOf( e.getValueIsAdjusting() ), trigger );
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public abstract class TableRowSelectionState<T> extends ItemState<T> {
 	protected abstract T getActualValueAt( int selectionIndex );
 
 	@Override
-	protected final T getValueFromSwing() {
+	protected final T getSwingValue() {
 		javax.swing.ListSelectionModel listSelectionModel = this.getSwingModel().getListSelectionModel();
 		int selectionIndex = listSelectionModel.getLeadSelectionIndex();
 		if( selectionIndex < 0 ) {

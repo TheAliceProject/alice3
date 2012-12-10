@@ -272,12 +272,12 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	}
 
 	@Override
-	protected Boolean getValueFromSwing() {
+	protected Boolean getSwingValue() {
 		return this.swingModel.buttonModel.isSelected();
 	}
 
 	@Override
-	protected void updateSwingModel( Boolean nextValue ) {
+	protected void setSwingValue( Boolean nextValue ) {
 		if( this.swingModel.buttonModel.isSelected() != nextValue ) {
 			//pass
 		} else {

@@ -91,8 +91,8 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 	}
 
 	@Override
-	protected void updateSwingModel( org.lgna.project.ast.Expression value ) {
-		super.updateSwingModel( value );
+	protected void setSwingValue( org.lgna.project.ast.Expression value ) {
+		super.setSwingValue( value );
 
 		// update AST
 		this.instanceCreation.requiredArguments.get( 0 ).expression.setValue( value );
