@@ -264,47 +264,46 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	private int atomicCount;
+	private T prevValueAtStartOfAtomicChange;
 
 	protected void pushIsInTheMidstOfAtomicChange() {
+		if( this.atomicCount == 0 ) {
+			this.prevValueAtStartOfAtomicChange = this.previousValue;
+		}
 		this.atomicCount++;
 	}
 
 	protected void popIsInTheMidstOfAtomicChange() {
 		this.atomicCount--;
+		if( this.atomicCount == 0 ) {
+			T nextValue = this.getCurrentTruthAndBeautyValue();
+			this.changeValue( this.prevValueAtStartOfAtomicChange, nextValue, IsAdjusting.FALSE, NULL_TRIGGER, Origin.FROM_SET_VALUE_TRANSACTIONLESSLY );
+		}
 		if( this.atomicCount < 0 ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.atomicCount );
 		}
 	}
 
-	private void changeValue( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
-		if( this.atomicCount > 0 ) {
+	private void changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
+		if( origin.isUpdatingSwingAppropriate() ) {
+			this.updateSwingModel( nextValue );
+		}
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
 			//pass
 		} else {
-			if( isAdjusting.value ) {
+			if( this.isInTheMidstOfChange ) {
 				//pass
 			} else {
-				T prevValue = this.previousValue;
-				if( origin.isUpdatingSwingAppropriate() ) {
-					this.updateSwingModel( nextValue );
-				}
-				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
-					//pass
-				} else {
-					if( this.isInTheMidstOfChange ) {
-						//pass
-					} else {
-						this.isInTheMidstOfChange = true;
-						try {
-							this.fireChanging( prevValue, nextValue, isAdjusting );
-							if( origin.isCommitingEditAppropriate() ) {
-								this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
-							}
-							this.fireChanged( prevValue, nextValue, isAdjusting );
-							this.previousValue = nextValue;
-						} finally {
-							this.isInTheMidstOfChange = false;
-						}
+				this.isInTheMidstOfChange = true;
+				try {
+					this.fireChanging( prevValue, nextValue, isAdjusting );
+					if( origin.isCommitingEditAppropriate() ) {
+						this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
 					}
+					this.fireChanged( prevValue, nextValue, isAdjusting );
+					this.previousValue = nextValue;
+				} finally {
+					this.isInTheMidstOfChange = false;
 				}
 			}
 		}
@@ -343,6 +342,18 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		//				}
 		//			}
 		//		}
+	}
+
+	private void changeValue( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
+		if( this.atomicCount > 0 ) {
+			//pass
+		} else {
+			if( isAdjusting.value ) {
+				//pass
+			} else {
+				this.changeValue( this.previousValue, nextValue, isAdjusting, trigger, origin );
+			}
+		}
 	}
 
 	protected final void changeValueFromSwing( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
