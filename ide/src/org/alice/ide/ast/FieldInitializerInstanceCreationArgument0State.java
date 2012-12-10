@@ -56,10 +56,9 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
 				if( requiredParameters.size() > 0 ) {
-					org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
 					return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, FieldInitializerInstanceCreationArgument0State>() {
 						public FieldInitializerInstanceCreationArgument0State initialize( org.lgna.project.ast.UserField field ) {
-							return new FieldInitializerInstanceCreationArgument0State( instanceCreation );
+							return new FieldInitializerInstanceCreationArgument0State( field, instanceCreation );
 						}
 					} );
 				}
@@ -68,10 +67,12 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 		return null;
 	}
 
+	private final org.lgna.project.ast.UserField field;
 	private final org.lgna.project.ast.InstanceCreation instanceCreation;
 
-	private FieldInitializerInstanceCreationArgument0State( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+	private FieldInitializerInstanceCreationArgument0State( org.lgna.project.ast.UserField field, org.lgna.project.ast.InstanceCreation instanceCreation ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "5743343c-c7e5-43aa-9ccc-51d766f3a683" ), instanceCreation.requiredArguments.get( 0 ).expression.getValue() );
+		this.field = field;
 		this.instanceCreation = instanceCreation;
 	}
 
@@ -87,5 +88,24 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 	@Override
 	protected org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
 		return this.getRequiredParameter0().getValueType();
+	}
+
+	@Override
+	protected void updateSwingModel( org.lgna.project.ast.Expression value ) {
+		super.updateSwingModel( value );
+
+		// update AST
+		this.instanceCreation.requiredArguments.get( 0 ).expression.setValue( value );
+
+		// update Scene Editor
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
+		org.lgna.story.SJointedModel model = sceneEditor.getInstanceInJavaVMForField( this.field, org.lgna.story.SJointedModel.class );
+		org.lgna.story.implementation.JointedModelImp<?, ?> imp = org.lgna.story.ImplementationAccessor.getImplementation( model );
+
+		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.ide.IDE.getActiveInstance().getVirtualMachineForSceneEditor();
+		org.lgna.project.virtualmachine.UserInstance userInstance = null;
+		Object[] array = vm.ENTRY_POINT_evaluate( userInstance, new org.lgna.project.ast.Expression[] { value } );
+		org.lgna.story.resources.JointedModelResource resource = (org.lgna.story.resources.JointedModelResource)array[ 0 ];
+		imp.setNewResource( resource );
 	}
 }
