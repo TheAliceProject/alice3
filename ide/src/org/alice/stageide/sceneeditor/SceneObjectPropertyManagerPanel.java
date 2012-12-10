@@ -216,8 +216,9 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 
 	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter( org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp )
 	{
+		org.lgna.project.ast.UserField field = null; //todo
 		org.lgna.project.ast.JavaMethod setter = org.lgna.project.ast.AstUtilities.getSetterForGetter( getter, declaringType );
-		org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForSetter( IDE.PROJECT_GROUP, setter );
+		org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.SceneEditorUpdatingPropertyState.getInstanceForSetter( field, setter );
 		boolean isVisible = ( setter == null ) || ( setter.getVisibility() == null ) || ( setter.getVisibility() == Visibility.PRIME_TIME );
 		if( ( setter != null ) && isVisible )
 		{

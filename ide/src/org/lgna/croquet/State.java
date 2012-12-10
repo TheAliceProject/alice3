@@ -136,7 +136,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		throw new UnsupportedOperationException();
 	}
 
-	protected org.lgna.croquet.edits.StateEdit<T> createStateEdit( org.lgna.croquet.history.CompletionStep<State<T>> step, T prevValue, T nextValue, boolean isAdjusting ) {
+	private org.lgna.croquet.edits.StateEdit<T> createStateEdit( org.lgna.croquet.history.CompletionStep<State<T>> step, T prevValue, T nextValue, boolean isAdjusting ) {
 		return new org.lgna.croquet.edits.StateEdit<T>( step, prevValue, nextValue );
 	}
 
