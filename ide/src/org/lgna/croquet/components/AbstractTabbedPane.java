@@ -43,6 +43,8 @@
 
 package org.lgna.croquet.components;
 
+import org.lgna.croquet.ListSelectionState;
+
 /*package-private*/abstract class TabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends ItemDetails<E> {
 	public TabItemDetails( org.lgna.croquet.ItemState<E> state, E item, AbstractTabbedPane<E, ?> tabbedPane ) {
 		super( state, item, tabbedPane );
@@ -63,6 +65,15 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite<?>, TID extends TabItemDetails<E>> extends ItemSelectablePanel<E, TID> {
+	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			ListSelectionState<E> model = getModel();
+			int index = e.getFirstIndex();
+			E card = index != -1 ? model.getItemAt( index ) : null;
+			AbstractTabbedPane.this.handleValueChanged( card );
+		}
+	};
+
 	public AbstractTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
@@ -90,6 +101,22 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 	protected final TID createItemDetails( final E item ) {
 		return this.createTabItemDetails( item );
 	}
+
+	@Override
+	protected void handleDisplayable() {
+		this.initializeIfNecessary();
+		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.handleValueChanged( this.getModel().getValue() );
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
+	}
+
+	protected abstract void handleValueChanged( E card );
 
 	@Override
 	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( final E item, org.lgna.croquet.BooleanState itemSelectedState ) {

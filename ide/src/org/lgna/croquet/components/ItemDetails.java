@@ -100,10 +100,10 @@ public class ItemDetails<E> {
 		buttonGroup.remove( jButton );
 	}
 
-	public void setSelected( boolean isSelected ) {
-		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
-		if( jButton.isSelected() != isSelected ) {
-			jButton.setSelected( isSelected );
-		}
-	}
+	//	public void setSelected( boolean isSelected ) {
+	//		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
+	//		if( jButton.isSelected() != isSelected ) {
+	//			jButton.setSelected( isSelected );
+	//		}
+	//	}
 }

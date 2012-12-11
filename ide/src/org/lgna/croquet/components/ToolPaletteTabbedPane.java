@@ -51,14 +51,14 @@ package org.lgna.croquet.components;
 		this.toolPaletteTabbedPane = toolPaletteTabbedPane;
 	}
 
-	@Override
-	public void setSelected( boolean isSelected ) {
-		super.setSelected( isSelected );
-		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.toolPaletteTabbedPane.getAllItemDetails() ) {
-			tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
-		}
-		this.toolPaletteTabbedPane.revalidateAndRepaint();
-	}
+	//	@Override
+	//	public void setSelected( boolean isSelected ) {
+	//		super.setSelected( isSelected );
+	//		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.toolPaletteTabbedPane.getAllItemDetails() ) {
+	//			tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
+	//		}
+	//		this.toolPaletteTabbedPane.revalidateAndRepaint();
+	//	}
 }
 
 /**
@@ -87,6 +87,14 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 	@Override
 	protected void removeAllDetails() {
 		this.internalRemoveAllComponents();
+	}
+
+	@Override
+	protected void handleValueChanged( E card ) {
+		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.getAllItemDetails() ) {
+			tabItemDetails.getRootComponent().setVisible( tabItemDetails.getItem() == card );
+		}
+		this.revalidateAndRepaint();
 	}
 
 	@Override

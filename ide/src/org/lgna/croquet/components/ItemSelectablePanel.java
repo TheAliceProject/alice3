@@ -53,8 +53,7 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 
 	private boolean isInitialized = false;
 
-	@Override
-	protected void handleDisplayable() {
+	protected final void initializeIfNecessary() {
 		if( this.isInitialized ) {
 			//pass
 		} else {
@@ -62,6 +61,11 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 			this.setSwingListSelectionModel( this.getModel().getSwingModel().getListSelectionModel() );
 			this.isInitialized = true;
 		}
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		this.initializeIfNecessary();
 		super.handleDisplayable();
 	}
 

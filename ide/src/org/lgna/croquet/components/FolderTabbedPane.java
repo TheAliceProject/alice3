@@ -57,14 +57,14 @@ import org.lgna.croquet.Operation;
 		this.folderTabbedPane = folderTabbedPane;
 	}
 
-	@Override
-	public void setSelected( boolean isSelected ) {
-		super.setSelected( isSelected );
-		if( isSelected ) {
-			this.folderTabbedPane.getCardPanel().showComposite( this.getItem() );
-			this.folderTabbedPane.getCardPanel().revalidateAndRepaint();
-		}
-	}
+	//	@Override
+	//	public void setSelected( boolean isSelected ) {
+	//		super.setSelected( isSelected );
+	//		if( isSelected ) {
+	//			this.folderTabbedPane.getCardPanel().showComposite( this.getItem() );
+	//			this.folderTabbedPane.getCardPanel().revalidateAndRepaint();
+	//		}
+	//	}
 }
 
 /**
@@ -428,15 +428,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
-	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			ListSelectionState<E> model = getModel();
-			int index = e.getFirstIndex();
-			E card = index != -1 ? model.getItemAt( index ) : null;
-			FolderTabbedPane.this.handleValueChanged( card );
-		}
-	};
-
 	public FolderTabbedPane( ListSelectionState<E> model ) {
 		super( model );
 		this.cardComposite.getView().setBackgroundColor( null );
@@ -483,19 +474,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
-		this.handleValueChanged( this.getModel().getValue() );
-		super.handleDisplayable();
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
-	}
-
-	private void handleValueChanged( E card ) {
+	protected void handleValueChanged( E card ) {
 		this.cardComposite.showCard( card );
 		this.repaint();
 	}
