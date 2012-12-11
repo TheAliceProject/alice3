@@ -251,7 +251,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		FROM_SWING( true, false, false, false ),
 		FROM_EDIT( false, true, false, false ),
 		FROM_INDIRECT_MODEL( false, false, true, false ),
-		FROM_SET_VALUE_TRANSACTIONLESSLY( false, false, true, false );
+		FROM_SET_VALUE_TRANSACTIONLESSLY( false, false, false, true );
 		private final boolean isFromSwing;
 		private final boolean isFromEdit;
 		private final boolean isFromIndirectModel;
