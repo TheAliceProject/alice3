@@ -216,36 +216,22 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		return java.util.Collections.emptyList();
 	}
 
-	/* package-private */T getSelectedItem() {
-		if( this.dataIndexPair.index >= 0 ) {
-			if( this.dataIndexPair.index < this.getItemCount() ) {
-				return this.getItemAt( this.dataIndexPair.index );
-			} else {
-				//				throw new IndexOutOfBoundsException( this.index + " " + this.getItemCount() + " " + this );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "item selection out of bounds", this.dataIndexPair.index, this.getItemCount(), this );
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
 	protected void handleMissingItem( T missingItem ) {
 	}
 
-	private void setSelectedItem( T selectedItem ) {
-		int index;
-		if( selectedItem != null ) {
-			index = this.indexOf( selectedItem );
-			if( index == -1 ) {
-				this.handleMissingItem( selectedItem );
-				index = this.indexOf( selectedItem );
-			}
-		} else {
-			index = -1;
-		}
-		this.setSelectedIndex( index );
-	}
+	//	private void setSelectedItem( T selectedItem ) {
+	//		int index;
+	//		if( selectedItem != null ) {
+	//			index = this.indexOf( selectedItem );
+	//			if( index == -1 ) {
+	//				this.handleMissingItem( selectedItem );
+	//				index = this.indexOf( selectedItem );
+	//			}
+	//		} else {
+	//			index = -1;
+	//		}
+	//		this.setSelectedIndex( index );
+	//	}
 
 	@Override
 	protected T getSwingValue() {
@@ -589,7 +575,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 				javax.swing.Action action = operation.getSwingModel().getAction();
 				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
 				buttonGroup.add( jMenuItem );
-				jMenuItem.setSelected( this.listSelectionState.getSelectedItem() == item );
+				jMenuItem.setSelected( this.listSelectionState.getValue() == item );
 				menuItemContainer.getViewController().getAwtComponent().add( jMenuItem );
 			}
 		}
