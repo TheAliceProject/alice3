@@ -46,13 +46,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ListSelectionState<T> extends ItemState<T> implements Iterable<T>/* , java.util.List<E> */{
-	private static class FiringListSelectionModel extends javax.swing.DefaultListSelectionModel {
-		@Override
-		public void fireValueChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
-			super.fireValueChanged( firstIndex, lastIndex, isAdjusting );
-		}
-	}
-
 	private static class DataIndexPair<T> implements javax.swing.ComboBoxModel {
 		private final org.lgna.croquet.data.ListData<T> data;
 		private int index;
@@ -107,9 +100,9 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	public static class SwingModel {
 		private final javax.swing.ComboBoxModel comboBoxModel;
-		private final FiringListSelectionModel listSelectionModel;
+		private final javax.swing.DefaultListSelectionModel listSelectionModel;
 
-		private SwingModel( javax.swing.ComboBoxModel comboBoxModel, FiringListSelectionModel listSelectionModel ) {
+		private SwingModel( javax.swing.ComboBoxModel comboBoxModel, javax.swing.DefaultListSelectionModel listSelectionModel ) {
 			this.comboBoxModel = comboBoxModel;
 			this.listSelectionModel = listSelectionModel;
 		}
@@ -156,7 +149,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	public ListSelectionState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
 		super( group, id, getItemAt( data, selectionIndex ), data.getItemCodec() );
 		this.dataIndexPair = new DataIndexPair<T>( data, selectionIndex );
-		this.swingModel = new SwingModel( this.dataIndexPair, new FiringListSelectionModel() );
+		this.swingModel = new SwingModel( this.dataIndexPair, new javax.swing.DefaultListSelectionModel() );
 		this.swingModel.listSelectionModel.addListSelectionListener( this.listSelectionListener );
 	}
 
