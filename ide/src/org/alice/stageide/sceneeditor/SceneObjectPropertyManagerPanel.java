@@ -214,10 +214,9 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		this.addNameAndControllerToPanel( propertyPair.label, propertyPair.controller.getPanel(), panel, index );
 	}
 
-	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter( org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp )
+	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter( org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp, org.lgna.project.ast.UserField field )
 	{
 		if( entityImp != null ) {
-			org.lgna.project.ast.UserField field = null; //todo
 			org.lgna.project.ast.JavaMethod setter = org.lgna.project.ast.AstUtilities.getSetterForGetter( getter, declaringType );
 			org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.SceneEditorUpdatingPropertyState.getInstanceForSetter( field, setter );
 			boolean isVisible = ( setter == null ) || ( setter.getVisibility() == null ) || ( setter.getVisibility() == Visibility.PRIME_TIME );
@@ -225,159 +224,156 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			{
 				if( setter.getName().equalsIgnoreCase( "setOpacity" ) )
 				{
-					if( setter.getName().equalsIgnoreCase( "setOpacity" ) )
+					if( entityImp instanceof ModelImp )
 					{
-						if( entityImp instanceof ModelImp )
-						{
-							return new ModelOpacityAdapter( (ModelImp)entityImp, state );
-						}
-						else if( entityImp instanceof GroundImp )
-						{
-							return new GroundOpacityAdapter( (GroundImp)entityImp, state );
-						}
+						return new ModelOpacityAdapter( (ModelImp)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setFogDensity" ) )
+					else if( entityImp instanceof GroundImp )
 					{
-						if( entityImp instanceof SceneImp )
-						{
-							return new SceneFogDensityAdapter( (SceneImp)entityImp, state );
-						}
+						return new GroundOpacityAdapter( (GroundImp)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setResource" ) ) {
-						if( entityImp instanceof JointedModelImp<?, ?> )
-						{
-							return new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)entityImp, state );
-						}
-					}
-					else if( setter.getName().equalsIgnoreCase( "setPaint" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setFogDensity" ) )
+				{
+					if( entityImp instanceof SceneImp )
 					{
-						if( entityImp instanceof GroundImp )
-						{
-							return new PaintPropertyAdapter<GroundImp>( "Paint", (GroundImp)entityImp, ( (GroundImp)entityImp ).paint, state );
-						}
-						else if( entityImp instanceof ModelImp )
-						{
-							return new PaintPropertyAdapter<ModelImp>( "Paint", (ModelImp)entityImp, ( (ModelImp)entityImp ).paint, state );
-						}
+						return new SceneFogDensityAdapter( (SceneImp)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setVehicle" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setResource" ) ) {
+					if( entityImp instanceof JointedModelImp<?, ?> )
 					{
-						if( entityImp.getAbstraction() instanceof MutableRider )
-						{
-							return new MutableRiderVehicleAdapter( (MutableRider)entityImp.getAbstraction(), state, this.sceneInstance );
-						}
+						return new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setFromAboveLightColor" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setPaint" ) )
+				{
+					if( entityImp instanceof GroundImp )
 					{
-						if( entityImp instanceof SceneImp )
-						{
-							return new ColorPropertyAdapter<SceneImp>( "Above Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromAboveLightColor, state );
-						}
+						return new PaintPropertyAdapter<GroundImp>( "Paint", (GroundImp)entityImp, ( (GroundImp)entityImp ).paint, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setFromBelowLightColor" ) )
+					else if( entityImp instanceof ModelImp )
 					{
-						if( entityImp instanceof SceneImp )
-						{
-							return new ColorPropertyAdapter<SceneImp>( "Below Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromBelowLightColor, state );
-						}
+						return new PaintPropertyAdapter<ModelImp>( "Paint", (ModelImp)entityImp, ( (ModelImp)entityImp ).paint, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setAtmosphereColor" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setVehicle" ) )
+				{
+					if( entityImp.getAbstraction() instanceof MutableRider )
 					{
-						if( entityImp instanceof SceneImp )
-						{
-							return new ColorPropertyAdapter<SceneImp>( "Atmosphere Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).atmosphereColor, state );
-						}
+						return new MutableRiderVehicleAdapter( (MutableRider)entityImp.getAbstraction(), state, this.sceneInstance );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setAmbientLightColor" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setFromAboveLightColor" ) )
+				{
+					if( entityImp instanceof SceneImp )
 					{
-						if( entityImp instanceof SceneImp )
-						{
-							return new ColorPropertyAdapter<SceneImp>( "Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromAboveLightColor, state );
-						}
+						return new ColorPropertyAdapter<SceneImp>( "Above Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromAboveLightColor, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setBackPaint" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setFromBelowLightColor" ) )
+				{
+					if( entityImp instanceof SceneImp )
 					{
-						if( entityImp instanceof BillboardImp )
-						{
-							return new BillboardBackPaintPropertyAdapter( (BillboardImp)entityImp, state );
-						}
+						return new ColorPropertyAdapter<SceneImp>( "Below Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromBelowLightColor, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setFrontPaint" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setAtmosphereColor" ) )
+				{
+					if( entityImp instanceof SceneImp )
 					{
-						if( entityImp instanceof BillboardImp )
-						{
-							return new BillboardFrontPaintPropertyAdapter( (BillboardImp)entityImp, state );
-						}
+						return new ColorPropertyAdapter<SceneImp>( "Atmosphere Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).atmosphereColor, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setWallPaint" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setAmbientLightColor" ) )
+				{
+					if( entityImp instanceof SceneImp )
 					{
-						if( entityImp instanceof RoomImp )
-						{
-							return new RoomWallPaintPropertyAdapter( (RoomImp)entityImp, state );
-						}
+						return new ColorPropertyAdapter<SceneImp>( "Light Color", (SceneImp)entityImp, ( (SceneImp)entityImp ).fromAboveLightColor, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setFloorPaint" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setBackPaint" ) )
+				{
+					if( entityImp instanceof BillboardImp )
 					{
-						if( entityImp instanceof RoomImp )
-						{
-							return new RoomFloorPaintPropertyAdapter( (RoomImp)entityImp, state );
-						}
+						return new BillboardBackPaintPropertyAdapter( (BillboardImp)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setCeilingPaint" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setFrontPaint" ) )
+				{
+					if( entityImp instanceof BillboardImp )
 					{
-						if( entityImp instanceof RoomImp )
-						{
-							return new RoomCeilingPaintPropertyAdapter( (RoomImp)entityImp, state );
-						}
+						return new BillboardFrontPaintPropertyAdapter( (BillboardImp)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setFont" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setWallPaint" ) )
+				{
+					if( entityImp instanceof RoomImp )
 					{
-						if( entityImp instanceof TextModelImp )
-						{
-							return new TextFontPropertyAdapter( (TextModelImp)entityImp, state );
-						}
+						return new RoomWallPaintPropertyAdapter( (RoomImp)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setValue" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setFloorPaint" ) )
+				{
+					if( entityImp instanceof RoomImp )
 					{
-						if( entityImp instanceof TextModelImp )
-						{
-							return new TextValuePropertyAdapter( (TextModelImp)entityImp, state );
-						}
+						return new RoomFloorPaintPropertyAdapter( (RoomImp)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setRadius" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setCeilingPaint" ) )
+				{
+					if( entityImp instanceof RoomImp )
 					{
-						if( entityImp instanceof CylinderImp ) {
-							return new DoublePropertyAdapter<CylinderImp>( "Radius", (CylinderImp)entityImp, ( (CylinderImp)entityImp ).radius, state );
-						}
-						else if( entityImp instanceof SphereImp )
-						{
-							return new DoublePropertyAdapter<SphereImp>( "Radius", (SphereImp)entityImp, ( (SphereImp)entityImp ).radius, state );
-						}
-						else if( entityImp instanceof DiscImp ) {
-							return new DoublePropertyAdapter<DiscImp>( "Radius", (DiscImp)entityImp, ( (DiscImp)entityImp ).outerRadius, state );
-						}
+						return new RoomCeilingPaintPropertyAdapter( (RoomImp)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setBaseRadius" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setFont" ) )
+				{
+					if( entityImp instanceof TextModelImp )
 					{
-						if( entityImp instanceof ConeImp )
-						{
-							return new DoublePropertyAdapter<ConeImp>( "Radius", (ConeImp)entityImp, ( (ConeImp)entityImp ).baseRadius, state );
-						}
+						return new TextFontPropertyAdapter( (TextModelImp)entityImp, state );
 					}
-					else if( setter.getName().equalsIgnoreCase( "setLength" ) )
+				}
+				else if( setter.getName().equalsIgnoreCase( "setValue" ) )
+				{
+					if( entityImp instanceof TextModelImp )
 					{
-						if( entityImp instanceof CylinderImp ) {
-							return new DoublePropertyAdapter<CylinderImp>( "Length", (CylinderImp)entityImp, ( (CylinderImp)entityImp ).length, state );
-						}
-						else if( entityImp instanceof ConeImp )
-						{
-							return new DoublePropertyAdapter<ConeImp>( "Length", (ConeImp)entityImp, ( (ConeImp)entityImp ).length, state );
-						}
+						return new TextValuePropertyAdapter( (TextModelImp)entityImp, state );
 					}
-					else
+				}
+				else if( setter.getName().equalsIgnoreCase( "setRadius" ) )
+				{
+					if( entityImp instanceof CylinderImp ) {
+						return new DoublePropertyAdapter<CylinderImp>( "Radius", (CylinderImp)entityImp, ( (CylinderImp)entityImp ).radius, state );
+					}
+					else if( entityImp instanceof SphereImp )
 					{
-						System.out.println( "Unknown setter: " + setter.getName() );
+						return new DoublePropertyAdapter<SphereImp>( "Radius", (SphereImp)entityImp, ( (SphereImp)entityImp ).radius, state );
 					}
+					else if( entityImp instanceof DiscImp ) {
+						return new DoublePropertyAdapter<DiscImp>( "Radius", (DiscImp)entityImp, ( (DiscImp)entityImp ).outerRadius, state );
+					}
+				}
+				else if( setter.getName().equalsIgnoreCase( "setBaseRadius" ) )
+				{
+					if( entityImp instanceof ConeImp )
+					{
+						return new DoublePropertyAdapter<ConeImp>( "Radius", (ConeImp)entityImp, ( (ConeImp)entityImp ).baseRadius, state );
+					}
+				}
+				else if( setter.getName().equalsIgnoreCase( "setLength" ) )
+				{
+					if( entityImp instanceof CylinderImp ) {
+						return new DoublePropertyAdapter<CylinderImp>( "Length", (CylinderImp)entityImp, ( (CylinderImp)entityImp ).length, state );
+					}
+					else if( entityImp instanceof ConeImp )
+					{
+						return new DoublePropertyAdapter<ConeImp>( "Length", (ConeImp)entityImp, ( (ConeImp)entityImp ).length, state );
+					}
+				}
+				else
+				{
+					System.out.println( "Unknown setter: " + setter.getName() );
 				}
 			}
 		}
@@ -398,7 +394,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			boolean isScene = this.selectedImp instanceof SceneImp;
 
 			org.lgna.project.ast.UserField selectedField = null;
-			if( ( this.selectedImp instanceof JointedModelImp ) && ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
+			if( ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
 				org.alice.ide.instancefactory.ThisFieldAccessFactory fieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.selectedInstance;
 				selectedField = fieldAccessFactory.getField();
 			}
@@ -412,7 +408,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 
 			for( org.lgna.project.ast.JavaMethod getter : getterMethods )
 			{
-				org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter( getter, declaringType, this.selectedImp );
+				org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter( getter, declaringType, this.selectedImp, selectedField );
 				if( adapter != null )
 				{
 					propertyAdapters.add( adapter );

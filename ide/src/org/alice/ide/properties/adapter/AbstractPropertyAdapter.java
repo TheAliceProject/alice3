@@ -62,15 +62,6 @@ public abstract class AbstractPropertyAdapter<P, O>
 	private boolean isExpressionSet = false;
 	protected StandardExpressionState expressionState;
 
-	private org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> valueObserver = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-			AbstractPropertyAdapter.this.onExpressionStateUpdate();
-		}
-	};
-
 	protected String getCurrentValueLabelString()
 	{
 		return " (current value)";
@@ -169,26 +160,10 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	public void startListening() {
 		startPropertyListening();
-		startExpressionListening();
 	}
 
 	public void stopListening() {
 		stopPropertyListening();
-		stopExpressionListening();
-	}
-
-	protected void startExpressionListening() {
-		if( this.expressionState != null )
-		{
-			this.expressionState.addValueListener( this.valueObserver );
-		}
-	}
-
-	protected void stopExpressionListening() {
-		if( this.expressionState != null )
-		{
-			this.expressionState.removeValueListener( this.valueObserver );
-		}
 	}
 
 	protected void startPropertyListening() {
@@ -199,9 +174,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	protected void initializeExpressionState()
 	{
-		stopExpressionListening();
 		this.setExpressionValue( this.getValue() );
-		startExpressionListening();
 	}
 
 	protected void setExpressionValue( P value )
@@ -212,6 +185,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 			{
 				org.lgna.project.ast.Expression expressionValue = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( this.getValue() );
 				this.expressionState.setValueTransactionlessly( expressionValue );
+
 			} catch( CannotCreateExpressionException e )
 			{
 				this.expressionState = null;
@@ -230,17 +204,6 @@ public abstract class AbstractPropertyAdapter<P, O>
 		Object[] values = vm.ENTRY_POINT_evaluate( null, new org.lgna.project.ast.Expression[] { expression } );
 		assert values.length == 1;
 		return values[ 0 ];
-	}
-
-	protected void onExpressionStateUpdate()
-	{
-		org.lgna.project.ast.Expression expression = expressionState.getValue();
-		if( expression != null ) {
-			Object value = evaluateExpression( expression );
-			isExpressionSet = true;
-			this.intermediateSetValue( value );
-			isExpressionSet = false;
-		}
 	}
 
 	protected void notifyValueObservers( P newValue )

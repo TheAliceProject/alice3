@@ -71,4 +71,26 @@ public class SceneEditorUpdatingPropertyState extends org.alice.ide.ast.Property
 	public org.lgna.project.ast.UserField getField() {
 		return this.field;
 	}
+
+	@Override
+	protected void handleTruthAndBeautyValueChange( org.lgna.project.ast.Expression nextValue ) {
+		super.handleTruthAndBeautyValueChange( nextValue );
+		if( nextValue instanceof org.lgna.project.ast.NullLiteral ) {
+			//do nothing for null literals
+		}
+		else {
+			org.lgna.project.ast.Expression e;
+			if( this.field == null ) {
+				e = new org.lgna.project.ast.ThisExpression();
+			}
+			else {
+				e = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field );
+			}
+			org.lgna.project.ast.AbstractParameter parameter = this.getSetter().getRequiredParameters().get( 0 );
+			org.lgna.project.ast.SimpleArgument argument = new org.lgna.project.ast.SimpleArgument( parameter, nextValue );
+			org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( e, this.getSetter(), argument );
+			org.lgna.project.ast.Statement s = new org.lgna.project.ast.ExpressionStatement( methodInvocation );
+			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().executeStatements( s );
+		}
+	}
 }
