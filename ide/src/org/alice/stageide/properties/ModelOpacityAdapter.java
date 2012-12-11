@@ -90,6 +90,7 @@ public class ModelOpacityAdapter extends AbstractPropertyAdapter<Double, ModelIm
 	public ModelOpacityAdapter( ModelImp instance, StandardExpressionState expressionState ) {
 		super( "Opacity", instance, expressionState );
 		this.property = instance.opacity;
+		this.startPropertyListening();
 		this.initializeExpressionState();
 	}
 
