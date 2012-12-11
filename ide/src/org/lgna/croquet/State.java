@@ -140,11 +140,15 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return new org.lgna.croquet.edits.StateEdit<T>( step, prevValue, nextValue );
 	}
 
-	protected org.lgna.croquet.edits.StateEdit<T> commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void handleTruthAndBeautyValueChange( T nextValue ) {
+	}
+
+	protected final org.lgna.croquet.edits.StateEdit<T> commitStateEdit( T prevValue, T nextValue, boolean isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 		org.lgna.croquet.history.CompletionStep<State<T>> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
 		org.lgna.croquet.edits.StateEdit<T> edit = this.createStateEdit( completionStep, prevValue, nextValue, isAdjusting );
 		completionStep.commitAndInvokeDo( edit );
+		this.handleTruthAndBeautyValueChange( nextValue );
 		return edit;
 	}
 
@@ -233,6 +237,11 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	public final void setValueTransactionlessly( T value ) {
 		this.changeValueTransactionlessly( value, false );
+	}
+
+	public final void setValueFromEdit( T nextValue ) {
+		this.changeValueTransactionlessly( nextValue, false );
+		this.handleTruthAndBeautyValueChange( nextValue );
 	}
 
 	public final void adjustValueTransactionlessly( T value ) {

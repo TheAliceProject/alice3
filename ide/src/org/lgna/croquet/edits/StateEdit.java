@@ -120,11 +120,11 @@ public final class StateEdit<T> extends org.lgna.croquet.edits.Edit<org.lgna.cro
 
 	@Override
 	protected void doOrRedoInternal( boolean isDo ) {
-		this.getModel().setValueTransactionlessly( this.getNextValue() );
+		this.getModel().setValueFromEdit( this.getNextValue() );
 	}
 
 	@Override
 	protected void undoInternal() {
-		this.getModel().setValueTransactionlessly( this.getPreviousValue() );
+		this.getModel().setValueFromEdit( this.getPreviousValue() );
 	}
 }
