@@ -151,6 +151,11 @@ public abstract class GatedCommitDialogCoreComposite<V extends org.lgna.croquet.
 		this.updateIsGoodToGo( isGoodToGo );
 	}
 
+	@Deprecated
+	protected void TEMPORARY_HACK_updateStatus() {
+		this.updateStatus( null );
+	}
+
 	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		org.lgna.croquet.history.CompletionStep<?> s = null;
 		if( event != null ) {

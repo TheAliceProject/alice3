@@ -76,7 +76,7 @@ public class UploadView extends BorderPanel {
 		//		bPanel.addComponent( new PreserveAspectRatioPanel( new Label( "Preview Coming Soon!" ), new Dimension( 16, 9 ) ), Constraint.CENTER );
 		bPanel.addComponent( new VideoInfoComponent( composite ) );
 		this.addComponent( bPanel, Constraint.CENTER );
-		this.addComponent( composite.getUploadOperation().createButton(), Constraint.PAGE_END );
+		this.addComponent( composite.getUploadOperation().getOperation().createButton(), Constraint.PAGE_END );
 	}
 
 	private class UserNameAndPasswordComponent extends BorderPanel {

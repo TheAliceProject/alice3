@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,46 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.media.components;
+
+import org.alice.media.UploadProgressDialogComposite;
+import org.alice.media.YouTubeEvent;
+import org.alice.media.YouTubeEvent.EventType;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.Label;
+
+import com.google.gdata.data.youtube.VideoEntry;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static org.lgna.croquet.StandardMenuItemPrepModel[] createMenuItemPrepModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
-				org.alice.ide.croquet.models.projecturi.NewProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.recentprojects.RecentProjectsMenuModel.getInstance(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.projecturi.SaveAsProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.ide.croquet.models.projecturi.RevertProjectOperation.getInstance().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				org.alice.media.ExportToYouTubeWizardDialogComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.lgna.croquet.MenuModel.SEPARATOR,
-				PrintMenuModel.getInstance()
-				);
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			list.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			list.add( org.alice.ide.croquet.models.projecturi.ClearanceCheckingExitOperation.getInstance().getMenuItemPrepModel() );
+public class UploadProgressDialogView extends BorderPanel {
+
+	Label statusLabel = new Label();
+	private boolean shouldStop = false;
+
+	public UploadProgressDialogView( UploadProgressDialogComposite uploadProgressDialogComposite ) {
+		this.addCenterComponent( statusLabel );
+		statusLabel.setText( "UPLOADING..." );
+	}
+
+	public void cycleText() throws InterruptedException {
+		while( !shouldStop ) {
+			Thread.sleep( 50 );
+			statusLabel.setText( "UPLOADING..." );
+			Thread.sleep( 50 );
+			statusLabel.setText( "UPLOADING.  " );
+			Thread.sleep( 50 );
+			statusLabel.setText( "UPLOADING . " );
+			Thread.sleep( 50 );
+			statusLabel.setText( "UPLOADING  ." );
 		}
-		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( list, org.lgna.croquet.StandardMenuItemPrepModel.class );
 	}
 
-	private static class SingletonHolder {
-		private static FileMenuModel instance = new FileMenuModel();
+	public void youtubeEventTriggered( YouTubeEvent event ) {
+		shouldStop = true;
+		System.out.println( "event triggered: " + event.getType() );
+		if( event.getType() == EventType.UPLOAD_FAILED ) {
+			statusLabel.setText( event.getMoreInfo().toString() );
+			System.out.println( "why failed: " );
+			System.out.println( event.getMoreInfo() );
+		}
+		if( event.getType() == EventType.UPLOAD_SUCCESS ) {
+			System.out.println( event.getMoreInfo() );
+			System.out.println( event.getMoreInfo().getClass() );
+			if( event.getMoreInfo() instanceof VideoEntry ) {
+				VideoEntry entry = ( (VideoEntry)event.getMoreInfo() );
+			}
+		}
 	}
 
-	public static FileMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private FileMenuModel() {
-		super( java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), createMenuItemPrepModels() );
-	}
 }

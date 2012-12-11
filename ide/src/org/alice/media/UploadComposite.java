@@ -49,7 +49,6 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.alice.media.YouTubeEvent.EventType;
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
@@ -59,14 +58,6 @@ import org.lgna.croquet.StringState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.project.Project;
 
-import com.google.gdata.data.media.MediaFileSource;
-import com.google.gdata.data.media.mediarss.MediaCategory;
-import com.google.gdata.data.media.mediarss.MediaDescription;
-import com.google.gdata.data.media.mediarss.MediaKeywords;
-import com.google.gdata.data.media.mediarss.MediaTitle;
-import com.google.gdata.data.youtube.VideoEntry;
-import com.google.gdata.data.youtube.YouTubeMediaGroup;
-import com.google.gdata.data.youtube.YouTubeNamespace;
 import com.google.gdata.util.AuthenticationException;
 
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
@@ -75,7 +66,7 @@ import edu.cmu.cs.dennisc.java.io.FileUtilities;
 /**
  * @author Matt May
  */
-public class UploadComposite extends WizardPageComposite<UploadView> implements YouTubeListener {
+public class UploadComposite extends WizardPageComposite<UploadView> {
 
 	private final YouTubeUploader uploader = new YouTubeUploader();
 	private final ExportToYouTubeWizardDialogComposite owner;
@@ -117,40 +108,42 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		}
 	} );
 
-	private final ActionOperation uploadOperation = this.createActionOperation( this.createKey( "upload" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation src ) throws org.lgna.croquet.CancelException {
-			VideoEntry entry = new VideoEntry();
+	private UploadProgressDialogComposite uploadOperation = new UploadProgressDialogComposite( this );
 
-			MediaFileSource source = new MediaFileSource( owner.getFile(), "video/quicktime" );
-			entry.setMediaSource( source );
-			YouTubeMediaGroup mediaGroup = entry.getOrCreateMediaGroup();
-
-			MediaTitle title = new MediaTitle();
-			title.setPlainTextContent( titleState.getValue().trim() );
-			mediaGroup.setTitle( title );//title
-
-			MediaDescription mediaDescription = new MediaDescription();
-			mediaDescription.setPlainTextContent( descriptionState.getValue().trim() );
-			mediaGroup.setDescription( mediaDescription );//description]
-
-			MediaKeywords keywords = new MediaKeywords();
-			String[] arr = tagState.getValue().split( "," );
-			for( String s : arr ) {
-				keywords.addKeyword( s.trim() );
-			}
-			mediaGroup.setKeywords( keywords );//tags
-
-			String category = videoCategoryState.getValue().toString().split( "\\s" )[ 0 ].trim();
-			mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
-			mediaGroup.setPrivate( isPrivateState.getValue() );//isPrivate
-			try {
-				uploader.uploadVideo( entry );
-			} catch( IOException e ) {
-				e.printStackTrace();
-			}
-			return null;
-		}
-	} );
+	//	private final ActionOperation uploadOperation = this.createActionOperation( this.createKey( "upload" ), new Action() {
+	//		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation src ) throws org.lgna.croquet.CancelException {
+	//			VideoEntry entry = new VideoEntry();
+	//
+	//			MediaFileSource source = new MediaFileSource( owner.getFile(), "video/quicktime" );
+	//			entry.setMediaSource( source );
+	//			YouTubeMediaGroup mediaGroup = entry.getOrCreateMediaGroup();
+	//
+	//			MediaTitle title = new MediaTitle();
+	//			title.setPlainTextContent( titleState.getValue().trim() );
+	//			mediaGroup.setTitle( title );//title
+	//
+	//			MediaDescription mediaDescription = new MediaDescription();
+	//			mediaDescription.setPlainTextContent( descriptionState.getValue().trim() );
+	//			mediaGroup.setDescription( mediaDescription );//description]
+	//
+	//			MediaKeywords keywords = new MediaKeywords();
+	//			String[] arr = tagState.getValue().split( "," );
+	//			for( String s : arr ) {
+	//				keywords.addKeyword( s.trim() );
+	//			}
+	//			mediaGroup.setKeywords( keywords );//tags
+	//
+	//			String category = videoCategoryState.getValue().toString().split( "\\s" )[ 0 ].trim();
+	//			mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
+	//			mediaGroup.setPrivate( isPrivateState.getValue() );//isPrivate
+	//			try {
+	//				uploader.uploadVideo( entry );
+	//			} catch( IOException e ) {
+	//				e.printStackTrace();
+	//			}
+	//			return null;
+	//		}
+	//	} );
 	private Status errorNotLoggedIn = createErrorStatus( this.createKey( "errorNotLoggedIn" ) );
 	private boolean isLoggedIn = false;
 	private Status noTittle = createErrorStatus( this.createKey( "errorNoTittle" ) );
@@ -161,8 +154,16 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
 		this.owner = owner;
 		UploadComposite.initializeCategories();
-		uploader.addYouTubeListener( this );
+		uploader.addYouTubeListener( this.getUploadOperation() );
 		videoCategoryState = this.createListSelectionState( this.createKey( "videoCategory" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, categoryStrings.toArray( new String[ 0 ] ) );
+	}
+
+	public YouTubeUploader getUploader() {
+		return this.uploader;
+	}
+
+	public ExportToYouTubeWizardDialogComposite getOwner() {
+		return this.owner;
 	}
 
 	public StringState getIdState() {
@@ -225,7 +226,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		return this.tagState;
 	}
 
-	public ActionOperation getUploadOperation() {
+	public UploadProgressDialogComposite getUploadOperation() {
 		return this.uploadOperation;
 	}
 
@@ -250,7 +251,8 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
-		uploadOperation.setEnabled( false );
+		//		uploadOperation.setEnabled( false );
+		uploadOperation.setEnabled( true );
 		Status rv = IS_GOOD_TO_GO_STATUS;
 		if( !isLoggedIn ) {
 			setEnabled( false );
@@ -277,14 +279,6 @@ public class UploadComposite extends WizardPageComposite<UploadView> implements 
 		tagState.setEnabled( isEnabled );
 		videoCategoryState.setEnabled( isEnabled );
 		isPrivateState.setEnabled( isEnabled );
-	}
-
-	public void youTubeEventTriggered( YouTubeEvent event ) {
-		System.out.println( "event triggered: " + event.getType() );
-		if( event.getType() == EventType.UPLOAD_FAILED ) {
-			System.out.println( "why failed: " );
-			System.out.println( event.getMoreInfo() );
-		}
 	}
 
 	/**

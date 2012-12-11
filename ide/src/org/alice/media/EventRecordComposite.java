@@ -113,10 +113,14 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		}
 		script = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
 		owner.setScript( script );
+
 	}
 
 	@Override
 	public void handlePostDeactivation() {
+		if( programContext == null ) {
+			programContext.cleanUpProgram();
+		}
 		super.handlePostDeactivation();
 	}
 

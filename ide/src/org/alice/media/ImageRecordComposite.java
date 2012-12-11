@@ -94,7 +94,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		try {
 			tempFile = File.createTempFile( "temp", ".webm" );
 			//			encoder = new MattsMovieEncoder( tempFile );
-			encoder = new WebmAdapter( tempFile );
 		} catch( IOException e ) {
 			e.printStackTrace();
 		}
@@ -147,29 +146,11 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				encoder.stop();
 				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			} else {
-				//				programContext.getProgramImp().startAnimator();
-				//				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
-				//				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
-				//				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
-				//				encoder.start();
-				//				if( true ) {
-				//					try {
-				//						encoder.setOutput( File.createTempFile( "temp", ".mov" ) );
-				//					} catch( IOException e ) {
-				//						e.printStackTrace();
-				//					}
-				//				} else {
-				//					encoder.setOutput( new File( FileUtilities.getDefaultDirectory(), "test.mov" ) );
-				//				}
-				//			} else {
-				//				encoder.stop();
-				//				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
-				//			}
+				encoder = new WebmAdapter( tempFile );
 				encoder.setFrameRate( frameRate.getValue() );
 				encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
 				programContext.getProgramImp().startAnimator();
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
-				//				encoder = new ImagesToQuickTimeEncoder( frameRate.getValue() );
 				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 				encoder.start();
 			}
@@ -224,7 +205,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		this.isRecordingState.removeValueListener( this.isRecordingListener );
 		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
 		programContext.cleanUpProgram();
-		if( ( encoder != null ) && ( tempFile != null ) ) {
+		if( ( encoder != null ) ) {
 			owner.setFile( tempFile );
 		}
 		super.handlePostDeactivation();

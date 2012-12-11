@@ -130,7 +130,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return this.index;
 	}
 
-	private void setIndex( int index ) {
+	protected void setIndex( int index ) {
 		this.index = index;
 		this.cardComposite.showCard( this.cardComposite.getCards().get( index ) );
 		this.listSelectionModel.setSelectionInterval( this.index, this.index );
@@ -147,6 +147,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			text = null;
 		}
 		this.stepLabel.setText( text );
+		this.TEMPORARY_HACK_updateStatus();
 		this.updateEnabled();
 	}
 
