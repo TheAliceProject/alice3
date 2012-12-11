@@ -91,11 +91,10 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 	}
 
 	@Override
-	protected void setSwingValue( org.lgna.project.ast.Expression value ) {
-		super.setSwingValue( value );
-
+	protected void handleTruthAndBeautyValueChange( org.lgna.project.ast.Expression nextValue ) {
+		super.handleTruthAndBeautyValueChange( nextValue );
 		// update AST
-		this.instanceCreation.requiredArguments.get( 0 ).expression.setValue( value );
+		this.instanceCreation.requiredArguments.get( 0 ).expression.setValue( nextValue );
 
 		// update Scene Editor
 		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
@@ -104,7 +103,7 @@ public class FieldInitializerInstanceCreationArgument0State extends org.alice.id
 
 		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.ide.IDE.getActiveInstance().getVirtualMachineForSceneEditor();
 		org.lgna.project.virtualmachine.UserInstance userInstance = null;
-		Object[] array = vm.ENTRY_POINT_evaluate( userInstance, new org.lgna.project.ast.Expression[] { value } );
+		Object[] array = vm.ENTRY_POINT_evaluate( userInstance, new org.lgna.project.ast.Expression[] { nextValue } );
 		org.lgna.story.resources.JointedModelResource resource = (org.lgna.story.resources.JointedModelResource)array[ 0 ];
 		imp.setNewResource( resource );
 	}
