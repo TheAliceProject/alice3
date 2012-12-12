@@ -214,10 +214,10 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		this.addNameAndControllerToPanel( propertyPair.label, propertyPair.controller.getPanel(), panel, index );
 	}
 
-	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter( org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp )
+	private org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> getPropertyAdapterForGetter( org.lgna.project.ast.JavaMethod getter, JavaType declaringType, EntityImp entityImp, org.lgna.project.ast.UserField field )
 	{
 		org.lgna.project.ast.JavaMethod setter = org.lgna.project.ast.AstUtilities.getSetterForGetter( getter, declaringType );
-		org.alice.ide.croquet.models.StandardExpressionState state = org.alice.ide.croquet.models.ast.PropertyState.getInstanceForSetter( IDE.PROJECT_GROUP, setter );
+		org.alice.ide.croquet.models.ast.SceneEditorUpdatingPropertyState state = org.alice.ide.croquet.models.ast.SceneEditorUpdatingPropertyState.getInstanceForSetter( field, setter );
 		boolean isVisible = ( setter == null ) || ( setter.getVisibility() == null ) || ( setter.getVisibility() == Visibility.PRIME_TIME );
 		if( ( setter != null ) && isVisible )
 		{
@@ -237,12 +237,6 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 				if( entityImp instanceof SceneImp )
 				{
 					return new SceneFogDensityAdapter( (SceneImp)entityImp, state );
-				}
-			}
-			else if( setter.getName().equalsIgnoreCase( "setResource" ) ) {
-				if( entityImp instanceof JointedModelImp<?, ?> )
-				{
-					return new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)entityImp, state );
 				}
 			}
 			else if( setter.getName().equalsIgnoreCase( "setPaint" ) )
@@ -390,11 +384,23 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			Iterable<org.lgna.project.ast.JavaMethod> getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters( this.selectedInstance.getValueType() );
 			JavaType declaringType = this.selectedInstance.getValueType().getFirstEncounteredJavaType();
 			boolean isScene = this.selectedImp instanceof SceneImp;
+
+			org.lgna.project.ast.UserField selectedField = null;
+			if( ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
+				org.alice.ide.instancefactory.ThisFieldAccessFactory fieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.selectedInstance;
+				selectedField = fieldAccessFactory.getField();
+			}
+
 			propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
+
+			org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
+			if( fieldInitializerState != null ) {
+				propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
+			}
 
 			for( org.lgna.project.ast.JavaMethod getter : getterMethods )
 			{
-				org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter( getter, declaringType, this.selectedImp );
+				org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter( getter, declaringType, this.selectedImp, selectedField );
 				if( adapter != null )
 				{
 					propertyAdapters.add( adapter );

@@ -92,11 +92,11 @@ public abstract class ManagedFieldDeclarationOperation extends FieldDeclarationO
 				initialExpression, isInitializerEditable );
 	}
 
-	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
-		return org.alice.ide.croquet.models.ast.PropertyState.getInstanceForGetter( org.lgna.croquet.Application.INHERIT_GROUP, getter );
+	protected org.alice.ide.ast.declaration.FieldDeclarationPropertyState getStateForGetter( org.lgna.project.ast.JavaMethod getter ) {
+		return org.alice.ide.ast.declaration.FieldDeclarationPropertyState.getInstanceForGetter( getter );
 	}
 
-	protected org.alice.ide.croquet.models.ast.PropertyState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
+	protected org.alice.ide.ast.declaration.FieldDeclarationPropertyState getStateForGetter( Class<?> cls, String name, Class<?>... parameterTypes ) {
 		return getStateForGetter( org.lgna.project.ast.JavaMethod.getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, name, parameterTypes ) ) );
 	}
 

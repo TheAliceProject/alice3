@@ -91,6 +91,7 @@ public class SceneFogDensityAdapter extends AbstractPropertyAdapter<Double, Scen
 	public SceneFogDensityAdapter( SceneImp instance, StandardExpressionState expressionState ) {
 		super( "Fog Density", instance, expressionState );
 		this.property = instance.fogDensity;
+		this.startPropertyListening();
 		this.initializeExpressionState();
 	}
 

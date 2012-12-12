@@ -45,14 +45,10 @@ package org.alice.interact.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSetLocalTransformationActionOperation extends org.lgna.croquet.ActionOperation {
-	private boolean isDoRequired;
-	private edu.cmu.cs.dennisc.animation.Animator animator;
+public abstract class AbstractSetLocalTransformationActionOperation extends AbstractFieldBasedManipulationActionOperation {
 
-	public AbstractSetLocalTransformationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
-		super( group, individualId );
-		this.isDoRequired = isDoRequired;
-		this.animator = animator;
+	public AbstractSetLocalTransformationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, String editPresentationKey ) {
+		super( group, individualId, isDoRequired, animator, field, editPresentationKey );
 	}
 
 	protected abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGTransformable();
@@ -61,25 +57,49 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation();
 
-	protected abstract String getEditPresentationName();
-
-	private void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
-		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
-		if( this.animator != null ) {
+	private void setLocalTransformation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
+		if( this.getAnimator() != null ) {
 			edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( sgTransformable, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, lt );
 			povAnimation.setDuration( 0.5 );
 			//this.animator.complete( null );
-			this.animator.invokeLater( povAnimation, null );
+			this.getAnimator().invokeLater( povAnimation, null );
 		} else {
 			sgTransformable.setLocalTransformation( lt );
 		}
 	}
 
+	private static final java.text.NumberFormat MILLI_FORMAT = new java.text.DecimalFormat( "0.000" );
+
+	private static void appendPosition( StringBuilder sb, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+		sb.append( "(" );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( m.translation.x, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( m.translation.y, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( m.translation.z, MILLI_FORMAT ) );
+		sb.append( ")" );
+	}
+
+	private static void appendOrientation( StringBuilder sb, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+		edu.cmu.cs.dennisc.math.UnitQuaternion q = m.orientation.createUnitQuaternion();
+		sb.append( "(" );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.x, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.y, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.z, MILLI_FORMAT ) );
+		sb.append( "," );
+		sb.append( edu.cmu.cs.dennisc.java.lang.DoubleUtilities.format( q.w, MILLI_FORMAT ) );
+		sb.append( ")" );
+	}
+
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		//		final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = ;
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
+
 		assert prevLT != null;
 		assert nextLT != null;
 		assert prevLT.isNaN() == false;
@@ -87,22 +107,39 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
-				if( isDo && ( isDoRequired == false ) ) {
+				if( isDo && ( isDoRequired() == false ) ) {
 					//pass
 				} else {
-					setLocalTransformation( nextLT );
+					setLocalTransformation( AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), nextLT );
 				}
 			}
 
 			@Override
 			protected final void undoInternal() {
-				setLocalTransformation( prevLT );
+				setLocalTransformation( AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), prevLT );
 			}
 
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv ) {
-				rv.append( getEditPresentationName() );
-				return rv;
+			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
+				String name = getEditPresentationKey();
+				rv.append( name );
+				if( descriptionStyle.isDetailed() ) {
+					org.lgna.story.SThing thing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( AbstractSetLocalTransformationActionOperation.this.getSGTransformable() );
+					rv.append( " " );
+					rv.append( thing );
+					if( name.contains( "Move" ) ) {
+						rv.append( " " );
+						appendPosition( rv, prevLT );
+						rv.append( " -> " );
+						appendPosition( rv, nextLT );
+					}
+					if( name.contains( "Rotate" ) ) {
+						rv.append( " " );
+						appendOrientation( rv, prevLT );
+						rv.append( " -> " );
+						appendOrientation( rv, nextLT );
+					}
+				}
 			}
 		} );
 	}

@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 /*package-private*/class ToolPaletteTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
 	private final ToolPaletteTabbedPane<E> toolPaletteTabbedPane;
 
-	public ToolPaletteTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, ToolPaletteTabbedPane<E> toolPaletteTabbedPane, ScrollPane scrollPane ) {
-		super( state, item, toolPaletteTabbedPane, scrollPane );
+	public ToolPaletteTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, ToolPaletteTabbedPane<E> toolPaletteTabbedPane ) {
+		super( state, item, toolPaletteTabbedPane );
 		this.toolPaletteTabbedPane = toolPaletteTabbedPane;
 	}
 
@@ -75,11 +75,8 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 	}
 
 	@Override
-	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item, ScrollPane scrollPane ) {
-		if( scrollPane != null ) {
-			scrollPane.setVisible( false );
-		}
-		return new ToolPaletteTabItemDetails<E>( this.getModel(), item, this, scrollPane );
+	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item ) {
+		return new ToolPaletteTabItemDetails<E>( this.getModel(), item, this );
 	};
 
 	@Override

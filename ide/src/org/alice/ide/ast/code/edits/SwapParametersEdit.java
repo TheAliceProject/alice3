@@ -97,7 +97,7 @@ public class SwapParametersEdit extends org.lgna.croquet.edits.Edit<org.alice.id
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		org.lgna.project.ast.UserParameter aParam = method.requiredParameters.get( aIndex );
 		org.lgna.project.ast.UserParameter bParam = method.requiredParameters.get( aIndex + 1 );
 		java.util.Locale locale = null;
@@ -105,6 +105,5 @@ public class SwapParametersEdit extends org.lgna.croquet.edits.Edit<org.alice.id
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, aParam, locale );
 		rv.append( " " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, bParam, locale );
-		return rv;
 	}
 }

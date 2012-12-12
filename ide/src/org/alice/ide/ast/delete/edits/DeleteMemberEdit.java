@@ -95,9 +95,8 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "delete:" );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, member, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 }

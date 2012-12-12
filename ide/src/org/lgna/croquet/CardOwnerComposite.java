@@ -58,6 +58,11 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 		}
 	}
 
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
 	public void addCard( Composite<?> card ) {
 		assert card != null : this;
 		this.cards.add( card );

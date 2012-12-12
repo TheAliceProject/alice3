@@ -74,7 +74,10 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = this.getType();
 		for( org.lgna.project.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-				items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
+				//todo: should this be identical? to?
+				if( type.isAssignableFrom( field.getValueType() ) ) {
+					items.add( org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field ) );
+				}
 			}
 		}
 	}

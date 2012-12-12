@@ -57,7 +57,7 @@ public class AstUtilities {
 		java.util.Map<Integer, org.lgna.project.ast.AbstractDeclaration> map = org.lgna.project.ast.AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
 		try {
-			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.Version.getCurrentVersionText(), map, false );
+			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, false );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 			return (N)dst;
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,59 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast;
+package org.lgna.project.migration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PropertyState extends org.alice.ide.croquet.models.StandardExpressionState {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public abstract class AbstractMigrationManager implements MigrationManager {
+	private final java.util.List<Migration> versionIndependentMigrations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	public static synchronized PropertyState getInstanceForSetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
-		return mapToMap.getInitializingIfAbsent( group, setter, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.croquet.Group, org.lgna.project.ast.JavaMethod, PropertyState>() {
-			public PropertyState initialize( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
-				return new PropertyState( group, setter );
+	private final org.lgna.project.Version currentVersion;
+
+	public AbstractMigrationManager( org.lgna.project.Version currentVersion ) {
+		this.currentVersion = currentVersion;
+	}
+
+	protected abstract TextMigration[] getTextMigrations();
+
+	protected abstract AstMigration[] getAstMigrations();
+
+	public org.lgna.project.Version getCurrentVersion() {
+		return this.currentVersion;
+	}
+
+	public boolean isDevoidOfVersionIndependentMigrations() {
+		return versionIndependentMigrations.size() == 0;
+	}
+
+	public String migrate( String source, org.lgna.project.Version version ) {
+		String rv = source;
+		for( TextMigration textMigration : this.getTextMigrations() ) {
+			if( textMigration.isApplicable( version ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( version, textMigration );
+				rv = textMigration.migrate( rv );
+				version = textMigration.getResultVersion();
 			}
-		} );
-	}
-
-	public static synchronized PropertyState getInstanceForGetter( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod getter ) {
-		return getInstanceForSetter( group, org.lgna.project.ast.AstUtilities.getSetterForGetter( getter ) );
-	}
-
-	private final org.lgna.project.ast.JavaMethod setter;
-
-	private PropertyState( org.lgna.croquet.Group group, org.lgna.project.ast.JavaMethod setter ) {
-		super( group, java.util.UUID.fromString( "f38ed248-1d68-43eb-b2c0-09ac62bd748e" ), null );
-		this.setter = setter;
-	}
-
-	public org.lgna.project.ast.JavaMethod getSetter() {
-		return this.setter;
-	}
-
-	private org.lgna.project.ast.JavaMethodParameter getParameter0() {
-		return (org.lgna.project.ast.JavaMethodParameter)this.setter.getRequiredParameters().get( 0 );
-	}
-
-	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		return this.getParameter0().getValueType();
-	}
-
-	@Override
-	protected org.lgna.project.annotations.ValueDetails<?> getValueDetails() {
-		return this.getParameter0().getDetails();
-	}
-
-	public org.lgna.project.ast.Expression getValueOrNullLiteral() {
-		org.lgna.project.ast.Expression rv = this.getValue();
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new org.lgna.project.ast.NullLiteral();
 		}
 		return rv;
+	}
+
+	public void migrate( org.lgna.project.ast.NamedUserType programType, org.lgna.project.Version version ) {
+		for( AstMigration astMigration : this.getAstMigrations() ) {
+			if( astMigration.isApplicable( version ) ) {
+				astMigration.migrate( programType );
+				version = astMigration.getResultVersion();
+			}
+		}
+	}
+
+	public void addVersionIndependentMigration( Migration migration ) {
+		versionIndependentMigrations.add( migration );
+	}
+
+	public void removeVersionIndependentMigration( Migration migration ) {
+		versionIndependentMigrations.remove( migration );
 	}
 }
