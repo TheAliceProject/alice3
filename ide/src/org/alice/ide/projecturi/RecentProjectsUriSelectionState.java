@@ -76,7 +76,7 @@ public class RecentProjectsUriSelectionState extends org.lgna.croquet.Refreshabl
 				return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.recentprojects.RecentProjectsListData.getInstance().toArray() );
 			}
 		}, -1 );
-		org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeDataOnlyOfListSelectionState( this );
+		//org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeDataOnlyOfListSelectionState( this );
 		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().addListener( this.listDataListener );
 	}
 }

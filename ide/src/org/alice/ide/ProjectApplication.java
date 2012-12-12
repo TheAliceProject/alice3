@@ -439,6 +439,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] {};
 		}
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
+		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
 		this.uri = file.toURI();
 		this.updateHistoryIndexFileSync();
 	}

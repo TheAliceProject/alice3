@@ -54,10 +54,13 @@ public class RecentProjectsListData extends org.lgna.croquet.data.AbstractMutabl
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<java.net.URI> values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<java.net.URI> values;
 
 	private RecentProjectsListData() {
 		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
+		java.net.URI[] array = org.lgna.croquet.preferences.PreferenceManager.decodeListData( this.getPreferenceKey(), this.getItemCodec(), new java.net.URI[] {} );
+		this.values = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( array );
+		org.lgna.croquet.preferences.PreferenceManager.registerListData( this );
 	}
 
 	@Override

@@ -54,6 +54,11 @@ public abstract class ListData<T> implements Iterable<T> {
 		this.itemCodec = itemCodec;
 	}
 
+	public String getPreferenceKey() {
+		//todo
+		return this.getClass().getName();
+	}
+
 	public abstract void addListener( javax.swing.event.ListDataListener listener );
 
 	public abstract void removeListener( javax.swing.event.ListDataListener listener );

@@ -114,7 +114,8 @@ public class PreferenceManager {
 	//	}
 
 	private static java.util.List<org.lgna.croquet.ListSelectionState<?>> selectionOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private static java.util.List<org.lgna.croquet.ListSelectionState<?>> dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	//private static java.util.List<org.lgna.croquet.ListSelectionState<?>> dataOfListSelectionStatePreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List<org.lgna.croquet.data.ListData<?>> registeredListData = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	private static String getKey( org.lgna.croquet.Model model ) {
 		return model.getMigrationId().toString();
@@ -196,6 +197,31 @@ public class PreferenceManager {
 		return rv;
 	}
 
+	private static <E> void encodeListData( org.lgna.croquet.data.ListData<E> listData, java.util.prefs.Preferences userPreferences ) {
+		org.lgna.croquet.ItemCodec<E> codec = listData.getItemCodec();
+		E[] value = listData.toArray();
+		byte[] encoding = encodeArray( value, codec );
+		String key = listData.getPreferenceKey();
+		userPreferences.putByteArray( key, encoding );
+	}
+
+	public static <E> E[] decodeListData( String key, org.lgna.croquet.ItemCodec<E> codec, E[] defaultValue ) {
+		E[] rv;
+		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+		if( userPreferences != null ) {
+			byte[] defaultEncoding = encodeArray( defaultValue, codec );
+			byte[] encoding = userPreferences.getByteArray( key, defaultEncoding );
+			if( java.util.Arrays.equals( defaultEncoding, encoding ) ) {
+				rv = defaultValue;
+			} else {
+				rv = decodeArray( encoding, codec );
+			}
+		} else {
+			rv = defaultValue;
+		}
+		return rv;
+	}
+
 	private static <E> void encodeSelection( org.lgna.croquet.ListSelectionState<E> listSelectionState, java.util.prefs.Preferences userPreferences ) {
 		org.lgna.croquet.ItemCodec<E> codec = listSelectionState.getItemCodec();
 		E value = listSelectionState.getValue();
@@ -212,8 +238,18 @@ public class PreferenceManager {
 		userPreferences.putByteArray( key, encoding );
 	}
 
+	public static void registerListData( org.lgna.croquet.data.ListData<?> listData ) {
+		if( registeredListData.contains( listData ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( listData );
+		}
+		registeredListData.add( listData );
+	}
+
 	//todo:
 	public static void registerAndInitializeSelectionOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState<?> listSelectionState ) {
+		if( selectionOfListSelectionStatePreferences.contains( listSelectionState ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( listSelectionState );
+		}
 		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
 			try {
@@ -223,24 +259,24 @@ public class PreferenceManager {
 			}
 			selectionOfListSelectionStatePreferences.add( listSelectionState );
 		} else {
-			System.err.println( "registerAndInitializePreference: " + listSelectionState );
+			System.err.println( "registerAndInitializeSelectionOnlyOfListSelectionState: " + listSelectionState );
 		}
 	}
 
-	//todo:
-	public static void registerAndInitializeDataOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState<?> listSelectionState ) {
-		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
-		if( userPreferences != null ) {
-			try {
-				decodeData( listSelectionState, userPreferences );
-			} catch( Throwable t ) {
-				t.printStackTrace();
-			}
-			dataOfListSelectionStatePreferences.add( listSelectionState );
-		} else {
-			System.err.println( "registerAndInitializePreference: " + listSelectionState );
-		}
-	}
+	//	//todo:
+	//	public static void registerAndInitializeDataOnlyOfListSelectionState( org.lgna.croquet.ListSelectionState<?> listSelectionState ) {
+	//		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
+	//		if( userPreferences != null ) {
+	//			try {
+	//				decodeData( listSelectionState, userPreferences );
+	//			} catch( Throwable t ) {
+	//				t.printStackTrace();
+	//			}
+	//			dataOfListSelectionStatePreferences.add( listSelectionState );
+	//		} else {
+	//			System.err.println( "registerAndInitializePreference: " + listSelectionState );
+	//		}
+	//	}
 
 	public static void preservePreferences() throws java.util.prefs.BackingStoreException {
 		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
@@ -254,12 +290,16 @@ public class PreferenceManager {
 					t.printStackTrace();
 				}
 			}
-			for( org.lgna.croquet.ListSelectionState<?> listSelectionState : dataOfListSelectionStatePreferences ) {
-				try {
-					encodeData( listSelectionState, userPreferences );
-				} catch( Throwable t ) {
-					t.printStackTrace();
-				}
+			//			for( org.lgna.croquet.ListSelectionState<?> listSelectionState : dataOfListSelectionStatePreferences ) {
+			//				try {
+			//					encodeData( listSelectionState, userPreferences );
+			//				} catch( Throwable t ) {
+			//					t.printStackTrace();
+			//				}
+			//			}
+
+			for( org.lgna.croquet.data.ListData<?> listData : registeredListData ) {
+				encodeListData( listData, userPreferences );
 			}
 			userPreferences.flush();
 		}
