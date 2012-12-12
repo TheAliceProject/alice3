@@ -245,9 +245,13 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	@Override
 	protected void setSwingValue( T nextValue ) {
-		int index = this.dataIndexPair.data.indexOf( nextValue );
-		this.swingModel.listSelectionModel.setSelectionInterval( index, index );
-		this.swingModel.fireListSelectionChanged( index, index, false );
+		if( this.dataIndexPair != null ) {
+			int index = this.dataIndexPair.data.indexOf( nextValue );
+			this.swingModel.listSelectionModel.setSelectionInterval( index, index );
+			this.swingModel.fireListSelectionChanged( index, index, false );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		}
 	}
 
 	public int getSelectedIndex() {
