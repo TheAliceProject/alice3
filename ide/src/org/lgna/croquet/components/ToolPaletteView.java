@@ -75,4 +75,11 @@ public final class ToolPaletteView extends BorderPanel {
 		composite.getIsShowingState().removeValueListener( this.isCoreShowingListener );
 		super.handleUndisplayable();
 	}
+
+	@Override
+	public void setBackgroundColor( java.awt.Color color ) {
+		super.setBackgroundColor( color );
+		this.getPageStartComponent().setBackgroundColor( color );
+		this.getCenterComponent().setBackgroundColor( color );
+	}
 }

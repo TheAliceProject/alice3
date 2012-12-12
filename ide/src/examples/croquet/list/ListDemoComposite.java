@@ -71,7 +71,11 @@ public final class ListDemoComposite extends org.lgna.croquet.OperationInputDial
 		return null;
 	}
 
-	public static void main( String[] args ) {
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		new ListDemoComposite().getOperation().fire();
 		System.exit( 0 );

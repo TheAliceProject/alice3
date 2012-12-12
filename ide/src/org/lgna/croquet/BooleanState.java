@@ -439,7 +439,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return this.falseOperation;
 	}
 
-	private class InternalRadioButton extends org.lgna.croquet.components.OperationButton<javax.swing.JRadioButton, Operation> {
+	private final static class InternalRadioButton extends org.lgna.croquet.components.OperationButton<javax.swing.JRadioButton, Operation> {
 		public InternalRadioButton( Operation operation ) {
 			super( operation );
 		}
@@ -450,7 +450,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		}
 	}
 
-	private class RadioButtonsPanel extends org.lgna.croquet.components.Panel {
+	private final class RadioButtonsPanel extends org.lgna.croquet.components.Panel {
 		private final int axis;
 
 		public RadioButtonsPanel( boolean isVertical, boolean isTrueFirst ) {
