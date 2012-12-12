@@ -270,4 +270,9 @@ public class OmniDirectionalBoundingBoxManipulator extends OmniDirectionalDragMa
 		dragSource.showDragProxy();
 	}
 
+	@Override
+	public boolean isUndoable() {
+		return false;
+	}
+
 }

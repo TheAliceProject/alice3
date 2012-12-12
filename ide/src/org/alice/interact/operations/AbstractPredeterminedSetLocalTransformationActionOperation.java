@@ -40,94 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.interact.operations;
 
-package org.lgna.story.implementation;
+import edu.cmu.cs.dennisc.scenegraph.AbstractTransformable;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class JointImp extends AbstractTransformableImp {
-	private org.lgna.story.SJoint abstraction;
-	private final JointedModelImp<?, ?> jointedModelImplementation;
-	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes axes;
+public abstract class AbstractPredeterminedSetLocalTransformationActionOperation extends AbstractSetLocalTransformationActionOperation {
+	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT;
+	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT;
 
-	public JointImp( JointedModelImp<?, ?> jointedModelImplementation ) {
-		this.jointedModelImplementation = jointedModelImplementation;
+	public AbstractPredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
+		super( group, individualId, isDoRequired, animator, field, editPresentationKey );
+		this.prevLT = prevLT;
+		this.nextLT = nextLT;
 	}
 
 	@Override
-	public org.lgna.story.implementation.SceneImp getScene() {
-		return this.jointedModelImplementation.getScene();
-	}
-
-	public abstract org.lgna.story.resources.JointId getJointId();
-
-	@Override
-	public final org.lgna.story.SJoint getAbstraction() {
-		return this.abstraction;
-	}
-
-	public void setAbstraction( org.lgna.story.SJoint abstraction ) {
-		assert abstraction != null;
-		assert this.abstraction == null : this.abstraction;
-		this.abstraction = abstraction;
-	}
-
-	public abstract boolean isFreeInX();
-
-	public abstract boolean isFreeInY();
-
-	public abstract boolean isFreeInZ();
-
-	@Override
-	protected void postCheckSetVehicle( org.lgna.story.implementation.EntityImp vehicle ) {
-		//note: do not call super
-		this.setSgVehicle( vehicle != null ? vehicle.getSgComposite() : null );
-	}
-
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getOriginalOrientation() {
-		return this.jointedModelImplementation.getOriginalJointOrientation( this.getJointId() );
-	}
-
-	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getOriginalTransformation() {
-		return this.jointedModelImplementation.getOriginalJointTransformation( this.getJointId() );
-	}
-
-	private edu.cmu.cs.dennisc.scenegraph.util.ModestAxes getPivot() {
-		if( this.axes != null ) {
-			//pass
-		} else {
-			this.axes = new edu.cmu.cs.dennisc.scenegraph.util.ModestAxes( 0.1 );
-			putInstance( this.axes );
-		}
-		return this.axes;
-	}
-
-	public boolean isPivotVisible() {
-		if( this.axes != null ) {
-			return this.axes.getParent() == this.getSgComposite();
-		} else {
-			return false;
-		}
-	}
-
-	public void setPivotVisible( boolean isPivotVisible ) {
-		if( isPivotVisible ) {
-			this.getPivot().setParent( this.getSgComposite() );
-		} else {
-			if( this.axes != null ) {
-				this.axes.setParent( null );
-			}
-		}
-	}
-
-	public JointedModelImp<?, ?> getJointedModelParent() {
-		return this.jointedModelImplementation;
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation() {
+		return this.nextLT;
 	}
 
 	@Override
-	protected void appendRepr( java.lang.StringBuilder sb ) {
-		super.appendRepr( sb );
-		sb.append( this.getJointId().toString() );
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation() {
+		return this.prevLT;
 	}
+
+	@Override
+	protected AbstractTransformable getSGTransformable() {
+		org.lgna.story.implementation.EntityImp entityImp = getEntityImp();
+		return (AbstractTransformable)entityImp.getSgComposite();
+	}
+
 }
