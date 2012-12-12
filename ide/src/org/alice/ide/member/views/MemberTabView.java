@@ -80,11 +80,10 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 				if( subComposite.isShowingDesired() ) {
 					org.lgna.croquet.components.ToolPaletteView view = subComposite.getOuterComposite().getView();
 					if( subComposite instanceof org.alice.ide.member.FunctionsOfReturnTypeSubComposite ) {
-						//view.getPageStartComponent().setForegroundColor( java.awt.Color.GRAY );
-						( (org.lgna.croquet.components.AbstractButton)view.getPageStartComponent() ).setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+						view.getTitle().setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 					}
-					view.getPageStartComponent().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-					( (org.lgna.croquet.components.AbstractButton<?, ?>)view.getPageStartComponent() ).setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+					view.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+					view.getTitle().setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
 					pageAxisPanel.addComponent( view );
 					view.setBackgroundColor( this.getBackgroundColor() );
 				}

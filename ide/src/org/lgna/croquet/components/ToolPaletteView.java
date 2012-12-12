@@ -69,6 +69,10 @@ public final class ToolPaletteView extends BorderPanel {
 		super.handleDisplayable();
 	}
 
+	public ToolPaletteTitle getTitle() {
+		return (ToolPaletteTitle)this.getPageStartComponent();
+	}
+
 	@Override
 	protected void handleUndisplayable() {
 		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
@@ -78,7 +82,7 @@ public final class ToolPaletteView extends BorderPanel {
 
 	@Override
 	public void setBackgroundColor( java.awt.Color color ) {
-		super.setBackgroundColor( color );
+		super.setBackgroundColor( null );
 		this.getPageStartComponent().setBackgroundColor( color );
 		this.getCenterComponent().setBackgroundColor( color );
 	}
