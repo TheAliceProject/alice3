@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionsOpenState extends org.lgna.croquet.BooleanState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, FunctionsOpenState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static synchronized FunctionsOpenState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		FunctionsOpenState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FunctionsOpenState( type );
-			map.put( type, rv );
-		}
-		return rv;
+public class FieldsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite {
+	public FieldsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "825af354-f73e-48ac-92b7-00359c6c7320" ), true, type );
 	}
 
-	private FunctionsOpenState( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "a85d7e2d-d746-47c3-96f4-f832f97ae492" ), true );
+	@Override
+	protected org.alice.ide.declarationseditor.type.components.FieldsToolPaletteCoreView createView() {
+		return new org.alice.ide.declarationseditor.type.components.FieldsToolPaletteCoreView( this );
 	}
 }

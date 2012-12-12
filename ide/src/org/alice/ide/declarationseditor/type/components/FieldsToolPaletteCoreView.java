@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.declarationseditor.type;
+package org.alice.ide.declarationseditor.type.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorsOpenState extends org.lgna.croquet.BooleanState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ConstructorsOpenState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static synchronized ConstructorsOpenState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		ConstructorsOpenState rv = map.get( type );
-		if( rv != null ) {
-			//pass
+public class FieldsToolPaletteCoreView extends org.lgna.croquet.components.BorderPanel {
+	public FieldsToolPaletteCoreView( org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite composite ) {
+		org.lgna.project.ast.NamedUserType type = composite.getType();
+		org.lgna.croquet.components.JComponent<?> fieldPanel;
+		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
+			fieldPanel = new org.lgna.croquet.components.PageAxisPanel(
+					new org.lgna.croquet.components.Label( "managed", 1.2f ),
+					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ),
+					new ManagedFieldList( type ),
+					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 24 ),
+					new org.lgna.croquet.components.Label( "unmanaged", 1.2f ),
+					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ),
+					new UnmanagedFieldList( type )
+					);
 		} else {
-			rv = new ConstructorsOpenState( type );
-			map.put( type, rv );
+			fieldPanel = new UnmanagedFieldList( type );
 		}
-		return rv;
-	}
-
-	private ConstructorsOpenState( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "3a39a816-1292-4951-abf3-f2b42ad98ec4" ), false );
+		this.addCenterComponent( new UnmanagedFieldList( composite.getType() ) );
 	}
 }

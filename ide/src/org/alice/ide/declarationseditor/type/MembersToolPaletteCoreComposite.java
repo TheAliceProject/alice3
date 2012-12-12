@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProceduresOpenState extends org.lgna.croquet.BooleanState {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, ProceduresOpenState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public abstract class MembersToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.lgna.croquet.components.View> {
+	private final org.lgna.project.ast.NamedUserType type;
 
-	public static synchronized ProceduresOpenState getInstance( org.lgna.project.ast.NamedUserType type ) {
-		ProceduresOpenState rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ProceduresOpenState( type );
-			map.put( type, rv );
-		}
-		return rv;
+	public MembersToolPaletteCoreComposite( java.util.UUID migrationId, boolean initialValue, org.lgna.project.ast.NamedUserType type ) {
+		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, initialValue );
+		this.type = type;
 	}
 
-	private ProceduresOpenState( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "006d5fac-8369-4f32-b090-faaceb00475f" ), true );
+	public org.lgna.project.ast.NamedUserType getType() {
+		return this.type;
+	}
+
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
 }
