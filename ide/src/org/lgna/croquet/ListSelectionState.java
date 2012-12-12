@@ -80,21 +80,21 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		public void setSelectedItem( Object item ) {
-			//todo: change list selection model
-			ListSelectionState.this.changeValueFromSwing( (T)item, IsAdjusting.FALSE, org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+			int index = this.data.indexOf( (T)item );
+			ListSelectionState.this.swingModel.listSelectionModel.setSelectionInterval( index, index );
 		}
 	}
 
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			int index = e.getFirstIndex();
+			int index = swingModel.listSelectionModel.getLeadSelectionIndex();
 			T nextValue;
 			if( index != -1 ) {
 				nextValue = (T)ListSelectionState.this.swingModel.comboBoxModel.getElementAt( index );
 			} else {
 				nextValue = null;
 			}
-			ListSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+			ListSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 		}
 	};
 

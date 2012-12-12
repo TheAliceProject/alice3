@@ -62,6 +62,12 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		this.previousValue = initialValue;
 	}
 
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.setSwingValue( this.getCurrentTruthAndBeautyValue() );
+	}
+
 	public abstract Class<T> getItemClass();
 
 	public abstract T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
@@ -295,6 +301,10 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		}
 	}
 
+	protected boolean isAdjustingIgnored() {
+		return true;
+	}
+
 	private void changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
 		this.updateSwingModelIfAppropriate( nextValue, origin );
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
@@ -323,7 +333,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		if( this.atomicCount > 0 ) {
 			//pass
 		} else {
-			if( isAdjusting.value ) {
+			if( isAdjusting.value && this.isAdjustingIgnored() ) {
 				//pass
 			} else {
 				this.changeValue( this.previousValue, nextValue, isAdjusting, trigger, origin );
