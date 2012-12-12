@@ -81,7 +81,7 @@ public class SceneEditorUpdatingPropertyState extends org.alice.ide.ast.Property
 		else {
 			org.lgna.project.ast.Expression e;
 			if( this.field == null ) {
-				e = new org.lgna.project.ast.ThisExpression();
+				e = org.lgna.project.ast.ThisExpression.createInstanceThatCanExistWithoutAnAncestorType( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getActiveSceneType() );
 			}
 			else {
 				e = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.ThisExpression(), this.field );
