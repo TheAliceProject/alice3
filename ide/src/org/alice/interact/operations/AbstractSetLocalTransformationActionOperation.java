@@ -45,14 +45,10 @@ package org.alice.interact.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSetLocalTransformationActionOperation extends org.lgna.croquet.ActionOperation {
-	private boolean isDoRequired;
-	private edu.cmu.cs.dennisc.animation.Animator animator;
+public abstract class AbstractSetLocalTransformationActionOperation extends AbstractFieldBasedManipulationActionOperation {
 
-	public AbstractSetLocalTransformationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
-		super( group, individualId );
-		this.isDoRequired = isDoRequired;
-		this.animator = animator;
+	public AbstractSetLocalTransformationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, String editPresentationKey ) {
+		super( group, individualId, isDoRequired, animator, field, editPresentationKey );
 	}
 
 	protected abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGTransformable();
@@ -61,14 +57,12 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation();
 
-	protected abstract String getEditPresentationName();
-
 	private void setLocalTransformation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
-		if( this.animator != null ) {
+		if( this.getAnimator() != null ) {
 			edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( sgTransformable, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, lt );
 			povAnimation.setDuration( 0.5 );
 			//this.animator.complete( null );
-			this.animator.invokeLater( povAnimation, null );
+			this.getAnimator().invokeLater( povAnimation, null );
 		} else {
 			sgTransformable.setLocalTransformation( lt );
 		}
@@ -102,7 +96,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
+		//		final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = ;
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
 		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
 
@@ -113,24 +107,24 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
-				if( isDo && ( isDoRequired == false ) ) {
+				if( isDo && ( isDoRequired() == false ) ) {
 					//pass
 				} else {
-					setLocalTransformation( sgTransformable, nextLT );
+					setLocalTransformation( AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), nextLT );
 				}
 			}
 
 			@Override
 			protected final void undoInternal() {
-				setLocalTransformation( sgTransformable, prevLT );
+				setLocalTransformation( AbstractSetLocalTransformationActionOperation.this.getSGTransformable(), prevLT );
 			}
 
 			@Override
 			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-				String name = getEditPresentationName();
+				String name = getEditPresentationKey();
 				rv.append( name );
 				if( descriptionStyle.isDetailed() ) {
-					org.lgna.story.SThing thing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( sgTransformable );
+					org.lgna.story.SThing thing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( AbstractSetLocalTransformationActionOperation.this.getSGTransformable() );
 					rv.append( " " );
 					rv.append( thing );
 					if( name.contains( "Move" ) ) {

@@ -42,11 +42,47 @@
  */
 package org.alice.interact.operations;
 
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.history.Transaction;
+import org.lgna.croquet.triggers.Trigger;
+
 /**
  * @author Dave Culyba
  */
-public class PredeterminedSetLocalTransformationActionOperation extends AbstractPredeterminedSetLocalTransformationActionOperation {
-	public PredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( group, java.util.UUID.fromString( "6c925ae4-ad06-4929-8da9-3e13dd17035c" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
+public class AbstractFieldBasedManipulationActionOperation extends ActionOperation {
+
+	private final boolean isDoRequired;
+	private final edu.cmu.cs.dennisc.animation.Animator animator;
+	private final org.lgna.project.ast.UserField field;
+	private final String editPresentationKey;
+
+	public AbstractFieldBasedManipulationActionOperation( org.lgna.croquet.Group group, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, String presentationKey ) {
+		super( group, individualId );
+		this.isDoRequired = isDoRequired;
+		this.animator = animator;
+		this.field = field;
+		this.editPresentationKey = presentationKey;
 	}
+
+	protected edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+		return this.animator;
+	}
+
+	protected boolean isDoRequired() {
+		return this.isDoRequired;
+	}
+
+	protected String getEditPresentationKey() {
+		return this.editPresentationKey;
+	}
+
+	protected org.lgna.story.implementation.EntityImp getEntityImp() {
+		org.lgna.story.implementation.EntityImp entityImp = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getImplementation( this.field );
+		return entityImp;
+	}
+
+	@Override
+	protected void perform( Transaction transaction, Trigger trigger ) {
+	}
+
 }

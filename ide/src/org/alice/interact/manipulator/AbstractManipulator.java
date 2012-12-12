@@ -50,6 +50,7 @@ import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
+import org.alice.interact.operations.AbstractPredeterminedSetLocalTransformationActionOperation;
 import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -292,7 +293,18 @@ public abstract class AbstractManipulator {
 			{
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Ending manipulation where the original transformaion is null." );
 			}
-			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription() );
+			AbstractPredeterminedSetLocalTransformationActionOperation undoOperation;
+			org.lgna.story.SThing aliceThing = org.lgna.story.implementation.EntityImp.getAbstractionFromSgElement( this.getManipulatedTransformable() );
+			if( aliceThing instanceof org.lgna.story.SJoint ) {
+				org.lgna.story.implementation.JointImp jointImp = (org.lgna.story.implementation.JointImp)org.lgna.story.implementation.EntityImp.getInstance( this.getManipulatedTransformable() );
+				org.lgna.story.SThing jointedModelThing = jointImp.getJointedModelParent().getAbstraction();
+				org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( jointedModelThing );
+				undoOperation = new org.alice.interact.operations.PredeterminedSetLocalJointTransformationActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, manipulatedField, jointImp.getJointId(), originalTransformation, newTransformation, getUndoRedoDescription() );
+			}
+			else {
+				org.lgna.project.ast.UserField manipulatedField = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getFieldForInstanceInJavaVM( aliceThing );
+				undoOperation = new PredeterminedSetLocalTransformationActionOperation( org.alice.ide.IDE.PROJECT_GROUP, false, animator, manipulatedField, originalTransformation, newTransformation, getUndoRedoDescription() );
+			}
 			undoOperation.fire();
 		}
 	}
