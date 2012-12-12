@@ -71,7 +71,14 @@ public class OpenFileOperation extends org.lgna.croquet.ActionOperation {
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setName( this.uri.toString() );
+		java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( this.uri );
+		String name;
+		if( file != null ) {
+			name = file.getAbsolutePath();
+		} else {
+			name = this.uri.toString();
+		}
+		this.setName( name );
 	}
 
 	@Override

@@ -57,18 +57,6 @@ public class RecentProjectsUriSelectionState extends org.lgna.croquet.Refreshabl
 		return SingletonHolder.instance;
 	}
 
-	//	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
-		}
-
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
-		}
-
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
-		}
-	};
-
 	private RecentProjectsUriSelectionState() {
 		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), new RefreshableListData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
 			@Override
@@ -76,7 +64,5 @@ public class RecentProjectsUriSelectionState extends org.lgna.croquet.Refreshabl
 				return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.recentprojects.RecentProjectsListData.getInstance().toArray() );
 			}
 		}, -1 );
-		//org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeDataOnlyOfListSelectionState( this );
-		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().addListener( this.listDataListener );
 	}
 }
