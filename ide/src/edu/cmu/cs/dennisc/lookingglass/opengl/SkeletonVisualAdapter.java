@@ -110,6 +110,9 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 				this.setListeningOnSkeleton( this.currentSkeleton, true );
 				this.skeletonIsDirty = true;
 			}
+			if( m_element.renderBackfaces() ) {
+				this.m_backFacingAppearanceAdapter = this.m_frontFacingAppearanceAdapter;
+			}
 			updateAppearanceToGeometryAdapterMap();
 			updateAppearanceToMeshControllersMap();
 		}
