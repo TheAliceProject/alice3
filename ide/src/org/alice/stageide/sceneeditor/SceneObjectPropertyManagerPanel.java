@@ -55,7 +55,6 @@ import org.alice.ide.properties.adapter.DoublePropertyAdapter;
 import org.alice.ide.properties.adapter.SceneFogDensityAdapter;
 import org.alice.ide.properties.uicontroller.AdapterControllerUtilities;
 import org.alice.ide.properties.uicontroller.PropertyAdapterController;
-import org.alice.stageide.croquet.models.sceneditor.AreExtraPropertiesShownState;
 import org.alice.stageide.properties.BillboardBackPaintPropertyAdapter;
 import org.alice.stageide.properties.BillboardFrontPaintPropertyAdapter;
 import org.alice.stageide.properties.GroundOpacityAdapter;
@@ -74,7 +73,6 @@ import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.ToolPalette;
 import org.lgna.project.annotations.Visibility;
 import org.lgna.project.ast.JavaType;
 import org.lgna.story.ImplementationAccessor;
@@ -132,14 +130,12 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	private List<LabelValueControllerPair> activeControllers = new LinkedList<LabelValueControllerPair>();
 	private Label classNameLabel;
 	private GridBagPanel morePropertiesPanel;
-	private ToolPalette extraPropertiesPalette;
 
 	public SceneObjectPropertyManagerPanel()
 	{
 		super();
 		this.classNameLabel = createLabel( "Class: " );
 		this.morePropertiesPanel = new GridBagPanel();
-		this.extraPropertiesPalette = AreExtraPropertiesShownState.getInstance().createToolPalette( this.morePropertiesPanel );
 	}
 
 	private void setShowJointsOfField( org.lgna.project.ast.AbstractField field, boolean showJoints ) {
@@ -153,7 +149,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	public void setBackgroundColor( java.awt.Color color )
 	{
 		super.setBackgroundColor( color );
-		this.extraPropertiesPalette.setBackgroundColor( color );
+		this.morePropertiesPanel.setBackgroundColor( color );
 	}
 
 	public void setSceneInstance( org.lgna.project.virtualmachine.UserInstance sceneInstance )
@@ -486,7 +482,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 				//Lastly, add the extra palette if there are any extra properties
 				if( extraPropertyCount > 0 )
 				{
-					this.addComponent( this.extraPropertiesPalette, new GridBagConstraints(
+					this.addComponent( this.morePropertiesPanel, new GridBagConstraints(
 							0, //gridX
 							mainPropertyCount++, //gridY
 							2, //gridWidth
