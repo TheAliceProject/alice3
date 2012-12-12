@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,45 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpandableCollapsibleView extends BorderPanel {
-	private final org.lgna.croquet.State.ValueListener<Boolean> isExpandedListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			ExpandableCollapsibleView.this.handleIsExpandedChanged( nextValue );
-		}
-	};
-
-	public ExpandableCollapsibleView( org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite composite ) {
-		super( composite );
-		this.addPageStartComponent( new ToolPaletteTitle( composite.getIsExpandedState() ) );
-		this.addCenterComponent( composite.getCoreComposite().getView() );
-		this.handleIsExpandedChanged( composite.getIsExpandedState().getValue() );
-	}
-
-	private void handleIsExpandedChanged( boolean isExpanded ) {
-		this.getCenterComponent().setVisible( isExpanded );
-		this.revalidateAndRepaint();
+public class InitialPropertyValuesToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.ide.ast.declaration.views.InitialPropertyValuesToolPaletteCoreView> {
+	public InitialPropertyValuesToolPaletteCoreComposite() {
+		super( java.util.UUID.fromString( "527409db-68e6-4169-b59c-6fb53bdc5a24" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP, true );
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite composite = (org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite)this.getComposite();
-		composite.getIsExpandedState().addValueListener( this.isExpandedListener );
-		super.handleDisplayable();
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
 
 	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite composite = (org.lgna.croquet.ExpandableCollapsibleCoreComposite.OuterComposite)this.getComposite();
-		composite.getIsExpandedState().removeValueListener( this.isExpandedListener );
+	protected org.alice.ide.ast.declaration.views.InitialPropertyValuesToolPaletteCoreView createView() {
+		return new org.alice.ide.ast.declaration.views.InitialPropertyValuesToolPaletteCoreView( this );
 	}
 }

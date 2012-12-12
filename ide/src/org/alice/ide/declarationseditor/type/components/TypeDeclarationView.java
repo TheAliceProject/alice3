@@ -53,16 +53,16 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		this.setBackgroundColor( ide.getTheme().getTypeColor() );
 
-		org.lgna.croquet.components.ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getRootComposite().getView();
+		org.lgna.croquet.components.ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();
 		constructorsToolPalette.setBackgroundColor( ide.getTheme().getConstructorColor() );
 
-		org.lgna.croquet.components.ToolPaletteView proceduresToolPalette = composite.getProceduresToolPaletteCoreComposite().getRootComposite().getView();
+		org.lgna.croquet.components.ToolPaletteView proceduresToolPalette = composite.getProceduresToolPaletteCoreComposite().getOuterComposite().getView();
 		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
 
-		org.lgna.croquet.components.ToolPaletteView functionsToolPalette = composite.getFunctionsToolPaletteCoreComposite().getRootComposite().getView();
+		org.lgna.croquet.components.ToolPaletteView functionsToolPalette = composite.getFunctionsToolPaletteCoreComposite().getOuterComposite().getView();
 		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
 
-		org.lgna.croquet.components.ToolPaletteView fieldsToolPalette = composite.getFieldsToolPaletteCoreComposite().getRootComposite().getView();
+		org.lgna.croquet.components.ToolPaletteView fieldsToolPalette = composite.getFieldsToolPaletteCoreComposite().getOuterComposite().getView();
 		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );
 
 		for( org.lgna.croquet.components.ToolPaletteView toolPalette : new org.lgna.croquet.components.ToolPaletteView[] { constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette } ) {

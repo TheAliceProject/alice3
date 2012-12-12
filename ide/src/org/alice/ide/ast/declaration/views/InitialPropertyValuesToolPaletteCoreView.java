@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,55 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpandableCollapsibleCoreComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
-	public static class OuterComposite extends SimpleComposite<org.lgna.croquet.components.ExpandableCollapsibleView> {
-		private final ExpandableCollapsibleCoreComposite<?> coreComposite;
-		private final BooleanState isExpandedState;
-
-		public OuterComposite( ExpandableCollapsibleCoreComposite<?> coreComposite, boolean isExpandedInitialValue ) {
-			super( java.util.UUID.fromString( "04fd070d-fea8-4f0e-81df-4b3acde7137c" ) );
-			this.coreComposite = coreComposite;
-			this.isExpandedState = this.createBooleanState( this.createKey( "isExpandedState" ), isExpandedInitialValue );
-		}
-
-		@Override
-		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
-			return this.coreComposite.getClassUsedForLocalization();
-		}
-
-		public BooleanState getIsExpandedState() {
-			return this.isExpandedState;
-		}
-
-		public ExpandableCollapsibleCoreComposite<?> getCoreComposite() {
-			return this.coreComposite;
-		}
-
-		@Override
-		protected org.lgna.croquet.components.ExpandableCollapsibleView createView() {
-			return new org.lgna.croquet.components.ExpandableCollapsibleView( this );
-		}
-	}
-
-	private final OuterComposite outerComposite;
-
-	public ExpandableCollapsibleCoreComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId );
-		this.outerComposite = new OuterComposite( this, isExpandedInitialValue );
-	}
-
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
-
-	public OuterComposite getOuterComposite() {
-		return this.outerComposite;
+public class InitialPropertyValuesToolPaletteCoreView extends org.lgna.croquet.components.BorderPanel {
+	public InitialPropertyValuesToolPaletteCoreView( org.alice.ide.ast.declaration.InitialPropertyValuesToolPaletteCoreComposite composite ) {
+		super( composite );
 	}
 }

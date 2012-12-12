@@ -46,10 +46,10 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
-	private static class InternalIsShowingState extends BooleanState {
+	private static class InternalIsExpandedState extends BooleanState {
 		private final ToolPaletteCoreComposite<?> coreComposite;
 
-		private InternalIsShowingState( Group group, boolean initialValue, ToolPaletteCoreComposite<?> coreComposite ) {
+		private InternalIsExpandedState( Group group, boolean initialValue, ToolPaletteCoreComposite<?> coreComposite ) {
 			super( group, java.util.UUID.fromString( "470a871b-61ec-495b-8007-06a573a7a126" ), initialValue );
 			this.coreComposite = coreComposite;
 		}
@@ -60,18 +60,18 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.compon
 		}
 	}
 
-	public static final class RootComposite extends AbstractComposite<org.lgna.croquet.components.ToolPaletteView> {
-		private final BooleanState isShowingState;
+	public static final class OuterComposite extends AbstractComposite<org.lgna.croquet.components.ToolPaletteView> {
+		private final BooleanState isExpandedState;
 		private final ToolPaletteCoreComposite<?> coreComposite;
 
-		private RootComposite( BooleanState isShowingState, ToolPaletteCoreComposite<?> coreComposite ) {
+		private OuterComposite( BooleanState isExpandedState, ToolPaletteCoreComposite<?> coreComposite ) {
 			super( java.util.UUID.fromString( "92df5e68-7aa6-4bc7-9ab1-da5cf0a448c0" ) );
-			this.isShowingState = isShowingState;
+			this.isExpandedState = isExpandedState;
 			this.coreComposite = coreComposite;
 		}
 
-		public BooleanState getIsShowingState() {
-			return this.isShowingState;
+		public BooleanState getIsExpandedState() {
+			return this.isExpandedState;
 		}
 
 		public ToolPaletteCoreComposite<?> getCoreComposite() {
@@ -89,15 +89,15 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.compon
 		}
 	}
 
-	private final RootComposite rootComposite;
+	private final OuterComposite outerComposite;
 
 	public ToolPaletteCoreComposite( java.util.UUID migrationId, Group group, boolean initialValue ) {
 		super( migrationId );
-		InternalIsShowingState isShowingState = new InternalIsShowingState( group, initialValue, this );
-		this.rootComposite = new RootComposite( isShowingState, this );
+		InternalIsExpandedState isExpandedState = new InternalIsExpandedState( group, initialValue, this );
+		this.outerComposite = new OuterComposite( isExpandedState, this );
 	}
 
-	public RootComposite getRootComposite() {
-		return this.rootComposite;
+	public OuterComposite getOuterComposite() {
+		return this.outerComposite;
 	}
 }

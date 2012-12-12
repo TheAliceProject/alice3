@@ -47,7 +47,7 @@ package org.alice.ide.ast.declaration;
  */
 public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	private final org.lgna.croquet.BooleanState initialPropertyValuesExpandedState = this.createBooleanState( this.createKey( "initialPropertyValuesExpandedState" ), true );
-	private java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> initialPropertyValueExpressionStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> initialPropertyValueExpressionStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 	public AddManagedFieldComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );

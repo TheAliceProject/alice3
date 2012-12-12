@@ -62,6 +62,6 @@ public class FieldsToolPaletteCoreView extends org.lgna.croquet.components.Borde
 		} else {
 			fieldPanel = new UnmanagedFieldList( type );
 		}
-		this.addCenterComponent( new UnmanagedFieldList( composite.getType() ) );
+		this.addCenterComponent( fieldPanel );
 	}
 }

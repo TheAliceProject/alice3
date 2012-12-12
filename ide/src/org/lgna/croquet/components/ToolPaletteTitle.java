@@ -124,40 +124,16 @@ package org.lgna.croquet.components;
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
 		javax.swing.AbstractButton rv = new javax.swing.JToggleButton() {
-			//			@Override
-			//			protected void paintComponent( java.awt.Graphics g ) {
-			//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			//				//				final double FACTOR;
-			//				//				javax.swing.ButtonModel buttonModel = this.getModel();
-			//				//				if( buttonModel.isArmed() || buttonModel.isRollover() ) {
-			//				//					FACTOR = 1.3;
-			//				//				} else {
-			//				//					FACTOR = 1.15;
-			//				//				}
-			//				//				final double INVERSE_FACTOR = 1.0 / FACTOR;
-			//				//				java.awt.Color colorDark = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
-			//				//
-			//				//				java.awt.Paint paint;
-			//				//				if( buttonModel.isSelected() ) {
-			//				//					paint = colorDark;
-			//				//				} else {
-			//				//					java.awt.Color colorBright = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, FACTOR, FACTOR );
-			//				//					paint = new java.awt.GradientPaint( 0, 0, colorBright, 0, this.getHeight(), colorDark );
-			//				//				}
-			//				//				g2.setPaint( paint );
-			//				//				g2.fill( g2.getClip() );
-			//				super.paintComponent( g );
-			//
-			//				int x = 4;
-			//				int height = this.getHeight();
-			//				int iconHeight = ARROW_ICON.getIconHeight();
-			//				int y = ( height - iconHeight ) / 2;
-			//				ARROW_ICON.paintIcon( this, g2, x, y );
-			//			}
-
 			@Override
-			public javax.swing.Icon getIcon() {
-				return ARROW_ICON;
+			protected void paintComponent( java.awt.Graphics g ) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				super.paintComponent( g );
+
+				int x = 4;
+				int height = this.getHeight();
+				int iconHeight = ARROW_ICON.getIconHeight();
+				int y = ( height - iconHeight ) / 2;
+				ARROW_ICON.paintIcon( this, g2, x, y );
 			}
 
 			@Override
@@ -166,11 +142,7 @@ package org.lgna.croquet.components;
 			}
 		};
 		rv.setRolloverEnabled( true );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 4, 2, 2 ) );
-		rv.setOpaque( false );
-		rv.setVerticalTextPosition( javax.swing.SwingConstants.CENTER );
-		rv.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 4 + ARROW_ICON.getIconWidth(), 2, 2 ) );
 		return rv;
 	}
 }

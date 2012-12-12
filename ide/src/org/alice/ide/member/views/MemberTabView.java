@@ -78,14 +78,15 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 		for( org.alice.ide.member.MethodsSubComposite subComposite : composite.getSubComposites() ) {
 			if( subComposite != org.alice.ide.member.MemberTabComposite.SEPARATOR ) {
 				if( subComposite.isShowingDesired() ) {
-					org.lgna.croquet.components.ExpandableCollapsibleView view = subComposite.getOuterComposite().getView();
+					org.lgna.croquet.components.ToolPaletteView view = subComposite.getOuterComposite().getView();
 					if( subComposite instanceof org.alice.ide.member.FunctionsOfReturnTypeSubComposite ) {
 						//view.getPageStartComponent().setForegroundColor( java.awt.Color.GRAY );
 						( (org.lgna.croquet.components.AbstractButton)view.getPageStartComponent() ).setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 					}
 					view.getPageStartComponent().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+					( (org.lgna.croquet.components.AbstractButton<?, ?>)view.getPageStartComponent() ).setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
 					pageAxisPanel.addComponent( view );
-					//pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
+					view.setBackgroundColor( this.getBackgroundColor() );
 				}
 			} else {
 				pageAxisPanel.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );

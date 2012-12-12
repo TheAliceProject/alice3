@@ -46,9 +46,9 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodsSubComposite extends org.lgna.croquet.ExpandableCollapsibleCoreComposite<org.alice.ide.member.views.MethodsSubView> {
+public abstract class MethodsSubComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.ide.member.views.MethodsSubView> {
 	public MethodsSubComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId, isExpandedInitialValue );
+		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, isExpandedInitialValue );
 	}
 
 	public abstract java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods();
@@ -62,6 +62,11 @@ public abstract class MethodsSubComposite extends org.lgna.croquet.ExpandableCol
 
 	public boolean isShowingDesired() {
 		return true;
+	}
+
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
 
 	@Override

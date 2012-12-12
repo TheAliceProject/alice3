@@ -51,28 +51,28 @@ public final class ToolPaletteView extends BorderPanel {
 		}
 
 		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			org.lgna.croquet.ToolPaletteCoreComposite.RootComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.RootComposite)ToolPaletteView.this.getComposite();
+			org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)ToolPaletteView.this.getComposite();
 			composite.getCoreComposite().getView().setVisible( nextValue );
 		}
 	};
 
-	public ToolPaletteView( org.lgna.croquet.ToolPaletteCoreComposite.RootComposite composite ) {
+	public ToolPaletteView( org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite ) {
 		super( composite );
-		this.addPageStartComponent( new ToolPaletteTitle( composite.getIsShowingState() ) );
+		this.addPageStartComponent( new ToolPaletteTitle( composite.getIsExpandedState() ) );
 		this.addCenterComponent( composite.getCoreComposite().getView() );
 	}
 
 	@Override
 	protected void handleDisplayable() {
-		org.lgna.croquet.ToolPaletteCoreComposite.RootComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.RootComposite)this.getComposite();
-		composite.getIsShowingState().addAndInvokeValueListener( this.isCoreShowingListener );
+		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
+		composite.getIsExpandedState().addAndInvokeValueListener( this.isCoreShowingListener );
 		super.handleDisplayable();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.lgna.croquet.ToolPaletteCoreComposite.RootComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.RootComposite)this.getComposite();
-		composite.getIsShowingState().removeValueListener( this.isCoreShowingListener );
+		org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite composite = (org.lgna.croquet.ToolPaletteCoreComposite.OuterComposite)this.getComposite();
+		composite.getIsExpandedState().removeValueListener( this.isCoreShowingListener );
 		super.handleUndisplayable();
 	}
 
