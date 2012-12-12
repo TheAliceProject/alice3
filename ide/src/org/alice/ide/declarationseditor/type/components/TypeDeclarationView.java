@@ -56,7 +56,9 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		org.lgna.croquet.components.ToolPalette constructorsToolPalette = org.alice.ide.declarationseditor.type.ConstructorsOpenState.getInstance( type ).createToolPalette( new ConstructorList( type ) );
 		constructorsToolPalette.setBackgroundColor( ide.getTheme().getConstructorColor() );
 
-		org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.declarationseditor.type.ProceduresOpenState.getInstance( type ).createToolPalette( new ProcedureList( type ) );
+		org.lgna.croquet.components.JComponent<?> toolPaletteView = new ProcedureList( type );
+		//org.lgna.croquet.components.JComponent<?> toolPaletteView = org.alice.ide.declarationseditor.type.ProceduresComposite.getInstance( type ).getView();
+		org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.declarationseditor.type.ProceduresOpenState.getInstance( type ).createToolPalette( toolPaletteView );
 		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
 
 		org.lgna.croquet.components.ToolPalette functionsToolPalette = org.alice.ide.declarationseditor.type.FunctionsOpenState.getInstance( type ).createToolPalette( new FunctionList( type ) );

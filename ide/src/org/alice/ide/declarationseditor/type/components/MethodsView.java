@@ -40,54 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.alice.ide.declarationseditor.type.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListDataView<T> extends Panel {
-	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
-			refreshLater();
-		}
-
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
-			refreshLater();
-		}
-
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
-			refreshLater();
-		}
-	};
-
-	public ListDataView( org.lgna.croquet.ListDataComposite<T, ?> composite ) {
+public class MethodsView extends MembersView<org.lgna.project.ast.UserMethod> {
+	public MethodsView( org.alice.ide.declarationseditor.type.MethodsComposite composite ) {
 		super( composite );
 	}
 
-	protected abstract JComponent<?> createComponentForItem( T item );
-
 	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
-
-		this.forgetAndRemoveAllComponents();
-		for( T item : composite.getData() ) {
-			this.internalAddComponent( this.createComponentForItem( item ) );
-		}
-	}
-
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
-		composite.getData().addListener( this.listDataListener );
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
-		composite.getData().removeListener( this.listDataListener );
-		super.handleUndisplayable();
+	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.UserMethod method ) {
+		return new MethodView( method );
 	}
 }

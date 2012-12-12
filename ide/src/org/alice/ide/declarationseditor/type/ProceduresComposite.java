@@ -40,54 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListDataView<T> extends Panel {
-	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
-			refreshLater();
-		}
+public class ProceduresComposite extends MethodsComposite {
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ProceduresComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
-			refreshLater();
+	public static synchronized ProceduresComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ProceduresComposite rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ProceduresComposite( type );
+			map.put( type, rv );
 		}
-
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
-			refreshLater();
-		}
-	};
-
-	public ListDataView( org.lgna.croquet.ListDataComposite<T, ?> composite ) {
-		super( composite );
+		return rv;
 	}
 
-	protected abstract JComponent<?> createComponentForItem( T item );
-
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
-
-		this.forgetAndRemoveAllComponents();
-		for( T item : composite.getData() ) {
-			this.internalAddComponent( this.createComponentForItem( item ) );
-		}
-	}
-
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
-		composite.getData().addListener( this.listDataListener );
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
-		composite.getData().removeListener( this.listDataListener );
-		super.handleUndisplayable();
+	private ProceduresComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "137f2f80-e290-4ea5-b26a-892066469988" ), new org.alice.ide.declarationseditor.type.data.ProcedureData( type ) );
 	}
 }

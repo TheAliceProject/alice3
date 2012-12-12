@@ -40,54 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.alice.ide.declarationseditor.type.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListDataView<T> extends Panel {
-	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
-			refreshLater();
+public class MethodView extends org.lgna.croquet.components.LineAxisPanel {
+	protected final float NAME_FONT_SCALE = 1.5f;
+
+	public MethodView( org.lgna.project.ast.UserMethod method ) {
+		org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( method, NAME_FONT_SCALE );
+
+		org.lgna.croquet.components.JComponent<?> component;
+		if( method.isProcedure() ) {
+			component = nameLabel;
+			//pass
+		} else {
+			component = new org.lgna.croquet.components.LineAxisPanel(
+					org.alice.ide.common.TypeComponent.createInstance( method.getReturnType() ),
+					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
+					nameLabel
+					);
 		}
-
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
-			refreshLater();
-		}
-
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
-			refreshLater();
-		}
-	};
-
-	public ListDataView( org.lgna.croquet.ListDataComposite<T, ?> composite ) {
-		super( composite );
-	}
-
-	protected abstract JComponent<?> createComponentForItem( T item );
-
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
-
-		this.forgetAndRemoveAllComponents();
-		for( T item : composite.getData() ) {
-			this.internalAddComponent( this.createComponentForItem( item ) );
-		}
-	}
-
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
-		composite.getData().addListener( this.listDataListener );
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
-		composite.getData().removeListener( this.listDataListener );
-		super.handleUndisplayable();
+		this.addComponent( component );
 	}
 }
