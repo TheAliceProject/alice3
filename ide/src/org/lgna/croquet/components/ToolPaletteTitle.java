@@ -90,7 +90,8 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 12 );
 
 	private static class JToolPaletteTitle extends javax.swing.JToggleButton {
-		private boolean isRoundedOnTop;
+		private boolean isRoundedOnTop = false;
+		private boolean isShadedWhenInactive = true;
 
 		public boolean isRoundedOnTop() {
 			return this.isRoundedOnTop;
@@ -99,6 +100,17 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		public void setRoundedOnTop( boolean isRoundedOnTop ) {
 			if( this.isRoundedOnTop != isRoundedOnTop ) {
 				this.isRoundedOnTop = isRoundedOnTop;
+				this.repaint();
+			}
+		}
+
+		public boolean isShadedWhenInactive() {
+			return this.isShadedWhenInactive;
+		}
+
+		public void setShadedWhenInactive( boolean isShadedWhenInactive ) {
+			if( this.isShadedWhenInactive != isShadedWhenInactive ) {
+				this.isShadedWhenInactive = isShadedWhenInactive;
 				this.repaint();
 			}
 		}
@@ -153,19 +165,24 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 				java.awt.Rectangle r = javax.swing.SwingUtilities.getLocalBounds( c );
 				java.awt.Color background = c.getBackground();
-				if( buttonModel.isPressed() ) {
-					g2.setPaint( background.darker() );
+				if( ( b.isShadedWhenInactive() == false ) && ( buttonModel.isRollover() == false ) ) {
+					g2.setPaint( background );
 					g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
 				} else {
-					double brightnessScale;
-					if( buttonModel.isRollover() ) {
-						brightnessScale = 1.2;
+					if( buttonModel.isPressed() ) {
+						g2.setPaint( background.darker() );
+						g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
 					} else {
-						brightnessScale = 1.1;
+						double brightnessScale;
+						if( buttonModel.isRollover() ) {
+							brightnessScale = 1.2;
+						} else {
+							brightnessScale = 1.1;
+						}
+						java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, brightnessScale );
+						java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, 0.8 );
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillGradientRectangle( g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f );
 					}
-					java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, brightnessScale );
-					java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, 0.8 );
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillGradientRectangle( g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f );
 				}
 				super.paint( g, c );
 			} finally {
@@ -184,6 +201,14 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 	public void setRoundedOnTop( boolean isRoundedOnTop ) {
 		( (JToolPaletteTitle)this.getAwtComponent() ).setRoundedOnTop( isRoundedOnTop );
+	}
+
+	public boolean isShadedWhenInactive() {
+		return ( (JToolPaletteTitle)this.getAwtComponent() ).isShadedWhenInactive();
+	}
+
+	public void setShadedWhenInactive( boolean isRoundedOnTop ) {
+		( (JToolPaletteTitle)this.getAwtComponent() ).setShadedWhenInactive( isRoundedOnTop );
 	}
 
 	@Override
