@@ -398,7 +398,15 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 			propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
 
 			org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
-			if( fieldInitializerState != null ) {
+			boolean isPerson = false;
+			if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
+				JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
+				if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
+				{
+					isPerson = true;
+				}
+			}
+			if( ( fieldInitializerState != null ) && !isPerson ) {
 				propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
 			}
 
