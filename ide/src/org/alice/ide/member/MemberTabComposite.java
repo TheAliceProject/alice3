@@ -83,6 +83,14 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			}
 		}
 	};
+	private final org.lgna.croquet.State.ValueListener<String> sortListener = new org.lgna.croquet.State.ValueListener<String>() {
+		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+			MemberTabComposite.this.getView().refreshLater();
+		}
+	};
 
 	public MemberTabComposite( java.util.UUID migrationId ) {
 		super( migrationId );
@@ -105,10 +113,13 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+		this.getSortState().addValueListener( this.sortListener );
+		this.getView().refreshLater();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
+		this.getSortState().removeValueListener( this.sortListener );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactorySelectionObserver );
 		super.handlePostDeactivation();
 	}

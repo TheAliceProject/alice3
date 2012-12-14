@@ -97,27 +97,32 @@ public final class ProcedureTabComposite extends MemberTabComposite<org.alice.id
 			rv.add( SEPARATOR );
 		}
 
-		java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> proceduresSubComposites = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredProceduresComposites();
-		for( FilteredJavaProceduresSubComposite proceduresSubComposite : proceduresSubComposites ) {
-			java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaProcedures.listIterator();
-			while( methodIterator.hasNext() ) {
-				org.lgna.project.ast.JavaMethod method = methodIterator.next();
-				if( proceduresSubComposite.isAcceptingOf( method ) ) {
-					acceptedMethods.add( method );
-					methodIterator.remove();
+		String sortValue = this.sortState.getValue();
+		if( SORT_ALPHABETICALLY.equals( sortValue ) ) {
+
+		} else {
+			java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> proceduresSubComposites = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredProceduresComposites();
+			for( FilteredJavaProceduresSubComposite proceduresSubComposite : proceduresSubComposites ) {
+				java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaProcedures.listIterator();
+				while( methodIterator.hasNext() ) {
+					org.lgna.project.ast.JavaMethod method = methodIterator.next();
+					if( proceduresSubComposite.isAcceptingOf( method ) ) {
+						acceptedMethods.add( method );
+						methodIterator.remove();
+					}
+				}
+
+				if( acceptedMethods.size() > 0 ) {
+					proceduresSubComposite.sortAndSetMethods( acceptedMethods );
+					rv.add( proceduresSubComposite );
 				}
 			}
 
-			if( acceptedMethods.size() > 0 ) {
-				proceduresSubComposite.sortAndSetMethods( acceptedMethods );
-				rv.add( proceduresSubComposite );
+			if( javaProcedures.size() > 0 ) {
+				UnclaimedJavaProceduresComposite.getInstance().sortAndSetMethods( javaProcedures );
+				rv.add( UnclaimedJavaProceduresComposite.getInstance() );
 			}
-		}
-
-		if( javaProcedures.size() > 0 ) {
-			UnclaimedJavaProceduresComposite.getInstance().sortAndSetMethods( javaProcedures );
-			rv.add( UnclaimedJavaProceduresComposite.getInstance() );
 		}
 
 		return rv;
