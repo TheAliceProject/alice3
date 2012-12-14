@@ -76,7 +76,7 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 		this.removeAllComponents();
 		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 		org.lgna.croquet.components.ComboBox<String> comboBox = composite.getSortState().getPrepModel().createComboBox();
-		pageAxisPanel.addComponent( new org.lgna.croquet.components.BorderPanel.Builder().lineEnd( comboBox ).build() );
+		pageAxisPanel.addComponent( new org.lgna.croquet.components.BorderPanel.Builder().lineStart( comboBox ).build() );
 		for( org.alice.ide.member.MethodsSubComposite subComposite : composite.getSubComposites() ) {
 			if( subComposite != org.alice.ide.member.MemberTabComposite.SEPARATOR ) {
 				if( subComposite.isShowingDesired() ) {

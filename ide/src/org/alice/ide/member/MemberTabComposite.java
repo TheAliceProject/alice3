@@ -46,7 +46,7 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabComposite<V extends org.alice.ide.member.views.MemberTabView> extends MemberOrControlFlowTabComposite<V> {
-	protected static final String GROUP_BY_CATEGORY = "by category";
+	protected static final String GROUP_BY_CATEGORY = "group by category";
 	protected static final String SORT_ALPHABETICALLY = "sort alphabetically";
 
 	public static org.alice.ide.member.MethodsSubComposite SEPARATOR = null;

@@ -69,7 +69,7 @@ public class ToolPalette extends BorderPanel {
 		}
 	};
 
-	public AbstractButton<?, org.lgna.croquet.BooleanState> getTitle() {
+	public ToolPaletteTitle getTitle() {
 		return this.title;
 	}
 
