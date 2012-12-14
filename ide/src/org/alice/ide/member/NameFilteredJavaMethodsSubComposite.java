@@ -64,7 +64,7 @@ public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMe
 	};
 
 	public NameFilteredJavaMethodsSubComposite( java.util.UUID migrationId, String... methodNames ) {
-		super( migrationId );
+		super( migrationId, true );
 		for( int i = 0; i < methodNames.length; i++ ) {
 			this.map.put( methodNames[ i ], i );
 		}

@@ -53,7 +53,7 @@ public abstract class UnclaimedJavaMethodsComposite extends FilteredJavaMethodsS
 	};
 
 	public UnclaimedJavaMethodsComposite( java.util.UUID migrationId ) {
-		super( migrationId );
+		super( migrationId, true );
 	}
 
 	@Override

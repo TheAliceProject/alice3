@@ -117,7 +117,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 
 	protected abstract UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite();
 
-	public final java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
+	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
 		java.util.List<org.alice.ide.member.MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 		java.util.List<org.lgna.project.ast.JavaMethod> javaMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

@@ -123,6 +123,15 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 	}
 
 	@Override
+	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
+		if( GROUP_BY_RETURN_TYPE.equals( this.getSortState().getValue() ) ) {
+			return this.getByReturnTypeSubComposites();
+		} else {
+			return super.getSubComposites();
+		}
+	}
+
+	@Override
 	protected org.alice.ide.member.views.FunctionTabView createView() {
 		return new org.alice.ide.member.views.FunctionTabView( this );
 	}

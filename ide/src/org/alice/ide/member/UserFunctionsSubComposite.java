@@ -67,6 +67,6 @@ public class UserFunctionsSubComposite extends UserMethodsSubComposite {
 
 	@Override
 	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
-		return method.isProcedure();
+		return method.isFunction();
 	}
 }

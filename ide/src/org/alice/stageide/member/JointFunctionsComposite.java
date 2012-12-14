@@ -61,7 +61,7 @@ public class JointFunctionsComposite extends org.alice.ide.member.FilteredJavaMe
 	};
 
 	private JointFunctionsComposite() {
-		super( java.util.UUID.fromString( "681b12ce-4948-4cc6-a943-985e9caa76bc" ) );
+		super( java.util.UUID.fromString( "681b12ce-4948-4cc6-a943-985e9caa76bc" ), false );
 	}
 
 	@Override

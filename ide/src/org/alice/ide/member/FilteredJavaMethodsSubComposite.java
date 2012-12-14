@@ -64,8 +64,8 @@ public abstract class FilteredJavaMethodsSubComposite extends MethodsSubComposit
 
 	private java.util.List<org.lgna.project.ast.JavaMethod> methods = java.util.Collections.emptyList();
 
-	public FilteredJavaMethodsSubComposite( java.util.UUID migrationId ) {
-		super( migrationId, true );
+	public FilteredJavaMethodsSubComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
+		super( migrationId, isExpandedInitialValue );
 	}
 
 	public abstract java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator();

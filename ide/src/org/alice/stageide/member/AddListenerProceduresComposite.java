@@ -63,7 +63,7 @@ public class AddListenerProceduresComposite extends org.alice.ide.member.Filtere
 	};
 
 	private AddListenerProceduresComposite() {
-		super( java.util.UUID.fromString( "cfb5bd39-c07b-4436-a4e9-031dd25ca3b5" ) );
+		super( java.util.UUID.fromString( "cfb5bd39-c07b-4436-a4e9-031dd25ca3b5" ), true );
 	}
 
 	@Override
