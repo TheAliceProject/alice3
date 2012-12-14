@@ -45,13 +45,20 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public final class ProcedureTabComposite extends MemberTabComposite {
+public final class ProcedureTabComposite extends MemberTabComposite<org.alice.ide.member.views.ProcedureTabView> {
+	private final org.lgna.croquet.ListSelectionState<String> sortState = this.createListSelectionState( this.createKey( "sortState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY );
+
 	public ProcedureTabComposite() {
 		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ) );
 	}
 
 	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
+	public org.lgna.croquet.ListSelectionState<String> getSortState() {
+		return this.sortState;
+	}
+
+	@Override
+	protected org.alice.ide.member.views.ProcedureTabView createView() {
 		return new org.alice.ide.member.views.ProcedureTabView( this );
 	}
 

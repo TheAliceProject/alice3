@@ -45,7 +45,10 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTabComposite extends MemberOrControlFlowTabComposite<org.alice.ide.member.views.MemberTabView> {
+public abstract class MemberTabComposite<V extends org.alice.ide.member.views.MemberTabView> extends MemberOrControlFlowTabComposite<V> {
+	protected static final String GROUP_BY_CATEGORY = "group by category";
+	protected static final String SORT_ALPHABETICALLY = "sort alphabetically";
+
 	public static org.alice.ide.member.MethodsSubComposite SEPARATOR = null;
 
 	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
@@ -84,6 +87,8 @@ public abstract class MemberTabComposite extends MemberOrControlFlowTabComposite
 	public MemberTabComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
+
+	public abstract org.lgna.croquet.ListSelectionState<String> getSortState();
 
 	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
 		for( MethodsSubComposite subComposite : this.getSubComposites() ) {
