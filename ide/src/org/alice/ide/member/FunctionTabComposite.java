@@ -70,8 +70,13 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 	}
 
 	@Override
-	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialSubComposites() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredFunctionsComposites();
+	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
+		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryFunctionSubComposites();
+	}
+
+	@Override
+	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
+		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalFunctionSubComposites();
 	}
 
 	private java.util.List<MethodsSubComposite> getByReturnTypeSubComposites() {

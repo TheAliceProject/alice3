@@ -73,8 +73,13 @@ public final class ProcedureTabComposite extends MemberTabComposite<org.alice.id
 	}
 
 	@Override
-	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialSubComposites() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredProceduresComposites();
+	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
+		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryProcedureSubComposites();
+	}
+
+	@Override
+	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
+		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalProcedureSubComposites();
 	}
 
 	@Override

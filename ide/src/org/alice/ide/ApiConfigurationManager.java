@@ -60,9 +60,13 @@ public abstract class ApiConfigurationManager {
 
 	public abstract java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> getTypeComparator();
 
-	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getFilteredProceduresComposites();
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites();
 
-	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getFilteredFunctionsComposites();
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites();
+
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites();
+
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites();
 
 	//override to create user types if desired
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getTypeFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {

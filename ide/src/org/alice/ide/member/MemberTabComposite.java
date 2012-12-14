@@ -109,7 +109,9 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 
 	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
 
-	protected abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialSubComposites();
+	protected abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites();
+
+	protected abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites();
 
 	protected abstract UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type );
 
@@ -153,7 +155,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		if( SORT_ALPHABETICALLY.equals( sortValue ) ) {
 			//todo
 		} else {
-			java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialSubComposites();
+			java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();
 			for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
 				java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaMethods.listIterator();
@@ -171,11 +173,34 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 				}
 			}
 		}
+
+		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> postSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategoryOrAlphabeticalSubComposites();
+		for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
+			java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaMethods.listIterator();
+			while( methodIterator.hasNext() ) {
+				org.lgna.project.ast.JavaMethod method = methodIterator.next();
+				if( potentialSubComposite.isAcceptingOf( method ) ) {
+					acceptedMethods.add( method );
+					methodIterator.remove();
+				}
+			}
+
+			if( acceptedMethods.size() > 0 ) {
+				potentialSubComposite.sortAndSetMethods( acceptedMethods );
+				postSubComposites.add( potentialSubComposite );
+			}
+		}
+
 		if( javaMethods.size() > 0 ) {
 			UnclaimedJavaMethodsComposite unclaimedJavaMethodsComposite = this.getUnclaimedJavaMethodsComposite();
 			unclaimedJavaMethodsComposite.sortAndSetMethods( javaMethods );
 			rv.add( unclaimedJavaMethodsComposite );
 		}
+
+		rv.addAll( postSubComposites );
 
 		return rv;
 	}
