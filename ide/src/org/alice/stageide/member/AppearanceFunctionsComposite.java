@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,45 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+package org.alice.stageide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ProcedureTabComposite extends MemberTabComposite<org.alice.ide.member.views.ProcedureTabView> {
-	private final org.lgna.croquet.ListSelectionState<String> sortState = this.createListSelectionState( this.createKey( "sortState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY );
-
-	public ProcedureTabComposite() {
-		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ) );
+public class AppearanceFunctionsComposite extends org.alice.ide.member.NameFilteredJavaFunctionsComposite {
+	private static class SingletonHolder {
+		private static AppearanceFunctionsComposite instance = new AppearanceFunctionsComposite();
 	}
 
-	@Override
-	public org.lgna.croquet.ListSelectionState<String> getSortState() {
-		return this.sortState;
+	public static AppearanceFunctionsComposite getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	@Override
-	protected org.alice.ide.member.views.ProcedureTabView createView() {
-		return new org.alice.ide.member.views.ProcedureTabView( this );
-	}
-
-	@Override
-	protected org.alice.ide.member.UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type ) {
-		return UserProceduresSubComposite.getInstance( type );
-	}
-
-	@Override
-	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
-		return method.isProcedure();
-	}
-
-	@Override
-	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialSubComposites() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredProceduresComposites();
-	}
-
-	@Override
-	protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
-		return UnclaimedJavaProceduresComposite.getInstance();
+	private AppearanceFunctionsComposite() {
+		super( java.util.UUID.fromString( "7909d450-b4f3-4107-ae56-a6a372e53238" ), "getPaint", "getBackPaint", "getFloorPaint", "getWallPaint", "getCeilingPaint", "getOpacity" );
 	}
 }

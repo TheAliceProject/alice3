@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,40 +45,28 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public final class ProcedureTabComposite extends MemberTabComposite<org.alice.ide.member.views.ProcedureTabView> {
-	private final org.lgna.croquet.ListSelectionState<String> sortState = this.createListSelectionState( this.createKey( "sortState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY );
+public class UserFunctionsSubComposite extends UserMethodsSubComposite {
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserFunctionsSubComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public ProcedureTabComposite() {
-		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ) );
+	public static synchronized UserFunctionsSubComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		assert type != null;
+		UserFunctionsSubComposite rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new UserFunctionsSubComposite( type );
+			map.put( type, rv );
+		}
+		return rv;
 	}
 
-	@Override
-	public org.lgna.croquet.ListSelectionState<String> getSortState() {
-		return this.sortState;
-	}
-
-	@Override
-	protected org.alice.ide.member.views.ProcedureTabView createView() {
-		return new org.alice.ide.member.views.ProcedureTabView( this );
-	}
-
-	@Override
-	protected org.alice.ide.member.UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type ) {
-		return UserProceduresSubComposite.getInstance( type );
+	private UserFunctionsSubComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "7e67d035-f06d-4a05-962c-b7924c48893a" ), type );
+		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Functions" );
 	}
 
 	@Override
 	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
 		return method.isProcedure();
-	}
-
-	@Override
-	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialSubComposites() {
-		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredProceduresComposites();
-	}
-
-	@Override
-	protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
-		return UnclaimedJavaProceduresComposite.getInstance();
 	}
 }

@@ -59,6 +59,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
 	private final java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> filteredProceduresComposites;
+	private final java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> filteredFunctionsComposites;
 
 	private StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.SThing.class );
@@ -78,20 +79,24 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, new org.alice.stageide.icons.JointIconFactory() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 
-		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		list.add( org.alice.stageide.member.TextProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.AtmosphereProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.SayThinkProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.PositionProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.OrientationProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.SizeProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.AppearanceProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.VehicleProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.AudioProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.TimingProceduresComposite.getInstance() );
-		list.add( org.alice.stageide.member.AddListenerProceduresComposite.getInstance() );
-		this.filteredProceduresComposites = java.util.Collections.unmodifiableList( list );
+		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> procedureSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		procedureSubComposites.add( org.alice.stageide.member.TextProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.AtmosphereProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.SayThinkProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.PositionProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.OrientationProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.SizeProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.AppearanceProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.VehicleProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.AudioProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.TimingProceduresComposite.getInstance() );
+		procedureSubComposites.add( org.alice.stageide.member.AddListenerProceduresComposite.getInstance() );
+		this.filteredProceduresComposites = java.util.Collections.unmodifiableList( procedureSubComposites );
+
+		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> functionSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		functionSubComposites.add( org.alice.stageide.member.AppearanceFunctionsComposite.getInstance() );
+		this.filteredFunctionsComposites = java.util.Collections.unmodifiableList( functionSubComposites );
 	}
 
 	private static enum TypeComparator implements java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> {
@@ -155,6 +160,11 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getFilteredProceduresComposites() {
 		return this.filteredProceduresComposites;
+	}
+
+	@Override
+	public java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getFilteredFunctionsComposites() {
+		return this.filteredFunctionsComposites;
 	}
 
 	@Override

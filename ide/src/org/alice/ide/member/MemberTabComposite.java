@@ -107,7 +107,81 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		this.getView().refreshLater();
 	}
 
-	public abstract java.util.List<MethodsSubComposite> getSubComposites();
+	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
+
+	protected abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialSubComposites();
+
+	protected abstract UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type );
+
+	protected abstract UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite();
+
+	public final java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
+		java.util.List<org.alice.ide.member.MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+		java.util.List<org.lgna.project.ast.JavaMethod> javaMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		if( instanceFactory != null ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+			while( type != null ) {
+				if( type instanceof org.lgna.project.ast.NamedUserType ) {
+					org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+					rv.add( this.getUserMethodsSubComposite( namedUserType ) );
+				} else if( type instanceof org.lgna.project.ast.JavaType ) {
+					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+					for( org.lgna.project.ast.JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
+						if( this.isAcceptable( javaMethod ) ) {
+							if( isInclusionDesired( javaMethod ) ) {
+								javaMethods.add( javaMethod );
+							}
+						}
+					}
+				}
+				if( type.isFollowToSuperClassDesired() ) {
+					type = type.getSuperType();
+				} else {
+					break;
+				}
+			}
+		}
+
+		if( rv.size() > 0 ) {
+			rv.add( SEPARATOR );
+		}
+
+		String sortValue = this.getSortState().getValue();
+		if( SORT_ALPHABETICALLY.equals( sortValue ) ) {
+			//todo
+		} else {
+			java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialSubComposites();
+			for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
+				java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaMethods.listIterator();
+				while( methodIterator.hasNext() ) {
+					org.lgna.project.ast.JavaMethod method = methodIterator.next();
+					if( potentialSubComposite.isAcceptingOf( method ) ) {
+						acceptedMethods.add( method );
+						methodIterator.remove();
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( method, potentialSubComposite );
+					}
+				}
+
+				if( acceptedMethods.size() > 0 ) {
+					potentialSubComposite.sortAndSetMethods( acceptedMethods );
+					rv.add( potentialSubComposite );
+				}
+			}
+
+			if( javaMethods.size() > 0 ) {
+				UnclaimedJavaMethodsComposite unclaimedJavaMethodsComposite = this.getUnclaimedJavaMethodsComposite();
+				unclaimedJavaMethodsComposite.sortAndSetMethods( javaMethods );
+				rv.add( unclaimedJavaMethodsComposite );
+			}
+		}
+
+		return rv;
+	}
 
 	@Override
 	public void handlePreActivation() {

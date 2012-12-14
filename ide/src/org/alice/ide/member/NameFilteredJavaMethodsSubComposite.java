@@ -66,7 +66,7 @@ public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMe
 	public NameFilteredJavaMethodsSubComposite( java.util.UUID migrationId, String... methodNames ) {
 		super( migrationId );
 		for( int i = 0; i < methodNames.length; i++ ) {
-			map.put( methodNames[ i ], i );
+			this.map.put( methodNames[ i ], i );
 		}
 	}
 
@@ -77,6 +77,6 @@ public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMe
 
 	@Override
 	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
-		return map.keySet().contains( method.getName() );
+		return this.map.keySet().contains( method.getName() );
 	}
 }

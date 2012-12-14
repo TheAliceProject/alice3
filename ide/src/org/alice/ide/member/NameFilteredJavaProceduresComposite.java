@@ -48,7 +48,7 @@ package org.alice.ide.member;
  */
 public abstract class NameFilteredJavaProceduresComposite extends NameFilteredJavaMethodsSubComposite {
 	public NameFilteredJavaProceduresComposite( java.util.UUID migrationId, String... methodNames ) {
-		super( migrationId );
+		super( migrationId, methodNames );
 	}
 
 	@Override

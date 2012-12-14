@@ -62,6 +62,8 @@ public abstract class ApiConfigurationManager {
 
 	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getFilteredProceduresComposites();
 
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getFilteredFunctionsComposites();
+
 	//override to create user types if desired
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getTypeFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return type;

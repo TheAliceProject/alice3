@@ -46,22 +46,22 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public class UserProceduresComposite extends UserMethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserProceduresComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class UserProceduresSubComposite extends UserMethodsSubComposite {
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserProceduresSubComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized UserProceduresComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+	public static synchronized UserProceduresSubComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
 		assert type != null;
-		UserProceduresComposite rv = map.get( type );
+		UserProceduresSubComposite rv = map.get( type );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new UserProceduresComposite( type );
+			rv = new UserProceduresSubComposite( type );
 			map.put( type, rv );
 		}
 		return rv;
 	}
 
-	private UserProceduresComposite( org.lgna.project.ast.NamedUserType type ) {
+	private UserProceduresSubComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "55b386bf-a97b-452e-94c7-13160c27ac8c" ), type );
 		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Procedures" );
 	}

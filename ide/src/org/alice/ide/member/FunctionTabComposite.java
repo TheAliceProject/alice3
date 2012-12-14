@@ -60,7 +60,21 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 	}
 
 	@Override
-	public java.util.List<MethodsSubComposite> getSubComposites() {
+	protected org.alice.ide.member.UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type ) {
+		return UserFunctionsSubComposite.getInstance( type );
+	}
+
+	@Override
+	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
+		return method.isFunction();
+	}
+
+	@Override
+	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialSubComposites() {
+		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredFunctionsComposites();
+	}
+
+	private java.util.List<MethodsSubComposite> getByReturnTypeSubComposites() {
 		java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, java.util.List<org.lgna.project.ast.AbstractMethod>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
@@ -106,6 +120,11 @@ public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide
 	@Override
 	protected org.alice.ide.member.views.FunctionTabView createView() {
 		return new org.alice.ide.member.views.FunctionTabView( this );
+	}
+
+	@Override
+	protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
+		return UnclaimedJavaFunctionsComposite.getInstance();
 	}
 	//todo
 	//	@Override
