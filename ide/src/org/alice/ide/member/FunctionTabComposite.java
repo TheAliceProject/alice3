@@ -46,7 +46,7 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public final class FunctionTabComposite extends MemberTabComposite<org.alice.ide.member.views.FunctionTabView> {
-	private static final String GROUP_BY_RETURN_TYPE = "group by return type";
+	private static final String GROUP_BY_RETURN_TYPE = "by return type";
 
 	private final org.lgna.croquet.ListSelectionState<String> sortState = this.createListSelectionState( this.createKey( "sortState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY, GROUP_BY_RETURN_TYPE );
 
