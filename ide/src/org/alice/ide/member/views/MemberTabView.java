@@ -86,6 +86,7 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 					}
 					view.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 					view.getTitle().setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+					view.getTitle().setShadedWhenInactive( false );
 					pageAxisPanel.addComponent( view );
 					view.setBackgroundColor( this.getBackgroundColor() );
 				}
