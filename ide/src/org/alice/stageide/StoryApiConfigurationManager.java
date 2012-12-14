@@ -79,25 +79,28 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, new org.alice.stageide.icons.JointIconFactory() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 
-		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> procedureSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		procedureSubComposites.add( org.alice.stageide.member.TextProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.AtmosphereProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.SayThinkProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.PositionProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.OrientationProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.SizeProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.AppearanceProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.VehicleProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.AudioProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.TimingProceduresComposite.getInstance() );
-		procedureSubComposites.add( org.alice.stageide.member.AddListenerProceduresComposite.getInstance() );
+		java.util.List<? extends org.alice.ide.member.FilteredJavaMethodsSubComposite> procedureSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+				org.alice.stageide.member.TextProceduresComposite.getInstance(),
+				org.alice.stageide.member.AtmosphereProceduresComposite.getInstance(),
+				org.alice.stageide.member.SayThinkProceduresComposite.getInstance(),
+				org.alice.stageide.member.PositionProceduresComposite.getInstance(),
+				org.alice.stageide.member.OrientationProceduresComposite.getInstance(),
+				org.alice.stageide.member.PositionAndOrientationProceduresComposite.getInstance(),
+				org.alice.stageide.member.SizeProceduresComposite.getInstance(),
+				org.alice.stageide.member.AppearanceProceduresComposite.getInstance(),
+				org.alice.stageide.member.VehicleProceduresComposite.getInstance(),
+				org.alice.stageide.member.AudioProceduresComposite.getInstance(),
+				org.alice.stageide.member.TimingProceduresComposite.getInstance(),
+				org.alice.stageide.member.AddListenerProceduresComposite.getInstance()
+				);
 		this.filteredProceduresComposites = java.util.Collections.unmodifiableList( procedureSubComposites );
 
-		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> functionSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		functionSubComposites.add( org.alice.stageide.member.AppearanceFunctionsComposite.getInstance() );
-		functionSubComposites.add( org.alice.stageide.member.SizeFunctionsComposite.getInstance() );
-		functionSubComposites.add( org.alice.stageide.member.PromptUserFunctionsComposite.getInstance() );
+		java.util.List<? extends org.alice.ide.member.FilteredJavaMethodsSubComposite> functionSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList(
+				org.alice.stageide.member.AppearanceFunctionsComposite.getInstance(),
+				org.alice.stageide.member.SizeFunctionsComposite.getInstance(),
+				org.alice.stageide.member.PromptUserFunctionsComposite.getInstance(),
+				org.alice.stageide.member.JointFunctionsComposite.getInstance()
+				);
 		this.filteredFunctionsComposites = java.util.Collections.unmodifiableList( functionSubComposites );
 	}
 

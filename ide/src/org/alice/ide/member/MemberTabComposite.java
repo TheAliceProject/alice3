@@ -170,12 +170,11 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 					rv.add( potentialSubComposite );
 				}
 			}
-
-			if( javaMethods.size() > 0 ) {
-				UnclaimedJavaMethodsComposite unclaimedJavaMethodsComposite = this.getUnclaimedJavaMethodsComposite();
-				unclaimedJavaMethodsComposite.sortAndSetMethods( javaMethods );
-				rv.add( unclaimedJavaMethodsComposite );
-			}
+		}
+		if( javaMethods.size() > 0 ) {
+			UnclaimedJavaMethodsComposite unclaimedJavaMethodsComposite = this.getUnclaimedJavaMethodsComposite();
+			unclaimedJavaMethodsComposite.sortAndSetMethods( javaMethods );
+			rv.add( unclaimedJavaMethodsComposite );
 		}
 
 		return rv;
