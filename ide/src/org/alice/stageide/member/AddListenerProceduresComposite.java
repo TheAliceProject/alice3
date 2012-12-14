@@ -46,7 +46,7 @@ package org.alice.stageide.member;
 /**
  * @author Dennis Cosgrove
  */
-public class AddListenerProceduresComposite extends org.alice.ide.member.FilteredJavaProceduresSubComposite {
+public class AddListenerProceduresComposite extends org.alice.ide.member.FilteredJavaMethodsSubComposite {
 	private static class SingletonHolder {
 		private static AddListenerProceduresComposite instance = new AddListenerProceduresComposite();
 	}
@@ -79,6 +79,6 @@ public class AddListenerProceduresComposite extends org.alice.ide.member.Filtere
 	@Override
 	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
 		String name = method.getName();
-		return names.contains( name ) || ( name.startsWith( "add" ) && name.endsWith( "Listener" ) );
+		return method.isProcedure() && ( names.contains( name ) || ( name.startsWith( "add" ) && name.endsWith( "Listener" ) ) );
 	}
 }

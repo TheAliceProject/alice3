@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProceduresSubComposite extends MethodsSubComposite {
-	public ProceduresSubComposite( java.util.UUID migrationId ) {
-		super( migrationId, true );
+public abstract class NameFilteredJavaMethodsSubComposite extends FilteredJavaMethodsSubComposite {
+	private final java.util.Map<String, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+			Integer valueA = map.get( methodA.getName() );
+			Integer valueB = map.get( methodB.getName() );
+			if( ( valueA != null ) && ( valueB != null ) ) {
+				int rv = ( valueA < valueB ) ? -1 : ( ( valueA == valueB ) ? 0 : 1 );
+				if( rv == 0 ) {
+					rv = compareMethodNames( methodA, methodB );
+				}
+				return rv;
+			} else {
+				return compareMethodNames( methodA, methodB );
+			}
+		}
+	};
+
+	public NameFilteredJavaMethodsSubComposite( java.util.UUID migrationId, String... methodNames ) {
+		super( migrationId );
+		for( int i = 0; i < methodNames.length; i++ ) {
+			map.put( methodNames[ i ], i );
+		}
+	}
+
+	@Override
+	public java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator() {
+		return this.comparator;
+	}
+
+	@Override
+	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
+		return map.keySet().contains( method.getName() );
 	}
 }

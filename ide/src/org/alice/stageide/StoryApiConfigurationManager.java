@@ -58,7 +58,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	private final org.alice.stageide.ast.ExpressionCreator expressionCreator = new org.alice.stageide.ast.ExpressionCreator();
-	private final java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> filteredProceduresComposites;
+	private final java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> filteredProceduresComposites;
 
 	private StoryApiConfigurationManager() {
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.lgna.story.SThing.class );
@@ -78,7 +78,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, new org.alice.stageide.icons.JointIconFactory() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 
-		java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		list.add( org.alice.stageide.member.TextProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.AtmosphereProceduresComposite.getInstance() );
 		list.add( org.alice.stageide.member.SayThinkProceduresComposite.getInstance() );
@@ -153,7 +153,7 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	}
 
 	@Override
-	public java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> getFilteredProceduresComposites() {
+	public java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getFilteredProceduresComposites() {
 		return this.filteredProceduresComposites;
 	}
 

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,53 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredJavaProceduresSubComposite extends ProceduresSubComposite {
-	protected static int compareMethodNames( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
-		if( methodA != null ) {
-			if( methodB != null ) {
-				return methodA.getName().compareTo( methodB.getName() );
-			} else {
-				return 1;
-			}
-		} else {
-			if( methodB != null ) {
-				return -1;
-			} else {
-				return 0;
-			}
-		}
+public abstract class UserMethodsSubComposite extends MethodsSubComposite {
+	private final org.lgna.project.ast.NamedUserType type;
+
+	public UserMethodsSubComposite( java.util.UUID migrationId, org.lgna.project.ast.NamedUserType type ) {
+		super( migrationId, true );
+		this.type = type;
+		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.type ) );
 	}
 
-	private java.util.List<org.lgna.project.ast.JavaMethod> methods = java.util.Collections.emptyList();
-
-	public FilteredJavaProceduresSubComposite( java.util.UUID migrationId ) {
-		super( migrationId );
-	}
-
-	public abstract java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator();
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( this.findDefaultLocalizedText() );
-	}
-
-	protected abstract boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method );
+	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
 
 	@Override
 	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
-		return this.methods;
-	}
-
-	public void sortAndSetMethods( java.util.List<org.lgna.project.ast.JavaMethod> unsortedMethods ) {
-		java.util.Collections.sort( unsortedMethods, this.getComparator() );
-		this.methods = java.util.Collections.unmodifiableList( unsortedMethods );
-		this.getView().refreshLater();
+		java.util.List<org.lgna.project.ast.UserMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( org.lgna.project.ast.UserMethod method : this.type.getDeclaredMethods() ) {
+			if( this.isAcceptable( method ) ) {
+				rv.add( method );
+			}
+		}
+		return rv;
 	}
 }

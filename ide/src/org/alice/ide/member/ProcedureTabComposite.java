@@ -101,8 +101,8 @@ public final class ProcedureTabComposite extends MemberTabComposite<org.alice.id
 		if( SORT_ALPHABETICALLY.equals( sortValue ) ) {
 
 		} else {
-			java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> proceduresSubComposites = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredProceduresComposites();
-			for( FilteredJavaProceduresSubComposite proceduresSubComposite : proceduresSubComposites ) {
+			java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> proceduresSubComposites = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredProceduresComposites();
+			for( FilteredJavaMethodsSubComposite proceduresSubComposite : proceduresSubComposites ) {
 				java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaProcedures.listIterator();
 				while( methodIterator.hasNext() ) {

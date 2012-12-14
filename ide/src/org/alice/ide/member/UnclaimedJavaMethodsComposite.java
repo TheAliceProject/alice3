@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NameFilteredJavaProceduresComposite extends NameFilteredJavaMethodsSubComposite {
-	public NameFilteredJavaProceduresComposite( java.util.UUID migrationId, String... methodNames ) {
+public abstract class UnclaimedJavaMethodsComposite extends FilteredJavaMethodsSubComposite {
+	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
+		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
+			return compareMethodNames( methodA, methodB );
+		}
+	};
+
+	public UnclaimedJavaMethodsComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
 
 	@Override
-	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
-		return method.isProcedure() && super.isAcceptingOf( method );
+	public java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator() {
+		return this.comparator;
 	}
 }
