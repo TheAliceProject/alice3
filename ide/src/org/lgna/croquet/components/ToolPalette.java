@@ -53,7 +53,7 @@ public class ToolPalette extends BorderPanel {
 	//todo: convert to composite
 	public ToolPalette( org.lgna.croquet.BooleanState booleanState, JComponent<?> mainComponent ) {
 		this.title = new ToolPaletteTitle( booleanState );
-		this.title.setShadedWhenInactive( false );
+		this.title.setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.SHADE_WHEN_ACTIVE );
 		this.title.setHorizontalAlignment( HorizontalAlignment.LEADING );
 		this.mainComponent = mainComponent;
 		this.addPageStartComponent( this.title );

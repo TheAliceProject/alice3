@@ -46,6 +46,28 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractButton> {
+	public static enum RenderingStyle {
+		LIGHT_UP_ICON_ONLY {
+			@Override
+			public boolean isShaded( javax.swing.ButtonModel buttonModel ) {
+				return false;
+			}
+		},
+		SHADE_WHEN_ACTIVE {
+			@Override
+			public boolean isShaded( javax.swing.ButtonModel buttonModel ) {
+				return buttonModel.isRollover();
+			}
+		},
+		SHADE_AGGRESSIVELY {
+			@Override
+			public boolean isShaded( javax.swing.ButtonModel buttonModel ) {
+				return true;
+			}
+		};
+		public abstract boolean isShaded( javax.swing.ButtonModel buttonModel );
+	}
+
 	private static class ArrowIcon extends edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon {
 		public ArrowIcon( int size ) {
 			super( size );
@@ -91,8 +113,17 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 	private static class JToolPaletteTitle extends javax.swing.JToggleButton {
 		private boolean isRoundedOnTop = false;
-		private boolean isShadedWhenInactive = true;
+		private RenderingStyle renderingStyle = RenderingStyle.SHADE_AGGRESSIVELY;
 		private boolean isInert = false;
+
+		@Override
+		public boolean contains( int x, int y ) {
+			if( this.isInert ) {
+				return false;
+			} else {
+				return super.contains( x, y );
+			}
+		}
 
 		public boolean isRoundedOnTop() {
 			return this.isRoundedOnTop;
@@ -105,13 +136,13 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 			}
 		}
 
-		public boolean isShadedWhenInactive() {
-			return this.isShadedWhenInactive;
+		public RenderingStyle getRenderingStyle() {
+			return this.renderingStyle;
 		}
 
-		public void setShadedWhenInactive( boolean isShadedWhenInactive ) {
-			if( this.isShadedWhenInactive != isShadedWhenInactive ) {
-				this.isShadedWhenInactive = isShadedWhenInactive;
+		public void setRenderingStyle( RenderingStyle renderingStyle ) {
+			if( this.renderingStyle != renderingStyle ) {
+				this.renderingStyle = renderingStyle;
 				this.repaint();
 			}
 		}
@@ -177,10 +208,8 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 				java.awt.Rectangle r = javax.swing.SwingUtilities.getLocalBounds( c );
 				java.awt.Color background = c.getBackground();
-				if( b.isInert() || ( ( b.isShadedWhenInactive() == false ) && ( buttonModel.isRollover() == false ) ) ) {
-					g2.setPaint( background );
-					g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
-				} else {
+				RenderingStyle renderingStyle = b.getRenderingStyle();
+				if( renderingStyle.isShaded( buttonModel ) ) {
 					if( buttonModel.isPressed() ) {
 						g2.setPaint( background.darker() );
 						g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
@@ -195,6 +224,9 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 						java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, 0.8 );
 						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillGradientRectangle( g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f );
 					}
+				} else {
+					g2.setPaint( background );
+					g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
 				}
 				super.paint( g, c );
 			} finally {
@@ -215,12 +247,12 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		( (JToolPaletteTitle)this.getAwtComponent() ).setRoundedOnTop( isRoundedOnTop );
 	}
 
-	public boolean isShadedWhenInactive() {
-		return ( (JToolPaletteTitle)this.getAwtComponent() ).isShadedWhenInactive();
+	public RenderingStyle getRenderingStyle() {
+		return ( (JToolPaletteTitle)this.getAwtComponent() ).getRenderingStyle();
 	}
 
-	public void setShadedWhenInactive( boolean isShadedWhenInactive ) {
-		( (JToolPaletteTitle)this.getAwtComponent() ).setShadedWhenInactive( isShadedWhenInactive );
+	public void setRenderingStyle( RenderingStyle renderingStyle ) {
+		( (JToolPaletteTitle)this.getAwtComponent() ).setRenderingStyle( renderingStyle );
 	}
 
 	public boolean isInert() {
