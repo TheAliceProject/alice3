@@ -92,6 +92,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 	private static class JToolPaletteTitle extends javax.swing.JToggleButton {
 		private boolean isRoundedOnTop = false;
 		private boolean isShadedWhenInactive = true;
+		private boolean isInert = false;
 
 		public boolean isRoundedOnTop() {
 			return this.isRoundedOnTop;
@@ -111,6 +112,17 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		public void setShadedWhenInactive( boolean isShadedWhenInactive ) {
 			if( this.isShadedWhenInactive != isShadedWhenInactive ) {
 				this.isShadedWhenInactive = isShadedWhenInactive;
+				this.repaint();
+			}
+		}
+
+		public boolean isInert() {
+			return this.isInert;
+		}
+
+		public void setInert( boolean isInert ) {
+			if( this.isInert != isInert ) {
+				this.isInert = isInert;
 				this.repaint();
 			}
 		}
@@ -165,7 +177,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 				java.awt.Rectangle r = javax.swing.SwingUtilities.getLocalBounds( c );
 				java.awt.Color background = c.getBackground();
-				if( ( b.isShadedWhenInactive() == false ) && ( buttonModel.isRollover() == false ) ) {
+				if( b.isInert() || ( ( b.isShadedWhenInactive() == false ) && ( buttonModel.isRollover() == false ) ) ) {
 					g2.setPaint( background );
 					g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
 				} else {
@@ -207,8 +219,16 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		return ( (JToolPaletteTitle)this.getAwtComponent() ).isShadedWhenInactive();
 	}
 
-	public void setShadedWhenInactive( boolean isRoundedOnTop ) {
-		( (JToolPaletteTitle)this.getAwtComponent() ).setShadedWhenInactive( isRoundedOnTop );
+	public void setShadedWhenInactive( boolean isShadedWhenInactive ) {
+		( (JToolPaletteTitle)this.getAwtComponent() ).setShadedWhenInactive( isShadedWhenInactive );
+	}
+
+	public boolean isInert() {
+		return ( (JToolPaletteTitle)this.getAwtComponent() ).isInert();
+	}
+
+	public void setInert( boolean isInert ) {
+		( (JToolPaletteTitle)this.getAwtComponent() ).setInert( isInert );
 	}
 
 	@Override

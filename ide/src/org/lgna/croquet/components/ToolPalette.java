@@ -47,12 +47,14 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ToolPalette extends BorderPanel {
-	private final AbstractButton<?, org.lgna.croquet.BooleanState> title;
+	private final ToolPaletteTitle title;
 	private final JComponent<?> mainComponent;
 
 	//todo: convert to composite
 	public ToolPalette( org.lgna.croquet.BooleanState booleanState, JComponent<?> mainComponent ) {
 		this.title = new ToolPaletteTitle( booleanState );
+		this.title.setShadedWhenInactive( false );
+		this.title.setHorizontalAlignment( HorizontalAlignment.LEADING );
 		this.mainComponent = mainComponent;
 		this.addPageStartComponent( this.title );
 		this.addCenterComponent( this.mainComponent );
