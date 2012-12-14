@@ -96,6 +96,8 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 
 		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> functionSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		functionSubComposites.add( org.alice.stageide.member.AppearanceFunctionsComposite.getInstance() );
+		functionSubComposites.add( org.alice.stageide.member.SizeFunctionsComposite.getInstance() );
+		functionSubComposites.add( org.alice.stageide.member.PromptUserFunctionsComposite.getInstance() );
 		this.filteredFunctionsComposites = java.util.Collections.unmodifiableList( functionSubComposites );
 	}
 

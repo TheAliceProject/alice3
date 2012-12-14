@@ -162,8 +162,6 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 					if( potentialSubComposite.isAcceptingOf( method ) ) {
 						acceptedMethods.add( method );
 						methodIterator.remove();
-					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( method, potentialSubComposite );
 					}
 				}
 
