@@ -70,6 +70,11 @@ public class SFlyer extends SJointedModel implements Articulable {
 		javax.swing.JOptionPane.showMessageDialog( null, "todo: touch" );
 	}
 
+	//	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
+	//	public void unfoldWings( UnfoldWings.Detail... details ) {
+	//		this.getImplementation().animateUnfoldWings( Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+	//	}
+
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
 	public SJoint getRoot() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.FlyerResource.ROOT );
