@@ -104,15 +104,11 @@ public class TreeUtilities {
 				//pass
 			} else {
 				String[] groupTags = node.getResourceKey().getGroupTags();
-				String groupTag0;
-				if( ( groupTags != null ) && ( groupTags.length > 0 ) ) {
-					groupTag0 = groupTags[ 0 ];
-				} else {
-					groupTag0 = null;
-				}
-				if( groupTag0 != null ) {
-					java.util.List<ResourceNode> list = map.getInitializingIfAbsentToLinkedList( groupTag0 );
-					list.add( node );
+				if( groupTags != null ) {
+					for( String groupTag : groupTags ) {
+						java.util.List<ResourceNode> list = map.getInitializingIfAbsentToLinkedList( groupTag );
+						list.add( node );
+					}
 				}
 			}
 			for( ResourceNode child : node.getNodeChildren() ) {
