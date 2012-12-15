@@ -49,7 +49,15 @@ import edu.cmu.cs.dennisc.property.IntBufferProperty;
 
 public class Mesh extends Geometry
 {
-	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (java.nio.DoubleBuffer)null );
+	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (java.nio.DoubleBuffer)null ) {
+		@Override
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, java.nio.DoubleBuffer value ) {
+			Mesh.this.boundsChanging();
+			super.setValue( owner, value );
+			Mesh.this.fireBoundChange();
+		}
+	};
+
 	public final FloatBufferProperty normalBuffer = new FloatBufferProperty( this, (java.nio.FloatBuffer)null );
 	public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty( this, (java.nio.FloatBuffer)null );
 	public final IntBufferProperty indexBuffer = new IntBufferProperty( this, (java.nio.IntBuffer)null );
