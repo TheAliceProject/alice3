@@ -40,52 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser.views;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceBasedTabView extends GalleryTabView {
-	private class ModelResourceDirectoryView extends org.lgna.croquet.components.TreeDirectoryViewController<org.alice.stageide.modelresource.ResourceNode> {
-		public ModelResourceDirectoryView( org.lgna.croquet.TreeSelectionState<org.alice.stageide.modelresource.ResourceNode> model ) {
-			super( model );
-		}
-
-		@Override
-		protected org.lgna.croquet.components.JComponent<?> getComponentFor( org.alice.stageide.modelresource.ResourceNode value ) {
-			return ResourceBasedTabView.this.getGalleryDragComponent( value );
-		}
+public abstract class TreeOwningGalleryTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView> {
+	public TreeOwningGalleryTab( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
-	public ResourceBasedTabView( org.alice.stageide.gallerybrowser.ResourceBasedTab composite ) {
-		super( composite );
+	public abstract org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState();
 
-		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance();
-
-		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
-
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
-			@Override
-			protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
-				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
-			}
-		};
-		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		scrollPane.setBorder( null );
-		scrollPane.setBothScrollBarIncrements( 16, 160 );
-
-		org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
-				.vgap( PAD )
-				.pageStart( new org.lgna.croquet.components.TreePathViewController( state ) )
-				.center( scrollPane )
-				.build();
-
-		this.addCenterComponent( panel );
-
-		//todo
-		view.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
-		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+	@Override
+	protected org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView createView() {
+		return new org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView( this );
 	}
 }

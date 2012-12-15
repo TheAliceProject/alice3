@@ -45,14 +45,19 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class ThemeBasedTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ThemeBasedTabView> {
+public class ThemeBasedTab extends TreeOwningGalleryTab {
 	public ThemeBasedTab() {
 		super( java.util.UUID.fromString( "9f620eca-b4a8-4b8b-879d-4d39f44aff7b" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.views.ThemeBasedTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.ThemeBasedTabView( this );
+	public org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState() {
+		return org.alice.stageide.modelresource.ThemeBasedResourceNodeTreeSelectionState.getInstance();
+	}
+
+	@Override
+	protected org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView createView() {
+		return new org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView( this );
 	}
 
 }
