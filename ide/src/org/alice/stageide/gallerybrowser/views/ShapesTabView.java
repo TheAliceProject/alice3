@@ -40,34 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.gallerybrowser.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.SearchTabView> {
-	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
-	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( this.createKey( "noMatchesLabel" ) );
-	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( this.createKey( "noEntryLabel" ) );
+public class ShapesTabView extends GalleryTabView {
+	public ShapesTabView( org.alice.stageide.gallerybrowser.ShapesTab composite ) {
+		super( composite );
 
-	public SearchTab() {
-		super( java.util.UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
-	}
+		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane( 0, 2 );
 
-	public org.lgna.croquet.StringState getFilterState() {
-		return this.filterState;
-	}
+		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getOperation().createButton() );
+		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite.getInstance().getOperation().createButton() );
 
-	public org.lgna.croquet.PlainStringValue getNoMatchesLabel() {
-		return this.noMatchesLabel;
-	}
+		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddConeManagedFieldComposite.getInstance().getOperation().createButton() );
+		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite.getInstance().getOperation().createButton() );
 
-	public org.lgna.croquet.PlainStringValue getNoEntryLabel() {
-		return this.noEntryLabel;
-	}
+		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddCylinderManagedFieldComposite.getInstance().getOperation().createButton() );
+		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddAxesManagedFieldComposite.getInstance().getOperation().createButton() );
 
-	@Override
-	protected org.alice.stageide.gallerybrowser.views.SearchTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.SearchTabView( this );
+		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddSphereManagedFieldComposite.getInstance().getOperation().createButton() );
+		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddTorusManagedFieldComposite.getInstance().getOperation().createButton() );
+
+		gridPanel.addComponent( org.alice.stageide.ast.declaration.AddBoxManagedFieldComposite.getInstance().getOperation().createButton() );
+		//gridPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createGlue() );
+
+		for( java.awt.Component awtComponent : gridPanel.getAwtComponent().getComponents() ) {
+			if( awtComponent instanceof javax.swing.JButton ) {
+				javax.swing.JButton jButton = (javax.swing.JButton)awtComponent;
+				jButton.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+			}
+		}
+
+		org.lgna.croquet.components.BorderPanel lineStartPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+				.pageStart( gridPanel )
+				.build();
+
+		this.addLineStartComponent( lineStartPanel );
+
+		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 	}
 }

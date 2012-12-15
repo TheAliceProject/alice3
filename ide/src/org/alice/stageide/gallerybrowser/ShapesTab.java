@@ -45,29 +45,13 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.SearchTabView> {
-	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
-	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( this.createKey( "noMatchesLabel" ) );
-	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( this.createKey( "noEntryLabel" ) );
-
-	public SearchTab() {
-		super( java.util.UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
-	}
-
-	public org.lgna.croquet.StringState getFilterState() {
-		return this.filterState;
-	}
-
-	public org.lgna.croquet.PlainStringValue getNoMatchesLabel() {
-		return this.noMatchesLabel;
-	}
-
-	public org.lgna.croquet.PlainStringValue getNoEntryLabel() {
-		return this.noEntryLabel;
+public class ShapesTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.ShapesTabView> {
+	public ShapesTab() {
+		super( java.util.UUID.fromString( "1e616f0e-4c57-460c-a4a7-919addbfc9d8" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.views.SearchTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.SearchTabView( this );
+	protected org.alice.stageide.gallerybrowser.views.ShapesTabView createView() {
+		return new org.alice.stageide.gallerybrowser.views.ShapesTabView( this );
 	}
 }
