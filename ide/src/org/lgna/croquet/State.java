@@ -304,7 +304,8 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return true;
 	}
 
-	private void changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
+	private org.lgna.croquet.edits.StateEdit<T> changeValue( T prevValue, T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
+		org.lgna.croquet.edits.StateEdit<T> rv = null;
 		this.updateSwingModelIfAppropriate( nextValue, origin );
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.previousValue, nextValue ) ) {
 			//pass
@@ -317,7 +318,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 					this.fireChanging( prevValue, nextValue, isAdjusting );
 					this.setCurrentTruthAndBeautyValue( nextValue );
 					if( origin.isCommitingEditAppropriate() ) {
-						this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
+						rv = this.commitStateEdit( prevValue, nextValue, isAdjusting, trigger );
 					}
 					this.fireChanged( prevValue, nextValue, isAdjusting );
 					this.previousValue = nextValue;
@@ -326,26 +327,30 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 				}
 			}
 		}
+		return rv;
 	}
 
-	private void changeValue( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
+	private org.lgna.croquet.edits.StateEdit<T> changeValue( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger, Origin origin ) {
+		org.lgna.croquet.edits.StateEdit<T> rv = null;
 		if( this.atomicCount > 0 ) {
 			//pass
 		} else {
 			if( isAdjusting.value && this.isAdjustingIgnored() ) {
 				//pass
 			} else {
-				this.changeValue( this.previousValue, nextValue, isAdjusting, trigger, origin );
+				rv = this.changeValue( this.previousValue, nextValue, isAdjusting, trigger, origin );
 			}
 		}
+		return rv;
 	}
 
 	protected final void changeValueFromSwing( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
 		this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_SWING );
 	}
 
-	protected final void changeValueFromIndirectModel( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
-		this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_INDIRECT_MODEL );
+	protected org.lgna.croquet.history.CompletionStep<?> changeValueFromIndirectModel( T nextValue, IsAdjusting isAdjusting, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.edits.StateEdit<T> edit = this.changeValue( nextValue, isAdjusting, trigger, Origin.FROM_INDIRECT_MODEL );
+		return edit != null ? edit.getCompletionStep() : null;
 	}
 
 	private void changeValueTransactionlessly( T value, IsAdjusting isAdjusting ) {

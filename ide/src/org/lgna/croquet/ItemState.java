@@ -176,8 +176,8 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		}
 
 		@Override
-		protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-			this.state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+		protected org.lgna.croquet.history.CompletionStep<?> hitIt( org.lgna.croquet.triggers.Trigger trigger ) {
+			return this.state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, trigger );
 		}
 
 		@Override

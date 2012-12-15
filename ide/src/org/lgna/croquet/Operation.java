@@ -64,7 +64,7 @@ public abstract class Operation extends AbstractCompletionModel {
 		super( group, id );
 	}
 
-	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
+	private void handleActionPerformed( java.awt.event.ActionEvent e ) {
 		this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 	}
 
