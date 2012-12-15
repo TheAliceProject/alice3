@@ -77,11 +77,13 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 	public static final org.lgna.project.ast.JavaMethod MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD;
 
 	public static final org.lgna.project.ast.JavaMethod STRAIGHTEN_OUT_JOINTS_METHOD;
+	//	public static final org.lgna.project.ast.JavaMethod UNFOLD_WINGS_METHOD;
 
 	static {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class );
 		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
+		org.lgna.project.ast.JavaType flyerType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SFlyer.class );
 		org.lgna.project.ast.JavaType cameraType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCamera.class );
 
 		TURN_METHOD = turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class );
@@ -112,6 +114,9 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 
 		STRAIGHTEN_OUT_JOINTS_METHOD = jointedModelType.getDeclaredMethod( "straightenOutJoints", org.lgna.story.StraightenOutJoints.Detail[].class );
 		assert STRAIGHTEN_OUT_JOINTS_METHOD != null;
+
+		//		UNFOLD_WINGS_METHOD = flyerType.getDeclaredMethod( "unfoldWings", org.lgna.story.UnfoldWings.Detail[].class );
+		//		assert UNFOLD_WINGS_METHOD != null;
 
 		MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD = cameraType.getDeclaredMethod( "moveAndOrientToAGoodVantagePointOf", org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientToAGoodVantagePointOf.Detail[].class );
 		assert MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD != null;
