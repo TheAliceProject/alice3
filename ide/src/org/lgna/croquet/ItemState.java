@@ -176,7 +176,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		}
 
 		@Override
-		protected org.lgna.croquet.history.CompletionStep<?> hitIt( org.lgna.croquet.triggers.Trigger trigger ) {
+		protected org.lgna.croquet.history.CompletionStep<?> createTransactionAndInvokePerform( org.lgna.croquet.triggers.Trigger trigger ) {
 			return this.state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, trigger );
 		}
 
