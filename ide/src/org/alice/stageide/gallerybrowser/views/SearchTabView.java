@@ -180,7 +180,6 @@ public class SearchTabView extends GalleryTabView {
 
 	@Override
 	public void handleCompositePreActivation() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "handleCompositePreActivation", this );
 		super.handleCompositePreActivation();
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
 		composite.getFilterState().addAndInvokeValueListener( this.filterListener );
@@ -189,7 +188,6 @@ public class SearchTabView extends GalleryTabView {
 
 	@Override
 	public void handleCompositePostDeactivation() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "handleCompositePostDeactivation", this );
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
 		composite.getFilterState().removeValueListener( this.filterListener );
 		super.handleCompositePostDeactivation();
