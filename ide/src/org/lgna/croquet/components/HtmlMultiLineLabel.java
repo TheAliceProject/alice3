@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StringValue extends AbstractElement {
-	private final javax.swing.text.AbstractDocument document;
+public class HtmlMultiLineLabel extends MultiLineLabel<javax.swing.JEditorPane> {
+	public HtmlMultiLineLabel( String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		super( new javax.swing.text.html.HTMLDocument(), text, fontScalar, textAttributes );
+	}
 
-	public StringValue( java.util.UUID id, javax.swing.text.AbstractDocument document ) {
-		super( id );
-		this.document = document;
+	public HtmlMultiLineLabel( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this( text, 1.0f, textAttributes );
+	}
+
+	public HtmlMultiLineLabel( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this( "", textAttributes );
 	}
 
 	@Override
-	protected void localize() {
-		this.setText( this.findDefaultLocalizedText() );
-	}
+	protected javax.swing.JEditorPane createJTextComponent( javax.swing.text.AbstractDocument document ) {
+		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", "" ) {
+			@Override
+			public java.awt.Color getBackground() {
+				return getDesiredBackgroundColor( this.getParent() );
+			}
 
-	public javax.swing.text.AbstractDocument getDocument() {
-		return this.document;
-	}
-
-	public String getText() {
-		try {
-			return this.document.getText( 0, this.document.getLength() );
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( ble );
-		}
-	}
-
-	public final void setText( String text ) {
-		try {
-			this.document.replace( 0, this.document.getLength(), text, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( text, ble );
-		}
+			@Override
+			public void updateUI() {
+				this.setUI( new javax.swing.plaf.basic.BasicEditorPaneUI() );
+			}
+		};
+		rv.setDocument( document );
+		return rv;
 	}
 }

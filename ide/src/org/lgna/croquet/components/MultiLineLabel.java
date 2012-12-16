@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StringValue extends AbstractElement {
+public abstract class MultiLineLabel<J extends javax.swing.text.JTextComponent> extends JComponent<J> {
+	protected static java.awt.Color getDesiredBackgroundColor( java.awt.Container awtParent ) {
+		if( awtParent != null ) {
+			if( awtParent.isOpaque() ) {
+				return awtParent.getBackground();
+			} else {
+				return getDesiredBackgroundColor( awtParent.getParent() );
+			}
+		} else {
+			return java.awt.Color.RED;
+		}
+	}
+
 	private final javax.swing.text.AbstractDocument document;
 
-	public StringValue( java.util.UUID id, javax.swing.text.AbstractDocument document ) {
-		super( id );
+	public MultiLineLabel( javax.swing.text.AbstractDocument document, String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		this.document = document;
-	}
-
-	@Override
-	protected void localize() {
-		this.setText( this.findDefaultLocalizedText() );
-	}
-
-	public javax.swing.text.AbstractDocument getDocument() {
-		return this.document;
+		this.setText( text );
+		this.scaleFont( fontScalar );
+		this.changeFont( textAttributes );
 	}
 
 	public String getText() {
@@ -77,4 +82,22 @@ public abstract class StringValue extends AbstractElement {
 			throw new RuntimeException( text, ble );
 		}
 	}
+
+	protected abstract J createJTextComponent( javax.swing.text.AbstractDocument document );
+
+	@Override
+	protected final J createAwtComponent() {
+		J component = this.createJTextComponent( this.document );
+		//component.setOpaque( false );
+		component.setEditable( false );
+		component.setCursor( null );
+		component.setFocusable( false );
+		component.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		component.setFont( javax.swing.UIManager.getFont( "Label.font" ) );
+		component.setAlignmentX( 0.0f );
+		String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
+		component.setDisabledTextColor( javax.swing.UIManager.getColor( disabledColorKey ) );
+		return component;
+	}
+
 }
