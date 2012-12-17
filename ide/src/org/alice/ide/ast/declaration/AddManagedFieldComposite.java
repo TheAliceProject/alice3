@@ -46,19 +46,14 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class AddManagedFieldComposite extends AddFieldComposite {
-	private final org.lgna.croquet.BooleanState initialPropertyValuesExpandedState = this.createBooleanState( this.createKey( "initialPropertyValuesExpandedState" ), true );
-	private final java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> initialPropertyValueExpressionStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final InitialPropertyValuesToolPaletteCoreComposite initialPropertyValuesToolPaletteCoreComposite = new InitialPropertyValuesToolPaletteCoreComposite();
 
 	public AddManagedFieldComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
 
-	public org.lgna.croquet.BooleanState getInitialPropertyValuesExpandedState() {
-		return this.initialPropertyValuesExpandedState;
-	}
-
-	public java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> getInitialPropertyValueExpressionStates() {
-		return this.initialPropertyValueExpressionStates;
+	public InitialPropertyValuesToolPaletteCoreComposite getInitialPropertyValuesToolPaletteCoreComposite() {
+		return this.initialPropertyValuesToolPaletteCoreComposite;
 	}
 
 	@Override
@@ -145,7 +140,8 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true ) );
 		rv.addUndoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) );
 
-		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initialPropertyValueExpressionState : this.initialPropertyValueExpressionStates ) {
+		//todo
+		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initialPropertyValueExpressionState : this.initialPropertyValuesToolPaletteCoreComposite.getInitialPropertyValueExpressionStates() ) {
 			InitialPropertyValueExpressionCustomizer customizer = (InitialPropertyValueExpressionCustomizer)( (InternalCustomItemState<org.lgna.project.ast.Expression>)initialPropertyValueExpressionState ).getCustomizer();
 			customizer.appendDoStatements( rv, field, initialPropertyValueExpressionState.getValue() );
 		}
@@ -171,7 +167,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		try {
 			org.lgna.project.ast.Expression expression = expressionCreator.createExpression( initialValue );
 			org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> rv = this.createCustomItemState( key, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), expression, new InitialPropertyValueExpressionCustomizer( method ) );
-			this.initialPropertyValueExpressionStates.add( rv );
+			this.initialPropertyValuesToolPaletteCoreComposite.addInitialPropertyValueExpressionState( rv );
 			return rv;
 		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 			throw new RuntimeException( ccee );

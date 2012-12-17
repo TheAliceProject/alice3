@@ -46,8 +46,22 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public class InitialPropertyValuesToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.ide.ast.declaration.views.InitialPropertyValuesToolPaletteCoreView> {
+	private final java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> initialPropertyValueExpressionStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
 	public InitialPropertyValuesToolPaletteCoreComposite() {
 		super( java.util.UUID.fromString( "527409db-68e6-4169-b59c-6fb53bdc5a24" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP, true );
+	}
+
+	public Iterable<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> getInitialPropertyValueExpressionStates() {
+		return java.util.Collections.unmodifiableList( this.initialPropertyValueExpressionStates );
+	}
+
+	public void addInitialPropertyValueExpressionState( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state ) {
+		this.initialPropertyValueExpressionStates.add( state );
+	}
+
+	public int getInitialPropertyValueExpressionStateCount() {
+		return this.initialPropertyValueExpressionStates.size();
 	}
 
 	@Override

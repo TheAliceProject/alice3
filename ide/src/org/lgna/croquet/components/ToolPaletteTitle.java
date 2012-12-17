@@ -267,6 +267,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 	protected javax.swing.AbstractButton createAwtComponent() {
 		javax.swing.AbstractButton rv = new JToolPaletteTitle();
 		rv.setRolloverEnabled( true );
+		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8 + ARROW_ICON.getIconWidth(), 2, 2 ) );
 		rv.setOpaque( false );
 		return rv;
