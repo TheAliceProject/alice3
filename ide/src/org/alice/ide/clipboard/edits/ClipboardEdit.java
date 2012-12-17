@@ -93,7 +93,7 @@ public abstract class ClipboardEdit extends org.lgna.croquet.edits.Edit {
 			}
 			sb.append( ";" );
 			sb.append( statement.getId() );
-			final org.alice.ide.issue.croquet.AnomalousSituationComposite composite = org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "The clipboard is in a bad state.  You may want to save your project and restart Alice.", sb.toString() );
+			final org.alice.ide.issue.croquet.AnomalousSituationComposite composite = org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  The clipboard is in a bad state.  You may want to save your project and restart Alice.", sb.toString() );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
 					composite.getOperation().fire();
