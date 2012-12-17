@@ -366,9 +366,9 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		this.handleTruthAndBeautyValueChange( nextValue );
 	}
 
-	@Deprecated
-	protected org.lgna.croquet.edits.StateEdit<T> TEMPORARY_HACK_createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
-		T prevValue = this.getValue();
-		return this.createStateEdit( completionStep, prevValue, nextValue, IsAdjusting.FALSE );
-	}
+	//	@Deprecated
+	//	protected org.lgna.croquet.edits.StateEdit<T> TEMPORARY_HACK_createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {
+	//		T prevValue = this.getValue();
+	//		return this.createStateEdit( completionStep, prevValue, nextValue, IsAdjusting.FALSE );
+	//	}
 }

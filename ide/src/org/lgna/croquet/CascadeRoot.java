@@ -228,24 +228,11 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 	public abstract org.lgna.croquet.history.CompletionStep<CM> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
-	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<CM> completionStep, T[] values );
-
 	public abstract void prologue();
 
 	public abstract void epilogue();
 
-	public final void handleCompletion( org.lgna.croquet.history.CompletionStep<CM> completionStep, T[] values ) {
-		try {
-			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep, values );
-			if( edit != null ) {
-				completionStep.commitAndInvokeDo( edit );
-			} else {
-				completionStep.cancel();
-			}
-		} finally {
-			this.getPopupPrepModel().handleFinally();
-		}
-	}
+	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, T[] values );
 
 	public final void handleCancel( org.lgna.croquet.history.CompletionStep<CM> completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		try {

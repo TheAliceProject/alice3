@@ -101,8 +101,20 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values ) {
-			return this.cascade.createEdit( completionStep, values );
+		public org.lgna.croquet.history.CompletionStep<Cascade<T>> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, T[] values ) {
+			org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
+			org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep = this.createCompletionStep( transaction, trigger );
+			try {
+				org.lgna.croquet.edits.Edit edit = this.cascade.createEdit( completionStep, values );
+				if( edit != null ) {
+					completionStep.commitAndInvokeDo( edit );
+				} else {
+					completionStep.cancel();
+				}
+			} finally {
+				this.getPopupPrepModel().handleFinally();
+			}
+			return completionStep;
 		}
 	}
 
