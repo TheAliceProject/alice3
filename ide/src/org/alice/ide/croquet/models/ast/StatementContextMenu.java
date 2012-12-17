@@ -106,7 +106,7 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 					}
 					sb.append( ";" );
 					sb.append( statement.getId() );
-					org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", sb.toString() ).getOperation().fire();
+					org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  A popup menu has been requested for a statement without a parent.", sb.toString() ).getOperation().fire();
 				}
 			} );
 			//throw new org.lgna.croquet.CancelException();
