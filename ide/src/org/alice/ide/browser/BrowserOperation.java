@@ -54,16 +54,24 @@ public abstract class BrowserOperation extends org.alice.ide.operations.Inconseq
 
 	@Override
 	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		//try {
 		java.net.URL url = this.getUrl();
-		try {
-			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
-		} catch( Exception e ) {
-			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( url.toString() );
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." );
+		if( url != null ) {
+			try {
+				edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
+			} catch( Exception e ) {
+				edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( url.toString() );
+				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "An error has occured in attempting to start your web browser.\n\nThe following text has been copied to your clipboard: \n\n\t" + url + "\n\nso that you may paste it into your web browser." );
+			}
+		} else {
+			StringBuilder sbDescription = new StringBuilder();
+			sbDescription.append( "URL is null for " );
+			sbDescription.append( this.getClass() );
+			final org.alice.ide.issue.croquet.AnomalousSituationComposite composite = org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  We do not know which web page to send you to.", sbDescription.toString() );
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					composite.getOperation().fire();
+				}
+			} );
 		}
-		//} catch( java.net.MalformedURLException murle ) {
-		//	throw new RuntimeException( this.getClass().getName(), murle );
-		//}
 	}
 }
