@@ -179,26 +179,6 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	protected void localize() {
 	}
 
-	//	/* package-private */void setSelectionIndexFromSwing( int index, org.lgna.croquet.triggers.Trigger trigger ) {
-	//		this.pushAtomic( trigger );
-	//		this.dataIndexPair.index = index;
-	//		this.popAtomic();
-	//	}
-	//
-	//	/* package-private */void setSelectionIndexFromSwing( int index ) {
-	//		this.setSelectionIndexFromSwing( index, null );
-	//	}
-	//
-	//	/* package-private */void setSelectionFromSwing( T item, org.lgna.croquet.triggers.Trigger trigger ) {
-	//		this.pushAtomic( trigger );
-	//		this.dataIndexPair.index = this.indexOf( item );
-	//		this.popAtomic();
-	//	}
-	//
-	//	/* package-private */void setSelectionFromSwing( T item ) {
-	//		this.setSelectionFromSwing( item, null );
-	//	}
-
 	private InternalPrepModel<T> prepModel;
 
 	public synchronized InternalPrepModel<T> getPrepModel() {
@@ -218,20 +198,6 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	protected void handleMissingItem( T missingItem ) {
 	}
-
-	//	private void setSelectedItem( T selectedItem ) {
-	//		int index;
-	//		if( selectedItem != null ) {
-	//			index = this.indexOf( selectedItem );
-	//			if( index == -1 ) {
-	//				this.handleMissingItem( selectedItem );
-	//				index = this.indexOf( selectedItem );
-	//			}
-	//		} else {
-	//			index = -1;
-	//		}
-	//		this.setSelectedIndex( index );
-	//	}
 
 	@Override
 	protected T getSwingValue() {
@@ -312,50 +278,6 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	protected final void internalSetItems( java.util.Collection<T> items ) {
 		this.dataIndexPair.data.internalSetItems( items );
 	}
-
-	//	private int pushCount = 0;
-	//	private T prevAtomicSelectedValue;
-	//	private org.lgna.croquet.triggers.Trigger trigger;
-	//
-	//	private boolean isInMidstOfAtomic() {
-	//		return this.pushCount > 0;
-	//	}
-	//
-	//	private void pushAtomic( org.lgna.croquet.triggers.Trigger trigger ) {
-	//		if( this.isInMidstOfAtomic() ) {
-	//			//pass
-	//		} else {
-	//			this.prevAtomicSelectedValue = this.getValue();
-	//			this.trigger = trigger;
-	//		}
-	//		this.pushCount++;
-	//	}
-	//
-	//	private void pushAtomic() {
-	//		this.pushAtomic( null );
-	//	}
-	//
-	//	private void popAtomic() {
-	//		this.pushCount--;
-	//		if( this.pushCount == 0 ) {
-	//			T nextSelectedValue = this.getValue();
-	//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevAtomicSelectedValue, nextSelectedValue ) ) {
-	//				//pass
-	//			} else {
-	//				this.fireChanging( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
-	//				if( this.isAppropriateToChange() ) {
-	//					this.commitStateEdit( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE, this.trigger );
-	//				}
-	//				this.fireChanged( this.prevAtomicSelectedValue, nextSelectedValue, IsAdjusting.FALSE );
-	//				this.trigger = null;
-	//			}
-	//		}
-	//	}
-
-	//	@Override
-	//	protected boolean isAppropriateToChange() {
-	//		return super.isAppropriateToChange() && ( this.isInMidstOfAtomic() == false );
-	//	}
 
 	public final void addItem( T item ) {
 		this.pushIsInTheMidstOfAtomicChange();
