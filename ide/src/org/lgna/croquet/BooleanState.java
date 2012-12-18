@@ -381,11 +381,6 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		return new org.lgna.croquet.components.PushButton( this );
 	}
 
-	//todo: convert to composite
-	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.JComponent<?> component ) {
-		return new org.lgna.croquet.components.ToolPalette( this, component );
-	}
-
 	private static class InternalSelectValueOperation extends ActionOperation {
 		private final BooleanState state;
 		private final boolean value;

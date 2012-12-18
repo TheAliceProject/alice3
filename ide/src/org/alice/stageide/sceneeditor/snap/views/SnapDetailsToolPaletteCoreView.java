@@ -45,8 +45,9 @@ package org.alice.stageide.sceneeditor.snap.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.BorderPanel {
+public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.GridBagPanel {
 	public SnapDetailsToolPaletteCoreView( org.alice.stageide.sceneeditor.snap.SnapDetailsToolPaletteCoreComposite composite ) {
 		super( composite );
+		//todo
 	}
 }
