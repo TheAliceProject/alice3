@@ -49,12 +49,21 @@ import edu.cmu.cs.dennisc.property.IntBufferProperty;
 
 public class Mesh extends Geometry
 {
-	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (java.nio.DoubleBuffer)null );
+	public final DoubleBufferProperty vertexBuffer = new DoubleBufferProperty( this, (java.nio.DoubleBuffer)null ) {
+		@Override
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, java.nio.DoubleBuffer value ) {
+			Mesh.this.boundsChanging();
+			super.setValue( owner, value );
+			Mesh.this.fireBoundChange();
+		}
+	};
+
 	public final FloatBufferProperty normalBuffer = new FloatBufferProperty( this, (java.nio.FloatBuffer)null );
 	public final FloatBufferProperty textCoordBuffer = new FloatBufferProperty( this, (java.nio.FloatBuffer)null );
 	public final IntBufferProperty indexBuffer = new IntBufferProperty( this, (java.nio.IntBuffer)null );
 	public final edu.cmu.cs.dennisc.property.IntegerProperty textureId = new edu.cmu.cs.dennisc.property.IntegerProperty( this, -1 );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty cullBackfaces = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty useAlphaTest = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
 	public Mesh()
 	{
