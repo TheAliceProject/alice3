@@ -45,8 +45,38 @@ package org.alice.ide.member.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowTabView extends org.lgna.croquet.components.BorderPanel {
+public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
 	public ControlFlowTabView( org.alice.ide.member.ControlFlowTabComposite composite ) {
-		this.addCenterComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( null ).getView() );
+		super( composite, "insets 4, gap 0" );
+		this.addHeader( composite.getDoInOrderHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance() );
+		this.addHeader( composite.getDoTogetherHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance() );
+		this.addHeader( composite.getLoopHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance() );
+		this.addHeader( composite.getIfThenHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance() );
+		this.addHeader( composite.getEachInTogetherHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance() );
+		this.addHeader( composite.getCommentHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
+		this.addHeader( composite.getLocalHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance() );
+		this.setBackgroundColor( new java.awt.Color( 0xd29669 ) );
+	}
+
+	private void addHeader( org.lgna.croquet.PlainStringValue stringValue ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "wrap" );
+		if( this.getComponentCount() > 0 ) {
+			sb.append( ", gaptop 8" );
+		}
+		this.addComponent( stringValue.createImmutableTextField( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), sb.toString() );
+	}
+
+	private void addDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+		this.addComponent( new org.alice.ide.controlflow.components.ControlFlowStatementTemplate( dragModel ), "wrap, gapleft 8" );
 	}
 }

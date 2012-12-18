@@ -46,8 +46,44 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public class ControlFlowTabComposite extends MemberOrControlFlowTabComposite<org.alice.ide.member.views.ControlFlowTabView> {
+	private final org.lgna.croquet.PlainStringValue doInOrderHeader = this.createStringValue( this.createKey( "doInOrderHeader" ) );
+	private final org.lgna.croquet.PlainStringValue doTogetherHeader = this.createStringValue( this.createKey( "doTogetherHeader" ) );
+	private final org.lgna.croquet.PlainStringValue loopHeader = this.createStringValue( this.createKey( "loopHeader" ) );
+	private final org.lgna.croquet.PlainStringValue ifThenHeader = this.createStringValue( this.createKey( "ifThenHeader" ) );
+	private final org.lgna.croquet.PlainStringValue eachInTogetherHeader = this.createStringValue( this.createKey( "eachInTogetherHeader" ) );
+	private final org.lgna.croquet.PlainStringValue commentHeader = this.createStringValue( this.createKey( "commentHeader" ) );
+	private final org.lgna.croquet.PlainStringValue localHeader = this.createStringValue( this.createKey( "localHeader" ) );
+
 	public ControlFlowTabComposite() {
 		super( java.util.UUID.fromString( "80073c5b-1308-4c32-9081-edf8e4573ab3" ) );
+	}
+
+	public org.lgna.croquet.PlainStringValue getDoInOrderHeader() {
+		return this.doInOrderHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getDoTogetherHeader() {
+		return this.doTogetherHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getLoopHeader() {
+		return this.loopHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getIfThenHeader() {
+		return this.ifThenHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getEachInTogetherHeader() {
+		return this.eachInTogetherHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getCommentHeader() {
+		return this.commentHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getLocalHeader() {
+		return this.localHeader;
 	}
 
 	@Override
