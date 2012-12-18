@@ -89,7 +89,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		scrollPane.setViewportView( bodyPane );
 		scrollPane.setBothScrollBarIncrements( 12, 24 );
 		scrollPane.setBorder( null );
-		scrollPane.setBackgroundColor( null );
+		//scrollPane.setBackgroundColor( null );
 		scrollPane.getAwtComponent().getViewport().setOpaque( false );
 		scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 
