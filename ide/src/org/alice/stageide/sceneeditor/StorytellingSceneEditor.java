@@ -762,6 +762,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
 
 			this.propertiesSplitPane.setResizeWeight( 1.0 );
+			this.propertiesSplitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 1, 0 ) );
 
 			this.orthographicCameraImp = new OrthographicCameraImp();
 			this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue( .01d );

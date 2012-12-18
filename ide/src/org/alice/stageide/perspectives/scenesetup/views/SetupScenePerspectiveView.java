@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.alice.stageide.perspectives.scenesetup.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitPane extends AbstractSplitPane<org.lgna.croquet.ImmutableSplitComposite> {
-	protected SplitPane( org.lgna.croquet.ImmutableSplitComposite splitComposite, int orientation ) {
-		super( splitComposite, orientation );
-	}
-
-	@Override
-	protected javax.swing.JSplitPane createJSplitPane( int orientation ) {
-		org.lgna.croquet.ImmutableSplitComposite composite = this.getComposite();
-		org.lgna.croquet.Composite<?> leadingComposite = composite.getLeadingComposite();
-		org.lgna.croquet.Composite<?> trailingComposite = composite.getTrailingComposite();
-		javax.swing.JSplitPane rv = new javax.swing.JSplitPane( orientation, leadingComposite != null ? leadingComposite.getView().getAwtComponent() : null, trailingComposite != null ? trailingComposite.getView().getAwtComponent() : null );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		return rv;
+public class SetupScenePerspectiveView extends org.lgna.croquet.components.BorderPanel {
+	public SetupScenePerspectiveView( org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite composite ) {
+		super( composite );
+		this.addCenterComponent( composite.getSceneLayoutComposite().getView() );
+		this.addPageEndComponent( composite.getGalleryComposite().getView() );
 	}
 }

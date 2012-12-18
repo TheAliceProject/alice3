@@ -47,21 +47,13 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.gallerybrowser.views.GalleryView> {
-	private static class SingletonHolder {
-		private static GalleryComposite instance = new GalleryComposite();
-	}
-
-	public static GalleryComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final ResourceBasedTab resourceBasedTab = new ResourceBasedTab();
 	private final ThemeBasedTab themeBasedTab = new ThemeBasedTab();
 	private final ShapesTab shapesTab = new ShapesTab();
 	private final SearchTab searchTab = new SearchTab();
 	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, this.themeBasedTab, this.resourceBasedTab, this.searchTab, this.shapesTab );
 
-	private GalleryComposite() {
+	public GalleryComposite() {
 		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
 	}
 
