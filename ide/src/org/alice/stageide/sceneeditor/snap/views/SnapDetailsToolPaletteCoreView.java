@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,23 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.snap.views;
 
-package org.alice.stageide.sceneeditor.snap;
-
-import org.lgna.croquet.BooleanState;
-
-public class AreSnapDetailsExpandedState extends BooleanState
-{
-	private static class SingletonHolder {
-		private static AreSnapDetailsExpandedState instance = new AreSnapDetailsExpandedState();
-	}
-
-	public static AreSnapDetailsExpandedState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private AreSnapDetailsExpandedState() {
-		//TODO: Localize this
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "5a13da16-1b32-4c50-85ae-1b62dc537876" ), false );
+/**
+ * @author Dennis Cosgrove
+ */
+public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.BorderPanel {
+	public SnapDetailsToolPaletteCoreView( org.alice.stageide.sceneeditor.snap.SnapDetailsToolPaletteCoreComposite composite ) {
+		super( composite );
 	}
 }

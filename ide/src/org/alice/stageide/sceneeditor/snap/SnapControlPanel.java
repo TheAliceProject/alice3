@@ -56,7 +56,6 @@ import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.Spinner;
-import org.lgna.croquet.components.ToolPalette;
 
 public class SnapControlPanel extends GridBagPanel implements ChangeListener, ActionListener
 {
@@ -69,7 +68,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	private GridBagPanel detailsPanel;
 	private LineAxisPanel snapToGridPanel;
 	private LineAxisPanel rotationSnapPanel;
-	private ToolPalette detailsPalette;
+	private org.lgna.croquet.components.ToolPaletteView detailsPalette;
 
 	private boolean isInitializing = false;
 
@@ -85,7 +84,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	public SnapControlPanel()
 	{
 		this.detailsPanel = new GridBagPanel();
-		this.detailsPalette = AreSnapDetailsExpandedState.getInstance().createToolPalette( detailsPanel );
+		this.detailsPalette = SnapDetailsToolPaletteCoreComposite.getInstance().getOuterComposite().getView();
 		initializeUI();
 		SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueListener( this.snapStateValueObserver );
 		updateUIFromSnapState();
@@ -193,19 +192,32 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.addComponent( detailsPalette.getMainComponent(), new GridBagConstraints(
-				0, //gridX
-				1, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.EAST, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 0, 0, 0, 0 ), //insets (top, left, bottom, right)
-				0, //ipadX
-				0 ) //ipadY
-		);
+		//		this.addComponent( detailsPalette.getTitle(), new GridBagConstraints(
+		//				1, //gridX
+		//				0, //gridY
+		//				1, //gridWidth
+		//				1, //gridHeight
+		//				1.0, //weightX
+		//				0.0, //weightY
+		//				GridBagConstraints.EAST, //anchor 
+		//				GridBagConstraints.HORIZONTAL, //fill
+		//				new Insets( 0, 0, 0, 0 ), //insets (top, left, bottom, right)
+		//				0, //ipadX
+		//				0 ) //ipadY
+		//		);
+		//		this.addComponent( detailsPalette.getCenterComponent(), new GridBagConstraints(
+		//				0, //gridX
+		//				1, //gridY
+		//				2, //gridWidth
+		//				1, //gridHeight
+		//				1.0, //weightX
+		//				0.0, //weightY
+		//				GridBagConstraints.EAST, //anchor 
+		//				GridBagConstraints.HORIZONTAL, //fill
+		//				new Insets( 0, 0, 0, 0 ), //insets (top, left, bottom, right)
+		//				0, //ipadX
+		//				0 ) //ipadY
+		//		);
 		this.isInitializing = false;
 	}
 
