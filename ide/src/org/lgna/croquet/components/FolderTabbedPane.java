@@ -198,7 +198,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
-	private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.WHITE;
+	private static java.awt.Color SELECTED_BORDER_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 221 );
 	private static java.awt.Color UNSELECTED_BORDER_COLOR = java.awt.Color.DARK_GRAY;
 
 	private static class TitlesPanel extends LineAxisPanel {
@@ -244,7 +244,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 					float cx1 = xCurve0;
 
 					float y0 = y + NORTH_AREA_PAD;
-					float y1 = y + height;// + this.contentBorderInsets.top;
+					float y1 = y + height + 1;// + this.contentBorderInsets.top;
 					float cy0 = y0;
 					float cy1 = y1;
 
@@ -270,7 +270,17 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 					int width = button.getWidth();
 					int height = button.getHeight();
 					java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
-					g2.draw( path );
+					java.awt.Shape prevClip = g2.getClip();
+					try {
+						if( button.getModel().isSelected() ) {
+							java.awt.Rectangle bounds = prevClip.getBounds();
+							bounds.height += 1;
+							g2.setClip( bounds );
+						}
+						g2.draw( path );
+					} finally {
+						g2.setClip( prevClip );
+					}
 				}
 
 				private void paintTabBackground( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
