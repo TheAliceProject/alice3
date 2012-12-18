@@ -57,6 +57,7 @@ import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;
 import org.lgna.croquet.components.Spinner;
 
+//todo: composite
 public class SnapControlPanel extends GridBagPanel implements ChangeListener, ActionListener
 {
 	private Spinner gridSizeSpinner;
@@ -65,10 +66,8 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	private Spinner snapAngleSpinner;
 	private Label snapAngleLabel;
 
-	private GridBagPanel detailsPanel;
 	private LineAxisPanel snapToGridPanel;
 	private LineAxisPanel rotationSnapPanel;
-	private org.lgna.croquet.components.ToolPaletteView detailsPalette;
 
 	private boolean isInitializing = false;
 
@@ -83,8 +82,6 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 
 	public SnapControlPanel()
 	{
-		this.detailsPanel = new GridBagPanel();
-		this.detailsPalette = SnapDetailsToolPaletteCoreComposite.getInstance().getOuterComposite().getView();
 		initializeUI();
 		SnapState.getInstance().getIsSnapEnabledState().addAndInvokeValueListener( this.snapStateValueObserver );
 		updateUIFromSnapState();
@@ -94,7 +91,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 	public void setBackgroundColor( java.awt.Color color )
 	{
 		super.setBackgroundColor( color );
-		this.detailsPalette.setBackgroundColor( color );
+		SnapDetailsToolPaletteCoreComposite.getInstance().getOuterComposite().getView().getTitle().setBackgroundColor( color );
 	}
 
 	protected void initializeUI()
@@ -126,6 +123,8 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 		this.snapAngleSpinner.getAwtComponent().setMaximumSize( spinnerSize );
 		rotationSnapPanel.addComponent( this.snapAngleSpinner );
 
+		//todo: move to SnapDetailsToolPaletteCoreView
+		org.lgna.croquet.components.GridBagPanel detailsPanel = SnapDetailsToolPaletteCoreComposite.getInstance().getView();
 		detailsPanel.addComponent( snapToGridPanel, new GridBagConstraints(
 				0, //gridX
 				1, //gridY
@@ -179,7 +178,11 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.addComponent( detailsPalette, new GridBagConstraints(
+
+		org.lgna.croquet.components.ToolPaletteView toolPaletteView = SnapDetailsToolPaletteCoreComposite.getInstance().getOuterComposite().getView();
+		org.lgna.croquet.components.ToolPaletteTitle title = toolPaletteView.getTitle();
+		title.setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+		this.addComponent( title, new GridBagConstraints(
 				1, //gridX
 				0, //gridY
 				1, //gridWidth
@@ -192,32 +195,19 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 				0, //ipadX
 				0 ) //ipadY
 		);
-		//		this.addComponent( detailsPalette.getTitle(), new GridBagConstraints(
-		//				1, //gridX
-		//				0, //gridY
-		//				1, //gridWidth
-		//				1, //gridHeight
-		//				1.0, //weightX
-		//				0.0, //weightY
-		//				GridBagConstraints.EAST, //anchor 
-		//				GridBagConstraints.HORIZONTAL, //fill
-		//				new Insets( 0, 0, 0, 0 ), //insets (top, left, bottom, right)
-		//				0, //ipadX
-		//				0 ) //ipadY
-		//		);
-		//		this.addComponent( detailsPalette.getCenterComponent(), new GridBagConstraints(
-		//				0, //gridX
-		//				1, //gridY
-		//				2, //gridWidth
-		//				1, //gridHeight
-		//				1.0, //weightX
-		//				0.0, //weightY
-		//				GridBagConstraints.EAST, //anchor 
-		//				GridBagConstraints.HORIZONTAL, //fill
-		//				new Insets( 0, 0, 0, 0 ), //insets (top, left, bottom, right)
-		//				0, //ipadX
-		//				0 ) //ipadY
-		//		);
+		this.addComponent( SnapDetailsToolPaletteCoreComposite.getInstance().getOuterComposite().getView(), new GridBagConstraints(
+				0, //gridX
+				1, //gridY
+				2, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.EAST, //anchor 
+				GridBagConstraints.HORIZONTAL, //fill
+				new Insets( 0, 0, 0, 0 ), //insets (top, left, bottom, right)
+				0, //ipadX
+				0 ) //ipadY
+		);
 		this.isInitializing = false;
 	}
 
