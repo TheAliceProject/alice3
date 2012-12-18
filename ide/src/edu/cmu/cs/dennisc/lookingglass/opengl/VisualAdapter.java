@@ -162,7 +162,6 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			rc.gl.glMultMatrixd( m_scaleBuffer );
 			rc.incrementScaledCount();
 		}
-
 		if( m_frontFacingAppearanceAdapter == m_backFacingAppearanceAdapter ) {
 			if( m_frontFacingAppearanceAdapter != null ) {
 				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT_AND_BACK );

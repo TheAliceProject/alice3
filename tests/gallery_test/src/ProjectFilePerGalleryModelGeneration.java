@@ -86,7 +86,7 @@ public class ProjectFilePerGalleryModelGeneration {
 			org.lgna.project.Project project = new org.lgna.project.Project( programType );
 			
 			
-			String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + org.lgna.project.Version.getCurrentVersionText() + "/" + valueType.getName() + "/" + argumentField.getName() + ".a3p";
+			String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + org.lgna.project.ProjectVersion.getCurrentVersionText() + "/" + valueType.getName() + "/" + argumentField.getName() + ".a3p";
 			
 			org.lgna.project.io.IoUtilities.writeProject( path, project );
 			
