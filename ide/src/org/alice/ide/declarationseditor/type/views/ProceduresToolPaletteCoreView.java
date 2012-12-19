@@ -42,18 +42,11 @@
  */
 package org.alice.ide.declarationseditor.type.views;
 
-import org.alice.ide.declarationseditor.type.components.ProcedureList;
-
 /**
  * @author Dennis Cosgrove
  */
-public class ProceduresToolPaletteCoreView extends MembersToolPaletteCoreView {
+public class ProceduresToolPaletteCoreView extends MethodsToolPaletteCoreView {
 	public ProceduresToolPaletteCoreView( org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite composite ) {
 		super( composite );
-
-		this.addComponent( new ProcedureList( composite.getType() ) );
-
-		this.addComponent( composite.getMethodsComposite().getView() );
-		this.addComponent( org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( composite.getType() ).getOperation().createButton() );
 	}
 }

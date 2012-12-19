@@ -45,8 +45,17 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite {
-	public MethodsToolPaletteCoreComposite( java.util.UUID migrationId, org.lgna.project.ast.NamedUserType type ) {
-		super( migrationId, true, type );
+public abstract class MethodsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite<org.alice.ide.declarationseditor.type.data.MethodData> {
+	private final MethodsComposite methodsComposite;
+
+	public MethodsToolPaletteCoreComposite( java.util.UUID migrationId, org.alice.ide.declarationseditor.type.data.MethodData data ) {
+		super( migrationId, true, data );
+		this.methodsComposite = new MethodsComposite( java.util.UUID.fromString( "e35165d2-1c84-4cd8-9f20-99a43bbe4263" ), data );
 	}
+
+	public MethodsComposite getMethodsComposite() {
+		return this.methodsComposite;
+	}
+
+	public abstract org.lgna.croquet.Operation getAddMethodOperation();
 }

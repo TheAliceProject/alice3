@@ -45,8 +45,10 @@ package org.alice.ide.declarationseditor.type.views;
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionsToolPaletteCoreView extends MethodsToolPaletteCoreView {
-	public FunctionsToolPaletteCoreView( org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite composite ) {
+public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
+	public MethodsToolPaletteCoreView( org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite composite ) {
 		super( composite );
+		this.addComponent( composite.getMethodsComposite().getView() );
+		this.addComponent( composite.getAddMethodOperation().createButton() );
 	}
 }

@@ -45,9 +45,9 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite<org.alice.ide.declarationseditor.type.views.FieldsToolPaletteCoreView> {
+public class FieldsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite {
 	public FieldsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "825af354-f73e-48ac-92b7-00359c6c7320" ), true, type );
+		super( java.util.UUID.fromString( "825af354-f73e-48ac-92b7-00359c6c7320" ), true, new org.alice.ide.declarationseditor.type.data.UnmanagedFieldData( type ) );
 	}
 
 	@Override

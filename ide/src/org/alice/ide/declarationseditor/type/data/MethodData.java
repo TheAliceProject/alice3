@@ -48,7 +48,7 @@ package org.alice.ide.declarationseditor.type.data;
  */
 public abstract class MethodData extends FilteredMemberData<org.lgna.project.ast.UserMethod> {
 	public MethodData( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.project.ast.UserMethod.class, type.methods );
+		super( org.lgna.project.ast.UserMethod.class, type, type.methods );
 	}
 
 	@Override

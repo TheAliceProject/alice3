@@ -48,6 +48,6 @@ package org.alice.ide.declarationseditor.type.data;
  */
 public abstract class FieldData extends FilteredMemberData<org.lgna.project.ast.UserField> {
 	public FieldData( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.project.ast.UserField.class, type.fields );
+		super( org.lgna.project.ast.UserField.class, type, type.fields );
 	}
 }

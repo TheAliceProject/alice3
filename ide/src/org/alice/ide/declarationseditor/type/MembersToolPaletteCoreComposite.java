@@ -45,16 +45,20 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersToolPaletteCoreComposite<V extends org.alice.ide.declarationseditor.type.views.MembersToolPaletteCoreView> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
-	private final org.lgna.project.ast.NamedUserType type;
+public abstract class MembersToolPaletteCoreComposite<D extends org.alice.ide.declarationseditor.type.data.FilteredMemberData<?>> extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.ide.declarationseditor.type.views.MembersToolPaletteCoreView> {
+	private final D data;
 
-	public MembersToolPaletteCoreComposite( java.util.UUID migrationId, boolean initialValue, org.lgna.project.ast.NamedUserType type ) {
+	public MembersToolPaletteCoreComposite( java.util.UUID migrationId, boolean initialValue, D data ) {
 		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, initialValue );
-		this.type = type;
+		this.data = data;
+	}
+
+	public D getData() {
+		return this.data;
 	}
 
 	public org.lgna.project.ast.NamedUserType getType() {
-		return this.type;
+		return this.data.getType();
 	}
 
 	@Override

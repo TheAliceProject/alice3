@@ -47,7 +47,7 @@ package org.alice.ide.declarationseditor.type;
  */
 public class ConstructorsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite {
 	public ConstructorsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "f1dd7570-db0e-43c3-a066-b75e198c63ec" ), false, type );
+		super( java.util.UUID.fromString( "f1dd7570-db0e-43c3-a066-b75e198c63ec" ), false, new org.alice.ide.declarationseditor.type.data.ConstructorData( type ) );
 	}
 
 	@Override
