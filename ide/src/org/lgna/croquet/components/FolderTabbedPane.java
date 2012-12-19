@@ -109,13 +109,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 			return bounds.getSize();
 		}
-		//		@Override
-		//		protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, java.lang.String text ) {
-		//			int EPIC_HACK_offsetLeft = 6; 
-		//			g.translate( -EPIC_HACK_offsetLeft, 0 );
-		//			super.paintText( g, b, textRect, text );
-		//			g.translate( EPIC_HACK_offsetLeft, 0 );
-		//		}
 	}
 
 	private static class JFolderTabTitle extends javax.swing.JToggleButton {
@@ -199,6 +192,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	private static java.awt.Color SELECTED_BORDER_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 221 );
+	//private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.RED;
 	private static java.awt.Color UNSELECTED_BORDER_COLOR = java.awt.Color.DARK_GRAY;
 
 	private static class TitlesPanel extends LineAxisPanel {
@@ -275,6 +269,10 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 						if( button.getModel().isSelected() ) {
 							java.awt.Rectangle bounds = prevClip.getBounds();
 							bounds.height += 1;
+							//todo: investigate
+							//							java.awt.Rectangle lineBelow = new java.awt.Rectangle( , , , 1 );
+							//							java.awt.Shape clip = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( prevClip, lineBelow );
+							//							g2.setClip( clip );
 							g2.setClip( bounds );
 						}
 						g2.draw( path );
