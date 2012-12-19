@@ -164,7 +164,6 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 							this.mapItemToButton.put( item, button );
 						}
 						this.addItem( item, button );
-						//						this.buttonGroup.add( button.getAwtComponent() );
 					}
 					this.addEpilogue();
 				}

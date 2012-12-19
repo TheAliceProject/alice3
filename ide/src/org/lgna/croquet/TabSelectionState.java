@@ -92,16 +92,16 @@ public abstract class TabSelectionState<T extends TabComposite<?>> extends ListS
 
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
-		TabComposite<?> selected = this.getValue();
-		if( selected != null ) {
-			selected.handlePreActivation();
-		}
+		//		TabComposite<?> selected = this.getValue();
+		//		if( selected != null ) {
+		//			selected.handlePreActivation();
+		//		}
 	}
 
 	public void handlePostDeactivation() {
-		TabComposite<?> selected = this.getValue();
-		if( selected != null ) {
-			selected.handlePostDeactivation();
-		}
+		//		TabComposite<?> selected = this.getValue();
+		//		if( selected != null ) {
+		//			selected.handlePostDeactivation();
+		//		}
 	}
 }

@@ -50,8 +50,9 @@ public class MethodView extends org.lgna.croquet.components.LineAxisPanel {
 
 	public MethodView( org.lgna.project.ast.UserMethod method ) {
 		//org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( method, NAME_FONT_SCALE );
-		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
-		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperation( method );
+		//		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		//		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperation( method );
+		org.lgna.croquet.Operation operation = org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( method );
 		org.lgna.croquet.components.JComponent<?> hyperlink = operation.createHyperlink();
 		hyperlink.scaleFont( NAME_FONT_SCALE );
 
