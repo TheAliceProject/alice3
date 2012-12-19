@@ -60,7 +60,7 @@ public class ProcedureFunctionPropertyTabState extends TemplatesTabSelectionStat
 	}
 
 	@Override
-	public org.lgna.croquet.components.AbstractTabbedPane<?, ?> createTabbedPane() {
+	public org.lgna.croquet.components.AbstractTabbedPane<?> createTabbedPane() {
 		return this.createFolderTabbedPane();
 	}
 }

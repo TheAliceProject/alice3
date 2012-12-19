@@ -139,7 +139,7 @@ public abstract class TemplatesTabSelectionState extends org.lgna.croquet.Simple
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, id, TemplateComposite.class, composites, 0 );
 	}
 
-	public abstract org.lgna.croquet.components.AbstractTabbedPane<?, ?> createTabbedPane();
+	public abstract org.lgna.croquet.components.AbstractTabbedPane<?> createTabbedPane();
 
 	//	public final org.lgna.croquet.components.AbstractTabbedPane< ?,?,? > createTabbedPane() {
 	//		return this.createTabbedPane( new TabCreator< TemplateComposite >() {

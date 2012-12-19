@@ -46,33 +46,40 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends ItemSelectable<javax.swing.JPanel, E, org.lgna.croquet.ListSelectionState<E>> {
+public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.JPanel, E, org.lgna.croquet.ListSelectionState<E>> {
+	private final java.util.Map<E, BooleanStateButton<?>> mapItemToButton = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private E[] prevItems;
+	private final javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
+		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
+			ItemSelectablePanel.this.handleListDataChanged();
+		}
+
+		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
+			ItemSelectablePanel.this.handleListDataChanged();
+		}
+
+		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
+			ItemSelectablePanel.this.handleListDataChanged();
+		}
+	};
+
 	public ItemSelectablePanel( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
 
 	private boolean isInitialized = false;
 
-	protected final void initializeIfNecessary() {
+	@Override
+	protected void handleDisplayable() {
 		if( this.isInitialized ) {
 			//pass
 		} else {
-			this.setSwingComboBoxModel( this.getModel().getSwingModel().getComboBoxModel() );
-			this.setSwingListSelectionModel( this.getModel().getSwingModel().getListSelectionModel() );
+			this.getModel().getData().addListener( this.listDataListener );
+			this.handleListDataChanged();
 			this.isInitialized = true;
 		}
-	}
-
-	@Override
-	protected void handleDisplayable() {
-		this.initializeIfNecessary();
 		super.handleDisplayable();
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		//todo?
-		super.handleUndisplayable();
 	}
 
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
@@ -102,54 +109,35 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 		return rv;
 	}
 
-	private java.util.Map<E, ID> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-	private javax.swing.ComboBoxModel comboBoxModel;
-	private javax.swing.ListSelectionModel listSelectionModel;
-	private javax.swing.event.ListDataListener listDataListener = new javax.swing.event.ListDataListener() {
-		public void intervalAdded( javax.swing.event.ListDataEvent e ) {
-			ItemSelectablePanel.this.handleListDataChanged();
-		}
-
-		public void intervalRemoved( javax.swing.event.ListDataEvent e ) {
-			ItemSelectablePanel.this.handleListDataChanged();
-		}
-
-		public void contentsChanged( javax.swing.event.ListDataEvent e ) {
-			ItemSelectablePanel.this.handleListDataChanged();
-		}
-	};
-
-	protected ID getItemDetails( E item ) {
-		return this.map.get( item );
+	protected BooleanStateButton<?> getItemDetails( E item ) {
+		return this.mapItemToButton.get( item );
 	}
 
-	protected java.util.Collection<ID> getAllItemDetails() {
-		return this.map.values();
+	protected java.util.Collection<BooleanStateButton<?>> getAllButtons() {
+		return this.mapItemToButton.values();
 	}
+
+	protected abstract BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState );
 
 	protected abstract void removeAllDetails();
 
 	protected abstract void addPrologue( int count );
 
-	protected abstract void addItem( ID itemDetails );
+	protected abstract void addItem( E item, BooleanStateButton<?> button );
 
 	protected abstract void addEpilogue();
 
-	protected abstract BooleanStateButton<?> createButtonForItemSelectedState( E item, org.lgna.croquet.BooleanState itemSelectedState );
-
-	private java.util.ArrayList<E> prevItems = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-
 	private void handleListDataChanged() {
-		synchronized( this.comboBoxModel ) {
-			final int N = this.comboBoxModel.getSize();
+		org.lgna.croquet.data.ListData<E> data = this.getModel().getData();
+		synchronized( data ) {
+			final int N = data.getItemCount();
 
 			boolean isActuallyChanged;
-			if( N == prevItems.size() ) {
+			if( ( prevItems != null ) && ( N == prevItems.length ) ) {
 				isActuallyChanged = false;
 				for( int i = 0; i < N; i++ ) {
-					E item = (E)this.comboBoxModel.getElementAt( i );
-					if( item == prevItems.get( i ) ) {
+					E item = data.getItemAt( i );
+					if( item == prevItems[ i ] ) {
 						//pass
 					} else {
 						isActuallyChanged = true;
@@ -158,27 +146,25 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 				}
 			} else {
 				isActuallyChanged = true;
-				;
 			}
 
 			if( isActuallyChanged ) {
 				synchronized( this.getTreeLock() ) {
+
 					this.removeAllDetails();
-					this.prevItems.clear();
-					this.prevItems.ensureCapacity( N );
+					this.prevItems = data.toArray();
 					this.addPrologue( N );
 					for( int i = 0; i < N; i++ ) {
-						E item = (E)this.comboBoxModel.getElementAt( i );
-						ID itemDetails = this.map.get( item );
-						if( itemDetails != null ) {
+						E item = data.getItemAt( i );
+						BooleanStateButton<?> button = this.mapItemToButton.get( item );
+						if( button != null ) {
 							//pass
 						} else {
-							itemDetails = this.createItemDetails( item );
-							this.map.put( item, itemDetails );
+							button = this.createButtonForItemSelectedState( item, this.getModel().getItemSelectedState( item ) );
+							this.mapItemToButton.put( item, button );
 						}
-						itemDetails.add( this.buttonGroup );
-						this.addItem( itemDetails );
-						this.prevItems.add( item );
+						this.addItem( item, button );
+						//						this.buttonGroup.add( button.getAwtComponent() );
 					}
 					this.addEpilogue();
 				}
@@ -196,73 +182,8 @@ public abstract class ItemSelectablePanel<E, ID extends ItemDetails<E>> extends 
 		this.revalidateAndRepaint();
 	}
 
-	protected abstract ID createItemDetails( E item );
-
-	//	protected void handleItemSelected( E item ) {
-	//		if( item != null ) {
-	//			ItemDetails<E> itemDetails = this.map.get( item );
-	//			assert itemDetails != null : item;
-	//			itemDetails.setSelected( true );
-	//		} else {
-	//			//todo: use buttonGroup.clearSelection() when 1.6
-	//			java.util.Enumeration<javax.swing.AbstractButton> buttonEnum = this.buttonGroup.getElements();
-	//			while( buttonEnum.hasMoreElements() ) {
-	//				javax.swing.AbstractButton button = buttonEnum.nextElement();
-	//				javax.swing.ButtonModel model = button.getModel();
-	//				if( model.isSelected() ) {
-	//					this.buttonGroup.remove( button );
-	//					model.setSelected( false );
-	//					this.buttonGroup.add( button );
-	//				}
-	//			}
-	//		}
-	//	}
-
 	@Override
 	public org.lgna.croquet.components.TrackableShape getTrackableShapeFor( E item ) {
-		ItemDetails<E> itemDetails = this.getItemDetails( item );
-		if( itemDetails != null ) {
-			return itemDetails.getTrackableShape();
-		} else {
-			return null;
-		}
-	}
-
-	/* package-private */javax.swing.ComboBoxModel getSwingComboBoxModel() {
-		return this.comboBoxModel;
-	}
-
-	private void setSwingComboBoxModel( javax.swing.ComboBoxModel model ) {
-		//		if( this.comboBoxModel != null ) {
-		//			synchronized( this.comboBoxModel ) {
-		//				this.comboBoxModel.removeListDataListener( this.listDataListener );
-		//			}
-		//		}
-		this.comboBoxModel = model;
-		this.handleListDataChanged();
-		//		if( this.comboBoxModel != null ) {
-		//			synchronized( this.comboBoxModel ) {
-		//				this.comboBoxModel.addListDataListener( this.listDataListener );
-		//			}
-		//		}
-	}
-
-	/* package-private */javax.swing.ListSelectionModel getSwingListSelectionModel() {
-		return this.listSelectionModel;
-	}
-
-	private void setSwingListSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
-		//		if( this.listSelectionModel != null ) {
-		//			synchronized( this.listSelectionModel ) {
-		//				this.listSelectionModel.removeListSelectionListener( this.listSelectionListener );
-		//			}
-		//		}
-		this.listSelectionModel = listSelectionModel;
-		//this.handleListSelectionChanged();
-		//		if( this.listSelectionModel != null ) {
-		//			synchronized( this.listSelectionModel ) {
-		//				this.listSelectionModel.addListSelectionListener( this.listSelectionListener );
-		//			}
-		//		}
+		return this.getItemDetails( item );
 	}
 }

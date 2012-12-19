@@ -43,28 +43,10 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/class ToolPaletteTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
-	private final ToolPaletteTabbedPane<E> toolPaletteTabbedPane;
-
-	public ToolPaletteTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, ToolPaletteTabbedPane<E> toolPaletteTabbedPane ) {
-		super( state, item, toolPaletteTabbedPane );
-		this.toolPaletteTabbedPane = toolPaletteTabbedPane;
-	}
-
-	//	@Override
-	//	public void setSelected( boolean isSelected ) {
-	//		super.setSelected( isSelected );
-	//		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.toolPaletteTabbedPane.getAllItemDetails() ) {
-	//			tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
-	//		}
-	//		this.toolPaletteTabbedPane.revalidateAndRepaint();
-	//	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>> {
+public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
 	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
@@ -75,11 +57,6 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 		rv.setHorizontalAlignment( HorizontalAlignment.LEADING );
 		return rv;
 	}
-
-	@Override
-	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item ) {
-		return new ToolPaletteTabItemDetails<E>( this.getModel(), item, this );
-	};
 
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
@@ -93,8 +70,8 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 
 	@Override
 	protected void handleValueChanged( E card ) {
-		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.getAllItemDetails() ) {
-			tabItemDetails.getRootComponent().setVisible( tabItemDetails.getItem() == card );
+		for( E item : this.getModel().getData() ) {
+			item.getRootComponent().setVisible( item == card );
 		}
 		this.revalidateAndRepaint();
 	}
@@ -104,15 +81,15 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 	}
 
 	@Override
-	protected void addItem( ToolPaletteTabItemDetails<E> itemDetails ) {
+	protected void addItem( E item, BooleanStateButton<?> button ) {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gbc.weightx = 1.0f;
 		gbc.weighty = 0.0f;
-		this.internalAddComponent( itemDetails.getButton(), gbc );
+		this.internalAddComponent( button, gbc );
 		gbc.weighty = 1.0f;
-		this.internalAddComponent( itemDetails.getRootComponent(), gbc );
+		this.internalAddComponent( item.getRootComponent(), gbc );
 	}
 
 	@Override

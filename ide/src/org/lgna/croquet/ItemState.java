@@ -97,24 +97,12 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		}
 	}
 
-	private static class InternalItemSelectedStateButtonModel<T> extends javax.swing.JToggleButton.ToggleButtonModel {
-		private final java.util.concurrent.Callable<T> itemCallable;
-
-		public InternalItemSelectedStateButtonModel( java.util.concurrent.Callable<T> itemCallable ) {
-			this.itemCallable = itemCallable;
-		}
-
-		public java.util.concurrent.Callable<T> getItemCallable() {
-			return this.itemCallable;
-		}
-	}
-
 	private static class InternalItemSelectedState<T> extends BooleanState {
 		private final ItemState<T> state;
 		private final java.util.concurrent.Callable<T> itemCallable;
 
 		private InternalItemSelectedState( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable ) {
-			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ), new InternalItemSelectedStateButtonModel<T>( itemCallable ) );
+			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ) );
 			assert state != null;
 			this.state = state;
 			this.itemCallable = itemCallable;
@@ -138,13 +126,8 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		protected void handleItemStateChanged( java.awt.event.ItemEvent e ) {
 			//note: do not invoke super
 			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-				InternalItemSelectedStateButtonModel<T> buttonModel = (InternalItemSelectedStateButtonModel<T>)e.getItem();
 				T item = getItem( this.itemCallable );
-				if( item == getItem( buttonModel.getItemCallable() ) ) {
-					this.state.changeValueFromIndirectModel( item, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-				}
+				this.state.changeValueFromIndirectModel( item, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
 			}
 		}
 
@@ -177,17 +160,8 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 
 		@Override
 		protected org.lgna.croquet.history.CompletionStep<?> createTransactionAndInvokePerform( org.lgna.croquet.triggers.Trigger trigger ) {
-			//todo
-			if( this.state.mapItemCallableToItemSelectedState != null ) {
-				java.util.Collection<InternalItemSelectedState<T>> itemSelectedStates = this.state.mapItemCallableToItemSelectedState.values();
-				for( InternalItemSelectedState<T> itemSelectedState : itemSelectedStates ) {
-					boolean isSelected = getItem( itemSelectedState.itemCallable ) == getItem( itemCallable );
-					if( isSelected ) {
-						itemSelectedState.getSwingModel().getButtonModel().setSelected( isSelected );
-					}
-				}
-			}
-			return this.state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, trigger );
+			T item = getItem( this.itemCallable );
+			return this.state.changeValueFromIndirectModel( item, IsAdjusting.FALSE, trigger );
 		}
 
 		@Override
@@ -241,4 +215,39 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 	public ActionOperation getItemSelectionOperation( final T item ) {
 		return getItemSelectionOperation( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
 	}
+
+	@Override
+	protected void fireChanged( T prevValue, T nextValue, org.lgna.croquet.State.IsAdjusting isAdjusting ) {
+		super.fireChanged( prevValue, nextValue, isAdjusting );
+		//todo
+		if( this.mapItemCallableToItemSelectedState != null ) {
+			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
+				T item = getItem( itemSelectedState.itemCallable );
+				boolean isSelected = item == nextValue;
+				itemSelectedState.getSwingModel().getButtonModel().setSelected( isSelected );
+			}
+		}
+	}
+	//	@Override
+	//	protected void setCurrentTruthAndBeautyValue( T value ) {
+	//		super.setCurrentTruthAndBeautyValue( value );
+	//		if( this.mapItemCallableToItemSelectedState != null ) {
+	//			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
+	//				T item = getItem( itemSelectedState.itemCallable );
+	//				boolean isSelected = item == value;
+	//				itemSelectedState.setCurrentTruthAndBeautyValue( isSelected );
+	//			}
+	//		}
+	//	}
+	//
+	//	@Override
+	//	protected void setSwingValue( T value ) {
+	//		if( this.mapItemCallableToItemSelectedState != null ) {
+	//			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
+	//				T item = getItem( itemSelectedState.itemCallable );
+	//				boolean isSelected = item == value;
+	//				itemSelectedState.setSwingValue( isSelected );
+	//			}
+	//		}
+	//	}
 }

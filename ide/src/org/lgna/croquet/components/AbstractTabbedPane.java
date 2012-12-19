@@ -43,31 +43,13 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.ListSelectionState;
-
-/*package-private*/abstract class TabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends ItemDetails<E> {
-	public TabItemDetails( org.lgna.croquet.ItemState<E> state, E item, AbstractTabbedPane<E, ?> tabbedPane ) {
-		super( state, item, tabbedPane );
-		View<?, ?> mainView = this.getMainView();
-		this.getButton().setBackgroundColor( mainView.getBackgroundColor() );
-	}
-
-	public View<?, ?> getMainView() {
-		return this.getItem().getView();
-	}
-
-	public JComponent<?> getRootComponent() {
-		return this.getItem().getRootComponent();
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite<?>, TID extends TabItemDetails<E>> extends ItemSelectablePanel<E, TID> {
+public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends ItemSelectablePanel<E> {
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			ListSelectionState<E> model = getModel();
+			org.lgna.croquet.ListSelectionState<E> model = getModel();
 			int index = e.getFirstIndex();
 			E card = index != -1 ? model.getItemAt( index ) : null;
 			AbstractTabbedPane.this.handleValueChanged( card );
@@ -81,8 +63,8 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 	@Override
 	public void setFont( java.awt.Font font ) {
 		super.setFont( font );
-		for( TID itemDetails : this.getAllItemDetails() ) {
-			itemDetails.getButton().setFont( font );
+		for( BooleanStateButton<?> button : this.getAllButtons() ) {
+			button.setFont( font );
 		}
 	}
 
@@ -95,16 +77,8 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 
 	protected abstract BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener );
 
-	protected abstract TID createTabItemDetails( E item );
-
-	@Override
-	protected final TID createItemDetails( final E item ) {
-		return this.createTabItemDetails( item );
-	}
-
 	@Override
 	protected void handleDisplayable() {
-		this.initializeIfNecessary();
 		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 		this.handleValueChanged( this.getModel().getValue() );
 		super.handleDisplayable();

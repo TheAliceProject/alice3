@@ -60,7 +60,7 @@ public abstract class TabSelectionState<T extends TabComposite<?>> extends ListS
 	}
 
 	public org.lgna.croquet.components.JComponent<?> getMainComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane<T> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( tabbedPane != null ) {
 			return tabbedPane.getMainComponentFor( item );
 		} else {
@@ -69,7 +69,7 @@ public abstract class TabSelectionState<T extends TabComposite<?>> extends ListS
 	}
 
 	public org.lgna.croquet.components.ScrollPane getScrollPaneFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane<T> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( tabbedPane != null ) {
 			return tabbedPane.getScrollPaneFor( item );
 		} else {
@@ -78,7 +78,7 @@ public abstract class TabSelectionState<T extends TabComposite<?>> extends ListS
 	}
 
 	public org.lgna.croquet.components.JComponent<?> getRootComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane<T> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( tabbedPane != null ) {
 			return tabbedPane.getRootComponentFor( item );
 		} else {

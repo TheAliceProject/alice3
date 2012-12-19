@@ -49,28 +49,10 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
 
-/*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
-	private final FolderTabbedPane<E> folderTabbedPane;
-
-	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane ) {
-		super( state, item, folderTabbedPane );
-		this.folderTabbedPane = folderTabbedPane;
-	}
-
-	//	@Override
-	//	public void setSelected( boolean isSelected ) {
-	//		super.setSelected( isSelected );
-	//		if( isSelected ) {
-	//			this.folderTabbedPane.getCardPanel().showComposite( this.getItem() );
-	//			this.folderTabbedPane.getCardPanel().revalidateAndRepaint();
-	//		}
-	//	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E, FolderTabItemDetails<E>> {
+public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 
@@ -560,13 +542,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		return new FolderTabTitle( itemSelectedState, closeButtonActionListener );
 	}
 
-	@Override
-	protected FolderTabItemDetails<E> createTabItemDetails( E item ) {
-		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this.getModel(), item, this );
-		rv.getRootComponent().setVisible( false );
-		return rv;
-	};
-
 	/* package-private */CardPanel getCardPanel() {
 		return this.cardComposite.getView();
 	}
@@ -582,9 +557,9 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	@Override
-	protected void addItem( FolderTabItemDetails<E> folderTabItemDetails ) {
-		this.titlesPanel.addComponent( folderTabItemDetails.getButton() );
-		this.cardComposite.getView().addComposite( folderTabItemDetails.getItem() );
+	protected void addItem( E item, BooleanStateButton<?> button ) {
+		this.titlesPanel.addComponent( button );
+		this.cardComposite.getView().addComposite( item );
 	}
 
 	@Override

@@ -60,7 +60,7 @@ public class ProcedureFunctionControlFlowTabState extends TemplatesTabSelectionS
 	}
 
 	@Override
-	public org.lgna.croquet.components.AbstractTabbedPane<?, ?> createTabbedPane() {
+	public org.lgna.croquet.components.AbstractTabbedPane<?> createTabbedPane() {
 		return this.createToolPaletteTabbedPane();
 	}
 }

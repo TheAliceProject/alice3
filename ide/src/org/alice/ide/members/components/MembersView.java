@@ -69,7 +69,7 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
 
 		this.addPageStartComponent( instancePanel );
-		org.lgna.croquet.components.AbstractTabbedPane<?, ?> tabbedPane;
+		org.lgna.croquet.components.AbstractTabbedPane<?> tabbedPane;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 				tabbedPane = composite.getTabState().createFolderTabbedPane();
