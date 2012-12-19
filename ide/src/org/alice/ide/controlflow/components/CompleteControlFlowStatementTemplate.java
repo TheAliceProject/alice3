@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ui.preferences;
+package org.alice.ide.controlflow.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsAlwaysShowingBlocksState {
-	private static class SingletonHolder {
-		private static IsAlwaysShowingBlocksState instance = new IsAlwaysShowingBlocksState();
-	}
+public class CompleteControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
+	public CompleteControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+		super( dragModel, dragModel.getStatementCls() );
+		org.lgna.project.ast.Statement incompleteStatement = dragModel.getPossiblyIncompleteStatement();
+		org.lgna.croquet.components.JComponent<?> incompleteStatementPane;
+		if( incompleteStatement instanceof org.lgna.project.ast.Comment ) {
+			incompleteStatementPane = new org.alice.ide.codeeditor.CommentPane( null, org.alice.ide.x.TemplateAstI18nFactory.getInstance(), (org.lgna.project.ast.Comment)incompleteStatement, null ) {
+				@Override
+				protected void paintOutline( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+				}
 
-	public static IsAlwaysShowingBlocksState getInstance() {
-		return SingletonHolder.instance;
-	}
+				@Override
+				protected boolean contains( int x, int y, boolean jContains ) {
+					return false;
+				}
+			};
+		} else {
+			incompleteStatementPane = new org.alice.ide.common.DefaultStatementPane( null, org.alice.ide.x.TemplateAstI18nFactory.getInstance(), incompleteStatement, null ) {
+				@Override
+				protected void paintOutline( java.awt.Graphics2D g2, java.awt.Shape shape ) {
+				}
 
-	private IsAlwaysShowingBlocksState() {
-	}
-
-	public final boolean getValue() {
-		return false;
+				@Override
+				protected boolean contains( int x, int y, boolean jContains ) {
+					return false;
+				}
+			};
+			//			incompleteStatementPane = org.alice.ide.x.TemplateAstI18nFactory.getInstance().createComponent( incompleteStatement );
+		}
+		//org.alice.ide.common.AbstractStatementPane incompleteStatementPane = org.alice.ide.x.TemplateAstI18nFactory.getInstance().createStatementPane( null, incompleteStatement, null );
+		this.internalAddComponent( incompleteStatementPane );
 	}
 }

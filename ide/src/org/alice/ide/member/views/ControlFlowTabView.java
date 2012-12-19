@@ -46,6 +46,9 @@ package org.alice.ide.member.views;
  * @author Dennis Cosgrove
  */
 public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
+	private static final boolean IS_MINI_DESIRED = false;
+	private static final int GAP_TOP = IS_MINI_DESIRED ? 8 : 16;
+
 	public ControlFlowTabView( org.alice.ide.member.ControlFlowTabComposite composite ) {
 		super( composite, "insets 4, gap 0" );
 		this.addHeader( composite.getDoInOrderHeader() );
@@ -71,12 +74,19 @@ public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "wrap" );
 		if( this.getComponentCount() > 0 ) {
-			sb.append( ", gaptop 8" );
+			sb.append( ", gaptop " );
+			sb.append( GAP_TOP );
 		}
 		this.addComponent( stringValue.createImmutableTextField( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), sb.toString() );
 	}
 
 	private void addDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
-		this.addComponent( new org.alice.ide.controlflow.components.ControlFlowStatementTemplate( dragModel ), "wrap, gapleft 8" );
+		org.lgna.croquet.components.DragComponent<?, ?> dragComponent;
+		if( IS_MINI_DESIRED ) {
+			dragComponent = new org.alice.ide.controlflow.components.MiniControlFlowStatementTemplate( dragModel );
+		} else {
+			dragComponent = new org.alice.ide.controlflow.components.CompleteControlFlowStatementTemplate( dragModel );
+		}
+		this.addComponent( dragComponent, "wrap, gapleft 8" );
 	}
 }

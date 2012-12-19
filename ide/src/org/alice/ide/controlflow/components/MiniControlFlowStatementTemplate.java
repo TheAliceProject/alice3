@@ -46,13 +46,13 @@ package org.alice.ide.controlflow.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
+public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.StatementTemplate {
 	private final org.lgna.project.ast.Statement incompleteStatement;
 	private org.lgna.croquet.components.JComponent<?> incompleteStatementPane;
 	private org.lgna.croquet.components.Label label;
 	private javax.swing.JToolTip toolTip;
 
-	public ControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+	public MiniControlFlowStatementTemplate( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
 		super( dragModel, dragModel.getStatementCls() );
 		this.incompleteStatement = dragModel.getPossiblyIncompleteStatement();
 	}
