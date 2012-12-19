@@ -60,7 +60,7 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.markerTab );
 
 	private SideComposite() {
-		super( java.util.UUID.fromString( "f1ae6805-24ec-400b-9459-7101f0663356" ) );
+		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
 	}
 
 	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getTabState() {
