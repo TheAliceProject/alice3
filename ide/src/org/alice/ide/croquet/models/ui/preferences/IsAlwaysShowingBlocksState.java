@@ -59,6 +59,6 @@ public class IsAlwaysShowingBlocksState {
 	}
 
 	public final boolean getValue() {
-		return false;
+		return true;
 	}
 }

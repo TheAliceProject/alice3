@@ -40,32 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.components;
+package org.alice.ide.declarationseditor.type.views;
+
+import org.alice.ide.declarationseditor.type.components.ProcedureList;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodView extends org.lgna.croquet.components.LineAxisPanel {
-	protected final float NAME_FONT_SCALE = 1.5f;
+public class ProceduresToolPaletteCoreView extends MembersToolPaletteCoreView {
+	public ProceduresToolPaletteCoreView( org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite composite ) {
+		super( composite );
 
-	public MethodView( org.lgna.project.ast.UserMethod method ) {
-		//org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( method, NAME_FONT_SCALE );
-		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
-		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperation( method );
-		org.lgna.croquet.components.JComponent<?> hyperlink = operation.createHyperlink();
-		hyperlink.scaleFont( NAME_FONT_SCALE );
+		this.addComponent( new ProcedureList( composite.getType() ) );
 
-		org.lgna.croquet.components.JComponent<?> component;
-		if( method.isProcedure() ) {
-			component = hyperlink;
-			//pass
-		} else {
-			component = new org.lgna.croquet.components.LineAxisPanel(
-					org.alice.ide.common.TypeComponent.createInstance( method.getReturnType() ),
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-					hyperlink
-					);
-		}
-		this.addComponent( component );
+		this.addComponent( composite.getMethodsComposite().getView() );
+		this.addComponent( org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( composite.getType() ).getOperation().createButton() );
 	}
 }

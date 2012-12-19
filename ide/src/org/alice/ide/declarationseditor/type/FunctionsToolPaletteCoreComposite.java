@@ -51,7 +51,7 @@ public class FunctionsToolPaletteCoreComposite extends MethodsToolPaletteCoreCom
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.components.FunctionsToolPaletteCoreView createView() {
-		return new org.alice.ide.declarationseditor.type.components.FunctionsToolPaletteCoreView( this );
+	protected org.alice.ide.declarationseditor.type.views.FunctionsToolPaletteCoreView createView() {
+		return new org.alice.ide.declarationseditor.type.views.FunctionsToolPaletteCoreView( this );
 	}
 }

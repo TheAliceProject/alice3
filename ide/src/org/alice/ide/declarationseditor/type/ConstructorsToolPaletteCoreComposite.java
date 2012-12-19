@@ -51,7 +51,7 @@ public class ConstructorsToolPaletteCoreComposite extends MembersToolPaletteCore
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.components.ConstructorsToolPaletteCoreView createView() {
-		return new org.alice.ide.declarationseditor.type.components.ConstructorsToolPaletteCoreView( this );
+	protected org.alice.ide.declarationseditor.type.views.ConstructorsToolPaletteCoreView createView() {
+		return new org.alice.ide.declarationseditor.type.views.ConstructorsToolPaletteCoreView( this );
 	}
 }

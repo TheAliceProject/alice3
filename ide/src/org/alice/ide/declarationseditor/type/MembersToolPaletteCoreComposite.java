@@ -45,7 +45,7 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.lgna.croquet.components.View> {
+public abstract class MembersToolPaletteCoreComposite<V extends org.alice.ide.declarationseditor.type.views.MembersToolPaletteCoreView> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
 	private final org.lgna.project.ast.NamedUserType type;
 
 	public MembersToolPaletteCoreComposite( java.util.UUID migrationId, boolean initialValue, org.lgna.project.ast.NamedUserType type ) {

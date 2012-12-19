@@ -40,13 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.components;
+package org.alice.ide.declarationseditor.type.views;
+
+import org.alice.ide.declarationseditor.type.components.ManagedFieldList;
+import org.alice.ide.declarationseditor.type.components.UnmanagedFieldList;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorsToolPaletteCoreView extends org.lgna.croquet.components.BorderPanel {
-	public ConstructorsToolPaletteCoreView( org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite composite ) {
-		this.addCenterComponent( new ConstructorList( composite.getType() ) );
+public class FieldsToolPaletteCoreView extends MembersToolPaletteCoreView {
+	public FieldsToolPaletteCoreView( org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite composite ) {
+		super( composite );
+		org.lgna.project.ast.NamedUserType type = composite.getType();
+		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
+			this.addComponent( new org.lgna.croquet.components.Label( "managed", 1.2f ) );
+			this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ) );
+			this.addComponent( new ManagedFieldList( type ) );
+			this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 24 ) );
+			this.addComponent( new org.lgna.croquet.components.Label( "unmanaged", 1.2f ) );
+			this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ) );
+		}
+		this.addComponent( new UnmanagedFieldList( type ) );
 	}
 }

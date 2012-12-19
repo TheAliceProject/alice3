@@ -40,28 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.components;
+package org.alice.ide.declarationseditor.type.views;
+
+import org.alice.ide.declarationseditor.type.components.FunctionList;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldsToolPaletteCoreView extends org.lgna.croquet.components.BorderPanel {
-	public FieldsToolPaletteCoreView( org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite composite ) {
-		org.lgna.project.ast.NamedUserType type = composite.getType();
-		org.lgna.croquet.components.JComponent<?> fieldPanel;
-		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
-			fieldPanel = new org.lgna.croquet.components.PageAxisPanel(
-					new org.lgna.croquet.components.Label( "managed", 1.2f ),
-					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ),
-					new ManagedFieldList( type ),
-					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 24 ),
-					new org.lgna.croquet.components.Label( "unmanaged", 1.2f ),
-					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ),
-					new UnmanagedFieldList( type )
-					);
-		} else {
-			fieldPanel = new UnmanagedFieldList( type );
-		}
-		this.addCenterComponent( fieldPanel );
+public class FunctionsToolPaletteCoreView extends MembersToolPaletteCoreView {
+	public FunctionsToolPaletteCoreView( org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite composite ) {
+		super( composite );
+		this.addComponent( new FunctionList( composite.getType() ) );
 	}
 }

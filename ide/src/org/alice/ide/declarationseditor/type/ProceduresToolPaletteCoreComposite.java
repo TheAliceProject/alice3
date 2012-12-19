@@ -46,13 +46,19 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class ProceduresToolPaletteCoreComposite extends MethodsToolPaletteCoreComposite {
+	private final MethodsComposite methodsComposite;
+
 	public ProceduresToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "cc7231d5-e01d-44c3-8f81-45555729c29a" ), type );
-		//new org.alice.ide.declarationseditor.type.data.ProcedureData( type )
+		this.methodsComposite = new MethodsComposite( java.util.UUID.fromString( "e35165d2-1c84-4cd8-9f20-99a43bbe4263" ), new org.alice.ide.declarationseditor.type.data.ProcedureData( type ) );
+	}
+
+	public MethodsComposite getMethodsComposite() {
+		return this.methodsComposite;
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.components.ProceduresToolPaletteCoreView createView() {
-		return new org.alice.ide.declarationseditor.type.components.ProceduresToolPaletteCoreView( this );
+	protected org.alice.ide.declarationseditor.type.views.ProceduresToolPaletteCoreView createView() {
+		return new org.alice.ide.declarationseditor.type.views.ProceduresToolPaletteCoreView( this );
 	}
 }

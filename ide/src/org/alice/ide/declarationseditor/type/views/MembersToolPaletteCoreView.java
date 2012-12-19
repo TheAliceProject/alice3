@@ -40,13 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.components;
+package org.alice.ide.declarationseditor.type.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionsToolPaletteCoreView extends org.lgna.croquet.components.BorderPanel {
-	public FunctionsToolPaletteCoreView( org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite composite ) {
-		this.addCenterComponent( new FunctionList( composite.getType() ) );
+public abstract class MembersToolPaletteCoreView extends org.lgna.croquet.components.PageAxisPanel {
+	public MembersToolPaletteCoreView( org.alice.ide.declarationseditor.type.MembersToolPaletteCoreComposite composite ) {
+		super( composite );
 	}
 }
