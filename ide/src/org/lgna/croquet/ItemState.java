@@ -177,6 +177,16 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 
 		@Override
 		protected org.lgna.croquet.history.CompletionStep<?> createTransactionAndInvokePerform( org.lgna.croquet.triggers.Trigger trigger ) {
+			//todo
+			if( this.state.mapItemCallableToItemSelectedState != null ) {
+				java.util.Collection<InternalItemSelectedState<T>> itemSelectedStates = this.state.mapItemCallableToItemSelectedState.values();
+				for( InternalItemSelectedState<T> itemSelectedState : itemSelectedStates ) {
+					boolean isSelected = getItem( itemSelectedState.itemCallable ) == getItem( itemCallable );
+					if( isSelected ) {
+						itemSelectedState.getSwingModel().getButtonModel().setSelected( isSelected );
+					}
+				}
+			}
 			return this.state.changeValueFromIndirectModel( getItem( this.itemCallable ), IsAdjusting.FALSE, trigger );
 		}
 
