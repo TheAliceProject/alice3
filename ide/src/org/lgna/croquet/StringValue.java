@@ -70,7 +70,7 @@ public abstract class StringValue extends AbstractElement {
 		}
 	}
 
-	public final void setText( java.lang.String text ) {
+	public final void setText( String text ) {
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );
 		} catch( javax.swing.text.BadLocationException ble ) {
