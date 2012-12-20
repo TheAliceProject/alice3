@@ -48,7 +48,7 @@ package org.alice.ide.member.views;
 public abstract class MemberTabView extends org.lgna.croquet.components.BorderPanel {
 	private final java.util.Map<org.lgna.project.ast.Member, org.lgna.croquet.components.JComponent<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public MemberTabView( org.alice.ide.member.MemberTabComposite composite ) {
+	public MemberTabView( org.alice.ide.member.MemberTabComposite<?> composite ) {
 		super( composite );
 	}
 

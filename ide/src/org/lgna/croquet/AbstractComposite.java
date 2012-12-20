@@ -624,20 +624,23 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 					StringValue sidekickLabel = model.getSidekickLabel();
 					sidekickLabel.setText( text );
 				} else {
-					Class<?> cls = this.getClassUsedForLocalization();
-					String localizationKey = cls.getSimpleName() + "." + key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE;
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "WARNING: could not find localization for sidekick label" );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "looking for:" );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "   ", localizationKey );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "in croquet.properties file in package:", cls.getPackage().getName() );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( localizationKey, "has been copied to the clipboard for your convenience." );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "if this does not solve your problem please feel free to ask dennis for help." );
-
-					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( localizationKey );
+					StringValue sidekickLabel = model.peekSidekickLabel();
+					//todo: it is probably to early for this check as we don't know if it will be accessed by the composite's view later.  hmm...
+					if( sidekickLabel != null ) {
+						Class<?> cls = this.getClassUsedForLocalization();
+						String localizationKey = cls.getSimpleName() + "." + key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE;
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "WARNING: could not find localization for sidekick label" );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "looking for:" );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "   ", localizationKey );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "in croquet.properties file in package:", cls.getPackage().getName() );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( localizationKey, "has been copied to the clipboard for your convenience." );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "if this does not solve your problem please feel free to ask dennis for help." );
+						edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( localizationKey );
+					}
 				}
 			}
 		}
