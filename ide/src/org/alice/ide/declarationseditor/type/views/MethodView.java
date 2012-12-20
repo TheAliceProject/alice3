@@ -47,24 +47,19 @@ package org.alice.ide.declarationseditor.type.views;
  */
 public class MethodView extends org.lgna.croquet.components.LineAxisPanel {
 	public MethodView( org.lgna.project.ast.UserMethod method ) {
-		//org.alice.ide.ast.components.DeclarationNameLabel nameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( method, NAME_FONT_SCALE );
-		//		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
-		//		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperation( method );
+		org.lgna.croquet.components.PopupButton popupButton = org.alice.ide.declarationseditor.type.MethodMenuModel.getInstance( method ).getPopupPrepModel().createPopupButton();
+		popupButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
+		this.addComponent( popupButton );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+
+		if( method.isFunction() ) {
+			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( method.getReturnType() ) );
+			this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
+		}
+
 		org.lgna.croquet.Operation operation = org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( method );
 		org.lgna.croquet.components.JComponent<?> hyperlink = operation.createHyperlink();
 		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
-
-		org.lgna.croquet.components.JComponent<?> component;
-		if( method.isProcedure() ) {
-			component = hyperlink;
-			//pass
-		} else {
-			component = new org.lgna.croquet.components.LineAxisPanel(
-					org.alice.ide.common.TypeComponent.createInstance( method.getReturnType() ),
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ),
-					hyperlink
-					);
-		}
-		this.addComponent( component );
+		this.addComponent( hyperlink );
 	}
 }

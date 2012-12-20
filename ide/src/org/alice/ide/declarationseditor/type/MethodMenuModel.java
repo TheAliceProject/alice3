@@ -40,34 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.views;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldsView extends MembersView<org.lgna.project.ast.UserField> {
-	public FieldsView( org.alice.ide.declarationseditor.type.FieldsComposite composite ) {
-		super( composite );
+public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.UserMethod> {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, MethodMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+
+	public static MethodMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
+		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, MethodMenuModel>() {
+			public MethodMenuModel initialize( org.lgna.project.ast.UserMethod key ) {
+				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				prepModels.add( org.alice.ide.ast.rename.RenameMethodComposite.getInstance( key ).getOperation().getMenuItemPrepModel() );
+				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
+				prepModels.add( org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( key ).getMenuItemPrepModel() );
+				return new MethodMenuModel( key, prepModels );
+			}
+		} );
 	}
 
-	@Override
-	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
-		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
-
-		org.lgna.croquet.components.PopupButton popupButton = org.alice.ide.declarationseditor.type.FieldMenuModel.getInstance( field ).getPopupPrepModel().createPopupButton();
-		popupButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
-		rv.addComponent( popupButton );
-		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-		org.lgna.project.ast.ManagementLevel managementLevel = field.managementLevel.getValue();
-		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
-			label.setToolTipText( "managed by the scene editor" );
-			label.setForegroundColor( java.awt.Color.GRAY );
-			label.scaleFont( 2.0f );
-			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-			rv.addComponent( label );
-		}
-		rv.addComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED ) );
-		return rv;
+	private MethodMenuModel( org.lgna.project.ast.UserMethod method, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels ) {
+		super( java.util.UUID.fromString( "bc472c3c-5851-4a32-a156-2eb89596db1d" ), method, prepModels );
 	}
 }
