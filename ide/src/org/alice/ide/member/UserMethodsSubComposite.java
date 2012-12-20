@@ -47,11 +47,31 @@ package org.alice.ide.member;
  */
 public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 	private final org.lgna.project.ast.NamedUserType type;
+	private final org.lgna.croquet.Operation addMethodOperation;
 
-	public UserMethodsSubComposite( java.util.UUID migrationId, org.lgna.project.ast.NamedUserType type ) {
+	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod> methodPropertyListener = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter<org.lgna.project.ast.UserMethod>() {
+		@Override
+		protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserMethod> e ) {
+		}
+
+		@Override
+		protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent<org.lgna.project.ast.UserMethod> e ) {
+			getView().refreshLater();
+		}
+	};
+
+	public UserMethodsSubComposite( java.util.UUID migrationId, org.lgna.project.ast.NamedUserType type, org.lgna.croquet.Operation addMethodOperation ) {
 		super( migrationId, true );
 		this.type = type;
+		this.addMethodOperation = addMethodOperation;
 		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.type ) );
+
+		//todo: move to handlePreActivation/handlePostDeactivation
+		type.methods.addListPropertyListener( this.methodPropertyListener );
+	}
+
+	public final org.lgna.croquet.Operation getAddMethodOperation() {
+		return this.addMethodOperation;
 	}
 
 	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
@@ -66,4 +86,21 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 		}
 		return rv;
 	}
+
+	@Override
+	protected org.alice.ide.member.views.UserMethodsSubView createView() {
+		return new org.alice.ide.member.views.UserMethodsSubView( this );
+	}
+
+	//	@Override
+	//	public void handlePreActivation() {
+	//		super.handlePreActivation();
+	//		type.methods.addListPropertyListener( this.methodPropertyListener );
+	//	}
+	//
+	//	@Override
+	//	public void handlePostDeactivation() {
+	//		type.methods.removeListPropertyListener( this.methodPropertyListener );
+	//		super.handlePostDeactivation();
+	//	}
 }

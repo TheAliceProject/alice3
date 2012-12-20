@@ -68,9 +68,4 @@ public abstract class MethodsSubComposite extends org.lgna.croquet.ToolPaletteCo
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
-
-	@Override
-	protected org.alice.ide.member.views.MethodsSubView createView() {
-		return new org.alice.ide.member.views.MethodsSubView( this );
-	}
 }

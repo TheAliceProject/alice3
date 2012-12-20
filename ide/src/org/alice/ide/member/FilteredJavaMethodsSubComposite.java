@@ -83,6 +83,11 @@ public abstract class FilteredJavaMethodsSubComposite extends MethodsSubComposit
 		return this.methods;
 	}
 
+	@Override
+	protected org.alice.ide.member.views.MethodsSubView<FilteredJavaMethodsSubComposite> createView() {
+		return new org.alice.ide.member.views.MethodsSubView<FilteredJavaMethodsSubComposite>( this );
+	}
+
 	public void sortAndSetMethods( java.util.List<org.lgna.project.ast.JavaMethod> unsortedMethods ) {
 		java.util.Collections.sort( unsortedMethods, this.getComparator() );
 		this.methods = java.util.Collections.unmodifiableList( unsortedMethods );

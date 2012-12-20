@@ -40,33 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+package org.alice.ide.member.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserFunctionsSubComposite extends UserMethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserFunctionsSubComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static synchronized UserFunctionsSubComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
-		assert type != null;
-		UserFunctionsSubComposite rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new UserFunctionsSubComposite( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
-
-	private UserFunctionsSubComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "7e67d035-f06d-4a05-962c-b7924c48893a" ), type, org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getOperation() );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Functions" );
+public class UserMethodsSubView extends MethodsSubView<org.alice.ide.member.UserMethodsSubComposite> {
+	public UserMethodsSubView( org.alice.ide.member.UserMethodsSubComposite composite ) {
+		super( composite );
 	}
 
 	@Override
-	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
-		return method.isFunction();
+	protected void internalRefresh() {
+		super.internalRefresh();
+		org.alice.ide.member.UserMethodsSubComposite composite = this.getComposite();
+		this.addComponent( composite.getAddMethodOperation().createButton() );
 	}
+
 }

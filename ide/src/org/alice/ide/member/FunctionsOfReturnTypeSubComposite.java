@@ -89,4 +89,9 @@ public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
 		this.methods = java.util.Collections.unmodifiableList( methods );
 		this.getView().refreshLater();
 	}
+
+	@Override
+	protected org.alice.ide.member.views.MethodsSubView<FunctionsOfReturnTypeSubComposite> createView() {
+		return new org.alice.ide.member.views.MethodsSubView<FunctionsOfReturnTypeSubComposite>( this );
+	}
 }
