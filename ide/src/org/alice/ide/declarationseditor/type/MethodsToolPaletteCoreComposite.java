@@ -45,17 +45,15 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite<org.alice.ide.declarationseditor.type.data.MethodData> {
-	private final MethodsComposite methodsComposite;
+public abstract class MethodsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite<MethodsComposite> {
+	private final org.lgna.croquet.Operation addMethodOperation;
 
-	public MethodsToolPaletteCoreComposite( java.util.UUID migrationId, org.alice.ide.declarationseditor.type.data.MethodData data ) {
-		super( migrationId, true, data );
-		this.methodsComposite = new MethodsComposite( java.util.UUID.fromString( "e35165d2-1c84-4cd8-9f20-99a43bbe4263" ), data );
+	public MethodsToolPaletteCoreComposite( java.util.UUID migrationId, MethodsComposite methodsComposite, org.lgna.croquet.Operation addMethodOperation ) {
+		super( migrationId, true, methodsComposite );
+		this.addMethodOperation = addMethodOperation;
 	}
 
-	public MethodsComposite getMethodsComposite() {
-		return this.methodsComposite;
+	public final org.lgna.croquet.Operation getAddMethodOperation() {
+		return this.addMethodOperation;
 	}
-
-	public abstract org.lgna.croquet.Operation getAddMethodOperation();
 }

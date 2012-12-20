@@ -42,7 +42,6 @@
  */
 package org.alice.ide.declarationseditor.type.views;
 
-import org.alice.ide.declarationseditor.type.components.ConstructorList;
 
 /**
  * @author Dennis Cosgrove
@@ -50,6 +49,6 @@ import org.alice.ide.declarationseditor.type.components.ConstructorList;
 public class ConstructorsToolPaletteCoreView extends MembersToolPaletteCoreView {
 	public ConstructorsToolPaletteCoreView( org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite composite ) {
 		super( composite );
-		this.addComponent( new ConstructorList( composite.getType() ) );
+		this.addComponent( composite.getMembersComposite().getView() );
 	}
 }

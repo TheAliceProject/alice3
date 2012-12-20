@@ -40,15 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.views;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public MethodsToolPaletteCoreView( org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( composite.getAddMethodOperation().createButton() );
+public class FunctionsComposite extends MethodsComposite {
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, FunctionsComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized FunctionsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		FunctionsComposite rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new FunctionsComposite( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+
+	private FunctionsComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "0d20c5c3-3c91-4881-94a0-1e41d351b8d7" ), new org.alice.ide.declarationseditor.type.data.FunctionData( type ) );
 	}
 }

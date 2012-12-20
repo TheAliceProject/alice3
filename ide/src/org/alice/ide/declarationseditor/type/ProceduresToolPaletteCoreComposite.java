@@ -47,12 +47,7 @@ package org.alice.ide.declarationseditor.type;
  */
 public class ProceduresToolPaletteCoreComposite extends MethodsToolPaletteCoreComposite {
 	public ProceduresToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "cc7231d5-e01d-44c3-8f81-45555729c29a" ), new org.alice.ide.declarationseditor.type.data.ProcedureData( type ) );
-	}
-
-	@Override
-	public org.lgna.croquet.Operation getAddMethodOperation() {
-		return org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.getType() ).getOperation();
+		super( java.util.UUID.fromString( "cc7231d5-e01d-44c3-8f81-45555729c29a" ), ProceduresComposite.getInstance( type ), org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( type ).getOperation() );
 	}
 
 	@Override

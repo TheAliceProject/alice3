@@ -45,10 +45,15 @@ package org.alice.ide.declarationseditor.type.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public MethodsToolPaletteCoreView( org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite composite ) {
+public class ConstructorsView extends MembersView<org.lgna.project.ast.NamedUserConstructor> {
+	public ConstructorsView( org.alice.ide.declarationseditor.type.ConstructorsComposite composite ) {
 		super( composite );
-		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( composite.getAddMethodOperation().createButton() );
+	}
+
+	@Override
+	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.NamedUserConstructor constructor ) {
+		org.lgna.croquet.components.Hyperlink rv = org.alice.ide.croquet.models.ast.EditConstructorOperation.getInstance( constructor ).createHyperlink();
+		rv.scaleFont( MembersView.NAME_FONT_SCALE );
+		return rv;
 	}
 }

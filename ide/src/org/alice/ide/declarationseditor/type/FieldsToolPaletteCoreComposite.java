@@ -46,8 +46,15 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public class FieldsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite {
+	private final ManagedFieldsComposite managedFieldsComposite;
+
 	public FieldsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "825af354-f73e-48ac-92b7-00359c6c7320" ), true, new org.alice.ide.declarationseditor.type.data.UnmanagedFieldData( type ) );
+		super( java.util.UUID.fromString( "825af354-f73e-48ac-92b7-00359c6c7320" ), true, UnmanagedFieldsComposite.getInstance( type ) );
+		this.managedFieldsComposite = ManagedFieldsComposite.getInstance( type );
+	}
+
+	public ManagedFieldsComposite getManagedFieldsComposite() {
+		return this.managedFieldsComposite;
 	}
 
 	@Override

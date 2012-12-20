@@ -45,10 +45,15 @@ package org.alice.ide.declarationseditor.type.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public MethodsToolPaletteCoreView( org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite composite ) {
+public abstract class MembersView<T extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.components.ListDataView<T> {
+	/* package-private */static final float NAME_FONT_SCALE = 1.5f;
+
+	public MembersView( org.alice.ide.declarationseditor.type.MembersComposite<T> composite ) {
 		super( composite );
-		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( composite.getAddMethodOperation().createButton() );
+	}
+
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 }

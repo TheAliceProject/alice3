@@ -45,9 +45,9 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite {
+public class ConstructorsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite<ConstructorsComposite> {
 	public ConstructorsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "f1dd7570-db0e-43c3-a066-b75e198c63ec" ), false, new org.alice.ide.declarationseditor.type.data.ConstructorData( type ) );
+		super( java.util.UUID.fromString( "f1dd7570-db0e-43c3-a066-b75e198c63ec" ), false, ConstructorsComposite.getInstance( type ) );
 	}
 
 	@Override

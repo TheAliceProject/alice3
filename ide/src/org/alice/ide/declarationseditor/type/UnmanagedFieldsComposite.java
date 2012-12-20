@@ -40,15 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.views;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public MethodsToolPaletteCoreView( org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( composite.getAddMethodOperation().createButton() );
+public class UnmanagedFieldsComposite extends FieldsComposite {
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, UnmanagedFieldsComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized UnmanagedFieldsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		UnmanagedFieldsComposite rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new UnmanagedFieldsComposite( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+
+	private UnmanagedFieldsComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "12be3d8b-2cd5-4e83-b6cc-8a0980a79ce1" ), new org.alice.ide.declarationseditor.type.data.UnmanagedFieldData( type ) );
 	}
 }

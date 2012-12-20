@@ -40,18 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.components;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersView<T extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.components.ListDataView<T> {
-	public MembersView( org.alice.ide.declarationseditor.type.MembersComposite<T> composite ) {
-		super( composite );
+public class ManagedFieldsComposite extends FieldsComposite {
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ManagedFieldsComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized ManagedFieldsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
+			ManagedFieldsComposite rv = map.get( type );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ManagedFieldsComposite( type );
+				map.put( type, rv );
+			}
+			return rv;
+		} else {
+			return null;
+		}
 	}
 
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+	private ManagedFieldsComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "02ffb55e-ab8b-4464-b6c8-72e54fc29522" ), new org.alice.ide.declarationseditor.type.data.ManagedFieldData( type ) );
 	}
 }

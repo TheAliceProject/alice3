@@ -45,10 +45,14 @@ package org.alice.ide.declarationseditor.type.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public MethodsToolPaletteCoreView( org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite composite ) {
+public class FieldsView extends MembersView<org.lgna.project.ast.UserField> {
+	public FieldsView( org.alice.ide.declarationseditor.type.FieldsComposite composite ) {
 		super( composite );
-		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( composite.getAddMethodOperation().createButton() );
 	}
+
+	@Override
+	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
+		return new org.lgna.croquet.components.Label( field.getName() );
+	}
+
 }

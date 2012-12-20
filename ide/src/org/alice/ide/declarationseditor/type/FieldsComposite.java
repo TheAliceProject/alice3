@@ -40,15 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.views;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public MethodsToolPaletteCoreView( org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( composite.getAddMethodOperation().createButton() );
+public abstract class FieldsComposite extends MembersComposite<org.lgna.project.ast.UserField> {
+	public FieldsComposite( java.util.UUID migrationId, org.alice.ide.declarationseditor.type.data.FieldData data ) {
+		super( migrationId, data );
+	}
+
+	@Override
+	protected final org.alice.ide.declarationseditor.type.views.FieldsView createView() {
+		return new org.alice.ide.declarationseditor.type.views.FieldsView( this );
 	}
 }

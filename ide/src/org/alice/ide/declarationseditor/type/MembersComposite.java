@@ -45,9 +45,13 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MembersComposite<T extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.ListDataComposite<T, org.alice.ide.declarationseditor.type.components.MembersView<T>> {
-	public MembersComposite( java.util.UUID migrationId, org.lgna.croquet.data.ListData<T> data ) {
+public abstract class MembersComposite<T extends org.lgna.project.ast.UserMember> extends org.lgna.croquet.ListDataComposite<T, org.alice.ide.declarationseditor.type.views.MembersView<T>> {
+	public MembersComposite( java.util.UUID migrationId, org.alice.ide.declarationseditor.type.data.FilteredMemberData<T> data ) {
 		super( migrationId, data );
+	}
+
+	public org.lgna.project.ast.NamedUserType getType() {
+		return ( (org.alice.ide.declarationseditor.type.data.FilteredMemberData<T>)this.getData() ).getType();
 	}
 
 	@Override

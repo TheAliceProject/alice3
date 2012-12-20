@@ -45,13 +45,13 @@ package org.alice.ide.declarationseditor.type;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsComposite extends MembersComposite<org.lgna.project.ast.UserMethod> {
+public abstract class MethodsComposite extends MembersComposite<org.lgna.project.ast.UserMethod> {
 	public MethodsComposite( java.util.UUID id, org.alice.ide.declarationseditor.type.data.MethodData data ) {
 		super( id, data );
 	}
 
 	@Override
-	protected org.alice.ide.declarationseditor.type.components.MethodsView createView() {
-		return new org.alice.ide.declarationseditor.type.components.MethodsView( this );
+	protected org.alice.ide.declarationseditor.type.views.MethodsView createView() {
+		return new org.alice.ide.declarationseditor.type.views.MethodsView( this );
 	}
 }

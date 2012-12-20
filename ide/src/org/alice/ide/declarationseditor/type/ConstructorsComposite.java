@@ -40,15 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type.views;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsToolPaletteCoreView extends MembersToolPaletteCoreView {
-	public MethodsToolPaletteCoreView( org.alice.ide.declarationseditor.type.MethodsToolPaletteCoreComposite composite ) {
-		super( composite );
-		this.addComponent( composite.getMembersComposite().getView() );
-		this.addComponent( composite.getAddMethodOperation().createButton() );
+public class ConstructorsComposite extends MembersComposite<org.lgna.project.ast.NamedUserConstructor> {
+	private static java.util.Map<org.lgna.project.ast.NamedUserType, ConstructorsComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static synchronized ConstructorsComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
+		ConstructorsComposite rv = map.get( type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ConstructorsComposite( type );
+			map.put( type, rv );
+		}
+		return rv;
+	}
+
+	private ConstructorsComposite( org.lgna.project.ast.NamedUserType type ) {
+		super( java.util.UUID.fromString( "4d972e95-b2c4-4308-bd74-11c516caedf0" ), new org.alice.ide.declarationseditor.type.data.ConstructorData( type ) );
+	}
+
+	@Override
+	protected org.alice.ide.declarationseditor.type.views.ConstructorsView createView() {
+		return new org.alice.ide.declarationseditor.type.views.ConstructorsView( this );
 	}
 }
