@@ -98,6 +98,11 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 
 	public abstract org.lgna.croquet.ListSelectionState<String> getSortState();
 
+	@Override
+	protected final org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
 	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
 		for( MethodsSubComposite subComposite : this.getSubComposites() ) {
 			if( subComposite != null ) {

@@ -74,9 +74,11 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 		super.internalRefresh();
 		org.alice.ide.member.MemberTabComposite<?> composite = (org.alice.ide.member.MemberTabComposite<?>)this.getComposite();
 		this.removeAllComponents();
-		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
+
 		org.lgna.croquet.components.ComboBox<String> comboBox = composite.getSortState().getPrepModel().createComboBox();
-		pageAxisPanel.addComponent( new org.lgna.croquet.components.BorderPanel.Builder().lineStart( comboBox ).build() );
+		this.addPageStartComponent( new org.lgna.croquet.components.BorderPanel.Builder().lineEnd( comboBox ).build() );
+
+		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
 		for( org.alice.ide.member.MethodsSubComposite subComposite : composite.getSubComposites() ) {
 			if( subComposite != org.alice.ide.member.MemberTabComposite.SEPARATOR ) {
 				if( subComposite.isShowingDesired() ) {
@@ -94,6 +96,9 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 			}
 		}
 		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
-		this.addPageStartComponent( pageAxisPanel );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( pageAxisPanel );
+		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		scrollPane.setBothScrollBarIncrements( 12, 24 );
+		this.addCenterComponent( scrollPane );
 	}
 }
