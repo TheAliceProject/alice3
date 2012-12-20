@@ -47,11 +47,24 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractElement implements Element {
-	private static java.util.Map<java.util.UUID, Class<? extends Element>> map;
+	private static final java.util.Map<java.util.UUID, Class<? extends Element>> map;
+	private static final java.util.Set<String> ignoredLocalizationSubkeys;
+
+	private static final String ACCELERATOR_SUB_KEY = "accelerator";
+	private static final String MNEMONIC_SUB_KEY = "mnemonic";
+
 	static {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.lgna.croquet.Element.isIdCheckDesired" ) ) {
 			map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "org.lgna.croquet.Element.isIdCheckDesired==true" );
+		} else {
+			map = null;
+		}
+		final boolean IS_NULL_LOCALIZATION_OUTPUT_DESIRED = false;
+		if( IS_NULL_LOCALIZATION_OUTPUT_DESIRED ) {
+			ignoredLocalizationSubkeys = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( ACCELERATOR_SUB_KEY, MNEMONIC_SUB_KEY );
+		} else {
+			ignoredLocalizationSubkeys = null;
 		}
 	}
 
@@ -168,11 +181,38 @@ public abstract class AbstractElement implements Element {
 				if( cls == AbstractElement.class ) {
 					return null;
 				} else {
-					return findLocalizedText( (Class<? extends Element>)cls.getSuperclass(), subKey );
+					Class<?> superCls = cls.getSuperclass();
+					if( Element.class.isAssignableFrom( superCls ) ) {
+						return findLocalizedText( (Class<? extends Element>)superCls, subKey );
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls, subKey );
+						return null;
+					}
 				}
 			}
 		} else {
 			return null;
+		}
+	}
+
+	protected void handleNullLocalizedText( Class<? extends Element> clsUsedForLocalization, String actualSubKey ) {
+		if( ignoredLocalizationSubkeys != null ) {
+			if( ignoredLocalizationSubkeys.contains( actualSubKey ) ) {
+				//pass
+			} else {
+				StringBuilder sb = new StringBuilder();
+				sb.append( "localization missing hachCode=0x" );
+				sb.append( Integer.toHexString( this.hashCode() ) );
+				sb.append( ": " );
+				sb.append( clsUsedForLocalization.getPackage().getName() );
+				sb.append( " " );
+				sb.append( clsUsedForLocalization.getSimpleName() );
+				if( actualSubKey != null ) {
+					sb.append( "." );
+					sb.append( actualSubKey );
+				}
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( sb.toString() );
+			}
 		}
 	}
 
@@ -188,7 +228,14 @@ public abstract class AbstractElement implements Element {
 		} else {
 			actualSubKey = subKey;
 		}
-		return findLocalizedText( this.getClassUsedForLocalization(), actualSubKey );
+		Class<? extends Element> clsUsedForLocalization = this.getClassUsedForLocalization();
+		String rv = findLocalizedText( clsUsedForLocalization, actualSubKey );
+		if( rv != null ) {
+			//pass
+		} else {
+			this.handleNullLocalizedText( clsUsedForLocalization, actualSubKey );
+		}
+		return rv;
 	}
 
 	protected String findDefaultLocalizedText() {
@@ -225,7 +272,7 @@ public abstract class AbstractElement implements Element {
 	}
 
 	protected int getLocalizedMnemonicKey() {
-		return getKeyCode( this.findLocalizedText( "mnemonic" ) );
+		return getKeyCode( this.findLocalizedText( MNEMONIC_SUB_KEY ) );
 	}
 
 	private static final int NULL_MNEMONIC = 0;
@@ -263,7 +310,7 @@ public abstract class AbstractElement implements Element {
 	}
 
 	protected javax.swing.KeyStroke getLocalizedAcceleratorKeyStroke() {
-		return getKeyStroke( this.findLocalizedText( "accelerator" ) );
+		return getKeyStroke( this.findLocalizedText( ACCELERATOR_SUB_KEY ) );
 	}
 
 	protected abstract void localize();
