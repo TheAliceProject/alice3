@@ -52,7 +52,17 @@ public class FieldsView extends MembersView<org.lgna.project.ast.UserField> {
 
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
-		return new org.lgna.croquet.components.Label( field.getName() );
+		org.lgna.project.ast.ManagementLevel managementLevel = field.managementLevel.getValue();
+		org.alice.ide.common.FieldDeclarationPane fieldDeclarationPane = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED );
+		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
+			label.setToolTipText( "managed by the scene editor" );
+			label.setForegroundColor( java.awt.Color.GRAY );
+			label.scaleFont( 2.0f );
+			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
+			return new org.lgna.croquet.components.LineAxisPanel( label, fieldDeclarationPane );
+		} else {
+			return fieldDeclarationPane;
+		}
 	}
-
 }
