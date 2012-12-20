@@ -383,6 +383,15 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		@Override
 		protected final javax.swing.JButton createAwtComponent() {
 			javax.swing.JButton rv = new javax.swing.JButton() {
+				@Override
+				public String getText() {
+					if( isTextClobbered() ) {
+						return getClobberText();
+					} else {
+						return super.getText();
+					}
+				}
+
 				private boolean isNecessary() {
 					java.awt.Container parent = this.getParent();
 					if( parent != null ) {

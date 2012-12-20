@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.alice.ide.declarationseditor.type;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
-	public Hyperlink( org.lgna.croquet.Operation model ) {
-		super( model );
+public final class ConstructorMenuModel extends MemberMenuModel<org.lgna.project.ast.NamedUserConstructor> {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.NamedUserConstructor, ConstructorMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+
+	public static ConstructorMenuModel getInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
+		return map.getInitializingIfAbsent( constructor, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.NamedUserConstructor, ConstructorMenuModel>() {
+			public ConstructorMenuModel initialize( org.lgna.project.ast.NamedUserConstructor key ) {
+				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				prepModels.add( org.alice.ide.croquet.models.ast.EditConstructorOperation.getInstance( key ).getMenuItemPrepModel() );
+				return new ConstructorMenuModel( key, prepModels );
+			}
+		} );
 	}
 
-	@Override
-	protected final javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
-			@Override
-			public String getText() {
-				if( isTextClobbered() ) {
-					return getClobberText();
-				} else {
-					return super.getText();
-				}
-			}
-
-			@Override
-			public void updateUI() {
-				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
-			}
-		};
-		rv.setForeground( new java.awt.Color( 0, 0, 191 ) );
-		rv.setBackground( java.awt.Color.LIGHT_GRAY );
-		rv.setRolloverEnabled( true );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		rv.setOpaque( false );
-		return rv;
+	private ConstructorMenuModel( org.lgna.project.ast.NamedUserConstructor constructor, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels ) {
+		super( java.util.UUID.fromString( "22fbfd6d-3b0f-41b3-834e-dd8078fd0733" ), constructor, prepModels );
 	}
 }

@@ -52,22 +52,6 @@ public class FieldsView extends MembersView<org.lgna.project.ast.UserField> {
 
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
-		org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
-
-		org.lgna.croquet.components.PopupButton popupButton = org.alice.ide.declarationseditor.type.FieldMenuModel.getInstance( field ).getPopupPrepModel().createPopupButton();
-		popupButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
-		rv.addComponent( popupButton );
-		rv.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-		org.lgna.project.ast.ManagementLevel managementLevel = field.managementLevel.getValue();
-		if( managementLevel == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-			org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "*" );
-			label.setToolTipText( "managed by the scene editor" );
-			label.setForegroundColor( java.awt.Color.GRAY );
-			label.scaleFont( 2.0f );
-			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
-			rv.addComponent( label );
-		}
-		rv.addComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED ) );
-		return rv;
+		return new FieldView( field );
 	}
 }

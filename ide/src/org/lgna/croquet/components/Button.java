@@ -62,6 +62,15 @@ public class Button extends OperationButton<javax.swing.JButton, org.lgna.croque
 					return super.getIcon();
 				}
 			}
+
+			@Override
+			public String getText() {
+				if( isTextClobbered() ) {
+					return getClobberText();
+				} else {
+					return super.getText();
+				}
+			}
 		};
 	}
 }

@@ -52,8 +52,6 @@ public class ConstructorsView extends MembersView<org.lgna.project.ast.NamedUser
 
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.NamedUserConstructor constructor ) {
-		org.lgna.croquet.components.Hyperlink rv = org.alice.ide.croquet.models.ast.EditConstructorOperation.getInstance( constructor ).createHyperlink();
-		rv.scaleFont( MembersView.NAME_FONT_SCALE );
-		return rv;
+		return new ConstructorView( constructor );
 	}
 }

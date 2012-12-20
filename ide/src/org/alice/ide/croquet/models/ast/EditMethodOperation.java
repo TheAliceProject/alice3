@@ -81,24 +81,6 @@ public class EditMethodOperation extends EditCodeOperation<org.lgna.project.ast.
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		StringBuilder sb = new StringBuilder();
-		//sb.append( "Edit " );
-		sb.append( this.getCode().getName() );
-		//		sb.append( "<html>" );
-		//		sb.append( "Edit " );
-		//		sb.append( "<strong>" );
-		//		sb.append( this.getCode().getName() );
-		//		if( this.getCode() == org.alice.ide.IDE.getActiveInstance().getFocusedCode() ) {
-		//			sb.append( " <font color=007F00>&#x2713;</font>" );
-		//		}
-		//		sb.append( "</strong>" );
-		//		sb.append( "</html>" );
-		this.setName( sb.toString() );
-	}
-
-	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<EditMethodOperation> createResolver() {
 		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<EditMethodOperation>( this, org.lgna.project.ast.UserMethod.class, this.getCode() );
 	}

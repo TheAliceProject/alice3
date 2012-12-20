@@ -55,6 +55,15 @@ public class MenuItem extends OperationButton<javax.swing.JMenuItem, org.lgna.cr
 	protected final javax.swing.JMenuItem createAwtComponent() {
 		return new javax.swing.JMenuItem() {
 			@Override
+			public String getText() {
+				if( isTextClobbered() ) {
+					return getClobberText();
+				} else {
+					return super.getText();
+				}
+			}
+
+			@Override
 			public javax.swing.Icon getIcon() {
 				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.areIconsDisplayedInMenus() ) {
 					if( MenuItem.this.isIconSet() ) {

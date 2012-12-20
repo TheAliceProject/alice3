@@ -72,7 +72,6 @@ public class MethodsSubView<C extends org.alice.ide.member.MethodsSubComposite> 
 			if( method instanceof org.lgna.project.ast.UserMethod ) {
 				org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
 				org.lgna.croquet.components.Hyperlink hyperlink = org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( userMethod ).createHyperlink();
-				hyperlink.getAwtComponent().setText( "edit" );
 				component = new org.lgna.croquet.components.LineAxisPanel( hyperlink, org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ), dragComponent );
 			} else {
 				component = dragComponent;

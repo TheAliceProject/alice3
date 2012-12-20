@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.alice.ide.declarationseditor.type.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
-	public Hyperlink( org.lgna.croquet.Operation model ) {
-		super( model );
-	}
-
-	@Override
-	protected final javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
-			@Override
-			public String getText() {
-				if( isTextClobbered() ) {
-					return getClobberText();
-				} else {
-					return super.getText();
-				}
-			}
-
-			@Override
-			public void updateUI() {
-				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
-			}
-		};
-		rv.setForeground( new java.awt.Color( 0, 0, 191 ) );
-		rv.setBackground( java.awt.Color.LIGHT_GRAY );
-		rv.setRolloverEnabled( true );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		rv.setOpaque( false );
-		return rv;
+public class MemberView extends org.lgna.croquet.components.LineAxisPanel {
+	public MemberView( org.lgna.croquet.MenuModel menuModel ) {
+		org.lgna.croquet.components.PopupButton popupButton = menuModel.getPopupPrepModel().createPopupButton();
+		popupButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
+		this.addComponent( popupButton );
+		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 	}
 }

@@ -45,21 +45,17 @@ package org.alice.ide.declarationseditor.type.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodView extends org.lgna.croquet.components.LineAxisPanel {
+public class MethodView extends MemberView {
 	public MethodView( org.lgna.project.ast.UserMethod method ) {
-		org.lgna.croquet.components.PopupButton popupButton = org.alice.ide.declarationseditor.type.MethodMenuModel.getInstance( method ).getPopupPrepModel().createPopupButton();
-		popupButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 6, 6, 6, 6 ) );
-		this.addComponent( popupButton );
-		this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-
+		super( org.alice.ide.declarationseditor.type.MethodMenuModel.getInstance( method ) );
 		if( method.isFunction() ) {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( method.getReturnType() ) );
 			this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		}
-
 		org.lgna.croquet.Operation operation = org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( method );
-		org.lgna.croquet.components.JComponent<?> hyperlink = operation.createHyperlink();
+		org.lgna.croquet.components.Hyperlink hyperlink = operation.createHyperlink();
 		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
+		hyperlink.setClobberText( method.getName() );
 		this.addComponent( hyperlink );
 	}
 }
