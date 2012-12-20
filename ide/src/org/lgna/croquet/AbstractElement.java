@@ -47,7 +47,7 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractElement implements Element {
-	private static final java.util.Map<java.util.UUID, Class<? extends Element>> map;
+	private static final java.util.Map<java.util.UUID, Class<? extends Element>> mapMigrationIdToCls;
 	private static final java.util.Set<String> ignoredLocalizationSubkeys;
 
 	private static final String ACCELERATOR_SUB_KEY = "accelerator";
@@ -55,10 +55,10 @@ public abstract class AbstractElement implements Element {
 
 	static {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.lgna.croquet.Element.isIdCheckDesired" ) ) {
-			map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			mapMigrationIdToCls = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "org.lgna.croquet.Element.isIdCheckDesired==true" );
 		} else {
-			map = null;
+			mapMigrationIdToCls = null;
 		}
 		final boolean IS_NULL_LOCALIZATION_OUTPUT_DESIRED = false;
 		if( IS_NULL_LOCALIZATION_OUTPUT_DESIRED ) {
@@ -99,8 +99,8 @@ public abstract class AbstractElement implements Element {
 
 	public AbstractElement( java.util.UUID migrationId ) {
 		this.migrationId = migrationId;
-		if( map != null ) {
-			Class<? extends Element> cls = map.get( migrationId );
+		if( mapMigrationIdToCls != null ) {
+			Class<? extends Element> cls = mapMigrationIdToCls.get( migrationId );
 			if( cls != null ) {
 				if( cls == this.getClass() ) {
 					//pass
@@ -111,7 +111,7 @@ public abstract class AbstractElement implements Element {
 					Application.getActiveInstance().showMessageDialog( message );
 				}
 			} else {
-				map.put( migrationId, this.getClass() );
+				mapMigrationIdToCls.put( migrationId, this.getClass() );
 			}
 		}
 	}
