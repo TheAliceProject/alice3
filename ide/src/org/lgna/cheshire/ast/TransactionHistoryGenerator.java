@@ -32,7 +32,8 @@ public class TransactionHistoryGenerator {
 		}
 		org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( (org.lgna.project.ast.NamedUserType)destinationMethod.getDeclaringType() );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
-		org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().pushGeneratedValue( org.alice.ide.members.ProcedureTemplateComposite.getInstance() );
+		org.alice.ide.members.MembersComposite membersComposite = org.alice.ide.members.MembersComposite.getInstance();
+		membersComposite.getTabState().pushGeneratedValue( membersComposite.getProcedureTabComposite() );
 		try {
 			org.lgna.project.ast.Expression[] argumentExpressions = {};
 			org.lgna.project.ast.ExpressionStatement invocationStatement = org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
@@ -42,7 +43,7 @@ public class TransactionHistoryGenerator {
 			destinationMethod.body.getValue().statements.remove( index );
 
 		} finally {
-			org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();
+			membersComposite.getTabState().popGeneratedValue();
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
 			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		}
