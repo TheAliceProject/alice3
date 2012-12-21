@@ -111,7 +111,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
 		org.alice.ide.common.TypeDropDownIcon icon = new org.alice.ide.common.TypeDropDownIcon( type, this.popupButton.getAwtComponent().getModel() );
-		this.popupButton.setIcon( icon );
+		this.popupButton.setClobberIcon( icon );
 		this.popupButton.revalidateAndRepaint();
 	}
 
