@@ -473,8 +473,13 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	@Override
-	protected void handleValueChanged( E card ) {
-		this.cardComposite.showCard( card );
+	protected void handleValueChanged( final E card ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: showCard", card );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				cardComposite.showCard( card );
+			}
+		} );
 		this.repaint();
 	}
 
