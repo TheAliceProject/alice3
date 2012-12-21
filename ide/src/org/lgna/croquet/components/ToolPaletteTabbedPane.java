@@ -75,9 +75,11 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 		if( card != this.card ) {
 			if( this.card != null ) {
 				this.card.getRootComponent().setVisible( false );
+				this.card.handlePostDeactivation();
 			}
 			this.card = card;
 			if( this.card != null ) {
+				this.card.handlePreActivation();
 				this.card.getRootComponent().setVisible( true );
 			}
 			this.revalidateAndRepaint();
