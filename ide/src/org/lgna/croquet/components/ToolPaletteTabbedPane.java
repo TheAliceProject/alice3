@@ -47,6 +47,8 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
+	private E card;
+
 	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
@@ -70,10 +72,16 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 
 	@Override
 	protected void handleValueChanged( E card ) {
-		for( E item : this.getModel().getData() ) {
-			item.getRootComponent().setVisible( item == card );
+		if( card != this.card ) {
+			if( this.card != null ) {
+				this.card.getRootComponent().setVisible( false );
+			}
+			this.card = card;
+			if( this.card != null ) {
+				this.card.getRootComponent().setVisible( true );
+			}
+			this.revalidateAndRepaint();
 		}
-		this.revalidateAndRepaint();
 	}
 
 	@Override
@@ -89,6 +97,7 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 		gbc.weighty = 0.0f;
 		this.internalAddComponent( button, gbc );
 		gbc.weighty = 1.0f;
+		item.getRootComponent().setVisible( item == this.getModel().getValue() );
 		this.internalAddComponent( item.getRootComponent(), gbc );
 	}
 
