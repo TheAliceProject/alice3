@@ -69,7 +69,7 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 			if( index < this.getItemCount() ) {
 				return this.values.get( index );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( index );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( index, this.getItemCount() );
 				return null;
 			}
 		} else {
