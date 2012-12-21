@@ -172,7 +172,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		}
 	};
 
-	public BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
+	protected BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
 		super( group, id, initialValue );
 		this.swingModel = new SwingModel( buttonModel );
 		this.swingModel.buttonModel.setSelected( initialValue );

@@ -101,8 +101,30 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		private final ItemState<T> state;
 		private final java.util.concurrent.Callable<T> itemCallable;
 
+		private static class RadioButtonesqueModel extends javax.swing.JToggleButton.ToggleButtonModel {
+			private boolean isIgnoringSetSelectedFalse;
+
+			@Override
+			public void setSelected( boolean b ) {
+				if( ( b == false ) && this.isIgnoringSetSelectedFalse ) {
+					//pass
+				} else {
+					super.setSelected( b );
+				}
+			}
+
+			@Override
+			public void setPressed( boolean b ) {
+				if( this.isSelected() ) {
+					this.isIgnoringSetSelectedFalse = true;
+				}
+				super.setPressed( b );
+				this.isIgnoringSetSelectedFalse = false;
+			}
+		}
+
 		private InternalItemSelectedState( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable ) {
-			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ) );
+			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ), new RadioButtonesqueModel() );
 			assert state != null;
 			this.state = state;
 			this.itemCallable = itemCallable;
