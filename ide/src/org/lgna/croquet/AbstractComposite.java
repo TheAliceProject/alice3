@@ -555,8 +555,9 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 	private final java.util.List<Composite<?>> subComposites = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	protected void registerSubComposite( Composite<?> subComposite ) {
+	protected <C extends Composite<?>> C registerSubComposite( C subComposite ) {
 		this.subComposites.add( subComposite );
+		return subComposite;
 	}
 
 	protected void unregisterSubComposite( Composite<?> subComposite ) {
@@ -796,14 +797,14 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	}
 
 	protected SplitComposite createHorizontalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
-		return new InternalSplitComposite( leadingComposite, trailingComposite, true, resizeWeight );
+		return this.registerSubComposite( new InternalSplitComposite( leadingComposite, trailingComposite, true, resizeWeight ) );
 	}
 
 	protected SplitComposite createVerticalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
-		return new InternalSplitComposite( leadingComposite, trailingComposite, false, resizeWeight );
+		return this.registerSubComposite( new InternalSplitComposite( leadingComposite, trailingComposite, false, resizeWeight ) );
 	}
 
 	protected CardOwnerComposite createCardOwnerComposite( Composite<?>... cards ) {
-		return new InternalCardOwnerComposite( cards );
+		return this.registerSubComposite( new InternalCardOwnerComposite( cards ) );
 	}
 }

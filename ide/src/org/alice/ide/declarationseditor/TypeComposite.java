@@ -70,14 +70,10 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 
 	private TypeComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.NamedUserType.class );
-		this.constructorsToolPaletteCoreComposite = new org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite( type );
-		this.proceduresToolPaletteCoreComposite = new org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite( type );
-		this.functionsToolPaletteCoreComposite = new org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite( type );
-		this.fieldsToolPaletteCoreComposite = new org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite( type );
-		this.registerSubComposite( this.constructorsToolPaletteCoreComposite );
-		this.registerSubComposite( this.proceduresToolPaletteCoreComposite );
-		this.registerSubComposite( this.functionsToolPaletteCoreComposite );
-		this.registerSubComposite( this.fieldsToolPaletteCoreComposite );
+		this.constructorsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite( type ) );
+		this.proceduresToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite( type ) );
+		this.functionsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite( type ) );
+		this.fieldsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite( type ) );
 	}
 
 	public org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite getConstructorsToolPaletteCoreComposite() {

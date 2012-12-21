@@ -55,13 +55,13 @@ public class SetupScenePerspectiveComposite extends org.lgna.croquet.SimpleCompo
 		return SingletonHolder.instance;
 	}
 
-	private final org.alice.stageide.perspectives.scenesetup.SceneLayoutComposite sceneLayoutComposite = new org.alice.stageide.perspectives.scenesetup.SceneLayoutComposite();
-	private final org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite = new org.alice.stageide.gallerybrowser.GalleryComposite();
+	private final org.alice.stageide.perspectives.scenesetup.SceneLayoutComposite sceneLayoutComposite;
+	private final org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite;
 
 	private SetupScenePerspectiveComposite() {
 		super( java.util.UUID.fromString( "aa47fc0f-0500-4e9a-b710-b481b802f8c5" ) );
-		this.registerSubComposite( this.sceneLayoutComposite );
-		this.registerSubComposite( this.galleryComposite );
+		this.sceneLayoutComposite = this.registerSubComposite( new org.alice.stageide.perspectives.scenesetup.SceneLayoutComposite() );
+		this.galleryComposite = this.registerSubComposite( new org.alice.stageide.gallerybrowser.GalleryComposite() );
 	}
 
 	public org.alice.stageide.perspectives.scenesetup.SceneLayoutComposite getSceneLayoutComposite() {
