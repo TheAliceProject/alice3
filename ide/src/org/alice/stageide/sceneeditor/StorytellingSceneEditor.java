@@ -750,13 +750,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			org.alice.stageide.perspectives.PerspectiveState perspectiveState = org.alice.stageide.perspectives.PerspectiveState.getInstance();
 			this.expandButton = perspectiveState.getItemSelectionOperation( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ).createButton();
-			this.expandButton.setIcon( EXPAND_ICON );
+			this.expandButton.setClobberIcon( EXPAND_ICON );
 			//todo: tool tip text
 			//this.expandButton.getAwtComponent().setText( null );
 			this.expandButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 
 			this.contractButton = perspectiveState.getItemSelectionOperation( org.alice.stageide.perspectives.CodePerspective.getInstance() ).createButton();
-			this.contractButton.setIcon( CONTRACT_ICON );
+			this.contractButton.setClobberIcon( CONTRACT_ICON );
 			this.contractButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
 

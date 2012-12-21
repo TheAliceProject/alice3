@@ -56,8 +56,8 @@ public class Button extends OperationButton<javax.swing.JButton, org.lgna.croque
 		return new javax.swing.JButton() {
 			@Override
 			public javax.swing.Icon getIcon() {
-				if( Button.this.isIconSet() ) {
-					return Button.this.getSetIcon();
+				if( Button.this.isIconClobbered() ) {
+					return Button.this.getClobberIcon();
 				} else {
 					return super.getIcon();
 				}
