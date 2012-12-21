@@ -77,6 +77,18 @@ public class MembersComposite extends org.lgna.croquet.SimpleComposite<org.alice
 		return this.tabState;
 	}
 
+	public org.alice.ide.member.ProcedureTabComposite getProcedureTabComposite() {
+		return this.procedureTabComposite;
+	}
+
+	public org.alice.ide.member.FunctionTabComposite getFunctionTabComposite() {
+		return this.functionTabComposite;
+	}
+
+	public org.alice.ide.member.ControlFlowTabComposite getControlStructureTabComposite() {
+		return this.controlStructureTabComposite;
+	}
+
 	@Override
 	protected org.alice.ide.members.components.MembersView createView() {
 		return new org.alice.ide.members.components.MembersView( this );

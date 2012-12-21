@@ -56,7 +56,7 @@ public abstract class AddMethodComposite extends AddDeclarationComposite<org.lgn
 			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState() );
 		} else {
 			this.getOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
-			this.getOperation().addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+			this.getOperation().addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
 		}
 		this.declaringType = declaringType;
 	}

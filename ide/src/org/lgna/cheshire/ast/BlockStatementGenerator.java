@@ -76,9 +76,10 @@ public class BlockStatementGenerator {
 			if( statement.isEnabled.getValue() ) {
 				StatementGenerator statementGenerator;
 				org.alice.ide.instancefactory.InstanceFactory instanceFactory = null;
-				org.alice.ide.members.TemplateComposite templateComposite = null;
+				org.alice.ide.member.MemberOrControlFlowTabComposite<?> templateComposite = null;
 				org.lgna.project.ast.MethodInvocation methodInvocation = null;
 				org.lgna.project.ast.Expression[] initialExpressions = {};
+				org.alice.ide.members.MembersComposite membersComposite = org.alice.ide.members.MembersComposite.getInstance();
 				if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 					org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
 					org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
@@ -114,17 +115,9 @@ public class BlockStatementGenerator {
 						boolean isFieldTemplateCompositeValid = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue();
 						//todo
 						if( method.isProcedure() ) {
-							if( isFieldTemplateCompositeValid && method.getName().startsWith( "set" ) ) {
-								templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
-							} else {
-								templateComposite = org.alice.ide.members.ProcedureTemplateComposite.getInstance();
-							}
+							templateComposite = membersComposite.getProcedureTabComposite();
 						} else {
-							if( isFieldTemplateCompositeValid && ( method.getName().startsWith( "get" ) || method.getName().startsWith( "is" ) ) ) {
-								templateComposite = org.alice.ide.members.FieldTemplateComposite.getInstance();
-							} else {
-								templateComposite = org.alice.ide.members.FunctionTemplateComposite.getInstance();
-							}
+							templateComposite = membersComposite.getFunctionTabComposite();
 						}
 					} else {
 						org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "todo: handle expression " + expression );
@@ -135,7 +128,7 @@ public class BlockStatementGenerator {
 					if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 						// pass
 					} else {
-						templateComposite = org.alice.ide.controlflow.ControlFlowComposite.getInstance( /* todo */null );
+						templateComposite = membersComposite.getControlStructureTabComposite();
 					}
 				}
 				boolean isReorderingDesired = statement instanceof org.lgna.project.ast.CountLoop;
@@ -152,19 +145,11 @@ public class BlockStatementGenerator {
 						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
 					}
 					if( templateComposite != null ) {
-						if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-							org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().pushGeneratedValue( templateComposite );
-						} else {
-							org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( templateComposite );
-						}
+						membersComposite.getTabState().pushGeneratedValue( templateComposite );
 					}
 					statementGenerator.generateAndAddStepsToTransaction( history, statement, initialExpressions );
 					if( templateComposite != null ) {
-						if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-							org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();
-						} else {
-							org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();
-						}
+						membersComposite.getTabState().popGeneratedValue();
 					}
 					if( instanceFactory != null ) {
 						org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
