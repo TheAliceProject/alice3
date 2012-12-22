@@ -47,10 +47,6 @@ package org.alice.stageide.openprojectpane.models;
  * @author Dennis Cosgrove
  */
 public class TemplateUriSelectionState extends org.lgna.croquet.ImmutableDataListSelectionState<java.net.URI> {
-	public static Template getSurfaceAppearance( java.net.URI uri ) {
-		return Template.valueOf( uri.getFragment() );
-	}
-
 	public static final String SCHEME = "gen";
 
 	public static enum Template {
@@ -69,6 +65,27 @@ public class TemplateUriSelectionState extends org.lgna.croquet.ImmutableDataLis
 		SWAMP( org.lgna.story.SGround.SurfaceAppearance.SWAMP, new org.lgna.story.Color( .2, .4, 0 ), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .2, .4, 0 ) ),
 		DESERT( org.lgna.story.SGround.SurfaceAppearance.DESERT ),
 		DIRT( org.lgna.story.SGround.SurfaceAppearance.DIRT );
+
+		public static Template getSurfaceAppearance( java.net.URI uri ) {
+			if( isValidUri( uri ) ) {
+				String fragment = uri.getFragment();
+				if( fragment != null ) {
+					return Template.valueOf( fragment );
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+
+		public static boolean isValidUri( java.net.URI uri ) {
+			if( uri != null ) {
+				return SCHEME.equals( uri.getScheme() );
+			} else {
+				return false;
+			}
+		}
 
 		private final org.lgna.story.SGround.SurfaceAppearance surfaceAppearance;
 		private final org.lgna.story.Paint floorAppearance;
