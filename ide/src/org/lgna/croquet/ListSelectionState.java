@@ -55,12 +55,12 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			this.index = index;
 		}
 
-		public void addListDataListener( javax.swing.event.ListDataListener l ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "addListDataListener", l );
+		public void addListDataListener( javax.swing.event.ListDataListener listDataListener ) {
+			this.data.addListener( listDataListener );
 		}
 
-		public void removeListDataListener( javax.swing.event.ListDataListener l ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "removeListDataListener", l );
+		public void removeListDataListener( javax.swing.event.ListDataListener listDataListener ) {
+			this.data.removeListener( listDataListener );
 		}
 
 		public int getSize() {
