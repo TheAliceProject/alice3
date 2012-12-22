@@ -117,8 +117,8 @@ public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
 	public void setViewportView( Component<?> view ) {
 		javax.swing.JScrollPane jScrollPane = this.getAwtComponent();
 		if( view != null ) {
-
-			if( view.getAwtComponent() instanceof javax.swing.Scrollable ) {
+			final boolean IS_SCROLLABLE_HEEDED = false;
+			if( IS_SCROLLABLE_HEEDED && ( view.getAwtComponent() instanceof javax.swing.Scrollable ) ) {
 				//pass
 			} else {
 				if( jScrollPane.getHorizontalScrollBar().getUnitIncrement() == 1 ) {
