@@ -123,15 +123,15 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		private void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( source, index0, index1 );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: fireContentsChanged", source, index0, index1 );
 		}
 
 		private void ACCESS_fireIntervalAdded( Object source, int index0, int index1 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( source, index0, index1 );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: fireIntervalAdded", source, index0, index1 );
 		}
 
 		private void ACCESS_fireIntervalRemoved( Object source, int index0, int index1 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( source, index0, index1 );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: fireIntervalRemoved", source, index0, index1 );
 		}
 	}
 
