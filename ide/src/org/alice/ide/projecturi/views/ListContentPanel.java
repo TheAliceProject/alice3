@@ -54,12 +54,16 @@ public abstract class ListContentPanel<M extends org.lgna.croquet.ListSelectionS
 		super( composite );
 		this.state = state;
 		this.list = this.state.createList();
-		this.list.setBackgroundColor( null );
+		this.list.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		this.list.setCellRenderer( this.createListCellRenderer() );
 		this.list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.list.setVisibleRowCount( -1 );
 		this.list.enableClickingDefaultButtonOnDoubleClick();
-		this.addCenterComponent( list );
+		this.list.setMaximumSizeClampedToPreferredSize( true );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.list );
+		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		scrollPane.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
+		this.addCenterComponent( scrollPane );
 	}
 
 	protected M getState() {
