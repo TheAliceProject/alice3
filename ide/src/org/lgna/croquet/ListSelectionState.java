@@ -122,16 +122,16 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			}
 		}
 
-		/* package-private */void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( source, index0, index1 );
+		private void ACCESS_fireContentsChanged( Object source, int index0, int index1 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( source, index0, index1 );
 		}
 
-		/* package-private */void ACCESS_fireIntervalAdded( Object source, int index0, int index1 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( source, index0, index1 );
+		private void ACCESS_fireIntervalAdded( Object source, int index0, int index1 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( source, index0, index1 );
 		}
 
-		/* package-private */void ACCESS_fireIntervalRemoved( Object source, int index0, int index1 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( source, index0, index1 );
+		private void ACCESS_fireIntervalRemoved( Object source, int index0, int index1 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( source, index0, index1 );
 		}
 	}
 
@@ -285,7 +285,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			this.internalAddItem( item );
 
 			int index = this.getItemCount() - 1;
-			this.swingModel.ACCESS_fireIntervalAdded( this, index, index );
+			this.fireIntervalAdded( index, index );
 			this.handleItemAdded( item );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
@@ -297,7 +297,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		try {
 			int index = this.indexOf( item );
 			this.internalRemoveItem( item );
-			this.swingModel.ACCESS_fireIntervalRemoved( this, index, index );
+			this.fireIntervalRemoved( index, index );
 			this.handleItemRemoved( item );
 		} finally {
 			this.popIsInTheMidstOfAtomicChange();
@@ -348,7 +348,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 			//				this.index = -1;
 			//			}
 
-			this.swingModel.ACCESS_fireContentsChanged( this, 0, this.getItemCount() );
+			this.fireContentsChanged( 0, this.getItemCount() );
 			for( T item : removed ) {
 				this.handleItemRemoved( item );
 			}

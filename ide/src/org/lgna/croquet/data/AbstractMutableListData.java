@@ -62,14 +62,14 @@ public abstract class AbstractMutableListData<T> extends ListData<T> {
 		this.listeners.remove( listener );
 	}
 
-	private void fireItervalAdded( int indexA, int indexB ) {
+	private void fireIntervalAdded( int indexA, int indexB ) {
 		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.INTERVAL_ADDED, indexA, indexB );
 		for( javax.swing.event.ListDataListener listener : this.listeners ) {
 			listener.intervalAdded( e );
 		}
 	}
 
-	private void fireItervalRemoved( int indexA, int indexB ) {
+	private void fireIntervalRemoved( int indexA, int indexB ) {
 		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.INTERVAL_REMOVED, indexA, indexB );
 		for( javax.swing.event.ListDataListener listener : this.listeners ) {
 			listener.intervalRemoved( e );
@@ -79,7 +79,7 @@ public abstract class AbstractMutableListData<T> extends ListData<T> {
 	private void fireContentsChanged( int indexA, int indexB ) {
 		javax.swing.event.ListDataEvent e = new javax.swing.event.ListDataEvent( this, javax.swing.event.ListDataEvent.CONTENTS_CHANGED, indexA, indexB );
 		for( javax.swing.event.ListDataListener listener : this.listeners ) {
-			listener.intervalRemoved( e );
+			listener.contentsChanged( e );
 		}
 	}
 
