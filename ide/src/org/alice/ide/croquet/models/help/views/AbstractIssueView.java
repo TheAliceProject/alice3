@@ -51,7 +51,6 @@ public class AbstractIssueView extends org.lgna.croquet.components.BorderPanel {
 		textArea.getAwtComponent().setLineWrap( true );
 		textArea.getAwtComponent().setWrapStyleWord( true );
 		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane( textArea );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		rv.setMinimumPreferredHeight( 128 );
 		return rv;
 	}

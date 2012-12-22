@@ -166,7 +166,6 @@ public class SearchTabView extends GalleryTabView {
 			}
 		};
 		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		scrollPane.setBorder( null );
 		scrollPane.setBothScrollBarIncrements( 16, 160 );
 		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.filteredResourcesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );

@@ -91,7 +91,6 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( borderPanel );
 		scrollPane.setBorder( null );
-		scrollPane.setBothScrollBarIncrements( 12, 24 );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 
 		org.alice.ide.ast.declaration.views.TypeHeader typeHeader = new org.alice.ide.ast.declaration.views.TypeHeader( type );

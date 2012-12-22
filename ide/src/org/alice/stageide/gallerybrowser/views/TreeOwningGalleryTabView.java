@@ -71,7 +71,6 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 			}
 		};
 		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		scrollPane.setBorder( null );
 		scrollPane.setBothScrollBarIncrements( 16, 160 );
 		org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
 				.vgap( PAD )

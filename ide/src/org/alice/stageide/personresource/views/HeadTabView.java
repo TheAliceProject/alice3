@@ -61,7 +61,6 @@ public class HeadTabView extends org.lgna.croquet.components.FormPanel {
 		list.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
 		scrollPane.setBothScrollBarIncrements( 66, 66 );
-		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
 		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getHairColorNameState().getSidekickLabel(), new HorizontalWrapList( composite.getHairColorNameState(), 1 ) ) );
 		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, scrollPane ) );

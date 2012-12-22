@@ -152,7 +152,6 @@ public class ResourceManagerView extends org.lgna.croquet.components.BorderPanel
 		jTable.getColumn( jTable.getColumnName( org.alice.ide.resource.manager.ResourceTableRowSelectionState.TYPE_COLUMN_INDEX ) ).setCellRenderer( new ResourceTypeTableCellRenderer() );
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.table );
-		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.addCenterComponent( scrollPane );
 
 		org.lgna.croquet.components.Panel lineEndPanel = org.lgna.croquet.components.GridPanel.createSingleColumnGridPane(
