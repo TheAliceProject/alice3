@@ -47,6 +47,13 @@ package org.alice.ide.croquet.models.ast.cascade.statement;
  * @author Dennis Cosgrove
  */
 public abstract class StatementInsertCascade extends org.alice.ide.croquet.models.ast.cascade.ExpressionsCascade implements org.alice.ide.croquet.models.ast.InsertStatementCompletionModel {
+
+	private static boolean EPIC_HACK_isActive;
+
+	public static boolean EPIC_HACK_isActive() {
+		return EPIC_HACK_isActive;
+	}
+
 	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
 
 	public StatementInsertCascade( java.util.UUID id, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
@@ -89,6 +96,18 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	}
 
 	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions );
+
+	@Override
+	protected void prologue() {
+		EPIC_HACK_isActive = true;
+		super.prologue();
+	}
+
+	@Override
+	protected void epilogue() {
+		super.epilogue();
+		EPIC_HACK_isActive = false;
+	}
 
 	@Override
 	protected org.alice.ide.croquet.edits.ast.InsertStatementEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {

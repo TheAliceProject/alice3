@@ -52,7 +52,7 @@ import org.lgna.project.ast.MethodInvocation;
 public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
 	private static class RootStatementListPropertyPane extends org.alice.ide.x.components.StatementListPropertyView {
 		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
-			super( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements );
+			super( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements, true );
 		}
 
 		@Override
