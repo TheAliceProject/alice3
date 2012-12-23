@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<T> extends AbstractCompletionModel {
+public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.components.DropProxy.Hider {
 	public static class InternalRootResolver<T> extends IndirectResolver<InternalRoot<T>, Cascade<T>> {
 		private InternalRootResolver( Cascade<T> indirect ) {
 			super( indirect );
@@ -168,6 +168,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 	}
 
 	protected void epilogue() {
+		this.hideDropProxyIfNecessary();
 	}
 
 	protected abstract org.lgna.croquet.edits.Edit<? extends Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
@@ -336,5 +337,18 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 	@Override
 	public void appendUserRepr( java.lang.StringBuilder sb ) {
 		sb.append( this.getRoot().getPopupPrepModel().getName() );
+	}
+
+	private org.lgna.croquet.components.DragComponent dragSource;
+
+	public final void setDragSource( org.lgna.croquet.components.DragComponent dragSource ) {
+		this.dragSource = dragSource;
+	}
+
+	private void hideDropProxyIfNecessary() {
+		if( this.dragSource != null ) {
+			this.dragSource.hideDropProxyIfNecessary();
+			this.dragSource = null;
+		}
 	}
 }
