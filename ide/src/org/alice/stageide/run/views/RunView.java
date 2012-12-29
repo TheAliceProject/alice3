@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.run;
+package org.alice.stageide.run.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RestartOperation extends org.lgna.croquet.ActionOperation {
-	private static class SingletonHolder {
-		private static RestartOperation instance = new RestartOperation();
-	}
-
-	public static RestartOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RestartOperation() {
-		super( org.alice.ide.IDE.RUN_GROUP, java.util.UUID.fromString( "f8acb9c4-f4d8-4c6e-84ae-6555cc0da4e0" ) );
-	}
-
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				org.alice.ide.IDE.getActiveInstance().getRunOperation().fire();
-			}
-		} );
+public class RunView extends org.lgna.croquet.components.FixedAspectRatioPanel {
+	public RunView( org.alice.stageide.run.RunComposite composite ) {
+		super( new org.lgna.croquet.components.BorderPanel(), org.alice.stageide.run.RunComposite.WIDTH_TO_HEIGHT_RATIO );
+		this.setBackgroundColor( java.awt.Color.BLACK );
 	}
 }
