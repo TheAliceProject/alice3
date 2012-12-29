@@ -58,8 +58,6 @@ import org.lgna.croquet.StringState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.project.Project;
 
-import com.google.gdata.util.AuthenticationException;
-
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
@@ -84,14 +82,10 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final PlainStringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
 	private final StringState tagState = this.createStringState( this.createKey( "tag" ), "Alice3" );
 
+	private final LoginComposite loginComposite = new LoginComposite( this );
 	private final ActionOperation loginOperation = this.createActionOperation( this.createKey( "login" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			try {
-				uploader.logIn( idState.getValue(), passwordState.getValue() );
-				isLoggedIn = true;
-			} catch( AuthenticationException e ) {
-				e.printStackTrace();
-			}
+
 			return null;
 		}
 	} );
@@ -183,7 +177,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	}
 
 	public ActionOperation getLoginOperation() {
-		return this.loginOperation;
+		return this.loginComposite.getOperation();
 	}
 
 	public ActionOperation getSaveToFileOperation() {
@@ -350,5 +344,9 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 			termStrings = null;
 		}
 		return false;
+	}
+
+	public void setLoggedIn( boolean isLoggedIn ) {
+		this.isLoggedIn = isLoggedIn;
 	}
 }

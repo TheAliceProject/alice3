@@ -42,50 +42,57 @@
  */
 package org.alice.media;
 
+import java.io.IOException;
+
+import org.alice.ide.browser.MutableBrowserOperation;
 import org.alice.media.components.UploadProgressDialogView;
 import org.lgna.croquet.PlainDialogOperationComposite;
+import org.lgna.croquet.PlainStringValue;
+
+import com.google.gdata.data.media.MediaFileSource;
+import com.google.gdata.data.media.mediarss.MediaCategory;
+import com.google.gdata.data.media.mediarss.MediaDescription;
+import com.google.gdata.data.media.mediarss.MediaKeywords;
+import com.google.gdata.data.media.mediarss.MediaTitle;
+import com.google.gdata.data.youtube.VideoEntry;
+import com.google.gdata.data.youtube.YouTubeMediaGroup;
+import com.google.gdata.data.youtube.YouTubeNamespace;
 
 /**
  * @author Matt May
  */
 public class UploadProgressDialogComposite extends PlainDialogOperationComposite<UploadProgressDialogView> implements YouTubeListener {
 
+	private UploadComposite parentComposite;
+	private PlainStringValue pliableValue = createStringValue( createKey( "NotAvailable" ) );
+	private PlainStringValue uploadingState = createStringValue( createKey( "uploading" ) );
+	private PlainStringValue successfulUploadState = createStringValue( createKey( "successfulUpload" ) );
+	private PlainStringValue unsuccessfulUploadState = createStringValue( createKey( "unsuccessfulUpload" ) );
+	private MutableBrowserOperation videoLinkOperation = new MutableBrowserOperation( java.util.UUID.fromString( "7de64bab-9f75-48b0-b52e-ad7d4ba8d22a" ) );
+
 	public UploadProgressDialogComposite( UploadComposite parentComposite ) {
 		super( java.util.UUID.fromString( "d8820578-420e-4fe4-9623-a3e4d073a190" ), null );
-		//		VideoEntry entry = new VideoEntry();
-		//
-		//		MediaFileSource source = new MediaFileSource( parentComposite.getOwner().getFile(), "video/quicktime" );
-		//		entry.setMediaSource( source );
-		//		YouTubeMediaGroup mediaGroup = entry.getOrCreateMediaGroup();
-		//
-		//		MediaTitle title = new MediaTitle();
-		//		title.setPlainTextContent( parentComposite.getTitleState().getValue().trim() );
-		//		mediaGroup.setTitle( title );//title
-		//
-		//		MediaDescription mediaDescription = new MediaDescription();
-		//		mediaDescription.setPlainTextContent( parentComposite.getDescriptionState().getValue().trim() );
-		//		mediaGroup.setDescription( mediaDescription );//description]
-		//
-		//		MediaKeywords keywords = new MediaKeywords();
-		//		String[] arr = parentComposite.getTagState().getValue().split( "," );
-		//		for( String s : arr ) {
-		//			keywords.addKeyword( s.trim() );
-		//		}
-		//		mediaGroup.setKeywords( keywords );//tags
-		//
-		//		String category = parentComposite.getVideoCategoryState().getValue().toString().split( "\\s" )[ 0 ].trim();
-		//		mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
-		//		mediaGroup.setPrivate( parentComposite.getIsPrivateState().getValue() );//isPrivate
-		//		try {
-		//			parentComposite.getUploader().uploadVideo( entry );
-		//		} catch( IOException e ) {
-		//			e.printStackTrace();
-		//		}
-		//		try {
-		//			getView().cycleText();
-		//		} catch( InterruptedException e ) {
-		//			e.printStackTrace();
-		//		}
+		this.parentComposite = parentComposite;
+	}
+
+	public PlainStringValue getPliablePlainStringValue() {
+		return pliableValue;
+	}
+
+	public PlainStringValue getUploadingState() {
+		return this.uploadingState;
+	}
+
+	public PlainStringValue getSuccessfulUploadState() {
+		return this.successfulUploadState;
+	}
+
+	public PlainStringValue getUnsuccessfulUploadState() {
+		return this.unsuccessfulUploadState;
+	}
+
+	public MutableBrowserOperation getVideoLinkOperation() {
+		return this.videoLinkOperation;
 	}
 
 	@Override
@@ -99,6 +106,40 @@ public class UploadProgressDialogComposite extends PlainDialogOperationComposite
 
 	public void youTubeEventTriggered( YouTubeEvent event ) {
 		getView().youtubeEventTriggered( event );
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		VideoEntry entry = new VideoEntry();
+
+		MediaFileSource source = new MediaFileSource( parentComposite.getOwner().getFile(), "video/quicktime" );
+		entry.setMediaSource( source );
+		YouTubeMediaGroup mediaGroup = entry.getOrCreateMediaGroup();
+
+		MediaTitle title = new MediaTitle();
+		title.setPlainTextContent( parentComposite.getTitleState().getValue().trim() );
+		mediaGroup.setTitle( title );//title
+
+		MediaDescription mediaDescription = new MediaDescription();
+		mediaDescription.setPlainTextContent( parentComposite.getDescriptionState().getValue().trim() );
+		mediaGroup.setDescription( mediaDescription );//description]
+
+		MediaKeywords keywords = new MediaKeywords();
+		String[] arr = parentComposite.getTagState().getValue().split( "," );
+		for( String s : arr ) {
+			keywords.addKeyword( s.trim() );
+		}
+		mediaGroup.setKeywords( keywords );//tags
+
+		String category = parentComposite.getVideoCategoryState().getValue().toString().split( "\\s" )[ 0 ].trim();
+		mediaGroup.addCategory( new MediaCategory( YouTubeNamespace.CATEGORY_SCHEME, category ) );//category
+		mediaGroup.setPrivate( parentComposite.getIsPrivateState().getValue() );//isPrivate
+		try {
+			parentComposite.getUploader().uploadVideo( entry );
+		} catch( IOException e ) {
+			e.printStackTrace();
+		}
 	}
 
 }

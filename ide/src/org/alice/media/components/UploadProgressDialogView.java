@@ -42,55 +42,72 @@
  */
 package org.alice.media.components;
 
+import org.alice.ide.browser.MutableBrowserOperation;
 import org.alice.media.UploadProgressDialogComposite;
 import org.alice.media.YouTubeEvent;
 import org.alice.media.YouTubeEvent.EventType;
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.ImmutableTextArea;
 import org.lgna.croquet.components.Label;
 
 import com.google.gdata.data.youtube.VideoEntry;
+
+import edu.cmu.cs.dennisc.math.GoldenRatio;
 
 /**
  * @author Matt May
  */
 public class UploadProgressDialogView extends BorderPanel {
 
-	Label statusLabel = new Label();
-	private boolean shouldStop = false;
+	private YouTubeEvent youTubeEvent;
+	private ImmutableTextArea createImmutableTextArea;
 
 	public UploadProgressDialogView( UploadProgressDialogComposite uploadProgressDialogComposite ) {
-		this.addCenterComponent( statusLabel );
-		statusLabel.setText( "UPLOADING..." );
-	}
+		super( uploadProgressDialogComposite );
 
-	public void cycleText() throws InterruptedException {
-		while( !shouldStop ) {
-			Thread.sleep( 50 );
-			statusLabel.setText( "UPLOADING..." );
-			Thread.sleep( 50 );
-			statusLabel.setText( "UPLOADING.  " );
-			Thread.sleep( 50 );
-			statusLabel.setText( "UPLOADING . " );
-			Thread.sleep( 50 );
-			statusLabel.setText( "UPLOADING  ." );
-		}
+		createImmutableTextArea = uploadProgressDialogComposite.getPliablePlainStringValue().createImmutableTextArea();
+		this.addCenterComponent( createImmutableTextArea );
+		this.addComponent( new Label(), Constraint.PAGE_END );
+
+		this.setMinimumPreferredHeight( 175 );
+		this.setMinimumPreferredWidth( GoldenRatio.getLongerSideLength( 175 ) );
 	}
 
 	public void youtubeEventTriggered( YouTubeEvent event ) {
-		shouldStop = true;
-		System.out.println( "event triggered: " + event.getType() );
-		if( event.getType() == EventType.UPLOAD_FAILED ) {
-			statusLabel.setText( event.getMoreInfo().toString() );
-			System.out.println( "why failed: " );
-			System.out.println( event.getMoreInfo() );
-		}
-		if( event.getType() == EventType.UPLOAD_SUCCESS ) {
-			System.out.println( event.getMoreInfo() );
-			System.out.println( event.getMoreInfo().getClass() );
-			if( event.getMoreInfo() instanceof VideoEntry ) {
-				VideoEntry entry = ( (VideoEntry)event.getMoreInfo() );
+		this.youTubeEvent = event;
+		refreshLater();
+	}
+
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		UploadProgressDialogComposite uploadProgressDialogComposite = (UploadProgressDialogComposite)this.getComposite();
+		if( this.youTubeEvent != null ) {
+			EventType eventType = this.youTubeEvent.getType();
+			if( eventType == EventType.UPLOAD_FAILED ) {
+				uploadProgressDialogComposite.getPliablePlainStringValue().setText( uploadProgressDialogComposite.getUnsuccessfulUploadState().getText() );
+				System.out.println( youTubeEvent.getMoreInfo() );
+				//				Label failLabel = new Label( youTubeEvent.getMoreInfo().toString() );
+				//				this.addComponent( failLabel, Constraint.PAGE_END );
+			} else if( eventType == EventType.UPLOAD_SUCCESS ) {
+				if( youTubeEvent.getMoreInfo() instanceof VideoEntry ) {
+					VideoEntry entry = ( (VideoEntry)youTubeEvent.getMoreInfo() );
+					uploadProgressDialogComposite.getPliablePlainStringValue().setText( uploadProgressDialogComposite.getSuccessfulUploadState().getText() );
+					MutableBrowserOperation videoLinkOperation = uploadProgressDialogComposite.getVideoLinkOperation();
+					videoLinkOperation.setUrl( entry.getHtmlLink().getHref() );
+					this.addComponent( uploadProgressDialogComposite.getVideoLinkOperation().createHyperlink(), Constraint.PAGE_END );
+				}
 			}
+		} else {
+			System.out.println( "HELLO WORLD (mmay) " + uploadProgressDialogComposite.getUploadingState().getText() );
+			uploadProgressDialogComposite.getPliablePlainStringValue().setText( uploadProgressDialogComposite.getUploadingState().getText() );
 		}
 	}
 
+	@Override
+	public void handleCompositePreActivation() {
+		super.handleCompositePreActivation();
+		this.youTubeEvent = null;
+		refreshLater();
+	}
 }
