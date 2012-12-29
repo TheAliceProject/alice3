@@ -82,7 +82,7 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 		sb.append( "<b>The Sims <sup>TM</sup> 2</b> Art Assets donated by <strong>Electronic Arts</strong>." );
 		sb.append( "</html>" );
 
-		org.lgna.croquet.components.HtmlMultiLineLabel supportedByLabel = new org.lgna.croquet.components.HtmlMultiLineLabel( sb.toString() );
+		org.lgna.croquet.components.Label supportedByLabel = new org.lgna.croquet.components.Label( sb.toString() );
 		supportedByLabel.setBorder( new IconBorder() );
 		this.addPageStartComponent( supportedByLabel );
 
