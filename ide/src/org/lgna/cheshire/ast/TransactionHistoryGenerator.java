@@ -48,14 +48,14 @@ public class TransactionHistoryGenerator {
 			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		}
 
-		org.alice.stageide.croquet.models.run.RunOperation runOperation = org.alice.stageide.croquet.models.run.RunOperation.getInstance();
+		org.alice.stageide.run.RunComposite runComposite = org.alice.stageide.run.RunComposite.getInstance();
 		// Call run
 		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 
 		org.lgna.croquet.history.TransactionHistory subTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		org.lgna.croquet.history.Transaction closeTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
-		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( closeTransaction, runOperation.getCloseOperation(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), null );
-		org.lgna.croquet.history.CompletionStep<?> commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, runOperation, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), subTransactionHistory );
+		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( closeTransaction, runComposite.getCloseOperation(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), null );
+		org.lgna.croquet.history.CompletionStep<?> commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, runComposite.getOperation(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), subTransactionHistory );
 		commitStep.finish();
 
 		return history;

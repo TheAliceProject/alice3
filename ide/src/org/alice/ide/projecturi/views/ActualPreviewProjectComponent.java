@@ -96,7 +96,7 @@ public class ActualPreviewProjectComponent extends org.lgna.croquet.components.J
 	};
 
 	private static final int DEFAULT_WIDTH = 320;
-	private static final int DEFAULT_HEIGHT = (int)( DEFAULT_WIDTH / org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
+	private static final int DEFAULT_HEIGHT = (int)( DEFAULT_WIDTH / org.alice.stageide.run.RunComposite.WIDTH_TO_HEIGHT_RATIO );
 
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {

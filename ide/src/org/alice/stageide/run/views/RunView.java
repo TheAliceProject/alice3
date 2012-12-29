@@ -45,9 +45,8 @@ package org.alice.stageide.run.views;
 /**
  * @author Dennis Cosgrove
  */
-public class RunView extends org.lgna.croquet.components.FixedAspectRatioPanel {
+public class RunView extends org.lgna.croquet.components.BorderPanel {
 	public RunView( org.alice.stageide.run.RunComposite composite ) {
-		super( new org.lgna.croquet.components.BorderPanel(), org.alice.stageide.run.RunComposite.WIDTH_TO_HEIGHT_RATIO );
-		this.setBackgroundColor( java.awt.Color.BLACK );
+		super( composite );
 	}
 }

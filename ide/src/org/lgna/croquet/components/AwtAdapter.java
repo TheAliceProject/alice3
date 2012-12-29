@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.program;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RunProgramContext extends ProgramContext {
-	public RunProgramContext( org.lgna.project.ast.NamedUserType programType ) {
-		super( programType );
-	}
+@Deprecated
+public class AwtAdapter extends Component<java.awt.Component> {
+	private final java.awt.Component awtComponent;
 
-	public RunProgramContext() {
-		this( getUpToDateProgramTypeFromActiveIde() );
-	}
-
-	public void initializeInContainer( org.lgna.story.implementation.ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
-		this.disableRendering();
-		this.getProgramImp().initializeInAwtContainer( awtContainerInitializer );
-	}
-
-	public java.awt.Container getContainer() {
-		return this.getOnscreenLookingGlass().getAWTComponent().getParent();
+	public AwtAdapter( java.awt.Component awtComponent ) {
+		this.awtComponent = awtComponent;
 	}
 
 	@Override
-	public void cleanUpProgram() {
-		this.getContainer().removeAll();
-		super.cleanUpProgram();
+	protected java.awt.Component createAwtComponent() {
+		return this.awtComponent;
 	}
 }

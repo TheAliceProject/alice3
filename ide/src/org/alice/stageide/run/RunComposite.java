@@ -57,7 +57,7 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	private RunComposite() {
 		super( java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ), org.alice.ide.IDE.RUN_GROUP );
 		//todo: move to localize
-		this.getOperation().setSmallIcon( new org.alice.stageide.croquet.models.run.RunIcon() );
+		this.getOperation().setSmallIcon( new org.alice.stageide.run.views.icons.RunIcon() );
 	}
 
 	private transient org.alice.stageide.program.RunProgramContext programContext;
@@ -85,13 +85,10 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	}
 
 	private class ProgramRunnable implements Runnable {
-		private final java.awt.Container awtContainer;
-
-		public ProgramRunnable( java.awt.Container awtContainer ) {
-			this.awtContainer = awtContainer;
+		public ProgramRunnable( org.lgna.story.implementation.ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
 			RunComposite.this.programContext = new org.alice.stageide.program.RunProgramContext();
 			RunComposite.this.programContext.getProgramImp().setRestartAction( RunComposite.this.restartAction );
-			RunComposite.this.programContext.initializeInContainer( this.awtContainer );
+			RunComposite.this.programContext.initializeInContainer( awtContainerInitializer );
 		}
 
 		public void run() {
@@ -99,33 +96,39 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 		}
 	}
 
-	private void startProgram( java.awt.Container awtContainer ) {
-		new org.lgna.common.ComponentThread( new ProgramRunnable( awtContainer ), RunComposite.this.getName() ).start();
+	private final class RunAwtContainerInitializer implements org.lgna.story.implementation.ProgramImp.AwtContainerInitializer {
+		public void addComponents( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass, javax.swing.JPanel controlPanel ) {
+			org.alice.stageide.run.views.RunView runView = RunComposite.this.getView();
+			runView.forgetAndRemoveAllComponents();
+
+			org.lgna.croquet.components.Component<?> lookingGlassContainer = new org.lgna.croquet.components.AwtAdapter( onscreenLookingGlass.getAWTComponent() );
+			org.lgna.croquet.components.FixedAspectRatioPanel fixedAspectRatioPanel = new org.lgna.croquet.components.FixedAspectRatioPanel( lookingGlassContainer, WIDTH_TO_HEIGHT_RATIO );
+			fixedAspectRatioPanel.setBackgroundColor( java.awt.Color.BLACK );
+			runView.getAwtComponent().add( controlPanel, java.awt.BorderLayout.PAGE_START );
+			runView.addCenterComponent( fixedAspectRatioPanel );
+			runView.revalidateAndRepaint();
+		}
 	}
 
-	private java.awt.Container stopProgram() {
+	private final RunAwtContainerInitializer runAwtContainerInitializer = new RunAwtContainerInitializer();
+
+	private void startProgram() {
+		new org.lgna.common.ComponentThread( new ProgramRunnable( runAwtContainerInitializer ), RunComposite.this.getName() ).start();
+	}
+
+	private void stopProgram() {
 		if( this.programContext != null ) {
-			java.awt.Container rv = this.programContext.getContainer();
 			this.programContext.cleanUpProgram();
 			this.programContext = null;
-			return rv;
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( this );
-			return null;
 		}
 	}
 
 	private class RestartAction extends javax.swing.AbstractAction {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			java.awt.Container awtContainer = RunComposite.this.stopProgram();
-			if( awtContainer != null ) {
-				RunComposite.this.startProgram( awtContainer );
-			} else {
-				//todo: prompt w/ dialog that can submit world to bugs database
-				String message = "Unable to restart";
-				String title = null;
-				org.lgna.croquet.Application.getActiveInstance().showMessageDialog( message, title, org.lgna.croquet.MessageType.ERROR );
-			}
+			RunComposite.this.stopProgram();
+			RunComposite.this.startProgram();
 		}
 	};
 
@@ -140,7 +143,7 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		super.handlePreShowDialog( step );
-		this.startProgram( (java.awt.Container)this.getView().getAwtComponent().getComponent( 0 ) );
+		this.startProgram();
 		if( this.size != null ) {
 			//pas
 		} else {
@@ -163,36 +166,6 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 		this.stopProgram();
 		super.handleFinally( step, dialog );
 	}
-
-	//		@Override
-	//		protected org.lgna.croquet.components.Container<?> createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
-	//			final org.alice.stageide.StageIDE ide = (org.alice.stageide.StageIDE)org.alice.ide.IDE.getActiveInstance();
-	//			if( ide.getProject() != null ) {
-	//				org.lgna.croquet.components.BorderPanel container = new org.lgna.croquet.components.BorderPanel();
-	//				org.lgna.croquet.components.FixedAspectRatioPanel rv = new org.lgna.croquet.components.FixedAspectRatioPanel( container, WIDTH_TO_HEIGHT_RATIO );
-	//				rv.setBackgroundColor( java.awt.Color.BLACK );
-	//				this.startProgram( container.getAwtComponent() );
-	//				return rv;
-	//			} else {
-	//				ide.showMessageDialog( "Please open a project first." );
-	//				return null;
-	//			}
-	//		}
-	//	
-	//		@Override
-	//		protected void releaseContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
-	//			//todo: investigate		
-	//			this.location = dialog.getLocation();
-	//			this.size = dialog.getSize();
-	//			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "releaseContentPane" );
-	//			step.finish();
-	//		}
-	//	
-	//		@Override
-	//		protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog, org.lgna.croquet.components.Container<?> contentPane ) {
-	//			super.handleFinally( step, dialog, contentPane );
-	//			this.stopProgram();
-	//		}
 
 	@Override
 	protected org.alice.stageide.run.views.RunView createView() {
