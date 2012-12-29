@@ -46,7 +46,7 @@ package org.alice.ide.projecturi.views;
  * @author Dennis Cosgrove
  */
 public class PreviewProjectPanel extends org.lgna.croquet.components.PageAxisPanel {
-	public static final boolean IS_READY_FOR_PRIME_TIME = false;
+	public static final boolean IS_READY_FOR_PRIME_TIME = true;
 
 	public PreviewProjectPanel() {
 		this.addComponent( new org.lgna.croquet.components.Label( "preview", 2.0f ) );

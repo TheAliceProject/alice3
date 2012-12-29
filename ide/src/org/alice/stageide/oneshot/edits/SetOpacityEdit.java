@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.stageide.oneshot.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryLabelSeparatorModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class SetOpacityEdit extends MethodInvocationEdit {
+	private transient org.lgna.story.implementation.ModelImp modelImp;
+	private transient Float value;
 
-	public static InstanceFactoryLabelSeparatorModel getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
-		synchronized( map ) {
-			InstanceFactoryLabelSeparatorModel rv = map.get( value );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new InstanceFactoryLabelSeparatorModel( value );
-				map.put( value, rv );
-			}
-			return rv;
-		}
+	public SetOpacityEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-
-	private InstanceFactoryLabelSeparatorModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
-		this.instanceFactory = instanceFactory;
+	public SetOpacityEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
 	}
 
 	@Override
-	public String getName() {
-		return this.instanceFactory.getRepr();
+	protected void preserveUndoInfo( Object instance, boolean isDo ) {
+		if( instance instanceof org.lgna.story.SThing ) {
+			org.lgna.story.SThing thing = (org.lgna.story.SThing)instance;
+			this.modelImp = org.lgna.story.ImplementationAccessor.getImplementation( thing );
+			this.value = this.modelImp.opacity.getValue();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
+			this.modelImp = null;
+			this.value = null;
+		}
+	}
+
+	@Override
+	protected void undoInternal() {
+		if( ( this.modelImp != null ) && ( this.value != null ) ) {
+			this.modelImp.opacity.animateValue( this.value );
+		}
 	}
 }

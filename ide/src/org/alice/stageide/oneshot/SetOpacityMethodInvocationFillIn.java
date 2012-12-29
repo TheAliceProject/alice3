@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalTransformationMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class SetOpacityMethodInvocationFillIn extends MethodInvocationFillIn {
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, SetOpacityMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, LocalTransformationMethodInvocationFillIn>() {
-			public LocalTransformationMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-				return new LocalTransformationMethodInvocationFillIn( instanceFactory, method );
+	public static SetOpacityMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, SetOpacityMethodInvocationFillIn>() {
+			public SetOpacityMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+				return new SetOpacityMethodInvocationFillIn( instanceFactory, method );
 			}
 		} );
 	}
 
-	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
+	public static SetOpacityMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
 		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( instanceFactory, method );
 	}
 
-	public static LocalTransformationMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+	public static SetOpacityMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
 		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 
-	private LocalTransformationMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "955cb8c1-3861-4ac7-b76f-72ca93b1289b" ), instanceFactory, method );
+	private SetOpacityMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "52f83a5b-9005-4d21-b6a0-3dd96211dc33" ), instanceFactory, method );
 	}
 
 	@Override
-	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		return new LocalTransformationMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
+	protected org.alice.stageide.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		return new SetOpacityMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

@@ -46,7 +46,7 @@ import java.text.MessageFormat;
 
 import javax.swing.Icon;
 
-import org.alice.stageide.operations.ast.MoveAndOrientToEdit;
+import org.alice.stageide.sceneeditor.viewmanager.edits.MoveAndOrientToEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.project.ast.UserField;
 import org.lgna.story.implementation.CameraImp;

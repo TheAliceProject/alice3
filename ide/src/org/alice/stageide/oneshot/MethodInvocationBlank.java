@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
@@ -76,6 +76,9 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 		org.lgna.project.ast.JavaType flyerType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SFlyer.class );
 		org.lgna.project.ast.JavaType cameraType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCamera.class );
+		org.lgna.project.ast.JavaType groundType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SGround.class );
+		org.lgna.project.ast.JavaType roomType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SRoom.class );
+		org.lgna.project.ast.JavaType modelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class );
 
 		org.lgna.project.ast.AbstractType<?, ?, ?> instanceFactoryValueType = this.instanceFactory.getValueType();
 		java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -105,12 +108,29 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD );
 		}
 
+		if( groundType.isAssignableFrom( instanceFactoryValueType ) ) {
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.GROUND_SET_PAINT_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.GROUND_SET_OPACITY_METHOD );
+		}
+		if( roomType.isAssignableFrom( instanceFactoryValueType ) ) {
+			//methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_PAINT_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_OPACITY_METHOD );
+		}
+		if( modelType.isAssignableFrom( instanceFactoryValueType ) ) {
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MODEL_SET_PAINT_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.MODEL_SET_OPACITY_METHOD );
+		}
+
 		java.util.List<org.lgna.project.ast.AbstractMethod> sortedMethods = org.alice.stageide.ast.sort.OneShotSorter.SINGLETON.createSortedList( methods );
 		for( org.lgna.project.ast.AbstractMethod method : sortedMethods ) {
 			if( method != null ) {
 				//todo
 				if( method == org.alice.stageide.ast.sort.OneShotSorter.STRAIGHTEN_OUT_JOINTS_METHOD ) {
 					rv.add( AllJointLocalTransformationsMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+				} else if( "setPaint".equals( method.getName() ) ) {
+					rv.add( SetPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+				} else if( "setOpacity".equals( method.getName() ) ) {
+					rv.add( SetOpacityMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else {
 					rv.add( LocalTransformationMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				}

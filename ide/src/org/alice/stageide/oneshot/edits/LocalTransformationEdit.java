@@ -41,42 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.stageide.oneshot.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, OneShotMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class LocalTransformationEdit extends MethodInvocationEdit {
+	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
+	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
 
-	public static OneShotMenuModel getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		synchronized( map ) {
-			OneShotMenuModel rv = map.get( instanceFactory );
-			if( rv != null ) {
-				//pass
-			} else {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
-				models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
-				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
-					models.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
-					if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) || field.getValueType().isAssignableTo( org.lgna.story.SScene.class ) ) {
-						//pass
-					} else {
-						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-					}
-					models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-				}
-				rv = new OneShotMenuModel( instanceFactory, models );
-				map.put( instanceFactory, rv );
-			}
-			return rv;
+	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		super( completionStep, instanceFactory, method, argumentExpressions );
+	}
+
+	public LocalTransformationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+	}
+
+	@Override
+	protected void preserveUndoInfo( Object instance, boolean isDo ) {
+		if( instance instanceof org.lgna.story.STurnable ) {
+			org.lgna.story.STurnable turnable = (org.lgna.story.STurnable)instance;
+			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
+			this.m = this.transformable.getLocalTransformation();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
+			this.transformable = null;
+			this.m = null;
 		}
 	}
 
-	private OneShotMenuModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
-		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
+	@Override
+	protected void undoInternal() {
+		if( ( this.transformable != null ) && ( this.m != null ) ) {
+			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.PARENT, this.m );
+		}
 	}
 }

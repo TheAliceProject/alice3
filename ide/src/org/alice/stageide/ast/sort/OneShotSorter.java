@@ -79,12 +79,24 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 	public static final org.lgna.project.ast.JavaMethod STRAIGHTEN_OUT_JOINTS_METHOD;
 	//	public static final org.lgna.project.ast.JavaMethod UNFOLD_WINGS_METHOD;
 
+	public static final org.lgna.project.ast.JavaMethod GROUND_SET_PAINT_METHOD;
+	public static final org.lgna.project.ast.JavaMethod ROOM_SET_PAINT_METHOD;
+	public static final org.lgna.project.ast.JavaMethod MODEL_SET_PAINT_METHOD;
+
+	public static final org.lgna.project.ast.JavaMethod GROUND_SET_OPACITY_METHOD;
+	public static final org.lgna.project.ast.JavaMethod ROOM_SET_OPACITY_METHOD;
+	public static final org.lgna.project.ast.JavaMethod MODEL_SET_OPACITY_METHOD;
+
 	static {
 		org.lgna.project.ast.JavaType turnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.STurnable.class );
 		org.lgna.project.ast.JavaType movableTurnableType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SMovableTurnable.class );
 		org.lgna.project.ast.JavaType jointedModelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJointedModel.class );
 		org.lgna.project.ast.JavaType flyerType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SFlyer.class );
 		org.lgna.project.ast.JavaType cameraType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SCamera.class );
+
+		org.lgna.project.ast.JavaType groundType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SGround.class );
+		org.lgna.project.ast.JavaType roomType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SRoom.class );
+		org.lgna.project.ast.JavaType modelType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SModel.class );
 
 		TURN_METHOD = turnableType.getDeclaredMethod( "turn", org.lgna.story.TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class );
 		assert TURN_METHOD != null;
@@ -121,6 +133,14 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD = cameraType.getDeclaredMethod( "moveAndOrientToAGoodVantagePointOf", org.lgna.story.SThing.class, org.lgna.story.MoveAndOrientToAGoodVantagePointOf.Detail[].class );
 		assert MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD != null;
 
+		GROUND_SET_PAINT_METHOD = getSetPaintMethod( groundType );
+		ROOM_SET_PAINT_METHOD = getSetPaintMethod( roomType );
+		MODEL_SET_PAINT_METHOD = getSetPaintMethod( modelType );
+
+		GROUND_SET_OPACITY_METHOD = getSetOpacityMethod( groundType );
+		ROOM_SET_OPACITY_METHOD = getSetOpacityMethod( roomType );
+		MODEL_SET_OPACITY_METHOD = getSetOpacityMethod( modelType );
+
 		double value = 1.0;
 		final double INCREMENT = 0.01;
 		map.put( MOVE_METHOD, value += INCREMENT );
@@ -141,6 +161,28 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 
 		value = 3.0;
 		map.put( STRAIGHTEN_OUT_JOINTS_METHOD, value += INCREMENT );
+
+		value = 4.0;
+		map.put( GROUND_SET_PAINT_METHOD, value );
+		map.put( ROOM_SET_PAINT_METHOD, value );
+		map.put( MODEL_SET_PAINT_METHOD, value );
+		value += INCREMENT;
+		map.put( GROUND_SET_OPACITY_METHOD, value );
+		map.put( ROOM_SET_OPACITY_METHOD, value );
+		map.put( MODEL_SET_OPACITY_METHOD, value );
+		value += INCREMENT;
+	}
+
+	private static org.lgna.project.ast.JavaMethod getSetPaintMethod( org.lgna.project.ast.JavaType type ) {
+		org.lgna.project.ast.JavaMethod rv = type.getDeclaredMethod( "setPaint", org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class );
+		assert rv != null : type;
+		return rv;
+	}
+
+	private static org.lgna.project.ast.JavaMethod getSetOpacityMethod( org.lgna.project.ast.JavaType type ) {
+		org.lgna.project.ast.JavaMethod rv = type.getDeclaredMethod( "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class );
+		assert rv != null : type;
+		return rv;
 	}
 
 	private static double getValue( org.lgna.project.ast.AbstractMember method ) {

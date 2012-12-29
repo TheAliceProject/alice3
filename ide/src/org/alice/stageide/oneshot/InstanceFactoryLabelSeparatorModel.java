@@ -40,23 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.ast.oneshot;
+
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AllJointLocalTransformationsMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.Expression[] argumentExpressions;
+public class InstanceFactoryLabelSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, InstanceFactoryLabelSeparatorModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public AllJointLocalTransformationsMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		this.instanceFactory = instanceFactory;
-		this.method = method;
-		this.argumentExpressions = argumentExpressions;
+	public static InstanceFactoryLabelSeparatorModel getInstance( org.alice.ide.instancefactory.InstanceFactory value ) {
+		synchronized( map ) {
+			InstanceFactoryLabelSeparatorModel rv = map.get( value );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new InstanceFactoryLabelSeparatorModel( value );
+				map.put( value, rv );
+			}
+			return rv;
+		}
 	}
 
-	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
-		return new AllJointLocalTransformationsEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+
+	private InstanceFactoryLabelSeparatorModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		super( java.util.UUID.fromString( "9a7e4f27-4e46-42a4-ab64-7702deefb5a1" ) );
+		this.instanceFactory = instanceFactory;
+	}
+
+	@Override
+	public String getName() {
+		return this.instanceFactory.getRepr();
 	}
 }

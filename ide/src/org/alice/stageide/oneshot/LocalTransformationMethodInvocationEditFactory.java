@@ -41,49 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.stageide.oneshot;
+
+import org.alice.stageide.oneshot.edits.LocalTransformationEdit;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationFillIn extends org.lgna.croquet.CascadeFillIn<MethodInvocationEditFactory, org.lgna.project.ast.Expression> {
+public class LocalTransformationMethodInvocationEditFactory implements MethodInvocationEditFactory {
 	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.MethodInvocation transientValue;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.Expression[] argumentExpressions;
 
-	public MethodInvocationFillIn( java.util.UUID id, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-		super( id );
+	public LocalTransformationMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		this.instanceFactory = instanceFactory;
-		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( method );
-		this.transientValue.expression.setValue( instanceFactory.createExpression() );
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
-			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameter ) );
-		}
+		this.method = method;
+		this.argumentExpressions = argumentExpressions;
 	}
 
-	private org.lgna.project.ast.AbstractMethod getMethod() {
-		return this.transientValue.method.getValue();
-	}
-
-	@Override
-	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode ) {
-		return org.alice.ide.x.PreviewAstI18nFactory.getInstance().createStatementPane( new org.lgna.project.ast.ExpressionStatement( this.transientValue ) ).getAwtComponent();
-	}
-
-	protected abstract MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions );
-
-	@Override
-	public MethodInvocationEditFactory createValue( org.lgna.croquet.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory ) {
-		org.lgna.project.ast.Expression[] argumentExpressions = this.createFromBlanks( itemNode, transactionHistory, org.lgna.project.ast.Expression.class );
-		return this.createMethodInvocationEditFactory( this.instanceFactory, this.getMethod(), argumentExpressions );
-	}
-
-	@Override
-	public MethodInvocationEditFactory getTransientValue( org.lgna.croquet.cascade.ItemNode<? super MethodInvocationEditFactory, org.lgna.project.ast.Expression> itemNode ) {
-		return null;
-	}
-
-	@Override
-	protected String getTutorialItemText() {
-		return this.transientValue.method.getValue().getName();
+	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
+		return new LocalTransformationEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

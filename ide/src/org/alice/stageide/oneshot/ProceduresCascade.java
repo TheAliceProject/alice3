@@ -41,23 +41,34 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalTransformationMethodInvocationEditFactory implements MethodInvocationEditFactory {
-	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
-	private final org.lgna.project.ast.AbstractMethod method;
-	private final org.lgna.project.ast.Expression[] argumentExpressions;
+public class ProceduresCascade extends org.lgna.croquet.Cascade<MethodInvocationEditFactory> {
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, ProceduresCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public LocalTransformationMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		this.instanceFactory = instanceFactory;
-		this.method = method;
-		this.argumentExpressions = argumentExpressions;
+	public static ProceduresCascade getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		synchronized( map ) {
+			ProceduresCascade rv = map.get( instanceFactory );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ProceduresCascade( instanceFactory );
+				map.put( instanceFactory, rv );
+			}
+			return rv;
+		}
 	}
 
-	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
-		return new LocalTransformationEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
+	private ProceduresCascade( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "5ebba3cc-cb89-4bb8-85fe-da513b76cb51" ), MethodInvocationEditFactory.class, MethodInvocationBlank.getInstance( instanceFactory ) );
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step, MethodInvocationEditFactory[] values ) {
+		assert values.length == 1;
+		return values[ 0 ].createEdit( step );
 	}
 }

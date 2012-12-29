@@ -40,53 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.ast;
+
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TransformableFieldTileActionOperation extends AbstractFieldTileActionOperation {
-	public TransformableFieldTileActionOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractField field ) {
-		super( individualId, field );
+public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, OneShotMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static OneShotMenuModel getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		synchronized( map ) {
+			OneShotMenuModel rv = map.get( instanceFactory );
+			if( rv != null ) {
+				//pass
+			} else {
+				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
+				models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
+				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
+					org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
+					models.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+					if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) || field.getValueType().isAssignableTo( org.lgna.story.SScene.class ) ) {
+						//pass
+					} else {
+						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+					}
+					models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				}
+				rv = new OneShotMenuModel( instanceFactory, models );
+				map.put( instanceFactory, rv );
+			}
+			return rv;
+		}
 	}
 
-	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.lgna.story.implementation.TransformableImp transformableImp );
-
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-		org.lgna.story.STurnable transformable = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getInstanceInJavaVMForField( this.getField(), org.lgna.story.STurnable.class );
-		final org.lgna.story.implementation.TransformableImp transformableImp = org.lgna.story.ImplementationAccessor.getImplementation( transformable );
-		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV;
-		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV;
-		if( transformable != null ) {
-			prevPOV = transformableImp.getAbsoluteTransformation();
-			nextPOV = this.calculateNextAbsoluteTransformation( transformableImp );
-			if( nextPOV.isNaN() ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "nextPOV.isNaN()" );
-				step.cancel();
-			} else {
-				step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
-					@Override
-					protected final void doOrRedoInternal( boolean isDo ) {
-						transformableImp.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, nextPOV );
-					}
-
-					@Override
-					protected final void undoInternal() {
-						transformableImp.animateTransformation( org.lgna.story.implementation.AsSeenBy.SCENE, prevPOV );
-					}
-
-					@Override
-					protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-						//todo
-						rv.append( TransformableFieldTileActionOperation.this.getName() );
-					}
-				} );
-			}
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "transformable == null" );
-			step.cancel();
-		}
+	private OneShotMenuModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
+		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
 	}
 }

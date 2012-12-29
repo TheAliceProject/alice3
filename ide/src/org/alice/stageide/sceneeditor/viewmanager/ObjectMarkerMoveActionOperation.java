@@ -46,7 +46,7 @@ import java.text.MessageFormat;
 
 import javax.swing.Icon;
 
-import org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit;
+import org.alice.stageide.oneshot.edits.LocalTransformationEdit;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Element;
 import org.lgna.project.ast.AbstractField;

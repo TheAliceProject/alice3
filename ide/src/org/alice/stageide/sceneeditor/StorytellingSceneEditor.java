@@ -679,7 +679,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			}
 			if( field != null ) {
 				org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
-				org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
+				org.alice.stageide.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( entityImp );
 			}

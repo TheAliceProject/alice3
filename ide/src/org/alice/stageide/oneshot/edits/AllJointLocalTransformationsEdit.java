@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.stageide.oneshot.edits;
 
 /**
  * @author Dennis Cosgrove

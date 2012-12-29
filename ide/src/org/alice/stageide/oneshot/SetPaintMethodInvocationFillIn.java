@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AllJointLocalTransformationsMethodInvocationFillIn extends MethodInvocationFillIn {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, AllJointLocalTransformationsMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+public class SetPaintMethodInvocationFillIn extends MethodInvocationFillIn {
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, SetPaintMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, AllJointLocalTransformationsMethodInvocationFillIn>() {
-			public AllJointLocalTransformationsMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-				return new AllJointLocalTransformationsMethodInvocationFillIn( instanceFactory, method );
+	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, SetPaintMethodInvocationFillIn>() {
+			public SetPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+				return new SetPaintMethodInvocationFillIn( instanceFactory, method );
 			}
 		} );
 	}
 
-	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
+	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
 		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		return getInstance( instanceFactory, method );
 	}
 
-	public static AllJointLocalTransformationsMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+	public static SetPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
 		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
 	}
 
-	private AllJointLocalTransformationsMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "1931250e-3f00-4d95-85e9-f8c06922eb17" ), instanceFactory, method );
+	private SetPaintMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "7fb8b1c7-242f-4662-8bea-b58ed0318003" ), instanceFactory, method );
 	}
 
 	@Override
-	protected org.alice.stageide.operations.ast.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		return new AllJointLocalTransformationsMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
+	protected org.alice.stageide.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		return new SetPaintMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

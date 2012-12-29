@@ -41,40 +41,11 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.operations.ast.oneshot;
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalTransformationEdit extends MethodInvocationEdit {
-	private transient org.lgna.story.implementation.AbstractTransformableImp transformable;
-	private transient edu.cmu.cs.dennisc.math.AffineMatrix4x4 m;
-
-	public LocalTransformationEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
-	}
-
-	public LocalTransformationEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
-
-	@Override
-	protected void preserveUndoInfo( Object instance, boolean isDo ) {
-		if( instance instanceof org.lgna.story.STurnable ) {
-			org.lgna.story.STurnable turnable = (org.lgna.story.STurnable)instance;
-			this.transformable = org.lgna.story.ImplementationAccessor.getImplementation( turnable );
-			this.m = this.transformable.getLocalTransformation();
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
-			this.transformable = null;
-			this.m = null;
-		}
-	}
-
-	@Override
-	protected void undoInternal() {
-		if( ( this.transformable != null ) && ( this.m != null ) ) {
-			this.transformable.animateTransformation( org.lgna.story.implementation.AsSeenBy.PARENT, this.m );
-		}
-	}
+public interface MethodInvocationEditFactory {
+	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step );
 }

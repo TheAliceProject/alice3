@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,24 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.operations.ast;
+package org.alice.stageide.oneshot;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractFieldTileActionOperation extends org.alice.ide.operations.ast.AbstractFieldActionOperation {
-	public AbstractFieldTileActionOperation( java.util.UUID individualId, org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, individualId, field );
+public class SetOpacityMethodInvocationEditFactory implements MethodInvocationEditFactory {
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.Expression[] argumentExpressions;
+
+	public SetOpacityMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		this.instanceFactory = instanceFactory;
+		this.method = method;
+		this.argumentExpressions = argumentExpressions;
 	}
 
+	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
+		return new org.alice.stageide.oneshot.edits.SetOpacityEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
+	}
 }
