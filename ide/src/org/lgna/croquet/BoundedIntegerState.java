@@ -235,7 +235,7 @@ public abstract class BoundedIntegerState extends BoundedNumberState<Integer> {
 	}
 
 	@Override
-	protected Integer getActualValue() {
+	protected Integer getSwingValue() {
 		return this.getSwingModel().getBoundedRangeModel().getValue();
 	}
 }

@@ -43,12 +43,10 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.ListSelectionState;
-
 /**
  * @author Dennis Cosgrove
  */
-public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionState<T>> {
+public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croquet.ListSelectionState<T>> {
 	public enum LayoutOrientation {
 		VERTICAL( javax.swing.JList.VERTICAL ),
 		VERTICAL_WRAP( javax.swing.JList.VERTICAL_WRAP ),
@@ -60,10 +58,10 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 		}
 	}
 
-	public List( ListSelectionState<T> model ) {
+	public List( org.lgna.croquet.ListSelectionState<T> model ) {
 		super( model );
-		this.setSwingListModel( model.getSwingModel().getComboBoxModel() );
-		this.setSelectionModel( model.getSwingModel().getListSelectionModel() );
+		this.getAwtComponent().setModel( model.getSwingModel().getComboBoxModel() );
+		this.getAwtComponent().setSelectionModel( model.getSwingModel().getListSelectionModel() );
 	}
 
 	private final edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
@@ -120,21 +118,5 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, ListSelectionS
 
 	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
 		this.getAwtComponent().setLayoutOrientation( layoutOrientation.internal );
-	}
-
-	/* package-private */void setSwingListModel( javax.swing.ListModel model ) {
-		this.getAwtComponent().setModel( model );
-	}
-
-	/* package-private */void setSelectionModel( javax.swing.ListSelectionModel listSelectionModel ) {
-		this.getAwtComponent().setSelectionModel( listSelectionModel );
-	}
-
-	/* package-private */void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
-		this.getAwtComponent().addListSelectionListener( listSelectionListener );
-	}
-
-	/* package-private */void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
-		this.getAwtComponent().removeListSelectionListener( listSelectionListener );
 	}
 }

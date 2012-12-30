@@ -46,9 +46,10 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, java.net.URI> {
+public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, UriProjectPair> {
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
 	private final org.lgna.croquet.TabSelectionState<ContentTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), ContentTab.class, -1, TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance() );
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriProjectPair> mapUriToUriProjectPair = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	private static class SingletonHolder {
 		private static SelectProjectUriWithPreviewComposite instance = new SelectProjectUriWithPreviewComposite();
@@ -67,10 +68,15 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 	}
 
 	@Override
-	protected java.net.URI createValue() {
+	protected UriProjectPair createValue() {
 		ContentTab<?> tab = this.tabState.getValue();
 		if( tab != null ) {
-			return tab.getSelectedUri();
+			java.net.URI uri = tab.getSelectedUri();
+			return this.mapUriToUriProjectPair.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriProjectPair>() {
+				public org.alice.ide.projecturi.UriProjectPair initialize( java.net.URI key ) {
+					return new UriProjectPair( key );
+				}
+			} );
 		} else {
 			return null;
 		}
@@ -120,6 +126,7 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		this.refresh();
+		this.mapUriToUriProjectPair.clear();
 		super.handlePreShowDialog( completionStep );
 	}
 }

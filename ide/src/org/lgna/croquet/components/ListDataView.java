@@ -64,6 +64,8 @@ public abstract class ListDataView<T> extends Panel {
 		super( composite );
 	}
 
+	protected abstract JComponent<?> createComponentForItem( T item );
+
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
@@ -71,7 +73,7 @@ public abstract class ListDataView<T> extends Panel {
 
 		this.forgetAndRemoveAllComponents();
 		for( T item : composite.getData() ) {
-			this.internalAddComponent( new Label( item.toString() ) );
+			this.internalAddComponent( this.createComponentForItem( item ) );
 		}
 	}
 

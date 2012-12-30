@@ -101,7 +101,15 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 		java.awt.FontMetrics fm = g.getFontMetrics();
 		int x = textRect.x + this.getTextShiftOffset();
 		int y = textRect.y + fm.getAscent() + this.getTextShiftOffset();
-		g.drawString( text, x, y );
+
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		Object prevTextAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+		try {
+			g.drawString( text, x, y );
+		} finally {
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
+		}
 		if( b.isEnabled() || this.isUnderlinedWhenDisabled ) {
 			g.fillRect( x, y, textRect.width, 1 );
 		}

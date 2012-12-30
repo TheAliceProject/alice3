@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BooleanState extends State<Boolean> {
+public abstract class BooleanState extends SimpleValueState<Boolean> {
 	public static final class InternalMenuItemPrepModelResolver extends IndirectResolver<InternalMenuItemPrepModel, BooleanState> {
 		private InternalMenuItemPrepModelResolver( BooleanState indirect ) {
 			super( indirect );
@@ -172,7 +172,7 @@ public abstract class BooleanState extends State<Boolean> {
 		}
 	};
 
-	public BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
+	protected BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
 		super( group, id, initialValue );
 		this.swingModel = new SwingModel( buttonModel );
 		this.swingModel.buttonModel.setSelected( initialValue );
@@ -272,12 +272,12 @@ public abstract class BooleanState extends State<Boolean> {
 	}
 
 	@Override
-	protected Boolean getActualValue() {
+	protected Boolean getSwingValue() {
 		return this.swingModel.buttonModel.isSelected();
 	}
 
 	@Override
-	protected void updateSwingModel( Boolean nextValue ) {
+	protected void setSwingValue( Boolean nextValue ) {
 		if( this.swingModel.buttonModel.isSelected() != nextValue ) {
 			//pass
 		} else {
@@ -381,11 +381,6 @@ public abstract class BooleanState extends State<Boolean> {
 		return new org.lgna.croquet.components.PushButton( this );
 	}
 
-	//todo: convert to composite
-	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.JComponent<?> component ) {
-		return new org.lgna.croquet.components.ToolPalette( this, component );
-	}
-
 	private static class InternalSelectValueOperation extends ActionOperation {
 		private final BooleanState state;
 		private final boolean value;
@@ -439,7 +434,7 @@ public abstract class BooleanState extends State<Boolean> {
 		return this.falseOperation;
 	}
 
-	private class InternalRadioButton extends org.lgna.croquet.components.OperationButton<javax.swing.JRadioButton, Operation> {
+	private final static class InternalRadioButton extends org.lgna.croquet.components.OperationButton<javax.swing.JRadioButton, Operation> {
 		public InternalRadioButton( Operation operation ) {
 			super( operation );
 		}
@@ -450,7 +445,7 @@ public abstract class BooleanState extends State<Boolean> {
 		}
 	}
 
-	private class RadioButtonsPanel extends org.lgna.croquet.components.Panel {
+	private final class RadioButtonsPanel extends org.lgna.croquet.components.Panel {
 		private final int axis;
 
 		public RadioButtonsPanel( boolean isVertical, boolean isTrueFirst ) {

@@ -66,12 +66,12 @@ public class ProjectDocumentState extends org.lgna.croquet.CustomItemState<org.a
 	}
 
 	@Override
-	protected void updateSwingModel( org.alice.ide.ProjectDocument nextValue ) {
+	protected void setSwingValue( org.alice.ide.ProjectDocument nextValue ) {
 		this.value = nextValue;
 	}
 
 	@Override
-	protected org.alice.ide.ProjectDocument getActualValue() {
+	protected org.alice.ide.ProjectDocument getSwingValue() {
 		return this.value;
 	}
 }

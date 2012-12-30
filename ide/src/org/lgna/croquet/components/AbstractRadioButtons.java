@@ -46,13 +46,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractRadioButtons<E> extends ItemSelectablePanel<E, ItemDetails<E>> {
+public abstract class AbstractRadioButtons<E> extends ItemSelectablePanel<E> {
 	/* package-private */AbstractRadioButtons( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
-	}
-
-	@Override
-	protected final ItemDetails<E> createItemDetails( E item ) {
-		return new ItemDetails<E>( this.getModel(), item, this );
 	}
 }

@@ -50,8 +50,42 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	private static final int INTRASTICIAL_MIDDLE = 1;
 	public static final int INTRASTICIAL_PAD = ( INTRASTICIAL_MIDDLE * 2 ) + 1;
 
-	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property ) {
+	private final org.alice.ide.codeeditor.EmptyStatementListAffordanceBorder border;
+
+	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property, boolean isRoot ) {
 		super( factory, property, javax.swing.BoxLayout.PAGE_AXIS );
+
+		int bottom;
+		org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+		//boolean isIf = isOwnedByIf( owningNode );
+		boolean isElse = isOwnedByElse( owningNode );
+		boolean isDoInOrder = owningNode instanceof org.lgna.project.ast.DoInOrder;
+		boolean isDoTogether = owningNode instanceof org.lgna.project.ast.DoTogether;
+		if( /* isIf || */isElse || isDoInOrder || isDoTogether ) {
+			bottom = 8;
+		} else {
+			bottom = 0;
+		}
+
+		org.lgna.project.ast.StatementListProperty alternateListProperty;
+		if( owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
+			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode.getParent();
+			alternateListProperty = conditionalStatement.elseBody.getValue().statements;
+		} else if( owningNode instanceof org.lgna.project.ast.ConditionalStatement ) {
+			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode;
+			alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
+		} else {
+			alternateListProperty = null;
+		}
+		java.awt.Insets insets;
+		if( isRoot ) {
+			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), 32, 0 );
+		} else {
+			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() );
+		}
+		this.border = new org.alice.ide.codeeditor.EmptyStatementListAffordanceBorder( factory, alternateListProperty, insets );
+
+		this.setBorder( this.border );
 	}
 
 	public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
@@ -142,21 +176,22 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		} else {
 			this.setCurrentPotentialDropIndex( -1 );
 		}
-		if( this.getComponentCount() > 0 ) {
-			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
-			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {
-				org.alice.ide.codeeditor.EmptyStatementListAffordance emptyStatementListAfforance = (org.alice.ide.codeeditor.EmptyStatementListAffordance)component0;
-
-				boolean isDrawingDesired = isCurrentUnder == false;
-
-				if( EPIC_HACK_ignoreDrawingDesired ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EmptyStatementListAffordance isDrawingDisabled" );
-					isDrawingDesired = false;
-				}
-
-				emptyStatementListAfforance.setDrawingDesired( isDrawingDesired );
-			}
-		}
+		this.border.setDrawingDesired( isCurrentUnder == false );
+		//		if( this.getComponentCount() > 0 ) {
+		//			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
+		//			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {
+		//				org.alice.ide.codeeditor.EmptyStatementListAffordance emptyStatementListAfforance = (org.alice.ide.codeeditor.EmptyStatementListAffordance)component0;
+		//
+		//				boolean isDrawingDesired = isCurrentUnder == false;
+		//
+		//				if( EPIC_HACK_ignoreDrawingDesired ) {
+		//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EmptyStatementListAffordance isDrawingDisabled" );
+		//					isDrawingDesired = false;
+		//				}
+		//
+		//				emptyStatementListAfforance.setDrawingDesired( isDrawingDesired );
+		//			}
+		//		}
 	}
 
 	public int getCurrentPotentialDropIndex() {
@@ -230,38 +265,38 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return this.getFactory().createStatementPane( org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ), statement, getProperty() );
 	}
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		int bottom;
-		if( this.getComponentCount() == 0 ) {
-			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
-			org.lgna.project.ast.StatementListProperty alternateListProperty;
-			if( owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
-				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode.getParent();
-				alternateListProperty = conditionalStatement.elseBody.getValue().statements;
-			} else if( owningNode instanceof org.lgna.project.ast.ConditionalStatement ) {
-				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode;
-				alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
-			} else {
-				alternateListProperty = null;
-			}
-			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getFactory(), this.getProperty(), alternateListProperty ) );
-			bottom = 0;
-		} else {
-			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
-			//boolean isIf = isOwnedByIf( owningNode );
-			boolean isElse = isOwnedByElse( owningNode );
-			boolean isDoInOrder = owningNode instanceof org.lgna.project.ast.DoInOrder;
-			boolean isDoTogether = owningNode instanceof org.lgna.project.ast.DoTogether;
-			if( /* isIf || */isElse || isDoInOrder || isDoTogether ) {
-				bottom = 8;
-			} else {
-				bottom = 0;
-			}
-		}
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() ) );
-	}
+	//	@Override
+	//	protected void internalRefresh() {
+	//		super.internalRefresh();
+	//		int bottom;
+	//		if( this.getComponentCount() == 0 ) {
+	//			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+	//			org.lgna.project.ast.StatementListProperty alternateListProperty;
+	//			if( owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
+	//				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode.getParent();
+	//				alternateListProperty = conditionalStatement.elseBody.getValue().statements;
+	//			} else if( owningNode instanceof org.lgna.project.ast.ConditionalStatement ) {
+	//				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode;
+	//				alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
+	//			} else {
+	//				alternateListProperty = null;
+	//			}
+	//			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getFactory(), this.getProperty(), alternateListProperty ) );
+	//			bottom = 0;
+	//		} else {
+	//			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+	//			//boolean isIf = isOwnedByIf( owningNode );
+	//			boolean isElse = isOwnedByElse( owningNode );
+	//			boolean isDoInOrder = owningNode instanceof org.lgna.project.ast.DoInOrder;
+	//			boolean isDoTogether = owningNode instanceof org.lgna.project.ast.DoTogether;
+	//			if( /* isIf || */isElse || isDoInOrder || isDoTogether ) {
+	//				bottom = 8;
+	//			} else {
+	//				bottom = 0;
+	//			}
+	//		}
+	//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() ) );
+	//	}
 
 	protected int getLeftInset() {
 		return INDENT;

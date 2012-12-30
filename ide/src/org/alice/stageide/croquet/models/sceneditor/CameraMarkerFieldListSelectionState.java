@@ -47,7 +47,7 @@ import org.lgna.project.ast.UserField;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkerFieldListSelectionState extends org.lgna.croquet.DefaultListSelectionState<UserField> {
+public class CameraMarkerFieldListSelectionState extends org.lgna.croquet.MutableDataListSelectionState<UserField> {
 	private static class SingletonHolder {
 		private static CameraMarkerFieldListSelectionState instance = new CameraMarkerFieldListSelectionState();
 	}

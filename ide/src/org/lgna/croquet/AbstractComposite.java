@@ -152,28 +152,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
-	private static final class UnlocalizedPlainStringValue extends PlainStringValue {
-		public UnlocalizedPlainStringValue( String text ) {
-			super( java.util.UUID.randomUUID() );
-			this.setText( text );
-		}
-
-		@Override
-		protected void localize() {
-		}
-	}
-
-	private static final class UnlocalizedHtmlStringValue extends HtmlStringValue {
-		public UnlocalizedHtmlStringValue( String text ) {
-			super( java.util.UUID.randomUUID() );
-			this.setText( text );
-		}
-
-		@Override
-		protected void localize() {
-		}
-	}
-
 	protected static abstract class AbstractInternalStringValue extends PlainStringValue {
 		private final Key key;
 
@@ -254,7 +232,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
-	private static final class InternalDefaultListSelectionState<T> extends DefaultListSelectionState<T> {
+	private static final class InternalDefaultListSelectionState<T> extends MutableDataListSelectionState<T> {
 		private final Key key;
 
 		private InternalDefaultListSelectionState( ItemCodec<T> codec, int selectionIndex, T[] data, Key key ) {
@@ -281,7 +259,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		private final Key key;
 
 		public InternalTabSelectionState( Class<T> cls, int selectionIndex, T[] data, Key key ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), cls, selectionIndex, data );
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "bea99c2f-45ad-40a8-a99c-9c125a72f0be" ), cls, data, selectionIndex );
 			this.key = key;
 		}
 
@@ -577,8 +555,9 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 	private final java.util.List<Composite<?>> subComposites = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	protected void registerSubComposite( Composite<?> subComposite ) {
+	protected <C extends Composite<?>> C registerSubComposite( C subComposite ) {
 		this.subComposites.add( subComposite );
+		return subComposite;
 	}
 
 	protected void unregisterSubComposite( Composite<?> subComposite ) {
@@ -635,14 +614,34 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 	//	private java.util.Map<Key, InternalCardOwnerComposite> mapKeyToCardOwnerComposite = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
+	private static final String SIDEKICK_LABEL_EPILOGUE = ".sidekickLabel";
+
 	private void localizeSidekicks( java.util.Map<Key, ? extends AbstractCompletionModel>... maps ) {
 		for( java.util.Map<Key, ? extends AbstractCompletionModel> map : maps ) {
 			for( Key key : map.keySet() ) {
 				AbstractCompletionModel model = map.get( key );
-				String text = this.findLocalizedText( key.getLocalizationKey() + ".sidekickLabel" );
+				String text = this.findLocalizedText( key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE );
 				if( text != null ) {
 					StringValue sidekickLabel = model.getSidekickLabel();
 					sidekickLabel.setText( text );
+				} else {
+					StringValue sidekickLabel = model.peekSidekickLabel();
+					//todo: it is probably to early for this check as we don't know if it will be accessed by the composite's view later.  hmm...
+					if( sidekickLabel != null ) {
+						Class<?> cls = this.getClassUsedForLocalization();
+						String localizationKey = cls.getSimpleName() + "." + key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE;
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "WARNING: could not find localization for sidekick label" );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "looking for:" );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "   ", localizationKey );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "in croquet.properties file in package:", cls.getPackage().getName() );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( localizationKey, "has been copied to the clipboard for your convenience." );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "if this does not solve your problem please feel free to ask dennis for help." );
+						edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( localizationKey );
+					}
 				}
 			}
 		}
@@ -729,16 +728,6 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return rv;
 	}
 
-	protected PlainStringValue createUnlocalizedPlainStringValue( String text ) {
-		UnlocalizedPlainStringValue rv = new UnlocalizedPlainStringValue( text );
-		return rv;
-	}
-
-	protected HtmlStringValue createUnlocalizedHtmlStringValue( String text ) {
-		UnlocalizedHtmlStringValue rv = new UnlocalizedHtmlStringValue( text );
-		return rv;
-	}
-
 	protected StringState createStringState( Key key, String initialValue ) {
 		InternalStringState rv = new InternalStringState( initialValue, key );
 		this.mapKeyToStringState.put( key, rv );
@@ -808,14 +797,14 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	}
 
 	protected SplitComposite createHorizontalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
-		return new InternalSplitComposite( leadingComposite, trailingComposite, true, resizeWeight );
+		return this.registerSubComposite( new InternalSplitComposite( leadingComposite, trailingComposite, true, resizeWeight ) );
 	}
 
 	protected SplitComposite createVerticalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
-		return new InternalSplitComposite( leadingComposite, trailingComposite, false, resizeWeight );
+		return this.registerSubComposite( new InternalSplitComposite( leadingComposite, trailingComposite, false, resizeWeight ) );
 	}
 
 	protected CardOwnerComposite createCardOwnerComposite( Composite<?>... cards ) {
-		return new InternalCardOwnerComposite( cards );
+		return this.registerSubComposite( new InternalCardOwnerComposite( cards ) );
 	}
 }

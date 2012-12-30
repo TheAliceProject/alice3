@@ -46,7 +46,7 @@ package org.alice.ide.choosers.array;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListSelectionState extends org.lgna.croquet.DefaultListSelectionState<org.lgna.project.ast.Expression> {
+public class ExpressionListSelectionState extends org.lgna.croquet.MutableDataListSelectionState<org.lgna.project.ast.Expression> {
 	private static class SingletonHolder {
 		private static ExpressionListSelectionState instance = new ExpressionListSelectionState();
 	}

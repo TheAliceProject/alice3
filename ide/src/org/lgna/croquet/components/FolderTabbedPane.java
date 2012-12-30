@@ -49,28 +49,10 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
 
-/*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
-	private final FolderTabbedPane<E> folderTabbedPane;
-
-	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane ) {
-		super( state, item, folderTabbedPane );
-		this.folderTabbedPane = folderTabbedPane;
-	}
-
-	@Override
-	public void setSelected( boolean isSelected ) {
-		super.setSelected( isSelected );
-		if( isSelected ) {
-			this.folderTabbedPane.getCardPanel().showComposite( this.getItem() );
-			this.folderTabbedPane.getCardPanel().revalidateAndRepaint();
-		}
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E, FolderTabItemDetails<E>> {
+public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 
@@ -109,13 +91,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 			return bounds.getSize();
 		}
-		//		@Override
-		//		protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, java.lang.String text ) {
-		//			int EPIC_HACK_offsetLeft = 6; 
-		//			g.translate( -EPIC_HACK_offsetLeft, 0 );
-		//			super.paintText( g, b, textRect, text );
-		//			g.translate( EPIC_HACK_offsetLeft, 0 );
-		//		}
 	}
 
 	private static class JFolderTabTitle extends javax.swing.JToggleButton {
@@ -198,7 +173,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
-	private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.WHITE;
+	private static java.awt.Color SELECTED_BORDER_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 221 );
+	//private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.RED;
 	private static java.awt.Color UNSELECTED_BORDER_COLOR = java.awt.Color.DARK_GRAY;
 
 	private static class TitlesPanel extends LineAxisPanel {
@@ -244,7 +220,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 					float cx1 = xCurve0;
 
 					float y0 = y + NORTH_AREA_PAD;
-					float y1 = y + height;// + this.contentBorderInsets.top;
+					float y1 = y + height + 1;// + this.contentBorderInsets.top;
 					float cy0 = y0;
 					float cy1 = y1;
 
@@ -270,7 +246,21 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 					int width = button.getWidth();
 					int height = button.getHeight();
 					java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
-					g2.draw( path );
+					java.awt.Shape prevClip = g2.getClip();
+					try {
+						if( button.getModel().isSelected() ) {
+							java.awt.Rectangle bounds = prevClip.getBounds();
+							bounds.height += 1;
+							//todo: investigate
+							//							java.awt.Rectangle lineBelow = new java.awt.Rectangle( , , , 1 );
+							//							java.awt.Shape clip = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( prevClip, lineBelow );
+							//							g2.setClip( clip );
+							g2.setClip( bounds );
+						}
+						g2.draw( path );
+					} finally {
+						g2.setClip( prevClip );
+					}
 				}
 
 				private void paintTabBackground( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
@@ -393,6 +383,15 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		@Override
 		protected final javax.swing.JButton createAwtComponent() {
 			javax.swing.JButton rv = new javax.swing.JButton() {
+				@Override
+				public String getText() {
+					if( isTextClobbered() ) {
+						return getClobberText();
+					} else {
+						return super.getText();
+					}
+				}
+
 				private boolean isNecessary() {
 					java.awt.Container parent = this.getParent();
 					if( parent != null ) {
@@ -470,6 +469,19 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		PopupOperation popupOperation = new PopupOperation();
 		this.setInnerHeaderTrailingComponent( new PopupButton( popupOperation ) );
+
+	}
+
+	@Override
+	protected void handleValueChanged( final E card ) {
+		//		cardComposite.showCard( card );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: showCard", card );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				cardComposite.showCard( card );
+			}
+		} );
+		this.repaint();
 	}
 
 	public JComponent<?> getHeaderLeadingComponent() {
@@ -545,13 +557,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		return new FolderTabTitle( itemSelectedState, closeButtonActionListener );
 	}
 
-	@Override
-	protected FolderTabItemDetails<E> createTabItemDetails( E item ) {
-		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this.getModel(), item, this );
-		rv.getRootComponent().setVisible( false );
-		return rv;
-	};
-
 	/* package-private */CardPanel getCardPanel() {
 		return this.cardComposite.getView();
 	}
@@ -567,9 +572,9 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	@Override
-	protected void addItem( FolderTabItemDetails<E> folderTabItemDetails ) {
-		this.titlesPanel.addComponent( folderTabItemDetails.getButton() );
-		this.cardComposite.getView().addComposite( folderTabItemDetails.getItem() );
+	protected void addItem( E item, BooleanStateButton<?> button ) {
+		this.titlesPanel.addComponent( button );
+		this.cardComposite.getView().addComposite( item );
 	}
 
 	@Override

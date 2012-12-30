@@ -78,17 +78,6 @@ public class EditMethodOperation extends EditCodeOperation<org.lgna.project.ast.
 
 	private EditMethodOperation( org.lgna.project.ast.UserMethod method ) {
 		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ), method );
-		//		StringBuilder sb = new StringBuilder();
-		//		sb.append( "<html>" );
-		//		sb.append( "Edit " );
-		//		sb.append( "<strong>" );
-		//		sb.append( method.getName() );
-		//		if( method == org.alice.ide.IDE.getActiveInstance().getFocusedCode() ) {
-		//			sb.append( " <font color=007F00>&#x2713;</font>" );
-		//		}
-		//		sb.append( "</strong>" );
-		//		sb.append( "</html>" );
-		//		this.setName( sb.toString() );
 	}
 
 	@Override

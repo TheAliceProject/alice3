@@ -45,74 +45,45 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public final class ProcedureTabComposite extends MemberTabComposite {
+public final class ProcedureTabComposite extends MemberTabComposite<org.alice.ide.member.views.ProcedureTabView> {
+	private final org.lgna.croquet.ListSelectionState<String> sortState = this.createListSelectionState( this.createKey( "sortState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, GROUP_BY_CATEGORY, SORT_ALPHABETICALLY );
+
 	public ProcedureTabComposite() {
 		super( java.util.UUID.fromString( "cdc6fb94-34ef-4992-b3d0-2ad90bd0179c" ) );
 	}
 
 	@Override
-	protected org.alice.ide.member.views.MemberTabView createView() {
+	public org.lgna.croquet.ListSelectionState<String> getSortState() {
+		return this.sortState;
+	}
+
+	@Override
+	protected org.alice.ide.member.views.ProcedureTabView createView() {
 		return new org.alice.ide.member.views.ProcedureTabView( this );
 	}
 
 	@Override
-	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
-		java.util.List<org.alice.ide.member.MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	protected org.alice.ide.member.UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type ) {
+		return UserProceduresSubComposite.getInstance( type );
+	}
 
-		java.util.List<org.lgna.project.ast.JavaMethod> javaProcedures = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	@Override
+	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
+		return method.isProcedure();
+	}
 
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-		if( instanceFactory != null ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
-			while( type != null ) {
-				if( type instanceof org.lgna.project.ast.NamedUserType ) {
-					org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
-					rv.add( UserProceduresComposite.getInstance( namedUserType ) );
-				} else if( type instanceof org.lgna.project.ast.JavaType ) {
-					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
-					for( org.lgna.project.ast.JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
-						if( javaMethod.isProcedure() ) {
-							if( isInclusionDesired( javaMethod ) ) {
-								javaProcedures.add( javaMethod );
-							}
-						}
-					}
-				}
-				if( type.isFollowToSuperClassDesired() ) {
-					type = type.getSuperType();
-				} else {
-					break;
-				}
-			}
-		}
+	@Override
+	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites() {
+		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryProcedureSubComposites();
+	}
 
-		if( rv.size() > 0 ) {
-			rv.add( SEPARATOR );
-		}
+	@Override
+	protected java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites() {
+		return org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getCategoryOrAlphabeticalProcedureSubComposites();
+	}
 
-		java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> proceduresSubComposites = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getFilteredProceduresComposites();
-		for( FilteredJavaProceduresSubComposite proceduresSubComposite : proceduresSubComposites ) {
-			java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaProcedures.listIterator();
-			while( methodIterator.hasNext() ) {
-				org.lgna.project.ast.JavaMethod method = methodIterator.next();
-				if( proceduresSubComposite.isAcceptingOf( method ) ) {
-					acceptedMethods.add( method );
-					methodIterator.remove();
-				}
-			}
-
-			if( acceptedMethods.size() > 0 ) {
-				proceduresSubComposite.sortAndSetMethods( acceptedMethods );
-				rv.add( proceduresSubComposite );
-			}
-		}
-
-		if( javaProcedures.size() > 0 ) {
-			UnclaimedJavaProceduresComposite.getInstance().sortAndSetMethods( javaProcedures );
-			rv.add( UnclaimedJavaProceduresComposite.getInstance() );
-		}
-
-		return rv;
+	@Override
+	protected UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite() {
+		return UnclaimedJavaProceduresComposite.getInstance();
 	}
 }

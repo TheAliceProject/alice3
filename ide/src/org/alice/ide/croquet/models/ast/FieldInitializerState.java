@@ -68,12 +68,12 @@ public class FieldInitializerState extends org.lgna.croquet.CustomItemStateWithI
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getActualValue() {
+	protected org.lgna.project.ast.Expression getSwingValue() {
 		return this.field.initializer.getValue();
 	}
 
 	@Override
-	protected void updateSwingModel( org.lgna.project.ast.Expression nextValue ) {
+	protected void setSwingValue( org.lgna.project.ast.Expression nextValue ) {
 		this.field.initializer.setValue( nextValue );
 	}
 

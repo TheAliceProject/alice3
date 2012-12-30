@@ -45,7 +45,29 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractButton> {
+public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractButton> {
+	public static enum RenderingStyle {
+		LIGHT_UP_ICON_ONLY {
+			@Override
+			public boolean isShaded( javax.swing.ButtonModel buttonModel ) {
+				return false;
+			}
+		},
+		SHADE_WHEN_ACTIVE {
+			@Override
+			public boolean isShaded( javax.swing.ButtonModel buttonModel ) {
+				return buttonModel.isRollover();
+			}
+		},
+		SHADE_AGGRESSIVELY {
+			@Override
+			public boolean isShaded( javax.swing.ButtonModel buttonModel ) {
+				return true;
+			}
+		};
+		public abstract boolean isShaded( javax.swing.ButtonModel buttonModel );
+	}
+
 	private static class ArrowIcon extends edu.cmu.cs.dennisc.javax.swing.icons.AbstractArrowIcon {
 		public ArrowIcon( int size ) {
 			super( size );
@@ -53,89 +75,201 @@ package org.lgna.croquet.components;
 
 		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			javax.swing.ButtonModel buttonModel = button.getModel();
 			Heading heading;
-			if( button.getModel().isSelected() || button.getModel().isPressed() ) {
+			if( buttonModel.isSelected() || buttonModel.isPressed() ) {
 				heading = Heading.SOUTH;
 			} else {
 				heading = Heading.EAST;
 			}
 			java.awt.geom.GeneralPath path = this.createPath( x, y, heading );
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			java.awt.Paint fillPaint = java.awt.Color.WHITE;
-			// if( button.getModel().isSelected() ) {
-			// //pass
-			// } else {
-			if( button.getModel().isPressed() ) {
-				fillPaint = java.awt.Color.YELLOW.darker();
+			java.awt.Paint fillPaint;
+			java.awt.Paint drawPaint = java.awt.Color.BLACK;
+			if( buttonModel.isPressed() ) {
+				fillPaint = java.awt.Color.WHITE;
 			} else {
-				if( button.getModel().isRollover() ) {
+				if( buttonModel.isRollover() ) {
 					fillPaint = java.awt.Color.YELLOW;
+				} else {
+					fillPaint = java.awt.Color.DARK_GRAY;
+					drawPaint = null;
 				}
 			}
-			// }
 			Object antialiasingValue = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 			g2.setPaint( fillPaint );
 			g2.fill( path );
-			g2.setPaint( java.awt.Color.BLACK );
-			g2.draw( path );
+			if( drawPaint != null ) {
+				g2.setPaint( drawPaint );
+				g2.draw( path );
+			}
 			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, antialiasingValue );
-
 		}
 	}
 
-	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 9 );
+	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 12 );
+
+	private static class JToolPaletteTitle extends javax.swing.JToggleButton {
+		private boolean isRoundedOnTop = false;
+		private RenderingStyle renderingStyle = RenderingStyle.SHADE_AGGRESSIVELY;
+		private boolean isInert = false;
+
+		@Override
+		public boolean contains( int x, int y ) {
+			if( this.isInert ) {
+				return false;
+			} else {
+				return super.contains( x, y );
+			}
+		}
+
+		public boolean isRoundedOnTop() {
+			return this.isRoundedOnTop;
+		}
+
+		public void setRoundedOnTop( boolean isRoundedOnTop ) {
+			if( this.isRoundedOnTop != isRoundedOnTop ) {
+				this.isRoundedOnTop = isRoundedOnTop;
+				this.repaint();
+			}
+		}
+
+		public RenderingStyle getRenderingStyle() {
+			return this.renderingStyle;
+		}
+
+		public void setRenderingStyle( RenderingStyle renderingStyle ) {
+			if( this.renderingStyle != renderingStyle ) {
+				this.renderingStyle = renderingStyle;
+				this.repaint();
+			}
+		}
+
+		public boolean isInert() {
+			return this.isInert;
+		}
+
+		public void setInert( boolean isInert ) {
+			if( this.isInert != isInert ) {
+				this.isInert = isInert;
+				this.repaint();
+			}
+		}
+
+		@Override
+		public boolean isOpaque() {
+			return this.isRoundedOnTop == false;
+		}
+
+		@Override
+		protected void paintComponent( java.awt.Graphics g ) {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			super.paintComponent( g );
+
+			int x = this.isRoundedOnTop ? 8 : 4;
+			int height = this.getHeight();
+			int iconHeight = ARROW_ICON.getIconHeight();
+			int y = ( height - iconHeight ) / 2;
+			ARROW_ICON.paintIcon( this, g2, x, y );
+		}
+
+		@Override
+		public void updateUI() {
+			this.setUI( new ToolPaletteTitleButtonUI() );
+		}
+	}
+
+	private static java.awt.Shape createRoundedOnTopShape( int width, int height, int round ) {
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( 0, height );
+		path.lineTo( 0, round );
+		path.quadTo( 0, 0, round, 0 );
+		path.lineTo( width - round, 0 );
+		path.quadTo( width, 0, width, round );
+		path.lineTo( width, height );
+		path.closePath();
+		return path;
+	}
+
+	private static class ToolPaletteTitleButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
+		@Override
+		public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			java.awt.Shape prevClip = g2.getClip();
+
+			try {
+				JToolPaletteTitle b = (JToolPaletteTitle)c;
+				javax.swing.ButtonModel buttonModel = b.getModel();
+				if( b.isRoundedOnTop() ) {
+					g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, createRoundedOnTopShape( b.getWidth(), b.getHeight(), ARROW_ICON.getIconWidth() ) ) );
+				}
+
+				java.awt.Rectangle r = javax.swing.SwingUtilities.getLocalBounds( c );
+				java.awt.Color background = c.getBackground();
+				RenderingStyle renderingStyle = b.getRenderingStyle();
+				if( renderingStyle.isShaded( buttonModel ) ) {
+					if( buttonModel.isPressed() ) {
+						g2.setPaint( background.darker() );
+						g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
+					} else {
+						double brightnessScale;
+						if( buttonModel.isRollover() ) {
+							brightnessScale = 1.2;
+						} else {
+							brightnessScale = 1.1;
+						}
+						java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, brightnessScale );
+						java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, 0.8 );
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillGradientRectangle( g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f );
+					}
+				} else {
+					g2.setPaint( background );
+					g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
+				}
+				super.paint( g, c );
+			} finally {
+				g2.setClip( prevClip );
+			}
+		}
+	}
 
 	public ToolPaletteTitle( org.lgna.croquet.BooleanState booleanState ) {
 		super( booleanState );
 	}
 
+	public boolean isRoundedOnTop() {
+		return ( (JToolPaletteTitle)this.getAwtComponent() ).isRoundedOnTop();
+	}
+
+	public void setRoundedOnTop( boolean isRoundedOnTop ) {
+		( (JToolPaletteTitle)this.getAwtComponent() ).setRoundedOnTop( isRoundedOnTop );
+	}
+
+	public RenderingStyle getRenderingStyle() {
+		return ( (JToolPaletteTitle)this.getAwtComponent() ).getRenderingStyle();
+	}
+
+	public void setRenderingStyle( RenderingStyle renderingStyle ) {
+		( (JToolPaletteTitle)this.getAwtComponent() ).setRenderingStyle( renderingStyle );
+	}
+
+	public boolean isInert() {
+		return ( (JToolPaletteTitle)this.getAwtComponent() ).isInert();
+	}
+
+	public void setInert( boolean isInert ) {
+		( (JToolPaletteTitle)this.getAwtComponent() ).setInert( isInert );
+	}
+
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
-		javax.swing.AbstractButton rv = new javax.swing.JToggleButton() {
-			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				//				final double FACTOR;
-				//				javax.swing.ButtonModel buttonModel = this.getModel();
-				//				if( buttonModel.isArmed() || buttonModel.isRollover() ) {
-				//					FACTOR = 1.3;
-				//				} else {
-				//					FACTOR = 1.15;
-				//				}
-				//				final double INVERSE_FACTOR = 1.0 / FACTOR;
-				//				java.awt.Color colorDark = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, INVERSE_FACTOR, INVERSE_FACTOR );
-				//
-				//				java.awt.Paint paint;
-				//				if( buttonModel.isSelected() ) {
-				//					paint = colorDark;
-				//				} else {
-				//					java.awt.Color colorBright = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getBackground(), 1.0, FACTOR, FACTOR );
-				//					paint = new java.awt.GradientPaint( 0, 0, colorBright, 0, this.getHeight(), colorDark );
-				//				}
-				//				g2.setPaint( paint );
-				//				g2.fill( g2.getClip() );
-				super.paintComponent( g );
-
-				int x = 4;
-				int height = this.getHeight();
-				int iconHeight = ARROW_ICON.getIconHeight();
-				int y = ( height - iconHeight ) / 2;
-				ARROW_ICON.paintIcon( this, g2, x, y );
-			}
-
-			@Override
-			public void updateUI() {
-				this.setUI( new javax.swing.plaf.basic.BasicButtonUI() );
-			}
-
-		};
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 16, 4, 4 ) );
-		rv.setOpaque( false );
-		rv.setVerticalTextPosition( javax.swing.SwingConstants.CENTER );
-		rv.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
+		javax.swing.AbstractButton rv = new JToolPaletteTitle();
+		rv.setRolloverEnabled( true );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8 + ARROW_ICON.getIconWidth(), 2, 2 ) );
+		rv.setOpaque( false );
 		return rv;
 	}
 }

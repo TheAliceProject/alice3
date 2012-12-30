@@ -80,7 +80,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.video.Rec
 
 	@Override
 	protected Component<?> createControlsPanel( CompletionStep<?> step, Dialog dialog ) {
-		org.alice.ide.video.IsRecordingState.getInstance().setValue( false );
+		org.alice.ide.video.IsRecordingState.getInstance().setValueTransactionlessly( false );
 		org.alice.ide.video.IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}

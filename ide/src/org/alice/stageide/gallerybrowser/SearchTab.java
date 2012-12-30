@@ -70,10 +70,4 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 	protected org.alice.stageide.gallerybrowser.views.SearchTabView createView() {
 		return new org.alice.stageide.gallerybrowser.views.SearchTabView( this );
 	}
-
-	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
-	}
 }

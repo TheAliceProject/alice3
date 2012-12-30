@@ -42,12 +42,26 @@
  */
 package org.alice.ide.code;
 
+import org.lgna.croquet.PlainStringValue;
+
 /**
  * @author Dennis Cosgrove
  */
 public class UserFunctionStatusComposite extends org.lgna.croquet.AbstractSeverityStatusComposite<org.alice.ide.code.views.UserFunctionStatusView> {
 	private static final String UNVIEWED_TEXT = "This message should never be visible";
-	private final org.lgna.croquet.PlainStringValue metaStringValue = this.createUnlocalizedPlainStringValue( UNVIEWED_TEXT );
+
+	private static final class UnlocalizedPlainStringValue extends PlainStringValue {
+		public UnlocalizedPlainStringValue( String text ) {
+			super( java.util.UUID.randomUUID() );
+			this.setText( text );
+		}
+
+		@Override
+		protected void localize() {
+		}
+	}
+
+	private final org.lgna.croquet.PlainStringValue metaStringValue = new UnlocalizedPlainStringValue( UNVIEWED_TEXT );
 	private final ErrorStatus noReturnStatementError = this.createErrorStatus( this.createKey( "noReturnStatementError" ) );
 	private final ErrorStatus notAllPathsEndInReturnStatementError = this.createErrorStatus( this.createKey( "notAllPathsEndInReturnStatementError" ) );
 	private final ErrorStatus unreachableCodeError = this.createErrorStatus( this.createKey( "unreachableCodeError" ) );

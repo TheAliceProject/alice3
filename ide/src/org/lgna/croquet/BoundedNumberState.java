@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedNumberState<N extends Number> extends State<N> {
+public abstract class BoundedNumberState<N extends Number> extends SimpleValueState<N> {
 	public static class AtomicChange<N extends Number> {
 		private N minimum = null;
 		private N maximum = null;
@@ -158,16 +158,16 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 	}
 
 	public void setAllTransactionlessly( AtomicChange<N> atomicChange ) {
-		this.pushIgnore();
+		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			this.setAll( atomicChange );
 		} finally {
-			this.popIgnore();
+			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 
 	@Override
-	protected void updateSwingModel( N nextValue ) {
+	protected void setSwingValue( N nextValue ) {
 		this.swingModel.setValue( nextValue );
 	}
 

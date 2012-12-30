@@ -46,8 +46,15 @@ package org.alice.ide.declarationseditor.type.data;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FilteredMemberData<T extends org.lgna.project.ast.AbstractMember> extends org.alice.ide.ast.data.FilteredListPropertyData<T> {
-	public FilteredMemberData( Class<T> cls, edu.cmu.cs.dennisc.property.ListProperty<T> listProperty ) {
+public abstract class FilteredMemberData<T extends org.lgna.project.ast.UserMember> extends org.alice.ide.ast.data.FilteredListPropertyData<T> {
+	private final org.lgna.project.ast.NamedUserType type;
+
+	public FilteredMemberData( Class<T> cls, org.lgna.project.ast.NamedUserType type, edu.cmu.cs.dennisc.property.ListProperty<T> listProperty ) {
 		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( cls ), listProperty );
+		this.type = type;
+	}
+
+	public org.lgna.project.ast.NamedUserType getType() {
+		return this.type;
 	}
 }

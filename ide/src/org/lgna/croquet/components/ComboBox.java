@@ -54,6 +54,17 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 		this.setSwingComboBoxModel( model.getListSelectionState().getSwingModel().getComboBoxModel() );
 	}
 
+	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			repaint();
+			//			if( e.getValueIsAdjusting() ) {
+			//				//pass
+			//			} else {
+			//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "valueChanged:", e );
+			//			}
+		}
+	};
+
 	//	@Override
 	//	public void appendPrepStepsIfNecessary( org.lgna.croquet.history.Transaction transaction ) {
 	//		super.appendPrepStepsIfNecessary( transaction );
@@ -111,10 +122,12 @@ public class ComboBox<E> extends ViewController<javax.swing.JComboBox, org.lgna.
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.getAwtComponent().addPopupMenuListener( this.popupMenuListener );
+		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
+		this.getModel().getListSelectionState().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
 		this.getAwtComponent().removePopupMenuListener( this.popupMenuListener );
 		super.handleUndisplayable();
 	}

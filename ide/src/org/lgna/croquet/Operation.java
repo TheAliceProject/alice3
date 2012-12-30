@@ -49,7 +49,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	public class SwingModel {
 		private javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				Operation.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+				Operation.this.handleActionPerformed( e );
 			}
 		};
 
@@ -62,6 +62,10 @@ public abstract class Operation extends AbstractCompletionModel {
 
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
+	}
+
+	private void handleActionPerformed( java.awt.event.ActionEvent e ) {
+		this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 	}
 
 	@Override

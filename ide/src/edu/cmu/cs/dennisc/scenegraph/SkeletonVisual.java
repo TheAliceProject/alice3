@@ -157,4 +157,24 @@ public class SkeletonVisual extends Visual {
 		}
 		return rv;
 	}
+
+	public boolean renderBackfaces() {
+		if( this.weightedMeshes.getValue() != null ) {
+			for( edu.cmu.cs.dennisc.scenegraph.WeightedMesh wm : this.weightedMeshes.getValue() )
+			{
+				if( !wm.cullBackfaces.getValue() ) {
+					return true;
+				}
+			}
+		}
+		if( this.geometries.getValue() != null ) {
+			for( edu.cmu.cs.dennisc.scenegraph.Geometry g : this.geometries.getValue() )
+			{
+				if( ( g instanceof Mesh ) && !( (Mesh)g ).cullBackfaces.getValue() ) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

@@ -57,7 +57,6 @@ public class MembersComposite extends org.lgna.croquet.SimpleComposite<org.alice
 
 	private final org.alice.ide.member.ProcedureTabComposite procedureTabComposite = new org.alice.ide.member.ProcedureTabComposite();
 	private final org.alice.ide.member.FunctionTabComposite functionTabComposite = new org.alice.ide.member.FunctionTabComposite();
-	private final org.alice.ide.member.SearchTabComposite searchTabComposite = new org.alice.ide.member.SearchTabComposite();
 	private final org.alice.ide.member.ControlFlowTabComposite controlStructureTabComposite;
 	private final org.lgna.croquet.TabSelectionState<org.alice.ide.member.MemberOrControlFlowTabComposite> tabState;
 
@@ -66,16 +65,28 @@ public class MembersComposite extends org.lgna.croquet.SimpleComposite<org.alice
 		org.alice.ide.member.MemberOrControlFlowTabComposite[] tabComposites;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			this.controlStructureTabComposite = null;
-			tabComposites = new org.alice.ide.member.MemberOrControlFlowTabComposite[] { this.procedureTabComposite, this.functionTabComposite, this.searchTabComposite };
+			tabComposites = new org.alice.ide.member.MemberOrControlFlowTabComposite[] { this.procedureTabComposite, this.functionTabComposite };
 		} else {
 			this.controlStructureTabComposite = new org.alice.ide.member.ControlFlowTabComposite();
-			tabComposites = new org.alice.ide.member.MemberOrControlFlowTabComposite[] { this.procedureTabComposite, this.functionTabComposite, this.searchTabComposite, this.controlStructureTabComposite };
+			tabComposites = new org.alice.ide.member.MemberOrControlFlowTabComposite[] { this.procedureTabComposite, this.functionTabComposite, this.controlStructureTabComposite };
 		}
 		this.tabState = this.createTabSelectionState( this.createKey( "tabState" ), org.alice.ide.member.MemberOrControlFlowTabComposite.class, 0, tabComposites );
 	}
 
 	public org.lgna.croquet.TabSelectionState<org.alice.ide.member.MemberOrControlFlowTabComposite> getTabState() {
 		return this.tabState;
+	}
+
+	public org.alice.ide.member.ProcedureTabComposite getProcedureTabComposite() {
+		return this.procedureTabComposite;
+	}
+
+	public org.alice.ide.member.FunctionTabComposite getFunctionTabComposite() {
+		return this.functionTabComposite;
+	}
+
+	public org.alice.ide.member.ControlFlowTabComposite getControlStructureTabComposite() {
+		return this.controlStructureTabComposite;
 	}
 
 	@Override

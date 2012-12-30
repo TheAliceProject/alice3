@@ -45,11 +45,11 @@ package org.alice.ide.member.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTabView extends org.lgna.croquet.components.BorderPanel {
+public abstract class MemberTabView extends org.lgna.croquet.components.MigPanel {
 	private final java.util.Map<org.lgna.project.ast.Member, org.lgna.croquet.components.JComponent<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public MemberTabView( org.alice.ide.member.MemberTabComposite composite ) {
-		super( composite );
+	public MemberTabView( org.alice.ide.member.MemberTabComposite<?> composite ) {
+		super( composite, "insets 0, fill", "[]", "[grow 0][]" );
 	}
 
 	private static org.lgna.croquet.components.JComponent<?> createDragView( org.lgna.project.ast.Member member ) {
@@ -72,26 +72,31 @@ public abstract class MemberTabView extends org.lgna.croquet.components.BorderPa
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		org.alice.ide.member.MemberTabComposite composite = (org.alice.ide.member.MemberTabComposite)this.getComposite();
+		org.alice.ide.member.MemberTabComposite<?> composite = (org.alice.ide.member.MemberTabComposite<?>)this.getComposite();
 		this.removeAllComponents();
-		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
+
+		org.lgna.croquet.components.ComboBox<String> comboBox = composite.getSortState().getPrepModel().createComboBox();
+		this.addComponent( comboBox, "align right, wrap" );
+
+		org.lgna.croquet.components.MigPanel scrollPaneView = new org.lgna.croquet.components.MigPanel( null, "insets 0", "[]", "[]0[]" );
 		for( org.alice.ide.member.MethodsSubComposite subComposite : composite.getSubComposites() ) {
 			if( subComposite != org.alice.ide.member.MemberTabComposite.SEPARATOR ) {
 				if( subComposite.isShowingDesired() ) {
-					org.lgna.croquet.components.ExpandableCollapsibleView view = subComposite.getOuterComposite().getView();
+					org.lgna.croquet.components.ToolPaletteView view = subComposite.getOuterComposite().getView();
 					if( subComposite instanceof org.alice.ide.member.FunctionsOfReturnTypeSubComposite ) {
-						//view.getPageStartComponent().setForegroundColor( java.awt.Color.GRAY );
-						( (org.lgna.croquet.components.AbstractButton)view.getPageStartComponent() ).setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
+						view.getTitle().setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 					}
-					view.getPageStartComponent().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-					pageAxisPanel.addComponent( view );
-					//pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 4 ) );
+					view.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+					view.getTitle().setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+					view.setBackgroundColor( this.getBackgroundColor() );
+					scrollPaneView.addComponent( view, "wrap" );
 				}
 			} else {
-				pageAxisPanel.addComponent( new org.lgna.croquet.components.HorizontalSeparator() );
+				scrollPaneView.addComponent( new org.lgna.croquet.components.HorizontalSeparator(), "wrap" );
 			}
 		}
-		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
-		this.addPageStartComponent( pageAxisPanel );
+		scrollPaneView.setBackgroundColor( this.getBackgroundColor() );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( scrollPaneView );
+		this.addComponent( scrollPane, "grow" );
 	}
 }

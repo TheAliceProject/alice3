@@ -48,7 +48,7 @@ import org.alice.stageide.StageIDE;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<DeclarationComposite> {
+public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectionState<DeclarationComposite> {
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod> methodsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod>() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<org.lgna.project.ast.UserMethod> e ) {
 		}

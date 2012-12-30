@@ -81,6 +81,13 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 
 	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
+	protected org.lgna.croquet.history.CompletionStep<?> createTransactionAndInvokePerform( org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+		this.perform( transaction, trigger );
+		return transaction.getCompletionStep();
+	}
+
 	@Deprecated
 	protected Model getSurrogateModel() {
 		return null;
@@ -96,10 +103,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		} else {
 			if( this.isEnabled() ) {
 				this.initializeIfNecessary();
-				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-				this.perform( transaction, trigger );
-				return transaction.getCompletionStep();
+				return this.createTransactionAndInvokePerform( trigger );
 			} else {
 				return null;
 			}

@@ -43,41 +43,22 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/class ToolPaletteTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
-	private final ToolPaletteTabbedPane<E> toolPaletteTabbedPane;
-
-	public ToolPaletteTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, ToolPaletteTabbedPane<E> toolPaletteTabbedPane ) {
-		super( state, item, toolPaletteTabbedPane );
-		this.toolPaletteTabbedPane = toolPaletteTabbedPane;
-	}
-
-	@Override
-	public void setSelected( boolean isSelected ) {
-		super.setSelected( isSelected );
-		for( ToolPaletteTabItemDetails<E> tabItemDetails : this.toolPaletteTabbedPane.getAllItemDetails() ) {
-			tabItemDetails.getRootComponent().setVisible( tabItemDetails == this );
-		}
-		this.toolPaletteTabbedPane.revalidateAndRepaint();
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E, ToolPaletteTabItemDetails<E>> {
+public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
+	private E card;
+
 	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
 
 	@Override
 	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
-		return new ToolPaletteTitle( itemSelectedState );
+		ToolPaletteTitle rv = new ToolPaletteTitle( itemSelectedState );
+		rv.setHorizontalAlignment( HorizontalAlignment.LEADING );
+		return rv;
 	}
-
-	@Override
-	protected ToolPaletteTabItemDetails<E> createTabItemDetails( E item ) {
-		return new ToolPaletteTabItemDetails<E>( this.getModel(), item, this );
-	};
 
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
@@ -90,19 +71,36 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 	}
 
 	@Override
+	protected void handleValueChanged( E card ) {
+		if( card != this.card ) {
+			if( this.card != null ) {
+				this.card.getRootComponent().setVisible( false );
+				this.card.handlePostDeactivation();
+			}
+			this.card = card;
+			if( this.card != null ) {
+				this.card.handlePreActivation();
+				this.card.getRootComponent().setVisible( true );
+			}
+			this.revalidateAndRepaint();
+		}
+	}
+
+	@Override
 	protected void addPrologue( int count ) {
 	}
 
 	@Override
-	protected void addItem( ToolPaletteTabItemDetails<E> itemDetails ) {
+	protected void addItem( E item, BooleanStateButton<?> button ) {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gbc.weightx = 1.0f;
 		gbc.weighty = 0.0f;
-		this.internalAddComponent( itemDetails.getButton(), gbc );
+		this.internalAddComponent( button, gbc );
 		gbc.weighty = 1.0f;
-		this.internalAddComponent( itemDetails.getRootComponent(), gbc );
+		item.getRootComponent().setVisible( item == this.getModel().getValue() );
+		this.internalAddComponent( item.getRootComponent(), gbc );
 	}
 
 	@Override

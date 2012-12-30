@@ -46,7 +46,7 @@ package org.alice.interact.operations;
  * @author dculyba
  * 
  */
-public class GetAGoodLookAtEdit extends org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit {
+public class GetAGoodLookAtEdit extends org.alice.stageide.oneshot.edits.LocalTransformationEdit {
 	private final org.lgna.story.SCamera camera;
 	private final org.lgna.story.SThing toLookAt;
 

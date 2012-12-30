@@ -108,7 +108,11 @@ public abstract class RefreshableListData<T> extends org.lgna.croquet.data.Abstr
 
 	@Override
 	public final int indexOf( T item ) {
-		return this.values.indexOf( item );
+		if( this.values != null ) {
+			return this.values.indexOf( item );
+		} else {
+			return -1;
+		}
 	}
 
 	@Override

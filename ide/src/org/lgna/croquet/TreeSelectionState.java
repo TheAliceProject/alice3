@@ -181,7 +181,7 @@ class TreeNodeCascade<T> extends Cascade<T> {
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> completionStep, T[] values ) {
 		assert values.length == 1;
-		this.model.setValue( values[ 0 ] );
+		this.model.changeValueFromIndirectModel( values[ 0 ], org.lgna.croquet.State.IsAdjusting.FALSE, org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 		return null;
 		//return new org.lgna.croquet.edits.TreeSelectionStateEdit< T >( completionStep, this.model, this.model.getSelectedNode(), values[ 0 ] );
 	}
@@ -191,42 +191,6 @@ class TreeNodeCascade<T> extends Cascade<T> {
  * @author Dennis Cosgrove
  */
 public abstract class TreeSelectionState<T> extends ItemState<T> {
-	private static final class InternalTreeNodeSelectionOperation<T> extends ActionOperation {
-		private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, InternalTreeNodeSelectionOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-
-		/* package-private */static <T> InternalTreeNodeSelectionOperation<T> getInstance( TreeSelectionState<T> model, T node ) {
-			return mapToMap.getInitializingIfAbsent( model, node, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<TreeSelectionState, Object, InternalTreeNodeSelectionOperation>() {
-				public InternalTreeNodeSelectionOperation<T> initialize( TreeSelectionState model, Object node ) {
-					return new InternalTreeNodeSelectionOperation<T>( model, (T)node );
-				}
-			} );
-		}
-
-		private final TreeSelectionState<T> treeSelectionState;
-		private final T treeNode;
-
-		private InternalTreeNodeSelectionOperation( TreeSelectionState<T> treeSelectionState, T treeNode ) {
-			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "ca407baf-13b1-4530-bf35-67764efbf5f0" ) );
-			this.treeSelectionState = treeSelectionState;
-			this.treeNode = treeNode;
-		}
-
-		@Override
-		protected void localize() {
-			super.localize();
-			this.setName( this.treeSelectionState.getTextForNode( this.treeNode ) );
-			this.setSmallIcon( this.treeSelectionState.getIconForNode( this.treeNode ) );
-		}
-
-		@Override
-		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
-			//todo: create edit
-			this.treeSelectionState.setSelectedNode( this.treeNode );
-			step.finish();
-		}
-	}
-
 	private class SingleTreeSelectionModel extends javax.swing.tree.DefaultTreeSelectionModel {
 	}
 
@@ -295,12 +259,12 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	}
 
 	@Override
-	protected T getActualValue() {
+	protected T getSwingValue() {
 		return this.getSelectedNode();
 	}
 
 	@Override
-	protected void updateSwingModel( T nextValue ) {
+	protected void setSwingValue( T nextValue ) {
 		this.setSelectedNode( nextValue );
 	}
 
@@ -342,10 +306,6 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 
 	public Cascade<T> getCascadeFor( T node ) {
 		return TreeNodeCascade.getInstance( this, node );
-	}
-
-	public ActionOperation getSelectionOperationFor( T node ) {
-		return InternalTreeNodeSelectionOperation.getInstance( this, node );
 	}
 
 	public org.lgna.croquet.components.Tree<T> createTree() {

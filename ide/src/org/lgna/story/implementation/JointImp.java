@@ -121,6 +121,10 @@ public abstract class JointImp extends AbstractTransformableImp {
 		}
 	}
 
+	public JointedModelImp<?, ?> getJointedModelParent() {
+		return this.jointedModelImplementation;
+	}
+
 	@Override
 	protected void appendRepr( java.lang.StringBuilder sb ) {
 		super.appendRepr( sb );

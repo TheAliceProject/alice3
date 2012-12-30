@@ -45,8 +45,48 @@ package org.alice.ide.member.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowTabView extends org.lgna.croquet.components.BorderPanel {
+public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
+	private static final boolean IS_MINI_DESIRED = false;
+	private static final int GAP_TOP = IS_MINI_DESIRED ? 8 : 16;
+
 	public ControlFlowTabView( org.alice.ide.member.ControlFlowTabComposite composite ) {
-		this.addCenterComponent( org.alice.ide.controlflow.ControlFlowComposite.getInstance( null ).getView() );
+		super( composite, "insets 4, gap 0" );
+		this.addHeader( composite.getDoInOrderHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DoInOrderTemplateDragModel.getInstance() );
+		this.addHeader( composite.getDoTogetherHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DoTogetherTemplateDragModel.getInstance() );
+		this.addHeader( composite.getLoopHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.CountLoopTemplateDragModel.getInstance() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.WhileLoopTemplateDragModel.getInstance() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.ForEachInArrayLoopTemplateDragModel.getInstance() );
+		this.addHeader( composite.getIfThenHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.ConditionalStatementTemplateDragModel.getInstance() );
+		this.addHeader( composite.getEachInTogetherHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance() );
+		this.addHeader( composite.getCommentHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance() );
+		this.addHeader( composite.getLocalHeader() );
+		this.addDragComponent( org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance() );
+		this.setBackgroundColor( new java.awt.Color( 0xd29669 ) );
+	}
+
+	private void addHeader( org.lgna.croquet.PlainStringValue stringValue ) {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "wrap" );
+		if( this.getComponentCount() > 0 ) {
+			sb.append( ", gaptop " );
+			sb.append( GAP_TOP );
+		}
+		this.addComponent( stringValue.createImmutableTextField( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), sb.toString() );
+	}
+
+	private void addDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
+		org.lgna.croquet.components.DragComponent<?, ?> dragComponent;
+		if( IS_MINI_DESIRED ) {
+			dragComponent = new org.alice.ide.controlflow.components.MiniControlFlowStatementTemplate( dragModel );
+		} else {
+			dragComponent = new org.alice.ide.controlflow.components.CompleteControlFlowStatementTemplate( dragModel );
+		}
+		this.addComponent( dragComponent, "wrap, gapleft 8" );
 	}
 }

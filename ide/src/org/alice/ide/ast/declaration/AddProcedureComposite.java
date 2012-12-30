@@ -96,7 +96,9 @@ public final class AddProcedureComposite extends AddMethodComposite {
 			}
 			assert instanceFactory != null : method;
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
-			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( org.alice.ide.members.ProcedureTemplateComposite.getInstance() );
+
+			org.alice.ide.members.MembersComposite membersComposite = org.alice.ide.members.MembersComposite.getInstance();
+			membersComposite.getTabState().pushGeneratedValue( membersComposite.getProcedureTabComposite() );
 		}
 	}
 
@@ -107,7 +109,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		} else {
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
-			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();
+			org.alice.ide.members.MembersComposite.getInstance().getTabState().popGeneratedValue();
 		}
 		super.popGeneratedContexts( ownerEdit );
 	}

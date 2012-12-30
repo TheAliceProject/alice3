@@ -67,7 +67,22 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 
 	public AboutView( org.alice.stageide.about.AboutComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.ImmutableEditorPane supportedByLabel = composite.getSupportedByLabel().createImmutableEditorPane();
+
+		StringBuilder sb = new StringBuilder();
+		sb.append( "<html><strong>Alice 3</strong> is supported by:" );
+		sb.append( "<br>" );
+		sb.append( "<ul>" );
+		for( String sponsor : new String[] { "Sun Foundation", "Oracle", "Electronic Arts Foundation", "The National Science Foundation", "Defense Advanced Research Projects Agency", "Hearst Foundations", "Heinz Endowments", "Google", "Disney and Hyperion" } ) {
+			sb.append( "<li><strong>" );
+			sb.append( sponsor );
+			sb.append( "</strong></li>" );
+		}
+		sb.append( "</ul>" );
+		//sb.append( "<br>" );
+		sb.append( "<b>The Sims <sup>TM</sup> 2</b> Art Assets donated by <strong>Electronic Arts</strong>." );
+		sb.append( "</html>" );
+
+		org.lgna.croquet.components.Label supportedByLabel = new org.lgna.croquet.components.Label( sb.toString() );
 		supportedByLabel.setBorder( new IconBorder() );
 		this.addPageStartComponent( supportedByLabel );
 
@@ -92,9 +107,9 @@ public class AboutView extends org.lgna.croquet.components.BorderPanel {
 		//		otherPanel.addComponent( lineAxisPanel );
 		otherPanel.addComponent( org.alice.stageide.about.MainSiteBrowserOperation.getInstance().createHyperlink() );
 		otherPanel.addComponent( org.alice.stageide.about.CreditsComposite.getInstance().getOperation().createHyperlink() );
-		otherPanel.addComponent( composite.getVersionLabel().createImmutableEditorPane() );
+		otherPanel.addComponent( new org.lgna.croquet.components.HtmlMultiLineLabel( "current version: " + org.lgna.project.ProjectVersion.getCurrentVersionText() ) );
 		otherPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
-		otherPanel.addComponent( composite.getDedicationLabel().createImmutableEditorPane() );
+		otherPanel.addComponent( new org.lgna.croquet.components.HtmlMultiLineLabel( "Alice 3 is dedicated to Randy." ) );
 
 		otherPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 16, 16, 16, 16 ) );
 		this.addCenterComponent( otherPanel );

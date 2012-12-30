@@ -57,8 +57,8 @@ public class PopupButton extends AbstractButton<javax.swing.JButton, org.lgna.cr
 		javax.swing.JButton rv = new javax.swing.JButton() {
 			@Override
 			public javax.swing.Icon getIcon() {
-				if( PopupButton.this.isIconSet() ) {
-					return PopupButton.this.getSetIcon();
+				if( PopupButton.this.isIconClobbered() ) {
+					return PopupButton.this.getClobberIcon();
 				} else {
 					return super.getIcon();
 				}

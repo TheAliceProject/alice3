@@ -57,13 +57,14 @@ public class RunProgramContext extends ProgramContext {
 		this( getUpToDateProgramTypeFromActiveIde() );
 	}
 
-	public void initializeInContainer( java.awt.Container container ) {
+	public void initializeInContainer( org.lgna.story.implementation.ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
 		this.disableRendering();
-		this.getProgramImp().initializeInAwtContainer( container );
+		this.getProgramImp().initializeInAwtContainer( awtContainerInitializer );
 	}
 
-	public void initializeInContainer( java.awt.Container container, int width, int height ) {
-		initializeInContainer( container );
+	public void initializeInContainer( java.awt.Container awtContainer, int width, int height ) {
+		this.disableRendering();
+		this.getProgramImp().initializeInAwtContainer( awtContainer );
 		this.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new Dimension( width, height ) );
 	}
 

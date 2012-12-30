@@ -54,7 +54,6 @@ public class BodyTabView extends org.lgna.croquet.components.BorderPanel {
 		list.setBackgroundColor( backgroundColor );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
 		scrollPane.setBothScrollBarIncrements( 66, 66 );
-		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 
 		org.lgna.croquet.components.Slider slider = composite.getObesityLevelState().createSlider();
 		slider.setBackgroundColor( backgroundColor );

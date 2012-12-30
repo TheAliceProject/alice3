@@ -54,12 +54,12 @@ public abstract class ResourceNodeTreeSelectionState extends org.lgna.croquet.Cu
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, migrationId, null, ResourceNodeCodec.SINGLETON );
 		this.root = root;
 		//todo
-		this.updateSwingModel( root );
+		this.setSwingValue( root );
 	}
 
 	@Override
-	protected void updateSwingModel( org.alice.stageide.modelresource.ResourceNode nextValue ) {
-		super.updateSwingModel( nextValue );
+	protected void setSwingValue( org.alice.stageide.modelresource.ResourceNode nextValue ) {
+		super.setSwingValue( nextValue );
 		if( nextValue.getResourceKey().isLeaf() ) {
 			org.lgna.croquet.Model model = nextValue.getLeftButtonClickModel();
 			if( model != null ) {

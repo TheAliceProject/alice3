@@ -47,12 +47,55 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 
+/* package-private */class ItemDetails<E> {
+	private final E item;
+	private final org.lgna.croquet.ItemState<E> state;
+	private final BooleanStateButton<?> button;
+
+	public ItemDetails( org.lgna.croquet.ItemState<E> state, E item, ItemSelectablePanel<E> panel ) {
+		this.state = state;
+		this.item = item;
+		this.button = panel.createButtonForItemSelectedState( this.item, this.state.getItemSelectedState( this.item ) );
+	}
+
+	public E getItem() {
+		return this.item;
+	}
+
+	public org.lgna.croquet.ItemState<E> getState() {
+		return this.state;
+	}
+
+	public BooleanStateButton<?> getButton() {
+		return this.button;
+	}
+
+	public TrackableShape getTrackableShape() {
+		return this.button;
+	}
+
+	public final void add( javax.swing.ButtonGroup buttonGroup ) {
+		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
+		//		jButton.addItemListener( this.itemListener );
+		buttonGroup.add( jButton );
+	}
+
+	// note: does not seem to be called
+	public final void remove( javax.swing.ButtonGroup buttonGroup ) {
+		javax.swing.AbstractButton jButton = this.button.getAwtComponent();
+		//note: should already be removed by removeAllComponents()
+		assert jButton.getParent() == null;
+		//		jButton.removeItemListener( this.itemListener );
+		buttonGroup.remove( jButton );
+	}
+}
+
 /* package-private */class MutableListItemDetails<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemDetails<E> {
 	private final LC leadingComponent;
 	private final MC mainComponent;
 	private final TC trailingComponent;
 
-	public MutableListItemDetails( org.lgna.croquet.ItemState<E> state, E item, ItemSelectablePanel<E, ?> panel, LC leadingComponent, MC mainComponent, TC trailingComponent, java.awt.event.ActionListener actionListener ) {
+	public MutableListItemDetails( org.lgna.croquet.ItemState<E> state, E item, ItemSelectablePanel<E> panel, LC leadingComponent, MC mainComponent, TC trailingComponent, java.awt.event.ActionListener actionListener ) {
 		super( state, item, panel );
 		AbstractButton<?, ?> button = this.getButton();
 		this.leadingComponent = leadingComponent;
@@ -92,7 +135,7 @@ package org.lgna.croquet.components;
 	}
 }
 
-public abstract class MutableList<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemSelectablePanel<E, MutableListItemDetails<E, LC, MC, TC>> {
+public abstract class MutableList<E, LC extends JComponent<?>, MC extends JComponent<?>, TC extends JComponent<?>> extends ItemSelectablePanel<E> {
 	private class MutableListButton extends BooleanStateButton<javax.swing.AbstractButton> {
 		public MutableListButton( org.lgna.croquet.BooleanState itemSelectedState ) {
 			super( itemSelectedState );
@@ -162,69 +205,6 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 			return rv;
 		}
 	}
-
-	//	private class MutableListDragModel extends org.lgna.croquet.DragModel {
-	//		public MutableListDragModel() {
-	//			super( java.util.UUID.fromString( "a136b615-2e99-4481-a89d-a48d633a4080" ) );
-	//		}
-	//		@Override
-	//		public final java.util.List< ? extends org.lgna.croquet.DropReceptor > createListOfPotentialDropReceptors() {
-	//			org.lgna.croquet.DropReceptor dropReceptor = MutableList.this;
-	//			return java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( dropReceptor ) );
-	//		}
-	//		@Override
-	//		public void handleDragStarted( org.lgna.croquet.history.DragStep step ) {
-	//		}
-	//		@Override
-	//		public void handleDragEnteredDropReceptor( org.lgna.croquet.history.DragStep step ) {
-	//		}
-	//		@Override
-	//		public void handleDragExitedDropReceptor( org.lgna.croquet.history.DragStep step ) {
-	//		}
-	//		@Override
-	//		public void handleDragStopped( org.lgna.croquet.history.DragStep step ) {
-	//		}
-	//		@Override
-	//		public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
-	//			return null;
-	//		}
-	//	}
-	//
-	//	private class MutableListButton extends org.alice.ide.croquet.components.KnurlDragComponent< MutableListDragModel > {
-	//		public MutableListButton( MutableListDragModel dragModel ) {
-	//			super( dragModel );
-	//		}
-	//		@Override
-	//		protected java.awt.Shape createShape( int x, int y, int width, int height ) {
-	//			return null;
-	//		}
-	//		@Override
-	//		protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-	//		}
-	//		@Override
-	//		protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-	//		}
-	//		@Override
-	//		protected int getInsetTop() {
-	//			return 0;
-	//		}
-	//		@Override
-	//		protected int getDockInsetLeft() {
-	//			return 0;
-	//		}
-	//		@Override
-	//		protected int getInternalInsetLeft() {
-	//			return 0;
-	//		}
-	//		@Override
-	//		protected int getInsetBottom() {
-	//			return 0;
-	//		}
-	//		@Override
-	//		protected int getInsetRight() {
-	//			return 0;
-	//		}
-	//	}
 
 	private static final java.awt.Color DEFAULT_SELECTED_BACKGROUND = new java.awt.Color( 57, 105, 138 );
 	private static final java.awt.Color DEFAULT_UNSELECTED_BACKGROUND = java.awt.Color.WHITE;//new java.awt.Color( 214, 217, 223 );
@@ -298,8 +278,8 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 
 	@Override
 	protected void removeAllDetails() {
-		for( ItemDetails<E> details : this.getAllItemDetails() ) {
-			details.getButton().setVisible( false );
+		for( BooleanStateButton<?> button : this.getAllButtons() ) {
+			button.setVisible( false );
 		}
 	}
 
@@ -331,31 +311,30 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 	protected void addPrologue( int count ) {
 		//this.pageAxisPanel.internalRemoveAllComponents();
 		this.index = 0;
-		for( ItemDetails<E> details : this.getAllItemDetails() ) {
-			details.getButton().setVisible( false );
+		for( BooleanStateButton<?> button : this.getAllButtons() ) {
+			button.setVisible( false );
 		}
 	}
 
 	@Override
-	protected void addItem( MutableListItemDetails<E, LC, MC, TC> itemDetails ) {
-		this.update( itemDetails.getLeadingComponent(), itemDetails.getMainComponent(), itemDetails.getTrailingComponent(), this.index, itemDetails.getItem() );
+	protected void addItem( E item, BooleanStateButton<?> button ) {
+		//		this.update( itemDetails.getLeadingComponent(), itemDetails.getMainComponent(), itemDetails.getTrailingComponent(), this.index, itemDetails.getItem() );
 		this.index++;
-		//this.pageAxisPanel.internalAddComponent( itemDetails.getButton() );
-		itemDetails.getButton().setVisible( true );
+		button.setVisible( true );
 	}
 
 	@Override
 	protected void addEpilogue() {
 	}
 
-	@Override
-	protected void handleItemSelected( E item ) {
-		super.handleItemSelected( item );
-		for( MutableListItemDetails<E, LC, MC, TC> details : this.getAllItemDetails() ) {
-			boolean isSelected = details.getItem() == item;
-			this.updateSelection( details.getLeadingComponent(), details.getMainComponent(), details.getTrailingComponent(), isSelected );
-		}
-	}
+	//	@Override
+	//	protected void handleItemSelected( E item ) {
+	//		super.handleItemSelected( item );
+	//		for( MutableListItemDetails<E, LC, MC, TC> details : this.getAllItemDetails() ) {
+	//			boolean isSelected = details.getItem() == item;
+	//			this.updateSelection( details.getLeadingComponent(), details.getMainComponent(), details.getTrailingComponent(), isSelected );
+	//		}
+	//	}
 
 	@Override
 	protected void handleDisplayable() {
@@ -369,19 +348,19 @@ public abstract class MutableList<E, LC extends JComponent<?>, MC extends JCompo
 		super.handleUndisplayable();
 	}
 
-	@Override
-	protected final MutableListItemDetails<E, LC, MC, TC> createItemDetails( final E item ) {
-		java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				MutableList.this.getModel().removeItem( item );
-			}
-		};
-		MutableListItemDetails<E, LC, MC, TC> rv = new MutableListItemDetails<E, LC, MC, TC>( this.getModel(), item, this, this.createLeadingComponent(), this.createMainComponent(), this.createTrailingComponent(), actionListener );
-		ViewController<?, ?> button = rv.getButton();
-		button.setVisible( false );
-		this.pageAxisPanel.addComponent( button );
-		return rv;
-	}
+	//	@Override
+	//	protected final MutableListItemDetails<E, LC, MC, TC> createItemDetails( final E item ) {
+	//		java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
+	//			public void actionPerformed( java.awt.event.ActionEvent e ) {
+	//				MutableList.this.getModel().removeItem( item );
+	//			}
+	//		};
+	//		MutableListItemDetails<E, LC, MC, TC> rv = new MutableListItemDetails<E, LC, MC, TC>( this.getModel(), item, this, this.createLeadingComponent(), this.createMainComponent(), this.createTrailingComponent(), actionListener );
+	//		ViewController<?, ?> button = rv.getButton();
+	//		button.setVisible( false );
+	//		this.pageAxisPanel.addComponent( button );
+	//		return rv;
+	//	}
 
 	private static final javax.swing.KeyStroke DELETE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_DELETE, 0 );
 	private static final javax.swing.KeyStroke BACK_SPACE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_BACK_SPACE, 0 );

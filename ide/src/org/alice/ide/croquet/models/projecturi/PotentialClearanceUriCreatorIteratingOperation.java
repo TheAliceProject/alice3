@@ -61,9 +61,9 @@ public abstract class PotentialClearanceUriCreatorIteratingOperation extends Uri
 	}
 
 	@Override
-	protected java.net.URI getURI( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+	protected org.alice.ide.projecturi.UriProjectPair getUriProjectPair( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
 		if( subSteps.size() > 0 ) {
-			return (java.net.URI)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+			return (org.alice.ide.projecturi.UriProjectPair)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
 		} else {
 			return null;
 		}

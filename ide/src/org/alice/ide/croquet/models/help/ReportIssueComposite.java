@@ -94,7 +94,6 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
 		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
-		this.registerSubComposite( this.logInOutComposite );
 	}
 
 	@Override

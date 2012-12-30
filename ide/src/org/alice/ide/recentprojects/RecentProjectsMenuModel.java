@@ -76,7 +76,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( uri, currentUri ) ) {
 				//pass
 			} else {
-				models.add( OpenFileOperation.getInstance( uri ).getMenuItemPrepModel() );
+				models.add( org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation.getInstance( uri ).getMenuItemPrepModel() );
 			}
 		}
 		if( models.size() == 0 ) {

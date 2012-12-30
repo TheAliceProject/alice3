@@ -2497,6 +2497,25 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"BILLY_GOAT",
 					"BIG_HORNS"
 			),
+			new org.lgna.project.migration.TextMigration(
+					new org.lgna.project.Version( "3.1.48.0.0" ),
+					new org.lgna.project.Version( "3.1.58.0.0" ),
+
+					"name=\"ICE_FLOW",
+					"name=\"ICE_FLOE",
+
+					"name=\"org.lgna.story.resources.prop.IceFlowResource",
+					"name=\"org.lgna.story.resources.prop.IceFloeResource",
+
+					"name=\"PIXIE_GREEN",
+					"name=\"GREEN",
+
+					"name=\"PIXIE_PINK",
+					"name=\"PINK",
+
+					"name=\"PIXIE_BLUE",
+					"name=\"BLUE"
+			),
 
 	};
 	private final AstMigration[] astMigrations = {

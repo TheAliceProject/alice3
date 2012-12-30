@@ -99,8 +99,8 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
-			return this.state.createEdit( completionStep, values[ 0 ] );
+		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, T[] values ) {
+			return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
 		}
 	}
 

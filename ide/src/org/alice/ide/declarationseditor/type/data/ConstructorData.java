@@ -48,7 +48,7 @@ package org.alice.ide.declarationseditor.type.data;
  */
 public class ConstructorData extends FilteredMemberData<org.lgna.project.ast.NamedUserConstructor> {
 	public ConstructorData( org.lgna.project.ast.NamedUserType type ) {
-		super( org.lgna.project.ast.NamedUserConstructor.class, type.constructors );
+		super( org.lgna.project.ast.NamedUserConstructor.class, type, type.constructors );
 	}
 
 	@Override

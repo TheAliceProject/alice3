@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor.type.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSelectablePanel<E, org.lgna.croquet.components.ItemDetails<E>> {
+public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSelectablePanel<E> {
 	protected final float NAME_FONT_SCALE = 1.5f;
 
 	protected class MemberButton extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> {
@@ -146,38 +146,23 @@ public abstract class MemberList<E> extends org.lgna.croquet.components.ItemSele
 	}
 
 	@Override
-	protected final org.lgna.croquet.components.ItemDetails<E> createItemDetails( E item ) {
-		org.lgna.croquet.components.ItemDetails<E> rv = new org.lgna.croquet.components.ItemDetails<E>( this.getModel(), item, this );
-
-		org.lgna.croquet.components.AbstractButton<?, ?> button = rv.getButton();
-		//button.getAwtComponent().removeAll();
-		button.setVisible( false );
-		this.pageAxisPanel.addComponent( button );
-		return rv;
-	}
-
-	@Override
 	protected void removeAllDetails() {
-		for( org.lgna.croquet.components.ItemDetails<E> details : this.getAllItemDetails() ) {
-			details.getButton().setVisible( false );
+		for( org.lgna.croquet.components.BooleanStateButton<?> button : this.getAllButtons() ) {
+			button.setVisible( false );
 		}
 	}
-
-	private int index;
 
 	@Override
 	protected void addPrologue( int count ) {
 		//this.pageAxisPanel.internalRemoveAllComponents();
-		this.index = 0;
-		for( org.lgna.croquet.components.ItemDetails<E> details : this.getAllItemDetails() ) {
-			details.getButton().setVisible( false );
+		for( org.lgna.croquet.components.BooleanStateButton<?> button : this.getAllButtons() ) {
+			button.setVisible( false );
 		}
 	}
 
 	@Override
-	protected void addItem( org.lgna.croquet.components.ItemDetails<E> details ) {
-		this.index++;
-		details.getButton().setVisible( true );
+	protected void addItem( E item, org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		button.setVisible( true );
 	}
 
 	@Override

@@ -65,6 +65,7 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 
 	private DeleteFieldOperation( org.lgna.project.ast.UserField field, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
+		this.setEnabled( field.isDeletionAllowed.getValue() );
 	}
 
 	@Override

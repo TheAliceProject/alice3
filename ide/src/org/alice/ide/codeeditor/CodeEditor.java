@@ -62,8 +62,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		org.lgna.project.ast.BlockStatement body = userCode.getBodyProperty().getValue();
 
-		this.rootStatementListPropertyPane = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), body.statements );
-		this.rootStatementListPropertyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 48, 0 ) );
+		this.rootStatementListPropertyPane = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), body.statements, true );
 
 		org.lgna.croquet.components.JComponent<?> statementListComponent = null;
 		if( body instanceof org.lgna.project.ast.ConstructorBlockStatement ) {
@@ -87,9 +86,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		org.lgna.croquet.components.ScrollPane scrollPane = this.getScrollPane();
 		scrollPane.setViewportView( bodyPane );
-		scrollPane.setBothScrollBarIncrements( 12, 24 );
-		scrollPane.setBorder( null );
-		scrollPane.setBackgroundColor( null );
+		//scrollPane.setBackgroundColor( null );
 		scrollPane.getAwtComponent().getViewport().setOpaque( false );
 		scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 

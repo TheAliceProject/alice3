@@ -59,9 +59,6 @@ public abstract class ContentTab<V extends org.alice.ide.projecturi.views.TabCon
 
 	@Override
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		org.lgna.croquet.components.ScrollPane rv = super.createScrollPaneIfDesired();
-		rv.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		rv.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
-		return rv;
+		return null;
 	}
 }

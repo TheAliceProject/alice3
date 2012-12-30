@@ -445,9 +445,6 @@ public class ArrayInitializerPane extends org.lgna.croquet.components.BorderPane
 				new org.lgna.croquet.components.LineAxisPanel( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 14 ), button )
 				);
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( pageAxisPanel );
-		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		scrollPane.setBothScrollBarIncrements( 12, 24 );
-		//pageAxisPanel.getAwtComponent().setOpaque( false );
 		pageAxisPanel.setBackgroundColor( null );
 		this.addCenterComponent( scrollPane );
 		this.setMinimumPreferredHeight( 240 );

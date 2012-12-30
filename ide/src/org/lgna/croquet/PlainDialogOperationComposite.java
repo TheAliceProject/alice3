@@ -46,6 +46,54 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractDialogComposite<V> implements OperationOwningComposite<V> {
+	public static final class InternalCloseOperationResolver extends IndirectResolver<InternalCloseOperation, PlainDialogOperationComposite> {
+		private InternalCloseOperationResolver( PlainDialogOperationComposite indirect ) {
+			super( indirect );
+		}
+
+		public InternalCloseOperationResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+
+		@Override
+		protected InternalCloseOperation getDirect( PlainDialogOperationComposite indirect ) {
+			return indirect.getCloseOperation();
+		}
+	}
+
+	public static class InternalCloseOperation extends SingleThreadOperation {
+		private final PlainDialogOperationComposite plainDialogOperationComposite;
+
+		private InternalCloseOperation( PlainDialogOperationComposite plainDialogOperationComposite ) {
+			super( DIALOG_IMPLEMENTATION_GROUP, java.util.UUID.fromString( "2a116435-9536-4590-8294-c4050ea65a4e" ) );
+			assert plainDialogOperationComposite != null;
+			this.plainDialogOperationComposite = plainDialogOperationComposite;
+		}
+
+		@Override
+		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+			rv.append( "Press the <strong>Close</strong> button when you are ready." );
+			return rv;
+		}
+
+		public PlainDialogOperationComposite getPlainDialogOperationComposite() {
+			return this.plainDialogOperationComposite;
+		}
+
+		@Override
+		protected InternalCloseOperationResolver createResolver() {
+			return new InternalCloseOperationResolver( this.plainDialogOperationComposite );
+		}
+
+		@Override
+		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+			step.finish();
+		}
+	}
+
+	private InternalCloseOperation closeOperation = new InternalCloseOperation( this );
+
 	private final OwnedByCompositeOperation operation;
 
 	public PlainDialogOperationComposite( java.util.UUID migrationId, Group operationGroup, boolean isModal ) {
@@ -59,6 +107,10 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 
 	public OwnedByCompositeOperation getOperation() {
 		return this.operation;
+	}
+
+	public InternalCloseOperation getCloseOperation() {
+		return this.closeOperation;
 	}
 
 	@Override
