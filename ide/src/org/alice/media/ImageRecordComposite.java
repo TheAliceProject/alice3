@@ -69,12 +69,11 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
-	//	private boolean isRecording;
-	//	private ImagesToQuickTimeEncoder encoder;
-	//	private MattsMovieEncoder encoder;
 	private WebmAdapter encoder;
-	private Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
-	private Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
+	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
+	private final BoundedIntegerState frameRateState = this.createBoundedIntegerState( this.createKey( "frameRateState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
+	private final Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
+	private final Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
 		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -84,9 +83,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			toggleRecording();
 		}
 	};
-	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
 
-	private final BoundedIntegerState frameRate = this.createBoundedIntegerState( this.createKey( "frameRate" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
 	private File tempFile;
 
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
@@ -147,7 +144,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			} else {
 				encoder = new WebmAdapter( tempFile );
-				encoder.setFrameRate( frameRate.getValue() );
+				encoder.setFrameRate( frameRateState.getValue() );
 				encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
 				programContext.getProgramImp().startAnimator();
 				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
@@ -163,8 +160,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		this.setRecording( !this.isRecording() );
 	}
 
-	public BoundedIntegerState getFrameRate() {
-		return frameRate;
+	public BoundedIntegerState getFrameRateState() {
+		return frameRateState;
 	}
 
 	@Override
@@ -180,7 +177,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				image = null;
 				imageCount = 0;
 
-				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRate.getValue() );
+				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRateState.getValue() );
 				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
 
 				getView().revalidateAndRepaint();

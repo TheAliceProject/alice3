@@ -54,7 +54,11 @@ import javax.swing.Icon;
  * @author Matt May
  */
 public class IsRecordingIcon implements Icon {
-	private static final int SIZE = 32;
+	private static final int SIZE = 20;
+	private static final Color RECORD_BASE_COLOR = new Color( 191, 63, 63 );
+	private static final Color RECORD_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 1.5 );
+	private static final Color RECORD_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( RECORD_BASE_COLOR, 1.0, 1.0, 0.5 );
+	private static final Color STOP_COLOR = Color.BLACK;
 
 	public int getIconHeight() {
 		return SIZE;
@@ -65,15 +69,22 @@ public class IsRecordingIcon implements Icon {
 	}
 
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Paint prevPaint = g2.getPaint();
 		if( c instanceof AbstractButton ) {
 			AbstractButton button = (AbstractButton)c;
 			ButtonModel buttonModel = button.getModel();
-			g.setColor( Color.RED );
 			if( buttonModel.isSelected() ) {
-				g.fillOval( x, y, SIZE, SIZE );
-			} else {
+				g.setColor( STOP_COLOR );
 				g.fillRect( x, y, SIZE, SIZE );
+			} else {
+				g2.setPaint( new java.awt.GradientPaint( x, y, RECORD_HIGHLIGHT_COLOR, x + SIZE, y + SIZE, RECORD_SHADOW_COLOR ) );
+				g.fillOval( x, y, SIZE, SIZE );
+				g.setColor( Color.BLACK );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				g.drawOval( x, y, SIZE, SIZE );
 			}
 		}
+		g2.setPaint( prevPaint );
 	}
 }

@@ -85,6 +85,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		assert owner != null;
 		this.owner = owner;
 		isRecordingState.addValueListener( isRecordingListener );
+		//isRecordingState.setIconForBothTrueAndFalse(  );
 	}
 
 	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
@@ -107,6 +108,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		if( programContext == null ) {
 			programContext = new RunProgramContext( owner.getProject().getProgramType() );
+			programContext.getProgramImp().setControlPanelDesired( false );
 			programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
 			programContext.getProgramImp().stopAnimator();
 			programContext.setActiveScene();

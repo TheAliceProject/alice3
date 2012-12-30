@@ -42,30 +42,21 @@
  */
 package org.alice.media.components;
 
-import org.alice.media.ImageRecordComposite;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
-
 /**
  * @author Matt May
  */
-public class ImageRecordView extends BorderPanel {
+public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
+	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
 
-	private final BorderPanel lookingGlassContainer = new BorderPanel();
-
-	public ImageRecordView( ImageRecordComposite recordComposite ) {
+	public ImageRecordView( org.alice.media.ImageRecordComposite recordComposite ) {
 		super( recordComposite );
-		//org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedAspectRatioPanel( this.lookingGlassContainer, org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
 		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( this.lookingGlassContainer );
-		this.addComponent( panel, Constraint.CENTER );
-		GridPanel bottomPanel = GridPanel.createGridPane( 1, 3 );
-		bottomPanel.addComponent( recordComposite.getIsRecordingState().createToggleButton() );
-		//		bottomPanel.addComponent( recordComposite.getRecordOperation().createButton() );
-		bottomPanel.addComponent( recordComposite.getFrameRate().createSpinner() );
-		addComponent( bottomPanel, Constraint.PAGE_END );
+		this.addComponent( panel, "wrap, span 2" );
+		this.addComponent( recordComposite.getIsRecordingState().createToggleButton() );
+		this.addComponent( new org.lgna.croquet.components.LineAxisPanel( recordComposite.getFrameRateState().getSidekickLabel().createImmutableTextField(), recordComposite.getFrameRateState().createSpinner() ), "wrap, align right" );
 	}
 
-	public BorderPanel getLookingGlassContainer() {
+	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
 	}
 }

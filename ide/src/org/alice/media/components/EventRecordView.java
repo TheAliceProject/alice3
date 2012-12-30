@@ -42,31 +42,21 @@
  */
 package org.alice.media.components;
 
-import org.alice.media.EventRecordComposite;
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.Label;
-
 /**
  * @author Matt May
  */
-public class EventRecordView extends BorderPanel {
+public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 
-	private final BorderPanel lookingGlassContainer = new BorderPanel();
+	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
 
-	public EventRecordView( EventRecordComposite eventRecordComposite ) {
-		//org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedAspectRatioPanel( lookingGlassContainer, org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
+	public EventRecordView( org.alice.media.EventRecordComposite eventRecordComposite ) {
 		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer );
-		this.addComponent( panel, Constraint.CENTER );
-		GridPanel bottom = GridPanel.createGridPane( 1, 3 );
-		bottom.addComponent( eventRecordComposite.getPlayRecordedOperation().createToggleButton() );
-		bottom.addComponent( new Label() );
-		bottom.addComponent( new Label() );
-		bottom.addComponent( eventRecordComposite.getRestartRecording().createButton() );
-		this.addComponent( bottom, Constraint.PAGE_END );
+		this.addComponent( panel, "wrap, span 2" );
+		this.addComponent( eventRecordComposite.getPlayRecordedOperation().createToggleButton() );
+		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
 	}
 
-	public BorderPanel getLookingGlassContainer() {
+	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
 	}
 }
