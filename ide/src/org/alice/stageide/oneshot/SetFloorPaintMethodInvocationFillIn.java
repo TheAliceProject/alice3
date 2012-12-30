@@ -40,22 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.oneshot.edits;
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetPaintEdit extends AbstractSetPaintEdit<org.lgna.story.implementation.ModelImp> {
-	public SetPaintEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+public class SetFloorPaintMethodInvocationFillIn extends MethodInvocationFillIn {
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, SetFloorPaintMethodInvocationFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+
+	public static SetFloorPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		return mapToMap.getInitializingIfAbsent( instanceFactory, method, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.alice.ide.instancefactory.InstanceFactory, org.lgna.project.ast.AbstractMethod, SetFloorPaintMethodInvocationFillIn>() {
+			public SetFloorPaintMethodInvocationFillIn initialize( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+				return new SetFloorPaintMethodInvocationFillIn( instanceFactory, method );
+			}
+		} );
 	}
 
-	public SetPaintEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
+	public static SetFloorPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractType<?, ?, ?> type, String methodName, Class<?>... parameterClses ) {
+		org.lgna.project.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
+		assert method != null : methodName;
+		return getInstance( instanceFactory, method );
+	}
+
+	public static SetFloorPaintMethodInvocationFillIn getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory, Class<?> cls, String methodName, Class<?>... parameterClses ) {
+		return getInstance( instanceFactory, org.lgna.project.ast.JavaType.getInstance( cls ), methodName, parameterClses );
+	}
+
+	private SetFloorPaintMethodInvocationFillIn( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
+		super( java.util.UUID.fromString( "fa7f6fe1-a726-43c2-aa88-d02f131d0da3" ), instanceFactory, method );
 	}
 
 	@Override
-	protected org.lgna.story.implementation.PaintProperty getPaintProperty( org.lgna.story.implementation.ModelImp modelImp ) {
-		return modelImp.paint;
+	protected org.alice.stageide.oneshot.MethodInvocationEditFactory createMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		return new SetFloorPaintMethodInvocationEditFactory( instanceFactory, method, argumentExpressions );
 	}
 }

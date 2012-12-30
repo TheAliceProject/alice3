@@ -40,22 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.oneshot.edits;
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetPaintEdit extends AbstractSetPaintEdit<org.lgna.story.implementation.ModelImp> {
-	public SetPaintEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
-		super( completionStep, instanceFactory, method, argumentExpressions );
+public class SetCeilingPaintMethodInvocationEditFactory implements MethodInvocationEditFactory {
+	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
+	private final org.lgna.project.ast.AbstractMethod method;
+	private final org.lgna.project.ast.Expression[] argumentExpressions;
+
+	public SetCeilingPaintMethodInvocationEditFactory( org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+		this.instanceFactory = instanceFactory;
+		this.method = method;
+		this.argumentExpressions = argumentExpressions;
 	}
 
-	public SetPaintEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-	}
-
-	@Override
-	protected org.lgna.story.implementation.PaintProperty getPaintProperty( org.lgna.story.implementation.ModelImp modelImp ) {
-		return modelImp.paint;
+	public org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<MethodInvocationEditFactory>> step ) {
+		return new org.alice.stageide.oneshot.edits.SetCeilingPaintEdit( step, this.instanceFactory, this.method, this.argumentExpressions );
 	}
 }

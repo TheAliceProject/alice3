@@ -45,17 +45,37 @@ package org.alice.stageide.oneshot.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class SetPaintEdit extends AbstractSetPaintEdit<org.lgna.story.implementation.ModelImp> {
-	public SetPaintEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+public abstract class AbstractSetPaintEdit<I extends org.lgna.story.implementation.ModelImp> extends MethodInvocationEdit {
+	private transient I modelImp;
+	private transient org.lgna.story.Paint value;
+
+	public AbstractSetPaintEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 
-	public SetPaintEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public AbstractSetPaintEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
 
+	protected abstract org.lgna.story.implementation.PaintProperty getPaintProperty( I modelImp );
+
 	@Override
-	protected org.lgna.story.implementation.PaintProperty getPaintProperty( org.lgna.story.implementation.ModelImp modelImp ) {
-		return modelImp.paint;
+	protected final void preserveUndoInfo( Object instance, boolean isDo ) {
+		if( instance instanceof org.lgna.story.SThing ) {
+			org.lgna.story.SThing thing = (org.lgna.story.SThing)instance;
+			this.modelImp = org.lgna.story.ImplementationAccessor.getImplementation( thing );
+			this.value = this.getPaintProperty( this.modelImp ).getValue();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
+			this.modelImp = null;
+			this.value = null;
+		}
+	}
+
+	@Override
+	protected final void undoInternal() {
+		if( ( this.modelImp != null ) && ( this.value != null ) ) {
+			this.getPaintProperty( this.modelImp ).animateValue( this.value );
+		}
 	}
 }

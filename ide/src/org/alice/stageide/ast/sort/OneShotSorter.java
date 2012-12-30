@@ -80,7 +80,9 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 	//	public static final org.lgna.project.ast.JavaMethod UNFOLD_WINGS_METHOD;
 
 	public static final org.lgna.project.ast.JavaMethod GROUND_SET_PAINT_METHOD;
-	public static final org.lgna.project.ast.JavaMethod ROOM_SET_PAINT_METHOD;
+	public static final org.lgna.project.ast.JavaMethod ROOM_SET_CEILING_PAINT_METHOD;
+	public static final org.lgna.project.ast.JavaMethod ROOM_SET_WALL_PAINT_METHOD;
+	public static final org.lgna.project.ast.JavaMethod ROOM_SET_FLOOR_PAINT_METHOD;
 	public static final org.lgna.project.ast.JavaMethod MODEL_SET_PAINT_METHOD;
 
 	public static final org.lgna.project.ast.JavaMethod GROUND_SET_OPACITY_METHOD;
@@ -134,8 +136,14 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 		assert MOVE_AND_ORIENT_TO_A_GOOD_VANTAGE_POINT_METHOD != null;
 
 		GROUND_SET_PAINT_METHOD = getSetPaintMethod( groundType );
-		ROOM_SET_PAINT_METHOD = getSetPaintMethod( roomType );
 		MODEL_SET_PAINT_METHOD = getSetPaintMethod( modelType );
+
+		ROOM_SET_CEILING_PAINT_METHOD = roomType.getDeclaredMethod( "setCeilingPaint", org.lgna.story.Paint.class, org.lgna.story.SetCeilingPaint.Detail[].class );
+		assert ROOM_SET_CEILING_PAINT_METHOD != null : roomType;
+		ROOM_SET_WALL_PAINT_METHOD = roomType.getDeclaredMethod( "setWallPaint", org.lgna.story.Paint.class, org.lgna.story.SetWallPaint.Detail[].class );
+		assert ROOM_SET_WALL_PAINT_METHOD != null : roomType;
+		ROOM_SET_FLOOR_PAINT_METHOD = roomType.getDeclaredMethod( "setFloorPaint", org.lgna.story.Paint.class, org.lgna.story.SetFloorPaint.Detail[].class );
+		assert ROOM_SET_FLOOR_PAINT_METHOD != null : roomType;
 
 		GROUND_SET_OPACITY_METHOD = getSetOpacityMethod( groundType );
 		ROOM_SET_OPACITY_METHOD = getSetOpacityMethod( roomType );
@@ -164,9 +172,13 @@ public enum OneShotSorter implements org.alice.ide.ast.sort.MemberSorter {
 
 		value = 4.0;
 		map.put( GROUND_SET_PAINT_METHOD, value );
-		map.put( ROOM_SET_PAINT_METHOD, value );
 		map.put( MODEL_SET_PAINT_METHOD, value );
 		value += INCREMENT;
+
+		map.put( ROOM_SET_CEILING_PAINT_METHOD, value += INCREMENT );
+		map.put( ROOM_SET_WALL_PAINT_METHOD, value += INCREMENT );
+		map.put( ROOM_SET_FLOOR_PAINT_METHOD, value += INCREMENT );
+
 		map.put( GROUND_SET_OPACITY_METHOD, value );
 		map.put( ROOM_SET_OPACITY_METHOD, value );
 		map.put( MODEL_SET_OPACITY_METHOD, value );

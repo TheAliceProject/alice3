@@ -113,7 +113,9 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.GROUND_SET_OPACITY_METHOD );
 		}
 		if( roomType.isAssignableFrom( instanceFactoryValueType ) ) {
-			//methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_PAINT_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_CEILING_PAINT_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_WALL_PAINT_METHOD );
+			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_FLOOR_PAINT_METHOD );
 			methods.add( org.alice.stageide.ast.sort.OneShotSorter.ROOM_SET_OPACITY_METHOD );
 		}
 		if( modelType.isAssignableFrom( instanceFactoryValueType ) ) {
@@ -129,6 +131,12 @@ public class MethodInvocationBlank extends org.lgna.croquet.CascadeBlank<MethodI
 					rv.add( AllJointLocalTransformationsMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else if( "setPaint".equals( method.getName() ) ) {
 					rv.add( SetPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+				} else if( "setCeilingPaint".equals( method.getName() ) ) {
+					rv.add( SetCeilingPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+				} else if( "setWallPaint".equals( method.getName() ) ) {
+					rv.add( SetWallPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
+				} else if( "setFloorPaint".equals( method.getName() ) ) {
+					rv.add( SetFloorPaintMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else if( "setOpacity".equals( method.getName() ) ) {
 					rv.add( SetOpacityMethodInvocationFillIn.getInstance( this.instanceFactory, method ) );
 				} else {

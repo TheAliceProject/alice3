@@ -45,17 +45,17 @@ package org.alice.stageide.oneshot.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class SetPaintEdit extends AbstractSetPaintEdit<org.lgna.story.implementation.ModelImp> {
-	public SetPaintEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
+public class SetFloorPaintEdit extends AbstractSetPaintEdit<org.lgna.story.implementation.RoomImp> {
+	public SetFloorPaintEdit( org.lgna.croquet.history.CompletionStep completionStep, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method, org.lgna.project.ast.Expression[] argumentExpressions ) {
 		super( completionStep, instanceFactory, method, argumentExpressions );
 	}
 
-	public SetPaintEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public SetFloorPaintEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 	}
 
 	@Override
-	protected org.lgna.story.implementation.PaintProperty getPaintProperty( org.lgna.story.implementation.ModelImp modelImp ) {
-		return modelImp.paint;
+	protected org.lgna.story.implementation.PaintProperty getPaintProperty( org.lgna.story.implementation.RoomImp roomImp ) {
+		return roomImp.floorPaint;
 	}
 }
