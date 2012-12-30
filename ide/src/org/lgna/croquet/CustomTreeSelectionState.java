@@ -88,9 +88,14 @@ public abstract class CustomTreeSelectionState<T> extends TreeSelectionState<T> 
 		}
 
 		public javax.swing.tree.TreePath getTreePath( Object node ) {
-			Object[] nodes = this.getPathToRoot( (T)node );
-			javax.swing.tree.TreePath path = new javax.swing.tree.TreePath( nodes );
-			return path;
+			if( node != null ) {
+				Object[] nodes = this.getPathToRoot( (T)node );
+				assert nodes != null : CustomTreeSelectionState.this;
+				assert nodes.length > 0 : CustomTreeSelectionState.this;
+				return new javax.swing.tree.TreePath( nodes );
+			} else {
+				return null;
+			}
 		}
 	};
 
