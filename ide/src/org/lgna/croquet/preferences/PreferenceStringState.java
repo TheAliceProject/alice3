@@ -47,10 +47,16 @@ package org.lgna.croquet.preferences;
  * @author Dennis Cosgrove
  */
 public class PreferenceStringState extends org.lgna.croquet.StringState {
+	private static final String NULL_VALUE = "__null__";
+
 	private static String getInitialValue( java.util.UUID id, String defaultInitialValue ) {
 		java.util.prefs.Preferences userPreferences = PreferenceManager.getUserPreferences();
 		if( userPreferences != null ) {
-			return userPreferences.get( id.toString(), defaultInitialValue );
+			String rv = userPreferences.get( id.toString(), defaultInitialValue );
+			if( NULL_VALUE.equals( rv ) ) {
+				rv = null;
+			}
+			return rv;
 		} else {
 			return defaultInitialValue;
 		}
@@ -60,7 +66,14 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 
 	public final static void preserveAll( java.util.prefs.Preferences userPreferences ) {
 		for( PreferenceStringState state : instances ) {
-			userPreferences.put( state.getMigrationId().toString(), state.getValue() );
+			String key = state.getMigrationId().toString();
+			String value = state.getValue();
+			if( value != null ) {
+				//pass
+			} else {
+				value = NULL_VALUE;
+			}
+			userPreferences.put( key, value );
 		}
 	}
 
