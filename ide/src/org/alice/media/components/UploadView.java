@@ -42,14 +42,6 @@
  */
 package org.alice.media.components;
 
-import java.io.File;
-
-import org.alice.media.UploadComposite;
-import org.lgna.croquet.components.CheckBox;
-import org.lgna.croquet.components.ComboBox;
-import org.lgna.croquet.components.TextArea;
-import org.lgna.croquet.components.TextField;
-
 /**
  * @author Matt May
  */
@@ -59,7 +51,7 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 
 	private final org.lgna.croquet.components.Panel youtubeDetailsPanel;
 
-	public UploadView( UploadComposite composite ) {
+	public UploadView( org.alice.media.UploadComposite composite ) {
 		super( composite, 24, 0 );
 
 		org.lgna.croquet.components.MigPanel loginPanel = new org.lgna.croquet.components.MigPanel( null, "fill, inset 0", "", "[]0[]4[]0[]4[]" );
@@ -73,65 +65,88 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 
 		loginPanel.addComponent( composite.getLoginComposite().getOperation().createButton(), "wrap" );
 
-		org.lgna.croquet.components.GridBagPanel panel = new org.lgna.croquet.components.GridBagPanel();
+		org.lgna.croquet.components.JComponent<?> titleSidekickLabel = composite.getTitleState().getSidekickLabel().createImmutableTextField();
+		org.lgna.croquet.components.TextField titleTextField = composite.getTitleState().createTextField();
 
-		final int TOP_INSET = 2;
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.weightx = 1.0;
-		gbc.weighty = 0.0;
+		org.lgna.croquet.components.JComponent<?> descriptionSidekickLabel = composite.getDescriptionState().getSidekickLabel().createImmutableTextField();
+		org.lgna.croquet.components.TextArea descriptionTextArea = composite.getDescriptionState().createTextArea();
+		descriptionTextArea.getAwtComponent().setRows( 4 );
+		//description.getAwtComponent().setLineWrap( true );
+		org.lgna.croquet.components.ScrollPane descriptionScrollPane = new org.lgna.croquet.components.ScrollPane( descriptionTextArea );
 
-		gbc.insets.top = TOP_INSET;
-		panel.addComponent( composite.getTitleState().getSidekickLabel().createImmutableTextField(), gbc );
-		gbc.insets.top = 0;
+		org.lgna.croquet.components.JComponent<?> tagsSidekickLabel = composite.getTagsState().getSidekickLabel().createImmutableTextField();
+		org.lgna.croquet.components.TextArea tagsTextArea = composite.getTagsState().createTextArea();
+		tagsTextArea.getAwtComponent().setRows( 2 );
+		//tags.getAwtComponent().setLineWrap( true );
+		org.lgna.croquet.components.ScrollPane tagsScrollPane = new org.lgna.croquet.components.ScrollPane( tagsTextArea );
 
-		TextField titleField = composite.getTitleState().createTextField();
-		panel.addComponent( titleField, gbc );
+		org.lgna.croquet.components.JComponent<?> categoryLabel = composite.getVideoCategoryState().getSidekickLabel().createImmutableTextField();
+		org.lgna.croquet.components.ComboBox<String> categoryComboBox = composite.getVideoCategoryState().getPrepModel().createComboBox();
 
-		gbc.insets.top = TOP_INSET;
-		panel.addComponent( composite.getDescriptionState().getSidekickLabel().createImmutableTextField(), gbc );
-		gbc.insets.top = 0;
+		org.lgna.croquet.components.CheckBox isPrivateCheckBox = composite.getIsPrivateState().createCheckBox();
 
-		gbc.weighty = 1.0;
-		TextArea description = composite.getDescriptionState().createTextArea();
-		description.getAwtComponent().setRows( 4 );
-		//		description.getAwtComponent().setLineWrap( true );
-		description.setMaximumSizeClampedToPreferredSize( false );
+		final boolean IS_MIG_PANEL_WORKING_WITH_TEXT_AREAS = true;
+		if( IS_MIG_PANEL_WORKING_WITH_TEXT_AREAS ) {
+			org.lgna.croquet.components.MigPanel migPanel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fill" );
+			migPanel.addComponent( titleSidekickLabel, "wrap" );
+			migPanel.addComponent( titleTextField, "wrap, growx" );
+			migPanel.addComponent( descriptionSidekickLabel, "wrap" );
+			migPanel.addComponent( descriptionScrollPane, "wrap, grow" );
+			migPanel.addComponent( tagsSidekickLabel, "wrap" );
+			migPanel.addComponent( tagsScrollPane, "wrap, grow" );
+			migPanel.addComponent( categoryLabel, "wrap" );
+			migPanel.addComponent( categoryComboBox, "wrap, growx" );
+			migPanel.addComponent( isPrivateCheckBox, "wrap" );
+			this.youtubeDetailsPanel = migPanel;
+		} else {
+			org.lgna.croquet.components.GridBagPanel gridBagPanel = new org.lgna.croquet.components.GridBagPanel();
 
-		org.lgna.croquet.components.ScrollPane descriptionScrollPane = new org.lgna.croquet.components.ScrollPane( description );
-		panel.addComponent( descriptionScrollPane, gbc );
-		gbc.weighty = 0.0;
+			final int TOP_INSET = 2;
+			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
+			gbc.fill = java.awt.GridBagConstraints.BOTH;
+			gbc.weightx = 1.0;
+			gbc.weighty = 0.0;
 
-		gbc.insets.top = TOP_INSET;
-		panel.addComponent( composite.getTagsState().getSidekickLabel().createImmutableTextField(), gbc );
-		gbc.insets.top = 0;
+			gbc.insets.top = TOP_INSET;
+			gridBagPanel.addComponent( titleSidekickLabel, gbc );
+			gbc.insets.top = 0;
 
-		gbc.weighty = 1.0;
-		TextArea tags = composite.getTagsState().createTextArea();
-		//		tags.getAwtComponent().setLineWrap( true );
-		tags.getAwtComponent().setRows( 2 );
-		org.lgna.croquet.components.ScrollPane tagsScrollPane = new org.lgna.croquet.components.ScrollPane( tags );
-		panel.addComponent( tagsScrollPane, gbc );
+			gridBagPanel.addComponent( titleTextField, gbc );
 
-		gbc.weighty = 0.0;
+			gbc.insets.top = TOP_INSET;
+			gridBagPanel.addComponent( descriptionSidekickLabel, gbc );
+			gbc.insets.top = 0;
 
-		gbc.insets.top = TOP_INSET;
-		panel.addComponent( composite.getVideoCategoryState().getSidekickLabel().createImmutableTextField(), gbc );
-		gbc.insets.top = 0;
+			gbc.weighty = 1.0;
+			descriptionTextArea.setMaximumSizeClampedToPreferredSize( false );
 
-		ComboBox<String> categories = composite.getVideoCategoryState().getPrepModel().createComboBox();
-		panel.addComponent( categories, gbc );
+			gridBagPanel.addComponent( descriptionScrollPane, gbc );
+			gbc.weighty = 0.0;
 
-		gbc.insets.top = TOP_INSET;
-		CheckBox isPrivateBox = composite.getIsPrivateState().createCheckBox();
-		panel.addComponent( isPrivateBox, gbc );
-		gbc.insets.top = 0;
+			gbc.insets.top = TOP_INSET;
+			gridBagPanel.addComponent( tagsSidekickLabel, gbc );
+			gbc.insets.top = 0;
+
+			gbc.weighty = 1.0;
+			gridBagPanel.addComponent( tagsScrollPane, gbc );
+
+			gbc.weighty = 0.0;
+
+			gbc.insets.top = TOP_INSET;
+			gridBagPanel.addComponent( categoryLabel, gbc );
+			gbc.insets.top = 0;
+
+			gridBagPanel.addComponent( categoryComboBox, gbc );
+
+			gbc.insets.top = TOP_INSET;
+			gridBagPanel.addComponent( isPrivateCheckBox, gbc );
+			gbc.insets.top = 0;
+			this.youtubeDetailsPanel = gridBagPanel;
+		}
 
 		//panel.addComponent( composite.getUploadOperation().getOperation().createButton(), gbc );
-
-		this.youtubeDetailsPanel = panel;
 
 		this.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().pageStart( loginPanel ).center( this.youtubeDetailsPanel ).build() );
 
@@ -155,7 +170,7 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 		return this.youtubeDetailsPanel;
 	}
 
-	public void setMovie( File file ) {
+	public void setMovie( java.io.File file ) {
 		//moviePlayerComposite.setMovie( file );
 	}
 }
