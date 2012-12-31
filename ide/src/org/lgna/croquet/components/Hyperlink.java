@@ -74,6 +74,7 @@ public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.cro
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		rv.setOpaque( false );
+		rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
 		return rv;
 	}
 }
