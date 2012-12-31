@@ -46,16 +46,8 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class TemplatesTab extends ContentTab<org.alice.stageide.openprojectpane.components.TemplatesTabContentPane> {
-	private static class SingletonHolder {
-		private static TemplatesTab instance = new TemplatesTab();
-	}
-
-	public static TemplatesTab getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private TemplatesTab() {
+public class TemplatesTab extends ContentTab {
+	public TemplatesTab() {
 		super( java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ) );
 	}
 

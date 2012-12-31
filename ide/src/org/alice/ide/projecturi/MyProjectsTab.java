@@ -46,16 +46,8 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class MyProjectsTab extends ContentTab<org.alice.ide.projecturi.views.DirectoryListContentPanel> {
-	private static class SingletonHolder {
-		private static MyProjectsTab instance = new MyProjectsTab();
-	}
-
-	public static MyProjectsTab getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private MyProjectsTab() {
+public class MyProjectsTab extends ContentTab {
+	public MyProjectsTab() {
 		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ) );
 	}
 

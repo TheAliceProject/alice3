@@ -47,7 +47,7 @@ package org.alice.ide.projecturi.views;
  * @author Dennis Cosgrove
  */
 public final class DirectoryListContentPanel extends RefreshableListContentPanel<org.alice.ide.projecturi.DirectoryUriSelectionState> {
-	public DirectoryListContentPanel( org.alice.ide.projecturi.ContentTab<?> composite, org.alice.ide.projecturi.DirectoryUriSelectionState state ) {
+	public DirectoryListContentPanel( org.alice.ide.projecturi.ContentTab composite, org.alice.ide.projecturi.DirectoryUriSelectionState state ) {
 		super( composite, state );
 	}
 

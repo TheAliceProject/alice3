@@ -48,7 +48,12 @@ package org.alice.ide.projecturi;
  */
 public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, UriProjectPair> {
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
-	private final org.lgna.croquet.TabSelectionState<ContentTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), ContentTab.class, -1, TemplatesTab.getInstance(), MyProjectsTab.getInstance(), RecentProjectsTab.getInstance(), FileSystemTab.getInstance() );
+	private final TemplatesTab templatesTab = new TemplatesTab();
+	private final MyProjectsTab myProjectsTab = new MyProjectsTab();
+	private final RecentProjectsTab recentProjectsTab = new RecentProjectsTab();
+	private final FileSystemTab fileSystemTab = new FileSystemTab();
+	private final org.lgna.croquet.TabSelectionState<ContentTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), ContentTab.class, -1, this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );
+	private final org.lgna.croquet.MetaState<java.net.URI> metaState = new SelectedUriMetaState( this.tabState );
 	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriProjectPair> mapUriToUriProjectPair = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	private static class SingletonHolder {
@@ -67,9 +72,13 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 		return this.tabState;
 	}
 
+	public org.lgna.croquet.MetaState<java.net.URI> getMetaState() {
+		return this.metaState;
+	}
+
 	@Override
 	protected UriProjectPair createValue() {
-		ContentTab<?> tab = this.tabState.getValue();
+		ContentTab tab = this.tabState.getValue();
 		if( tab != null ) {
 			java.net.URI uri = tab.getSelectedUri();
 			return this.mapUriToUriProjectPair.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriProjectPair>() {
@@ -109,9 +118,9 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 	public void selectAppropriateTab( boolean isNew ) {
 		ContentTab tab;
 		if( isNew ) {
-			tab = TemplatesTab.getInstance();
+			tab = this.templatesTab;
 		} else {
-			tab = MyProjectsTab.getInstance(); //todo: recentPane?
+			tab = this.myProjectsTab; // todo: recentTab?
 		}
 		this.tabState.setValueTransactionlessly( tab );
 		org.lgna.croquet.components.ComponentManager.revalidateAndRepaintAllComponents( this.tabState );

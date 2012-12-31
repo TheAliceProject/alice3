@@ -46,16 +46,8 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsTab extends ContentTab<org.alice.ide.projecturi.views.RecentPane> {
-	private static class SingletonHolder {
-		private static RecentProjectsTab instance = new RecentProjectsTab();
-	}
-
-	public static RecentProjectsTab getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RecentProjectsTab() {
+public class RecentProjectsTab extends ContentTab {
+	public RecentProjectsTab() {
 		super( java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ) );
 	}
 

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,28 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FileSystemTab extends ContentTab {
-	public FileSystemTab() {
-		super( java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
+public final class SelectedUriMetaState extends org.lgna.croquet.MetaState<java.net.URI> {
+	private final org.lgna.croquet.TabSelectionState<ContentTab> tabState;
+
+	public SelectedUriMetaState( org.lgna.croquet.TabSelectionState<ContentTab> tabState ) {
+		this.tabState = tabState;
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
-
-	@Override
-	protected void refresh() {
-	}
-
-	@Override
-	protected org.alice.ide.projecturi.views.FileSystemPane createView() {
-		return new org.alice.ide.projecturi.views.FileSystemPane( this );
+	protected java.net.URI getValue() {
+		ContentTab tab = this.tabState.getValue();
+		if( tab != null ) {
+			return tab.getSelectedUri();
+		} else {
+			return null;
+		}
 	}
 }
