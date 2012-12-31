@@ -42,105 +42,120 @@
  */
 package org.alice.media.components;
 
-import java.awt.Dimension;
 import java.io.File;
-import java.util.LinkedList;
 
-import org.alice.media.MoviePlayerComposite;
 import org.alice.media.UploadComposite;
-import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.CheckBox;
 import org.lgna.croquet.components.ComboBox;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.PasswordField;
-import org.lgna.croquet.components.PreserveAspectRatioPanel;
 import org.lgna.croquet.components.TextArea;
 import org.lgna.croquet.components.TextField;
-import org.lgna.croquet.components.ViewController;
 
 /**
  * @author Matt May
  */
-public class UploadView extends BorderPanel {
+public class UploadView extends org.lgna.croquet.components.BorderPanel {
 
-	private MoviePlayerComposite moviePlayerComposite;
+	//private final MoviePlayerComposite moviePlayerComposite;
+
+	private final org.lgna.croquet.components.Panel youtubeDetailsPanel;
 
 	public UploadView( UploadComposite composite ) {
-		super( composite );
-		this.addComponent( new UserNameAndPasswordComponent( composite ), Constraint.PAGE_START );
-		moviePlayerComposite = new MoviePlayerComposite( composite.getFile() );
-		GridPanel bPanel = GridPanel.createGridPane( 1, 2 );
-		MoviePlayerView panel = moviePlayerComposite.getView();
-		bPanel.addComponent( new PreserveAspectRatioPanel( panel, new Dimension( 16, 9 ) ) );
-		//		bPanel.addComponent( new PreserveAspectRatioPanel( new Label( "Preview Coming Soon!" ), new Dimension( 16, 9 ) ), Constraint.CENTER );
-		bPanel.addComponent( new VideoInfoComponent( composite ) );
-		this.addComponent( bPanel, Constraint.CENTER );
-		this.addComponent( composite.getUploadOperation().getOperation().createButton(), Constraint.PAGE_END );
+		super( composite, 24, 0 );
+
+		org.lgna.croquet.components.MigPanel loginPanel = new org.lgna.croquet.components.MigPanel( null, "fill, inset 0", "", "[]0[]4[]0[]4[]" );
+		loginPanel.addComponent( composite.getIdState().getSidekickLabel().createImmutableTextField(), "wrap" );
+
+		loginPanel.addComponent( composite.getIdState().createTextField(), "wrap, growx" );
+
+		loginPanel.addComponent( composite.getPasswordState().getSidekickLabel().createImmutableTextField(), "wrap" );
+
+		loginPanel.addComponent( composite.getPasswordState().createPasswordField(), "wrap, growx" );
+
+		loginPanel.addComponent( composite.getLoginComposite().getOperation().createButton(), "wrap" );
+
+		org.lgna.croquet.components.GridBagPanel panel = new org.lgna.croquet.components.GridBagPanel();
+
+		final int TOP_INSET = 2;
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.weightx = 1.0;
+		gbc.weighty = 0.0;
+
+		gbc.insets.top = TOP_INSET;
+		panel.addComponent( composite.getTitleState().getSidekickLabel().createImmutableTextField(), gbc );
+		gbc.insets.top = 0;
+
+		TextField titleField = composite.getTitleState().createTextField();
+		panel.addComponent( titleField, gbc );
+
+		gbc.insets.top = TOP_INSET;
+		panel.addComponent( composite.getDescriptionState().getSidekickLabel().createImmutableTextField(), gbc );
+		gbc.insets.top = 0;
+
+		gbc.weighty = 1.0;
+		TextArea description = composite.getDescriptionState().createTextArea();
+		description.getAwtComponent().setRows( 4 );
+		//		description.getAwtComponent().setLineWrap( true );
+		description.setMaximumSizeClampedToPreferredSize( false );
+
+		org.lgna.croquet.components.ScrollPane descriptionScrollPane = new org.lgna.croquet.components.ScrollPane( description );
+		panel.addComponent( descriptionScrollPane, gbc );
+		gbc.weighty = 0.0;
+
+		gbc.insets.top = TOP_INSET;
+		panel.addComponent( composite.getTagsState().getSidekickLabel().createImmutableTextField(), gbc );
+		gbc.insets.top = 0;
+
+		gbc.weighty = 1.0;
+		TextArea tags = composite.getTagsState().createTextArea();
+		//		tags.getAwtComponent().setLineWrap( true );
+		tags.getAwtComponent().setRows( 2 );
+		org.lgna.croquet.components.ScrollPane tagsScrollPane = new org.lgna.croquet.components.ScrollPane( tags );
+		panel.addComponent( tagsScrollPane, gbc );
+
+		gbc.weighty = 0.0;
+
+		gbc.insets.top = TOP_INSET;
+		panel.addComponent( composite.getVideoCategoryState().getSidekickLabel().createImmutableTextField(), gbc );
+		gbc.insets.top = 0;
+
+		ComboBox<String> categories = composite.getVideoCategoryState().getPrepModel().createComboBox();
+		panel.addComponent( categories, gbc );
+
+		gbc.insets.top = TOP_INSET;
+		CheckBox isPrivateBox = composite.getIsPrivateState().createCheckBox();
+		panel.addComponent( isPrivateBox, gbc );
+		gbc.insets.top = 0;
+
+		//panel.addComponent( composite.getUploadOperation().getOperation().createButton(), gbc );
+
+		this.youtubeDetailsPanel = panel;
+
+		this.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().pageStart( loginPanel ).center( this.youtubeDetailsPanel ).build() );
+
+		this.addLineStartComponent( new org.lgna.croquet.components.PageAxisPanel(
+				new org.lgna.croquet.components.Label( "Preview:" ),
+				new PreviewVideoView(),
+				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ),
+				composite.getExportToFileOperation().createButton() ) );
+		//		this.moviePlayerComposite = new MoviePlayerComposite( composite.getFile() );
+		//
+		//		org.lgna.croquet.components.PageAxisPanel sidePanel = new org.lgna.croquet.components.PageAxisPanel();
+		//		sidePanel.addComponent( panel );
+		//		sidePanel.addComponent( composite.getSaveToFileOperation().createButton() );
+		//		//		this.addComponent( new PreserveAspectRatioPanel( panel, new Dimension( 16, 9 ) ), "wrap, aligny top" );
+		//		this.addLineEndComponent( sidePanel );
+
+		//this.disableable = (java.util.List)edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( titleField, categories, description, tags );
 	}
 
-	private class UserNameAndPasswordComponent extends BorderPanel {
-		public UserNameAndPasswordComponent( UploadComposite composite ) {
-			GridPanel top = GridPanel.createGridPane( 1, 3 );
-			top.addComponent( new Label() );
-			top.addComponent( composite.getSaveToFileOperation().createButton() );
-			top.addComponent( new Label() );
-			this.addComponent( top, Constraint.PAGE_START );
-			GridPanel bottom = GridPanel.createGridPane( 1, 3 );
-			bottom.addComponent( new Label() );
-			bottom.addComponent( composite.getLoginOperation().createButton() );
-			bottom.addComponent( new Label() );
-			this.addComponent( bottom, Constraint.PAGE_END );
-			TextField userName = composite.getIdState().createTextField();
-			PasswordField password = composite.getPasswordState().createPasswordField();
-			GridPanel middle = GridPanel.createGridPane( 2, 2 );
-			middle.addComponent( composite.getUsername().createImmutableTextArea() );
-			middle.addComponent( userName );
-			middle.addComponent( composite.getPasswordLabelValue().createImmutableTextArea() );
-			middle.addComponent( password );
-			this.addComponent( middle, Constraint.CENTER );
-		}
-	}
-
-	private LinkedList<ViewController> disableable = new LinkedList<ViewController>();
-
-	private class VideoInfoComponent extends BorderPanel {
-
-		public VideoInfoComponent( UploadComposite composite ) {
-			GridPanel titlePanel = GridPanel.createGridPane( 2, 1 );
-			titlePanel.addComponent( composite.getTitleLabelValue().createImmutableTextArea() );
-			TextField titleField = composite.getTitleState().createTextField();
-			titlePanel.addComponent( titleField );
-			disableable.add( titleField );
-			this.addComponent( titlePanel, Constraint.PAGE_START );
-			GridPanel detailPanel = GridPanel.createGridPane( 3, 1 );
-			detailPanel.addComponent( composite.getCategoryValue().createImmutableTextArea() );
-			ComboBox<String> categories = composite.getVideoCategoryState().getPrepModel().createComboBox();
-			detailPanel.addComponent( categories );
-			disableable.add( categories );
-			CheckBox isPrivateBox = composite.getIsPrivateState().createCheckBox();
-			detailPanel.addComponent( isPrivateBox );
-			GridPanel middle = GridPanel.createGridPane( 2, 1 );
-			BorderPanel topBorder = new BorderPanel();
-			topBorder.addComponent( composite.getDescriptionValue().createImmutableTextArea(), Constraint.PAGE_START );
-			TextArea description = composite.getDescriptionState().createTextArea();
-			description.getAwtComponent().setLineWrap( true );
-			disableable.add( description );
-			topBorder.addComponent( description, Constraint.CENTER );
-			BorderPanel bottomBorder = new BorderPanel();
-			bottomBorder.addComponent( composite.getTagLabel().createImmutableTextArea(), Constraint.PAGE_START );
-			TextArea tags = composite.getTagState().createTextArea();
-			tags.getAwtComponent().setLineWrap( true );
-			disableable.add( tags );
-			bottomBorder.addComponent( tags, Constraint.CENTER );
-			middle.addComponent( topBorder );
-			middle.addComponent( bottomBorder );
-			this.addComponent( middle, Constraint.CENTER );
-			this.addComponent( detailPanel, Constraint.PAGE_END );
-		}
+	public org.lgna.croquet.components.Panel getYoutubeDetailsPanel() {
+		return this.youtubeDetailsPanel;
 	}
 
 	public void setMovie( File file ) {
-		moviePlayerComposite.setMovie( file );
+		//moviePlayerComposite.setMovie( file );
 	}
 }

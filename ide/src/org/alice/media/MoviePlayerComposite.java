@@ -59,7 +59,7 @@ public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<Movie
 	private uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent mediaPlayerComponent;
 	private File videoFile;
 
-	private final ActionOperation playOperation = this.createActionOperation( this.createKey( "playOperation" ), new Action() {
+	private final ActionOperation previewOperation = this.createActionOperation( this.createKey( "previewOperation" ), new Action() {
 
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			assert videoFile != null;
@@ -96,6 +96,6 @@ public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<Movie
 	}
 
 	public ActionOperation getPlayOperation() {
-		return playOperation;
+		return previewOperation;
 	}
 }

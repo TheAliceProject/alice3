@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,34 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media;
+package org.alice.media.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExportToYoutubePanel extends org.alice.ide.video.components.RecordVideoPanel {
-	private final VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane( new org.alice.stageide.program.VideoEncodingProgramContext( 24.0 ) ) {
-		@Override
-		protected void onClose() {
-			javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
+public class PreviewVideoView extends org.lgna.croquet.components.JComponent<javax.swing.AbstractButton> {
+	private static class PlayIcon extends org.alice.stageide.icons.ShapeIcon {
+		private final java.awt.Stroke stroke;
+
+		public PlayIcon( java.awt.Dimension size ) {
+			super( size );
+			stroke = new java.awt.BasicStroke( size.width / 25.0f );
 		}
-	};
 
-	public ExportToYoutubePanel() {
-		this.getAwtComponent().add( this.videoCapturePane );
+		@Override
+		protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+			java.awt.Stroke prevStroke = g2.getStroke();
+			g2.setStroke( stroke );
+			java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( 0, 0, width, height, width * 0.45f, height * 0.45f );
+			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 70 ) );
+			g2.fill( rr );
+			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
+			g2.draw( rr );
+
+			int w = (int)( width * 0.4 );
+			int h = (int)( height * 0.45 );
+			int xFudge = width / 20;
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, ( ( width - w ) / 2 ) + xFudge, ( height - h ) / 2, w, h );
+			g2.setStroke( prevStroke );
+		}
+	}
+
+	public PreviewVideoView() {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.BorderLayout();
-	}
-
-	public org.alice.media.encoder.ImagesToQuickTimeEncoder getEncoder() {
-		return this.videoCapturePane.getEncoder();
-	}
-
-	@Override
-	public java.awt.Container getLookingGlassContainer() {
-		return this.videoCapturePane.getWorldPane();
+	protected javax.swing.AbstractButton createAwtComponent() {
+		javax.swing.AbstractButton rv = new javax.swing.JToggleButton() {
+			@Override
+			public void updateUI() {
+				this.setUI( new javax.swing.plaf.basic.BasicButtonUI() {
+					@Override
+					public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
+						return new java.awt.Dimension( 320, 180 );
+					}
+				} );
+			}
+		};
+		rv.setIcon( new PlayIcon( new java.awt.Dimension( 60, 60 ) ) );
+		rv.setBackground( java.awt.Color.BLACK );
+		rv.setRolloverEnabled( true );
+		return rv;
 	}
 }

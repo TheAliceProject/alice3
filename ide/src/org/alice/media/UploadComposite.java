@@ -53,7 +53,6 @@ import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
-import org.lgna.croquet.PlainStringValue;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.WizardPageComposite;
 import org.lgna.project.Project;
@@ -68,29 +67,18 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 
 	private final YouTubeUploader uploader = new YouTubeUploader();
 	private final ExportToYouTubeWizardDialogComposite owner;
-	private final StringState idState = this.createStringState( this.createKey( "id" ), "" );
-	private final PlainStringValue username = this.createStringValue( this.createKey( "username" ) );
-	private final StringState passwordState = this.createStringState( this.createKey( "password" ), "" );
-	private final PlainStringValue passwordLabelValue = this.createStringValue( this.createKey( "passwordLabel" ) );
-	private final PlainStringValue titleLabelValue = this.createStringValue( this.createKey( "titleLabel" ) );
-	private final StringState titleState = this.createStringState( this.createKey( "title" ), "Alice Video" );
-	private final BooleanState isPrivateState = this.createBooleanState( this.createKey( "isPrivate" ), false );
-	private final PlainStringValue categoryValue = this.createStringValue( this.createKey( "category" ) );
+
+	private final org.lgna.croquet.StringState idState = this.createStringState( this.createKey( "idState" ) );
+	private final org.lgna.croquet.StringState passwordState = this.createStringState( this.createKey( "passwordState" ), "" );
+
+	private final StringState titleState = this.createStringState( this.createKey( "titleState" ), "Alice Video" );
+	private final BooleanState isPrivateState = this.createBooleanState( this.createKey( "isPrivateState" ), false );
 	private final ListSelectionState<String> videoCategoryState;
-	private final PlainStringValue descriptionValue = this.createStringValue( this.createKey( "descriptionValue" ) );
-	private final StringState descriptionState = this.createStringState( this.createKey( "description" ), "" );
-	private final PlainStringValue tagLabel = this.createStringValue( this.createKey( "tagLabel" ) );
-	private final StringState tagState = this.createStringState( this.createKey( "tag" ), "Alice3" );
+	private final StringState descriptionState = this.createStringState( this.createKey( "descriptionState" ), "" );
+	private final StringState tagsState = this.createStringState( this.createKey( "tagsState" ), "Alice3" );
 
 	private final LoginComposite loginComposite = new LoginComposite( this );
-	private final ActionOperation loginOperation = this.createActionOperation( this.createKey( "login" ), new Action() {
-		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-
-			return null;
-		}
-	} );
-
-	private final ActionOperation saveToFileOperation = this.createActionOperation( this.createKey( "save" ), new Action() {
+	private final ActionOperation exportToFileOperation = this.createActionOperation( this.createKey( "exportToFileOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 
 			File file = FileDialogUtilities.showSaveFileDialog( java.util.UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
@@ -102,7 +90,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		}
 	} );
 
-	private UploadProgressDialogComposite uploadOperation = new UploadProgressDialogComposite( this );
+	private final UploadProgressDialogComposite uploadProgressDialogComposite = new UploadProgressDialogComposite( this );
 
 	//	private final ActionOperation uploadOperation = this.createActionOperation( this.createKey( "upload" ), new Action() {
 	//		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation src ) throws org.lgna.croquet.CancelException {
@@ -138,18 +126,27 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	//			return null;
 	//		}
 	//	} );
-	private Status errorNotLoggedIn = createErrorStatus( this.createKey( "errorNotLoggedIn" ) );
+	private final Status errorNotLoggedIn = createErrorStatus( this.createKey( "errorNotLoggedIn" ) );
+	private final Status noTittle = createErrorStatus( this.createKey( "errorNoTittle" ) );
+	private final Status noDescriptions = createWarningStatus( this.createKey( "warningNoDescriptions" ) );
+	private final Status noTags = createWarningStatus( this.createKey( "warningNoTags" ) );
+
 	private boolean isLoggedIn = false;
-	private Status noTittle = createErrorStatus( this.createKey( "errorNoTittle" ) );
-	private Status noDescriptions = createWarningStatus( this.createKey( "warningNoDescriptions" ) );
-	private Status noTags = createWarningStatus( this.createKey( "warningNoTags" ) );
 
 	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
 		this.owner = owner;
 		UploadComposite.initializeCategories();
 		uploader.addYouTubeListener( this.getUploadOperation() );
-		videoCategoryState = this.createListSelectionState( this.createKey( "videoCategory" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, categoryStrings.toArray( new String[ 0 ] ) );
+		this.videoCategoryState = this.createListSelectionState( this.createKey( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, categoryStrings.toArray( new String[ 0 ] ) );
+	}
+
+	public org.lgna.croquet.StringState getIdState() {
+		return this.idState;
+	}
+
+	public org.lgna.croquet.StringState getPasswordState() {
+		return this.passwordState;
 	}
 
 	public YouTubeUploader getUploader() {
@@ -160,32 +157,12 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		return this.owner;
 	}
 
-	public StringState getIdState() {
-		return this.idState;
+	public LoginComposite getLoginComposite() {
+		return this.loginComposite;
 	}
 
-	public PlainStringValue getUsername() {
-		return this.username;
-	}
-
-	public StringState getPasswordState() {
-		return this.passwordState;
-	}
-
-	public PlainStringValue getPasswordLabelValue() {
-		return this.passwordLabelValue;
-	}
-
-	public ActionOperation getLoginOperation() {
-		return this.loginComposite.getOperation();
-	}
-
-	public ActionOperation getSaveToFileOperation() {
-		return this.saveToFileOperation;
-	}
-
-	public PlainStringValue getTitleLabelValue() {
-		return this.titleLabelValue;
+	public org.lgna.croquet.Operation getExportToFileOperation() {
+		return this.exportToFileOperation;
 	}
 
 	public StringState getTitleState() {
@@ -196,32 +173,20 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		return this.isPrivateState;
 	}
 
-	public PlainStringValue getCategoryValue() {
-		return this.categoryValue;
-	}
-
 	public ListSelectionState<String> getVideoCategoryState() {
 		return this.videoCategoryState;
-	}
-
-	public PlainStringValue getDescriptionValue() {
-		return this.descriptionValue;
 	}
 
 	public StringState getDescriptionState() {
 		return this.descriptionState;
 	}
 
-	public PlainStringValue getTagLabel() {
-		return this.tagLabel;
-	}
-
-	public StringState getTagState() {
-		return this.tagState;
+	public StringState getTagsState() {
+		return this.tagsState;
 	}
 
 	public UploadProgressDialogComposite getUploadOperation() {
-		return this.uploadOperation;
+		return this.uploadProgressDialogComposite;
 	}
 
 	@Override
@@ -246,7 +211,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//		uploadOperation.setEnabled( false );
-		uploadOperation.setEnabled( true );
+		uploadProgressDialogComposite.setEnabled( true );
 		Status rv = IS_GOOD_TO_GO_STATUS;
 		if( !isLoggedIn ) {
 			setEnabled( false );
@@ -257,22 +222,33 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 				return noTittle;
 			} else if( descriptionState.getValue().length() == 0 ) {
 				rv = noDescriptions;
-			} else if( tagState.getValue().length() == 0 ) {
+			} else if( tagsState.getValue().length() == 0 ) {
 				rv = noTags;
 			}
 		}
 		if( !( rv instanceof ErrorStatus ) ) {
-			uploadOperation.setEnabled( true );
+			uploadProgressDialogComposite.setEnabled( true );
 		}
 		return rv;
 	}
 
 	private void setEnabled( boolean isEnabled ) {
-		titleState.setEnabled( isEnabled );
-		descriptionState.setEnabled( isEnabled );
-		tagState.setEnabled( isEnabled );
-		videoCategoryState.setEnabled( isEnabled );
-		isPrivateState.setEnabled( isEnabled );
+		final boolean IS_VIEW_BASED = true;
+		if( IS_VIEW_BASED ) {
+			for( java.awt.Component awtComponent : this.getView().getYoutubeDetailsPanel().getAwtComponent().getComponents() ) {
+				awtComponent.setEnabled( false );
+				if( awtComponent instanceof javax.swing.JScrollPane ) {
+					javax.swing.JScrollPane jScrollPane = (javax.swing.JScrollPane)awtComponent;
+					jScrollPane.getViewport().getView().setEnabled( false );
+				}
+			}
+		} else {
+			titleState.setEnabled( isEnabled );
+			descriptionState.setEnabled( isEnabled );
+			tagsState.setEnabled( isEnabled );
+			videoCategoryState.setEnabled( isEnabled );
+			isPrivateState.setEnabled( isEnabled );
+		}
 	}
 
 	/**

@@ -130,7 +130,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	@Override
 	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		super.modifyPackedWindowSizeIfDesired( window );
-		final int WIDTH = 1000;
+		final int WIDTH = 900;
 		window.setSize( WIDTH, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH ) );
 	}
 

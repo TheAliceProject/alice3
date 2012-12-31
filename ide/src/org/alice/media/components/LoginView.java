@@ -40,8 +40,9 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media;
+package org.alice.media.components;
 
+import org.alice.media.LoginComposite;
 import org.lgna.croquet.components.BorderPanel;
 
 /**
@@ -54,7 +55,7 @@ public class LoginView extends BorderPanel {
 
 	}
 
-	public void update( boolean isLoginSuccessfull ) {
+	public void update( boolean isLoginSuccessful ) {
 
 		refreshLater();
 	}

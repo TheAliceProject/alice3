@@ -126,7 +126,7 @@ public class UploadProgressDialogComposite extends PlainDialogOperationComposite
 		mediaGroup.setDescription( mediaDescription );//description]
 
 		MediaKeywords keywords = new MediaKeywords();
-		String[] arr = parentComposite.getTagState().getValue().split( "," );
+		String[] arr = parentComposite.getTagsState().getValue().split( "," );
 		for( String s : arr ) {
 			keywords.addKeyword( s.trim() );
 		}
