@@ -47,6 +47,7 @@ package org.alice.ide.projecturi;
  * @author Dennis Cosgrove
  */
 public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, UriProjectPair> {
+
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
 	private final TemplatesTab templatesTab = new TemplatesTab();
 	private final MyProjectsTab myProjectsTab = new MyProjectsTab();
@@ -55,6 +56,8 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 	private final org.lgna.croquet.TabSelectionState<ContentTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), ContentTab.class, -1, this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );
 	private final org.lgna.croquet.MetaState<java.net.URI> metaState = new SelectedUriMetaState( this.tabState );
 	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriProjectPair> mapUriToUriProjectPair = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+
+	private final ProjectSideComposite sideSubComposite;
 
 	private static class SingletonHolder {
 		private static SelectProjectUriWithPreviewComposite instance = new SelectProjectUriWithPreviewComposite();
@@ -66,10 +69,19 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 
 	private SelectProjectUriWithPreviewComposite() {
 		super( java.util.UUID.fromString( "3b9ec3fb-3fe5-485c-ac2a-688a5468b0b9" ) );
+		final boolean IS_SIDE_SUB_COMPOSITE_READY_FOR_PRIME_TIME = true;
+		if( IS_SIDE_SUB_COMPOSITE_READY_FOR_PRIME_TIME ) {
+			this.sideSubComposite = new ProjectSideComposite();
+			this.registerSubComposite( this.sideSubComposite );
+		}
 	}
 
 	public org.lgna.croquet.TabSelectionState<ContentTab> getTabState() {
 		return this.tabState;
+	}
+
+	public org.lgna.croquet.Composite<?> getSideSubComposite() {
+		return this.sideSubComposite;
 	}
 
 	public org.lgna.croquet.MetaState<java.net.URI> getMetaState() {
@@ -97,7 +109,7 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
-		return org.alice.ide.projecturi.views.SelectProjectUriWithPreviewPanel.getInstance();
+		return new org.alice.ide.projecturi.views.SelectProjectUriWithPreviewPanel( this );
 	}
 
 	@Override
@@ -111,7 +123,7 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 
 	@Override
 	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
-		if( org.alice.ide.projecturi.views.PreviewProjectPanel.IS_READY_FOR_PRIME_TIME ) {
+		if( this.sideSubComposite != null ) {
 			final int width = 960;
 			window.setSize( width, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( width ) );
 		} else {

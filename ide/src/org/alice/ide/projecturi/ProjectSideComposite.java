@@ -40,13 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.projecturi.views;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectProjectUriPanel extends org.lgna.croquet.components.BorderPanel {
-	public SelectProjectUriPanel() {
-		this.addCenterComponent( org.alice.ide.projecturi.SelectProjectUriWithPreviewComposite.getInstance().getTabState().createFolderTabbedPane() );
+public class ProjectSideComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.projecturi.views.ProjectSideView> {
+	public ProjectSideComposite() {
+		super( java.util.UUID.fromString( "d00d6695-abac-4fa7-b8f9-b5672ac2a64d" ) );
+	}
+
+	@Override
+	protected org.alice.ide.projecturi.views.ProjectSideView createView() {
+		return new org.alice.ide.projecturi.views.ProjectSideView( this );
 	}
 }

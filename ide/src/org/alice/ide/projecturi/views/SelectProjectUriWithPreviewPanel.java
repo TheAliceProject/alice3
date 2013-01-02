@@ -47,18 +47,12 @@ package org.alice.ide.projecturi.views;
  * @author Dennis Cosgrove
  */
 public class SelectProjectUriWithPreviewPanel extends org.lgna.croquet.components.BorderPanel {
-	private static class SingletonHolder {
-		private static SelectProjectUriWithPreviewPanel instance = new SelectProjectUriWithPreviewPanel();
-	}
-
-	public static SelectProjectUriWithPreviewPanel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SelectProjectUriWithPreviewPanel() {
-		this.addCenterComponent( new SelectProjectUriPanel() );
-		if( PreviewProjectPanel.IS_READY_FOR_PRIME_TIME ) {
-			this.addLineEndComponent( new PreviewProjectPanel() );
+	public SelectProjectUriWithPreviewPanel( org.alice.ide.projecturi.SelectProjectUriWithPreviewComposite composite ) {
+		super( composite );
+		this.addCenterComponent( org.alice.ide.projecturi.SelectProjectUriWithPreviewComposite.getInstance().getTabState().createFolderTabbedPane() );
+		org.lgna.croquet.Composite<?> sideSubComposite = composite.getSideSubComposite();
+		if( sideSubComposite != null ) {
+			this.addLineEndComponent( sideSubComposite.getView() );
 		}
 		this.setBackgroundColor( TabContentPanel.DEFAULT_BACKGROUND_COLOR );
 	}

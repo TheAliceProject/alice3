@@ -47,13 +47,15 @@ package org.alice.ide.projecturi;
  * @author Dennis Cosgrove
  */
 public class RecentProjectsTab extends ListUriTab {
+	private final RecentProjectsUriSelectionState recentProjectsUriSelectionState = new RecentProjectsUriSelectionState();
+
 	public RecentProjectsTab() {
 		super( java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ) );
 	}
 
 	@Override
 	public org.lgna.croquet.ListSelectionState<java.net.URI> getListSelectionState() {
-		return RecentProjectsUriSelectionState.getInstance();
+		return this.recentProjectsUriSelectionState;
 	}
 
 	@Override

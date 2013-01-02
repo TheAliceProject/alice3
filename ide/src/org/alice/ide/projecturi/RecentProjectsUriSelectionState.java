@@ -43,20 +43,11 @@
 
 package org.alice.ide.projecturi;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class RecentProjectsUriSelectionState extends org.lgna.croquet.ListSelectionState<java.net.URI> {
-	private static class SingletonHolder {
-		private static RecentProjectsUriSelectionState instance = new RecentProjectsUriSelectionState();
-	}
-
-	public static RecentProjectsUriSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RecentProjectsUriSelectionState() {
+	public RecentProjectsUriSelectionState() {
 		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), org.alice.ide.recentprojects.RecentProjectsListData.getInstance(), -1 );
 	}
 }
