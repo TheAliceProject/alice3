@@ -56,6 +56,20 @@ public class DocumentLabel extends AbstractLabel {
 		}
 	}
 
+	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
+		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+			handleDocumentChanged();
+		}
+
+		public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+			handleDocumentChanged();
+		}
+
+		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+			handleDocumentChanged();
+		}
+	};
+
 	public DocumentLabel( javax.swing.text.Document document, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		this.document = document;
 		this.scaleFont( fontScalar );
@@ -64,11 +78,23 @@ public class DocumentLabel extends AbstractLabel {
 
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
-		return new javax.swing.JLabel( DocumentLabel.getText( document ) ) {
-			@Override
-			public String getText() {
-				return DocumentLabel.getText( document );
-			}
-		};
+		return new javax.swing.JLabel( DocumentLabel.getText( this.document ) );
+	}
+
+	private void handleDocumentChanged() {
+		this.setText( getText( this.document ) );
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		this.handleDocumentChanged();
+		this.document.addDocumentListener( this.documentListener );
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.document.removeDocumentListener( this.documentListener );
 	}
 }
