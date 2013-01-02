@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.javax.swing.plaf;
 public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 	private java.awt.Color disabledColor = java.awt.Color.LIGHT_GRAY;
 	private boolean isUnderlinedWhenDisabled = true;
-	private boolean isUnderlinedOnlyWhenRolledOver = false;
+	private boolean isUnderlinedOnlyWhenRolledOver = true;
 
 	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) {
 		return new HyperlinkUI();
