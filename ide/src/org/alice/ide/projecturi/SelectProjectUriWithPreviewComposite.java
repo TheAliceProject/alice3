@@ -54,7 +54,20 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 	private final RecentProjectsTab recentProjectsTab = new RecentProjectsTab();
 	private final FileSystemTab fileSystemTab = new FileSystemTab();
 	private final org.lgna.croquet.TabSelectionState<ContentTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), ContentTab.class, -1, this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );
-	private final org.lgna.croquet.MetaState<java.net.URI> metaState = new SelectedUriMetaState( this.tabState );
+
+	private final class SelectedUriMetaState extends org.lgna.croquet.MetaState<java.net.URI> {
+		@Override
+		public java.net.URI getValue() {
+			ContentTab tab = tabState.getValue();
+			if( tab != null ) {
+				return tab.getSelectedUri();
+			} else {
+				return null;
+			}
+		}
+	}
+
+	private final org.lgna.croquet.MetaState<java.net.URI> metaState = new SelectedUriMetaState();
 	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriProjectPair> mapUriToUriProjectPair = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	private final ProjectSideComposite sideSubComposite;
@@ -90,18 +103,13 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 
 	@Override
 	protected UriProjectPair createValue() {
-		ContentTab tab = this.tabState.getValue();
-		if( tab != null ) {
-			java.net.URI uri = tab.getSelectedUri();
-			if( uri != null ) {
-				return this.mapUriToUriProjectPair.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriProjectPair>() {
-					public org.alice.ide.projecturi.UriProjectPair initialize( java.net.URI key ) {
-						return new UriProjectPair( key );
-					}
-				} );
-			} else {
-				return null;
-			}
+		java.net.URI uri = this.metaState.getValue();
+		if( uri != null ) {
+			return this.mapUriToUriProjectPair.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriProjectPair>() {
+				public org.alice.ide.projecturi.UriProjectPair initialize( java.net.URI key ) {
+					return new UriProjectPair( key );
+				}
+			} );
 		} else {
 			return null;
 		}

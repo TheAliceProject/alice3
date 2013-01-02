@@ -62,7 +62,7 @@ public abstract class MetaState<T> {
 
 	private T prevValue;
 
-	protected abstract T getValue();
+	public abstract T getValue();
 
 	public void addMetaStateValueListener( MetaStateValueListener<T> listener ) {
 		this.valueListeners.add( listener );
