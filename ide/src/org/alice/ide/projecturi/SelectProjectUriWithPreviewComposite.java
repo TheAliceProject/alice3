@@ -122,7 +122,8 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.createValue() != null ) {
+		java.net.URI uri = this.metaState.getValue();
+		if( uri != null ) {
 			return IS_GOOD_TO_GO_STATUS;
 		} else {
 			return this.noSelectionError;
