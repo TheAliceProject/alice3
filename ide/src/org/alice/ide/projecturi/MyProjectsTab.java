@@ -46,17 +46,8 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class MyProjectsTab extends ContentTab {
+public class MyProjectsTab extends DirectoryUriListTab {
 	public MyProjectsTab() {
-		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ) );
-	}
-
-	@Override
-	protected void refresh() {
-	}
-
-	@Override
-	protected org.alice.ide.projecturi.views.DirectoryListContentPanel createView() {
-		return new org.alice.ide.projecturi.views.DirectoryListContentPanel( this, org.alice.ide.projecturi.MyProjectsUriSelectionState.getInstance() );
+		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ), org.alice.ide.IDE.getActiveInstance().getMyProjectsDirectory() );
 	}
 }

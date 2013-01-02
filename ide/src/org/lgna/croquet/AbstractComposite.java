@@ -255,6 +255,29 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
+	private static final class InternalRefreshableListSelectionState<T> extends RefreshableDataListSelectionState<T> {
+		private final Key key;
+
+		private InternalRefreshableListSelectionState( org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "4d7ef91c-a8ae-4b17-9d8a-91ffac4ba12e" ), data, selectionIndex );
+			this.key = key;
+		}
+
+		public Key getKey() {
+			return this.key;
+		}
+
+		@Override
+		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
+		}
+	}
+
 	private static final class InternalTabSelectionState<T extends SimpleTabComposite<?>> extends SimpleTabSelectionState<T> {
 		private final Key key;
 
@@ -603,6 +626,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	private java.util.Map<Key, InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalDefaultListSelectionState> mapKeyToListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key, InternalRefreshableListSelectionState> mapKeyToRefreshableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalTabSelectionState> mapKeyToTabSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -653,7 +677,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
 			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
 		}
-		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToItemState, this.mapKeyToListSelectionState, this.mapKeyToTabSelectionState, this.mapKeyToStringState );
+		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToItemState, this.mapKeyToListSelectionState, this.mapKeyToRefreshableListSelectionState, this.mapKeyToTabSelectionState, this.mapKeyToStringState );
 	}
 
 	public boolean contains( Model model ) {
@@ -671,6 +695,12 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 		for( Key key : this.mapKeyToListSelectionState.keySet() ) {
 			InternalDefaultListSelectionState state = this.mapKeyToListSelectionState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToRefreshableListSelectionState.keySet() ) {
+			InternalRefreshableListSelectionState state = this.mapKeyToRefreshableListSelectionState.get( key );
 			if( model == state ) {
 				return true;
 			}
@@ -784,6 +814,12 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		T[] constants = valueCls.getEnumConstants();
 		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
 		return createListSelectionState( key, valueCls, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), selectionIndex, constants );
+	}
+
+	protected <T> RefreshableDataListSelectionState<T> createListSelectionState( Key key, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
+		InternalRefreshableListSelectionState<T> rv = new InternalRefreshableListSelectionState<T>( data, selectionIndex, key );
+		this.mapKeyToRefreshableListSelectionState.put( key, rv );
+		return rv;
 	}
 
 	protected <C extends SimpleTabComposite<?>> TabSelectionState<C> createTabSelectionState( Key key, Class<C> cls, int selectionIndex, C... tabComposites ) {

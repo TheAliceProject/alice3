@@ -41,19 +41,40 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.projecturi.views;
+package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class DirectoryListContentPanel extends RefreshableListContentPanel<org.alice.ide.projecturi.DirectoryUriSelectionState> {
-	public DirectoryListContentPanel( org.alice.ide.projecturi.ContentTab composite, org.alice.ide.projecturi.DirectoryUriSelectionState state ) {
-		super( composite, state );
+public final class DirectoryUriListData extends org.lgna.croquet.data.RefreshableListData<java.net.URI> {
+	private final java.io.File directory;
+
+	public DirectoryUriListData( final java.io.File directory ) {
+		super( org.alice.ide.croquet.codecs.UriCodec.SINGLETON );
+		this.directory = directory;
 	}
 
 	@Override
-	protected String getTextForZeroProjects() {
-		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.getState().getDirectory() );
-		return "there are no projects in " + path;
+	protected java.util.List<java.net.URI> createValues() {
+		if( directory != null ) {
+			java.net.URI[] uris;
+			java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( directory );
+			final int N = files.length;
+			uris = new java.net.URI[ N ];
+			for( int i = 0; i < N; i++ ) {
+				if( files[ i ] != null ) {
+					uris[ i ] = files[ i ].toURI();
+				} else {
+					uris[ i ] = null;
+				}
+			}
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( uris );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
+	public java.io.File getDirectory() {
+		return this.directory;
 	}
 }

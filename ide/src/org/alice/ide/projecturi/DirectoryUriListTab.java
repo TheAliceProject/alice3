@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DirectoryUriSelectionState extends org.lgna.croquet.RefreshableDataListSelectionState<java.net.URI> {
+public abstract class DirectoryUriListTab extends RefreshableListUriTab {
 	private final java.io.File directory;
 
-	public DirectoryUriSelectionState( java.util.UUID migrationId, final java.io.File directory ) {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, migrationId, new org.lgna.croquet.data.RefreshableListData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
-			@Override
-			protected java.util.List<java.net.URI> createValues() {
-				if( directory != null ) {
-					java.net.URI[] uris;
-					java.io.File[] files = org.lgna.project.io.IoUtilities.listProjectFiles( directory );
-					final int N = files.length;
-					uris = new java.net.URI[ N ];
-					for( int i = 0; i < N; i++ ) {
-						if( files[ i ] != null ) {
-							uris[ i ] = files[ i ].toURI();
-						} else {
-							uris[ i ] = null;
-						}
-					}
-					return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( uris );
-				} else {
-					return java.util.Collections.emptyList();
-				}
-			}
-		}, -1 );
+	public DirectoryUriListTab( java.util.UUID migrationId, java.io.File directory ) {
+		super( migrationId, new DirectoryUriListData( directory ) );
 		this.directory = directory;
 	}
 
-	public java.io.File getDirectory() {
-		return this.directory;
+	@Override
+	public final String getTextForZeroProjects() {
+		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.directory );
+		return "there are no projects in " + path;
 	}
 }

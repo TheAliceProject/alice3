@@ -45,20 +45,21 @@ package org.alice.ide.projecturi.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RefreshableListContentPanel<M extends org.lgna.croquet.RefreshableDataListSelectionState<java.net.URI>> extends ListContentPanel<M> {
+public final class RefreshableListContentPanel extends ListContentPanel {
 	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			RefreshableListContentPanel.this.refreshState();
+			RefreshableListContentPanel.this.handleRefresh();
 		}
 	};
 
-	private void refreshState() {
-		this.getState().getData().refresh();
+	private void handleRefresh() {
+		org.alice.ide.projecturi.RefreshableListUriTab composite = (org.alice.ide.projecturi.RefreshableListUriTab)this.getComposite();
+		composite.refresh();
 		this.revalidateAndRepaint();
 	}
 
-	public RefreshableListContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite, M state ) {
-		super( composite, state );
+	public RefreshableListContentPanel( org.alice.ide.projecturi.RefreshableListUriTab composite ) {
+		super( composite );
 		this.getList().registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
 	}
 }

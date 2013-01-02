@@ -46,13 +46,23 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class TemplatesTab extends ContentTab {
+public class TemplatesTab extends ListUriTab {
 	public TemplatesTab() {
 		super( java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ) );
 	}
 
 	@Override
 	protected void refresh() {
+	}
+
+	@Override
+	public org.lgna.croquet.ListSelectionState<java.net.URI> getListSelectionState() {
+		return org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getInstance();
+	}
+
+	@Override
+	public final String getTextForZeroProjects() {
+		return "there are no template projects.";
 	}
 
 	@Override

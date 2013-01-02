@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,22 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.projecturi;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MyProjectsUriSelectionState extends DirectoryUriSelectionState {
-	private static class SingletonHolder {
-		private static MyProjectsUriSelectionState instance = new MyProjectsUriSelectionState();
+public abstract class ListUriTab extends ContentTab {
+	public ListUriTab( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
-	public static MyProjectsUriSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
+	public abstract org.lgna.croquet.ListSelectionState<java.net.URI> getListSelectionState();
 
-	private MyProjectsUriSelectionState() {
-		super( java.util.UUID.fromString( "6390ecee-7d11-4881-8eca-7db9baf1c19c" ), org.alice.ide.IDE.getActiveInstance().getMyProjectsDirectory() );
+	public abstract String getTextForZeroProjects();
+
+	@Override
+	public java.net.URI getSelectedUri() {
+		return this.getListSelectionState().getValue();
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.ide.projecturi;
 
-package org.alice.ide.projecturi.views;
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class RefreshableListUriTab extends ListUriTab {
+	private final org.lgna.croquet.RefreshableDataListSelectionState<java.net.URI> listState;
 
-public class RecentPane extends RefreshableListContentPanel<org.alice.ide.projecturi.RecentProjectsUriSelectionState> {
-	public RecentPane( org.alice.ide.projecturi.RecentProjectsTab composite ) {
-		super( composite, org.alice.ide.projecturi.RecentProjectsUriSelectionState.getInstance() );
+	public RefreshableListUriTab( java.util.UUID migrationId, org.lgna.croquet.data.RefreshableListData<java.net.URI> data ) {
+		super( migrationId );
+		this.listState = this.createListSelectionState( this.createKey( "listState" ), data, -1 );
 	}
 
 	@Override
-	protected String getTextForZeroProjects() {
-		return "there are no recent projects";
+	public final void refresh() {
+		this.listState.getData().refresh();
+	}
+
+	@Override
+	public org.lgna.croquet.ListSelectionState<java.net.URI> getListSelectionState() {
+		return this.listState;
+	}
+
+	@Override
+	protected final org.alice.ide.projecturi.views.RefreshableListContentPanel createView() {
+		return new org.alice.ide.projecturi.views.RefreshableListContentPanel( this );
 	}
 }
