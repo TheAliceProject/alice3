@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.ast.declaration.views;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddBillboardManagedFieldView extends org.alice.ide.ast.declaration.views.AddManagedFieldView {
-	private static class SidePanel extends org.lgna.croquet.components.MigPanel {
-		public SidePanel( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
-			this.addComponent( composite.getPaintState().getSidekickLabel().createLabel() );
-			this.addComponent( composite.getBackPaintState().getSidekickLabel().createLabel(), "wrap" );
-			this.addComponent( new PaintView( composite.getPaintState() ) );
-			this.addComponent( new PaintView( composite.getBackPaintState() ) );
-		}
+public abstract class AbstractLabel extends JComponent<javax.swing.JLabel> {
+	public String getText() {
+		return this.getAwtComponent().getText();
 	}
 
-	private final SidePanel sidePanel;
-
-	public AddBillboardManagedFieldView( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
-		super( composite );
-		this.sidePanel = new SidePanel( composite );
+	public void setText( String text ) {
+		this.getAwtComponent().setText( text );
 	}
 
-	@Override
-	protected org.lgna.croquet.components.JComponent<?> getSideView() {
-		return this.sidePanel;
+	public javax.swing.Icon getIcon() {
+		return this.getAwtComponent().getIcon();
+	}
+
+	public void setIcon( javax.swing.Icon icon ) {
+		this.getAwtComponent().setIcon( icon );
+	}
+
+	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
+		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
+	}
+
+	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
+		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
+	}
+
+	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
+		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
+	}
+
+	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
+		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
 	}
 }

@@ -49,14 +49,9 @@ package org.alice.ide.projecturi.views;
 public class FileSystemPane extends TabContentPanel {
 	public FileSystemPane( org.alice.ide.projecturi.FileSystemTab composite ) {
 		super( composite );
-		//org.lgna.croquet.components.ImmutableTextArea sidekickLabel = composite.getPathState().getSidekickLabel().createImmutableTextArea();
-
-		//todo
-		org.lgna.croquet.components.Label sidekickLabel = new org.lgna.croquet.components.Label( composite.getPathState().getSidekickLabel().getText() );
-
 		org.lgna.croquet.components.BorderPanel pane = new org.lgna.croquet.components.BorderPanel.Builder()
 				.hgap( 4 )
-				.lineStart( sidekickLabel )
+				.lineStart( composite.getPathState().getSidekickLabel().createLabel() )
 				.center( composite.getPathState().createTextField() )
 				.lineEnd( composite.getBrowseOperation().createButton() )
 				.build();

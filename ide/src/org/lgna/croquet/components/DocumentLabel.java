@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.ast.declaration.views;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AddBillboardManagedFieldView extends org.alice.ide.ast.declaration.views.AddManagedFieldView {
-	private static class SidePanel extends org.lgna.croquet.components.MigPanel {
-		public SidePanel( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
-			this.addComponent( composite.getPaintState().getSidekickLabel().createLabel() );
-			this.addComponent( composite.getBackPaintState().getSidekickLabel().createLabel(), "wrap" );
-			this.addComponent( new PaintView( composite.getPaintState() ) );
-			this.addComponent( new PaintView( composite.getBackPaintState() ) );
+public class DocumentLabel extends AbstractLabel {
+	private final javax.swing.text.Document document;
+
+	private static String getText( javax.swing.text.Document document ) {
+		try {
+			return document.getText( 0, document.getLength() );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
 		}
 	}
 
-	private final SidePanel sidePanel;
-
-	public AddBillboardManagedFieldView( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
-		super( composite );
-		this.sidePanel = new SidePanel( composite );
+	public DocumentLabel( javax.swing.text.Document document, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this.document = document;
+		this.scaleFont( fontScalar );
+		this.changeFont( textAttributes );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> getSideView() {
-		return this.sidePanel;
+	protected javax.swing.JLabel createAwtComponent() {
+		return new javax.swing.JLabel( DocumentLabel.getText( document ) ) {
+			@Override
+			public String getText() {
+				return DocumentLabel.getText( document );
+			}
+		};
 	}
 }

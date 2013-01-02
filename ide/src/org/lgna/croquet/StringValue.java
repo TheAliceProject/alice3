@@ -77,4 +77,12 @@ public abstract class StringValue extends AbstractElement {
 			throw new RuntimeException( text, ble );
 		}
 	}
+
+	public org.lgna.croquet.components.AbstractLabel createLabel( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return new org.lgna.croquet.components.DocumentLabel( this.document, fontScalar, textAttributes );
+	}
+
+	public org.lgna.croquet.components.AbstractLabel createLabel( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return this.createLabel( 1.0f, textAttributes );
+	}
 }
