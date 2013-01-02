@@ -50,7 +50,7 @@ public class UserFunctionStatusView extends org.lgna.croquet.components.BorderPa
 		super( composite, 8, 0 );
 		javax.swing.Icon errorIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.getErrorIcon();
 		this.addLineStartComponent( new org.lgna.croquet.components.Label( errorIcon ) );
-		this.addCenterComponent( composite.getMetaStringValue().createImmutableTextField() );
+		this.addCenterComponent( composite.getMetaStringValue().createLabel() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 8, 0 ) );
 	}
 }

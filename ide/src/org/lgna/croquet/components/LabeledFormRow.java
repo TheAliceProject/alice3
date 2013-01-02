@@ -85,7 +85,7 @@ public class LabeledFormRow implements FormRow {
 
 	private org.lgna.croquet.components.JComponent<?> createImmutableTextField() {
 		if( this.labelStringValue != null ) {
-			org.lgna.croquet.components.ImmutableTextField textField = this.labelStringValue.createImmutableTextField();
+			org.lgna.croquet.components.AbstractLabel textField = this.labelStringValue.createLabel();
 			textField.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
 			if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.CENTER ) {
 				return textField;
