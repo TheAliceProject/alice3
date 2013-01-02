@@ -46,7 +46,7 @@ package org.alice.ide.projecturi.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel extends TabContentPanel {
+public class ListContentPanel extends TabContentPanel {
 	private final org.lgna.croquet.components.List<java.net.URI> list;
 
 	public ListContentPanel( org.alice.ide.projecturi.ListUriTab tab ) {

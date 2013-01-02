@@ -81,11 +81,15 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 		ContentTab tab = this.tabState.getValue();
 		if( tab != null ) {
 			java.net.URI uri = tab.getSelectedUri();
-			return this.mapUriToUriProjectPair.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriProjectPair>() {
-				public org.alice.ide.projecturi.UriProjectPair initialize( java.net.URI key ) {
-					return new UriProjectPair( key );
-				}
-			} );
+			if( uri != null ) {
+				return this.mapUriToUriProjectPair.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriProjectPair>() {
+					public org.alice.ide.projecturi.UriProjectPair initialize( java.net.URI key ) {
+						return new UriProjectPair( key );
+					}
+				} );
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
