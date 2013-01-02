@@ -93,6 +93,16 @@ public class IconFactoryManager {
 					return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
 				}
 			}
+			if( modelResourceName != null ) {
+				//pass
+			} else {
+				if( modelResourceCls.isEnum() ) {
+					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
+					if( constants.length > 1 ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo", modelResourceCls );
+					}
+				}
+			}
 			java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
 			if( url != null ) {
 				org.lgna.croquet.icon.IconFactory iconFactory = new org.lgna.croquet.icon.ImageIconFactory( url );
