@@ -148,10 +148,29 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 		}
 	}
 
+	private final org.lgna.croquet.MetaState.MetaStateValueListener<java.net.URI> metaUriListener = new org.lgna.croquet.MetaState.MetaStateValueListener<java.net.URI>() {
+		public void metaStateValueChanged( java.net.URI prevValue, java.net.URI nextValue ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "MetaStateValueListener", nextValue );
+		}
+	};
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		this.refresh();
 		this.mapUriToUriProjectPair.clear();
+		if( this.sideSubComposite != null ) {
+			this.metaState.activate( completionStep );
+			this.metaState.addMetaStateValueListener( this.metaUriListener );
+		}
 		super.handlePreShowDialog( completionStep );
+	}
+
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		if( this.sideSubComposite != null ) {
+			this.metaState.removeMetaStateValueListener( this.metaUriListener );
+		}
+		this.metaState.deactivate( completionStep );
+		super.handlePostHideDialog( completionStep );
 	}
 }
