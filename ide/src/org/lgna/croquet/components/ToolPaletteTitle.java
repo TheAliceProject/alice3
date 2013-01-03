@@ -113,12 +113,13 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 	private static class JToolPaletteTitle extends javax.swing.JToggleButton {
 		private boolean isRoundedOnTop = false;
+		private boolean isPartOfAccordion = false;
 		private RenderingStyle renderingStyle = RenderingStyle.SHADE_AGGRESSIVELY;
 		private boolean isInert = false;
 
 		@Override
 		public boolean contains( int x, int y ) {
-			if( this.isInert ) {
+			if( this.isInert || ( this.isPartOfAccordion && this.isSelected() ) ) {
 				return false;
 			} else {
 				return super.contains( x, y );
@@ -132,6 +133,17 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		public void setRoundedOnTop( boolean isRoundedOnTop ) {
 			if( this.isRoundedOnTop != isRoundedOnTop ) {
 				this.isRoundedOnTop = isRoundedOnTop;
+				this.repaint();
+			}
+		}
+
+		public boolean isPartOfAccordion() {
+			return this.isPartOfAccordion;
+		}
+
+		public void setPartOfAccordion( boolean isPartOfAccordion ) {
+			if( this.isPartOfAccordion != isPartOfAccordion ) {
+				this.isPartOfAccordion = isPartOfAccordion;
 				this.repaint();
 			}
 		}
@@ -245,6 +257,14 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 	public void setRoundedOnTop( boolean isRoundedOnTop ) {
 		( (JToolPaletteTitle)this.getAwtComponent() ).setRoundedOnTop( isRoundedOnTop );
+	}
+
+	public boolean isPartOfAccordion() {
+		return ( (JToolPaletteTitle)this.getAwtComponent() ).isPartOfAccordion();
+	}
+
+	public void setPartOfAccordion( boolean isPartOfAccordion ) {
+		( (JToolPaletteTitle)this.getAwtComponent() ).setPartOfAccordion( isPartOfAccordion );
 	}
 
 	public RenderingStyle getRenderingStyle() {
