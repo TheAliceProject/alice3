@@ -99,7 +99,12 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, T[] values ) {
+		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.CustomItemState<T>> rtRoot ) {
+			//todo: investigate
+			org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
+			org.lgna.croquet.history.CompletionStep<CustomItemState<T>> completionStep = this.createCompletionStep( transaction, trigger );
+			org.lgna.croquet.history.TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
+			T[] values = rtRoot.createValues( subTransactionHistory, this.getComponentType() );
 			return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
 		}
 	}

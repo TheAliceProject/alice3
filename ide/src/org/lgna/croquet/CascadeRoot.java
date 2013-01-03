@@ -232,7 +232,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 	public abstract void epilogue();
 
-	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, T[] values );
+	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, CM> rtRoot );
 
 	public final void handleCancel( org.lgna.croquet.history.CompletionStep<CM> completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		try {
