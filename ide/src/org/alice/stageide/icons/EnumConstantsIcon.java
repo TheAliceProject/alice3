@@ -46,21 +46,42 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class EnumConstantsIcon extends org.lgna.croquet.icon.AbstractIcon {
+	private static final int OFFSET = 8;
 	private final javax.swing.Icon[] icons;
 
-	public EnumConstantsIcon( java.awt.Dimension size, org.lgna.croquet.icon.IconFactory[] iconFactories ) {
+	public EnumConstantsIcon( java.awt.Dimension size, java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
 		super( size );
-		this.icons = new javax.swing.Icon[] { iconFactories[ 0 ].getIcon( size ), iconFactories[ 1 ].getIcon( size ) };
+		final int N = iconFactories.size();
+		this.icons = new javax.swing.Icon[ N ];
+		int totalOffset = OFFSET * this.icons.length;
+		int subWidth = Math.max( size.width - totalOffset, size.width / 2 );
+		int subHeight = Math.max( size.height - totalOffset, size.height / 2 );
+		java.awt.Dimension subSize = new java.awt.Dimension( subWidth, subHeight );
+		for( int i = 0; i < N; i++ ) {
+			this.icons[ N - i - 1 ] = iconFactories.get( i ).getIcon( subSize );
+		}
 	}
 
 	@Override
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
-		int x = 0;
+		int totalOffset = OFFSET * this.icons.length;
+		int x = totalOffset;
 		int y = 0;
+
+		java.awt.Composite prevComposite = g2.getComposite();
 		for( javax.swing.Icon icon : this.icons ) {
 			icon.paintIcon( c, g2, x, y );
-			x += 4;
-			y += 4;
+			x -= OFFSET;
+			y += OFFSET;
+			if( x > 0 ) {
+				g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 0.4f ) );
+				try {
+					g2.setPaint( c.getBackground() );
+					g2.fillRect( 0, 0, this.getIconWidth(), this.getIconHeight() );
+				} finally {
+					g2.setComposite( prevComposite );
+				}
+			}
 		}
 	}
 }

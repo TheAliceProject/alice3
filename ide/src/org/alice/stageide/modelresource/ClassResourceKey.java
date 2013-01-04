@@ -62,7 +62,15 @@ public final class ClassResourceKey extends ResourceKey {
 
 	@Override
 	public String getDisplayText() {
-		return cls.getSimpleName().replace( "Resource", "" );
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.cls.getSimpleName().replace( "Resource", "" ) );
+		org.lgna.story.resources.ModelResource[] constants = this.cls.getEnumConstants();
+		if( ( constants != null ) && ( constants.length > 1 ) ) {
+			sb.append( " (" );
+			sb.append( constants.length );
+			sb.append( ")" );
+		}
+		return sb.toString();
 	}
 
 	@Override

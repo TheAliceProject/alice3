@@ -100,6 +100,17 @@ public class IconFactoryManager {
 					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
 					if( constants.length > 1 ) {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo", modelResourceCls );
+						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( constants.length );
+						int i = 0;
+						int N = 4;
+						for( org.lgna.story.resources.ModelResource constant : constants ) {
+							iconFactories.add( getIconFactoryForResourceInstance( constant ) );
+							i += 1;
+							if( i == N ) {
+								break;
+							}
+						}
+						return new EnumConstantsIconFactory( iconFactories );
 					}
 				}
 			}

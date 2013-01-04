@@ -46,9 +46,9 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
-	private final org.lgna.croquet.icon.IconFactory[] imageIconFactories;
+	private final java.util.List<org.lgna.croquet.icon.IconFactory> imageIconFactories;
 
-	public EnumConstantsIconFactory( org.lgna.croquet.icon.IconFactory[] imageIconFactories ) {
+	public EnumConstantsIconFactory( java.util.List<org.lgna.croquet.icon.IconFactory> imageIconFactories ) {
 		this.imageIconFactories = imageIconFactories;
 	}
 
@@ -58,6 +58,6 @@ public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconF
 	}
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return this.imageIconFactories[ 0 ].getDefaultSize( sizeIfResolutionIndependent );
+		return this.imageIconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
 	}
 }
