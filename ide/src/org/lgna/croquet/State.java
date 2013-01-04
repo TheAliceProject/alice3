@@ -171,24 +171,24 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		return edit;
 	}
 
-	@Override
-	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.edits.Edit<?> rv = super.commitTutorialCompletionEdit( step, originalEdit, retargeter, trigger );
-		org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)rv;
-		this.changeValueTransactionlessly( stateEdit.getNextValue(), IsAdjusting.FALSE );
-		return rv;
-	}
-
 	//	@Override
-	//	public final org.lgna.croquet.edits.StateEdit<T> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
-	//		assert originalEdit instanceof org.lgna.croquet.edits.StateEdit;
-	//		org.lgna.croquet.edits.StateEdit<T> originalStateEdit = (org.lgna.croquet.edits.StateEdit<T>)originalEdit;
-	//		T prevRetargetValue = retargeter.retarget( originalStateEdit.getPreviousValue() );
-	//		T nextRetargetValue = retargeter.retarget( originalStateEdit.getNextValue() );
-	//		org.lgna.croquet.edits.StateEdit<T> stateEdit = this.commitStateEdit( prevRetargetValue, nextRetargetValue, IsAdjusting.FALSE, trigger );
-	//		this.changeValueTransactionlessly( nextRetargetValue, IsAdjusting.FALSE );
-	//		return stateEdit;
+	//	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
+	//		org.lgna.croquet.edits.Edit<?> rv = super.commitTutorialCompletionEdit( step, originalEdit, retargeter, trigger );
+	//		org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)rv;
+	//		this.changeValueTransactionlessly( stateEdit.getNextValue(), IsAdjusting.FALSE );
+	//		return rv;
 	//	}
+
+	@Override
+	public final org.lgna.croquet.edits.StateEdit<T> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
+		assert originalEdit instanceof org.lgna.croquet.edits.StateEdit;
+		org.lgna.croquet.edits.StateEdit<T> originalStateEdit = (org.lgna.croquet.edits.StateEdit<T>)originalEdit;
+		T prevRetargetValue = retargeter.retarget( originalStateEdit.getPreviousValue() );
+		T nextRetargetValue = retargeter.retarget( originalStateEdit.getNextValue() );
+		org.lgna.croquet.edits.StateEdit<T> stateEdit = this.commitStateEdit( prevRetargetValue, nextRetargetValue, IsAdjusting.FALSE, trigger );
+		this.changeValueTransactionlessly( nextRetargetValue, IsAdjusting.FALSE );
+		return stateEdit;
+	}
 
 	@Override
 	protected final StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
