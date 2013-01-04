@@ -53,7 +53,7 @@ public class EnumConstantsIcon extends org.lgna.croquet.icon.AbstractIcon {
 		super( size );
 		final int N = iconFactories.size();
 		this.icons = new javax.swing.Icon[ N ];
-		int totalOffset = OFFSET * this.icons.length;
+		int totalOffset = OFFSET * ( N - 1 );
 		int subWidth = Math.max( size.width - totalOffset, size.width / 2 );
 		int subHeight = Math.max( size.height - totalOffset, size.height / 2 );
 		java.awt.Dimension subSize = new java.awt.Dimension( subWidth, subHeight );
@@ -64,23 +64,26 @@ public class EnumConstantsIcon extends org.lgna.croquet.icon.AbstractIcon {
 
 	@Override
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
-		int totalOffset = OFFSET * this.icons.length;
+		int totalOffset = OFFSET * ( this.icons.length - 1 );
 		int x = totalOffset;
 		int y = 0;
 
+		float alphaDelta = 0.15f;
+		float alpha = 0.75f - ( ( this.icons.length - 1 ) * alphaDelta );
 		java.awt.Composite prevComposite = g2.getComposite();
 		for( javax.swing.Icon icon : this.icons ) {
-			icon.paintIcon( c, g2, x, y );
-			x -= OFFSET;
-			y += OFFSET;
-			if( x > 0 ) {
-				g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 0.4f ) );
-				try {
-					g2.setPaint( c.getBackground() );
-					g2.fillRect( 0, 0, this.getIconWidth(), this.getIconHeight() );
-				} finally {
-					g2.setComposite( prevComposite );
+			try {
+				if( x > 0 ) {
+					g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, alpha ) );
+					//					g2.setPaint( c.getBackground() );
+					//					g2.fillRect( x, y, icon.getIconWidth(), icon.getIconHeight() );
 				}
+				icon.paintIcon( c, g2, x, y );
+				x -= OFFSET;
+				y += OFFSET;
+				alpha += alphaDelta;
+			} finally {
+				g2.setComposite( prevComposite );
 			}
 		}
 	}
