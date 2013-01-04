@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,73 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractButton<J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model> extends ViewController<J, M> {
-	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
-
-	private boolean isIconClobbered;
-	private javax.swing.Icon clobberIcon;
-
-	public AbstractButton( M model ) {
-		super( model );
+public class HtmlMultiLineLabel extends MultiLineLabel<javax.swing.JEditorPane> {
+	public HtmlMultiLineLabel( String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		super( new javax.swing.text.html.HTMLDocument(), text, fontScalar, textAttributes );
 	}
 
-	public boolean isIconClobbered() {
-		return this.isIconClobbered;
+	public HtmlMultiLineLabel( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this( text, 1.0f, textAttributes );
 	}
 
-	public void setIconClobbered( boolean isIconClobbered ) {
-		this.isIconClobbered = isIconClobbered;
+	public HtmlMultiLineLabel( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this( "", textAttributes );
 	}
 
-	public javax.swing.Icon getClobberIcon() {
-		return this.clobberIcon;
-	}
+	@Override
+	protected javax.swing.JEditorPane createJTextComponent( javax.swing.text.AbstractDocument document ) {
+		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", "" ) {
+			@Override
+			public java.awt.Color getBackground() {
+				return getDesiredBackgroundColor( this.getParent() );
+			}
 
-	public void setClobberIcon( javax.swing.Icon clobberIcon ) {
-		this.clobberIcon = clobberIcon;
-		this.isIconClobbered = true;
-	}
-
-	/* package-private */void setSwingButtonModel( javax.swing.ButtonModel model ) {
-		if( model != null ) {
-			//pass
-		} else {
-			model = MODEL_FOR_NULL;
-		}
-		if( model != this.getAwtComponent().getModel() ) {
-			this.getAwtComponent().setModel( model );
-		}
-	}
-
-	/* package-private */void setAction( javax.swing.Action action ) {
-		if( action != this.getAwtComponent().getAction() ) {
-			this.getAwtComponent().setAction( action );
-		}
-	}
-
-	public void doClick() {
-		this.getAwtComponent().doClick();
-	}
-
-	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
-		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
-	}
-
-	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
-		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
-	}
-
-	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
-		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
-	}
-
-	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
-		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
+			@Override
+			public void updateUI() {
+				this.setUI( new javax.swing.plaf.basic.BasicEditorPaneUI() );
+			}
+		};
+		rv.setDocument( document );
+		return rv;
 	}
 }

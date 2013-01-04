@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,73 +40,64 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractButton<J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model> extends ViewController<J, M> {
-	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
-
-	private boolean isIconClobbered;
-	private javax.swing.Icon clobberIcon;
-
-	public AbstractButton( M model ) {
-		super( model );
-	}
-
-	public boolean isIconClobbered() {
-		return this.isIconClobbered;
-	}
-
-	public void setIconClobbered( boolean isIconClobbered ) {
-		this.isIconClobbered = isIconClobbered;
-	}
-
-	public javax.swing.Icon getClobberIcon() {
-		return this.clobberIcon;
-	}
-
-	public void setClobberIcon( javax.swing.Icon clobberIcon ) {
-		this.clobberIcon = clobberIcon;
-		this.isIconClobbered = true;
-	}
-
-	/* package-private */void setSwingButtonModel( javax.swing.ButtonModel model ) {
-		if( model != null ) {
-			//pass
+public abstract class MultiLineLabel<J extends javax.swing.text.JTextComponent> extends JComponent<J> {
+	protected static java.awt.Color getDesiredBackgroundColor( java.awt.Container awtParent ) {
+		if( awtParent != null ) {
+			if( awtParent.isOpaque() ) {
+				return awtParent.getBackground();
+			} else {
+				return getDesiredBackgroundColor( awtParent.getParent() );
+			}
 		} else {
-			model = MODEL_FOR_NULL;
-		}
-		if( model != this.getAwtComponent().getModel() ) {
-			this.getAwtComponent().setModel( model );
+			return java.awt.Color.RED;
 		}
 	}
 
-	/* package-private */void setAction( javax.swing.Action action ) {
-		if( action != this.getAwtComponent().getAction() ) {
-			this.getAwtComponent().setAction( action );
+	private final javax.swing.text.AbstractDocument document;
+
+	public MultiLineLabel( javax.swing.text.AbstractDocument document, String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		this.document = document;
+		this.setText( text );
+		this.scaleFont( fontScalar );
+		this.changeFont( textAttributes );
+	}
+
+	public String getText() {
+		try {
+			return this.document.getText( 0, this.document.getLength() );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( ble );
 		}
 	}
 
-	public void doClick() {
-		this.getAwtComponent().doClick();
+	public final void setText( String text ) {
+		try {
+			this.document.replace( 0, this.document.getLength(), text, null );
+		} catch( javax.swing.text.BadLocationException ble ) {
+			throw new RuntimeException( text, ble );
+		}
 	}
 
-	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
-		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
+	protected abstract J createJTextComponent( javax.swing.text.AbstractDocument document );
+
+	@Override
+	protected final J createAwtComponent() {
+		J component = this.createJTextComponent( this.document );
+		//component.setOpaque( false );
+		component.setEditable( false );
+		component.setCursor( null );
+		component.setFocusable( false );
+		component.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		component.setFont( javax.swing.UIManager.getFont( "Label.font" ) );
+		component.setAlignmentX( 0.0f );
+		String disabledColorKey = "CheckBox.disabledText"; // why does "Label.disabledForeground" not work?
+		component.setDisabledTextColor( javax.swing.UIManager.getColor( disabledColorKey ) );
+		return component;
 	}
 
-	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
-		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
-	}
-
-	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
-		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
-	}
-
-	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
-		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
-	}
 }

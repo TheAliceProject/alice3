@@ -280,7 +280,9 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	public final void scaleFont( float scaleFactor ) {
-		this.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( this.getAwtComponent(), scaleFactor ) );
+		if( scaleFactor != 1.0f ) {
+			this.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.scaleFont( this.getAwtComponent(), scaleFactor ) );
+		}
 	}
 
 	public final void setFontSize( float fontSize ) {
