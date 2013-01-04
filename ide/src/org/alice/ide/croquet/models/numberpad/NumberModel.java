@@ -51,9 +51,22 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 
 	private final javax.swing.text.PlainDocument document = new javax.swing.text.PlainDocument();
 	private final javax.swing.JTextField textField = new javax.swing.JTextField();
-	private final javax.swing.event.DocumentListener documentListener = new javax.swing.event.DocumentListener() {
+
+	private static final class NumberDocumentListener implements javax.swing.event.DocumentListener {
+		private int ignoreCount;
+
+		public void pushIgnore() {
+			this.ignoreCount++;
+		}
+
+		public void popIgnore() {
+			this.ignoreCount--;
+		}
+
 		private void update( javax.swing.event.DocumentEvent e ) {
-			org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
+			if( this.ignoreCount == 0 ) {
+				org.lgna.croquet.history.TransactionManager.TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.DocumentEventTrigger.createUserInstance( e ) );
+			}
 		}
 
 		public void changedUpdate( javax.swing.event.DocumentEvent e ) {
@@ -67,7 +80,9 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 		public void removeUpdate( javax.swing.event.DocumentEvent e ) {
 			this.update( e );
 		}
-	};
+	}
+
+	private final NumberDocumentListener documentListener = new NumberDocumentListener();
 
 	public NumberModel( org.lgna.croquet.Group group, java.util.UUID id ) {
 		this.textField.setDocument( this.document );
@@ -79,7 +94,12 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 	}
 
 	private void replaceSelection( String s ) {
-		this.textField.replaceSelection( s );
+		this.documentListener.pushIgnore();
+		try {
+			this.textField.replaceSelection( s );
+		} finally {
+			this.documentListener.popIgnore();
+		}
 	}
 
 	public void replaceSelection( short numeral ) {
@@ -91,47 +111,62 @@ public abstract class NumberModel<N extends org.lgna.project.ast.Expression> /* 
 	}
 
 	public void negate() {
-		final int N = document.getLength();
+		this.documentListener.pushIgnore();
 		try {
-			boolean isNegative;
-			if( N > 0 ) {
-				String s0 = document.getText( 0, 1 );
-				isNegative = s0.charAt( 0 ) == '-';
-			} else {
-				isNegative = false;
+			final int N = document.getLength();
+			try {
+				boolean isNegative;
+				if( N > 0 ) {
+					String s0 = document.getText( 0, 1 );
+					isNegative = s0.charAt( 0 ) == '-';
+				} else {
+					isNegative = false;
+				}
+				if( isNegative ) {
+					document.remove( 0, 1 );
+				} else {
+					document.insertString( 0, "-", null );
+				}
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
 			}
-			if( isNegative ) {
-				document.remove( 0, 1 );
-			} else {
-				document.insertString( 0, "-", null );
-			}
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( ble );
+		} finally {
+			this.documentListener.popIgnore();
 		}
 	}
 
 	public void delete() {
-		javax.swing.text.Caret caret = this.textField.getCaret();
-		int dot = caret.getDot();
-		int mark = caret.getMark();
-		if( dot != mark ) {
-			this.replaceSelection( "" );
-		} else {
-			if( dot > 0 ) {
-				try {
-					document.remove( dot - 1, 1 );
-				} catch( javax.swing.text.BadLocationException ble ) {
-					throw new RuntimeException( ble );
+		this.documentListener.pushIgnore();
+		try {
+			javax.swing.text.Caret caret = this.textField.getCaret();
+			int dot = caret.getDot();
+			int mark = caret.getMark();
+			if( dot != mark ) {
+				this.replaceSelection( "" );
+			} else {
+				if( dot > 0 ) {
+					try {
+						document.remove( dot - 1, 1 );
+					} catch( javax.swing.text.BadLocationException ble ) {
+						throw new RuntimeException( ble );
+					}
 				}
 			}
+		} finally {
+			this.documentListener.popIgnore();
 		}
 	}
 
 	public void setText( String text ) {
+		this.documentListener.pushIgnore();
 		try {
-			this.document.replace( 0, this.document.getLength(), text, null );
-		} catch( javax.swing.text.BadLocationException ble ) {
-			throw new RuntimeException( ble );
+			try {
+				this.document.replace( 0, this.document.getLength(), text, null );
+			} catch( javax.swing.text.BadLocationException ble ) {
+				throw new RuntimeException( ble );
+			}
+		} finally {
+			this.documentListener.popIgnore();
 		}
 	}
 
