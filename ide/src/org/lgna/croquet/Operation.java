@@ -109,24 +109,13 @@ public abstract class Operation extends AbstractCompletionModel {
 		return rv;
 	}
 
-	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		return null;
-	}
-
 	@Override
-	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.croquet.edits.Edit<?> replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
-		//		if( replacementEdit != null ) {
-		//			final S step = this.createAndPushStep( null, null );
-		//			try {
-		//				step.commitAndInvokeDo( replacementEdit );
-		//			} finally {
-		//				ModelContext< ? > popContext = ContextManager.popContext();
-		//				assert popContext == step : popContext.getClass() + " " + step.getClass();
-		//			}
-		//		} else {
-		//			System.err.println( "createTutorialCompletionEdit returned null" );
-		//		}
+	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.edits.Edit<?> replacementEdit = org.lgna.croquet.edits.Edit.createCopy( originalEdit );
+		replacementEdit.retarget( retargeter );
+		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
+		completionStep.commitAndInvokeDo( replacementEdit );
 		return replacementEdit;
 	}
 

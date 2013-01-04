@@ -142,7 +142,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 
 	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit );
 
-	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( originalEdit );
 		return null;
 	}

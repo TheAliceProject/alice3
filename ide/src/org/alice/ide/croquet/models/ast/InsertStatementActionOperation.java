@@ -80,11 +80,6 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		}
 	}
 
-	@Override
-	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		return originalEdit;
-	}
-
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
 		org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation> replacementEdit = (org.alice.ide.croquet.edits.DependentEdit<InsertStatementActionOperation>)edit;
 		InsertStatementActionOperation replacement = replacementEdit.getModel();
