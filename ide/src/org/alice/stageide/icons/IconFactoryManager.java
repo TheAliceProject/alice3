@@ -118,7 +118,7 @@ public class IconFactoryManager {
 								break;
 							}
 						}
-						return new EnumConstantsIconFactory( iconFactories );
+						return new EnumConstantsIconFactory( constants.length, iconFactories );
 					}
 				}
 			}

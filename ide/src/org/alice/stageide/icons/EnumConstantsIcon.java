@@ -45,12 +45,12 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantsIcon extends org.lgna.croquet.icon.AbstractIcon {
+public class EnumConstantsIcon extends ContainerIcon {
 	private static final int OFFSET = 8;
 	private final javax.swing.Icon[] icons;
 
-	public EnumConstantsIcon( java.awt.Dimension size, java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
-		super( size );
+	public EnumConstantsIcon( java.awt.Dimension size, int childCount, java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
+		super( size, childCount );
 		final int N = iconFactories.size();
 		this.icons = new javax.swing.Icon[ N ];
 		int totalOffset = OFFSET * ( N - 1 );
@@ -63,13 +63,13 @@ public class EnumConstantsIcon extends org.lgna.croquet.icon.AbstractIcon {
 	}
 
 	@Override
-	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+	protected void paintIconMain( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		int totalOffset = OFFSET * ( this.icons.length - 1 );
 		int x = totalOffset;
 		int y = 0;
 
-		float alphaDelta = 0.15f;
-		float alpha = 0.75f - ( ( this.icons.length - 1 ) * alphaDelta );
+		float alphaDelta = 0.1f;
+		float alpha = 0.5f - ( ( this.icons.length - 1 ) * alphaDelta );
 		java.awt.Composite prevComposite = g2.getComposite();
 		for( javax.swing.Icon icon : this.icons ) {
 			try {

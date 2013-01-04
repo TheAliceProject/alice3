@@ -45,21 +45,26 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
-	private final java.util.List<org.lgna.croquet.icon.IconFactory> imageIconFactories;
+public abstract class ContainerIcon extends org.lgna.croquet.icon.AbstractIcon {
 	private final int childCount;
 
-	public EnumConstantsIconFactory( int childCount, java.util.List<org.lgna.croquet.icon.IconFactory> imageIconFactories ) {
+	public ContainerIcon( java.awt.Dimension size, int childCount ) {
+		super( size );
 		this.childCount = childCount;
-		this.imageIconFactories = imageIconFactories;
 	}
+
+	protected abstract void paintIconMain( java.awt.Component c, java.awt.Graphics2D g2 );
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new EnumConstantsIcon( size, this.childCount, this.imageIconFactories );
+	protected final void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+		this.paintIconMain( c, g2 );
+
+		String s = Integer.toString( this.childCount );
+		java.awt.FontMetrics fm = g2.getFontMetrics();
+		int messageWidth = fm.stringWidth( s );
+		int ascent = fm.getMaxAscent();
+
+		g2.drawString( s, this.getIconWidth() - messageWidth, ascent );
 	}
 
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return this.imageIconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
-	}
 }

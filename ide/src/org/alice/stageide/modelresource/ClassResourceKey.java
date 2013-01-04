@@ -64,11 +64,14 @@ public final class ClassResourceKey extends ResourceKey {
 	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.cls.getSimpleName().replace( "Resource", "" ) );
-		org.lgna.story.resources.ModelResource[] constants = this.cls.getEnumConstants();
-		if( ( constants != null ) && ( constants.length > 1 ) ) {
-			sb.append( " (" );
-			sb.append( constants.length );
-			sb.append( ")" );
+		final boolean IS_COUNT_DESIRED = false;
+		if( IS_COUNT_DESIRED ) {
+			org.lgna.story.resources.ModelResource[] constants = this.cls.getEnumConstants();
+			if( ( constants != null ) && ( constants.length > 1 ) ) {
+				sb.append( " (" );
+				sb.append( constants.length );
+				sb.append( ")" );
+			}
 		}
 		return sb.toString();
 	}
