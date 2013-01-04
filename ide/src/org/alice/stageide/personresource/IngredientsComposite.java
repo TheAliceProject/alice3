@@ -249,7 +249,9 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			this.removeListeners();
 		}
 		//personViewer.setPerson( null );
-		assert activeCount == 0; //todo
+		if( activeCount != 0 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo" );
+		}
 		super.handlePostDeactivation();
 	}
 
