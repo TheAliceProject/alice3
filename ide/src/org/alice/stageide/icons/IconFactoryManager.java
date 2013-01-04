@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.icons;
 
+import java.util.Comparator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -99,11 +101,17 @@ public class IconFactoryManager {
 				if( modelResourceCls.isEnum() ) {
 					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
 					if( constants.length > 1 ) {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo", modelResourceCls );
-						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( constants.length );
-						int i = 0;
 						int MAXIMUM_CONSTANTS_TO_USE = 5;
-						for( org.lgna.story.resources.ModelResource constant : constants ) {
+						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
+
+						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( constants );
+						java.util.Collections.sort( sortedConstants, new Comparator<org.lgna.story.resources.ModelResource>() {
+							public int compare( org.lgna.story.resources.ModelResource o1, org.lgna.story.resources.ModelResource o2 ) {
+								return o1.toString().compareTo( o2.toString() );
+							}
+						} );
+						int i = 0;
+						for( org.lgna.story.resources.ModelResource constant : sortedConstants ) {
 							iconFactories.add( getIconFactoryForResourceInstance( constant ) );
 							i += 1;
 							if( i == MAXIMUM_CONSTANTS_TO_USE ) {
