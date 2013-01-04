@@ -52,17 +52,18 @@ import org.lgna.project.annotations.ValueTemplate;
  */
 public class SGround extends SThing implements MutableRider, Visual {
 	public static enum SurfaceAppearance implements ImagePaint {
-		GRASS("grass"),
-		DARK_GRASS("dark_grass"), 
-		DIRT("dirt"), 
-		SAND("sand"),
-		MARS("mars"),
-		DESERT("desert"),
-		SNOW("snow"),
-		SWAMP("swamp"), 
-		WATER("water"), 
-		OCEAN_FLOOR("underwater"), 
-		MOON("moon");
+		GRASS( "grass" ),
+		DARK_GRASS( "dark_grass" ),
+		DIRT( "dirt" ),
+		SAND( "sand" ),
+		MARS( "mars" ),
+		DESERT( "desert" ),
+		SANDY_DESERT( "sandy_desert" ),
+		SNOW( "snow" ),
+		SWAMP( "swamp" ),
+		WATER( "water" ),
+		OCEAN_FLOOR( "underwater" ),
+		MOON( "moon" );
 		private String resourceName;
 
 		SurfaceAppearance( String resourceName ) {
