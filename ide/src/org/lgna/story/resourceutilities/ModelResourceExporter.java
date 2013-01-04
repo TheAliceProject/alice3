@@ -146,6 +146,9 @@ public class ModelResourceExporter {
 	private boolean forceRebuildCode = false;
 	private boolean forceRebuildXML = false;
 	private Date lastEdited = null;
+	private boolean shouldRecenter = false;
+	private boolean recenterXZ = false;
+	private boolean moveCenterToBottom = true;
 
 	private String attributionName;
 	private String attributionYear;
@@ -201,6 +204,34 @@ public class ModelResourceExporter {
 
 	public void setHasNewData( boolean hasNewData ) {
 		this.hasNewData = hasNewData;
+	}
+
+	public void setShouldRecenter( boolean shouldRecenter ) {
+		this.shouldRecenter = shouldRecenter;
+		if( !this.shouldRecenter ) {
+			this.moveCenterToBottom = false;
+			this.recenterXZ = false;
+		}
+	}
+
+	public boolean shouldRecenter() {
+		return this.shouldRecenter;
+	}
+
+	public void setMoveCenterToBottom( boolean moveCenter ) {
+		this.moveCenterToBottom = moveCenter;
+	}
+
+	public boolean shouldMoveCenterToBottom() {
+		return this.moveCenterToBottom;
+	}
+
+	public void setRecenterXZ( boolean recenterXZ ) {
+		this.recenterXZ = recenterXZ;
+	}
+
+	public boolean shouldRecenterXZ() {
+		return this.recenterXZ;
 	}
 
 	public boolean hasNewData() {

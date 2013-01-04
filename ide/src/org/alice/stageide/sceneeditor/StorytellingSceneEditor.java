@@ -669,9 +669,19 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		{
 			EntityImp entityImp = EntityImp.getInstance( element );
 			SThing entity = entityImp.getAbstraction();
-			UserField field = this.getFieldForInstanceInJavaVM( entity );
-			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
-			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
+			UserField field;
+			if( entity != null ) {
+				field = this.getFieldForInstanceInJavaVM( entity );
+			} else {
+				//todo: handle camera
+				field = null;
+			}
+			if( field != null ) {
+				org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field );
+				org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.InputEventTrigger.createUserInstance( clickInput.getInputEvent() ) );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( entityImp );
+			}
 		}
 	}
 
@@ -740,13 +750,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			org.alice.stageide.perspectives.PerspectiveState perspectiveState = org.alice.stageide.perspectives.PerspectiveState.getInstance();
 			this.expandButton = perspectiveState.getItemSelectionOperation( org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ).createButton();
-			this.expandButton.setIcon( EXPAND_ICON );
+			this.expandButton.setClobberIcon( EXPAND_ICON );
 			//todo: tool tip text
 			//this.expandButton.getAwtComponent().setText( null );
 			this.expandButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 
 			this.contractButton = perspectiveState.getItemSelectionOperation( org.alice.stageide.perspectives.CodePerspective.getInstance() ).createButton();
-			this.contractButton.setIcon( CONTRACT_ICON );
+			this.contractButton.setClobberIcon( CONTRACT_ICON );
 			this.contractButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
 
@@ -1083,6 +1093,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		if( this.onscreenLookingGlass != null ) {
 			this.onscreenLookingGlass.forgetAllCachedItems();
 			edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
+		}
+		org.alice.stageide.personresource.PreviewComposite.getInstance().unloadPerson();
+		if( this.globalDragAdapter != null ) {
+			this.globalDragAdapter.clear();
 		}
 		super.handleProjectOpened( nextProject );
 	}

@@ -43,13 +43,13 @@
 
 package test.render;
 
-class ExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractCaughtExceptionPane {
+class ExceptionPane extends org.alice.ide.issue.swing.views.AbstractCaughtExceptionPane {
 	@Override
 	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
 		return new org.alice.ide.issue.ReportSubmissionConfiguration() {
 			@Override
 			public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane.BUGS_ALICE_ORG_KEY );
+				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
 						public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
@@ -63,7 +63,7 @@ class ExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractCaughtExcep
 
 			@Override
 			public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
-				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane.BUGS_ALICE_ORG_KEY );
+				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( org.alice.ide.issue.swing.views.LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
 						public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
@@ -84,7 +84,7 @@ class ExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractCaughtExcep
 
 	@Override
 	protected String[] getAffectsVersions() {
-		return new String[] { org.lgna.project.Version.getCurrentVersionText() };
+		return new String[] { org.lgna.project.ProjectVersion.getCurrentVersionText() };
 	}
 }
 

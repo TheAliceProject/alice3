@@ -48,22 +48,14 @@ import org.lgna.croquet.Group;
 /**
  * @author Dennis Cosgrove
  */
-public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOperation {
-	private boolean isDoRequired;
-	private edu.cmu.cs.dennisc.animation.Animator animator;
-	private Scalable scalable;
+public class PredeterminedScaleActionOperation extends AbstractFieldBasedManipulationActionOperation {
 	private org.lgna.story.implementation.ModelImp.Resizer resizer;
 	private double redoScale;
 	private double undoScale;
 	private edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion;
 
-	private String editPresentationKey;
-
-	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, Scalable scalable, org.lgna.story.implementation.ModelImp.Resizer resizer, double previousScale, double currentScale, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion, String editPresentationKey ) {
-		super( group, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ) );
-		this.isDoRequired = isDoRequired;
-		this.animator = animator;
-		this.scalable = scalable;
+	public PredeterminedScaleActionOperation( Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField scalableField, org.lgna.story.implementation.ModelImp.Resizer resizer, double previousScale, double currentScale, edu.cmu.cs.dennisc.pattern.Criterion<edu.cmu.cs.dennisc.scenegraph.Component> criterion, String editPresentationKey ) {
+		super( group, java.util.UUID.fromString( "455cae50-c329-44e3-ba7c-9ef10f69d965" ), isDoRequired, animator, scalableField, editPresentationKey );
 		this.resizer = resizer;
 
 		this.redoScale = currentScale;
@@ -73,11 +65,19 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 		assert undoScale != 0.0;
 
 		this.criterion = criterion;
-		this.editPresentationKey = editPresentationKey;
+	}
+
+	private Scalable getScalable() {
+		org.lgna.story.implementation.ModelImp modelImp = (org.lgna.story.implementation.ModelImp)getEntityImp();
+		return modelImp;
+	}
+
+	private org.lgna.story.implementation.ModelImp.Resizer getResizer() {
+		return this.resizer;
 	}
 
 	private void scale( final double startScale, final double endScale ) {
-		if( this.animator != null ) {
+		if( this.getAnimator() != null ) {
 			class ScaleAnimation extends edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation {
 				public ScaleAnimation() {
 					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, startScale, endScale );
@@ -85,15 +85,17 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 
 				@Override
 				protected void updateValue( Double v ) {
+					Scalable scalable = getScalable();
 					if( scalable != null ) {
-						scalable.setValueForResizer( resizer, v );
+						scalable.setValueForResizer( getResizer(), v );
 					}
 				}
 			}
-			this.animator.invokeLater( new ScaleAnimation(), null );
+			this.getAnimator().invokeLater( new ScaleAnimation(), null );
 		} else {
+			Scalable scalable = getScalable();
 			if( scalable != null ) {
-				scalable.setValueForResizer( resizer, endScale );
+				scalable.setValueForResizer( getResizer(), endScale );
 			}
 		}
 
@@ -105,7 +107,7 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 		step.commitAndInvokeDo( new org.alice.ide.ToDoEdit( step ) {
 			@Override
 			protected final void doOrRedoInternal( boolean isDo ) {
-				if( isDo && ( isDoRequired == false ) ) {
+				if( isDo && ( isDoRequired() == false ) ) {
 					//pass
 				} else {
 					scale( undoScale, redoScale );
@@ -118,9 +120,8 @@ public class PredeterminedScaleActionOperation extends org.lgna.croquet.ActionOp
 			}
 
 			@Override
-			protected StringBuilder updatePresentation( StringBuilder rv ) {
-				rv.append( editPresentationKey );
-				return rv;
+			protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
+				rv.append( getEditPresentationKey() );
 			}
 		} );
 	}

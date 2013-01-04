@@ -47,17 +47,29 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class ThisExpression extends Expression {
+	public static ThisExpression createInstanceThatCanExistWithoutAnAncestorType( AbstractType<?, ?, ?> typeForNoAncestorTypeCondition ) {
+		return new ThisExpression( typeForNoAncestorTypeCondition );
+	}
+
+	private final AbstractType<?, ?, ?> typeForNoAncestorTypeCondition;
+
+	public ThisExpression() {
+		this( null );
+	}
+
+	private ThisExpression( AbstractType<?, ?, ?> typeForNoAncestorTypeCondition ) {
+		this.typeForNoAncestorTypeCondition = typeForNoAncestorTypeCondition;
+	}
+
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		AbstractType<?, ?, ?> rv = this.getFirstAncestorAssignableTo( AbstractType.class );
 		if( rv != null ) {
 			//pass
 		} else {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			rv = this.typeForNoAncestorTypeCondition;
 		}
 		return rv;
-		//		//todo
-		//		return TypeDeclaredInJava.OBJECT_TYPE;
 	}
 
 	@Override
@@ -70,5 +82,10 @@ public class ThisExpression extends Expression {
 	public boolean isValid() {
 		//todo
 		return true;
+	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "this" );
 	}
 }

@@ -46,7 +46,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DeclarationComposite<D extends org.lgna.project.ast.AbstractDeclaration, V extends org.alice.ide.declarationseditor.components.DeclarationView> extends org.lgna.croquet.TabComposite<V> {
+public abstract class DeclarationComposite<D extends org.lgna.project.ast.AbstractDeclaration, V extends org.alice.ide.declarationseditor.components.DeclarationView> extends org.lgna.croquet.AbstractTabComposite<V> {
 	@Deprecated
 	public static synchronized DeclarationComposite<?, ?> getInstance( org.lgna.project.ast.AbstractDeclaration declaration ) {
 		if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
@@ -78,7 +78,7 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 
 				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 					String nextName = (String)e.getValue();
-					DeclarationTabState.getInstance().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );
+					org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectedState( DeclarationComposite.this ).setTextForBothTrueAndFalse( nextName );
 				}
 			};
 			nameProperty.addPropertyListener( nameListener );
@@ -86,8 +86,8 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 	}
 
 	@Override
-	public java.util.UUID getTabId() {
-		return this.declaration.getId();
+	protected String findDefaultLocalizedText() {
+		return this.declaration.getName();
 	}
 
 	public D getDeclaration() {
@@ -99,12 +99,7 @@ public abstract class DeclarationComposite<D extends org.lgna.project.ast.Abstra
 	public abstract boolean isValid();
 
 	@Override
-	public String getTitleText() {
-		return this.declaration.getName();
-	}
-
-	@Override
-	public org.lgna.croquet.components.ScrollPane createScrollPane() {
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 

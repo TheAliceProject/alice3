@@ -82,4 +82,46 @@ public class CountLoop extends AbstractLoop {
 		NodeUtilities.safeAppendRepr( rv, this.count.getValue(), locale );
 		return super.appendRepr( rv, locale );
 	}
+
+	@Override
+	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
+		Expression countValue = this.count.getValue();
+		String variableName = this.variable.getValue().getValidName();
+		String constantName = this.constant.getValue().getValidName();
+		boolean isInline;
+		if( countValue instanceof IntegerLiteral ) {
+			isInline = true;
+		} else if( countValue instanceof ParameterAccess ) {
+			isInline = true;
+		} else if( countValue instanceof LocalAccess ) {
+			LocalAccess access = (LocalAccess)countValue;
+			isInline = access.local.getValue().isFinal.getValue();
+		} else if( countValue instanceof FieldAccess ) {
+			FieldAccess access = (FieldAccess)countValue;
+			isInline = access.field.getValue().isFinal();
+		} else if( countValue instanceof ArrayLength ) {
+			//todo?
+			isInline = true;
+		} else {
+			generator.appendString( "final int " );
+			generator.appendString( constantName );
+			generator.appendString( "=" );
+			generator.appendExpression( countValue );
+			generator.appendSemicolon();
+			isInline = false;
+		}
+		generator.appendString( "for( int " );
+		generator.appendString( variableName );
+		generator.appendString( "=0;" );
+		generator.appendString( variableName );
+		generator.appendString( "<" );
+		if( isInline ) {
+			generator.appendExpression( countValue );
+		} else {
+			generator.appendString( constantName );
+		}
+		generator.appendString( ";" );
+		generator.appendString( variableName );
+		generator.appendString( "++ )" );
+	}
 }

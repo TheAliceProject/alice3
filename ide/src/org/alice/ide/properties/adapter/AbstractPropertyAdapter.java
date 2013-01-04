@@ -62,15 +62,6 @@ public abstract class AbstractPropertyAdapter<P, O>
 	private boolean isExpressionSet = false;
 	protected StandardExpressionState expressionState;
 
-	private org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> valueObserver = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
-			AbstractPropertyAdapter.this.onExpressionStateUpdate();
-		}
-	};
-
 	protected String getCurrentValueLabelString()
 	{
 		return " (current value)";
@@ -128,9 +119,11 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	public void addValueChangeObserver( ValueChangeObserver<P> observer )
 	{
-		if( !this.valueChangeObservers.contains( observer ) )
-		{
-			this.valueChangeObservers.add( observer );
+		synchronized( this.valueChangeObservers ) {
+			if( !this.valueChangeObservers.contains( observer ) )
+			{
+				this.valueChangeObservers.add( observer );
+			}
 		}
 	}
 
@@ -142,7 +135,9 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	public void removeValueChangeObserver( ValueChangeObserver<P> observer )
 	{
-		this.valueChangeObservers.remove( observer );
+		synchronized( this.valueChangeObservers ) {
+			this.valueChangeObservers.remove( observer );
+		}
 	}
 
 	public void setExpressionState( StandardExpressionState expressionState )
@@ -153,7 +148,9 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	public void clearListeners()
 	{
-		this.valueChangeObservers.clear();
+		synchronized( this.valueChangeObservers ) {
+			this.valueChangeObservers.clear();
+		}
 	}
 
 	public StandardExpressionState getExpressionState()
@@ -163,26 +160,10 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	public void startListening() {
 		startPropertyListening();
-		startExpressionListening();
 	}
 
 	public void stopListening() {
 		stopPropertyListening();
-		stopExpressionListening();
-	}
-
-	protected void startExpressionListening() {
-		if( this.expressionState != null )
-		{
-			this.expressionState.addValueListener( this.valueObserver );
-		}
-	}
-
-	protected void stopExpressionListening() {
-		if( this.expressionState != null )
-		{
-			this.expressionState.removeValueListener( this.valueObserver );
-		}
 	}
 
 	protected void startPropertyListening() {
@@ -193,9 +174,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 
 	protected void initializeExpressionState()
 	{
-		stopExpressionListening();
 		this.setExpressionValue( this.getValue() );
-		startExpressionListening();
 	}
 
 	protected void setExpressionValue( P value )
@@ -206,6 +185,7 @@ public abstract class AbstractPropertyAdapter<P, O>
 			{
 				org.lgna.project.ast.Expression expressionValue = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( this.getValue() );
 				this.expressionState.setValueTransactionlessly( expressionValue );
+
 			} catch( CannotCreateExpressionException e )
 			{
 				this.expressionState = null;
@@ -226,26 +206,17 @@ public abstract class AbstractPropertyAdapter<P, O>
 		return values[ 0 ];
 	}
 
-	protected void onExpressionStateUpdate()
-	{
-		org.lgna.project.ast.Expression expression = expressionState.getValue();
-		if( expression != null ) {
-			Object value = evaluateExpression( expression );
-			isExpressionSet = true;
-			this.intermediateSetValue( value );
-			isExpressionSet = false;
-		}
-	}
-
 	protected void notifyValueObservers( P newValue )
 	{
 		if( !isExpressionSet )
 		{
 			this.setExpressionValue( newValue );
 		}
-		for( ValueChangeObserver<P> observer : this.valueChangeObservers )
-		{
-			observer.valueChanged( newValue );
+		synchronized( this.valueChangeObservers ) {
+			for( ValueChangeObserver<P> observer : this.valueChangeObservers )
+			{
+				observer.valueChanged( newValue );
+			}
 		}
 	}
 

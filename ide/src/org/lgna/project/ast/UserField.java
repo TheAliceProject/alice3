@@ -139,4 +139,17 @@ public class UserField extends AbstractField implements UserMember {
 	public boolean isTransient() {
 		return this.isStatic.getValue();
 	}
+
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendAccessLevel( this.getAccessLevel() );
+		if( this.isFinal() ) {
+			generator.appendString( "final " );
+		}
+		generator.appendTypeName( this.valueType.getValue() );
+		generator.appendSpace();
+		generator.appendString( this.name.getValue() );
+		generator.appendChar( '=' );
+		generator.appendExpression( this.initializer.getValue() );
+		generator.appendSemicolon();
+	}
 }

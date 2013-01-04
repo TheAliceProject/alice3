@@ -4,7 +4,7 @@ package org.lgna.cheshire.ast;
  * @author Kyle J. Harms
  */
 public class TransactionHistoryGenerator {
-	public org.lgna.croquet.history.TransactionHistory generate( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.MethodInvocation methodInvocation, org.lgna.project.ast.UserMethod destinationMethod, org.lgna.project.ast.UserField field ) {
+	public org.lgna.croquet.history.TransactionHistory generate( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.MethodInvocation methodInvocation, org.lgna.project.ast.UserMethod destinationMethod, org.lgna.project.ast.UserField field ) throws org.lgna.croquet.UnsupportedGenerationException {
 		org.lgna.croquet.history.TransactionHistory history = new org.lgna.croquet.history.TransactionHistory();
 
 		//we add the new method to the same class as the method we add the invocation to
@@ -16,7 +16,7 @@ public class TransactionHistoryGenerator {
 		//cheshire cat does not recover since the procedure invocation drag model is found (albeit with the wrong state).  curses.
 		//so we manually place ide in correct configuration.
 		org.alice.ide.declarationseditor.TypeState.getInstance().addGeneratedStateChangeTransaction( history, null, (org.lgna.project.ast.NamedUserType)destinationMethod.getDeclaringType() );
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addGeneratedStateChangeTransaction( history, null, org.alice.ide.declarationseditor.DeclarationComposite.getInstance( destinationMethod ) );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addGeneratedStateChangeTransaction( history, null, org.alice.ide.declarationseditor.DeclarationComposite.getInstance( destinationMethod ) );
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		org.lgna.project.ast.Expression instanceExpression;

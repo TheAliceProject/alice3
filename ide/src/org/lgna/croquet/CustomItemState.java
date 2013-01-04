@@ -100,7 +100,7 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 
 		@Override
 		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
-			return this.state.createEdit( completionStep, values[ 0 ] );
+			return this.state.TEMPORARY_HACK_createEdit( completionStep, values[ 0 ] );
 		}
 	}
 
@@ -125,7 +125,7 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 	}
 
 	@Override
-	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) {
+	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) throws UnsupportedGenerationException {
 		org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
 		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( rv, this.getCascadeRoot().getPopupPrepModel(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance() );
 		return rv;

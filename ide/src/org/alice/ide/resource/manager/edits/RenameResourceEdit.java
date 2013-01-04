@@ -87,11 +87,10 @@ public final class RenameResourceEdit extends org.lgna.croquet.edits.Edit {
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "rename resource: " );
 		rv.append( this.prevValue );
 		rv.append( " ===> " );
 		rv.append( this.nextValue );
-		return rv;
 	}
 }

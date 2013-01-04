@@ -80,16 +80,14 @@ public abstract class SJointedModel extends SModel {
 				BubbleOutlineColor.getValue( details, Color.BLACK ).getInternal() );
 	}
 
-	//	@MethodTemplate()
-	//	@GetterTemplate(isPersistent = true)
-	//	@ValueTemplate(detailsEnumCls = org.lgna.story.annotation.ModelResourceDetails.class)
+	//	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.TUCKED_AWAY )
 	//	public org.lgna.story.resources.JointedModelResource getResource() {
 	//		return this.getImplementation().getResource();
 	//	}
-	//	
-	//	@MethodTemplate()
-	//	public void setResource(org.lgna.story.resources.JointedModelResource resource) {
-	//		this.getImplementation().setNewResource(resource);
+	//
+	//	@MethodTemplate( )
+	//	protected void setResource( org.lgna.story.resources.JointedModelResource resource ) {
+	//		this.getImplementation().setNewResource( resource );
 	//	}
 
 	//TODO: Get this to work

@@ -483,16 +483,21 @@ public abstract class VirtualMachine {
 			assert adapterCls != null;
 			mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( adapterCls, mthd.getName(), mthd.getParameterTypes() );
 		}
-		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( mthd );
-		//		try {
-		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, mthd, arguments );
-		//		} catch( RuntimeException re ) {
-		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: could not invoke ", method );
-		//			for( Object argument : arguments ) {
-		//				edu.cmu.cs.dennisc.print.PrintUtilities.println( argument );
-		//			}
-		//			return null;
-		//		}
+		assert edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isPublic( mthd ) : mthd;
+
+		try {
+			return mthd.invoke( instance, arguments );
+		} catch( IllegalAccessException iae ) {
+			throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), iae );
+		} catch( java.lang.reflect.InvocationTargetException ite ) {
+			Throwable throwable = ite.getTargetException();
+			if( throwable instanceof RuntimeException ) {
+				RuntimeException re = (RuntimeException)throwable;
+				throw re;
+			} else {
+				throw new RuntimeException( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDetail( instance, mthd, arguments ), throwable );
+			}
+		}
 	}
 
 	protected Object invoke( Object instance, org.lgna.project.ast.AbstractMethod method, Object... arguments ) {

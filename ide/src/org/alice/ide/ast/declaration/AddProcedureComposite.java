@@ -46,19 +46,14 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public final class AddProcedureComposite extends AddMethodComposite {
-	private static java.util.Map<org.lgna.project.ast.UserType<?>, AddProcedureComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserType<?>, AddProcedureComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static AddProcedureComposite getInstance( org.lgna.project.ast.UserType<?> declaringType ) {
-		synchronized( map ) {
-			AddProcedureComposite rv = map.get( declaringType );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new AddProcedureComposite( declaringType );
-				map.put( declaringType, rv );
+		return map.getInitializingIfAbsent( declaringType, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserType<?>, AddProcedureComposite>() {
+			public AddProcedureComposite initialize( org.lgna.project.ast.UserType<?> declaringType ) {
+				return new AddProcedureComposite( declaringType );
 			}
-			return rv;
-		}
+		} );
 	}
 
 	private AddProcedureComposite( org.lgna.project.ast.UserType<?> declaringType ) {
@@ -85,7 +80,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( namedUserType );
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
+			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
 		} else {
 			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory;
@@ -108,7 +103,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 	@Override
 	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().popGeneratedValue();
+			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().popGeneratedValue();
 			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		} else {
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
@@ -118,7 +113,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 	}
 
 	@Override
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) {
+	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
 		assert ownerEdit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : ownerEdit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)ownerEdit;
 		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
@@ -129,7 +124,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 	}
 
 	@Override
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws org.lgna.croquet.UnsupportedGenerationException {
 		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
 		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : edit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;

@@ -70,4 +70,16 @@ public class IntegerLiteral extends AbstractValueLiteral {
 	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
 		return this.value;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		int n = this.value.getValue();
+		if( n == Integer.MAX_VALUE ) {
+			generator.appendString( "Integer.MAX_VALUE" );
+		} else if( n == Integer.MIN_VALUE ) {
+			generator.appendString( "Integer.MIN_VALUE" );
+		} else {
+			generator.appendInt( n );
+		}
+	}
 }

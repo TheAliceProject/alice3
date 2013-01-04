@@ -70,6 +70,12 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 			public TestBooleanState() {
 				super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "1d7a975b-58cb-4ebb-b1cb-e0b456584820" ), false );
 			}
+
+			@Override
+			protected void localize() {
+				super.localize();
+				this.setTextForTrueAndTextForFalse( "true", "false" );
+			}
 		}
 
 		TestIntegerState integerState = new TestIntegerState();
@@ -89,7 +95,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 			}
 
 			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue, isAdjusting );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "prev:", prevValue, "next:", nextValue, "isAdjusting:", isAdjusting );
 			}
 		} );
 
@@ -105,15 +111,40 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 		}
 
 		TestOperation operation = new TestOperation();
+
+		class TestFileSelectionState extends org.lgna.croquet.FileSelectionState {
+			public TestFileSelectionState() {
+				super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7b183ea9-914f-4296-a96b-93d95af9c98f" ), null );
+			}
+		}
+
+		javax.swing.filechooser.FileFilter fileFilter = org.lgna.common.resources.AudioResource.createFileFilter( true );
+		TestFileSelectionState fileSelectionState = new TestFileSelectionState();
+		fileSelectionState.addChoosableFileFilter( fileFilter );
+		fileSelectionState.setFileFilter( fileFilter );
+		fileSelectionState.addValueListener( new org.lgna.croquet.State.ValueListener<java.io.File>() {
+			public void changing( org.lgna.croquet.State<java.io.File> state, java.io.File prevValue, java.io.File nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( org.lgna.croquet.State<java.io.File> state, java.io.File prevValue, java.io.File nextValue, boolean isAdjusting ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextValue );
+			}
+		} );
+
 		org.lgna.croquet.components.GridPanel gridPanel = org.lgna.croquet.components.GridPanel.createGridPane(
 				0, 2,
 				integerState.createSlider(), integerState.createSpinner(),
 				doubleState.createSlider(), doubleState.createSpinner(),
-				booleanState.createRadioButton(), booleanState.createCheckBox(),
+				booleanState.createToggleButton(), booleanState.createCheckBox(),
 				operation.createButton(), new org.lgna.croquet.components.Label()
 				);
 
-		testCroquet.getFrame().getContentPanel().addCenterComponent( gridPanel );
+		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
+				.center( fileSelectionState.getOneAndOnlyOneFileChooser() )
+				.pageEnd( gridPanel )
+				.build();
+
+		testCroquet.getFrame().getContentPanel().addCenterComponent( borderPanel );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );

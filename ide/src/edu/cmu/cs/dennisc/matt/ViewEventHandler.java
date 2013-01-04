@@ -1,8 +1,8 @@
 package edu.cmu.cs.dennisc.matt;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
@@ -15,13 +15,13 @@ import org.lgna.story.event.ViewEvent;
 import org.lgna.story.event.ViewExitListener;
 import org.lgna.story.implementation.CameraImp;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
 public class ViewEventHandler extends TransformationChangedHandler<Object, ViewEvent> {
 
 	private CameraImp camera;
-	private Map<SModel, List<Object>> map = Collections.newHashMap();
-	private Map<SModel, Boolean> wasInView = Collections.newHashMap();
+	private Map<SModel, List<Object>> map = Collections.newConcurrentHashMap();
+	private Map<SModel, Boolean> wasInView = Collections.newConcurrentHashMap();
 
 	@Override
 	protected void check( SThing changedEntity ) {
@@ -99,7 +99,7 @@ public class ViewEventHandler extends TransformationChangedHandler<Object, ViewE
 		}
 		for( SModel model : models ) {
 			if( map.get( model ) == null ) {
-				map.put( model, new LinkedList<Object>() );
+				map.put( model, new CopyOnWriteArrayList<Object>() );
 			}
 			map.get( model ).add( listener );
 		}

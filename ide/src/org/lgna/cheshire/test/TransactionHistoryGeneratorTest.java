@@ -40,7 +40,7 @@ public class TransactionHistoryGeneratorTest {
 
 		// We need to "convert" lgp to a3p... this hack will suffice
 		org.lgna.project.Version VERSION_INDEPENDENT = null;
-		org.lgna.project.migration.MigrationManager.addVersionIndependentMigration( new org.lgna.project.migration.TextMigration(
+		org.lgna.project.migration.ProjectMigrationManager.getInstance().addVersionIndependentMigration( new org.lgna.project.migration.TextMigration(
 				VERSION_INDEPENDENT,
 				VERSION_INDEPENDENT,
 				"edu.wustl.cse.lookingglass.ast.ThisInstanceExpression",
@@ -66,15 +66,16 @@ public class TransactionHistoryGeneratorTest {
 	}
 
 	private org.lgna.project.ast.AbstractNode loadReuseLgp( java.io.File file ) throws java.io.IOException {
-		org.lgna.project.Version BAD_BAD_BAD_madeUpVersion = new org.lgna.project.Version( "3.1" );
-		java.io.FileInputStream fis = new java.io.FileInputStream( file );
-		org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML( fis, BAD_BAD_BAD_madeUpVersion );
-		try {
-			return org.lgna.project.ast.AbstractNode.decode( xmlDocument, BAD_BAD_BAD_madeUpVersion.toString() );
-		} catch( org.lgna.project.VersionNotSupportedException e ) {
-			e.printStackTrace();
-			return null;
-		}
+		throw new RuntimeException( "todo" );
+		//		org.lgna.project.Version BAD_BAD_BAD_madeUpVersion = new org.lgna.project.Version( "3.1" );
+		//		java.io.FileInputStream fis = new java.io.FileInputStream( file );
+		//		org.w3c.dom.Document xmlDocument = org.lgna.project.io.IoUtilities.readXML( fis, BAD_BAD_BAD_madeUpVersion );
+		//		try {
+		//			return org.lgna.project.ast.AbstractNode.decode( xmlDocument, BAD_BAD_BAD_madeUpVersion );
+		//		} catch( org.lgna.project.VersionNotSupportedException e ) {
+		//			e.printStackTrace();
+		//			return null;
+		//		}
 	}
 
 	private org.lgna.project.ast.AbstractNode loadReuseA3p( java.io.File file, String fieldName, String methodName ) throws java.io.IOException {
@@ -116,7 +117,11 @@ public class TransactionHistoryGeneratorTest {
 		org.lgna.project.ast.UserMethod methodToGenerate = (org.lgna.project.ast.UserMethod)this.reuseMethod;
 		org.lgna.project.ast.MethodInvocation methodInvocation = new org.lgna.project.ast.MethodInvocation( new org.lgna.project.ast.ThisExpression(), methodToGenerate );
 		org.lgna.cheshire.ast.TransactionHistoryGenerator transactionHistoryGenerator = new org.lgna.cheshire.ast.TransactionHistoryGenerator();
-		this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation, myFirstMethod, field );
+		try {
+			this.reuseTransactionHistory = transactionHistoryGenerator.generate( type, methodInvocation, myFirstMethod, field );
+		} catch( org.lgna.croquet.UnsupportedGenerationException uge ) {
+			javax.swing.JOptionPane.showMessageDialog( null, uge.toString() );
+		}
 
 		if( TEMPORARY_HACK_isStoringDesired ) {
 			try {

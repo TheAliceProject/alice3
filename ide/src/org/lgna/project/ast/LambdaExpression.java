@@ -71,4 +71,13 @@ public class LambdaExpression extends Expression {
 			return null;
 		}
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		Lambda lambda = this.value.getValue();
+		if( lambda instanceof UserLambda ) {
+			UserLambda userLambda = (UserLambda)lambda;
+			userLambda.appendJava( generator );
+		}
+	}
 }

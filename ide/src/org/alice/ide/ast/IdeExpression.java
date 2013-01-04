@@ -46,5 +46,6 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IdeExpression extends org.lgna.project.ast.Expression {
+public abstract class IdeExpression extends org.lgna.project.ast.FauxExpression {
+
 }

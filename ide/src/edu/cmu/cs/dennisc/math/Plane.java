@@ -73,8 +73,16 @@ public final class Plane {
 	//Kept private to avoid confusion on order
 	private static Plane createInstance( double xPosition, double yPosition, double zPosition, double xNormal, double yNormal, double zNormal ) {
 		final double EPSILON = 0.01;
-		assert EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal ), EPSILON );
-		//assert EpsilonUtilities.isWithinEpsilon( Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal ), 1.0, EPSILON );
+		double magnitudeSquared = Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal );
+		if( EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( magnitudeSquared, EPSILON ) ) {
+			//pass
+		} else {
+			double magnitude = Math.sqrt( magnitudeSquared );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( magnitude, xNormal, yNormal, zNormal );
+			xNormal /= magnitude;
+			yNormal /= magnitude;
+			zNormal /= magnitude;
+		}
 		return createInstance( xNormal, yNormal, zNormal, -( ( xNormal * xPosition ) + ( yNormal * yPosition ) + ( zNormal * zPosition ) ) );
 	}
 

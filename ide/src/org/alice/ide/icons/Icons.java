@@ -66,4 +66,7 @@ public class Icons {
 
 	public static final javax.swing.Icon NEXT_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-next.png" ) );
 	public static final javax.swing.Icon PREVIOUS_SMALL = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/go-previous.png" ) );
+
+	public static final javax.swing.Icon TRASH_CAN_FULL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/fulltrash.png" ) );
+	public static final javax.swing.Icon TRASH_CAN_EMPTY_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/emptytrash.png" ) );
 }

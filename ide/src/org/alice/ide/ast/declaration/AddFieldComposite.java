@@ -48,12 +48,20 @@ package org.alice.ide.ast.declaration;
  */
 public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna.project.ast.UserField> {
 	public static class FieldDetailsBuilder {
+		private ApplicabilityStatus isFinalStatus = ApplicabilityStatus.NOT_APPLICABLE;
+		private boolean inFinalInitialValue;
 		private ApplicabilityStatus valueComponentTypeStatus;
 		private org.lgna.project.ast.AbstractType<?, ?, ?> valueComponentTypeInitialValue;
 		private ApplicabilityStatus valueIsArrayTypeStatus;
 		private boolean valueIsArrayTypeInitialValue;
 		private ApplicabilityStatus initializerStatus;
 		private org.lgna.project.ast.Expression initializerInitialValue;
+
+		public FieldDetailsBuilder isFinal( ApplicabilityStatus status, boolean initialValue ) {
+			this.isFinalStatus = status;
+			this.inFinalInitialValue = initialValue;
+			return this;
+		}
 
 		public FieldDetailsBuilder valueComponentType( ApplicabilityStatus status, org.lgna.project.ast.AbstractType<?, ?, ?> initialValue ) {
 			this.valueComponentTypeStatus = status;
@@ -78,6 +86,7 @@ public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna
 			assert this.valueIsArrayTypeStatus != null : this;
 			assert this.initializerStatus != null : this;
 			return new Details()
+					.isFinal( this.isFinalStatus, this.inFinalInitialValue )
 					.valueComponentType( this.valueComponentTypeStatus, this.valueComponentTypeInitialValue )
 					.valueIsArrayType( this.valueIsArrayTypeStatus, this.valueIsArrayTypeInitialValue )
 					.name( ApplicabilityStatus.EDITABLE )
@@ -147,29 +156,7 @@ public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna
 
 	private String generateNameFromInitializer() {
 		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
-		if( instanceCreation != null ) {
-			java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
-			if( fld != null ) {
-				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
-			} else {
-				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = constructor.getDeclaringType();
-				String typeName = abstractType.getName();
-				if( typeName != null ) {
-					//todo: move to api configuration
-					if( typeName.length() > 1 ) {
-						if( ( typeName.charAt( 0 ) == 'S' ) && Character.isUpperCase( typeName.charAt( 1 ) ) ) {
-							typeName = typeName.substring( 1 );
-						}
-					}
-					return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
-				} else {
-					return "";
-				}
-			}
-		} else {
-			return "";
-		}
+		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
 
 	//	protected void updateNameTextField() {

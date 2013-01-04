@@ -58,9 +58,20 @@ public abstract class PrintOperation extends org.alice.ide.operations.Inconseque
 		java.awt.print.Printable printable = this.getPrintable();
 		if( printable != null ) {
 			job.setPrintable( printable );
-			if( job.printDialog( new javax.print.attribute.HashPrintRequestAttributeSet() ) ) {
+
+			int mm = javax.print.attribute.Size2DSyntax.MM;
+			javax.print.attribute.standard.MediaSize mediaSize = javax.print.attribute.standard.MediaSize.ISO.A4;
+
+			float mediaWidth = mediaSize.getX( mm );
+			float mediaHeight = mediaSize.getY( mm );
+			float margin = mediaWidth / 50.0f;
+
+			javax.print.attribute.PrintRequestAttributeSet set = new javax.print.attribute.HashPrintRequestAttributeSet();
+			set.add( mediaSize.getMediaSizeName() );
+			set.add( new javax.print.attribute.standard.MediaPrintableArea( margin, margin, mediaWidth - margin - margin, mediaHeight - margin - margin, mm ) );
+			if( job.printDialog( set ) ) {
 				try {
-					job.print();
+					job.print( set );
 				} catch( java.awt.print.PrinterException pe ) {
 					//todo
 					pe.printStackTrace();

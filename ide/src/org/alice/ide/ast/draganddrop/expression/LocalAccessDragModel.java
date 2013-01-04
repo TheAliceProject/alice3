@@ -47,20 +47,17 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class LocalAccessDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserLocal, LocalAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static synchronized LocalAccessDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
-		LocalAccessDragModel rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalAccessDragModel( local );
-			map.put( local, rv );
-		}
-		return rv;
+	public static LocalAccessDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
+		return map.getInitializingIfAbsent( local, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserLocal, LocalAccessDragModel>() {
+			public LocalAccessDragModel initialize( org.lgna.project.ast.UserLocal local ) {
+				return new LocalAccessDragModel( local );
+			}
+		} );
 	}
 
-	private org.lgna.project.ast.UserLocal local;
+	private final org.lgna.project.ast.UserLocal local;
 
 	private LocalAccessDragModel( org.lgna.project.ast.UserLocal local ) {
 		super( java.util.UUID.fromString( "57dbd70e-11e0-4311-905e-954a95403950" ) );

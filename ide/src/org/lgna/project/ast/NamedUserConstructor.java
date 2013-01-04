@@ -127,4 +127,11 @@ public class NamedUserConstructor extends UserConstructor implements UserCode {
 	public AccessLevel getAccessLevel() {
 		return this.accessLevel.getValue();
 	}
+
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendAccessLevel( this.getAccessLevel() );
+		generator.appendTypeName( this.getDeclaringType() );
+		generator.appendParameters( this );
+		this.body.getValue().appendJava( generator );
+	}
 }

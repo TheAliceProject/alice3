@@ -46,7 +46,7 @@ package org.alice.ide.members.components;
  * @author Dennis Cosgrove
  */
 abstract class MethodsContentPanel extends OrganizedByTypeMembersContentPanel {
-	public MethodsContentPanel( org.lgna.croquet.TabComposite<?> composite ) {
+	public MethodsContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite ) {
 		super( composite );
 	}
 }

@@ -54,9 +54,9 @@ public class IdeHighlightStencil extends HighlightStencil {
 		if( field != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 				public org.lgna.croquet.components.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
-					if( composite != null ) {
-						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+					if( declarationComposite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 						if( view instanceof org.alice.ide.declarationseditor.type.components.TypeDeclarationView ) {
 							java.util.List<javax.swing.JPanel> jPanels = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.JPanel.class );
 							for( javax.swing.JPanel jPanel : jPanels ) {
@@ -83,9 +83,9 @@ public class IdeHighlightStencil extends HighlightStencil {
 		if( expression != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 				public org.lgna.croquet.components.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
-					if( composite != null ) {
-						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+					if( declarationComposite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 
 						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
 						for( javax.swing.AbstractButton jButton : jButtons ) {
@@ -124,9 +124,9 @@ public class IdeHighlightStencil extends HighlightStencil {
 		if( statement != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 				public org.lgna.croquet.components.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
-					if( composite != null ) {
-						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+					if( declarationComposite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
 						for( javax.swing.AbstractButton jButton : jButtons ) {
 							org.lgna.project.ast.Statement candidate = null;
@@ -181,9 +181,9 @@ public class IdeHighlightStencil extends HighlightStencil {
 		if( statement != null ) {
 			this.show( new org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape>() {
 				public org.lgna.croquet.components.TrackableShape getResolved() {
-					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> composite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
-					if( composite != null ) {
-						org.alice.ide.declarationseditor.components.DeclarationView view = composite.getView();
+					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
+					if( declarationComposite != null ) {
+						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
 						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
 						for( javax.swing.AbstractButton jButton : jButtons ) {
 							org.lgna.project.ast.Statement candidate = null;

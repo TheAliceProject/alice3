@@ -68,10 +68,12 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel<org.alic
 		javax.swing.Icon prevIcon = this.iconLabel.getIcon();
 		javax.swing.Icon nextIcon;
 
+		String creator = null;
 		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
 		java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
 		if( fld != null ) {
 			java.awt.Image thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( fld.getDeclaringClass(), fld.getName() );
+			creator = org.lgna.story.implementation.alice.AliceResourceUtilties.getCreator( fld.getDeclaringClass(), fld.getName() );
 			if( thumbnail != null ) {
 				nextIcon = new javax.swing.ImageIcon( thumbnail );
 			} else {
@@ -81,6 +83,17 @@ public class GalleryFieldDeclarationPanel extends FieldDeclarationPanel<org.alic
 			nextIcon = null;
 		}
 		this.iconLabel.setIcon( nextIcon );
+
+		String toolTipText;
+		if( creator != null ) {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "created by: " );
+			sb.append( creator );
+			toolTipText = sb.toString();
+		} else {
+			toolTipText = null;
+		}
+		this.iconLabel.setToolTipText( toolTipText );
 		if( edu.cmu.cs.dennisc.javax.swing.IconUtilities.areSizesEqual( prevIcon, nextIcon ) ) {
 			//pass
 		} else {

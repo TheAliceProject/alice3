@@ -66,7 +66,8 @@ import org.lgna.story.TurnDirection;
 import org.lgna.story.event.CollisionStartListener;
 import org.lgna.story.event.KeyEvent;
 import org.lgna.story.event.KeyPressListener;
-import org.lgna.story.event.MouseClickOnScreenListener;
+import org.lgna.story.event.MouseClickOnObjectEvent;
+import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.event.SceneActivationEvent;
 import org.lgna.story.event.SceneActivationListener;
 import org.lgna.story.event.StartCollisionEvent;
@@ -244,10 +245,11 @@ class SnowScene extends SScene {
 		} );
 		SThing[] groupOne = { ogre };
 		SThing[] groupTwo = { susan };
-		this.addMouseClickOnScreenListener( new MouseClickOnScreenListener() {
+		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
 
-			public void mouseClicked() {
-				System.out.println( "MOUSECLICKONSCREEN" );
+			public void mouseClicked( MouseClickOnObjectEvent e ) {
+				e.getModelAtMouseLocation().move( MoveDirection.UP, 1 );
+				e.getModelAtMouseLocation().move( MoveDirection.DOWN, 1 );
 			}
 		} );
 		this.addCollisionStartListener( new CollisionStartListener() {

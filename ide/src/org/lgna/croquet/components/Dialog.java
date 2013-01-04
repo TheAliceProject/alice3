@@ -71,16 +71,16 @@ public class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	}
 
 	private static class JDialog extends javax.swing.JDialog {
-		public JDialog( java.awt.Frame owner ) {
-			super( owner );
+		public JDialog( java.awt.Frame owner, boolean isModal ) {
+			super( owner, isModal );
 		}
 
-		public JDialog( java.awt.Dialog owner ) {
-			super( owner );
+		public JDialog( java.awt.Dialog owner, boolean isModal ) {
+			super( owner, isModal );
 		}
 
-		public JDialog() {
-			super();
+		public JDialog( boolean isModal ) {
+			this( (java.awt.Frame)null, isModal );
 		}
 
 		@Override
@@ -92,16 +92,16 @@ public class Dialog extends AbstractWindow<javax.swing.JDialog> {
 		}
 	}
 
-	private static javax.swing.JDialog createJDialog( ScreenElement owner ) {
+	private static javax.swing.JDialog createJDialog( ScreenElement owner, boolean isModal ) {
 		javax.swing.JDialog rv;
 		if( owner != null ) {
 			AbstractWindow<?> root = owner.getRoot();
 			if( root != null ) {
 				java.awt.Window ownerWindow = root.getAwtComponent();
 				if( ownerWindow instanceof java.awt.Frame ) {
-					rv = new JDialog( (java.awt.Frame)ownerWindow );
+					rv = new JDialog( (java.awt.Frame)ownerWindow, isModal );
 				} else if( ownerWindow instanceof java.awt.Dialog ) {
-					rv = new JDialog( (java.awt.Dialog)ownerWindow );
+					rv = new JDialog( (java.awt.Dialog)ownerWindow, isModal );
 				} else {
 					rv = null;
 				}
@@ -114,7 +114,7 @@ public class Dialog extends AbstractWindow<javax.swing.JDialog> {
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new JDialog();
+			rv = new JDialog( isModal );
 		}
 		return rv;
 	}
@@ -153,8 +153,8 @@ public class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	}
 
 	public Dialog( ScreenElement owner, boolean isModal ) {
-		super( Dialog.createJDialog( owner ) );
-		this.getAwtComponent().setModal( isModal );
+		super( Dialog.createJDialog( owner, isModal ) );
+		//		this.getAwtComponent().setModal( isModal );
 		this.getAwtComponent().setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
 		this.addWindowListener( this.windowListener );
 	}

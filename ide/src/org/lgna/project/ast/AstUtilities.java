@@ -57,7 +57,7 @@ public class AstUtilities {
 		java.util.Map<Integer, org.lgna.project.ast.AbstractDeclaration> map = org.lgna.project.ast.AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
 		try {
-			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.Version.getCurrentVersionText(), map, false );
+			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, false );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 			return (N)dst;
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
@@ -320,11 +320,14 @@ public class AstUtilities {
 	}
 
 	public static MethodInvocation createMethodInvocation( Expression instanceExpression, AbstractMethod method, Expression... argumentExpressions ) {
+		java.util.ArrayList<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+		assert requiredParameters.size() == argumentExpressions.length : method;
+
 		MethodInvocation rv = new MethodInvocation();
 		rv.expression.setValue( instanceExpression );
 		rv.method.setValue( method );
 		int i = 0;
-		for( AbstractParameter parameter : method.getRequiredParameters() ) {
+		for( AbstractParameter parameter : requiredParameters ) {
 			SimpleArgument argument = new SimpleArgument( parameter, argumentExpressions[ i ] );
 			rv.requiredArguments.add( argument );
 			i++;
@@ -477,11 +480,16 @@ public class AstUtilities {
 		return rv;
 	}
 
-	public static UserLambda createUserLambda( AbstractType<?, ?, ?> type ) {
+	public static AbstractMethod getSingleAbstractMethod( AbstractType<?, ?, ?> type ) {
 		java.util.ArrayList<? extends AbstractMethod> methods = type.getDeclaredMethods();
 		assert methods.size() == 1;
 		AbstractMethod singleAbstractMethod = methods.get( 0 );
 		assert singleAbstractMethod.isAbstract() : singleAbstractMethod;
+		return singleAbstractMethod;
+	}
+
+	public static UserLambda createUserLambda( AbstractType<?, ?, ?> type ) {
+		AbstractMethod singleAbstractMethod = getSingleAbstractMethod( type );
 		java.util.ArrayList<? extends AbstractParameter> srcRequiredParameters = singleAbstractMethod.getRequiredParameters();
 		UserParameter[] dstRequiredParameters = new UserParameter[ srcRequiredParameters.size() ];
 		for( int i = 0; i < dstRequiredParameters.length; i++ ) {
@@ -544,5 +552,33 @@ public class AstUtilities {
 			}
 		}
 		return null;
+	}
+
+	private static AbstractType<?, ?, ?>[] getParameterTypes( AbstractMethod method ) {
+		AbstractParameter[] parameters = method.getAllParameters();
+		AbstractType<?, ?, ?>[] rv = new AbstractType<?, ?, ?>[ parameters.length ];
+		for( int i = 0; i < parameters.length; i++ ) {
+			rv[ i ] = parameters[ i ].getValueType();
+		}
+		return rv;
+	}
+
+	private static AbstractMethod getOverridenMethod( AbstractType<?, ?, ?> type, String methodName, AbstractType<?, ?, ?>[] parameterTypes ) {
+		if( type != null ) {
+			AbstractMethod rv = type.getDeclaredMethod( methodName, parameterTypes );
+			if( rv != null ) {
+				return rv;
+			} else {
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( type, methodName, java.util.Arrays.toString( parameterTypes ) );
+				return getOverridenMethod( type.getSuperType(), methodName, parameterTypes );
+			}
+		} else {
+			return null;
+		}
+	}
+
+	public static AbstractMethod getOverridenMethod( AbstractMethod method ) {
+		AbstractType<?, ?, ?> type = method.getDeclaringType();
+		return getOverridenMethod( type.getSuperType(), method.getName(), getParameterTypes( method ) );
 	}
 }

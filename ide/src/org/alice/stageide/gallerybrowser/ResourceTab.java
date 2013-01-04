@@ -65,12 +65,6 @@ public class ResourceTab extends GalleryTab<org.alice.stageide.gallerybrowser.vi
 	}
 
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponent( booleanState, button );
-		booleanState.setIconForBothTrueAndFalse( org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
-	}
-
-	@Override
 	protected org.alice.stageide.gallerybrowser.views.ResourceTabView createView() {
 		return new org.alice.stageide.gallerybrowser.views.ResourceTabView( this );
 	}

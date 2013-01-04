@@ -1,3 +1,8 @@
+import org.alice.stageide.modelresource.ClassResourceKey;
+import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
@@ -45,13 +50,14 @@
  * @author dennisc
  */
 public class ProjectFilePerGalleryModelGeneration {
-	private static void test( java.util.List<Throwable> brokenModels,  org.alice.ide.croquet.models.gallerybrowser.GalleryNode node, Class<? extends org.lgna.story.SJointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException, java.io.IOException {
-		if( node instanceof org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode ) {
-			org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode fieldGalleryNode = (org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode)node;
-			org.lgna.project.ast.JavaField argumentField = (org.lgna.project.ast.JavaField)fieldGalleryNode.getDeclaration();
+	private static void test( java.util.List<Throwable> brokenModels,  org.alice.stageide.modelresource.ResourceNode node, Class<? extends org.lgna.story.SJointedModel> instanceCls, Class<?>... parameterClses ) throws IllegalAccessException, java.io.IOException {
+		if( node.getResourceKey() instanceof EnumConstantResourceKey) {
+			EnumConstantResourceKey key = (EnumConstantResourceKey)node.getResourceKey();
+			org.lgna.project.ast.JavaField argumentField = key.getField();
 
 			org.lgna.project.ast.AbstractType< ?, ?, ? > valueType = argumentField.getValueType();
-			org.lgna.project.ast.AbstractConstructor bogusConstructor = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance().getConstructorForArgumentType( valueType );
+			
+			org.lgna.project.ast.AbstractConstructor bogusConstructor =key.createInstanceCreation().constructor.getValue();
 			org.lgna.project.ast.NamedUserType namedUserType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( bogusConstructor.getDeclaringType().getFirstEncounteredJavaType(), (org.lgna.project.ast.JavaField)argumentField );
 			org.lgna.project.ast.AbstractConstructor constructor = namedUserType.constructors.get( 0 );
 			org.lgna.project.ast.InstanceCreation instanceCreation = org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, org.lgna.project.ast.AstUtilities.createStaticFieldAccess( argumentField ) );
@@ -80,30 +86,30 @@ public class ProjectFilePerGalleryModelGeneration {
 			org.lgna.project.Project project = new org.lgna.project.Project( programType );
 			
 			
-			String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + org.lgna.project.Version.getCurrentVersionText() + "/" + valueType.getName() + "/" + argumentField.getName() + ".a3p";
+			String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/" + org.lgna.project.ProjectVersion.getCurrentVersionText() + "/" + valueType.getName() + "/" + argumentField.getName() + ".a3p";
 			
 			org.lgna.project.io.IoUtilities.writeProject( path, project );
 			
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( path );
 		}
-		final int N = node.getChildCount();
-		for( int i=0; i<N; i++ ) {
-			test( brokenModels, node.getChild( i ), instanceCls, parameterClses );
+		for( org.alice.stageide.modelresource.ResourceNode child : node.getNodeChildren() ) {
+			test( brokenModels, child, instanceCls, parameterClses );
 		}
 	}
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
-		org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode rootGalleryNode = org.alice.ide.croquet.models.gallerybrowser.RootGalleryNode.getInstance();
-		
+		org.alice.stageide.modelresource.ResourceNode rootGalleryNode = org.alice.stageide.modelresource.TreeUtilities.getTreeBasedOnClassHierarchy();
 		java.util.List< Throwable > brokenModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		
-		int i = 0;
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SBiped.class, org.lgna.story.resources.BipedResource.class );
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SFlyer.class, org.lgna.story.resources.FlyerResource.class );
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SProp.class, org.lgna.story.resources.PropResource.class );
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SQuadruped.class, org.lgna.story.resources.QuadrupedResource.class );
-		test( brokenModels, rootGalleryNode.getChild( i++ ), org.lgna.story.SSwimmer.class, org.lgna.story.resources.SwimmerResource.class );
+		for( org.alice.stageide.modelresource.ResourceNode child : rootGalleryNode.getNodeChildren() ) {
+			ResourceKey key = child.getResourceKey();
+			if (key instanceof ClassResourceKey) {
+				ClassResourceKey classKey = (ClassResourceKey)key;
+				Class<? extends org.lgna.story.SJointedModel> modelClass = (Class<? extends org.lgna.story.SJointedModel>)AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getCls());
+				test( brokenModels, child, modelClass, classKey.getCls() );
+			}
+		}
 		
 		if( brokenModels.size() > 0 ) {
 //			System.err.println();

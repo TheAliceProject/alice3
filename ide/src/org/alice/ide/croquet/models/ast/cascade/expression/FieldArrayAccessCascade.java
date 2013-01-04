@@ -47,19 +47,16 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class FieldArrayAccessCascade extends ArrayAccessCascade {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayAccessCascade> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayAccessCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized FieldArrayAccessCascade getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static FieldArrayAccessCascade getInstance( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert field != null;
 		assert expressionProperty != null;
-		FieldArrayAccessCascade rv = map.get( field, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldArrayAccessCascade( field, expressionProperty );
-			map.put( field, expressionProperty, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( field, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.AbstractField, org.lgna.project.ast.ExpressionProperty, FieldArrayAccessCascade>() {
+			public FieldArrayAccessCascade initialize( org.lgna.project.ast.AbstractField field, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+				return new FieldArrayAccessCascade( field, expressionProperty );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.AbstractField field;

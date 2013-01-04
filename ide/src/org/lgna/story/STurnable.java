@@ -96,12 +96,12 @@ public abstract class STurnable extends SThing {
 	@MethodTemplate( )
 	public void pointAt( SThing target, PointAt.Detail... details ) {
 		SThing upAsSeenBy = UpAsSeenBy.getValue( details, null );
-		this.getImplementation().animateOrientationToPointAt( target.getImplementation(), upAsSeenBy != null ? upAsSeenBy.getImplementation() : org.lgna.story.implementation.AsSeenBy.SCENE, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateOrientationToPointAt( EmployeesOnly.checkArgumentNotNull( target, 0 ).getImplementation(), upAsSeenBy != null ? upAsSeenBy.getImplementation() : org.lgna.story.implementation.AsSeenBy.SCENE, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void orientTo( SThing target, OrientTo.Detail... details ) {
-		this.getImplementation().animateOrientationOnly( target.getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		this.getImplementation().animateOrientationOnly( EmployeesOnly.checkArgumentNotNull( target, 0 ).getImplementation(), null, Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( visibility = Visibility.TUCKED_AWAY )
@@ -125,6 +125,6 @@ public abstract class STurnable extends SThing {
 
 	@MethodTemplate( visibility = Visibility.PRIME_TIME )
 	public Double getDistanceTo( STurnable other, GetDistanceTo.Detail... details ) {
-		return this.getImplementation().getDistanceTo( other.getImplementation() );
+		return this.getImplementation().getDistanceTo( EmployeesOnly.checkArgumentNotNull( other, 0 ).getImplementation() );
 	}
 }

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.zip.ZipEntry;
 
+import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
 
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
@@ -565,8 +566,10 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 		System.out.println(jarDir);
 		
 		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(jarDir, "jar");
+		final String DATA_LOCATIONS = "C:\\Users\\Alice\\Documents\\aliceBuildProcess\\Data_AliceVersions\\";
+		final String FILE_NAME = "\\galleryData.txt";
 		
-//		GalleryDiff.saveGalleryInfo(Version.getCurrentVersion(), "C:/aliceBuildProcess/Data_AliceVersions/"+Version.getCurrentVersion().toString()+"/galleryData.txt", jarFiles);
+//		GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(), DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME, jarFiles);
 
 		final String[] DATA_VERSIONS = {
 //				"3.1.0.0.0", //Not supported
@@ -577,12 +580,13 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 //				"3.1.5.0.0", //Not supported
 //				"3.1.6.0.0", //Not supported
 //				"3.1.29.0.0",
-				"3.1.34.0.0",
-				"3.1.35.0.0",
+//				"3.1.46.0.0",
+//				"3.1.47.0.0",
+				"3.1.56.0.0",
+				"3.1.57.0.0",
+				"3.1.58.0.0"
 		};
 		
-		final String DATA_LOCATIONS = "C:\\aliceBuildProcess\\Data_AliceVersions\\";
-		final String FILE_NAME = "\\galleryData.txt";
 		StringBuilder sb = new StringBuilder();
 		for (int i=0; i<DATA_VERSIONS.length-1; i++)
 		{

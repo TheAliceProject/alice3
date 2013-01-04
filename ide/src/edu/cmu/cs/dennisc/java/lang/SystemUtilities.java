@@ -68,12 +68,22 @@ public class SystemUtilities {
 	}
 
 	private static java.io.ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
-		java.util.Properties properties = System.getProperties();
+		java.util.List<Property> properties = getSortedPropertyList();
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+		org.w3c.dom.Document xmlDocument = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
+		org.w3c.dom.Element xmlRootElement = xmlDocument.createElement( "systemProperties" );
+		xmlDocument.appendChild( xmlRootElement );
+		for( Property property : properties ) {
+			org.w3c.dom.Element xmlProperty = xmlDocument.createElement( "property" );
+			xmlProperty.setAttribute( "key", property.getKey() );
+			xmlProperty.appendChild( xmlDocument.createTextNode( property.getValue() ) );
+			xmlRootElement.appendChild( xmlProperty );
+		}
+		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, baos );
 		try {
-			properties.storeToXML( baos, "comment" );
+			baos.flush();
 		} catch( java.io.IOException ioe ) {
-			ioe.printStackTrace();
+			throw new RuntimeException( ioe );
 		}
 		return baos;
 	}
@@ -87,18 +97,23 @@ public class SystemUtilities {
 	}
 
 	public static java.util.List<Property> getPropertyList() {
-		java.util.List<edu.cmu.cs.dennisc.java.lang.Property> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<Property> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.Properties systemProperties = System.getProperties();
-		java.util.Enumeration<?> keys = systemProperties.propertyNames();
-		while( keys.hasMoreElements() ) {
-			Object key = keys.nextElement();
-			Object value = systemProperties.get( key );
+		for( java.util.Map.Entry<Object, Object> entry : systemProperties.entrySet() ) {
+			Object key = entry.getKey();
+			Object value = entry.getValue();
 			if( ( key instanceof String ) && ( value instanceof String ) ) {
 				rv.add( new edu.cmu.cs.dennisc.java.lang.Property( (String)key, (String)value ) );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( key, value );
 			}
 		}
+		return rv;
+	}
+
+	public static java.util.List<Property> getSortedPropertyList() {
+		java.util.List<Property> rv = getPropertyList();
+		java.util.Collections.sort( rv );
 		return rv;
 	}
 
@@ -133,6 +148,60 @@ public class SystemUtilities {
 
 	public static boolean isWindows() {
 		return SystemUtilities.platform == Platform.WINDOWS;
+	}
+
+	public static Integer getBitCount() {
+		String bitCountText = System.getProperty( "sun.arch.data.model" );
+		if( bitCountText != null ) {
+			try {
+				return Integer.parseInt( bitCountText );
+			} catch( NumberFormatException nfe ) {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	public static boolean isPlatformSpecificLibraryLoadingDesired() {
+		//return isWindows();
+		return false;
+	}
+
+	public static String getPlatformSpecificLibraryNameIfAppropriate( String libraryName ) {
+		if( isPlatformSpecificLibraryLoadingDesired() ) {
+			StringBuilder sb = new StringBuilder();
+			if( isMac() ) {
+				sb.append( "macosx-universal/" );
+			} else {
+				if( isWindows() ) {
+					sb.append( "windows-" );
+				} else if( isLinux() ) {
+					sb.append( "linux-" );
+				} else {
+					throw new RuntimeException( System.getProperty( "os.name" ) );
+				}
+				Integer bitCount = getBitCount();
+				if( bitCount != null ) {
+					switch( bitCount ) {
+					case 32:
+						sb.append( "i586/" );
+						break;
+					case 64:
+						sb.append( "amd64/" );
+						break;
+					default:
+						throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+					}
+				} else {
+					throw new RuntimeException( System.getProperty( "sun.arch.data.model" ) );
+				}
+			}
+			sb.append( libraryName );
+			return sb.toString();
+		} else {
+			return libraryName;
+		}
 	}
 
 	public static boolean areIconsDisplayedInMenus() {
@@ -176,5 +245,9 @@ public class SystemUtilities {
 
 	public static String[] getLibraryPath() {
 		return parsePath( "java.library.path" );
+	}
+
+	public static void main( String[] args ) {
+		System.out.println( getPropertiesAsXMLString() );
 	}
 }

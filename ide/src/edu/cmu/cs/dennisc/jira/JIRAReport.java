@@ -61,6 +61,8 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	private String environment;
 	private String exception;
 	private String[] affectsVersions = new String[] {};
+	private String reportedBy;
+	private String emailAddress;
 
 	public String getProjectKey() {
 		return this.projectKey;
@@ -124,6 +126,22 @@ public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 
 	public void setException( String exception ) {
 		this.exception = exception;
+	}
+
+	public String getReportedBy() {
+		return this.reportedBy;
+	}
+
+	public void setReportedBy( String reportedBy ) {
+		this.reportedBy = reportedBy;
+	}
+
+	public String getEmailAddress() {
+		return this.emailAddress;
+	}
+
+	public void setEmailAddress( String emailAddress ) {
+		this.emailAddress = emailAddress;
 	}
 
 	public String getAffectsVersionText() {

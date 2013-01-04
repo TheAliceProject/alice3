@@ -75,7 +75,23 @@ public class SOAPUtilities {
 		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = new com.atlassian.jira.rpc.soap.client.RemoteIssue();
 		remoteIssue.setSummary( edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( jiraReport.getSummary(), 254 ) );
 		remoteIssue.setType( Integer.toString( edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( jiraReport.getType() ) ) );
-		remoteIssue.setDescription( jiraReport.getDescription() );
+
+		StringBuilder sb = new StringBuilder();
+		sb.append( jiraReport.getDescription() );
+
+		String reportedBy = jiraReport.getReportedBy();
+		if( ( reportedBy != null ) && ( reportedBy.length() > 0 ) ) {
+			sb.append( "\nreported by: " );
+			sb.append( reportedBy );
+		}
+
+		String emailAddress = jiraReport.getEmailAddress();
+		if( ( emailAddress != null ) && ( emailAddress.length() > 0 ) ) {
+			sb.append( "\nemail address: " );
+			sb.append( emailAddress );
+		}
+
+		remoteIssue.setDescription( sb.toString() );
 
 		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue steps = createCustomField( 10000, jiraReport.getSteps() );
 		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue exception = createCustomField( 10001, jiraReport.getException() );
@@ -100,53 +116,18 @@ public class SOAPUtilities {
 		com.atlassian.jira.rpc.soap.client.RemoteVersion[] remoteAffectsVersions = SOAPUtilities.getRemoteAffectsVersions( jiraReport, service, token, project );
 		remoteIssue.setAffectsVersions( remoteAffectsVersions );
 		com.atlassian.jira.rpc.soap.client.RemoteIssue rv = service.createIssue( token, remoteIssue );
-
-		//		java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = jiraReport.getAttachments();
-		//		if( attachments != null && attachments.size() > 0 ) {
-		//			try {
-		//				final int N = attachments.size();
-		//				String[] names = new String[ N ];
-		//				//byte[][] data = new byte[ N ][];
-		//				String[] base64s = new String[ N ];
-		//				for( int i=0; i<N; i++ ) {		
-		//					edu.cmu.cs.dennisc.issue.Attachment attachmentI = attachments.get( i );
-		//					names[ i ] = attachmentI.getFileName();
-		//					//data[ i ] = attachmentI.getBytes();
-		//					byte[] data = attachmentI.getBytes();
-		//					assert data != null;
-		//					base64s[ i ] = org.apache.axis.encoding.Base64.encode( data );
-		//				}
-		//				//service.addAttachmentsToIssue( token, rv.getKey(), names, data );
-		//				service.addBase64EncodedAttachmentsToIssue( token, rv.getKey(), names, base64s );
-		//			} catch( Exception e ) {
-		//				e.printStackTrace();
-		//			}
-		//		}
 		return rv;
 	}
 
-	public static com.atlassian.jira.rpc.soap.client.RemoteIssue addAttachments( com.atlassian.jira.rpc.soap.client.RemoteIssue rv, edu.cmu.cs.dennisc.jira.JIRAReport jiraReport, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token, boolean isBase64EncodingDesired ) throws java.rmi.RemoteException {
-		java.util.List<edu.cmu.cs.dennisc.issue.Attachment> attachments = jiraReport.getAttachments();
-		if( ( attachments != null ) && ( attachments.size() > 0 ) ) {
-			final int N = attachments.size();
-			String[] names = new String[ N ];
-			byte[][] data = new byte[ N ][];
-			String[] base64s = new String[ N ];
-			for( int i = 0; i < N; i++ ) {
-				edu.cmu.cs.dennisc.issue.Attachment attachmentI = attachments.get( i );
-				names[ i ] = attachmentI.getFileName();
-				data[ i ] = attachmentI.getBytes();
-				assert data[ i ] != null;
-				if( isBase64EncodingDesired ) {
-					base64s[ i ] = org.apache.axis.encoding.Base64.encode( data[ i ] );
-					data[ i ] = null;
-				}
-			}
-			if( isBase64EncodingDesired ) {
-				service.addBase64EncodedAttachmentsToIssue( token, rv.getKey(), names, base64s );
-			} else {
-				service.addAttachmentsToIssue( token, rv.getKey(), names, data );
-			}
+	public static com.atlassian.jira.rpc.soap.client.RemoteIssue addAttachment( com.atlassian.jira.rpc.soap.client.RemoteIssue rv, edu.cmu.cs.dennisc.issue.Attachment attachment, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token ) throws java.rmi.RemoteException {
+		String[] names = { attachment.getFileName() };
+		final boolean isBase64EncodingDesired = true; // addAttachmentsToIssue is slow and uses too much memory
+		if( isBase64EncodingDesired ) {
+			String[] base64s = { org.apache.axis.encoding.Base64.encode( attachment.getBytes() ) };
+			service.addBase64EncodedAttachmentsToIssue( token, rv.getKey(), names, base64s );
+		} else {
+			byte[][] data = { attachment.getBytes() };
+			service.addAttachmentsToIssue( token, rv.getKey(), names, data );
 		}
 		return rv;
 	}

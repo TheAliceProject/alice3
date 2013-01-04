@@ -109,7 +109,7 @@ class ViewEULAsPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSprin
  */
 public class AboutPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	public AboutPane() {
-		this.add( this.createLabel( "current version: " + org.lgna.project.Version.getCurrentVersionText() ) );
+		this.add( this.createLabel( "current version: " + org.lgna.project.ProjectVersion.getCurrentVersionText() ) );
 		this.add( javax.swing.Box.createVerticalStrut( 24 ) );
 		this.add( this.createViewEULAsPane() );
 		this.add( javax.swing.Box.createVerticalStrut( 24 ) );

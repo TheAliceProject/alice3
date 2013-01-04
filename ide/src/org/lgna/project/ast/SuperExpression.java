@@ -63,4 +63,9 @@ public class SuperExpression extends Expression {
 		rv.append( "super" );
 		return rv;
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "super" );
+	}
 }

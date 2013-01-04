@@ -44,20 +44,17 @@
 package org.alice.ide.statementfactory;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
 public class LocalStatementCascade extends org.lgna.croquet.CascadeWithInternalBlank<org.lgna.project.ast.Expression> {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalStatementCascade> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalStatementCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static synchronized LocalStatementCascade getInstance( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		LocalStatementCascade rv = map.get( local, blockStatementIndexPair );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalStatementCascade( local, blockStatementIndexPair );
-			map.put( local, blockStatementIndexPair, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( local, blockStatementIndexPair, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.alice.ide.ast.draganddrop.BlockStatementIndexPair, LocalStatementCascade>() {
+			public LocalStatementCascade initialize( org.lgna.project.ast.UserLocal local, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+				return new LocalStatementCascade( local, blockStatementIndexPair );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.UserLocal local;

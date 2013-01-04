@@ -465,7 +465,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) {
+		public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) throws org.lgna.croquet.UnsupportedGenerationException {
 			org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
 			CascadeFillIn<T, ?> fillIn = this.customizer.getFillInFor( nextValue );
 			if( fillIn != null ) {
@@ -511,10 +511,21 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 	}
 
+	private static final class InternalCardOwnerComposite extends CardOwnerComposite {
+		private InternalCardOwnerComposite( Composite<?>... cards ) {
+			super( java.util.UUID.fromString( "3a6b3b22-9c35-473b-96cf-f69640176948" ), cards );
+		}
+	}
+
 	private java.util.UUID cardId;
+
+	private V view;
+
+	private final org.lgna.croquet.components.ScrollPane scrollPane;
 
 	public AbstractComposite( java.util.UUID id ) {
 		super( id );
+		this.scrollPane = this.createScrollPaneIfDesired();
 		Manager.registerComposite( this );
 	}
 
@@ -527,7 +538,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return this.cardId;
 	}
 
-	private V view;
+	protected abstract org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired();
 
 	protected abstract V createView();
 
@@ -541,19 +552,70 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		} else {
 			this.view = this.createView();
 			assert this.view != null : this;
+			if( this.scrollPane != null ) {
+				this.scrollPane.setViewportView( this.view );
+			}
 		}
 		return this.view;
+	}
+
+	public final org.lgna.croquet.components.ScrollPane getScrollPaneIfItExists() {
+		return this.scrollPane;
+	}
+
+	public final org.lgna.croquet.components.JComponent<?> getRootComponent() {
+		if( this.scrollPane != null ) {
+			return this.scrollPane;
+		} else {
+			return this.getView();
+		}
 	}
 
 	public void releaseView() {
 		this.view = null;
 	}
 
+	private final java.util.List<Composite<?>> subComposites = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	protected void registerSubComposite( Composite<?> subComposite ) {
+		this.subComposites.add( subComposite );
+	}
+
+	protected void unregisterSubComposite( Composite<?> subComposite ) {
+		this.subComposites.remove( subComposite );
+	}
+
+	protected void registerTabSelectionState( TabSelectionState<?> tabSelectionState ) {
+		this.registeredTabSelectionStates.add( tabSelectionState );
+	}
+
+	protected void unregisterTabSelectionState( TabSelectionState<?> tabSelectionState ) {
+		this.registeredTabSelectionStates.remove( tabSelectionState );
+	}
+
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
+		for( Composite<?> subComposite : this.subComposites ) {
+			subComposite.handlePreActivation();
+		}
+		for( TabSelectionState<?> tabSelectionState : this.mapKeyToTabSelectionState.values() ) {
+			tabSelectionState.handlePreActivation();
+		}
+		for( TabSelectionState<?> tabSelectionState : this.registeredTabSelectionStates ) {
+			tabSelectionState.handlePreActivation();
+		}
 	}
 
 	public void handlePostDeactivation() {
+		for( TabSelectionState<?> tabSelectionState : this.registeredTabSelectionStates ) {
+			tabSelectionState.handlePostDeactivation();
+		}
+		for( TabSelectionState<?> tabSelectionState : this.mapKeyToTabSelectionState.values() ) {
+			tabSelectionState.handlePostDeactivation();
+		}
+		for( Composite<?> subComposite : this.subComposites ) {
+			subComposite.handlePostDeactivation();
+		}
 	}
 
 	private java.util.Map<Key, AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -567,14 +629,35 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	private java.util.Map<Key, InternalCascadeWithInternalBlank> mapKeyToCascade = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalCustomItemState> mapKeyToItemState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
+	private java.util.Set<TabSelectionState> registeredTabSelectionStates = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+
+	//	private java.util.Map<Key, InternalCardOwnerComposite> mapKeyToCardOwnerComposite = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	private static final String SIDEKICK_LABEL_EPILOGUE = ".sidekickLabel";
+
 	private void localizeSidekicks( java.util.Map<Key, ? extends AbstractCompletionModel>... maps ) {
 		for( java.util.Map<Key, ? extends AbstractCompletionModel> map : maps ) {
 			for( Key key : map.keySet() ) {
 				AbstractCompletionModel model = map.get( key );
-				String text = this.findLocalizedText( key.getLocalizationKey() + ".sidekickLabel" );
+				String text = this.findLocalizedText( key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE );
 				if( text != null ) {
 					StringValue sidekickLabel = model.getSidekickLabel();
 					sidekickLabel.setText( text );
+				} else {
+					Class<?> cls = this.getClassUsedForLocalization();
+					String localizationKey = cls.getSimpleName() + "." + key.getLocalizationKey() + SIDEKICK_LABEL_EPILOGUE;
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "WARNING: could not find localization for sidekick label" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "looking for:" );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "   ", localizationKey );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "in croquet.properties file in package:", cls.getPackage().getName() );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( localizationKey, "has been copied to the clipboard for your convenience." );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "if this does not solve your problem please feel free to ask dennis for help." );
+
+					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( localizationKey );
 				}
 			}
 		}
@@ -745,5 +828,9 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 	protected SplitComposite createVerticalSplitComposite( Composite<?> leadingComposite, Composite<?> trailingComposite, double resizeWeight ) {
 		return new InternalSplitComposite( leadingComposite, trailingComposite, false, resizeWeight );
+	}
+
+	protected CardOwnerComposite createCardOwnerComposite( Composite<?>... cards ) {
+		return new InternalCardOwnerComposite( cards );
 	}
 }

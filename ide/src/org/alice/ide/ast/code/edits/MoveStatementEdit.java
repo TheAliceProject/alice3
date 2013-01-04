@@ -94,7 +94,7 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		int toDelta = this.getToDelta();
 		this.fromLocation.getBlockStatement().statements.remove( this.fromLocation.getIndex() );
 		this.toLocation.getBlockStatement().statements.add( this.toLocation.getIndex() + toDelta, this.statement );
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		int toDelta = this.getToDelta();
 		this.toLocation.getBlockStatement().statements.remove( this.toLocation.getIndex() + toDelta );
 		this.fromLocation.getBlockStatement().statements.add( this.fromLocation.getIndex(), this.statement );
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
 	}
 
 	@Override
@@ -121,11 +121,9 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	}
 
 	@Override
-	public StringBuilder updatePresentation( StringBuilder rv ) {
-		//super.updatePresentation( rv, locale );
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "move: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 
 	@Override

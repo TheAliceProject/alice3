@@ -47,20 +47,17 @@ package org.alice.ide.ast.draganddrop.expression;
  * @author Dennis Cosgrove
  */
 public class FieldAccessDragModel extends AbstractExpressionDragModel {
-	private static java.util.Map<org.lgna.project.ast.AbstractField, FieldAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.AbstractField, FieldAccessDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public static synchronized FieldAccessDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		FieldAccessDragModel rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldAccessDragModel( field );
-			map.put( field, rv );
-		}
-		return rv;
+	public static FieldAccessDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
+		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.AbstractField, FieldAccessDragModel>() {
+			public FieldAccessDragModel initialize( org.lgna.project.ast.AbstractField field ) {
+				return new FieldAccessDragModel( field );
+			}
+		} );
 	}
 
-	private org.lgna.project.ast.AbstractField field;
+	private final org.lgna.project.ast.AbstractField field;
 
 	private FieldAccessDragModel( org.lgna.project.ast.AbstractField field ) {
 		super( java.util.UUID.fromString( "55de38ae-a90e-4c6a-9208-4a83f3f303d9" ) );

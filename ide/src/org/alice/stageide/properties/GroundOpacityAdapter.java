@@ -93,6 +93,7 @@ public class GroundOpacityAdapter extends AbstractPropertyAdapter<Double, Ground
 	public GroundOpacityAdapter( GroundImp instance, StandardExpressionState expressionState ) {
 		super( "Opacity", instance, expressionState );
 		this.property = instance.opacity;
+		this.startPropertyListening();
 	}
 
 	@Override

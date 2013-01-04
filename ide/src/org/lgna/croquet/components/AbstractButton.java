@@ -49,32 +49,28 @@ package org.lgna.croquet.components;
 public abstract class AbstractButton<J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model> extends ViewController<J, M> {
 	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
 
-	private boolean isIconSet;
-	private javax.swing.Icon setIcon;
+	private boolean isIconClobbered;
+	private javax.swing.Icon clobberIcon;
 
 	public AbstractButton( M model ) {
 		super( model );
 	}
 
-	protected javax.swing.Icon getSetIcon() {
-		return this.setIcon;
+	public boolean isIconClobbered() {
+		return this.isIconClobbered;
 	}
 
-	public boolean isIconSet() {
-		return this.isIconSet;
+	public void setIconClobbered( boolean isIconClobbered ) {
+		this.isIconClobbered = isIconClobbered;
 	}
 
-	public void setIconSet( boolean isIconSet ) {
-		this.isIconSet = isIconSet;
+	public javax.swing.Icon getClobberIcon() {
+		return this.clobberIcon;
 	}
 
-	public javax.swing.Icon getIcon() {
-		return this.getAwtComponent().getIcon();
-	}
-
-	public void setIcon( javax.swing.Icon icon ) {
-		this.setIconSet( true );
-		this.setIcon = icon;
+	public void setClobberIcon( javax.swing.Icon clobberIcon ) {
+		this.clobberIcon = clobberIcon;
+		this.isIconClobbered = true;
 	}
 
 	/* package-private */void setSwingButtonModel( javax.swing.ButtonModel model ) {

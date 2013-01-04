@@ -59,4 +59,10 @@ public class DoInOrder extends AbstractStatementWithBody {
 		rv.append( "do in order" );
 		return super.appendRepr( rv, locale );
 	}
+
+	@Override
+	/* package-private */void appendJava( JavaCodeGenerator generator ) {
+		generator.appendString( "/*do in order*/" );
+		this.body.getValue().appendJava( generator );
+	}
 }

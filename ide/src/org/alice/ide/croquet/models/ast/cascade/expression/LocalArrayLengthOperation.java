@@ -47,19 +47,16 @@ package org.alice.ide.croquet.models.ast.cascade.expression;
  * @author Dennis Cosgrove
  */
 public class LocalArrayLengthOperation extends ArrayLengthOperation {
-	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayLengthOperation> map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static edu.cmu.cs.dennisc.map.MapToMap<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayLengthOperation> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
-	public static synchronized LocalArrayLengthOperation getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public static LocalArrayLengthOperation getInstance( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		assert local != null;
 		assert expressionProperty != null;
-		LocalArrayLengthOperation rv = map.get( local, expressionProperty );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalArrayLengthOperation( local, expressionProperty );
-			map.put( local, expressionProperty, rv );
-		}
-		return rv;
+		return mapToMap.getInitializingIfAbsent( local, expressionProperty, new edu.cmu.cs.dennisc.map.MapToMap.Initializer<org.lgna.project.ast.UserLocal, org.lgna.project.ast.ExpressionProperty, LocalArrayLengthOperation>() {
+			public LocalArrayLengthOperation initialize( org.lgna.project.ast.UserLocal local, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+				return new LocalArrayLengthOperation( local, expressionProperty );
+			}
+		} );
 	}
 
 	private final org.lgna.project.ast.UserLocal local;

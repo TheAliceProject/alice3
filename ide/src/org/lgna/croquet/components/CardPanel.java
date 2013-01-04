@@ -69,114 +69,40 @@ public class CardPanel extends Panel {
 		this( composite, 0, 0 );
 	}
 
-	@Deprecated
-	public CardPanel() {
-		this( null );
-	}
-
-	@Deprecated
-	public CardPanel( int hgap, int vgap ) {
-		this( null, hgap, vgap );
-	}
-
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return this.cardLayout;
 	}
 
-	public static final class Key {
-		private final JComponent<?> view;
-		private final java.util.UUID id;
+	private static final String NULL_KEY = "null";
 
-		private Key( JComponent<?> view, java.util.UUID id ) {
-			this.view = view;
-			this.id = id;
-		}
+	private Label nullLabel;
 
-		public java.util.UUID getId() {
-			return this.id;
-		}
-
-		public JComponent<?> getView() {
-			return this.view;
-		}
-	}
-
-	private java.util.Map<java.util.UUID, Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private Key nullKey;
-
-	@Deprecated
-	public Key createKey( JComponent<?> child, java.util.UUID id ) {
-		if( map.containsKey( id ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "CardPanel replacing key", id );
-		}
-		Key rv = new Key( child, id );
-		this.map.put( id, rv );
-		return rv;
-	}
-
-	@Deprecated
-	public Key getKey( java.util.UUID id ) {
-		return this.map.get( id );
-	}
-
-	@Deprecated
-	public void addComponent( Key key ) {
-		this.internalAddComponent( key.view, key.id.toString() );
-	}
-
-	@Deprecated
-	public void removeComponent( Key key ) {
-		this.internalRemoveComponent( key.view );
-	}
-
-	@Deprecated
-	public void showKey( Key key ) {
-		if( key != null ) {
-			//pass
-		} else {
-			if( this.nullKey != null ) {
-				//pass
-			} else {
-				Label label = new Label();
-				//label.setText( "unset" );
-				label.setBackgroundColor( null );
-				label.setHorizontalAlignment( HorizontalAlignment.CENTER );
-				this.nullKey = this.createKey( label, java.util.UUID.randomUUID() );
-				this.addComponent( this.nullKey );
-			}
-			key = this.nullKey;
-		}
-		this.cardLayout.show( this.getAwtComponent(), key.id.toString() );
-	}
-
-	private Key getKey( org.lgna.croquet.Composite<?> composite ) {
-		if( composite != null ) {
-			java.util.UUID id = composite.getCardId();
-			Key key = this.getKey( id );
-			if( key != null ) {
-				//pass
-			} else {
-				key = this.createKey( composite.getView(), id );
-			}
-			return key;
-		} else {
-			return null;
-		}
+	private static String getKey( org.lgna.croquet.Composite<?> composite ) {
+		return composite != null ? composite.getCardId().toString() : NULL_KEY;
 	}
 
 	public void addComposite( org.lgna.croquet.Composite<?> composite ) {
-		assert composite != null;
-		this.addComponent( this.getKey( composite ) );
+		assert composite != null : this;
+		this.internalAddComponent( composite.getRootComponent(), getKey( composite ) );
 	}
 
 	public void removeComposite( org.lgna.croquet.Composite<?> composite ) {
-		assert composite != null;
-		this.removeComponent( this.getKey( composite ) );
+		assert composite != null : this;
+		this.internalRemoveComponent( composite.getRootComponent() );
 	}
 
 	public void showComposite( org.lgna.croquet.Composite<?> composite ) {
-		this.showKey( this.getKey( composite ) );
+		if( composite != null ) {
+			//pass
+		} else {
+			if( this.nullLabel != null ) {
+				//pass
+			} else {
+				this.nullLabel = new Label();
+				this.internalAddComponent( this.nullLabel, NULL_KEY );
+			}
+		}
+		this.cardLayout.show( this.getAwtComponent(), getKey( composite ) );
 	}
-
 }

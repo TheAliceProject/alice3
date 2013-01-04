@@ -84,10 +84,19 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	private void updateUndoRedoEnabled() {
 		org.lgna.croquet.undo.UndoHistory historyManager = this.getProjectHistory( org.alice.ide.IDE.PROJECT_GROUP );
-		int index = historyManager.getInsertionIndex();
-		int size = historyManager.getStack().size();
-		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( index > 0 );
-		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( index < size );
+		boolean isUndoEnabled;
+		boolean isRedoEnabled;
+		if( historyManager != null ) {
+			int index = historyManager.getInsertionIndex();
+			int size = historyManager.getStack().size();
+			isUndoEnabled = index > 0;
+			isRedoEnabled = index < size;
+		} else {
+			isUndoEnabled = false;
+			isRedoEnabled = false;
+		}
+		org.alice.ide.croquet.models.history.UndoOperation.getInstance().setEnabled( isUndoEnabled );
+		org.alice.ide.croquet.models.history.RedoOperation.getInstance().setEnabled( isRedoEnabled );
 	}
 
 	protected void handleInsertionIndexChanged( org.lgna.croquet.undo.event.HistoryInsertionIndexEvent e ) {
@@ -103,7 +112,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	public static final String getVersionText() {
-		return org.lgna.project.Version.getCurrentVersionText();
+		return org.lgna.project.ProjectVersion.getCurrentVersionText();
 	}
 
 	public static final String getVersionAdornment() {
@@ -335,6 +344,51 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	public void setProject( org.lgna.project.Project project ) {
+		StringBuilder sb = new StringBuilder();
+		java.util.Set<org.lgna.project.ast.NamedUserType> types = project.getNamedUserTypes();
+		for( org.lgna.project.ast.NamedUserType type : types ) {
+			boolean wasNullMethodRemoved = false;
+			java.util.ListIterator<org.lgna.project.ast.UserMethod> methodIterator = type.getDeclaredMethods().listIterator();
+			while( methodIterator.hasNext() ) {
+				org.lgna.project.ast.UserMethod method = methodIterator.next();
+				if( method != null ) {
+					//pass
+				} else {
+					methodIterator.remove();
+					wasNullMethodRemoved = true;
+				}
+			}
+			boolean wasNullFieldRemoved = false;
+			java.util.ListIterator<org.lgna.project.ast.UserField> fieldIterator = type.getDeclaredFields().listIterator();
+			while( fieldIterator.hasNext() ) {
+				org.lgna.project.ast.UserField field = fieldIterator.next();
+				if( field != null ) {
+					//pass
+				} else {
+					fieldIterator.remove();
+					wasNullFieldRemoved = true;
+				}
+			}
+			if( wasNullMethodRemoved ) {
+				if( sb.length() > 0 ) {
+					sb.append( "\n" );
+				}
+				sb.append( "null method was removed from " );
+				sb.append( type.getName() );
+				sb.append( "." );
+			}
+			if( wasNullFieldRemoved ) {
+				if( sb.length() > 0 ) {
+					sb.append( "\n" );
+				}
+				sb.append( "null field was removed from " );
+				sb.append( type.getName() );
+				sb.append( "." );
+			}
+		}
+		if( sb.length() > 0 ) {
+			this.showMessageDialog( sb.toString(), "A Problem With Your Project Has Been Fixed", org.lgna.croquet.MessageType.WARNING );
+		}
 		this.setDocument( new ProjectDocument( project ) );
 	}
 

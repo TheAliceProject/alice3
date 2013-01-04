@@ -330,6 +330,10 @@ public abstract class ExpressionCascadeManager {
 		return true;
 	}
 
+	protected boolean isNullLiteralAllowedForType( org.lgna.project.ast.AbstractType<?, ?, ?> type, java.util.List<org.lgna.croquet.CascadeBlankChild> items ) {
+		return false;
+	}
+
 	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type, org.lgna.project.annotations.ValueDetails<?> details ) {
 		if( type != null ) {
 			boolean isRoot = blankNode.isTop();
@@ -379,6 +383,9 @@ public abstract class ExpressionCascadeManager {
 			if( type.isArray() ) {
 				items.add( org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( type.getComponentType() ).getFillIn() );
 				//rv.add( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( type ).getValueCreator().getFillIn() );
+			}
+			if( this.isNullLiteralAllowedForType( type, items ) ) {
+				items.add( org.alice.ide.croquet.models.cascade.literals.NullLiteralFillIn.getInstance() );
 			}
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "type is null" );

@@ -50,24 +50,18 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
 
 /*package-private*/class FolderTabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends TabItemDetails<E> {
-	private final CardPanel.Key cardPanelKey;
 	private final FolderTabbedPane<E> folderTabbedPane;
 
-	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane, ScrollPane scrollPane ) {
-		super( state, item, folderTabbedPane, scrollPane );
+	public FolderTabItemDetails( org.lgna.croquet.ItemState<E> state, E item, FolderTabbedPane<E> folderTabbedPane ) {
+		super( state, item, folderTabbedPane );
 		this.folderTabbedPane = folderTabbedPane;
-		this.cardPanelKey = folderTabbedPane.getCardPanel().createKey( this.getRootComponent(), this.getTabId() );
-	}
-
-	public CardPanel.Key getCardPanelKey() {
-		return this.cardPanelKey;
 	}
 
 	@Override
 	public void setSelected( boolean isSelected ) {
 		super.setSelected( isSelected );
 		if( isSelected ) {
-			this.folderTabbedPane.getCardPanel().showKey( this.cardPanelKey );
+			this.folderTabbedPane.getCardPanel().showComposite( this.getItem() );
 			this.folderTabbedPane.getCardPanel().revalidateAndRepaint();
 		}
 	}
@@ -80,7 +74,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	private static final int TRAILING_TAB_PAD = 32;
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 ).darker();
 
-	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicButtonUI {
+	private static class FolderTabTitleUI extends javax.swing.plaf.basic.BasicToggleButtonUI {
 		@Override
 		public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
@@ -107,7 +101,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			if( button.getComponentCount() > 0 ) {
 				for( java.awt.Component component : button.getComponents() ) {
 					//if( component.isVisible() ) {
-					bounds.width += 2;
+					bounds.width += 4;
 					bounds.width += component.getPreferredSize().width;
 					//}
 				}
@@ -124,7 +118,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		//		}
 	}
 
-	private static class JFolderTabTitle extends javax.swing.JRadioButton {
+	private static class JFolderTabTitle extends javax.swing.JToggleButton {
 		private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 			public void itemStateChanged( java.awt.event.ItemEvent e ) {
 				JFolderTabTitle.this.revalidate();
@@ -136,6 +130,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 			this.setAlignmentY( java.awt.Component.BOTTOM_ALIGNMENT );
 			this.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+			this.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 			this.setLayout( new javax.swing.SpringLayout() );
 		}
 
@@ -185,7 +180,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 				} else {
 					horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
 				}
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 4 );
+				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 2 );
 			}
 		}
 
@@ -549,8 +544,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	@Override
-	protected FolderTabItemDetails<E> createTabItemDetails( E item, ScrollPane scrollPane ) {
-		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this.getModel(), item, this, scrollPane );
+	protected FolderTabItemDetails<E> createTabItemDetails( E item ) {
+		FolderTabItemDetails<E> rv = new FolderTabItemDetails<E>( this.getModel(), item, this );
 		rv.getRootComponent().setVisible( false );
 		return rv;
 	};
@@ -572,7 +567,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	@Override
 	protected void addItem( FolderTabItemDetails<E> folderTabItemDetails ) {
 		this.titlesPanel.addComponent( folderTabItemDetails.getButton() );
-		this.cardComposite.getView().addComponent( folderTabItemDetails.getCardPanelKey() );
+		this.cardComposite.getView().addComposite( folderTabItemDetails.getItem() );
 	}
 
 	@Override

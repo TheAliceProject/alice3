@@ -46,10 +46,24 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class StringState extends State<String> {
-	public class SwingModel {
+	public static class SwingModel {
+		private final java.util.List<org.lgna.croquet.components.TextComponent<?>> textComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 		private final javax.swing.text.Document document = new javax.swing.text.PlainDocument();
 
 		private SwingModel() {
+		}
+
+		public void install( org.lgna.croquet.components.TextComponent<?> textComponent ) {
+			this.textComponents.add( textComponent );
+			textComponent.getAwtComponent().setDocument( this.document );
+		}
+
+		public void deinstall( org.lgna.croquet.components.TextComponent<?> textComponent ) {
+			this.textComponents.remove( textComponent );
+		}
+
+		public Iterable<org.lgna.croquet.components.TextComponent<?>> getTextComponents() {
+			return this.textComponents;
 		}
 
 		public javax.swing.text.Document getDocument() {
@@ -199,11 +213,15 @@ public abstract class StringState extends State<String> {
 	}
 
 	public void selectAll() {
-		for( org.lgna.croquet.components.Component component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
-			if( component instanceof org.lgna.croquet.components.TextComponent ) {
-				org.lgna.croquet.components.TextComponent textComponent = (org.lgna.croquet.components.TextComponent)component;
-				textComponent.selectAll();
-			}
+		for( org.lgna.croquet.components.TextComponent<?> textComponent : this.swingModel.getTextComponents() ) {
+			textComponent.selectAll();
+		}
+	}
+
+	public void requestFocus() {
+		for( org.lgna.croquet.components.Component<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+			//todo: find the most appropriate candidate?
+			component.requestFocus();
 		}
 	}
 }

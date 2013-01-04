@@ -111,4 +111,6 @@ public interface ManipulationHandle extends Cloneable {
 	public void setDragAdapter( AbstractDragAdapter dragAdapter );
 
 	public void setCameraPosition( Point3 cameraPosition );
+
+	public void clear();
 }

@@ -75,4 +75,30 @@ public abstract class AbstractCode extends AbstractMember implements Code {
 	public abstract AbstractCode getNextShorterInChain();
 
 	public abstract boolean isSignatureLocked();
+
+	public final AbstractParameter[] getAllParameters() {
+		java.util.ArrayList<? extends AbstractParameter> requiredParameters = this.getRequiredParameters();
+		AbstractParameter variableLengthParameter = this.getVariableLengthParameter();
+		AbstractParameter keyedParameter = this.getKeyedParameter();
+
+		int length = requiredParameters.size();
+		if( variableLengthParameter != null ) {
+			length += 1;
+		}
+		if( keyedParameter != null ) {
+			length += 1;
+		}
+		AbstractParameter[] rv = new AbstractParameter[ length ];
+		requiredParameters.toArray( rv );
+		int i = requiredParameters.size();
+		if( variableLengthParameter != null ) {
+			rv[ i ] = variableLengthParameter;
+			i += 1;
+		}
+		if( keyedParameter != null ) {
+			rv[ i ] = keyedParameter;
+			i += 1;
+		}
+		return rv;
+	}
 }

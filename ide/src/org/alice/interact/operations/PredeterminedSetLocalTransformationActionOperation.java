@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -43,40 +43,10 @@
 package org.alice.interact.operations;
 
 /**
- * @author Dennis Cosgrove
+ * @author Dave Culyba
  */
-public class PredeterminedSetLocalTransformationActionOperation extends AbstractSetLocalTransformationActionOperation {
-	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT;
-	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT;
-	private String editPresentationKey;
-
-	public PredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( group, java.util.UUID.fromString( "461e0745-a8b4-4fca-8af7-5efb213f855b" ), isDoRequired, animator );
-		this.sgTransformable = sgTransformable;
-		this.prevLT = prevLT;
-		this.nextLT = nextLT;
-		this.editPresentationKey = editPresentationKey;
+public class PredeterminedSetLocalTransformationActionOperation extends AbstractPredeterminedSetLocalTransformationActionOperation {
+	public PredeterminedSetLocalTransformationActionOperation( org.lgna.croquet.Group group, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, org.lgna.project.ast.UserField field, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
+		super( group, java.util.UUID.fromString( "6c925ae4-ad06-4929-8da9-3e13dd17035c" ), isDoRequired, animator, field, prevLT, nextLT, editPresentationKey );
 	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGTransformable() {
-		return this.sgTransformable;
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation() {
-		return this.nextLT;
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation() {
-		return this.prevLT;
-	}
-
-	@Override
-	protected String getEditPresentationName() {
-		return this.editPresentationKey;
-	}
-
 }

@@ -47,17 +47,16 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class TextComponent<J extends javax.swing.text.JTextComponent> extends ViewController<J, org.lgna.croquet.StringState> {
-	private javax.swing.border.BevelBorder outsideBorder = new javax.swing.border.BevelBorder( javax.swing.border.BevelBorder.LOWERED );
-	private edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder insideBorder = new edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder();
-	private javax.swing.border.CompoundBorder border = new javax.swing.border.CompoundBorder( outsideBorder, insideBorder );
-
-	//	private javax.swing.border.Border border = new edu.cmu.cs.dennisc.javax.swing.border.SunkenBorder( 4, 4, 2, 2 );
+	private final javax.swing.border.BevelBorder outsideBorder = new javax.swing.border.BevelBorder( javax.swing.border.BevelBorder.LOWERED );
+	private final edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder insideBorder = new edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder();
+	private final javax.swing.border.CompoundBorder border = new javax.swing.border.CompoundBorder( outsideBorder, insideBorder );
 
 	public TextComponent( org.lgna.croquet.StringState model ) {
 		super( model );
-		this.getAwtComponent().setBorder( this.border );
-		this.getAwtComponent().setDocument( model.getSwingModel().getDocument() );
-		this.getAwtComponent().setEnabled( model.isEnabled() );
+		J jTextComponent = this.getAwtComponent();
+		model.getSwingModel().install( this );
+		jTextComponent.setBorder( this.border );
+		jTextComponent.setEnabled( model.isEnabled() );
 		this.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
 		this.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
 	}

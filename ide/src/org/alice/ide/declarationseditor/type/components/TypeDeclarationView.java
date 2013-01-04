@@ -131,11 +131,10 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 	}
 
 	@Override
-	public boolean isPrintSupported() {
-		return false;
-	}
-
-	public int print( java.awt.Graphics g, java.awt.print.PageFormat pageFormat, int pageIndex ) throws java.awt.print.PrinterException {
-		throw new RuntimeException( "todo" );
+	public java.awt.print.Printable getPrintable() {
+		return new edu.cmu.cs.dennisc.java.awt.PrintHelper.Builder( this.getInsets(), this.getBackgroundColor() )
+				.pageStart( this.getPageStartComponent().getAwtComponent() )
+				.center( this.getCenterComponent().getAwtComponent() )
+				.build();
 	}
 }

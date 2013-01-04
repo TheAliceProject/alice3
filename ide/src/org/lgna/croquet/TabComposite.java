@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,101 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
-	private String titleText;
-	private javax.swing.Icon titleIcon;
+public interface TabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
+	public boolean isCloseable();
 
-	private org.lgna.croquet.BooleanState booleanState;
-	//todo: remove
-	private org.lgna.croquet.components.BooleanStateButton<?> button = null;
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button );
 
-	public TabComposite( java.util.UUID id ) {
-		super( id );
-	}
-
-	public java.util.UUID getTabId() {
-		return this.getMigrationId();
-	}
-
-	public abstract boolean isCloseable();
-
-	public org.lgna.croquet.components.ScrollPane createScrollPane() {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		rv.setBothScrollBarIncrements( 12, 24 );
-		return rv;
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setTitleText( this.findDefaultLocalizedText() );
-	}
-
-	public String getTitleText() {
-		return this.titleText;
-	}
-
-	protected void setTitleText( String titleText ) {
-		this.titleText = titleText;
-		this.updateTitleText();
-	}
-
-	public javax.swing.Icon getTitleIcon() {
-		return this.titleIcon;
-	}
-
-	public void setTitleIcon( javax.swing.Icon titleIcon ) {
-		this.titleIcon = titleIcon;
-		this.updateTitleIcon();
-	}
-
-	private void updateTitleText() {
-		if( this.button != null ) {
-			this.booleanState.setTextForBothTrueAndFalse( this.getTitleText() );
-		}
-	}
-
-	private void updateTitleIcon() {
-		if( this.button != null ) {
-			this.button.getAwtComponent().setIcon( this.getTitleIcon() );
-		}
-	}
-
-	@Override
-	public void appendUserRepr( StringBuilder userRepr ) {
-		userRepr.append( this.getTitleText() );
-	}
-
-	@Override
-	protected final void appendRepr( StringBuilder repr ) {
-		this.appendUserRepr( repr );
-	}
-
-	@Override
-	protected String createRepr() {
-		StringBuilder sb = new StringBuilder();
-		this.appendRepr( sb );
-		return sb.toString();
-	}
-
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		this.initializeIfNecessary();
-		this.booleanState = booleanState;
-		this.button = button;
-		this.updateTitleText();
-		this.updateTitleIcon();
-	}
-
-	public void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-	}
-
-	public void TEMPORARY_HACK_handleSelected() {
-	}
+	public void TEMPORARY_HACK_handleSelected();
 }

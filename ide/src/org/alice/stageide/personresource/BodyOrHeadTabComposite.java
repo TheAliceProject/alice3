@@ -48,16 +48,11 @@ package org.alice.stageide.personresource;
  */
 public abstract class BodyOrHeadTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
 	public BodyOrHeadTabComposite( java.util.UUID id ) {
-		super( id );
+		super( id, IsCloseable.FALSE );
 	}
 
 	@Override
-	public final boolean isCloseable() {
-		return false;
-	}
-
-	@Override
-	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 }

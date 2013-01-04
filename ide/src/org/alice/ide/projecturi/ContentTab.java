@@ -48,26 +48,20 @@ package org.alice.ide.projecturi;
  */
 public abstract class ContentTab<V extends org.alice.ide.projecturi.views.TabContentPanel> extends org.lgna.croquet.SimpleTabComposite<V> {
 	public ContentTab( java.util.UUID id ) {
-		super( id );
+		super( id, IsCloseable.FALSE );
 	}
 
 	public final java.net.URI getSelectedUri() {
 		return getView().getSelectedUri();
 	}
 
-	@Override
-	public boolean isCloseable() {
-		return false;
-	}
-
 	protected abstract void refresh();
 
 	@Override
-	public org.lgna.croquet.components.ScrollPane createScrollPane() {
-		org.lgna.croquet.components.ScrollPane rv = super.createScrollPane();
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		org.lgna.croquet.components.ScrollPane rv = super.createScrollPaneIfDesired();
 		rv.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 		rv.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
-		rv.setBothScrollBarIncrements( 12, 24 );
 		return rv;
 	}
 }

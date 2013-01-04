@@ -113,23 +113,7 @@ public abstract class DeclarationPanel<M extends org.alice.ide.croquet.models.de
 
 	private String generateNameFromInitializer() {
 		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
-		if( instanceCreation != null ) {
-			java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
-			if( fld != null ) {
-				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
-			} else {
-				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = constructor.getDeclaringType();
-				String typeName = abstractType.getName();
-				if( typeName != null ) {
-					return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
-				} else {
-					return "";
-				}
-			}
-		} else {
-			return "";
-		}
+		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
 
 	protected void updateNameTextField() {

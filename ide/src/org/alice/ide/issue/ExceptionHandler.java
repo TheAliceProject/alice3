@@ -48,8 +48,6 @@ package org.alice.ide.issue;
 public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 	protected abstract boolean handleLgnaRuntimeException( Thread thread, org.lgna.common.LgnaRuntimeException lgnare );
 
-	protected abstract boolean handleGlException( Thread thread, javax.media.opengl.GLException gle );
-
 	protected abstract void handleThrowable( Thread thread, Throwable throwable );
 
 	public final void uncaughtException( Thread thread, Throwable throwable ) {
@@ -69,9 +67,6 @@ public abstract class ExceptionHandler implements Thread.UncaughtExceptionHandle
 		if( throwable instanceof org.lgna.common.LgnaRuntimeException ) {
 			org.lgna.common.LgnaRuntimeException lgnare = (org.lgna.common.LgnaRuntimeException)throwable;
 			isHandled = this.handleLgnaRuntimeException( thread, lgnare );
-		} else if( throwable instanceof javax.media.opengl.GLException ) {
-			javax.media.opengl.GLException gle = (javax.media.opengl.GLException)throwable;
-			isHandled = this.handleGlException( thread, gle );
 		} else {
 			isHandled = false;
 		}

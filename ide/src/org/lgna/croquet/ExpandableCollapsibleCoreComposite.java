@@ -83,6 +83,11 @@ public abstract class ExpandableCollapsibleCoreComposite<V extends org.lgna.croq
 		this.outerComposite = new OuterComposite( this, isExpandedInitialValue );
 	}
 
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
 	public OuterComposite getOuterComposite() {
 		return this.outerComposite;
 	}

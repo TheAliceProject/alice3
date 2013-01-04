@@ -78,9 +78,9 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 	private void updateFinalLabel() {
 		String text;
 		if( field.isFinal() ) {
-			text = "permanently set ";
+			text = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getFinalText() + " ";
 		} else {
-			text = "initialize ";
+			text = "";
 		}
 		this.finalLabel.setText( text );
 	}

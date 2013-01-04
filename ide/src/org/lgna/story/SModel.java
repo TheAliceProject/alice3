@@ -110,7 +110,8 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 	@MethodTemplate( )
 	public void setWidth( Number width, SetWidth.Detail... details ) {
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
-		this.getImplementation().animateSetWidth( width.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		//todo: allow for 0.0
+		this.getImplementation().animateSetWidth( EmployeesOnly.checkArgumentDoubleValuePositive( width, 0 ), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
@@ -121,7 +122,8 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 	@MethodTemplate( )
 	public void setHeight( Number height, SetHeight.Detail... details ) {
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
-		this.getImplementation().animateSetHeight( height.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		//todo: allow for 0.0
+		this.getImplementation().animateSetHeight( EmployeesOnly.checkArgumentDoubleValuePositive( height, 0 ), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
@@ -132,35 +134,31 @@ public abstract class SModel extends SMovableTurnable implements MutableRider, R
 	@MethodTemplate( )
 	public void setDepth( Number depth, SetDepth.Detail... details ) {
 		SetDimensionPolicy policy = SetDimensionPolicy.getValue( details );
-		this.getImplementation().animateSetDepth( depth.doubleValue(), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		//todo: allow for 0.0
+		this.getImplementation().animateSetDepth( EmployeesOnly.checkArgumentDoubleValuePositive( depth, 0 ), policy.isVolumePreserved(), policy.isAspectRatioPreserved(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void resize( Number factor, Resize.Detail... details ) {
-		this.getImplementation().animateResize( factor.doubleValue(), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		//todo: explain how to make things smaller 
+		this.getImplementation().animateResize( EmployeesOnly.checkArgumentDoubleValuePositive( factor, 0 ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void resizeWidth( Number factor, ResizeWidth.Detail... details ) {
-		this.getImplementation().animateResizeWidth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		//todo: explain how to make things smaller 
+		this.getImplementation().animateResizeWidth( EmployeesOnly.checkArgumentDoubleValuePositive( factor, 0 ), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void resizeHeight( Number factor, ResizeHeight.Detail... details ) {
-		this.getImplementation().animateResizeHeight( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		//todo: explain how to make things smaller 
+		this.getImplementation().animateResizeHeight( EmployeesOnly.checkArgumentDoubleValuePositive( factor, 0 ), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
 
 	@MethodTemplate( )
 	public void resizeDepth( Number factor, ResizeDepth.Detail... details ) {
-		this.getImplementation().animateResizeDepth( factor.doubleValue(), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
+		//todo: explain how to make things smaller 
+		this.getImplementation().animateResizeDepth( EmployeesOnly.checkArgumentDoubleValuePositive( factor, 0 ), IsVolumePreserved.getValue( details ), Duration.getValue( details ), AnimationStyle.getValue( details ).getInternal() );
 	}
-
-	//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	//	public void addMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-	//		this.getImplementation().addMouseButtonListener( mouseButtonListener );
-	//	}
-	//	@MethodTemplate(visibility=Visibility.COMPLETELY_HIDDEN)
-	//	public void removeMouseButtonListener( org.lgna.story.event.MouseButtonListener mouseButtonListener ) {
-	//		this.getImplementation().removeMouseButtonListener( mouseButtonListener );
-	//	}
 }

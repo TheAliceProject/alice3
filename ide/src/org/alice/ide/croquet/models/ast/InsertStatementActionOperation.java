@@ -68,13 +68,13 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 
 	public void doOrRedoInternal( boolean isDo ) {
 		this.blockStatement.statements.add( this.index, this.statement );
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
 	}
 
 	public void undoInternal() {
 		if( this.blockStatement.statements.get( this.index ) == this.statement ) {
 			this.blockStatement.statements.remove( this.index );
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().handleAstChangeThatCouldBeOfInterest();
+			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}
@@ -106,11 +106,9 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 		//		}
 	}
 
-	public StringBuilder updatePresentation( StringBuilder rv ) {
-		//super.updatePresentation( rv, locale );
+	public void appendDescription( StringBuilder rv, boolean isDetailed ) {
 		rv.append( "create: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 
 	public org.lgna.croquet.edits.ReplacementAcceptability getReplacementAcceptability( org.lgna.croquet.edits.Edit<?> replacementCandidate ) {
