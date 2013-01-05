@@ -151,6 +151,9 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
 		org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
 		completionStep.commitAndInvokeDo( replacementEdit );
+
+		originalEdit.addKeyValuePairs( retargeter, replacementEdit );
+
 		return replacementEdit;
 	}
 
