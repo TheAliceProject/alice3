@@ -109,21 +109,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		return rv;
 	}
 
-	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.croquet.edits.Edit<?> replacementEdit = org.lgna.croquet.edits.Edit.createCopy( originalEdit );
-		replacementEdit.retarget( retargeter );
-		return replacementEdit;
-	}
-
-	@Override
-	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.edits.Edit<?> replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
-		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
-		org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
-		completionStep.commitAndInvokeDo( replacementEdit );
-		return replacementEdit;
-	}
-
 	@Override
 	public boolean isEnabled() {
 		return this.swingModel.action.isEnabled();
