@@ -90,7 +90,7 @@ public abstract class ContainerIcon extends org.lgna.croquet.icon.AbstractIcon {
 
 			g2.translate( x, y );
 			try {
-				g2.setPaint( new java.awt.Color( 255, 255, 191 ) );
+				g2.setPaint( new java.awt.Color( 221, 221, 191 ) );
 				g2.fill( shape );
 				g2.setPaint( java.awt.Color.GRAY );
 				g2.draw( shape );

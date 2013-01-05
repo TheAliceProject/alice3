@@ -72,6 +72,20 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	@Override
+	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
+		super.handleMouseClicked( e );
+		int button = e.getButton();
+		switch( button ) {
+		case 4:
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: back" );
+			break;
+		case 5:
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: forward" );
+			break;
+		}
+	}
+
+	@Override
 	protected int getInsetTop() {
 		return 4;
 	}
