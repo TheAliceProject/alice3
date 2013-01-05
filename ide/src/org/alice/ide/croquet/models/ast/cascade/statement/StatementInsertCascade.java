@@ -116,6 +116,16 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	}
 
 	@Override
+	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+		org.alice.ide.croquet.edits.ast.InsertStatementEdit originalInsertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)originalEdit;
+		org.alice.ide.croquet.edits.ast.InsertStatementEdit retargetedEdit = org.lgna.croquet.edits.Edit.createCopy( originalInsertStatementEdit );
+		retargetedEdit.retarget( retargeter );
+		org.lgna.project.ast.Expression[] values = retargetedEdit.getInitialExpressions();
+		org.lgna.project.ast.Statement statement = this.createStatement( values );
+		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, values );
+	}
+
+	@Override
 	protected <M extends org.lgna.croquet.Element> org.lgna.croquet.resolvers.Resolver<M> createResolver() {
 		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
 	}
