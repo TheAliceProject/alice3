@@ -124,15 +124,27 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 
 	private final byte[] encryptionKey;
 
-	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue, byte[] encryptionKey ) {
+	private static byte[] getEncryptionKey( String s ) {
+		try {
+			return s.getBytes( CHARSET_NAME );
+		} catch( java.io.UnsupportedEncodingException uee ) {
+			throw new RuntimeException( CHARSET_NAME, uee );
+		}
+	}
+
+	private PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue, byte[] encryptionKey ) {
 		super( group, id, getInitialValue( id, initialValue, encryptionKey ) );
 		this.encryptionKey = encryptionKey;
 		assert instances.contains( this ) == false;
 		instances.add( this );
 	}
 
+	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue, String encryptionText ) {
+		this( group, id, initialValue, getEncryptionKey( encryptionText ) );
+	}
+
 	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
-		this( group, id, initialValue, null );
+		this( group, id, initialValue, (byte[])null );
 	}
 
 	protected boolean isStoringPreferenceDesired() {
