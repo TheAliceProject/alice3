@@ -132,9 +132,20 @@ public class TreeUtilities {
 		}
 	}
 
-	private static void addGroupNode( String groupTag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> groupNodes, java.util.Map<String, ThemeBasedResourceNode> mapGroupTagToNode ) {
+	private static java.util.Set<String> themeNames = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "arctic" );
+
+	public static boolean isThemeName( String name ) {
+		return themeNames.contains( name );
+	}
+
+	private static void addGroupNode( String groupTag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> groupNodes, java.util.Map<String, ResourceNode> mapGroupTagToNode ) {
 		GroupTagKey groupTagKey = new GroupTagKey( groupTag );
-		ThemeBasedResourceNode dstNode = new ThemeBasedResourceNode( groupTagKey, dstChildNodes );
+		ResourceNode dstNode;
+		if( isThemeName( groupTag ) ) {
+			dstNode = new ThemeBasedResourceNode( groupTagKey, dstChildNodes );
+		} else {
+			dstNode = new GroupBasedResourceNode( groupTagKey, dstChildNodes );
+		}
 		groupNodes.add( dstNode );
 		mapGroupTagToNode.put( groupTag, dstNode );
 	}
@@ -144,7 +155,7 @@ public class TreeUtilities {
 		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
 		buildMap( map, rootClassHierarchy );
 
-		java.util.Map<String, ThemeBasedResourceNode> mapGroupTagToNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<String, ResourceNode> mapGroupTagToNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 		java.util.List<ResourceNode> groupNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
@@ -172,7 +183,7 @@ public class TreeUtilities {
 			int lastIndex = groupTag.lastIndexOf( GroupTagKey.SEPARATOR );
 			if( lastIndex != -1 ) {
 				String parentGroupTag = groupTag.substring( 0, lastIndex );
-				ThemeBasedResourceNode parentToBeNode = mapGroupTagToNode.get( parentGroupTag );
+				ResourceNode parentToBeNode = mapGroupTagToNode.get( parentGroupTag );
 				if( parentToBeNode != null ) {
 					listIterator.remove();
 					parentToBeNode.addNodeChild( 0, resourceNode );
@@ -187,8 +198,7 @@ public class TreeUtilities {
 		java.util.ListIterator<ResourceNode> listIteratorThemeGroup = groupNodes.listIterator();
 		while( listIteratorThemeGroup.hasNext() ) {
 			ResourceNode resourceNode = listIteratorThemeGroup.next();
-			ResourceKey resourceKey = resourceNode.getResourceKey();
-			if( "arctic".equals( resourceKey.getSearchText() ) ) {
+			if( resourceNode instanceof ThemeBasedResourceNode ) {
 				listIteratorThemeGroup.remove();
 				themeNodes.add( resourceNode );
 			}

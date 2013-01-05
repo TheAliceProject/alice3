@@ -45,63 +45,14 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class GroupTagKey extends ResourceKey {
-	public static final char SEPARATOR = ':';
-
-	private final String groupTag;
-
-	private final org.lgna.croquet.icon.IconFactory iconFactory;
-
-	public GroupTagKey( String groupTag ) {
-		this.groupTag = groupTag;
-		if( TreeUtilities.isThemeName( this.groupTag ) ) {
-			this.iconFactory = new org.alice.stageide.icons.ThemeIconFactory( this );
-		} else {
-			this.iconFactory = new org.alice.stageide.icons.FolderIconFactory( null );
-		}
-	}
-
-	public String getGroupTag() {
-		return this.groupTag;
+public class GroupBasedResourceNode extends ResourceNode {
+	public GroupBasedResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
+		super( java.util.UUID.fromString( "55dd4e20-c072-4ab8-988b-d9db89ca2335" ), resourceKey, children );
 	}
 
 	@Override
-	public String getDisplayText() {
-		int lastIndex = groupTag.lastIndexOf( GroupTagKey.SEPARATOR );
-		if( lastIndex != -1 ) {
-			return groupTag.substring( lastIndex + 1 );
-		} else {
-			return this.groupTag;
-		}
+	protected ResourceNodeTreeSelectionState getState() {
+		return GroupBasedResourceNodeTreeSelectionState.getInstance();
 	}
 
-	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return this.iconFactory;
-	}
-
-	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		return null;
-	}
-
-	@Override
-	public String[] getTags() {
-		return null;
-	}
-
-	@Override
-	public String[] getGroupTags() {
-		return null;
-	}
-
-	@Override
-	public boolean isLeaf() {
-		return false;
-	}
-
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.getDisplayText() );
-	}
 }
