@@ -100,14 +100,15 @@ public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
 				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			}
 		};
-		rv.setOpaque( true );
-		rv.setBorder( null );
 		return rv;
 	}
 
 	@Override
 	protected final javax.swing.JScrollPane createAwtComponent() {
-		return this.createJScrollPane();
+		javax.swing.JScrollPane rv = this.createJScrollPane();
+		rv.setOpaque( true );
+		rv.setBorder( null );
+		return rv;
 	}
 
 	public Component<?> getViewportView() {
