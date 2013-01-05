@@ -58,8 +58,8 @@ public abstract class ResourceNodeTreeSelectionState extends org.lgna.croquet.Cu
 	}
 
 	@Override
-	protected void setSwingValue( org.alice.stageide.modelresource.ResourceNode nextValue ) {
-		super.setSwingValue( nextValue );
+	protected void setCurrentTruthAndBeautyValue( org.alice.stageide.modelresource.ResourceNode nextValue ) {
+		super.setCurrentTruthAndBeautyValue( nextValue );
 		if( nextValue.getResourceKey().isLeaf() ) {
 			org.lgna.croquet.Model model = nextValue.getLeftButtonClickModel();
 			if( model != null ) {
