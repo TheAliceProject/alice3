@@ -113,7 +113,11 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 				possiblyEncriptedValue = value;
 			}
 			if( possiblyEncriptedValue != null ) {
-				userPreferences.put( key, possiblyEncriptedValue );
+				if( state.isStoringPreferenceDesired() ) {
+					userPreferences.put( key, possiblyEncriptedValue );
+				} else {
+					userPreferences.remove( key );
+				}
 			}
 		}
 	}
@@ -129,5 +133,9 @@ public class PreferenceStringState extends org.lgna.croquet.StringState {
 
 	public PreferenceStringState( org.lgna.croquet.Group group, java.util.UUID id, String initialValue ) {
 		this( group, id, initialValue, null );
+	}
+
+	protected boolean isStoringPreferenceDesired() {
+		return true;
 	}
 }
