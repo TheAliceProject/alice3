@@ -51,6 +51,15 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 	private final edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder insideBorder = new edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder();
 	private final javax.swing.border.CompoundBorder border = new javax.swing.border.CompoundBorder( outsideBorder, insideBorder );
 
+	private final java.awt.event.FocusListener selectAllFocusListener = new java.awt.event.FocusListener() {
+		public void focusGained( java.awt.event.FocusEvent e ) {
+			getAwtComponent().selectAll();
+		}
+
+		public void focusLost( java.awt.event.FocusEvent e ) {
+		}
+	};
+
 	public TextComponent( org.lgna.croquet.StringState model ) {
 		super( model );
 		J jTextComponent = this.getAwtComponent();
@@ -59,6 +68,14 @@ public abstract class TextComponent<J extends javax.swing.text.JTextComponent> e
 		jTextComponent.setEnabled( model.isEnabled() );
 		this.setMargin( new java.awt.Insets( 4, 4, 2, 2 ) );
 		this.setBackgroundColor( new java.awt.Color( 255, 255, 221 ) );
+	}
+
+	public void enableSelectAllWhenFocusGained() {
+		this.getAwtComponent().addFocusListener( this.selectAllFocusListener );
+	}
+
+	public void disableSelectAllWhenFocusGained() {
+		this.getAwtComponent().removeFocusListener( this.selectAllFocusListener );
 	}
 
 	public java.awt.Insets getMargin() {
