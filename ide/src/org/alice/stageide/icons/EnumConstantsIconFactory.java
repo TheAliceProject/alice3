@@ -60,6 +60,10 @@ public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconF
 	}
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return this.imageIconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
+		if( this.imageIconFactories.size() > 0 ) {
+			return this.imageIconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
+		} else {
+			return sizeIfResolutionIndependent;
+		}
 	}
 }

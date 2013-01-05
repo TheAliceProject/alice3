@@ -65,8 +65,6 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		label.setIcon( iconFactory != null ? iconFactory.getIcon( DEFAULT_LARGE_ICON_SIZE ) : null );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-		label.setBackgroundColor( BASE_COLOR );
-		label.setOpaque( false );
 		this.internalAddComponent( label );
 		this.setBackgroundColor( BASE_COLOR );
 		this.setMaximumSizeClampedToPreferredSize( true );
