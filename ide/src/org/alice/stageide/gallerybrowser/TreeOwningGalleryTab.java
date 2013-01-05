@@ -53,7 +53,7 @@ public abstract class TreeOwningGalleryTab extends GalleryTab<org.alice.stageide
 	public abstract org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState();
 
 	@Override
-	protected org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView createView() {
+	protected final org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView createView() {
 		return new org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView( this );
 	}
 }

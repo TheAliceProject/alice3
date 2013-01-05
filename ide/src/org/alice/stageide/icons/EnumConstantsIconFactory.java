@@ -47,16 +47,14 @@ package org.alice.stageide.icons;
  */
 public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
 	private final java.util.List<org.lgna.croquet.icon.IconFactory> imageIconFactories;
-	private final int childCount;
 
-	public EnumConstantsIconFactory( int childCount, java.util.List<org.lgna.croquet.icon.IconFactory> imageIconFactories ) {
-		this.childCount = childCount;
+	public EnumConstantsIconFactory( java.util.List<org.lgna.croquet.icon.IconFactory> imageIconFactories ) {
 		this.imageIconFactories = imageIconFactories;
 	}
 
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new EnumConstantsIcon( size, this.childCount, this.imageIconFactories );
+		return new EnumConstantsIcon( size, this.imageIconFactories );
 	}
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {

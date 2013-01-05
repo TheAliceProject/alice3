@@ -52,6 +52,7 @@ public class TreeUtilities {
 
 	private static ClassHierarchyBasedResourceNode treeBasedOnClassHierarchy;
 	private static ThemeBasedResourceNode treeBasedOnTheme;
+	private static ThemeBasedResourceNode treeBasedOnGroup;
 
 	private static ClassHierarchyBasedResourceNode createNode( org.lgna.story.resourceutilities.ModelResourceTreeNode source, ResourceKey key ) {
 		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -138,7 +139,7 @@ public class TreeUtilities {
 		mapGroupTagToNode.put( groupTag, dstNode );
 	}
 
-	private static ThemeBasedResourceNode createTreeBasedOnTheme() {
+	private static void createTreesBasedOnThemeAndGroup() {
 		ResourceNode rootClassHierarchy = getTreeBasedOnClassHierarchy();
 		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
 		buildMap( map, rootClassHierarchy );
@@ -181,15 +182,36 @@ public class TreeUtilities {
 			}
 		}
 		java.util.Collections.sort( groupNodes );
-		return new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( groupNodes ) );
+
+		java.util.List<ResourceNode> themeNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.ListIterator<ResourceNode> listIteratorThemeGroup = groupNodes.listIterator();
+		while( listIteratorThemeGroup.hasNext() ) {
+			ResourceNode resourceNode = listIteratorThemeGroup.next();
+			ResourceKey resourceKey = resourceNode.getResourceKey();
+			if( "arctic".equals( resourceKey.getSearchText() ) ) {
+				listIteratorThemeGroup.remove();
+				themeNodes.add( resourceNode );
+			}
+		}
+		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( themeNodes ) );
+		treeBasedOnGroup = new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( groupNodes ) );
 	}
 
 	public static ThemeBasedResourceNode getTreeBasedOnTheme() {
 		if( treeBasedOnTheme != null ) {
 			//pass
 		} else {
-			treeBasedOnTheme = createTreeBasedOnTheme();
+			createTreesBasedOnThemeAndGroup();
 		}
 		return treeBasedOnTheme;
+	}
+
+	public static ThemeBasedResourceNode getTreeBasedOnGroup() {
+		if( treeBasedOnGroup != null ) {
+			//pass
+		} else {
+			createTreesBasedOnThemeAndGroup();
+		}
+		return treeBasedOnGroup;
 	}
 }

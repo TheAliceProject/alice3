@@ -40,18 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThemeBasedTab extends TreeOwningGalleryTab {
-	public ThemeBasedTab() {
-		super( java.util.UUID.fromString( "9f620eca-b4a8-4b8b-879d-4d39f44aff7b" ) );
+public class ThemeIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
+	private final org.alice.stageide.modelresource.ResourceKey key;
+
+	public ThemeIconFactory( org.alice.stageide.modelresource.ResourceKey key ) {
+		this.key = key;
 	}
 
 	@Override
-	public org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState() {
-		return org.alice.stageide.modelresource.ThemeBasedResourceNodeTreeSelectionState.getInstance();
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new ThemeIcon( size, this.key );
+	}
+
+	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+		//todo
+		return sizeIfResolutionIndependent;
 	}
 }

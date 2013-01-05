@@ -40,66 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.alice.stageide.modelresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ContainerIcon extends org.lgna.croquet.icon.AbstractIcon {
-	private final int childCount;
-
-	public ContainerIcon( java.awt.Dimension size, int childCount ) {
-		super( size );
-		this.childCount = childCount;
+public class GroupBasedResourceNodeTreeSelectionState extends ResourceNodeTreeSelectionState {
+	private static class SingletonHolder {
+		private static GroupBasedResourceNodeTreeSelectionState instance = new GroupBasedResourceNodeTreeSelectionState();
 	}
 
-	protected abstract void paintIconMain( java.awt.Component c, java.awt.Graphics2D g2 );
-
-	private static java.awt.Shape createShapeAround( java.awt.geom.Rectangle2D bounds ) {
-		double x0 = bounds.getX() - 2;
-		double y0 = bounds.getY() - 4;
-		double x1 = x0 + bounds.getWidth() + 4;
-		double y1 = y0 + bounds.getHeight() + 5;
-		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
-		rv.moveTo( x0, y1 );
-		rv.lineTo( x0, y0 );
-		rv.lineTo( x0 + 7, y0 );
-		rv.lineTo( x0 + 10, y0 + 3 );
-		rv.lineTo( x1, y0 + 3 );
-		rv.lineTo( x1, y1 );
-		rv.closePath();
-		return rv;
+	public static GroupBasedResourceNodeTreeSelectionState getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	@Override
-	protected final void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
-		this.paintIconMain( c, g2 );
-
-		if( this.getIconHeight() > 32 ) {
-			String s = Integer.toString( this.childCount );
-			java.awt.FontMetrics fm = g2.getFontMetrics();
-			java.awt.geom.Rectangle2D bounds = fm.getStringBounds( "00", g2 );
-
-			java.awt.Shape shape = createShapeAround( bounds );
-			java.awt.geom.Rectangle2D shapeBounds = shape.getBounds();
-
-			final double INSET = 0;
-
-			double x = this.getIconWidth() - shapeBounds.getWidth() - INSET;
-			double y = shapeBounds.getHeight() + INSET;
-
-			g2.translate( x, y );
-			try {
-				g2.setPaint( new java.awt.Color( 221, 221, 191 ) );
-				g2.fill( shape );
-				g2.setPaint( java.awt.Color.GRAY );
-				g2.draw( shape );
-
-				g2.setPaint( java.awt.Color.BLACK );
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, s, bounds );
-			} finally {
-				g2.translate( -x, -y );
-			}
-		}
+	private GroupBasedResourceNodeTreeSelectionState() {
+		super( java.util.UUID.fromString( "92417991-1b96-429c-aa2a-a4dd706732bc" ), TreeUtilities.getTreeBasedOnGroup() );
 	}
 }

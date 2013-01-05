@@ -45,12 +45,12 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantsIcon extends ContainerIcon {
+public class EnumConstantsIcon extends org.lgna.croquet.icon.AbstractIcon {
 	private static final int OFFSET = 8;
 	private final javax.swing.Icon[] icons;
 
-	public EnumConstantsIcon( java.awt.Dimension size, int childCount, java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
-		super( size, childCount );
+	public EnumConstantsIcon( java.awt.Dimension size, java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
+		super( size );
 		final int N = iconFactories.size();
 		this.icons = new javax.swing.Icon[ N ];
 		int totalOffset = OFFSET * ( N - 1 );
@@ -63,7 +63,7 @@ public class EnumConstantsIcon extends ContainerIcon {
 	}
 
 	@Override
-	protected void paintIconMain( java.awt.Component c, java.awt.Graphics2D g2 ) {
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		int totalOffset = OFFSET * ( this.icons.length - 1 );
 		int x = totalOffset;
 		int y = 0;

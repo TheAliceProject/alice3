@@ -40,18 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ThemeBasedTab extends TreeOwningGalleryTab {
-	public ThemeBasedTab() {
-		super( java.util.UUID.fromString( "9f620eca-b4a8-4b8b-879d-4d39f44aff7b" ) );
+public class ThemeIcon extends org.lgna.croquet.icon.AbstractIcon {
+	private final javax.swing.ImageIcon icon;
+
+	public ThemeIcon( java.awt.Dimension size, org.alice.stageide.modelresource.ResourceKey key ) {
+		super( size );
+		this.icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( ThemeIcon.class.getResource( "themes/" + key.getSearchText() + ".png" ) );
 	}
 
 	@Override
-	public org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState() {
-		return org.alice.stageide.modelresource.ThemeBasedResourceNodeTreeSelectionState.getInstance();
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+		if( this.icon != null ) {
+			this.icon.paintIcon( c, g2, 0, 0 );
+		} else {
+			g2.setColor( java.awt.Color.RED );
+			g2.fillRect( 0, 0, this.getIconWidth(), this.getIconHeight() );
+		}
 	}
 }

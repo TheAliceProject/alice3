@@ -54,7 +54,11 @@ public class GroupTagKey extends ResourceKey {
 
 	public GroupTagKey( String groupTag ) {
 		this.groupTag = groupTag;
-		this.iconFactory = new org.alice.stageide.icons.FolderIconFactory( null );
+		if( "arctic".equals( this.groupTag ) ) {
+			this.iconFactory = new org.alice.stageide.icons.ThemeIconFactory( this );
+		} else {
+			this.iconFactory = new org.alice.stageide.icons.FolderIconFactory( null );
+		}
 	}
 
 	public String getGroupTag() {

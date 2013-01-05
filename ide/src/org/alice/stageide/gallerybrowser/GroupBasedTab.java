@@ -45,13 +45,13 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class ThemeBasedTab extends TreeOwningGalleryTab {
-	public ThemeBasedTab() {
-		super( java.util.UUID.fromString( "9f620eca-b4a8-4b8b-879d-4d39f44aff7b" ) );
+public class GroupBasedTab extends TreeOwningGalleryTab {
+	public GroupBasedTab() {
+		super( java.util.UUID.fromString( "94127e69-57c8-42bd-8936-1038e6a127b0" ) );
 	}
 
 	@Override
 	public org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState() {
-		return org.alice.stageide.modelresource.ThemeBasedResourceNodeTreeSelectionState.getInstance();
+		return org.alice.stageide.modelresource.GroupBasedResourceNodeTreeSelectionState.getInstance();
 	}
 }

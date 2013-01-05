@@ -157,4 +157,67 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			}
 		}
 	}
+
+	private static java.awt.Shape createShapeAround( java.awt.geom.Rectangle2D bounds ) {
+		double x0 = bounds.getX() - 2;
+		double y0 = bounds.getY() - 4;
+		double x1 = x0 + bounds.getWidth() + 4;
+		double y1 = y0 + bounds.getHeight() + 5;
+
+		final int TAB_LENGTH = 6;
+
+		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+		rv.moveTo( x0, y1 );
+		rv.lineTo( x0, y0 );
+		rv.lineTo( x0 + TAB_LENGTH, y0 );
+		rv.lineTo( x0 + TAB_LENGTH + 3, y0 + 3 );
+		rv.lineTo( x1, y0 + 3 );
+		rv.lineTo( x1, y1 );
+		rv.closePath();
+		return rv;
+	}
+
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		super.paintEpilogue( g2, x, y, width, height );
+
+		org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model = this.getModel();
+		if( model instanceof org.alice.stageide.modelresource.ResourceNode ) {
+			org.alice.stageide.modelresource.ResourceNode resourceNode = (org.alice.stageide.modelresource.ResourceNode)model;
+			java.util.List<org.alice.stageide.modelresource.ResourceNode> nodeChildren = resourceNode.getNodeChildren();
+			if( nodeChildren.size() > 1 ) {
+				String s = Integer.toString( nodeChildren.size() );
+				java.awt.FontMetrics fm = g2.getFontMetrics();
+
+				java.awt.geom.Rectangle2D actualTextBounds = fm.getStringBounds( s, g2 );
+				java.awt.geom.Rectangle2D minimumTextBounds = fm.getStringBounds( "00", g2 );
+
+				java.awt.geom.Rectangle2D textBounds;
+				if( actualTextBounds.getWidth() > minimumTextBounds.getWidth() ) {
+					textBounds = actualTextBounds;
+				} else {
+					textBounds = minimumTextBounds;
+				}
+
+				java.awt.Shape shape = createShapeAround( textBounds );
+				java.awt.geom.Rectangle2D shapeBounds = shape.getBounds();
+
+				double xTranslate = ( x + width ) - shapeBounds.getWidth() - 4;
+				double yTranslate = y + shapeBounds.getHeight();
+
+				g2.translate( xTranslate, yTranslate );
+				try {
+					g2.setPaint( new java.awt.Color( 221, 221, 191 ) );
+					g2.fill( shape );
+					g2.setPaint( java.awt.Color.GRAY );
+					g2.draw( shape );
+
+					g2.setPaint( java.awt.Color.BLACK );
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, s, textBounds );
+				} finally {
+					g2.translate( -xTranslate, -yTranslate );
+				}
+			}
+		}
+	}
 }
