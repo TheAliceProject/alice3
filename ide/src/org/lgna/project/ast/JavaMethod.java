@@ -74,7 +74,6 @@ public class JavaMethod extends AbstractMethod {
 	private final JavaMethodParameter variableOrKeyedParameter;
 
 	private JavaMethod( MethodReflectionProxy methodReflectionProxy ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( methodReflectionProxy );
 		this.methodReflectionProxy = methodReflectionProxy;
 		ClassReflectionProxy[] parameterTypeReflectionProxies = this.methodReflectionProxy.getParameterClassReflectionProxies();
 		final int N;
