@@ -111,8 +111,8 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 
 	private final InternalRoot<T> root;
 
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<T> itemCodec, CascadeBlank<T>... blanks ) {
-		super( group, id, null, itemCodec );
+	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec, CascadeBlank<T>... blanks ) {
+		super( group, id, initialValue, itemCodec );
 		this.root = new InternalRoot<T>( this, blanks );
 	}
 

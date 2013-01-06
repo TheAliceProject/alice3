@@ -714,7 +714,7 @@ public class AliceResourceUtilties {
 						classToInfoMap.put( parentKey, parentInfo );
 					}
 					else {
-						Logger.severe( "Failed to find class info for " + name );
+						Logger.errln( "Failed to find class info for " + name );
 						classToInfoMap.put( parentKey, null );
 					}
 				} catch( Exception e )

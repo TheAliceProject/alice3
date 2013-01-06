@@ -67,7 +67,7 @@ class TypePropertyItemState extends org.lgna.croquet.CustomItemState<org.lgna.pr
 	private final org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> typeProperty;
 
 	public TypePropertyItemState( org.lgna.project.ast.DeclarationProperty<org.lgna.project.ast.AbstractType<?, ?, ?>> typeProperty ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1818f209-d305-431c-8fea-bcb8698ba908" ), org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), org.alice.ide.croquet.models.ast.declaration.TypeBlank.getInstance() );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "1818f209-d305-431c-8fea-bcb8698ba908" ), null, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ), org.alice.ide.croquet.models.ast.declaration.TypeBlank.getInstance() );
 		this.typeProperty = typeProperty;
 	}
 

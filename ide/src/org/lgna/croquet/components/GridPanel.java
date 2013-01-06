@@ -99,9 +99,6 @@ public class GridPanel extends Panel {
 		}
 	}
 
-	private static int DEFAULT_HGAP = 0;
-	private static int DEFAULT_VGAP = 0;
-
 	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite<?> composite, Component<?>... components ) {
 		return new GridPanel( new Details().composite( composite ).rowCount( 1 ), components );
 	}
@@ -119,11 +116,11 @@ public class GridPanel extends Panel {
 	}
 
 	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, int hgap, int vgap, Component<?>... components ) {
-		return new GridPanel( new Details().composite( composite ).rowCount( 1 ).columnCount( 1 ).hgap( hgap ).vgap( vgap ), components );
+		return new GridPanel( new Details().composite( composite ).rowCount( rowCount ).columnCount( columnCount ).hgap( hgap ).vgap( vgap ), components );
 	}
 
 	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, Component<?>... components ) {
-		return new GridPanel( new Details().composite( composite ).rowCount( 1 ).columnCount( 1 ), components );
+		return new GridPanel( new Details().composite( composite ).rowCount( rowCount ).columnCount( columnCount ), components );
 	}
 
 	public static GridPanel createSingleRowGridPane( Component<?>... components ) {
@@ -147,7 +144,7 @@ public class GridPanel extends Panel {
 	}
 
 	public static GridPanel createGridPane( int rowCount, int columnCount, Component<?>... components ) {
-		return createGridPane( null, rowCount, columnCount, DEFAULT_HGAP, DEFAULT_VGAP, components );
+		return createGridPane( null, rowCount, columnCount, components );
 	}
 
 	@Override
