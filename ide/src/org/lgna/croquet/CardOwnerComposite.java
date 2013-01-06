@@ -116,7 +116,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 		super.releaseView();
 	}
 
-	public void showCard( Composite<?> card ) {
+	public synchronized void showCard( Composite<?> card ) {
 		org.lgna.croquet.Composite<?> prevCard = this.getShowingCard();
 		if( prevCard != card ) {
 			synchronized( this.getView().getTreeLock() ) {
