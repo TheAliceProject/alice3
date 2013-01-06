@@ -47,22 +47,15 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaMethod extends AbstractMethod {
-	private static final java.util.Map<MethodReflectionProxy, JavaMethod> s_mapReflectionProxyToJava = new java.util.HashMap<MethodReflectionProxy, JavaMethod>();
-
-	private final MethodReflectionProxy methodReflectionProxy;
-	private final java.util.ArrayList<JavaMethodParameter> requiredParameters;
-	private final JavaMethodParameter variableOrKeyedParameter;
+	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<MethodReflectionProxy, JavaMethod> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static JavaMethod getInstance( MethodReflectionProxy methodReflectionProxy ) {
 		if( methodReflectionProxy != null ) {
-			JavaMethod rv = s_mapReflectionProxyToJava.get( methodReflectionProxy );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new JavaMethod( methodReflectionProxy );
-				s_mapReflectionProxyToJava.put( methodReflectionProxy, rv );
-			}
-			return rv;
+			return mapReflectionProxyToInstance.getInitializingIfAbsent( methodReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<MethodReflectionProxy, JavaMethod>() {
+				public org.lgna.project.ast.JavaMethod initialize( org.lgna.project.ast.MethodReflectionProxy key ) {
+					return new JavaMethod( key );
+				}
+			} );
 		} else {
 			return null;
 		}
@@ -76,7 +69,12 @@ public class JavaMethod extends AbstractMethod {
 		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterClses ) );
 	}
 
+	private final MethodReflectionProxy methodReflectionProxy;
+	private final java.util.ArrayList<JavaMethodParameter> requiredParameters;
+	private final JavaMethodParameter variableOrKeyedParameter;
+
 	private JavaMethod( MethodReflectionProxy methodReflectionProxy ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( methodReflectionProxy );
 		this.methodReflectionProxy = methodReflectionProxy;
 		ClassReflectionProxy[] parameterTypeReflectionProxies = this.methodReflectionProxy.getParameterClassReflectionProxies();
 		final int N;
