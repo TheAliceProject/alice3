@@ -47,46 +47,83 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class GridPanel extends Panel {
-	private static final int DEFAULT_HGAP = 0;
-	private static final int DEFAULT_VGAP = 0;
-	private int rowCount;
-	private int columnCount;
-	private int hgap;
-	private int vgap;
+	private final int rowCount;
+	private final int columnCount;
+	private final int hgap;
+	private final int vgap;
 
-	private GridPanel( org.lgna.croquet.Composite composite, int rowCount, int columnCount, int hgap, int vgap, Component<?>[] components ) {
-		super( composite );
-		this.rowCount = rowCount;
-		this.columnCount = columnCount;
-		this.hgap = hgap;
-		this.vgap = vgap;
+	public static class Details {
+		private org.lgna.croquet.Composite<?> composite;
+		private int rowCount;
+		private int columnCount;
+		private int hgap;
+		private int vgap;
+
+		public Details() {
+		}
+
+		public Details composite( org.lgna.croquet.Composite<?> composite ) {
+			this.composite = composite;
+			return this;
+		}
+
+		public Details rowCount( int rowCount ) {
+			this.rowCount = rowCount;
+			return this;
+		}
+
+		public Details columnCount( int columnCount ) {
+			this.columnCount = columnCount;
+			return this;
+		}
+
+		public Details hgap( int hgap ) {
+			this.hgap = hgap;
+			return this;
+		}
+
+		public Details vgap( int vgap ) {
+			this.vgap = vgap;
+			return this;
+		}
+	}
+
+	public GridPanel( Details details, Component<?>... components ) {
+		super( details.composite );
+		this.rowCount = details.rowCount;
+		this.columnCount = details.columnCount;
+		this.hgap = details.hgap;
+		this.vgap = details.vgap;
 		for( Component<?> component : components ) {
 			this.addComponent( component );
 		}
 	}
 
-	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite composite, Component<?>... components ) {
-		return new GridPanel( composite, 1, 0, DEFAULT_HGAP, DEFAULT_VGAP, components );
+	private static int DEFAULT_HGAP = 0;
+	private static int DEFAULT_VGAP = 0;
+
+	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite<?> composite, Component<?>... components ) {
+		return new GridPanel( new Details().composite( composite ).rowCount( 1 ), components );
 	}
 
-	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite composite, int hgap, int vgap, Component<?>... components ) {
-		return new GridPanel( composite, 1, 0, hgap, vgap, components );
+	public static GridPanel createSingleRowGridPane( org.lgna.croquet.Composite<?> composite, int hgap, int vgap, Component<?>... components ) {
+		return new GridPanel( new Details().composite( composite ).rowCount( 1 ).hgap( hgap ).vgap( vgap ), components );
 	}
 
-	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite composite, Component<?>... components ) {
-		return new GridPanel( composite, 0, 1, DEFAULT_HGAP, DEFAULT_VGAP, components );
+	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite<?> composite, Component<?>... components ) {
+		return new GridPanel( new Details().composite( composite ).columnCount( 1 ), components );
 	}
 
-	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite composite, int hgap, int vgap, Component<?>... components ) {
-		return new GridPanel( composite, 0, 1, hgap, vgap, components );
+	public static GridPanel createSingleColumnGridPane( org.lgna.croquet.Composite<?> composite, int hgap, int vgap, Component<?>... components ) {
+		return new GridPanel( new Details().composite( composite ).columnCount( 1 ).hgap( hgap ).vgap( vgap ), components );
 	}
 
-	public static GridPanel createGridPane( org.lgna.croquet.Composite composite, int rowCount, int columnCount, int hgap, int vgap, Component<?>... components ) {
-		return new GridPanel( composite, rowCount, columnCount, hgap, vgap, components );
+	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, int hgap, int vgap, Component<?>... components ) {
+		return new GridPanel( new Details().composite( composite ).rowCount( 1 ).columnCount( 1 ).hgap( hgap ).vgap( vgap ), components );
 	}
 
-	public static GridPanel createGridPane( org.lgna.croquet.Composite composite, int rowCount, int columnCount, Component<?>... components ) {
-		return new GridPanel( composite, rowCount, columnCount, DEFAULT_HGAP, DEFAULT_VGAP, components );
+	public static GridPanel createGridPane( org.lgna.croquet.Composite<?> composite, int rowCount, int columnCount, Component<?>... components ) {
+		return new GridPanel( new Details().composite( composite ).rowCount( 1 ).columnCount( 1 ), components );
 	}
 
 	public static GridPanel createSingleRowGridPane( Component<?>... components ) {
