@@ -46,19 +46,19 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, UriProjectPair> {
+public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, UriProjectPair> {
 
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
 	private final TemplatesTab templatesTab = new TemplatesTab();
 	private final MyProjectsTab myProjectsTab = new MyProjectsTab();
 	private final RecentProjectsTab recentProjectsTab = new RecentProjectsTab();
 	private final FileSystemTab fileSystemTab = new FileSystemTab();
-	private final org.lgna.croquet.TabSelectionState<ContentTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), ContentTab.class, -1, this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );
+	private final org.lgna.croquet.TabSelectionState<SelectUriTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), SelectUriTab.class, -1, this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );
 
 	private final class SelectedUriMetaState extends org.lgna.croquet.MetaState<java.net.URI> {
 		@Override
 		public java.net.URI getValue() {
-			ContentTab tab = tabState.getValue();
+			SelectUriTab tab = tabState.getValue();
 			if( tab != null ) {
 				return tab.getSelectedUri();
 			} else {
@@ -67,29 +67,31 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 		}
 	}
 
-	private final org.lgna.croquet.MetaState<java.net.URI> metaState = new SelectedUriMetaState();
+	private final SelectedUriMetaState metaState = new SelectedUriMetaState();
 	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriProjectPair> mapUriToUriProjectPair = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	private final ProjectSideComposite sideSubComposite;
 
 	private static class SingletonHolder {
-		private static SelectProjectUriWithPreviewComposite instance = new SelectProjectUriWithPreviewComposite();
+		private static SelectProjectUriComposite instance = new SelectProjectUriComposite();
 	}
 
-	public static SelectProjectUriWithPreviewComposite getInstance() {
+	public static SelectProjectUriComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private SelectProjectUriWithPreviewComposite() {
+	private SelectProjectUriComposite() {
 		super( java.util.UUID.fromString( "3b9ec3fb-3fe5-485c-ac2a-688a5468b0b9" ) );
-		final boolean IS_SIDE_SUB_COMPOSITE_READY_FOR_PRIME_TIME = true;
+		final boolean IS_SIDE_SUB_COMPOSITE_READY_FOR_PRIME_TIME = false;
 		if( IS_SIDE_SUB_COMPOSITE_READY_FOR_PRIME_TIME ) {
 			this.sideSubComposite = new ProjectSideComposite();
 			this.registerSubComposite( this.sideSubComposite );
+		} else {
+			this.sideSubComposite = null;
 		}
 	}
 
-	public org.lgna.croquet.TabSelectionState<ContentTab> getTabState() {
+	public org.lgna.croquet.TabSelectionState<SelectUriTab> getTabState() {
 		return this.tabState;
 	}
 
@@ -141,7 +143,7 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 	}
 
 	public void selectAppropriateTab( boolean isNew ) {
-		ContentTab tab;
+		SelectUriTab tab;
 		if( isNew ) {
 			tab = this.templatesTab;
 		} else {
@@ -152,7 +154,7 @@ public final class SelectProjectUriWithPreviewComposite extends org.lgna.croquet
 	}
 
 	private void refresh() {
-		for( ContentTab contentTab : this.tabState ) {
+		for( SelectUriTab contentTab : this.tabState ) {
 			contentTab.refresh();
 		}
 	}

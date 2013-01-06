@@ -46,8 +46,8 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ContentTab extends org.lgna.croquet.SimpleTabComposite<org.alice.ide.projecturi.views.TabContentPanel> {
-	public ContentTab( java.util.UUID migrationId ) {
+public abstract class SelectUriTab extends org.lgna.croquet.SimpleTabComposite<org.alice.ide.projecturi.views.TabContentPanel> {
+	public SelectUriTab( java.util.UUID migrationId ) {
 		super( migrationId, IsCloseable.FALSE );
 	}
 
