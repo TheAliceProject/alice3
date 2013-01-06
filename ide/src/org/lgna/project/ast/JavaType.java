@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaField> {
-	private static java.util.Map<ClassReflectionProxy, JavaType> s_mapReflectionProxyToJava = new java.util.HashMap<ClassReflectionProxy, JavaType>();
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<ClassReflectionProxy, JavaType> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 	public static final JavaType VOID_TYPE = getInstance( Void.TYPE );
 
 	public static final JavaType BOOLEAN_PRIMITIVE_TYPE = getInstance( Boolean.TYPE );
@@ -128,77 +128,76 @@ public class JavaType extends AbstractType<JavaConstructor, JavaMethod, JavaFiel
 		}
 	}
 
-	public static JavaType getInstance( ClassReflectionProxy classReflectionProxy ) {
+	public static JavaType getInstance( final ClassReflectionProxy classReflectionProxy ) {
 		if( classReflectionProxy != null ) {
-			JavaType rv = s_mapReflectionProxyToJava.get( classReflectionProxy );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new JavaType( classReflectionProxy );
-				s_mapReflectionProxyToJava.put( classReflectionProxy, rv );
-				Class<?> cls = classReflectionProxy.getReification();
-				if( cls != null ) {
-					//todo: handle constructors as methods are (set up chains...)
-					for( java.lang.reflect.Constructor<?> cnstrctr : cls.getDeclaredConstructors() ) {
-						rv.constructors.add( JavaConstructor.getInstance( cnstrctr ) );
-					}
+			return mapReflectionProxyToInstance.getInitializingIfAbsent( classReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<ClassReflectionProxy, JavaType>() {
+				public org.lgna.project.ast.JavaType initialize( org.lgna.project.ast.ClassReflectionProxy key ) {
+					JavaType rv = new JavaType( classReflectionProxy );
+					mapReflectionProxyToInstance.put( classReflectionProxy, rv );
+					Class<?> cls = classReflectionProxy.getReification();
+					if( cls != null ) {
+						//todo: handle constructors as methods are (set up chains...)
+						for( java.lang.reflect.Constructor<?> cnstrctr : cls.getDeclaredConstructors() ) {
+							rv.constructors.add( JavaConstructor.getInstance( cnstrctr ) );
+						}
 
-					for( java.lang.reflect.Field fld : cls.getDeclaredFields() ) {
-						rv.fields.add( JavaField.getInstance( fld ) );
-					}
+						for( java.lang.reflect.Field fld : cls.getDeclaredFields() ) {
+							rv.fields.add( JavaField.getInstance( fld ) );
+						}
 
-					java.util.Set<java.lang.reflect.Method> methodSet = null;
-					Iterable<org.lgna.project.reflect.MethodInfo> methodInfos = org.lgna.project.reflect.ClassInfoManager.getMethodInfos( cls );
-					if( methodInfos != null ) {
-						methodSet = new java.util.HashSet<java.lang.reflect.Method>();
-						for( org.lgna.project.reflect.MethodInfo methodInfo : methodInfos ) {
-							try {
-								java.lang.reflect.Method mthd = methodInfo.getMthd();
-								if( mthd != null ) {
-									rv.handleMthd( mthd );
-									methodSet.add( mthd );
-								}
-							} catch( RuntimeException re ) {
-								//edu.cmu.cs.dennisc.print.PrintUtilities.println( "no such method", methodInfo, "on ", cls );
-								//re.printStackTrace();
-							}
-						}
-					}
-					for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
-						if( ( methodSet != null ) && methodSet.contains( mthd ) ) {
-							//pass
-						} else {
-							rv.handleMthd( mthd );
-						}
-					}
-				}
-				for( JavaMethod method : rv.methods ) {
-					java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
-					org.lgna.project.annotations.GetterTemplate propertyGetterTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
-					if( propertyGetterTemplate != null ) {
-						java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
-						JavaMethod setter;
-						if( sttr != null ) {
-							setter = (JavaMethod)JavaMethod.getInstance( sttr ).getLongestInChain();
-						} else {
-							setter = null;
-						}
-						rv.getterSetterPairs.add( new JavaGetterSetterPair( method, setter ) );
-						if( setter != null ) {
-							org.lgna.project.annotations.ValueTemplate valueTemplate = mthd.getAnnotation( org.lgna.project.annotations.ValueTemplate.class );
-							if( valueTemplate != null ) {
-								JavaMethod m = setter;
-								while( m != null ) {
-									JavaMethodParameter parameter0 = (JavaMethodParameter)m.getRequiredParameters().get( 0 );
-									parameter0.setValueTemplate( valueTemplate );
-									m = m.getNextShorterInChain();
+						java.util.Set<java.lang.reflect.Method> methodSet = null;
+						Iterable<org.lgna.project.reflect.MethodInfo> methodInfos = org.lgna.project.reflect.ClassInfoManager.getMethodInfos( cls );
+						if( methodInfos != null ) {
+							methodSet = new java.util.HashSet<java.lang.reflect.Method>();
+							for( org.lgna.project.reflect.MethodInfo methodInfo : methodInfos ) {
+								try {
+									java.lang.reflect.Method mthd = methodInfo.getMthd();
+									if( mthd != null ) {
+										rv.handleMthd( mthd );
+										methodSet.add( mthd );
+									}
+								} catch( RuntimeException re ) {
+									//edu.cmu.cs.dennisc.print.PrintUtilities.println( "no such method", methodInfo, "on ", cls );
+									//re.printStackTrace();
 								}
 							}
 						}
+						for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
+							if( ( methodSet != null ) && methodSet.contains( mthd ) ) {
+								//pass
+							} else {
+								rv.handleMthd( mthd );
+							}
+						}
 					}
+					for( JavaMethod method : rv.methods ) {
+						java.lang.reflect.Method mthd = method.getMethodReflectionProxy().getReification();
+						org.lgna.project.annotations.GetterTemplate propertyGetterTemplate = mthd.getAnnotation( org.lgna.project.annotations.GetterTemplate.class );
+						if( propertyGetterTemplate != null ) {
+							java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
+							JavaMethod setter;
+							if( sttr != null ) {
+								setter = (JavaMethod)JavaMethod.getInstance( sttr ).getLongestInChain();
+							} else {
+								setter = null;
+							}
+							rv.getterSetterPairs.add( new JavaGetterSetterPair( method, setter ) );
+							if( setter != null ) {
+								org.lgna.project.annotations.ValueTemplate valueTemplate = mthd.getAnnotation( org.lgna.project.annotations.ValueTemplate.class );
+								if( valueTemplate != null ) {
+									JavaMethod m = setter;
+									while( m != null ) {
+										JavaMethodParameter parameter0 = (JavaMethodParameter)m.getRequiredParameters().get( 0 );
+										parameter0.setValueTemplate( valueTemplate );
+										m = m.getNextShorterInChain();
+									}
+								}
+							}
+						}
+					}
+					return rv;
 				}
-			}
-			return rv;
+			} );
 		} else {
 			return null;
 		}
