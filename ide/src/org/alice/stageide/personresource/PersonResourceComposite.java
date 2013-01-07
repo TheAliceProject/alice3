@@ -87,7 +87,7 @@ public abstract class PersonResourceComposite extends org.lgna.croquet.ValueCrea
 	}
 
 	@Override
-	protected Integer getWiderGoldenRatioSideFromWidth() {
+	protected Integer getWiderGoldenRatioSizeFromWidth() {
 		return 1000;
 	}
 

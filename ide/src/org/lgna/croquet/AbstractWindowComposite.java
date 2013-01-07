@@ -53,39 +53,39 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.compone
 	protected static enum GoldenRatioPolicy {
 		WIDTH_LONG_SIDE {
 			@Override
-			public void adjustWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+			public java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
 				java.awt.Dimension size = window.getAwtComponent().getPreferredSize();
 				int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.width );
 				if( phiHeight > size.height ) {
-					window.setSize( size.width, phiHeight );
+					return new java.awt.Dimension( size.width, phiHeight );
 				} else {
 					int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.height );
 					if( phiWidth > size.width ) {
-						window.setSize( phiWidth, size.height );
+						return new java.awt.Dimension( phiWidth, size.height );
 					} else {
-						window.setSize( size );
+						return size;
 					}
 				}
 			}
 		},
 		HEIGHT_LONG_SIDE {
 			@Override
-			public void adjustWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+			public java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
 				java.awt.Dimension size = window.getAwtComponent().getPreferredSize();
 				int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.width );
 				if( phiHeight > size.height ) {
-					window.setSize( size.width, phiHeight );
+					return new java.awt.Dimension( size.width, phiHeight );
 				} else {
 					int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.height );
 					if( phiWidth > size.width ) {
-						window.setSize( phiWidth, size.height );
+						return new java.awt.Dimension( phiWidth, size.height );
 					} else {
-						window.setSize( size );
+						return size;
 					}
 				}
 			}
 		};
-		public abstract void adjustWindowSize( org.lgna.croquet.components.AbstractWindow<?> window );
+		public abstract java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window );
 
 	}
 
@@ -93,35 +93,38 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.compone
 		return GoldenRatioPolicy.WIDTH_LONG_SIDE;
 	}
 
-	protected Integer getWiderGoldenRatioSideFromWidth() {
+	protected Integer getWiderGoldenRatioSizeFromWidth() {
 		return null;
 	}
 
-	protected Integer getWiderGoldenRatioSideFromHeight() {
+	protected Integer getWiderGoldenRatioSizeFromHeight() {
 		return null;
 	}
 
-	protected void updateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
-		Integer width = this.getWiderGoldenRatioSideFromWidth();
+	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		Integer width = this.getWiderGoldenRatioSizeFromWidth();
 		if( width != null ) {
-			window.setSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( width ) );
+			return edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( width );
 		} else {
-			Integer height = this.getWiderGoldenRatioSideFromHeight();
+			Integer height = this.getWiderGoldenRatioSizeFromHeight();
 			if( height != null ) {
-				window.setSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromHeight( height ) );
+				return edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromHeight( height );
 			} else {
 				GoldenRatioPolicy goldenRatioPolicy = this.getGoldenRatioPolicy();
 				if( goldenRatioPolicy != null ) {
 					window.pack();
-					goldenRatioPolicy.adjustWindowSize( window );
+					return goldenRatioPolicy.calculateWindowSize( window );
 				} else {
 					edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( window.getAwtComponent() );
 					window.getAwtComponent().doLayout();
-					java.awt.Dimension size = window.getAwtComponent().getPreferredSize();
-					window.setSize( size );
+					return window.getAwtComponent().getPreferredSize();
 				}
 			}
 		}
+	}
+
+	protected final void updateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		window.setSize( this.calculateWindowSize( window ) );
 		window.getAwtComponent().revalidate();
 	}
 

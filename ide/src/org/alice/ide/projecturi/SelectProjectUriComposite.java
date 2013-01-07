@@ -133,7 +133,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	}
 
 	@Override
-	protected Integer getWiderGoldenRatioSideFromWidth() {
+	protected Integer getWiderGoldenRatioSizeFromWidth() {
 		if( this.sideSubComposite != null ) {
 			return 960;
 		} else {

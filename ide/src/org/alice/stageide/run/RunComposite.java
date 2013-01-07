@@ -78,11 +78,11 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	}
 
 	@Override
-	protected void updateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		if( this.size != null ) {
-			window.setSize( this.size );
+			return this.size;
 		} else {
-			super.updateWindowSize( window );
+			return super.calculateWindowSize( window );
 		}
 	}
 
