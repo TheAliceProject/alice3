@@ -85,6 +85,7 @@ public class PlainMultiLineLabel extends MultiLineLabel<javax.swing.JTextArea> {
 				this.setUI( new javax.swing.plaf.basic.BasicTextAreaUI() );
 			}
 		};
+		rv.setMinimumSize( new java.awt.Dimension() );
 		rv.setWrapStyleWord( true );
 		rv.setLineWrap( true );
 		return rv;

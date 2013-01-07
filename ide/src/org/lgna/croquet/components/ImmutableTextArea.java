@@ -66,6 +66,7 @@ public class ImmutableTextArea extends ImmutableTextComponent<javax.swing.JTextA
 		this.initializeJComponent( rv );
 		rv.setWrapStyleWord( true );
 		rv.setLineWrap( true );
+		rv.setMinimumSize( new java.awt.Dimension() );
 		return rv;
 	}
 }
