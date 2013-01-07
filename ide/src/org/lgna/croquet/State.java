@@ -153,7 +153,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	private org.lgna.croquet.edits.StateEdit<T> createStateEdit( org.lgna.croquet.history.CompletionStep<State<T>> step, T prevValue, T nextValue, IsAdjusting isAdjusting ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "createStateEdit", prevValue, nextValue );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "createStateEdit", prevValue, nextValue, isAdjusting.value ? "isAdjusting=true" : "" );
 		return new org.lgna.croquet.edits.StateEdit<T>( step, prevValue, nextValue );
 	}
 

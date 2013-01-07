@@ -128,8 +128,13 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 		return this.swingModel;
 	}
 
+	@Override
+	protected boolean isAdjustingIgnored() {
+		return false;
+	}
+
 	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
-		N nextValue = this.getValue();
+		N nextValue = this.getSwingValue();
 		this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( this.swingModel.getBoundedRangeModel().getValueIsAdjusting() ), org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e ) );
 	}
 
