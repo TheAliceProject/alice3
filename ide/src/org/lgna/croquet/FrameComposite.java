@@ -83,8 +83,7 @@ package org.lgna.croquet;
 			this.frame = new org.lgna.croquet.components.Frame();
 			this.frame.getContentPanel().addCenterComponent( this.frameComposite.getView() );
 			this.frame.setTitle( this.frameComposite.getFrameTitle() );
-			this.frame.pack();
-			this.frameComposite.modifyPackedWindowSizeIfDesired( this.frame );
+			this.frameComposite.updateWindowSize( this.frame );
 			this.frame.addWindowListener( this.windowListener );
 		}
 		return this.frame;

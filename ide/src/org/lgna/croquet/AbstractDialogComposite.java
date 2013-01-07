@@ -75,8 +75,8 @@ public abstract class AbstractDialogComposite<V extends org.lgna.croquet.compone
 			return this.composite.getDesiredWindowLocation();
 		}
 
-		public void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-			this.composite.modifyPackedWindowSizeIfDesired( dialog );
+		public void updateDialogSize( org.lgna.croquet.components.Dialog dialog ) {
+			this.composite.updateWindowSize( dialog );
 		}
 
 		public boolean isWindowClosingEnabled( org.lgna.croquet.triggers.WindowEventTrigger trigger ) {

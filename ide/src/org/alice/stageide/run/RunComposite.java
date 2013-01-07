@@ -78,9 +78,11 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	}
 
 	@Override
-	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	protected void updateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		if( this.size != null ) {
 			window.setSize( this.size );
+		} else {
+			super.updateWindowSize( window );
 		}
 	}
 
@@ -147,8 +149,8 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 		if( this.size != null ) {
 			//pas
 		} else {
-			org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 			this.programContext.getOnscreenLookingGlass().getAWTComponent().setPreferredSize( new java.awt.Dimension( DEFAULT_WIDTH, DEFAULT_HEIGHT ) );
+			org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
 			dialog.pack();
 		}
 	}
