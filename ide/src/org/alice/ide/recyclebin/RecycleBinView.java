@@ -41,49 +41,25 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.perspectives;
+package org.alice.ide.recyclebin;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspective {
-	private final org.lgna.croquet.Composite<?> mainComposite;
-
-	public ProjectPerspective( java.util.UUID id, org.lgna.croquet.Composite<?> mainComposite ) {
-		super( id );
-		this.mainComposite = mainComposite;
-	}
-
-	public final org.lgna.croquet.Composite<?> getMainComposite() {
-		return this.mainComposite;
-	}
-
-	public org.alice.ide.croquet.models.MenuBarComposite getMenuBarComposite() {
-		return org.alice.ide.croquet.models.MenuBarComposite.getInstance();
-	}
-
-	public abstract org.lgna.croquet.components.TrackableShape getRenderWindow();
-
-	public abstract org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus();
-
-	protected abstract void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel );
-
-	public final java.util.List<org.lgna.croquet.DropReceptor> createListOfPotentialDropReceptors( org.alice.ide.croquet.models.IdeDragModel dragModel ) {
-		java.util.List<org.lgna.croquet.DropReceptor> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.addPotentialDropReceptors( rv, dragModel );
-		org.lgna.croquet.DropReceptor recycleBinDropReceptor = org.alice.ide.recyclebin.RecycleBin.SINGLETON.getDropReceptor();
-		if( recycleBinDropReceptor.isPotentiallyAcceptingOf( dragModel ) ) {
-			rv.add( recycleBinDropReceptor );
-		}
-		org.lgna.croquet.DropReceptor clipboardDropReceptor = org.alice.ide.clipboard.Clipboard.SINGLETON.getDropReceptor();
-		if( clipboardDropReceptor.isPotentiallyAcceptingOf( dragModel ) ) {
-			rv.add( clipboardDropReceptor );
-		}
-		return rv;
-	}
-
+public class RecycleBinView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
 	@Override
-	protected String createRepr() {
-		return this.getName();
+	protected javax.swing.JComponent createAwtComponent() {
+		return new javax.swing.JComponent() {
+			@Override
+			protected void paintComponent( java.awt.Graphics g ) {
+				super.paintComponent( g );
+				RecycleBinIcon.SINGLETON.paintIcon( this, g, 0, 0 );
+			}
+
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return new java.awt.Dimension( org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON.getIconWidth(), org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON.getIconHeight() );
+			}
+		};
 	}
 }
