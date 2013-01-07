@@ -62,6 +62,20 @@ public class PlainMultiLineLabel extends MultiLineLabel<javax.swing.JTextArea> {
 	protected javax.swing.JTextArea createJTextComponent( javax.swing.text.AbstractDocument document ) {
 		javax.swing.JTextArea rv = new javax.swing.JTextArea( document ) {
 			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+			}
+
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				java.awt.Dimension rv = super.getMaximumSize();
+				if( PlainMultiLineLabel.this.isMaximumSizeClampedToPreferredSize() ) {
+					rv.setSize( this.getPreferredSize() );
+				}
+				return rv;
+			}
+
+			@Override
 			public java.awt.Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}
