@@ -58,6 +58,20 @@ public class ProgressBar extends JComponent<javax.swing.JProgressBar> {
 
 	@Override
 	protected javax.swing.JProgressBar createAwtComponent() {
-		return new javax.swing.JProgressBar( this.boundedRangeModel );
+		return new javax.swing.JProgressBar( this.boundedRangeModel ) {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+			}
+
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				java.awt.Dimension rv = super.getMaximumSize();
+				if( ProgressBar.this.isMaximumSizeClampedToPreferredSize() ) {
+					rv.setSize( this.getPreferredSize() );
+				}
+				return rv;
+			}
+		};
 	}
 }
