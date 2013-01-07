@@ -51,7 +51,6 @@ public class EulaView extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.PlainMultiLineLabel label = new org.lgna.croquet.components.PlainMultiLineLabel( composite.getEulaText() );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( label );
 		this.addCenterComponent( scrollPane );
-		final int WIDTH = 600;
-		this.setPreferredSize( new java.awt.Dimension( WIDTH, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH ) ) );
+		this.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 600 ) );
 	}
 }

@@ -135,8 +135,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	@Override
 	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		if( this.sideSubComposite != null ) {
-			final int width = 960;
-			window.setSize( width, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( width ) );
+			window.setSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 960 ) );
 		} else {
 			window.setSize( 620, 480 );
 		}

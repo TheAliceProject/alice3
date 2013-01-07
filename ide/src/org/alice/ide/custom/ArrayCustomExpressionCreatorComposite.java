@@ -138,9 +138,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	@Override
 	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		super.modifyPackedWindowSizeIfDesired( window );
-		final int WIDTH = 320;
-		final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( WIDTH );
-		window.setSize( WIDTH, HEIGHT );
+		window.setSize( edu.cmu.cs.dennisc.math.GoldenRatio.createTallerSizeFromWidth( 320 ) );
 	}
 
 	public static void main( String[] args ) throws Exception {
