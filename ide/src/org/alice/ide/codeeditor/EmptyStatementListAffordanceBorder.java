@@ -63,13 +63,15 @@ public class EmptyStatementListAffordanceBorder implements javax.swing.border.Bo
 	private final org.lgna.project.ast.StatementListProperty alternateListProperty;
 
 	private final java.awt.Insets normalInsets;
+	private final int minimum;
 
 	private boolean isDrawingDesired = true;
 
-	public EmptyStatementListAffordanceBorder( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty alternateListProperty, java.awt.Insets normalInsets ) {
+	public EmptyStatementListAffordanceBorder( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty alternateListProperty, java.awt.Insets normalInsets, int minimum ) {
 		this.factory = factory;
 		this.alternateListProperty = alternateListProperty;
 		this.normalInsets = normalInsets;
+		this.minimum = minimum;
 	}
 
 	private static java.awt.geom.Rectangle2D getStringBounds( java.awt.Component c, java.awt.Graphics g ) {
@@ -83,7 +85,7 @@ public class EmptyStatementListAffordanceBorder implements javax.swing.border.Bo
 
 	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 		java.awt.Container container = (java.awt.Container)c;
-		if( container.getComponentCount() > 0 ) {
+		if( container.getComponentCount() > this.minimum ) {
 			return this.normalInsets;
 		} else {
 			java.awt.Graphics g = c.getGraphics();
@@ -104,26 +106,26 @@ public class EmptyStatementListAffordanceBorder implements javax.swing.border.Bo
 	}
 
 	private boolean isDashed() {
-		return ( ( alternateListProperty != null ) && ( alternateListProperty.size() > 0 ) );
+		return ( alternateListProperty != null ) && ( alternateListProperty.size() > 0 );
 	}
 
 	private boolean isEditable() {
 		return this.factory instanceof org.alice.ide.x.ProjectEditorAstI18nFactory;
 	}
 
-	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
+	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int w, int h ) {
 		java.awt.Container container = (java.awt.Container)c;
-		if( container.getComponentCount() > 0 ) {
+		if( container.getComponentCount() > this.minimum ) {
 			//pass
 		} else {
 			if( this.isEditable() ) {
 				if( this.isDrawingDesired() ) {
 					java.awt.geom.Rectangle2D bounds = getStringBounds( c, g );
 
-					width = ( EMPTY_INSETS.right + (int)bounds.getWidth() ) - 16;
-					height = ( EMPTY_INSETS.bottom + (int)bounds.getHeight() ) - 4;
+					int width = ( EMPTY_INSETS.right + (int)bounds.getWidth() ) - 16;
+					int height = ( EMPTY_INSETS.bottom + (int)bounds.getHeight() ) - 4;
 					int dx = x + EMPTY_INSETS.left;
-					int dy = y + EMPTY_INSETS.top + 2;
+					int dy = ( y + h ) - height - 2;
 					g.translate( dx, dy );
 					if( this.isDashed() ) {
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -142,8 +144,12 @@ public class EmptyStatementListAffordanceBorder implements javax.swing.border.Bo
 						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DRoundRectangle( g2, rr, SHADOW_COLOR, HIGHLIGHT_COLOR, SOLID_STROKE );
 						g2.setPaint( prevPaint );
 					}
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 					g.setColor( java.awt.Color.BLACK );
+					Object prevTextAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
 					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, TEXT, 8, 0, (int)bounds.getWidth(), height );
+					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
 					g.translate( -dx, -dy );
 				}
 			}

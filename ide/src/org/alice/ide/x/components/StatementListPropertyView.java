@@ -83,7 +83,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		} else {
 			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() );
 		}
-		this.border = new org.alice.ide.codeeditor.EmptyStatementListAffordanceBorder( factory, alternateListProperty, insets );
+		this.border = new org.alice.ide.codeeditor.EmptyStatementListAffordanceBorder( factory, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
 
 		this.setBorder( this.border );
 	}
