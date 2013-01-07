@@ -208,7 +208,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 
 						int availableHeight = this.currentUnder.getAvailableDropProxyHeight();
 
-						if( this.currentUnder.isFigurativelyEmpty() ) {
+						if( this.currentUnder.isEmpty() ) {
 							height = null;
 							p.y = insets.top;
 						} else {

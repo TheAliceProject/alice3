@@ -306,8 +306,8 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return 16;
 	}
 
-	public boolean isFigurativelyEmpty() {
-		return ( this.getComponentCount() == 0 ) || ( this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance );
+	public boolean isEmpty() {
+		return this.getComponentCount() == 0;
 	}
 
 	private Integer getCenterYOfComponentAt( int i ) {
@@ -320,7 +320,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	}
 
 	public int calculateIndex( java.awt.Point p ) {
-		if( isFigurativelyEmpty() ) {
+		if( isEmpty() ) {
 			return 0;
 		} else {
 			for( int i = 0; i < this.getComponentCount(); i++ ) {
@@ -342,7 +342,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 	public BoundInformation calculateYBounds( int index ) {
 		final int N;
-		if( isFigurativelyEmpty() ) {
+		if( isEmpty() ) {
 			N = 0;
 		} else {
 			N = this.getComponentCount();

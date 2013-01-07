@@ -125,7 +125,12 @@ public class EmptyStatementListAffordanceBorder implements javax.swing.border.Bo
 					int width = ( EMPTY_INSETS.right + (int)bounds.getWidth() ) - 16;
 					int height = ( EMPTY_INSETS.bottom + (int)bounds.getHeight() ) - 4;
 					int dx = x + EMPTY_INSETS.left;
-					int dy = ( y + h ) - height - 2;
+					int dy;
+					if( container.getComponentCount() == 0 ) {
+						dy = y + EMPTY_INSETS.top + 2;
+					} else {
+						dy = ( y + h ) - height - 2;
+					}
 					g.translate( dx, dy );
 					if( this.isDashed() ) {
 						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
