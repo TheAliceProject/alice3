@@ -103,6 +103,7 @@ public class DialogUtilities {
 			dialog.getAwtComponent().setContentPane( view.getAwtComponent() );
 			dialog.pack();
 			dialogOwner.modifyPackedDialogSizeIfDesired( dialog );
+			dialog.getAwtComponent().revalidate();
 			if( window != null ) {
 				final int OFFSET = 32;
 				java.awt.Point p = window.getLocation();
