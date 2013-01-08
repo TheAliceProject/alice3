@@ -139,7 +139,28 @@ public class TreeUtilities {
 	}
 
 	private static void addGroupNode( String groupTag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> groupNodes, java.util.Map<String, ResourceNode> mapGroupTagToNode ) {
-		GroupTagKey groupTagKey = new GroupTagKey( groupTag );
+		java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
+		if( isThemeName( groupTag ) ) {
+			iconFactories = java.util.Collections.emptyList();
+		} else {
+			iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( ResourceNode resourceNode : dstChildNodes ) {
+				ResourceKey resourceKey = resourceNode.getResourceKey();
+				//todo
+				org.lgna.croquet.icon.IconFactory iconFactory = resourceKey.getIconFactory();
+				if( iconFactory instanceof org.lgna.croquet.icon.ImageIconFactory ) {
+					iconFactories.add( iconFactory );
+				} else if( iconFactory instanceof org.alice.stageide.icons.EnumConstantsIconFactory ) {
+					org.alice.stageide.icons.EnumConstantsIconFactory enumConstantsIconFactory = (org.alice.stageide.icons.EnumConstantsIconFactory)iconFactory;
+					iconFactories.add( enumConstantsIconFactory.getIconFactories().get( 0 ) );
+
+				}
+				if( iconFactories.size() == 5 ) {
+					break;
+				}
+			}
+		}
+		GroupTagKey groupTagKey = new GroupTagKey( groupTag, iconFactories );
 		ResourceNode dstNode;
 		if( isThemeName( groupTag ) ) {
 			dstNode = new ThemeBasedResourceNode( groupTagKey, dstChildNodes );
