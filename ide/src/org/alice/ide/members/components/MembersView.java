@@ -42,7 +42,6 @@
  */
 package org.alice.ide.members.components;
 
-import org.alice.ide.members.components.icons.UserTrashSymbolic;
 import org.alice.ide.recyclebin.RecycleBin;
 
 /**
@@ -63,7 +62,8 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 	private static enum DragReceptorState {
 		IDLE( null, null, null, 0 ),
 		STARTED( java.awt.Color.YELLOW, new java.awt.Color( 191, 191, 191, 0 ), null, 32 ),
-		ENTERED( java.awt.Color.GREEN, new java.awt.Color( 127, 127, 127, 191 ), new UserTrashSymbolic( 128, 128 ), 64 );
+		ENTERED( java.awt.Color.YELLOW, new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.icons.TrashClosedSym( 128, 128 ), 32 ),
+		ENTERED_FAR_ENOUGH( java.awt.Color.GREEN, new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.icons.TrashOpenSym( 128, 128 ), 64 );
 		private final java.awt.Color colorA;
 		private final java.awt.Color colorB;
 		private final javax.swing.Icon icon;
@@ -111,20 +111,34 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 
 		public void dragEntered( org.lgna.croquet.history.DragStep step ) {
 			this.setDragReceptorState( DragReceptorState.ENTERED );
-			//			step.getDragSource().hideDragProxy();
 		}
 
 		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
-			return MembersView.this.dropSite;
+			java.awt.event.MouseEvent e = step.getLatestMouseEvent();
+			java.awt.Point p = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertPoint( e.getComponent(), e.getPoint(), MembersView.this.getAwtComponent() );
+
+			final int FAR_ENOUGH = 64;
+			if( p.x < ( MembersView.this.getWidth() - FAR_ENOUGH ) ) {
+				this.setDragReceptorState( DragReceptorState.ENTERED_FAR_ENOUGH );
+				return MembersView.this.dropSite;
+			} else {
+				this.setDragReceptorState( DragReceptorState.ENTERED );
+				return null;
+			}
 		}
 
 		@Override
 		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step ) {
-			org.lgna.croquet.DragModel dragModel = step.getModel();
-			if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
-				org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
-				org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
-				return org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement );
+			org.lgna.croquet.DropSite dropSite = step.getCurrentPotentialDropSite();
+			if( dropSite != null ) {
+				org.lgna.croquet.DragModel dragModel = step.getModel();
+				if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
+					org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
+					org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
+					return org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement );
+				} else {
+					return null;
+				}
 			} else {
 				return null;
 			}

@@ -281,9 +281,9 @@ public class TrashClosedSym implements Icon {
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public TrashClosedSym() {
-		this.width = getOrigWidth();
-		this.height = getOrigHeight();
+	public TrashClosedSym( int width, int height ) {
+		this.width = width;
+		this.height = height;
 	}
 
 	/*

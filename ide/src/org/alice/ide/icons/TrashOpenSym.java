@@ -256,7 +256,7 @@ public class TrashOpenSym implements Icon {
 	 * @return The width of the bounding box of the original SVG image.
 	 */
 	public int getOrigWidth() {
-		return 16;
+		return 15; //16
 	}
 
 	/**
@@ -265,7 +265,7 @@ public class TrashOpenSym implements Icon {
 	 * @return The height of the bounding box of the original SVG image.
 	 */
 	public int getOrigHeight() {
-		return 18;
+		return 16; //18
 	}
 
 	/**
@@ -281,9 +281,9 @@ public class TrashOpenSym implements Icon {
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public TrashOpenSym() {
-		this.width = getOrigWidth();
-		this.height = getOrigHeight();
+	public TrashOpenSym( int width, int height ) {
+		this.width = width;
+		this.height = height;
 	}
 
 	/*
@@ -319,8 +319,10 @@ public class TrashOpenSym implements Icon {
 	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
 	 */
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
+		final int OFFSET_X = 2;
+		final int OFFSET_Y = 9;
 		Graphics2D g2d = (Graphics2D)g.create();
-		g2d.translate( x, y );
+		g2d.translate( x - OFFSET_X, y - OFFSET_Y );
 
 		double coef1 = (double)this.width / (double)getOrigWidth();
 		double coef2 = (double)this.height / (double)getOrigHeight();

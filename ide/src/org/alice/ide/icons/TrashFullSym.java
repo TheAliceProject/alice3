@@ -282,9 +282,9 @@ public class TrashFullSym implements Icon {
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public TrashFullSym() {
-		this.width = getOrigWidth();
-		this.height = getOrigHeight();
+	public TrashFullSym( int width, int height ) {
+		this.width = width;
+		this.height = height;
 	}
 
 	/*
