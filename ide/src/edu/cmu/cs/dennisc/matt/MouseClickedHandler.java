@@ -46,9 +46,9 @@ public class MouseClickedHandler extends AbstractEventHandler<Object, MouseClick
 		} else if( listener instanceof MouseClickOnScreenListener ) {
 			MouseClickOnScreenListener mouseCOSL = (MouseClickOnScreenListener)listener;
 			mouseCOSL.mouseClicked();
-		} else if( listener instanceof MouseClickEvent ) {//TODO: Deprecated
-			MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;
-			mouseCOOL.mouseClicked( new MouseClickOnObjectEvent( event ) );
+			//		} else if( listener instanceof MouseClickEvent ) {//TODO: Deprecated
+			//			MouseClickOnObjectListener mouseCOOL = (MouseClickOnObjectListener)listener;
+			//			mouseCOOL.mouseClicked( new MouseClickOnObjectEvent( event ) );
 		}
 	}
 

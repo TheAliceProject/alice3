@@ -42,10 +42,13 @@
  */
 package org.lgna.ik.walkandtouch;
 
+import java.util.List;
+
 import org.lgna.ik.IkConstants;
 import org.lgna.ik.enforcer.JointedModelIkEnforcer;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MoveDirection;
+import org.lgna.story.SBiped;
 import org.lgna.story.SThing;
 import org.lgna.story.implementation.AsSeenBy;
 import org.lgna.story.implementation.BipedImp;
@@ -53,6 +56,7 @@ import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.JointedModelImp;
 import org.lgna.story.resources.JointId;
 
+import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.math.Point3;
 
 /**
@@ -68,9 +72,25 @@ public class IKMagicWand {
 	}
 
 	private static double legLength;
+	private static final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.GREEN );
+	private static final boolean USING_OLD = true;
+	private static List<JointId> defaultAnchors = Collections.newArrayList(
+			( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightClavicle() ) ).getJointId(),
+			( (JointImp)ImplementationAccessor.getImplementation( ogre.getLeftClavicle() ) ).getJointId(),
+			//			( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightHip() ) ).getJointId(),
+			//			( (JointImp)ImplementationAccessor.getImplementation( ogre.getLeftHip() ) ).getJointId()
+			( (JointImp)ImplementationAccessor.getImplementation( ogre.getPelvis() ) ).getJointId()
+			);
+
+	//	JointId rightWrist = ;
 
 	public static void moveChainToPointInSceneSpace( JointImp anchor, JointImp end, Point3 target ) {
+		if( USING_OLD ) {
+			moveUsingOldJMIKEnforcer( anchor, end, target );
+		}
+	}
 
+	private static void moveUsingOldJMIKEnforcer( JointImp anchor, JointImp end, Point3 target ) {
 		JointedModelImp<?, ?> jointedParent = anchor.getJointedModelImplementation();
 		JointedModelIkEnforcer enforcer = new JointedModelIkEnforcer( jointedParent );
 		enforcer.addFullBodyDefaultPoseUsingCurrentPose();
@@ -141,73 +161,6 @@ public class IKMagicWand {
 		JointedModelImp<?, ?> jointedParent = anchor.getJointedModelImplementation();
 		Point3 targetPrime = jointedParent.getTransformation( AsSeenBy.SCENE ).createTransformed( target );
 		moveChainToPointInSceneSpace( anchor, end, targetPrime );
-		//		return;
-		//		JointedModelIkEnforcer enforcer = new JointedModelIkEnforcer( jointedParent );
-		//		enforcer.addFullBodyDefaultPoseUsingCurrentPose();
-		//		enforcer.setDefaultJointWeight( 1 );
-		//		enforcer.setJointWeight( org.lgna.story.resources.BipedResource.RIGHT_ELBOW, 1 );
-		//		JointId anchorId = anchor.getJointId();
-		//		JointId eeId = end.getJointId();
-		//		enforcer.setChainBetween( anchorId, eeId );
-		//		Point3 currTransformation = end.getTransformation( jointedParent ).translation;
-		//		Point3 prevTransformation = new Point3( Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE );
-		//		double delta = .001;//arbitrary
-		//		while( Point3.calculateDistanceBetween( currTransformation, prevTransformation ) > delta ) {
-		//			prevTransformation = currTransformation;
-		//			//solver has the chain. can also have multiple chains. 
-		//			//I can tell solver, for this chain this is the linear target, etc. 
-		//			//it actually only needs the velocity, etc. then, I should say for this chain this is the desired velocity. ok. 
-		//
-		//			java.util.Map<org.lgna.ik.solver.Bone.Axis, Double> desiredSpeedForAxis = new java.util.HashMap<org.lgna.ik.solver.Bone.Axis, Double>();
-		//
-		//			//not bad concurrent programming practice
-		//			boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
-		//			boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
-		//
-		//			//these could be multiple. in this app it is one pair.
-		//			//			final JointId eeId = test.ik.croquet.EndJointIdState.getInstance().getValue();
-		//			//			final JointId anchorId = test.ik.croquet.AnchorJointIdState.getInstance().getValue();
-		//
-		//			double maxLinearSpeedForEe = .025;//IkConstants.MAX_LINEAR_SPEED_FOR_EE;
-		//			double maxAngularSpeedForEe = IkConstants.MAX_ANGULAR_SPEED_FOR_EE;
-		//
-		//			double deltaTime = IkConstants.DESIRED_DELTA_TIME;
-		//			if( enforcer.hasActiveChain() && ( isLinearEnabled || isAngularEnabled ) ) {
-		//				//I could make chain setter not race with this
-		//				//However, racing is fine, as long as the old chain is still valid. It is.  
-		//				//				if( isLinearEnabled ) {
-		//				enforcer.setEeDesiredPosition( eeId, target, maxLinearSpeedForEe );
-		//				//				}
-		//
-		//				//				if( isAngularEnabled ) {
-		//				//					enforcer.setEeDesiredOrientation( eeId, targetTransformation.orientation, maxAngularSpeedForEe );
-		//				//				}
-		//
-		//				enforcer.advanceTime( deltaTime );
-		//
-		//				//this is for display of gazi's sphere's only
-		//				//				Point3 ep = enforcer.getEndEffectorPosition( eeId );
-		//				//				Point3 ap = enforcer.getAnchorPosition( anchorId );
-		//				//				scene.anchor.setPositionRelativeToVehicle( new Position( ap.x, ap.y, ap.z ) );
-		//				//				scene.ee.setPositionRelativeToVehicle( new Position( ep.x, ep.y, ep.z ) );
-		//
-		//				//force bone reprint
-		//				//this should be fine even if the chain is not valid anymore.
-		//				//						javax.swing.SwingUtilities.invokeLater(new Runnable() {
-		//				//							public void run() {
-		//				//								//this would prevent me from selecting the list
-		//				////								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
-		//				//								//this would throw java.lang.IllegalStateException: Attempt to mutate in notification
-		//				////								updateInfo();
-		//				//							}
-		//				//						});
-		//			}
-		//
-		//			currTransformation = end.getTransformation( jointedParent ).translation;
-		//		}
-	}
-
-	private static void straighten( BipedImp walker ) {
 	}
 
 	/**
@@ -393,6 +346,13 @@ public class IKMagicWand {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static JointId getDefaultAnchorForBipedEndJoint( JointId jointId ) {
+		while( ( jointId != null ) && !defaultAnchors.contains( jointId ) ) {
+			jointId = jointId.getParent();
+		}
+		return jointId;
 	}
 
 }

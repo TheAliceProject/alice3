@@ -43,6 +43,8 @@
 package org.lgna.story.event;
 
 import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SJoint;
+import org.lgna.story.SModel;
 import org.lgna.story.implementation.EntityImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
@@ -84,6 +86,16 @@ public class MouseClickEvent extends AbstractEvent {
 									if( sgParent == null ) {
 										break;
 									}
+									org.lgna.story.SThing me = EntityImp.getAbstractionFromSgElement( sgComponent );
+									if( me != null ) {
+										if( !( me instanceof SJoint ) ) {
+											if( me instanceof SModel ) {
+												this.modelAtMouseLocation = (SModel)me;
+												break;
+											}
+										}
+									}
+
 									if( sgParent == sceneImp.getSgComposite() ) {
 										org.lgna.story.SThing e = EntityImp.getAbstractionFromSgElement( sgComponent );
 										if( e instanceof org.lgna.story.SModel ) {

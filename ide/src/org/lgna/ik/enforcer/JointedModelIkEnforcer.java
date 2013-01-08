@@ -358,6 +358,8 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 	}
 
 	private void moveJointsWithSpeedsForTime( Map<Bone, Map<Axis, Double>> jointSpeedsToUse, double deltaTime ) {
+		System.out.println( "jointSPeed: " + jointSpeedsToUse );
+		System.out.println( "deltaTime: " + deltaTime );
 		if( jointSpeedsToUse == null ) {
 			System.err.println( "Joint speeds were null. Could not advance time." );
 			return;
@@ -380,14 +382,22 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 				}
 			} else {
 				Vector3 cumulativeAxisAngle = Vector3.createZero();
+				//				System.out.println( "=========" );
 				for( Entry<Axis, Double> ea : jointSpeedsForBone.entrySet() ) {
 					Axis axis = ea.getKey();
 					Double speed = ea.getValue();
 
+					//					System.out.println( "ea: " + ea );
+					//					System.out.println( "ea.key: " + ea.getKey() );
+					//					System.out.println( "speed: " + speed );
 					Vector3 contribution = Vector3.createMultiplication( axis.getLocalAxis(), deltaTime * speed * weight );
+					//					System.out.println( "cumulativeAxisAngle: " + cumulativeAxisAngle );
+					//					System.out.println( "contribution: " + contribution );
 					cumulativeAxisAngle.add( contribution );
 				}
+				//				System.out.println( "=========" );
 
+				//				System.out.println( "cumulativeAxisAngle: " + cumulativeAxisAngle );
 				double angle = cumulativeAxisAngle.calculateMagnitude();
 				if( !EpsilonUtilities.isWithinReasonableEpsilon( 0, angle ) ) {
 					Vector3 axis = Vector3.createDivision( cumulativeAxisAngle, angle );
