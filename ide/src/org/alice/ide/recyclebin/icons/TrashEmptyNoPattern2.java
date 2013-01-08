@@ -1,4 +1,4 @@
-package org.alice.ide.icons;
+package org.alice.ide.recyclebin.icons;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;

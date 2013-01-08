@@ -1,4 +1,4 @@
-package org.alice.ide.icons;
+package org.alice.ide.recyclebin.icons;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -15,7 +15,7 @@ import java.awt.geom.GeneralPath;
  * This class has been automatically generated using svg2java
  * 
  */
-public class TrashFullSym implements javax.swing.Icon {
+public class FullTrashCanSymbolicStyleIcon implements javax.swing.Icon {
 
 	private float origAlpha = 1.0f;
 
@@ -282,7 +282,7 @@ public class TrashFullSym implements javax.swing.Icon {
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public TrashFullSym( int width, int height, Color fillColor ) {
+	public FullTrashCanSymbolicStyleIcon( int width, int height, Color fillColor ) {
 		this.width = width;
 		this.height = height;
 		this.fillColor = fillColor;
