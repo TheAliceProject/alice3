@@ -83,6 +83,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			}
 		}
 	};
+
 	private final org.lgna.croquet.State.ValueListener<String> sortListener = new org.lgna.croquet.State.ValueListener<String>() {
 		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
 		}
@@ -91,6 +92,8 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			MemberTabComposite.this.getView().refreshLater();
 		}
 	};
+
+	private final java.util.List<javax.swing.JComponent> jComponentsInNeedOfRepaintWhenInstanceFactoryChanges = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public MemberTabComposite( java.util.UUID migrationId ) {
 		super( migrationId );
@@ -110,6 +113,9 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			}
 		}
 		this.getView().refreshLater();
+		for( javax.swing.JComponent jComponent : this.jComponentsInNeedOfRepaintWhenInstanceFactoryChanges ) {
+			jComponent.repaint();
+		}
 	}
 
 	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
@@ -232,6 +238,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		if( IS_ICON_DESIRED ) {
 			button.getAwtComponent().setIcon( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
 			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
+			this.jComponentsInNeedOfRepaintWhenInstanceFactoryChanges.add( button.getAwtComponent() );
 		}
 	}
 }
