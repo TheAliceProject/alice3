@@ -85,9 +85,7 @@ public class EmptyStatementListAffordanceBorder implements javax.swing.border.Bo
 
 	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 		java.awt.Container container = (java.awt.Container)c;
-		if( container.getComponentCount() > this.minimum ) {
-			return this.normalInsets;
-		} else {
+		if( this.isVirtuallyEmpty( container ) ) {
 			java.awt.Graphics g = c.getGraphics();
 			java.awt.geom.Rectangle2D bounds = getStringBounds( c, g );
 			if( g != null ) {
@@ -98,7 +96,13 @@ public class EmptyStatementListAffordanceBorder implements javax.swing.border.Bo
 			} else {
 				return EMPTY_INSETS;
 			}
+		} else {
+			return this.normalInsets;
 		}
+	}
+
+	public boolean isVirtuallyEmpty( java.awt.Container container ) {
+		return container.getComponentCount() <= this.minimum;
 	}
 
 	public boolean isBorderOpaque() {
@@ -115,9 +119,7 @@ public class EmptyStatementListAffordanceBorder implements javax.swing.border.Bo
 
 	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int w, int h ) {
 		java.awt.Container container = (java.awt.Container)c;
-		if( container.getComponentCount() > this.minimum ) {
-			//pass
-		} else {
+		if( this.isVirtuallyEmpty( container ) ) {
 			if( this.isEditable() ) {
 				if( this.isDrawingDesired() ) {
 					java.awt.geom.Rectangle2D bounds = getStringBounds( c, g );
