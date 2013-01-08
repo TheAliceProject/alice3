@@ -119,7 +119,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 
 	@Override
 	protected org.lgna.croquet.components.Panel createView() {
-		return new org.alice.ide.projecturi.views.SelectProjectUriWithPreviewPanel( this );
+		return new org.alice.ide.projecturi.views.SelectProjectUriView( this );
 	}
 
 	@Override
@@ -137,7 +137,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		if( this.sideSubComposite != null ) {
 			return 960;
 		} else {
-			return 620;
+			return 800;
 		}
 	}
 
