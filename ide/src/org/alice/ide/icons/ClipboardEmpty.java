@@ -1,4 +1,4 @@
-package org.svg.image;
+package org.alice.ide.icons;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -428,7 +428,6 @@ public class ClipboardEmpty implements Icon {
 	 * 
 	 * @see javax.swing.Icon#getIconHeight()
 	 */
-	@Override
 	public int getIconHeight() {
 		return height;
 	}
@@ -438,7 +437,6 @@ public class ClipboardEmpty implements Icon {
 	 * 
 	 * @see javax.swing.Icon#getIconWidth()
 	 */
-	@Override
 	public int getIconWidth() {
 		return width;
 	}
@@ -457,7 +455,6 @@ public class ClipboardEmpty implements Icon {
 	 * 
 	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
 	 */
-	@Override
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
 		Graphics2D g2d = (Graphics2D)g.create();
 		g2d.translate( x, y );
