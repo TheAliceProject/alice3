@@ -47,18 +47,23 @@ package org.alice.ide.recyclebin;
  * @author Dennis Cosgrove
  */
 public class RecycleBinView extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
+	//private static final org.alice.ide.icons.TrashEmptyNoPattern EMPTY_ICON = new org.alice.ide.icons.TrashEmptyNoPattern();
+	private static final javax.swing.Icon EMPTY_ICON = RecycleBinIcon.SINGLETON;
+
+	//private static final org.alice.ide.icons.TrashFullNoPattern FULL_ICON = new org.alice.ide.icons.TrashFullNoPattern();
+
 	@Override
 	protected javax.swing.JComponent createAwtComponent() {
 		return new javax.swing.JComponent() {
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
-				RecycleBinIcon.SINGLETON.paintIcon( this, g, 0, 0 );
+				EMPTY_ICON.paintIcon( this, g, 0, 0 );
 			}
 
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return new java.awt.Dimension( org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON.getIconWidth(), org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON.getIconHeight() );
+				return new java.awt.Dimension( EMPTY_ICON.getIconWidth(), EMPTY_ICON.getIconHeight() );
 			}
 		};
 	}
