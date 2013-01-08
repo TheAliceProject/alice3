@@ -95,7 +95,7 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 
 		this.getAwtComponent().removeAll();
 		this.internalAddComponent( this.mainComponent, java.awt.BorderLayout.LINE_START );
-		this.internalAddComponent( new org.lgna.croquet.components.Label( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 24 ) {
+		this.internalAddComponent( new org.lgna.croquet.components.Label( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 16 ) {
 			@Override
 			protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
 				javax.swing.AbstractButton jButton = InstanceFactoryPopupButton.this.getAwtComponent();
@@ -104,10 +104,60 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 		} ), java.awt.BorderLayout.LINE_END );
 	}
 
+	private static final java.awt.Color TOP_COLOR = new java.awt.Color( 255, 255, 255, 91 );
+	private static final java.awt.Color BOTTOM_COLOR = new java.awt.Color( 57, 105, 138, 91 );
+	private static final java.awt.Color LINE_COLOR = new java.awt.Color( 169, 176, 190 );
+
+	private static final java.awt.Color SELECTED_COLOR = new java.awt.Color( 57, 105, 138 );
+	private static final java.awt.Color SELECTED_LINE_COLOR = java.awt.Color.DARK_GRAY;
+
 	@Override
 	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = super.createAwtComponent();
-		rv.setIcon( null );
+		javax.swing.JButton rv = new javax.swing.JButton() {
+			@Override
+			public void paintComponent( java.awt.Graphics g ) {
+				super.paintComponent( g );
+
+				//todo: replace with painter
+				if( this.getUI().getClass().getSimpleName().contains( "Synth" ) ) {
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					int width = this.getWidth();
+					int height = this.getHeight();
+
+					double round = 8;
+					double inset = 2.25;
+					java.awt.geom.RoundRectangle2D r = new java.awt.geom.RoundRectangle2D.Double( inset, inset, width - ( inset * 2 ), height - ( inset * 2 ), round, round );
+
+					java.awt.Shape prevClip = g2.getClip();
+
+					g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, r ) );
+
+					final int WIDTH_ADJUSTMENT = 6;
+					int x = ( width - height ) + WIDTH_ADJUSTMENT;
+					if( this.getModel().isPressed() ) {
+						g2.setPaint( SELECTED_COLOR );
+					} else {
+						g2.setPaint( new java.awt.GradientPaint( width, 0, TOP_COLOR, width, ( 2 * height ) / 3, BOTTOM_COLOR ) );
+					}
+					g.fillRect( x, 0, height - WIDTH_ADJUSTMENT, height );
+					if( this.getModel().isPressed() ) {
+						g2.setPaint( SELECTED_LINE_COLOR );
+					} else {
+						g2.setPaint( LINE_COLOR );
+					}
+					g2.fillRect( x, 0, 1, height );
+					g2.setClip( prevClip );
+				}
+
+			}
+
+			@Override
+			public javax.swing.Icon getIcon() {
+				return null;
+			}
+		};
+		rv.setAction( this.getModel().getAction() );
+		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 		return rv;
 	}
 
