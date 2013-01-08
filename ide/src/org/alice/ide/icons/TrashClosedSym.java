@@ -82,7 +82,7 @@ public class TrashClosedSym implements Icon {
 		shape0.lineTo( 504.66635, 176.64601 );
 		shape0.lineTo( 504.66635, 175.67726 );
 		shape0.closePath();
-		g.setPaint( new Color( 190, 190, 190, 255 ) );
+		g.setPaint( this.fillColor );
 		g.fill( shape0 );
 	}
 
@@ -271,19 +271,22 @@ public class TrashClosedSym implements Icon {
 	/**
 	 * The current width of this resizable icon.
 	 */
-	int width;
+	private int width;
 
 	/**
 	 * The current height of this resizable icon.
 	 */
-	int height;
+	private int height;
+
+	private Color fillColor = new Color( 190, 190, 190, 255 );
 
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public TrashClosedSym( int width, int height ) {
+	public TrashClosedSym( int width, int height, Color fillColor ) {
 		this.width = width;
 		this.height = height;
+		this.fillColor = fillColor;
 	}
 
 	/*

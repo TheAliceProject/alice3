@@ -11,13 +11,11 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 
-import javax.swing.Icon;
-
 /**
  * This class has been automatically generated using svg2java
  * 
  */
-public class TrashFullSym implements Icon {
+public class TrashFullSym implements javax.swing.Icon {
 
 	private float origAlpha = 1.0f;
 
@@ -82,7 +80,7 @@ public class TrashFullSym implements Icon {
 		shape0.lineTo( -14.6875, 2.21875 );
 		shape0.lineTo( -14.6875, 1.25 );
 		shape0.closePath();
-		g.setPaint( new Color( 190, 190, 190, 255 ) );
+		g.setPaint( this.fillColor );
 		g.fill( shape0 );
 	}
 
@@ -272,19 +270,22 @@ public class TrashFullSym implements Icon {
 	/**
 	 * The current width of this resizable icon.
 	 */
-	int width;
+	private int width;
 
 	/**
 	 * The current height of this resizable icon.
 	 */
-	int height;
+	private int height;
+
+	private Color fillColor = new Color( 190, 190, 190, 255 );
 
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public TrashFullSym( int width, int height ) {
+	public TrashFullSym( int width, int height, Color fillColor ) {
 		this.width = width;
 		this.height = height;
+		this.fillColor = fillColor;
 	}
 
 	/*

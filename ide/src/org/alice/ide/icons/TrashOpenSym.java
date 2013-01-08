@@ -11,13 +11,11 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 
-import javax.swing.Icon;
-
 /**
  * This class has been automatically generated using svg2java
  * 
  */
-public class TrashOpenSym implements Icon {
+public class TrashOpenSym implements javax.swing.Icon {
 
 	private float origAlpha = 1.0f;
 
@@ -82,7 +80,7 @@ public class TrashOpenSym implements Icon {
 		shape0.lineTo( 484.72598, 176.83304 );
 		shape0.lineTo( 484.60767, 175.87154 );
 		shape0.closePath();
-		g.setPaint( new Color( 190, 190, 190, 255 ) );
+		g.setPaint( this.fillColor );
 		g.fill( shape0 );
 	}
 
@@ -271,19 +269,22 @@ public class TrashOpenSym implements Icon {
 	/**
 	 * The current width of this resizable icon.
 	 */
-	int width;
+	private int width;
 
 	/**
 	 * The current height of this resizable icon.
 	 */
-	int height;
+	private int height;
+
+	private Color fillColor = new Color( 190, 190, 190, 255 );
 
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public TrashOpenSym( int width, int height ) {
+	public TrashOpenSym( int width, int height, Color fillColor ) {
 		this.width = width;
 		this.height = height;
+		this.fillColor = fillColor;
 	}
 
 	/*
@@ -307,10 +308,17 @@ public class TrashOpenSym implements Icon {
 	/*
 	 * Set the dimension of the icon.
 	 */
-
 	public void setDimension( Dimension newDimension ) {
 		this.width = newDimension.width;
 		this.height = newDimension.height;
+	}
+
+	public Color getFillColor() {
+		return this.fillColor;
+	}
+
+	public void setFillColor( Color fillColor ) {
+		this.fillColor = fillColor;
 	}
 
 	/*
@@ -319,8 +327,8 @@ public class TrashOpenSym implements Icon {
 	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
 	 */
 	public void paintIcon( Component c, Graphics g, int x, int y ) {
-		final int OFFSET_X = 2;
-		final int OFFSET_Y = 9;
+		final double OFFSET_X = 2;
+		final double OFFSET_Y = 8.5;
 		Graphics2D g2d = (Graphics2D)g.create();
 		g2d.translate( x - OFFSET_X, y - OFFSET_Y );
 
