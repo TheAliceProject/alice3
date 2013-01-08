@@ -86,6 +86,11 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	@Override
+	protected boolean isAlphaDesiredWhenOverDropReceptor() {
+		return false;
+	}
+
+	@Override
 	protected int getInsetTop() {
 		return 4;
 	}
