@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,71 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.project.ast;
+package org.alice.ide.preferences.recursion;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IdentifierUtilities {
-	public static boolean isValidIdentifier( String name ) {
-		final int N = name != null ? name.length() : 0;
-		if( N > 0 ) {
-			char name0 = name.charAt( 0 );
-			if( Character.isLetter( name0 ) || ( name0 == '_' ) ) {
-				for( int i = 1; i < N; i++ ) {
-					char c = name.charAt( i );
-					if( Character.isLetterOrDigit( c ) || ( c == '_' ) ) {
-						//pass
-					} else {
-						return false;
-					}
-				}
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+public class IsIdentifierNameValidityStrictState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+	private static class SingletonHolder {
+		private static IsIdentifierNameValidityStrictState instance = new IsIdentifierNameValidityStrictState();
 	}
 
-	private static String getConventionalIdentifierName( String name, boolean cap ) {
-		String rv = "";
-		boolean isAlphaEncountered = false;
-		final int N = name.length();
-		for( int i = 0; i < N; i++ ) {
-			char c = name.charAt( i );
-			if( Character.isLetterOrDigit( c ) ) {
-				if( Character.isDigit( c ) ) {
-					if( isAlphaEncountered ) {
-						//pass
-					} else {
-						rv += "_";
-						rv += c;
-						isAlphaEncountered = true;
-						continue;
-					}
-				} else {
-					isAlphaEncountered = true;
-				}
-				if( cap ) {
-					c = Character.toUpperCase( c );
-				}
-				rv += c;
-				cap = Character.isDigit( c );
-			} else {
-				cap = true;
-			}
-		}
-		return rv;
+	public static IsIdentifierNameValidityStrictState getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	public static String getConventionalInstanceName( String text ) {
-		return getConventionalIdentifierName( text, false );
-	}
-
-	public static String getConventionalClassName( String text ) {
-		return getConventionalIdentifierName( text, true );
+	private IsIdentifierNameValidityStrictState() {
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "4cbb1a11-c028-463b-9468-366481885dd3" ), true );
 	}
 }

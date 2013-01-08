@@ -52,6 +52,10 @@ public abstract class AddDeclarationComposite<N extends org.lgna.project.ast.Dec
 
 	@Override
 	protected boolean isNameValid( String name ) {
-		return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
+		if( org.alice.ide.preferences.recursion.IsIdentifierNameValidityStrictState.getInstance().getValue() ) {
+			return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
+		} else {
+			return ( name != null ) && ( name.length() > 0 );
+		}
 	}
 }
