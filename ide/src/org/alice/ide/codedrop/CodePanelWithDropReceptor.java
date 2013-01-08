@@ -210,8 +210,8 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 
 						javax.swing.border.Border border = this.currentUnder.getBorder();
 						boolean isVirtuallyEmpty;
-						if( border instanceof org.alice.ide.codeeditor.EmptyStatementListAffordanceBorder ) {
-							org.alice.ide.codeeditor.EmptyStatementListAffordanceBorder emptyStatementListAffordanceBorder = (org.alice.ide.codeeditor.EmptyStatementListAffordanceBorder)border;
+						if( border instanceof org.alice.ide.codeeditor.StatementListBorder ) {
+							org.alice.ide.codeeditor.StatementListBorder emptyStatementListAffordanceBorder = (org.alice.ide.codeeditor.StatementListBorder)border;
 							isVirtuallyEmpty = emptyStatementListAffordanceBorder.isVirtuallyEmpty( this.currentUnder.getAwtComponent() );
 						} else {
 							isVirtuallyEmpty = false;

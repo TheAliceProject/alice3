@@ -47,7 +47,7 @@ import org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyStatementListAffordanceBorder implements javax.swing.border.Border {
+public class StatementListBorder implements javax.swing.border.Border {
 	private static final String TEXT = "drop statement here";
 	private static final java.awt.Stroke SOLID_STROKE = new java.awt.BasicStroke( 2.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 220 );
@@ -67,7 +67,7 @@ public class EmptyStatementListAffordanceBorder implements javax.swing.border.Bo
 
 	private boolean isDrawingDesired = true;
 
-	public EmptyStatementListAffordanceBorder( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty alternateListProperty, java.awt.Insets normalInsets, int minimum ) {
+	public StatementListBorder( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty alternateListProperty, java.awt.Insets normalInsets, int minimum ) {
 		this.factory = factory;
 		this.alternateListProperty = alternateListProperty;
 		this.normalInsets = normalInsets;
