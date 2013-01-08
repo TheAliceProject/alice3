@@ -71,7 +71,21 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		}
 	}
 
-	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+	private class InstanceFactoryListener implements org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> {
+		private boolean isActive;
+
+		public boolean isActive() {
+			return this.isActive;
+		}
+
+		public void setActive( boolean isActive ) {
+			this.isActive = isActive;
+		}
+
+		private void repaintTitlesIfNecessary() {
+
+		}
+
 		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 
@@ -79,10 +93,15 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			if( isAdjusting ) {
 				//pass
 			} else {
-				MemberTabComposite.this.handleInstanceFactoryChanged( prevValue, nextValue );
+				if( this.isActive ) {
+					MemberTabComposite.this.refreshContentsLater();
+				}
+				MemberTabComposite.this.repaintTitles();
 			}
 		}
-	};
+	}
+
+	private final InstanceFactoryListener instanceFactoryListener = new InstanceFactoryListener();
 
 	private final org.lgna.croquet.State.ValueListener<String> sortListener = new org.lgna.croquet.State.ValueListener<String>() {
 		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
@@ -93,10 +112,16 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		}
 	};
 
-	private final java.util.List<javax.swing.JComponent> jComponentsInNeedOfRepaintWhenInstanceFactoryChanges = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<javax.swing.JComponent> jTitlesInNeedOfRepaintWhenInstanceFactoryChanges = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public MemberTabComposite( java.util.UUID migrationId ) {
 		super( migrationId );
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addValueListener( this.instanceFactoryListener );
 	}
 
 	public abstract org.lgna.croquet.ListSelectionState<String> getSortState();
@@ -106,16 +131,24 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		return null;
 	}
 
-	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
+	private void repaintTitles() {
+		try {
+			for( javax.swing.JComponent jComponent : this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges ) {
+				jComponent.repaint();
+			}
+		} catch( Throwable t ) {
+			// deemed not worth an exception
+			t.printStackTrace();
+		}
+	}
+
+	private void refreshContentsLater() {
 		for( MethodsSubComposite subComposite : this.getSubComposites() ) {
 			if( subComposite != null ) {
 				subComposite.getView().refreshLater();
 			}
 		}
 		this.getView().refreshLater();
-		for( javax.swing.JComponent jComponent : this.jComponentsInNeedOfRepaintWhenInstanceFactoryChanges ) {
-			jComponent.repaint();
-		}
 	}
 
 	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
@@ -219,15 +252,16 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+		this.instanceFactoryListener.setActive( true );
 		this.getSortState().addValueListener( this.sortListener );
-		this.getView().refreshLater();
+		this.refreshContentsLater();
+		this.repaintTitles();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		this.getSortState().removeValueListener( this.sortListener );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactorySelectionObserver );
+		this.instanceFactoryListener.setActive( false );
 		super.handlePostDeactivation();
 	}
 
@@ -238,7 +272,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		if( IS_ICON_DESIRED ) {
 			button.getAwtComponent().setIcon( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
 			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
-			this.jComponentsInNeedOfRepaintWhenInstanceFactoryChanges.add( button.getAwtComponent() );
+			this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges.add( button.getAwtComponent() );
 		}
 	}
 }
