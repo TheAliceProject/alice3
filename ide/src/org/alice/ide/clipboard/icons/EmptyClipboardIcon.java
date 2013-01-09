@@ -1,4 +1,4 @@
-package org.alice.ide.icons;
+package org.alice.ide.clipboard.icons;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -16,13 +16,11 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 
-import javax.swing.Icon;
-
 /**
  * This class has been automatically generated using svg2java
  * 
  */
-public class ClipboardEmpty implements Icon {
+public class EmptyClipboardIcon implements ClipboardIcon {
 
 	private float origAlpha = 1.0f;
 
@@ -53,27 +51,27 @@ public class ClipboardEmpty implements Icon {
 
 	}
 
-	private void paintCompositeGraphicsNode_0_0_0_0( Graphics2D g ) {
-	}
+	//	private void paintCompositeGraphicsNode_0_0_0_0( Graphics2D g ) {
+	//	}
+	//
+	//	private void paintCompositeGraphicsNode_0_0_0( Graphics2D g ) {
+	//		// _0_0_0_0
+	//		AffineTransform trans_0_0_0_0 = g.getTransform();
+	//		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
+	//		paintCompositeGraphicsNode_0_0_0_0( g );
+	//		g.setTransform( trans_0_0_0_0 );
+	//	}
 
-	private void paintCompositeGraphicsNode_0_0_0( Graphics2D g ) {
-		// _0_0_0_0
-		AffineTransform trans_0_0_0_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintCompositeGraphicsNode_0_0_0_0( g );
-		g.setTransform( trans_0_0_0_0 );
-	}
-
-	private void paintCompositeGraphicsNode_0_0_1_0( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_1( Graphics2D g ) {
-		// _0_0_1_0
-		AffineTransform trans_0_0_1_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintCompositeGraphicsNode_0_0_1_0( g );
-		g.setTransform( trans_0_0_1_0 );
-	}
+	//	private void paintCompositeGraphicsNode_0_0_1_0( Graphics2D g ) {
+	//	}
+	//
+	//	private void paintCompositeGraphicsNode_0_0_1( Graphics2D g ) {
+	//		// _0_0_1_0
+	//		AffineTransform trans_0_0_1_0 = g.getTransform();
+	//		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
+	//		paintCompositeGraphicsNode_0_0_1_0( g );
+	//		g.setTransform( trans_0_0_1_0 );
+	//	}
 
 	private void paintShapeNode_0_0_2_0_0_0( Graphics2D g ) {
 		RoundRectangle2D.Double shape0 = new RoundRectangle2D.Double( 6.874999523162842, 35.875, 35.125, 6.5, 6.499999523162842, 6.5 );
@@ -86,9 +84,12 @@ public class ClipboardEmpty implements Icon {
 		g.fill( shape1 );
 	}
 
+	// board
 	private void paintShapeNode_0_0_2_0_0_2( Graphics2D g ) {
 		RoundRectangle2D.Double shape2 = new RoundRectangle2D.Double( 305.5, -92.5, 29.999996185302734, 31.999998092651367, 5.0, 5.0 );
-		g.setPaint( new LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 226, 179, 105, 255 ), new Color( 199, 155, 85, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
+
+		Color color = this.dragReceptorState.getColor();
+		g.setPaint( new LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { color, new Color( 199, 155, 85, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
 		g.fill( shape2 );
 		g.setPaint( new LinearGradientPaint( new Point2D.Double( 18.39735221862793, -37.160858154296875 ), new Point2D.Double( 10.831841468811035, 4.028111457824707 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 143, 89, 2, 255 ), new Color( 233, 185, 110, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -50.0f ) ) );
 		g.setStroke( new BasicStroke( 1.0f, 0, 0, 4.0f, null, 0.0f ) );
@@ -129,53 +130,53 @@ public class ClipboardEmpty implements Icon {
 		g.setTransform( trans_0_0_2_0_0_3 );
 	}
 
-	private void paintCompositeGraphicsNode_0_0_2_0_1_0_0_0( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_1_0_0( Graphics2D g ) {
-		// _0_0_2_0_1_0_0_0
-		g.setComposite( AlphaComposite.getInstance( 3, 0.4f * origAlpha ) );
-		AffineTransform trans_0_0_2_0_1_0_0_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0526319742202759f, 0.0f, 0.0f, 1.2857129573822021f, -1.2631579637527466f, -13.428540229797363f ) );
-		paintCompositeGraphicsNode_0_0_2_0_1_0_0_0( g );
-		g.setTransform( trans_0_0_2_0_1_0_0_0 );
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_1_0( Graphics2D g ) {
-		// _0_0_2_0_1_0_0
-		AffineTransform trans_0_0_2_0_1_0_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintCompositeGraphicsNode_0_0_2_0_1_0_0( g );
-		g.setTransform( trans_0_0_2_0_1_0_0 );
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_1_1( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_1_2( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_1( Graphics2D g ) {
-		// _0_0_2_0_1_0
-		AffineTransform trans_0_0_2_0_1_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 0.5555559992790222f, -4.5499979250962497E-7f, 13.888870239257812f ) );
-		paintCompositeGraphicsNode_0_0_2_0_1_0( g );
-		g.setTransform( trans_0_0_2_0_1_0 );
-		// _0_0_2_0_1_1
-		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
-		AffineTransform trans_0_0_2_0_1_1 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 50.68870162963867f, 6.214990139007568f ) );
-		paintCompositeGraphicsNode_0_0_2_0_1_1( g );
-		g.setTransform( trans_0_0_2_0_1_1 );
-		// _0_0_2_0_1_2
-		AffineTransform trans_0_0_2_0_1_2 = g.getTransform();
-		g.transform( new AffineTransform( 0.18670299649238586f, 0.0f, 0.0f, 0.18670299649238586f, 29.58139991760254f, 63.83797836303711f ) );
-		paintCompositeGraphicsNode_0_0_2_0_1_2( g );
-		g.setTransform( trans_0_0_2_0_1_2 );
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_2( Graphics2D g ) {
-	}
+	//	private void paintCompositeGraphicsNode_0_0_2_0_1_0_0_0( Graphics2D g ) {
+	//	}
+	//
+	//	private void paintCompositeGraphicsNode_0_0_2_0_1_0_0( Graphics2D g ) {
+	//		// _0_0_2_0_1_0_0_0
+	//		g.setComposite( AlphaComposite.getInstance( 3, 0.4f * origAlpha ) );
+	//		AffineTransform trans_0_0_2_0_1_0_0_0 = g.getTransform();
+	//		g.transform( new AffineTransform( 1.0526319742202759f, 0.0f, 0.0f, 1.2857129573822021f, -1.2631579637527466f, -13.428540229797363f ) );
+	//		paintCompositeGraphicsNode_0_0_2_0_1_0_0_0( g );
+	//		g.setTransform( trans_0_0_2_0_1_0_0_0 );
+	//	}
+	//
+	//	private void paintCompositeGraphicsNode_0_0_2_0_1_0( Graphics2D g ) {
+	//		// _0_0_2_0_1_0_0
+	//		AffineTransform trans_0_0_2_0_1_0_0 = g.getTransform();
+	//		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
+	//		paintCompositeGraphicsNode_0_0_2_0_1_0_0( g );
+	//		g.setTransform( trans_0_0_2_0_1_0_0 );
+	//	}
+	//
+	//	private void paintCompositeGraphicsNode_0_0_2_0_1_1( Graphics2D g ) {
+	//	}
+	//
+	//	private void paintCompositeGraphicsNode_0_0_2_0_1_2( Graphics2D g ) {
+	//	}
+	//
+	//	private void paintCompositeGraphicsNode_0_0_2_0_1( Graphics2D g ) {
+	//		// _0_0_2_0_1_0
+	//		AffineTransform trans_0_0_2_0_1_0 = g.getTransform();
+	//		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 0.5555559992790222f, -4.5499979250962497E-7f, 13.888870239257812f ) );
+	//		paintCompositeGraphicsNode_0_0_2_0_1_0( g );
+	//		g.setTransform( trans_0_0_2_0_1_0 );
+	//		// _0_0_2_0_1_1
+	//		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
+	//		AffineTransform trans_0_0_2_0_1_1 = g.getTransform();
+	//		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 50.68870162963867f, 6.214990139007568f ) );
+	//		paintCompositeGraphicsNode_0_0_2_0_1_1( g );
+	//		g.setTransform( trans_0_0_2_0_1_1 );
+	//		// _0_0_2_0_1_2
+	//		AffineTransform trans_0_0_2_0_1_2 = g.getTransform();
+	//		g.transform( new AffineTransform( 0.18670299649238586f, 0.0f, 0.0f, 0.18670299649238586f, 29.58139991760254f, 63.83797836303711f ) );
+	//		paintCompositeGraphicsNode_0_0_2_0_1_2( g );
+	//		g.setTransform( trans_0_0_2_0_1_2 );
+	//	}
+	//
+	//	private void paintCompositeGraphicsNode_0_0_2_0_2( Graphics2D g ) {
+	//	}
 
 	private void paintShapeNode_0_0_2_0_3_0( Graphics2D g ) {
 		GeneralPath shape4 = new GeneralPath();
@@ -300,16 +301,16 @@ public class ClipboardEmpty implements Icon {
 		paintCompositeGraphicsNode_0_0_2_0_0( g );
 		g.setTransform( trans_0_0_2_0_0 );
 		// _0_0_2_0_1
-		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
-		AffineTransform trans_0_0_2_0_1 = g.getTransform();
-		g.transform( new AffineTransform( 0.6855238676071167f, 0.0f, 0.0f, 0.6771684288978577f, 137.05018615722656f, 60.773277282714844f ) );
-		paintCompositeGraphicsNode_0_0_2_0_1( g );
-		g.setTransform( trans_0_0_2_0_1 );
-		// _0_0_2_0_2
-		AffineTransform trans_0_0_2_0_2 = g.getTransform();
-		g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
-		paintCompositeGraphicsNode_0_0_2_0_2( g );
-		g.setTransform( trans_0_0_2_0_2 );
+		//		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
+		//		AffineTransform trans_0_0_2_0_1 = g.getTransform();
+		//		g.transform( new AffineTransform( 0.6855238676071167f, 0.0f, 0.0f, 0.6771684288978577f, 137.05018615722656f, 60.773277282714844f ) );
+		//		paintCompositeGraphicsNode_0_0_2_0_1( g );
+		//		g.setTransform( trans_0_0_2_0_1 );
+		//		// _0_0_2_0_2
+		//		AffineTransform trans_0_0_2_0_2 = g.getTransform();
+		//		g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
+		//		paintCompositeGraphicsNode_0_0_2_0_2( g );
+		//		g.setTransform( trans_0_0_2_0_2 );
 		// _0_0_2_0_3
 		AffineTransform trans_0_0_2_0_3 = g.getTransform();
 		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -167.00001525878906f, -3.0f ) );
@@ -325,39 +326,39 @@ public class ClipboardEmpty implements Icon {
 		g.setTransform( trans_0_0_2_0 );
 	}
 
-	private void paintCompositeGraphicsNode_0_0_3_0( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_3( Graphics2D g ) {
-		// _0_0_3_0
-		AffineTransform trans_0_0_3_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintCompositeGraphicsNode_0_0_3_0( g );
-		g.setTransform( trans_0_0_3_0 );
-	}
+	//	private void paintCompositeGraphicsNode_0_0_3_0( Graphics2D g ) {
+	//	}
+	//
+	//	private void paintCompositeGraphicsNode_0_0_3( Graphics2D g ) {
+	//		// _0_0_3_0
+	//		AffineTransform trans_0_0_3_0 = g.getTransform();
+	//		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
+	//		paintCompositeGraphicsNode_0_0_3_0( g );
+	//		g.setTransform( trans_0_0_3_0 );
+	//	}
 
 	private void paintCanvasGraphicsNode_0_0( Graphics2D g ) {
 		// _0_0_0
-		AffineTransform trans_0_0_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
-		paintCompositeGraphicsNode_0_0_0( g );
-		g.setTransform( trans_0_0_0 );
-		// _0_0_1
-		AffineTransform trans_0_0_1 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
-		paintCompositeGraphicsNode_0_0_1( g );
-		g.setTransform( trans_0_0_1 );
+		//		AffineTransform trans_0_0_0 = g.getTransform();
+		//		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
+		//		paintCompositeGraphicsNode_0_0_0( g );
+		//		g.setTransform( trans_0_0_0 );
+		//		// _0_0_1
+		//		AffineTransform trans_0_0_1 = g.getTransform();
+		//		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
+		//		paintCompositeGraphicsNode_0_0_1( g );
+		//		g.setTransform( trans_0_0_1 );
 		// _0_0_2
 		AffineTransform trans_0_0_2 = g.getTransform();
 		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
 		paintCompositeGraphicsNode_0_0_2( g );
 		g.setTransform( trans_0_0_2 );
 		// _0_0_3
-		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
-		AffineTransform trans_0_0_3 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
-		paintCompositeGraphicsNode_0_0_3( g );
-		g.setTransform( trans_0_0_3 );
+		//		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
+		//		AffineTransform trans_0_0_3 = g.getTransform();
+		//		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
+		//		paintCompositeGraphicsNode_0_0_3( g );
+		//		g.setTransform( trans_0_0_3 );
 	}
 
 	private void paintRootGraphicsNode_0( Graphics2D g ) {
@@ -408,17 +409,19 @@ public class ClipboardEmpty implements Icon {
 	/**
 	 * The current width of this resizable icon.
 	 */
-	int width;
+	private int width;
 
 	/**
 	 * The current height of this resizable icon.
 	 */
-	int height;
+	private int height;
+
+	private org.alice.ide.clipboard.DragReceptorState dragReceptorState = org.alice.ide.clipboard.DragReceptorState.IDLE;
 
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public ClipboardEmpty() {
+	public EmptyClipboardIcon() {
 		this.width = getOrigWidth();
 		this.height = getOrigHeight();
 	}
@@ -448,6 +451,10 @@ public class ClipboardEmpty implements Icon {
 	public void setDimension( Dimension newDimension ) {
 		this.width = newDimension.width;
 		this.height = newDimension.height;
+	}
+
+	public void setDragReceptorState( org.alice.ide.clipboard.DragReceptorState dragReceptorState ) {
+		this.dragReceptorState = dragReceptorState;
 	}
 
 	/*

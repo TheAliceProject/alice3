@@ -1,4 +1,4 @@
-package org.alice.ide.icons;
+package org.alice.ide.clipboard.icons;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -17,13 +17,11 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 
-import javax.swing.Icon;
-
 /**
  * This class has been automatically generated using svg2java
  * 
  */
-public class ClipboardFull implements Icon {
+public class FullClipboardIcon implements ClipboardIcon {
 
 	private float origAlpha = 1.0f;
 
@@ -89,7 +87,11 @@ public class ClipboardFull implements Icon {
 
 	private void paintShapeNode_0_0_2_0_0_2( Graphics2D g ) {
 		RoundRectangle2D.Double shape2 = new RoundRectangle2D.Double( 305.5, -92.5, 29.999996185302734, 31.999998092651367, 5.0, 5.0 );
-		g.setPaint( new LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 226, 179, 105, 255 ), new Color( 199, 155, 85, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
+
+		Color color = this.dragReceptorState.getColor();
+		g.setPaint( new LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { color, new Color( 199, 155, 85, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
+		//g.setPaint( new LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 226, 179, 105, 255 ), new Color( 199, 155, 85, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
+
 		g.fill( shape2 );
 		g.setPaint( new LinearGradientPaint( new Point2D.Double( 18.39735221862793, -37.160858154296875 ), new Point2D.Double( 10.831841468811035, 4.028111457824707 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 143, 89, 2, 255 ), new Color( 233, 185, 110, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -50.0f ) ) );
 		g.setStroke( new BasicStroke( 1.0f, 0, 0, 4.0f, null, 0.0f ) );
@@ -551,17 +553,19 @@ public class ClipboardFull implements Icon {
 	/**
 	 * The current width of this resizable icon.
 	 */
-	int width;
+	private int width;
 
 	/**
 	 * The current height of this resizable icon.
 	 */
-	int height;
+	private int height;
+
+	private org.alice.ide.clipboard.DragReceptorState dragReceptorState = org.alice.ide.clipboard.DragReceptorState.IDLE;
 
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public ClipboardFull() {
+	public FullClipboardIcon() {
 		this.width = getOrigWidth();
 		this.height = getOrigHeight();
 	}
@@ -591,6 +595,10 @@ public class ClipboardFull implements Icon {
 	public void setDimension( Dimension newDimension ) {
 		this.width = newDimension.width;
 		this.height = newDimension.height;
+	}
+
+	public void setDragReceptorState( org.alice.ide.clipboard.DragReceptorState dragReceptorState ) {
+		this.dragReceptorState = dragReceptorState;
 	}
 
 	/*

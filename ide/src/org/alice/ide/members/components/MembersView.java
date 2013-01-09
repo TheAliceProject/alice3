@@ -59,11 +59,13 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		} );
 	}
 
+	private static final int SIZE = 32;
+
 	private static enum DragReceptorState {
 		IDLE( null, null, null, 0 ),
-		STARTED( java.awt.Color.YELLOW, new java.awt.Color( 191, 191, 191, 0 ), null, 32 ),
-		ENTERED( java.awt.Color.YELLOW, new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon( 128, 128, java.awt.Color.LIGHT_GRAY ), 32 ),
-		ENTERED_FAR_ENOUGH( java.awt.Color.GREEN, new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.recyclebin.icons.OpenTrashCanSymbolicStyleIcon( 128, 128, java.awt.Color.WHITE ), 64 );
+		STARTED( java.awt.Color.YELLOW, new java.awt.Color( 191, 191, 191, 0 ), null, SIZE ),
+		ENTERED( java.awt.Color.YELLOW, new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon( 128, 128, java.awt.Color.LIGHT_GRAY ), SIZE ),
+		ENTERED_FAR_ENOUGH( new java.awt.Color( 0xCCFF99 ), new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.recyclebin.icons.OpenTrashCanSymbolicStyleIcon( 128, 128, java.awt.Color.WHITE ), SIZE );
 		private final java.awt.Color colorA;
 		private final java.awt.Color colorB;
 		private final javax.swing.Icon icon;

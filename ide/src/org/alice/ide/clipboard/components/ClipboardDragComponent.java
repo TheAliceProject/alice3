@@ -42,43 +42,30 @@
  */
 package org.alice.ide.clipboard.components;
 
+import org.alice.ide.clipboard.DragReceptorState;
+
 /**
  * @author Dennis Cosgrove
  */
 public class ClipboardDragComponent extends org.lgna.croquet.components.DragComponent<javax.swing.AbstractButton, org.lgna.croquet.DragModel> {
-	private static enum DragReceptorState {
-		IDLE( java.awt.Color.ORANGE.darker() ),
-		STARTED( java.awt.Color.YELLOW ),
-		ENTERED( java.awt.Color.GREEN );
-		private final java.awt.Paint paint;
-
-		private DragReceptorState( java.awt.Paint paint ) {
-			this.paint = paint;
-		}
-
-		public java.awt.Paint getPaint() {
-			return this.paint;
-		}
-	};
-
 	private class ClipboardDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
-		private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
+		private org.alice.ide.clipboard.DragReceptorState dragReceptorState = org.alice.ide.clipboard.DragReceptorState.IDLE;
 
 		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			return dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel;
 		}
 
-		private void setDragReceptorState( DragReceptorState dragReceptorState ) {
+		private void setDragReceptorState( org.alice.ide.clipboard.DragReceptorState dragReceptorState ) {
 			this.dragReceptorState = dragReceptorState;
 			ClipboardDragComponent.this.repaint();
 		}
 
 		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
-			this.setDragReceptorState( DragReceptorState.STARTED );
+			this.setDragReceptorState( org.alice.ide.clipboard.DragReceptorState.STARTED );
 		}
 
 		public void dragEntered( org.lgna.croquet.history.DragStep step ) {
-			this.setDragReceptorState( DragReceptorState.ENTERED );
+			this.setDragReceptorState( org.alice.ide.clipboard.DragReceptorState.ENTERED );
 			//			step.getDragSource().hideDragProxy();
 		}
 
@@ -167,8 +154,8 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 		return this.subject;
 	}
 
-	private static final org.alice.ide.icons.ClipboardFull FULL_ICON = new org.alice.ide.icons.ClipboardFull();
-	private static final org.alice.ide.icons.ClipboardEmpty EMPTY_ICON = new org.alice.ide.icons.ClipboardEmpty();
+	private static final org.alice.ide.clipboard.icons.FullClipboardIcon FULL_ICON = new org.alice.ide.clipboard.icons.FullClipboardIcon();
+	private static final org.alice.ide.clipboard.icons.EmptyClipboardIcon EMPTY_ICON = new org.alice.ide.clipboard.icons.EmptyClipboardIcon();
 
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
@@ -187,15 +174,15 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 			@Override
 			public void paint( java.awt.Graphics g ) {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				javax.swing.Icon icon;
+				org.alice.ide.clipboard.icons.ClipboardIcon icon;
 				if( org.alice.ide.clipboard.Clipboard.SINGLETON.isStackEmpty() && ( dropReceptor.dragReceptorState != DragReceptorState.ENTERED ) ) {
 					icon = EMPTY_ICON;
-					EMPTY_ICON.setDimension( this.getSize() );
 				} else {
 					icon = FULL_ICON;
-					FULL_ICON.setDimension( this.getSize() );
 				}
 				synchronized( icon ) {
+					icon.setDimension( this.getSize() );
+					icon.setDragReceptorState( dropReceptor.dragReceptorState );
 					icon.paintIcon( this, g, 0, 0 );
 				}
 
