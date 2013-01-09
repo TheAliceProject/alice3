@@ -154,7 +154,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 		return this.subject;
 	}
 
-	private static final org.alice.ide.clipboard.icons.FullClipboardIcon ICON = new org.alice.ide.clipboard.icons.FullClipboardIcon();
+	private static final org.alice.ide.clipboard.icons.ClipboardIcon ICON = new org.alice.ide.clipboard.icons.ClipboardIcon();
 
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {

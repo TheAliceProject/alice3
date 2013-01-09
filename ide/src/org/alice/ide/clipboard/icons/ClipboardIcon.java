@@ -21,7 +21,7 @@ import java.awt.geom.RoundRectangle2D;
  * This class has been automatically generated using svg2java
  * 
  */
-public class FullClipboardIcon implements javax.swing.Icon {
+public class ClipboardIcon implements javax.swing.Icon {
 
 	private float origAlpha = 1.0f;
 
@@ -463,7 +463,7 @@ public class FullClipboardIcon implements javax.swing.Icon {
 	/**
 	 * Creates a new transcoded SVG image.
 	 */
-	public FullClipboardIcon() {
+	public ClipboardIcon() {
 		this.width = getOrigWidth();
 		this.height = getOrigHeight();
 	}
