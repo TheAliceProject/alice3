@@ -75,7 +75,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
 				);
 
-		final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = true;
+		final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
 		if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
 			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBinView() );
 		}

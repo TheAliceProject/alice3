@@ -46,6 +46,17 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class CylinderIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static CylinderIconFactory instance = new CylinderIconFactory();
+	}
+
+	public static CylinderIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private CylinderIconFactory() {
+	}
+
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new CylinderIcon( size );

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.alice.stageide.gallerybrowser.shapes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoxIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+public class TextModelDragModel extends ShapeDragModel {
+	private static final org.lgna.story.STextModel sModel = new org.lgna.story.STextModel();
+
 	private static class SingletonHolder {
-		private static BoxIconFactory instance = new BoxIconFactory();
+		private static TextModelDragModel instance = new TextModelDragModel();
 	}
 
-	public static BoxIconFactory getInstance() {
+	public static TextModelDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private BoxIconFactory() {
+	private TextModelDragModel() {
+		super( java.util.UUID.fromString( "ac8a92e6-ebb7-49b2-bdec-6b17668e4398" ) );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new BoxIcon( size );
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
+		return org.lgna.story.ImplementationAccessor.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	}
+
+	@Override
+	public org.lgna.croquet.Model getLeftButtonClickModel() {
+		return org.alice.stageide.ast.declaration.AddTextModelManagedFieldOperationComposite.getInstance().getOperation();
+	}
+
+	@Override
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return org.alice.stageide.icons.TextModelIconFactory.getInstance();
 	}
 }

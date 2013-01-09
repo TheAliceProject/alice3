@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.alice.stageide.gallerybrowser.shapes;
+
+import org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoxIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
-	private static class SingletonHolder {
-		private static BoxIconFactory instance = new BoxIconFactory();
-	}
+public abstract class ShapeDragModel extends GalleryDragModel {
+	private String text;
 
-	public static BoxIconFactory getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private BoxIconFactory() {
+	public ShapeDragModel( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new BoxIcon( size );
+	protected void localize() {
+		super.localize();
+		this.text = this.findDefaultLocalizedText();
 	}
+
+	@Override
+	public final String getText() {
+		return this.text;
+	}
+
+	@Override
+	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
+		return this.getLeftButtonClickModel();
+	}
+
 }

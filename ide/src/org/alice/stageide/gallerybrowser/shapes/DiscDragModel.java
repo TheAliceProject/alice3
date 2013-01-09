@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.alice.stageide.gallerybrowser.shapes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoxIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+public class DiscDragModel extends ShapeDragModel {
+	private static final org.lgna.story.SDisc sModel = new org.lgna.story.SDisc();
+
 	private static class SingletonHolder {
-		private static BoxIconFactory instance = new BoxIconFactory();
+		private static DiscDragModel instance = new DiscDragModel();
 	}
 
-	public static BoxIconFactory getInstance() {
+	public static DiscDragModel getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private BoxIconFactory() {
+	private DiscDragModel() {
+		super( java.util.UUID.fromString( "461b82ed-0e75-4549-90ff-6e34a809fb2c" ) );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new BoxIcon( size );
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
+		return org.lgna.story.ImplementationAccessor.getImplementation( sModel ).getAxisAlignedMinimumBoundingBox();
+	}
+
+	@Override
+	public org.lgna.croquet.Model getLeftButtonClickModel() {
+		return org.alice.stageide.ast.declaration.AddDiscManagedFieldComposite.getInstance().getOperation();
+	}
+
+	@Override
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return org.alice.stageide.icons.DiscIconFactory.getInstance();
 	}
 }

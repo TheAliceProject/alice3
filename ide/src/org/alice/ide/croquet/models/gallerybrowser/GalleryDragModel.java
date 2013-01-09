@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
-	public GalleryDragModel( java.util.UUID id ) {
-		super( id );
+	public GalleryDragModel( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
 	public abstract String getText();

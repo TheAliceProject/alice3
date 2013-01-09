@@ -63,6 +63,7 @@ public class DiscImp extends ShapeImp {
 
 	public DiscImp( org.lgna.story.SDisc abstraction ) {
 		this.abstraction = abstraction;
+		this.sgDisc.outerRadius.setValue( 0.5 );
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
 		sgVisual.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgDisc } );
 	}
