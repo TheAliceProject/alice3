@@ -49,6 +49,8 @@ import org.alice.ide.croquet.models.ast.cascade.statement.StatementInsertCascade
  */
 public class StatementListBorder implements javax.swing.border.Border {
 	private static final String TEXT = "drop statement here";
+	private static final String[] TEXTS = { TEXT, TEXT };
+	private static final int LONGER_INDEX = 1;
 	private static final java.awt.Stroke SOLID_STROKE = new java.awt.BasicStroke( 2.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND );
 	private static final java.awt.Color HIGHLIGHT_COLOR = new java.awt.Color( 255, 255, 220 );
 	private static final java.awt.Color SHADOW_COLOR = new java.awt.Color( 63, 63, 63 );
@@ -74,10 +76,10 @@ public class StatementListBorder implements javax.swing.border.Border {
 		this.minimum = minimum;
 	}
 
-	private static java.awt.geom.Rectangle2D getStringBounds( java.awt.Component c, java.awt.Graphics g ) {
+	private static java.awt.geom.Rectangle2D getStringBounds( java.awt.Component c, java.awt.Graphics g, int index ) {
 		java.awt.FontMetrics fontMetrics = c.getFontMetrics( c.getFont() );
 		if( fontMetrics != null ) {
-			return fontMetrics.getStringBounds( TEXT, g );
+			return fontMetrics.getStringBounds( TEXTS[ index ], g );
 		} else {
 			return null;
 		}
@@ -87,7 +89,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 		java.awt.Container container = (java.awt.Container)c;
 		if( this.isVirtuallyEmpty( container ) ) {
 			java.awt.Graphics g = c.getGraphics();
-			java.awt.geom.Rectangle2D bounds = getStringBounds( c, g );
+			java.awt.geom.Rectangle2D bounds = getStringBounds( c, g, LONGER_INDEX );
 			if( g != null ) {
 				g.dispose();
 			}
@@ -126,7 +128,8 @@ public class StatementListBorder implements javax.swing.border.Border {
 		if( this.isVirtuallyEmpty( container ) ) {
 			if( this.isEditable() ) {
 				if( this.isDrawingDesired() ) {
-					java.awt.geom.Rectangle2D bounds = getStringBounds( c, g );
+					int textIndex = container.getComponentCount();
+					java.awt.geom.Rectangle2D bounds = getStringBounds( c, g, textIndex );
 
 					int width = ( EMPTY_INSETS.right + (int)bounds.getWidth() ) - 16;
 					int height = ( EMPTY_INSETS.bottom + (int)bounds.getHeight() ) - 4;
@@ -159,7 +162,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 					g.setColor( java.awt.Color.BLACK );
 					Object prevTextAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, TEXT, 8, 0, (int)bounds.getWidth(), height );
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, TEXTS[ textIndex ], 8, 0, (int)bounds.getWidth(), height );
 					g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
 					g.translate( -dx, -dy );
 				}
