@@ -50,7 +50,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	private static final int INTRASTICIAL_MIDDLE = 1;
 	public static final int INTRASTICIAL_PAD = ( INTRASTICIAL_MIDDLE * 2 ) + 1;
 
-	private final org.alice.ide.codeeditor.StatementListBorder border;
+	private final org.alice.ide.codeeditor.StatementListBorder statementListBorder;
 
 	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property, boolean isRoot ) {
 		super( factory, property, javax.swing.BoxLayout.PAGE_AXIS );
@@ -83,9 +83,13 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		} else {
 			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() );
 		}
-		this.border = new org.alice.ide.codeeditor.StatementListBorder( factory, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
+		this.statementListBorder = new org.alice.ide.codeeditor.StatementListBorder( factory, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
 
-		this.setBorder( this.border );
+		this.setBorder( this.statementListBorder );
+	}
+
+	public org.alice.ide.codeeditor.StatementListBorder getStatementListBorder() {
+		return this.statementListBorder;
 	}
 
 	public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
@@ -176,7 +180,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		} else {
 			this.setCurrentPotentialDropIndex( -1 );
 		}
-		this.border.setDrawingDesired( isCurrentUnder == false );
+		this.statementListBorder.setDrawingDesired( isCurrentUnder == false );
 		//		if( this.getComponentCount() > 0 ) {
 		//			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
 		//			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {

@@ -208,17 +208,15 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 
 						int availableHeight = this.currentUnder.getAvailableDropProxyHeight();
 
-						javax.swing.border.Border border = this.currentUnder.getBorder();
-						boolean isVirtuallyEmpty;
-						if( border instanceof org.alice.ide.codeeditor.StatementListBorder ) {
-							org.alice.ide.codeeditor.StatementListBorder emptyStatementListAffordanceBorder = (org.alice.ide.codeeditor.StatementListBorder)border;
-							isVirtuallyEmpty = emptyStatementListAffordanceBorder.isVirtuallyEmpty( this.currentUnder.getAwtComponent() );
-						} else {
-							isVirtuallyEmpty = false;
-						}
-						if( isVirtuallyEmpty ) {
+						org.alice.ide.codeeditor.StatementListBorder statementListBorder = this.currentUnder.getStatementListBorder();
+						int componentCount = this.currentUnder.getComponentCount();
+						if( componentCount <= statementListBorder.getMinimum() ) {
 							height = null;
-							p.y = this.currentUnder.getHeight() - insets.bottom;
+							if( componentCount == 0 ) {
+								p.y = insets.top;
+							} else {
+								p.y = this.currentUnder.getHeight() - insets.bottom;
+							}
 						} else {
 							int n = this.currentUnder.getComponentCount();
 							if( n > 0 ) {

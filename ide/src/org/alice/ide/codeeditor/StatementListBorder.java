@@ -101,6 +101,10 @@ public class StatementListBorder implements javax.swing.border.Border {
 		}
 	}
 
+	public int getMinimum() {
+		return this.minimum;
+	}
+
 	public boolean isVirtuallyEmpty( java.awt.Container container ) {
 		return container.getComponentCount() <= this.minimum;
 	}
