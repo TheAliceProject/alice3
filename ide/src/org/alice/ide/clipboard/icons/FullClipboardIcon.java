@@ -127,54 +127,6 @@ public class FullClipboardIcon implements javax.swing.Icon {
 		g.draw( shape4 );
 	}
 
-	private void paintCompositeGraphicsNode_0_0_2_0_2_0_0_0( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_2_0_0( Graphics2D g ) {
-		// _0_0_2_0_2_0_0_0
-		g.setComposite( AlphaComposite.getInstance( 3, 0.4f * origAlpha ) );
-		AffineTransform trans_0_0_2_0_2_0_0_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0526319742202759f, 0.0f, 0.0f, 1.2857129573822021f, -1.2631579637527466f, -13.428540229797363f ) );
-		paintCompositeGraphicsNode_0_0_2_0_2_0_0_0( g );
-		g.setTransform( trans_0_0_2_0_2_0_0_0 );
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_2_0( Graphics2D g ) {
-		// _0_0_2_0_2_0_0
-		AffineTransform trans_0_0_2_0_2_0_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintCompositeGraphicsNode_0_0_2_0_2_0_0( g );
-		g.setTransform( trans_0_0_2_0_2_0_0 );
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_2_1( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_2_2( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_2( Graphics2D g ) {
-		// _0_0_2_0_2_0
-		AffineTransform trans_0_0_2_0_2_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 0.5555559992790222f, -4.5499979250962497E-7f, 13.888870239257812f ) );
-		paintCompositeGraphicsNode_0_0_2_0_2_0( g );
-		g.setTransform( trans_0_0_2_0_2_0 );
-		// _0_0_2_0_2_1
-		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
-		AffineTransform trans_0_0_2_0_2_1 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 50.68870162963867f, 6.214990139007568f ) );
-		paintCompositeGraphicsNode_0_0_2_0_2_1( g );
-		g.setTransform( trans_0_0_2_0_2_1 );
-		// _0_0_2_0_2_2
-		AffineTransform trans_0_0_2_0_2_2 = g.getTransform();
-		g.transform( new AffineTransform( 0.18670299649238586f, 0.0f, 0.0f, 0.18670299649238586f, 29.58139991760254f, 63.83797836303711f ) );
-		paintCompositeGraphicsNode_0_0_2_0_2_2( g );
-		g.setTransform( trans_0_0_2_0_2_2 );
-	}
-
-	private void paintCompositeGraphicsNode_0_0_2_0_3( Graphics2D g ) {
-	}
-
 	private void paintShapeNode_0_0_2_0_4_0( Graphics2D g ) {
 		GeneralPath shape5 = new GeneralPath();
 		shape5.moveTo( -34.29474, 4.03866 );
@@ -398,15 +350,6 @@ public class FullClipboardIcon implements javax.swing.Icon {
 			g.setTransform( trans_0_0_2_0_1 );
 			// _0_0_2_0_2
 			g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
-			AffineTransform trans_0_0_2_0_2 = g.getTransform();
-			g.transform( new AffineTransform( 0.6855238676071167f, 0.0f, 0.0f, 0.6771684288978577f, 137.05018615722656f, 60.773277282714844f ) );
-			paintCompositeGraphicsNode_0_0_2_0_2( g );
-			g.setTransform( trans_0_0_2_0_2 );
-			// _0_0_2_0_3
-			AffineTransform trans_0_0_2_0_3 = g.getTransform();
-			g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
-			paintCompositeGraphicsNode_0_0_2_0_3( g );
-			g.setTransform( trans_0_0_2_0_3 );
 			// _0_0_2_0_4
 			AffineTransform trans_0_0_2_0_4 = g.getTransform();
 			g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
