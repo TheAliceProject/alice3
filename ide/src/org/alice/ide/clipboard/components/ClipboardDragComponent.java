@@ -154,8 +154,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 		return this.subject;
 	}
 
-	private static final org.alice.ide.clipboard.icons.FullClipboardIcon FULL_ICON = new org.alice.ide.clipboard.icons.FullClipboardIcon();
-	private static final org.alice.ide.clipboard.icons.EmptyClipboardIcon EMPTY_ICON = new org.alice.ide.clipboard.icons.EmptyClipboardIcon();
+	private static final org.alice.ide.clipboard.icons.FullClipboardIcon ICON = new org.alice.ide.clipboard.icons.FullClipboardIcon();
 
 	@Override
 	protected javax.swing.AbstractButton createAwtComponent() {
@@ -163,7 +162,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				//return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 32 );
-				return new java.awt.Dimension( FULL_ICON.getOrigWidth(), FULL_ICON.getOrigHeight() );
+				return new java.awt.Dimension( ICON.getOrigWidth(), ICON.getOrigHeight() );
 			}
 
 			@Override
@@ -173,19 +172,14 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 
 			@Override
 			public void paint( java.awt.Graphics g ) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				org.alice.ide.clipboard.icons.ClipboardIcon icon;
-				if( org.alice.ide.clipboard.Clipboard.SINGLETON.isStackEmpty() && ( dropReceptor.dragReceptorState != DragReceptorState.ENTERED ) ) {
-					icon = EMPTY_ICON;
-				} else {
-					icon = FULL_ICON;
-				}
-				synchronized( icon ) {
-					icon.setDimension( this.getSize() );
-					icon.setDragReceptorState( dropReceptor.dragReceptorState );
-					icon.paintIcon( this, g, 0, 0 );
+				synchronized( ICON ) {
+					ICON.setDimension( this.getSize() );
+					ICON.setFull( org.alice.ide.clipboard.Clipboard.SINGLETON.isStackEmpty() == false );
+					ICON.setDragReceptorState( dropReceptor.dragReceptorState );
+					ICON.paintIcon( this, g, 0, 0 );
 				}
 
+				//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				//				int x = 0;
 				//				int y = 0;
 				//				int width = this.getWidth();

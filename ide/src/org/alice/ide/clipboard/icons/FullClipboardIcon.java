@@ -21,7 +21,7 @@ import java.awt.geom.RoundRectangle2D;
  * This class has been automatically generated using svg2java
  * 
  */
-public class FullClipboardIcon implements ClipboardIcon {
+public class FullClipboardIcon implements javax.swing.Icon {
 
 	private float origAlpha = 1.0f;
 
@@ -52,28 +52,6 @@ public class FullClipboardIcon implements ClipboardIcon {
 
 	}
 
-	private void paintCompositeGraphicsNode_0_0_0_0( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_0( Graphics2D g ) {
-		// _0_0_0_0
-		AffineTransform trans_0_0_0_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintCompositeGraphicsNode_0_0_0_0( g );
-		g.setTransform( trans_0_0_0_0 );
-	}
-
-	private void paintCompositeGraphicsNode_0_0_1_0( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_1( Graphics2D g ) {
-		// _0_0_1_0
-		AffineTransform trans_0_0_1_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintCompositeGraphicsNode_0_0_1_0( g );
-		g.setTransform( trans_0_0_1_0 );
-	}
-
 	private void paintShapeNode_0_0_2_0_0_0( Graphics2D g ) {
 		RoundRectangle2D.Double shape0 = new RoundRectangle2D.Double( 6.874999523162842, 35.875, 35.125, 6.5, 6.499999523162842, 6.5 );
 		g.setPaint( new Color( 0, 0, 0, 255 ) );
@@ -88,9 +66,8 @@ public class FullClipboardIcon implements ClipboardIcon {
 	private void paintShapeNode_0_0_2_0_0_2( Graphics2D g ) {
 		RoundRectangle2D.Double shape2 = new RoundRectangle2D.Double( 305.5, -92.5, 29.999996185302734, 31.999998092651367, 5.0, 5.0 );
 
-		Color color = this.dragReceptorState.getColor();
-		g.setPaint( new LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { color, new Color( 199, 155, 85, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
-		//g.setPaint( new LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 226, 179, 105, 255 ), new Color( 199, 155, 85, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
+		Color boardColor = this.dragReceptorState.getBoardColor();
+		g.setPaint( new LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { boardColor, new Color( 199, 155, 85, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
 
 		g.fill( shape2 );
 		g.setPaint( new LinearGradientPaint( new Point2D.Double( 18.39735221862793, -37.160858154296875 ), new Point2D.Double( 10.831841468811035, 4.028111457824707 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 143, 89, 2, 255 ), new Color( 233, 185, 110, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -50.0f ) ) );
@@ -210,7 +187,8 @@ public class FullClipboardIcon implements ClipboardIcon {
 		shape5.lineTo( -36.59162, 6.152546 );
 		shape5.curveTo( -36.59162, 4.9814777, -35.56721, 4.0387044, -34.29474, 4.0387044 );
 		shape5.closePath();
-		g.setPaint( new RadialGradientPaint( new Point2D.Double( -117.93485260009766, 5.198304176330566 ), 18.000002f, new Point2D.Double( -117.93485260009766, 5.198304176330566 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 255, 255, 255, 255 ), new Color( 211, 215, 207, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 3.19461989402771f, 0.0f, 0.0f, 1.5470696687698364f, 365.3152770996094f, 23.795835494995117f ) ) );
+		Color paperColor = this.dragReceptorState.getPaperColor();
+		g.setPaint( new RadialGradientPaint( new Point2D.Double( -117.93485260009766, 5.198304176330566 ), 18.000002f, new Point2D.Double( -117.93485260009766, 5.198304176330566 ), new float[] { 0.0f, 1.0f }, new Color[] { paperColor, new Color( 211, 215, 207, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 3.19461989402771f, 0.0f, 0.0f, 1.5470696687698364f, 365.3152770996094f, 23.795835494995117f ) ) );
 		g.fill( shape5 );
 	}
 
@@ -301,7 +279,7 @@ public class FullClipboardIcon implements ClipboardIcon {
 		shape10.lineTo( 15.890176, 12.665036 );
 		shape10.curveTo( 15.890176, 12.665036, 15.838146, 14.462638, 16.722025, 14.506832 );
 		shape10.closePath();
-		g.setPaint( new Color( 0, 0, 0, 255 ) );
+		g.setPaint( Color.BLACK );
 		g.fill( shape10 );
 	}
 
@@ -328,7 +306,7 @@ public class FullClipboardIcon implements ClipboardIcon {
 
 	private void paintShapeNode_0_0_2_0_9_2( Graphics2D g ) {
 		RoundRectangle2D.Double shape12 = new RoundRectangle2D.Double( 313.0, 62.0, 15.0, 1.0416321754455566, 1.0416321754455566, 1.0416321754455566 );
-		g.setPaint( new Color( 255, 255, 255, 255 ) );
+		g.setPaint( Color.WHITE );
 		g.fill( shape12 );
 	}
 
@@ -344,7 +322,7 @@ public class FullClipboardIcon implements ClipboardIcon {
 		shape13.lineTo( 317.0, 57.0 );
 		shape13.lineTo( 316.0, 60.0 );
 		shape13.closePath();
-		g.setPaint( new LinearGradientPaint( new Point2D.Double( 24.49800682067871, 3.9980428218841553 ), new Point2D.Double( 24.49800682067871, 8.0 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 255, 255, 255, 255 ), new Color( 255, 255, 255, 0 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, 52.0f ) ) );
+		g.setPaint( new LinearGradientPaint( new Point2D.Double( 24.49800682067871, 3.9980428218841553 ), new Point2D.Double( 24.49800682067871, 8.0 ), new float[] { 0.0f, 1.0f }, new Color[] { Color.WHITE, new Color( 255, 255, 255, 0 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, 52.0f ) ) );
 		g.fill( shape13 );
 	}
 
@@ -368,7 +346,7 @@ public class FullClipboardIcon implements ClipboardIcon {
 		shape14.curveTo( 325.16806, 55.58605, 324.99304, 55.5, 324.8125, 55.5 );
 		shape14.lineTo( 316.28125, 55.40625 );
 		shape14.closePath();
-		g.setPaint( new Color( 255, 255, 255, 255 ) );
+		g.setPaint( Color.WHITE );
 		g.draw( shape14 );
 	}
 
@@ -411,50 +389,52 @@ public class FullClipboardIcon implements ClipboardIcon {
 		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -167.00001525878906f, -3.0f ) );
 		paintCompositeGraphicsNode_0_0_2_0_0( g );
 		g.setTransform( trans_0_0_2_0_0 );
-		// _0_0_2_0_1
-		g.setComposite( AlphaComposite.getInstance( 3, 0.2f * origAlpha ) );
-		AffineTransform trans_0_0_2_0_1 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintShapeNode_0_0_2_0_1( g );
-		g.setTransform( trans_0_0_2_0_1 );
-		// _0_0_2_0_2
-		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
-		AffineTransform trans_0_0_2_0_2 = g.getTransform();
-		g.transform( new AffineTransform( 0.6855238676071167f, 0.0f, 0.0f, 0.6771684288978577f, 137.05018615722656f, 60.773277282714844f ) );
-		paintCompositeGraphicsNode_0_0_2_0_2( g );
-		g.setTransform( trans_0_0_2_0_2 );
-		// _0_0_2_0_3
-		AffineTransform trans_0_0_2_0_3 = g.getTransform();
-		g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
-		paintCompositeGraphicsNode_0_0_2_0_3( g );
-		g.setTransform( trans_0_0_2_0_3 );
-		// _0_0_2_0_4
-		AffineTransform trans_0_0_2_0_4 = g.getTransform();
-		g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
-		paintCompositeGraphicsNode_0_0_2_0_4( g );
-		g.setTransform( trans_0_0_2_0_4 );
-		// _0_0_2_0_5
-		AffineTransform trans_0_0_2_0_5 = g.getTransform();
-		g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
-		paintCompositeGraphicsNode_0_0_2_0_5( g );
-		g.setTransform( trans_0_0_2_0_5 );
-		// _0_0_2_0_6
-		g.setComposite( AlphaComposite.getInstance( 3, 0.2f * origAlpha ) );
-		AffineTransform trans_0_0_2_0_6 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 0.903225839138031f, -167.00027465820312f, 5.119354724884033f ) );
-		paintShapeNode_0_0_2_0_6( g );
-		g.setTransform( trans_0_0_2_0_6 );
-		// _0_0_2_0_7
-		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
-		AffineTransform trans_0_0_2_0_7 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintShapeNode_0_0_2_0_7( g );
-		g.setTransform( trans_0_0_2_0_7 );
-		// _0_0_2_0_8
-		AffineTransform trans_0_0_2_0_8 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintShapeNode_0_0_2_0_8( g );
-		g.setTransform( trans_0_0_2_0_8 );
+		if( this.isFull || ( this.dragReceptorState == org.alice.ide.clipboard.DragReceptorState.ENTERED ) ) {
+			// _0_0_2_0_1
+			g.setComposite( AlphaComposite.getInstance( 3, 0.2f * origAlpha ) );
+			AffineTransform trans_0_0_2_0_1 = g.getTransform();
+			g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
+			paintShapeNode_0_0_2_0_1( g );
+			g.setTransform( trans_0_0_2_0_1 );
+			// _0_0_2_0_2
+			g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
+			AffineTransform trans_0_0_2_0_2 = g.getTransform();
+			g.transform( new AffineTransform( 0.6855238676071167f, 0.0f, 0.0f, 0.6771684288978577f, 137.05018615722656f, 60.773277282714844f ) );
+			paintCompositeGraphicsNode_0_0_2_0_2( g );
+			g.setTransform( trans_0_0_2_0_2 );
+			// _0_0_2_0_3
+			AffineTransform trans_0_0_2_0_3 = g.getTransform();
+			g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
+			paintCompositeGraphicsNode_0_0_2_0_3( g );
+			g.setTransform( trans_0_0_2_0_3 );
+			// _0_0_2_0_4
+			AffineTransform trans_0_0_2_0_4 = g.getTransform();
+			g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
+			paintCompositeGraphicsNode_0_0_2_0_4( g );
+			g.setTransform( trans_0_0_2_0_4 );
+			// _0_0_2_0_5
+			AffineTransform trans_0_0_2_0_5 = g.getTransform();
+			g.transform( new AffineTransform( 0.6232035160064697f, 0.0f, 0.0f, 0.6771684288978577f, 164.3101348876953f, 56.7651481628418f ) );
+			paintCompositeGraphicsNode_0_0_2_0_5( g );
+			g.setTransform( trans_0_0_2_0_5 );
+			// _0_0_2_0_6
+			g.setComposite( AlphaComposite.getInstance( 3, 0.2f * origAlpha ) );
+			AffineTransform trans_0_0_2_0_6 = g.getTransform();
+			g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 0.903225839138031f, -167.00027465820312f, 5.119354724884033f ) );
+			paintShapeNode_0_0_2_0_6( g );
+			g.setTransform( trans_0_0_2_0_6 );
+			// _0_0_2_0_7
+			g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
+			AffineTransform trans_0_0_2_0_7 = g.getTransform();
+			g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
+			paintShapeNode_0_0_2_0_7( g );
+			g.setTransform( trans_0_0_2_0_7 );
+			// _0_0_2_0_8
+			AffineTransform trans_0_0_2_0_8 = g.getTransform();
+			g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
+			paintShapeNode_0_0_2_0_8( g );
+			g.setTransform( trans_0_0_2_0_8 );
+		}
 		// _0_0_2_0_9
 		AffineTransform trans_0_0_2_0_9 = g.getTransform();
 		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -167.00001525878906f, -3.0f ) );
@@ -470,39 +450,12 @@ public class FullClipboardIcon implements ClipboardIcon {
 		g.setTransform( trans_0_0_2_0 );
 	}
 
-	private void paintCompositeGraphicsNode_0_0_3_0( Graphics2D g ) {
-	}
-
-	private void paintCompositeGraphicsNode_0_0_3( Graphics2D g ) {
-		// _0_0_3_0
-		AffineTransform trans_0_0_3_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f ) );
-		paintCompositeGraphicsNode_0_0_3_0( g );
-		g.setTransform( trans_0_0_3_0 );
-	}
-
 	private void paintCanvasGraphicsNode_0_0( Graphics2D g ) {
-		// _0_0_0
-		AffineTransform trans_0_0_0 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
-		paintCompositeGraphicsNode_0_0_0( g );
-		g.setTransform( trans_0_0_0 );
-		// _0_0_1
-		AffineTransform trans_0_0_1 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
-		paintCompositeGraphicsNode_0_0_1( g );
-		g.setTransform( trans_0_0_1 );
 		// _0_0_2
 		AffineTransform trans_0_0_2 = g.getTransform();
 		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
 		paintCompositeGraphicsNode_0_0_2( g );
 		g.setTransform( trans_0_0_2 );
-		// _0_0_3
-		g.setComposite( AlphaComposite.getInstance( 3, 1.0f * origAlpha ) );
-		AffineTransform trans_0_0_3 = g.getTransform();
-		g.transform( new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -128.79701232910156f, -51.03125f ) );
-		paintCompositeGraphicsNode_0_0_3( g );
-		g.setTransform( trans_0_0_3 );
 	}
 
 	private void paintRootGraphicsNode_0( Graphics2D g ) {
@@ -549,6 +502,8 @@ public class FullClipboardIcon implements ClipboardIcon {
 	public int getOrigHeight() {
 		return 43;
 	}
+
+	private boolean isFull;
 
 	/**
 	 * The current width of this resizable icon.
@@ -597,8 +552,20 @@ public class FullClipboardIcon implements ClipboardIcon {
 		this.height = newDimension.height;
 	}
 
+	public org.alice.ide.clipboard.DragReceptorState getDragReceptorState() {
+		return this.dragReceptorState;
+	}
+
 	public void setDragReceptorState( org.alice.ide.clipboard.DragReceptorState dragReceptorState ) {
 		this.dragReceptorState = dragReceptorState;
+	}
+
+	public boolean isFull() {
+		return this.isFull;
+	}
+
+	public void setFull( boolean isFull ) {
+		this.isFull = isFull;
 	}
 
 	/*

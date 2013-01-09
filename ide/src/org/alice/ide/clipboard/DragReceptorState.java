@@ -46,16 +46,22 @@ package org.alice.ide.clipboard;
  * @author Dennis Cosgrove
  */
 public enum DragReceptorState {
-	IDLE( new java.awt.Color( 226, 179, 105 ) ),
-	STARTED( java.awt.Color.YELLOW ),
-	ENTERED( new java.awt.Color( 0xCCFF99 ) );
-	private final java.awt.Color paint;
+	IDLE( new java.awt.Color( 226, 179, 105 ), java.awt.Color.WHITE ),
+	STARTED( java.awt.Color.YELLOW, java.awt.Color.YELLOW ),
+	ENTERED( new java.awt.Color( 0xCCFF99 ), new java.awt.Color( 0x44FF44 ) );
+	private final java.awt.Color boardColor;
+	private final java.awt.Color paperColor;
 
-	private DragReceptorState( java.awt.Color paint ) {
-		this.paint = paint;
+	private DragReceptorState( java.awt.Color boardColor, java.awt.Color paperColor ) {
+		this.boardColor = boardColor;
+		this.paperColor = paperColor;
 	}
 
-	public java.awt.Color getColor() {
-		return this.paint;
+	public java.awt.Color getBoardColor() {
+		return this.boardColor;
+	}
+
+	public java.awt.Color getPaperColor() {
+		return this.paperColor;
 	}
 };
