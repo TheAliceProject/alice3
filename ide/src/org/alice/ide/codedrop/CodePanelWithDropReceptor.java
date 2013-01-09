@@ -209,39 +209,35 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 						int availableHeight = this.currentUnder.getAvailableDropProxyHeight();
 
 						org.alice.ide.codeeditor.StatementListBorder statementListBorder = this.currentUnder.getStatementListBorder();
-						int componentCount = this.currentUnder.getComponentCount();
-						if( componentCount <= statementListBorder.getMinimum() ) {
+						int N = this.currentUnder.getComponentCount();
+						if( N == 0 ) {
+							p.y = insets.top;
 							height = null;
-							if( componentCount == 0 ) {
-								p.y = insets.top;
-							} else {
-								p.y = this.currentUnder.getHeight() - insets.bottom;
-							}
 						} else {
-							int n = this.currentUnder.getComponentCount();
-							if( n > 0 ) {
-								int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
-								this.currentUnder.setCurrentPotentialDropIndex( index );
-								final boolean IS_SQUISHING_DESIRED = false;
-								if( index == 0 ) {
-									//java.awt.Component firstComponent = this.currentUnder.getComponent( 0 );
-									p.y = 0;
-									if( IS_SQUISHING_DESIRED ) {
-										height = null;
-									}
-								} else if( index < n ) {
-									p.y = this.currentUnder.getAwtComponent().getComponent( index ).getY();
+							int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
+							this.currentUnder.setCurrentPotentialDropIndex( index );
+							final boolean IS_SQUISHING_DESIRED = false;
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( index );
+							if( index == 0 ) {
+								p.y = 0;
+								if( IS_SQUISHING_DESIRED ) {
+									height = null;
+								}
+							} else if( ( index == statementListBorder.getMinimum() ) && ( N == 1 ) ) {
+								p.y = this.currentUnder.getHeight() - insets.bottom;
+								height = null;
+							} else if( index < N ) {
+								p.y = this.currentUnder.getAwtComponent().getComponent( index ).getY();
+							} else {
+								java.awt.Component lastComponent = this.currentUnder.getAwtComponent().getComponent( N - 1 );
+								p.y = lastComponent.getY() + lastComponent.getHeight();
+								if( IS_SQUISHING_DESIRED ) {
+									p.y -= availableHeight;
+									height = null;
 								} else {
-									java.awt.Component lastComponent = this.currentUnder.getAwtComponent().getComponent( n - 1 );
-									p.y = lastComponent.getY() + lastComponent.getHeight();
-									if( IS_SQUISHING_DESIRED ) {
-										p.y -= availableHeight;
+									p.y += StatementListPropertyView.INTRASTICIAL_PAD;
+									if( this.currentUnder.getProperty() == ( (org.lgna.project.ast.UserCode)getCode() ).getBodyProperty().getValue().statements ) {
 										height = null;
-									} else {
-										p.y += StatementListPropertyView.INTRASTICIAL_PAD;
-										if( this.currentUnder.getProperty() == ( (org.lgna.project.ast.UserCode)getCode() ).getBodyProperty().getValue().statements ) {
-											height = null;
-										}
 									}
 								}
 							}

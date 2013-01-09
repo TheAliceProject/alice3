@@ -120,33 +120,36 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 			public void paint( java.awt.Graphics g ) {
 				super.paint( g );
 				int i = StatementListPropertyView.this.currentPotentialDropIndex;
-				final int N = StatementListPropertyView.this.getProperty().size();
-				if( ( N == this.getComponentCount() ) && ( i >= 0 ) && ( i < N ) ) {
-					if( ( i != -1 ) && ( N > 0 ) ) {
-						int y;
-						if( i == N ) {
-							java.awt.Component lastComponent = this.getComponent( N - 1 );
-							y = lastComponent.getY();
-							y += lastComponent.getHeight();
-						} else {
-							java.awt.Component iComponent = this.getComponent( i );
-							y = iComponent.getY();
-							y -= INTRASTICIAL_PAD;
-						}
-						int x0 = 0;
-						int x1 = INDENT;
-						int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
-						int y0 = yC - INDENT;
-						int y1 = yC + INDENT;
+				if( i != -1 ) {
+					final int N = StatementListPropertyView.this.getProperty().size();
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( i, N, this.getComponentCount(), this.hashCode(), System.currentTimeMillis() );
+					if( ( N == this.getComponentCount() ) && ( i >= 0 ) && ( i < N ) ) {
+						if( ( i != -1 ) && ( N > 0 ) ) {
+							int y;
+							if( i == N ) {
+								java.awt.Component lastComponent = this.getComponent( N - 1 );
+								y = lastComponent.getY();
+								y += lastComponent.getHeight();
+							} else {
+								java.awt.Component iComponent = this.getComponent( i );
+								y = iComponent.getY();
+								y -= INTRASTICIAL_PAD;
+							}
+							int x0 = 0;
+							int x1 = INDENT;
+							int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
+							int y0 = yC - INDENT;
+							int y1 = yC + INDENT;
 
-						int w = this.getWidth();
-						int[] xPoints = new int[] { x1, x0, x0 };
-						int[] yPoints = new int[] { yC, y1, y0 };
-						g.setColor( FEEDBACK_COLOR );
-						g.fillRect( 0, y, w, INTRASTICIAL_PAD );
-						g.fillPolygon( xPoints, yPoints, 3 );
-						//g.setColor( java.awt.Color.YELLOW );
-						//g.fillRect( 1, yC, w-2, 1 );
+							int w = this.getWidth();
+							int[] xPoints = new int[] { x1, x0, x0 };
+							int[] yPoints = new int[] { yC, y1, y0 };
+							g.setColor( FEEDBACK_COLOR );
+							g.fillRect( 0, y, w, INTRASTICIAL_PAD );
+							g.fillPolygon( xPoints, yPoints, 3 );
+							//g.setColor( java.awt.Color.YELLOW );
+							//g.fillRect( 1, yC, w-2, 1 );
+						}
 					}
 				}
 			}

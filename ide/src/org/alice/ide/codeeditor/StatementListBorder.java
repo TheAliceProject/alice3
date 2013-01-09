@@ -68,6 +68,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 	private final int minimum;
 
 	private boolean isDrawingDesired = true;
+	private boolean isEmptyAffordanceTemporariltyDisabled = false;
 
 	public StatementListBorder( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.StatementListProperty alternateListProperty, java.awt.Insets normalInsets, int minimum ) {
 		this.factory = factory;
