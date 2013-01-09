@@ -57,7 +57,7 @@ public class StatementListBorder implements javax.swing.border.Border {
 
 	private static final java.awt.Stroke DASHED_STROKE = new java.awt.BasicStroke( 1.0f, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_BEVEL, 0, new float[] { 9.0f, 3.0f }, 0 );
 
-	private static final java.awt.Insets EMPTY_INSETS = new java.awt.Insets( 0, 12, 16, 64 );
+	private static final java.awt.Insets EMPTY_INSETS = new java.awt.Insets( 3, 12, 16, 64 );
 
 	private final org.alice.ide.x.AstI18nFactory factory;
 	private final org.lgna.project.ast.StatementListProperty alternateListProperty;
