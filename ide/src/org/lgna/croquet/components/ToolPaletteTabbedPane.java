@@ -47,9 +47,81 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends AbstractTabbedPane<E> {
+
+	private static class AccordionLayoutManager implements java.awt.LayoutManager {
+		//private final java.util.List<java.awt.Component> awtComponents = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+		public void addLayoutComponent( String name, java.awt.Component awtComponent ) {
+			//this.awtComponents.add( awtComponent );
+		}
+
+		public void removeLayoutComponent( java.awt.Component awtComponent ) {
+			//this.awtComponents.remove( awtComponent );
+		}
+
+		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+			return new java.awt.Dimension( 0, 0 );
+		}
+
+		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+			final int N = parent.getComponentCount();
+			if( ( N % 2 ) == 0 ) {
+				java.awt.Dimension rv = new java.awt.Dimension( 0, 0 );
+				for( int i = 0; i < N; i += 2 ) {
+					javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent.getComponent( i );
+					java.awt.Component contents = parent.getComponent( i + 1 );
+					javax.swing.ButtonModel buttonModel = button.getModel();
+					rv.width = Math.max( rv.width, button.getPreferredSize().width );
+					rv.width = Math.max( rv.width, contents.getPreferredSize().width );
+					rv.height += button.getHeight();
+					if( buttonModel.isSelected() ) {
+						rv.height += contents.getPreferredSize().height;
+					}
+				}
+				return rv;
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( N );
+				return new java.awt.Dimension( 100, 100 );
+			}
+		}
+
+		public void layoutContainer( java.awt.Container parent ) {
+			final int N = parent.getComponentCount();
+			if( ( N % 2 ) == 0 ) {
+				java.awt.Dimension parentSize = parent.getSize();
+				int consumedHeight = 0;
+				for( int i = 0; i < N; i += 2 ) {
+					javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent.getComponent( i );
+					int height = button.getPreferredSize().height;
+					button.setSize( parentSize.width, height );
+					consumedHeight += height;
+				}
+				for( int i = 0; i < N; i += 2 ) {
+					javax.swing.AbstractButton button = (javax.swing.AbstractButton)parent.getComponent( i );
+					java.awt.Component contents = parent.getComponent( i + 1 );
+					javax.swing.ButtonModel buttonModel = button.getModel();
+					if( buttonModel.isSelected() ) {
+						contents.setSize( parentSize.width, parentSize.height - consumedHeight );
+					} else {
+						contents.setSize( 0, 0 );
+					}
+				}
+				int y = 0;
+				for( int i = 0; i < N; i++ ) {
+					java.awt.Component component = parent.getComponent( i );
+					component.setLocation( 0, y );
+					y += component.getHeight();
+				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( N );
+			}
+		}
+
+	}
+
 	private E card;
 
-	public ToolPaletteTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
+	public ToolPaletteTabbedPane( org.lgna.croquet.TabSelectionState<E> model ) {
 		super( model );
 	}
 
@@ -63,7 +135,21 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridBagLayout();
+		return new AccordionLayoutManager();
+	}
+
+	@Override
+	protected void handleValueChanged( E card ) {
+		if( card != this.card ) {
+			if( this.card != null ) {
+				this.card.handlePostDeactivation();
+			}
+			this.card = card;
+			if( this.card != null ) {
+				this.card.handlePreActivation();
+			}
+			this.revalidateAndRepaint();
+		}
 	}
 
 	@Override
@@ -72,36 +158,13 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 	}
 
 	@Override
-	protected void handleValueChanged( E card ) {
-		if( card != this.card ) {
-			if( this.card != null ) {
-				this.card.getRootComponent().setVisible( false );
-				this.card.handlePostDeactivation();
-			}
-			this.card = card;
-			if( this.card != null ) {
-				this.card.handlePreActivation();
-				this.card.getRootComponent().setVisible( true );
-			}
-			this.revalidateAndRepaint();
-		}
-	}
-
-	@Override
 	protected void addPrologue( int count ) {
 	}
 
 	@Override
 	protected void addItem( E item, BooleanStateButton<?> button ) {
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.weightx = 1.0f;
-		gbc.weighty = 0.0f;
-		this.internalAddComponent( button, gbc );
-		gbc.weighty = 1.0f;
-		item.getRootComponent().setVisible( item == this.getModel().getValue() );
-		this.internalAddComponent( item.getRootComponent(), gbc );
+		this.internalAddComponent( button );
+		this.internalAddComponent( item.getRootComponent() );
 	}
 
 	@Override

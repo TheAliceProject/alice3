@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
+import org.lgna.croquet.TabSelectionState;
 
 /**
  * @author Dennis Cosgrove
@@ -427,7 +427,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
-	public FolderTabbedPane( ListSelectionState<E> model ) {
+	public FolderTabbedPane( TabSelectionState<E> model ) {
 		super( model );
 		this.cardComposite.getView().setBackgroundColor( null );
 		this.innerHeaderPanel.setBackgroundColor( null );
