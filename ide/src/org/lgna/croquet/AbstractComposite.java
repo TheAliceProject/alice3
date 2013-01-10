@@ -88,6 +88,18 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 			}
 			return rv;
 		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( this.getClass().getSimpleName() );
+			sb.append( "[" );
+			sb.append( this.composite );
+			sb.append( ";" );
+			sb.append( this.localizationKey );
+			sb.append( "]" );
+			return sb.toString();
+		}
 	}
 
 	public static abstract class KeyResolver<M extends Model> implements org.lgna.croquet.resolvers.Resolver<M> {
@@ -173,6 +185,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
 		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
 	}
 
 	private static final class InternalStringValue extends AbstractInternalStringValue {
@@ -207,6 +226,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		protected StringStateKeyResolver createResolver() {
 			return new StringStateKeyResolver( this.getKey() );
 		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
 	}
 
 	private static final class InternalBooleanState extends BooleanState {
@@ -229,6 +255,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -253,6 +286,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
 		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
 	}
 
 	private static final class InternalRefreshableListSelectionState<T> extends RefreshableDataListSelectionState<T> {
@@ -276,6 +316,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
 		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
 	}
 
 	private static final class InternalTabSelectionState<T extends SimpleTabComposite<?>> extends SimpleTabSelectionState<T> {
@@ -298,6 +345,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -323,6 +377,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -352,6 +413,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -397,6 +465,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 				step.cancel();
 			}
 		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
 	}
 
 	protected static interface CascadeCustomizer<T> {
@@ -438,6 +513,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		protected java.util.List<CascadeBlankChild> updateBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
 			this.customizer.appendBlankChildren( rv, blankNode );
 			return rv;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -486,6 +568,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected ItemStateKeyResolver<T> createResolver() {
 			return new ItemStateKeyResolver<T>( this.getKey() );
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
