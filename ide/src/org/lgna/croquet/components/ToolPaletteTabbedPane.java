@@ -119,7 +119,7 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 
 	}
 
-	private E card;
+	//	private E card;
 
 	public ToolPaletteTabbedPane( org.lgna.croquet.TabSelectionState<E> model ) {
 		super( model );
@@ -140,16 +140,16 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 
 	@Override
 	protected void handleValueChanged( E card ) {
-		if( card != this.card ) {
-			if( this.card != null ) {
-				this.card.handlePostDeactivation();
-			}
-			this.card = card;
-			if( this.card != null ) {
-				this.card.handlePreActivation();
-			}
-			this.revalidateAndRepaint();
-		}
+		//		if( card != this.card ) {
+		//			if( this.card != null ) {
+		//				this.card.handlePostDeactivation();
+		//			}
+		//			this.card = card;
+		//			if( this.card != null ) {
+		//				this.card.handlePreActivation();
+		//			}
+		this.revalidateAndRepaint();
+		//		}
 	}
 
 	@Override
