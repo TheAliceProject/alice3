@@ -46,6 +46,16 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabComposite<V extends org.alice.ide.member.views.MemberTabView> extends MemberOrControlFlowTabComposite<V> {
+	public static boolean ARE_TOOL_PALETTES_INERT = false;
+
+	public static boolean getExpandedAccountingForInert( boolean isExpanded ) {
+		if( ARE_TOOL_PALETTES_INERT ) {
+			return true;
+		} else {
+			return isExpanded;
+		}
+	}
+
 	protected static final String GROUP_BY_CATEGORY = "group by category";
 	protected static final String SORT_ALPHABETICALLY = "sort alphabetically";
 

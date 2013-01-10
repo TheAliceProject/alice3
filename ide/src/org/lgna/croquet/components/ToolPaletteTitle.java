@@ -179,12 +179,15 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		protected void paintComponent( java.awt.Graphics g ) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			super.paintComponent( g );
-
-			int x = this.isRoundedOnTop ? 8 : 4;
-			int height = this.getHeight();
-			int iconHeight = ARROW_ICON.getIconHeight();
-			int y = ( height - iconHeight ) / 2;
-			ARROW_ICON.paintIcon( this, g2, x, y );
+			if( this.isInert ) {
+				//pass
+			} else {
+				int x = this.isRoundedOnTop ? 8 : 4;
+				int height = this.getHeight();
+				int iconHeight = ARROW_ICON.getIconHeight();
+				int y = ( height - iconHeight ) / 2;
+				ARROW_ICON.paintIcon( this, g2, x, y );
+			}
 		}
 
 		@Override
@@ -210,35 +213,38 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			java.awt.Shape prevClip = g2.getClip();
-
 			try {
 				JToolPaletteTitle b = (JToolPaletteTitle)c;
-				javax.swing.ButtonModel buttonModel = b.getModel();
-				if( b.isRoundedOnTop() ) {
-					g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, createRoundedOnTopShape( b.getWidth(), b.getHeight(), ARROW_ICON.getIconWidth() ) ) );
-				}
-
-				java.awt.Rectangle r = javax.swing.SwingUtilities.getLocalBounds( c );
-				java.awt.Color background = c.getBackground();
-				RenderingStyle renderingStyle = b.getRenderingStyle();
-				if( renderingStyle.isShaded( buttonModel ) ) {
-					if( buttonModel.isPressed() ) {
-						g2.setPaint( background.darker() );
-						g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
-					} else {
-						double brightnessScale;
-						if( buttonModel.isRollover() ) {
-							brightnessScale = 1.2;
-						} else {
-							brightnessScale = 1.1;
-						}
-						java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, brightnessScale );
-						java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, 0.8 );
-						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillGradientRectangle( g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f );
-					}
+				if( b.isInert() ) {
+					//pass
 				} else {
-					g2.setPaint( background );
-					g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
+					javax.swing.ButtonModel buttonModel = b.getModel();
+					if( b.isRoundedOnTop() ) {
+						g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, createRoundedOnTopShape( b.getWidth(), b.getHeight(), ARROW_ICON.getIconWidth() ) ) );
+					}
+
+					java.awt.Rectangle r = javax.swing.SwingUtilities.getLocalBounds( c );
+					java.awt.Color background = c.getBackground();
+					RenderingStyle renderingStyle = b.getRenderingStyle();
+					if( renderingStyle.isShaded( buttonModel ) ) {
+						if( buttonModel.isPressed() ) {
+							g2.setPaint( background.darker() );
+							g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
+						} else {
+							double brightnessScale;
+							if( buttonModel.isRollover() ) {
+								brightnessScale = 1.2;
+							} else {
+								brightnessScale = 1.1;
+							}
+							java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, brightnessScale );
+							java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, 0.8 );
+							edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillGradientRectangle( g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f );
+						}
+					} else {
+						g2.setPaint( background );
+						g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
+					}
 				}
 				super.paint( g, c );
 			} finally {
@@ -252,35 +258,48 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 	}
 
 	public boolean isRoundedOnTop() {
-		return ( (JToolPaletteTitle)this.getAwtComponent() ).isRoundedOnTop();
+		return this.getJPaletteTitle().isRoundedOnTop();
 	}
 
 	public void setRoundedOnTop( boolean isRoundedOnTop ) {
-		( (JToolPaletteTitle)this.getAwtComponent() ).setRoundedOnTop( isRoundedOnTop );
+		this.getJPaletteTitle().setRoundedOnTop( isRoundedOnTop );
 	}
 
 	public boolean isPartOfAccordion() {
-		return ( (JToolPaletteTitle)this.getAwtComponent() ).isPartOfAccordion();
+		return this.getJPaletteTitle().isPartOfAccordion();
 	}
 
 	public void setPartOfAccordion( boolean isPartOfAccordion ) {
-		( (JToolPaletteTitle)this.getAwtComponent() ).setPartOfAccordion( isPartOfAccordion );
+		this.getJPaletteTitle().setPartOfAccordion( isPartOfAccordion );
 	}
 
 	public RenderingStyle getRenderingStyle() {
-		return ( (JToolPaletteTitle)this.getAwtComponent() ).getRenderingStyle();
+		return this.getJPaletteTitle().getRenderingStyle();
 	}
 
 	public void setRenderingStyle( RenderingStyle renderingStyle ) {
-		( (JToolPaletteTitle)this.getAwtComponent() ).setRenderingStyle( renderingStyle );
+		this.getJPaletteTitle().setRenderingStyle( renderingStyle );
 	}
 
 	public boolean isInert() {
-		return ( (JToolPaletteTitle)this.getAwtComponent() ).isInert();
+		return this.getJPaletteTitle().isInert();
+	}
+
+	private javax.swing.border.Border createBorder( boolean isInert ) {
+		if( isInert ) {
+			return javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
+		} else {
+			return javax.swing.BorderFactory.createEmptyBorder( 2, 8 + ARROW_ICON.getIconWidth(), 2, 2 );
+		}
 	}
 
 	public void setInert( boolean isInert ) {
-		( (JToolPaletteTitle)this.getAwtComponent() ).setInert( isInert );
+		this.getJPaletteTitle().setInert( isInert );
+		this.setBorder( this.createBorder( isInert ) );
+	}
+
+	private JToolPaletteTitle getJPaletteTitle() {
+		return (JToolPaletteTitle)this.getAwtComponent();
 	}
 
 	@Override
@@ -288,7 +307,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		javax.swing.AbstractButton rv = new JToolPaletteTitle();
 		rv.setRolloverEnabled( true );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8 + ARROW_ICON.getIconWidth(), 2, 2 ) );
+		rv.setBorder( this.createBorder( false ) );
 		rv.setOpaque( false );
 		return rv;
 	}
