@@ -121,10 +121,14 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 				return false;
 			}
 		}, true );
-		org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
-		if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
-			org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
-			return dropTrigger.getDropSite();
+		if( step != null ) {
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+				org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
+				return dropTrigger.getDropSite();
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
