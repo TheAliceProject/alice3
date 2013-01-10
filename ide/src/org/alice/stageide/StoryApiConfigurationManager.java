@@ -79,10 +79,10 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.STextModel.class, org.alice.stageide.icons.TextModelIconFactory.getInstance() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBillboard.class, org.alice.stageide.icons.BillboardIconFactory.getInstance() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SBox.class, org.alice.stageide.icons.BoxIconFactory.getInstance() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SRoom.class, new org.alice.stageide.icons.RoomIconFactory() );
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SGround.class, new org.alice.stageide.icons.GroundIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SRoom.class, org.alice.stageide.icons.RoomIconFactory.getInstance() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SGround.class, org.alice.stageide.icons.GroundIconFactory.getInstance() );
 
-		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, new org.alice.stageide.icons.JointIconFactory() );
+		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SJoint.class, org.alice.stageide.icons.JointIconFactory.getInstance() );
 		org.alice.stageide.icons.IconFactoryManager.registerIconFactory( org.lgna.story.SCamera.class, new org.lgna.croquet.icon.ImageIconFactory( org.alice.ide.icons.Icons.class.getResource( "images/160x120/Camera.png" ) ) );
 
 		this.categoryProcedureSubComposites = createUnmodifiableSubCompositeList(

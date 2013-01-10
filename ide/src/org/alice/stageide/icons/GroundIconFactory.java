@@ -46,6 +46,17 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class GroundIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static GroundIconFactory instance = new GroundIconFactory();
+	}
+
+	public static GroundIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private GroundIconFactory() {
+	}
+
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new GroundIcon( size );
