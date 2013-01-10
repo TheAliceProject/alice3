@@ -137,8 +137,22 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	}
 
 	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
-		rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true ) );
-		rv.addUndoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) );
+		org.lgna.croquet.DropSite dropSite = step.findDropSite();
+		if( dropSite instanceof org.alice.stageide.sceneeditor.draganddrop.SceneDropSite ) {
+			org.alice.stageide.sceneeditor.draganddrop.SceneDropSite sceneDropSite = (org.alice.stageide.sceneeditor.draganddrop.SceneDropSite)dropSite;
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform = sceneDropSite.getTransform();
+			org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
+			org.lgna.project.ast.Statement[] doStatements = sceneEditor.getDoStatementsForAddField( field, initialTransform );
+			for( org.lgna.project.ast.Statement s : doStatements ) {
+				rv.addDoStatement( s );
+			}
+			org.lgna.project.ast.Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField( field );
+			for( org.lgna.project.ast.Statement s : undoStatements ) {
+				rv.addUndoStatement( s );
+			}
+		}
+		//		rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true ) );
+		//		rv.addUndoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) );
 
 		//todo
 		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initialPropertyValueExpressionState : this.initialPropertyValuesToolPaletteCoreComposite.getInitialPropertyValueExpressionStates() ) {
