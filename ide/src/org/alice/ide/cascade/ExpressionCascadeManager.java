@@ -196,7 +196,8 @@ public abstract class ExpressionCascadeManager {
 		org.lgna.croquet.CascadeBlankChild blankChild;
 		org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression, ?> expressionFillIn;
 		if( this.isApplicableForFillIn( desiredType, expressionType ) ) {
-			expressionFillIn = new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn<org.lgna.project.ast.Expression>( expression );
+			boolean isLeadingIconDesired = true;
+			expressionFillIn = new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn<org.lgna.project.ast.Expression>( expression, isLeadingIconDesired );
 		} else {
 			expressionFillIn = null;
 		}

@@ -63,7 +63,9 @@ public class DropTrigger extends AbstractMouseEventTrigger {
 
 	private DropTrigger( Origin origin, org.lgna.croquet.components.ViewController<?, ?> viewController, java.awt.event.MouseEvent e, org.lgna.croquet.DropSite dropSite ) {
 		super( origin, viewController, e );
-		assert dropSite != null : this;
+		if( dropSite != null ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+		}
 		this.dropSite = dropSite;
 	}
 
