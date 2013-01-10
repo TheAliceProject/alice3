@@ -160,6 +160,9 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 
 	public void setAll( AtomicChange<N> atomicChange ) {
 		atomicChange.updateSwingModel( this.swingModel );
+		if( atomicChange.value != null ) {
+			this.setCurrentTruthAndBeautyValue( atomicChange.value );
+		}
 	}
 
 	public void setAllTransactionlessly( AtomicChange<N> atomicChange ) {
