@@ -70,16 +70,21 @@ public class SimpleExpressionFillIn<E extends org.lgna.project.ast.Expression> e
 	@Override
 	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.cascade.ItemNode<? super E, java.lang.Void> step ) {
 		if( this.isLeadingIconDesired ) {
-			if( this.transientValue != null ) {
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = this.transientValue.getType();
-				if( type != null ) {
-					if( type.isAssignableTo( org.lgna.story.SThing.class ) ) {
-						java.awt.Dimension size = new java.awt.Dimension( 24, 18 );
-						org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( type );
-						if( iconFactory != null ) {
-							return iconFactory.getIcon( size );
-						} else {
-							return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON.getIcon( size );
+			if( this.transientValue instanceof org.lgna.project.ast.FieldAccess ) {
+				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)this.transientValue;
+				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+				if( field instanceof org.lgna.project.ast.UserField ) {
+					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
+					org.lgna.project.ast.AbstractType<?, ?, ?> type = userField.getValueType();
+					if( type != null ) {
+						if( type.isAssignableTo( org.lgna.story.SThing.class ) ) {
+							java.awt.Dimension size = new java.awt.Dimension( 24, 18 );
+							org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( userField );
+							if( iconFactory != null ) {
+								return iconFactory.getIcon( size );
+							} else {
+								return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON.getIcon( size );
+							}
 						}
 					}
 				}
