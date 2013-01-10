@@ -217,7 +217,6 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 							int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
 							this.currentUnder.setCurrentPotentialDropIndex( index );
 							final boolean IS_SQUISHING_DESIRED = false;
-							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( index );
 							if( index == 0 ) {
 								p.y = 0;
 								if( IS_SQUISHING_DESIRED ) {

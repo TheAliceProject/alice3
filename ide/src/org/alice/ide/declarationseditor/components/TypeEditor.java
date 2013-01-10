@@ -69,7 +69,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 
 	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.LineAxisPanel headerTrailingComponent = new org.lgna.croquet.components.LineAxisPanel(
+		org.lgna.croquet.components.FlowPanel headerTrailingComponent = new org.lgna.croquet.components.FlowPanel(
 				composite.getControlsComposite().getView(),
 				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
 				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()

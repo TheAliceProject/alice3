@@ -122,7 +122,6 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 				int i = StatementListPropertyView.this.currentPotentialDropIndex;
 				if( i != -1 ) {
 					final int N = StatementListPropertyView.this.getProperty().size();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( i, N, this.getComponentCount(), this.hashCode(), System.currentTimeMillis() );
 					if( ( N == this.getComponentCount() ) && ( i >= 0 ) && ( i < N ) ) {
 						if( ( i != -1 ) && ( N > 0 ) ) {
 							int y;
