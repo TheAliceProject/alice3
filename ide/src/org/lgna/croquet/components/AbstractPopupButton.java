@@ -50,7 +50,18 @@ public abstract class AbstractPopupButton extends AbstractButton<javax.swing.Abs
 		super( model );
 	}
 
+	protected static final int TRAILING_PAD = -2;
+
 	protected class JPopupButton extends javax.swing.JToggleButton {
+		@Override
+		public java.awt.Insets getMargin() {
+			java.awt.Insets rv = super.getMargin();
+			if( rv != null ) {
+				rv.right += TRAILING_PAD;
+			}
+			return rv;
+		}
+
 		@Override
 		public javax.swing.Icon getIcon() {
 			if( AbstractPopupButton.this.isIconClobbered() ) {

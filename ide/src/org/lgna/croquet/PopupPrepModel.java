@@ -122,6 +122,10 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 		return new org.lgna.croquet.components.PopupButton( this );
 	}
 
+	public org.lgna.croquet.components.FauxComboBoxPopupButton createFauxComboBoxPopupButton() {
+		return new org.lgna.croquet.components.FauxComboBoxPopupButton( this );
+	}
+
 	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger );
 
 	@Override

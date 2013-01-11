@@ -66,7 +66,7 @@ public class FauxComboBoxPopupButton extends AbstractPopupButton {
 			}
 
 			private int getComboPad() {
-				return this.getArrowSize() / 2;
+				return this.getArrowSize() / 3;
 			}
 
 			@Override
@@ -76,6 +76,7 @@ public class FauxComboBoxPopupButton extends AbstractPopupButton {
 					rv.right += this.getArrowSize();
 					rv.right += this.getComboPad();
 					rv.right += OUTER_PAD;
+					rv.right += TRAILING_PAD;
 				}
 				return rv;
 			}
@@ -90,7 +91,7 @@ public class FauxComboBoxPopupButton extends AbstractPopupButton {
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 				int width = this.getWidth();
 				int height = this.getHeight();
-				int x = ( width - insets.right ) + OUTER_PAD;
+				int x = ( ( width - insets.right ) + OUTER_PAD ) - TRAILING_PAD;
 				if( this.getUI().getClass().getSimpleName().contains( "Synth" ) ) {
 					double round = 8;
 					double inset = 2;
