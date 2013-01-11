@@ -85,8 +85,13 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
+		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.root.getClassUsedForLocalization();
+		}
+
+		@Override
+		protected java.lang.String getSubKeyForLocalization() {
+			return this.root.getSubKeyForLocalization();
 		}
 
 		protected void handleFinally() {
@@ -187,8 +192,13 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
-		return this.getCompletionModel().getClass();
+	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		return this.getCompletionModel().getClassUsedForLocalization();
+	}
+
+	@Override
+	protected String getSubKeyForLocalization() {
+		return this.getCompletionModel().getSubKeyForLocalization();
 	}
 
 	@Override
@@ -222,7 +232,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		return null;
 	}
 
-	public abstract CompletionModel getCompletionModel();
+	public abstract AbstractCompletionModel getCompletionModel();
 
 	public abstract Class<T> getComponentType();
 

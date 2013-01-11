@@ -77,7 +77,7 @@ public abstract class ValueInputDialogOperation<T> extends InputDialogOperation<
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.valueInputDialogOperation.getClassUsedForLocalization();
 		}
 

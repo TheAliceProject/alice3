@@ -133,7 +133,7 @@ public abstract class FrameComposite<V extends org.lgna.croquet.components.View<
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.frameComposite.getClassUsedForLocalization();
 		}
 

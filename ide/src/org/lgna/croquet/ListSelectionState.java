@@ -276,7 +276,7 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	protected final void internalSetItems( java.util.Collection<T> items ) {
-		this.dataIndexPair.data.internalSetItems( items );
+		this.dataIndexPair.data.internalSetAllItems( items );
 	}
 
 	public final void addItem( T item ) {

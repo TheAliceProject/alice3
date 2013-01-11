@@ -48,19 +48,19 @@ package org.lgna.croquet;
  */
 public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	public static final StandardMenuItemPrepModel SEPARATOR = null;
-	private Class<? extends org.lgna.croquet.Model> clsForI18N;
+	private final Class<? extends AbstractElement> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
 
-	public AbstractMenuModel( java.util.UUID individualId, Class<? extends org.lgna.croquet.Model> clsForI18N ) {
+	public AbstractMenuModel( java.util.UUID individualId, Class<? extends AbstractElement> clsForI18N ) {
 		super( individualId );
 		this.clsForI18N = clsForI18N;
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
+	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 		if( this.clsForI18N != null ) {
 			return this.clsForI18N;
 		} else {

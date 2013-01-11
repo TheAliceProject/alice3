@@ -48,7 +48,7 @@ import org.lgna.croquet.components.ComponentManager;
  * @author Dennis Cosgrove
  */
 public abstract class MenuModel extends AbstractMenuModel {
-	public MenuModel( java.util.UUID individualId, Class<? extends Model> clsForI18N ) {
+	public MenuModel( java.util.UUID individualId, Class<? extends AbstractElement> clsForI18N ) {
 		super( individualId, clsForI18N );
 	}
 
@@ -85,7 +85,7 @@ public abstract class MenuModel extends AbstractMenuModel {
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
+		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.menuModel.getClassUsedForLocalization();
 		}
 

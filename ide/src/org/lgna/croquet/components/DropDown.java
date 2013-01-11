@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgna.croquet.components.AbstractButton<javax.swing.AbstractButton, M> {
+public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgna.croquet.components.AbstractButton<javax.swing.AbstractButton, M> {
 	private static final int DEFAULT_AFFORDANCE_WIDTH = 6;
 	private static final int DEFAULT_AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );

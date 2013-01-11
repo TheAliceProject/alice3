@@ -42,6 +42,8 @@
  */
 package org.alice.ide.custom;
 
+import org.lgna.project.ast.Expression;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -64,12 +66,15 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	private final org.lgna.croquet.PlainStringValue arrayTypeLabel = this.createStringValue( this.createKey( "arrayTypeLabel" ) );
 	private final org.lgna.project.ast.AbstractType<?, ?, ?> arrayType;
 
-	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Expression> valueState = this.createListSelectionState(
-			this.createKey( "valueState" ),
-			org.lgna.project.ast.Expression.class,
-			org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ),
-			-1
-			);
+	//	private final org.lgna.croquet.MutableDataListSelectionState<org.lgna.project.ast.Expression> valueState = this.createListSelectionState(
+	//			this.createKey( "valueState" ),
+	//			org.lgna.project.ast.Expression.class,
+	//			org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ),
+	//			-1
+	//			);
+
+	private final org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression> data = new org.lgna.croquet.data.MutableListData<Expression>( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ) );
+
 	private final org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> addItemCascade = this.createCascadeWithInternalBlank( this.createKey( "addItemCascade" ), org.lgna.project.ast.Expression.class, new CascadeCustomizer<org.lgna.project.ast.Expression>() {
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
@@ -78,7 +83,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 
 		public org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Expression[] values ) {
 			assert values.length == 1;
-			valueState.addItem( values[ 0 ] );
+			data.internalAddItem( values[ 0 ] );
 			getView().updatePreview();
 			return null;
 		}
@@ -98,8 +103,8 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		return this.arrayTypeLabel;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.Expression> getValueState() {
-		return this.valueState;
+	public org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression> getData() {
+		return this.data;
 	}
 
 	public org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> getAddItemCascade() {
@@ -113,7 +118,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 
 	@Override
 	protected org.lgna.project.ast.Expression createValue() {
-		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.arrayType, this.valueState.toArray() );
+		return org.lgna.project.ast.AstUtilities.createArrayInstanceCreation( this.arrayType, this.data.toArray() );
 	}
 
 	@Override
@@ -131,8 +136,7 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 				items = arrayInstanceCreation.expressions.toArray( org.lgna.project.ast.Expression.class );
 			}
 		}
-		//todo: transactionlessly
-		this.valueState.setListData( selectedIndex, items );
+		this.data.internalSetAllItems( items );
 	}
 
 	@Override
