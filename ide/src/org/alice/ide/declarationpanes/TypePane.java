@@ -95,7 +95,7 @@ public class TypePane extends org.lgna.croquet.components.BorderPanel {
 		}
 
 		private void update( org.lgna.project.ast.AbstractType type ) {
-			this.getAction().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) {
+			this.getAwtComponent().getAction().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) {
 				@Override
 				protected java.awt.Color getTextColor( java.awt.Component c ) {
 					return super.getTextColor( TypeDropDownPane.this.getAwtComponent() );

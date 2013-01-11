@@ -47,11 +47,28 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class PopupPrepModel extends AbstractPrepModel {
-	private javax.swing.Action action = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			PopupPrepModel.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+	public class SwingModel {
+		private final javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
+		private final javax.swing.Action action = new javax.swing.AbstractAction() {
+			public void actionPerformed( final java.awt.event.ActionEvent e ) {
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						PopupPrepModel.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+					}
+				} );
+			}
+		};
+
+		private javax.swing.ButtonModel getButtonModel() {
+			return this.buttonModel;
 		}
-	};
+
+		public javax.swing.Action getAction() {
+			return this.action;
+		}
+	}
+
+	private final SwingModel swingModel = new SwingModel();
 
 	public PopupPrepModel( java.util.UUID id ) {
 		super( id );
@@ -67,16 +84,16 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 		}
 	}
 
-	public javax.swing.Action getAction() {
-		return this.action;
+	public SwingModel getSwingModel() {
+		return this.swingModel;
 	}
 
 	public String getName() {
-		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
+		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.NAME ) );
 	}
 
 	public void setName( String name ) {
-		this.action.putValue( javax.swing.Action.NAME, name );
+		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 	}
 
 	//	public void setShortDescription( String shortDescription ) {
@@ -97,12 +114,12 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 
 	@Override
 	public boolean isEnabled() {
-		return this.action.isEnabled();
+		return this.swingModel.action.isEnabled();
 	}
 
 	@Override
 	public void setEnabled( boolean isEnabled ) {
-		this.action.setEnabled( isEnabled );
+		this.swingModel.action.setEnabled( isEnabled );
 	}
 
 	@Override

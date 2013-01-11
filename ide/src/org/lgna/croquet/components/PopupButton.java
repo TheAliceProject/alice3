@@ -54,7 +54,8 @@ public class PopupButton extends AbstractButton<javax.swing.JButton, org.lgna.cr
 
 	@Override
 	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = new javax.swing.JButton() {
+		org.lgna.croquet.PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
+		javax.swing.JButton rv = new javax.swing.JButton( swingModel.getAction() ) {
 			@Override
 			public javax.swing.Icon getIcon() {
 				if( PopupButton.this.isIconClobbered() ) {
@@ -64,7 +65,7 @@ public class PopupButton extends AbstractButton<javax.swing.JButton, org.lgna.cr
 				}
 			}
 		};
-		rv.setAction( this.getModel().getAction() );
+		//rv.setModel( swingModel.getButtonModel() );
 		rv.setIcon( ARROW_ICON );
 		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 		return rv;

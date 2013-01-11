@@ -92,20 +92,26 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 
 		@Override
 		public void prologue() {
+			this.state.prologue();
 		}
 
 		@Override
 		public void epilogue() {
+			this.state.epilogue();
 		}
 
 		@Override
 		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.CustomItemState<T>> rtRoot ) {
-			//todo: investigate
-			org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
-			org.lgna.croquet.history.CompletionStep<CustomItemState<T>> completionStep = this.createCompletionStep( transaction, trigger );
-			org.lgna.croquet.history.TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
-			T[] values = rtRoot.createValues( subTransactionHistory, this.getComponentType() );
-			return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
+			try {
+				//todo: investigate
+				org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
+				org.lgna.croquet.history.CompletionStep<CustomItemState<T>> completionStep = this.createCompletionStep( transaction, trigger );
+				org.lgna.croquet.history.TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
+				T[] values = rtRoot.createValues( subTransactionHistory, this.getComponentType() );
+				return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
+			} finally {
+				this.getPopupPrepModel().handleFinally();
+			}
 		}
 	}
 
@@ -134,6 +140,12 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
 		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( rv, this.getCascadeRoot().getPopupPrepModel(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance() );
 		return rv;
+	}
+
+	protected void prologue() {
+	}
+
+	protected void epilogue() {
 	}
 
 	@Override

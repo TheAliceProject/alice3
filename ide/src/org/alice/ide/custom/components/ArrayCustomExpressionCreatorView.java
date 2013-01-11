@@ -128,11 +128,6 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 			return this.cascade;
 		}
 
-		@Override
-		protected javax.swing.Action getAction() {
-			return this.getModel().getAction();
-		}
-
 		public void refreshInternalLater() {
 			this.mainComponent.refreshLater();
 		}

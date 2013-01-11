@@ -55,11 +55,6 @@ public abstract class ItemDropDown<T, CM extends org.lgna.croquet.CustomItemStat
 		this( model, null, null, null );
 	}
 
-	@Override
-	protected javax.swing.Action getAction() {
-		return this.getModel().getAction();
-	}
-
 	private final org.lgna.croquet.State.ValueListener<T> valueObserver = new org.lgna.croquet.State.ValueListener<T>() {
 		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 		}

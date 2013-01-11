@@ -82,7 +82,8 @@ public abstract class PopupContainer extends AbstractButton<javax.swing.Abstract
 		}
 		JPopupPanel rv = new JPopupPanel();
 		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
-		rv.setAction( this.getModel().getAction() );
+		rv.setAction( this.getModel().getSwingModel().getAction() );
+		//rv.setModel( this.getModel().getSwingModel().getButtonModel() );
 		return rv;
 	}
 

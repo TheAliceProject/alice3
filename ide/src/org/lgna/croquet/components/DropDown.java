@@ -100,8 +100,6 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 		}
 	}
 
-	protected abstract javax.swing.Action getAction();
-
 	protected boolean isInactiveFeedbackDesired() {
 		return true;
 	}
@@ -231,8 +229,7 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 		}
 	};
 
-	protected javax.swing.JButton createJButton() {
-
+	protected final javax.swing.JButton createJButton() {
 		javax.swing.JButton rv = new JPopupMenuButton();
 		rv.setRolloverEnabled( true );
 		rv.setOpaque( false );
@@ -245,9 +242,13 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 	}
 
 	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
+	protected final javax.swing.AbstractButton createAwtComponent() {
 		javax.swing.AbstractButton rv = this.createJButton();
-		rv.setAction( DropDown.this.getAction() );
+		org.lgna.croquet.PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
+		rv.setAction( swingModel.getAction() );
+
+		//rv.setModel( swingModel.getButtonModel() );
+
 		if( ( this.prefixComponent != null ) || ( this.mainComponent != null ) || ( this.postfixComponent != null ) ) {
 			//			rv.setModel( new javax.swing.DefaultButtonModel() );
 			//rv.setLayout(new javax.swing.BoxLayout(rv, javax.swing.BoxLayout.LINE_AXIS));

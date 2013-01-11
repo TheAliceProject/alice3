@@ -116,7 +116,8 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 	protected javax.swing.JButton createAwtComponent() {
 		final int COMBO_PAD = 12;
 		final int OUTER_PAD = 6;
-		javax.swing.JButton rv = new javax.swing.JButton() {
+		org.lgna.croquet.PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
+		javax.swing.JButton rv = new javax.swing.JButton( swingModel.getAction() ) {
 			@Override
 			public java.awt.Insets getMargin() {
 				java.awt.Insets rv = super.getMargin();
@@ -167,7 +168,7 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 				return null;
 			}
 		};
-		rv.setAction( this.getModel().getAction() );
+		//rv.setModel( swingModel.getButtonModel() );
 		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 		return rv;
 	}

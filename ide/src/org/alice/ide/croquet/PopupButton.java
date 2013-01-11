@@ -53,9 +53,4 @@ public class PopupButton<M extends org.lgna.croquet.PopupPrepModel> extends org.
 	public PopupButton( M model ) {
 		this( model, null, null, null );
 	}
-
-	@Override
-	protected javax.swing.Action getAction() {
-		return this.getModel().getAction();
-	}
 }
