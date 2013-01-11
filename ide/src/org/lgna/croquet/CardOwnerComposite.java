@@ -53,9 +53,6 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 	public CardOwnerComposite( java.util.UUID id, Composite<?>... cards ) {
 		super( id );
 		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
-		//		if( this.cards.size() > 0 ) {
-		//			this.showingCard = this.cards.get( 0 );
-		//		}
 	}
 
 	@Override
@@ -160,6 +157,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 
 	@Override
 	public void handlePostDeactivation() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this, this.showingCard );
 		if( this.showingCard != null ) {
 			this.showingCard.handlePostDeactivation();
 		}

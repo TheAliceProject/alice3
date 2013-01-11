@@ -137,8 +137,8 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 
 	private CodeContextSplitComposite() {
 		super( java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ) );
-		this.sceneOrNonSceneComposite = this.createCardOwnerComposite( org.alice.stageide.typecontext.SceneTypeComposite.getInstance(), org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance() );
-		this.typeOrCodeCardOwnerComposite = this.createCardOwnerComposite( org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), org.alice.ide.members.MembersComposite.getInstance() );
+		this.sceneOrNonSceneComposite = this.createCardOwnerCompositeButDoNotRegister( org.alice.stageide.typecontext.SceneTypeComposite.getInstance(), org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance() );
+		this.typeOrCodeCardOwnerComposite = this.createCardOwnerCompositeButDoNotRegister( org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), org.alice.ide.members.MembersComposite.getInstance() );
 	}
 
 	@Override

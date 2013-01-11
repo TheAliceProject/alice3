@@ -929,7 +929,11 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return this.registerSubComposite( new InternalSplitComposite( leadingComposite, trailingComposite, false, resizeWeight ) );
 	}
 
-	protected CardOwnerComposite createCardOwnerComposite( Composite<?>... cards ) {
-		return this.registerSubComposite( new InternalCardOwnerComposite( cards ) );
+	protected CardOwnerComposite createAndRegisterCardOwnerComposite( Composite<?>... cards ) {
+		return this.registerSubComposite( this.createCardOwnerCompositeButDoNotRegister( cards ) );
+	}
+
+	protected CardOwnerComposite createCardOwnerCompositeButDoNotRegister( Composite<?>... cards ) {
+		return new InternalCardOwnerComposite( cards );
 	}
 }

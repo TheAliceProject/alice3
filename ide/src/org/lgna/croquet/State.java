@@ -78,7 +78,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	public void addValueListener( ValueListener<T> valueListener ) {
 		if( this.valueListeners.contains( valueListener ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, valueListener );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener already contained", this, valueListener );
 		}
 		this.valueListeners.add( valueListener );
 	}
@@ -95,7 +95,7 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		if( this.valueListeners.contains( valueListener ) ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", valueListener );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "listener not contained", this, valueListener );
 		}
 		this.valueListeners.remove( valueListener );
 	}
