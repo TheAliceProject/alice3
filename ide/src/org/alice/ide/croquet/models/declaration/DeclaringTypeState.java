@@ -66,7 +66,6 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 
 	public org.lgna.croquet.components.PopupButton createComponent() {
 		final org.lgna.croquet.components.PopupButton rv = this.getCascadeRoot().getPopupPrepModel().createPopupButton();
-		javax.swing.JButton awtButton = rv.getAwtComponent();
 		final int PAD = 8;
 		class TypeDropDownIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon {
 			public TypeDropDownIcon() {
@@ -94,7 +93,7 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 				super.paintIcon( c, g, x + typeIcon.getIconWidth() + PAD, y );
 			}
 		}
-		awtButton.setIcon( new TypeDropDownIcon() );
+		rv.getAwtComponent().setIcon( new TypeDropDownIcon() );
 		this.addValueListener( new ValueListener<org.lgna.project.ast.UserType>() {
 			public void changing( org.lgna.croquet.State<org.lgna.project.ast.UserType> state, org.lgna.project.ast.UserType prevValue, org.lgna.project.ast.UserType nextValue, boolean isAdjusting ) {
 			}

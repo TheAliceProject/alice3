@@ -98,9 +98,9 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions );
 
 	@Override
-	protected void prologue() {
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
 		EPIC_HACK_isActive = true;
-		super.prologue();
+		super.prologue( trigger );
 	}
 
 	@Override

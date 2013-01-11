@@ -96,13 +96,6 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 		this.getAwtComponent().setLayout( new java.awt.BorderLayout() );
 		this.getAwtComponent().removeAll();
 		this.internalAddComponent( this.mainComponent, java.awt.BorderLayout.LINE_START );
-		//		this.internalAddComponent( new org.lgna.croquet.components.Label( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 16 ) {
-		//			@Override
-		//			protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
-		//				javax.swing.AbstractButton jButton = InstanceFactoryPopupButton.this.getAwtComponent();
-		//				return jButton.getModel();
-		//			}
-		//		} ), java.awt.BorderLayout.LINE_END );
 	}
 
 	private static final java.awt.Color TOP_COLOR = new java.awt.Color( 255, 255, 255, 91 );
@@ -113,11 +106,10 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 	private static final java.awt.Color SELECTED_LINE_COLOR = java.awt.Color.DARK_GRAY;
 
 	@Override
-	protected javax.swing.JButton createAwtComponent() {
+	protected javax.swing.AbstractButton createSwingButton() {
 		final int COMBO_PAD = 12;
 		final int OUTER_PAD = 6;
-		org.lgna.croquet.PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
-		javax.swing.JButton rv = new javax.swing.JButton( swingModel.getAction() ) {
+		JPopupButton rv = new JPopupButton() {
 			@Override
 			public java.awt.Insets getMargin() {
 				java.awt.Insets rv = super.getMargin();
@@ -139,20 +131,22 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 				int x = ( width - insets.right ) + OUTER_PAD;
 				if( this.getUI().getClass().getSimpleName().contains( "Synth" ) ) {
 					double round = 8;
-					double inset = 2.25;
-					java.awt.geom.RoundRectangle2D r = new java.awt.geom.RoundRectangle2D.Double( inset, inset, width - ( inset * 2 ), height - ( inset * 2 ), round, round );
+					double inset = 2;
+					java.awt.geom.RoundRectangle2D r = new java.awt.geom.RoundRectangle2D.Double( inset, inset, width - ( inset * 2 ), ( height - ( inset * 2 ) ) + 1, round, round );
 
 					java.awt.Shape prevClip = g2.getClip();
 
 					g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, r ) );
 
-					if( this.getModel().isPressed() ) {
+					javax.swing.ButtonModel buttonModel = this.getModel();
+					boolean isSelected = buttonModel.isPressed() || buttonModel.isSelected();
+					if( isSelected ) {
 						g2.setPaint( SELECTED_COLOR );
 					} else {
 						g2.setPaint( new java.awt.GradientPaint( width, 0, TOP_COLOR, width, ( 2 * height ) / 3, BOTTOM_COLOR ) );
 					}
 					g.fillRect( x, 0, width - x, height );
-					if( this.getModel().isPressed() ) {
+					if( isSelected ) {
 						g2.setPaint( SELECTED_LINE_COLOR );
 					} else {
 						g2.setPaint( LINE_COLOR );
@@ -162,13 +156,7 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 				}
 				ARROW_ICON.paintIcon( this, g2, x + COMBO_PAD, ( height - SIZE ) / 2 );
 			}
-
-			@Override
-			public javax.swing.Icon getIcon() {
-				return null;
-			}
 		};
-		//rv.setModel( swingModel.getButtonModel() );
 		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 		return rv;
 	}

@@ -48,20 +48,11 @@ package org.lgna.croquet;
  */
 public abstract class PopupPrepModel extends AbstractPrepModel {
 	public class SwingModel {
-		private final javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( final java.awt.event.ActionEvent e ) {
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-					public void run() {
-						PopupPrepModel.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
-					}
-				} );
+				PopupPrepModel.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 			}
 		};
-
-		private javax.swing.ButtonModel getButtonModel() {
-			return this.buttonModel;
-		}
 
 		public javax.swing.Action getAction() {
 			return this.action;

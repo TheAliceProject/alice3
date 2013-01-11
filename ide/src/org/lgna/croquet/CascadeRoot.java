@@ -95,7 +95,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 		@Override
 		protected org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger ) {
-			this.root.prologue();
+			this.root.prologue( trigger );
 			final org.lgna.croquet.cascade.RtRoot<T, ?> rtRoot = new org.lgna.croquet.cascade.RtRoot( this.root );
 			org.lgna.croquet.history.Step<?> rv;
 			if( rtRoot.isAutomaticallyDetermined() ) {
@@ -228,7 +228,7 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 	public abstract org.lgna.croquet.history.CompletionStep<CM> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
-	public abstract void prologue();
+	public abstract void prologue( org.lgna.croquet.triggers.Trigger trigger );
 
 	public abstract void epilogue();
 

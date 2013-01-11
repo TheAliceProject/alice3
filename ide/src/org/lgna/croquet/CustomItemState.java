@@ -91,8 +91,8 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public void prologue() {
-			this.state.prologue();
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			this.state.prologue( trigger );
 		}
 
 		@Override
@@ -142,10 +142,29 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		return rv;
 	}
 
-	protected void prologue() {
+	private javax.swing.ButtonModel buttonModel;
+
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		this.buttonModel = null;
+		if( trigger instanceof org.lgna.croquet.triggers.ActionEventTrigger ) {
+			org.lgna.croquet.triggers.ActionEventTrigger actionEventTrigger = (org.lgna.croquet.triggers.ActionEventTrigger)trigger;
+			java.awt.event.ActionEvent e = actionEventTrigger.getEvent();
+			Object source = e.getSource();
+			if( source instanceof javax.swing.AbstractButton ) {
+				javax.swing.AbstractButton button = (javax.swing.AbstractButton)source;
+				this.buttonModel = button.getModel();
+			}
+		}
+		if( this.buttonModel != null ) {
+			this.buttonModel.setPressed( true );
+		}
 	}
 
 	protected void epilogue() {
+		if( this.buttonModel != null ) {
+			this.buttonModel.setSelected( false );
+			this.buttonModel.setPressed( false );
+		}
 	}
 
 	@Override
