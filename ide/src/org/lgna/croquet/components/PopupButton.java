@@ -45,31 +45,10 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton extends AbstractButton<javax.swing.AbstractButton, org.lgna.croquet.PopupPrepModel> {
+public class PopupButton extends AbstractPopupButton {
 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
 		super( model );
-	}
-
-	protected class JPopupButton extends javax.swing.JToggleButton {
-		@Override
-		public javax.swing.Icon getIcon() {
-			if( PopupButton.this.isIconClobbered() ) {
-				return PopupButton.this.getClobberIcon();
-			} else {
-				return super.getIcon();
-			}
-		}
-	}
-
-	protected javax.swing.AbstractButton createSwingButton() {
-		return new JPopupButton();
-	}
-
-	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
-		javax.swing.AbstractButton rv = this.createSwingButton();
-		org.lgna.croquet.PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
-		rv.setAction( swingModel.getAction() );
-		return rv;
+		this.setClobberIcon( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 12 ) );
+		this.setHorizontalTextPosition( HorizontalTextPosition.LEADING );
 	}
 }

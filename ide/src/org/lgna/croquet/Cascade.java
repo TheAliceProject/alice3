@@ -87,12 +87,14 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 
 		@Override
 		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			super.prologue( trigger );
 			this.cascade.prologue( trigger );
 		}
 
 		@Override
 		public void epilogue() {
 			this.cascade.epilogue();
+			super.epilogue();
 		}
 
 		@Override

@@ -91,16 +91,6 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
-			this.state.prologue( trigger );
-		}
-
-		@Override
-		public void epilogue() {
-			this.state.epilogue();
-		}
-
-		@Override
 		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.CustomItemState<T>> rtRoot ) {
 			try {
 				//todo: investigate
@@ -140,31 +130,6 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
 		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( rv, this.getCascadeRoot().getPopupPrepModel(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance() );
 		return rv;
-	}
-
-	private javax.swing.ButtonModel buttonModel;
-
-	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
-		this.buttonModel = null;
-		if( trigger instanceof org.lgna.croquet.triggers.ActionEventTrigger ) {
-			org.lgna.croquet.triggers.ActionEventTrigger actionEventTrigger = (org.lgna.croquet.triggers.ActionEventTrigger)trigger;
-			java.awt.event.ActionEvent e = actionEventTrigger.getEvent();
-			Object source = e.getSource();
-			if( source instanceof javax.swing.AbstractButton ) {
-				javax.swing.AbstractButton button = (javax.swing.AbstractButton)source;
-				this.buttonModel = button.getModel();
-			}
-		}
-		if( this.buttonModel != null ) {
-			this.buttonModel.setPressed( true );
-		}
-	}
-
-	protected void epilogue() {
-		if( this.buttonModel != null ) {
-			this.buttonModel.setSelected( false );
-			this.buttonModel.setPressed( false );
-		}
 	}
 
 	@Override

@@ -88,77 +88,12 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 		}
 	};
 	private final MainComponent mainComponent = new MainComponent();
-	private static final int SIZE = 16;
-	private static final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( SIZE );
 
 	public InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState ) {
 		super( instanceFactoryState );
 		this.getAwtComponent().setLayout( new java.awt.BorderLayout() );
 		this.getAwtComponent().removeAll();
 		this.internalAddComponent( this.mainComponent, java.awt.BorderLayout.LINE_START );
-	}
-
-	private static final java.awt.Color TOP_COLOR = new java.awt.Color( 255, 255, 255, 91 );
-	private static final java.awt.Color BOTTOM_COLOR = new java.awt.Color( 57, 105, 138, 91 );
-	private static final java.awt.Color LINE_COLOR = new java.awt.Color( 169, 176, 190 );
-
-	private static final java.awt.Color SELECTED_COLOR = new java.awt.Color( 57, 105, 138 );
-	private static final java.awt.Color SELECTED_LINE_COLOR = java.awt.Color.DARK_GRAY;
-
-	@Override
-	protected javax.swing.AbstractButton createSwingButton() {
-		final int COMBO_PAD = 12;
-		final int OUTER_PAD = 6;
-		JPopupButton rv = new JPopupButton() {
-			@Override
-			public java.awt.Insets getMargin() {
-				java.awt.Insets rv = super.getMargin();
-				if( rv != null ) {
-					rv.right += SIZE;
-					rv.right += COMBO_PAD;
-					rv.right += OUTER_PAD;
-				}
-				return rv;
-			}
-
-			@Override
-			protected void paintBorder( java.awt.Graphics g ) {
-				super.paintBorder( g );
-				java.awt.Insets insets = this.getInsets();
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				int width = this.getWidth();
-				int height = this.getHeight();
-				int x = ( width - insets.right ) + OUTER_PAD;
-				if( this.getUI().getClass().getSimpleName().contains( "Synth" ) ) {
-					double round = 8;
-					double inset = 2;
-					java.awt.geom.RoundRectangle2D r = new java.awt.geom.RoundRectangle2D.Double( inset, inset, width - ( inset * 2 ), ( height - ( inset * 2 ) ) + 1, round, round );
-
-					java.awt.Shape prevClip = g2.getClip();
-
-					g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, r ) );
-
-					javax.swing.ButtonModel buttonModel = this.getModel();
-					boolean isSelected = buttonModel.isPressed() || buttonModel.isSelected();
-					if( isSelected ) {
-						g2.setPaint( SELECTED_COLOR );
-					} else {
-						g2.setPaint( new java.awt.GradientPaint( width, 0, TOP_COLOR, width, ( 2 * height ) / 3, BOTTOM_COLOR ) );
-					}
-					g.fillRect( x, 0, width - x, height );
-					if( isSelected ) {
-						g2.setPaint( SELECTED_LINE_COLOR );
-					} else {
-						g2.setPaint( LINE_COLOR );
-					}
-					g2.fillRect( x, 0, 1, height );
-					g2.setClip( prevClip );
-				}
-				ARROW_ICON.paintIcon( this, g2, x + COMBO_PAD, ( height - SIZE ) / 2 );
-			}
-		};
-		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-		return rv;
 	}
 
 	@Override

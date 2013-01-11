@@ -228,9 +228,30 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 
 	public abstract org.lgna.croquet.history.CompletionStep<CM> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
-	public abstract void prologue( org.lgna.croquet.triggers.Trigger trigger );
+	private javax.swing.ButtonModel buttonModel;
 
-	public abstract void epilogue();
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		this.buttonModel = null;
+		if( trigger instanceof org.lgna.croquet.triggers.EventObjectTrigger ) {
+			org.lgna.croquet.triggers.EventObjectTrigger<?> eventTrigger = (org.lgna.croquet.triggers.EventObjectTrigger<?>)trigger;
+			java.util.EventObject e = eventTrigger.getEvent();
+			Object source = e.getSource();
+			if( source instanceof javax.swing.AbstractButton ) {
+				javax.swing.AbstractButton button = (javax.swing.AbstractButton)source;
+				this.buttonModel = button.getModel();
+			}
+		}
+		if( this.buttonModel != null ) {
+			this.buttonModel.setPressed( true );
+		}
+	}
+
+	protected void epilogue() {
+		if( this.buttonModel != null ) {
+			this.buttonModel.setSelected( false );
+			this.buttonModel.setPressed( false );
+		}
+	}
 
 	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, CM> rtRoot );
 

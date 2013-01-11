@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,37 +45,31 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomItemStatePopupButton<T> extends FauxComboBoxPopupButton {
-	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
-		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
-			CustomItemStatePopupButton.this.handleChanged( state, prevValue, nextValue, isAdjusting );
-		}
-	};
-
-	public CustomItemStatePopupButton( org.lgna.croquet.CustomItemState<T> itemState ) {
-		super( itemState.getCascadeRoot().getPopupPrepModel() );
+public abstract class AbstractPopupButton extends AbstractButton<javax.swing.AbstractButton, org.lgna.croquet.PopupPrepModel> {
+	public AbstractPopupButton( org.lgna.croquet.PopupPrepModel model ) {
+		super( model );
 	}
 
-	public org.lgna.croquet.CustomItemState<T> getCustomItemState() {
-		org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T> model = (org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T>)this.getModel();
-		org.lgna.croquet.CustomItemState.InternalRoot<T> root = (org.lgna.croquet.CustomItemState.InternalRoot<T>)model.getCascadeRoot();
-		return root.getCompletionModel();
+	protected class JPopupButton extends javax.swing.JToggleButton {
+		@Override
+		public javax.swing.Icon getIcon() {
+			if( AbstractPopupButton.this.isIconClobbered() ) {
+				return AbstractPopupButton.this.getClobberIcon();
+			} else {
+				return super.getIcon();
+			}
+		}
 	}
 
-	protected abstract void handleChanged( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting );
-
-	@Override
-	protected void handleDisplayable() {
-		this.getCustomItemState().addAndInvokeValueListener( valueListener );
-		super.handleDisplayable();
+	protected javax.swing.AbstractButton createSwingButton() {
+		return new JPopupButton();
 	}
 
 	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		this.getCustomItemState().removeValueListener( valueListener );
+	protected final javax.swing.AbstractButton createAwtComponent() {
+		javax.swing.AbstractButton rv = this.createSwingButton();
+		org.lgna.croquet.PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
+		rv.setAction( swingModel.getAction() );
+		return rv;
 	}
 }
