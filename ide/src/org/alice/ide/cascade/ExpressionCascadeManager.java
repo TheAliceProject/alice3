@@ -382,7 +382,6 @@ public abstract class ExpressionCascadeManager {
 			this.appendExpressionBonusFillInsForType( items, blankNode, type );
 			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			if( type.isArray() ) {
-				//items.add( org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( type.getComponentType() ).getFillIn() );
 				items.add( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( type ).getValueCreator().getFillIn() );
 			}
 			if( this.isNullLiteralAllowedForType( type, items ) ) {

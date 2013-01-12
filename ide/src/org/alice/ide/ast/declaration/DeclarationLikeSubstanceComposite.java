@@ -221,7 +221,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			//todo
 			if( value instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
 				org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)value;
-				return org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( arrayInstanceCreation.getType().getComponentType() ).getFillIn();
+				return org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( arrayInstanceCreation.getType() ).getValueCreator().getFillIn();
 			} else {
 				return null;
 			}

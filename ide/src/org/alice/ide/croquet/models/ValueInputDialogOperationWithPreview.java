@@ -46,6 +46,7 @@ package org.alice.ide.croquet.models;
 /**
  * @author Dennis Cosgrove
  */
+//todo: delete
 public abstract class ValueInputDialogOperationWithPreview<T> extends org.lgna.croquet.ValueInputDialogOperation<T> {
 	public ValueInputDialogOperationWithPreview( org.lgna.croquet.Group group, java.util.UUID id ) {
 		super( group, id );
