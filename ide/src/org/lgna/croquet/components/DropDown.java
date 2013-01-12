@@ -51,11 +51,11 @@ public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends Abstrac
 	private static final int DEFAULT_AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );
 
-	private org.lgna.croquet.components.Component<?> prefixComponent;
-	private org.lgna.croquet.components.Component<?> mainComponent;
-	private org.lgna.croquet.components.Component<?> postfixComponent;
+	private org.lgna.croquet.components.JComponent<?> prefixComponent;
+	private org.lgna.croquet.components.JComponent<?> mainComponent;
+	private org.lgna.croquet.components.JComponent<?> postfixComponent;
 
-	public DropDown( M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
+	public DropDown( M model, org.lgna.croquet.components.JComponent<?> prefixComponent, org.lgna.croquet.components.JComponent<?> mainComponent, org.lgna.croquet.components.JComponent<?> postfixComponent ) {
 		super( model );
 		this.prefixComponent = prefixComponent;
 		this.mainComponent = mainComponent;
@@ -67,33 +67,33 @@ public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends Abstrac
 		this( model, null, null, null );
 	}
 
-	public org.lgna.croquet.components.Component<?> getPrefixComponent() {
+	public org.lgna.croquet.components.JComponent<?> getPrefixComponent() {
 		return this.prefixComponent;
 	}
 
-	public void setPrefixComponent( org.lgna.croquet.components.Component<?> prefixComponent ) {
+	public void setPrefixComponent( org.lgna.croquet.components.JComponent<?> prefixComponent ) {
 		if( this.prefixComponent != prefixComponent ) {
 			this.prefixComponent = prefixComponent;
 			//			this.revalidateAndRepaint();
 		}
 	}
 
-	public org.lgna.croquet.components.Component<?> getMainComponent() {
+	public org.lgna.croquet.components.JComponent<?> getMainComponent() {
 		return this.mainComponent;
 	}
 
-	public void setMainComponent( org.lgna.croquet.components.Component<?> mainComponent ) {
+	public void setMainComponent( org.lgna.croquet.components.JComponent<?> mainComponent ) {
 		if( this.mainComponent != mainComponent ) {
 			this.mainComponent = mainComponent;
 			//			this.revalidateAndRepaint();
 		}
 	}
 
-	public org.lgna.croquet.components.Component<?> getPostfixComponent() {
+	public org.lgna.croquet.components.JComponent<?> getPostfixComponent() {
 		return this.postfixComponent;
 	}
 
-	public void setPostfixComponent( org.lgna.croquet.components.Component<?> postfixComponent ) {
+	public void setPostfixComponent( org.lgna.croquet.components.JComponent<?> postfixComponent ) {
 		if( this.postfixComponent != postfixComponent ) {
 			this.postfixComponent = postfixComponent;
 			//			this.revalidateAndRepaint();

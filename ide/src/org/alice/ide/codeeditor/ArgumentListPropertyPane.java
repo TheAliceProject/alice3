@@ -76,7 +76,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 
 	@Override
 	protected org.lgna.croquet.components.Component<?> createComponent( org.lgna.project.ast.SimpleArgument argument ) {
-		org.lgna.croquet.components.Component<?> prefixPane;
+		org.lgna.croquet.components.JComponent<?> prefixPane;
 		if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.isJava() ) {
 			prefixPane = null;
 		} else {
