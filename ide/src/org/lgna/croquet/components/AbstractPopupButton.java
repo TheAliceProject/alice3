@@ -45,8 +45,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPopupButton extends AbstractButton<javax.swing.AbstractButton, org.lgna.croquet.PopupPrepModel> {
-	public AbstractPopupButton( org.lgna.croquet.PopupPrepModel model ) {
+public abstract class AbstractPopupButton<M extends org.lgna.croquet.PopupPrepModel> extends AbstractButton<javax.swing.AbstractButton, M> {
+	public AbstractPopupButton( M model ) {
 		super( model );
 	}
 

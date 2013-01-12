@@ -45,7 +45,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupButton extends AbstractPopupButton {
+public class PopupButton extends AbstractPopupButton<org.lgna.croquet.PopupPrepModel> {
 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
 		super( model );
 		this.setClobberIcon( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 12 ) );

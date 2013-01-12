@@ -45,8 +45,8 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class FauxComboBoxPopupButton extends AbstractPopupButton {
-	public FauxComboBoxPopupButton( org.lgna.croquet.PopupPrepModel model ) {
+public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T>> {
+	public FauxComboBoxPopupButton( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<T> model ) {
 		super( model );
 	}
 

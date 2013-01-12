@@ -145,6 +145,10 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 			rv.append( "</strong>" );
 			return rv;
 		}
+
+		public org.lgna.croquet.components.FauxComboBoxPopupButton<T> createFauxComboBoxPopupButton() {
+			return new org.lgna.croquet.components.FauxComboBoxPopupButton<T>( this );
+		}
 	}
 
 	private final InternalPopupPrepModel<T> popupPrepModel = new InternalPopupPrepModel<T>( this );
@@ -282,7 +286,4 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		super.appendRepr( sb );
 		sb.append( this.getCompletionModel() );
 	}
-	//
-	//	public abstract void handleCompletion( CS completionStep, T[] values );
-	//	public abstract void handleCancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce );
 }
