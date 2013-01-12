@@ -253,7 +253,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
-		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( null, "insets 0, fillx", "[align right]8[]", "[]8[]0[]" );
+		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( null, "insets 0, fillx", "[align right, grow 0]8[fill]", "[]8[]0[]" );
 		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.expressionList );
@@ -269,7 +269,7 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		rv.addComponent( label, "aligny top, spany 2" );
 		rv.addComponent( scrollPane, "wrap" );
 
-		rv.addComponent( popupButton, "cell 1 2, wrap" );
+		rv.addComponent( popupButton, "cell 1 2, grow 0, wrap" );
 		return rv;
 	}
 }

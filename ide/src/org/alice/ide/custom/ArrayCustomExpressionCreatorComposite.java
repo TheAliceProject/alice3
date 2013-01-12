@@ -122,7 +122,6 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
 		org.lgna.project.ast.Expression[] items = {};
-		int selectedIndex = -1;
 		if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
 			org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)expression;
 			if( this.arrayType.isAssignableFrom( arrayInstanceCreation.getType() ) ) {
@@ -132,9 +131,14 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		this.data.internalSetAllItems( items );
 	}
 
+	//	@Override
+	//	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+	//		return edu.cmu.cs.dennisc.math.GoldenRatio.createTallerSizeFromWidth( 320 );
+	//	}
+
 	@Override
 	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
-		return edu.cmu.cs.dennisc.math.GoldenRatio.createTallerSizeFromWidth( 320 );
+		return new java.awt.Dimension( 400, 500 );
 	}
 
 	public static void main( String[] args ) throws Exception {
