@@ -93,16 +93,18 @@ public class FauxComboBoxPopupButton extends AbstractPopupButton {
 				int height = this.getHeight();
 				int x = ( ( width - insets.right ) + OUTER_PAD ) - TRAILING_PAD;
 				if( this.getUI().getClass().getSimpleName().contains( "Synth" ) ) {
+					javax.swing.ButtonModel buttonModel = this.getModel();
+					boolean isSelected = buttonModel.isPressed() || buttonModel.isSelected();
 					double round = 8;
-					double inset = 2;
-					java.awt.geom.RoundRectangle2D r = new java.awt.geom.RoundRectangle2D.Double( inset, inset, width - ( inset * 2 ), ( height - ( inset * 2 ) ) + 1, round, round );
+					double inset = isSelected ? 2 : 3;
+					double offsetY = isSelected ? 1 : 0;
+
+					java.awt.geom.RoundRectangle2D r = new java.awt.geom.RoundRectangle2D.Double( inset, inset + offsetY, width - ( inset * 2 ), ( height - ( inset * 2 ) ), round, round );
 
 					java.awt.Shape prevClip = g2.getClip();
 
 					g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, r ) );
 
-					javax.swing.ButtonModel buttonModel = this.getModel();
-					boolean isSelected = buttonModel.isPressed() || buttonModel.isSelected();
 					if( isSelected ) {
 						g2.setPaint( SELECTED_COLOR );
 					} else {
