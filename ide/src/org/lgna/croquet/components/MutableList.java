@@ -46,7 +46,6 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-
 public abstract class MutableList<E> extends JComponent<javax.swing.JPanel> {
 
 	private class MutableListLayout implements java.awt.LayoutManager {
@@ -91,6 +90,12 @@ public abstract class MutableList<E> extends JComponent<javax.swing.JPanel> {
 		}
 	}
 
+	private static java.awt.Color BASE_COLOR = new java.awt.Color( 221, 221, 255 );
+	private static java.awt.Color HIGHLIGHT_COLOR = BASE_COLOR.brighter();
+
+	private static java.awt.Color SELECTED_BASE_COLOR = new java.awt.Color( 57, 105, 138 );
+	private static java.awt.Color SELECTED_HIGHLIGHT_COLOR = SELECTED_BASE_COLOR.brighter();
+
 	protected abstract class JItemAtIndexButton extends javax.swing.JToggleButton {
 		public JItemAtIndexButton() {
 			this.setOpaque( false );
@@ -110,35 +115,37 @@ public abstract class MutableList<E> extends JComponent<javax.swing.JPanel> {
 		protected void paintComponent( java.awt.Graphics g ) {
 			//super.paintComponent( g );
 			javax.swing.ButtonModel model = this.getModel();
-			java.awt.Color color;
+			java.awt.Paint paint;
+			int width = this.getWidth() - 1;
+			int height = this.getHeight() - 1;
 			if( model.isSelected() ) {
 				if( model.isRollover() ) {
-					color = MutableList.this.selectedRolloverBackgroundColor;
+					paint = new java.awt.GradientPaint( 0, 0, SELECTED_HIGHLIGHT_COLOR, 0, height, SELECTED_BASE_COLOR );
 				} else {
-					color = MutableList.this.selectedBackgroundColor;
+					paint = SELECTED_BASE_COLOR;
 				}
 			} else {
 				if( model.isRollover() ) {
-					color = MutableList.this.unselectedRolloverBackgroundColor;
+					paint = new java.awt.GradientPaint( 0, 0, HIGHLIGHT_COLOR, 0, height, BASE_COLOR );
 				} else {
-					color = null;
+					paint = BASE_COLOR;
 				}
 			}
-			int width = this.getWidth();
-			int height = this.getHeight();
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			if( color != null ) {
+			if( paint != null ) {
 				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-				g2.setPaint( color );
-
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+
+				g2.setPaint( paint );
 				g2.fillRoundRect( 0, 0, width, height, 8, 8 );
+				g2.setPaint( java.awt.Color.DARK_GRAY );
+				g2.drawRoundRect( 0, 0, width, height, 8, 8 );
 				if( model.isRollover() ) {
-					color = java.awt.Color.LIGHT_GRAY;
+					paint = java.awt.Color.LIGHT_GRAY;
 				} else {
-					color = java.awt.Color.GRAY;
+					paint = java.awt.Color.GRAY;
 				}
-				g2.setPaint( color );
+				g2.setPaint( paint );
 				edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g, 2, 2, 6, height - 5 );
 
 				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
@@ -148,14 +155,6 @@ public abstract class MutableList<E> extends JComponent<javax.swing.JPanel> {
 			}
 		}
 	}
-
-	private static final java.awt.Color DEFAULT_SELECTED_BACKGROUND = new java.awt.Color( 57, 105, 138 );
-	private static final java.awt.Color DEFAULT_UNSELECTED_BACKGROUND = java.awt.Color.WHITE;//new java.awt.Color( 214, 217, 223 );
-
-	private java.awt.Color selectedBackgroundColor;
-	private java.awt.Color unselectedBackgroundColor;
-	private java.awt.Color selectedRolloverBackgroundColor;
-	private java.awt.Color unselectedRolloverBackgroundColor;
 
 	private final org.lgna.croquet.data.MutableListData<E> data;
 	private final java.util.List<JItemAtIndexButton> jButtons = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
@@ -176,9 +175,6 @@ public abstract class MutableList<E> extends JComponent<javax.swing.JPanel> {
 
 	public MutableList( org.lgna.croquet.data.MutableListData<E> data ) {
 		this.data = data;
-		this.setSelectedBackgroundColor( DEFAULT_SELECTED_BACKGROUND );
-		this.setBackgroundColor( DEFAULT_UNSELECTED_BACKGROUND );
-
 		this.data.addListener( this.listDataListener );
 		this.handleListDataChanged();
 	}
@@ -215,26 +211,6 @@ public abstract class MutableList<E> extends JComponent<javax.swing.JPanel> {
 		}
 		this.clearSelection();
 		this.revalidateAndRepaint();
-	}
-
-	public java.awt.Color getSelectedBackgroundColor() {
-		return this.selectedBackgroundColor;
-	}
-
-	public void setSelectedBackgroundColor( java.awt.Color color ) {
-		this.selectedBackgroundColor = color;
-		this.selectedRolloverBackgroundColor = this.selectedBackgroundColor.darker();
-	}
-
-	public java.awt.Color getUnselectedBackgroundColor() {
-		return this.unselectedBackgroundColor;
-	}
-
-	@Override
-	public void setBackgroundColor( java.awt.Color color ) {
-		super.setBackgroundColor( color );
-		this.unselectedBackgroundColor = color;
-		this.unselectedRolloverBackgroundColor = new java.awt.Color( 221, 221, 255 );
 	}
 
 	@Override

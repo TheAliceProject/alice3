@@ -154,7 +154,7 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 		}
 	};
 
-	private static class ExpressionList extends org.lgna.croquet.components.MutableList<org.lgna.project.ast.Expression> {
+	private static class ExpressionMutableList extends org.lgna.croquet.components.MutableList<org.lgna.project.ast.Expression> {
 		private final org.lgna.project.ast.AbstractType<?, ?, ?> componentType;
 
 		private class JExpressionItemAtIndexButton extends JItemAtIndexButton {
@@ -170,7 +170,7 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 				this.prefixLabel.setText( "[" + index + "]" );
 				edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.prefixLabel, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 
-				ExpressionAtIndexCascade cascade = new ExpressionAtIndexCascade( ExpressionList.this.getData(), index, ExpressionList.this.componentType );
+				ExpressionAtIndexCascade cascade = new ExpressionAtIndexCascade( ExpressionMutableList.this.getData(), index, ExpressionMutableList.this.componentType );
 				this.expressionDropDown = new ExpressionDropDown( cascade, org.alice.ide.x.DialogAstI18nFactory.getInstance() );
 
 				this.setLayout( new net.miginfocom.swing.MigLayout( "insets 0", "[][]push[]" ) );
@@ -189,7 +189,7 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 			}
 		}
 
-		public ExpressionList( org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression> data, org.lgna.project.ast.AbstractType<?, ?, ?> componentType ) {
+		public ExpressionMutableList( org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression> data, org.lgna.project.ast.AbstractType<?, ?, ?> componentType ) {
 			super( (org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression>)data );
 			this.componentType = componentType;
 		}
@@ -231,11 +231,11 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 		}
 	};
 
-	private final ExpressionList expressionList;
+	private final ExpressionMutableList expressionList;
 
 	public ArrayCustomExpressionCreatorView( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite ) {
 		super( composite );
-		this.expressionList = new ExpressionList( composite.getData(), composite.getArrayType().getComponentType() );
+		this.expressionList = new ExpressionMutableList( composite.getData(), composite.getArrayType().getComponentType() );
 		this.expressionList.setBackgroundColor( this.getBackgroundColor() );
 	}
 
@@ -260,12 +260,21 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 		org.lgna.croquet.components.PopupButton popupButton = composite.getAddItemCascade().getRoot().getPopupPrepModel().createPopupButton();
 		scrollPane.setAlignmentX( 0.0f );
 		popupButton.setAlignmentX( 0.0f );
+		popupButton.setMaximumSizeClampedToPreferredSize( true );
 		rows.add(
 				new org.lgna.croquet.components.LabeledFormRow(
 						composite.getValueLabel(),
-						new org.lgna.croquet.components.PageAxisPanel( scrollPane, popupButton )
+						new org.lgna.croquet.components.BorderPanel.Builder().pageStart( scrollPane ).lineStart( popupButton ).build()
 						, org.lgna.croquet.components.VerticalAlignment.TOP
-				)
+				) {
+					@Override
+					protected org.lgna.croquet.components.JComponent<?> createLabel() {
+						org.lgna.croquet.components.JComponent<?> rv = super.createLabel();
+						rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
+						return rv;
+
+					}
+				}
 				);
 	}
 }

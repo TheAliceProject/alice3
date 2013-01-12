@@ -66,13 +66,6 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 	private final org.lgna.croquet.PlainStringValue arrayTypeLabel = this.createStringValue( this.createKey( "arrayTypeLabel" ) );
 	private final org.lgna.project.ast.AbstractType<?, ?, ?> arrayType;
 
-	//	private final org.lgna.croquet.MutableDataListSelectionState<org.lgna.project.ast.Expression> valueState = this.createListSelectionState(
-	//			this.createKey( "valueState" ),
-	//			org.lgna.project.ast.Expression.class,
-	//			org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ),
-	//			-1
-	//			);
-
 	private final org.lgna.croquet.data.MutableListData<org.lgna.project.ast.Expression> data = new org.lgna.croquet.data.MutableListData<Expression>( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ) );
 
 	private final org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> addItemCascade = this.createCascadeWithInternalBlank( this.createKey( "addItemCascade" ), org.lgna.project.ast.Expression.class, new CascadeCustomizer<org.lgna.project.ast.Expression>() {
