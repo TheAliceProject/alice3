@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgna.croquet.components.AbstractButton<javax.swing.AbstractButton, M> {
+public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends AbstractPopupButton<M> {
 	private static final int DEFAULT_AFFORDANCE_WIDTH = 6;
 	private static final int DEFAULT_AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );
@@ -122,8 +122,8 @@ public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgn
 	//		}
 	//	}
 
-	private class JPopupMenuButton extends javax.swing.JButton {
-		public JPopupMenuButton() {
+	private final class JDropDownButton extends javax.swing.JToggleButton {
+		public JDropDownButton() {
 			this.setRolloverEnabled( true );
 		}
 
@@ -156,10 +156,14 @@ public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgn
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
 			java.awt.Paint prevPaint = g2.getPaint();
-			boolean isActive = buttonModel.isRollover();
+			boolean isActive = buttonModel.isRollover() || buttonModel.isPressed();
 			if( isActive || DropDown.this.isInactiveFeedbackDesired() ) {
 				if( isActive ) {
-					g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
+					if( buttonModel.isPressed() ) {
+						g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 127 ) );
+					} else {
+						g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
+					}
 				} else {
 					g2.setColor( this.getBackground() );
 				}
@@ -210,10 +214,18 @@ public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgn
 				//				g2.draw(new java.awt.geom.Rectangle2D.Float(1.5f, 1.5f, width - 3.0f, height - 3.0f));
 				int xMax = ( x + width ) - 1;
 				int yMax = ( y + height ) - 1;
-				g2.setColor( java.awt.Color.WHITE );
+				if( buttonModel.isPressed() ) {
+					g2.setColor( java.awt.Color.BLACK );
+				} else {
+					g2.setColor( java.awt.Color.WHITE );
+				}
 				g2.drawLine( x, yMax, x, y );
 				g2.drawLine( x, y, xMax, y );
-				g2.setColor( java.awt.Color.BLACK );
+				if( buttonModel.isPressed() ) {
+					g2.setColor( java.awt.Color.WHITE );
+				} else {
+					g2.setColor( java.awt.Color.BLACK );
+				}
 				g2.drawLine( x, yMax, xMax, yMax );
 				g2.drawLine( xMax, yMax, xMax, y );
 			} else {
@@ -229,8 +241,9 @@ public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgn
 		}
 	};
 
-	protected final javax.swing.JButton createJButton() {
-		javax.swing.JButton rv = new JPopupMenuButton();
+	@Override
+	protected javax.swing.AbstractButton createSwingButton() {
+		javax.swing.AbstractButton rv = new JDropDownButton();
 		rv.setRolloverEnabled( true );
 		rv.setOpaque( false );
 		rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
@@ -238,17 +251,6 @@ public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgn
 		rv.setBackground( new java.awt.Color( 230, 230, 230, 127 ) );
 		rv.setFocusable( false );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 5 + getAffordanceWidth() ) );
-		return rv;
-	}
-
-	@Override
-	protected final javax.swing.AbstractButton createAwtComponent() {
-		javax.swing.AbstractButton rv = this.createJButton();
-		org.lgna.croquet.PopupPrepModel.SwingModel swingModel = this.getModel().getSwingModel();
-		rv.setAction( swingModel.getAction() );
-
-		//rv.setModel( swingModel.getButtonModel() );
-
 		if( ( this.prefixComponent != null ) || ( this.mainComponent != null ) || ( this.postfixComponent != null ) ) {
 			//			rv.setModel( new javax.swing.DefaultButtonModel() );
 			//rv.setLayout(new javax.swing.BoxLayout(rv, javax.swing.BoxLayout.LINE_AXIS));
@@ -265,5 +267,4 @@ public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgn
 		}
 		return rv;
 	}
-
 }
