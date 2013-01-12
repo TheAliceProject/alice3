@@ -45,7 +45,7 @@ package org.alice.ide.custom.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCreatorView {
+public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorView {
 	private static abstract class ItemAtIndexCascade<T> extends org.lgna.croquet.CascadeWithInternalBlank<T> {
 		private final org.lgna.croquet.data.ListData<T> data;
 		private final int index;
@@ -173,7 +173,7 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 				ExpressionAtIndexCascade cascade = new ExpressionAtIndexCascade( ExpressionMutableList.this.getData(), index, ExpressionMutableList.this.componentType );
 				this.expressionDropDown = new ExpressionDropDown( cascade, org.alice.ide.x.DialogAstI18nFactory.getInstance() );
 
-				this.setLayout( new net.miginfocom.swing.MigLayout( "insets 0", "[][]push[]" ) );
+				this.setLayout( new net.miginfocom.swing.MigLayout( "insets 0", "[]8[]push[]" ) );
 				this.add( this.prefixLabel );
 				this.add( this.expressionDropDown.getAwtComponent() );
 				if( deleteAction != null ) {
@@ -252,29 +252,24 @@ public class ArrayCustomExpressionCreatorView extends RowBasedCustomExpressionCr
 	}
 
 	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
+	protected org.lgna.croquet.components.JComponent<?> createMainComponent() {
+		org.lgna.croquet.components.MigPanel rv = new org.lgna.croquet.components.MigPanel( null, "insets 0, fillx", "[align right]8[]", "[]8[]0[]" );
 		org.alice.ide.custom.ArrayCustomExpressionCreatorComposite composite = (org.alice.ide.custom.ArrayCustomExpressionCreatorComposite)this.getComposite();
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getArrayTypeLabel(), new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ) ) );
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.expressionList );
 		org.lgna.croquet.components.PopupButton popupButton = composite.getAddItemCascade().getRoot().getPopupPrepModel().createPopupButton();
-		scrollPane.setAlignmentX( 0.0f );
-		popupButton.setAlignmentX( 0.0f );
+		scrollPane.getAwtComponent().setMinimumSize( new java.awt.Dimension( 0, 0 ) );
 		popupButton.setMaximumSizeClampedToPreferredSize( true );
-		rows.add(
-				new org.lgna.croquet.components.LabeledFormRow(
-						composite.getValueLabel(),
-						new org.lgna.croquet.components.BorderPanel.Builder().pageStart( scrollPane ).lineStart( popupButton ).build()
-						, org.lgna.croquet.components.VerticalAlignment.TOP
-				) {
-					@Override
-					protected org.lgna.croquet.components.JComponent<?> createLabel() {
-						org.lgna.croquet.components.JComponent<?> rv = super.createLabel();
-						rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
-						return rv;
 
-					}
-				}
-				);
+		rv.addComponent( composite.getArrayTypeLabel().createLabel() );
+		rv.addComponent( new org.lgna.croquet.components.Label( org.alice.ide.common.TypeIcon.getInstance( composite.getArrayType() ) ), "wrap" );
+
+		org.lgna.croquet.components.AbstractLabel label = composite.getValueLabel().createLabel();
+		label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
+		rv.addComponent( label, "aligny top, spany 2" );
+		rv.addComponent( scrollPane, "wrap" );
+
+		rv.addComponent( popupButton, "cell 1 2, wrap" );
+		return rv;
 	}
 }
