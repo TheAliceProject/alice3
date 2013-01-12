@@ -99,6 +99,10 @@ public abstract class ExpressionCascadeManager {
 		this.contextStack.push( context );
 	}
 
+	public void pushNullContext() {
+		this.pushContext( NULL_CONTEXT );
+	}
+
 	public ExpressionCascadeContext popContext() {
 		if( this.contextStack.size() > 0 ) {
 			return this.contextStack.pop();
@@ -115,6 +119,10 @@ public abstract class ExpressionCascadeManager {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( poppedContext, expectedContext );
 		}
 		return poppedContext;
+	}
+
+	public void popAndCheckNullContext() {
+		this.popAndCheckContext( NULL_CONTEXT );
 	}
 
 	public org.lgna.project.ast.Expression getPreviousExpression() {

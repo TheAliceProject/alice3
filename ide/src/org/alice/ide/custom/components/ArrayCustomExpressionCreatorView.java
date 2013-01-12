@@ -73,12 +73,43 @@ public class ArrayCustomExpressionCreatorView extends CustomExpressionCreatorVie
 		}
 	}
 
+	private static class ExpressionAtIndexContext implements org.alice.ide.cascade.ExpressionCascadeContext {
+		private final org.lgna.project.ast.Expression expression;
+
+		public ExpressionAtIndexContext( org.lgna.project.ast.Expression expression ) {
+			this.expression = expression;
+		}
+
+		public org.lgna.project.ast.Expression getPreviousExpression() {
+			return this.expression;
+		}
+
+		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+			return null;
+		}
+	}
+
 	private static class ExpressionAtIndexCascade extends ItemAtIndexCascade<org.lgna.project.ast.Expression> {
 		private final org.lgna.project.ast.AbstractType<?, ?, ?> componentType;
+		private ExpressionAtIndexContext pushedContext;
 
 		public ExpressionAtIndexCascade( org.lgna.croquet.data.ListData<org.lgna.project.ast.Expression> data, int index, org.lgna.project.ast.AbstractType<?, ?, ?> componentType ) {
 			super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "bbdd16fe-0ea0-41ae-8e09-fde5ee075e06" ), data, index );
 			this.componentType = componentType;
+		}
+
+		@Override
+		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			this.pushedContext = new ExpressionAtIndexContext( this.getData().getItemAt( this.getIndex() ) );
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
+			super.prologue( trigger );
+		}
+
+		@Override
+		protected void epilogue() {
+			super.epilogue();
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
+			this.pushedContext = null;
 		}
 
 		@Override
