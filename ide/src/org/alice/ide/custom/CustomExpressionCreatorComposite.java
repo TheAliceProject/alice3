@@ -61,10 +61,9 @@ public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.c
 
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		org.lgna.project.ast.Expression previousExpression = ide != null ? ide.getExpressionCascadeManager().getPreviousExpression() : null;
-		this.initializeToPreviousExpression( previousExpression );
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushNullContext();
+		org.alice.ide.cascade.ExpressionCascadeManager expressionCascadeManager = org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager();
+		this.initializeToPreviousExpression( expressionCascadeManager.getPreviousExpression() );
+		expressionCascadeManager.pushNullContext();
 		super.handlePreShowDialog( step );
 	}
 

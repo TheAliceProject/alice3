@@ -93,9 +93,6 @@ public abstract class ExpressionCascadeManager {
 
 	public void pushContext( ExpressionCascadeContext context ) {
 		assert context != null;
-		if( this.contextStack.size() > 0 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.contextStack );
-		}
 		this.contextStack.push( context );
 	}
 
@@ -107,7 +104,7 @@ public abstract class ExpressionCascadeManager {
 		if( this.contextStack.size() > 0 ) {
 			return this.contextStack.pop();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "contextStack is empty", this );
 			//todo?
 			return NULL_CONTEXT;
 		}
