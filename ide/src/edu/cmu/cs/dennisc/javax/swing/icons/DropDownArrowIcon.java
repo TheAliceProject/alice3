@@ -66,7 +66,7 @@ public class DropDownArrowIcon extends AbstractArrowIcon {
 		java.awt.Paint fillPaint;
 		java.awt.Paint drawPaint;
 		if( buttonModel.isEnabled() ) {
-			if( buttonModel.isPressed() ) {
+			if( buttonModel.isPressed() || buttonModel.isSelected() ) {
 				fillPaint = java.awt.Color.WHITE;
 				drawPaint = null;
 			} else {
