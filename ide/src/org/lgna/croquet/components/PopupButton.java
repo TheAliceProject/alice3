@@ -48,7 +48,7 @@ package org.lgna.croquet.components;
 public class PopupButton extends AbstractPopupButton<org.lgna.croquet.PopupPrepModel> {
 	public PopupButton( org.lgna.croquet.PopupPrepModel model ) {
 		super( model );
-		this.setClobberIcon( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 12 ) );
+		this.setClobberIcon( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 10, java.awt.Color.DARK_GRAY ) );
 		this.setHorizontalTextPosition( HorizontalTextPosition.LEADING );
 	}
 }

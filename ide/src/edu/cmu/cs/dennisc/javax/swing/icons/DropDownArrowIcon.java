@@ -47,8 +47,11 @@ package edu.cmu.cs.dennisc.javax.swing.icons;
  * @author Dennis Cosgrove
  */
 public class DropDownArrowIcon extends AbstractArrowIcon {
-	public DropDownArrowIcon( int size ) {
+	private final java.awt.Paint selectedFillPaint;
+
+	public DropDownArrowIcon( int size, java.awt.Paint selectedFillPaint ) {
 		super( size );
+		this.selectedFillPaint = selectedFillPaint;
 	}
 
 	protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
@@ -67,7 +70,7 @@ public class DropDownArrowIcon extends AbstractArrowIcon {
 		java.awt.Paint drawPaint;
 		if( buttonModel.isEnabled() ) {
 			if( buttonModel.isPressed() || buttonModel.isSelected() ) {
-				fillPaint = java.awt.Color.WHITE;
+				fillPaint = selectedFillPaint;
 				drawPaint = null;
 			} else {
 				if( buttonModel.isRollover() || buttonModel.isArmed() ) {

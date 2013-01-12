@@ -69,7 +69,7 @@ public class DeclaringTypeState extends org.lgna.croquet.DefaultCustomItemState<
 		final int PAD = 8;
 		class TypeDropDownIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon {
 			public TypeDropDownIcon() {
-				super( 14 );
+				super( 14, java.awt.Color.DARK_GRAY );
 			}
 
 			private org.alice.ide.common.TypeIcon getTypeIcon() {

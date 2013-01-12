@@ -86,7 +86,7 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.cro
 			protected void paintBorder( java.awt.Graphics g ) {
 				super.paintBorder( g );
 				final int SIZE = this.getArrowSize();
-				final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( SIZE );
+				final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( SIZE, java.awt.Color.WHITE );
 
 				java.awt.Insets insets = this.getInsets();
 				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
