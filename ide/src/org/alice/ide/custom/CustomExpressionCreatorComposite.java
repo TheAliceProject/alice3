@@ -64,6 +64,13 @@ public abstract class CustomExpressionCreatorComposite<V extends org.alice.ide.c
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.lgna.project.ast.Expression previousExpression = ide != null ? ide.getExpressionCascadeManager().getPreviousExpression() : null;
 		this.initializeToPreviousExpression( previousExpression );
+		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushNullContext();
 		super.handlePreShowDialog( step );
+	}
+
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePostHideDialog( completionStep );
+		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckNullContext();
 	}
 }

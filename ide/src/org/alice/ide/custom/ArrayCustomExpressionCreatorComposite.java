@@ -131,18 +131,6 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 		this.data.internalSetAllItems( items );
 	}
 
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushNullContext();
-		super.handlePreShowDialog( step );
-	}
-
-	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
-		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckNullContext();
-	}
-
 	//	@Override
 	//	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
 	//		return edu.cmu.cs.dennisc.math.GoldenRatio.createTallerSizeFromWidth( 320 );
