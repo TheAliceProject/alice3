@@ -122,6 +122,31 @@ public abstract class PopupPrepModel extends AbstractPrepModel {
 		return new org.lgna.croquet.components.PopupButton( this );
 	}
 
+	private javax.swing.ButtonModel prevButtonModel;
+
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		this.prevButtonModel = null;
+		if( trigger instanceof org.lgna.croquet.triggers.EventObjectTrigger ) {
+			org.lgna.croquet.triggers.EventObjectTrigger<?> eventTrigger = (org.lgna.croquet.triggers.EventObjectTrigger<?>)trigger;
+			java.util.EventObject e = eventTrigger.getEvent();
+			Object source = e.getSource();
+			if( source instanceof javax.swing.AbstractButton ) {
+				javax.swing.AbstractButton button = (javax.swing.AbstractButton)source;
+				this.prevButtonModel = button.getModel();
+			}
+		}
+		if( this.prevButtonModel != null ) {
+			this.prevButtonModel.setPressed( true );
+		}
+	}
+
+	protected void epilogue() {
+		if( this.prevButtonModel != null ) {
+			this.prevButtonModel.setSelected( false );
+			this.prevButtonModel.setPressed( false );
+		}
+	}
+
 	protected abstract org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger );
 
 	@Override

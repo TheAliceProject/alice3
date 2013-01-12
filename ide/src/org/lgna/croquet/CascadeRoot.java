@@ -94,13 +94,25 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 			return this.root.getSubKeyForLocalization();
 		}
 
-		protected void handleFinally() {
+		@Override
+		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			super.prologue( trigger );
+			this.root.prologue( trigger );
+		}
+
+		@Override
+		protected void epilogue() {
 			this.root.epilogue();
+			super.epilogue();
+		}
+
+		protected void handleFinally() {
+			this.epilogue();
 		}
 
 		@Override
 		protected org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger ) {
-			this.root.prologue( trigger );
+			this.prologue( trigger );
 			final org.lgna.croquet.cascade.RtRoot<T, ?> rtRoot = new org.lgna.croquet.cascade.RtRoot( this.root );
 			org.lgna.croquet.history.Step<?> rv;
 			if( rtRoot.isAutomaticallyDetermined() ) {
@@ -236,36 +248,17 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		return null;
 	}
 
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+
+	protected void epilogue() {
+	}
+
 	public abstract AbstractCompletionModel getCompletionModel();
 
 	public abstract Class<T> getComponentType();
 
 	public abstract org.lgna.croquet.history.CompletionStep<CM> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
-
-	private javax.swing.ButtonModel buttonModel;
-
-	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
-		this.buttonModel = null;
-		if( trigger instanceof org.lgna.croquet.triggers.EventObjectTrigger ) {
-			org.lgna.croquet.triggers.EventObjectTrigger<?> eventTrigger = (org.lgna.croquet.triggers.EventObjectTrigger<?>)trigger;
-			java.util.EventObject e = eventTrigger.getEvent();
-			Object source = e.getSource();
-			if( source instanceof javax.swing.AbstractButton ) {
-				javax.swing.AbstractButton button = (javax.swing.AbstractButton)source;
-				this.buttonModel = button.getModel();
-			}
-		}
-		if( this.buttonModel != null ) {
-			this.buttonModel.setPressed( true );
-		}
-	}
-
-	protected void epilogue() {
-		if( this.buttonModel != null ) {
-			this.buttonModel.setSelected( false );
-			this.buttonModel.setPressed( false );
-		}
-	}
 
 	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, CM> rtRoot );
 
