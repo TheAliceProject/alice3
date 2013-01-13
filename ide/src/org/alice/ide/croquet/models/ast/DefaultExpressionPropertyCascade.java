@@ -48,12 +48,17 @@ package org.alice.ide.croquet.models.ast;
 public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade {
 	private static java.util.Map<org.lgna.project.ast.ExpressionProperty, DefaultExpressionPropertyCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized DefaultExpressionPropertyCascade getInstance( org.lgna.croquet.Group group, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType ) {
+	private static org.lgna.project.ast.AbstractType<?, ?, ?> getDesiredType( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType ) {
 		if( desiredType != null ) {
 			//pass
 		} else {
 			desiredType = expressionProperty.getExpressionType();
 		}
+		return desiredType;
+	}
+
+	public static synchronized DefaultExpressionPropertyCascade getInstance( org.lgna.croquet.Group group, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType ) {
+		desiredType = getDesiredType( expressionProperty, desiredType );
 		DefaultExpressionPropertyCascade rv = map.get( expressionProperty );
 		if( rv != null ) {
 			assert rv.getGroup() == group;
@@ -67,6 +72,7 @@ public class DefaultExpressionPropertyCascade extends org.alice.ide.croquet.mode
 	}
 
 	public static synchronized DefaultExpressionPropertyCascade EPIC_HACK_createInstance( org.lgna.croquet.Group group, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType ) {
+		desiredType = getDesiredType( expressionProperty, desiredType );
 		return new DefaultExpressionPropertyCascade( group, expressionProperty, desiredType );
 	}
 
