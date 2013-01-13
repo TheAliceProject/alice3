@@ -121,20 +121,17 @@ public class ArrayCustomExpressionCreatorComposite extends CustomExpressionCreat
 
 	@Override
 	protected void initializeToPreviousExpression( org.lgna.project.ast.Expression expression ) {
-		org.lgna.project.ast.Expression[] items = {};
+		java.util.List<org.lgna.project.ast.Expression> items = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
 			org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)expression;
 			if( this.arrayType.isAssignableFrom( arrayInstanceCreation.getType() ) ) {
-				items = arrayInstanceCreation.expressions.toArray( org.lgna.project.ast.Expression.class );
+				for( org.lgna.project.ast.Expression itemExpression : arrayInstanceCreation.expressions ) {
+					items.add( org.alice.ide.IDE.getActiveInstance().createCopy( itemExpression ) );
+				}
 			}
 		}
 		this.data.internalSetAllItems( items );
 	}
-
-	//	@Override
-	//	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
-	//		return edu.cmu.cs.dennisc.math.GoldenRatio.createTallerSizeFromWidth( 320 );
-	//	}
 
 	@Override
 	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
