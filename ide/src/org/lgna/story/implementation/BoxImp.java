@@ -119,12 +119,6 @@ public class BoxImp extends ShapeImp {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "getScale shouldn't be called on " + this.getClass().getSimpleName() );
-		return new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 );
-	}
-
-	@Override
 	public void setSize( edu.cmu.cs.dennisc.math.Dimension3 size ) {
 		double x = size.x * 0.5;
 		double z = size.z * 0.5;
