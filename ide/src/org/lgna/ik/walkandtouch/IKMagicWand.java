@@ -82,8 +82,6 @@ public class IKMagicWand {
 			( (JointImp)ImplementationAccessor.getImplementation( ogre.getPelvis() ) ).getJointId()
 			);
 
-	//	JointId rightWrist = ;
-
 	public static void moveChainToPointInSceneSpace( JointImp anchor, JointImp end, Point3 target ) {
 		if( USING_OLD ) {
 			moveUsingOldJMIKEnforcer( anchor, end, target );

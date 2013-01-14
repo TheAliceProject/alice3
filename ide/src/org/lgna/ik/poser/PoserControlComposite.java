@@ -81,4 +81,11 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		endJointState.addValueListener( endJointListener );
 	}
 
+	public JointSelectionSphereState getAnchorJointState() {
+		return this.anchorJointState;
+	}
+
+	public JointSelectionSphereState getEndJointState() {
+		return this.endJointState;
+	}
 }

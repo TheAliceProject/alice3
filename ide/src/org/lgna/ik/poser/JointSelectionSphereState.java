@@ -42,8 +42,10 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.croquet.PrepModel;
+import org.lgna.croquet.CustomItemState;
+import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.State;
+import org.lgna.croquet.components.ItemDropDown;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -51,46 +53,50 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 /**
  * @author Matt May
  */
-public class JointSelectionSphereState extends State<JointSelectionSphere> {
+public class JointSelectionSphereState extends CustomItemState<JointSelectionSphere> {
+
+	private JointSelectionSphere value;
 
 	public JointSelectionSphereState( JointSelectionSphere initialValue ) {
-		super( null, java.util.UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), initialValue );
-	}
+		super( null, java.util.UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), new ItemCodec<JointSelectionSphere>() {
 
-	@Override
-	public Class<JointSelectionSphere> getItemClass() {
-		return null;
-	}
+			public Class<JointSelectionSphere> getValueClass() {
+				return JointSelectionSphere.class;
+			}
 
-	@Override
-	public JointSelectionSphere decodeValue( BinaryDecoder binaryDecoder ) {
-		return null;
-	}
+			public JointSelectionSphere decodeValue( BinaryDecoder binaryDecoder ) {
+				throw new RuntimeException( "todo" );
+			}
 
-	@Override
-	public void encodeValue( BinaryEncoder binaryEncoder, JointSelectionSphere value ) {
-	}
+			public void encodeValue( BinaryEncoder binaryEncoder, JointSelectionSphere value ) {
+				throw new RuntimeException( "todo" );
+			}
 
-	@Override
-	public void appendRepresentation( StringBuilder sb, JointSelectionSphere value ) {
+			public void appendRepresentation( StringBuilder sb, JointSelectionSphere value ) {
+				sb.append( value );
+			}
+		} );
 	}
 
 	@Override
 	protected void updateSwingModel( JointSelectionSphere nextValue ) {
+		this.setValue( nextValue );
 	}
 
 	@Override
 	protected JointSelectionSphere getActualValue() {
-		return null;
+		return this.value;
 	}
 
-	@Override
-	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
-		return null;
-	}
+	public ItemDropDown<JointSelectionSphere, JointSelectionSphereState> createItemDropDown() {
+		return new ItemDropDown<JointSelectionSphere, JointSelectionSphereState>( this ) {
 
-	@Override
-	protected void localize() {
+			@Override
+			protected void handleChanged( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+				//				this.mainComponent.setText( nextValue != null ? nextValue.toString() : "null" );
+				this.revalidateAndRepaint();
+			}
+		};
 	}
 
 }

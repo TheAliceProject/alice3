@@ -43,7 +43,10 @@
 package org.lgna.ik.poser.view;
 
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.ItemDropDown;
+import org.lgna.ik.poser.JointSelectionSphere;
+import org.lgna.ik.poser.JointSelectionSphereState;
 import org.lgna.ik.poser.PoserControlComposite;
 
 /**
@@ -53,7 +56,10 @@ public class PoserControlView extends BorderPanel {
 
 	public PoserControlView( PoserControlComposite poserControlComposite ) {
 		super( poserControlComposite );
-		this.addCenterComponent( new Label( "hello Matt!" ) );
+		GridPanel panel = GridPanel.createGridPane( 2, 1 );
+		this.addComponent( panel, Constraint.CENTER );
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> anchorComponent = poserControlComposite.getAnchorJointState().createItemDropDown();
+		panel.addComponent( anchorComponent );
 	}
 
 }
