@@ -108,8 +108,8 @@ public class SearchTabView extends GalleryTabView {
 		}
 	}
 
-	private final org.lgna.croquet.components.ImmutableTextField noMatchesLabel;
-	private final org.lgna.croquet.components.ImmutableTextField noEntryLabel;
+	private final org.lgna.croquet.components.AbstractLabel noMatchesLabel;
+	private final org.lgna.croquet.components.AbstractLabel noEntryLabel;
 
 	private class FilteredResourcesView extends org.lgna.croquet.components.LineAxisPanel {
 		@Override
@@ -149,8 +149,8 @@ public class SearchTabView extends GalleryTabView {
 	public SearchTabView( org.alice.stageide.gallerybrowser.SearchTab composite ) {
 		super( composite );
 
-		this.noMatchesLabel = composite.getNoMatchesLabel().createImmutableTextField( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-		this.noEntryLabel = composite.getNoEntryLabel().createImmutableTextField( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		this.noMatchesLabel = composite.getNoMatchesLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		this.noEntryLabel = composite.getNoEntryLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		this.noMatchesLabel.setForegroundColor( java.awt.Color.DARK_GRAY );
 		this.noEntryLabel.setForegroundColor( java.awt.Color.DARK_GRAY );
 
@@ -158,6 +158,7 @@ public class SearchTabView extends GalleryTabView {
 		this.filterTextField.setMinimumPreferredWidth( 320 );
 		this.filterTextField.setMaximumSizeClampedToPreferredSize( true );
 		this.filterTextField.scaleFont( 1.2f );
+		this.filterTextField.enableSelectAllWhenFocusGained();
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.filteredResourcesView ) {
 			@Override
@@ -171,7 +172,7 @@ public class SearchTabView extends GalleryTabView {
 		this.filteredResourcesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
 		this.addPageStartComponent( new org.lgna.croquet.components.LineAxisPanel(
-				composite.getFilterState().getSidekickLabel().createImmutableTextField(),
+				composite.getFilterState().getSidekickLabel().createLabel(),
 				this.filterTextField
 				) );
 		this.addCenterComponent( scrollPane );

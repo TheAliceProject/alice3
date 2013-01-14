@@ -51,6 +51,13 @@ import org.lgna.croquet.Retargeter;
  * @author Dennis Cosgrove
  */
 public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public static <E extends Edit<?>> E createCopy( E original ) {
+		edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder();
+		encoder.encode( original );
+		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = encoder.createDecoder();
+		return decoder.decodeBinaryEncodableAndDecodable( null );
+	}
+
 	private transient org.lgna.croquet.history.CompletionStep<M> completionStep;
 
 	public Edit( org.lgna.croquet.history.CompletionStep<M> completionStep ) {

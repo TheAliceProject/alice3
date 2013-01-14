@@ -77,7 +77,7 @@ public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
 			sb.append( ", gaptop " );
 			sb.append( GAP_TOP );
 		}
-		this.addComponent( stringValue.createImmutableTextField( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), sb.toString() );
+		this.addComponent( stringValue.createLabel( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ), sb.toString() );
 	}
 
 	private void addDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {

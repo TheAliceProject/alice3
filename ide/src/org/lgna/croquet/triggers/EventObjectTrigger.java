@@ -89,22 +89,27 @@ public abstract class EventObjectTrigger<E extends java.util.EventObject> extend
 	}
 
 	protected java.awt.Component getComponent() {
-		//		if( this.viewController != null ) {
-		//			return this.viewController.getAwtComponent();
-		//		} else {
-		Object source = this.event.getSource();
-		if( source instanceof java.awt.Component ) {
-			return (java.awt.Component)source;
+		if( this.viewController != null ) {
+			return this.viewController.getAwtComponent();
 		} else {
-			return null;
+			Object source = this.event.getSource();
+			if( source instanceof java.awt.Component ) {
+				return (java.awt.Component)source;
+			} else {
+				return null;
+			}
 		}
-		//		}
 	}
 
 	@Override
 	public void showPopupMenu( org.lgna.croquet.components.PopupMenu popupMenu ) {
 		java.awt.Point pt = this.getPoint();
 		java.awt.Component invoker = this.getComponent();
+		if( invoker.isShowing() ) {
+			//pass
+		} else {
+			invoker = null;
+		}
 		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu.getAwtComponent(), invoker, pt );
 	}
 }

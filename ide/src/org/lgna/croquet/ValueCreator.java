@@ -85,7 +85,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.valueCreator.getClassUsedForLocalization();
 		}
 

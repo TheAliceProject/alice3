@@ -58,8 +58,8 @@ public abstract class CustomItemStateWithInternalBlank<T> extends CustomItemStat
 		}
 	}
 
-	public CustomItemStateWithInternalBlank( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<T> itemCodec ) {
-		super( group, id, itemCodec );
+	public CustomItemStateWithInternalBlank( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec ) {
+		super( group, id, initialValue, itemCodec );
 		this.getCascadeRoot().addBlank( new CustomBlank() );
 	}
 

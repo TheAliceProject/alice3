@@ -91,23 +91,24 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public void prologue() {
-		}
-
-		@Override
-		public void epilogue() {
-		}
-
-		@Override
-		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, T[] values ) {
-			return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
+		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.CustomItemState<T>> rtRoot ) {
+			try {
+				//todo: investigate
+				org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
+				org.lgna.croquet.history.CompletionStep<CustomItemState<T>> completionStep = this.createCompletionStep( transaction, trigger );
+				org.lgna.croquet.history.TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
+				T[] values = rtRoot.createValues( subTransactionHistory, this.getComponentType() );
+				return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
+			} finally {
+				this.getPopupPrepModel().handleFinally();
+			}
 		}
 	}
 
 	private final InternalRoot<T> root;
 
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<T> itemCodec, CascadeBlank<T>... blanks ) {
-		super( group, id, null, itemCodec );
+	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec, CascadeBlank<T>... blanks ) {
+		super( group, id, initialValue, itemCodec );
 		this.root = new InternalRoot<T>( this, blanks );
 	}
 
@@ -129,5 +130,15 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
 		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( rv, this.getCascadeRoot().getPopupPrepModel(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance() );
 		return rv;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.getCascadeRoot().getPopupPrepModel().isEnabled();
+	}
+
+	@Override
+	public void setEnabled( boolean isEnabled ) {
+		this.getCascadeRoot().getPopupPrepModel().setEnabled( isEnabled );
 	}
 }

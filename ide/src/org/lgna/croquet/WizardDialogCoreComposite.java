@@ -253,7 +253,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		org.lgna.croquet.components.CardPanel cardPanel = this.cardComposite.getView();
 		org.lgna.croquet.components.Panel rv;
 		if( this.isAdornmentDesired() ) {
-			org.lgna.croquet.components.ImmutableTextField stepsTextField = this.stepsLabel.createImmutableTextField();
+			org.lgna.croquet.components.AbstractLabel stepsLabel = this.stepsLabel.createLabel();
 			javax.swing.JList list = new javax.swing.JList( this.listModel ) {
 				@Override
 				public boolean contains( int x, int y ) {
@@ -265,10 +265,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			//list.setEnabled( false );
 			list.setCellRenderer( this.listCellRenderer );
 
-			//		org.lgna.croquet.components.PageAxisPanel mainView = this.createPageAxisPanel( this.stepLabel );
-			//		mainView.addComponent( this.cardComposite.getView() );
-			//		mainView.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalGlue() );
-			org.lgna.croquet.components.PageAxisPanel stepsView = this.createAdornmentPageAxisPanel( stepsTextField );
+			org.lgna.croquet.components.PageAxisPanel stepsView = this.createAdornmentPageAxisPanel( stepsLabel );
 			stepsView.setBackgroundColor( java.awt.Color.WHITE );
 			stepsView.getAwtComponent().add( list );
 

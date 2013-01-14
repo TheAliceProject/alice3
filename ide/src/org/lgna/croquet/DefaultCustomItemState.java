@@ -47,11 +47,10 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class DefaultCustomItemState<T> extends org.lgna.croquet.CustomItemStateWithInternalBlank<T> {
-	private T value;
+	private T swingValue;
 
 	public DefaultCustomItemState( Group group, java.util.UUID id, ItemCodec<T> itemCodec, T initialValue ) {
-		super( group, id, itemCodec );
-		this.value = initialValue;
+		super( group, id, initialValue, itemCodec );
 	}
 
 	@Override
@@ -60,11 +59,11 @@ public abstract class DefaultCustomItemState<T> extends org.lgna.croquet.CustomI
 
 	@Override
 	protected T getSwingValue() {
-		return this.value;
+		return this.swingValue;
 	}
 
 	@Override
-	protected void setSwingValue( T value ) {
-		this.value = value;
+	protected void setSwingValue( T swingValue ) {
+		this.swingValue = swingValue;
 	}
 }

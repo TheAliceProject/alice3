@@ -89,7 +89,12 @@ public class RecentProjectsListData extends org.lgna.croquet.data.AbstractMutabl
 	}
 
 	@Override
-	public void internalSetItems( java.util.Collection<java.net.URI> items ) {
+	public void internalSetAllItems( java.util.Collection<java.net.URI> items ) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void internalSetItemAt( int index, java.net.URI item ) {
 		throw new UnsupportedOperationException();
 	}
 

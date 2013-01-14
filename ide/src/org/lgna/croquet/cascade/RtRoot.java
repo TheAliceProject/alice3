@@ -70,7 +70,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 	public void select() {
 	}
 
-	protected final T[] createValues( org.lgna.croquet.history.TransactionHistory transactionHistory, Class<T> componentType ) {
+	public final T[] createValues( org.lgna.croquet.history.TransactionHistory transactionHistory, Class<T> componentType ) {
 		RtBlank<T>[] rtBlanks = this.getBlankChildren();
 		T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
 		for( int i = 0; i < rtBlanks.length; i++ ) {
@@ -91,8 +91,8 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 		org.lgna.croquet.history.TransactionHistory transactionHistory = Application.getActiveInstance().getDocument().getRootTransactionHistory().getActiveTransactionHistory();
 		org.lgna.croquet.history.CompletionStep<CM> completionStep;
 		try {
-			T[] values = this.createValues( transactionHistory, root.getComponentType() );
-			completionStep = root.handleCompletion( transactionHistory, trigger, values );
+			//T[] values = this.createValues( transactionHistory, root.getComponentType() );
+			completionStep = root.handleCompletion( transactionHistory, trigger, this );
 		} catch( CancelException ce ) {
 			completionStep = this.cancel( transactionHistory, trigger, ce );
 		}

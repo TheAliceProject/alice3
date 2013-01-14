@@ -56,9 +56,11 @@ public abstract class NumberCustomExpressionCreatorComposite extends CustomExpre
 	}
 
 	@Override
-	protected GoldenRatioPolicy getGoldenRatioPolicy() {
-		//return GoldenRatioPolicy.HEIGHT_LONG_SIDE;
-		return null;
+	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		java.awt.Dimension rv = super.calculateWindowSize( window );
+		//todo
+		rv.width = (int)( rv.height / edu.cmu.cs.dennisc.math.GoldenRatio.PHI );
+		return rv;
 	}
 
 	@Override

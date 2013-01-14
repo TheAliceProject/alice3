@@ -62,7 +62,15 @@ public abstract class MetaState<T> {
 
 	private T prevValue;
 
-	protected abstract T getValue();
+	public abstract T getValue();
+
+	public void addMetaStateValueListener( MetaStateValueListener<T> listener ) {
+		this.valueListeners.add( listener );
+	}
+
+	public void removeMetaStateValueListener( MetaStateValueListener<T> listener ) {
+		this.valueListeners.add( listener );
+	}
 
 	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
 		T nextValue = this.getValue();

@@ -54,10 +54,4 @@ public class ThemeBasedTab extends TreeOwningGalleryTab {
 	public org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getResourceNodeTreeSelectionState() {
 		return org.alice.stageide.modelresource.ThemeBasedResourceNodeTreeSelectionState.getInstance();
 	}
-
-	@Override
-	protected org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView createView() {
-		return new org.alice.stageide.gallerybrowser.views.TreeOwningGalleryTabView( this );
-	}
-
 }

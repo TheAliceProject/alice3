@@ -46,7 +46,7 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class Label extends JComponent<javax.swing.JLabel> {
+public class Label extends AbstractLabel {
 	public Label() {
 	}
 
@@ -82,37 +82,5 @@ public class Label extends JComponent<javax.swing.JLabel> {
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
 		return new javax.swing.JLabel();
-	}
-
-	public String getText() {
-		return this.getAwtComponent().getText();
-	}
-
-	public void setText( String text ) {
-		this.getAwtComponent().setText( text );
-	}
-
-	public javax.swing.Icon getIcon() {
-		return this.getAwtComponent().getIcon();
-	}
-
-	public void setIcon( javax.swing.Icon icon ) {
-		this.getAwtComponent().setIcon( icon );
-	}
-
-	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
-		this.getAwtComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
-	}
-
-	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
-		this.getAwtComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
-	}
-
-	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
-		this.getAwtComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
-	}
-
-	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
-		this.getAwtComponent().setVerticalAlignment( verticalAlignment.getInternal() );
 	}
 }

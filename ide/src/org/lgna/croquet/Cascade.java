@@ -86,25 +86,28 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		}
 
 		@Override
-		public void prologue() {
-			this.cascade.prologue();
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			super.prologue( trigger );
+			this.cascade.prologue( trigger );
 		}
 
 		@Override
 		public void epilogue() {
 			this.cascade.epilogue();
+			super.epilogue();
 		}
 
 		@Override
-		public org.lgna.croquet.history.CompletionStep<Cascade<T>> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		public final org.lgna.croquet.history.CompletionStep<Cascade<T>> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			return transaction.createAndSetCompletionStep( this.cascade, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		}
 
 		@Override
-		public org.lgna.croquet.history.CompletionStep<Cascade<T>> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, T[] values ) {
+		public org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.Cascade<T>> rtRoot ) {
 			org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
 			org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep = this.createCompletionStep( transaction, trigger );
 			try {
+				T[] values = rtRoot.createValues( completionStep.getTransactionHistory(), this.getComponentType() );
 				org.lgna.croquet.edits.Edit edit = this.cascade.createEdit( completionStep, values );
 				if( edit != null ) {
 					completionStep.commitAndInvokeDo( edit );
@@ -164,7 +167,7 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 		return this.componentType;
 	}
 
-	protected void prologue() {
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
 	}
 
 	protected void epilogue() {

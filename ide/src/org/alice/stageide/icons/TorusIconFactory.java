@@ -46,6 +46,17 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class TorusIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static TorusIconFactory instance = new TorusIconFactory();
+	}
+
+	public static TorusIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private TorusIconFactory() {
+	}
+
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new TorusIcon( size );

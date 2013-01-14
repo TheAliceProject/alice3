@@ -46,26 +46,29 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsTab extends ContentTab<org.alice.ide.projecturi.views.RecentPane> {
-	private static class SingletonHolder {
-		private static RecentProjectsTab instance = new RecentProjectsTab();
-	}
+public class RecentProjectsTab extends ListUriTab {
+	private final RecentProjectsUriSelectionState recentProjectsUriSelectionState = new RecentProjectsUriSelectionState();
 
-	public static RecentProjectsTab getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RecentProjectsTab() {
+	public RecentProjectsTab() {
 		super( java.util.UUID.fromString( "b490bb6c-f74f-422b-b9a6-5ef643b02b58" ) );
 	}
 
 	@Override
-	protected void refresh() {
-		org.alice.ide.projecturi.RecentProjectsUriSelectionState.getInstance().getData().refresh();
+	public org.lgna.croquet.ListSelectionState<java.net.URI> getListSelectionState() {
+		return this.recentProjectsUriSelectionState;
 	}
 
 	@Override
-	protected org.alice.ide.projecturi.views.RecentPane createView() {
-		return new org.alice.ide.projecturi.views.RecentPane( this );
+	protected void refresh() {
+	}
+
+	@Override
+	protected org.alice.ide.projecturi.views.TabContentPanel createView() {
+		return new org.alice.ide.projecturi.views.ListContentPanel( this );
+	}
+
+	@Override
+	public String getTextForZeroProjects() {
+		return "there are no recent projects";
 	}
 }

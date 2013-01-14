@@ -149,7 +149,7 @@ public abstract class AbstractElement implements Element {
 		this.localize();
 	}
 
-	protected Class<? extends Element> getClassUsedForLocalization() {
+	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 		return this.getClass();
 	}
 

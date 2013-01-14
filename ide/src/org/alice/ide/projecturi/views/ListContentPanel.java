@@ -46,14 +46,12 @@ package org.alice.ide.projecturi.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel<M extends org.lgna.croquet.ListSelectionState<java.net.URI>> extends TabContentPanel {
-	private final M state;
+public class ListContentPanel extends TabContentPanel {
 	private final org.lgna.croquet.components.List<java.net.URI> list;
 
-	public ListContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite, M state ) {
-		super( composite );
-		this.state = state;
-		this.list = this.state.createList();
+	public ListContentPanel( org.alice.ide.projecturi.ListUriTab tab ) {
+		super( tab );
+		this.list = tab.getListSelectionState().createList();
 		this.list.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		this.list.setCellRenderer( this.createListCellRenderer() );
 		this.list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
@@ -66,22 +64,11 @@ public abstract class ListContentPanel<M extends org.lgna.croquet.ListSelectionS
 		this.addCenterComponent( scrollPane );
 	}
 
-	protected M getState() {
-		return this.state;
-	}
-
 	public org.lgna.croquet.components.List<java.net.URI> getList() {
 		return this.list;
 	}
 
 	protected javax.swing.ListCellRenderer createListCellRenderer() {
 		return new ProjectSnapshotListCellRenderer();
-	}
-
-	protected abstract String getTextForZeroProjects();
-
-	@Override
-	public java.net.URI getSelectedUri() {
-		return this.state.getValue();
 	}
 }

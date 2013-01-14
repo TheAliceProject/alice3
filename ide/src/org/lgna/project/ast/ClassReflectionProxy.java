@@ -63,7 +63,7 @@ public final class ClassReflectionProxy extends ReflectionProxy<Class<?>> {
 		return rv;
 	}
 
-	private String name;
+	private final String name;
 
 	public ClassReflectionProxy( String name ) {
 		this.name = name;

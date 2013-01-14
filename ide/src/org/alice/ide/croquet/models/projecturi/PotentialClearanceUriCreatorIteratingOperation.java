@@ -49,14 +49,14 @@ public abstract class PotentialClearanceUriCreatorIteratingOperation extends Uri
 	private final boolean isNew;
 
 	public PotentialClearanceUriCreatorIteratingOperation( java.util.UUID migrationId, boolean isNew ) {
-		super( migrationId, org.alice.ide.projecturi.SelectProjectUriWithPreviewComposite.getInstance().getValueCreator() );
+		super( migrationId, org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().getValueCreator() );
 		this.isNew = isNew;
 	}
 
 	@Override
 	protected java.util.Iterator<org.lgna.croquet.Model> createIteratingData() {
 		java.util.Iterator<org.lgna.croquet.Model> rv = super.createIteratingData();
-		org.alice.ide.projecturi.SelectProjectUriWithPreviewComposite.getInstance().selectAppropriateTab( this.isNew );
+		org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
 		return rv;
 	}
 

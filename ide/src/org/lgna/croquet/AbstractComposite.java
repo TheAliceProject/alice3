@@ -88,6 +88,18 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 			}
 			return rv;
 		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append( this.getClass().getSimpleName() );
+			sb.append( "[" );
+			sb.append( this.composite );
+			sb.append( ";" );
+			sb.append( this.localizationKey );
+			sb.append( "]" );
+			return sb.toString();
+		}
 	}
 
 	public static abstract class KeyResolver<M extends Model> implements org.lgna.croquet.resolvers.Resolver<M> {
@@ -165,13 +177,20 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -194,7 +213,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -206,6 +225,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected StringStateKeyResolver createResolver() {
 			return new StringStateKeyResolver( this.getKey() );
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -222,7 +248,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -230,12 +256,79 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
 		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
 	}
 
-	private static final class InternalDefaultListSelectionState<T> extends MutableDataListSelectionState<T> {
+	private static final class InternalImmutableListSelectionState<T> extends ImmutableDataListSelectionState<T> {
 		private final Key key;
 
-		private InternalDefaultListSelectionState( ItemCodec<T> codec, int selectionIndex, T[] data, Key key ) {
+		private InternalImmutableListSelectionState( ItemCodec<T> codec, T[] data, int selectionIndex, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "091d5251-d278-4eb1-8214-a27c154f5378" ), codec, data, selectionIndex );
+			this.key = key;
+		}
+
+		public Key getKey() {
+			return this.key;
+		}
+
+		@Override
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
+	}
+
+	private static final class InternalRefreshableListSelectionState<T> extends RefreshableDataListSelectionState<T> {
+		private final Key key;
+
+		private InternalRefreshableListSelectionState( org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex, Key key ) {
+			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "4d7ef91c-a8ae-4b17-9d8a-91ffac4ba12e" ), data, selectionIndex );
+			this.key = key;
+		}
+
+		public Key getKey() {
+			return this.key;
+		}
+
+		@Override
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
+			return this.key.composite.getClass();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
+		}
+	}
+
+	private static final class InternalMutableListSelectionState<T> extends MutableDataListSelectionState<T> {
+		private final Key key;
+
+		private InternalMutableListSelectionState( ItemCodec<T> codec, int selectionIndex, T[] data, Key key ) {
 			super( Application.INHERIT_GROUP, java.util.UUID.fromString( "6cc16988-0fc8-476b-9026-b19fd15748ea" ), codec, selectionIndex, data );
 			this.key = key;
 		}
@@ -245,13 +338,20 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -268,13 +368,20 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -293,13 +400,20 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -322,13 +436,20 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
 		@Override
 		protected String getSubKeyForLocalization() {
 			return this.key.localizationKey;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -351,7 +472,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -373,6 +494,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 			} catch( CancelException ce ) {
 				step.cancel();
 			}
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -397,7 +525,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.key.composite.getClass();
 		}
 
@@ -415,6 +543,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		protected java.util.List<CascadeBlankChild> updateBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode ) {
 			this.customizer.appendBlankChildren( rv, blankNode );
 			return rv;
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -463,6 +598,13 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		@Override
 		protected ItemStateKeyResolver<T> createResolver() {
 			return new ItemStateKeyResolver<T>( this.getKey() );
+		}
+
+		@Override
+		protected void appendRepr( java.lang.StringBuilder sb ) {
+			super.appendRepr( sb );
+			sb.append( ";key=" );
+			sb.append( this.key );
 		}
 	}
 
@@ -602,7 +744,9 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	private java.util.Map<Key, AbstractInternalStringValue> mapKeyToStringValue = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalBooleanState> mapKeyToBooleanState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalStringState> mapKeyToStringState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private java.util.Map<Key, InternalDefaultListSelectionState> mapKeyToListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key, InternalImmutableListSelectionState> mapKeyToImmutableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key, InternalRefreshableListSelectionState> mapKeyToRefreshableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map<Key, InternalMutableListSelectionState> mapKeyToMutableListSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalTabSelectionState> mapKeyToTabSelectionState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalBoundedIntegerState> mapKeyToBoundedIntegerState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private java.util.Map<Key, InternalBoundedDoubleState> mapKeyToBoundedDoubleState = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
@@ -653,7 +797,7 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
 			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
 		}
-		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToItemState, this.mapKeyToListSelectionState, this.mapKeyToTabSelectionState, this.mapKeyToStringState );
+		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToItemState, this.mapKeyToImmutableListSelectionState, this.mapKeyToRefreshableListSelectionState, this.mapKeyToMutableListSelectionState, this.mapKeyToTabSelectionState, this.mapKeyToStringState );
 	}
 
 	public boolean contains( Model model ) {
@@ -669,8 +813,20 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 				return true;
 			}
 		}
-		for( Key key : this.mapKeyToListSelectionState.keySet() ) {
-			InternalDefaultListSelectionState state = this.mapKeyToListSelectionState.get( key );
+		for( Key key : this.mapKeyToImmutableListSelectionState.keySet() ) {
+			InternalImmutableListSelectionState state = this.mapKeyToImmutableListSelectionState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToRefreshableListSelectionState.keySet() ) {
+			InternalRefreshableListSelectionState state = this.mapKeyToRefreshableListSelectionState.get( key );
+			if( model == state ) {
+				return true;
+			}
+		}
+		for( Key key : this.mapKeyToMutableListSelectionState.keySet() ) {
+			InternalMutableListSelectionState state = this.mapKeyToMutableListSelectionState.get( key );
 			if( model == state ) {
 				return true;
 			}
@@ -774,16 +930,24 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return rv;
 	}
 
-	protected <T> ListSelectionState<T> createListSelectionState( Key key, Class<T> valueCls, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... values ) {
-		InternalDefaultListSelectionState<T> rv = new InternalDefaultListSelectionState<T>( codec, selectionIndex, values, key );
-		this.mapKeyToListSelectionState.put( key, rv );
+	protected <T> MutableDataListSelectionState<T> createListSelectionState( Key key, Class<T> valueCls, org.lgna.croquet.ItemCodec<T> codec, int selectionIndex, T... values ) {
+		InternalMutableListSelectionState<T> rv = new InternalMutableListSelectionState<T>( codec, selectionIndex, values, key );
+		this.mapKeyToMutableListSelectionState.put( key, rv );
 		return rv;
 	}
 
-	protected <T extends Enum<T>> ListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, T initialValue ) {
+	protected <T extends Enum<T>> ImmutableDataListSelectionState<T> createListSelectionStateForEnum( Key key, Class<T> valueCls, T initialValue ) {
 		T[] constants = valueCls.getEnumConstants();
 		int selectionIndex = java.util.Arrays.asList( constants ).indexOf( initialValue );
-		return createListSelectionState( key, valueCls, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), selectionIndex, constants );
+		InternalImmutableListSelectionState<T> rv = new InternalImmutableListSelectionState<T>( edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( valueCls ), constants, selectionIndex, key );
+		this.mapKeyToImmutableListSelectionState.put( key, rv );
+		return rv;
+	}
+
+	protected <T> RefreshableDataListSelectionState<T> createListSelectionState( Key key, org.lgna.croquet.data.RefreshableListData<T> data, int selectionIndex ) {
+		InternalRefreshableListSelectionState<T> rv = new InternalRefreshableListSelectionState<T>( data, selectionIndex, key );
+		this.mapKeyToRefreshableListSelectionState.put( key, rv );
+		return rv;
 	}
 
 	protected <C extends SimpleTabComposite<?>> TabSelectionState<C> createTabSelectionState( Key key, Class<C> cls, int selectionIndex, C... tabComposites ) {
@@ -804,7 +968,11 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		return this.registerSubComposite( new InternalSplitComposite( leadingComposite, trailingComposite, false, resizeWeight ) );
 	}
 
-	protected CardOwnerComposite createCardOwnerComposite( Composite<?>... cards ) {
-		return this.registerSubComposite( new InternalCardOwnerComposite( cards ) );
+	protected CardOwnerComposite createAndRegisterCardOwnerComposite( Composite<?>... cards ) {
+		return this.registerSubComposite( this.createCardOwnerCompositeButDoNotRegister( cards ) );
+	}
+
+	protected CardOwnerComposite createCardOwnerCompositeButDoNotRegister( Composite<?>... cards ) {
+		return new InternalCardOwnerComposite( cards );
 	}
 }

@@ -47,17 +47,12 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class ItemDropDown<T, CM extends org.lgna.croquet.CustomItemState<T>> extends DropDown<org.lgna.croquet.Cascade.InternalRoot.InternalPopupPrepModel<T>> {
-	public ItemDropDown( CM state, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
+	public ItemDropDown( CM state, org.lgna.croquet.components.JComponent<?> prefixComponent, org.lgna.croquet.components.JComponent<?> mainComponent, org.lgna.croquet.components.JComponent<?> postfixComponent ) {
 		super( state.getCascadeRoot().getPopupPrepModel(), prefixComponent, mainComponent, postfixComponent );
 	}
 
 	public ItemDropDown( CM model ) {
 		this( model, null, null, null );
-	}
-
-	@Override
-	protected javax.swing.Action getAction() {
-		return this.getModel().getAction();
 	}
 
 	private final org.lgna.croquet.State.ValueListener<T> valueObserver = new org.lgna.croquet.State.ValueListener<T>() {

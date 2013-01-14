@@ -210,8 +210,8 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 		public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
 			T nextValue = getSelectedNode();
 			TreeSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.TreeSelectionEventTrigger.createUserInstance( e ) );
-			T prevValue = getValue();
-			fireChanged( prevValue, nextValue, IsAdjusting.FALSE );
+			//			T prevValue = getValue();
+			//			fireChanged( prevValue, nextValue, IsAdjusting.FALSE );
 		}
 	};
 
@@ -255,7 +255,13 @@ public abstract class TreeSelectionState<T> extends ItemState<T> {
 	}
 
 	private void setSelectedNode( T e ) {
-		this.swingModel.treeSelectionModel.setSelectionPath( this.getTreeModel().getTreePath( e ) );
+		javax.swing.tree.TreePath currTreePath = this.swingModel.treeSelectionModel.getSelectionPath();
+		javax.swing.tree.TreePath nextTreePath = this.getTreeModel().getTreePath( e );
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currTreePath, nextTreePath ) ) {
+			//pass
+		} else {
+			this.swingModel.treeSelectionModel.setSelectionPath( nextTreePath );
+		}
 	}
 
 	@Override

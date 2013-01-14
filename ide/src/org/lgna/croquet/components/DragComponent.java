@@ -117,7 +117,7 @@ public abstract class DragComponent<J extends javax.swing.AbstractButton, M exte
 	//	}
 
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return false;
+		return true;
 	}
 
 	private boolean isActuallyPotentiallyDraggable() {

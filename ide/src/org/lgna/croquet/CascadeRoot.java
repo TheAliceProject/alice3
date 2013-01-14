@@ -85,17 +85,34 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		protected Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
+		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.root.getClassUsedForLocalization();
 		}
 
-		protected void handleFinally() {
+		@Override
+		protected java.lang.String getSubKeyForLocalization() {
+			return this.root.getSubKeyForLocalization();
+		}
+
+		@Override
+		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			super.prologue( trigger );
+			this.root.prologue( trigger );
+		}
+
+		@Override
+		protected void epilogue() {
 			this.root.epilogue();
+			super.epilogue();
+		}
+
+		protected void handleFinally() {
+			this.epilogue();
 		}
 
 		@Override
 		protected org.lgna.croquet.history.Step<?> perform( org.lgna.croquet.triggers.Trigger trigger ) {
-			this.root.prologue();
+			this.prologue( trigger );
 			final org.lgna.croquet.cascade.RtRoot<T, ?> rtRoot = new org.lgna.croquet.cascade.RtRoot( this.root );
 			org.lgna.croquet.history.Step<?> rv;
 			if( rtRoot.isAutomaticallyDetermined() ) {
@@ -139,6 +156,10 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 			completionModel.appendUserRepr( rv );
 			rv.append( "</strong>" );
 			return rv;
+		}
+
+		public org.lgna.croquet.components.FauxComboBoxPopupButton<T> createFauxComboBoxPopupButton() {
+			return new org.lgna.croquet.components.FauxComboBoxPopupButton<T>( this );
 		}
 	}
 
@@ -187,8 +208,13 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
-		return this.getCompletionModel().getClass();
+	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		return this.getCompletionModel().getClassUsedForLocalization();
+	}
+
+	@Override
+	protected String getSubKeyForLocalization() {
+		return this.getCompletionModel().getSubKeyForLocalization();
 	}
 
 	@Override
@@ -222,17 +248,19 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		return null;
 	}
 
-	public abstract CompletionModel getCompletionModel();
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+
+	protected void epilogue() {
+	}
+
+	public abstract AbstractCompletionModel getCompletionModel();
 
 	public abstract Class<T> getComponentType();
 
 	public abstract org.lgna.croquet.history.CompletionStep<CM> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
-	public abstract void prologue();
-
-	public abstract void epilogue();
-
-	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, T[] values );
+	public abstract org.lgna.croquet.history.CompletionStep<CM> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, CM> rtRoot );
 
 	public final void handleCancel( org.lgna.croquet.history.CompletionStep<CM> completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce ) {
 		try {
@@ -251,7 +279,4 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		super.appendRepr( sb );
 		sb.append( this.getCompletionModel() );
 	}
-	//
-	//	public abstract void handleCompletion( CS completionStep, T[] values );
-	//	public abstract void handleCancel( CS completionStep, org.lgna.croquet.triggers.Trigger trigger, CancelException ce );
 }

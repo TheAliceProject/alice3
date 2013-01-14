@@ -43,26 +43,11 @@
 
 package org.alice.ide.projecturi;
 
-import org.lgna.croquet.data.RefreshableListData;
-
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsUriSelectionState extends org.lgna.croquet.RefreshableDataListSelectionState<java.net.URI> {
-	private static class SingletonHolder {
-		private static RecentProjectsUriSelectionState instance = new RecentProjectsUriSelectionState();
-	}
-
-	public static RecentProjectsUriSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RecentProjectsUriSelectionState() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), new RefreshableListData<java.net.URI>( org.alice.ide.croquet.codecs.UriCodec.SINGLETON ) {
-			@Override
-			protected java.util.List<java.net.URI> createValues() {
-				return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.recentprojects.RecentProjectsListData.getInstance().toArray() );
-			}
-		}, -1 );
+public class RecentProjectsUriSelectionState extends org.lgna.croquet.ListSelectionState<java.net.URI> {
+	public RecentProjectsUriSelectionState() {
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), org.alice.ide.recentprojects.RecentProjectsListData.getInstance(), -1 );
 	}
 }

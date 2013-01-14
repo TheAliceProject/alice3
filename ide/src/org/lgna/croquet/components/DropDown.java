@@ -46,16 +46,16 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends org.lgna.croquet.components.AbstractButton<javax.swing.AbstractButton, M> {
+public class DropDown<M extends org.lgna.croquet.PopupPrepModel> extends AbstractPopupButton<M> {
 	private static final int DEFAULT_AFFORDANCE_WIDTH = 6;
 	private static final int DEFAULT_AFFORDANCE_HALF_HEIGHT = 5;
 	private static final java.awt.Color ARROW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );
 
-	private org.lgna.croquet.components.Component<?> prefixComponent;
-	private org.lgna.croquet.components.Component<?> mainComponent;
-	private org.lgna.croquet.components.Component<?> postfixComponent;
+	private org.lgna.croquet.components.JComponent<?> prefixComponent;
+	private org.lgna.croquet.components.JComponent<?> mainComponent;
+	private org.lgna.croquet.components.JComponent<?> postfixComponent;
 
-	public DropDown( M model, org.lgna.croquet.components.Component<?> prefixComponent, org.lgna.croquet.components.Component<?> mainComponent, org.lgna.croquet.components.Component<?> postfixComponent ) {
+	public DropDown( M model, org.lgna.croquet.components.JComponent<?> prefixComponent, org.lgna.croquet.components.JComponent<?> mainComponent, org.lgna.croquet.components.JComponent<?> postfixComponent ) {
 		super( model );
 		this.prefixComponent = prefixComponent;
 		this.mainComponent = mainComponent;
@@ -67,40 +67,38 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 		this( model, null, null, null );
 	}
 
-	public org.lgna.croquet.components.Component<?> getPrefixComponent() {
+	public org.lgna.croquet.components.JComponent<?> getPrefixComponent() {
 		return this.prefixComponent;
 	}
 
-	public void setPrefixComponent( org.lgna.croquet.components.Component<?> prefixComponent ) {
+	public void setPrefixComponent( org.lgna.croquet.components.JComponent<?> prefixComponent ) {
 		if( this.prefixComponent != prefixComponent ) {
 			this.prefixComponent = prefixComponent;
 			//			this.revalidateAndRepaint();
 		}
 	}
 
-	public org.lgna.croquet.components.Component<?> getMainComponent() {
+	public org.lgna.croquet.components.JComponent<?> getMainComponent() {
 		return this.mainComponent;
 	}
 
-	public void setMainComponent( org.lgna.croquet.components.Component<?> mainComponent ) {
+	public void setMainComponent( org.lgna.croquet.components.JComponent<?> mainComponent ) {
 		if( this.mainComponent != mainComponent ) {
 			this.mainComponent = mainComponent;
 			//			this.revalidateAndRepaint();
 		}
 	}
 
-	public org.lgna.croquet.components.Component<?> getPostfixComponent() {
+	public org.lgna.croquet.components.JComponent<?> getPostfixComponent() {
 		return this.postfixComponent;
 	}
 
-	public void setPostfixComponent( org.lgna.croquet.components.Component<?> postfixComponent ) {
+	public void setPostfixComponent( org.lgna.croquet.components.JComponent<?> postfixComponent ) {
 		if( this.postfixComponent != postfixComponent ) {
 			this.postfixComponent = postfixComponent;
 			//			this.revalidateAndRepaint();
 		}
 	}
-
-	protected abstract javax.swing.Action getAction();
 
 	protected boolean isInactiveFeedbackDesired() {
 		return true;
@@ -124,8 +122,8 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 	//		}
 	//	}
 
-	private class JPopupMenuButton extends javax.swing.JButton {
-		public JPopupMenuButton() {
+	private final class JDropDownButton extends javax.swing.JToggleButton {
+		public JDropDownButton() {
 			this.setRolloverEnabled( true );
 		}
 
@@ -158,10 +156,14 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
 			java.awt.Paint prevPaint = g2.getPaint();
-			boolean isActive = buttonModel.isRollover();
+			boolean isActive = buttonModel.isRollover() || buttonModel.isPressed();
 			if( isActive || DropDown.this.isInactiveFeedbackDesired() ) {
 				if( isActive ) {
-					g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
+					if( buttonModel.isPressed() ) {
+						g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 127 ) );
+					} else {
+						g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 220 ) );
+					}
 				} else {
 					g2.setColor( this.getBackground() );
 				}
@@ -212,10 +214,18 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 				//				g2.draw(new java.awt.geom.Rectangle2D.Float(1.5f, 1.5f, width - 3.0f, height - 3.0f));
 				int xMax = ( x + width ) - 1;
 				int yMax = ( y + height ) - 1;
-				g2.setColor( java.awt.Color.WHITE );
+				if( buttonModel.isPressed() ) {
+					g2.setColor( java.awt.Color.BLACK );
+				} else {
+					g2.setColor( java.awt.Color.WHITE );
+				}
 				g2.drawLine( x, yMax, x, y );
 				g2.drawLine( x, y, xMax, y );
-				g2.setColor( java.awt.Color.BLACK );
+				if( buttonModel.isPressed() ) {
+					g2.setColor( java.awt.Color.WHITE );
+				} else {
+					g2.setColor( java.awt.Color.BLACK );
+				}
 				g2.drawLine( x, yMax, xMax, yMax );
 				g2.drawLine( xMax, yMax, xMax, y );
 			} else {
@@ -231,9 +241,9 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 		}
 	};
 
-	protected javax.swing.JButton createJButton() {
-
-		javax.swing.JButton rv = new JPopupMenuButton();
+	@Override
+	protected javax.swing.AbstractButton createSwingButton() {
+		javax.swing.AbstractButton rv = new JDropDownButton();
 		rv.setRolloverEnabled( true );
 		rv.setOpaque( false );
 		rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
@@ -241,13 +251,6 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 		rv.setBackground( new java.awt.Color( 230, 230, 230, 127 ) );
 		rv.setFocusable( false );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 5 + getAffordanceWidth() ) );
-		return rv;
-	}
-
-	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
-		javax.swing.AbstractButton rv = this.createJButton();
-		rv.setAction( DropDown.this.getAction() );
 		if( ( this.prefixComponent != null ) || ( this.mainComponent != null ) || ( this.postfixComponent != null ) ) {
 			//			rv.setModel( new javax.swing.DefaultButtonModel() );
 			//rv.setLayout(new javax.swing.BoxLayout(rv, javax.swing.BoxLayout.LINE_AXIS));
@@ -264,5 +267,4 @@ public abstract class DropDown<M extends org.lgna.croquet.PopupPrepModel> extend
 		}
 		return rv;
 	}
-
 }

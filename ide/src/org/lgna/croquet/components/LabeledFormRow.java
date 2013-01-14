@@ -83,9 +83,9 @@ public class LabeledFormRow implements FormRow {
 		return new LabeledFormRow( label, null, component, org.lgna.croquet.components.VerticalAlignment.CENTER, true );
 	}
 
-	private org.lgna.croquet.components.JComponent<?> createImmutableTextField() {
+	protected org.lgna.croquet.components.JComponent<?> createLabel() {
 		if( this.labelStringValue != null ) {
-			org.lgna.croquet.components.ImmutableTextField textField = this.labelStringValue.createImmutableTextField();
+			org.lgna.croquet.components.AbstractLabel textField = this.labelStringValue.createLabel();
 			textField.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.TRAILING );
 			if( this.labelVerticalAlignment == org.lgna.croquet.components.VerticalAlignment.CENTER ) {
 				return textField;
@@ -113,11 +113,11 @@ public class LabeledFormRow implements FormRow {
 		if( this.label != null ) {
 			leadingComponent = this.label;
 		} else {
-			leadingComponent = this.createImmutableTextField();
+			leadingComponent = this.createLabel();
 		}
 		StringBuilder sbTrailing = new StringBuilder();
 		if( this.isFillHorizontal ) {
-			sbTrailing.append( "grow, " );
+			sbTrailing.append( "growx, " );
 		}
 		sbTrailing.append( "wrap" );
 

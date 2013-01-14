@@ -49,8 +49,8 @@ package org.alice.stageide.ast.declaration.views;
 public class AddBillboardManagedFieldView extends org.alice.ide.ast.declaration.views.AddManagedFieldView {
 	private static class SidePanel extends org.lgna.croquet.components.MigPanel {
 		public SidePanel( org.alice.stageide.ast.declaration.AddBillboardManagedFieldComposite composite ) {
-			this.addComponent( composite.getPaintState().getSidekickLabel().createImmutableTextField() );
-			this.addComponent( composite.getBackPaintState().getSidekickLabel().createImmutableTextField(), "wrap" );
+			this.addComponent( composite.getPaintState().getSidekickLabel().createLabel() );
+			this.addComponent( composite.getBackPaintState().getSidekickLabel().createLabel(), "wrap" );
 			this.addComponent( new PaintView( composite.getPaintState() ) );
 			this.addComponent( new PaintView( composite.getBackPaintState() ) );
 		}

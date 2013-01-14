@@ -79,7 +79,7 @@ public class DragProxy extends Proxy {
 	@Override
 	protected float getAlpha() {
 		if( this.isAlphaDesiredWhenOverDropReceptor && this.isOverDropAcceptor() ) {
-			return 0.5f;
+			return 0.6f;
 		} else {
 			return 1.0f;
 		}

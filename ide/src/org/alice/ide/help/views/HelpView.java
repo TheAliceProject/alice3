@@ -50,7 +50,7 @@ public class HelpView extends org.lgna.croquet.components.BorderPanel {
 		super( composite );
 		org.lgna.croquet.components.Hyperlink hyperlink = composite.getBrowserOperation().createHyperlink();
 		org.lgna.croquet.components.Label iconLabel = new org.lgna.croquet.components.Label( new javax.swing.ImageIcon( HelpView.class.getResource( "images/help.png" ) ) );
-		org.lgna.croquet.components.ImmutableTextField textLabel = composite.getWhereToFindHelpText().createImmutableTextField();
+		org.lgna.croquet.components.AbstractLabel textLabel = composite.getWhereToFindHelpText().createLabel();
 
 		textLabel.scaleFont( 2.0f );
 		textLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );

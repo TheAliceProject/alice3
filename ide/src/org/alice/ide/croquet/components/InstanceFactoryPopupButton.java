@@ -92,23 +92,8 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 	public InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState ) {
 		super( instanceFactoryState );
 		this.getAwtComponent().setLayout( new java.awt.BorderLayout() );
-
 		this.getAwtComponent().removeAll();
 		this.internalAddComponent( this.mainComponent, java.awt.BorderLayout.LINE_START );
-		this.internalAddComponent( new org.lgna.croquet.components.Label( new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( 24 ) {
-			@Override
-			protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
-				javax.swing.AbstractButton jButton = InstanceFactoryPopupButton.this.getAwtComponent();
-				return jButton.getModel();
-			}
-		} ), java.awt.BorderLayout.LINE_END );
-	}
-
-	@Override
-	protected javax.swing.JButton createAwtComponent() {
-		javax.swing.JButton rv = super.createAwtComponent();
-		rv.setIcon( null );
-		return rv;
 	}
 
 	@Override
