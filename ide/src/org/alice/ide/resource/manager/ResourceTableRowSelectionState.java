@@ -129,7 +129,7 @@ public class ResourceTableRowSelectionState extends org.lgna.croquet.TableRowSel
 	}
 
 	@Override
-	protected void updateSwingModel( org.lgna.common.Resource nextValue ) {
+	protected void setSwingValue( org.lgna.common.Resource nextValue ) {
 		//todo
 	}
 

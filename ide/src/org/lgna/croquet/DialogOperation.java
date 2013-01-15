@@ -87,6 +87,12 @@ public abstract class DialogOperation extends SingleThreadOperation {
 		return true;
 	}
 
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	}
+
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	}
+
 	protected void handleClosing() {
 	}
 
@@ -143,7 +149,9 @@ public abstract class DialogOperation extends SingleThreadOperation {
 				}
 
 				dialog.setTitle( this.getDialogTitle( step ) );
+				this.handlePreShowDialog( step );
 				dialog.setVisible( true );
+				this.handlePostHideDialog( step );
 				this.handleClosing();
 				this.releaseContentPane( step, dialog, contentPane );
 				dialog.dispose();

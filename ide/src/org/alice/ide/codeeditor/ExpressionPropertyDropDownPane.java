@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupButton<org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression>> {
+public class ExpressionPropertyDropDownPane extends org.lgna.croquet.components.DropDown<org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression>> {
 	private class ExpressionPropertyDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			return dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel;
@@ -101,7 +101,7 @@ public class ExpressionPropertyDropDownPane extends org.alice.ide.croquet.PopupB
 	private final ExpressionPropertyDropReceptor dropReceptor = new ExpressionPropertyDropReceptor();
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 
-	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression> model, org.lgna.croquet.components.Component<?> prefixPane, org.lgna.croquet.components.Component<?> component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( org.lgna.croquet.CascadeRoot.InternalPopupPrepModel<org.lgna.project.ast.Expression> model, org.lgna.croquet.components.JComponent<?> prefixPane, org.lgna.croquet.components.JComponent<?> component, org.lgna.project.ast.ExpressionProperty expressionProperty ) {
 		super( model, prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 	}

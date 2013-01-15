@@ -64,7 +64,7 @@ public class KeyedArgumentListPropertyView extends ArgumentListPropertyView<org.
 			//pass
 		} else {
 			this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
-			this.addComponent( new org.alice.ide.croquet.PopupButton( org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( this.getArgumentListProperty().getOwner() ).getRoot().getPopupPrepModel() ) );
+			this.addComponent( new org.lgna.croquet.components.DropDown( org.alice.ide.croquet.models.ast.keyed.KeyedMoreCascade.getInstance( this.getArgumentListProperty().getOwner() ).getRoot().getPopupPrepModel() ) );
 		}
 	}
 }

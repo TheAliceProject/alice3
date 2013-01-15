@@ -64,7 +64,7 @@ public abstract class FileSelectionState extends ItemState<java.io.File> {
 		public void propertyChange( java.beans.PropertyChangeEvent e ) {
 			//java.io.File prevValue = (java.io.File)e.getOldValue();
 			java.io.File nextValue = (java.io.File)e.getNewValue();
-			FileSelectionState.this.changeValueFromSwing( nextValue, false, org.lgna.croquet.triggers.PropertyChangeEventTrigger.createUserInstance( oneAndOnlyOneFileChooser, e ) );
+			FileSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.PropertyChangeEventTrigger.createUserInstance( oneAndOnlyOneFileChooser, e ) );
 		}
 	};
 
@@ -83,12 +83,12 @@ public abstract class FileSelectionState extends ItemState<java.io.File> {
 	}
 
 	@Override
-	protected java.io.File getActualValue() {
+	protected java.io.File getSwingValue() {
 		return this.swingModel.jFileChooser.getSelectedFile();
 	}
 
 	@Override
-	protected void updateSwingModel( java.io.File nextValue ) {
+	protected void setSwingValue( java.io.File nextValue ) {
 		if( this.swingModel != null ) {
 			this.swingModel.jFileChooser.setSelectedFile( nextValue );
 		}

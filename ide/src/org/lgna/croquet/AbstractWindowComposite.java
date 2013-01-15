@@ -53,35 +53,39 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.compone
 	protected static enum GoldenRatioPolicy {
 		WIDTH_LONG_SIDE {
 			@Override
-			public void adjustWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
-				java.awt.Dimension size = window.getSize();
+			public java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+				java.awt.Dimension size = window.getAwtComponent().getPreferredSize();
 				int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.width );
 				if( phiHeight > size.height ) {
-					window.setSize( size.width, phiHeight );
+					return new java.awt.Dimension( size.width, phiHeight );
 				} else {
 					int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.height );
 					if( phiWidth > size.width ) {
-						window.setSize( phiWidth, size.height );
+						return new java.awt.Dimension( phiWidth, size.height );
+					} else {
+						return size;
 					}
 				}
 			}
 		},
 		HEIGHT_LONG_SIDE {
 			@Override
-			public void adjustWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
-				java.awt.Dimension size = window.getSize();
+			public java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+				java.awt.Dimension size = window.getAwtComponent().getPreferredSize();
 				int phiHeight = edu.cmu.cs.dennisc.math.GoldenRatio.getLongerSideLength( size.width );
 				if( phiHeight > size.height ) {
-					window.setSize( size.width, phiHeight );
+					return new java.awt.Dimension( size.width, phiHeight );
 				} else {
 					int phiWidth = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( size.height );
 					if( phiWidth > size.width ) {
-						window.setSize( phiWidth, size.height );
+						return new java.awt.Dimension( phiWidth, size.height );
+					} else {
+						return size;
 					}
 				}
 			}
 		};
-		public abstract void adjustWindowSize( org.lgna.croquet.components.AbstractWindow<?> window );
+		public abstract java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window );
 
 	}
 
@@ -89,12 +93,39 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.compone
 		return GoldenRatioPolicy.WIDTH_LONG_SIDE;
 	}
 
-	protected void modifyPackedWindowSizeIfDesired( org.lgna.croquet.components.AbstractWindow<?> window ) {
-		GoldenRatioPolicy goldenRatioPolicy = this.getGoldenRatioPolicy();
-		if( goldenRatioPolicy != null ) {
-			goldenRatioPolicy.adjustWindowSize( window );
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( window.getWidth()/(double)window.getHeight(), edu.cmu.cs.dennisc.math.GoldenRatio.PHI );
+	protected Integer getWiderGoldenRatioSizeFromWidth() {
+		return null;
+	}
+
+	protected Integer getWiderGoldenRatioSizeFromHeight() {
+		return null;
+	}
+
+	protected java.awt.Dimension calculateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		Integer width = this.getWiderGoldenRatioSizeFromWidth();
+		if( width != null ) {
+			return edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( width );
+		} else {
+			Integer height = this.getWiderGoldenRatioSizeFromHeight();
+			if( height != null ) {
+				return edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromHeight( height );
+			} else {
+				GoldenRatioPolicy goldenRatioPolicy = this.getGoldenRatioPolicy();
+				if( goldenRatioPolicy != null ) {
+					window.pack();
+					return goldenRatioPolicy.calculateWindowSize( window );
+				} else {
+					edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( window.getAwtComponent() );
+					window.getAwtComponent().doLayout();
+					return window.getAwtComponent().getPreferredSize();
+				}
+			}
 		}
+	}
+
+	protected final void updateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		window.setSize( this.calculateWindowSize( window ) );
+		window.getAwtComponent().revalidate();
 	}
 
 	protected java.awt.Point getDesiredWindowLocation() {

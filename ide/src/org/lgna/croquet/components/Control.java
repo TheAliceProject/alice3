@@ -151,17 +151,19 @@ public abstract class Control<J extends javax.swing.AbstractButton, M extends or
 	}
 
 	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
-		switch( e.getClickCount() ) {
-		case 1:
-			if( this.leftButtonClickModel != null ) {
-				this.leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
+		if( e.getButton() == java.awt.event.MouseEvent.BUTTON1 ) {
+			switch( e.getClickCount() ) {
+			case 1:
+				if( this.leftButtonClickModel != null ) {
+					this.leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
+				}
+				break;
+			case 2:
+				if( this.leftButtonDoubleClickModel != null ) {
+					this.leftButtonDoubleClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
+				}
+				break;
 			}
-			break;
-		case 2:
-			if( this.leftButtonDoubleClickModel != null ) {
-				this.leftButtonDoubleClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
-			}
-			break;
 		}
 	}
 

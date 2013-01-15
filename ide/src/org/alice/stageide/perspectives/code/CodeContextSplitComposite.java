@@ -46,7 +46,7 @@ package org.alice.stageide.perspectives.code;
 /**
  * @author Dennis Cosgrove
  */
-public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
+public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitComposite {
 	private static class SingletonHolder {
 		private static CodeContextSplitComposite instance = new CodeContextSplitComposite();
 	}
@@ -54,6 +54,23 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 	public static CodeContextSplitComposite getInstance() {
 		return SingletonHolder.instance;
 	}
+
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+			CodeContextSplitComposite.this.handleTypeStateChanged( nextValue );
+		}
+	};
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+			CodeContextSplitComposite.this.handleDeclarationStateChanged( nextValue );
+		}
+	};
 
 	private final java.beans.PropertyChangeListener dividerLocationListener = new java.beans.PropertyChangeListener() {
 		public void propertyChange( java.beans.PropertyChangeEvent e ) {
@@ -63,7 +80,7 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 				CodePerspectiveComposite otherComposite = CodePerspectiveComposite.getInstance();
 				org.lgna.croquet.components.SplitPane otherSplitPane = otherComposite.getView();
 				int prevValue = otherSplitPane.getDividerLocation();
-				int nextValue = (int)( (Integer)e.getNewValue() * org.alice.stageide.croquet.models.run.RunOperation.WIDTH_TO_HEIGHT_RATIO );
+				int nextValue = (int)( (Integer)e.getNewValue() * org.alice.stageide.run.RunComposite.WIDTH_TO_HEIGHT_RATIO );
 				if( prevValue != nextValue ) {
 					otherComposite.incrementIgnoreDividerLocationChangeCount();
 					try {
@@ -76,13 +93,62 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 			}
 		}
 	};
+
+	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
+		org.lgna.croquet.Composite<?> composite;
+		if( nextValue != null ) {
+			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
+				composite = org.alice.stageide.typecontext.SceneTypeComposite.getInstance();
+			} else {
+				composite = org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance();
+			}
+			//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
+			//			if( view instanceof NonSceneTypeView ) {
+			//				NonSceneTypeView nonSceneTypeView = (NonSceneTypeView)view;
+			//				nonSceneTypeView.handlePreShow();
+			//			}
+		} else {
+			composite = null;
+		}
+		this.sceneOrNonSceneComposite.showCard( composite );
+	}
+
+	private void handleDeclarationStateChanged( org.alice.ide.declarationseditor.DeclarationComposite nextValue ) {
+		org.lgna.croquet.Composite<?> composite;
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			if( nextValue != null ) {
+				if( nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
+					composite = org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance();
+				} else {
+					composite = org.alice.ide.members.MembersComposite.getInstance();
+				}
+			} else {
+				composite = null;
+			}
+		} else {
+			composite = org.alice.ide.members.MembersComposite.getInstance();
+		}
+		this.typeOrCodeCardOwnerComposite.showCard( composite );
+	}
+
+	private final org.lgna.croquet.CardOwnerComposite sceneOrNonSceneComposite;
+	private final org.lgna.croquet.CardOwnerComposite typeOrCodeCardOwnerComposite;
 	private int ignoreDividerChangeCount = 0;
 
 	private CodeContextSplitComposite() {
-		super(
-				java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ),
-				org.alice.stageide.typecontext.SceneOrNonSceneCardOwnerComposite.getInstance(),
-				TypeOrCodeCardOwnerComposite.getInstance() );
+		super( java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ) );
+		this.sceneOrNonSceneComposite = this.createCardOwnerCompositeButDoNotRegister( org.alice.stageide.typecontext.SceneTypeComposite.getInstance(), org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance() );
+		this.typeOrCodeCardOwnerComposite = this.createCardOwnerCompositeButDoNotRegister( org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), org.alice.ide.members.MembersComposite.getInstance() );
+	}
+
+	@Override
+	public org.lgna.croquet.Composite<?> getLeadingComposite() {
+		return this.sceneOrNonSceneComposite;
+	}
+
+	@Override
+	public org.lgna.croquet.Composite<?> getTrailingComposite() {
+		return this.typeOrCodeCardOwnerComposite;
 	}
 
 	public void incrementIgnoreDividerLocationChangeCount() {
@@ -99,5 +165,19 @@ public class CodeContextSplitComposite extends org.lgna.croquet.SplitComposite {
 		rv.addDividerLocationChangeListener( this.dividerLocationListener );
 		rv.setResizeWeight( 0.0 );
 		return rv;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeValueListener( this.declarationListener );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeValueListener( this.declarationListener );
+		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
+		super.handlePostDeactivation();
 	}
 }

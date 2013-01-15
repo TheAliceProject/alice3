@@ -70,11 +70,19 @@ public abstract class StringValue extends AbstractElement {
 		}
 	}
 
-	public final void setText( java.lang.String text ) {
+	public final void setText( String text ) {
 		try {
 			this.document.replace( 0, this.document.getLength(), text, null );
 		} catch( javax.swing.text.BadLocationException ble ) {
 			throw new RuntimeException( text, ble );
 		}
+	}
+
+	public org.lgna.croquet.components.AbstractLabel createLabel( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return new org.lgna.croquet.components.DocumentLabel( this.document, fontScalar, textAttributes );
+	}
+
+	public org.lgna.croquet.components.AbstractLabel createLabel( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return this.createLabel( 1.0f, textAttributes );
 	}
 }

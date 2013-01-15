@@ -51,7 +51,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 		private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 		private final javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( InternalButton.this.instanceFactory );
+				org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( InternalButton.this.instanceFactory );
 			}
 
 		};
@@ -130,7 +130,7 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 		}
 
 		protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
-			org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
+			org.alice.stageide.oneshot.OneShotMenuModel.getInstance( this.instanceFactory ).getPopupPrepModel().fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e ) );
 		}
 
 		@Override

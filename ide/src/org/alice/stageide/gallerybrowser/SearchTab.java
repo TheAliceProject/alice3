@@ -46,19 +46,11 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.views.SearchTabView> {
-	private static class SingletonHolder {
-		private static SearchTab instance = new SearchTab();
-	}
-
-	public static SearchTab getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final org.lgna.croquet.StringState filterState = this.createStringState( this.createKey( "filterState" ) );
 	private final org.lgna.croquet.PlainStringValue noMatchesLabel = this.createStringValue( this.createKey( "noMatchesLabel" ) );
 	private final org.lgna.croquet.PlainStringValue noEntryLabel = this.createStringValue( this.createKey( "noEntryLabel" ) );
 
-	private SearchTab() {
+	public SearchTab() {
 		super( java.util.UUID.fromString( "4e3e7dc2-c8ed-4e8c-9028-9493a19ba50d" ) );
 	}
 
@@ -75,24 +67,7 @@ public class SearchTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 	}
 
 	@Override
-	public javax.swing.Icon getTitleIcon() {
-		return org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON;
-	}
-
-	@Override
 	protected org.alice.stageide.gallerybrowser.views.SearchTabView createView() {
 		return new org.alice.stageide.gallerybrowser.views.SearchTabView( this );
-	}
-
-	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponent( booleanState, button );
-		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
-	}
-
-	@Override
-	public void TEMPORARY_HACK_handleSelected() {
-		super.TEMPORARY_HACK_handleSelected();
-		this.getView().TEMPORARY_HACK_handleSelected();
 	}
 }

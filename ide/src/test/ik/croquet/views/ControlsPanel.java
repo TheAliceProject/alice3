@@ -85,7 +85,6 @@ public class ControlsPanel extends org.lgna.croquet.components.PageAxisPanel {
 		textArea.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( textArea );
 		scrollPane.setAlignmentX( 0.0f );
-		scrollPane.setBorder( null );
 		this.addComponent( scrollPane );
 		this.setMinimumPreferredWidth( 200 );
 	}

@@ -71,9 +71,8 @@ public class DeleteParameterEdit extends ParameterEdit {
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "delete:" );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, getParameter(), org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 }

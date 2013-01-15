@@ -53,6 +53,7 @@ public class RootResourceKey extends ResourceKey {
 	public String getSearchText() {
 		return null;
 	}
+
 	@Override
 	public String getDisplayText() {
 		return "all models";
@@ -70,6 +71,11 @@ public class RootResourceKey extends ResourceKey {
 
 	@Override
 	public String[] getTags() {
+		return null;
+	}
+
+	@Override
+	public String[] getGroupTags() {
 		return null;
 	}
 

@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.icons;
 
+import java.util.Comparator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -90,7 +92,35 @@ public class IconFactoryManager {
 			} else {
 				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
 					javax.swing.ImageIcon imageIcon = getIcon( modelResourceCls );
-					return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
+					//return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
+					return new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
+				}
+			}
+			if( modelResourceName != null ) {
+				//pass
+			} else {
+				if( modelResourceCls.isEnum() ) {
+					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
+					if( constants.length > 1 ) {
+						int MAXIMUM_CONSTANTS_TO_USE = 5;
+						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
+
+						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( constants );
+						java.util.Collections.sort( sortedConstants, new Comparator<org.lgna.story.resources.ModelResource>() {
+							public int compare( org.lgna.story.resources.ModelResource o1, org.lgna.story.resources.ModelResource o2 ) {
+								return o1.toString().compareTo( o2.toString() );
+							}
+						} );
+						int i = 0;
+						for( org.lgna.story.resources.ModelResource constant : sortedConstants ) {
+							iconFactories.add( getIconFactoryForResourceInstance( constant ) );
+							i += 1;
+							if( i == MAXIMUM_CONSTANTS_TO_USE ) {
+								break;
+							}
+						}
+						return new EnumConstantsIconFactory( iconFactories );
+					}
 				}
 			}
 			java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
@@ -193,7 +223,7 @@ public class IconFactoryManager {
 			if( this.instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
 				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.instance;
 				try {
-					java.awt.image.BufferedImage image = org.lgna.story.resourceutilities.ThumbnailMaker.getInstance().createThumbnailFromPersonResource( personResource );
+					java.awt.image.BufferedImage image = org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance().createThumbnailFromPersonResource( personResource );
 					return new org.lgna.croquet.icon.ImageIconFactory( image );
 				} catch( Throwable t ) {
 					t.printStackTrace();
@@ -272,6 +302,15 @@ public class IconFactoryManager {
 		}
 
 		return null;
+	}
+
+	private static int getRequiredArgumentsInInitializer( org.lgna.project.ast.UserField userField ) {
+		org.lgna.project.ast.Expression initializer = userField.initializer.getValue();
+		if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
+			return instanceCreation.requiredArguments.size();
+		}
+		return -1;
 	}
 
 	private static ResourceDeclaration createResourceDeclarationFromField( org.lgna.project.ast.UserField userField ) {
@@ -366,28 +405,28 @@ public class IconFactoryManager {
 		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
 	}
 
-	public static org.lgna.croquet.icon.IconFactory getIconFactoryForField( org.lgna.project.ast.AbstractField field ) {
-		if( field != null ) {
-			org.lgna.croquet.icon.IconFactory iconFactory = getRegisteredIconFactory( field.getValueType() );
+	public static org.lgna.croquet.icon.IconFactory getIconFactoryForField( org.lgna.project.ast.UserField userField ) {
+		if( userField != null ) {
+			org.lgna.croquet.icon.IconFactory iconFactory = getRegisteredIconFactory( userField.getValueType() );
 			if( iconFactory != null ) {
 				return iconFactory;
 			}
-			if( field instanceof org.lgna.project.ast.UserField ) {
-				org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
-				ResourceDeclaration resourceDeclaration = createResourceDeclarationFromField( userField );
-				if( resourceDeclaration != null ) {
-					iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
-					if( iconFactory != null ) {
-						//pass
-					} else {
-						iconFactory = resourceDeclaration.createIconFactory();
-						mapResourceDeclarationToIconFactory.put( resourceDeclaration, iconFactory );
-					}
-					return iconFactory;
+			ResourceDeclaration resourceDeclaration = createResourceDeclarationFromField( userField );
+			if( resourceDeclaration != null ) {
+				iconFactory = mapResourceDeclarationToIconFactory.get( resourceDeclaration );
+				if( iconFactory != null ) {
+					//pass
+				} else {
+					iconFactory = resourceDeclaration.createIconFactory();
+					mapResourceDeclarationToIconFactory.put( resourceDeclaration, iconFactory );
 				}
+				return iconFactory;
 			}
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note: falling back to type for icon for", field );
-			return getIconFactoryForType( field.getValueType() );
+			int requiredArgumentCount = getRequiredArgumentsInInitializer( userField );
+			if( requiredArgumentCount != 0 ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "Note: non-zero initializer detected, but no resource specific icon found. Falling back to type for icon for", userField );
+			}
+			return getIconFactoryForType( userField.getValueType() );
 		}
 		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
 	}

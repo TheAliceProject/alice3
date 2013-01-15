@@ -46,6 +46,17 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class DiscIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static DiscIconFactory instance = new DiscIconFactory();
+	}
+
+	public static DiscIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private DiscIconFactory() {
+	}
+
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new DiscIcon( size );

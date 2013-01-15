@@ -172,7 +172,7 @@ class IkProgram extends SProgram {
 
 	//SOLVER this prints to the yellow area right under the chain display
 	private void updateInfo() {
-		org.lgna.ik.solver.Bone bone = test.ik.croquet.BonesState.getInstance().getSelectedItem();
+		org.lgna.ik.solver.Bone bone = test.ik.croquet.BonesState.getInstance().getValue();
 
 		StringBuilder sb = new StringBuilder();
 		if( bone != null ) {
@@ -191,7 +191,7 @@ class IkProgram extends SProgram {
 		edu.cmu.cs.dennisc.print.PrintUtilities.appendLines( sb, this.getTargetImp().getLocalTransformation() );
 		sb.append( "\n" );
 
-		test.ik.croquet.InfoState.getInstance().setValue( sb.toString() );
+		test.ik.croquet.InfoState.getInstance().setValueTransactionlessly( sb.toString() );
 	}
 
 	//	private org.lgna.ik.solver.Chain createChain() {
@@ -485,11 +485,11 @@ class IkProgram extends SProgram {
 		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.RIGHT_CLAVICLE;
 		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.RIGHT_WRIST;
 
-		test.ik.croquet.AnchorJointIdState.getInstance().setValue( initialAnchor );
-		test.ik.croquet.EndJointIdState.getInstance().setValue( initialEnd );
+		test.ik.croquet.AnchorJointIdState.getInstance().setValueTransactionlessly( initialAnchor );
+		test.ik.croquet.EndJointIdState.getInstance().setValueTransactionlessly( initialEnd );
 
-		test.ik.croquet.IsLinearEnabledState.getInstance().setValue( true );
-		test.ik.croquet.IsAngularEnabledState.getInstance().setValue( false );
+		test.ik.croquet.IsLinearEnabledState.getInstance().setValueTransactionlessly( true );
+		test.ik.croquet.IsAngularEnabledState.getInstance().setValueTransactionlessly( false );
 
 		IkProgram program = new IkProgram();
 

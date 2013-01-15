@@ -51,6 +51,13 @@ import org.lgna.croquet.Retargeter;
  * @author Dennis Cosgrove
  */
 public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public static <E extends Edit<?>> E createCopy( E original ) {
+		edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder encoder = new edu.cmu.cs.dennisc.codec.ByteArrayBinaryEncoder();
+		encoder.encode( original );
+		edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = encoder.createDecoder();
+		return decoder.decodeBinaryEncodableAndDecodable( null );
+	}
+
 	private transient org.lgna.croquet.history.CompletionStep<M> completionStep;
 
 	public Edit( org.lgna.croquet.history.CompletionStep<M> completionStep ) {
@@ -138,45 +145,6 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		}
 	}
 
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder title ) {
-		return title;
-	}
-
-	public final String getTutorialTransactionTitle() {
-		StringBuilder sb = new StringBuilder();
-		this.updateTutorialTransactionTitle( sb );
-		if( sb.length() == 0 ) {
-			return null;
-		} else {
-			return sb.toString();
-		}
-	}
-
-	protected abstract StringBuilder updatePresentation( StringBuilder rv );
-
-	public final String getPresentation() {
-		StringBuilder sb = new StringBuilder();
-		this.updatePresentation( sb );
-		if( sb.length() == 0 ) {
-			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
-		}
-		return sb.toString();
-	}
-
-	public String getRedoPresentation() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Redo:" );
-		this.updatePresentation( sb );
-		return sb.toString();
-	}
-
-	public String getUndoPresentation() {
-		StringBuilder sb = new StringBuilder();
-		sb.append( "Undo:" );
-		this.updatePresentation( sb );
-		return sb.toString();
-	}
-
 	public ReplacementAcceptability getReplacementAcceptability( Edit<?> replacementCandidate ) {
 		if( replacementCandidate != null ) {
 			return ReplacementAcceptability.PERFECT_MATCH;
@@ -209,12 +177,88 @@ public abstract class Edit<M extends CompletionModel> implements edu.cmu.cs.denn
 		return null;
 	}
 
-	@Override
-	public String toString() {
+	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
+	}
+
+	public final String getTutorialTransactionTitle() {
+		StringBuilder sb = new StringBuilder();
+		this.appendTutorialTransactionTitle( sb );
+		if( sb.length() == 0 ) {
+			return null;
+		} else {
+			return sb.toString();
+		}
+	}
+
+	protected static enum DescriptionStyle {
+		TERSE( false, false ),
+		DETAILED( true, false ),
+		LOG( true, true );
+		private final boolean isDetailed;
+		private final boolean isLog;
+
+		private DescriptionStyle( boolean isDetailed, boolean isLog ) {
+			this.isDetailed = isDetailed;
+			this.isLog = isLog;
+		}
+
+		public boolean isDetailed() {
+			return this.isDetailed;
+		}
+
+		public boolean isLog() {
+			return this.isLog;
+		}
+	}
+
+	protected abstract void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle );
+
+	public String getRedoPresentation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Redo:" );
+		this.appendDescription( sb, DescriptionStyle.TERSE );
+		return sb.toString();
+	}
+
+	public String getUndoPresentation() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( "Undo:" );
+		this.appendDescription( sb, DescriptionStyle.TERSE );
+		return sb.toString();
+	}
+
+	public final String getTerseDescription() {
+		StringBuilder sb = new StringBuilder();
+		this.appendDescription( sb, DescriptionStyle.TERSE );
+		if( sb.length() == 0 ) {
+			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
+		}
+		return sb.toString();
+	}
+
+	public final String getDetailedDescription() {
 		StringBuilder sb = new StringBuilder();
 		sb.append( this.getClass().getName() );
 		sb.append( ": " );
-		this.updatePresentation( sb );
+		this.appendDescription( sb, DescriptionStyle.DETAILED );
 		return sb.toString();
+	}
+
+	public final String getLogDescription() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( ": " );
+		this.appendDescription( sb, DescriptionStyle.LOG );
+		return sb.toString();
+	}
+
+	@Deprecated
+	public final String getPresentation() {
+		return this.getTerseDescription();
+	}
+
+	@Override
+	public String toString() {
+		return this.getDetailedDescription();
 	}
 }

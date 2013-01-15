@@ -43,44 +43,23 @@
 
 package org.lgna.croquet.components;
 
-/*package-private*/abstract class TabItemDetails<E extends org.lgna.croquet.TabComposite<?>> extends ItemDetails<E> {
-	private ScrollPane scrollPane;
-
-	public TabItemDetails( org.lgna.croquet.ItemState<E> state, E item, AbstractTabbedPane<E, ?> tabbedPane, ScrollPane scrollPane ) {
-		super( state, item, tabbedPane );
-		this.scrollPane = scrollPane;
-		View<?, ?> mainView = this.getMainView();
-		this.getButton().setBackgroundColor( mainView.getBackgroundColor() );
-		if( this.scrollPane != null ) {
-			this.scrollPane.setViewportView( mainView );
-		}
-	}
-
-	public java.util.UUID getTabId() {
-		return this.getItem().getTabId();
-	}
-
-	public View<?, ?> getMainView() {
-		return this.getItem().getView();
-	}
-
-	public ScrollPane getScrollPane() {
-		return this.scrollPane;
-	}
-
-	public JComponent<?> getRootComponent() {
-		if( this.scrollPane != null ) {
-			return this.scrollPane;
-		} else {
-			return this.getMainView();
-		}
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite<?>, TID extends TabItemDetails<E>> extends ItemSelectablePanel<E, TID> {
+public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extends ItemSelectablePanel<E> {
+	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			if( e.getValueIsAdjusting() ) {
+				//pass
+			} else {
+				org.lgna.croquet.ListSelectionState<E> model = getModel();
+				int indexFromSwingModel = model.getSwingModel().getListSelectionModel().getLeadSelectionIndex();
+				E cardFromSwingModel = (E)model.getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
+				AbstractTabbedPane.this.handleValueChanged( cardFromSwingModel );
+			}
+		}
+	};
+
 	public AbstractTabbedPane( org.lgna.croquet.ListSelectionState<E> model ) {
 		super( model );
 	}
@@ -88,31 +67,34 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 	@Override
 	public void setFont( java.awt.Font font ) {
 		super.setFont( font );
-		for( TID itemDetails : this.getAllItemDetails() ) {
-			itemDetails.getButton().setFont( font );
+		for( BooleanStateButton<?> button : this.getAllButtons() ) {
+			button.setFont( font );
 		}
 	}
 
 	protected void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, BooleanStateButton<?> button, E item ) {
-		item.customizeTitleComponent( booleanState, button );
+		item.customizeTitleComponentAppearance( button );
 	}
 
 	protected void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, BooleanStateButton<?> button, E item ) {
-		item.releaseTitleComponent( booleanState, button );
-	}
-
-	protected ScrollPane createScrollPane( E item ) {
-		return item.createScrollPane();
 	}
 
 	protected abstract BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener );
 
-	protected abstract TID createTabItemDetails( E item, ScrollPane scrollPane );
+	@Override
+	protected void handleDisplayable() {
+		this.getModel().getSwingModel().getListSelectionModel().addListSelectionListener( this.listSelectionListener );
+		this.handleValueChanged( this.getModel().getValue() );
+		super.handleDisplayable();
+	}
 
 	@Override
-	protected final TID createItemDetails( final E item ) {
-		return createTabItemDetails( item, this.createScrollPane( item ) );
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		this.getModel().getSwingModel().getListSelectionModel().removeListSelectionListener( this.listSelectionListener );
 	}
+
+	protected abstract void handleValueChanged( E card );
 
 	@Override
 	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( final E item, org.lgna.croquet.BooleanState itemSelectedState ) {
@@ -127,43 +109,32 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 			closeButtonActionListener = null;
 		}
 		BooleanStateButton<?> rv = this.createTitleButton( item, itemSelectedState, closeButtonActionListener );
-		item.customizeTitleComponent( itemSelectedState, rv );
+		this.customizeTitleComponent( itemSelectedState, rv, item );
 		return rv;
 
 	}
 
 	public JComponent<?> getMainComponentFor( E item ) {
-		TabItemDetails<E> tabItemDetails = (TabItemDetails<E>)this.getItemDetails( item );
-		if( tabItemDetails != null ) {
-			return tabItemDetails.getMainView();
+		if( item != null ) {
+			return item.getView();
 		} else {
 			return null;
 		}
 	}
 
 	public ScrollPane getScrollPaneFor( E item ) {
-		TabItemDetails<E> tabItemDetails = (TabItemDetails<E>)this.getItemDetails( item );
-		if( tabItemDetails != null ) {
-			return tabItemDetails.getScrollPane();
+		if( item != null ) {
+			return item.getScrollPaneIfItExists();
 		} else {
 			return null;
 		}
 	}
 
 	public JComponent<?> getRootComponentFor( E item ) {
-		TabItemDetails<E> tabItemDetails = (TabItemDetails<E>)this.getItemDetails( item );
-		if( tabItemDetails != null ) {
-			return tabItemDetails.getRootComponent();
+		if( item != null ) {
+			return item.getRootComponent();
 		} else {
 			return null;
-		}
-	}
-
-	@Override
-	protected void handleItemSelected( E item ) {
-		super.handleItemSelected( item );
-		if( item != null ) {
-			item.TEMPORARY_HACK_handleSelected();
 		}
 	}
 }

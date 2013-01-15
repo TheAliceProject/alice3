@@ -46,7 +46,7 @@ package test.ik.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class BonesState extends org.lgna.croquet.DefaultListSelectionState<org.lgna.ik.solver.Bone> {
+public class BonesState extends org.lgna.croquet.MutableDataListSelectionState<org.lgna.ik.solver.Bone> {
 	private static class SingletonHolder {
 		private static BonesState instance = new BonesState();
 	}
@@ -63,7 +63,7 @@ public class BonesState extends org.lgna.croquet.DefaultListSelectionState<org.l
 		if( chain == null ) {
 			this.clear();
 		} else {
-			org.lgna.ik.solver.Bone prevBone = this.getSelectedItem();
+			org.lgna.ik.solver.Bone prevBone = this.getValue();
 			org.lgna.ik.solver.Bone[] bones = chain.getBones();
 			int selectionIndex = -1;
 			if( prevBone != null ) {

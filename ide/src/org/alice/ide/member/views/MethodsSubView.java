@@ -46,7 +46,7 @@ package org.alice.ide.member.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodsSubView extends org.lgna.croquet.components.PageAxisPanel {
+public class MethodsSubView<C extends org.alice.ide.member.MethodsSubComposite> extends org.lgna.croquet.components.PageAxisPanel {
 	public MethodsSubView( org.alice.ide.member.MethodsSubComposite composite ) {
 		super( composite );
 		this.setMaximumSizeClampedToPreferredSize( true );
@@ -54,19 +54,25 @@ public class MethodsSubView extends org.lgna.croquet.components.PageAxisPanel {
 	}
 
 	@Override
+	public C getComposite() {
+		return (C)super.getComposite();
+	}
+
+	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		org.alice.ide.member.MethodsSubComposite composite = (org.alice.ide.member.MethodsSubComposite)this.getComposite();
+		C composite = this.getComposite();
 		this.removeAllComponents();
+
+		composite.updateTabTitle();
+
 		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			org.lgna.croquet.components.DragComponent<?, ?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getFunctionInvocationTemplate( method );
+			org.lgna.croquet.components.DragComponent<?, ?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getMethodInvocationTemplate( method );
 			org.lgna.croquet.components.JComponent<?> component;
-			if( method.isUserAuthored() ) {
-				org.alice.ide.declarationseditor.CodeComposite codeComposite = org.alice.ide.declarationseditor.CodeComposite.getInstance( method );
-				org.lgna.croquet.BooleanState isSelectedState = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectedState( codeComposite );
-				org.lgna.croquet.components.ToggleButton button = isSelectedState.createToggleButton();
-				button.getAwtComponent().setText( "edit" );
-				component = new org.lgna.croquet.components.LineAxisPanel( button, dragComponent );
+			if( method instanceof org.lgna.project.ast.UserMethod ) {
+				org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+				org.lgna.croquet.components.Hyperlink hyperlink = org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( userMethod ).createHyperlink();
+				component = new org.lgna.croquet.components.LineAxisPanel( hyperlink, org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ), dragComponent );
 			} else {
 				component = dragComponent;
 			}

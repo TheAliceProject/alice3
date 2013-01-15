@@ -113,23 +113,7 @@ public abstract class DeclarationPanel<M extends org.alice.ide.croquet.models.de
 
 	private String generateNameFromInitializer() {
 		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
-		if( instanceCreation != null ) {
-			java.lang.reflect.Field fld = this.getFldFromInstanceCreationInitializer( instanceCreation );
-			if( fld != null ) {
-				return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertConstantNameToMethodName( fld.getName() );
-			} else {
-				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = constructor.getDeclaringType();
-				String typeName = abstractType.getName();
-				if( typeName != null ) {
-					return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.convertFirstCharacterToLowerCase( typeName );
-				} else {
-					return "";
-				}
-			}
-		} else {
-			return "";
-		}
+		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
 
 	protected void updateNameTextField() {
@@ -138,7 +122,20 @@ public abstract class DeclarationPanel<M extends org.alice.ide.croquet.models.de
 			if( ( jTextField.getSelectionStart() == 0 ) && ( jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) ) {
 				M model = this.getModel();
 				String name = generateNameFromInitializer();
-				model.getNameState().setValue( name );
+
+				org.alice.ide.name.NameValidator nameValidator = model.getUpToDateNameValidator();
+
+				if( nameValidator != null ) {
+					String candidate = name;
+					int i = 2;
+					while( nameValidator.isNameAvailable( candidate ) == false ) {
+						candidate = name + i;
+						i++;
+					}
+					name = candidate;
+				}
+
+				model.getNameState().setValueTransactionlessly( name );
 				this.nameTextField.requestFocus();
 				this.nameTextField.selectAll();
 				this.nameTextField.repaint();

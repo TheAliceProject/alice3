@@ -134,7 +134,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 				Object last = treePath.getLastPathComponent();
 				if( last instanceof edu.cmu.cs.dennisc.tree.Node ) {
 					edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> node = (edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType>)last;
-					org.alice.ide.declarationseditor.TypeState.getInstance().setValue( node.getValue() );
+					org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( node.getValue() );
 				}
 				jTree.repaint();
 			}
@@ -151,7 +151,6 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 
 		org.lgna.croquet.components.JComponent<?> viewportView = new org.lgna.croquet.components.SwingAdapter( this.jTree );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( viewportView );
-		scrollPane.setBorder( null );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "type hierarchy", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getTypeColor() );
 		this.addPageStartComponent( label );

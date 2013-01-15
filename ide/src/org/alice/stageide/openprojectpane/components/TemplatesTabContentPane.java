@@ -42,14 +42,9 @@
  */
 package org.alice.stageide.openprojectpane.components;
 
-public class TemplatesTabContentPane extends org.alice.ide.projecturi.views.ListContentPanel<org.alice.stageide.openprojectpane.models.TemplateUriSelectionState> {
+public class TemplatesTabContentPane extends org.alice.ide.projecturi.views.ListContentPanel {
 	public TemplatesTabContentPane( org.alice.ide.projecturi.TemplatesTab composite ) {
-		super( composite, org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getInstance() );
-	}
-
-	@Override
-	protected String getTextForZeroProjects() {
-		return "there are no template projects.";
+		super( composite );
 	}
 
 	@Override

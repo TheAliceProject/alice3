@@ -81,7 +81,7 @@ public class MetaDeclarationFauxState {
 
 	private MetaDeclarationFauxState() {
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().addValueListener( this.perspectiveListener );
-		org.alice.ide.declarationseditor.DeclarationTabState.getInstance().addValueListener( this.declarationTabListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addValueListener( this.declarationTabListener );
 		this.prevDeclaration = this.getValue();
 	}
 
@@ -90,7 +90,7 @@ public class MetaDeclarationFauxState {
 		if( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() == org.alice.stageide.perspectives.SetupScenePerspective.getInstance() ) {
 			return ide != null ? ide.getPerformEditorGeneratedSetUpMethod() : null;
 		} else {
-			org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getValue();
+			org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 			return declarationComposite != null ? declarationComposite.getDeclaration() : null;
 		}
 	}

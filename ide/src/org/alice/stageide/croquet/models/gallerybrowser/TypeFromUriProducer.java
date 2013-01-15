@@ -114,7 +114,7 @@ public class TypeFromUriProducer extends UriCreator<org.lgna.project.ast.NamedUs
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 				} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 					type = null;
-					org.alice.ide.IDE.getActiveInstance().handleVersionNotSupported( file, vnse );
+					org.alice.ide.ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
 				} catch( java.io.IOException ioe ) {
 					if( isWorthyOfException ) {
 						throw new RuntimeException( file.getAbsolutePath(), ioe );

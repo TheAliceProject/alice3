@@ -50,38 +50,46 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	private static final int INTRASTICIAL_MIDDLE = 1;
 	public static final int INTRASTICIAL_PAD = ( INTRASTICIAL_MIDDLE * 2 ) + 1;
 
-	//	private static final int INTRASTICIAL_PAD = 0;
-	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property ) {
+	private final org.alice.ide.codeeditor.StatementListBorder statementListBorder;
+
+	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property, boolean isRoot ) {
 		super( factory, property, javax.swing.BoxLayout.PAGE_AXIS );
-		//		this.addMouseListener( new java.awt.event.MouseListener() {
-		//			public void mouseClicked( final java.awt.event.MouseEvent e ) {
-		//				final alice.ide.IDE ide = alice.ide.IDE.getActiveInstance();
-		//				if( ide != null ) {
-		//					//final StatementListPropertyPane statementListPropertyPane = getStatementListPropertyPaneUnder( e, createStatementListPropertyPaneInfos( null ) );
-		//					final StatementListPropertyPane statementListPropertyPane = StatementListPropertyPane.this;
-		//					if( statementListPropertyPane != null ) {
-		//						ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< org.lgna.project.ast.Statement >() {
-		//							public void handleCompletion( org.lgna.project.ast.Statement statement ) {
-		//								java.awt.Point p = e.getPoint();
-		//								//p = javax.swing.SwingUtilities.convertPoint( e.getComponent(), p, statementListPropertyPane );
-		//								statementListPropertyPane.getProperty().add( statementListPropertyPane.calculateIndex( p ), statement );
-		//								ide.markChanged( "statement" );
-		//							}
-		//							public void handleCancelation() {
-		//							}
-		//						} );
-		//					}
-		//				}
-		//			}
-		//			public void mouseEntered( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mouseExited( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mousePressed( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mouseReleased( java.awt.event.MouseEvent e ) {
-		//			}
-		//		} );
+
+		int bottom;
+		org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+		//boolean isIf = isOwnedByIf( owningNode );
+		boolean isElse = isOwnedByElse( owningNode );
+		boolean isDoInOrder = owningNode instanceof org.lgna.project.ast.DoInOrder;
+		boolean isDoTogether = owningNode instanceof org.lgna.project.ast.DoTogether;
+		if( /* isIf || */isElse || isDoInOrder || isDoTogether ) {
+			bottom = 8;
+		} else {
+			bottom = 0;
+		}
+
+		org.lgna.project.ast.StatementListProperty alternateListProperty;
+		if( owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
+			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode.getParent();
+			alternateListProperty = conditionalStatement.elseBody.getValue().statements;
+		} else if( owningNode instanceof org.lgna.project.ast.ConditionalStatement ) {
+			org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode;
+			alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
+		} else {
+			alternateListProperty = null;
+		}
+		java.awt.Insets insets;
+		if( isRoot ) {
+			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), 32, 0 );
+		} else {
+			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() );
+		}
+		this.statementListBorder = new org.alice.ide.codeeditor.StatementListBorder( factory, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
+
+		this.setBorder( this.statementListBorder );
+	}
+
+	public org.alice.ide.codeeditor.StatementListBorder getStatementListBorder() {
+		return this.statementListBorder;
 	}
 
 	public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
@@ -112,33 +120,35 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 			public void paint( java.awt.Graphics g ) {
 				super.paint( g );
 				int i = StatementListPropertyView.this.currentPotentialDropIndex;
-				final int N = StatementListPropertyView.this.getProperty().size();
-				if( ( N == this.getComponentCount() ) && ( i >= 0 ) && ( i < N ) ) {
-					if( ( i != -1 ) && ( N > 0 ) ) {
-						int y;
-						if( i == N ) {
-							java.awt.Component lastComponent = this.getComponent( N - 1 );
-							y = lastComponent.getY();
-							y += lastComponent.getHeight();
-						} else {
-							java.awt.Component iComponent = this.getComponent( i );
-							y = iComponent.getY();
-							y -= INTRASTICIAL_PAD;
-						}
-						int x0 = 0;
-						int x1 = INDENT;
-						int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
-						int y0 = yC - INDENT;
-						int y1 = yC + INDENT;
+				if( i != -1 ) {
+					final int N = StatementListPropertyView.this.getProperty().size();
+					if( ( N == this.getComponentCount() ) && ( i >= 0 ) && ( i < N ) ) {
+						if( ( i != -1 ) && ( N > 0 ) ) {
+							int y;
+							if( i == N ) {
+								java.awt.Component lastComponent = this.getComponent( N - 1 );
+								y = lastComponent.getY();
+								y += lastComponent.getHeight();
+							} else {
+								java.awt.Component iComponent = this.getComponent( i );
+								y = iComponent.getY();
+								y -= INTRASTICIAL_PAD;
+							}
+							int x0 = 0;
+							int x1 = INDENT;
+							int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
+							int y0 = yC - INDENT;
+							int y1 = yC + INDENT;
 
-						int w = this.getWidth();
-						int[] xPoints = new int[] { x1, x0, x0 };
-						int[] yPoints = new int[] { yC, y1, y0 };
-						g.setColor( FEEDBACK_COLOR );
-						g.fillRect( 0, y, w, INTRASTICIAL_PAD );
-						g.fillPolygon( xPoints, yPoints, 3 );
-						//g.setColor( java.awt.Color.YELLOW );
-						//g.fillRect( 1, yC, w-2, 1 );
+							int w = this.getWidth();
+							int[] xPoints = new int[] { x1, x0, x0 };
+							int[] yPoints = new int[] { yC, y1, y0 };
+							g.setColor( FEEDBACK_COLOR );
+							g.fillRect( 0, y, w, INTRASTICIAL_PAD );
+							g.fillPolygon( xPoints, yPoints, 3 );
+							//g.setColor( java.awt.Color.YELLOW );
+							//g.fillRect( 1, yC, w-2, 1 );
+						}
 					}
 				}
 			}
@@ -161,40 +171,6 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return -1;
 	}
 
-	//	@Override
-	//	protected javax.swing.JPanel createJPanel() {
-	//		class StatementListJPanel extends edu.cmu.cs.dennisc.croquet.Panel.DefaultJPanel {
-	//			@Override
-	//			protected void paintChildren( java.awt.Graphics g ) {
-	//				if( StatementListPropertyPane.this.currentPotentialDropIndex != -1 ) {
-	//					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-	//					final int N = this.getComponentCount();
-	//					int heightAvailable = this.getHeight();
-	//					int heightAllocatedToDrop = StatementListPropertyPane.this.getAvailableDropProxyHeight();
-	//					int heightAllocatedToThis = heightAvailable - heightAllocatedToDrop;
-	//					double yScale = heightAllocatedToThis/(double)heightAvailable;
-	//					java.awt.geom.AffineTransform m = g2.getTransform();
-	//					try {
-	//						int i = StatementListPropertyPane.this.currentPotentialDropIndex;
-	//						if( i == 0 || i == N ) {
-	//							if( i == 0 ) {
-	//								g2.translate( 0, heightAllocatedToDrop );
-	//							}
-	//							g2.scale( 1.0, yScale );
-	//							super.paintChildren( g );
-	//						} else {
-	//							super.paintChildren( g );
-	//						}
-	//					} finally {
-	//						g2.setTransform( m );
-	//					}
-	//				} else {
-	//					super.paintChildren( g );
-	//				}
-	//			}
-	//		}
-	//		return new StatementListJPanel();
-	//	}
 	private java.awt.Dimension dropSize = new java.awt.Dimension( 0, 0 );
 	private int currentPotentialDropIndex = -1;
 
@@ -206,21 +182,22 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		} else {
 			this.setCurrentPotentialDropIndex( -1 );
 		}
-		if( this.getComponentCount() > 0 ) {
-			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
-			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {
-				org.alice.ide.codeeditor.EmptyStatementListAffordance emptyStatementListAfforance = (org.alice.ide.codeeditor.EmptyStatementListAffordance)component0;
-
-				boolean isDrawingDesired = isCurrentUnder == false;
-
-				if( EPIC_HACK_ignoreDrawingDesired ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EmptyStatementListAffordance isDrawingDisabled" );
-					isDrawingDesired = false;
-				}
-
-				emptyStatementListAfforance.setDrawingDesired( isDrawingDesired );
-			}
-		}
+		this.statementListBorder.setDrawingDesired( isCurrentUnder == false );
+		//		if( this.getComponentCount() > 0 ) {
+		//			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
+		//			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {
+		//				org.alice.ide.codeeditor.EmptyStatementListAffordance emptyStatementListAfforance = (org.alice.ide.codeeditor.EmptyStatementListAffordance)component0;
+		//
+		//				boolean isDrawingDesired = isCurrentUnder == false;
+		//
+		//				if( EPIC_HACK_ignoreDrawingDesired ) {
+		//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: EmptyStatementListAffordance isDrawingDisabled" );
+		//					isDrawingDesired = false;
+		//				}
+		//
+		//				emptyStatementListAfforance.setDrawingDesired( isDrawingDesired );
+		//			}
+		//		}
 	}
 
 	public int getCurrentPotentialDropIndex() {
@@ -294,38 +271,38 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return this.getFactory().createStatementPane( org.alice.ide.ast.draganddrop.statement.StatementDragModel.getInstance( statement ), statement, getProperty() );
 	}
 
-	@Override
-	protected void internalRefresh() {
-		super.internalRefresh();
-		int bottom;
-		if( this.getComponentCount() == 0 ) {
-			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
-			org.lgna.project.ast.StatementListProperty alternateListProperty;
-			if( owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
-				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode.getParent();
-				alternateListProperty = conditionalStatement.elseBody.getValue().statements;
-			} else if( owningNode instanceof org.lgna.project.ast.ConditionalStatement ) {
-				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode;
-				alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
-			} else {
-				alternateListProperty = null;
-			}
-			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getFactory(), this.getProperty(), alternateListProperty ) );
-			bottom = 0;
-		} else {
-			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
-			//boolean isIf = isOwnedByIf( owningNode );
-			boolean isElse = isOwnedByElse( owningNode );
-			boolean isDoInOrder = owningNode instanceof org.lgna.project.ast.DoInOrder;
-			boolean isDoTogether = owningNode instanceof org.lgna.project.ast.DoTogether;
-			if( /* isIf || */isElse || isDoInOrder || isDoTogether ) {
-				bottom = 8;
-			} else {
-				bottom = 0;
-			}
-		}
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() ) );
-	}
+	//	@Override
+	//	protected void internalRefresh() {
+	//		super.internalRefresh();
+	//		int bottom;
+	//		if( this.getComponentCount() == 0 ) {
+	//			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+	//			org.lgna.project.ast.StatementListProperty alternateListProperty;
+	//			if( owningNode instanceof org.lgna.project.ast.BooleanExpressionBodyPair ) {
+	//				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode.getParent();
+	//				alternateListProperty = conditionalStatement.elseBody.getValue().statements;
+	//			} else if( owningNode instanceof org.lgna.project.ast.ConditionalStatement ) {
+	//				org.lgna.project.ast.ConditionalStatement conditionalStatement = (org.lgna.project.ast.ConditionalStatement)owningNode;
+	//				alternateListProperty = conditionalStatement.booleanExpressionBodyPairs.get( 0 ).body.getValue().statements;
+	//			} else {
+	//				alternateListProperty = null;
+	//			}
+	//			this.addComponent( new org.alice.ide.codeeditor.EmptyStatementListAffordance( this.getFactory(), this.getProperty(), alternateListProperty ) );
+	//			bottom = 0;
+	//		} else {
+	//			org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+	//			//boolean isIf = isOwnedByIf( owningNode );
+	//			boolean isElse = isOwnedByElse( owningNode );
+	//			boolean isDoInOrder = owningNode instanceof org.lgna.project.ast.DoInOrder;
+	//			boolean isDoTogether = owningNode instanceof org.lgna.project.ast.DoTogether;
+	//			if( /* isIf || */isElse || isDoInOrder || isDoTogether ) {
+	//				bottom = 8;
+	//			} else {
+	//				bottom = 0;
+	//			}
+	//		}
+	//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() ) );
+	//	}
 
 	protected int getLeftInset() {
 		return INDENT;
@@ -335,8 +312,8 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return 16;
 	}
 
-	public boolean isFigurativelyEmpty() {
-		return ( this.getComponentCount() == 0 ) || ( this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance );
+	public boolean isEmpty() {
+		return this.getComponentCount() == 0;
 	}
 
 	private Integer getCenterYOfComponentAt( int i ) {
@@ -349,7 +326,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	}
 
 	public int calculateIndex( java.awt.Point p ) {
-		if( isFigurativelyEmpty() ) {
+		if( isEmpty() ) {
 			return 0;
 		} else {
 			for( int i = 0; i < this.getComponentCount(); i++ ) {
@@ -362,31 +339,6 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		}
 	}
 
-	//	public java.awt.Rectangle updateYBounds( java.awt.Rectangle rv, int index ) {
-	//		if( isFigurativelyEmpty() ) {
-	//			//pass
-	//		} else {
-	//			int yMinimum;
-	//			int yMaximum;
-	//			final int N = this.getComponentCount();
-	//			if( index == Short.MAX_VALUE ) {
-	//				index = N;
-	//			}
-	//			if( index == 0 ) {
-	//				yMinimum = rv.y;
-	//			} else {
-	//				yMinimum = rv.y + this.getCenterYOfComponentAt( index-1 );
-	//			}
-	//			if( index == N ) {
-	//				yMaximum = rv.y + rv.height;
-	//			} else {
-	//				yMaximum = rv.y + this.getCenterYOfComponentAt( index );
-	//			}
-	//			rv.y = yMinimum;
-	//			rv.height = yMaximum-yMinimum-1;
-	//		}
-	//		return rv;
-	//	}
 	public static class BoundInformation {
 		public Integer yMinimum;
 		public Integer yMaximum;
@@ -396,7 +348,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 	public BoundInformation calculateYBounds( int index ) {
 		final int N;
-		if( isFigurativelyEmpty() ) {
+		if( isEmpty() ) {
 			N = 0;
 		} else {
 			N = this.getComponentCount();

@@ -311,6 +311,8 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			}
 			edu.cmu.cs.dennisc.scenegraph.Composite originalParent = this.visualData.getSGParent();
 			VisualData<?> oldVisualData = this.visualData;
+			edu.cmu.cs.dennisc.math.Dimension3 oldScale = this.getScale();
+			edu.cmu.cs.dennisc.property.InstanceProperty[] oldScaleProperties = this.getScaleProperties();
 			this.factory = (JointImplementationAndVisualDataFactory<R>)resource.getImplementationAndVisualFactory();
 			float originalOpacity = this.opacity.getValue();
 			org.lgna.story.Paint originalPaint = this.paint.getValue();
@@ -326,10 +328,20 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			}
 			matchNewDataToExistingJoints( mapIdToOriginalRotation, newJoints );
 
-			this.visualData.setSGParent( oldVisualData.getSGParent() );
+			this.visualData.setSGParent( originalParent );
 			oldVisualData.setSGParent( null );
 			this.opacity.setValue( originalOpacity );
 			this.paint.setValue( originalPaint );
+
+			edu.cmu.cs.dennisc.property.InstanceProperty[] newScaleProperties = this.getScaleProperties();
+			for( int i = 0; i < oldScaleProperties.length; i++ ) {
+				edu.cmu.cs.dennisc.property.InstanceProperty oldProp = oldScaleProperties[ i ];
+				for( edu.cmu.cs.dennisc.property.event.PropertyListener propListener : (Iterable<edu.cmu.cs.dennisc.property.event.PropertyListener>)oldProp.accessPropertyListeners() )
+				{
+					newScaleProperties[ i ].addPropertyListener( propListener );
+				}
+			}
+			this.setScale( oldScale );
 		}
 	}
 

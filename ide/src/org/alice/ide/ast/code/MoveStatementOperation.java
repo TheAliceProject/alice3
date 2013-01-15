@@ -84,11 +84,6 @@ public class MoveStatementOperation extends org.lgna.croquet.ActionOperation {
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		return originalEdit;
-	}
-
-	@Override
 	protected org.lgna.croquet.resolvers.Resolver<MoveStatementOperation> createResolver() {
 		return new org.alice.ide.ast.code.resolvers.MoveStatementOperationResolver( this );
 	}

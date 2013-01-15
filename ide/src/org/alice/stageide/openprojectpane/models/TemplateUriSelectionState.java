@@ -46,11 +46,7 @@ package org.alice.stageide.openprojectpane.models;
 /**
  * @author Dennis Cosgrove
  */
-public class TemplateUriSelectionState extends org.alice.ide.projecturi.UriSelectionState {
-	public static Template getSurfaceAppearance( java.net.URI uri ) {
-		return Template.valueOf( uri.getFragment() );
-	}
-
+public class TemplateUriSelectionState extends org.lgna.croquet.ImmutableDataListSelectionState<java.net.URI> {
 	public static final String SCHEME = "gen";
 
 	public static enum Template {
@@ -69,6 +65,27 @@ public class TemplateUriSelectionState extends org.alice.ide.projecturi.UriSelec
 		SWAMP( org.lgna.story.SGround.SurfaceAppearance.SWAMP, new org.lgna.story.Color( .2, .4, 0 ), 0.2, org.lgna.story.Color.WHITE, new org.lgna.story.Color( .2, .4, 0 ) ),
 		DESERT( org.lgna.story.SGround.SurfaceAppearance.DESERT ),
 		DIRT( org.lgna.story.SGround.SurfaceAppearance.DIRT );
+
+		public static Template getSurfaceAppearance( java.net.URI uri ) {
+			if( isValidUri( uri ) ) {
+				String fragment = uri.getFragment();
+				if( fragment != null ) {
+					return Template.valueOf( fragment );
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+
+		public static boolean isValidUri( java.net.URI uri ) {
+			if( uri != null ) {
+				return SCHEME.equals( uri.getScheme() );
+			} else {
+				return false;
+			}
+		}
 
 		private final org.lgna.story.SGround.SurfaceAppearance surfaceAppearance;
 		private final org.lgna.story.Paint floorAppearance;
@@ -175,6 +192,15 @@ public class TemplateUriSelectionState extends org.alice.ide.projecturi.UriSelec
 		}
 	};
 
+	private static java.net.URI[] createArray() {
+		Template[] values = Template.values();
+		java.net.URI[] array = new java.net.URI[ values.length ];
+		for( int i = 0; i < array.length; i++ ) {
+			array[ i ] = values[ i ].getUri();
+		}
+		return array;
+	}
+
 	private static class SingletonHolder {
 		private static TemplateUriSelectionState instance = new TemplateUriSelectionState();
 	}
@@ -183,19 +209,7 @@ public class TemplateUriSelectionState extends org.alice.ide.projecturi.UriSelec
 		return SingletonHolder.instance;
 	}
 
-	private final java.net.URI[] array;
-
 	private TemplateUriSelectionState() {
-		super( java.util.UUID.fromString( "53c45c6f-e14f-4a88-ae90-1942ed3f3483" ) );
-		Template[] values = Template.values();
-		this.array = new java.net.URI[ values.length ];
-		for( int i = 0; i < this.array.length; i++ ) {
-			this.array[ i ] = values[ i ].getUri();
-		}
-	}
-
-	@Override
-	protected java.net.URI[] createArray() {
-		return this.array;
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "53c45c6f-e14f-4a88-ae90-1942ed3f3483" ), org.alice.ide.croquet.codecs.UriCodec.SINGLETON, createArray(), -1 );
 	}
 }

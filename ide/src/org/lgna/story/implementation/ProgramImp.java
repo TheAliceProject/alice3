@@ -99,115 +99,6 @@ public abstract class ProgramImp {
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 
-	private final class ControlPanel extends javax.swing.JPanel {
-		private final javax.swing.JLabel label = new javax.swing.JLabel();
-		private final javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-
-		public ControlPanel() {
-			final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
-			buttonModel.setSelected( true );
-			buttonModel.addChangeListener( new javax.swing.event.ChangeListener() {
-				public void stateChanged( javax.swing.event.ChangeEvent e ) {
-					ProgramImp.this.handlePlayOrPause( buttonModel.isSelected() );
-				}
-			} );
-
-			javax.swing.JButton playPauseButton = new javax.swing.JButton();
-			playPauseButton.setModel( buttonModel );
-			playPauseButton.setIcon( new javax.swing.Icon() {
-				public int getIconWidth() {
-					return 12;
-				}
-
-				public int getIconHeight() {
-					return 12;
-				}
-
-				public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-					javax.swing.AbstractButton toggleButton = (javax.swing.AbstractButton)c;
-					javax.swing.ButtonModel buttonModel = toggleButton.getModel();
-					if( buttonModel.isSelected() ) {
-						g.fillRect( x + 1, y + 1, 3, 10 );
-						g.fillRect( x + 7, y + 1, 3, 10 );
-					} else {
-						edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, 12, 12 );
-					}
-				}
-			} );
-
-			final int PAD_X = 12;
-			final int PAD_Y = 8;
-			playPauseButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( PAD_Y, PAD_X, PAD_Y, PAD_X ) );
-
-			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextFamily.MONOSPACED );
-
-			boundedRangeModel.setMinimum( 1 );
-			boundedRangeModel.setMaximum( 8 );
-			boundedRangeModel.addChangeListener( new javax.swing.event.ChangeListener() {
-				public void stateChanged( javax.swing.event.ChangeEvent e ) {
-					ControlPanel.this.updateLabel();
-					ProgramImp.this.handleSpeedChange( boundedRangeModel.getValue() );
-				}
-			} );
-			ControlPanel.this.updateLabel();
-
-			javax.swing.JSlider slider = new javax.swing.JSlider( boundedRangeModel );
-			slider.addMouseListener( new java.awt.event.MouseListener() {
-				public void mousePressed( java.awt.event.MouseEvent e ) {
-				}
-
-				public void mouseReleased( java.awt.event.MouseEvent e ) {
-					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
-						//pass
-					} else {
-						ControlPanel.this.boundedRangeModel.setValue( 1 );
-					}
-				}
-
-				public void mouseClicked( java.awt.event.MouseEvent e ) {
-				}
-
-				public void mouseEntered( java.awt.event.MouseEvent e ) {
-				}
-
-				public void mouseExited( java.awt.event.MouseEvent e ) {
-				}
-			} );
-
-			javax.swing.JPanel leadingPanel = new javax.swing.JPanel();
-			leadingPanel.setLayout( new javax.swing.BoxLayout( leadingPanel, javax.swing.BoxLayout.LINE_AXIS ) );
-			leadingPanel.add( playPauseButton );
-			leadingPanel.add( javax.swing.Box.createHorizontalStrut( 12 ) );
-			leadingPanel.add( this.label );
-
-			this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
-			this.add( leadingPanel, java.awt.BorderLayout.LINE_START );
-			this.add( slider, java.awt.BorderLayout.CENTER );
-			javax.swing.Action restartAction = ProgramImp.this.getRestartAction();
-			if( restartAction != null ) {
-				this.add( new javax.swing.JButton( restartAction ), java.awt.BorderLayout.LINE_END );
-			}
-		}
-
-		private final void updateLabel() {
-			StringBuilder sb = new StringBuilder();
-			sb.append( "speed: " );
-			sb.append( this.boundedRangeModel.getValue() );
-			sb.append( "x" );
-			this.label.setText( sb.toString() );
-		}
-	}
-
-	private void handlePlayOrPause( boolean isPlay ) {
-		double speedFactor = 0.0;
-		if( isPlay ) {
-			speedFactor = 1.0;
-		} else {
-			speedFactor = 0.0;
-		}
-		this.getAnimator().setSpeedFactor( speedFactor );
-	}
-
 	protected void handleSpeedChange( double speedFactor ) {
 		this.getAnimator().setSpeedFactor( speedFactor );
 	}
@@ -282,7 +173,7 @@ public abstract class ProgramImp {
 		synchronized( awtLgComponent.getTreeLock() ) {
 			javax.swing.JPanel controlPanel;
 			if( this.isControlPanelDesired() ) {
-				controlPanel = new ControlPanel();
+				controlPanel = new ProgramControlPanel( this );
 			} else {
 				controlPanel = null;
 			}

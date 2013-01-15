@@ -42,8 +42,6 @@
  */
 package org.alice.ide.declarationseditor.type;
 
-import org.lgna.story.SThingMarker;
-
 /**
  * @author dculyba
  * 
@@ -63,11 +61,6 @@ public class ManagedObjectMarkerFieldState extends AbstractManagedFieldState {
 	}
 
 	private ManagedObjectMarkerFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "84bf0218-ded7-472d-9b4c-0dbac1c0d9d8" ), type );
-	}
-
-	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableTo( SThingMarker.class ) && ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED );
+		super( java.util.UUID.fromString( "84bf0218-ded7-472d-9b4c-0dbac1c0d9d8" ), new org.alice.ide.declarationseditor.type.data.ManagedObjectMarkerFieldData( type ) );
 	}
 }

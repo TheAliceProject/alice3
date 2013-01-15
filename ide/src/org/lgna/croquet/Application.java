@@ -103,7 +103,12 @@ public abstract class Application {
 	}
 
 	public org.lgna.croquet.components.AbstractWindow<?> peekWindow() {
-		return this.stack.peek();
+		if( this.stack.size() > 0 ) {
+			return this.stack.peek();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "window stack is empty" );
+			return null;
+		}
 	}
 
 	public org.lgna.croquet.components.Frame getFrame() {

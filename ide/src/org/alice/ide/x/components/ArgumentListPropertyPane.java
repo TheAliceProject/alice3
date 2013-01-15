@@ -81,7 +81,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		org.lgna.project.ast.AbstractParameter parameter = argument.parameter.getValue();
 		final boolean IS_PARAMETER_NAME_DESIRED = parameter.getParent() instanceof org.lgna.project.ast.AbstractMethod;
 		if( IS_PARAMETER_NAME_DESIRED ) {
-			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().getNameForDeclaration( parameter );
+			String parameterName = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getNameForDeclaration( parameter );
 			if( ( parameterName != null ) && ( parameterName.length() > 0 ) ) {
 				org.lgna.croquet.components.LineAxisPanel rv = new org.lgna.croquet.components.LineAxisPanel();
 				rv.addComponent( new org.lgna.croquet.components.Label( parameterName + ": " ) );

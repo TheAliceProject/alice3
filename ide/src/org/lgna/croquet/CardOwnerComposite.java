@@ -55,15 +55,29 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 		this.cards = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList( cards );
 	}
 
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
 	public void addCard( Composite<?> card ) {
-		this.cards.add( card );
-		org.lgna.croquet.components.CardPanel view = this.peekView();
-		if( view != null ) {
-			view.addComposite( card );
+		assert card != null : this;
+		if( this.cards.contains( card ) ) {
+			//pass
+		} else {
+			this.cards.add( card );
+			org.lgna.croquet.components.CardPanel view = this.peekView();
+			if( view != null ) {
+				view.addComposite( card );
+			}
+			if( this.cards.size() == 1 ) {
+				this.showingCard = card;
+			}
 		}
 	}
 
 	public void removeCard( Composite<?> card ) {
+		assert card != null : this;
 		this.cards.remove( card );
 	}
 
@@ -103,17 +117,34 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 		super.releaseView();
 	}
 
-	public void showCard( Composite<?> card ) {
-		synchronized( this.getView().getTreeLock() ) {
-			if( this.showingCard != null ) {
-				this.showingCard.handlePostDeactivation();
+	private synchronized void showCard( Composite<?> card, boolean isActivationDesired ) {
+		org.lgna.croquet.Composite<?> prevCard = this.getShowingCard();
+		if( prevCard != card ) {
+			if( isActivationDesired ) {
+				if( this.showingCard != null ) {
+					this.showingCard.handlePostDeactivation();
+				}
 			}
 			this.showingCard = card;
-			if( this.showingCard != null ) {
-				this.showingCard.handlePreActivation();
-			}
+		}
+		synchronized( this.getView().getTreeLock() ) {
 			this.getView().showComposite( this.showingCard );
 		}
+		if( prevCard != card ) {
+			if( isActivationDesired ) {
+				if( this.showingCard != null ) {
+					this.showingCard.handlePreActivation();
+				}
+			}
+		}
+	}
+
+	public void showCard( Composite<?> card ) {
+		this.showCard( card, true );
+	}
+
+	public void showCardRefrainingFromActivation( Composite<?> card ) {
+		this.showCard( card, false );
 	}
 
 	@Override
@@ -126,6 +157,7 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 
 	@Override
 	public void handlePostDeactivation() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this, this.showingCard );
 		if( this.showingCard != null ) {
 			this.showingCard.handlePostDeactivation();
 		}

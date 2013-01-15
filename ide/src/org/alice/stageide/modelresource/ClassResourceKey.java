@@ -62,7 +62,18 @@ public final class ClassResourceKey extends ResourceKey {
 
 	@Override
 	public String getDisplayText() {
-		return cls.getSimpleName().replace( "Resource", "" );
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.cls.getSimpleName().replace( "Resource", "" ) );
+		final boolean IS_COUNT_DESIRED = false;
+		if( IS_COUNT_DESIRED ) {
+			org.lgna.story.resources.ModelResource[] constants = this.cls.getEnumConstants();
+			if( ( constants != null ) && ( constants.length > 1 ) ) {
+				sb.append( " (" );
+				sb.append( constants.length );
+				sb.append( ")" );
+			}
+		}
+		return sb.toString();
 	}
 
 	@Override
@@ -88,6 +99,11 @@ public final class ClassResourceKey extends ResourceKey {
 	@Override
 	public String[] getTags() {
 		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this.cls );
+	}
+
+	@Override
+	public String[] getGroupTags() {
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this.cls );
 	}
 
 	@Override

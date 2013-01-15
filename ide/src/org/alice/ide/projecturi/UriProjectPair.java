@@ -120,8 +120,66 @@ public class UriProjectPair {
 				observer.workStarted();
 			}
 			try {
-				java.io.InputStream is = new java.io.FileInputStream( new java.io.File( this.uri ) );
-				return org.lgna.project.io.IoUtilities.readProject( is );
+				org.lgna.project.Project project;
+				if( uri != null ) {
+					java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
+					if( file != null ) {
+						if( file.exists() ) {
+							String lcFilename = file.getName().toLowerCase();
+							if( lcFilename.endsWith( ".a2w" ) ) {
+								org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
+							} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
+								org.lgna.croquet.Application.getActiveInstance().showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
+							} else {
+								boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() );
+								java.util.zip.ZipFile zipFile;
+								try {
+									zipFile = new java.util.zip.ZipFile( file );
+								} catch( java.io.IOException ioe ) {
+									if( isWorthyOfException ) {
+										throw new RuntimeException( file.getAbsolutePath(), ioe );
+									} else {
+										org.alice.ide.ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, false );
+										zipFile = null;
+									}
+								}
+								if( zipFile != null ) {
+									try {
+										project = org.lgna.project.io.IoUtilities.readProject( zipFile );
+									} catch( org.lgna.project.VersionNotSupportedException vnse ) {
+										org.alice.ide.ProjectApplication.getActiveInstance().handleVersionNotSupported( file, vnse );
+									} catch( java.io.IOException ioe ) {
+										if( isWorthyOfException ) {
+											throw new RuntimeException( file.getAbsolutePath(), ioe );
+										} else {
+											org.alice.ide.ProjectApplication.getActiveInstance().showUnableToOpenProjectMessageDialog( file, true );
+										}
+									}
+								} else {
+									//actionContext.cancel();
+								}
+							}
+						} else {
+							org.alice.ide.ProjectApplication.getActiveInstance().showUnableToOpenFileDialog( file, "It does not exist." );
+						}
+						java.io.InputStream is = new java.io.FileInputStream( new java.io.File( this.uri ) );
+						project = org.lgna.project.io.IoUtilities.readProject( is );
+					} else if( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.isValidUri( this.uri ) ) {
+						org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.getSurfaceAppearance( this.uri );
+						org.lgna.project.ast.NamedUserType programType;
+						if( template.isRoom() ) {
+							programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
+						} else {
+							programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
+						}
+						project = new org.lgna.project.Project( programType );
+					} else {
+						project = null;
+					}
+				} else {
+					project = null;
+				}
+				return project;
 			} finally {
 				if( observer != null ) {
 					observer.workEnded();

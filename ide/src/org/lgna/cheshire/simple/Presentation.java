@@ -257,8 +257,8 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 
 	protected org.lgna.croquet.history.Transaction createTabSelectionRecoveryTransactionIfAppropriate( org.lgna.croquet.history.Transaction transaction ) {
 		org.lgna.croquet.CompletionModel model = transaction.getCompletionStep().getModel();
-		for( org.lgna.croquet.TabSelectionState<org.lgna.croquet.TabComposite> tabSelectionState : org.lgna.croquet.Manager.getRegisteredModels( org.lgna.croquet.TabSelectionState.class ) ) {
-			for( org.lgna.croquet.TabComposite item : tabSelectionState ) {
+		for( org.lgna.croquet.TabSelectionState<org.lgna.croquet.AbstractTabComposite> tabSelectionState : org.lgna.croquet.Manager.getRegisteredModels( org.lgna.croquet.TabSelectionState.class ) ) {
+			for( org.lgna.croquet.AbstractTabComposite item : tabSelectionState ) {
 				if( tabSelectionState.getValue() == item ) {
 					//pass
 				} else {
@@ -320,11 +320,11 @@ public abstract class Presentation extends org.lgna.croquet.BooleanState {
 	}
 
 	public void showStencilsPresentation() {
-		this.setValue( true );
+		this.setValueTransactionlessly( true );
 	}
 
 	public void hideStencilsPresentation() {
-		this.setValue( false );
+		this.setValueTransactionlessly( false );
 	}
 
 	protected abstract void handleStateChange( boolean isVisible );

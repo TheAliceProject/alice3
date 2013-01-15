@@ -91,9 +91,8 @@ public class DeleteStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.i
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "delete:" );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, statement, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 }

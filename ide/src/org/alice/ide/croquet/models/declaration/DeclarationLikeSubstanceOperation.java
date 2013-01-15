@@ -133,6 +133,15 @@ public abstract class DeclarationLikeSubstanceOperation<T extends org.lgna.proje
 		return new InitializerState( this, initialValue );
 	}
 
+	public org.alice.ide.name.NameValidator getUpToDateNameValidator() {
+		//todo
+		if( this.nameValidator instanceof org.alice.ide.name.validators.MemberNameValidator ) {
+			org.alice.ide.name.validators.MemberNameValidator memberNameValidator = (org.alice.ide.name.validators.MemberNameValidator)this.nameValidator;
+			memberNameValidator.setType( this.getDeclaringType() );
+		}
+		return this.nameValidator;
+	}
+
 	@Override
 	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
 		final int WIDTH = Math.min( dialog.getWidth(), 480 );
@@ -260,13 +269,9 @@ public abstract class DeclarationLikeSubstanceOperation<T extends org.lgna.proje
 
 	protected String getNameExplanation( String declarationName ) {
 		if( declarationName.length() > 0 ) {
-			if( this.nameValidator != null ) {
-				//todo
-				if( this.nameValidator instanceof org.alice.ide.name.validators.MemberNameValidator ) {
-					org.alice.ide.name.validators.MemberNameValidator memberNameValidator = (org.alice.ide.name.validators.MemberNameValidator)this.nameValidator;
-					memberNameValidator.setType( this.getDeclaringType() );
-				}
-				return this.nameValidator.getExplanationIfOkButtonShouldBeDisabled( declarationName );
+			org.alice.ide.name.NameValidator nameValidator = this.getUpToDateNameValidator();
+			if( nameValidator != null ) {
+				return nameValidator.getExplanationIfOkButtonShouldBeDisabled( declarationName );
 			} else {
 				return null;
 			}
@@ -365,7 +370,7 @@ public abstract class DeclarationLikeSubstanceOperation<T extends org.lgna.proje
 		org.lgna.project.ast.AbstractType<?, ?, ?> nextType = this.getValueType();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "restore:", nextType );
 		org.lgna.project.ast.Expression nextInitializer = this.mapTypeToInitializer.get( nextType );
-		this.initializerState.setValue( nextInitializer );
+		this.initializerState.setValueTransactionlessly( nextInitializer );
 	}
 
 	protected abstract org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.AbstractType<?, ?, ?> valueType, String declarationName, org.lgna.project.ast.Expression initializer );

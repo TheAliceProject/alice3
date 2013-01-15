@@ -58,7 +58,7 @@ public class JointSelectionSphereState extends CustomItemState<JointSelectionSph
 	private JointSelectionSphere value;
 
 	public JointSelectionSphereState( JointSelectionSphere initialValue ) {
-		super( null, java.util.UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), new ItemCodec<JointSelectionSphere>() {
+		super( null, java.util.UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), null, new ItemCodec<JointSelectionSphere>() {
 
 			public Class<JointSelectionSphere> getValueClass() {
 				return JointSelectionSphere.class;
@@ -79,14 +79,24 @@ public class JointSelectionSphereState extends CustomItemState<JointSelectionSph
 	}
 
 	@Override
-	protected void updateSwingModel( JointSelectionSphere nextValue ) {
-		this.setValue( nextValue );
+	protected org.lgna.ik.poser.JointSelectionSphere getSwingValue() {
+		return this.value;
 	}
 
 	@Override
-	protected JointSelectionSphere getActualValue() {
-		return this.value;
+	protected void setSwingValue( org.lgna.ik.poser.JointSelectionSphere nextValue ) {
+		this.value = nextValue;
 	}
+
+	//	@Override
+	//	protected void updateSwingModel( JointSelectionSphere nextValue ) {
+	//		this.setValue( nextValue );
+	//	}
+	//
+	//	@Override
+	//	protected JointSelectionSphere getActualValue() {
+	//		return this.value;
+	//	}
 
 	public ItemDropDown<JointSelectionSphere, JointSelectionSphereState> createItemDropDown() {
 		return new ItemDropDown<JointSelectionSphere, JointSelectionSphereState>( this ) {

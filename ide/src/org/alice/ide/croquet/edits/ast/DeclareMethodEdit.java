@@ -99,17 +99,14 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 	}
 
 	@Override
-	protected StringBuilder updatePresentation( StringBuilder rv ) {
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 		rv.append( "declare: " );
 		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.method, org.lgna.croquet.Application.getLocale() );
-		return rv;
 	}
 
 	@Override
-	protected StringBuilder updateTutorialTransactionTitle( StringBuilder rv ) {
-		rv.append( "declare " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.method, org.lgna.croquet.Application.getLocale() );
-		return rv;
+	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
+		this.appendDescription( sbTitle, DescriptionStyle.TERSE );
 	}
 
 	@Override
@@ -134,7 +131,7 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 						return org.lgna.croquet.edits.ReplacementAcceptability.createDeviation( org.lgna.croquet.edits.ReplacementAcceptability.DeviationSeverity.SHOULD_BE_FINE, sb.toString() );
 					}
 				} else {
-					org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem();
+					org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue();
 					return org.lgna.croquet.edits.ReplacementAcceptability.createRejection( "<html>return type <strong>MUST</strong> be <strong>" + formatter.getTextForType( method.getReturnType() ) + "</strong></html>" );
 				}
 			} else {

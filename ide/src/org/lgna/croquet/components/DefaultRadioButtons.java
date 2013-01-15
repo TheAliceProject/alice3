@@ -43,8 +43,6 @@
 
 package org.lgna.croquet.components;
 
-import org.lgna.croquet.ListSelectionState;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -65,7 +63,7 @@ public class DefaultRadioButtons<E> extends AbstractRadioButtons<E> {
 	}
 	private final boolean isVertical;
 
-	public DefaultRadioButtons( ListSelectionState<E> model, boolean isVertical ) {
+	public DefaultRadioButtons( org.lgna.croquet.ListSelectionState<E> model, boolean isVertical ) {
 		super( model );
 		this.isVertical = isVertical;
 		this.setMaximumSizeClampedToPreferredSize( true );
@@ -100,8 +98,8 @@ public class DefaultRadioButtons<E> extends AbstractRadioButtons<E> {
 	}
 
 	@Override
-	protected void addItem( ItemDetails<E> itemDetails ) {
-		this.internalAddComponent( itemDetails.getButton(), this.getGridBagConstraints() );
+	protected void addItem( E item, BooleanStateButton<?> button ) {
+		this.internalAddComponent( button, this.getGridBagConstraints() );
 	}
 
 	@Override

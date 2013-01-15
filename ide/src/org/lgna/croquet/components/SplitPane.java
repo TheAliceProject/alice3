@@ -46,16 +46,18 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SplitPane extends AbstractSplitPane<org.lgna.croquet.SplitComposite> {
-	protected SplitPane( org.lgna.croquet.SplitComposite splitComposite, int orientation ) {
+public abstract class SplitPane extends AbstractSplitPane<org.lgna.croquet.ImmutableSplitComposite> {
+	protected SplitPane( org.lgna.croquet.ImmutableSplitComposite splitComposite, int orientation ) {
 		super( splitComposite, orientation );
 	}
 
 	@Override
 	protected javax.swing.JSplitPane createJSplitPane( int orientation ) {
-		org.lgna.croquet.SplitComposite composite = this.getComposite();
+		org.lgna.croquet.ImmutableSplitComposite composite = this.getComposite();
 		org.lgna.croquet.Composite<?> leadingComposite = composite.getLeadingComposite();
 		org.lgna.croquet.Composite<?> trailingComposite = composite.getTrailingComposite();
-		return new javax.swing.JSplitPane( orientation, leadingComposite != null ? leadingComposite.getView().getAwtComponent() : null, trailingComposite != null ? trailingComposite.getView().getAwtComponent() : null );
+		javax.swing.JSplitPane rv = new javax.swing.JSplitPane( orientation, leadingComposite != null ? leadingComposite.getView().getAwtComponent() : null, trailingComposite != null ? trailingComposite.getView().getAwtComponent() : null );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		return rv;
 	}
 }

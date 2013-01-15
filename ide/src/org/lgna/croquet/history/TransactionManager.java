@@ -63,8 +63,7 @@ public class TransactionManager {
 
 	@Deprecated
 	public static void TODO_REMOVE_fireEvent( org.lgna.croquet.triggers.Trigger trigger ) {
-		Transaction transaction = getActiveTransaction();
-		transaction.addPrepStep( new TODO_REMOVE_BogusStep( transaction, trigger ) );
+		new TODO_REMOVE_BogusStep( getActiveTransaction(), trigger );
 	}
 
 	@Deprecated

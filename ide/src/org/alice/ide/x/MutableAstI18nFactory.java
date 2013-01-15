@@ -90,12 +90,7 @@ public abstract class MutableAstI18nFactory extends AstI18nFactory {
 		org.lgna.project.ast.Expression expression = expressionProperty.getValue();
 		org.lgna.croquet.components.JComponent<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
 		if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
-			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model;
-			if( this.group == org.lgna.croquet.Application.INHERIT_GROUP ) {
-				model = org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade.EPIC_HACK_createInstance( group, expressionProperty, desiredValueType );
-			} else {
-				model = org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
-			}
+			org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade model = org.alice.ide.croquet.models.ast.DefaultExpressionPropertyCascade.getInstance( group, expressionProperty, desiredValueType );
 			org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), null, rv, expressionProperty );
 			rv = expressionPropertyDropDownPane;
 		}

@@ -57,7 +57,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return paint;
 	}
 
-	public org.lgna.croquet.components.JComponent<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.Component<?> prefixPane ) {
+	public org.lgna.croquet.components.JComponent<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.JComponent<?> prefixPane ) {
 		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
 			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;
 			org.lgna.project.ast.ExpressionProperty expressionProperty = simpleArgument.expression;
@@ -123,7 +123,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 	}
 
 	protected org.lgna.croquet.components.JComponent<?> createStatementListPropertyPane( org.lgna.project.ast.StatementListProperty statementListProperty ) {
-		return new org.alice.ide.x.components.StatementListPropertyView( this, statementListProperty );
+		return new org.alice.ide.x.components.StatementListPropertyView( this, statementListProperty, false );
 	}
 
 	protected abstract org.lgna.croquet.components.JComponent<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty );
@@ -177,7 +177,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 			} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
 				rv = this.createFieldAccessPane( (org.lgna.project.ast.FieldAccess)expression );
 			} else if( expression instanceof org.lgna.project.ast.TypeExpression ) {
-				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getSelectedItem().isTypeExpressionDesired() ) {
+				if( org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().isTypeExpressionDesired() ) {
 					org.lgna.project.ast.TypeExpression typeExpression = (org.lgna.project.ast.TypeExpression)expression;
 					org.lgna.project.ast.Node parent = typeExpression.getParent();
 					if( parent instanceof org.lgna.project.ast.MethodInvocation ) {

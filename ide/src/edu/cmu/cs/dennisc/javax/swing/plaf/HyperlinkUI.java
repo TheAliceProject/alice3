@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.javax.swing.plaf;
 public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 	private java.awt.Color disabledColor = java.awt.Color.LIGHT_GRAY;
 	private boolean isUnderlinedWhenDisabled = true;
+	private boolean isUnderlinedOnlyWhenRolledOver = true;
 
 	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) {
 		return new HyperlinkUI();
@@ -69,6 +70,14 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 		this.isUnderlinedWhenDisabled = isUnderlinedWhenDisabled;
 	}
 
+	public boolean isUnderlinedOnlyWhenRolledOver() {
+		return this.isUnderlinedOnlyWhenRolledOver;
+	}
+
+	public void setUnderlinedOnlyWhenRolledOver( boolean isUnderlinedOnlyWhenRolledOver ) {
+		this.isUnderlinedOnlyWhenRolledOver = isUnderlinedOnlyWhenRolledOver;
+	}
+
 	@Override
 	protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, String text ) {
 		javax.swing.ButtonModel model = b.getModel();
@@ -86,9 +95,9 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 				float backgroundBrightness = edu.cmu.cs.dennisc.java.awt.ColorUtilities.getBrightness( backgroundColor );
 				boolean isForegroundBrighter = foregroundBrightness > backgroundBrightness;
 				if( model.isPressed() ) {
-					color = isForegroundBrighter ? foregroundColor.darker() : foregroundColor.brighter();
+					color = isForegroundBrighter ? foregroundColor.darker().darker() : foregroundColor.brighter().brighter();
 				} else {
-					color = isForegroundBrighter ? foregroundColor.brighter() : foregroundColor.darker();
+					color = isForegroundBrighter ? foregroundColor.brighter().brighter() : foregroundColor.darker().darker();
 				}
 			} else {
 				color = foregroundColor;
@@ -101,8 +110,16 @@ public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 		java.awt.FontMetrics fm = g.getFontMetrics();
 		int x = textRect.x + this.getTextShiftOffset();
 		int y = textRect.y + fm.getAscent() + this.getTextShiftOffset();
-		g.drawString( text, x, y );
-		if( b.isEnabled() || this.isUnderlinedWhenDisabled ) {
+
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		Object prevTextAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+		try {
+			g.drawString( text, x, y );
+		} finally {
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevTextAntialiasing );
+		}
+		if( ( b.isEnabled() || this.isUnderlinedWhenDisabled ) && ( ( this.isUnderlinedOnlyWhenRolledOver == false ) || model.isRollover() ) ) {
 			g.fillRect( x, y, textRect.width, 1 );
 		}
 	}

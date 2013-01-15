@@ -57,7 +57,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 	}
 
 	public class Stencil extends org.lgna.cheshire.simple.SimpleStencil {
-		private org.lgna.croquet.components.CardPanel cardPanel = new org.lgna.croquet.components.CardPanel();
+		private final OldCardPanel cardPanel = new OldCardPanel();
 
 		public Stencil( org.lgna.croquet.components.AbstractWindow<?> window, org.lgna.cheshire.simple.ScrollRenderer scrollingRequiredRenderer, LayerId menuPolicy ) {
 			super( window );
@@ -294,7 +294,7 @@ public class SimplePresentation extends org.lgna.cheshire.simple.Presentation {
 				}
 				chapterPage.reset();
 				java.util.UUID transactionId = chapter.getId();
-				org.lgna.croquet.components.CardPanel.Key key = this.stencil.cardPanel.getKey( transactionId );
+				OldCardPanel.Key key = this.stencil.cardPanel.getKey( transactionId );
 				if( key != null ) {
 					// pass
 				} else {

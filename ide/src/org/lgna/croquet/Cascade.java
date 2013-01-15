@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<T> extends AbstractCompletionModel {
+public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.components.DropProxy.Hider {
 	public static class InternalRootResolver<T> extends IndirectResolver<InternalRoot<T>, Cascade<T>> {
 		private InternalRootResolver( Cascade<T> indirect ) {
 			super( indirect );
@@ -86,23 +86,38 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 		}
 
 		@Override
-		public void prologue() {
-			this.cascade.prologue();
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			super.prologue( trigger );
+			this.cascade.prologue( trigger );
 		}
 
 		@Override
 		public void epilogue() {
 			this.cascade.epilogue();
+			super.epilogue();
 		}
 
 		@Override
-		public org.lgna.croquet.history.CompletionStep<Cascade<T>> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		public final org.lgna.croquet.history.CompletionStep<Cascade<T>> createCompletionStep( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			return transaction.createAndSetCompletionStep( this.cascade, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values ) {
-			return this.cascade.createEdit( completionStep, values );
+		public org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<T>> handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.Cascade<T>> rtRoot ) {
+			org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
+			org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep = this.createCompletionStep( transaction, trigger );
+			try {
+				T[] values = rtRoot.createValues( completionStep.getTransactionHistory(), this.getComponentType() );
+				org.lgna.croquet.edits.Edit edit = this.cascade.createEdit( completionStep, values );
+				if( edit != null ) {
+					completionStep.commitAndInvokeDo( edit );
+				} else {
+					completionStep.cancel();
+				}
+			} finally {
+				this.getPopupPrepModel().handleFinally();
+			}
+			return completionStep;
 		}
 	}
 
@@ -152,10 +167,11 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 		return this.componentType;
 	}
 
-	protected void prologue() {
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
 	}
 
 	protected void epilogue() {
+		this.hideDropProxyIfNecessary();
 	}
 
 	protected abstract org.lgna.croquet.edits.Edit<? extends Cascade<T>> createEdit( org.lgna.croquet.history.CompletionStep<Cascade<T>> completionStep, T[] values );
@@ -324,5 +340,18 @@ public abstract class Cascade<T> extends AbstractCompletionModel {
 	@Override
 	public void appendUserRepr( java.lang.StringBuilder sb ) {
 		sb.append( this.getRoot().getPopupPrepModel().getName() );
+	}
+
+	private org.lgna.croquet.components.DragComponent dragSource;
+
+	public final void setDragSource( org.lgna.croquet.components.DragComponent dragSource ) {
+		this.dragSource = dragSource;
+	}
+
+	private void hideDropProxyIfNecessary() {
+		if( this.dragSource != null ) {
+			this.dragSource.hideDropProxyIfNecessary();
+			this.dragSource = null;
+		}
 	}
 }

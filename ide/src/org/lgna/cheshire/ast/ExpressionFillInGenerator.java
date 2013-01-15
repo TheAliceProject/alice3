@@ -143,7 +143,7 @@ public class ExpressionFillInGenerator {
 		} else if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
 			org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)expression;
 			org.lgna.project.ast.AbstractType<?, ?, ?> arrayType = arrayInstanceCreation.arrayType.getValue();
-			fillIn = org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( arrayType.getComponentType() ).getFillIn();
+			fillIn = org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( arrayType ).getValueCreator().getFillIn();
 		} else {
 			fillIn = null;
 		}

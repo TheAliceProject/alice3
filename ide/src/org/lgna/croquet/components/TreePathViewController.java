@@ -63,7 +63,7 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 			} else {
 				selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
 			}
-			ActionOperation operation = treeSelectionState.getSelectionOperationFor( treeNode );
+			ActionOperation operation = treeSelectionState.getItemSelectionOperation( treeNode );
 			operation.initializeIfNecessary();
 			//initializer.configure( operation, treeNode );
 			Button button = operation.createButton();

@@ -76,15 +76,21 @@ public final class IssueReportWorker extends org.jdesktop.swingworker.SwingWorke
 			String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
 			com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
 
-			boolean rv;
-			//todo?
-			try {
-				boolean isBase64EncodingDesired = false;
-				edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.addAttachments( result, jiraReport, service, token, isBase64EncodingDesired );
-				rv = true;
-			} catch( java.rmi.RemoteException re ) {
-				re.printStackTrace();
-				rv = false;
+			java.util.List<Attachment> attachments = jiraReport.getAttachments();
+			boolean rv = true;
+			if( ( attachments != null ) && ( attachments.size() > 0 ) ) {
+				this.process( "\n" );
+				for( Attachment attachment : attachments ) {
+					this.process( "\t" + attachment.getFileName() + "... " );
+					try {
+						edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.addAttachment( result, attachment, service, token );
+						rv = true;
+					} catch( java.rmi.RemoteException re ) {
+						re.printStackTrace();
+						rv = false;
+					}
+					this.process( "done.\n" );
+				}
 			}
 
 			this.key = result.getKey();
@@ -132,7 +138,7 @@ public final class IssueReportWorker extends org.jdesktop.swingworker.SwingWorke
 			if( isSuccessAttachment ) {
 				this.process( "SUCCEEDED.\n" );
 			} else {
-				//				this.process( "PARTIALLY SUCCEEDED (attachments failed).\n" );
+				this.process( "PARTIALLY SUCCEEDED (attachments failed).\n" );
 				//				this.process( "* sending mail (on smtp port)... " );
 				//				try {
 				//					this.sendMail( false, null );
@@ -141,7 +147,6 @@ public final class IssueReportWorker extends org.jdesktop.swingworker.SwingWorke
 				//					eC.printStackTrace();
 				//					this.process( "FAILED.\n" );
 				//				}
-				this.process( "FAILED.\n" );
 			}
 		} catch( Exception eA ) {
 			eA.printStackTrace();

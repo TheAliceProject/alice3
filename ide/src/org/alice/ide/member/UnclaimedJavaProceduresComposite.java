@@ -46,7 +46,7 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public class UnclaimedJavaProceduresComposite extends FilteredJavaProceduresSubComposite {
+public class UnclaimedJavaProceduresComposite extends UnclaimedJavaMethodsComposite {
 	private static class SingletonHolder {
 		private static UnclaimedJavaProceduresComposite instance = new UnclaimedJavaProceduresComposite();
 	}
@@ -55,23 +55,12 @@ public class UnclaimedJavaProceduresComposite extends FilteredJavaProceduresSubC
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
-		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
-			return compareMethodNames( methodA, methodB );
-		}
-	};
-
 	private UnclaimedJavaProceduresComposite() {
 		super( java.util.UUID.fromString( "1ecd0cc1-1336-4c89-b099-5d17cb381aed" ) );
 	}
 
 	@Override
-	public java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator() {
-		return this.comparator;
-	}
-
-	@Override
 	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
-		return true;
+		return method.isProcedure();
 	}
 }

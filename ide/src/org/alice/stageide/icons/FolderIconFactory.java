@@ -62,7 +62,7 @@ public class FolderIconFactory extends org.lgna.croquet.icon.CachingIconFactory 
 		} else {
 			subIconSize = size;
 		}
-		return new FolderIcon( size, this.iconFactory.getIcon( subIconSize ) );
+		return new FolderIcon( size, this.iconFactory != null ? this.iconFactory.getIcon( subIconSize ) : null );
 	}
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {

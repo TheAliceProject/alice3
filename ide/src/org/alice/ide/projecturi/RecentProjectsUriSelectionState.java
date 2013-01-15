@@ -46,30 +46,8 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public class RecentProjectsUriSelectionState extends org.alice.ide.projecturi.UriSelectionState {
-	private static class SingletonHolder {
-		private static RecentProjectsUriSelectionState instance = new RecentProjectsUriSelectionState();
-	}
-
-	public static RecentProjectsUriSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	//	private final java.util.List< java.net.URI > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	private org.lgna.croquet.ListData.Listener<java.net.URI> listener = new org.lgna.croquet.ListData.Listener<java.net.URI>() {
-		public void changed() {
-			RecentProjectsUriSelectionState.this.refresh();
-		}
-	};
-
-	private RecentProjectsUriSelectionState() {
-		super( java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ) );
-		org.lgna.croquet.preferences.PreferenceManager.registerAndInitializeDataOnlyOfListSelectionState( this );
-		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().addListener( this.listener );
-	}
-
-	@Override
-	protected java.net.URI[] createArray() {
-		return org.alice.ide.recentprojects.RecentProjectsListData.getInstance().createArray();
+public class RecentProjectsUriSelectionState extends org.lgna.croquet.ListSelectionState<java.net.URI> {
+	public RecentProjectsUriSelectionState() {
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27771d96-8702-4536-888a-0038a39bee2b" ), org.alice.ide.recentprojects.RecentProjectsListData.getInstance(), -1 );
 	}
 }

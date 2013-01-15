@@ -47,14 +47,6 @@ package org.alice.ide.declarationseditor.components;
  * @author Dennis Cosgrove
  */
 public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
-	private static class SingletonHolder {
-		private static TypeEditor instance = new TypeEditor();
-	}
-
-	public static TypeEditor getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final org.lgna.croquet.State.ValueListener<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 		}
@@ -73,74 +65,30 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	};
 
 	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
-	private final org.lgna.croquet.components.PopupButton popupButton;
+	private final org.lgna.croquet.components.AbstractPopupButton popupButton;
 
-	private TypeEditor() {
-		// note:
-		// trigger side effect to initialize isEnabled
-		org.alice.ide.declarationseditor.DeclarationCompositeHistory.getInstance();
-
-		int y = 0;
-		int x = 2;
-		javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( y, x, y, x );
-
-		org.lgna.croquet.components.Button backwardButton = org.alice.ide.declarationseditor.BackwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.BackwardCascade.getInstance() );
-		org.lgna.croquet.components.Button forwardButton = org.alice.ide.declarationseditor.ForwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.ForwardCascade.getInstance() );
-
-		forwardButton.setBorder( border );
-
-		final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
-		org.lgna.croquet.components.JComponent<?> backwardFowardComponent;
-		if( ARE_CASCADE_BUTTONS_DESIRED ) {
-			org.lgna.croquet.components.PopupButton backwardPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
-			org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
-
-			backwardPopupButton.setBorder( border );
-			forwardPopupButton.setBorder( border );
-
-			org.lgna.croquet.components.BorderPanel backwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-					.center( backwardButton )
-					.lineEnd( backwardPopupButton )
-					.build();
-			org.lgna.croquet.components.BorderPanel forwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-					.center( forwardButton )
-					.lineEnd( forwardPopupButton )
-					.build();
-
-			backwardFowardComponent = new org.lgna.croquet.components.LineAxisPanel(
-					backwardPanel,
-					org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 3 ),
-					forwardPanel
-					);
-		} else {
-			backwardFowardComponent = new org.lgna.croquet.components.BorderPanel.Builder()
-					.center( backwardButton )
-					.lineEnd( forwardButton )
-					.build();
-			;
-		}
-
-		backwardFowardComponent.setMaximumSizeClampedToPreferredSize( true );
-
-		org.lgna.croquet.components.LineAxisPanel headerTrailingComponent = new org.lgna.croquet.components.LineAxisPanel(
-				backwardFowardComponent,
+	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
+		super( composite );
+		org.lgna.croquet.components.FlowPanel headerTrailingComponent = new org.lgna.croquet.components.FlowPanel(
+				composite.getControlsComposite().getView(),
 				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
 				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
 				);
 
 		final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
 		if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
-			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBin() );
+			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBinView() );
 		}
 		headerTrailingComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 0, 2 ) );
-		this.tabbedPane = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().createFolderTabbedPane();
+		this.tabbedPane = composite.getTabState().createFolderTabbedPane();
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
-		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
+		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createFauxComboBoxPopupButton();
 		this.addCenterComponent( tabbedPane );
 	}
 
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		org.alice.ide.declarationseditor.DeclarationComposite item = org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getSelectedItem();
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite composite = (org.alice.ide.declarationseditor.DeclarationsEditorComposite)this.getComposite();
+		org.alice.ide.declarationseditor.DeclarationComposite item = composite.getTabState().getValue();
 		if( item != null ) {
 			org.lgna.croquet.components.JComponent<?> component = this.tabbedPane.getMainComponentFor( item );
 			if( component instanceof org.alice.ide.declarationseditor.code.components.CodeDeclarationView ) {
@@ -162,8 +110,58 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
-		org.alice.ide.common.TypeDropDownIcon icon = new org.alice.ide.common.TypeDropDownIcon( type, this.popupButton.getAwtComponent().getModel() );
-		this.popupButton.setIcon( icon );
+		//		public class TypeDropDownIcon extends TypeIcon {
+		//			private static final int ARROW_SIZE = 12;
+		//			private javax.swing.ButtonModel buttonModel;
+		//
+		//			public TypeDropDownIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, javax.swing.ButtonModel buttonModel ) {
+		//				super( type );
+		//				this.buttonModel = buttonModel;
+		//			}
+		//
+		//			@Override
+		//			public int getIconWidth() {
+		//				return super.getIconWidth() + ARROW_SIZE + 4;
+		//			}
+		//
+		//			@Override
+		//			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		//				super.paintIcon( c, g, x, y );
+		//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		//				java.awt.Paint fillPaint;
+		//				java.awt.Paint drawPaint;
+		//				if( buttonModel.isEnabled() ) {
+		//					if( buttonModel.isPressed() ) {
+		//						fillPaint = java.awt.Color.WHITE;
+		//						drawPaint = java.awt.Color.BLACK;
+		//					} else {
+		//						if( buttonModel.isRollover() || buttonModel.isArmed() ) {
+		//							fillPaint = java.awt.Color.GRAY;
+		//						} else {
+		//							fillPaint = java.awt.Color.BLACK;
+		//						}
+		//						drawPaint = null;
+		//					}
+		//				} else {
+		//					fillPaint = java.awt.Color.LIGHT_GRAY;
+		//					drawPaint = null;
+		//				}
+		//
+		//				int w = this.getIconWidth();
+		//				int h = this.getIconHeight();
+		//				if( fillPaint != null ) {
+		//					g2.setPaint( fillPaint );
+		//					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, ( x + w ) - ARROW_SIZE, y + ( ( h - ARROW_SIZE ) / 2 ), ARROW_SIZE, ARROW_SIZE );
+		//				}
+		//				if( drawPaint != null ) {
+		//					g2.setPaint( drawPaint );
+		//					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, ( x + w ) - ARROW_SIZE, y + ( ( h - ARROW_SIZE ) / 2 ), ARROW_SIZE, ARROW_SIZE );
+		//				}
+		//			}
+		//		}
+		//org.alice.ide.common.TypeDropDownIcon icon = new org.alice.ide.common.TypeDropDownIcon( type, this.popupButton.getAwtComponent().getModel() );
+		org.alice.ide.common.TypeIcon icon = new org.alice.ide.common.TypeIcon( type );
+		this.popupButton.setClobberIcon( icon );
 		this.popupButton.revalidateAndRepaint();
 	}
 

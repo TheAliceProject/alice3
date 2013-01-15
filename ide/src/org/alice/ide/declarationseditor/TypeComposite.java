@@ -63,8 +63,33 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 		}
 	}
 
+	private final org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite constructorsToolPaletteCoreComposite;
+	private final org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite proceduresToolPaletteCoreComposite;
+	private final org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite functionsToolPaletteCoreComposite;
+	private final org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite fieldsToolPaletteCoreComposite;
+
 	private TypeComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "ff057bea-73cc-4cf2-8bb3-b02e35b4b965" ), type, org.lgna.project.ast.NamedUserType.class );
+		this.constructorsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite( type ) );
+		this.proceduresToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite( type ) );
+		this.functionsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite( type ) );
+		this.fieldsToolPaletteCoreComposite = this.registerSubComposite( new org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite( type ) );
+	}
+
+	public org.alice.ide.declarationseditor.type.ConstructorsToolPaletteCoreComposite getConstructorsToolPaletteCoreComposite() {
+		return this.constructorsToolPaletteCoreComposite;
+	}
+
+	public org.alice.ide.declarationseditor.type.ProceduresToolPaletteCoreComposite getProceduresToolPaletteCoreComposite() {
+		return this.proceduresToolPaletteCoreComposite;
+	}
+
+	public org.alice.ide.declarationseditor.type.FunctionsToolPaletteCoreComposite getFunctionsToolPaletteCoreComposite() {
+		return this.functionsToolPaletteCoreComposite;
+	}
+
+	public org.alice.ide.declarationseditor.type.FieldsToolPaletteCoreComposite getFieldsToolPaletteCoreComposite() {
+		return this.fieldsToolPaletteCoreComposite;
 	}
 
 	@Override
@@ -90,12 +115,11 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 	}
 
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponent( booleanState, button );
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.6f );
 	}
 
-	@Override
 	public boolean isCloseable() {
 		return false;
 	}

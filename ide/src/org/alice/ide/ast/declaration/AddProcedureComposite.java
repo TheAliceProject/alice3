@@ -80,7 +80,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( namedUserType );
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
+			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
 		} else {
 			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory;
@@ -96,18 +96,20 @@ public final class AddProcedureComposite extends AddMethodComposite {
 			}
 			assert instanceFactory != null : method;
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
-			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().pushGeneratedValue( org.alice.ide.members.ProcedureTemplateComposite.getInstance() );
+
+			org.alice.ide.members.MembersComposite membersComposite = org.alice.ide.members.MembersComposite.getInstance();
+			membersComposite.getTabState().pushGeneratedValue( membersComposite.getProcedureTabComposite() );
 		}
 	}
 
 	@Override
 	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit ) {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			org.alice.ide.declarationseditor.DeclarationTabState.getInstance().popGeneratedValue();
+			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().popGeneratedValue();
 			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		} else {
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
-			org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().popGeneratedValue();
+			org.alice.ide.members.MembersComposite.getInstance().getTabState().popGeneratedValue();
 		}
 		super.popGeneratedContexts( ownerEdit );
 	}

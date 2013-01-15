@@ -47,7 +47,7 @@ package org.alice.stageide.modelresource;
  */
 public class PersonResourceKey extends ResourceKey {
 
-	private static final org.lgna.croquet.icon.IconFactory ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( org.alice.stageide.gallerybrowser.ResourceTab.CREATE_PERSON_LARGE_ICON.getImage() );
+	private static final org.lgna.croquet.icon.IconFactory ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( org.alice.stageide.gallerybrowser.ResourceBasedTab.CREATE_PERSON_LARGE_ICON.getImage() );
 
 	private static class SingletonHolder {
 		private static PersonResourceKey instance = new PersonResourceKey();
@@ -85,6 +85,11 @@ public class PersonResourceKey extends ResourceKey {
 
 	@Override
 	public String[] getTags() {
+		return null;
+	}
+
+	@Override
+	public String[] getGroupTags() {
 		return null;
 	}
 

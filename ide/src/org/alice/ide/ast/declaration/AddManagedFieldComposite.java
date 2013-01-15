@@ -46,19 +46,14 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class AddManagedFieldComposite extends AddFieldComposite {
-	private final org.lgna.croquet.BooleanState initialPropertyValuesExpandedState = this.createBooleanState( this.createKey( "initialPropertyValuesExpandedState" ), true );
-	private java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> initialPropertyValueExpressionStates = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final InitialPropertyValuesToolPaletteCoreComposite initialPropertyValuesToolPaletteCoreComposite = new InitialPropertyValuesToolPaletteCoreComposite();
 
 	public AddManagedFieldComposite( java.util.UUID migrationId, Details details ) {
 		super( migrationId, details );
 	}
 
-	public org.lgna.croquet.BooleanState getInitialPropertyValuesExpandedState() {
-		return this.initialPropertyValuesExpandedState;
-	}
-
-	public java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> getInitialPropertyValueExpressionStates() {
-		return this.initialPropertyValueExpressionStates;
+	public InitialPropertyValuesToolPaletteCoreComposite getInitialPropertyValuesToolPaletteCoreComposite() {
+		return this.initialPropertyValuesToolPaletteCoreComposite;
 	}
 
 	@Override
@@ -142,10 +137,24 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 	}
 
 	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
-		rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true ) );
-		rv.addUndoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false ) );
-
-		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initialPropertyValueExpressionState : this.initialPropertyValueExpressionStates ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform = null;
+		org.lgna.croquet.DropSite dropSite = step.findDropSite();
+		if( dropSite instanceof org.alice.stageide.sceneeditor.draganddrop.SceneDropSite ) {
+			org.alice.stageide.sceneeditor.draganddrop.SceneDropSite sceneDropSite = (org.alice.stageide.sceneeditor.draganddrop.SceneDropSite)dropSite;
+			initialTransform = sceneDropSite.getTransform();
+		} else {
+			initialTransform = null;
+		}
+		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
+		org.lgna.project.ast.Statement[] doStatements = sceneEditor.getDoStatementsForAddField( field, initialTransform );
+		for( org.lgna.project.ast.Statement s : doStatements ) {
+			rv.addDoStatement( s );
+		}
+		org.lgna.project.ast.Statement[] undoStatements = sceneEditor.getUndoStatementsForAddField( field );
+		for( org.lgna.project.ast.Statement s : undoStatements ) {
+			rv.addUndoStatement( s );
+		}
+		for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> initialPropertyValueExpressionState : this.initialPropertyValuesToolPaletteCoreComposite.getInitialPropertyValueExpressionStates() ) {
 			InitialPropertyValueExpressionCustomizer customizer = (InitialPropertyValueExpressionCustomizer)( (InternalCustomItemState<org.lgna.project.ast.Expression>)initialPropertyValueExpressionState ).getCustomizer();
 			customizer.appendDoStatements( rv, field, initialPropertyValueExpressionState.getValue() );
 		}
@@ -171,7 +180,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		try {
 			org.lgna.project.ast.Expression expression = expressionCreator.createExpression( initialValue );
 			org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> rv = this.createCustomItemState( key, org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Expression.class ), expression, new InitialPropertyValueExpressionCustomizer( method ) );
-			this.initialPropertyValueExpressionStates.add( rv );
+			this.initialPropertyValuesToolPaletteCoreComposite.addInitialPropertyValueExpressionState( rv );
 			return rv;
 		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 			throw new RuntimeException( ccee );

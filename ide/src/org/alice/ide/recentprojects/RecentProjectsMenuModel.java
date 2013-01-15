@@ -70,13 +70,13 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 	private void setChildren( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		java.net.URI currentUri = ide.getUri();
-		java.net.URI[] uris = RecentProjectsListData.getInstance().createArray();
+		java.net.URI[] uris = RecentProjectsListData.getInstance().toArray();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( java.net.URI uri : uris ) {
 			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( uri, currentUri ) ) {
 				//pass
 			} else {
-				models.add( OpenFileOperation.getInstance( uri ).getMenuItemPrepModel() );
+				models.add( org.alice.ide.croquet.models.projecturi.OpenRecentProjectOperation.getInstance( uri ).getMenuItemPrepModel() );
 			}
 		}
 		if( models.size() == 0 ) {

@@ -68,7 +68,7 @@ public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
 	private final org.lgna.project.ast.AbstractType<?, ?, ?> returnType;
 
 	private FunctionsOfReturnTypeSubComposite( org.lgna.project.ast.AbstractType<?, ?, ?> returnType ) {
-		super( java.util.UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), true /* returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) */);
+		super( java.util.UUID.fromString( "76b131c5-133c-43a0-9592-e200b9cd1f25" ), returnType != org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SJoint.class ) );
 		this.returnType = returnType;
 
 		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( new org.alice.ide.common.TypeIcon( this.returnType ) );
@@ -88,5 +88,10 @@ public class FunctionsOfReturnTypeSubComposite extends MethodsSubComposite {
 	public void setMethods( java.util.List<org.lgna.project.ast.AbstractMethod> methods ) {
 		this.methods = java.util.Collections.unmodifiableList( methods );
 		this.getView().refreshLater();
+	}
+
+	@Override
+	protected org.alice.ide.member.views.MethodsSubView<FunctionsOfReturnTypeSubComposite> createView() {
+		return new org.alice.ide.member.views.MethodsSubView<FunctionsOfReturnTypeSubComposite>( this );
 	}
 }

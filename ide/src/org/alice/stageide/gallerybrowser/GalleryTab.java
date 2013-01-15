@@ -48,22 +48,18 @@ package org.alice.stageide.gallerybrowser;
  */
 public abstract class GalleryTab<V extends org.lgna.croquet.components.Panel> extends org.lgna.croquet.SimpleTabComposite<V> {
 	public GalleryTab( java.util.UUID id ) {
-		super( id );
+		super( id, IsCloseable.FALSE );
 	}
 
 	@Override
-	public final boolean isCloseable() {
-		return false;
-	}
-
-	@Override
-	public final org.lgna.croquet.components.ScrollPane createScrollPane() {
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		return null;
 	}
 
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponent( booleanState, button );
-		button.scaleFont( 1.5f );
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
+		button.scaleFont( 1.2f );
+		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
 	}
 }

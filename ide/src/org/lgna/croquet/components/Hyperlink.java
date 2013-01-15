@@ -55,6 +55,15 @@ public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.cro
 	protected final javax.swing.JButton createAwtComponent() {
 		javax.swing.JButton rv = new javax.swing.JButton() {
 			@Override
+			public String getText() {
+				if( isTextClobbered() ) {
+					return getClobberText();
+				} else {
+					return super.getText();
+				}
+			}
+
+			@Override
 			public void updateUI() {
 				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
 			}
@@ -65,6 +74,7 @@ public class Hyperlink extends OperationButton<javax.swing.JButton, org.lgna.cro
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		rv.setOpaque( false );
+		rv.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
 		return rv;
 	}
 }

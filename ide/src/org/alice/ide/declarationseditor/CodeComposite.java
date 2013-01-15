@@ -77,7 +77,6 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 		return this.getDeclaration().isValid();
 	}
 
-	@Override
 	public boolean isCloseable() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
@@ -88,8 +87,8 @@ public class CodeComposite extends DeclarationComposite<org.lgna.project.ast.Abs
 	}
 
 	@Override
-	public void customizeTitleComponent( org.lgna.croquet.BooleanState booleanState, org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponent( booleanState, button );
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
 		button.scaleFont( 1.2f );
 	}
 

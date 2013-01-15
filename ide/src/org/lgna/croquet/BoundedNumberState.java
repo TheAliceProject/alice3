@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedNumberState<N extends Number> extends State<N> {
+public abstract class BoundedNumberState<N extends Number> extends SimpleValueState<N> {
 	public static class AtomicChange<N extends Number> {
 		private N minimum = null;
 		private N maximum = null;
@@ -128,9 +128,14 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 		return this.swingModel;
 	}
 
+	@Override
+	protected boolean isAdjustingIgnored() {
+		return false;
+	}
+
 	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
-		N nextValue = this.getValue();
-		this.changeValue( nextValue, this.swingModel.getBoundedRangeModel().getValueIsAdjusting(), org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e ) );
+		N nextValue = this.getSwingValue();
+		this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( this.swingModel.getBoundedRangeModel().getValueIsAdjusting() ), org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e ) );
 	}
 
 	@Override
@@ -155,19 +160,22 @@ public abstract class BoundedNumberState<N extends Number> extends State<N> {
 
 	public void setAll( AtomicChange<N> atomicChange ) {
 		atomicChange.updateSwingModel( this.swingModel );
+		if( atomicChange.value != null ) {
+			this.setCurrentTruthAndBeautyValue( atomicChange.value );
+		}
 	}
 
 	public void setAllTransactionlessly( AtomicChange<N> atomicChange ) {
-		this.pushIgnore();
+		this.pushIsInTheMidstOfAtomicChange();
 		try {
 			this.setAll( atomicChange );
 		} finally {
-			this.popIgnore();
+			this.popIsInTheMidstOfAtomicChange();
 		}
 	}
 
 	@Override
-	protected void updateSwingModel( N nextValue ) {
+	protected void setSwingValue( N nextValue ) {
 		this.swingModel.setValue( nextValue );
 	}
 

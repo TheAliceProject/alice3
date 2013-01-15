@@ -54,7 +54,7 @@ public class TypeDropDown<M extends org.lgna.croquet.CustomItemState<org.lgna.pr
 	}
 
 	private void update( org.lgna.project.ast.AbstractType type ) {
-		this.getAction().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) {
+		this.getAwtComponent().getAction().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) {
 			@Override
 			protected java.awt.Color getTextColor( java.awt.Component c ) {
 				return super.getTextColor( TypeDropDown.this.getAwtComponent() );

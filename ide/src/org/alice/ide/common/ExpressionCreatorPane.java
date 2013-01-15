@@ -56,11 +56,6 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	}
 
 	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-
-	@Override
 	public void setActive( boolean isActive ) {
 		super.setActive( isActive );
 		if( isActive ) {

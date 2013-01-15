@@ -49,29 +49,10 @@ package org.alice.ide.projecturi.views;
 public abstract class TabContentPanel extends org.lgna.croquet.components.BorderPanel {
 	public static final java.awt.Color DEFAULT_BACKGROUND_COLOR = new java.awt.Color( 191, 191, 255 );
 
-	//	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
-	public TabContentPanel( org.lgna.croquet.TabComposite<?> composite ) {
+	public TabContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite ) {
 		super( composite );
 		this.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
 		final int INSET = 8;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-
-	public abstract java.net.URI getSelectedUri();
-	//	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel ) {
-	//		this.inputPanel = inputPanel;
-	//	}
-	//	public javax.swing.Icon getTabTitleIcon() {
-	//		return null;
-	//	}
-	//	protected void updateOKButton() {
-	//		if( this.inputPanel != null ) {
-	//			this.inputPanel.updateOKButton();
-	//		}
-	//	}
-	//	protected void fireOKButtonIfPossible() {
-	//		if( this.inputPanel != null ) {
-	//			this.inputPanel.fireOKButtonIfPossible();
-	//		}
-	//	}
 }

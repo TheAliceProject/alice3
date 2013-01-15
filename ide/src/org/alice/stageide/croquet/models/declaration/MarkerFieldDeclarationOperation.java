@@ -66,7 +66,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		}
 
 		public void propertyChanged( PropertyEvent e ) {
-			localize();
+			//localize();
 		}
 	};
 
@@ -99,7 +99,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		} catch( CannotCreateExpressionException ccee ) {
 			ccee.printStackTrace();
 		}
-		this.getNameState().setValue( initialMarkerName );
+		this.getNameState().setValueTransactionlessly( initialMarkerName );
 	}
 
 	public void setSelectedField( UserField field ) {
@@ -110,7 +110,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		if( this.selectedField != null ) {
 			this.selectedField.name.addPropertyListener( this.nameChangeListener );
 		}
-		this.localize();
+		//this.localize();
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 		return createMainComponent();
 	}
 
-	public org.alice.ide.croquet.models.ast.PropertyState getColorIdState() {
+	public org.alice.ide.ast.declaration.FieldDeclarationPropertyState getColorIdState() {
 		return this.getStateForGetter( org.lgna.story.SMarker.class, "getColorId" );
 	}
 
@@ -138,7 +138,7 @@ public abstract class MarkerFieldDeclarationOperation extends ManagedFieldDeclar
 	@Override
 	protected org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.alice.ide.croquet.models.declaration.ManagedFieldDeclarationOperation.EditCustomization rv ) {
 		super.customize( step, declaringType, field, rv );
-		org.alice.ide.croquet.models.ast.PropertyState colorState = this.getColorIdState();
+		org.alice.ide.ast.declaration.FieldDeclarationPropertyState colorState = this.getColorIdState();
 		rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement(
 				false, field,
 				colorState.getSetter(),

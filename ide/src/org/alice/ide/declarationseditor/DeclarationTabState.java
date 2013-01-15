@@ -48,15 +48,7 @@ import org.alice.stageide.StageIDE;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<DeclarationComposite> {
-	private static class SingletonHolder {
-		private static DeclarationTabState instance = new DeclarationTabState();
-	}
-
-	public static DeclarationTabState getInstance() {
-		return SingletonHolder.instance;
-	}
-
+public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectionState<DeclarationComposite> {
 	private final edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod> methodsListener = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<org.lgna.project.ast.UserMethod>() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<org.lgna.project.ast.UserMethod> e ) {
 		}
@@ -114,7 +106,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<Decl
 
 	private org.lgna.project.ast.NamedUserType type;
 
-	private DeclarationTabState() {
+	public DeclarationTabState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
 		TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addValueListener( this.isEmphasizingClassesListener );
@@ -122,7 +114,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<Decl
 	}
 
 	@Override
-	protected void fireChanged( org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+	protected void fireChanged( org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, IsAdjusting isAdjusting ) {
 		super.fireChanged( prevValue, nextValue, isAdjusting );
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			//pass
@@ -144,7 +136,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<Decl
 			if( missingItem != null ) {
 				org.lgna.project.ast.NamedUserType missingItemType = (org.lgna.project.ast.NamedUserType)missingItem.getType();
 				if( missingItemType != TypeState.getInstance().getValue() ) {
-					TypeState.getInstance().setValue( missingItemType );
+					TypeState.getInstance().setValueTransactionlessly( missingItemType );
 				}
 			}
 		}
@@ -152,34 +144,29 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<Decl
 
 	private void refresh() {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			this.pushAtomic();
-			try {
-				java.util.List<DeclarationComposite> items = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				if( this.type != null ) {
-					items.add( DeclarationComposite.getInstance( this.type ) );
-					final boolean isInitializeEventListenersDesired = false;
-					for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
-						if( method.isPublicAccess() || ( isInitializeEventListenersDesired && StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( method.getName() ) ) ) {
-							if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
-								items.add( DeclarationComposite.getInstance( method ) );
-							}
+			java.util.List<DeclarationComposite> items = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			if( this.type != null ) {
+				items.add( DeclarationComposite.getInstance( this.type ) );
+				final boolean isInitializeEventListenersDesired = false;
+				for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
+					if( method.isPublicAccess() || ( isInitializeEventListenersDesired && StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( method.getName() ) ) ) {
+						if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
+							items.add( DeclarationComposite.getInstance( method ) );
 						}
 					}
-					DeclarationComposite selection = DeclarationComposite.getInstance( this.type );
-					int index;
-					if( selection != null ) {
-						index = this.indexOf( selection );
-						index = Math.max( index, 0 );
-					} else {
-						index = this.getItemCount() - 1;
-						//index = -1;
-					}
-					this.setListData( index, items );
-				} else {
-					this.setSelectedIndex( -1 );
 				}
-			} finally {
-				this.popAtomic();
+				DeclarationComposite selection = DeclarationComposite.getInstance( this.type );
+				int index;
+				if( selection != null ) {
+					index = this.indexOf( selection );
+					index = Math.max( index, 0 );
+				} else {
+					index = this.getItemCount() - 1;
+					//index = -1;
+				}
+				this.setListData( index, items );
+			} else {
+				this.setSelectedIndex( -1 );
 			}
 		} else {
 			boolean isTypeRemovalNecessary = false;
@@ -190,7 +177,7 @@ public class DeclarationTabState extends org.lgna.croquet.TabSelectionState<Decl
 				}
 			}
 			if( isTypeRemovalNecessary ) {
-				DeclarationComposite selectedItem = this.getSelectedItem();
+				DeclarationComposite selectedItem = this.getValue();
 				int selectionIndex = -1;
 				java.util.List<DeclarationComposite> nextItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				for( DeclarationComposite item : items ) {

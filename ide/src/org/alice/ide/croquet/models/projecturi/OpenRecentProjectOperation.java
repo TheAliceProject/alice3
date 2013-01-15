@@ -74,7 +74,7 @@ public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOp
 	}
 
 	@Override
-	protected java.net.URI getURI( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		return this.uri;
+	protected org.alice.ide.projecturi.UriProjectPair getUriProjectPair( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+		return new org.alice.ide.projecturi.UriProjectPair( this.uri );
 	}
 }

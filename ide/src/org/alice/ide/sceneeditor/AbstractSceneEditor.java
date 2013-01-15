@@ -136,7 +136,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 	}
 
 	public org.lgna.project.ast.UserField getActiveSceneField() {
-		return SceneFieldListSelectionState.getInstance().getSelectedItem();
+		return SceneFieldListSelectionState.getInstance().getValue();
 	}
 
 	public org.lgna.project.ast.UserField getFieldForInstanceInJavaVM( Object javaInstance ) {
@@ -282,17 +282,19 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 
 	public org.lgna.project.ast.NamedUserType getActiveSceneType()
 	{
-		org.lgna.project.ast.AbstractType type = this.getActiveSceneField().getValueType();
-		if( type instanceof org.lgna.project.ast.NamedUserType )
-		{
-			return (org.lgna.project.ast.NamedUserType)type;
+		org.lgna.project.ast.UserField field = this.getActiveSceneField();
+		if( field != null ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
+			if( type instanceof org.lgna.project.ast.NamedUserType ) {
+				return (org.lgna.project.ast.NamedUserType)type;
+			}
 		}
 		return null;
 	}
 
 	public org.lgna.project.virtualmachine.UserInstance getActiveSceneInstance()
 	{
-		org.lgna.project.ast.UserField activeSceneField = SceneFieldListSelectionState.getInstance().getSelectedItem();
+		org.lgna.project.ast.UserField activeSceneField = SceneFieldListSelectionState.getInstance().getValue();
 		return this.mapSceneFieldToInstance.get( activeSceneField );
 	}
 

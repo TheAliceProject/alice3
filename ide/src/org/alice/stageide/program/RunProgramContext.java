@@ -55,9 +55,9 @@ public class RunProgramContext extends ProgramContext {
 		this( getUpToDateProgramTypeFromActiveIde() );
 	}
 
-	public void initializeInContainer( java.awt.Container container ) {
+	public void initializeInContainer( org.lgna.story.implementation.ProgramImp.AwtContainerInitializer awtContainerInitializer ) {
 		this.disableRendering();
-		this.getProgramImp().initializeInAwtContainer( container );
+		this.getProgramImp().initializeInAwtContainer( awtContainerInitializer );
 	}
 
 	public java.awt.Container getContainer() {

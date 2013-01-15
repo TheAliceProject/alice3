@@ -84,7 +84,7 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
 				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 				if( method instanceof org.lgna.project.ast.UserMethod ) {
-					rv.add( org.alice.ide.declarationseditor.DeclarationTabState.getInstance().getItemSelectionOperation( method ).getMenuItemPrepModel() );
+					rv.add( org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectionOperation( method ).getMenuItemPrepModel() );
 				}
 			}
 		}
@@ -100,14 +100,13 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 				public void run() {
 					StringBuilder sb = new StringBuilder();
 					try {
-						java.util.Locale locale = null;
-						sb.append( statement.getRepr( locale ) );
+						org.lgna.project.ast.NodeUtilities.safeAppendRepr( sb, statement );
 					} catch( Throwable t ) {
 						sb.append( statement );
 					}
 					sb.append( ";" );
 					sb.append( statement.getId() );
-					org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "A popup menu has been requested for a statement without a parent.", sb.toString() ).getOperation().fire();
+					org.alice.ide.issue.croquet.AnomalousSituationComposite.createInstance( "Oh no!  A popup menu has been requested for a statement without a parent.", sb.toString() ).getOperation().fire();
 				}
 			} );
 			//throw new org.lgna.croquet.CancelException();
