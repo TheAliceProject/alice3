@@ -52,7 +52,7 @@ public class TreeUtilities {
 
 	private static ClassHierarchyBasedResourceNode treeBasedOnClassHierarchy;
 	private static ThemeBasedResourceNode treeBasedOnTheme;
-	private static ThemeBasedResourceNode treeBasedOnGroup;
+	private static GroupBasedResourceNode treeBasedOnGroup;
 
 	private static ClassHierarchyBasedResourceNode createNode( org.lgna.story.resourceutilities.ModelResourceTreeNode source, ResourceKey key ) {
 		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -139,7 +139,7 @@ public class TreeUtilities {
 	}
 
 	private static void addGroupNode( String groupTag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> groupNodes, java.util.Map<String, ResourceNode> mapGroupTagToNode ) {
-		java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
+		java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories;
 		if( isThemeName( groupTag ) ) {
 			iconFactories = java.util.Collections.emptyList();
 		} else {
@@ -148,12 +148,9 @@ public class TreeUtilities {
 				ResourceKey resourceKey = resourceNode.getResourceKey();
 				//todo
 				org.lgna.croquet.icon.IconFactory iconFactory = resourceKey.getIconFactory();
-				if( iconFactory instanceof org.lgna.croquet.icon.ImageIconFactory ) {
-					iconFactories.add( iconFactory );
-				} else if( iconFactory instanceof org.alice.stageide.icons.EnumConstantsIconFactory ) {
-					org.alice.stageide.icons.EnumConstantsIconFactory enumConstantsIconFactory = (org.alice.stageide.icons.EnumConstantsIconFactory)iconFactory;
-					iconFactories.add( enumConstantsIconFactory.getIconFactories().get( 0 ) );
-
+				if( iconFactory instanceof org.lgna.croquet.icon.AbstractImageIconFactory ) {
+					org.lgna.croquet.icon.AbstractImageIconFactory imageIconFactory = (org.lgna.croquet.icon.AbstractImageIconFactory)iconFactory;
+					iconFactories.add( imageIconFactory );
 				}
 				if( iconFactories.size() == 5 ) {
 					break;
@@ -225,7 +222,7 @@ public class TreeUtilities {
 			}
 		}
 		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( themeNodes ) );
-		treeBasedOnGroup = new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( groupNodes ) );
+		treeBasedOnGroup = new GroupBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( groupNodes ) );
 	}
 
 	public static ThemeBasedResourceNode getTreeBasedOnTheme() {
@@ -237,7 +234,7 @@ public class TreeUtilities {
 		return treeBasedOnTheme;
 	}
 
-	public static ThemeBasedResourceNode getTreeBasedOnGroup() {
+	public static GroupBasedResourceNode getTreeBasedOnGroup() {
 		if( treeBasedOnGroup != null ) {
 			//pass
 		} else {

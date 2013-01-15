@@ -40,33 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.lgna.croquet.icon;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
-	private final java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
+public class TrimmedIcon implements javax.swing.Icon {
+	private final javax.swing.Icon icon;
+	private final int width;
+	private final int height;
 
-	public EnumConstantsIconFactory( java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
-		this.iconFactories = iconFactories;
+	public TrimmedIcon( javax.swing.Icon icon, int width, int height ) {
+		this.icon = icon;
+		this.width = width;
+		this.height = height;
 	}
 
-	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new EnumConstantsIcon( size, this.iconFactories );
+	public int getIconWidth() {
+		return this.width;
 	}
 
-	public java.util.List<org.lgna.croquet.icon.IconFactory> getIconFactories() {
-		return this.iconFactories;
+	public int getIconHeight() {
+		return this.height;
 	}
 
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		if( this.iconFactories.size() > 0 ) {
-			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		//		g.setColor( java.awt.Color.RED );
+		//		g.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
+		this.icon.paintIcon( c, g, x, y );
 	}
 }
