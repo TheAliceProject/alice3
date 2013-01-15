@@ -8,9 +8,6 @@ import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.MultipleGradientPaint;
-import java.awt.MultipleGradientPaint.ColorSpaceType;
-import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
@@ -25,16 +22,48 @@ public class ClipboardIcon implements javax.swing.Icon {
 
 	private float origAlpha = 1.0f;
 
-	private static java.awt.Paint new_LinearGradientPaint( Point2D start, Point2D end, float[] fractions, Color[] colors, CycleMethod cycleMethod, ColorSpaceType colorSpace, AffineTransform gradientTransform ) {
-		assert cycleMethod == java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE : cycleMethod;
-		assert colorSpace == java.awt.MultipleGradientPaint.ColorSpaceType.SRGB : colorSpace;
-		return new java.awt.LinearGradientPaint( start, end, fractions, colors, cycleMethod, colorSpace, gradientTransform );
+	//	private static java.awt.Paint new_LinearGradientPaint( Point2D start, Point2D end, float[] fractions, Color[] colors, CycleMethod cycleMethod, ColorSpaceType colorSpace, AffineTransform gradientTransform ) {
+	//		assert cycleMethod == java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE : cycleMethod;
+	//		assert colorSpace == java.awt.MultipleGradientPaint.ColorSpaceType.SRGB : colorSpace;
+	//		return new java.awt.LinearGradientPaint( start, end, fractions, colors, cycleMethod, colorSpace, gradientTransform );
+	//	}
+	//
+	//	private static java.awt.Paint new_RadialGradientPaint( Point2D center, float radius, Point2D focus, float[] fractions, Color[] colors, CycleMethod cycleMethod, ColorSpaceType colorSpace, AffineTransform gradientTransform ) {
+	//		assert cycleMethod == java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE : cycleMethod;
+	//		assert colorSpace == java.awt.MultipleGradientPaint.ColorSpaceType.SRGB : colorSpace;
+	//		return new java.awt.RadialGradientPaint( center, radius, focus, fractions, colors, cycleMethod, colorSpace, gradientTransform );
+	//	}
+
+	private static java.awt.Paint new_LinearGradientPaint( Point2D start, Point2D end, float[] fractions, Color[] colors, AffineTransform gradientTransform ) {
+		try {
+			Class<?> cls = Class.forName( "java.awt.LinearGradientPaint" );
+			Class<?> cycleMethodCls = Class.forName( "java.awt.MultipleGradientPaint$CycleMethod" );
+			Class<?> colorSpaceTypeCls = Class.forName( "java.awt.MultipleGradientPaint$ColorSpaceType" );
+			final Object NO_CYCLE = cycleMethodCls.getField( "NO_CYCLE" ).get( null );
+			final Object SRGB = colorSpaceTypeCls.getField( "SRGB" ).get( null );
+			java.lang.reflect.Constructor<?> cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, Point2D.class, Point2D.class, float[].class, Color[].class, cycleMethodCls, colorSpaceTypeCls, AffineTransform.class );
+			return (java.awt.Paint)cnstrctr.newInstance( start, end, fractions, colors, NO_CYCLE, SRGB, gradientTransform );
+		} catch( Throwable t ) {
+			//t.printStackTrace();
+			return colors[ 0 ];
+			//		return new java.awt.LinearGradientPaint( start, end, fractions, colors, java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE, java.awt.MultipleGradientPaint.ColorSpaceType.SRGB, gradientTransform );
+		}
 	}
 
-	private static java.awt.Paint new_RadialGradientPaint( Point2D center, float radius, Point2D focus, float[] fractions, Color[] colors, CycleMethod cycleMethod, ColorSpaceType colorSpace, AffineTransform gradientTransform ) {
-		assert cycleMethod == java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE : cycleMethod;
-		assert colorSpace == java.awt.MultipleGradientPaint.ColorSpaceType.SRGB : colorSpace;
-		return new java.awt.RadialGradientPaint( center, radius, focus, fractions, colors, cycleMethod, colorSpace, gradientTransform );
+	private static java.awt.Paint new_RadialGradientPaint( Point2D center, float radius, Point2D focus, float[] fractions, Color[] colors, AffineTransform gradientTransform ) {
+		try {
+			Class<?> cls = Class.forName( "java.awt.RadialGradientPaint" );
+			Class<?> cycleMethodCls = Class.forName( "java.awt.MultipleGradientPaint$CycleMethod" );
+			Class<?> colorSpaceTypeCls = Class.forName( "java.awt.MultipleGradientPaint$ColorSpaceType" );
+			final Object NO_CYCLE = cycleMethodCls.getField( "NO_CYCLE" ).get( null );
+			final Object SRGB = colorSpaceTypeCls.getField( "SRGB" ).get( null );
+			java.lang.reflect.Constructor<?> cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( cls, Point2D.class, Float.TYPE, Point2D.class, float[].class, Color[].class, cycleMethodCls, colorSpaceTypeCls, AffineTransform.class );
+			return (java.awt.Paint)cnstrctr.newInstance( center, radius, focus, fractions, colors, NO_CYCLE, SRGB, gradientTransform );
+		} catch( Throwable t ) {
+			//t.printStackTrace();
+			return colors[ 0 ];
+			//return new java.awt.RadialGradientPaint( center, radius, focus, fractions, colors, java.awt.MultipleGradientPaint.CycleMethod.NO_CYCLE, java.awt.MultipleGradientPaint.ColorSpaceType.SRGB, gradientTransform );
+		}
 	}
 
 	/**
@@ -79,17 +108,23 @@ public class ClipboardIcon implements javax.swing.Icon {
 		RoundRectangle2D.Double shape2 = new RoundRectangle2D.Double( 305.5, -92.5, 29.999996185302734, 31.999998092651367, 5.0, 5.0 );
 
 		Color boardColor = this.dragReceptorState.getBoardColor();
-		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { boardColor, new Color( 199, 155, 85, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
+		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 25.5, -13.625 ), new Point2D.Double( 26.0, -39.125 ), new float[] { 0.0f, 1.0f }, new Color[] { boardColor, new Color( 199, 155, 85, 255 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
 
 		g.fill( shape2 );
-		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 18.39735221862793, -37.160858154296875 ), new Point2D.Double( 10.831841468811035, 4.028111457824707 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 143, 89, 2, 255 ), new Color( 233, 185, 110, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -50.0f ) ) );
+		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 18.39735221862793, -37.160858154296875 ), new Point2D.Double( 10.831841468811035, 4.028111457824707 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 143, 89, 2, 255 ), new Color( 233, 185, 110, 255 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -50.0f ) ) );
 		g.setStroke( new BasicStroke( 1.0f, 0, 0, 4.0f, null, 0.0f ) );
 		g.draw( shape2 );
 	}
 
 	private void paintShapeNode_0_0_2_0_0_3( Graphics2D g ) {
 		RoundRectangle2D.Double shape3 = new RoundRectangle2D.Double( 306.5, -91.5, 28.00001335144043, 30.000003814697266, 3.0, 3.0 );
-		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 14.787761688232422, -9.017683982849121 ), new Point2D.Double( 14.787761688232422, -69.46895599365234 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 255, 255, 255, 255 ), new Color( 255, 255, 255, 0 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
+		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 14.787761688232422, -9.017683982849121 ), new Point2D.Double( 14.787761688232422, -69.46895599365234 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 255, 255, 255, 255 ), new Color( 255, 255, 255, 0 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, -52.0f ) ) );
 		g.setStroke( new BasicStroke( 0.99999994f, 0, 0, 4.0f, null, 0.0f ) );
 		g.draw( shape3 );
 	}
@@ -152,7 +187,9 @@ public class ClipboardIcon implements javax.swing.Icon {
 		shape5.curveTo( -36.59162f, 4.9814777f, -35.56721f, 4.0387044f, -34.29474f, 4.0387044f );
 		shape5.closePath();
 		Color paperColor = this.dragReceptorState.getPaperColor();
-		g.setPaint( new_RadialGradientPaint( new Point2D.Double( -117.93485260009766, 5.198304176330566 ), 18.000002f, new Point2D.Double( -117.93485260009766, 5.198304176330566 ), new float[] { 0.0f, 1.0f }, new Color[] { paperColor, new Color( 211, 215, 207, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 3.19461989402771f, 0.0f, 0.0f, 1.5470696687698364f, 365.3152770996094f, 23.795835494995117f ) ) );
+		g.setPaint( new_RadialGradientPaint( new Point2D.Double( -117.93485260009766, 5.198304176330566 ), 18.000002f, new Point2D.Double( -117.93485260009766, 5.198304176330566 ), new float[] { 0.0f, 1.0f }, new Color[] { paperColor, new Color( 211, 215, 207, 255 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 3.19461989402771f, 0.0f, 0.0f, 1.5470696687698364f, 365.3152770996094f, 23.795835494995117f ) ) );
 		g.fill( shape5 );
 	}
 
@@ -176,7 +213,9 @@ public class ClipboardIcon implements javax.swing.Icon {
 		shape6.lineTo( -36.59162f, 6.152546f );
 		shape6.curveTo( -36.59162f, 4.9814777f, -35.56721f, 4.0387044f, -34.29474f, 4.0387044f );
 		shape6.closePath();
-		g.setPaint( new_LinearGradientPaint( new Point2D.Double( -367.9520568847656, 16.063671112060547 ), new Point2D.Double( -393.3939208984375, -46.69970703125 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 85, 87, 83, 255 ), new Color( 186, 189, 182, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 356.0f, 50.0f ) ) );
+		g.setPaint( new_LinearGradientPaint( new Point2D.Double( -367.9520568847656, 16.063671112060547 ), new Point2D.Double( -393.3939208984375, -46.69970703125 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 85, 87, 83, 255 ), new Color( 186, 189, 182, 255 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 356.0f, 50.0f ) ) );
 		g.setStroke( new BasicStroke( 1.5393476f, 0, 0, 4.0f, null, 0.0f ) );
 		g.draw( shape6 );
 	}
@@ -207,9 +246,13 @@ public class ClipboardIcon implements javax.swing.Icon {
 		shape8.lineTo( 160.49973f, 86.5f );
 		shape8.lineTo( 165.49973f, 81.5f );
 		shape8.closePath();
-		g.setPaint( new_RadialGradientPaint( new Point2D.Double( 328.5484619140625, 85.5484619140625 ), 3.0f, new Point2D.Double( 328.5484619140625, 85.5484619140625 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 255, 255, 255, 255 ), new Color( 136, 138, 133, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 0.6394925117492676f, 0.0f, 0.0f, 0.6394924521446228f, -48.60456085205078f, 27.792404174804688f ) ) );
+		g.setPaint( new_RadialGradientPaint( new Point2D.Double( 328.5484619140625, 85.5484619140625 ), 3.0f, new Point2D.Double( 328.5484619140625, 85.5484619140625 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 255, 255, 255, 255 ), new Color( 136, 138, 133, 255 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 0.6394925117492676f, 0.0f, 0.0f, 0.6394924521446228f, -48.60456085205078f, 27.792404174804688f ) ) );
 		g.fill( shape8 );
-		g.setPaint( new_RadialGradientPaint( new Point2D.Double( 327.53125, 84.5 ), 3.0f, new Point2D.Double( 327.53125, 84.5 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 211, 215, 207, 255 ), new Color( 85, 87, 83, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.9562286138534546f, 0.0f, 0.0f, 1.9562286138534546f, -480.1950378417969f, -83.80131530761719f ) ) );
+		g.setPaint( new_RadialGradientPaint( new Point2D.Double( 327.53125, 84.5 ), 3.0f, new Point2D.Double( 327.53125, 84.5 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 211, 215, 207, 255 ), new Color( 85, 87, 83, 255 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 1.9562286138534546f, 0.0f, 0.0f, 1.9562286138534546f, -480.1950378417969f, -83.80131530761719f ) ) );
 		g.setStroke( new BasicStroke( 1.0f, 0, 1, 4.0f, null, 0.0f ) );
 		g.draw( shape8 );
 	}
@@ -226,7 +269,9 @@ public class ClipboardIcon implements javax.swing.Icon {
 		shape9.lineTo( 142.49973f, 61.07282f );
 		shape9.curveTo( 142.49973f, 60.755478f, 142.7552f, 60.5f, 143.07254f, 60.5f );
 		shape9.closePath();
-		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 325.5882263183594, 82.02571105957031 ), new Point2D.Double( 333.8441162109375, 90.2815933227539 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 255, 255, 255, 255 ), new Color( 255, 255, 255, 0 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -167.00027465820312f, -3.0f ) ) );
+		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 325.5882263183594, 82.02571105957031 ), new Point2D.Double( 333.8441162109375, 90.2815933227539 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 255, 255, 255, 255 ), new Color( 255, 255, 255, 0 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, -167.00027465820312f, -3.0f ) ) );
 		g.setStroke( new BasicStroke( 0.99999946f, 0, 0, 4.0f, null, 0.0f ) );
 		g.draw( shape9 );
 	}
@@ -261,9 +306,13 @@ public class ClipboardIcon implements javax.swing.Icon {
 		shape11.lineTo( 311.89008f, 62.66503f );
 		shape11.curveTo( 311.89008f, 62.66503f, 311.83807f, 64.46263f, 312.72192f, 64.50683f );
 		shape11.closePath();
-		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 24.635435104370117, 3.519411563873291 ), new Point2D.Double( 24.635435104370117, 11.540999412536621 ), new float[] { 0.0f, 0.13349205f, 0.53102833f, 0.78739f, 1.0f }, new Color[] { new Color( 186, 189, 182, 255 ), new Color( 238, 238, 236, 255 ), new Color( 186, 189, 182, 255 ), new Color( 255, 255, 255, 255 ), new Color( 156, 152, 138, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, 52.0f ) ) );
+		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 24.635435104370117, 3.519411563873291 ), new Point2D.Double( 24.635435104370117, 11.540999412536621 ), new float[] { 0.0f, 0.13349205f, 0.53102833f, 0.78739f, 1.0f }, new Color[] { new Color( 186, 189, 182, 255 ), new Color( 238, 238, 236, 255 ), new Color( 186, 189, 182, 255 ), new Color( 255, 255, 255, 255 ), new Color( 156, 152, 138, 255 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, 52.0f ) ) );
 		g.fill( shape11 );
-		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 32.91161346435547, 16.214149475097656 ), new Point2D.Double( 31.417892456054688, 4.031081199645996 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 85, 87, 83, 255 ), new Color( 186, 189, 182, 255 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, 50.0f ) ) );
+		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 32.91161346435547, 16.214149475097656 ), new Point2D.Double( 31.417892456054688, 4.031081199645996 ), new float[] { 0.0f, 1.0f }, new Color[] { new Color( 85, 87, 83, 255 ), new Color( 186, 189, 182, 255 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, 50.0f ) ) );
 		g.setStroke( new BasicStroke( 1.0f, 0, 0, 4.0f, null, 0.0f ) );
 		g.draw( shape11 );
 	}
@@ -286,7 +335,9 @@ public class ClipboardIcon implements javax.swing.Icon {
 		shape13.lineTo( 317.0f, 57.0f );
 		shape13.lineTo( 316.0f, 60.0f );
 		shape13.closePath();
-		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 24.49800682067871, 3.9980428218841553 ), new Point2D.Double( 24.49800682067871, 8.0 ), new float[] { 0.0f, 1.0f }, new Color[] { Color.WHITE, new Color( 255, 255, 255, 0 ) }, MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, 52.0f ) ) );
+		g.setPaint( new_LinearGradientPaint( new Point2D.Double( 24.49800682067871, 3.9980428218841553 ), new Point2D.Double( 24.49800682067871, 8.0 ), new float[] { 0.0f, 1.0f }, new Color[] { Color.WHITE, new Color( 255, 255, 255, 0 ) },
+				//MultipleGradientPaint.CycleMethod.NO_CYCLE, MultipleGradientPaint.ColorSpaceType.SRGB, 
+				new AffineTransform( 1.0f, 0.0f, 0.0f, 1.0f, 296.0f, 52.0f ) ) );
 		g.fill( shape13 );
 	}
 
