@@ -71,9 +71,13 @@ public abstract class ProjectPerspective extends org.lgna.croquet.AbstractPerspe
 	public final java.util.List<org.lgna.croquet.DropReceptor> createListOfPotentialDropReceptors( org.alice.ide.croquet.models.IdeDragModel dragModel ) {
 		java.util.List<org.lgna.croquet.DropReceptor> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.addPotentialDropReceptors( rv, dragModel );
-		org.lgna.croquet.DropReceptor dropReceptorComposite = org.alice.ide.clipboard.Clipboard.SINGLETON.getDropReceptor();
-		if( dropReceptorComposite.isPotentiallyAcceptingOf( dragModel ) ) {
-			rv.add( dropReceptorComposite );
+		org.lgna.croquet.DropReceptor recycleBinDropReceptor = org.alice.ide.recyclebin.RecycleBin.SINGLETON.getDropReceptor();
+		if( recycleBinDropReceptor.isPotentiallyAcceptingOf( dragModel ) ) {
+			rv.add( recycleBinDropReceptor );
+		}
+		org.lgna.croquet.DropReceptor clipboardDropReceptor = org.alice.ide.clipboard.Clipboard.SINGLETON.getDropReceptor();
+		if( clipboardDropReceptor.isPotentiallyAcceptingOf( dragModel ) ) {
+			rv.add( clipboardDropReceptor );
 		}
 		return rv;
 	}

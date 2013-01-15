@@ -158,6 +158,7 @@ public class SearchTabView extends GalleryTabView {
 		this.filterTextField.setMinimumPreferredWidth( 320 );
 		this.filterTextField.setMaximumSizeClampedToPreferredSize( true );
 		this.filterTextField.scaleFont( 1.2f );
+		this.filterTextField.enableSelectAllWhenFocusGained();
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.filteredResourcesView ) {
 			@Override

@@ -57,21 +57,32 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		}
 	}
 
+	private final org.lgna.croquet.State.ValueListener<org.alice.stageide.modelresource.ResourceNode> treeListener = new org.lgna.croquet.State.ValueListener<org.alice.stageide.modelresource.ResourceNode>() {
+		public void changing( org.lgna.croquet.State<org.alice.stageide.modelresource.ResourceNode> state, org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.alice.stageide.modelresource.ResourceNode> state, org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue, boolean isAdjusting ) {
+			handleChanged( prevValue, nextValue );
+		}
+	};
+
+	private final java.util.Map<org.alice.stageide.modelresource.ResourceNode, Integer> mapNodeToHorizontalScrollPosition = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private final org.lgna.croquet.components.ScrollPane scrollPane;
+
 	public TreeOwningGalleryTabView( org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite ) {
 		super( composite );
 
 		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
-
 		ModelResourceDirectoryView view = new ModelResourceDirectoryView( state );
 
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
+		this.scrollPane = new org.lgna.croquet.components.ScrollPane( view ) {
 			@Override
 			protected edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug createJScrollPane() {
 				return new edu.cmu.cs.dennisc.javax.swing.components.HorizontalScrollBarPaintOmittingWhenAppropriateJScrollPane();
 			}
 		};
-		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		scrollPane.setBothScrollBarIncrements( 16, 160 );
+		this.scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
+		this.scrollPane.setBothScrollBarIncrements( 16, 160 );
 		org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
 				.vgap( PAD )
 				.pageStart( new org.lgna.croquet.components.TreePathViewController( state ) )
@@ -85,5 +96,38 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		panel.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
+		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
+		state.addValueListener( this.treeListener );
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		org.alice.stageide.gallerybrowser.TreeOwningGalleryTab composite = (org.alice.stageide.gallerybrowser.TreeOwningGalleryTab)this.getComposite();
+		org.alice.stageide.modelresource.ResourceNodeTreeSelectionState state = composite.getResourceNodeTreeSelectionState();
+		state.removeValueListener( this.treeListener );
+	}
+
+	private void handleChanged( org.alice.stageide.modelresource.ResourceNode prevValue, org.alice.stageide.modelresource.ResourceNode nextValue ) {
+		final javax.swing.JScrollBar jHorizontalScrollBar = this.scrollPane.getAwtComponent().getHorizontalScrollBar();
+		this.mapNodeToHorizontalScrollPosition.put( prevValue, jHorizontalScrollBar.getValue() );
+		Integer i = this.mapNodeToHorizontalScrollPosition.get( nextValue );
+		final int nextScrollPosition;
+		if( i != null ) {
+			nextScrollPosition = i;
+		} else {
+			nextScrollPosition = 0;
+		}
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				jHorizontalScrollBar.setValue( nextScrollPosition );
+			}
+		} );
 	}
 }

@@ -46,8 +46,8 @@ package org.lgna.croquet.components;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.Application;
 import org.lgna.croquet.BooleanState;
-import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.Operation;
+import org.lgna.croquet.TabSelectionState;
 
 /**
  * @author Dennis Cosgrove
@@ -427,8 +427,11 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
-	public FolderTabbedPane( ListSelectionState<E> model ) {
+	public FolderTabbedPane( TabSelectionState<E> model ) {
 		super( model );
+		for( org.lgna.croquet.TabComposite<?> card : model ) {
+			this.cardComposite.addCard( card );
+		}
 		this.cardComposite.getView().setBackgroundColor( null );
 		this.innerHeaderPanel.setBackgroundColor( null );
 		this.titlesPanel.setBackgroundColor( null );
@@ -474,14 +477,23 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	@Override
 	protected void handleValueChanged( final E card ) {
-		//		cardComposite.showCard( card );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: showCard", card );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				cardComposite.showCard( card );
+		if( cardComposite.getShowingCard() == card ) {
+			//pass
+		} else {
+			if( cardComposite.getCards().contains( card ) ) {
+				cardComposite.showCardRefrainingFromActivation( card );
+				this.repaint();
+			} else {
+				cardComposite.addCard( card );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note invoke later showCard", card );
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						cardComposite.showCardRefrainingFromActivation( card );
+						repaint();
+					}
+				} );
 			}
-		} );
-		this.repaint();
+		}
 	}
 
 	public JComponent<?> getHeaderLeadingComponent() {

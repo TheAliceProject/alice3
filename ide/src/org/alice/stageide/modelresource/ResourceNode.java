@@ -169,4 +169,11 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 	public int compareTo( org.alice.stageide.modelresource.ResourceNode other ) {
 		return this.getText().toLowerCase().compareTo( other.getText().toLowerCase() );
 	}
+
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( "key=" );
+		sb.append( this.resourceKey );
+	}
 }

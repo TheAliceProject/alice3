@@ -55,7 +55,7 @@ public class AddFieldCascade extends org.lgna.croquet.Cascade<ResourceNode> {
 
 	@Override
 	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.alice.stageide.modelresource.ResourceNode>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.alice.stageide.modelresource.ResourceNode>> completionStep, org.alice.stageide.modelresource.ResourceNode[] values ) {
-		values[ 0 ].getLeftButtonClickModel().fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
+		values[ 0 ].getDropModel( null, this.dropSite ).fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 		return null;
 	}
 }

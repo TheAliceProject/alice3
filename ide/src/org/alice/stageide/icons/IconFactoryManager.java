@@ -92,7 +92,8 @@ public class IconFactoryManager {
 			} else {
 				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
 					javax.swing.ImageIcon imageIcon = getIcon( modelResourceCls );
-					return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
+					//return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
+					return new org.lgna.croquet.icon.ImageIconFactory( imageIcon );
 				}
 			}
 			if( modelResourceName != null ) {
@@ -118,7 +119,7 @@ public class IconFactoryManager {
 								break;
 							}
 						}
-						return new EnumConstantsIconFactory( constants.length, iconFactories );
+						return new EnumConstantsIconFactory( iconFactories );
 					}
 				}
 			}

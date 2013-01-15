@@ -50,7 +50,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	private static final int INTRASTICIAL_MIDDLE = 1;
 	public static final int INTRASTICIAL_PAD = ( INTRASTICIAL_MIDDLE * 2 ) + 1;
 
-	private final org.alice.ide.codeeditor.EmptyStatementListAffordanceBorder border;
+	private final org.alice.ide.codeeditor.StatementListBorder statementListBorder;
 
 	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property, boolean isRoot ) {
 		super( factory, property, javax.swing.BoxLayout.PAGE_AXIS );
@@ -83,9 +83,13 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		} else {
 			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() );
 		}
-		this.border = new org.alice.ide.codeeditor.EmptyStatementListAffordanceBorder( factory, alternateListProperty, insets );
+		this.statementListBorder = new org.alice.ide.codeeditor.StatementListBorder( factory, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
 
-		this.setBorder( this.border );
+		this.setBorder( this.statementListBorder );
+	}
+
+	public org.alice.ide.codeeditor.StatementListBorder getStatementListBorder() {
+		return this.statementListBorder;
 	}
 
 	public boolean isAcceptingOfAddEventListenerMethodInvocationStatements() {
@@ -116,33 +120,35 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 			public void paint( java.awt.Graphics g ) {
 				super.paint( g );
 				int i = StatementListPropertyView.this.currentPotentialDropIndex;
-				final int N = StatementListPropertyView.this.getProperty().size();
-				if( ( N == this.getComponentCount() ) && ( i >= 0 ) && ( i < N ) ) {
-					if( ( i != -1 ) && ( N > 0 ) ) {
-						int y;
-						if( i == N ) {
-							java.awt.Component lastComponent = this.getComponent( N - 1 );
-							y = lastComponent.getY();
-							y += lastComponent.getHeight();
-						} else {
-							java.awt.Component iComponent = this.getComponent( i );
-							y = iComponent.getY();
-							y -= INTRASTICIAL_PAD;
-						}
-						int x0 = 0;
-						int x1 = INDENT;
-						int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
-						int y0 = yC - INDENT;
-						int y1 = yC + INDENT;
+				if( i != -1 ) {
+					final int N = StatementListPropertyView.this.getProperty().size();
+					if( ( N == this.getComponentCount() ) && ( i >= 0 ) && ( i < N ) ) {
+						if( ( i != -1 ) && ( N > 0 ) ) {
+							int y;
+							if( i == N ) {
+								java.awt.Component lastComponent = this.getComponent( N - 1 );
+								y = lastComponent.getY();
+								y += lastComponent.getHeight();
+							} else {
+								java.awt.Component iComponent = this.getComponent( i );
+								y = iComponent.getY();
+								y -= INTRASTICIAL_PAD;
+							}
+							int x0 = 0;
+							int x1 = INDENT;
+							int yC = Math.max( y + INTRASTICIAL_MIDDLE, 1 );
+							int y0 = yC - INDENT;
+							int y1 = yC + INDENT;
 
-						int w = this.getWidth();
-						int[] xPoints = new int[] { x1, x0, x0 };
-						int[] yPoints = new int[] { yC, y1, y0 };
-						g.setColor( FEEDBACK_COLOR );
-						g.fillRect( 0, y, w, INTRASTICIAL_PAD );
-						g.fillPolygon( xPoints, yPoints, 3 );
-						//g.setColor( java.awt.Color.YELLOW );
-						//g.fillRect( 1, yC, w-2, 1 );
+							int w = this.getWidth();
+							int[] xPoints = new int[] { x1, x0, x0 };
+							int[] yPoints = new int[] { yC, y1, y0 };
+							g.setColor( FEEDBACK_COLOR );
+							g.fillRect( 0, y, w, INTRASTICIAL_PAD );
+							g.fillPolygon( xPoints, yPoints, 3 );
+							//g.setColor( java.awt.Color.YELLOW );
+							//g.fillRect( 1, yC, w-2, 1 );
+						}
 					}
 				}
 			}
@@ -176,7 +182,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		} else {
 			this.setCurrentPotentialDropIndex( -1 );
 		}
-		this.border.setDrawingDesired( isCurrentUnder == false );
+		this.statementListBorder.setDrawingDesired( isCurrentUnder == false );
 		//		if( this.getComponentCount() > 0 ) {
 		//			org.lgna.croquet.components.Component<?> component0 = this.getComponent( 0 );
 		//			if( component0 instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance ) {
@@ -306,8 +312,8 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		return 16;
 	}
 
-	public boolean isFigurativelyEmpty() {
-		return ( this.getComponentCount() == 0 ) || ( this.getComponent( 0 ) instanceof org.alice.ide.codeeditor.EmptyStatementListAffordance );
+	public boolean isEmpty() {
+		return this.getComponentCount() == 0;
 	}
 
 	private Integer getCenterYOfComponentAt( int i ) {
@@ -320,7 +326,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 	}
 
 	public int calculateIndex( java.awt.Point p ) {
-		if( isFigurativelyEmpty() ) {
+		if( isEmpty() ) {
 			return 0;
 		} else {
 			for( int i = 0; i < this.getComponentCount(); i++ ) {
@@ -342,7 +348,7 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 	public BoundInformation calculateYBounds( int index ) {
 		final int N;
-		if( isFigurativelyEmpty() ) {
+		if( isEmpty() ) {
 			N = 0;
 		} else {
 			N = this.getComponentCount();

@@ -50,7 +50,7 @@ public abstract class JointIdState extends org.lgna.croquet.CustomItemStateWithI
 	private org.lgna.story.resources.JointId value;
 
 	public JointIdState( java.util.UUID id ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, test.ik.croquet.codecs.JointIdCodec.SINGLETON );
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, id, null, test.ik.croquet.codecs.JointIdCodec.SINGLETON );
 	}
 
 	@Override

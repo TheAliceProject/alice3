@@ -46,6 +46,17 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class BillboardIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static BillboardIconFactory instance = new BillboardIconFactory();
+	}
+
+	public static BillboardIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private BillboardIconFactory() {
+	}
+
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new BillboardIcon( size );

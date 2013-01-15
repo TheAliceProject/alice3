@@ -46,6 +46,17 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class TextModelIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static TextModelIconFactory instance = new TextModelIconFactory();
+	}
+
+	public static TextModelIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private TextModelIconFactory() {
+	}
+
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new TextModelIcon( size );

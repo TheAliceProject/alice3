@@ -65,6 +65,20 @@ public class HtmlMultiLineLabel extends MultiLineLabel<javax.swing.JEditorPane> 
 		String text = this.getText();
 		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", text ) {
 			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+			}
+
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				java.awt.Dimension rv = super.getMaximumSize();
+				if( HtmlMultiLineLabel.this.isMaximumSizeClampedToPreferredSize() ) {
+					rv.setSize( this.getPreferredSize() );
+				}
+				return rv;
+			}
+
+			@Override
 			public java.awt.Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
 			}

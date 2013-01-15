@@ -138,7 +138,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 	@Override
 	protected void setValueOnUI( org.alice.ide.instancefactory.InstanceFactory value )
 	{
-		edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "NOT SUPPORTED" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "NOT SUPPORTED", this, value );
 
 	}
 

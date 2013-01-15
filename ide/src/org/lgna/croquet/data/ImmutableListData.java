@@ -87,7 +87,12 @@ public final class ImmutableListData<T> extends ListData<T> {
 	}
 
 	@Override
-	public void internalSetItems( java.util.Collection<T> items ) {
+	public void internalSetAllItems( java.util.Collection<T> items ) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void internalSetItemAt( int index, T item ) {
 		throw new UnsupportedOperationException();
 	}
 

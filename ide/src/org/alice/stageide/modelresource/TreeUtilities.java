@@ -52,6 +52,7 @@ public class TreeUtilities {
 
 	private static ClassHierarchyBasedResourceNode treeBasedOnClassHierarchy;
 	private static ThemeBasedResourceNode treeBasedOnTheme;
+	private static ThemeBasedResourceNode treeBasedOnGroup;
 
 	private static ClassHierarchyBasedResourceNode createNode( org.lgna.story.resourceutilities.ModelResourceTreeNode source, ResourceKey key ) {
 		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -131,19 +132,51 @@ public class TreeUtilities {
 		}
 	}
 
-	private static void addGroupNode( String groupTag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> groupNodes, java.util.Map<String, ThemeBasedResourceNode> mapGroupTagToNode ) {
-		GroupTagKey groupTagKey = new GroupTagKey( groupTag );
-		ThemeBasedResourceNode dstNode = new ThemeBasedResourceNode( groupTagKey, dstChildNodes );
+	private static java.util.Set<String> themeNames = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "arctic" );
+
+	public static boolean isThemeName( String name ) {
+		return themeNames.contains( name );
+	}
+
+	private static void addGroupNode( String groupTag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> groupNodes, java.util.Map<String, ResourceNode> mapGroupTagToNode ) {
+		java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
+		if( isThemeName( groupTag ) ) {
+			iconFactories = java.util.Collections.emptyList();
+		} else {
+			iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( ResourceNode resourceNode : dstChildNodes ) {
+				ResourceKey resourceKey = resourceNode.getResourceKey();
+				//todo
+				org.lgna.croquet.icon.IconFactory iconFactory = resourceKey.getIconFactory();
+				if( iconFactory instanceof org.lgna.croquet.icon.ImageIconFactory ) {
+					iconFactories.add( iconFactory );
+				} else if( iconFactory instanceof org.alice.stageide.icons.EnumConstantsIconFactory ) {
+					org.alice.stageide.icons.EnumConstantsIconFactory enumConstantsIconFactory = (org.alice.stageide.icons.EnumConstantsIconFactory)iconFactory;
+					iconFactories.add( enumConstantsIconFactory.getIconFactories().get( 0 ) );
+
+				}
+				if( iconFactories.size() == 5 ) {
+					break;
+				}
+			}
+		}
+		GroupTagKey groupTagKey = new GroupTagKey( groupTag, iconFactories );
+		ResourceNode dstNode;
+		if( isThemeName( groupTag ) ) {
+			dstNode = new ThemeBasedResourceNode( groupTagKey, dstChildNodes );
+		} else {
+			dstNode = new GroupBasedResourceNode( groupTagKey, dstChildNodes );
+		}
 		groupNodes.add( dstNode );
 		mapGroupTagToNode.put( groupTag, dstNode );
 	}
 
-	private static ThemeBasedResourceNode createTreeBasedOnTheme() {
+	private static void createTreesBasedOnThemeAndGroup() {
 		ResourceNode rootClassHierarchy = getTreeBasedOnClassHierarchy();
 		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
 		buildMap( map, rootClassHierarchy );
 
-		java.util.Map<String, ThemeBasedResourceNode> mapGroupTagToNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.Map<String, ResourceNode> mapGroupTagToNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 		java.util.List<ResourceNode> groupNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
@@ -171,7 +204,7 @@ public class TreeUtilities {
 			int lastIndex = groupTag.lastIndexOf( GroupTagKey.SEPARATOR );
 			if( lastIndex != -1 ) {
 				String parentGroupTag = groupTag.substring( 0, lastIndex );
-				ThemeBasedResourceNode parentToBeNode = mapGroupTagToNode.get( parentGroupTag );
+				ResourceNode parentToBeNode = mapGroupTagToNode.get( parentGroupTag );
 				if( parentToBeNode != null ) {
 					listIterator.remove();
 					parentToBeNode.addNodeChild( 0, resourceNode );
@@ -181,15 +214,35 @@ public class TreeUtilities {
 			}
 		}
 		java.util.Collections.sort( groupNodes );
-		return new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( groupNodes ) );
+
+		java.util.List<ResourceNode> themeNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.ListIterator<ResourceNode> listIteratorThemeGroup = groupNodes.listIterator();
+		while( listIteratorThemeGroup.hasNext() ) {
+			ResourceNode resourceNode = listIteratorThemeGroup.next();
+			if( resourceNode instanceof ThemeBasedResourceNode ) {
+				listIteratorThemeGroup.remove();
+				themeNodes.add( resourceNode );
+			}
+		}
+		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( themeNodes ) );
+		treeBasedOnGroup = new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( groupNodes ) );
 	}
 
 	public static ThemeBasedResourceNode getTreeBasedOnTheme() {
 		if( treeBasedOnTheme != null ) {
 			//pass
 		} else {
-			treeBasedOnTheme = createTreeBasedOnTheme();
+			createTreesBasedOnThemeAndGroup();
 		}
 		return treeBasedOnTheme;
+	}
+
+	public static ThemeBasedResourceNode getTreeBasedOnGroup() {
+		if( treeBasedOnGroup != null ) {
+			//pass
+		} else {
+			createTreesBasedOnThemeAndGroup();
+		}
+		return treeBasedOnGroup;
 	}
 }

@@ -98,9 +98,9 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	protected abstract org.lgna.project.ast.Statement createStatement( org.lgna.project.ast.Expression... expressions );
 
 	@Override
-	protected void prologue() {
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
 		EPIC_HACK_isActive = true;
-		super.prologue();
+		super.prologue( trigger );
 	}
 
 	@Override
@@ -118,11 +118,16 @@ public abstract class StatementInsertCascade extends org.alice.ide.croquet.model
 	@Override
 	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
 		org.alice.ide.croquet.edits.ast.InsertStatementEdit originalInsertStatementEdit = (org.alice.ide.croquet.edits.ast.InsertStatementEdit)originalEdit;
-		org.alice.ide.croquet.edits.ast.InsertStatementEdit retargetedEdit = org.lgna.croquet.edits.Edit.createCopy( originalInsertStatementEdit );
-		retargetedEdit.retarget( retargeter );
-		org.lgna.project.ast.Expression[] values = retargetedEdit.getInitialExpressions();
-		org.lgna.project.ast.Statement statement = this.createStatement( values );
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, this.blockStatementIndexPair, statement, values );
+		org.lgna.project.ast.Expression[] values = originalInsertStatementEdit.getInitialExpressions();
+		org.lgna.project.ast.Expression[] retargetedValues = new org.lgna.project.ast.Expression[ values.length ];
+		for( int i = 0; i < values.length; i++ ) {
+			retargetedValues[ i ] = retargeter.retarget( values[ i ] );
+		}
+		org.lgna.project.ast.BlockStatement retargetedBlockStatement = retargeter.retarget( originalInsertStatementEdit.getBlockStatement() );
+		org.lgna.project.ast.Statement statement = this.createStatement( retargetedValues );
+		org.alice.ide.croquet.edits.ast.InsertStatementEdit retargetedEdit = new org.alice.ide.croquet.edits.ast.InsertStatementEdit( step, new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( retargetedBlockStatement, originalInsertStatementEdit.getSpecifiedIndex() ), statement, retargetedValues );
+		//		retargetedEdit.retarget( retargeter );
+		return retargetedEdit;
 	}
 
 	@Override

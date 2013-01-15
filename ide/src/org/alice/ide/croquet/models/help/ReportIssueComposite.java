@@ -66,7 +66,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	private final LogInCard logInCard = new LogInCard();
 	private final LogOutCard logOutCard = new LogOutCard();
 
-	private final org.lgna.croquet.CardOwnerComposite logInOutComposite = this.createCardOwnerComposite( this.logInCard, this.logOutCard );
+	private final org.lgna.croquet.CardOwnerComposite logInOutComposite = this.createAndRegisterCardOwnerComposite( this.logInCard, this.logOutCard );
 
 	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
 

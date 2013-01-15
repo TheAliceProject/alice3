@@ -101,6 +101,14 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		binaryEncoder.encode( ids );
 	}
 
+	public org.lgna.project.ast.BlockStatement getBlockStatement() {
+		return this.blockStatement;
+	}
+
+	public int getSpecifiedIndex() {
+		return this.specifiedIndex;
+	}
+
 	public org.lgna.project.ast.Expression[] getInitialExpressions() {
 		return this.initialExpressions;
 	}

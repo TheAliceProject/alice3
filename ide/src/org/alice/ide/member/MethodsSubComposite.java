@@ -48,7 +48,7 @@ package org.alice.ide.member;
  */
 public abstract class MethodsSubComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.ide.member.views.MethodsSubView> {
 	public MethodsSubComposite( java.util.UUID migrationId, boolean isExpandedInitialValue ) {
-		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, isExpandedInitialValue );
+		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, MemberTabComposite.getExpandedAccountingForInert( isExpandedInitialValue ) );
 	}
 
 	public abstract java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods();

@@ -47,8 +47,11 @@ package edu.cmu.cs.dennisc.javax.swing.icons;
  * @author Dennis Cosgrove
  */
 public class DropDownArrowIcon extends AbstractArrowIcon {
-	public DropDownArrowIcon( int size ) {
+	private final java.awt.Paint selectedFillPaint;
+
+	public DropDownArrowIcon( int size, java.awt.Paint selectedFillPaint ) {
 		super( size );
+		this.selectedFillPaint = selectedFillPaint;
 	}
 
 	protected javax.swing.ButtonModel getButtonModel( java.awt.Component c ) {
@@ -60,16 +63,18 @@ public class DropDownArrowIcon extends AbstractArrowIcon {
 		javax.swing.ButtonModel buttonModel = this.getButtonModel( c );
 		java.awt.geom.GeneralPath path = this.createPath( x, y, Heading.SOUTH );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 		java.awt.Paint fillPaint;
 		java.awt.Paint drawPaint;
 		if( buttonModel.isEnabled() ) {
-			if( buttonModel.isPressed() ) {
-				fillPaint = java.awt.Color.WHITE;
-				drawPaint = java.awt.Color.BLACK;
+			if( buttonModel.isPressed() || buttonModel.isSelected() ) {
+				fillPaint = selectedFillPaint;
+				drawPaint = null;
 			} else {
 				if( buttonModel.isRollover() || buttonModel.isArmed() ) {
-					fillPaint = java.awt.Color.GRAY;
+					fillPaint = java.awt.Color.DARK_GRAY;
 				} else {
 					fillPaint = java.awt.Color.BLACK;
 				}
@@ -87,5 +92,6 @@ public class DropDownArrowIcon extends AbstractArrowIcon {
 			g2.setPaint( drawPaint );
 			g2.draw( path );
 		}
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 	}
 }

@@ -116,17 +116,23 @@ public abstract class RefreshableListData<T> extends org.lgna.croquet.data.Abstr
 	}
 
 	@Override
-	public final void internalAddItem( T item ) {
-		throw new AssertionError();
+	public void internalAddItem( T item ) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public final void internalRemoveItem( T item ) {
-		throw new AssertionError();
+	public void internalRemoveItem( T item ) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public final void internalSetItems( java.util.Collection<T> items ) {
+	public final void internalSetAllItems( java.util.Collection<T> items ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( items );
+	}
+
+	@Override
+	public void internalSetItemAt( int index, T item ) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

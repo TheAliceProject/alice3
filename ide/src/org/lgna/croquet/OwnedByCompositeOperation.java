@@ -73,8 +73,9 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
-	protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
-		return this.composite.getClass();
+	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		//todo
+		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
 	}
 
 	@Override
