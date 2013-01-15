@@ -52,7 +52,7 @@ public class GroupTagKey extends ResourceKey {
 
 	private final org.lgna.croquet.icon.IconFactory iconFactory;
 
-	public GroupTagKey( String groupTag, java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
+	public GroupTagKey( String groupTag, java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories ) {
 		this.groupTag = groupTag;
 		if( TreeUtilities.isThemeName( this.groupTag ) ) {
 			this.iconFactory = new org.alice.stageide.icons.ThemeIconFactory( this );

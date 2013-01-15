@@ -89,7 +89,13 @@ public final class EnumConstantResourceKey extends ResourceKey {
 
 	@Override
 	public String getDisplayText() {
-		return this.enumConstant.name();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "new " );
+		sb.append( this.enumConstant.getClass().getSimpleName().replace( "Resource", "" ) );
+		sb.append( "( " );
+		sb.append( this.enumConstant.name() );
+		sb.append( " )" );
+		return sb.toString();
 	}
 
 	@Override

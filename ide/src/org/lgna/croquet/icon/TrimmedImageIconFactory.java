@@ -40,33 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.lgna.croquet.icon;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
-	private final java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
+public class TrimmedImageIconFactory extends AbstractImageIconFactory {
+	private final TrimmedIcon trimmedSourceIcon;
 
-	public EnumConstantsIconFactory( java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
-		this.iconFactories = iconFactories;
+	public TrimmedImageIconFactory( javax.swing.ImageIcon imageIcon, int width, int height ) {
+		super( imageIcon );
+		this.trimmedSourceIcon = new TrimmedIcon( imageIcon, width, height );
 	}
 
-	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new EnumConstantsIcon( size, this.iconFactories );
+	public TrimmedImageIconFactory( java.net.URL resource, int width, int height ) {
+		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ), width, height );
 	}
 
-	public java.util.List<org.lgna.croquet.icon.IconFactory> getIconFactories() {
-		return this.iconFactories;
+	public TrimmedImageIconFactory( java.awt.Image image, int width, int height ) {
+		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ), width, height );
+	}
+
+	public javax.swing.Icon getIcon( java.awt.Dimension size ) {
+		if( ( this.trimmedSourceIcon.getIconWidth() == size.width ) && ( this.trimmedSourceIcon.getIconHeight() == size.height ) ) {
+			return this.trimmedSourceIcon;
+		} else {
+			return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( this.trimmedSourceIcon, size.width, size.height );
+		}
 	}
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		if( this.iconFactories.size() > 0 ) {
-			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
+		//		javax.swing.ImageIcon imageIcon = this.getImageIcon();
+		//		if( imageIcon != null ) {
+		return new java.awt.Dimension( this.trimmedSourceIcon.getIconWidth(), this.trimmedSourceIcon.getIconHeight() );
+		//		} else {
+		//			return sizeIfResolutionIndependent;
+		//		}
 	}
 }
