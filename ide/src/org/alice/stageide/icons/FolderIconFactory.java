@@ -45,6 +45,7 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class FolderIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
 	private final org.lgna.croquet.icon.IconFactory iconFactory;
 

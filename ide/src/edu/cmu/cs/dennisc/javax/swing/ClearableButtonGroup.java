@@ -40,33 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
-	private final java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
+public class ClearableButtonGroup extends javax.swing.ButtonGroup {
+	private javax.swing.ButtonModel selection;
 
-	public EnumConstantsIconFactory( java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
-		this.iconFactories = iconFactories;
+	@Override
+	public void add( javax.swing.AbstractButton b ) {
+		super.add( b );
+		javax.swing.ButtonModel buttonModel = b.getModel();
+		if( buttonModel.isSelected() ) {
+			this.selection = buttonModel;
+		}
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new EnumConstantsIcon( size, this.iconFactories );
+	public void remove( javax.swing.AbstractButton b ) {
+		super.remove( b );
+		javax.swing.ButtonModel buttonModel = b.getModel();
+		if( this.selection == buttonModel ) {
+			this.selection = null;
+		}
 	}
 
-	public java.util.List<org.lgna.croquet.icon.IconFactory> getIconFactories() {
-		return this.iconFactories;
-	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		if( this.iconFactories.size() > 0 ) {
-			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
+	@Override
+	public void setSelected( javax.swing.ButtonModel m, boolean b ) {
+		super.setSelected( m, b );
+		if( b ) {
+			this.selection = m;
 		} else {
-			return sizeIfResolutionIndependent;
+			if( this.selection == m ) {
+				this.selection = null;
+				m.setSelected( false );
+			}
+		}
+	}
+
+	@Override
+	public javax.swing.ButtonModel getSelection() {
+		return this.selection;
+	}
+
+	@Override
+	public boolean isSelected( javax.swing.ButtonModel m ) {
+		return this.getSelection() == m;
+	}
+
+	public void clearSelectedModel() {
+		if( this.selection != null ) {
+			this.setSelected( this.selection, false );
 		}
 	}
 }

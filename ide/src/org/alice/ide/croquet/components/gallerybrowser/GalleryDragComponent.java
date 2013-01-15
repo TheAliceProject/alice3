@@ -164,10 +164,10 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	private static java.awt.Shape createShapeAround( java.awt.geom.Rectangle2D bounds ) {
-		double x0 = bounds.getX() - 2;
-		double y0 = bounds.getY() - 4;
-		double x1 = x0 + bounds.getWidth() + 4;
-		double y1 = y0 + bounds.getHeight() + 5;
+		float x0 = (float)( bounds.getX() - 2 );
+		float y0 = (float)( bounds.getY() - 4 );
+		float x1 = (float)( x0 + bounds.getWidth() + 4 );
+		float y1 = (float)( y0 + bounds.getHeight() + 5 );
 
 		final int TAB_LENGTH = 6;
 

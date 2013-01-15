@@ -40,33 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.icons;
+package org.lgna.croquet.icon;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
-	private final java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
+public abstract class AbstractImageIconFactory implements IconFactory {
+	private final javax.swing.ImageIcon imageIcon;
 
-	public EnumConstantsIconFactory( java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
-		this.iconFactories = iconFactories;
+	public AbstractImageIconFactory( javax.swing.ImageIcon imageIcon ) {
+		this.imageIcon = imageIcon;
 	}
 
-	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new EnumConstantsIcon( size, this.iconFactories );
-	}
-
-	public java.util.List<org.lgna.croquet.icon.IconFactory> getIconFactories() {
-		return this.iconFactories;
-	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		if( this.iconFactories.size() > 0 ) {
-			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
+	public javax.swing.ImageIcon getSourceImageIcon() {
+		return this.imageIcon;
 	}
 }
