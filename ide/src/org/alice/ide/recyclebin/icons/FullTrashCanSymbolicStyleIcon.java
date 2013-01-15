@@ -57,28 +57,28 @@ public class FullTrashCanSymbolicStyleIcon implements javax.swing.Icon {
 
 	private void paintShapeNode_0_0_3_0( Graphics2D g ) {
 		GeneralPath shape0 = new GeneralPath();
-		shape0.moveTo( -15.21875, 0.25 );
-		shape0.curveTo( -15.70907, 0.25, -16.01482, 0.47845, -16.25, 0.71875 );
-		shape0.curveTo( -16.48517, 0.95905, -16.6875, 1.2772601, -16.6875, 1.75 );
-		shape0.lineTo( -16.6875, 2.21875 );
-		shape0.lineTo( -18.6875, 2.21875 );
-		shape0.lineTo( -18.6875, 4.21875 );
-		shape0.lineTo( -3.6875, 4.21875 );
-		shape0.lineTo( -3.6875, 2.21875 );
-		shape0.lineTo( -5.6875, 2.21875 );
-		shape0.lineTo( -5.6875, 1.875 );
-		shape0.lineTo( -5.6875, 1.84375 );
-		shape0.curveTo( -5.7114, 1.41315, -5.85774, 1.09146, -6.09375, 0.8125 );
-		shape0.curveTo( -6.31748, 0.54806, -6.72044, 0.28319, -7.25, 0.28125 );
-		shape0.lineTo( -7.25, 0.25 );
-		shape0.lineTo( -7.3125, 0.25 );
-		shape0.lineTo( -15.21875, 0.25 );
+		shape0.moveTo( -15.21875f, 0.25f );
+		shape0.curveTo( -15.70907f, 0.25f, -16.01482f, 0.47845f, -16.25f, 0.71875f );
+		shape0.curveTo( -16.48517f, 0.95905f, -16.6875f, 1.2772601f, -16.6875f, 1.75f );
+		shape0.lineTo( -16.6875f, 2.21875f );
+		shape0.lineTo( -18.6875f, 2.21875f );
+		shape0.lineTo( -18.6875f, 4.21875f );
+		shape0.lineTo( -3.6875f, 4.21875f );
+		shape0.lineTo( -3.6875f, 2.21875f );
+		shape0.lineTo( -5.6875f, 2.21875f );
+		shape0.lineTo( -5.6875f, 1.875f );
+		shape0.lineTo( -5.6875f, 1.84375f );
+		shape0.curveTo( -5.7114f, 1.41315f, -5.85774f, 1.09146f, -6.09375f, 0.8125f );
+		shape0.curveTo( -6.31748f, 0.54806f, -6.72044f, 0.28319f, -7.25f, 0.28125f );
+		shape0.lineTo( -7.25f, 0.25f );
+		shape0.lineTo( -7.3125f, 0.25f );
+		shape0.lineTo( -15.21875f, 0.25f );
 		shape0.closePath();
-		shape0.moveTo( -14.6875, 1.25 );
-		shape0.lineTo( -7.6875, 1.25 );
-		shape0.lineTo( -7.6875, 2.21875 );
-		shape0.lineTo( -14.6875, 2.21875 );
-		shape0.lineTo( -14.6875, 1.25 );
+		shape0.moveTo( -14.6875f, 1.25f );
+		shape0.lineTo( -7.6875f, 1.25f );
+		shape0.lineTo( -7.6875f, 2.21875f );
+		shape0.lineTo( -14.6875f, 2.21875f );
+		shape0.lineTo( -14.6875f, 1.25f );
 		shape0.closePath();
 		g.setPaint( this.fillColor );
 		g.fill( shape0 );
@@ -86,47 +86,47 @@ public class FullTrashCanSymbolicStyleIcon implements javax.swing.Icon {
 
 	private void paintShapeNode_0_0_3_1( Graphics2D g ) {
 		GeneralPath shape1 = new GeneralPath();
-		shape1.moveTo( 474.30283, 180.2261 );
-		shape1.lineTo( 476.30283, 180.2261 );
-		shape1.curveTo( 477.97647, 183.15318, 477.4405, 186.08028, 476.30283, 189.00735 );
-		shape1.curveTo( 475.86783, 190.12659, 475.32043, 191.2261, 474.11533, 191.2261 );
-		shape1.lineTo( 465.49033, 191.2261 );
-		shape1.curveTo( 464.28522, 191.2261, 463.71375, 190.13565, 463.30283, 189.00735 );
-		shape1.curveTo( 462.26053, 186.14542, 461.7039, 183.25313, 463.30283, 180.2261 );
-		shape1.lineTo( 465.30283, 180.2261 );
-		shape1.curveTo( 463.58154, 183.17395, 464.31796, 186.19626, 465.30283, 189.2261 );
-		shape1.lineTo( 474.30283, 189.2261 );
-		shape1.curveTo( 475.39874, 186.1929, 475.93423, 183.17667, 474.30283, 180.2261 );
+		shape1.moveTo( 474.30283f, 180.2261f );
+		shape1.lineTo( 476.30283f, 180.2261f );
+		shape1.curveTo( 477.97647f, 183.15318f, 477.4405f, 186.08028f, 476.30283f, 189.00735f );
+		shape1.curveTo( 475.86783f, 190.12659f, 475.32043f, 191.2261f, 474.11533f, 191.2261f );
+		shape1.lineTo( 465.49033f, 191.2261f );
+		shape1.curveTo( 464.28522f, 191.2261f, 463.71375f, 190.13565f, 463.30283f, 189.00735f );
+		shape1.curveTo( 462.26053f, 186.14542f, 461.7039f, 183.25313f, 463.30283f, 180.2261f );
+		shape1.lineTo( 465.30283f, 180.2261f );
+		shape1.curveTo( 463.58154f, 183.17395f, 464.31796f, 186.19626f, 465.30283f, 189.2261f );
+		shape1.lineTo( 474.30283f, 189.2261f );
+		shape1.curveTo( 475.39874f, 186.1929f, 475.93423f, 183.17667f, 474.30283f, 180.2261f );
 		shape1.closePath();
 		g.fill( shape1 );
 	}
 
 	private void paintShapeNode_0_0_3_2( Graphics2D g ) {
 		GeneralPath shape2 = new GeneralPath();
-		shape2.moveTo( 469.33408, 180.20961 );
-		shape2.lineTo( 469.33408, 188.22607 );
-		shape2.lineTo( 470.30283, 188.22607 );
-		shape2.lineTo( 470.30283, 180.20961 );
+		shape2.moveTo( 469.33408f, 180.20961f );
+		shape2.lineTo( 469.33408f, 188.22607f );
+		shape2.lineTo( 470.30283f, 188.22607f );
+		shape2.lineTo( 470.30283f, 180.20961f );
 		shape2.closePath();
 		g.fill( shape2 );
 	}
 
 	private void paintShapeNode_0_0_3_3( Graphics2D g ) {
 		GeneralPath shape3 = new GeneralPath();
-		shape3.moveTo( 471.30283, 180.20961 );
-		shape3.curveTo( 473.06503, 182.43282, 472.13315, 185.84085, 471.30283, 188.22607 );
-		shape3.lineTo( 472.30283, 188.22607 );
-		shape3.curveTo( 473.12778, 185.91774, 474.14224, 182.59868, 472.30283, 180.20961 );
+		shape3.moveTo( 471.30283f, 180.20961f );
+		shape3.curveTo( 473.06503f, 182.43282f, 472.13315f, 185.84085f, 471.30283f, 188.22607f );
+		shape3.lineTo( 472.30283f, 188.22607f );
+		shape3.curveTo( 473.12778f, 185.91774f, 474.14224f, 182.59868f, 472.30283f, 180.20961f );
 		shape3.closePath();
 		g.fill( shape3 );
 	}
 
 	private void paintShapeNode_0_0_3_4( Graphics2D g ) {
 		GeneralPath shape4 = new GeneralPath();
-		shape4.moveTo( 467.33408, 180.20961 );
-		shape4.curveTo( 465.5168, 182.81828, 466.4778, 186.02248, 467.33408, 188.22607 );
-		shape4.lineTo( 468.30283, 188.22607 );
-		shape4.curveTo( 467.43762, 186.00438, 466.64014, 182.75748, 468.30283, 180.20961 );
+		shape4.moveTo( 467.33408f, 180.20961f );
+		shape4.curveTo( 465.5168f, 182.81828f, 466.4778f, 186.02248f, 467.33408f, 188.22607f );
+		shape4.lineTo( 468.30283f, 188.22607f );
+		shape4.curveTo( 467.43762f, 186.00438f, 466.64014f, 182.75748f, 468.30283f, 180.20961f );
 		shape4.closePath();
 		g.fill( shape4 );
 	}
