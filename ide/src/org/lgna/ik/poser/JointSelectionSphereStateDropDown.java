@@ -42,63 +42,24 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.croquet.CustomItemState;
-import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.State;
 import org.lgna.croquet.components.ItemDropDown;
-
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
 /**
  * @author Matt May
  */
-public class JointSelectionSphereState extends CustomItemState<JointSelectionSphere> {
+public class JointSelectionSphereStateDropDown extends ItemDropDown<JointSelectionSphere, JointSelectionSphereState> {
+	private final org.lgna.croquet.components.Label mainComponent = new org.lgna.croquet.components.Label();
 
-	private JointSelectionSphere value;
-
-	public JointSelectionSphereState( JointSelectionSphere initialValue ) {
-		super( null, java.util.UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), initialValue, new ItemCodec<JointSelectionSphere>() {
-
-			public Class<JointSelectionSphere> getValueClass() {
-				return JointSelectionSphere.class;
-			}
-
-			public JointSelectionSphere decodeValue( BinaryDecoder binaryDecoder ) {
-				throw new RuntimeException( "todo" );
-			}
-
-			public void encodeValue( BinaryEncoder binaryEncoder, JointSelectionSphere value ) {
-				throw new RuntimeException( "todo" );
-			}
-
-			public void appendRepresentation( StringBuilder sb, JointSelectionSphere value ) {
-				sb.append( value );
-			}
-		} );
+	public JointSelectionSphereStateDropDown( JointSelectionSphereState model ) {
+		super( model );
+		this.setMainComponent( this.mainComponent );
 	}
 
 	@Override
-	protected org.lgna.ik.poser.JointSelectionSphere getSwingValue() {
-		return this.value;
-	}
-
-	@Override
-	protected void setSwingValue( org.lgna.ik.poser.JointSelectionSphere nextValue ) {
-		this.value = nextValue;
-	}
-
-	//	@Override
-	//	protected void updateSwingModel( JointSelectionSphere nextValue ) {
-	//		this.setValue( nextValue );
-	//	}
-	//
-	//	@Override
-	//	protected JointSelectionSphere getActualValue() {
-	//		return this.value;
-	//	}
-
-	public ItemDropDown<JointSelectionSphere, JointSelectionSphereState> createItemDropDown() {
-		return new JointSelectionSphereStateDropDown( this );
+	protected void handleChanged( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		this.mainComponent.setText( nextValue != null ? nextValue.toString() : "null" );
+		this.revalidateAndRepaint();
 	}
 
 }

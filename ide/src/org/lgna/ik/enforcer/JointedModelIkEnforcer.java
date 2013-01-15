@@ -358,8 +358,6 @@ public class JointedModelIkEnforcer extends IkEnforcer {
 	}
 
 	private void moveJointsWithSpeedsForTime( Map<Bone, Map<Axis, Double>> jointSpeedsToUse, double deltaTime ) {
-		System.out.println( "jointSPeed: " + jointSpeedsToUse );
-		System.out.println( "deltaTime: " + deltaTime );
 		if( jointSpeedsToUse == null ) {
 			System.err.println( "Joint speeds were null. Could not advance time." );
 			return;

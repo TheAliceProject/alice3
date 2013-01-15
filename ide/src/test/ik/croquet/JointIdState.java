@@ -60,7 +60,7 @@ public abstract class JointIdState extends org.lgna.croquet.CustomItemStateWithI
 
 	@Override
 	protected void setSwingValue( org.lgna.story.resources.JointId nextValue ) {
-		this.setSwingValue( nextValue );
+		//		this.setSwingValue( nextValue );
 		this.value = nextValue;
 	}
 
