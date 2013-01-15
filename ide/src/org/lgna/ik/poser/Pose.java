@@ -42,72 +42,80 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.List;
-
-import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.SimpleComposite;
-import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.edits.Edit;
-import org.lgna.croquet.history.CompletionStep;
-import org.lgna.ik.poser.view.PoserControlView;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SBiped;
+import org.lgna.story.SJoint;
+import org.lgna.story.implementation.JointImp;
 
 /**
  * @author Matt May
  */
-public class PoserControlComposite extends SimpleComposite<PoserControlView> {
+public class Pose {
 
-	private IkPoser ikPoser;
-	private JointSelectionSphereState endJointState;
-	private JointSelectionSphereState anchorJointState;
-	private List<Pose> poses = Collections.newArrayList();
+	private final JointQPair base = new JointQPair( null, null, null );
+	private final JointQPair rightArmBase;
+	private final JointQPair leftArmBase;
+	private final JointQPair rightLegBase;
+	private final JointQPair leftLegBase;
 
-	private ActionOperation dumpPose = createActionOperation( createKey( "dumpPose" ), new Action() {
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			Pose pose = ikPoser.getPose();
-			poses.add( pose );
-			System.out.println( pose );
-			return null;
-		}
-	} );
-
-	public PoserControlComposite( IkPoser ikPoser ) {
-		super( java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
-		this.ikPoser = ikPoser;
-		ikPoser.getJointSelectionSheres();
-		anchorJointState = new JointSelectionSphereState( ikPoser.getDefaultAnchorJoint() );
-		endJointState = new JointSelectionSphereState( ikPoser.getDefaultEndJoint() );
-		ikPoser.setAdapter( new PoserControllerAdapter( this ) );
+	public Pose( SBiped biped ) {
+		rightArmBase = createJQP( biped.getRightClavicle(), base );
+		JointQPair rShoulder = createJQP( biped.getRightShoulder(), rightArmBase );
+		JointQPair rElbow = createJQP( biped.getRightShoulder(), rShoulder );
+		createJQP( biped.getRightShoulder(), rElbow );
+		leftArmBase = createJQP( biped.getRightClavicle(), base );
+		JointQPair lShoulder = createJQP( biped.getRightShoulder(), leftArmBase );
+		JointQPair lElbow = createJQP( biped.getRightShoulder(), lShoulder );
+		createJQP( biped.getRightShoulder(), lElbow );
+		rightLegBase = createJQP( biped.getPelvis(), base );
+		JointQPair rHip = createJQP( biped.getLeftHip(), rightLegBase );
+		JointQPair rKnee = createJQP( biped.getLeftKnee(), rHip );
+		createJQP( biped.getLeftAnkle(), rKnee );
+		leftLegBase = createJQP( biped.getPelvis(), base );
+		JointQPair lHip = createJQP( biped.getLeftHip(), leftLegBase );
+		JointQPair lKnee = createJQP( biped.getLeftKnee(), lHip );
+		createJQP( biped.getLeftAnkle(), lKnee );
 	}
 
-	public IkPoser getIkPoser() {
-		return this.ikPoser;
+	private JointQPair createJQP( SJoint joint, JointQPair parent ) {
+		JointImp jointImp = ImplementationAccessor.getImplementation( joint );
+		JointQPair rv = new JointQPair( parent, jointImp.getJointId(), jointImp.getAbsoluteTransformation() );
+		if( parent != base ) {
+			parent.setChild( rv );
+		}
+		return rv;
 	}
 
 	@Override
-	protected PoserControlView createView() {
-		return new PoserControlView( this );
+	public String toString() {
+		String rv = "";
+		rv += "\n";
+		rv += "Right Arm: ";
+		rv += stringForChain( rightArmBase );
+		rv += "\n";
+		rv += "Left Arm: ";
+		rv += stringForChain( leftArmBase );
+		rv += "\n";
+		rv += "Right Leg: ";
+		rv += stringForChain( rightLegBase );
+		rv += "\n";
+		rv += "Left Leg: ";
+		rv += stringForChain( leftLegBase );
+		return rv;
 	}
 
-	public void addRootJointListener( ValueListener<JointSelectionSphere> rootJointListener ) {
-		anchorJointState.addValueListener( rootJointListener );
-	}
-
-	public void addEndJointListener( ValueListener<JointSelectionSphere> endJointListener ) {
-		endJointState.addValueListener( endJointListener );
-	}
-
-	public JointSelectionSphereState getAnchorJointState() {
-		return this.anchorJointState;
-	}
-
-	public JointSelectionSphereState getEndJointState() {
-		return this.endJointState;
-	}
-
-	public ActionOperation getDumpPose() {
-		return this.dumpPose;
+	private String stringForChain( JointQPair base ) {
+		JointQPair jqpPointer = base;
+		String rv = "";
+		boolean comma = false;
+		while( jqpPointer != null ) {
+			if( comma ) {
+				rv += ", ";
+			}
+			comma = true;
+			rv += jqpPointer.toString();
+			jqpPointer = jqpPointer.getChild();
+		}
+		return rv;
 	}
 }

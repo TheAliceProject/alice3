@@ -40,27 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser;
 
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
-import org.lgna.croquet.components.ItemDropDown;
-import org.lgna.ik.poser.JointSelectionSphere;
-import org.lgna.ik.poser.JointSelectionSphereState;
-import org.lgna.ik.poser.PoserControlComposite;
+import org.lgna.story.resources.JointId;
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author Matt May
  */
-public class PoserControlView extends BorderPanel {
+public class JointQPair {
 
-	public PoserControlView( PoserControlComposite poserControlComposite ) {
-		super( poserControlComposite );
-		GridPanel panel = GridPanel.createGridPane( 2, 1 );
-		this.addComponent( panel, Constraint.CENTER );
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> anchorComponent = poserControlComposite.getAnchorJointState().createItemDropDown();
-		panel.addComponent( anchorComponent );
-		this.addComponent( poserControlComposite.getDumpPose().createButton(), Constraint.PAGE_END );
+	private final JointQPair parent;
+	private final JointId joint;
+	private final AffineMatrix4x4 affineMatrix;
+	private JointQPair child;
+
+	public JointQPair( JointQPair parent, JointId joint, AffineMatrix4x4 affineMatrix4x4 ) {
+		this.parent = parent;
+		this.joint = joint;
+		this.affineMatrix = affineMatrix4x4;
+	}
+
+	public void setChild( JointQPair rv ) {
+		this.child = rv;
+	}
+
+	public JointQPair getChild() {
+		return this.child;
+	}
+
+	public JointQPair getParent() {
+		return this.parent;
+	}
+
+	@Override
+	public String toString() {
+		return "[ " + joint + " " + affineMatrix + " ]";
 	}
 
 }

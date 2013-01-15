@@ -529,4 +529,8 @@ class IkPoser extends SProgram {
 		return JointSelectionSphere.findSphereForJoint( DEFAULT_END, getJointSelectionSheres() );
 	}
 
+	public Pose getPose() {
+		return new Pose( ogre );
+	}
+
 }
