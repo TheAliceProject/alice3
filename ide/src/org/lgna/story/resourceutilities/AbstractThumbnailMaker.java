@@ -321,6 +321,14 @@ public abstract class AbstractThumbnailMaker {
 		return returnImage;
 	}
 
+	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox ) throws Exception {
+		return createThumbnail( v, bbox, true );
+	}
+
+	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v ) throws Exception {
+		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), true );
+	}
+
 	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, boolean trimWhitespace ) throws Exception {
 		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), trimWhitespace );
 	}

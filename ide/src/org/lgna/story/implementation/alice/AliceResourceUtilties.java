@@ -893,4 +893,23 @@ public class AliceResourceUtilties {
 		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
+	public static String[] getThemeTags( Class<?> modelResource, String resourceName )
+	{
+		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
+		if( info != null ) {
+			return info.getThemeTags();
+		}
+		return null;
+	}
+
+	public static String[] getThemeTags( Class<?> modelResource )
+	{
+		return getThemeTags( modelResource, null );
+	}
+
+	public static String[] getThemeTags( ResourceKey key )
+	{
+		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
 }

@@ -107,6 +107,11 @@ public final class ClassResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public String[] getThemeTags() {
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this.cls );
+	}
+
+	@Override
 	public boolean equals( Object o ) {
 		if( this == o ) {
 			return true;
