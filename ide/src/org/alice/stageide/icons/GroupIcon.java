@@ -178,7 +178,6 @@ public class GroupIcon extends ShapeIcon {
 			g2.draw( frontShape );
 		} finally {
 			g2.setTransform( t );
-			g2.translate( -dx, -dy );
 			g2.setStroke( prevStroke );
 		}
 	}
