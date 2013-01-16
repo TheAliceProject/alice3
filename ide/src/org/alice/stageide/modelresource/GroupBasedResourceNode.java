@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class GroupBasedResourceNode extends ResourceNode {
+public class GroupBasedResourceNode extends TagBasedResourceNode {
 	public GroupBasedResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
 		super( java.util.UUID.fromString( "55dd4e20-c072-4ab8-988b-d9db89ca2335" ), resourceKey, children );
 	}

@@ -45,13 +45,16 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class ThemeBasedResourceNode extends TagBasedResourceNode {
-	public ThemeBasedResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
-		super( java.util.UUID.fromString( "ae62639f-2bf2-4eb4-b6aa-ebaf2aff976d" ), resourceKey, children );
+public class ThemeTagKey extends TagKey {
+	private final org.lgna.croquet.icon.IconFactory iconFactory;
+
+	public ThemeTagKey( String groupTag ) {
+		super( groupTag );
+		this.iconFactory = new org.alice.stageide.icons.ThemeIconFactory( this );
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getState() {
-		return ThemeBasedResourceNodeTreeSelectionState.getInstance();
+	public org.lgna.croquet.icon.IconFactory getIconFactory() {
+		return this.iconFactory;
 	}
 }

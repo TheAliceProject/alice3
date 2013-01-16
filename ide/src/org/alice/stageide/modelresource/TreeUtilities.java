@@ -138,12 +138,13 @@ public class TreeUtilities {
 		return themeNames.contains( name );
 	}
 
-	private static void addGroupNode( String groupTag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> groupNodes, java.util.Map<String, ResourceNode> mapGroupTagToNode ) {
-		java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories;
-		if( isThemeName( groupTag ) ) {
-			iconFactories = java.util.Collections.emptyList();
+	private static void addTagNode( String tag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> groupNodes, java.util.Map<String, ResourceNode> mapGroupTagToNode ) {
+		ResourceNode dstNode;
+		if( isThemeName( tag ) ) {
+			ThemeTagKey themeTagKey = new ThemeTagKey( tag );
+			dstNode = new ThemeBasedResourceNode( themeTagKey, dstChildNodes );
 		} else {
-			iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( ResourceNode resourceNode : dstChildNodes ) {
 				ResourceKey resourceKey = resourceNode.getResourceKey();
 				//todo
@@ -156,16 +157,11 @@ public class TreeUtilities {
 					break;
 				}
 			}
-		}
-		GroupTagKey groupTagKey = new GroupTagKey( groupTag, iconFactories );
-		ResourceNode dstNode;
-		if( isThemeName( groupTag ) ) {
-			dstNode = new ThemeBasedResourceNode( groupTagKey, dstChildNodes );
-		} else {
+			GroupTagKey groupTagKey = new GroupTagKey( tag, iconFactories );
 			dstNode = new GroupBasedResourceNode( groupTagKey, dstChildNodes );
 		}
 		groupNodes.add( dstNode );
-		mapGroupTagToNode.put( groupTag, dstNode );
+		mapGroupTagToNode.put( tag, dstNode );
 	}
 
 	private static void createTreesBasedOnThemeAndGroup() {
@@ -180,7 +176,7 @@ public class TreeUtilities {
 		java.util.List<String> emptyGroupTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "household" );
 		for( String emptyGroupTag : emptyGroupTags ) {
 			java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			addGroupNode( emptyGroupTag, childNodes, groupNodes, mapGroupTagToNode );
+			addTagNode( emptyGroupTag, childNodes, groupNodes, mapGroupTagToNode );
 		}
 
 		for( String groupTag : map.keySet() ) {
@@ -190,15 +186,15 @@ public class TreeUtilities {
 				java.util.List<ResourceNode> srcChildNodes = map.get( groupTag );
 				java.util.List<ResourceNode> dstChildNodes = convert( srcChildNodes );
 
-				addGroupNode( groupTag, dstChildNodes, groupNodes, mapGroupTagToNode );
+				addTagNode( groupTag, dstChildNodes, groupNodes, mapGroupTagToNode );
 			}
 		}
 		java.util.ListIterator<ResourceNode> listIterator = groupNodes.listIterator();
 		while( listIterator.hasNext() ) {
 			ResourceNode resourceNode = listIterator.next();
-			GroupTagKey groupTagKey = (GroupTagKey)resourceNode.getResourceKey();
-			String groupTag = groupTagKey.getGroupTag();
-			int lastIndex = groupTag.lastIndexOf( GroupTagKey.SEPARATOR );
+			TagKey groupTagKey = (TagKey)resourceNode.getResourceKey();
+			String groupTag = groupTagKey.getTag();
+			int lastIndex = groupTag.lastIndexOf( TagKey.SEPARATOR );
 			if( lastIndex != -1 ) {
 				String parentGroupTag = groupTag.substring( 0, lastIndex );
 				ResourceNode parentToBeNode = mapGroupTagToNode.get( parentGroupTag );

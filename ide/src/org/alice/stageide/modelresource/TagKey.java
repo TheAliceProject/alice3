@@ -45,13 +45,56 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class ThemeBasedResourceNode extends TagBasedResourceNode {
-	public ThemeBasedResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
-		super( java.util.UUID.fromString( "ae62639f-2bf2-4eb4-b6aa-ebaf2aff976d" ), resourceKey, children );
+public abstract class TagKey extends ResourceKey {
+	public static final char SEPARATOR = ':';
+
+	private final String tag;
+
+	public TagKey( String tag ) {
+		this.tag = tag;
+	}
+
+	public String getTag() {
+		return this.tag;
 	}
 
 	@Override
-	protected org.alice.stageide.modelresource.ResourceNodeTreeSelectionState getState() {
-		return ThemeBasedResourceNodeTreeSelectionState.getInstance();
+	public String getDisplayText() {
+		int lastIndex = tag.lastIndexOf( GroupTagKey.SEPARATOR );
+		if( lastIndex != -1 ) {
+			return tag.substring( lastIndex + 1 );
+		} else {
+			return this.tag;
+		}
+	}
+
+	@Override
+	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
+		return null;
+	}
+
+	@Override
+	public String[] getTags() {
+		return null;
+	}
+
+	@Override
+	public String[] getGroupTags() {
+		return null;
+	}
+
+	@Override
+	public String[] getThemeTags() {
+		return null;
+	}
+
+	@Override
+	public boolean isLeaf() {
+		return false;
+	}
+
+	@Override
+	protected void appendRep( StringBuilder sb ) {
+		sb.append( this.getDisplayText() );
 	}
 }
