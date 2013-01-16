@@ -162,6 +162,15 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 	}
 
 	@Override
+	protected boolean isInstanceCreator() {
+		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) || ( this.resourceKey instanceof ClassResourceKey ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox() {
 		return org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( this.resourceKey );
 	}

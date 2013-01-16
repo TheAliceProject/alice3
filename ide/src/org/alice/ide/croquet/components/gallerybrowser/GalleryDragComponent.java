@@ -49,15 +49,44 @@ package org.alice.ide.croquet.components.gallerybrowser;
 public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent<org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel> {
 	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
 
-	private static final java.awt.Color BASE_COLOR = new java.awt.Color( 0xf7e4b6 );
-	private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 1.4 );
-	private static final java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 0.8 );
+	//	private static final java.awt.Color BASE_COLOR = java.awt.Color.LIGHT_GRAY;//new java.awt.Color( 0xf7e4b6 );
+	//	private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 1.4 );
+	//	private static final java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 0.8 );
 
-	private static final java.awt.Color ACTIVE_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 2.0 );
-	private static final java.awt.Color ACTIVE_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 0.9 );
+	//	private static final java.awt.Color ACTIVE_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 2.0 );
+	//	private static final java.awt.Color ACTIVE_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 0.9 );
+
+	private final java.awt.Color baseColor;
+	private final java.awt.Color highlightColor;
+	private final java.awt.Color shadowColor;
+	private final java.awt.Color activeHighlightColor;
+	private final java.awt.Color activeShadowColor;
+
+	private static java.awt.Color createHighlightColor( java.awt.Color baseColor ) {
+		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.0, 1.4 );
+	}
+
+	private static java.awt.Color createShadowColor( java.awt.Color baseColor ) {
+		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.0, 0.8 );
+	}
+
+	private static java.awt.Color createActiveHighlightColor( java.awt.Color baseColor ) {
+		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.0, 2.0 );
+	}
+
+	private static java.awt.Color createActiveShadowColor( java.awt.Color baseColor ) {
+		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.0, 0.9 );
+	}
 
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model );
+
+		this.baseColor = model.getBaseColor();
+		this.highlightColor = createHighlightColor( this.baseColor );
+		this.shadowColor = createShadowColor( this.baseColor );
+		this.activeHighlightColor = createActiveHighlightColor( this.baseColor );
+		this.activeShadowColor = createActiveShadowColor( this.baseColor );
+
 		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setText( model.getText() );
@@ -66,7 +95,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
 		this.internalAddComponent( label );
-		this.setBackgroundColor( BASE_COLOR );
+		this.setBackgroundColor( this.baseColor );
 		this.setMaximumSizeClampedToPreferredSize( true );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
 	}
@@ -129,7 +158,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		java.awt.geom.RoundRectangle2D.Float shape = this.createShape( x, y, width, height );
 		if( this.getAwtComponent().getModel().isPressed() ) {
-			g2.setPaint( BASE_COLOR );
+			g2.setPaint( this.baseColor );
 			g2.fill( shape );
 		} else {
 			int y1 = y + height;
@@ -137,8 +166,8 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			int yA = y + ( height / 3 );
 			int yB = y1 - ( height / 3 );
 
-			java.awt.Color highlightColor = this.isActive() ? ACTIVE_HIGHLIGHT_COLOR : HIGHLIGHT_COLOR;
-			java.awt.Color shadowColor = this.isActive() ? ACTIVE_SHADOW_COLOR : SHADOW_COLOR;
+			java.awt.Color highlightColor = this.isActive() ? this.activeHighlightColor : this.highlightColor;
+			java.awt.Color shadowColor = this.isActive() ? this.activeShadowColor : this.shadowColor;
 
 			java.awt.GradientPaint paintTop = new java.awt.GradientPaint( x, y, highlightColor, x, yA, shadowColor );
 			java.awt.GradientPaint paintBottom = new java.awt.GradientPaint( x, yB, shadowColor, x, y1, highlightColor );
