@@ -94,6 +94,11 @@ public class PersonResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public String[] getThemeTags() {
+		return null;
+	}
+
+	@Override
 	public boolean isLeaf() {
 		return true;
 	}

@@ -65,8 +65,8 @@ public class TrimmedIcon implements javax.swing.Icon {
 	}
 
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		//		g.setColor( java.awt.Color.RED );
-		//		g.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
-		this.icon.paintIcon( c, g, x, y );
+		int dx = ( this.width - this.icon.getIconWidth() ) / 2;
+		int dy = ( this.height - this.icon.getIconHeight() ) / 2;
+		this.icon.paintIcon( c, g, x + dx, y + dy );
 	}
 }

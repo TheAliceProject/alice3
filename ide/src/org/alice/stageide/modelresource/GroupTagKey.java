@@ -96,6 +96,11 @@ public class GroupTagKey extends ResourceKey {
 	}
 
 	@Override
+	public String[] getThemeTags() {
+		return null;
+	}
+
+	@Override
 	public boolean isLeaf() {
 		return false;
 	}

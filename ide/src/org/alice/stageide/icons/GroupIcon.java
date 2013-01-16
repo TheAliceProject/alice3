@@ -158,7 +158,7 @@ public class GroupIcon extends ShapeIcon {
 					int imageWidth = imageIcon.getIconWidth();
 					int imageHeight = imageIcon.getIconHeight();
 
-					double scale = ( width * 0.3 ) / imageWidth;
+					double scale = Math.min( ( width * 0.25 ) / imageWidth, ( height * 0.8 ) / imageHeight );
 					int dstWidth = (int)( imageWidth * scale );
 					int dstHeight = (int)( imageHeight * scale );
 
