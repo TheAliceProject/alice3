@@ -42,84 +42,47 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.List;
+import java.util.Map;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CustomItemStateWithInternalBlank;
-import org.lgna.croquet.ItemCodec;
-import org.lgna.croquet.cascade.BlankNode;
-import org.lgna.croquet.components.ItemDropDown;
+import org.lgna.croquet.CascadeFillIn;
+import org.lgna.croquet.cascade.ItemNode;
+import org.lgna.croquet.history.TransactionHistory;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<JointSelectionSphere> {
+public class JointSelectionSphereFillIn extends CascadeFillIn<JointSelectionSphere, Void> {
 
-	private JointSelectionSphere value;
+	private static Map<JointSelectionSphere, JointSelectionSphereFillIn> map = Collections.newHashMap();
+	private final JointSelectionSphere sphere;
 
-	public JointSelectionSphereState( JointSelectionSphere initialValue ) {
-		super( null, java.util.UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), initialValue, new ItemCodec<JointSelectionSphere>() {
-
-			public Class<JointSelectionSphere> getValueClass() {
-				return JointSelectionSphere.class;
-			}
-
-			public JointSelectionSphere decodeValue( BinaryDecoder binaryDecoder ) {
-				throw new RuntimeException( "todo" );
-			}
-
-			public void encodeValue( BinaryEncoder binaryEncoder, JointSelectionSphere value ) {
-				throw new RuntimeException( "todo" );
-			}
-
-			public void appendRepresentation( StringBuilder sb, JointSelectionSphere value ) {
-				sb.append( value );
-			}
-		} );
+	public JointSelectionSphereFillIn( JointSelectionSphere sphere ) {
+		super( java.util.UUID.fromString( "097b8967-97ba-4a41-bf47-7e428fde95dc" ) );
+		this.sphere = sphere;
 	}
 
 	@Override
-	protected org.lgna.ik.poser.JointSelectionSphere getSwingValue() {
-		return this.value;
+	public JointSelectionSphere getTransientValue( ItemNode<? super JointSelectionSphere, Void> node ) {
+		return sphere;
 	}
 
 	@Override
-	protected void setSwingValue( org.lgna.ik.poser.JointSelectionSphere nextValue ) {
-		this.value = nextValue;
-	}
-
-	//	@Override
-	//	protected void updateSwingModel( JointSelectionSphere nextValue ) {
-	//		this.setValue( nextValue );
-	//	}
-	//
-	//	@Override
-	//	protected JointSelectionSphere getActualValue() {
-	//		return this.value;
-	//	}
-
-	public ItemDropDown<JointSelectionSphere, JointSelectionSphereState> createItemDropDown() {
-		return new JointSelectionSphereStateDropDown( this );
-	}
-
-	private static void fillIn( List<CascadeBlankChild> rv, JointSelectionSphere sphere ) {
-		JointSelectionSphere root = sphere.getRoot();
-		if( sphere != null ) {
-			rv.add( JointSelectionSphereFillIn.getInstance( sphere ) );
-			fillIn( rv, sphere.getRoot() );
-		}
+	public JointSelectionSphere createValue( ItemNode<? super JointSelectionSphere, Void> node, TransactionHistory transactionHistory ) {
+		return sphere;
 	}
 
 	@Override
-	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<JointSelectionSphere> blankNode ) {
-		fillIn( rv, this.getValue() );
-		//		for( org.lgna.story.resources.JointId rootId : rootIds ) {
-		//			fillIn( rv, rootId );
-		//			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		//		}
-		return rv;
+	protected JComponent createMenuItemIconProxy( ItemNode<? super JointSelectionSphere, Void> node ) {
+		return new JLabel( "mmay: " + sphere.getJoint() );
+	}
+
+	public static CascadeBlankChild getInstance( JointSelectionSphere sphere ) {
+		return map.get( sphere ) != null ? map.get( sphere ) : new JointSelectionSphereFillIn( sphere.getRoot() );
 	}
 }

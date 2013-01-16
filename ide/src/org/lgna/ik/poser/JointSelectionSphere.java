@@ -51,14 +51,16 @@ import org.lgna.story.resources.JointId;
 
 public class JointSelectionSphere extends SSphere {
 
-	private JointImp joint;
+	private final JointImp joint;
+	private final JointSelectionSphere parent;
 
-	public JointSelectionSphere( JointImp jointToSelect ) {
+	public JointSelectionSphere( JointImp jointToSelect, JointSelectionSphere parent ) {
 		super();
 		this.joint = jointToSelect;
 		this.setVehicle( jointToSelect.getAbstraction() );
 		this.moveAndOrientTo( jointToSelect.getAbstraction() );
 		this.setSize( new Size( .25, .25, .25 ) );
+		this.parent = parent;
 	}
 
 	public JointImp getJoint() {
@@ -72,5 +74,13 @@ public class JointSelectionSphere extends SSphere {
 			}
 		}
 		return null;
+	}
+
+	public JointSelectionSphere getRoot() {
+		return this.getParent() != null ? this.getParent().getRoot() : this;
+	}
+
+	private JointSelectionSphere getParent() {
+		return this.parent;
 	}
 }

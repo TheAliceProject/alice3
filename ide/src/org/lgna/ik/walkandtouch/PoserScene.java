@@ -84,30 +84,28 @@ public class PoserScene extends SScene {
 	public PoserScene( SCamera camera, SBiped ogre ) {
 		this.camera = camera;
 		this.ogre = ogre;
-		this.jssArr = Collections.newArrayList(
-				createJSS( ogre.getRightAnkle() ),
-				createJSS( ogre.getRightKnee() ),
-				createJSS( ogre.getRightHip() ),
-				createJSS( ogre.getRightWrist() ),
-				createJSS( ogre.getRightElbow() ),
-				createJSS( ogre.getRightClavicle() ),
-				createJSS( ogre.getRightWrist() ),
-				createJSS( ogre.getLeftAnkle() ),
-				createJSS( ogre.getLeftKnee() ),
-				createJSS( ogre.getLeftHip() ),
-				createJSS( ogre.getLeftWrist() ),
-				createJSS( ogre.getLeftElbow() ),
-				createJSS( ogre.getLeftClavicle() ),
-				createJSS( ogre.getLeftWrist() )
-				);
+		JointSelectionSphere pelvis = createJSS( ogre.getPelvis(), null );
+		JointSelectionSphere a = createJSS( ogre.getRightHip(), pelvis );
+		JointSelectionSphere b = createJSS( ogre.getRightKnee(), a );
+		JointSelectionSphere c = createJSS( ogre.getRightAnkle(), b );
+		JointSelectionSphere d = createJSS( ogre.getRightClavicle(), null );
+		JointSelectionSphere e = createJSS( ogre.getRightElbow(), d );
+		JointSelectionSphere f = createJSS( ogre.getRightWrist(), e );
+		JointSelectionSphere g = createJSS( ogre.getLeftHip(), pelvis );
+		JointSelectionSphere h = createJSS( ogre.getLeftKnee(), g );
+		JointSelectionSphere i = createJSS( ogre.getLeftAnkle(), h );
+		JointSelectionSphere j = createJSS( ogre.getLeftClavicle(), null );
+		JointSelectionSphere k = createJSS( ogre.getLeftElbow(), j );
+		JointSelectionSphere l = createJSS( ogre.getLeftWrist(), k );
+		this.jssArr = Collections.newArrayList( a, b, c, d, e, f, g, h, i, j, k, l );
 		ArrayList<SJoint> sJointList = Collections.newArrayList( ogre.getRightClavicle(), ogre.getLeftClavicle(), ogre.getRightHip(), ogre.getLeftHip() );
 		for( SJoint joint : sJointList ) {
 			anchorPoints.add( ( (JointImp)ImplementationAccessor.getImplementation( joint ) ).getJointId() );
 		}
 	}
 
-	private JointSelectionSphere createJSS( SJoint joint ) {
-		return new JointSelectionSphere( (JointImp)ImplementationAccessor.getImplementation( joint ) );
+	private JointSelectionSphere createJSS( SJoint joint, JointSelectionSphere child ) {
+		return new JointSelectionSphere( (JointImp)ImplementationAccessor.getImplementation( joint ), child );
 	}
 
 	private void performGeneratedSetup() {
