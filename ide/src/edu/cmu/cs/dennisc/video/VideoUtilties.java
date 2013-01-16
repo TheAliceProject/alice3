@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,39 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media;
-
-import java.io.File;
-
-import org.lgna.croquet.WizardPageComposite;
-import org.lgna.croquet.history.CompletionStep;
+package edu.cmu.cs.dennisc.video;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class VideoEditorComposite extends WizardPageComposite<VideoEditorView> {
-
-	private ExportToYouTubeWizardDialogComposite owner;
-	private File videoFile;
-
-	public VideoEditorComposite( ExportToYouTubeWizardDialogComposite exportToYouTubeWizardDialogComposite ) {
-		super( java.util.UUID.fromString( "0c25182f-cb4f-4820-8144-53563f8f79f8" ) );
-		this.owner = exportToYouTubeWizardDialogComposite;
-		this.videoFile = owner.getFile();
+public class VideoUtilties {
+	public static VideoPlayer createVideoPlayer() {
+		return new VlcVideoPlayer();
 	}
-
-	@Override
-	public Status getPageStatus( CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
-	}
-
-	@Override
-	protected VideoEditorView createView() {
-		return new VideoEditorView( this );
-	}
-
-	public File getFile() {
-		return videoFile;
-	}
-
 }

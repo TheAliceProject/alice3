@@ -42,60 +42,65 @@
  */
 package org.alice.media;
 
-import java.awt.Component;
 import java.io.File;
 
 import org.alice.media.components.MoviePlayerView;
 import org.lgna.croquet.ActionOperation;
 
-import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
-
 /**
  * @author Matt May
  */
 public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<MoviePlayerView> {
-
-	private MoviePlayerView view;
-	private uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent mediaPlayerComponent;
-	private File videoFile;
-
+	private final edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
+	private java.io.File file;
 	private final ActionOperation previewOperation = this.createActionOperation( this.createKey( "previewOperation" ), new Action() {
-
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			assert videoFile != null;
-			mediaPlayerComponent.getMediaPlayer().playMedia( videoFile.getAbsolutePath() );
+			videoPlayer.playMedia( file );
 			return null;
 		}
 	} );
 
-	public MoviePlayerComposite( File file ) {
+	public MoviePlayerComposite() {
 		super( java.util.UUID.fromString( "28ea7f67-1f3f-443f-a3fb-130676779b5f" ) );
-		com.sun.jna.NativeLibrary.addSearchPath( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), "c:/Program Files/VideoLAN/VLC/" );
-		com.sun.jna.Native.loadLibrary( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), uk.co.caprica.vlcj.binding.LibVlc.class );
-		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+		this.videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilties.createVideoPlayer();
 	}
 
 	@Override
 	protected MoviePlayerView createView() {
-		view = new MoviePlayerView( this );
-		return view;
-	}
-
-	public void handlePlayerRealized( Component visualComponent, Component controlComponent ) {
-		getView().handlePlayerRealized( visualComponent, controlComponent );
-		getView().revalidateAndRepaint();
+		return new MoviePlayerView( this );
 	}
 
 	public void setMovie( File file ) {
-		view.setMovie( file );
-		videoFile = file;
+		if( this.file != null ) {
+			//shut down old file
+		}
+		this.file = file;
+		if( this.file != null ) {
+			//perhaps initialize?
+		}
 	}
 
-	public EmbeddedMediaPlayerComponent getPlayer() {
-		return this.mediaPlayerComponent;
+	public edu.cmu.cs.dennisc.video.VideoPlayer getVideoPlayer() {
+		return this.videoPlayer;
 	}
 
 	public ActionOperation getPlayOperation() {
 		return previewOperation;
+	}
+
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		File file = new File( "C:/Users/dennisc/Videos/test.webm" );
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		MoviePlayerComposite moviePlayerComposite = new MoviePlayerComposite();
+		moviePlayerComposite.setMovie( file );
+		app.getFrame().setMainComposite( moviePlayerComposite );
+		app.getFrame().pack();
+		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
+		app.getFrame().setVisible( true );
+
 	}
 }

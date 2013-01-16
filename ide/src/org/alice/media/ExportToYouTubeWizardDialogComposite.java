@@ -75,7 +75,6 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 
 	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
-	private final VideoEditorComposite videoEditorComposite = new VideoEditorComposite( this );
 	private final UploadComposite uploadComposite = new UploadComposite( this );
 
 	private org.lgna.project.Project project;

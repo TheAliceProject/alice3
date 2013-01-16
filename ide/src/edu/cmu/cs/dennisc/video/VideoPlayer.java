@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media;
-
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.Label;
+package edu.cmu.cs.dennisc.video;
 
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class VideoEditorView extends BorderPanel {
+public interface VideoPlayer {
+	public java.awt.Component getAwtComponent();
 
-	public VideoEditorView( VideoEditorComposite videoEditorComposite ) {
-		this.addComponent( new MoviePlayerComposite( videoEditorComposite.getFile() ).createView(), Constraint.CENTER );
-		this.addComponent( new Label( "Hello, World!" ), Constraint.PAGE_END );
-	}
-
+	public void playMedia( java.io.File file );
 }

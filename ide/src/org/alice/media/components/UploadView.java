@@ -46,9 +46,6 @@ package org.alice.media.components;
  * @author Matt May
  */
 public class UploadView extends org.lgna.croquet.components.BorderPanel {
-
-	//private final MoviePlayerComposite moviePlayerComposite;
-
 	private final org.lgna.croquet.components.Panel youtubeDetailsPanel;
 
 	public UploadView( org.alice.media.UploadComposite composite ) {
@@ -152,9 +149,11 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 
 		this.addLineStartComponent( new org.lgna.croquet.components.PageAxisPanel(
 				new org.lgna.croquet.components.Label( "Preview:" ),
-				new PreviewVideoView(),
+				//new PreviewVideoView(),
+				composite.getMoviePlayerComposite().getView(),
 				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ),
-				composite.getExportToFileOperation().createButton() ) );
+				composite.getExportToFileOperation().createButton(),
+				org.lgna.croquet.components.BoxUtilities.createGlue() ) );
 		//		this.moviePlayerComposite = new MoviePlayerComposite( composite.getFile() );
 		//
 		//		org.lgna.croquet.components.PageAxisPanel sidePanel = new org.lgna.croquet.components.PageAxisPanel();
@@ -168,9 +167,5 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 
 	public org.lgna.croquet.components.Panel getYoutubeDetailsPanel() {
 		return this.youtubeDetailsPanel;
-	}
-
-	public void setMovie( java.io.File file ) {
-		//moviePlayerComposite.setMovie( file );
 	}
 }
