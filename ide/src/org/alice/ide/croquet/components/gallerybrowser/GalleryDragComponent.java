@@ -49,43 +49,20 @@ package org.alice.ide.croquet.components.gallerybrowser;
 public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent<org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel> {
 	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
 
-	//	private static final java.awt.Color BASE_COLOR = java.awt.Color.LIGHT_GRAY;//new java.awt.Color( 0xf7e4b6 );
-	//	private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 1.4 );
-	//	private static final java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 0.8 );
-
-	//	private static final java.awt.Color ACTIVE_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 2.0 );
-	//	private static final java.awt.Color ACTIVE_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 0.9 );
-
 	private final java.awt.Color baseColor;
 	private final java.awt.Color highlightColor;
 	private final java.awt.Color shadowColor;
 	private final java.awt.Color activeHighlightColor;
 	private final java.awt.Color activeShadowColor;
 
-	private static java.awt.Color createHighlightColor( java.awt.Color baseColor ) {
-		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.0, 1.4 );
-	}
-
-	private static java.awt.Color createShadowColor( java.awt.Color baseColor ) {
-		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.0, 0.8 );
-	}
-
-	private static java.awt.Color createActiveHighlightColor( java.awt.Color baseColor ) {
-		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.0, 2.0 );
-	}
-
-	private static java.awt.Color createActiveShadowColor( java.awt.Color baseColor ) {
-		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( baseColor, 1.0, 1.0, 0.9 );
-	}
-
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model );
 
 		this.baseColor = model.getBaseColor();
-		this.highlightColor = createHighlightColor( this.baseColor );
-		this.shadowColor = createShadowColor( this.baseColor );
-		this.activeHighlightColor = createActiveHighlightColor( this.baseColor );
-		this.activeShadowColor = createActiveShadowColor( this.baseColor );
+		this.highlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
+		this.shadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.8 );
+		this.activeHighlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 2.0 );
+		this.activeShadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.9 );
 
 		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();

@@ -48,7 +48,7 @@ package org.alice.ide.croquet.models.gallerybrowser;
  */
 public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 	private static final java.awt.Color INSTANCE_CREATION_BASE_COLOR = new java.awt.Color( 0xf7e4b6 );
-	private static final java.awt.Color OTHER_BASE_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 221 );
+	private static final java.awt.Color OTHER_BASE_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );
 
 	public GalleryDragModel( java.util.UUID migrationId ) {
 		super( migrationId );
