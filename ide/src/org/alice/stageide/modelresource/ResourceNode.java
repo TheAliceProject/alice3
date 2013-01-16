@@ -130,7 +130,7 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 				//return ResourceCascade.getInstance( classResourceKey.getType(), dropSite );
 				return new AddFieldCascade( this, dropSite );
 			}
-		} else if( this.resourceKey instanceof GroupTagKey ) {
+		} else if( this.resourceKey instanceof TagKey ) {
 			return new AddFieldCascade( this, dropSite );
 		} else {
 			return null;
@@ -154,7 +154,7 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 			} else {
 				return this.getState().getItemSelectionOperation( this );
 			}
-		} else if( this.resourceKey instanceof GroupTagKey ) {
+		} else if( this.resourceKey instanceof TagKey ) {
 			return this.getState().getItemSelectionOperation( this );
 		} else {
 			return null;
