@@ -75,4 +75,14 @@ public class EmptyIconFactory extends AbstractIconFactory {
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		return sizeIfResolutionIndependent;
 	}
+
+	@Override
+	public java.awt.Dimension getTrimmedSizeForWidth( int width ) {
+		return new java.awt.Dimension( width, 0 );
+	}
+
+	@Override
+	public java.awt.Dimension getTrimmedSizeForHeight( int height ) {
+		return new java.awt.Dimension( 0, height );
+	}
 }

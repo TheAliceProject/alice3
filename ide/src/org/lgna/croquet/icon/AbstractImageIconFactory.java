@@ -55,4 +55,9 @@ public abstract class AbstractImageIconFactory extends AbstractIconFactory {
 	public javax.swing.ImageIcon getSourceImageIcon() {
 		return this.imageIcon;
 	}
+
+	@Override
+	protected double getTrimmedWidthToHeightAspectRatio() {
+		return this.imageIcon.getIconWidth() / (double)this.imageIcon.getIconHeight();
+	}
 }

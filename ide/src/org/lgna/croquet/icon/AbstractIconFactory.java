@@ -55,13 +55,17 @@ public abstract class AbstractIconFactory implements IconFactory {
 		}
 	}
 
+	protected double getTrimmedWidthToHeightAspectRatio() {
+		return this.getDefaultWidthToHeightAspectRatio();
+	}
+
 	protected java.awt.Dimension createDimensionForWidth( int width, double widthToHeigthAspectRatio ) {
 		int height = (int)Math.round( width / widthToHeigthAspectRatio );
 		return new java.awt.Dimension( width, height );
 	}
 
 	protected java.awt.Dimension createDimensionForHeight( int height, double widthToHeigthAspectRatio ) {
-		int width = (int)Math.round( height / widthToHeigthAspectRatio );
+		int width = (int)Math.round( height * widthToHeigthAspectRatio );
 		return new java.awt.Dimension( width, height );
 	}
 
@@ -74,10 +78,10 @@ public abstract class AbstractIconFactory implements IconFactory {
 	}
 
 	public java.awt.Dimension getTrimmedSizeForWidth( int width ) {
-		return this.getDefaultSizeForWidth( width );
+		return this.createDimensionForWidth( width, this.getTrimmedWidthToHeightAspectRatio() );
 	}
 
 	public java.awt.Dimension getTrimmedSizeForHeight( int height ) {
-		return this.getDefaultSizeForHeight( height );
+		return this.createDimensionForHeight( height, this.getTrimmedWidthToHeightAspectRatio() );
 	}
 }
