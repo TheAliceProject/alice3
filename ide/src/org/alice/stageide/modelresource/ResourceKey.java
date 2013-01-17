@@ -66,6 +66,8 @@ public abstract class ResourceKey {
 
 	public abstract String[] getThemeTags();
 
+	public abstract boolean isInstanceCreator();
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

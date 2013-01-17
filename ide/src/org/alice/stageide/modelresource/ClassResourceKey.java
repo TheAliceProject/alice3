@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class ClassResourceKey extends ResourceKey {
+public final class ClassResourceKey extends InstanceCreatorKey {
 	private final Class<? extends org.lgna.story.resources.ModelResource> cls;
 
 	public ClassResourceKey( Class<? extends org.lgna.story.resources.ModelResource> cls ) {

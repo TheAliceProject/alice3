@@ -58,11 +58,20 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model );
 
-		this.baseColor = model.getBaseColor();
-		this.highlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
-		this.shadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.8 );
-		this.activeHighlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 2.0 );
-		this.activeShadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.9 );
+		if( model.isInstanceCreator() ) {
+			this.baseColor = new java.awt.Color( 0xf7e4b6 );
+			this.highlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
+			this.shadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 0.9, 0.8 );
+			this.activeHighlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 2.0 );
+			this.activeShadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.9 );
+		} else {
+			this.baseColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );
+			this.highlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 221 );
+			this.shadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 171 );
+			this.activeHighlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 255 );
+			this.activeShadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 181 );
+
+		}
 
 		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();

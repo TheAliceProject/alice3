@@ -66,7 +66,7 @@ public abstract class ShapeDragModel extends GalleryDragModel {
 	}
 
 	@Override
-	protected boolean isInstanceCreator() {
+	public boolean isInstanceCreator() {
 		return true;
 	}
 

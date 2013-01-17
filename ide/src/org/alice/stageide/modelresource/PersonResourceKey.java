@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonResourceKey extends ResourceKey {
+public class PersonResourceKey extends InstanceCreatorKey {
 
 	private static final org.lgna.croquet.icon.IconFactory ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( org.alice.stageide.gallerybrowser.ResourceBasedTab.CREATE_PERSON_LARGE_ICON.getImage() );
 

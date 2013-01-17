@@ -45,61 +45,9 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TagKey extends ResourceKey {
-	public static final char SEPARATOR = ':';
-
-	private final String tag;
-
-	public TagKey( String tag ) {
-		this.tag = tag;
-	}
-
-	public String getTag() {
-		return this.tag;
-	}
-
-	@Override
-	public String getDisplayText() {
-		int lastIndex = tag.lastIndexOf( GroupTagKey.SEPARATOR );
-		if( lastIndex != -1 ) {
-			return tag.substring( lastIndex + 1 );
-		} else {
-			return this.tag;
-		}
-	}
-
-	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		return null;
-	}
-
-	@Override
-	public String[] getTags() {
-		return null;
-	}
-
-	@Override
-	public String[] getGroupTags() {
-		return null;
-	}
-
-	@Override
-	public String[] getThemeTags() {
-		return null;
-	}
-
-	@Override
-	public boolean isLeaf() {
-		return false;
-	}
-
+public abstract class InstanceCreatorKey extends ResourceKey {
 	@Override
 	public boolean isInstanceCreator() {
-		return false;
-	}
-
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.getDisplayText() );
+		return true;
 	}
 }

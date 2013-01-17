@@ -162,12 +162,8 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 	}
 
 	@Override
-	protected boolean isInstanceCreator() {
-		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) || ( this.resourceKey instanceof ClassResourceKey ) ) {
-			return true;
-		} else {
-			return false;
-		}
+	public boolean isInstanceCreator() {
+		return this.resourceKey.isInstanceCreator();
 	}
 
 	@Override

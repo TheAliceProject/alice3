@@ -143,12 +143,17 @@ public class StageIDE extends org.alice.ide.IDE {
 				}
 				return rv;
 			} else if( declaringType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) && valueType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) ) {
-				Class<?> resourceClass = ( (org.lgna.project.ast.JavaType)field.getValueType() ).getClassReflectionProxy().getReification();
-				java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( resourceClass, field.getName() );
-				if( thumbnail != null ) {
-					return edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon.createSafeInstanceInPixels( thumbnail, 20, 20 );
+				if( field instanceof org.lgna.project.ast.JavaField ) {
+					org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+					try {
+						org.lgna.story.resources.ModelResource modelResource = (org.lgna.story.resources.ModelResource)javaField.getFieldReflectionProxy().getReification().get( null );
+						org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
+						return iconFactory.getIcon( new java.awt.Dimension( 20, 15 ) );
+					} catch( Exception e ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( e, field );
+						return null;
+					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( resourceClass, field.getName() );
 					return null;
 				}
 			} else {

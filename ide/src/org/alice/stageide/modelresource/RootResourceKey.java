@@ -90,6 +90,11 @@ public class RootResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public boolean isInstanceCreator() {
+		return false;
+	}
+
+	@Override
 	protected void appendRep( StringBuilder sb ) {
 	}
 }

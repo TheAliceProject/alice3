@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class EnumConstantResourceKey extends ResourceKey {
+public final class EnumConstantResourceKey extends InstanceCreatorKey {
 	private static java.util.Map<org.lgna.project.ast.JavaType, org.lgna.project.ast.JavaType> mapResourceTypeToAbstractionType;
 
 	private final Enum<? extends org.lgna.story.resources.ModelResource> enumConstant;
