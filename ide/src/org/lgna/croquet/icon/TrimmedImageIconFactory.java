@@ -70,11 +70,6 @@ public class TrimmedImageIconFactory extends AbstractImageIconFactory {
 	}
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		//		javax.swing.ImageIcon imageIcon = this.getImageIcon();
-		//		if( imageIcon != null ) {
 		return new java.awt.Dimension( this.trimmedSourceIcon.getIconWidth(), this.trimmedSourceIcon.getIconHeight() );
-		//		} else {
-		//			return sizeIfResolutionIndependent;
-		//		}
 	}
 }

@@ -82,7 +82,7 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.ide.ast.icons.ThisInstanceIconFactory.SINGLETON;
+		return org.alice.ide.ast.icons.ThisInstanceIconFactory.getInstance();
 	}
 
 	public String getRepr() {

@@ -45,8 +45,18 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public enum EmptyIconFactory implements IconFactory {
-	SINGLETON;
+public class EmptyIconFactory extends AbstractIconFactory {
+	private static class SingletonHolder {
+		private static EmptyIconFactory instance = new EmptyIconFactory();
+	}
+
+	public static EmptyIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private EmptyIconFactory() {
+	}
+
 	public javax.swing.Icon getIcon( final java.awt.Dimension size ) {
 		return new javax.swing.Icon() {
 			public int getIconWidth() {

@@ -42,11 +42,23 @@
  */
 package org.alice.ide.ast.icons;
 
+import org.lgna.croquet.icon.AbstractIconFactory;
+
 /**
  * @author Dennis Cosgrove
  */
-public enum ThisInstanceIconFactory implements org.lgna.croquet.icon.IconFactory {
-	SINGLETON;
+public class ThisInstanceIconFactory extends AbstractIconFactory {
+	private static class SingletonHolder {
+		private static ThisInstanceIconFactory instance = new ThisInstanceIconFactory();
+	}
+
+	public static ThisInstanceIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ThisInstanceIconFactory() {
+	}
+
 	public javax.swing.Icon getIcon( final java.awt.Dimension size ) {
 		return new javax.swing.Icon() {
 			public int getIconWidth() {

@@ -45,7 +45,7 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class ColorIconFactory implements org.lgna.croquet.icon.IconFactory {
+public class ColorIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
 	private final java.awt.Color color;
 
 	public ColorIconFactory( java.awt.Color color ) {

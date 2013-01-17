@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,16 +45,39 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public interface IconFactory {
-	public javax.swing.Icon getIcon( java.awt.Dimension size );
+public abstract class AbstractIconFactory implements IconFactory {
+	private double getDefaultWidthToHeightAspectRatio() {
+		java.awt.Dimension defaultSize = this.getDefaultSize( null );
+		if( defaultSize != null ) {
+			return defaultSize.width / (double)defaultSize.height;
+		} else {
+			return 1.0;
+		}
+	}
 
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent );
+	protected java.awt.Dimension createDimensionForWidth( int width, double widthToHeigthAspectRatio ) {
+		int height = (int)Math.round( width / widthToHeigthAspectRatio );
+		return new java.awt.Dimension( width, height );
+	}
 
-	public java.awt.Dimension getDefaultSizeForWidth( int width );
+	protected java.awt.Dimension createDimensionForHeight( int height, double widthToHeigthAspectRatio ) {
+		int width = (int)Math.round( height / widthToHeigthAspectRatio );
+		return new java.awt.Dimension( width, height );
+	}
 
-	public java.awt.Dimension getDefaultSizeForHeight( int height );
+	public final java.awt.Dimension getDefaultSizeForWidth( int width ) {
+		return this.createDimensionForWidth( width, this.getDefaultWidthToHeightAspectRatio() );
+	}
 
-	public java.awt.Dimension getTrimmedSizeForWidth( int width );
+	public final java.awt.Dimension getDefaultSizeForHeight( int height ) {
+		return this.createDimensionForHeight( height, this.getDefaultWidthToHeightAspectRatio() );
+	}
 
-	public java.awt.Dimension getTrimmedSizeForHeight( int height );
+	public java.awt.Dimension getTrimmedSizeForWidth( int width ) {
+		return this.getDefaultSizeForWidth( width );
+	}
+
+	public java.awt.Dimension getTrimmedSizeForHeight( int height ) {
+		return this.getDefaultSizeForHeight( height );
+	}
 }

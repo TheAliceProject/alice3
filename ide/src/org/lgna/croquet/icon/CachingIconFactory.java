@@ -45,7 +45,7 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CachingIconFactory implements IconFactory {
+public abstract class CachingIconFactory extends AbstractIconFactory {
 	private final java.util.Map<java.awt.Dimension, javax.swing.Icon> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	protected java.util.Map<java.awt.Dimension, javax.swing.Icon> getMap() {

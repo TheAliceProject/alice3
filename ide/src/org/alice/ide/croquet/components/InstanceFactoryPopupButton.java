@@ -68,7 +68,7 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 			this.addCenterComponent( expressionPane );
 			if( nextValue != null ) {
 				org.lgna.croquet.icon.IconFactory iconFactory = nextValue.getIconFactory();
-				if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) ) {
+				if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
 					javax.swing.Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE );
 					if( icon != null ) {
 						this.addLineStartComponent( new org.lgna.croquet.components.Label( icon ) );
