@@ -56,6 +56,11 @@ public class ColorIconFactory extends org.lgna.croquet.icon.AbstractIconFactory 
 		return new org.alice.ide.swing.icons.ColorIcon( this.color, size.width, size.height );
 	}
 
+	@Override
+	protected double getDefaultWidthToHeightAspectRatio() {
+		return 1.0;
+	}
+
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		return sizeIfResolutionIndependent;
 	}

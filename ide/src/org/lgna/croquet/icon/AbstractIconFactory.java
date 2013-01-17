@@ -46,12 +46,12 @@ package org.lgna.croquet.icon;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractIconFactory implements IconFactory {
-	private double getDefaultWidthToHeightAspectRatio() {
+	protected double getDefaultWidthToHeightAspectRatio() {
 		java.awt.Dimension defaultSize = this.getDefaultSize( null );
 		if( defaultSize != null ) {
 			return defaultSize.width / (double)defaultSize.height;
 		} else {
-			return 1.0;
+			return 4.0 / 3.0;
 		}
 	}
 
