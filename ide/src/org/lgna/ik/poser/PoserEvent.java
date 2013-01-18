@@ -42,59 +42,19 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * @author Matt May
+ */
+public class PoserEvent {
 
-import org.lgna.story.SSphere;
-import org.lgna.story.Size;
-import org.lgna.story.implementation.JointImp;
-import org.lgna.story.resources.JointId;
+	private JointSelectionSphere jss;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
-
-public class JointSelectionSphere extends SSphere {
-
-	private final JointImp joint;
-	private final JointSelectionSphere parent;
-
-	public JointSelectionSphere( JointImp jointToSelect, JointSelectionSphere parent ) {
-		super();
-		this.joint = jointToSelect;
-		this.setVehicle( jointToSelect.getAbstraction() );
-		this.moveAndOrientTo( jointToSelect.getAbstraction() );
-		this.setSize( new Size( .25, .25, .25 ) );
-		this.parent = parent;
+	public PoserEvent( JointSelectionSphere sphere ) {
+		this.jss = sphere;
 	}
 
-	public JointImp getJoint() {
-		return this.joint;
+	public JointSelectionSphere getJSS() {
+		return jss;
 	}
 
-	public static JointSelectionSphere findSphereForJoint( JointId jointID, ArrayList<JointSelectionSphere> jointSelectionSpheres ) {
-		for( JointSelectionSphere sphere : jointSelectionSpheres ) {
-			if( sphere.getJoint().getJointId().equals( jointID ) ) {
-				return sphere;
-			}
-		}
-		return null;
-	}
-
-	public JointSelectionSphere getRoot() {
-		return this.getParent() != null ? this.getParent().getRoot() : this;
-	}
-
-	private JointSelectionSphere getParent() {
-		return this.parent;
-	}
-
-	public List<JointSelectionSphere> getPossibleAnchors() {
-		List<JointSelectionSphere> rv = Collections.newArrayList();
-		JointSelectionSphere ptr = this;
-		while( ptr != this.getRoot() ) {
-			rv.add( ptr );
-			ptr = ptr.getParent();
-		}
-		rv.add( ptr );
-		return rv;
-	}
 }

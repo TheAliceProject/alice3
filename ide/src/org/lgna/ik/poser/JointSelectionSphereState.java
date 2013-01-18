@@ -59,6 +59,7 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<JointSelectionSphere> {
 
 	private JointSelectionSphere value;
+	private List<JointSelectionSphere> possibleStates;
 
 	public JointSelectionSphereState( JointSelectionSphere initialValue ) {
 		super( null, java.util.UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), initialValue, new ItemCodec<JointSelectionSphere>() {
@@ -105,21 +106,23 @@ public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<
 		return new JointSelectionSphereStateDropDown( this );
 	}
 
-	private static void fillIn( List<CascadeBlankChild> rv, JointSelectionSphere sphere ) {
-		JointSelectionSphere root = sphere.getRoot();
-		if( sphere != null ) {
+	private void fillIn( List<CascadeBlankChild> rv ) {
+		for( JointSelectionSphere sphere : possibleStates ) {
 			rv.add( JointSelectionSphereFillIn.getInstance( sphere ) );
-			fillIn( rv, sphere.getRoot() );
 		}
 	}
 
 	@Override
 	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<JointSelectionSphere> blankNode ) {
-		fillIn( rv, this.getValue() );
+		fillIn( rv );
 		//		for( org.lgna.story.resources.JointId rootId : rootIds ) {
 		//			fillIn( rv, rootId );
 		//			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 		//		}
 		return rv;
+	}
+
+	public void setPossibleStates( List<JointSelectionSphere> possibleStates ) {
+		this.possibleStates = possibleStates;
 	}
 }

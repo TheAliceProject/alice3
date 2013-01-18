@@ -69,11 +69,13 @@ public class PickHint extends BitSet {
 
 		private PickType()
 		{
-			this.pickHint = new PickHint( this );
 		}
 
 		public PickHint pickHint()
 		{
+			if( this.pickHint == null ) {
+				this.pickHint = new PickHint( this );
+			}
 			return this.pickHint;
 		}
 

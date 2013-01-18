@@ -60,6 +60,8 @@ public class PoserControlView extends BorderPanel {
 		this.addComponent( panel, Constraint.CENTER );
 		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> anchorComponent = poserControlComposite.getAnchorJointState().createItemDropDown();
 		panel.addComponent( anchorComponent );
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> endComponent = poserControlComposite.getEndJointState().createItemDropDown();
+		panel.addComponent( endComponent );
 		this.addComponent( poserControlComposite.getDumpPose().createButton(), Constraint.PAGE_END );
 	}
 

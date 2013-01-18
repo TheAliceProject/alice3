@@ -44,26 +44,27 @@ package org.lgna.ik.walkandtouch;
 
 import java.util.ArrayList;
 
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.PoserControllerAdapter;
-import org.lgna.story.AddMouseClickOnObjectListener;
-import org.lgna.story.Color;
+import org.lgna.ik.poser.PoserDragAdapter;
+import org.lgna.ik.poser.PoserEvent;
+import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.SGround;
 import org.lgna.story.SJoint;
 import org.lgna.story.SScene;
-import org.lgna.story.SSphere;
 import org.lgna.story.SSun;
 import org.lgna.story.SpatialRelation;
-import org.lgna.story.event.MouseClickOnObjectEvent;
-import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.implementation.JointImp;
+import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.resources.JointId;
 
-import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author Matt May
@@ -73,11 +74,10 @@ public class PoserScene extends SScene {
 	private final SGround snow = new SGround();
 	private final SCamera camera;
 	public final SBiped ogre;
-	public SSphere anchor = new SSphere();
-	public SSphere ee = new SSphere();
 	private ArrayList<JointSelectionSphere> jssArr;// = Collections.newArrayList();
 	private ArrayList<JointId> anchorPoints = Collections.newArrayList();
 	private PoserControllerAdapter adapter;
+	private PoserDragAdapter dragAdapter;
 
 	//	private State<JointSelectionSphere> selectedEndJointSphere = new State<PoserScene.JointSelectionSphere>();
 
@@ -113,15 +113,6 @@ public class PoserScene extends SScene {
 		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.ogre.setVehicle( this );
-		anchor.setVehicle( this );
-		ee.setVehicle( this );
-
-		anchor.setRadius( .15 );
-		anchor.setPaint( Color.GREEN );
-		anchor.setOpacity( 0.5 );
-
-		ee.setRadius( .1 );
-		ee.setPaint( Color.BLUE );
 
 		this.ogre.place( SpatialRelation.ABOVE, this.snow );
 		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
@@ -141,23 +132,38 @@ public class PoserScene extends SScene {
 		//		impl.showVisualization();
 	}
 
+	/**
+	 * for tomorow fix the anchoring functions
+	 */
 	private void performInitializeEvents() {
-		this.addDefaultModelManipulation();
-		this.addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
+		addCustomDragAdapter();
+	}
 
-			public void mouseClicked( MouseClickOnObjectEvent e ) {
-				if( e.getModelAtMouseLocation() instanceof JointSelectionSphere ) {
-					JointSelectionSphere jss = (JointSelectionSphere)e.getModelAtMouseLocation();
-					jss.setVehicle( PoserScene.this );
-					JointImp end = jss.getJoint();
-					JointImp anchor2 = (JointImp)ImplementationAccessor.getImplementation( ogre.getJoint( getAnchorForEndJoint( end ) ) );
-					IKMagicWand.moveChainToPointInSceneSpace( anchor2, end, ImplementationAccessor.getImplementation( jss ).getAbsoluteTransformation().translation );
-					jss.setVehicle( end.getAbstraction() );
-					jss.moveAndOrientTo( end.getAbstraction() );
-				}
+	public void addCustomDragAdapter() {
+		this.dragAdapter = new PoserDragAdapter();
+		SceneImp scene = (SceneImp)ImplementationAccessor.getImplementation( this );
+		OnscreenLookingGlass lookingGlass = scene.getProgram().getOnscreenLookingGlass();
+		SymmetricPerspectiveCamera camera = (SymmetricPerspectiveCamera)scene.findFirstCamera().getSgCamera();
+		this.dragAdapter.setOnscreenLookingGlass( lookingGlass );
+		this.dragAdapter.addCameraView( CameraView.MAIN, camera, null );
+		this.dragAdapter.makeCameraActive( camera );
+		dragAdapter.addListener( new PoserSphereManipulatorListener() {
+
+			public void fireStart( PoserEvent poserEvent ) {
+				JointSelectionSphere jss = poserEvent.getJSS();
+				jss.setVehicle( PoserScene.this );
+				JointImp end = jss.getJoint();
+				JointImp anchor2 = (JointImp)ImplementationAccessor.getImplementation( ogre.getJoint( getAnchorForEndJoint( end ) ) );
+				IKMagicWand.moveChainToPointInSceneSpace( anchor2, end, ImplementationAccessor.getImplementation( jss ).getAbsoluteTransformation().translation );
+				jss.setVehicle( end.getAbstraction() );
+
 			}
 
-		}, AddMouseClickOnObjectListener.setOfVisuals( ArrayUtilities.createArray( jssArr, JointSelectionSphere.class ) ) );
+			public void fireFinish( PoserEvent poserEvent ) {
+				JointSelectionSphere jss = poserEvent.getJSS();
+				jss.moveAndOrientTo( jss.getJoint().getAbstraction() );
+			}
+		} );
 	}
 
 	private JointId getAnchorForEndJoint( JointImp joint ) {

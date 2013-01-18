@@ -42,59 +42,85 @@
  */
 package org.lgna.ik.poser;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.lgna.story.SSphere;
-import org.lgna.story.Size;
-import org.lgna.story.implementation.JointImp;
-import org.lgna.story.resources.JointId;
+import org.alice.interact.InputState;
+import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
+import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
+import org.lgna.story.SThing;
+import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
-public class JointSelectionSphere extends SSphere {
+/**
+ * @author Matt May
+ */
+public class PoserSphereManipulator {
+	private OmniDirectionalPoserSphereManipulator omni = new OmniDirectionalPoserSphereManipulator();
+	private UpDownPoserSphereManipulator uppy = new UpDownPoserSphereManipulator();
 
-	private final JointImp joint;
-	private final JointSelectionSphere parent;
+	List<PoserSphereManipulatorListener> listeners = Collections.newArrayList();
 
-	public JointSelectionSphere( JointImp jointToSelect, JointSelectionSphere parent ) {
-		super();
-		this.joint = jointToSelect;
-		this.setVehicle( jointToSelect.getAbstraction() );
-		this.moveAndOrientTo( jointToSelect.getAbstraction() );
-		this.setSize( new Size( .25, .25, .25 ) );
-		this.parent = parent;
+	public void addListener( PoserSphereManipulatorListener listener ) {
+		listeners.add( listener );
 	}
 
-	public JointImp getJoint() {
-		return this.joint;
+	private void fireAllStart( JointSelectionSphere sphere ) {
+		fireFinish( sphere );
 	}
 
-	public static JointSelectionSphere findSphereForJoint( JointId jointID, ArrayList<JointSelectionSphere> jointSelectionSpheres ) {
-		for( JointSelectionSphere sphere : jointSelectionSpheres ) {
-			if( sphere.getJoint().getJointId().equals( jointID ) ) {
-				return sphere;
+	private void fireFinish( JointSelectionSphere sphere ) {
+		for( PoserSphereManipulatorListener listener : listeners ) {
+			listener.fireStart( new PoserEvent( sphere ) );
+		}
+	}
+
+	public OmniDirectionalPoserSphereManipulator getOmni() {
+		return this.omni;
+	}
+
+	public UpDownPoserSphereManipulator getUppy() {
+		return this.uppy;
+	}
+
+	public class OmniDirectionalPoserSphereManipulator extends OmniDirectionalDragManipulator {
+
+		@Override
+		public boolean doStartManipulator( InputState startInput ) {
+			boolean rv = super.doStartManipulator( startInput );
+			if( manipulatedTransformable != null ) {
+				SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement( manipulatedTransformable );
+				if( abstractionFromSgElement instanceof JointSelectionSphere ) {
+					JointSelectionSphere sphere = (JointSelectionSphere)abstractionFromSgElement;
+					fireStart( sphere );
+				}
 			}
+			return rv;
 		}
-		return null;
-	}
 
-	public JointSelectionSphere getRoot() {
-		return this.getParent() != null ? this.getParent().getRoot() : this;
-	}
-
-	private JointSelectionSphere getParent() {
-		return this.parent;
-	}
-
-	public List<JointSelectionSphere> getPossibleAnchors() {
-		List<JointSelectionSphere> rv = Collections.newArrayList();
-		JointSelectionSphere ptr = this;
-		while( ptr != this.getRoot() ) {
-			rv.add( ptr );
-			ptr = ptr.getParent();
+		private void fireStart( JointSelectionSphere sphere ) {
+			fireAllStart( sphere );
 		}
-		rv.add( ptr );
-		return rv;
+
+	}
+
+	public class UpDownPoserSphereManipulator extends ObjectUpDownDragManipulator {
+
+		@Override
+		public boolean doStartManipulator( InputState startInput ) {
+			boolean rv = super.doStartManipulator( startInput );
+			if( manipulatedTransformable != null ) {
+				SThing abstractionFromSgElement = EntityImp.getAbstractionFromSgElement( manipulatedTransformable );
+				if( abstractionFromSgElement instanceof JointSelectionSphere ) {
+					JointSelectionSphere sphere = (JointSelectionSphere)abstractionFromSgElement;
+					fireStart( sphere );
+				}
+			}
+			return rv;
+		}
+
+		private void fireStart( JointSelectionSphere sphere ) {
+			fireAllStart( sphere );
+		}
 	}
 }

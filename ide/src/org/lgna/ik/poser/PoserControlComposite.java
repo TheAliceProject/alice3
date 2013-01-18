@@ -47,6 +47,7 @@ import java.util.List;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
@@ -79,6 +80,17 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		ikPoser.getJointSelectionSheres();
 		anchorJointState = new JointSelectionSphereState( ikPoser.getDefaultAnchorJoint() );
 		endJointState = new JointSelectionSphereState( ikPoser.getDefaultEndJoint() );
+		endJointState.setPossibleStates( ikPoser.getJointSelectionSheres() );
+		anchorJointState.setPossibleStates( endJointState.getValue().getPossibleAnchors() );
+		endJointState.addValueListener( new ValueListener<JointSelectionSphere>() {
+
+			public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+				anchorJointState.setPossibleStates( endJointState.getValue().getPossibleAnchors() );
+			}
+		} );
 		ikPoser.setAdapter( new PoserControllerAdapter( this ) );
 	}
 
@@ -110,4 +122,5 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 	public ActionOperation getDumpPose() {
 		return this.dumpPose;
 	}
+
 }
