@@ -58,6 +58,26 @@ public class ArrayUtilities {
 		}
 	}
 
+	public static <E extends Object> E[] concatArrays( Class<E> cls, E[]... arrays ) {
+		int totalLength = 0;
+		for( E[] array : arrays ) {
+			totalLength += array.length;
+		}
+		if( totalLength > 0 ) {
+			E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, totalLength );
+			int index = 0;
+			for( E[] array : arrays ) {
+				System.arraycopy( array, 0, rv, index, array.length );
+				index += array.length;
+			}
+			return rv;
+		}
+		else {
+			return null;
+		}
+
+	}
+
 	public static <E extends Object> E[] createArray( java.util.Collection<E> collection, Class<E> cls, boolean isZeroLengthArrayDesiredForNull ) {
 		int size;
 		if( collection != null ) {

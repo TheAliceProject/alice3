@@ -405,11 +405,15 @@ public class AliceResourceUtilties {
 		return getThumbnailResourceFileName( resource.getClass(), resource.toString() );
 	}
 
+	public static String getDefaultTextureEnumName( String resourceName ) {
+		return "DEFAULT";
+	}
+
 	private static String createTextureBaseName( String modelName, String textureName ) {
 		if( textureName == null ) {
 			textureName = "_cls";
 		}
-		else if( modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) ) {
+		else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) ) {
 			textureName = "";
 		}
 		else if( textureName.length() > 0 ) {
