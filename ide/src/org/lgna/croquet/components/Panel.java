@@ -140,18 +140,13 @@ public abstract class Panel extends View<javax.swing.JPanel, org.lgna.croquet.Co
 	}
 
 	public final void refreshLater() {
-		Panel.this.isRefreshNecessary = true;
-		Panel.this.revalidateAndRepaint();
+		this.isRefreshNecessary = true;
+		this.revalidateAndRepaint();
 	}
 
 	@Override
 	protected void handleDisplayable() {
 		this.refreshIfNecessary();
 		super.handleDisplayable();
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
 	}
 }
