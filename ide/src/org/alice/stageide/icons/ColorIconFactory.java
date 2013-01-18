@@ -45,23 +45,21 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class ColorIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
+public class ColorIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
 	private final java.awt.Color color;
 
 	public ColorIconFactory( java.awt.Color color ) {
+		super( IsCachingDesired.FALSE );
 		this.color = color;
 	}
 
-	public javax.swing.Icon getIcon( java.awt.Dimension size ) {
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new org.alice.ide.swing.icons.ColorIcon( this.color, size.width, size.height );
 	}
 
 	@Override
 	protected double getDefaultWidthToHeightAspectRatio() {
 		return 1.0;
-	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return sizeIfResolutionIndependent;
 	}
 }

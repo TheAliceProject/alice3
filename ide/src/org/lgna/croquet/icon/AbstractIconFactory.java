@@ -46,6 +46,46 @@ package org.lgna.croquet.icon;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractIconFactory implements IconFactory {
+	protected static enum IsCachingDesired {
+		TRUE,
+		FALSE;
+	}
+
+	private final java.util.Map<java.awt.Dimension, javax.swing.Icon> map;
+
+	public AbstractIconFactory( IsCachingDesired isCachingDesired ) {
+		if( isCachingDesired == IsCachingDesired.TRUE ) {
+			this.map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		} else {
+			this.map = null;
+		}
+	}
+
+	//	protected java.util.Map<java.awt.Dimension, javax.swing.Icon> getMap() {
+	//		return this.map;
+	//	}
+
+	protected java.util.Collection<javax.swing.Icon> getMapValues() {
+		return this.map.values();
+	}
+
+	protected abstract javax.swing.Icon createIcon( java.awt.Dimension size );
+
+	public final javax.swing.Icon getIcon( java.awt.Dimension size ) {
+		if( this.map != null ) {
+			javax.swing.Icon rv = this.map.get( size );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = this.createIcon( size );
+				this.map.put( size, rv );
+			}
+			return rv;
+		} else {
+			return this.createIcon( size );
+		}
+	}
+
 	protected double getDefaultWidthToHeightAspectRatio() {
 		java.awt.Dimension defaultSize = this.getDefaultSize( null );
 		if( defaultSize != null ) {

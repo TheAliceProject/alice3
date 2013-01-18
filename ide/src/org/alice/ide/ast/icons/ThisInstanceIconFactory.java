@@ -42,12 +42,10 @@
  */
 package org.alice.ide.ast.icons;
 
-import org.lgna.croquet.icon.AbstractIconFactory;
-
 /**
  * @author Dennis Cosgrove
  */
-public class ThisInstanceIconFactory extends AbstractIconFactory {
+public class ThisInstanceIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
 	private static class SingletonHolder {
 		private static ThisInstanceIconFactory instance = new ThisInstanceIconFactory();
 	}
@@ -57,9 +55,11 @@ public class ThisInstanceIconFactory extends AbstractIconFactory {
 	}
 
 	private ThisInstanceIconFactory() {
+		super( IsCachingDesired.TRUE );
 	}
 
-	public javax.swing.Icon getIcon( final java.awt.Dimension size ) {
+	@Override
+	protected javax.swing.Icon createIcon( final java.awt.Dimension size ) {
 		return new javax.swing.Icon() {
 			public int getIconWidth() {
 				return size.width;
@@ -82,9 +82,5 @@ public class ThisInstanceIconFactory extends AbstractIconFactory {
 				}
 			}
 		};
-	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return sizeIfResolutionIndependent;
 	}
 }

@@ -45,10 +45,11 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class ThemeIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
+public class ThemeIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
 	private final org.alice.stageide.modelresource.ResourceKey key;
 
 	public ThemeIconFactory( org.alice.stageide.modelresource.ResourceKey key ) {
+		super( IsCachingDesired.TRUE );
 		this.key = key;
 	}
 

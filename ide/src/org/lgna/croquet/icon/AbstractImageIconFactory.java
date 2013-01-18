@@ -49,6 +49,7 @@ public abstract class AbstractImageIconFactory extends AbstractIconFactory {
 	private final javax.swing.ImageIcon imageIcon;
 
 	public AbstractImageIconFactory( javax.swing.ImageIcon imageIcon ) {
+		super( IsCachingDesired.FALSE );
 		this.imageIcon = imageIcon;
 	}
 

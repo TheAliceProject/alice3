@@ -61,7 +61,8 @@ public class TrimmedImageIconFactory extends AbstractImageIconFactory {
 		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ), width, height );
 	}
 
-	public javax.swing.Icon getIcon( final java.awt.Dimension size ) {
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new TrimmedIcon( this.getSourceImageIcon(), size );
 	}
 
