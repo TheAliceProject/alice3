@@ -46,11 +46,11 @@ package org.lgna.croquet.icon;
  * @author Dennis Cosgrove
  */
 public class TrimmedImageIconFactory extends AbstractImageIconFactory {
-	private final TrimmedIcon trimmedSourceIcon;
+	private final java.awt.Dimension defaultSize;
 
 	public TrimmedImageIconFactory( javax.swing.ImageIcon imageIcon, int width, int height ) {
 		super( imageIcon );
-		this.trimmedSourceIcon = new TrimmedIcon( imageIcon, new java.awt.Dimension( width, height ) );
+		this.defaultSize = new java.awt.Dimension( width, height );
 	}
 
 	public TrimmedImageIconFactory( java.net.URL resource, int width, int height ) {
@@ -62,14 +62,10 @@ public class TrimmedImageIconFactory extends AbstractImageIconFactory {
 	}
 
 	public javax.swing.Icon getIcon( final java.awt.Dimension size ) {
-		if( ( this.trimmedSourceIcon.getIconWidth() == size.width ) && ( this.trimmedSourceIcon.getIconHeight() == size.height ) ) {
-			return this.trimmedSourceIcon;
-		} else {
-			return new TrimmedIcon( trimmedSourceIcon.getImageIcon(), size );
-		}
+		return new TrimmedIcon( this.getSourceImageIcon(), size );
 	}
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return new java.awt.Dimension( this.trimmedSourceIcon.getIconWidth(), this.trimmedSourceIcon.getIconHeight() );
+		return this.defaultSize;
 	}
 }
