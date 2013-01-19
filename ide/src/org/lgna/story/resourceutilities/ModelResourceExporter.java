@@ -859,7 +859,7 @@ public class ModelResourceExporter {
 		if( modelName.equalsIgnoreCase( parentExporter.getClassName() ) ) {
 			return AliceResourceUtilties.makeEnumName( textureName );
 		}
-		else if( modelName.equalsIgnoreCase( textureName ) ) {
+		else if( modelName.equalsIgnoreCase( textureName ) || textureName.equalsIgnoreCase( AliceResourceUtilties.getDefaultTextureEnumName( modelName ) ) ) {
 			return AliceResourceUtilties.makeEnumName( modelName );
 		}
 		else {
