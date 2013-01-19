@@ -52,7 +52,7 @@ public class MethodView extends MemberView {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( method.getReturnType() ) );
 			this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		}
-		org.lgna.croquet.Operation operation = org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( method );
+		org.lgna.croquet.Operation operation = org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToEditInstance( method );
 		org.lgna.croquet.components.Hyperlink hyperlink = operation.createHyperlink();
 		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
 		hyperlink.setClobberText( method.getName() );

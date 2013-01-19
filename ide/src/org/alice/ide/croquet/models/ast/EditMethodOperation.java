@@ -61,24 +61,49 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class EditMethodOperation extends EditCodeOperation<org.lgna.project.ast.UserMethod> {
-	//	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();
+	private static enum IsLocalizedToEdit {
+		TRUE,
+		FALSE;
+		private final java.util.Map<org.lgna.project.ast.UserMethod, EditMethodOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	}
 
-	private static java.util.Map<org.lgna.project.ast.UserMethod, EditMethodOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static synchronized EditMethodOperation getInstance( org.lgna.project.ast.UserMethod method ) {
-		EditMethodOperation rv = map.get( method );
+	public static synchronized EditMethodOperation getInstance( org.lgna.project.ast.UserMethod method, IsLocalizedToEdit isLocalizedToEdit ) {
+		EditMethodOperation rv = isLocalizedToEdit.map.get( method );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new EditMethodOperation( method );
-			map.put( method, rv );
+			rv = new EditMethodOperation( method, isLocalizedToEdit );
+			isLocalizedToEdit.map.put( method, rv );
 		}
 		return rv;
 	}
 
-	private EditMethodOperation( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ), method );
+	public static EditMethodOperation getLocalizedToEditInstance( org.lgna.project.ast.UserMethod method ) {
+		return getInstance( method, IsLocalizedToEdit.TRUE );
 	}
+
+	public static EditMethodOperation getLocalizedToNameInstance( org.lgna.project.ast.UserMethod method ) {
+		return getInstance( method, IsLocalizedToEdit.FALSE );
+	}
+
+	private final IsLocalizedToEdit isLocalizedToEdit;
+
+	private EditMethodOperation( org.lgna.project.ast.UserMethod method, IsLocalizedToEdit isLocalizedToEdit ) {
+		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ), method );
+		this.isLocalizedToEdit = isLocalizedToEdit;
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		if( this.isLocalizedToEdit == IsLocalizedToEdit.TRUE ) {
+			//pass
+		} else {
+			this.setName( this.getCode().getName() );
+		}
+	}
+
+	//	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();
 
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<EditMethodOperation> createResolver() {

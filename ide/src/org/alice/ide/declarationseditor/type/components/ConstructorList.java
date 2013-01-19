@@ -56,7 +56,7 @@ public class ConstructorList extends MemberList<org.lgna.project.ast.NamedUserCo
 
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createButtonLineStart( org.lgna.project.ast.NamedUserConstructor item ) {
-		return org.alice.ide.croquet.models.ast.EditConstructorOperation.getInstance( item ).createButton();
+		return org.alice.ide.croquet.models.ast.EditConstructorOperation.getLocalizedToConstructorInstance( item ).createButton();
 	}
 
 	@Override

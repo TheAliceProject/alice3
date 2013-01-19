@@ -40,27 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type;
+package org.alice.stageide.icons;
 
 /**
- * @author Dennis Cosgrove
+ * @author user
  */
-public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.UserMethod> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, MethodMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
-
-	public static MethodMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, MethodMenuModel>() {
-			public MethodMenuModel initialize( org.lgna.project.ast.UserMethod key ) {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				prepModels.add( org.alice.ide.ast.rename.RenameMethodComposite.getInstance( key ).getOperation().getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToEditInstance( key ).getMenuItemPrepModel() );
-				return new MethodMenuModel( key, prepModels );
-			}
-		} );
+public class PlusIcon extends ShapeIcon {
+	public PlusIcon( java.awt.Dimension size ) {
+		super( size );
 	}
 
-	private MethodMenuModel( org.lgna.project.ast.UserMethod method, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels ) {
-		super( java.util.UUID.fromString( "bc472c3c-5851-4a32-a156-2eb89596db1d" ), method, prepModels );
+	private static java.awt.geom.Ellipse2D.Float createEllipse( float portion, int width, int height ) {
+		float diameter = Math.min( width, height ) * portion;
+		float x = ( width - diameter ) / 2;
+		float y = ( height - diameter ) / 2;
+		return new java.awt.geom.Ellipse2D.Float( x, y, diameter, diameter );
+	}
+
+	@Override
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		boolean isArmed;
+		if( c instanceof javax.swing.AbstractButton ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			javax.swing.ButtonModel buttonModel = button.getModel();
+			isArmed = buttonModel.isArmed();
+		} else {
+			isArmed = false;
+		}
+		g2.setPaint( isArmed ? java.awt.Color.WHITE : java.awt.Color.DARK_GRAY );
+		g2.fill( createEllipse( 1.0f, width, height ) );
+
+		g2.setPaint( isArmed ? java.awt.Color.GRAY : java.awt.Color.LIGHT_GRAY );
+		g2.fill( createEllipse( 0.9f, width, height ) );
+
+		float halfStrokeSize = 0.075f;
+		float shortPosition = 0.5f - halfStrokeSize;
+		float shortLength = halfStrokeSize * 2.0f;
+
+		float longPosition = 0.2f;
+		float longLength = 1.0f - ( longPosition * 2.0f );
+
+		g2.setPaint( isArmed ? java.awt.Color.WHITE : java.awt.Color.BLACK );
+		g2.fill( new java.awt.geom.Rectangle2D.Float( longPosition * width, shortPosition * height, longLength * width, shortLength * height ) );
+		g2.fill( new java.awt.geom.Rectangle2D.Float( shortPosition * width, longPosition * height, shortLength * width, longLength * height ) );
 	}
 }

@@ -40,27 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.UserMethod> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, MethodMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
-
-	public static MethodMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, MethodMenuModel>() {
-			public MethodMenuModel initialize( org.lgna.project.ast.UserMethod key ) {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				prepModels.add( org.alice.ide.ast.rename.RenameMethodComposite.getInstance( key ).getOperation().getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToEditInstance( key ).getMenuItemPrepModel() );
-				return new MethodMenuModel( key, prepModels );
-			}
-		} );
+public class PlusIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static PlusIconFactory instance = new PlusIconFactory();
 	}
 
-	private MethodMenuModel( org.lgna.project.ast.UserMethod method, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels ) {
-		super( java.util.UUID.fromString( "bc472c3c-5851-4a32-a156-2eb89596db1d" ), method, prepModels );
+	public static PlusIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private PlusIconFactory() {
+	}
+
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new PlusIcon( size );
 	}
 }

@@ -53,7 +53,7 @@ public abstract class MethodList extends MemberList<org.lgna.project.ast.UserMet
 
 	@Override
 	protected org.lgna.croquet.components.JComponent<?> createButtonLineStart( org.lgna.project.ast.UserMethod item ) {
-		return org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( item ).createButton();
+		return org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToEditInstance( item ).createButton();
 	}
 
 	@Override

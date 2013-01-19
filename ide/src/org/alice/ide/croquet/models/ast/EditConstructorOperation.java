@@ -46,21 +46,46 @@ package org.alice.ide.croquet.models.ast;
  * @author Dennis Cosgrove
  */
 public class EditConstructorOperation extends EditCodeOperation<org.lgna.project.ast.NamedUserConstructor> {
-	private static java.util.Map<org.lgna.project.ast.NamedUserConstructor, EditConstructorOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static enum IsLocalizedToEdit {
+		TRUE,
+		FALSE;
+		private final java.util.Map<org.lgna.project.ast.NamedUserConstructor, EditConstructorOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	}
 
-	public static synchronized EditConstructorOperation getInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
-		EditConstructorOperation rv = map.get( constructor );
+	private static synchronized EditConstructorOperation getInstance( org.lgna.project.ast.NamedUserConstructor constructor, IsLocalizedToEdit isLocalizedToEdit ) {
+		EditConstructorOperation rv = isLocalizedToEdit.map.get( constructor );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new EditConstructorOperation( constructor );
-			map.put( constructor, rv );
+			rv = new EditConstructorOperation( constructor, isLocalizedToEdit );
+			isLocalizedToEdit.map.put( constructor, rv );
 		}
 		return rv;
 	}
 
-	private EditConstructorOperation( org.lgna.project.ast.NamedUserConstructor constructor ) {
+	public static EditConstructorOperation getLocalizedToEditInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
+		return getInstance( constructor, IsLocalizedToEdit.TRUE );
+	}
+
+	public static EditConstructorOperation getLocalizedToConstructorInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
+		return getInstance( constructor, IsLocalizedToEdit.FALSE );
+	}
+
+	private final IsLocalizedToEdit isLocalizedToEdit;
+
+	private EditConstructorOperation( org.lgna.project.ast.NamedUserConstructor constructor, IsLocalizedToEdit isLocalizedToEdit ) {
 		super( java.util.UUID.fromString( "4dce50a6-c637-490c-b1ff-3cd3028dd8ac" ), constructor );
+		this.isLocalizedToEdit = isLocalizedToEdit;
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		if( this.isLocalizedToEdit == IsLocalizedToEdit.TRUE ) {
+			//pass
+		} else {
+			this.setName( "constructor" );
+		}
 	}
 
 	@Override

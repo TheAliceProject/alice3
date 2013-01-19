@@ -48,7 +48,7 @@ package org.alice.ide.declarationseditor.type.views;
 public class ConstructorView extends MemberView {
 	public ConstructorView( org.lgna.project.ast.NamedUserConstructor constructor ) {
 		super( org.alice.ide.declarationseditor.type.ConstructorMenuModel.getInstance( constructor ) );
-		org.lgna.croquet.Operation operation = org.alice.ide.croquet.models.ast.EditConstructorOperation.getInstance( constructor );
+		org.lgna.croquet.Operation operation = org.alice.ide.croquet.models.ast.EditConstructorOperation.getLocalizedToConstructorInstance( constructor );
 		org.lgna.croquet.components.Hyperlink hyperlink = operation.createHyperlink();
 		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
 		hyperlink.setClobberText( "constructor" );

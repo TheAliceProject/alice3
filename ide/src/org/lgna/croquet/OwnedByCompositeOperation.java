@@ -68,6 +68,12 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		this.composite = composite;
 	}
 
+	@Override
+	protected void initialize() {
+		this.composite.initializeIfNecessary();
+		super.initialize();
+	}
+
 	public OperationOwningComposite getComposite() {
 		return this.composite;
 	}

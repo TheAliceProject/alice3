@@ -40,27 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor.type;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.UserMethod> {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserMethod, MethodMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
-
-	public static MethodMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		return map.getInitializingIfAbsent( method, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserMethod, MethodMenuModel>() {
-			public MethodMenuModel initialize( org.lgna.project.ast.UserMethod key ) {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				prepModels.add( org.alice.ide.ast.rename.RenameMethodComposite.getInstance( key ).getOperation().getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToEditInstance( key ).getMenuItemPrepModel() );
-				return new MethodMenuModel( key, prepModels );
-			}
-		} );
+public class DeclarationMenu extends org.lgna.croquet.MenuModel {
+	public DeclarationMenu() {
+		super( java.util.UUID.fromString( "dabfd4e0-d835-4d7c-b3b0-922fb67bada1" ) );
 	}
 
-	private MethodMenuModel( org.lgna.project.ast.UserMethod method, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels ) {
-		super( java.util.UUID.fromString( "bc472c3c-5851-4a32-a156-2eb89596db1d" ), method, prepModels );
+	private void addTypeFillIns( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> node ) {
+		org.lgna.project.ast.NamedUserType type = node.getValue();
+		if( type != null ) {
+			models.add( TypeMenu.getInstance( type ) );
+		}
+		for( edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> child : node.getChildren() ) {
+			addTypeFillIns( models, child );
+		}
+	}
+
+	@Override
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
+
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
+
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		addTypeFillIns( models, root );
+
+		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
 	}
 }

@@ -66,6 +66,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 
 	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
 	private final org.lgna.croquet.components.AbstractPopupButton popupButton;
+	private final org.lgna.croquet.components.AbstractPopupButton<?> startButton;
 
 	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
 		super( composite );
@@ -83,6 +84,9 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		this.tabbedPane = composite.getTabState().createFolderTabbedPane();
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
 		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createFauxComboBoxPopupButton();
+
+		this.startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
+
 		this.addCenterComponent( tabbedPane );
 	}
 
@@ -98,12 +102,18 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		return null;
 	}
 
+	private static final boolean IS_START_MENU_READY_FOR_PRIME_TIME = true;
+
 	private void handleIsEmphasizingClassesChanged() {
 		org.lgna.croquet.components.JComponent<?> component;
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			component = this.popupButton;
+		if( IS_START_MENU_READY_FOR_PRIME_TIME ) {
+			component = this.startButton;
 		} else {
-			component = null;
+			if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+				component = this.popupButton;
+			} else {
+				component = null;
+			}
 		}
 		this.tabbedPane.setHeaderLeadingComponent( component );
 	}

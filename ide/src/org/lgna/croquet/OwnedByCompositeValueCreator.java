@@ -59,6 +59,12 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 	}
 
 	@Override
+	protected void initialize() {
+		this.composite.initializeIfNecessary();
+		super.initialize();
+	}
+
+	@Override
 	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 		//todo
 		return ( (AbstractComposite)this.composite ).getClassUsedForLocalization();
