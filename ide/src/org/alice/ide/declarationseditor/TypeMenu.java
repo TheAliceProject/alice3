@@ -101,6 +101,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 				}
 			}
 		}
+
 		if( procedureModels.size() > 0 ) {
 			procedureModels.add( 0, ProceduresSeparator.getInstance() );
 		}
@@ -111,11 +112,31 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		procedureModels.add( org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.type ).getOperation().getMenuItemPrepModel() );
 		functionModels.add( org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.type ).getOperation().getMenuItemPrepModel() );
 
+		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperation( type );
+		operation.setSmallIcon( org.alice.ide.croquet.models.ast.EditMethodOperation.TYPE_ICON );
+		operation.setName( type.getName() );
+
+		models.add( operation.getMenuItemPrepModel() );
+		models.add( null );
 		models.addAll( procedureModels );
 		models.add( null );
 		models.addAll( functionModels );
 
+		//		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
+		//			models.add( null );
+		//			java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> unmanagedFieldModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		//			if( unmanagedFieldModels.size() > 0 ) {
+		//				models.add( ManagedFieldsSeparator.getInstance() );
+		//			}
+		//		}
+		models.add( null );
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> fieldModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		if( fieldModels.size() > 0 ) {
+			models.add( FieldsSeparator.getInstance() );
+		}
+		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().getMenuItemPrepModel() );
 		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models );
 
 		super.handleShowing( menuItemContainer, e );

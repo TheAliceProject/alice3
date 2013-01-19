@@ -61,12 +61,6 @@ public abstract class AddMethodComposite extends AddDeclarationComposite<org.lgn
 		this.declaringType = declaringType;
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 20, 20 ) ) );
-	}
-
 	private org.lgna.project.ast.UserMethod createMethod() {
 		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}

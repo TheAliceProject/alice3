@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,28 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddDeclarationComposite<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceComposite<N> {
-	public AddDeclarationComposite( java.util.UUID migrationId, Details details ) {
-		super( migrationId, details );
+public class ManagedFieldsSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static class SingletonHolder {
+		private static ManagedFieldsSeparator instance = new ManagedFieldsSeparator();
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+	public static ManagedFieldsSeparator getInstance() {
+		return SingletonHolder.instance;
 	}
 
-	@Override
-	protected boolean isNameValid( String name ) {
-		if( org.alice.ide.preferences.recursion.IsIdentifierNameValidityStrictState.getInstance().getValue() ) {
-			return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
-		} else {
-			return ( name != null ) && ( name.length() > 0 );
-		}
+	public ManagedFieldsSeparator() {
+		super( java.util.UUID.fromString( "caf3cea7-4ddc-4951-9657-f165ebdbdeab" ) );
 	}
 }

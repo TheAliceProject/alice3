@@ -48,10 +48,32 @@ package org.alice.ide.icons;
 public class TabIcon extends org.alice.stageide.icons.ShapeIcon {
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 0.0f );
 	private final java.awt.Paint fillPaint;
+	private final java.awt.Paint armedFillPaint;
+	private final java.awt.geom.GeneralPath shape = new java.awt.geom.GeneralPath();
 
-	public TabIcon( java.awt.Dimension size, java.awt.Paint fillPaint ) {
+	public TabIcon( java.awt.Dimension size, java.awt.Color fillColor ) {
 		super( size );
-		this.fillPaint = fillPaint;
+		this.fillPaint = fillColor;
+		this.armedFillPaint = new java.awt.GradientPaint( 0, 0, java.awt.Color.WHITE, 0, size.height, fillColor );
+
+		float a = 0.1f;
+		float b = 0.3f;
+		float d = b + a;
+		float f = d + 0.2f;
+		float g = 0.2f;
+
+		float w = size.width - ( PAD * 2 );
+		float h = size.height - ( PAD * 2 );
+
+		shape.moveTo( 0.0f, h );
+		shape.lineTo( 0.0f, a * h );
+		shape.quadTo( 0.0f, 0.0f, a * w, 0.0f );
+		shape.lineTo( b * w, 0.0f );
+		shape.quadTo( d * w, 0.0f, d * w, a * h );
+		shape.quadTo( d * w, g * h, f * w, g * h );
+		shape.lineTo( w, g * h );
+		shape.lineTo( w, h );
+		shape.closePath();
 	}
 
 	@Override
@@ -64,27 +86,7 @@ public class TabIcon extends org.alice.stageide.icons.ShapeIcon {
 		} else {
 			isArmed = false;
 		}
-
-		float a = 0.1f;
-		float b = 0.3f;
-		float d = b + a;
-		float f = d + 0.2f;
-		float g = 0.2f;
-
-		java.awt.geom.GeneralPath shape = new java.awt.geom.GeneralPath();
-		shape.moveTo( 0.0f, 1.0f );
-		shape.lineTo( 0.0f, a );
-		shape.quadTo( 0.0f, 0.0f, a, 0.0f );
-		shape.lineTo( b, 0.0f );
-		shape.quadTo( d, 0.0f, d, a );
-		shape.quadTo( d, g, f, g );
-		shape.lineTo( 1.0f, g );
-		shape.lineTo( 1.0f, 1.0f );
-		shape.closePath();
-
-		java.awt.geom.AffineTransform m = g2.getTransform();
-		g2.scale( width, height );
-		g2.setPaint( isArmed ? java.awt.Color.WHITE : this.fillPaint );
+		g2.setPaint( isArmed ? this.armedFillPaint : this.fillPaint );
 		g2.fill( shape );
 		if( isArmed ) {
 			//pass
@@ -95,7 +97,5 @@ public class TabIcon extends org.alice.stageide.icons.ShapeIcon {
 			g2.draw( shape );
 			g2.setStroke( prevStroke );
 		}
-
-		g2.setTransform( m );
 	}
 }
