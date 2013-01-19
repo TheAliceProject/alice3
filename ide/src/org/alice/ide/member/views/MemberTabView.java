@@ -87,7 +87,6 @@ public abstract class MemberTabView extends org.lgna.croquet.components.MigPanel
 						view.getTitle().setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 					}
 					view.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-					final boolean IS_INERT = true;
 					if( org.alice.ide.member.MemberTabComposite.ARE_TOOL_PALETTES_INERT ) {
 						view.getTitle().setInert( true );
 					} else {

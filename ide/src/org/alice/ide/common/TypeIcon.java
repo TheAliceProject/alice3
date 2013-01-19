@@ -58,7 +58,7 @@ public class TypeIcon implements javax.swing.Icon {
 	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, boolean isIndentForDepthDesired ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
-		this.isIndentForDepthDesired = true;
+		this.isIndentForDepthDesired = isIndentForDepthDesired;
 	}
 
 	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
