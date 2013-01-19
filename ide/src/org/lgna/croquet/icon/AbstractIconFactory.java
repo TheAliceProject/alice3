@@ -46,13 +46,57 @@ package org.lgna.croquet.icon;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractIconFactory implements IconFactory {
-	private double getDefaultWidthToHeightAspectRatio() {
+	protected static enum IsCachingDesired {
+		TRUE,
+		FALSE;
+	}
+
+	private final java.util.Map<java.awt.Dimension, javax.swing.Icon> map;
+
+	public AbstractIconFactory( IsCachingDesired isCachingDesired ) {
+		if( isCachingDesired == IsCachingDesired.TRUE ) {
+			this.map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		} else {
+			this.map = null;
+		}
+	}
+
+	//	protected java.util.Map<java.awt.Dimension, javax.swing.Icon> getMap() {
+	//		return this.map;
+	//	}
+
+	protected java.util.Collection<javax.swing.Icon> getMapValues() {
+		return this.map.values();
+	}
+
+	protected abstract javax.swing.Icon createIcon( java.awt.Dimension size );
+
+	public final javax.swing.Icon getIcon( java.awt.Dimension size ) {
+		if( this.map != null ) {
+			javax.swing.Icon rv = this.map.get( size );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = this.createIcon( size );
+				this.map.put( size, rv );
+			}
+			return rv;
+		} else {
+			return this.createIcon( size );
+		}
+	}
+
+	protected double getDefaultWidthToHeightAspectRatio() {
 		java.awt.Dimension defaultSize = this.getDefaultSize( null );
 		if( defaultSize != null ) {
 			return defaultSize.width / (double)defaultSize.height;
 		} else {
-			return 1.0;
+			return 4.0 / 3.0;
 		}
+	}
+
+	protected double getTrimmedWidthToHeightAspectRatio() {
+		return this.getDefaultWidthToHeightAspectRatio();
 	}
 
 	protected java.awt.Dimension createDimensionForWidth( int width, double widthToHeigthAspectRatio ) {
@@ -61,7 +105,7 @@ public abstract class AbstractIconFactory implements IconFactory {
 	}
 
 	protected java.awt.Dimension createDimensionForHeight( int height, double widthToHeigthAspectRatio ) {
-		int width = (int)Math.round( height / widthToHeigthAspectRatio );
+		int width = (int)Math.round( height * widthToHeigthAspectRatio );
 		return new java.awt.Dimension( width, height );
 	}
 
@@ -74,10 +118,10 @@ public abstract class AbstractIconFactory implements IconFactory {
 	}
 
 	public java.awt.Dimension getTrimmedSizeForWidth( int width ) {
-		return this.getDefaultSizeForWidth( width );
+		return this.createDimensionForWidth( width, this.getTrimmedWidthToHeightAspectRatio() );
 	}
 
 	public java.awt.Dimension getTrimmedSizeForHeight( int height ) {
-		return this.getDefaultSizeForHeight( height );
+		return this.createDimensionForHeight( height, this.getTrimmedWidthToHeightAspectRatio() );
 	}
 }

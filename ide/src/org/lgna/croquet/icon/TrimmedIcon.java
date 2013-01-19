@@ -45,28 +45,51 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public class TrimmedIcon implements javax.swing.Icon {
-	private final javax.swing.Icon icon;
-	private final int width;
-	private final int height;
+public class TrimmedIcon extends AbstractIcon {
+	private final javax.swing.ImageIcon imageIcon;
 
-	public TrimmedIcon( javax.swing.Icon icon, int width, int height ) {
-		this.icon = icon;
-		this.width = width;
-		this.height = height;
+	public TrimmedIcon( javax.swing.ImageIcon imageIcon, java.awt.Dimension size ) {
+		super( size );
+		this.imageIcon = imageIcon;
 	}
 
-	public int getIconWidth() {
-		return this.width;
+	public javax.swing.ImageIcon getImageIcon() {
+		return this.imageIcon;
 	}
 
-	public int getIconHeight() {
-		return this.height;
-	}
+	@Override
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+		java.awt.Image image = this.imageIcon.getImage();
+		int imageWidth = image.getWidth( c );
+		int imageHeight = image.getHeight( c );
 
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		int dx = ( this.width - this.icon.getIconWidth() ) / 2;
-		int dy = ( this.height - this.icon.getIconHeight() ) / 2;
-		this.icon.paintIcon( c, g, x + dx, y + dy );
+		int width = this.getIconWidth();
+		int height = this.getIconHeight();
+
+		java.awt.geom.AffineTransform t = g2.getTransform();
+
+		//todo: make work for more than just scaled and height based trimmed
+		int dx;
+		int dy;
+		if( height != imageHeight ) {
+			double factor = height / (double)imageHeight;
+			g2.scale( factor, factor );
+			dx = (int)( ( ( width / factor ) - imageWidth ) / 2 );
+			dy = 0;
+		} else {
+			dx = ( width - imageWidth ) / 2;
+			dy = ( height - imageHeight ) / 2;
+			final boolean DEBUG = false;
+			if( DEBUG ) {
+				g2.setPaint( java.awt.Color.RED );
+				g2.fillRect( 0, 0, this.getIconWidth(), this.getIconHeight() );
+				g2.setPaint( java.awt.Color.GREEN );
+				g2.fillRect( dx, dy, this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight() );
+			}
+		}
+
+		g2.translate( dx, dy );
+		g2.drawImage( image, 0, 0, imageWidth, imageHeight, c );
+		g2.setTransform( t );
 	}
 }
