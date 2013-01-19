@@ -60,6 +60,12 @@ public interface MenuItemContainer {
 
 	public Container<?> getParent();
 
+	public Component<?>[] getMenuComponents();
+
+	public Component<?> getMenuComponent( int i );
+
+	public int getMenuComponentCount();
+
 	public void addMenu( Menu menu );
 
 	public void addMenuItem( MenuItem menuItem );

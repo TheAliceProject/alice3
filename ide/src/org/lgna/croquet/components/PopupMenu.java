@@ -76,6 +76,29 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		return rv;
 	}
 
+	public Component<?> getMenuComponent( int i ) {
+		javax.swing.MenuElement menuElement = this.getAwtComponent().getSubElements()[ i ];
+		if( menuElement instanceof java.awt.Component ) {
+			java.awt.Component awtComponent = (java.awt.Component)menuElement;
+			return Component.lookup( awtComponent );
+		} else {
+			return null;
+		}
+	}
+
+	public int getMenuComponentCount() {
+		return this.getAwtComponent().getSubElements().length;
+	}
+
+	public synchronized Component<?>[] getMenuComponents() {
+		final int N = this.getMenuComponentCount();
+		Component<?>[] rv = new Component<?>[ N ];
+		for( int i = 0; i < N; i++ ) {
+			rv[ i ] = this.getMenuComponent( i );
+		}
+		return rv;
+	}
+
 	public void addMenu( Menu menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}

@@ -67,6 +67,10 @@ public class EditMethodOperation extends EditCodeOperation<org.lgna.project.ast.
 		private final java.util.Map<org.lgna.project.ast.UserMethod, EditMethodOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	}
 
+	//todo
+	private static final javax.swing.Icon PROCEDURE_ICON = new org.alice.ide.icons.TabIcon( new java.awt.Dimension( 20, 20 ), new java.awt.Color( 0xb2b7d9 ) );
+	private static final javax.swing.Icon FUNCTION_ICON = new org.alice.ide.icons.TabIcon( new java.awt.Dimension( 20, 20 ), new java.awt.Color( 0xb0c9a4 ) );
+
 	public static synchronized EditMethodOperation getInstance( org.lgna.project.ast.UserMethod method, IsLocalizedToEdit isLocalizedToEdit ) {
 		EditMethodOperation rv = isLocalizedToEdit.map.get( method );
 		if( rv != null ) {
@@ -101,6 +105,7 @@ public class EditMethodOperation extends EditCodeOperation<org.lgna.project.ast.
 		} else {
 			this.setName( this.getCode().getName() );
 		}
+		this.setSmallIcon( this.getCode().isProcedure() ? PROCEDURE_ICON : FUNCTION_ICON );
 	}
 
 	//	private static CheckMarkIcon checkMarkIcon = new CheckMarkIcon();

@@ -88,13 +88,9 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 
 	@Override
 	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
-		menuItemContainer.removeAllMenuItems();
-
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> procedureModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> functionModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-		procedureModels.add( ProceduresSeparator.getInstance() );
-		functionModels.add( FunctionsSeparator.getInstance() );
 		for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
 			if( method.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) {
 				org.lgna.croquet.StandardMenuItemPrepModel model = org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToNameInstance( method ).getMenuItemPrepModel();
@@ -105,6 +101,12 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 				}
 			}
 		}
+		if( procedureModels.size() > 0 ) {
+			procedureModels.add( 0, ProceduresSeparator.getInstance() );
+		}
+		if( functionModels.size() > 0 ) {
+			functionModels.add( 0, FunctionsSeparator.getInstance() );
+		}
 
 		procedureModels.add( org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( this.type ).getOperation().getMenuItemPrepModel() );
 		functionModels.add( org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( this.type ).getOperation().getMenuItemPrepModel() );
@@ -113,7 +115,8 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		models.addAll( procedureModels );
 		models.add( null );
 		models.addAll( functionModels );
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( menuItemContainer, models );
+
+		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models );
 
 		super.handleShowing( menuItemContainer, e );
 	}

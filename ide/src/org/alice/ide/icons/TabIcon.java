@@ -40,36 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor;
+package org.alice.ide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationMenu extends org.lgna.croquet.MenuModel {
-	public DeclarationMenu() {
-		super( java.util.UUID.fromString( "dabfd4e0-d835-4d7c-b3b0-922fb67bada1" ) );
-	}
+public class TabIcon extends org.alice.stageide.icons.ShapeIcon {
+	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 0.0f );
+	private final java.awt.Paint fillPaint;
 
-	private void addTypeFillIns( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> node ) {
-		org.lgna.project.ast.NamedUserType type = node.getValue();
-		if( type != null ) {
-			models.add( TypeMenu.getInstance( type ) );
-		}
-		for( edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> child : node.getChildren() ) {
-			addTypeFillIns( models, child );
-		}
+	public TabIcon( java.awt.Dimension size, java.awt.Paint fillPaint ) {
+		super( size );
+		this.fillPaint = fillPaint;
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		boolean isArmed;
+		if( c instanceof javax.swing.AbstractButton ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			javax.swing.ButtonModel buttonModel = button.getModel();
+			isArmed = buttonModel.isArmed();
+		} else {
+			isArmed = false;
+		}
 
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
+		float a = 0.1f;
+		float b = 0.3f;
+		float d = b + a;
+		float f = d + 0.2f;
+		float g = 0.2f;
 
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		addTypeFillIns( models, root );
+		java.awt.geom.GeneralPath shape = new java.awt.geom.GeneralPath();
+		shape.moveTo( 0.0f, 1.0f );
+		shape.lineTo( 0.0f, a );
+		shape.quadTo( 0.0f, 0.0f, a, 0.0f );
+		shape.lineTo( b, 0.0f );
+		shape.quadTo( d, 0.0f, d, a );
+		shape.quadTo( d, g, f, g );
+		shape.lineTo( 1.0f, g );
+		shape.lineTo( 1.0f, 1.0f );
+		shape.closePath();
 
-		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
+		java.awt.geom.AffineTransform m = g2.getTransform();
+		g2.scale( width, height );
+		g2.setPaint( isArmed ? java.awt.Color.WHITE : this.fillPaint );
+		g2.fill( shape );
+		if( isArmed ) {
+			//pass
+		} else {
+			java.awt.Stroke prevStroke = g2.getStroke();
+			g2.setStroke( STROKE );
+			g2.setPaint( java.awt.Color.DARK_GRAY );
+			g2.draw( shape );
+			g2.setStroke( prevStroke );
+		}
+
+		g2.setTransform( m );
 	}
 }

@@ -143,6 +143,6 @@ public class StatementContextMenu extends org.lgna.croquet.MenuModel {
 		super.handlePopupMenuPrologue( popupMenu, context );
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		this.updatePopupOperations( models, this.statement );
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 	}
 }
