@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.alice.stageide.showme;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionOperation extends Operation {
-	public ActionOperation( Group group, java.util.UUID id ) {
-		super( group, id );
+public abstract class StencilsIteratingOperation extends org.lgna.croquet.IteratingOperation {
+	private final org.lgna.croquet.StencilModel[] stencilModels;
+
+	public StencilsIteratingOperation( java.util.UUID id, org.lgna.croquet.StencilModel... stencilModels ) {
+		super( org.lgna.croquet.Application.INFORMATION_GROUP, id );
+		this.stencilModels = stencilModels;
+	}
+
+	@Override
+	protected boolean hasNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+		return subSteps.size() < stencilModels.length;
+	}
+
+	@Override
+	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, Object iteratingData ) {
+		int i = subSteps.size();
+		if( i < this.stencilModels.length ) {
+			return this.stencilModels[ i ];
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+		step.finish();
 	}
 }

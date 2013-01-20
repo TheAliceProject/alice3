@@ -140,6 +140,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 				models.add( ManagedFieldsSeparator.getInstance() );
 				models.addAll( managedFieldModels );
 			}
+			models.add( org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
 			models.add( org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance().getMenuItemPrepModel() );
 		}
 

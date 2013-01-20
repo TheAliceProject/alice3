@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SingleThreadOperation extends Operation {
-	public SingleThreadOperation( Group group, java.util.UUID id ) {
-		super( group, id );
+public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionModel {
+	public StencilModel( java.util.UUID migrationId ) {
+		super( org.lgna.croquet.Application.INFORMATION_GROUP, migrationId );
+	}
+
+	@Override
+	public boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit ) {
+		return false;
+	}
+
+	@Override
+	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
+	}
+
+	@Override
+	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		return rv;
+	}
+
+	@Override
+	protected void localize() {
+	}
+
+	@Override
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 	}
 }

@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IteratingOperation extends SingleThreadOperation {
+public abstract class IteratingOperation extends Operation {
 	public IteratingOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}

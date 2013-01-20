@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.alice.stageide.showme;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionOperation extends Operation {
-	public ActionOperation( Group group, java.util.UUID id ) {
-		super( group, id );
+public class SetupSceneStencilModel extends org.lgna.croquet.StencilModel {
+	public SetupSceneStencilModel() {
+		super( java.util.UUID.fromString( "3e558dd6-974d-4a70-87c8-93f44c72618b" ) );
 	}
 }
