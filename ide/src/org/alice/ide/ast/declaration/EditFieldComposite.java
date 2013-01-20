@@ -57,6 +57,7 @@ public final class EditFieldComposite extends FieldComposite {
 	}
 
 	private final org.lgna.project.ast.UserField field;
+	private final org.lgna.project.ast.UserField previewField = new org.lgna.project.ast.UserField();
 
 	private EditFieldComposite( org.lgna.project.ast.UserField field ) {
 		super( java.util.UUID.fromString( "1fe84908-65e9-454a-81f7-4a9325a12ed5" ), new Details()
@@ -96,7 +97,15 @@ public final class EditFieldComposite extends FieldComposite {
 
 	@Override
 	public org.lgna.project.ast.UserField getPreviewValue() {
-		return this.field;
+		if( this.getIsFinalState().getValue() ) {
+			this.previewField.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+		} else {
+			this.previewField.finalVolatileOrNeither.setValue( org.lgna.project.ast.FieldModifierFinalVolatileOrNeither.NEITHER );
+		}
+		this.previewField.valueType.setValue( this.getValueType() );
+		this.previewField.name.setValue( this.getDeclarationLikeSubstanceName() );
+		this.previewField.initializer.setValue( this.getInitializer() );
+		return this.previewField;
 	}
 
 	@Override
