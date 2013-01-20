@@ -327,7 +327,13 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 	}
 
-	protected abstract boolean isNameValid( String name );
+	protected final boolean isNameValid( String name ) {
+		if( org.alice.ide.preferences.recursion.IsIdentifierNameValidityStrictState.getInstance().getValue() ) {
+			return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
+		} else {
+			return ( name != null ) && ( name.length() > 0 );
+		}
+	}
 
 	protected abstract boolean isNameAvailable( String name );
 

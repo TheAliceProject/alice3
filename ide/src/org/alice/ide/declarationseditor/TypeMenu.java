@@ -90,6 +90,8 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> procedureModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> functionModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> managedFieldModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> unmanagedFieldModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 		for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
 			if( method.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) {
@@ -99,6 +101,15 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 				} else {
 					functionModels.add( model );
 				}
+			}
+		}
+
+		for( org.lgna.project.ast.UserField field : this.type.fields ) {
+			org.lgna.croquet.StandardMenuItemPrepModel model = org.alice.ide.ast.declaration.EditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel();
+			if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+				managedFieldModels.add( model );
+			} else {
+				unmanagedFieldModels.add( model );
 			}
 		}
 
@@ -124,19 +135,22 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		models.add( null );
 		models.addAll( functionModels );
 
-		//		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
-		//			models.add( null );
-		//			java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> unmanagedFieldModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		//			if( unmanagedFieldModels.size() > 0 ) {
-		//				models.add( ManagedFieldsSeparator.getInstance() );
-		//			}
-		//		}
+		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
+			models.add( null );
+			if( managedFieldModels.size() > 0 ) {
+				models.add( ManagedFieldsSeparator.getInstance() );
+				models.addAll( managedFieldModels );
+			}
+			models.add( org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance().getMenuItemPrepModel() );
+		}
+
 		models.add( null );
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> fieldModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		if( fieldModels.size() > 0 ) {
+		if( ( unmanagedFieldModels.size() > 0 ) || ( managedFieldModels.size() > 0 ) ) {
 			models.add( FieldsSeparator.getInstance() );
+			models.addAll( unmanagedFieldModels );
 		}
 		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().getMenuItemPrepModel() );
+
 		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models );
 
 		super.handleShowing( menuItemContainer, e );

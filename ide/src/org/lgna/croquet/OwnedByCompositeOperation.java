@@ -74,6 +74,12 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		super.initialize();
 	}
 
+	@Override
+	protected void localize() {
+		super.localize();
+		this.composite.clobberLocalizationIfDesired( this );
+	}
+
 	public OperationOwningComposite getComposite() {
 		return this.composite;
 	}

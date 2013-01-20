@@ -43,10 +43,11 @@
 
 package org.alice.ide.ast.declaration;
 
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna.project.ast.UserField> {
+public abstract class AddFieldComposite extends FieldComposite {
 	public static class FieldDetailsBuilder {
 		private ApplicabilityStatus isFinalStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private boolean inFinalInitialValue;
@@ -113,6 +114,12 @@ public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna
 		field.name.setValue( this.getDeclarationLikeSubstanceName() );
 		field.initializer.setValue( this.getInitializer() );
 		return field;
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
 	}
 
 	@Override

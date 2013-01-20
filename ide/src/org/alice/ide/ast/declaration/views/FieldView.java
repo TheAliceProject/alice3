@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,51 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InsertStatementComposite<S extends org.lgna.project.ast.Statement> extends DeclarationLikeSubstanceComposite<S> {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
-	//todo: remove
-	private final org.alice.ide.name.validators.LocalNameValidator nameValidator;
-
-	public InsertStatementComposite( java.util.UUID migrationId, Details details, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( migrationId, details );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-		this.nameValidator = new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair );
+public abstract class FieldView extends DeclarationView<org.lgna.project.ast.UserField> {
+	public FieldView( org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField> composite ) {
+		super( composite );
 	}
 
-	protected abstract S createStatement();
+	private final org.lgna.croquet.components.Label typeIconView = new org.lgna.croquet.components.Label( org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) );
 
-	@Override
-	public S getPreviewValue() {
-		return this.createStatement();
+	public FieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
+		super( composite );
 	}
 
 	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, this.blockStatementIndexPair, this.createStatement() );
+	public org.lgna.croquet.components.JComponent<?> createPreviewSubComponent() {
+		org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField> composite = (org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserField>)this.getComposite();
+		org.lgna.project.ast.UserField field = composite.getPreviewValue();
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field );
+	}
+
+	protected org.lgna.croquet.components.JComponent<?> getSideView() {
+		return this.typeIconView;
 	}
 
 	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
+	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {
+		return new org.lgna.croquet.components.BorderPanel.Builder()
+				.lineStart( super.createPageStartComponent() )
+				.lineEnd( this.getSideView() )
+				.build();
 	}
 
 	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
-		return null;
+	protected boolean isPreviewDesired() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptIncludingPreviewState.getInstance().getValue();
 	}
 
 	@Override
-	protected boolean isNameAvailable( String name ) {
-		return this.nameValidator.isNameAvailable( name );
-	}
-
-	@Override
-	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
-		return new org.alice.ide.ast.declaration.views.InsertStatementView( this );
+	public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?, ?, ?> nextType ) {
+		super.handleValueTypeChanged( nextType );
+		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( nextType );
+		this.typeIconView.setIcon( iconFactory.getIcon( iconFactory.getDefaultSize( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
+		this.typeIconView.revalidateAndRepaint();
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,51 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InsertStatementComposite<S extends org.lgna.project.ast.Statement> extends DeclarationLikeSubstanceComposite<S> {
-	private final org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair;
-	//todo: remove
-	private final org.alice.ide.name.validators.LocalNameValidator nameValidator;
-
-	public InsertStatementComposite( java.util.UUID migrationId, Details details, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		super( migrationId, details );
-		this.blockStatementIndexPair = blockStatementIndexPair;
-		this.nameValidator = new org.alice.ide.name.validators.LocalNameValidator( blockStatementIndexPair );
-	}
-
-	protected abstract S createStatement();
-
-	@Override
-	public S getPreviewValue() {
-		return this.createStatement();
-	}
-
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, this.blockStatementIndexPair, this.createStatement() );
-	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver createResolver() {
-		return new org.alice.ide.croquet.resolvers.BlockStatementIndexPairStaticGetInstanceKeyedResolver( this, blockStatementIndexPair );
-	}
-
-	@Override
-	public org.lgna.project.ast.UserType<?> getDeclaringType() {
-		return null;
-	}
-
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		return this.nameValidator.isNameAvailable( name );
-	}
-
-	@Override
-	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
-		return new org.alice.ide.ast.declaration.views.InsertStatementView( this );
+public class EditFieldView extends FieldView {
+	public EditFieldView( org.alice.ide.ast.declaration.EditFieldComposite composite ) {
+		super( composite );
 	}
 }

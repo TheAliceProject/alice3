@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration.views;
+package org.alice.ide.ast.declaration;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddDeclarationView<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceView {
-	public AddDeclarationView( org.alice.ide.ast.declaration.AddDeclarationComposite<N> composite ) {
-		super( composite );
+public final class EditFieldComposite extends FieldComposite {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, EditFieldComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+
+	public static synchronized EditFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
+		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, EditFieldComposite>() {
+			public EditFieldComposite initialize( org.lgna.project.ast.UserField field ) {
+				return new EditFieldComposite( field );
+			}
+		} );
+	}
+
+	private final org.lgna.project.ast.UserField field;
+
+	private EditFieldComposite( org.lgna.project.ast.UserField field ) {
+		super( java.util.UUID.fromString( "1fe84908-65e9-454a-81f7-4a9325a12ed5" ), new Details()
+				.isFinal( ApplicabilityStatus.DISPLAYED, false )
+				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
+				.valueIsArrayType( ApplicabilityStatus.DISPLAYED, false )
+				.name( ApplicabilityStatus.EDITABLE )
+				.initializer( ApplicabilityStatus.EDITABLE, null ) );
+		this.field = field;
+	}
+
+	@Override
+	public void clobberLocalizationIfDesired( org.lgna.croquet.OwnedByCompositeOperation operation ) {
+		super.clobberLocalizationIfDesired( operation );
+		operation.setName( "Edit " + this.field.getName() + "..." );
+	}
+
+	@Override
+	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
+		return new org.alice.ide.ast.declaration.views.EditFieldView( this );
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		return null;
+	}
+
+	@Override
+	protected boolean isNameAvailable( String name ) {
+		return org.lgna.project.ast.StaticAnalysisUtilities.isAvailableFieldName( name, this.field );
+	}
+
+	@Override
+	public org.lgna.project.ast.UserType<?> getDeclaringType() {
+		return this.field.getDeclaringType();
+	}
+
+	@Override
+	public org.lgna.project.ast.UserField getPreviewValue() {
+		return this.field;
 	}
 }

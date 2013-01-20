@@ -40,28 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.ide.ast.declaration.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddDeclarationComposite<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceComposite<N> {
-	public AddDeclarationComposite( java.util.UUID migrationId, Details details ) {
-		super( migrationId, details );
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
-	}
-
-	@Override
-	protected boolean isNameValid( String name ) {
-		if( org.alice.ide.preferences.recursion.IsIdentifierNameValidityStrictState.getInstance().getValue() ) {
-			return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
-		} else {
-			return ( name != null ) && ( name.length() > 0 );
-		}
+public abstract class DeclarationView<N extends org.lgna.project.ast.Declaration> extends DeclarationLikeSubstanceView {
+	public DeclarationView( org.alice.ide.ast.declaration.DeclarationLikeSubstanceComposite<N> composite ) {
+		super( composite );
 	}
 }
