@@ -183,11 +183,11 @@ public abstract class AddFieldComposite extends FieldComposite {
 	//	}
 
 	@Override
-	protected java.lang.String getInitialNameValue() {
+	protected java.lang.String getNameInitialValue() {
 		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
 			return generateNameFromInitializer();
 		} else {
-			return super.getInitialNameValue();
+			return super.getNameInitialValue();
 		}
 	}
 }

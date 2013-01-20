@@ -98,4 +98,34 @@ public final class EditFieldComposite extends FieldComposite {
 	public org.lgna.project.ast.UserField getPreviewValue() {
 		return this.field;
 	}
+
+	@Override
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = this.field.getValueType();
+		if( valueType.isArray() ) {
+			return valueType.getComponentType();
+		} else {
+			return valueType;
+		}
+	}
+
+	@Override
+	protected boolean getIsFinalInitialValue() {
+		return this.field.isFinal();
+	}
+
+	@Override
+	protected boolean getValueIsArrayTypeInitialValue() {
+		return this.field.getValueType().isArray();
+	}
+
+	@Override
+	protected String getNameInitialValue() {
+		return this.field.getName();
+	}
+
+	@Override
+	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+		return this.field.initializer.getValue();
+	}
 }
