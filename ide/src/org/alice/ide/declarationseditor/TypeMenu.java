@@ -105,11 +105,10 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		}
 
 		for( org.lgna.project.ast.UserField field : this.type.fields ) {
-			org.lgna.croquet.StandardMenuItemPrepModel model = org.alice.ide.ast.declaration.EditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel();
 			if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-				managedFieldModels.add( model );
+				managedFieldModels.add( org.alice.ide.ast.declaration.ManagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
 			} else {
-				unmanagedFieldModels.add( model );
+				unmanagedFieldModels.add( org.alice.ide.ast.declaration.UnmanagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
 			}
 		}
 

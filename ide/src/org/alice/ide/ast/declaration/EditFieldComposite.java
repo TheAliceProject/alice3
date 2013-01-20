@@ -45,27 +45,17 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class EditFieldComposite extends FieldComposite {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, EditFieldComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
-
-	public static synchronized EditFieldComposite getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, EditFieldComposite>() {
-			public EditFieldComposite initialize( org.lgna.project.ast.UserField field ) {
-				return new EditFieldComposite( field );
-			}
-		} );
-	}
-
+public abstract class EditFieldComposite extends FieldComposite {
 	private final org.lgna.project.ast.UserField field;
 	private final org.lgna.project.ast.UserField previewField = new org.lgna.project.ast.UserField();
 
-	private EditFieldComposite( org.lgna.project.ast.UserField field ) {
-		super( java.util.UUID.fromString( "1fe84908-65e9-454a-81f7-4a9325a12ed5" ), new Details()
+	public EditFieldComposite( java.util.UUID migrationId, org.lgna.project.ast.UserField field, ApplicabilityStatus initializerApplicabilityStatus, org.lgna.project.ast.Expression initializerInitialValue ) {
+		super( migrationId, new Details()
 				.isFinal( ApplicabilityStatus.DISPLAYED, false )
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.DISPLAYED, false )
 				.name( ApplicabilityStatus.EDITABLE )
-				.initializer( ApplicabilityStatus.EDITABLE, null ) );
+				.initializer( initializerApplicabilityStatus, initializerInitialValue ) );
 		this.field = field;
 	}
 
