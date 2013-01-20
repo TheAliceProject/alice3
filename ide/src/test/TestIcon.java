@@ -58,7 +58,7 @@ public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
 		//				org.alice.stageide.icons.BoxIconFactory.getInstance()
 		//				);
 		//		org.lgna.croquet.icon.IconFactory iconFactory = new org.alice.stageide.icons.GroupIconFactory( iconFactories );
-		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.TorusIconFactory.getInstance();
+		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.BillboardIconFactory.getInstance();
 		for( org.lgna.croquet.icon.IconSize iconSize : org.lgna.croquet.icon.IconSize.values() ) {
 			javax.swing.Icon icon = iconFactory.getIcon( iconSize.getSize() );
 			flowPanel.addComponent( new org.lgna.croquet.components.Label( icon ) );
