@@ -97,17 +97,19 @@ public class ScrollPane extends JComponent<javax.swing.JScrollPane> {
 		edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug rv = new edu.cmu.cs.dennisc.javax.swing.components.JScrollPaneCoveringLinuxPaintBug() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+				java.awt.Dimension rv = super.getPreferredSize();
+				return constrainPreferredSizeIfNecessary( rv );
 			}
 		};
-		rv.setOpaque( true );
-		rv.setBorder( null );
 		return rv;
 	}
 
 	@Override
 	protected final javax.swing.JScrollPane createAwtComponent() {
-		return this.createJScrollPane();
+		javax.swing.JScrollPane rv = this.createJScrollPane();
+		rv.setOpaque( true );
+		rv.setBorder( null );
+		return rv;
 	}
 
 	public Component<?> getViewportView() {

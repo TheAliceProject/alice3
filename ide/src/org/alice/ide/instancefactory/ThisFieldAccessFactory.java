@@ -106,7 +106,7 @@ public class ThisFieldAccessFactory extends AbstractInstanceFactory {
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
 		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( this.field );
-		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) ) {
+		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
 			return iconFactory;
 		} else {
 			return super.getIconFactory();

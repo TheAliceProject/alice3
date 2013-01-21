@@ -128,8 +128,13 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 		return this.swingModel;
 	}
 
+	@Override
+	protected boolean isAdjustingIgnored() {
+		return false;
+	}
+
 	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
-		N nextValue = this.getValue();
+		N nextValue = this.getSwingValue();
 		this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( this.swingModel.getBoundedRangeModel().getValueIsAdjusting() ), org.lgna.croquet.triggers.ChangeEventTrigger.createUserInstance( e ) );
 	}
 
@@ -155,6 +160,9 @@ public abstract class BoundedNumberState<N extends Number> extends SimpleValueSt
 
 	public void setAll( AtomicChange<N> atomicChange ) {
 		atomicChange.updateSwingModel( this.swingModel );
+		if( atomicChange.value != null ) {
+			this.setCurrentTruthAndBeautyValue( atomicChange.value );
+		}
 	}
 
 	public void setAllTransactionlessly( AtomicChange<N> atomicChange ) {

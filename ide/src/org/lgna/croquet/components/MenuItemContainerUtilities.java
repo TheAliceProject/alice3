@@ -68,26 +68,31 @@ public class MenuItemContainerUtilities {
 	//		return rv;
 	//	}
 
-	public static MenuItemContainer addMenuElement( MenuItemContainer rv, org.lgna.croquet.StandardMenuItemPrepModel model ) {
+	private static MenuItemContainer addMenuElement( MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel model ) {
 		if( model != null ) {
-			model.createMenuItemAndAddTo( rv );
+			model.createMenuItemAndAddTo( menuItemContainer );
 		} else {
-			rv.addSeparator();
+			menuItemContainer.addSeparator();
 		}
-		return rv;
+		return menuItemContainer;
 	}
 
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
-		for( org.lgna.croquet.StandardMenuItemPrepModel model : models ) {
-			addMenuElement( rv, model );
+	public static void setMenuElements( MenuItemContainer menuItemContainer, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
+		final boolean IS_REUSE_READY_FOR_PRIME_TIME = false;
+		if( IS_REUSE_READY_FOR_PRIME_TIME ) {
+			java.util.Set<Component<?>> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( menuItemContainer.getMenuComponents() );
+			for( Component<?> component : set ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( component );
+			}
+		} else {
+			menuItemContainer.forgetAndRemoveAllMenuItems();
+			for( org.lgna.croquet.StandardMenuItemPrepModel model : models ) {
+				addMenuElement( menuItemContainer, model );
+			}
 		}
-		return rv;
 	}
 
-	public static MenuItemContainer addMenuElements( MenuItemContainer rv, org.lgna.croquet.StandardMenuItemPrepModel[] models ) {
-		for( org.lgna.croquet.StandardMenuItemPrepModel model : models ) {
-			addMenuElement( rv, model );
-		}
-		return rv;
+	public static void setMenuElements( MenuItemContainer menuItemContainer, org.lgna.croquet.StandardMenuItemPrepModel[] models ) {
+		setMenuElements( menuItemContainer, edu.cmu.cs.dennisc.java.util.Collections.newArrayList( models ) );
 	}
 }

@@ -130,7 +130,7 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 				//return ResourceCascade.getInstance( classResourceKey.getType(), dropSite );
 				return new AddFieldCascade( this, dropSite );
 			}
-		} else if( this.resourceKey instanceof GroupTagKey ) {
+		} else if( this.resourceKey instanceof TagKey ) {
 			return new AddFieldCascade( this, dropSite );
 		} else {
 			return null;
@@ -154,11 +154,16 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 			} else {
 				return this.getState().getItemSelectionOperation( this );
 			}
-		} else if( this.resourceKey instanceof GroupTagKey ) {
+		} else if( this.resourceKey instanceof TagKey ) {
 			return this.getState().getItemSelectionOperation( this );
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean isInstanceCreator() {
+		return this.resourceKey.isInstanceCreator();
 	}
 
 	@Override
@@ -168,5 +173,12 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 
 	public int compareTo( org.alice.stageide.modelresource.ResourceNode other ) {
 		return this.getText().toLowerCase().compareTo( other.getText().toLowerCase() );
+	}
+
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( "key=" );
+		sb.append( this.resourceKey );
 	}
 }

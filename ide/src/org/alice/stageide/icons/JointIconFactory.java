@@ -46,6 +46,17 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 public class JointIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static JointIconFactory instance = new JointIconFactory();
+	}
+
+	public static JointIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private JointIconFactory() {
+	}
+
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		return new JointIcon( size );

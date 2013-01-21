@@ -63,6 +63,7 @@ public class DiscImp extends ShapeImp {
 
 	public DiscImp( org.lgna.story.SDisc abstraction ) {
 		this.abstraction = abstraction;
+		this.sgDisc.outerRadius.setValue( 0.5 );
 		edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = this.getSgVisuals()[ 0 ];
 		sgVisual.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgDisc } );
 	}
@@ -99,12 +100,6 @@ public class DiscImp extends ShapeImp {
 		} else {
 			assert false : resizer;
 		}
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.math.Dimension3 getScale() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "getScale shouldn't be called on " + this.getClass().getSimpleName() );
-		return new edu.cmu.cs.dennisc.math.Dimension3( 1, 1, 1 );
 	}
 
 	@Override

@@ -49,15 +49,30 @@ package org.alice.ide.croquet.components.gallerybrowser;
 public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent<org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel> {
 	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
 
-	private static final java.awt.Color BASE_COLOR = new java.awt.Color( 0xf7e4b6 );
-	private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 1.4 );
-	private static final java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 0.8 );
-
-	private static final java.awt.Color ACTIVE_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 2.0 );
-	private static final java.awt.Color ACTIVE_SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BASE_COLOR, 1.0, 1.0, 0.9 );
+	private final java.awt.Color baseColor;
+	private final java.awt.Color highlightColor;
+	private final java.awt.Color shadowColor;
+	private final java.awt.Color activeHighlightColor;
+	private final java.awt.Color activeShadowColor;
 
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model );
+
+		if( model.isInstanceCreator() ) {
+			this.baseColor = new java.awt.Color( 0xf7e4b6 );
+			this.highlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
+			this.shadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 0.9, 0.8 );
+			this.activeHighlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 2.0 );
+			this.activeShadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 0.9 );
+		} else {
+			this.baseColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 );
+			this.highlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 221 );
+			this.shadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 171 );
+			this.activeHighlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 255 );
+			this.activeShadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 181 );
+
+		}
+
 		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setText( model.getText() );
@@ -65,12 +80,29 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		label.setIcon( iconFactory != null ? iconFactory.getIcon( DEFAULT_LARGE_ICON_SIZE ) : null );
 		label.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 		label.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-		label.setBackgroundColor( BASE_COLOR );
-		label.setOpaque( false );
 		this.internalAddComponent( label );
-		this.setBackgroundColor( BASE_COLOR );
+		this.setBackgroundColor( this.baseColor );
 		this.setMaximumSizeClampedToPreferredSize( true );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
+	}
+
+	@Override
+	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
+		super.handleMouseClicked( e );
+		int button = e.getButton();
+		switch( button ) {
+		case 4:
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: back" );
+			break;
+		case 5:
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: forward" );
+			break;
+		}
+	}
+
+	@Override
+	protected boolean isAlphaDesiredWhenOverDropReceptor() {
+		return false;
 	}
 
 	@Override
@@ -112,7 +144,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		java.awt.geom.RoundRectangle2D.Float shape = this.createShape( x, y, width, height );
 		if( this.getAwtComponent().getModel().isPressed() ) {
-			g2.setPaint( BASE_COLOR );
+			g2.setPaint( this.baseColor );
 			g2.fill( shape );
 		} else {
 			int y1 = y + height;
@@ -120,8 +152,8 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			int yA = y + ( height / 3 );
 			int yB = y1 - ( height / 3 );
 
-			java.awt.Color highlightColor = this.isActive() ? ACTIVE_HIGHLIGHT_COLOR : HIGHLIGHT_COLOR;
-			java.awt.Color shadowColor = this.isActive() ? ACTIVE_SHADOW_COLOR : SHADOW_COLOR;
+			java.awt.Color highlightColor = this.isActive() ? this.activeHighlightColor : this.highlightColor;
+			java.awt.Color shadowColor = this.isActive() ? this.activeShadowColor : this.shadowColor;
 
 			java.awt.GradientPaint paintTop = new java.awt.GradientPaint( x, y, highlightColor, x, yA, shadowColor );
 			java.awt.GradientPaint paintBottom = new java.awt.GradientPaint( x, yB, shadowColor, x, y1, highlightColor );
@@ -142,6 +174,69 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			} finally {
 				g2.setClip( prevClip );
 				g2.setPaint( prevPaint );
+			}
+		}
+	}
+
+	private static java.awt.Shape createShapeAround( java.awt.geom.Rectangle2D bounds ) {
+		float x0 = (float)( bounds.getX() - 2 );
+		float y0 = (float)( bounds.getY() - 4 );
+		float x1 = (float)( x0 + bounds.getWidth() + 4 );
+		float y1 = (float)( y0 + bounds.getHeight() + 5 );
+
+		final int TAB_LENGTH = 6;
+
+		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+		rv.moveTo( x0, y1 );
+		rv.lineTo( x0, y0 );
+		rv.lineTo( x0 + TAB_LENGTH, y0 );
+		rv.lineTo( x0 + TAB_LENGTH + 3, y0 + 3 );
+		rv.lineTo( x1, y0 + 3 );
+		rv.lineTo( x1, y1 );
+		rv.closePath();
+		return rv;
+	}
+
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		super.paintEpilogue( g2, x, y, width, height );
+
+		org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model = this.getModel();
+		if( model instanceof org.alice.stageide.modelresource.ResourceNode ) {
+			org.alice.stageide.modelresource.ResourceNode resourceNode = (org.alice.stageide.modelresource.ResourceNode)model;
+			java.util.List<org.alice.stageide.modelresource.ResourceNode> nodeChildren = resourceNode.getNodeChildren();
+			if( nodeChildren.size() > 1 ) {
+				String s = Integer.toString( nodeChildren.size() );
+				java.awt.FontMetrics fm = g2.getFontMetrics();
+
+				java.awt.geom.Rectangle2D actualTextBounds = fm.getStringBounds( s, g2 );
+				java.awt.geom.Rectangle2D minimumTextBounds = fm.getStringBounds( "00", g2 );
+
+				java.awt.geom.Rectangle2D textBounds;
+				if( actualTextBounds.getWidth() > minimumTextBounds.getWidth() ) {
+					textBounds = actualTextBounds;
+				} else {
+					textBounds = minimumTextBounds;
+				}
+
+				java.awt.Shape shape = createShapeAround( textBounds );
+				java.awt.geom.Rectangle2D shapeBounds = shape.getBounds();
+
+				double xTranslate = ( x + width ) - shapeBounds.getWidth() - 4;
+				double yTranslate = y + shapeBounds.getHeight();
+
+				g2.translate( xTranslate, yTranslate );
+				try {
+					g2.setPaint( new java.awt.Color( 221, 221, 191 ) );
+					g2.fill( shape );
+					g2.setPaint( java.awt.Color.GRAY );
+					g2.draw( shape );
+
+					g2.setPaint( java.awt.Color.BLACK );
+					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, s, textBounds );
+				} finally {
+					g2.translate( -xTranslate, -yTranslate );
+				}
 			}
 		}
 	}

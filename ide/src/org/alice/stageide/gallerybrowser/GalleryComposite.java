@@ -49,9 +49,10 @@ package org.alice.stageide.gallerybrowser;
 public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.gallerybrowser.views.GalleryView> {
 	private final ResourceBasedTab resourceBasedTab = new ResourceBasedTab();
 	private final ThemeBasedTab themeBasedTab = new ThemeBasedTab();
+	private final GroupBasedTab groupBasedTab = new GroupBasedTab();
 	private final ShapesTab shapesTab = new ShapesTab();
 	private final SearchTab searchTab = new SearchTab();
-	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, this.resourceBasedTab, this.themeBasedTab, this.searchTab, this.shapesTab );
+	private final org.lgna.croquet.TabSelectionState<GalleryTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), GalleryTab.class, 0, this.resourceBasedTab, this.themeBasedTab, this.groupBasedTab, this.searchTab, this.shapesTab );
 
 	public GalleryComposite() {
 		super( java.util.UUID.fromString( "c3dd549e-6622-4641-913b-27b08dc4dba5" ) );
@@ -61,8 +62,9 @@ public class GalleryComposite extends org.lgna.croquet.SimpleComposite<org.alice
 	protected void localize() {
 		super.localize();
 		this.tabState.setItemIconForBothTrueAndFalse( this.shapesTab, new org.alice.stageide.icons.TorusIcon( new java.awt.Dimension( 24, 24 ) ) );
-		this.tabState.setItemIconForBothTrueAndFalse( this.themeBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
 		this.tabState.setItemIconForBothTrueAndFalse( this.resourceBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
+		this.tabState.setItemIconForBothTrueAndFalse( this.themeBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
+		this.tabState.setItemIconForBothTrueAndFalse( this.groupBasedTab, org.alice.ide.icons.Icons.EMPTY_HEIGHT_ICON_SMALL );
 		this.tabState.setItemIconForBothTrueAndFalse( this.searchTab, org.alice.stageide.gallerybrowser.views.SearchTabView.SEARCH_ICON );
 	}
 

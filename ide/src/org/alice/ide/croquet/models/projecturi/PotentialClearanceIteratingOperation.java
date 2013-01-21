@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentialClearanceIteratingOperation extends org.lgna.croquet.IteratingOperation {
+public abstract class PotentialClearanceIteratingOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
 	private final org.lgna.croquet.Model postClearanceModel;
 
 	public PotentialClearanceIteratingOperation( org.lgna.croquet.Group group, java.util.UUID migrationId, org.lgna.croquet.Model postClearanceModel ) {

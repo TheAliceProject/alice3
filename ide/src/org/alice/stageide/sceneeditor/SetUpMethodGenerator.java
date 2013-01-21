@@ -357,7 +357,7 @@ public class SetUpMethodGenerator {
 							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "cannot create expression for: " + value );
 						}
 					} else {
-						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "setter is null for: " + getter );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "setter is null for: " + getter );
 					}
 				}
 				if( instance instanceof org.lgna.story.STurnable ) {

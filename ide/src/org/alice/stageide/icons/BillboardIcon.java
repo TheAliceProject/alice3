@@ -53,10 +53,34 @@ public class BillboardIcon extends ShapeIcon {
 	@Override
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 		float h = width / (float)edu.cmu.cs.dennisc.math.GoldenRatio.PHI;
-		java.awt.Shape shape = new java.awt.geom.Rectangle2D.Float( 0, ( height - h ) * 0.5f, width, h );
+		float x = 0.0f;
+		float y = ( height - h ) * 0.5f;
+		java.awt.Shape outerShape = new java.awt.geom.Rectangle2D.Float( x, y, width, h );
 		g2.setPaint( fillPaint );
-		g2.fill( shape );
+		g2.fill( outerShape );
 		g2.setPaint( drawPaint );
-		g2.draw( shape );
+		g2.draw( outerShape );
+
+		float offset;
+		if( width > 64 ) {
+			offset = 0.05f * width;
+		} else {
+			offset = 0.1f * width;
+		}
+		java.awt.geom.Rectangle2D.Float innerShape = new java.awt.geom.Rectangle2D.Float( x + offset, y + offset, width - ( offset * 2 ), h - ( offset * 2 ) );
+
+		java.awt.Paint innerFillPaint;
+		if( fillPaint instanceof java.awt.Color ) {
+			java.awt.Color fillColor = (java.awt.Color)fillPaint;
+			innerFillPaint = new java.awt.GradientPaint( (float)innerShape.getMinX(), (float)innerShape.getMinY(), fillColor.brighter(), (float)innerShape.getCenterX(), (float)innerShape.getMaxY(), fillColor );
+		} else {
+			innerFillPaint = fillPaint;
+		}
+
+		g2.setPaint( innerFillPaint );
+		g2.fill( innerShape );
+		g2.setPaint( java.awt.Color.DARK_GRAY );
+		g2.draw( innerShape );
+
 	}
 }

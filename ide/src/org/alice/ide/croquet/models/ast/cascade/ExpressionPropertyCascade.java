@@ -60,10 +60,10 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 	}
 
 	@Override
-	protected void prologue() {
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
 		this.pushedContext = new org.alice.ide.cascade.ExpressionPropertyContext( this.expressionProperty );
 		org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
-		super.prologue();
+		super.prologue( trigger );
 	}
 
 	@Override

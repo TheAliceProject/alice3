@@ -134,6 +134,7 @@ public class ModelResourceExporter {
 	private String className;
 	private List<String> tags = new LinkedList<String>();
 	private List<String> groupTags = new LinkedList<String>();
+	private List<String> themeTags = new LinkedList<String>();
 	private Map<String, AxisAlignedBox> boundingBoxes = new HashMap<String, AxisAlignedBox>();
 	private File xmlFile;
 	private File javaFile;
@@ -437,6 +438,18 @@ public class ModelResourceExporter {
 		}
 	}
 
+	public void addSubResourceThemeTags( String modelName, String textureName, String... tags ) {
+		if( ( tags != null ) && ( tags.length > 0 ) ) {
+			for( ModelSubResourceExporter subResource : this.subResources ) {
+				if( subResource.getModelName().equalsIgnoreCase( modelName ) ) {
+					if( ( textureName == null ) || subResource.getTextureName().equalsIgnoreCase( textureName ) ) {
+						subResource.addThemeTags( tags );
+					}
+				}
+			}
+		}
+	}
+
 	public void addAttribution( String name, String year )
 	{
 		this.attributionName = name;
@@ -455,6 +468,14 @@ public class ModelResourceExporter {
 		if( tags != null ) {
 			for( String s : tags ) {
 				this.groupTags.add( s );
+			}
+		}
+	}
+
+	public void addThemeTags( String... tags ) {
+		if( tags != null ) {
+			for( String s : tags ) {
+				this.themeTags.add( s );
 			}
 		}
 	}
@@ -549,6 +570,17 @@ public class ModelResourceExporter {
 		return tagsElement;
 	}
 
+	private static org.w3c.dom.Element createThemeTagsElement( Document doc, List<String> tagList )
+	{
+		org.w3c.dom.Element tagsElement = doc.createElement( "ThemeTags" );
+		for( String tag : tagList ) {
+			org.w3c.dom.Element tagElement = doc.createElement( "ThemeTag" );
+			tagElement.setTextContent( tag );
+			tagsElement.appendChild( tagElement );
+		}
+		return tagsElement;
+	}
+
 	private static org.w3c.dom.Element createSubResourceElement( Document doc, ModelSubResourceExporter subResource, ModelResourceExporter parentMRE )
 	{
 		org.w3c.dom.Element resourceElement = doc.createElement( "Resource" );
@@ -583,6 +615,18 @@ public class ModelResourceExporter {
 				resourceElement.appendChild( createGroupTagsElement( doc, uniqueTags ) );
 			}
 		}
+
+		if( subResource.getThemeTags().size() > 0 ) {
+			List<String> uniqueTags = new ArrayList<String>();
+			for( String t : subResource.getThemeTags() ) {
+				if( ( parentMRE.themeTags == null ) || !parentMRE.themeTags.contains( t ) ) {
+					uniqueTags.add( t );
+				}
+			}
+			if( !uniqueTags.isEmpty() ) {
+				resourceElement.appendChild( createThemeTagsElement( doc, uniqueTags ) );
+			}
+		}
 		return resourceElement;
 	}
 
@@ -612,6 +656,7 @@ public class ModelResourceExporter {
 			modelRoot.appendChild( createBoundingBoxElement( doc, this.boundingBoxes.get( this.className ) ) );
 			modelRoot.appendChild( createTagsElement( doc, this.tags ) );
 			modelRoot.appendChild( createGroupTagsElement( doc, this.groupTags ) );
+			modelRoot.appendChild( createThemeTagsElement( doc, this.themeTags ) );
 
 			for( ModelSubResourceExporter subResource : this.subResources ) {
 				if( !subResource.getModelName().equalsIgnoreCase( this.className ) && this.boundingBoxes.containsKey( subResource.getModelName() ) ) {
@@ -814,7 +859,7 @@ public class ModelResourceExporter {
 		if( modelName.equalsIgnoreCase( parentExporter.getClassName() ) ) {
 			return AliceResourceUtilties.makeEnumName( textureName );
 		}
-		else if( modelName.equalsIgnoreCase( textureName ) ) {
+		else if( modelName.equalsIgnoreCase( textureName ) || textureName.equalsIgnoreCase( AliceResourceUtilties.getDefaultTextureEnumName( modelName ) ) ) {
 			return AliceResourceUtilties.makeEnumName( modelName );
 		}
 		else {

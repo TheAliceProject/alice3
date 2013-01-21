@@ -99,11 +99,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 								component = typeDropDown;
 							}
 						} else {
-							if( composite.isValueIsArrayTypeStateDisplayed() ) {
-								component = new org.lgna.croquet.components.Label( "todo" );
-							} else {
-								component = new org.alice.ide.croquet.components.TypeView( valueComponentTypeState, valueIsArrayTypeState.getValue() );
-							}
+							component = new org.alice.ide.croquet.components.TypeView( valueComponentTypeState, valueIsArrayTypeState.getValue() );
 						}
 						rows.add( new org.lgna.croquet.components.LabeledFormRow(
 								valueComponentTypeState.getSidekickLabel(),

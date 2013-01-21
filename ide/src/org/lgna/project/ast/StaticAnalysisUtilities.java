@@ -186,6 +186,45 @@ public class StaticAnalysisUtilities {
 		return false;
 	}
 
+	private static String getConventionalIdentifierName( String name, boolean cap ) {
+		String rv = "";
+		boolean isAlphaEncountered = false;
+		final int N = name.length();
+		for( int i = 0; i < N; i++ ) {
+			char c = name.charAt( i );
+			if( Character.isLetterOrDigit( c ) ) {
+				if( Character.isDigit( c ) ) {
+					if( isAlphaEncountered ) {
+						//pass
+					} else {
+						rv += "_";
+						rv += c;
+						isAlphaEncountered = true;
+						continue;
+					}
+				} else {
+					isAlphaEncountered = true;
+				}
+				if( cap ) {
+					c = Character.toUpperCase( c );
+				}
+				rv += c;
+				cap = Character.isDigit( c );
+			} else {
+				cap = true;
+			}
+		}
+		return rv;
+	}
+
+	public static String getConventionalInstanceName( String text ) {
+		return getConventionalIdentifierName( text, false );
+	}
+
+	public static String getConventionalClassName( String text ) {
+		return getConventionalIdentifierName( text, true );
+	}
+
 	public static boolean isAvailableResourceName( org.lgna.project.Project project, String name, org.lgna.common.Resource self ) {
 		if( project != null ) {
 			java.util.Set<org.lgna.common.Resource> resources = project.getResources();
@@ -257,5 +296,17 @@ public class StaticAnalysisUtilities {
 
 	public static boolean isAvailableMethodName( String name, UserMethod self ) {
 		return isAvailableMethodName( name, self.getDeclaringType(), self );
+	}
+
+	public static int getUserTypeDepth( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		if( type != null ) {
+			if( type instanceof org.lgna.project.ast.JavaType ) {
+				return -1;
+			} else {
+				return 1 + getUserTypeDepth( type.getSuperType() );
+			}
+		} else {
+			return -1;
+		}
 	}
 }

@@ -110,9 +110,15 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 	}
 
 	@Override
-	public void internalSetItems( java.util.Collection<T> items ) {
+	public void internalSetAllItems( java.util.Collection<T> items ) {
 		this.values.clear();
 		this.values.addAll( items );
+		this.fireContentsChanged();
+	}
+
+	@Override
+	public void internalSetItemAt( int index, T item ) {
+		this.values.set( index, item );
 		this.fireContentsChanged();
 	}
 }

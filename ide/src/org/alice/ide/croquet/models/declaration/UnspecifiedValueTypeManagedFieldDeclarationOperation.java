@@ -74,4 +74,10 @@ public class UnspecifiedValueTypeManagedFieldDeclarationOperation extends Initia
 				null );
 		//		this.getInitializerState().addValueObserver( this.initializerObserver );
 	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+	}
 }

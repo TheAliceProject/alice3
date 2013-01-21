@@ -59,7 +59,13 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+	protected void initialize() {
+		this.composite.initializeIfNecessary();
+		super.initialize();
+	}
+
+	@Override
+	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 		//todo
 		return ( (AbstractComposite)this.composite ).getClassUsedForLocalization();
 	}

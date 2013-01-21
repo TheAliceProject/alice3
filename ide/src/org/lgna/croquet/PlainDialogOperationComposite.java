@@ -61,7 +61,7 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 		}
 	}
 
-	public static class InternalCloseOperation extends SingleThreadOperation {
+	public static class InternalCloseOperation extends Operation {
 		private final PlainDialogOperationComposite plainDialogOperationComposite;
 
 		private InternalCloseOperation( PlainDialogOperationComposite plainDialogOperationComposite ) {
@@ -116,6 +116,9 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 	@Override
 	protected String getName() {
 		return this.getOperation().getName();
+	}
+
+	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
 	}
 
 	@Override

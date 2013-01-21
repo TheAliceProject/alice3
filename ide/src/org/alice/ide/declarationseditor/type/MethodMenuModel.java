@@ -54,7 +54,7 @@ public final class MethodMenuModel extends MemberMenuModel<org.lgna.project.ast.
 				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> prepModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				prepModels.add( org.alice.ide.ast.rename.RenameMethodComposite.getInstance( key ).getOperation().getMenuItemPrepModel() );
 				prepModels.add( org.alice.ide.croquet.models.ast.DeleteMethodOperation.getInstance( key ).getMenuItemPrepModel() );
-				prepModels.add( org.alice.ide.croquet.models.ast.EditMethodOperation.getInstance( key ).getMenuItemPrepModel() );
+				prepModels.add( org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToEditInstance( key ).getMenuItemPrepModel() );
 				return new MethodMenuModel( key, prepModels );
 			}
 		} );

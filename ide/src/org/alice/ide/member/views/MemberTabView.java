@@ -87,7 +87,11 @@ public abstract class MemberTabView extends org.lgna.croquet.components.MigPanel
 						view.getTitle().setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.LEADING );
 					}
 					view.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-					view.getTitle().setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+					if( org.alice.ide.member.MemberTabComposite.ARE_TOOL_PALETTES_INERT ) {
+						view.getTitle().setInert( true );
+					} else {
+						view.getTitle().setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+					}
 					view.setBackgroundColor( this.getBackgroundColor() );
 					scrollPaneView.addComponent( view, "wrap" );
 				}

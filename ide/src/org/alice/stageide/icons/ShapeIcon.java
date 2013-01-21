@@ -53,7 +53,7 @@ public abstract class ShapeIcon extends org.lgna.croquet.icon.AbstractIcon {
 		g2.draw( path );
 	}
 
-	private static final int PAD = 2;
+	protected static final int PAD = 2;
 	protected static final java.awt.Color FILL_PAINT = new java.awt.Color( 191, 191, 255 );
 
 	public ShapeIcon( java.awt.Dimension size ) {

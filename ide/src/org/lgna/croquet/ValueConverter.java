@@ -54,7 +54,7 @@ public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 		return this.source.getClassUsedForLocalization();
 	}
 

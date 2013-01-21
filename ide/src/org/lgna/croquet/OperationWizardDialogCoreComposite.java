@@ -63,6 +63,9 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return this.getOperation().getName();
 	}
 
+	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
+	}
+
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {

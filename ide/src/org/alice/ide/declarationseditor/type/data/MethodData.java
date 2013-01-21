@@ -53,15 +53,19 @@ public abstract class MethodData extends FilteredMemberData<org.lgna.project.ast
 
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
-		if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();
-		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PROTECTED ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getValue();
-		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PACKAGE ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getValue();
+		if( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) {
+			org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
+			if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
+				return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();
+			} else if( accessLevel == org.lgna.project.ast.AccessLevel.PROTECTED ) {
+				return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getValue();
+			} else if( accessLevel == org.lgna.project.ast.AccessLevel.PACKAGE ) {
+				return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getValue();
+			} else {
+				return true;
+			}
 		} else {
-			return true;
+			return false;
 		}
 	}
 }

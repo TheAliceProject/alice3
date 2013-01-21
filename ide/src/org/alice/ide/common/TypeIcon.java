@@ -46,16 +46,23 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class TypeIcon implements javax.swing.Icon {
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
-	private TypeBorder border;
+	private static final int INDENT_PER_DEPTH = 12;
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final TypeBorder border;
+	private final boolean isIndentForDepthDesired;
 
 	public static TypeIcon getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return new TypeIcon( type );
 	}
 
-	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, boolean isIndentForDepthDesired ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
+		this.isIndentForDepthDesired = isIndentForDepthDesired;
+	}
+
+	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		this( type, false );
 	}
 
 	protected java.awt.Font getFont() {
@@ -76,7 +83,14 @@ public class TypeIcon implements javax.swing.Icon {
 	}
 
 	public int getIconWidth() {
-		return this.getBorderWidth();
+		int rv = this.getBorderWidth();
+		if( this.isIndentForDepthDesired ) {
+			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( type );
+			if( depth > 0 ) {
+				rv += ( depth * INDENT_PER_DEPTH );
+			}
+		}
+		return rv;
 	}
 
 	public int getIconHeight() {
@@ -113,6 +127,16 @@ public class TypeIcon implements javax.swing.Icon {
 	}
 
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+		if( this.isIndentForDepthDesired ) {
+			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( type );
+			if( depth > 0 ) {
+				g2.translate( depth * INDENT_PER_DEPTH, 0 );
+			}
+		}
+
 		int w = this.getBorderWidth();
 		int h = this.getBorderHeight();
 		this.border.paintBorder( c, g, x, y, w, h );
@@ -126,5 +150,6 @@ public class TypeIcon implements javax.swing.Icon {
 		if( font.isItalic() ) {
 			g.setFont( font );
 		}
+		g2.setTransform( prevTransform );
 	}
 }

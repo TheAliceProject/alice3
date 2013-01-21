@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class ClassResourceKey extends ResourceKey {
+public final class ClassResourceKey extends InstanceCreatorKey {
 	private final Class<? extends org.lgna.story.resources.ModelResource> cls;
 
 	public ClassResourceKey( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
@@ -63,16 +63,15 @@ public final class ClassResourceKey extends ResourceKey {
 	@Override
 	public String getDisplayText() {
 		StringBuilder sb = new StringBuilder();
+		sb.append( "new " );
 		sb.append( this.cls.getSimpleName().replace( "Resource", "" ) );
-		final boolean IS_COUNT_DESIRED = false;
-		if( IS_COUNT_DESIRED ) {
-			org.lgna.story.resources.ModelResource[] constants = this.cls.getEnumConstants();
-			if( ( constants != null ) && ( constants.length > 1 ) ) {
-				sb.append( " (" );
-				sb.append( constants.length );
-				sb.append( ")" );
-			}
+		sb.append( "(" );
+		if( this.isLeaf() ) {
+			//pass
+		} else {
+			sb.append( " \u2423 " );
 		}
+		sb.append( ")" );
 		return sb.toString();
 	}
 
@@ -104,6 +103,11 @@ public final class ClassResourceKey extends ResourceKey {
 	@Override
 	public String[] getGroupTags() {
 		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this.cls );
+	}
+
+	@Override
+	public String[] getThemeTags() {
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this.cls );
 	}
 
 	@Override

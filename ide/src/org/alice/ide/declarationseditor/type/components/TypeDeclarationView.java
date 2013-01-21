@@ -74,8 +74,11 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		}
 
 		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
-		pageAxisPanel.addComponent( constructorsToolPalette );
-		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
+
+		if( org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors.getInstance().getValue() ) {
+			pageAxisPanel.addComponent( constructorsToolPalette );
+			pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
+		}
 		pageAxisPanel.addComponent( proceduresToolPalette );
 		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 		pageAxisPanel.addComponent( functionsToolPalette );

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,59 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.recyclebin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RecycleBin extends org.lgna.croquet.components.JComponent<javax.swing.JComponent> {
-	@Override
-	protected javax.swing.JComponent createAwtComponent() {
-		return new javax.swing.JComponent() {
-			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
-				super.paintComponent( g );
-				RecycleBinIcon.SINGLETON.paintIcon( this, g, 0, 0 );
-			}
-
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return new java.awt.Dimension( org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON.getIconWidth(), org.alice.ide.icons.Icons.TRASH_CAN_FULL_ICON.getIconHeight() );
-			}
-		};
+public enum RecycleBin {
+	SINGLETON;
+	public org.lgna.croquet.DropReceptor getDropReceptor() {
+		return org.alice.ide.members.MembersComposite.getInstance().getView().getRecycleBinDropReceptor();
 	}
-	//	public static void main( String[] args ) {
-	//		org.lgna.croquet.Application application = new org.lgna.croquet.Application() {
-	//			@Override
-	//			protected org.lgna.croquet.components.Component< ? > createContentPane() {
-	//				return new RecycleBin();
-	//			}
-	//			@Override
-	//			public org.lgna.croquet.DropReceptor getDropReceptor( org.lgna.croquet.DropSite dropSite ) {
-	//				return null;
-	//			}
-	//			@Override
-	//			protected org.lgna.croquet.Operation< ? > getAboutOperation() {
-	//				return null;
-	//			}
-	//			@Override
-	//			protected org.lgna.croquet.Operation< ? > getPreferencesOperation() {
-	//				return null;
-	//			}
-	//			@Override
-	//			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-	//			}
-	//			@Override
-	//			protected void handleOpenFile( org.lgna.croquet.triggers.Trigger trigger ) {
-	//			}
-	//			@Override
-	//			protected void handleQuit( org.lgna.croquet.triggers.Trigger trigger ) {
-	//				System.exit( 0 );
-	//			}
-	//		};
-	//		application.initialize( args );
-	//		application.getFrame().pack();
-	//		application.getFrame().setVisible( true );
-	//	}
 }

@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class EnumConstantResourceKey extends ResourceKey {
+public final class EnumConstantResourceKey extends InstanceCreatorKey {
 	private static java.util.Map<org.lgna.project.ast.JavaType, org.lgna.project.ast.JavaType> mapResourceTypeToAbstractionType;
 
 	private final Enum<? extends org.lgna.story.resources.ModelResource> enumConstant;
@@ -89,7 +89,13 @@ public final class EnumConstantResourceKey extends ResourceKey {
 
 	@Override
 	public String getDisplayText() {
-		return this.enumConstant.name();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "new " );
+		sb.append( this.enumConstant.getClass().getSimpleName().replace( "Resource", "" ) );
+		sb.append( "( " );
+		sb.append( this.enumConstant.name() );
+		sb.append( " )" );
+		return sb.toString();
 	}
 
 	@Override
@@ -132,6 +138,11 @@ public final class EnumConstantResourceKey extends ResourceKey {
 	@Override
 	public String[] getGroupTags() {
 		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this.enumConstant.getClass() );
+	}
+
+	@Override
+	public String[] getThemeTags() {
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this.enumConstant.getClass() );
 	}
 
 	@Override

@@ -168,7 +168,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 					globalDragAdapter.dragExited( dragStep );
 				}
 			}
-			return null;
+			AffineMatrix4x4 t = globalDragAdapter.getDropTargetTransformation();
+			return t != null ? new SceneDropSite( t ) : null;
 		}
 
 		@Override

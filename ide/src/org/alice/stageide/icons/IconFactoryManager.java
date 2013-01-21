@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.icons;
 
-import java.util.Comparator;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -92,47 +90,43 @@ public class IconFactoryManager {
 			} else {
 				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
 					javax.swing.ImageIcon imageIcon = getIcon( modelResourceCls );
-					return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
+					//return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
+					return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
 				}
 			}
-			if( modelResourceName != null ) {
-				//pass
-			} else {
-				if( modelResourceCls.isEnum() ) {
-					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
-					if( constants.length > 1 ) {
-						int MAXIMUM_CONSTANTS_TO_USE = 5;
-						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
-
-						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( constants );
-						java.util.Collections.sort( sortedConstants, new Comparator<org.lgna.story.resources.ModelResource>() {
-							public int compare( org.lgna.story.resources.ModelResource o1, org.lgna.story.resources.ModelResource o2 ) {
-								return o1.toString().compareTo( o2.toString() );
-							}
-						} );
-						int i = 0;
-						for( org.lgna.story.resources.ModelResource constant : sortedConstants ) {
-							iconFactories.add( getIconFactoryForResourceInstance( constant ) );
-							i += 1;
-							if( i == MAXIMUM_CONSTANTS_TO_USE ) {
-								break;
-							}
-						}
-						return new EnumConstantsIconFactory( constants.length, iconFactories );
-					}
-				}
-			}
+			//			if( modelResourceName != null ) {
+			//				//pass
+			//			} else {
+			//				if( modelResourceCls.isEnum() ) {
+			//					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
+			//					if( constants.length > 1 ) {
+			//						int MAXIMUM_CONSTANTS_TO_USE = 5;
+			//						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
+			//
+			//						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( constants );
+			//						java.util.Collections.sort( sortedConstants, new Comparator<org.lgna.story.resources.ModelResource>() {
+			//							public int compare( org.lgna.story.resources.ModelResource o1, org.lgna.story.resources.ModelResource o2 ) {
+			//								return o1.toString().compareTo( o2.toString() );
+			//							}
+			//						} );
+			//						int i = 0;
+			//						for( org.lgna.story.resources.ModelResource constant : sortedConstants ) {
+			//							iconFactories.add( getIconFactoryForResourceInstance( constant ) );
+			//							i += 1;
+			//							if( i == MAXIMUM_CONSTANTS_TO_USE ) {
+			//								break;
+			//							}
+			//						}
+			//						return new EnumConstantsIconFactory( iconFactories );
+			//					}
+			//				}
+			//			}
 			java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
 			if( url != null ) {
-				org.lgna.croquet.icon.IconFactory iconFactory = new org.lgna.croquet.icon.ImageIconFactory( url );
-				if( modelResourceName != null ) {
-					return iconFactory;
-				} else {
-					return new FolderIconFactory( iconFactory );
-				}
+				return new org.lgna.croquet.icon.TrimmedImageIconFactory( url, 160, 120 );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
-				return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+				return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 			}
 		}
 	}
@@ -226,7 +220,7 @@ public class IconFactoryManager {
 					return new org.lgna.croquet.icon.ImageIconFactory( image );
 				} catch( Throwable t ) {
 					t.printStackTrace();
-					return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+					return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 				}
 			} else {
 				return null;
@@ -401,7 +395,7 @@ public class IconFactoryManager {
 				}
 			}
 		}
-		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+		return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 	}
 
 	public static org.lgna.croquet.icon.IconFactory getIconFactoryForField( org.lgna.project.ast.UserField userField ) {
@@ -427,7 +421,7 @@ public class IconFactoryManager {
 			}
 			return getIconFactoryForType( userField.getValueType() );
 		}
-		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+		return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 	}
 
 	public static org.lgna.croquet.icon.IconFactory getIconFactoryForCameraMarker( org.lgna.story.Color color ) {

@@ -63,6 +63,8 @@ public class CylinderImp extends AbstractCylinderImp {
 
 	public CylinderImp( org.lgna.story.SCylinder abstraction ) {
 		this.abstraction = abstraction;
+		this.getSgCylinder().bottomRadius.setValue( 0.5 );
+		this.getSgCylinder().topRadius.setValue( 0.5 );
 	}
 
 	@Override

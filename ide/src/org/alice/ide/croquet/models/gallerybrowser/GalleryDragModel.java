@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
-	public GalleryDragModel( java.util.UUID id ) {
-		super( id );
+	public GalleryDragModel( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
 	public abstract String getText();
@@ -85,4 +85,6 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 	}
 
 	public abstract edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox();
+
+	public abstract boolean isInstanceCreator();
 }

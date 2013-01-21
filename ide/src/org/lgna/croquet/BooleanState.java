@@ -446,29 +446,54 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	}
 
 	private final class RadioButtonsPanel extends org.lgna.croquet.components.Panel {
+		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+		private final InternalRadioButton trueButton;
+		private final InternalRadioButton falseButton;
 		private final int axis;
+		private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
+			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+				handleChanged( nextValue );
+			}
+		};
 
 		public RadioButtonsPanel( boolean isVertical, boolean isTrueFirst ) {
 			this.axis = isVertical ? javax.swing.BoxLayout.PAGE_AXIS : javax.swing.BoxLayout.LINE_AXIS;
-			InternalRadioButton trueButton = new InternalRadioButton( getSetToTrueOperation() );
-			InternalRadioButton falseButton = new InternalRadioButton( getSetToFalseOperation() );
+			this.trueButton = new InternalRadioButton( getSetToTrueOperation() );
+			this.falseButton = new InternalRadioButton( getSetToFalseOperation() );
 			if( isTrueFirst ) {
-				this.internalAddComponent( trueButton );
-				this.internalAddComponent( falseButton );
+				this.internalAddComponent( this.trueButton );
+				this.internalAddComponent( this.falseButton );
 			} else {
-				this.internalAddComponent( falseButton );
-				this.internalAddComponent( trueButton );
+				this.internalAddComponent( this.falseButton );
+				this.internalAddComponent( this.trueButton );
 			}
-			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-			buttonGroup.add( trueButton.getAwtComponent() );
-			buttonGroup.add( falseButton.getAwtComponent() );
-			InternalRadioButton selected = getValue() ? trueButton : falseButton;
-			buttonGroup.setSelected( selected.getAwtComponent().getModel(), true );
+			this.buttonGroup.add( trueButton.getAwtComponent() );
+			this.buttonGroup.add( falseButton.getAwtComponent() );
 		}
 
 		@Override
 		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 			return new javax.swing.BoxLayout( jPanel, axis );
+		}
+
+		private void handleChanged( Boolean nextValue ) {
+			InternalRadioButton selected = nextValue ? this.trueButton : this.falseButton;
+			this.buttonGroup.setSelected( selected.getAwtComponent().getModel(), true );
+		}
+
+		@Override
+		protected void handleDisplayable() {
+			super.handleDisplayable();
+			BooleanState.this.addAndInvokeValueListener( this.valueListener );
+		}
+
+		@Override
+		protected void handleUndisplayable() {
+			BooleanState.this.removeValueListener( this.valueListener );
+			super.handleUndisplayable();
 		}
 	}
 

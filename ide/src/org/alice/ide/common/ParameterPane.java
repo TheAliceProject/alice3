@@ -71,7 +71,7 @@ public class ParameterPane extends TransientPane {
 					}
 					models.add( org.lgna.croquet.MenuModel.SEPARATOR );
 					models.add( deleteParameterOperation.getMenuItemPrepModel() );
-					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+					org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 				}
 			}.getPopupPrepModel() );
 		} else {

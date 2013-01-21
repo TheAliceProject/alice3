@@ -90,18 +90,34 @@ public abstract class TabSelectionState<T extends TabComposite<?>> extends ListS
 		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
 	}
 
+	@Override
+	protected void fireChanging( T prevValue, T nextValue, org.lgna.croquet.State.IsAdjusting isAdjusting ) {
+		if( prevValue != null ) {
+			prevValue.handlePostDeactivation();
+		}
+		super.fireChanging( prevValue, nextValue, isAdjusting );
+	}
+
+	@Override
+	protected void fireChanged( T prevValue, T nextValue, org.lgna.croquet.State.IsAdjusting isAdjusting ) {
+		super.fireChanged( prevValue, nextValue, isAdjusting );
+		if( nextValue != null ) {
+			nextValue.handlePreActivation();
+		}
+	}
+
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
-		//		TabComposite<?> selected = this.getValue();
-		//		if( selected != null ) {
-		//			selected.handlePreActivation();
-		//		}
+		TabComposite<?> selected = this.getValue();
+		if( selected != null ) {
+			selected.handlePreActivation();
+		}
 	}
 
 	public void handlePostDeactivation() {
-		//		TabComposite<?> selected = this.getValue();
-		//		if( selected != null ) {
-		//			selected.handlePostDeactivation();
-		//		}
+		TabComposite<?> selected = this.getValue();
+		if( selected != null ) {
+			selected.handlePostDeactivation();
+		}
 	}
 }

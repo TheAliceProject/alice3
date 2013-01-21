@@ -118,8 +118,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	private static final org.lgna.project.ast.JavaType COLOR_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class );
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointedModelResource.class );
 
-	private java.util.Map<org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon> mapFieldToIcon = new java.util.HashMap<org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon>();
-
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
 		if( field == null ) {
 			return null;
@@ -128,27 +126,28 @@ public class StageIDE extends org.alice.ide.IDE {
 		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = field.getValueType();
 		if( ( declaringType != null ) && ( valueType != null ) ) {
 			if( ( declaringType == COLOR_TYPE ) && ( valueType == COLOR_TYPE ) ) {
-				org.alice.ide.swing.icons.ColorIcon rv = this.mapFieldToIcon.get( field );
-				if( rv != null ) {
+				try {
+					org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+					org.lgna.story.Color color = (org.lgna.story.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( javaField.getFieldReflectionProxy().getReification(), null );
+					java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor();
+					return new org.alice.stageide.icons.ColorIconFactory( awtColor ).getIcon( new java.awt.Dimension( 15, 15 ) );
+				} catch( RuntimeException re ) {
 					//pass
-				} else {
-					try {
-						org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
-						org.lgna.story.Color color = (org.lgna.story.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( javaField.getFieldReflectionProxy().getReification(), null );
-						rv = new org.alice.ide.swing.icons.ColorIcon( org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor() );
-						this.mapFieldToIcon.put( field, rv );
-					} catch( RuntimeException re ) {
-						//pass
-					}
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( re, field );
+					return null;
 				}
-				return rv;
 			} else if( declaringType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) && valueType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) ) {
-				Class<?> resourceClass = ( (org.lgna.project.ast.JavaType)field.getValueType() ).getClassReflectionProxy().getReification();
-				java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( resourceClass, field.getName() );
-				if( thumbnail != null ) {
-					return edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon.createSafeInstanceInPixels( thumbnail, 20, 20 );
+				if( field instanceof org.lgna.project.ast.JavaField ) {
+					org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+					try {
+						org.lgna.story.resources.ModelResource modelResource = (org.lgna.story.resources.ModelResource)javaField.getFieldReflectionProxy().getReification().get( null );
+						org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
+						return iconFactory.getIcon( new java.awt.Dimension( 20, 15 ) );
+					} catch( Exception e ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( e, field );
+						return null;
+					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( resourceClass, field.getName() );
 					return null;
 				}
 			} else {

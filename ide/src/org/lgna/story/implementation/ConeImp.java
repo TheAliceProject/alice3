@@ -62,6 +62,7 @@ public class ConeImp extends AbstractCylinderImp {
 
 	public ConeImp( org.lgna.story.SCone abstraction ) {
 		this.abstraction = abstraction;
+		this.getSgCylinder().bottomRadius.setValue( 0.5 );
 		this.getSgCylinder().topRadius.setValue( 0.0 );
 		this.getSgCylinder().hasTopCap.setValue( false );
 	}

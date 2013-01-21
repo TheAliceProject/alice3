@@ -57,6 +57,7 @@ public class ModelSubResourceExporter {
 	private AxisAlignedBox bbox = null;
 	List<String> tags = new LinkedList<String>();
 	List<String> groupTags = new LinkedList<String>();
+	List<String> themeTags = new LinkedList<String>();
 
 	public ModelSubResourceExporter( String modelName, String textureName ) {
 		this.modelName = modelName;
@@ -87,6 +88,10 @@ public class ModelSubResourceExporter {
 		return groupTags;
 	}
 
+	public List<String> getThemeTags() {
+		return themeTags;
+	}
+
 	public void addTags( String... tags ) {
 		for( String tag : tags ) {
 			this.tags.add( tag );
@@ -96,6 +101,12 @@ public class ModelSubResourceExporter {
 	public void addGroupTags( String... tags ) {
 		for( String tag : tags ) {
 			this.groupTags.add( tag );
+		}
+	}
+
+	public void addThemeTags( String... tags ) {
+		for( String tag : tags ) {
+			this.themeTags.add( tag );
 		}
 	}
 

@@ -45,21 +45,29 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
-	private final java.util.List<org.lgna.croquet.icon.IconFactory> imageIconFactories;
-	private final int childCount;
+@Deprecated
+public class EnumConstantsIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
+	private final java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
 
-	public EnumConstantsIconFactory( int childCount, java.util.List<org.lgna.croquet.icon.IconFactory> imageIconFactories ) {
-		this.childCount = childCount;
-		this.imageIconFactories = imageIconFactories;
+	public EnumConstantsIconFactory( java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
+		super( IsCachingDesired.TRUE );
+		this.iconFactories = iconFactories;
 	}
 
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		return new EnumConstantsIcon( size, this.childCount, this.imageIconFactories );
+		return new EnumConstantsIcon( size, this.iconFactories );
+	}
+
+	public java.util.List<org.lgna.croquet.icon.IconFactory> getIconFactories() {
+		return this.iconFactories;
 	}
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return this.imageIconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
+		if( this.iconFactories.size() > 0 ) {
+			return this.iconFactories.get( 0 ).getDefaultSize( sizeIfResolutionIndependent );
+		} else {
+			return sizeIfResolutionIndependent;
+		}
 	}
 }

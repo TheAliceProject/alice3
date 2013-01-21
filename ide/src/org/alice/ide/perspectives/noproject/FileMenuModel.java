@@ -75,7 +75,7 @@ public class FileMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 	}
 
 	@Override
-	protected java.lang.Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
+	protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
 		return org.alice.ide.croquet.models.menubar.FileMenuModel.class;
 	}
 }

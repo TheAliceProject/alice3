@@ -58,7 +58,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.completionModel.getClassUsedForLocalization();
 		}
 

@@ -45,7 +45,7 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListUriTab extends ContentTab {
+public abstract class ListUriTab extends SelectUriTab {
 	public ListUriTab( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
