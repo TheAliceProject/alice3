@@ -64,8 +64,7 @@ public abstract class IteratingOperation extends Operation {
 
 	protected abstract void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps );
 
-	@Override
-	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+	protected void iterateOverSubModels( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger, this.createTransactionHistoryIfNecessary() );
 		try {
 			java.util.List<org.lgna.croquet.history.Step<?>> subSteps = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

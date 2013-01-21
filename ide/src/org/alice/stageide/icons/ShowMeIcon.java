@@ -40,26 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.showme;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DragIntoSceneStencilModel extends org.lgna.croquet.StencilModel {
-	public DragIntoSceneStencilModel() {
-		super( java.util.UUID.fromString( "b891dc2f-2baf-4fb2-a328-d194e3e11f0a" ) );
+public class ShowMeIcon extends ShapeIcon {
+	public ShowMeIcon( java.awt.Dimension size ) {
+		super( size );
 	}
 
 	@Override
-	protected void showStencil() {
-		org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite = org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance().getGalleryComposite();
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( galleryComposite.getTabState(), this.getText() );
-		new Thread() {
-			@Override
-			public void run() {
-				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 4000 );
-				barrierAwait();
-			}
-		}.start();
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
+		java.awt.Paint paint;
+		if( c instanceof javax.swing.AbstractButton ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+			javax.swing.ButtonModel buttonModel = button.getModel();
+			paint = buttonModel.isArmed() ? java.awt.Color.WHITE : java.awt.Color.BLACK;
+		} else {
+			paint = java.awt.Color.BLACK;
+		}
+		g2.setPaint( paint );
+
+		java.awt.Font prevFont = g2.getFont();
+		g2.setFont( prevFont.deriveFont( height * 0.95f ).deriveFont( java.awt.Font.BOLD ) );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g2, "?", 0, 0, width, height );
+		g2.setFont( prevFont );
 	}
 }

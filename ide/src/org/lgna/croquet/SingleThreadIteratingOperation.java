@@ -40,26 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.showme;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DragIntoSceneStencilModel extends org.lgna.croquet.StencilModel {
-	public DragIntoSceneStencilModel() {
-		super( java.util.UUID.fromString( "b891dc2f-2baf-4fb2-a328-d194e3e11f0a" ) );
+public abstract class SingleThreadIteratingOperation extends IteratingOperation {
+	public SingleThreadIteratingOperation( Group group, java.util.UUID migrationId ) {
+		super( group, migrationId );
 	}
 
 	@Override
-	protected void showStencil() {
-		org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite = org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance().getGalleryComposite();
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( galleryComposite.getTabState(), this.getText() );
-		new Thread() {
-			@Override
-			public void run() {
-				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 4000 );
-				barrierAwait();
-			}
-		}.start();
+	protected final void perform( final org.lgna.croquet.history.Transaction transaction, final org.lgna.croquet.triggers.Trigger trigger ) {
+		this.iterateOverSubModels( transaction, trigger );
 	}
 }

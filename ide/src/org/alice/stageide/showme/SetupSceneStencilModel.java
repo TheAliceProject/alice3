@@ -42,11 +42,13 @@
  */
 package org.alice.stageide.showme;
 
+import org.lgna.croquet.ChangePerspectiveStencilModel;
+
 /**
  * @author Dennis Cosgrove
  */
-public class SetupSceneStencilModel extends org.lgna.croquet.StencilModel {
+public class SetupSceneStencilModel extends ChangePerspectiveStencilModel {
 	public SetupSceneStencilModel() {
-		super( java.util.UUID.fromString( "3e558dd6-974d-4a70-87c8-93f44c72618b" ) );
+		super( java.util.UUID.fromString( "3e558dd6-974d-4a70-87c8-93f44c72618b" ), org.alice.stageide.perspectives.SetupScenePerspective.getInstance() );
 	}
 }

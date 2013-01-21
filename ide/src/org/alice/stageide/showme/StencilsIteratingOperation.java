@@ -72,4 +72,14 @@ public abstract class StencilsIteratingOperation extends org.lgna.croquet.Iterat
 	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
 		step.finish();
 	}
+
+	@Override
+	protected final void perform( final org.lgna.croquet.history.Transaction transaction, final org.lgna.croquet.triggers.Trigger trigger ) {
+		new Thread() {
+			@Override
+			public void run() {
+				iterateOverSubModels( transaction, trigger );
+			}
+		}.start();
+	}
 }

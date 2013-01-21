@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.IteratingOperation {
+public class DeclareFieldFromImportedTypeOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
 	private static class SingletonHolder {
 		private static DeclareFieldFromImportedTypeOperation instance = new DeclareFieldFromImportedTypeOperation();
 	}

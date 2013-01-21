@@ -40,24 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.showme;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DragIntoSceneStencilModel extends org.lgna.croquet.StencilModel {
-	public DragIntoSceneStencilModel() {
-		super( java.util.UUID.fromString( "b891dc2f-2baf-4fb2-a328-d194e3e11f0a" ) );
+public abstract class ChangePerspectiveStencilModel extends StencilModel {
+	private final org.alice.ide.perspectives.ProjectPerspective perspective;
+
+	public ChangePerspectiveStencilModel( java.util.UUID migrationId, org.alice.ide.perspectives.ProjectPerspective perspective ) {
+		super( migrationId );
+		this.perspective = perspective;
 	}
 
 	@Override
-	protected void showStencil() {
-		org.alice.stageide.gallerybrowser.GalleryComposite galleryComposite = org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance().getGalleryComposite();
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( galleryComposite.getTabState(), this.getText() );
+	protected final void showStencil() {
+		final org.alice.stageide.perspectives.PerspectiveState perspectiveState = org.alice.stageide.perspectives.PerspectiveState.getInstance();
+		org.lgna.croquet.Operation operation = perspectiveState.getItemSelectionOperation( this.perspective );
+		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverCroquetViewController( operation, this.getText() );
 		new Thread() {
 			@Override
 			public void run() {
-				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 4000 );
+				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
+				perspectiveState.setValueTransactionlessly( perspective );
 				barrierAwait();
 			}
 		}.start();

@@ -46,6 +46,9 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionModel {
+	private final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
+	private String text;
+
 	public StencilModel( java.util.UUID migrationId ) {
 		super( org.lgna.croquet.Application.INFORMATION_GROUP, migrationId );
 	}
@@ -67,9 +70,35 @@ public abstract class StencilModel extends org.lgna.croquet.AbstractCompletionMo
 
 	@Override
 	protected void localize() {
+		this.text = this.findDefaultLocalizedText();
 	}
+
+	public String getText() {
+		return this.text;
+	}
+
+	protected void barrierAwait() {
+		try {
+			this.barrier.await();
+		} catch( Throwable t ) {
+			throw new RuntimeException( t );
+		}
+	}
+
+	protected abstract void showStencil();
 
 	@Override
 	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this );
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		this.barrier.reset();
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				showStencil();
+			}
+		} );
+		this.barrierAwait();
+		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().hideIfNecessary();
+		step.finish();
 	}
 }
