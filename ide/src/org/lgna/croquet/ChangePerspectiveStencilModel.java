@@ -62,7 +62,11 @@ public abstract class ChangePerspectiveStencilModel extends StencilModel {
 			@Override
 			public void run() {
 				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 2000 );
-				perspectiveState.setValueTransactionlessly( perspective );
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						perspectiveState.setValueTransactionlessly( perspective );
+					}
+				} );
 				barrierAwait();
 			}
 		}.start();

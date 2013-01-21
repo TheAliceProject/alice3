@@ -145,26 +145,35 @@ public class TreeUtilities {
 		}
 	}
 
+	private static java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> createIconFactories( java.util.List<ResourceNode> dstChildNodes ) {
+		java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( ResourceNode resourceNode : dstChildNodes ) {
+			ResourceKey resourceKey = resourceNode.getResourceKey();
+			//todo
+			org.lgna.croquet.icon.IconFactory iconFactory = resourceKey.getIconFactory();
+			if( iconFactory instanceof org.lgna.croquet.icon.AbstractImageIconFactory ) {
+				org.lgna.croquet.icon.AbstractImageIconFactory imageIconFactory = (org.lgna.croquet.icon.AbstractImageIconFactory)iconFactory;
+				iconFactories.add( imageIconFactory );
+			}
+			if( iconFactories.size() == 5 ) {
+				break;
+			}
+		}
+		return iconFactories;
+	}
+
 	private static void addTagNode( String tag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> tagNodes, java.util.Map<String, ResourceNode> mapTagToNode, boolean isTheme ) {
 		ResourceNode dstNode;
 		if( isTheme ) {
-			ThemeTagKey themeTagKey = new ThemeTagKey( tag );
-			dstNode = new ThemeBasedResourceNode( themeTagKey, dstChildNodes );
-		} else {
-			java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( ResourceNode resourceNode : dstChildNodes ) {
-				ResourceKey resourceKey = resourceNode.getResourceKey();
-				//todo
-				org.lgna.croquet.icon.IconFactory iconFactory = resourceKey.getIconFactory();
-				if( iconFactory instanceof org.lgna.croquet.icon.AbstractImageIconFactory ) {
-					org.lgna.croquet.icon.AbstractImageIconFactory imageIconFactory = (org.lgna.croquet.icon.AbstractImageIconFactory)iconFactory;
-					iconFactories.add( imageIconFactory );
-				}
-				if( iconFactories.size() == 5 ) {
-					break;
-				}
+			TagKey tagKey;
+			if( tag.indexOf( TagKey.SEPARATOR ) == -1 ) {
+				tagKey = new ThemeTagKey( tag );
+			} else {
+				tagKey = new GroupTagKey( tag, createIconFactories( dstChildNodes ) );
 			}
-			GroupTagKey groupTagKey = new GroupTagKey( tag, iconFactories );
+			dstNode = new ThemeBasedResourceNode( tagKey, dstChildNodes );
+		} else {
+			GroupTagKey groupTagKey = new GroupTagKey( tag, createIconFactories( dstChildNodes ) );
 			dstNode = new GroupBasedResourceNode( groupTagKey, dstChildNodes );
 		}
 		tagNodes.add( dstNode );
