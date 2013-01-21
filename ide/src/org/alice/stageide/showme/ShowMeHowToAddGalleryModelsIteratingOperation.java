@@ -57,4 +57,10 @@ public class ShowMeHowToAddGalleryModelsIteratingOperation extends StencilsItera
 	private ShowMeHowToAddGalleryModelsIteratingOperation() {
 		super( java.util.UUID.fromString( "c5856a7a-c03d-4432-a12f-e797cfbc8899" ), new SetupSceneStencilModel(), new DragIntoSceneStencilModel(), new EditCodeStencilModel() );
 	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setSmallIcon( org.alice.stageide.icons.ShowMeIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+	}
 }

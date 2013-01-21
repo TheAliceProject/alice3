@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,36 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package test;
+package org.alice.stageide.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
-	public static void main( String[] args ) {
-		TestCroquet testCroquet = new TestCroquet();
-		testCroquet.initialize( args );
+public class ShowMeIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static ShowMeIconFactory instance = new ShowMeIconFactory();
+	}
 
-		org.lgna.croquet.components.FlowPanel flowPanel = new org.lgna.croquet.components.FlowPanel();
-		//		java.util.List<? extends org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
-		//				org.alice.stageide.icons.CylinderIconFactory.getInstance(),
-		//				org.alice.stageide.icons.SphereIconFactory.getInstance(),
-		//				org.alice.stageide.icons.ConeIconFactory.getInstance(),
-		//				org.alice.stageide.icons.BoxIconFactory.getInstance()
-		//				);
-		//		org.lgna.croquet.icon.IconFactory iconFactory = new org.alice.stageide.icons.GroupIconFactory( iconFactories );
-		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.ShowMeIconFactory.getInstance();
-		for( org.lgna.croquet.icon.IconSize iconSize : org.lgna.croquet.icon.IconSize.values() ) {
-			javax.swing.Icon icon = iconFactory.getIcon( iconSize.getSize() );
-			flowPanel.addComponent( new org.lgna.croquet.components.Label( icon ) );
-		}
-		flowPanel.addComponent( new org.lgna.croquet.components.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) ) );
-		flowPanel.addComponent( new org.lgna.croquet.components.Label( iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_LARGE_ICON_SIZE ) ) );
-		flowPanel.addComponent( new org.lgna.croquet.components.Label( iconFactory.getIcon( new java.awt.Dimension( 160, 120 ) ) ) );
+	public static ShowMeIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
 
-		testCroquet.getFrame().getContentPanel().addCenterComponent( flowPanel );
-		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
-		testCroquet.getFrame().pack();
-		testCroquet.getFrame().setVisible( true );
+	private ShowMeIconFactory() {
+	}
+
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		return new ShowMeIcon( size );
 	}
 }
