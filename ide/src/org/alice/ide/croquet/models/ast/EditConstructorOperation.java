@@ -86,6 +86,7 @@ public class EditConstructorOperation extends EditCodeOperation<org.lgna.project
 		} else {
 			this.setName( "constructor" );
 		}
+		this.setSmallIcon( EditMethodOperation.CONSTRUCTOR_ICON );
 	}
 
 	@Override

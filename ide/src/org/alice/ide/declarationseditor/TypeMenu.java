@@ -129,13 +129,22 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		operation.setName( type.getName() );
 
 		models.add( operation.getMenuItemPrepModel() );
-		models.add( null );
+
+		if( org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors.getInstance().getValue() ) {
+			org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
+			if( constructor != null ) {
+				models.add( SEPARATOR );
+				models.add( org.alice.ide.croquet.models.ast.EditConstructorOperation.getLocalizedToConstructorInstance( constructor ).getMenuItemPrepModel() );
+			}
+		}
+
+		models.add( SEPARATOR );
 		models.addAll( procedureModels );
-		models.add( null );
+		models.add( SEPARATOR );
 		models.addAll( functionModels );
 
 		if( org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
-			models.add( null );
+			models.add( SEPARATOR );
 			if( managedFieldModels.size() > 0 ) {
 				models.add( ManagedFieldsSeparator.getInstance() );
 				models.addAll( managedFieldModels );
@@ -144,7 +153,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			models.add( org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance().getMenuItemPrepModel() );
 		}
 
-		models.add( null );
+		models.add( SEPARATOR );
 		if( ( unmanagedFieldModels.size() > 0 ) || ( managedFieldModels.size() > 0 ) ) {
 			models.add( FieldsSeparator.getInstance() );
 			models.addAll( unmanagedFieldModels );

@@ -289,7 +289,8 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		if( isInert ) {
 			return javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
 		} else {
-			return javax.swing.BorderFactory.createEmptyBorder( 2, 8 + ARROW_ICON.getIconWidth(), 2, 2 );
+			final int INDENT = 10;
+			return javax.swing.BorderFactory.createEmptyBorder( 2, INDENT + ARROW_ICON.getIconWidth(), 2, 2 );
 		}
 	}
 

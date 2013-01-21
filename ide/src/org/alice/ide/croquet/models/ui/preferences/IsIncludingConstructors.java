@@ -40,28 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.showme;
+package org.alice.ide.croquet.models.ui.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ShowMeHowToAddGalleryModelsIteratingOperation extends StencilsIteratingOperation {
+public class IsIncludingConstructors extends org.lgna.croquet.preferences.PreferenceBooleanState {
 	private static class SingletonHolder {
-		private static ShowMeHowToAddGalleryModelsIteratingOperation instance = new ShowMeHowToAddGalleryModelsIteratingOperation();
+		private static IsIncludingConstructors instance = new IsIncludingConstructors();
 	}
 
-	public static ShowMeHowToAddGalleryModelsIteratingOperation getInstance() {
+	public static IsIncludingConstructors getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private ShowMeHowToAddGalleryModelsIteratingOperation() {
-		super( java.util.UUID.fromString( "c5856a7a-c03d-4432-a12f-e797cfbc8899" ), new SetupSceneStencilModel(), new DragIntoSceneStencilModel(), new EditCodeStencilModel() );
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setSmallIcon( org.alice.stageide.icons.ShowMeIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
-		//this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 ) );
+	private IsIncludingConstructors() {
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "53e023fc-f502-4126-89a0-982ee3af1ec3" ), false );
 	}
 }
