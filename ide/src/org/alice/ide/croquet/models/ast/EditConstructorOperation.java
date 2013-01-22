@@ -52,7 +52,7 @@ public class EditConstructorOperation extends EditCodeOperation<org.lgna.project
 		private final java.util.Map<org.lgna.project.ast.NamedUserConstructor, EditConstructorOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	}
 
-	private static synchronized EditConstructorOperation getInstance( org.lgna.project.ast.NamedUserConstructor constructor, IsLocalizedToEdit isLocalizedToEdit ) {
+	private static synchronized org.lgna.croquet.Operation getInstance( org.lgna.project.ast.NamedUserConstructor constructor, IsLocalizedToEdit isLocalizedToEdit ) {
 		EditConstructorOperation rv = isLocalizedToEdit.map.get( constructor );
 		if( rv != null ) {
 			//pass
@@ -63,11 +63,11 @@ public class EditConstructorOperation extends EditCodeOperation<org.lgna.project
 		return rv;
 	}
 
-	public static EditConstructorOperation getLocalizedToEditInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
+	public static org.lgna.croquet.Operation getLocalizedToEditInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
 		return getInstance( constructor, IsLocalizedToEdit.TRUE );
 	}
 
-	public static EditConstructorOperation getLocalizedToConstructorInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
+	public static org.lgna.croquet.Operation getLocalizedToConstructorInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
 		return getInstance( constructor, IsLocalizedToEdit.FALSE );
 	}
 
@@ -86,7 +86,7 @@ public class EditConstructorOperation extends EditCodeOperation<org.lgna.project
 		} else {
 			this.setName( "constructor" );
 		}
-		this.setSmallIcon( EditMethodOperation.CONSTRUCTOR_ICON );
+		//this.setSmallIcon( EditMethodOperation.CONSTRUCTOR_ICON );
 	}
 
 	@Override

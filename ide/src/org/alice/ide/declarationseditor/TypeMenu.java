@@ -88,6 +88,8 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 
 	@Override
 	protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+		DeclarationTabState declarationTabState = DeclarationsEditorComposite.getInstance().getTabState();
+
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> procedureModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> functionModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> managedFieldModels = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -95,7 +97,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 
 		for( org.lgna.project.ast.UserMethod method : this.type.methods ) {
 			if( method.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.NONE ) {
-				org.lgna.croquet.StandardMenuItemPrepModel model = org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToNameInstance( method ).getMenuItemPrepModel();
+				org.lgna.croquet.StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForMethod( method ).getMenuItemPrepModel();
 				if( method.isProcedure() ) {
 					procedureModels.add( model );
 				} else {
@@ -124,8 +126,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 
 		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperation( type );
-		operation.setSmallIcon( org.alice.ide.croquet.models.ast.EditMethodOperation.TYPE_ICON );
+		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForType( type );
 		operation.setName( type.getName() );
 
 		models.add( operation.getMenuItemPrepModel() );
@@ -134,7 +135,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
 			if( constructor != null ) {
 				models.add( SEPARATOR );
-				models.add( org.alice.ide.croquet.models.ast.EditConstructorOperation.getLocalizedToConstructorInstance( constructor ).getMenuItemPrepModel() );
+				models.add( declarationTabState.getItemSelectionOperationForConstuctor( constructor ).getMenuItemPrepModel() );
 			}
 		}
 

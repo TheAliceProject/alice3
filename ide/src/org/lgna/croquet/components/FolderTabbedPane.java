@@ -370,6 +370,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 					checkBox.setSelected( FolderTabbedPane.this.getModel().getValue() == item );
 					popupMenu.add( checkBox );
 					buttonGroup.add( checkBox );
+				} else {
+					popupMenu.addSeparator();
 				}
 			}
 			ViewController<?, ?> viewController = trigger.getViewController();
@@ -486,14 +488,16 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 				cardComposite.showCardRefrainingFromActivation( card );
 				this.repaint();
 			} else {
-				cardComposite.addCard( card );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note invoke later showCard", card );
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-					public void run() {
-						cardComposite.showCardRefrainingFromActivation( card );
-						repaint();
-					}
-				} );
+				if( card != null ) {
+					cardComposite.addCard( card );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note invoke later showCard", card );
+					javax.swing.SwingUtilities.invokeLater( new Runnable() {
+						public void run() {
+							cardComposite.showCardRefrainingFromActivation( card );
+							repaint();
+						}
+					} );
+				}
 			}
 		}
 	}

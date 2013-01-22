@@ -102,7 +102,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 		}
 	};
 
-	private org.lgna.project.ast.NamedUserType type;
+	//private org.lgna.project.ast.NamedUserType type;
 
 	public DeclarationTabState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
@@ -207,7 +207,6 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 
 	@Override
 	protected void setCurrentTruthAndBeautyValue( DeclarationComposite declarationComposite ) {
-		super.setCurrentTruthAndBeautyValue( declarationComposite );
 		if( declarationComposite != null ) {
 			org.lgna.croquet.data.ListData<DeclarationComposite> data = this.getData();
 			if( data.contains( declarationComposite ) ) {
@@ -222,7 +221,11 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 					}
 
 					public void addDeclarationComposite( DeclarationComposite declarationComposite ) {
-						this.list.add( declarationComposite );
+						if( declarationComposite instanceof TypeComposite ) {
+							this.list.add( 0, declarationComposite );
+						} else {
+							this.list.add( declarationComposite );
+						}
 					}
 
 					public void update( java.util.List<DeclarationComposite> updatee, boolean isTypeRequired ) {
@@ -274,15 +277,34 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 				data.internalSetAllItems( nextItems );
 			}
 		}
+		super.setCurrentTruthAndBeautyValue( declarationComposite );
 	}
 
-	public org.lgna.croquet.ActionOperation getItemSelectionOperation( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		org.lgna.croquet.ActionOperation rv = super.getItemSelectionOperation( DeclarationComposite.getInstance( declaration ) );
-		if( declaration instanceof org.lgna.project.ast.AbstractConstructor ) {
-			rv.setName( "Edit Constructor" );
+	private static final java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 16, 16 );
+	private static final javax.swing.Icon TYPE_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, new java.awt.Color( 0xe2ba84 ) );
+	private static final javax.swing.Icon PROCEDURE_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, new java.awt.Color( 0xb2b7d9 ) );
+	private static final javax.swing.Icon FUNCTION_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, new java.awt.Color( 0xb0c9a4 ) );
+	private static final javax.swing.Icon CONSTRUCTOR_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, new java.awt.Color( 0xadc0ab ) );
+
+	public org.lgna.croquet.Operation getItemSelectionOperationForType( org.lgna.project.ast.NamedUserType type ) {
+		org.lgna.croquet.Operation rv = this.getItemSelectionOperation( TypeComposite.getInstance( type ) );
+		rv.setSmallIcon( TYPE_ICON );
+		return rv;
+	}
+
+	public org.lgna.croquet.Operation getItemSelectionOperationForMethod( org.lgna.project.ast.AbstractMethod method ) {
+		org.lgna.croquet.Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( method ) );
+		if( method.isProcedure() ) {
+			rv.setSmallIcon( PROCEDURE_ICON );
 		} else {
-			rv.setName( "Edit" );
+			rv.setSmallIcon( FUNCTION_ICON );
 		}
+		return rv;
+	}
+
+	public org.lgna.croquet.Operation getItemSelectionOperationForConstuctor( org.lgna.project.ast.AbstractConstructor constructor ) {
+		org.lgna.croquet.Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( constructor ) );
+		rv.setSmallIcon( CONSTRUCTOR_ICON );
 		return rv;
 	}
 
