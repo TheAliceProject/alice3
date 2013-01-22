@@ -64,6 +64,11 @@ public class RecentProjectsListData extends org.lgna.croquet.data.AbstractMutabl
 	}
 
 	@Override
+	public boolean contains( java.net.URI item ) {
+		return this.values.contains( item );
+	}
+
+	@Override
 	public int getItemCount() {
 		return this.values.size();
 	}

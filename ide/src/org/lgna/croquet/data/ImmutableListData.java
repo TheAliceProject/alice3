@@ -62,6 +62,11 @@ public final class ImmutableListData<T> extends ListData<T> {
 	}
 
 	@Override
+	public boolean contains( T item ) {
+		return java.util.Arrays.asList( this.values ).contains( item );
+	}
+
+	@Override
 	public T getItemAt( int index ) {
 		return this.values[ index ];
 	}

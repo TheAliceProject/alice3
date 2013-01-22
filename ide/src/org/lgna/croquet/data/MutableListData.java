@@ -64,6 +64,11 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 	}
 
 	@Override
+	public boolean contains( T item ) {
+		return this.values.contains( item );
+	}
+
+	@Override
 	public T getItemAt( int index ) {
 		if( index >= 0 ) {
 			if( index < this.getItemCount() ) {

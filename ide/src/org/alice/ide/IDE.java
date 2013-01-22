@@ -495,11 +495,11 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
 			}
 			org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
-			if( tabState.containsItem( declarationComposite ) ) {
-				//pass
-			} else {
-				tabState.addItem( declarationComposite );
-			}
+			//			if( tabState.containsItem( declarationComposite ) ) {
+			//				//pass
+			//			} else {
+			//				tabState.addItem( declarationComposite );
+			//			}
 			tabState.setValueTransactionlessly( declarationComposite );
 		}
 	}

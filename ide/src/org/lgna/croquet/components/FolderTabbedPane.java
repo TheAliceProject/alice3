@@ -365,10 +365,12 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for( E item : FolderTabbedPane.this.getModel() ) {
-				javax.swing.JCheckBoxMenuItem checkBox = new javax.swing.JCheckBoxMenuItem( getActionFor( item ) );
-				checkBox.setSelected( FolderTabbedPane.this.getModel().getValue() == item );
-				popupMenu.add( checkBox );
-				buttonGroup.add( checkBox );
+				if( item != null ) {
+					javax.swing.JCheckBoxMenuItem checkBox = new javax.swing.JCheckBoxMenuItem( getActionFor( item ) );
+					checkBox.setSelected( FolderTabbedPane.this.getModel().getValue() == item );
+					popupMenu.add( checkBox );
+					buttonGroup.add( checkBox );
+				}
 			}
 			ViewController<?, ?> viewController = trigger.getViewController();
 			popupMenu.show( viewController.getAwtComponent(), 0, viewController.getHeight() );
@@ -587,6 +589,11 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	protected void addItem( E item, BooleanStateButton<?> button ) {
 		this.titlesPanel.addComponent( button );
 		this.cardComposite.getView().addComposite( item );
+	}
+
+	@Override
+	protected void addSeparator() {
+		this.titlesPanel.addComponent( BoxUtilities.createHorizontalSliver( 16 ) );
 	}
 
 	@Override
