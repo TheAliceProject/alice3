@@ -68,14 +68,25 @@ public class TrimmedIcon extends AbstractIcon {
 
 		java.awt.geom.AffineTransform t = g2.getTransform();
 
-		//todo: make work for more than just scaled and height based trimmed
+		//todo
 		int dx;
 		int dy;
-		if( height != imageHeight ) {
-			double factor = height / (double)imageHeight;
+		if( ( height != imageHeight ) && ( width != imageWidth ) ) {
+			double factorX = width / (double)imageWidth;
+			double factorY = height / (double)imageHeight;
+			double factor;
+
+			//todo: handle icons larger than image
+			if( factorX > factorY ) {
+				factor = factorY;
+				dx = (int)( ( ( width / factor ) - imageWidth ) / 2 );
+				dy = 0;
+			} else {
+				factor = factorX;
+				dx = 0;
+				dy = (int)( ( ( height / factor ) - imageHeight ) / 2 );
+			}
 			g2.scale( factor, factor );
-			dx = (int)( ( ( width / factor ) - imageWidth ) / 2 );
-			dy = 0;
 		} else {
 			dx = ( width - imageWidth ) / 2;
 			dy = ( height - imageHeight ) / 2;
