@@ -99,9 +99,10 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		}
 
 		@Override
-		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-			rv.addCheckBoxMenuItem( new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() ) );
-			return rv;
+		public org.lgna.croquet.components.CheckBoxMenuItem createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+			org.lgna.croquet.components.CheckBoxMenuItem checkBoxMenuItem = new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() );
+			menuItemContainer.addCheckBoxMenuItem( checkBoxMenuItem );
+			return checkBoxMenuItem;
 		}
 
 		@Override
