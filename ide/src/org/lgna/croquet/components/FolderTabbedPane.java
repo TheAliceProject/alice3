@@ -200,155 +200,157 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	//private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.RED;
 	private static java.awt.Color UNSELECTED_BORDER_COLOR = java.awt.Color.DARK_GRAY;
 
-	private static class TitlesPanel extends LineAxisPanel {
+	protected static class TitlesPanel extends LineAxisPanel {
 		private static final int NORTH_AREA_PAD = 1;
 		// private static java.awt.Stroke SELECTED_STROKE = new
 		// java.awt.BasicStroke( 3.0f );
 		private static java.awt.Stroke SELECTED_STROKE = new java.awt.BasicStroke( 1.0f );
 		private static java.awt.Stroke UNSELECTED_STROKE = new java.awt.BasicStroke( 2.0f );
 
-		@Override
-		protected javax.swing.JPanel createJPanel() {
-			javax.swing.JPanel rv = new javax.swing.JPanel() {
+		protected static class JTitlesPanel extends javax.swing.JPanel {
+			public JTitlesPanel() {
+				this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+			}
 
-				@Override
-				public java.awt.Dimension getPreferredSize() {
-					java.awt.Dimension rv = super.getPreferredSize();
-					rv.width += TRAILING_TAB_PAD;
-					return rv;
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				java.awt.Dimension rv = super.getPreferredSize();
+				rv.width += TRAILING_TAB_PAD;
+				return rv;
+			}
+
+			private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, boolean isContinuation ) {
+				float a = height * 0.25f;
+
+				float xStart;
+				float xEnd;
+				float xA;
+				float tabPad;
+				if( this.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+					xStart = x;
+					xEnd = ( x + width ) - 1;
+					tabPad = TRAILING_TAB_PAD;
+					xA = xStart + a;
+				} else {
+					xStart = ( x + width ) - 1;
+					xEnd = x;
+					tabPad = -TRAILING_TAB_PAD;
+					xA = xStart - a;
 				}
 
-				private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, boolean isContinuation ) {
-					float a = height * 0.25f;
+				float xCurve0 = xEnd - ( tabPad / 2 );
+				float xCurve1 = xEnd + tabPad;
+				float cx0 = xCurve0 + ( tabPad * 0.75f );
+				float cx1 = xCurve0;
 
-					float xStart;
-					float xEnd;
-					float xA;
-					float tabPad;
-					if( this.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
-						xStart = x;
-						xEnd = ( x + width ) - 1;
-						tabPad = TRAILING_TAB_PAD;
-						xA = xStart + a;
-					} else {
-						xStart = ( x + width ) - 1;
-						xEnd = x;
-						tabPad = -TRAILING_TAB_PAD;
-						xA = xStart - a;
-					}
+				float y0 = y + NORTH_AREA_PAD;
+				float y1 = y + height + 1;// + this.contentBorderInsets.top;
+				float cy0 = y0;
+				float cy1 = y1;
 
-					float xCurve0 = xEnd - ( tabPad / 2 );
-					float xCurve1 = xEnd + tabPad;
-					float cx0 = xCurve0 + ( tabPad * 0.75f );
-					float cx1 = xCurve0;
+				float yA = y + a;
 
-					float y0 = y + NORTH_AREA_PAD;
-					float y1 = y + height + 1;// + this.contentBorderInsets.top;
-					float cy0 = y0;
-					float cy1 = y1;
-
-					float yA = y + a;
-
-					if( isContinuation ) {
-						rv.lineTo( xCurve1, y1 );
-					} else {
-						rv.moveTo( xCurve1, y1 );
-					}
-					rv.lineTo( xCurve1, y1 - 1 );
-					rv.curveTo( cx1, cy1, cx0, cy0, xCurve0, y0 );
-					rv.lineTo( xA, y0 );
-					rv.quadTo( xStart, y0, xStart, yA );
-					rv.lineTo( xStart, y1 );
-
-					return rv;
+				if( isContinuation ) {
+					rv.lineTo( xCurve1, y1 );
+				} else {
+					rv.moveTo( xCurve1, y1 );
 				}
+				rv.lineTo( xCurve1, y1 - 1 );
+				rv.curveTo( cx1, cy1, cx0, cy0, xCurve0, y0 );
+				rv.lineTo( xA, y0 );
+				rv.quadTo( xStart, y0, xStart, yA );
+				rv.lineTo( xStart, y1 );
 
-				private void paintTabBorder( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
+				return rv;
+			}
+
+			private void paintTabBorder( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
+				int x = button.getX();
+				int y = button.getY();
+				int width = button.getWidth();
+				int height = button.getHeight();
+				java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
+				java.awt.Shape prevClip = g2.getClip();
+				try {
+					if( button.getModel().isSelected() ) {
+						java.awt.Rectangle bounds = prevClip.getBounds();
+						bounds.height += 1;
+						//todo: investigate
+						//							java.awt.Rectangle lineBelow = new java.awt.Rectangle( , , , 1 );
+						//							java.awt.Shape clip = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( prevClip, lineBelow );
+						//							g2.setClip( clip );
+						g2.setClip( bounds );
+					}
+					g2.draw( path );
+				} finally {
+					g2.setClip( prevClip );
+				}
+			}
+
+			private void paintTabBackground( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
+				java.awt.Color prev = g2.getColor();
+				try {
 					int x = button.getX();
 					int y = button.getY();
 					int width = button.getWidth();
 					int height = button.getHeight();
-					java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
-					java.awt.Shape prevClip = g2.getClip();
-					try {
-						if( button.getModel().isSelected() ) {
-							java.awt.Rectangle bounds = prevClip.getBounds();
-							bounds.height += 1;
-							//todo: investigate
-							//							java.awt.Rectangle lineBelow = new java.awt.Rectangle( , , , 1 );
-							//							java.awt.Shape clip = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( prevClip, lineBelow );
-							//							g2.setClip( clip );
-							g2.setClip( bounds );
-						}
-						g2.draw( path );
-					} finally {
-						g2.setClip( prevClip );
-					}
-				}
-
-				private void paintTabBackground( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
-					java.awt.Color prev = g2.getColor();
-					try {
-						int x = button.getX();
-						int y = button.getY();
-						int width = button.getWidth();
-						int height = button.getHeight();
-						boolean isSelected = button.isSelected();
-						boolean isRollover = button.getModel().isArmed();
-						java.awt.Color color = button.getBackground();
-						if( isSelected ) {
+					boolean isSelected = button.isSelected();
+					boolean isRollover = button.getModel().isArmed();
+					java.awt.Color color = button.getBackground();
+					if( isSelected ) {
+						// pass
+					} else {
+						color = color.darker();
+						if( isRollover ) {
 							// pass
 						} else {
 							color = color.darker();
-							if( isRollover ) {
-								// pass
-							} else {
-								color = color.darker();
-							}
 						}
-						g2.setColor( color );
-						java.awt.geom.GeneralPath path = addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
-						g2.fill( path );
-					} finally {
-						g2.setColor( prev );
 					}
+					g2.setColor( color );
+					java.awt.geom.GeneralPath path = addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
+					g2.fill( path );
+				} finally {
+					g2.setColor( prev );
 				}
+			}
 
-				@Override
-				protected void paintChildren( java.awt.Graphics g ) {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-					javax.swing.AbstractButton selectedButton = null;
-					java.awt.Component[] components = this.getComponents();
-					final int N = components.length;
-					for( int i = 0; i < N; i++ ) {
-						java.awt.Component component = components[ N - 1 - i ];
-						if( component instanceof javax.swing.AbstractButton ) {
-							javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
-							if( button.isSelected() ) {
-								selectedButton = button;
-							} else {
-								g2.setColor( UNSELECTED_BORDER_COLOR );
-								g2.setStroke( UNSELECTED_STROKE );
-								this.paintTabBorder( g2, button );
-								this.paintTabBackground( g2, button );
-							}
+			@Override
+			protected void paintChildren( java.awt.Graphics g ) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				javax.swing.AbstractButton selectedButton = null;
+				java.awt.Component[] components = this.getComponents();
+				final int N = components.length;
+				for( int i = 0; i < N; i++ ) {
+					java.awt.Component component = components[ N - 1 - i ];
+					if( component instanceof javax.swing.AbstractButton ) {
+						javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
+						if( button.isSelected() ) {
+							selectedButton = button;
+						} else {
+							g2.setColor( UNSELECTED_BORDER_COLOR );
+							g2.setStroke( UNSELECTED_STROKE );
+							this.paintTabBorder( g2, button );
+							this.paintTabBackground( g2, button );
 						}
 					}
-					if( selectedButton != null ) {
-						this.paintTabBackground( g2, selectedButton );
-						g2.setColor( SELECTED_BORDER_COLOR );
-						g2.setStroke( SELECTED_STROKE );
-						this.paintTabBorder( g2, selectedButton );
-					}
-					super.paintChildren( g2 );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				}
-			};
-			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
-			//rv.setBackground( this.getBackgroundColor() );
-			return rv;
+				if( selectedButton != null ) {
+					this.paintTabBackground( g2, selectedButton );
+					g2.setColor( SELECTED_BORDER_COLOR );
+					g2.setStroke( SELECTED_STROKE );
+					this.paintTabBorder( g2, selectedButton );
+				}
+				super.paintChildren( g2 );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+			}
+		}
+
+		@Override
+		protected javax.swing.JPanel createJPanel() {
+			return new JTitlesPanel();
 		}
 	}
 
@@ -359,9 +361,13 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	private final InternalCardOwnerComposite cardComposite = new InternalCardOwnerComposite();
-	private final TitlesPanel titlesPanel = new TitlesPanel();
+	private final TitlesPanel titlesPanel = this.createTitlesPanel();
 	private final BorderPanel innerHeaderPanel = new BorderPanel();
 	private final BorderPanel outerHeaderPanel = new BorderPanel();
+
+	protected TitlesPanel createTitlesPanel() {
+		return new TitlesPanel();
+	}
 
 	//private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.Action getActionFor( E item ) {

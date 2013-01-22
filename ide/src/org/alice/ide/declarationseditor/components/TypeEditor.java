@@ -43,6 +43,8 @@
 
 package org.alice.ide.declarationseditor.components;
 
+import org.alice.ide.declarationseditor.DeclarationComposite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,6 +67,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	};
 
 	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
+	//todo: remove
 	private final org.lgna.croquet.components.AbstractPopupButton popupButton;
 	private final org.lgna.croquet.components.AbstractPopupButton<?> startButton;
 
@@ -81,7 +84,30 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBinView() );
 		}
 		headerTrailingComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 0, 2 ) );
-		this.tabbedPane = composite.getTabState().createFolderTabbedPane();
+
+		final boolean IS_CUSTOM_DRAWING_DESIRED = false;
+		if( IS_CUSTOM_DRAWING_DESIRED ) {
+			this.tabbedPane = new org.lgna.croquet.components.FolderTabbedPane<DeclarationComposite>( composite.getTabState() ) {
+				@Override
+				protected TitlesPanel createTitlesPanel() {
+					return new TitlesPanel() {
+						@Override
+						protected javax.swing.JPanel createJPanel() {
+							return new JTitlesPanel() {
+								@Override
+								public void paint( java.awt.Graphics g ) {
+									super.paint( g );
+									g.setColor( java.awt.Color.RED );
+									g.drawString( "possibilities abound", 100, 10 );
+								}
+							};
+						}
+					};
+				}
+			};
+		} else {
+			this.tabbedPane = composite.getTabState().createFolderTabbedPane();
+		}
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
 		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createFauxComboBoxPopupButton();
 
