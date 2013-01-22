@@ -79,7 +79,7 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 	protected void releaseTitleComponent( org.lgna.croquet.BooleanState booleanState, BooleanStateButton<?> button, E item ) {
 	}
 
-	protected abstract BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener );
+	protected abstract BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState );
 
 	@Override
 	protected void handleDisplayable() {
@@ -98,17 +98,7 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 
 	@Override
 	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( final E item, org.lgna.croquet.BooleanState itemSelectedState ) {
-		java.awt.event.ActionListener closeButtonActionListener;
-		if( item.isCloseable() ) {
-			closeButtonActionListener = new java.awt.event.ActionListener() {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					AbstractTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement( item );
-				}
-			};
-		} else {
-			closeButtonActionListener = null;
-		}
-		BooleanStateButton<?> rv = this.createTitleButton( item, itemSelectedState, closeButtonActionListener );
+		BooleanStateButton<?> rv = this.createTitleButton( item, itemSelectedState );
 		this.customizeTitleComponent( itemSelectedState, rv, item );
 		return rv;
 

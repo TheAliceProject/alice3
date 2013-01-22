@@ -121,6 +121,19 @@ public class TypeComposite extends DeclarationComposite<org.lgna.project.ast.Nam
 	}
 
 	public boolean isCloseable() {
+		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
+		for( DeclarationComposite tab : tabState ) {
+			if( tab != null ) {
+				if( ( tab != this ) && ( tab.getType() == this.getDeclaration() ) ) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isPotentiallyCloseable() {
 		return true;
 	}
 

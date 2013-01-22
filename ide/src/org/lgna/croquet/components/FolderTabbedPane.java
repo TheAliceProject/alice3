@@ -142,20 +142,43 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
-	private static class FolderTabTitle extends BooleanStateButton<javax.swing.AbstractButton> {
-		public FolderTabTitle( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
+	private class FolderTabTitle extends BooleanStateButton<javax.swing.AbstractButton> {
+		private final javax.swing.JButton closeButton;
+
+		public FolderTabTitle( final E item, BooleanState booleanState ) {
 			super( booleanState );
-			if( closeButtonActionListener != null ) {
-				javax.swing.AbstractButton awtButton = this.getAwtComponent();
-				javax.swing.JButton closeButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
-				closeButton.addActionListener( closeButtonActionListener );
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal horizontal;
-				if( this.getAwtComponent().getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
-					horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST;
-				} else {
-					horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
+
+			if( item.isPotentiallyCloseable() ) {
+				java.awt.event.ActionListener closeButtonActionListener = new java.awt.event.ActionListener() {
+					public void actionPerformed( java.awt.event.ActionEvent e ) {
+						FolderTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement( item );
+					}
+				};
+				this.closeButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
+				this.closeButton.addActionListener( closeButtonActionListener );
+			} else {
+				this.closeButton = null;
+			}
+		}
+
+		public void setCloseable( boolean isCloseable ) {
+			if( this.closeButton != null ) {
+				if( isCloseable != ( this.closeButton.getParent() != null ) ) {
+					javax.swing.AbstractButton awtButton = this.getAwtComponent();
+					if( isCloseable ) {
+						edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal horizontal;
+						if( this.getAwtComponent().getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+							horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST;
+						} else {
+							horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
+						}
+						edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, this.closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 2 );
+					} else {
+						awtButton.remove( this.closeButton );
+					}
+					awtButton.revalidate();
+					awtButton.repaint();
 				}
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 2 );
 			}
 		}
 
@@ -571,8 +594,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	@Override
-	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
-		return new FolderTabTitle( itemSelectedState, closeButtonActionListener );
+	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, BooleanState itemSelectedState ) {
+		return new FolderTabTitle( item, itemSelectedState );
 	}
 
 	/* package-private */CardPanel getCardPanel() {
@@ -591,6 +614,10 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	@Override
 	protected void addItem( E item, BooleanStateButton<?> button ) {
+		if( button instanceof FolderTabbedPane.FolderTabTitle ) {
+			FolderTabTitle title = (FolderTabTitle)button;
+			title.setCloseable( item.isCloseable() );
+		}
 		this.titlesPanel.addComponent( button );
 		this.cardComposite.getView().addComposite( item );
 	}
@@ -603,69 +630,4 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	@Override
 	protected void addEpilogue() {
 	}
-
-	//	@Override
-	//	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-	//		return new FolderTab<E>( item, tabCreator );
-	//	}
-	//	@Override
-	//	protected void addTab(AbstractTabbedPane.Tab<E> tab) {
-	//		this.headerPane.addComponent( tab.getOuterTitleComponent() );
-	//		this.cardPanel.addComponent( ((FolderTab<E>)tab).getCardPanelKey() );
-	////		this.revalidateAndRepaint();
-	//	}
-	//	@Override
-	//	protected void removeTab(AbstractTabbedPane.Tab<E> tab) {
-	//		this.headerPane.removeComponent( tab.getOuterTitleComponent() );
-	//		this.cardPanel.removeComponent( ((FolderTab<E>)tab).getCardPanelKey() );
-	//	}
-
-	//
-	//	/* package-private */class Key {
-	//		private AbstractButton<?> headerComponent;
-	//		private TabStateOperation tabStateOperation;
-	//		private CardPanel.Key mainComponentKey;
-	//
-	//		private Key( AbstractButton<?> headerComponent, Component<?> mainComponent, TabStateOperation tabStateOperation ) {
-	//			this.headerComponent = headerComponent;
-	//			this.mainComponentKey = FolderTabbedPane.this.cardPanel.createKey( mainComponent, tabStateOperation.getIndividualUUID().toString());
-	//			this.tabStateOperation = tabStateOperation;
-	//		}
-	//		public TabStateOperation getTabStateOperation() {
-	//			return this.tabStateOperation;
-	//		}
-	//	}
-	//	private java.util.Map<TabStateOperation, CardPanel.Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	//	private CardPanel.Key getKey( TabStateOperation tabStateOperation ) {
-	//		CardPanel.Key rv = this.map.get( tabStateOperation );
-	//		if( rv != null ) {
-	//			//pass
-	//		} else {
-	//			rv = this.cardPanel.createKey( tabStateOperation.getSingletonScrollPane(), tabStateOperation.getIndividualUUID().toString() );
-	//			this.map.put( tabStateOperation, rv );
-	//		}
-	//		return rv;
-	//	}
-	//	@Override
-	//	/* package-private */ void addTab(TabStateOperation<?> tabStateOperation) {
-	//		super.addTab(tabStateOperation);
-	//		this.headerPane.addComponent(tabStateOperation.getSingletonTabTitle( this ));
-	//		this.cardPanel.addComponent(this.getKey(tabStateOperation));
-	//	}
-	//	
-	//	@Override
-	//	/* package-private */ void removeTab(TabStateOperation<?> tabStateOperation) {
-	//		super.removeTab(tabStateOperation);
-	//		this.cardPanel.removeComponent(this.getKey(tabStateOperation));
-	//		this.headerPane.removeComponent(tabStateOperation.getSingletonTabTitle( this ));
-	//	}
-	//
-	//	@Override
-	//	/* package-private */ void selectTab(TabStateOperation<?> tabStateOperation) {
-	//		if( tabStateOperation != null ) {
-	//			this.cardPanel.show(this.getKey(tabStateOperation));
-	//		} else {
-	//			this.cardPanel.show( null );
-	//		}
-	//	}
 }
