@@ -55,7 +55,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	private final FileSystemTab fileSystemTab = new FileSystemTab();
 	private final org.lgna.croquet.TabSelectionState<SelectUriTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), SelectUriTab.class, -1, this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );
 
-	private final class SelectedUriMetaState extends org.lgna.croquet.MetaState<java.net.URI> {
+	private final class SelectedUriMetaState extends org.lgna.croquet.meta.TransactionHistoryTrackingMetaState<java.net.URI> {
 		@Override
 		public java.net.URI getValue() {
 			SelectUriTab tab = tabState.getValue();
@@ -99,7 +99,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		return this.sideSubComposite;
 	}
 
-	public org.lgna.croquet.MetaState<java.net.URI> getMetaState() {
+	public org.lgna.croquet.meta.MetaState<java.net.URI> getMetaState() {
 		return this.metaState;
 	}
 
@@ -158,7 +158,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		}
 	}
 
-	private final org.lgna.croquet.MetaState.MetaStateValueListener<java.net.URI> metaUriListener = new org.lgna.croquet.MetaState.MetaStateValueListener<java.net.URI>() {
+	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<java.net.URI> metaUriListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<java.net.URI>() {
 		public void metaStateValueChanged( java.net.URI prevValue, java.net.URI nextValue ) {
 			handleMetaStateValueChanged( nextValue );
 		}

@@ -40,56 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.meta;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MetaState<T> {
-	public static interface MetaStateValueListener<T> {
-		public void metaStateValueChanged( T prevValue, T nextValue );
-	}
-
-	private final java.util.List<MetaStateValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
-		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
+public abstract class StateTrackingMetaState<T, ST> extends MetaState<T> {
+	private final org.lgna.croquet.State.ValueListener<ST> valueListener = new org.lgna.croquet.State.ValueListener<ST>() {
+		public void changing( org.lgna.croquet.State<ST> state, ST prevValue, ST nextValue, boolean isAdjusting ) {
 		}
 
-		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
-			MetaState.this.handleFiredEvent( e );
+		public void changed( org.lgna.croquet.State<ST> state, ST prevValue, ST nextValue, boolean isAdjusting ) {
+			checkValueAndFireIfAppropriate();
 		}
 	};
 
-	private T prevValue;
-
-	public abstract T getValue();
-
-	public void addMetaStateValueListener( MetaStateValueListener<T> listener ) {
-		this.valueListeners.add( listener );
-	}
-
-	public void removeMetaStateValueListener( MetaStateValueListener<T> listener ) {
-		this.valueListeners.add( listener );
-	}
-
-	protected void handleFiredEvent( org.lgna.croquet.history.event.Event<?> event ) {
-		T nextValue = this.getValue();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValue, nextValue ) ) {
-			//pass
-		} else {
-			for( MetaStateValueListener<T> listener : this.valueListeners ) {
-				listener.metaStateValueChanged( this.prevValue, nextValue );
-			}
-			this.prevValue = nextValue;
-		}
-	}
-
-	public void activate( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		this.prevValue = this.getValue();
-		completionStep.addListener( this.listener );
-	}
-
-	public void deactivate( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		completionStep.removeListener( this.listener );
+	public StateTrackingMetaState( org.lgna.croquet.State<ST> state ) {
+		this.setPrevValue( this.getValue() );
+		state.addValueListener( valueListener );
 	}
 }

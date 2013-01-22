@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,61 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.lgna.croquet.meta;
 
-package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.declarationseditor.components.TypeEditor> {
-	private static class SingletonHolder {
-		private static DeclarationsEditorComposite instance = new DeclarationsEditorComposite();
-	}
+public abstract class TransactionHistoryTrackingMetaState<T> extends MetaState<T> {
+	private final org.lgna.croquet.history.event.Listener listener = new org.lgna.croquet.history.event.Listener() {
+		public void changing( org.lgna.croquet.history.event.Event<?> e ) {
+		}
 
-	public static DeclarationsEditorComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.alice.ide.declarationseditor.DeclarationMenu declarationMenu = new org.alice.ide.declarationseditor.DeclarationMenu();
-	private final DeclarationTabState tabState = new DeclarationTabState();
-	private final BackwardForwardComposite backwardForwardComposite;
-
-	private final org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> metaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, DeclarationComposite>( this.tabState ) {
-		@Override
-		public org.lgna.project.ast.NamedUserType getValue() {
-			DeclarationComposite<?, ?> declarationComposite = tabState.getValue();
-			if( declarationComposite != null ) {
-				return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( declarationComposite.getType(), org.lgna.project.ast.NamedUserType.class );
-			} else {
-				return null;
-			}
+		public void changed( org.lgna.croquet.history.event.Event<?> e ) {
+			TransactionHistoryTrackingMetaState.this.checkValueAndFireIfAppropriate();
 		}
 	};
 
-	private DeclarationsEditorComposite() {
-		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
-		this.backwardForwardComposite = this.registerSubComposite( new BackwardForwardComposite() );
-		this.registerTabSelectionState( this.tabState );
+	public void activate( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		this.setPrevValue( this.getValue() );
+		completionStep.addListener( this.listener );
 	}
 
-	public org.alice.ide.declarationseditor.DeclarationMenu getDeclarationMenu() {
-		return this.declarationMenu;
-	}
-
-	public org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> getMetaState() {
-		return this.metaState;
-	}
-
-	public DeclarationTabState getTabState() {
-		return this.tabState;
-	}
-
-	public org.lgna.croquet.Composite<?> getControlsComposite() {
-		return this.backwardForwardComposite;
-	}
-
-	@Override
-	protected org.alice.ide.declarationseditor.components.TypeEditor createView() {
-		return new org.alice.ide.declarationseditor.components.TypeEditor( this );
+	public void deactivate( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		completionStep.removeListener( this.listener );
 	}
 }
