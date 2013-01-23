@@ -111,11 +111,20 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			}
 		}
 
+		final boolean EDIT = false;
 		for( org.lgna.project.ast.UserField field : this.type.fields ) {
 			if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-				managedFieldModels.add( org.alice.ide.ast.declaration.ManagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+				if( EDIT ) {
+					managedFieldModels.add( org.alice.ide.ast.declaration.ManagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+				} else {
+					managedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				}
 			} else {
-				unmanagedFieldModels.add( org.alice.ide.ast.declaration.UnmanagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+				if( EDIT ) {
+					unmanagedFieldModels.add( org.alice.ide.ast.declaration.UnmanagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+				} else {
+					unmanagedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				}
 			}
 		}
 
@@ -163,13 +172,21 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 				models.add( ManagedFieldsSeparator.getInstance() );
 				models.addAll( managedFieldModels );
 			}
-			models.add( org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
-			models.add( org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance().getMenuItemPrepModel() );
+			final boolean IS_SHOW_ME_HOW_PREFERRED = true;
+			if( IS_SHOW_ME_HOW_PREFERRED ) {
+				models.add( org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
+			} else {
+				models.add( org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance().getMenuItemPrepModel() );
+			}
 		}
 
 		models.add( SEPARATOR );
 		if( ( unmanagedFieldModels.size() > 0 ) || ( managedFieldModels.size() > 0 ) ) {
-			models.add( FieldsSeparator.getInstance() );
+			if( managedFieldModels.size() > 0 ) {
+				models.add( UnmanagedFieldsSeparator.getInstance() );
+			} else {
+				models.add( FieldsSeparator.getInstance() );
+			}
 			models.addAll( unmanagedFieldModels );
 		}
 		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().getMenuItemPrepModel() );

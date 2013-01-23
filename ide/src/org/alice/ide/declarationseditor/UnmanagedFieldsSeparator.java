@@ -45,16 +45,16 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public final class ManagedFieldsSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
+public final class UnmanagedFieldsSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
 	private static class SingletonHolder {
-		private static ManagedFieldsSeparator instance = new ManagedFieldsSeparator();
+		private static UnmanagedFieldsSeparator instance = new UnmanagedFieldsSeparator();
 	}
 
-	public static ManagedFieldsSeparator getInstance() {
+	public static UnmanagedFieldsSeparator getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	public ManagedFieldsSeparator() {
-		super( java.util.UUID.fromString( "caf3cea7-4ddc-4951-9657-f165ebdbdeab" ) );
+	public UnmanagedFieldsSeparator() {
+		super( java.util.UUID.fromString( "9b6cee58-8b3d-4a4d-9459-ed7e979b6bec" ) );
 	}
 }
