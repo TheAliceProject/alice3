@@ -144,7 +144,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
 			if( constructor != null ) {
 				models.add( SEPARATOR );
-				org.lgna.croquet.StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForConstuctor( constructor ).getMenuItemPrepModel();
+				org.lgna.croquet.StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForConstructor( constructor ).getMenuItemPrepModel();
 				if( data.contains( DeclarationComposite.getInstance( constructor ) ) ) {
 					set.add( model );
 				}

@@ -43,6 +43,9 @@
 
 package org.alice.ide.declarationseditor;
 
+import org.lgna.project.ast.AbstractConstructor;
+import org.lgna.project.ast.AbstractMethod;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -302,10 +305,20 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 		return rv;
 	}
 
-	public org.lgna.croquet.Operation getItemSelectionOperationForConstuctor( org.lgna.project.ast.AbstractConstructor constructor ) {
+	public org.lgna.croquet.Operation getItemSelectionOperationForConstructor( org.lgna.project.ast.AbstractConstructor constructor ) {
 		org.lgna.croquet.Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( constructor ) );
 		rv.setSmallIcon( CONSTRUCTOR_ICON );
 		return rv;
+	}
+
+	public org.lgna.croquet.Operation getItemSelectionOperationForCode( org.lgna.project.ast.AbstractCode code ) {
+		if( code instanceof AbstractMethod ) {
+			return this.getItemSelectionOperationForMethod( (AbstractMethod)code );
+		} else if( code instanceof AbstractConstructor ) {
+			return this.getItemSelectionOperationForConstructor( (AbstractConstructor)code );
+		} else {
+			return null;
+		}
 	}
 
 	public void handleAstChangeThatCouldBeOfInterest() {
