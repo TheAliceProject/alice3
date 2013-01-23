@@ -50,23 +50,25 @@ public class TypeIcon implements javax.swing.Icon {
 	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
 	private final TypeBorder border;
 	private final boolean isIndentForDepthDesired;
+	private final java.awt.Font font;
 
 	public static TypeIcon getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return new TypeIcon( type );
 	}
 
-	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, boolean isIndentForDepthDesired ) {
+	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, boolean isIndentForDepthDesired, java.awt.Font font ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
 		this.isIndentForDepthDesired = isIndentForDepthDesired;
+		this.font = font;
 	}
 
 	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		this( type, false );
+		this( type, false, javax.swing.UIManager.getFont( "defaultFont" ) );
 	}
 
 	protected java.awt.Font getFont() {
-		return javax.swing.UIManager.getFont( "defaultFont" );
+		return this.font;
 	}
 
 	protected java.awt.Color getTextColor( java.awt.Component c ) {
@@ -129,6 +131,7 @@ public class TypeIcon implements javax.swing.Icon {
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
 		if( this.isIndentForDepthDesired ) {
 			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( type );
@@ -142,14 +145,10 @@ public class TypeIcon implements javax.swing.Icon {
 		this.border.paintBorder( c, g, x, y, w, h );
 		g.setColor( this.getTextColor( c ) );
 
-		java.awt.Font font = g.getFont();
-		if( font.isItalic() ) {
-			g.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( font, edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR ) );
-		}
+		java.awt.Font prevFont = g.getFont();
+		g.setFont( this.font );
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getText(), x, y, w, h );
-		if( font.isItalic() ) {
-			g.setFont( font );
-		}
+		g.setFont( prevFont );
 		g2.setTransform( prevTransform );
 	}
 }

@@ -59,6 +59,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		return rv;
 	}
 
+	private static final java.awt.Font FONT = javax.swing.UIManager.getFont( "defaultFont" ).deriveFont( 18.0f );
 	private final org.lgna.project.ast.NamedUserType type;
 
 	private TypeMenu( org.lgna.project.ast.NamedUserType type ) {
@@ -71,7 +72,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		super.localize();
 		final boolean ICON_IS_DESIRED = true;
 		if( ICON_IS_DESIRED ) {
-			this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.type, true ) );
+			this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.type, true, FONT ) );
 		} else {
 			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( this.type );
 			StringBuilder sb = new StringBuilder();
