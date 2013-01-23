@@ -268,7 +268,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 					}
 				}
 				java.util.List<DeclarationComposite> nextItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				boolean isTypeRequired = typeListPairs.size() > 1;
+				boolean isTypeRequired = true; //typeListPairs.size() > 1;
 				boolean isSeparatorDesired = false;
 				for( TypeListPair typeListPair : typeListPairs ) {
 					if( isSeparatorDesired ) {
