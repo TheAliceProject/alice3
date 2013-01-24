@@ -51,6 +51,11 @@ public abstract class NodeLikeSubstance extends org.alice.ide.croquet.components
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
+	}
+
 	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
 		if( this.isActive() ) {
 			if( this.isPressed() ) {

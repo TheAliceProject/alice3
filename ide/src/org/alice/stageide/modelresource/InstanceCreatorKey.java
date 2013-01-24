@@ -46,6 +46,8 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public abstract class InstanceCreatorKey extends ResourceKey {
+	public abstract Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls();
+
 	@Override
 	public boolean isInstanceCreator() {
 		return true;

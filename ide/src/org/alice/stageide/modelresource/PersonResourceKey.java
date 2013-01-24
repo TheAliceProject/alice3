@@ -61,6 +61,11 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	}
 
 	@Override
+	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
+		return org.lgna.story.resources.sims2.PersonResource.class;
+	}
+
+	@Override
 	public String getDisplayText() {
 		return "Person";
 	}

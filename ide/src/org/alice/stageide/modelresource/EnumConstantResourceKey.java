@@ -79,6 +79,11 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 		return this.enumConstant;
 	}
 
+	@Override
+	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
+		return this.enumConstant.getDeclaringClass();
+	}
+
 	public org.lgna.project.ast.JavaField getField() {
 		try {
 			return org.lgna.project.ast.JavaField.getInstance( this.enumConstant.getClass().getField( this.enumConstant.name() ) );

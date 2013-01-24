@@ -662,7 +662,7 @@ public class AliceResourceUtilties {
 	private static Class<?> getClassFromKey( ResourceKey key ) {
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey clsKey = (ClassResourceKey)key;
-			return clsKey.getCls();
+			return clsKey.getModelResourceCls();
 		}
 		else if( key instanceof EnumConstantResourceKey ) {
 			EnumConstantResourceKey enumKey = (EnumConstantResourceKey)key;

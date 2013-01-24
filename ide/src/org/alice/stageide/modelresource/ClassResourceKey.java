@@ -52,7 +52,8 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 		this.cls = cls;
 	}
 
-	public Class<? extends org.lgna.story.resources.ModelResource> getCls() {
+	@Override
+	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
 		return this.cls;
 	}
 

@@ -49,6 +49,7 @@ package org.alice.ide.croquet.components.gallerybrowser;
 public class GalleryDragComponent extends org.alice.ide.croquet.components.KnurlDragComponent<org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel> {
 	private static final java.awt.Dimension DEFAULT_LARGE_ICON_SIZE = new java.awt.Dimension( 160, 120 );
 
+	private final javax.swing.Icon superclsIcon;
 	private final java.awt.Color baseColor;
 	private final java.awt.Color highlightColor;
 	private final java.awt.Color shadowColor;
@@ -73,6 +74,40 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 
 		}
 
+		javax.swing.Icon icon = null;
+		if( model instanceof org.alice.stageide.modelresource.ResourceNode ) {
+			org.alice.stageide.modelresource.ResourceNode resourceNode = (org.alice.stageide.modelresource.ResourceNode)model;
+			org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
+			if( resourceKey instanceof org.alice.stageide.modelresource.InstanceCreatorKey ) {
+				org.alice.stageide.modelresource.InstanceCreatorKey instanceCreatorKey = (org.alice.stageide.modelresource.InstanceCreatorKey)resourceKey;
+				Class<?> modelResourceCls = instanceCreatorKey.getModelResourceCls();
+				Class<?>[] modelResourceInterfaces = modelResourceCls.getInterfaces();
+				if( modelResourceInterfaces.length > 0 ) {
+					Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
+					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
+						org.lgna.croquet.icon.IconFactory superclsIconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
+						if( ( superclsIconFactory != null ) && ( superclsIconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
+							icon = superclsIconFactory.getIcon( new java.awt.Dimension( 32, 24 ) );
+							final boolean IS_LABEL_DESIRED = false;
+							if( IS_LABEL_DESIRED ) {
+								org.lgna.croquet.components.Label superclsLabel = new org.lgna.croquet.components.Label( icon );
+								StringBuilder sb = new StringBuilder();
+								sb.append( "superclass: " );
+								String simpleName = modelResourceInterface.getSimpleName();
+								if( simpleName.endsWith( "Resource" ) ) {
+									simpleName = simpleName.substring( 0, simpleName.length() - "Resource".length() );
+								}
+								sb.append( simpleName );
+								superclsLabel.setToolTipText( sb.toString() );
+								this.internalAddComponent( superclsLabel );
+							}
+						}
+					}
+				}
+			}
+		}
+		this.superclsIcon = icon;
+
 		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setText( model.getText() );
@@ -84,6 +119,11 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		this.setBackgroundColor( this.baseColor );
 		this.setMaximumSizeClampedToPreferredSize( true );
 		this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
+	}
+
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+		return new java.awt.BorderLayout();
 	}
 
 	@Override
@@ -238,6 +278,10 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 					g2.translate( -xTranslate, -yTranslate );
 				}
 			}
+		}
+
+		if( this.superclsIcon != null ) {
+			this.superclsIcon.paintIcon( this.getAwtComponent(), g2, x + 4, y + 4 );
 		}
 	}
 }
