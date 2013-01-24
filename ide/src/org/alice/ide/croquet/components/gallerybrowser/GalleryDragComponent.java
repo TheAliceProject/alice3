@@ -130,7 +130,11 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 
 			public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
 				//note: ridiculous 
-				return parent.getComponent( parent.getComponentCount() - 1 ).getPreferredSize();
+				java.awt.Dimension rv = parent.getComponent( parent.getComponentCount() - 1 ).getPreferredSize();
+				java.awt.Insets insets = parent.getInsets();
+				rv.width += insets.left + insets.right;
+				rv.height += insets.top + insets.bottom;
+				return rv;
 			}
 
 			public void layoutContainer( java.awt.Container parent ) {
