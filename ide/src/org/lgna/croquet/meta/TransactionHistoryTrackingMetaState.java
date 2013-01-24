@@ -42,7 +42,6 @@
  */
 package org.lgna.croquet.meta;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -56,12 +55,20 @@ public abstract class TransactionHistoryTrackingMetaState<T> extends MetaState<T
 		}
 	};
 
-	public void activate( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		this.setPrevValue( this.getValue() );
-		completionStep.addListener( this.listener );
+	private final java.util.Stack<org.lgna.croquet.history.TransactionNode<?>> stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+
+	public void pushActivation( org.lgna.croquet.history.TransactionNode<?> transactionNode ) {
+		if( this.stack.size() > 0 ) {
+			//pass
+		} else {
+			this.setPrevValue( this.getValue() );
+		}
+		this.stack.push( transactionNode );
+		transactionNode.addListener( this.listener );
 	}
 
-	public void deactivate( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		completionStep.removeListener( this.listener );
+	public void popActivation() {
+		org.lgna.croquet.history.TransactionNode<?> transactionNode = this.stack.pop();
+		transactionNode.removeListener( this.listener );
 	}
 }
