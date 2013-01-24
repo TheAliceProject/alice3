@@ -52,19 +52,24 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 
 	private final org.alice.ide.codeeditor.StatementListBorder statementListBorder;
 
-	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property, boolean isRoot ) {
+	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property, int bottom ) {
 		super( factory, property, javax.swing.BoxLayout.PAGE_AXIS );
 
-		int bottom;
 		org.lgna.project.ast.Node owningNode = this.getOwningBlockStatementOwningNode();
+
 		//boolean isIf = isOwnedByIf( owningNode );
 		boolean isElse = isOwnedByElse( owningNode );
 		boolean isDoInOrder = owningNode instanceof org.lgna.project.ast.DoInOrder;
 		boolean isDoTogether = owningNode instanceof org.lgna.project.ast.DoTogether;
-		if( /* isIf || */isElse || isDoInOrder || isDoTogether ) {
-			bottom = 8;
+
+		java.awt.Insets insets;
+		if( bottom != 0 ) {
+			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, 0 );
 		} else {
-			bottom = 0;
+			if( /* isIf || */isElse || isDoInOrder || isDoTogether ) {
+				bottom = 8;
+			}
+			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() );
 		}
 
 		org.lgna.project.ast.StatementListProperty alternateListProperty;
@@ -77,15 +82,13 @@ public class StatementListPropertyView extends org.alice.ide.croquet.components.
 		} else {
 			alternateListProperty = null;
 		}
-		java.awt.Insets insets;
-		if( isRoot ) {
-			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), 32, 0 );
-		} else {
-			insets = new java.awt.Insets( INTRASTICIAL_PAD, this.getLeftInset(), bottom, this.getRightInset() );
-		}
 		this.statementListBorder = new org.alice.ide.codeeditor.StatementListBorder( factory, alternateListProperty, insets, ( isDoInOrder || isDoTogether ) ? 1 : 0 );
 
 		this.setBorder( this.statementListBorder );
+	}
+
+	public StatementListPropertyView( org.alice.ide.x.AstI18nFactory factory, final org.lgna.project.ast.StatementListProperty property ) {
+		this( factory, property, 0 );
 	}
 
 	public org.alice.ide.codeeditor.StatementListBorder getStatementListBorder() {

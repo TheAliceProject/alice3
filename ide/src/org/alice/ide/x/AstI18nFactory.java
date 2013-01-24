@@ -123,7 +123,7 @@ public abstract class AstI18nFactory extends I18nFactory {
 	}
 
 	protected org.lgna.croquet.components.JComponent<?> createStatementListPropertyPane( org.lgna.project.ast.StatementListProperty statementListProperty ) {
-		return new org.alice.ide.x.components.StatementListPropertyView( this, statementListProperty, false );
+		return new org.alice.ide.x.components.StatementListPropertyView( this, statementListProperty );
 	}
 
 	protected abstract org.lgna.croquet.components.JComponent<?> createSimpleArgumentListPropertyPane( org.lgna.project.ast.SimpleArgumentListProperty argumentListProperty );

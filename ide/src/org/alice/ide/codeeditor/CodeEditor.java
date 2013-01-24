@@ -62,7 +62,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		org.lgna.project.ast.BlockStatement body = userCode.getBodyProperty().getValue();
 
-		this.rootStatementListPropertyPane = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), body.statements, true );
+		this.rootStatementListPropertyPane = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), body.statements, 32 );
 
 		org.lgna.croquet.components.JComponent<?> statementListComponent = null;
 		if( body instanceof org.lgna.project.ast.ConstructorBlockStatement ) {
