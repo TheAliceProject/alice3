@@ -59,7 +59,8 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		return rv;
 	}
 
-	private static final java.awt.Font FONT = javax.swing.UIManager.getFont( "defaultFont" ).deriveFont( 18.0f );
+	private static final java.awt.Font TYPE_FONT = javax.swing.UIManager.getFont( "defaultFont" ).deriveFont( 18.0f );
+	private static final java.awt.Font BONUS_FONT = javax.swing.UIManager.getFont( "defaultFont" ).deriveFont( java.awt.Font.ITALIC );
 	private final org.lgna.project.ast.NamedUserType type;
 
 	private TypeMenu( org.lgna.project.ast.NamedUserType type ) {
@@ -70,21 +71,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 	@Override
 	protected void localize() {
 		super.localize();
-		final boolean ICON_IS_DESIRED = true;
-		if( ICON_IS_DESIRED ) {
-			this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.type, true, FONT ) );
-		} else {
-			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( this.type );
-			StringBuilder sb = new StringBuilder();
-			if( depth > 0 ) {
-				for( int i = 0; i < depth; i++ ) {
-					sb.append( '-' );
-				}
-				sb.append( ' ' );
-			}
-			sb.append( this.type.getName() );
-			this.setName( sb.toString() );
-		}
+		this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.type, true, TYPE_FONT, BONUS_FONT ) );
 	}
 
 	@Override
