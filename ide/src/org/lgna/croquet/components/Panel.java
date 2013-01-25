@@ -98,7 +98,30 @@ public abstract class Panel extends View<javax.swing.JPanel, org.lgna.croquet.Co
 		if( prevLayoutManager instanceof java.awt.FlowLayout ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( prevLayoutManager, nextLayoutManager, rv.getComponentCount(), this );
+			StringBuilder sb = new StringBuilder();
+			sb.append( "\n********************************************************" );
+			sb.append( "\n********************************************************" );
+			sb.append( "\n********************************************************" );
+			sb.append( "\n\tIt appears that a layout manager was set on:\n\t\t" );
+			sb.append( this );
+			sb.append( "\n\tduring the creation of its JPanel.\n\n\t" );
+			sb.append( prevLayoutManager );
+			sb.append( ";hashCode=" );
+			sb.append( Integer.toHexString( prevLayoutManager.hashCode() ) );
+			sb.append( " will be replaced by " );
+			sb.append( nextLayoutManager );
+			sb.append( ";hashCode=" );
+			sb.append( Integer.toHexString( nextLayoutManager.hashCode() ) );
+			sb.append( "." );
+			if( rv.getComponentCount() > 0 ) {
+				sb.append( "\n\n\tOf great concern is the fact that you have already added " );
+				sb.append( rv.getComponentCount() );
+				sb.append( " components which may not get laid out." );
+			}
+			sb.append( "\n********************************************************" );
+			sb.append( "\n********************************************************" );
+			sb.append( "\n********************************************************" );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( sb.toString() );
 		}
 		rv.setLayout( nextLayoutManager );
 		return rv;
