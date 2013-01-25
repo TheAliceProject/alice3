@@ -79,10 +79,10 @@ public class JointSelectionSphereFillIn extends CascadeFillIn<JointSelectionSphe
 
 	@Override
 	protected JComponent createMenuItemIconProxy( ItemNode<? super JointSelectionSphere, Void> node ) {
-		return new JLabel( "mmay: " + sphere.getJoint() );
+		return new JLabel( sphere.getName() );
 	}
 
 	public static CascadeBlankChild getInstance( JointSelectionSphere sphere ) {
-		return map.get( sphere ) != null ? map.get( sphere ) : new JointSelectionSphereFillIn( sphere.getRoot() );
+		return map.get( sphere ) != null ? map.get( sphere ) : new JointSelectionSphereFillIn( sphere );
 	}
 }

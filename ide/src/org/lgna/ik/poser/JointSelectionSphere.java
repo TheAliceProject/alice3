@@ -64,6 +64,7 @@ public class JointSelectionSphere extends SSphere {
 		this.moveAndOrientTo( jointToSelect.getAbstraction() );
 		this.setSize( new Size( .25, .25, .25 ) );
 		this.parent = parent;
+		setName( jointToSelect.getJointId().toString() );
 	}
 
 	public JointImp getJoint() {

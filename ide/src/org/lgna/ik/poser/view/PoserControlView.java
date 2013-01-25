@@ -56,12 +56,16 @@ public class PoserControlView extends BorderPanel {
 
 	public PoserControlView( PoserControlComposite poserControlComposite ) {
 		super( poserControlComposite );
-		GridPanel panel = GridPanel.createGridPane( 2, 1 );
-		this.addComponent( panel, Constraint.CENTER );
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> anchorComponent = poserControlComposite.getAnchorJointState().createItemDropDown();
-		panel.addComponent( anchorComponent );
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> endComponent = poserControlComposite.getEndJointState().createItemDropDown();
-		panel.addComponent( endComponent );
+		GridPanel panel = GridPanel.createGridPane( 4, 1 );
+		this.addPageStartComponent( panel );
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raComponent = poserControlComposite.getRightArmAnchor().createItemDropDown();
+		panel.addComponent( raComponent );
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlComponent = poserControlComposite.getRightLegAnchor().createItemDropDown();
+		panel.addComponent( rlComponent );
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laComponent = poserControlComposite.getLeftArmAnchor().createItemDropDown();
+		panel.addComponent( laComponent );
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llComponent = poserControlComposite.getLeftLegAnchor().createItemDropDown();
+		panel.addComponent( llComponent );
 		this.addComponent( poserControlComposite.getDumpPose().createButton(), Constraint.PAGE_END );
 	}
 

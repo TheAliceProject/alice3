@@ -59,9 +59,9 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<JointSelectionSphere> {
 
 	private JointSelectionSphere value;
-	private List<JointSelectionSphere> possibleStates;
+	private final List<JointSelectionSphere> possibleStates;
 
-	public JointSelectionSphereState( JointSelectionSphere initialValue ) {
+	public JointSelectionSphereState( JointSelectionSphere initialValue, List<JointSelectionSphere> possibleStates ) {
 		super( null, java.util.UUID.fromString( "26646dcd-2003-43af-9939-c3eb61fdf560" ), initialValue, new ItemCodec<JointSelectionSphere>() {
 
 			public Class<JointSelectionSphere> getValueClass() {
@@ -80,6 +80,7 @@ public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<
 				sb.append( value );
 			}
 		} );
+		this.possibleStates = possibleStates;
 	}
 
 	@Override
@@ -91,16 +92,6 @@ public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<
 	protected void setSwingValue( org.lgna.ik.poser.JointSelectionSphere nextValue ) {
 		this.value = nextValue;
 	}
-
-	//	@Override
-	//	protected void updateSwingModel( JointSelectionSphere nextValue ) {
-	//		this.setValue( nextValue );
-	//	}
-	//
-	//	@Override
-	//	protected JointSelectionSphere getActualValue() {
-	//		return this.value;
-	//	}
 
 	public ItemDropDown<JointSelectionSphere, JointSelectionSphereState> createItemDropDown() {
 		return new JointSelectionSphereStateDropDown( this );
@@ -115,14 +106,6 @@ public class JointSelectionSphereState extends CustomItemStateWithInternalBlank<
 	@Override
 	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<JointSelectionSphere> blankNode ) {
 		fillIn( rv );
-		//		for( org.lgna.story.resources.JointId rootId : rootIds ) {
-		//			fillIn( rv, rootId );
-		//			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-		//		}
 		return rv;
-	}
-
-	public void setPossibleStates( List<JointSelectionSphere> possibleStates ) {
-		this.possibleStates = possibleStates;
 	}
 }

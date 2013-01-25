@@ -1099,7 +1099,7 @@ public class TightPositionalIkEnforcer extends IkEnforcer {
 		// TODO use the current nullspace projector to find an additional angle delta 
 		// that would move us closer to a natural pose
 		// TODO for now I'm ignoring this. TBD
-		System.out.println( "implement this at some point" );
+		//		System.out.println( "implement this at some point" );
 	}
 
 	//this is the version that never clamps

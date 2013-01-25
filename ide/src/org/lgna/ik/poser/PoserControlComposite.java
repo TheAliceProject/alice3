@@ -47,11 +47,12 @@ import java.util.List;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.SimpleComposite;
-import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.view.PoserControlView;
+import org.lgna.ik.walkandtouch.IKMagicWand;
+import org.lgna.ik.walkandtouch.PoserScene;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -61,15 +62,17 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 
 	private IkPoser ikPoser;
-	private JointSelectionSphereState endJointState;
-	private JointSelectionSphereState anchorJointState;
+	//	private JointSelectionSphereState anchorJointState;
+	private JointSelectionSphereState rightArmAnchor;
+	private JointSelectionSphereState leftArmAnchor;
+	private JointSelectionSphereState rightLegAnchor;
+	private JointSelectionSphereState leftLegAnchor;
 	private List<Pose> poses = Collections.newArrayList();
 
 	private ActionOperation dumpPose = createActionOperation( createKey( "dumpPose" ), new Action() {
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			Pose pose = ikPoser.getPose();
 			poses.add( pose );
-			System.out.println( pose );
 			return null;
 		}
 	} );
@@ -78,19 +81,11 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		super( java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
 		this.ikPoser = ikPoser;
 		ikPoser.getJointSelectionSheres();
-		anchorJointState = new JointSelectionSphereState( ikPoser.getDefaultAnchorJoint() );
-		endJointState = new JointSelectionSphereState( ikPoser.getDefaultEndJoint() );
-		endJointState.setPossibleStates( ikPoser.getJointSelectionSheres() );
-		anchorJointState.setPossibleStates( endJointState.getValue().getPossibleAnchors() );
-		endJointState.addValueListener( new ValueListener<JointSelectionSphere>() {
-
-			public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
-				anchorJointState.setPossibleStates( endJointState.getValue().getPossibleAnchors() );
-			}
-		} );
+		PoserScene scene = ikPoser.scene;
+		rightArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_ARM ) );
+		leftArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_ARM ) );
+		rightLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_LEG ) );
+		leftLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_LEG ) );
 		ikPoser.setAdapter( new PoserControllerAdapter( this ) );
 	}
 
@@ -103,24 +98,39 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		return new PoserControlView( this );
 	}
 
-	public void addRootJointListener( ValueListener<JointSelectionSphere> rootJointListener ) {
-		anchorJointState.addValueListener( rootJointListener );
-	}
-
-	public void addEndJointListener( ValueListener<JointSelectionSphere> endJointListener ) {
-		endJointState.addValueListener( endJointListener );
-	}
-
-	public JointSelectionSphereState getAnchorJointState() {
-		return this.anchorJointState;
-	}
-
-	public JointSelectionSphereState getEndJointState() {
-		return this.endJointState;
-	}
-
 	public ActionOperation getDumpPose() {
 		return this.dumpPose;
 	}
 
+	public void addRightArmAnchorListener( ValueListener<JointSelectionSphere> listener ) {
+		rightArmAnchor.addValueListener( listener );
+	}
+
+	public void addRightLegAnchorListener( ValueListener<JointSelectionSphere> listener ) {
+		rightLegAnchor.addValueListener( listener );
+	}
+
+	public void addLeftArmAnchorListener( ValueListener<JointSelectionSphere> listener ) {
+		leftArmAnchor.addValueListener( listener );
+	}
+
+	public void addLeftLegAnchorListener( ValueListener<JointSelectionSphere> listener ) {
+		leftLegAnchor.addValueListener( listener );
+	}
+
+	public JointSelectionSphereState getRightArmAnchor() {
+		return this.rightArmAnchor;
+	}
+
+	public JointSelectionSphereState getRightLegAnchor() {
+		return this.rightLegAnchor;
+	}
+
+	public JointSelectionSphereState getLeftArmAnchor() {
+		return this.leftArmAnchor;
+	}
+
+	public JointSelectionSphereState getLeftLegAnchor() {
+		return this.leftLegAnchor;
+	}
 }

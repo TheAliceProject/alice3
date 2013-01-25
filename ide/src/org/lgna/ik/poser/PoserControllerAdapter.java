@@ -44,6 +44,8 @@ package org.lgna.ik.poser;
 
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
+import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
+import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
 /**
@@ -52,42 +54,73 @@ import org.lgna.story.resources.JointId;
 public class PoserControllerAdapter {
 
 	private PoserControlComposite controlComposite;
-	private JointId rootJointID;
-	private JointId endJointID;
+	private JointId rightLegAnchorJointID;
+	private JointId rightArmAnchorJointID;
+	private JointId leftLegAnchorJointID;
+	private JointId leftArmAnchorJointID;
 
 	public PoserControllerAdapter( PoserControlComposite controlComposite ) {
 		this.controlComposite = controlComposite;
-		this.controlComposite.addRootJointListener( rootJointListener );
-		this.controlComposite.addEndJointListener( endJointListener );
-		rootJointID = controlComposite.getIkPoser().DEFAULT_ANCHOR;
-		endJointID = controlComposite.getIkPoser().DEFAULT_END;
+		this.controlComposite.addRightArmAnchorListener( rightArmAnchorJointListener );
+		rightLegAnchorJointID = controlComposite.getRightLegAnchor().getValue().getJoint().getJointId();
+		this.controlComposite.addRightLegAnchorListener( rightArmAnchorJointListener );
+		rightArmAnchorJointID = controlComposite.getRightArmAnchor().getValue().getJoint().getJointId();
+		this.controlComposite.addLeftArmAnchorListener( rightArmAnchorJointListener );
+		leftLegAnchorJointID = controlComposite.getLeftLegAnchor().getValue().getJoint().getJointId();
+		this.controlComposite.addLeftLegAnchorListener( rightArmAnchorJointListener );
+		leftArmAnchorJointID = controlComposite.getLeftArmAnchor().getValue().getJoint().getJointId();
 	}
 
-	public JointId getAnchorJointID() {
-		return this.rootJointID;
-	}
-
-	public JointId getEndJointID() {
-		return this.endJointID;
-	}
-
-	ValueListener<JointSelectionSphere> rootJointListener = new ValueListener<JointSelectionSphere>() {
+	ValueListener<JointSelectionSphere> rightArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
 		}
 
 		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
-			PoserControllerAdapter.this.rootJointID = nextValue.getJoint().getJointId();
+			PoserControllerAdapter.this.rightArmAnchorJointID = nextValue.getJoint().getJointId();
 		}
 	};
-	ValueListener<JointSelectionSphere> endJointListener = new ValueListener<JointSelectionSphere>() {
+	ValueListener<JointSelectionSphere> rightLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
 
 		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
 		}
 
 		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
-			PoserControllerAdapter.this.endJointID = nextValue.getJoint().getJointId();
+			PoserControllerAdapter.this.rightLegAnchorJointID = nextValue.getJoint().getJointId();
 		}
 	};
+	ValueListener<JointSelectionSphere> leftArmAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+
+		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+			PoserControllerAdapter.this.leftArmAnchorJointID = nextValue.getJoint().getJointId();
+		}
+	};
+	ValueListener<JointSelectionSphere> leftLegAnchorJointListener = new ValueListener<JointSelectionSphere>() {
+
+		public void changing( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+			System.out.println( "update? (mmay)" );
+			PoserControllerAdapter.this.leftLegAnchorJointID = nextValue.getJoint().getJointId();
+		}
+	};
+
+	public JointId getAnchorJointID( Limb limb, JointImp joint ) {
+		switch( limb ) {
+		case LEFT_ARM:
+			return leftArmAnchorJointID;
+		case LEFT_LEG:
+			return leftLegAnchorJointID;
+		case RIGHT_ARM:
+			return rightArmAnchorJointID;
+		case RIGHT_LEG:
+			return rightLegAnchorJointID;
+		}
+		return null;
+	}
 
 }

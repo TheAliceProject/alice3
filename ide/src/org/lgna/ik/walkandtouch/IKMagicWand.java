@@ -46,6 +46,8 @@ import java.util.List;
 
 import org.lgna.ik.IkConstants;
 import org.lgna.ik.enforcer.JointedModelIkEnforcer;
+import org.lgna.ik.enforcer.TightPositionalIkEnforcer;
+import org.lgna.ik.enforcer.TightPositionalIkEnforcer.PositionConstraint;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
@@ -73,7 +75,7 @@ public class IKMagicWand {
 
 	private static double legLength;
 	private static final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.GREEN );
-	private static final boolean USING_OLD = true;
+	private static final boolean USING_OLD = false;
 	private static List<JointId> defaultAnchors = Collections.newArrayList(
 			( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightClavicle() ) ).getJointId(),
 			( (JointImp)ImplementationAccessor.getImplementation( ogre.getLeftClavicle() ) ).getJointId(),
@@ -85,6 +87,93 @@ public class IKMagicWand {
 	public static void moveChainToPointInSceneSpace( JointImp anchor, JointImp end, Point3 target ) {
 		if( USING_OLD ) {
 			moveUsingOldJMIKEnforcer( anchor, end, target );
+		} else {
+			moveUsingNewTPIKEnforcer( anchor, end, target );
+		}
+	}
+
+	private static void moveUsingNewTPIKEnforcer( JointImp anchor, JointImp end, Point3 target ) {
+		target = correctTarget( anchor, end, target );
+		JointedModelImp<?, ?> jointedParent = anchor.getJointedModelImplementation();
+		final TightPositionalIkEnforcer tightIkEnforcer = new TightPositionalIkEnforcer( jointedParent );
+
+		//TODO do what's below to complete it
+		// set its chain
+		int level = 0;
+		org.lgna.story.resources.JointId endId = end.getJointId();
+		org.lgna.story.resources.JointId anchorId = anchor.getJointId();
+		PositionConstraint myPositionConstraint = tightIkEnforcer.createPositionConstraint( level, anchorId, endId );
+
+		//				System.out.println("will start");
+		//				try {
+		//					System.in.read();
+		//				} catch (IOException e1) {
+		//					// TODO Auto-generated catch block
+		//					e1.printStackTrace();
+		//				}
+		//		while( true ) {
+
+		//not bad concurrent programming practice
+		boolean isLinearEnabled = test.ik.croquet.IsLinearEnabledState.getInstance().getValue();
+		boolean isAngularEnabled = test.ik.croquet.IsAngularEnabledState.getInstance().getValue();
+
+		//these could be multiple. in this app it is one pair.
+
+		double deltaTime = IkConstants.DESIRED_DELTA_TIME;
+
+		//					edu.cmu.cs.dennisc.math.AffineMatrix4x4 targetTransformation = getTargetImp().getTransformation( org.lgna.story.implementation.AsSeenBy.SCENE );
+		myPositionConstraint.setEeDesiredPosition( target );
+
+		//					//this is a little weird. I'd better let the enforcer create and hold the constraint, and I should hold a pointer to it for myself.
+		//					for(PositionConstraint positionConstraint: constraints.activePositionConstraints) {
+		//						//should it be like this, or should constraints read them automatically?
+		//							//IK system reads joint angles automatically anyway
+		//							//but these desired position/orientations are not necessarily tied to scenegraph stuff. I should give them myself like this. 
+		//						positionConstraint.setEeDesiredPosition(targetTransformation.translation);
+		//						
+		//						//force bone reprint
+		//						//this should be fine even if the chain is not valid anymore.
+		//						//this would prevent me from selecting the list
+		////						javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		////							public void run() {
+		////								test.ik.croquet.BonesState.getInstance().setChain( ikEnforcer.getChainForPrinting(anchorId, eeId) );
+		////							}
+		////						});
+		//					}
+		//					
+		//					for(OrientationConstraint orientationConstraint: constraints.activeOrientationConstraints) {
+		//						System.out.println("orientaiton constraint!");
+		//						orientationConstraint.setEeDesiredOrientation(targetTransformation.orientation);
+		//					} 
+		//perhaps better ways of setting constraint values?
+
+		//this enforces the constraints immediately right now. so, there is no talk about deltatime or speed
+		//had I had a maximum rotational speed for joints, then having time would make sense
+		tightIkEnforcer.enforceConstraints();
+		//			break;
+
+		//		}
+
+	}
+
+	private static Point3 correctTarget( JointImp anchor, JointImp end, Point3 target ) {
+		double lengthOfLimb = getLengthOfLimb( anchor, end );
+		Point3 vec = Point3.createSubtraction( target, anchor.getAbsoluteTransformation().translation );
+		if( lengthOfLimb < vec.calculateMagnitude() ) {
+			vec.setToDivision( vec, vec.calculateMagnitude() );
+			vec.setToMultiplication( vec, lengthOfLimb );
+			return Point3.createAddition( anchor.getAbsoluteTransformation().translation, vec );
+		}
+		return target;
+	}
+
+	private static double getLengthOfLimb( JointImp anchor, JointImp end ) {
+		JointedModelImp model = end.getJointedModelParent();
+		if( !end.getJointId().equals( anchor.getJointId() ) ) {
+			JointImp parent = model.getJointImplementation( end.getJointId().getParent() );
+			return end.getDistanceTo( parent ) + getLengthOfLimb( anchor, parent );
+		} else {
+			return 0;
 		}
 	}
 
