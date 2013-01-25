@@ -405,11 +405,15 @@ public class AliceResourceUtilties {
 		return getThumbnailResourceFileName( resource.getClass(), resource.toString() );
 	}
 
+	public static String getDefaultTextureEnumName( String resourceName ) {
+		return "DEFAULT";
+	}
+
 	private static String createTextureBaseName( String modelName, String textureName ) {
 		if( textureName == null ) {
 			textureName = "_cls";
 		}
-		else if( modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) ) {
+		else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) ) {
 			textureName = "";
 		}
 		else if( textureName.length() > 0 ) {
@@ -658,7 +662,7 @@ public class AliceResourceUtilties {
 	private static Class<?> getClassFromKey( ResourceKey key ) {
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey clsKey = (ClassResourceKey)key;
-			return clsKey.getCls();
+			return clsKey.getModelResourceCls();
 		}
 		else if( key instanceof EnumConstantResourceKey ) {
 			EnumConstantResourceKey enumKey = (EnumConstantResourceKey)key;
@@ -891,6 +895,25 @@ public class AliceResourceUtilties {
 	public static String[] getGroupTags( ResourceKey key )
 	{
 		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	}
+
+	public static String[] getThemeTags( Class<?> modelResource, String resourceName )
+	{
+		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
+		if( info != null ) {
+			return info.getThemeTags();
+		}
+		return null;
+	}
+
+	public static String[] getThemeTags( Class<?> modelResource )
+	{
+		return getThemeTags( modelResource, null );
+	}
+
+	public static String[] getThemeTags( ResourceKey key )
+	{
+		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
 }

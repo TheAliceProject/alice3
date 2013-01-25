@@ -47,69 +47,98 @@ package org.alice.ide.croquet.components;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryPopupButton extends org.lgna.croquet.components.CustomItemStatePopupButton<org.alice.ide.instancefactory.InstanceFactory> {
-	private static class MainComponent extends org.lgna.croquet.components.BorderPanel {
-		private org.alice.ide.instancefactory.InstanceFactory nextValue;
-
-		private void handleChanged( org.alice.ide.instancefactory.InstanceFactory nextValue ) {
-			this.nextValue = nextValue;
-			this.refreshLater();
-		}
-
-		@Override
-		protected void internalRefresh() {
-			super.internalRefresh();
-			this.forgetAndRemoveAllComponents();
-			org.lgna.croquet.components.JComponent<?> expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null );
-
-			for( javax.swing.JLabel label : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( expressionPane.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS, javax.swing.JLabel.class ) ) {
-				edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 2.0f );
-			}
-
-			this.addCenterComponent( expressionPane );
-			if( nextValue != null ) {
-				org.lgna.croquet.icon.IconFactory iconFactory = nextValue.getIconFactory();
-				if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.SINGLETON ) ) {
-					javax.swing.Icon icon = iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE );
-					if( icon != null ) {
-						this.addLineStartComponent( new org.lgna.croquet.components.Label( icon ) );
-					}
-				}
-			}
-		}
-	};
-
 	// note: for singleton ThisInstanceFactory
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
 			InstanceFactoryPopupButton.this.repaint();
 		}
 	};
-	private final MainComponent mainComponent = new MainComponent();
 
 	public InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState instanceFactoryState ) {
 		super( instanceFactoryState );
-		this.getAwtComponent().setLayout( new java.awt.BorderLayout() );
-		this.getAwtComponent().removeAll();
-		this.internalAddComponent( this.mainComponent, java.awt.BorderLayout.LINE_START );
+		this.getAwtComponent().setLayout( new javax.swing.BoxLayout( this.getAwtComponent(), javax.swing.BoxLayout.LINE_AXIS ) );
 	}
 
 	@Override
+	protected javax.swing.AbstractButton createSwingButton() {
+		return new JFauxComboBoxPopupButton() {
+			@Override
+			public void invalidate() {
+				super.invalidate();
+				refreshIfNecessary();
+			}
+		};
+	}
+
+	private org.alice.ide.instancefactory.InstanceFactory nextValue;
+
+	@Override
 	protected void handleChanged( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
-		this.mainComponent.handleChanged( nextValue );
+		this.nextValue = nextValue;
+		this.refreshLater();
+	}
+
+	private boolean isInTheMidstOfRefreshing = false;
+	private boolean isRefreshNecessary = true;
+
+	protected void internalRefresh() {
+		this.internalForgetAndRemoveAllComponents();
+		org.lgna.croquet.components.JComponent<?> expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( nextValue != null ? nextValue.createTransientExpression() : null );
+
+		for( javax.swing.JLabel label : edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( expressionPane.getAwtComponent(), edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS, javax.swing.JLabel.class ) ) {
+			edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 2.0f );
+		}
+
+		if( nextValue != null ) {
+			org.lgna.croquet.icon.IconFactory iconFactory = nextValue.getIconFactory();
+			if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
+				final boolean IS_TRIMMED_ICON_DESIRED = true;
+				java.awt.Dimension size = IS_TRIMMED_ICON_DESIRED ? iconFactory.getTrimmedSizeForHeight( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height ) : org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE;
+				javax.swing.Icon icon = iconFactory.getIcon( size );
+				if( icon != null ) {
+					this.internalAddComponent( new org.lgna.croquet.components.Label( icon ) );
+				}
+			}
+		}
+		this.internalAddComponent( expressionPane );
+
+		this.revalidateAndRepaint();
+	}
+
+	private void refreshIfNecessary() {
+		if( this.isRefreshNecessary ) {
+			if( this.isInTheMidstOfRefreshing ) {
+				//pass
+			} else {
+				this.isInTheMidstOfRefreshing = true;
+				try {
+					//this.forgetAndRemoveAllComponents();
+					synchronized( this.getTreeLock() ) {
+						this.internalRefresh();
+					}
+					this.isRefreshNecessary = false;
+				} finally {
+					this.isInTheMidstOfRefreshing = false;
+				}
+			}
+		}
+	}
+
+	public final void refreshLater() {
+		this.isRefreshNecessary = true;
+		this.revalidateAndRepaint();
 	}
 
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
-		org.alice.ide.declarationseditor.TypeState.getInstance().addValueListener( this.typeListener );
+		this.refreshLater();
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addMetaStateValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeMetaStateValueListener( this.typeListener );
 		super.handleUndisplayable();
 	}
 };

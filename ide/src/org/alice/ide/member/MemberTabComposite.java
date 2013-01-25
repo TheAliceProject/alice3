@@ -46,7 +46,7 @@ package org.alice.ide.member;
  * @author Dennis Cosgrove
  */
 public abstract class MemberTabComposite<V extends org.alice.ide.member.views.MemberTabView> extends MemberOrControlFlowTabComposite<V> {
-	public static boolean ARE_TOOL_PALETTES_INERT = false;
+	public static boolean ARE_TOOL_PALETTES_INERT = true;
 
 	public static boolean getExpandedAccountingForInert( boolean isExpanded ) {
 		if( ARE_TOOL_PALETTES_INERT ) {

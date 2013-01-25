@@ -84,7 +84,7 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( this.getModelTransformable() );
 		}
-		java.awt.image.BufferedImage returnImage = takePicture( getThumbnailCameraOrientationForPerson( resource ) );
+		java.awt.image.BufferedImage returnImage = takePicture( getThumbnailCameraOrientationForPerson( resource ), true );
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );

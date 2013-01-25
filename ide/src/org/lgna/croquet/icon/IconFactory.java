@@ -49,4 +49,12 @@ public interface IconFactory {
 	public javax.swing.Icon getIcon( java.awt.Dimension size );
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent );
+
+	public java.awt.Dimension getDefaultSizeForWidth( int width );
+
+	public java.awt.Dimension getDefaultSizeForHeight( int height );
+
+	public java.awt.Dimension getTrimmedSizeForWidth( int width );
+
+	public java.awt.Dimension getTrimmedSizeForHeight( int height );
 }

@@ -52,12 +52,11 @@ public class FieldsToolPaletteCoreView extends MembersToolPaletteCoreView {
 
 		org.lgna.project.ast.NamedUserType type = composite.getMembersComposite().getType();
 		if( managedFieldsComposite != null ) {
-			this.addComponent( new org.lgna.croquet.components.Label( "managed", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-			//this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ) );
+			this.addComponent( composite.getManagedLabel().createLabel( 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			this.addComponent( managedFieldsComposite.getView() );
 			this.addComponent( org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance().createButton() );
 			this.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 24 ) );
-			this.addComponent( new org.lgna.croquet.components.Label( "unmanaged", 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( composite.getUnmanagedLabel().createLabel( 1.2f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 		this.addComponent( composite.getMembersComposite().getView() );
 		this.addComponent( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().createButton() );

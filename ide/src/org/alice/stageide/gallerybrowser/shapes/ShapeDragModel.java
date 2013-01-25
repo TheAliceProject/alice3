@@ -66,6 +66,11 @@ public abstract class ShapeDragModel extends GalleryDragModel {
 	}
 
 	@Override
+	public boolean isInstanceCreator() {
+		return true;
+	}
+
+	@Override
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		return this.getLeftButtonClickModel();
 	}

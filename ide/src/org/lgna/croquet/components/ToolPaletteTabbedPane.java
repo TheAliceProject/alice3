@@ -126,7 +126,7 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 	}
 
 	@Override
-	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
+	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, org.lgna.croquet.BooleanState itemSelectedState ) {
 		ToolPaletteTitle rv = new ToolPaletteTitle( itemSelectedState );
 		rv.setPartOfAccordion( true );
 		rv.setHorizontalAlignment( HorizontalAlignment.LEADING );

@@ -51,13 +51,14 @@ public class TestIcon extends org.lgna.croquet.simple.SimpleApplication {
 		testCroquet.initialize( args );
 
 		org.lgna.croquet.components.FlowPanel flowPanel = new org.lgna.croquet.components.FlowPanel();
-		java.util.List<? extends org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
-				org.alice.stageide.icons.CylinderIconFactory.getInstance(),
-				org.alice.stageide.icons.SphereIconFactory.getInstance(),
-				org.alice.stageide.icons.ConeIconFactory.getInstance(),
-				org.alice.stageide.icons.BoxIconFactory.getInstance()
-				);
-		org.lgna.croquet.icon.IconFactory iconFactory = new org.alice.stageide.icons.GroupIconFactory( iconFactories );
+		//		java.util.List<? extends org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+		//				org.alice.stageide.icons.CylinderIconFactory.getInstance(),
+		//				org.alice.stageide.icons.SphereIconFactory.getInstance(),
+		//				org.alice.stageide.icons.ConeIconFactory.getInstance(),
+		//				org.alice.stageide.icons.BoxIconFactory.getInstance()
+		//				);
+		//		org.lgna.croquet.icon.IconFactory iconFactory = new org.alice.stageide.icons.GroupIconFactory( iconFactories );
+		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.ShowMeIconFactory.getInstance();
 		for( org.lgna.croquet.icon.IconSize iconSize : org.lgna.croquet.icon.IconSize.values() ) {
 			javax.swing.Icon icon = iconFactory.getIcon( iconSize.getSize() );
 			flowPanel.addComponent( new org.lgna.croquet.components.Label( icon ) );

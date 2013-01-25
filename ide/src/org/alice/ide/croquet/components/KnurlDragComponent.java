@@ -91,9 +91,7 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 
 	protected abstract int getInsetRight();
 
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
-		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
-	}
+	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent );
 
 	@Override
 	protected final javax.swing.AbstractButton createAwtComponent() {

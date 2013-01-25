@@ -297,4 +297,16 @@ public class StaticAnalysisUtilities {
 	public static boolean isAvailableMethodName( String name, UserMethod self ) {
 		return isAvailableMethodName( name, self.getDeclaringType(), self );
 	}
+
+	public static int getUserTypeDepth( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		if( type != null ) {
+			if( type instanceof org.lgna.project.ast.JavaType ) {
+				return -1;
+			} else {
+				return 1 + getUserTypeDepth( type.getSuperType() );
+			}
+		} else {
+			return -1;
+		}
+	}
 }

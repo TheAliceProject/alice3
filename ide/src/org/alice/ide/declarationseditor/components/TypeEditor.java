@@ -43,6 +43,8 @@
 
 package org.alice.ide.declarationseditor.components;
 
+import org.alice.ide.declarationseditor.DeclarationComposite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,17 +57,9 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 			TypeEditor.this.handleIsEmphasizingClassesChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-			TypeEditor.this.handleTypeStateChanged( nextValue );
-		}
-	};
 
 	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
-	private final org.lgna.croquet.components.AbstractPopupButton popupButton;
+	private final org.lgna.croquet.components.AbstractPopupButton<?> startButton;
 
 	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
 		super( composite );
@@ -80,9 +74,33 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBinView() );
 		}
 		headerTrailingComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 0, 2 ) );
-		this.tabbedPane = composite.getTabState().createFolderTabbedPane();
+
+		final boolean IS_CUSTOM_DRAWING_DESIRED = false;
+		if( IS_CUSTOM_DRAWING_DESIRED ) {
+			this.tabbedPane = new org.lgna.croquet.components.FolderTabbedPane<DeclarationComposite>( composite.getTabState() ) {
+				@Override
+				protected TitlesPanel createTitlesPanel() {
+					return new TitlesPanel() {
+						@Override
+						protected javax.swing.JPanel createJPanel() {
+							return new JTitlesPanel() {
+								@Override
+								public void paint( java.awt.Graphics g ) {
+									super.paint( g );
+									g.setColor( java.awt.Color.RED );
+									g.drawString( "possibilities abound", 100, 10 );
+								}
+							};
+						}
+					};
+				}
+			};
+		} else {
+			this.tabbedPane = composite.getTabState().createFolderTabbedPane();
+		}
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
-		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createFauxComboBoxPopupButton();
+		this.startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
+
 		this.addCenterComponent( tabbedPane );
 	}
 
@@ -101,80 +119,21 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	private void handleIsEmphasizingClassesChanged() {
 		org.lgna.croquet.components.JComponent<?> component;
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			component = this.popupButton;
+			component = this.startButton;
 		} else {
 			component = null;
 		}
 		this.tabbedPane.setHeaderLeadingComponent( component );
 	}
 
-	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
-		//		public class TypeDropDownIcon extends TypeIcon {
-		//			private static final int ARROW_SIZE = 12;
-		//			private javax.swing.ButtonModel buttonModel;
-		//
-		//			public TypeDropDownIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, javax.swing.ButtonModel buttonModel ) {
-		//				super( type );
-		//				this.buttonModel = buttonModel;
-		//			}
-		//
-		//			@Override
-		//			public int getIconWidth() {
-		//				return super.getIconWidth() + ARROW_SIZE + 4;
-		//			}
-		//
-		//			@Override
-		//			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		//				super.paintIcon( c, g, x, y );
-		//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		//				java.awt.Paint fillPaint;
-		//				java.awt.Paint drawPaint;
-		//				if( buttonModel.isEnabled() ) {
-		//					if( buttonModel.isPressed() ) {
-		//						fillPaint = java.awt.Color.WHITE;
-		//						drawPaint = java.awt.Color.BLACK;
-		//					} else {
-		//						if( buttonModel.isRollover() || buttonModel.isArmed() ) {
-		//							fillPaint = java.awt.Color.GRAY;
-		//						} else {
-		//							fillPaint = java.awt.Color.BLACK;
-		//						}
-		//						drawPaint = null;
-		//					}
-		//				} else {
-		//					fillPaint = java.awt.Color.LIGHT_GRAY;
-		//					drawPaint = null;
-		//				}
-		//
-		//				int w = this.getIconWidth();
-		//				int h = this.getIconHeight();
-		//				if( fillPaint != null ) {
-		//					g2.setPaint( fillPaint );
-		//					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, ( x + w ) - ARROW_SIZE, y + ( ( h - ARROW_SIZE ) / 2 ), ARROW_SIZE, ARROW_SIZE );
-		//				}
-		//				if( drawPaint != null ) {
-		//					g2.setPaint( drawPaint );
-		//					edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, ( x + w ) - ARROW_SIZE, y + ( ( h - ARROW_SIZE ) / 2 ), ARROW_SIZE, ARROW_SIZE );
-		//				}
-		//			}
-		//		}
-		//org.alice.ide.common.TypeDropDownIcon icon = new org.alice.ide.common.TypeDropDownIcon( type, this.popupButton.getAwtComponent().getModel() );
-		org.alice.ide.common.TypeIcon icon = new org.alice.ide.common.TypeIcon( type );
-		this.popupButton.setClobberIcon( icon );
-		this.popupButton.revalidateAndRepaint();
-	}
-
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueListener( this.isEmphasizingClassesListener );
-		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueListener( this.isEmphasizingClassesListener );
 		super.handleUndisplayable();
 	}

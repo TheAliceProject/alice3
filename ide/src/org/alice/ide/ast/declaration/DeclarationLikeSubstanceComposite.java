@@ -327,7 +327,13 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 	}
 
-	protected abstract boolean isNameValid( String name );
+	protected final boolean isNameValid( String name ) {
+		if( org.alice.ide.preferences.recursion.IsIdentifierNameValidityStrictState.getInstance().getValue() ) {
+			return org.lgna.project.ast.StaticAnalysisUtilities.isValidIdentifier( name );
+		} else {
+			return ( name != null ) && ( name.length() > 0 );
+		}
+	}
 
 	protected abstract boolean isNameAvailable( String name );
 
@@ -479,29 +485,51 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		this.getView().handleValueTypeChanged( nextType );
 	}
 
+	protected boolean getIsFinalInitialValue() {
+		return this.details.inFinalInitialValue;
+	}
+
 	//perhaps for InitializerManagedFieldDeclaration
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getInitialValueComponentType() {
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
 		return this.details.valueComponentTypeInitialValue;
 	}
 
-	protected String getInitialNameValue() {
+	protected String getNameInitialValue() {
 		return this.details.nameInitialValue;
+	}
+
+	protected boolean getValueIsArrayTypeInitialValue() {
+		return this.details.valueIsArrayTypeInitialValue;
+	}
+
+	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+		return this.details.initializerInitialValue;
 	}
 
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( this.isFinalState != null ) {
+			boolean isFinal = this.getIsFinalInitialValue();
+			this.isFinalState.setValueTransactionlessly( isFinal );
+			if( details.isFinalStatus == ApplicabilityStatus.DISPLAYED ) {
+				org.lgna.croquet.Operation trueOperation = this.isFinalState.getSetToTrueOperation();
+				org.lgna.croquet.Operation falseOperation = this.isFinalState.getSetToFalseOperation();
+				trueOperation.setEnabled( isFinal );
+				falseOperation.setEnabled( isFinal == false );
+			}
+		}
 		if( this.valueComponentTypeState != null ) {
-			this.valueComponentTypeState.setValueTransactionlessly( this.getInitialValueComponentType() );
+			this.valueComponentTypeState.setValueTransactionlessly( this.getValueComponentTypeInitialValue() );
 		}
 		if( this.valueIsArrayTypeState != null ) {
-			this.valueIsArrayTypeState.setValueTransactionlessly( this.details.valueIsArrayTypeInitialValue );
+			this.valueIsArrayTypeState.setValueTransactionlessly( this.getValueIsArrayTypeInitialValue() );
 		}
 		if( this.nameState != null ) {
-			this.nameState.setValueTransactionlessly( this.getInitialNameValue() );
+			this.nameState.setValueTransactionlessly( this.getNameInitialValue() );
 		}
 		if( this.initializerState != null ) {
 			//todo
-			this.initializerState.setValueTransactionlessly( this.details.initializerInitialValue );
+			this.initializerState.setValueTransactionlessly( this.getInitializerInitialValue() );
 		}
 
 		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {

@@ -53,8 +53,12 @@ public class UserMethodsSubView extends MethodsSubView<org.alice.ide.member.User
 	@Override
 	protected void internalRefresh() {
 		super.internalRefresh();
-		org.alice.ide.member.UserMethodsSubComposite composite = this.getComposite();
-		this.addComponent( composite.getAddMethodOperation().createButton() );
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			//pass
+		} else {
+			org.alice.ide.member.UserMethodsSubComposite composite = this.getComposite();
+			this.addComponent( composite.getAddMethodOperation().createButton() );
+		}
 	}
 
 }

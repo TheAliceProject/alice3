@@ -221,9 +221,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 
 		@Override
-		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-			rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
-			return rv;
+		public org.lgna.croquet.components.MenuItem createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+			org.lgna.croquet.components.MenuItem menuItem = new org.lgna.croquet.components.MenuItem( this.getOperation() );
+			menuItemContainer.addMenuItem( menuItem );
+			return menuItem;
 		}
 
 		@Override

@@ -80,7 +80,17 @@ public class RootResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public String[] getThemeTags() {
+		return null;
+	}
+
+	@Override
 	public boolean isLeaf() {
+		return false;
+	}
+
+	@Override
+	public boolean isInstanceCreator() {
 		return false;
 	}
 

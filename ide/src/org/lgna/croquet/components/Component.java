@@ -273,7 +273,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 			if( Thread.holdsLock( this.getTreeLock() ) ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "tree lock required", this );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "tree lock required", this );
 			}
 		}
 	}

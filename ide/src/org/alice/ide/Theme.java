@@ -52,6 +52,8 @@ public interface Theme {
 
 	public java.awt.Color getTypeColor();
 
+	public java.awt.Color getMutedTypeColor();
+
 	public java.awt.Color getProcedureColor();
 
 	public java.awt.Color getFunctionColor();

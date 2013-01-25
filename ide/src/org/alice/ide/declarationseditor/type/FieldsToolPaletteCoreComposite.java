@@ -47,6 +47,8 @@ package org.alice.ide.declarationseditor.type;
  */
 public class FieldsToolPaletteCoreComposite extends MembersToolPaletteCoreComposite {
 	private final ManagedFieldsComposite managedFieldsComposite;
+	private final org.lgna.croquet.PlainStringValue managedLabel = this.createStringValue( this.createKey( "managedLabel" ) );
+	private final org.lgna.croquet.PlainStringValue unmanagedLabel = this.createStringValue( this.createKey( "unmanagedLabel" ) );
 
 	public FieldsToolPaletteCoreComposite( org.lgna.project.ast.NamedUserType type ) {
 		super( java.util.UUID.fromString( "825af354-f73e-48ac-92b7-00359c6c7320" ), true, UnmanagedFieldsComposite.getInstance( type ) );
@@ -55,6 +57,14 @@ public class FieldsToolPaletteCoreComposite extends MembersToolPaletteCoreCompos
 
 	public ManagedFieldsComposite getManagedFieldsComposite() {
 		return this.managedFieldsComposite;
+	}
+
+	public org.lgna.croquet.PlainStringValue getManagedLabel() {
+		return this.managedLabel;
+	}
+
+	public org.lgna.croquet.PlainStringValue getUnmanagedLabel() {
+		return this.unmanagedLabel;
 	}
 
 	@Override

@@ -76,14 +76,17 @@ public abstract class LabelMenuSeparatorModel extends StandardMenuItemPrepModel 
 	}
 
 	@Override
-	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
+	public org.lgna.croquet.components.MenuTextSeparator createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+		this.initializeIfNecessary();
 		String name = this.getName();
 		if( ( name != null ) || ( this.icon != null ) ) {
-			rv.addSeparator( new org.lgna.croquet.components.MenuTextSeparator( this ) );
+			org.lgna.croquet.components.MenuTextSeparator menuTextSeparator = new org.lgna.croquet.components.MenuTextSeparator( this );
+			menuItemContainer.addSeparator( menuTextSeparator );
+			return menuTextSeparator;
 		} else {
-			rv.addSeparator();
+			menuItemContainer.addSeparator();
+			return null;
 		}
-		return rv;
 	}
 
 	@Override

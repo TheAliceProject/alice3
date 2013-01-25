@@ -46,20 +46,36 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class TypeIcon implements javax.swing.Icon {
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
-	private TypeBorder border;
+	private static final int INDENT_PER_DEPTH = 12;
+	private static final int BONUS_GAP = 4;
+	private final org.lgna.project.ast.AbstractType<?, ?, ?> type;
+	private final TypeBorder border;
+	private final boolean isIndentForDepthAndMemberCountTextDesired;
+	private final java.awt.Font typeFont;
+	private final java.awt.Font bonusFont;
 
 	public static TypeIcon getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		return new TypeIcon( type );
 	}
 
-	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type, boolean isIndentForDepthAndMemberCountTextDesired, java.awt.Font typeFont, java.awt.Font bonusFont ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
+		this.isIndentForDepthAndMemberCountTextDesired = isIndentForDepthAndMemberCountTextDesired;
+		this.typeFont = typeFont;
+		this.bonusFont = bonusFont;
 	}
 
-	protected java.awt.Font getFont() {
-		return javax.swing.UIManager.getFont( "defaultFont" );
+	public TypeIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		this( type, false, javax.swing.UIManager.getFont( "defaultFont" ), null );
+	}
+
+	protected java.awt.Font getTypeFont() {
+		return this.typeFont;
+	}
+
+	public java.awt.Font getBonusFont() {
+		return this.bonusFont;
 	}
 
 	protected java.awt.Color getTextColor( java.awt.Component c ) {
@@ -70,24 +86,42 @@ public class TypeIcon implements javax.swing.Icon {
 		}
 	}
 
-	private String getText() {
+	private String getTypeText() {
 		org.alice.ide.formatter.Formatter formatter = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue();
 		return formatter.getTextForType( this.type );
 	}
 
-	public int getIconWidth() {
-		return this.getBorderWidth();
+	private String getBonusText() {
+		if( isIndentForDepthAndMemberCountTextDesired ) {
+			if( this.type instanceof org.lgna.project.ast.NamedUserType ) {
+				org.lgna.project.ast.NamedUserType userType = (org.lgna.project.ast.NamedUserType)this.type;
+				int count = 0;
+				for( org.lgna.project.ast.UserMethod method : userType.methods ) {
+					if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
+						count += 1;
+					}
+				}
+				count += userType.fields.size();
+				if( count > 0 ) {
+					StringBuilder sb = new StringBuilder();
+					sb.append( "(" );
+					sb.append( count );
+					sb.append( ")" );
+					return sb.toString();
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
-	public int getIconHeight() {
-		return this.getBorderHeight();
-	}
-
-	private java.awt.geom.Rectangle2D getTextBounds() {
-		String text = this.getText();
+	private static java.awt.geom.Rectangle2D getTextBounds( String text, java.awt.Font font ) {
 		if( text != null ) {
 			java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
-			java.awt.Font font = this.getFont();
 			java.awt.FontMetrics fm;
 			if( font != null ) {
 				fm = g.getFontMetrics( font );
@@ -100,31 +134,88 @@ public class TypeIcon implements javax.swing.Icon {
 		}
 	}
 
+	private java.awt.geom.Rectangle2D getTypeTextBounds() {
+		return getTextBounds( this.getTypeText(), this.getTypeFont() );
+	}
+
+	private java.awt.geom.Rectangle2D getBonusTextBounds() {
+		return getTextBounds( this.getBonusText(), this.getBonusFont() );
+	}
+
 	private int getBorderWidth() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.geom.Rectangle2D bounds = this.getTextBounds();
-		return insets.left + insets.right + (int)bounds.getWidth();
+		java.awt.geom.Rectangle2D typeTextBounds = this.getTypeTextBounds();
+		return insets.left + insets.right + (int)typeTextBounds.getWidth();
 	}
 
 	private int getBorderHeight() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.geom.Rectangle2D bounds = this.getTextBounds();
+		java.awt.geom.Rectangle2D bounds = this.getTypeTextBounds();
 		return insets.top + insets.bottom + (int)bounds.getHeight();
 	}
 
+	public int getIconWidth() {
+		int rv = this.getBorderWidth();
+		if( this.isIndentForDepthAndMemberCountTextDesired ) {
+			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( type );
+			if( depth > 0 ) {
+				rv += ( depth * INDENT_PER_DEPTH );
+			}
+		}
+		if( this.isIndentForDepthAndMemberCountTextDesired ) {
+			rv += BONUS_GAP;
+			java.awt.geom.Rectangle2D bonusTextBounds = this.getBonusTextBounds();
+			rv += (int)bonusTextBounds.getWidth();
+		}
+		return rv;
+	}
+
+	public int getIconHeight() {
+		return this.getBorderHeight();
+	}
+
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+
+		//g.setColor( java.awt.Color.BLUE );
+		//g.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
+
+		int typePlusBonusWidth = this.getIconWidth();
+		if( this.isIndentForDepthAndMemberCountTextDesired ) {
+			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( type );
+			if( depth > 0 ) {
+				int dx = depth * INDENT_PER_DEPTH;
+				g2.translate( dx, 0 );
+				typePlusBonusWidth -= dx;
+				typePlusBonusWidth -= BONUS_GAP;
+			}
+		}
+
 		int w = this.getBorderWidth();
 		int h = this.getBorderHeight();
+
+		//g.setColor( java.awt.Color.GREEN );
+		//g.fillRect( x, y, typePlusBonusWidth, this.getIconHeight() );
+
+		//g.setColor( java.awt.Color.RED );
+		//g.fillRect( x, y, w, h );
 		this.border.paintBorder( c, g, x, y, w, h );
 		g.setColor( this.getTextColor( c ) );
 
-		java.awt.Font font = g.getFont();
-		if( font.isItalic() ) {
-			g.setFont( edu.cmu.cs.dennisc.java.awt.FontUtilities.deriveFont( font, edu.cmu.cs.dennisc.java.awt.font.TextPosture.REGULAR ) );
+		java.awt.Font prevFont = g.getFont();
+		g.setFont( this.getTypeFont() );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getTypeText(), x, y, w, h );
+
+		if( this.isIndentForDepthAndMemberCountTextDesired ) {
+			if( this.bonusFont != null ) {
+				g.setFont( this.bonusFont );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getBonusText(), x + w + BONUS_GAP, y, typePlusBonusWidth - w, h );
+			}
 		}
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getText(), x, y, w, h );
-		if( font.isItalic() ) {
-			g.setFont( font );
-		}
+		g.setFont( prevFont );
+		g2.setTransform( prevTransform );
 	}
 }

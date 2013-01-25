@@ -175,7 +175,9 @@ public class InstanceFactorySelectionPanel extends org.lgna.croquet.components.P
 			org.lgna.project.ast.NamedUserType sceneType = ide.getSceneType();
 			if( sceneType != null ) {
 				for( org.lgna.project.ast.UserField field : sceneType.fields ) {
-					buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) ) );
+					if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+						buttons.add( getButtonFor( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) ) );
+					}
 				}
 			}
 			for( InternalButton button : buttons ) {

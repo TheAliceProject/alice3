@@ -67,12 +67,18 @@ public class SceneTypeComposite extends org.lgna.croquet.SimpleComposite<org.ali
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.getView().addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+		org.alice.stageide.typecontext.components.SceneTypeView view = this.getView();
+		synchronized( view.getTreeLock() ) {
+			view.addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+		}
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		this.getView().removeComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+		org.alice.stageide.typecontext.components.SceneTypeView view = this.getView();
+		synchronized( view.getTreeLock() ) {
+			view.removeComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+		}
 		super.handlePostDeactivation();
 	}
 }

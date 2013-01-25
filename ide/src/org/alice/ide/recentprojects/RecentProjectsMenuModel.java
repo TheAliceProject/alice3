@@ -45,6 +45,7 @@ package org.alice.ide.recentprojects;
 import org.lgna.croquet.components.CascadeMenu;
 import org.lgna.croquet.components.CascadeMenuItem;
 import org.lgna.croquet.components.CheckBoxMenuItem;
+import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.Container;
 import org.lgna.croquet.components.Menu;
 import org.lgna.croquet.components.MenuItem;
@@ -82,8 +83,7 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 		if( models.size() == 0 ) {
 			models.add( NoRecentUrisSeparatorModel.getInstance() );
 		}
-		menuItemContainer.forgetAndRemoveAllMenuItems();
-		org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( menuItemContainer, models );
+		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( menuItemContainer, models );
 	}
 
 	//	@Override
@@ -113,6 +113,29 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 				}
 
 				public void removePopupMenuListener( javax.swing.event.PopupMenuListener listener ) {
+				}
+
+				public Component<?> getMenuComponent( int i ) {
+					javax.swing.MenuElement menuElement = jPopupMenu.getSubElements()[ i ];
+					if( menuElement instanceof java.awt.Component ) {
+						java.awt.Component awtComponent = (java.awt.Component)menuElement;
+						return Component.lookup( awtComponent );
+					} else {
+						return null;
+					}
+				}
+
+				public int getMenuComponentCount() {
+					return jPopupMenu.getSubElements().length;
+				}
+
+				public synchronized Component<?>[] getMenuComponents() {
+					final int N = this.getMenuComponentCount();
+					Component<?>[] rv = new Component<?>[ N ];
+					for( int i = 0; i < N; i++ ) {
+						rv[ i ] = this.getMenuComponent( i );
+					}
+					return rv;
 				}
 
 				public Container<?> getParent() {

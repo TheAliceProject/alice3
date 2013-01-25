@@ -95,6 +95,23 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 		};
 	}
 
+	public Component<?> getMenuComponent( int i ) {
+		return Component.lookup( this.getAwtComponent().getMenuComponent( i ) );
+	}
+
+	public int getMenuComponentCount() {
+		return this.getAwtComponent().getMenuComponentCount();
+	}
+
+	public synchronized Component<?>[] getMenuComponents() {
+		final int N = this.getMenuComponentCount();
+		Component<?>[] rv = new Component<?>[ N ];
+		for( int i = 0; i < N; i++ ) {
+			rv[ i ] = this.getMenuComponent( i );
+		}
+		return rv;
+	}
+
 	public final org.lgna.croquet.components.ViewController<?, ?> getViewController() {
 		return this;
 	}

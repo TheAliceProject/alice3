@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonResourceKey extends ResourceKey {
+public class PersonResourceKey extends InstanceCreatorKey {
 
 	private static final org.lgna.croquet.icon.IconFactory ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( org.alice.stageide.gallerybrowser.ResourceBasedTab.CREATE_PERSON_LARGE_ICON.getImage() );
 
@@ -58,6 +58,11 @@ public class PersonResourceKey extends ResourceKey {
 	}
 
 	private PersonResourceKey() {
+	}
+
+	@Override
+	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
+		return org.lgna.story.resources.sims2.PersonResource.class;
 	}
 
 	@Override
@@ -90,6 +95,11 @@ public class PersonResourceKey extends ResourceKey {
 
 	@Override
 	public String[] getGroupTags() {
+		return null;
+	}
+
+	@Override
+	public String[] getThemeTags() {
 		return null;
 	}
 
