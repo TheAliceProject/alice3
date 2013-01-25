@@ -208,10 +208,6 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		private static java.awt.Stroke UNSELECTED_STROKE = new java.awt.BasicStroke( 2.0f );
 
 		protected static class JTitlesPanel extends javax.swing.JPanel {
-			public JTitlesPanel() {
-				this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-			}
-
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				java.awt.Dimension rv = super.getPreferredSize();

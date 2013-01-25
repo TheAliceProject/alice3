@@ -240,7 +240,6 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		} else {
 			rv = new javax.swing.JPanel();
 		}
-		rv.setLayout( new java.awt.BorderLayout() );
 		return rv;
 	}
 

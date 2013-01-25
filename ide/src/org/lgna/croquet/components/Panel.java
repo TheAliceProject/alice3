@@ -93,8 +93,14 @@ public abstract class Panel extends View<javax.swing.JPanel, org.lgna.croquet.Co
 	@Override
 	protected final javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = this.createJPanel();
-		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
-		rv.setLayout( layoutManager );
+		java.awt.LayoutManager prevLayoutManager = rv.getLayout();
+		java.awt.LayoutManager nextLayoutManager = this.createLayoutManager( rv );
+		if( prevLayoutManager instanceof java.awt.FlowLayout ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( prevLayoutManager, nextLayoutManager, rv.getComponentCount(), this );
+		}
+		rv.setLayout( nextLayoutManager );
 		return rv;
 	}
 
