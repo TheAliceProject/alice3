@@ -42,13 +42,12 @@
  */
 package org.alice.ide;
 
-import java.awt.Color;
-
 /**
  * @author Dennis Cosgrove
  */
 public class DefaultTheme implements Theme {
-	public static final java.awt.Color DEFAULT_TYPE_COLOR = new java.awt.Color( 0xFDF6C0 );
+	private static final java.awt.Color DEFAULT_NOUN_COLOR = new java.awt.Color( 0xFDF6C0 );
+	public static final java.awt.Color DEFAULT_TYPE_COLOR = DEFAULT_NOUN_COLOR;
 	public static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xE6D4A3 );
 	public static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 0xD6AC8B );
 
@@ -148,8 +147,7 @@ public class DefaultTheme implements Theme {
 				if( org.lgna.project.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
 					return java.awt.Color.RED;
 				} else {
-					//return new java.awt.Color( 255, 255, 210 );
-					return new java.awt.Color( 0xfdf6c0 );
+					return DEFAULT_NOUN_COLOR;
 				}
 			}
 		} else if( org.lgna.project.ast.AbstractField.class.isAssignableFrom( cls ) ) {
@@ -210,24 +208,19 @@ public class DefaultTheme implements Theme {
 		}
 	}
 
-	public Color getSelectedColor()
-	{
+	public java.awt.Color getSelectedColor() {
 		return DEFAULT_SELECTED_COLOR;
 	}
 
-	public Color getUnselectedColor()
-	{
+	public java.awt.Color getUnselectedColor() {
 		return DEFAULT_UNSELECTED_COLOR;
 	}
 
-	public Color getPrimaryBackgroundColor()
-	{
+	public java.awt.Color getPrimaryBackgroundColor() {
 		return DEFAULT_PRIMARY_BACKGROUND_COLOR;
 	}
 
-	public Color getSecondaryBackgroundColor()
-	{
-		// TODO Auto-generated method stub
+	public java.awt.Color getSecondaryBackgroundColor() {
 		return DEFAULT_SECONDARY_BACKGROUND_COLOR;
 	}
 }
