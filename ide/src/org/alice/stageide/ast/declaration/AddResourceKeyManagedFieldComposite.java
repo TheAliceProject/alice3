@@ -95,6 +95,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 
 	private class InitializerContext implements ExpressionCascadeContext {
 		public org.lgna.project.ast.Expression getPreviousExpression() {
+			//todo: investigate
 			//org.lgna.project.ast.UserField field = getPreviewValue();
 			//return field.initializer.getValue();
 			return getInitializer();
@@ -124,31 +125,13 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-			//			rv.add( org.alice.ide.croquet.models.cascade.PreviousExpressionItselfFillIn.getInstance( getValueComponentType() ) );
-			//			rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			org.lgna.project.ast.Expression initializer = getInitializer();
 			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
 				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
 				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-				org.lgna.project.ast.AbstractType<?, ?, ?> parameter0Type = org.alice.ide.typemanager.ConstructorArgumentUtilities.getParameter0Type( constructor );
-				if( parameter0Type != null ) {
-					for( org.lgna.project.ast.AbstractField field : parameter0Type.getDeclaredFields() ) {
-						if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
-							//todo: should this be identical? to?
-							if( parameter0Type.isAssignableFrom( field.getValueType() ) ) {
-								org.lgna.project.ast.FieldAccess fieldAccess = new org.lgna.project.ast.FieldAccess( new org.lgna.project.ast.TypeExpression( field.getDeclaringType() ), field );
-								org.lgna.project.ast.InstanceCreation instanceCreationI = org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, fieldAccess );
-								rv.add( new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn( instanceCreationI, false ) );
-							}
-						}
-					}
-				} else {
-					rv.add( new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn( instanceCreation, false ) );
-				}
+				rv.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillIn.getInstance( constructor ) );
 				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
-
 			}
-
 			rv.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
 		}
 	}
