@@ -95,8 +95,6 @@ public class TypeIcon implements javax.swing.Icon {
 		if( isIndentForDepthAndMemberCountTextDesired ) {
 			if( this.type instanceof org.lgna.project.ast.NamedUserType ) {
 				org.lgna.project.ast.NamedUserType userType = (org.lgna.project.ast.NamedUserType)this.type;
-				StringBuilder sb = new StringBuilder();
-				sb.append( "(" );
 				int count = 0;
 				for( org.lgna.project.ast.UserMethod method : userType.methods ) {
 					if( method.getManagementLevel() == org.lgna.project.ast.ManagementLevel.NONE ) {
@@ -104,9 +102,15 @@ public class TypeIcon implements javax.swing.Icon {
 					}
 				}
 				count += userType.fields.size();
-				sb.append( count );
-				sb.append( ")" );
-				return sb.toString();
+				if( count > 0 ) {
+					StringBuilder sb = new StringBuilder();
+					sb.append( "(" );
+					sb.append( count );
+					sb.append( ")" );
+					return sb.toString();
+				} else {
+					return null;
+				}
 			} else {
 				return null;
 			}
