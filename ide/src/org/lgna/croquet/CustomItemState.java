@@ -91,6 +91,18 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
+		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			super.prologue( trigger );
+			this.state.prologue( trigger );
+		}
+
+		@Override
+		protected void epilogue() {
+			this.state.epilogue();
+			super.epilogue();
+		}
+
+		@Override
 		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.CustomItemState<T>> rtRoot ) {
 			try {
 				//todo: investigate
@@ -123,6 +135,12 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 
 	@Override
 	protected void localize() {
+	}
+
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+
+	protected void epilogue() {
 	}
 
 	@Override

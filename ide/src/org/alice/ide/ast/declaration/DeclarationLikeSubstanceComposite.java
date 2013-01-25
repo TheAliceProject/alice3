@@ -132,6 +132,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			return org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type );
 		}
 
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		}
+
+		public void epilogue() {
+		}
+
 		private void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> node ) {
 			org.lgna.project.ast.NamedUserType type = node.getValue();
 			if( type != null ) {
@@ -225,6 +231,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			} else {
 				return null;
 			}
+		}
+
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		}
+
+		public void epilogue() {
 		}
 
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
@@ -518,6 +530,11 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 				falseOperation.setEnabled( isFinal == false );
 			}
 		}
+		if( this.initializerState != null ) {
+			//todo
+			this.initializerState.setValueTransactionlessly( this.getInitializerInitialValue() );
+		}
+
 		if( this.valueComponentTypeState != null ) {
 			this.valueComponentTypeState.setValueTransactionlessly( this.getValueComponentTypeInitialValue() );
 		}
@@ -527,12 +544,8 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		if( this.nameState != null ) {
 			this.nameState.setValueTransactionlessly( this.getNameInitialValue() );
 		}
-		if( this.initializerState != null ) {
-			//todo
-			this.initializerState.setValueTransactionlessly( this.getInitializerInitialValue() );
-		}
 
-		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {
+		if( this.isValueComponentTypeEditable() || this.isInitializerEditable() ) {
 			if( this.isValueIsArrayTypeEditable() ) {
 				this.valueIsArrayTypeState.addValueListener( this.isArrayValueTypeListener );
 			}
@@ -548,7 +561,7 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
-		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {
+		if( this.isValueComponentTypeEditable() || this.isInitializerEditable() ) {
 			if( this.isValueIsArrayTypeEditable() ) {
 				this.valueIsArrayTypeState.removeValueListener( this.isArrayValueTypeListener );
 			}

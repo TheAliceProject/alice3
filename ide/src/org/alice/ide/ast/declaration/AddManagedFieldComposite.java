@@ -118,6 +118,12 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 			this.setter = setter;
 		}
 
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		}
+
+		public void epilogue() {
+		}
+
 		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
 			//todo
 			return null;
