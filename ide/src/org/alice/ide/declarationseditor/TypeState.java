@@ -46,12 +46,15 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
+
+//todo: delete
+@Deprecated
 public class TypeState extends org.lgna.croquet.DefaultCustomItemState<org.lgna.project.ast.NamedUserType> {
 	private static class SingletonHolder {
 		private static TypeState instance = new TypeState();
 	}
 
-	public static TypeState getInstance() {
+	private static TypeState getInstance() {
 		return SingletonHolder.instance;
 	}
 

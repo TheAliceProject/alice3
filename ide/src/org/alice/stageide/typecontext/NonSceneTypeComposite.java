@@ -43,10 +43,10 @@
 
 package org.alice.stageide.typecontext;
 
-enum SceneTypeCallable implements java.util.concurrent.Callable<org.lgna.project.ast.NamedUserType> {
+enum SceneTypeCallable implements java.util.concurrent.Callable<org.alice.ide.declarationseditor.DeclarationComposite> {
 	SINGLEON() {
-		public org.lgna.project.ast.NamedUserType call() throws java.lang.Exception {
-			return org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
+		public org.alice.ide.declarationseditor.TypeComposite call() throws java.lang.Exception {
+			return org.alice.ide.declarationseditor.TypeComposite.getInstance( org.alice.stageide.StageIDE.getActiveInstance().getSceneType() );
 		}
 	};
 }
@@ -68,7 +68,7 @@ public class NonSceneTypeComposite extends org.lgna.croquet.SimpleComposite<org.
 	}
 
 	public org.lgna.croquet.Operation getSelectSceneTypeOperation() {
-		return org.alice.ide.declarationseditor.TypeState.getInstance().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
+		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
 	}
 
 	@Override
