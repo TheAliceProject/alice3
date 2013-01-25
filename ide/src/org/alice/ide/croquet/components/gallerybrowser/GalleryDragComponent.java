@@ -91,7 +91,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		super( model );
 
 		if( model.isInstanceCreator() ) {
-			this.baseColor = new java.awt.Color( 0xf7e4b6 );
+			this.baseColor = org.alice.ide.DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
 			this.highlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 1.4 );
 			this.shadowColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 0.9, 0.8 );
 			this.activeHighlightColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.baseColor, 1.0, 1.0, 2.0 );

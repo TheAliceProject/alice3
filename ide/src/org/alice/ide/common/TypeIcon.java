@@ -206,7 +206,7 @@ public class TypeIcon implements javax.swing.Icon {
 		g.setColor( this.getTextColor( c ) );
 
 		java.awt.Font prevFont = g.getFont();
-		g.setFont( this.typeFont );
+		g.setFont( this.getTypeFont() );
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getTypeText(), x, y, w, h );
 
 		if( this.isIndentForDepthAndMemberCountTextDesired ) {

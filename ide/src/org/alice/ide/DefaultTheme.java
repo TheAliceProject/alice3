@@ -48,11 +48,12 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class DefaultTheme implements Theme {
-	private static final java.awt.Color DEFAULT_TYPE_COLOR = new java.awt.Color( 0xe2ba84 );
-	private static final java.awt.Color DEFAULT_PROCEDURE_COLOR = new java.awt.Color( 0xb2b7d9 );
-	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xb0c9a4 );
-	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xadc0ab );
-	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 230, 230, 210 );
+	public static final java.awt.Color DEFAULT_TYPE_COLOR = new java.awt.Color( 0xFDF6C0 );
+	public static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xE6D4A3 );
+	public static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 0xD6AC8B );
+
+	public static final java.awt.Color DEFAULT_PROCEDURE_COLOR = new java.awt.Color( 0xB2B7D9 );
+	public static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xADCF95 );
 	//	private static final java.awt.Color DEFAULT_EVENT_COLOR = new Color( 100, 200, 100 );
 	//	private static final java.awt.Color DEFAULT_EVENT_BODY_COLOR = DEFAULT_EVENT_COLOR.brighter().brighter(); //new Color( 150, 225, 150 );
 	private static final java.awt.Color DEFAULT_EVENT_COLOR = new java.awt.Color( 0xd3d7f0 );
@@ -65,6 +66,10 @@ public class DefaultTheme implements Theme {
 
 	public java.awt.Color getTypeColor() {
 		return DEFAULT_TYPE_COLOR;
+	}
+
+	public java.awt.Color getMutedTypeColor() {
+		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getTypeColor(), 1.0, 0.95, 0.95 );
 	}
 
 	public java.awt.Color getProcedureColor() {
@@ -135,7 +140,8 @@ public class DefaultTheme implements Theme {
 			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.InfixExpression.class, org.lgna.project.ast.LogicalComplement.class, org.lgna.project.ast.StringConcatenation.class ) ) {
 				return new java.awt.Color( 0xDEEBD3 );
 			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, org.lgna.project.ast.InstanceCreation.class, org.lgna.project.ast.ArrayInstanceCreation.class ) ) {
-				return new java.awt.Color( 0xbdcfb3 );
+				//return new java.awt.Color( 0xbdcfb3 );
+				return DEFAULT_CONSTRUCTOR_COLOR;
 			} else if( org.lgna.project.ast.ResourceExpression.class.isAssignableFrom( cls ) ) {
 				return new java.awt.Color( 0xffffff );
 			} else {
