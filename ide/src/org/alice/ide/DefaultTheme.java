@@ -69,7 +69,7 @@ public class DefaultTheme implements Theme {
 	}
 
 	public java.awt.Color getMutedTypeColor() {
-		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getTypeColor(), 1.0, 0.95, 0.95 );
+		return edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( this.getTypeColor(), 1.0, 0.9, 0.9 );
 	}
 
 	public java.awt.Color getProcedureColor() {
