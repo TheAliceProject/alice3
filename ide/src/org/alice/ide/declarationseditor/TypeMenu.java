@@ -138,9 +138,8 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		models.add( operation.getMenuItemPrepModel() );
 
 		if( org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors.getInstance().getValue() ) {
-			org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
-			if( constructor != null ) {
-				models.add( SEPARATOR );
+			models.add( SEPARATOR );
+			for( org.lgna.project.ast.NamedUserConstructor constructor : type.getDeclaredConstructors() ) {
 				org.lgna.croquet.StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForConstructor( constructor ).getMenuItemPrepModel();
 				if( data.contains( DeclarationComposite.getInstance( constructor ) ) ) {
 					set.add( model );
