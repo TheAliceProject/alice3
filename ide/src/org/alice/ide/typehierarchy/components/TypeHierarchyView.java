@@ -159,7 +159,8 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	@Override
-	protected void handleDisplayable() {
+	public void handleCompositePreActivation() {
+		super.handleCompositePreActivation();
 		super.handleDisplayable();
 		org.alice.ide.ast.AstEventManager.addAndInvokeTypeHierarchyListener( this.typeHierarchyListener );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeMetaStateValueListener( this.typeListener, null );
@@ -168,12 +169,12 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 	}
 
 	@Override
-	protected void handleUndisplayable() {
+	public void handleCompositePostDeactivation() {
 		this.jTree.removeTreeSelectionListener( this.treeSelectionListener );
 		this.jTree.removeKeyListener( this.keyListener );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeMetaStateValueListener( this.typeListener );
 		org.alice.ide.ast.AstEventManager.removeTypeHierarchyListener( this.typeHierarchyListener );
-		super.handleUndisplayable();
+		super.handleCompositePostDeactivation();
 	}
 
 	@Override
