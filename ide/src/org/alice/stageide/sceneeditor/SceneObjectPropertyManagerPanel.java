@@ -385,138 +385,141 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		if( this.selectedInstance != null ) {
 			List<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?>> propertyAdapters = new LinkedList<org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?>>();
 
-			Iterable<org.lgna.project.ast.JavaMethod> getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters( this.selectedInstance.getValueType() );
-			JavaType declaringType = this.selectedInstance.getValueType().getFirstEncounteredJavaType();
-			boolean isScene = this.selectedImp instanceof SceneImp;
+			org.lgna.project.ast.AbstractType<?, ?, ?> instanceValueType = this.selectedInstance.getValueType();
+			if( instanceValueType != null ) {
+				Iterable<org.lgna.project.ast.JavaMethod> getterMethods = org.lgna.project.ast.AstUtilities.getPersistentPropertyGetters( instanceValueType );
+				JavaType declaringType = this.selectedInstance.getValueType().getFirstEncounteredJavaType();
+				boolean isScene = this.selectedImp instanceof SceneImp;
 
-			org.lgna.project.ast.UserField selectedField = null;
-			if( ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
-				org.alice.ide.instancefactory.ThisFieldAccessFactory fieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.selectedInstance;
-				selectedField = fieldAccessFactory.getField();
-			}
-
-			propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
-
-			org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
-			boolean isPerson = false;
-			if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
-				JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
-				if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
-				{
-					isPerson = true;
+				org.lgna.project.ast.UserField selectedField = null;
+				if( ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
+					org.alice.ide.instancefactory.ThisFieldAccessFactory fieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.selectedInstance;
+					selectedField = fieldAccessFactory.getField();
 				}
-			}
-			if( ( fieldInitializerState != null ) && !isPerson ) {
-				propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
-			}
 
-			for( org.lgna.project.ast.JavaMethod getter : getterMethods )
-			{
-				org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter( getter, declaringType, this.selectedImp, selectedField );
-				if( adapter != null )
-				{
-					propertyAdapters.add( adapter );
-				}
-			}
+				propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
 
-			if( this.selectedEntity instanceof SMovableTurnable )
-			{
-				propertyAdapters.add( new MoveableTurnableTranslationAdapter( (SMovableTurnable)this.selectedEntity, null ) );
-			}
-			if( ( this.selectedEntity instanceof SModel ) && ( this.selectedImp instanceof ModelImp ) )
-			{
-				propertyAdapters.add( new ModelSizeAdapter( (ModelImp)this.selectedImp, null ) );
-			}
-
-			LabelValueControllerPair fieldNamePair = null;
-
-			if( propertyAdapters.size() != 0 )
-			{
-				int mainPropertyCount = 0;
-				int extraPropertyCount = 0;
-				//Add all the extra properties to the extra panel and find the name property adapter
-				for( org.alice.ide.properties.adapter.AbstractPropertyAdapter propertyAdapter : propertyAdapters )
-				{
-
-					PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter( propertyAdapter );
-					assert propertyController != null;
-					LabelValueControllerPair matchingLabelController = new LabelValueControllerPair( createLabel( propertyAdapter.getRepr() + " = " ), propertyController );
-					assert matchingLabelController != null;
-					if( propertyAdapter instanceof SelectedInstanceAdapter )
+				org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
+				boolean isPerson = false;
+				if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
+					JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
+					if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
 					{
-						//Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
-						fieldNamePair = matchingLabelController;
-						//TODO: Localize this
-						fieldNamePair.label.setText( "Selected: " );
+						isPerson = true;
+					}
+				}
+				if( ( fieldInitializerState != null ) && !isPerson ) {
+					propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
+				}
+
+				for( org.lgna.project.ast.JavaMethod getter : getterMethods )
+				{
+					org.alice.ide.properties.adapter.AbstractPropertyAdapter<?, ?> adapter = getPropertyAdapterForGetter( getter, declaringType, this.selectedImp, selectedField );
+					if( adapter != null )
+					{
+						propertyAdapters.add( adapter );
+					}
+				}
+
+				if( this.selectedEntity instanceof SMovableTurnable )
+				{
+					propertyAdapters.add( new MoveableTurnableTranslationAdapter( (SMovableTurnable)this.selectedEntity, null ) );
+				}
+				if( ( this.selectedEntity instanceof SModel ) && ( this.selectedImp instanceof ModelImp ) )
+				{
+					propertyAdapters.add( new ModelSizeAdapter( (ModelImp)this.selectedImp, null ) );
+				}
+
+				LabelValueControllerPair fieldNamePair = null;
+
+				if( propertyAdapters.size() != 0 )
+				{
+					int mainPropertyCount = 0;
+					int extraPropertyCount = 0;
+					//Add all the extra properties to the extra panel and find the name property adapter
+					for( org.alice.ide.properties.adapter.AbstractPropertyAdapter propertyAdapter : propertyAdapters )
+					{
+
+						PropertyAdapterController<?> propertyController = AdapterControllerUtilities.getValuePanelForPropertyAdapter( propertyAdapter );
+						assert propertyController != null;
+						LabelValueControllerPair matchingLabelController = new LabelValueControllerPair( createLabel( propertyAdapter.getRepr() + " = " ), propertyController );
+						assert matchingLabelController != null;
+						if( propertyAdapter instanceof SelectedInstanceAdapter )
+						{
+							//Don't add the fieldNameAdapter, just hold onto it so we can add it to the main panel later
+							fieldNamePair = matchingLabelController;
+							//TODO: Localize this
+							fieldNamePair.label.setText( "Selected: " );
+						}
+						else
+						{
+							this.addPropertyToPanel( matchingLabelController, this.morePropertiesPanel, extraPropertyCount );
+							extraPropertyCount++;
+						}
+						this.activeControllers.add( matchingLabelController );
+					}
+
+					org.lgna.project.ast.AbstractType<?, ?, ?> valueType;
+					//Setup the primary properties
+					if( this.selectedInstance != null )
+					{
+						valueType = this.selectedInstance.getValueType();
 					}
 					else
 					{
-						this.addPropertyToPanel( matchingLabelController, this.morePropertiesPanel, extraPropertyCount );
-						extraPropertyCount++;
-					}
-					this.activeControllers.add( matchingLabelController );
-				}
-
-				org.lgna.project.ast.AbstractType<?, ?, ?> valueType;
-				//Setup the primary properties
-				if( this.selectedInstance != null )
-				{
-					valueType = this.selectedInstance.getValueType();
-				}
-				else
-				{
-					valueType = null;
-				}
-
-				//Add the object's name
-				if( fieldNamePair != null )
-				{
-					this.addPropertyToPanel( fieldNamePair, this, mainPropertyCount++ );
-				}
-				//Add the object's class
-				this.addNameAndControllerToPanel( this.classNameLabel, org.alice.ide.common.TypeComponent.createInstance( valueType ), this, mainPropertyCount++ );
-
-				if( ( this.selectedImp instanceof JointedModelImp ) && ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
-					org.alice.ide.instancefactory.ThisFieldAccessFactory fieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.selectedInstance;
-					if( this.showJointsState != null ) {
-						this.showJointsState.removeValueListener( this.showJointsStateObserver );
+						valueType = null;
 					}
 
-					this.showJointsState = ShowJointedModelJointAxesState.getInstance( fieldAccessFactory.getField() );
-					this.showJointsState.addValueListener( this.showJointsStateObserver );
-					this.addNameAndControllerToPanel( createLabel( "Show Joints: " ), this.showJointsState.createCheckBox(), this, mainPropertyCount++ );
-				}
+					//Add the object's name
+					if( fieldNamePair != null )
+					{
+						this.addPropertyToPanel( fieldNamePair, this, mainPropertyCount++ );
+					}
+					//Add the object's class
+					this.addNameAndControllerToPanel( this.classNameLabel, org.alice.ide.common.TypeComponent.createInstance( valueType ), this, mainPropertyCount++ );
 
-				//Lastly, add the extra palette if there are any extra properties
-				if( extraPropertyCount > 0 )
-				{
-					this.addComponent( this.morePropertiesPanel, new GridBagConstraints(
+					if( ( this.selectedImp instanceof JointedModelImp ) && ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
+						org.alice.ide.instancefactory.ThisFieldAccessFactory fieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.selectedInstance;
+						if( this.showJointsState != null ) {
+							this.showJointsState.removeValueListener( this.showJointsStateObserver );
+						}
+
+						this.showJointsState = ShowJointedModelJointAxesState.getInstance( fieldAccessFactory.getField() );
+						this.showJointsState.addValueListener( this.showJointsStateObserver );
+						this.addNameAndControllerToPanel( createLabel( "Show Joints: " ), this.showJointsState.createCheckBox(), this, mainPropertyCount++ );
+					}
+
+					//Lastly, add the extra palette if there are any extra properties
+					if( extraPropertyCount > 0 )
+					{
+						this.addComponent( this.morePropertiesPanel, new GridBagConstraints(
+								0, //gridX
+								mainPropertyCount++, //gridY
+								2, //gridWidth
+								1, //gridHeight
+								1.0, //weightX
+								0.0, //weightY
+								GridBagConstraints.WEST, //anchor 
+								GridBagConstraints.HORIZONTAL, //fill
+								new Insets( 4, 0, 0, 0 ), // insets (top, left, bottom, right)
+								0, //ipadX
+								0 ) //ipadY
+						);
+					}
+					this.addComponent( BoxUtilities.createVerticalGlue(), new GridBagConstraints(
 							0, //gridX
 							mainPropertyCount++, //gridY
 							2, //gridWidth
 							1, //gridHeight
 							1.0, //weightX
-							0.0, //weightY
-							GridBagConstraints.WEST, //anchor 
-							GridBagConstraints.HORIZONTAL, //fill
-							new Insets( 4, 0, 0, 0 ), // insets (top, left, bottom, right)
+							1.0, //weightY
+							GridBagConstraints.CENTER, //anchor 
+							GridBagConstraints.VERTICAL, //fill
+							new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
 							0, //ipadX
 							0 ) //ipadY
 					);
 				}
-				this.addComponent( BoxUtilities.createVerticalGlue(), new GridBagConstraints(
-						0, //gridX
-						mainPropertyCount++, //gridY
-						2, //gridWidth
-						1, //gridHeight
-						1.0, //weightX
-						1.0, //weightY
-						GridBagConstraints.CENTER, //anchor 
-						GridBagConstraints.VERTICAL, //fill
-						new Insets( 0, 0, 0, 0 ), // insets (top, left, bottom, right)
-						0, //ipadX
-						0 ) //ipadY
-				);
 			}
 		}
 	}

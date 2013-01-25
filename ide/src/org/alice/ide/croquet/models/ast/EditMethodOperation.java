@@ -82,9 +82,9 @@ public class EditMethodOperation extends EditCodeOperation<org.lgna.project.ast.
 		return getInstance( method, IsLocalizedToEdit.TRUE );
 	}
 
-	public static org.lgna.croquet.Operation getLocalizedToNameInstance( org.lgna.project.ast.UserMethod method ) {
-		return getInstance( method, IsLocalizedToEdit.FALSE );
-	}
+	//	public static org.lgna.croquet.Operation getLocalizedToNameInstance( org.lgna.project.ast.UserMethod method ) {
+	//		return getInstance( method, IsLocalizedToEdit.FALSE );
+	//	}
 
 	private final IsLocalizedToEdit isLocalizedToEdit;
 

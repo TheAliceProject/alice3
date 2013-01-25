@@ -67,9 +67,9 @@ public class EditConstructorOperation extends EditCodeOperation<org.lgna.project
 		return getInstance( constructor, IsLocalizedToEdit.TRUE );
 	}
 
-	public static org.lgna.croquet.Operation getLocalizedToConstructorInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
-		return getInstance( constructor, IsLocalizedToEdit.FALSE );
-	}
+	//	public static org.lgna.croquet.Operation getLocalizedToConstructorInstance( org.lgna.project.ast.NamedUserConstructor constructor ) {
+	//		return getInstance( constructor, IsLocalizedToEdit.FALSE );
+	//	}
 
 	private final IsLocalizedToEdit isLocalizedToEdit;
 
