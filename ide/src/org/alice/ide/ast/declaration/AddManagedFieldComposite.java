@@ -142,6 +142,10 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		}
 	}
 
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 updateInitialTransformIfNecessary( edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform ) {
+		return initialTransform;
+	}
+
 	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform = null;
 		org.lgna.croquet.DropSite dropSite = step.findDropSite();
@@ -151,6 +155,7 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 		} else {
 			initialTransform = null;
 		}
+		initialTransform = this.updateInitialTransformIfNecessary( initialTransform );
 		org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = org.alice.ide.IDE.getActiveInstance().getSceneEditor();
 		org.lgna.project.ast.Statement[] doStatements = sceneEditor.getDoStatementsForAddField( field, initialTransform );
 		for( org.lgna.project.ast.Statement s : doStatements ) {
