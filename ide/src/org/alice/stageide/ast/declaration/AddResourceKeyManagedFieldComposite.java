@@ -70,7 +70,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		super( java.util.UUID.fromString( "ae05629a-0b90-4670-bc20-0279acbbc164" ), new FieldDetailsBuilder()
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.EDITABLE, resourceKey.createInstanceCreation() )
+				.initializer( ApplicabilityStatus.EDITABLE, resourceKey != null ? resourceKey.createInstanceCreation() : null )
 				.build() );
 		this.getInitializerState().addAndInvokeValueListener( initializerObserver );
 	}

@@ -159,11 +159,11 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 				models.add( ManagedFieldsSeparator.getInstance() );
 				models.addAll( managedFieldModels );
 			}
-			final boolean IS_SHOW_ME_HOW_PREFERRED = true;
+			final boolean IS_SHOW_ME_HOW_PREFERRED = false;
 			if( IS_SHOW_ME_HOW_PREFERRED ) {
 				models.add( org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
 			} else {
-				models.add( org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance().getMenuItemPrepModel() );
+				models.add( new org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite( null ).getOperation().getMenuItemPrepModel() );
 			}
 		}
 
