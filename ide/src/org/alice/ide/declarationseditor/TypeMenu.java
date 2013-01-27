@@ -163,7 +163,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			if( IS_SHOW_ME_HOW_PREFERRED ) {
 				models.add( org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
 			} else {
-				models.add( new org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite( null ).getOperation().getMenuItemPrepModel() );
+				models.add( org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance().getOperation().getMenuItemPrepModel() );
 			}
 		}
 

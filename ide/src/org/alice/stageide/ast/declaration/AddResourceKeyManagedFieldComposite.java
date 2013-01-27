@@ -48,6 +48,15 @@ import org.alice.ide.cascade.ExpressionCascadeContext;
  * @author Dennis Cosgrove
  */
 public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.declaration.AddManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddResourceKeyManagedFieldComposite instance = new AddResourceKeyManagedFieldComposite();
+	}
+
+	public static AddResourceKeyManagedFieldComposite getInstance() {
+		SingletonHolder.instance.setResourceKeyToBeUsedByGetInitializerInitialValue( null );
+		return SingletonHolder.instance;
+	}
+
 	private static org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( org.lgna.project.ast.Expression expression ) {
 		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
 			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
@@ -66,13 +75,24 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 	};
 
-	public AddResourceKeyManagedFieldComposite( org.alice.stageide.modelresource.ResourceKey resourceKey ) {
+	private org.lgna.project.ast.InstanceCreation initialInstanceCreation;
+
+	private AddResourceKeyManagedFieldComposite() {
 		super( java.util.UUID.fromString( "ae05629a-0b90-4670-bc20-0279acbbc164" ), new FieldDetailsBuilder()
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.EDITABLE, resourceKey != null ? resourceKey.createInstanceCreation() : null )
+				.initializer( ApplicabilityStatus.EDITABLE, null )
 				.build() );
 		this.getInitializerState().addAndInvokeValueListener( initializerObserver );
+	}
+
+	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey ) {
+		this.initialInstanceCreation = resourceKey != null ? resourceKey.createInstanceCreation() : null;
+	}
+
+	@Override
+	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+		return this.initialInstanceCreation;
 	}
 
 	@Override
