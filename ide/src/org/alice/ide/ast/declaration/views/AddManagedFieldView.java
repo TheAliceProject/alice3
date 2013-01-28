@@ -57,7 +57,9 @@ public class AddManagedFieldView extends AddFieldView {
 		if( composite.getInitialPropertyValuesToolPaletteCoreComposite().getInitialPropertyValueExpressionStateCount() > 0 ) {
 			org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getInitialPropertyValuesToolPaletteCoreComposite().getOuterComposite().getView();
 			toolPaletteView.getTitle().setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
-			rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPaletteView ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
+			//rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPaletteView ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
+			toolPaletteView.setBackgroundColor( this.getBackgroundColor() );
+			rv.addCenterComponent( toolPaletteView );
 		}
 		return rv;
 	}
