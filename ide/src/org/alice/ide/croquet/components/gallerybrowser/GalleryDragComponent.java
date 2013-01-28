@@ -127,7 +127,6 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 			}
 		}
 
-		this.setLeftButtonClickModel( model.getLeftButtonClickModel() );
 		org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 		label.setText( model.getText() );
 		org.lgna.croquet.icon.IconFactory iconFactory = model.getIconFactory();
@@ -181,6 +180,16 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		super.handleMouseClicked( e );
 		int button = e.getButton();
 		switch( button ) {
+		case java.awt.event.MouseEvent.BUTTON1:
+			switch( e.getClickCount() ) {
+			case 1:
+				org.lgna.croquet.Model leftButtonClickModel = this.getModel().getLeftButtonClickModel();
+				if( leftButtonClickModel != null ) {
+					leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
+				}
+				break;
+			}
+			break;
 		case 4:
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: back" );
 			break;

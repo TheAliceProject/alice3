@@ -53,7 +53,6 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 	}
 
 	public static AddResourceKeyManagedFieldComposite getInstance() {
-		SingletonHolder.instance.setResourceKeyToBeUsedByGetInitializerInitialValue( null );
 		return SingletonHolder.instance;
 	}
 
@@ -161,4 +160,9 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		return new ResourceKeyInitializerCustomizer();
 	}
 
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePostHideDialog( completionStep );
+		this.initialInstanceCreation = null;
+	}
 }
