@@ -69,11 +69,6 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
-		return edu.cmu.cs.dennisc.java.awt.BevelState.SUNKEN;
-	}
-
-	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		return true;
 	}
