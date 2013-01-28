@@ -52,10 +52,11 @@ public class MethodView extends MemberView {
 			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( method.getReturnType() ) );
 			this.addComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 		}
-		org.lgna.croquet.Operation operation = org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToEditInstance( method );
+		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForMethod( method );
 		org.lgna.croquet.components.Hyperlink hyperlink = operation.createHyperlink();
 		hyperlink.scaleFont( MembersView.NAME_FONT_SCALE );
-		hyperlink.setClobberText( method.getName() );
+		//hyperlink.setClobberText( method.getName() );
 		this.addComponent( hyperlink );
 	}
 }

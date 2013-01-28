@@ -175,7 +175,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		this.refresh();
 		this.mapUriToUriProjectPair.clear();
 		if( this.sideSubComposite != null ) {
-			this.metaState.activate( completionStep );
+			this.metaState.pushActivation( completionStep );
 			this.metaState.addMetaStateValueListener( this.metaUriListener );
 		}
 		super.handlePreShowDialog( completionStep );
@@ -185,8 +185,8 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		if( this.sideSubComposite != null ) {
 			this.metaState.removeMetaStateValueListener( this.metaUriListener );
+			this.metaState.popActivation();
 		}
-		this.metaState.deactivate( completionStep );
 		super.handlePostHideDialog( completionStep );
 	}
 }

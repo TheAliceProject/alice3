@@ -47,11 +47,8 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "selected type:" );
 	private final org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.Label snapshotLabel = new org.lgna.croquet.components.Label();
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
 			SelectedTypeView.this.handleTypeStateChanged( nextValue );
 		}
 	};
@@ -81,12 +78,12 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
 		super.handleAddedTo( parent );
-		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeMetaStateValueListener( this.typeListener, null );
 	}
 
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
-		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeMetaStateValueListener( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
 }

@@ -43,7 +43,6 @@
 
 package org.alice.ide.ast.declaration;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -165,22 +164,6 @@ public abstract class AddFieldComposite extends FieldComposite {
 		org.lgna.project.ast.InstanceCreation instanceCreation = this.getInstanceCreationFromInitializer();
 		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
-
-	//	protected void updateNameTextField() {
-	//		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
-	//			String name = generateNameFromInitializer();
-	//			this.getNameState().setValueTransactionlessly( name );
-	//			this.getNameState().selectAll();
-	////			javax.swing.JTextField jTextField = this.nameTextField.getAwtComponent();
-	////			if( jTextField.getSelectionStart() == 0 && jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) {
-	////				String name = generateNameFromInitializer();
-	////				model.getNameState().setValue( name );
-	////				this.nameTextField.requestFocus();
-	////				this.nameTextField.selectAll();
-	////				this.nameTextField.repaint();
-	////			}
-	//		}
-	//	}
 
 	@Override
 	protected java.lang.String getNameInitialValue() {

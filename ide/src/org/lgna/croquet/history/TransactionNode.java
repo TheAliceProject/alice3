@@ -96,6 +96,15 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 				if( criterion.accept( step ) ) {
 					return step;
 				}
+			} else if( rv instanceof Transaction ) {
+				Transaction transaction = (Transaction)rv;
+				final int N = transaction.getPrepStepCount();
+				for( int i = 0; i < N; i++ ) {
+					PrepStep<?> prepStep = transaction.getPrepStepAt( N - 1 - i );
+					if( criterion.accept( prepStep ) ) {
+						return prepStep;
+					}
+				}
 			}
 			rv = rv.getOwner();
 		}

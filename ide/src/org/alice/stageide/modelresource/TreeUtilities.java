@@ -58,7 +58,7 @@ public class TreeUtilities {
 		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)key;
-			if( classResourceKey.getCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
+			if( classResourceKey.getModelResourceCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
 				java.util.List<ResourceNode> emptyList = java.util.Collections.emptyList();
 				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getInstance(), emptyList ) );
 			}

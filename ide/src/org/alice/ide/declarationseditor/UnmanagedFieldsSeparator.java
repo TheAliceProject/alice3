@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.members.filters;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodFilter extends PublicOrUserMemberFilter {
-	protected abstract boolean isAcceptableMethod( org.lgna.project.ast.AbstractMethod method );
+public final class UnmanagedFieldsSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static class SingletonHolder {
+		private static UnmanagedFieldsSeparator instance = new UnmanagedFieldsSeparator();
+	}
 
-	@Override
-	public final boolean isAcceptable( org.lgna.project.ast.AbstractMember member ) {
-		if( super.isAcceptable( member ) ) {
-			if( member instanceof org.lgna.project.ast.AbstractMethod ) {
-				org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)member;
-				return this.isAcceptableMethod( method );
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+	public static UnmanagedFieldsSeparator getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	public UnmanagedFieldsSeparator() {
+		super( java.util.UUID.fromString( "9b6cee58-8b3d-4a4d-9459-ed7e979b6bec" ) );
 	}
 }

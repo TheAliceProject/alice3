@@ -46,6 +46,14 @@ package org.alice.stageide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.declaration.AddManagedFieldComposite {
+	private static class SingletonHolder {
+		private static AddResourceKeyManagedFieldComposite instance = new AddResourceKeyManagedFieldComposite();
+	}
+
+	public static AddResourceKeyManagedFieldComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
 	private static org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringTypeFromInitializer( org.lgna.project.ast.Expression expression ) {
 		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
 			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
@@ -64,19 +72,37 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 	};
 
-	public AddResourceKeyManagedFieldComposite( org.alice.stageide.modelresource.ResourceKey resourceKey ) {
+	private org.lgna.project.ast.InstanceCreation initialInstanceCreation;
+
+	private AddResourceKeyManagedFieldComposite() {
 		super( java.util.UUID.fromString( "ae05629a-0b90-4670-bc20-0279acbbc164" ), new FieldDetailsBuilder()
 				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.EDITABLE, resourceKey.createInstanceCreation() )
+				.initializer( ApplicabilityStatus.EDITABLE, null )
 				.build() );
 		this.getInitializerState().addAndInvokeValueListener( initializerObserver );
+	}
+
+	public void setResourceKeyToBeUsedByGetInitializerInitialValue( org.alice.stageide.modelresource.ResourceKey resourceKey ) {
+		this.initialInstanceCreation = resourceKey != null ? resourceKey.createInstanceCreation() : null;
+	}
+
+	@Override
+	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+		return this.initialInstanceCreation;
+	}
+
+	@Override
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+		return getDeclaringTypeFromInitializer( this.getInitializer() );
 	}
 
 	private void handleInitializerChanged( org.lgna.project.ast.Expression nextValue ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer( nextValue );
 		this.getValueComponentTypeState().setValueTransactionlessly( type );
-		org.lgna.croquet.components.AbstractWindow<?> root = this.getView().getRoot();
+		this.getNameState().setValueTransactionlessly( this.getNameInitialValue() );
+		this.refreshStatus();
+		final org.lgna.croquet.components.AbstractWindow<?> root = this.getView().getRoot();
 		if( root != null ) {
 			java.awt.Dimension preferredSize = root.getAwtComponent().getPreferredSize();
 			java.awt.Dimension size = root.getSize();
@@ -86,12 +112,45 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 	}
 
+	private class InitializerContext implements org.alice.ide.cascade.ExpressionCascadeContext {
+		public org.lgna.project.ast.Expression getPreviousExpression() {
+			//todo: investigate
+			//org.lgna.project.ast.UserField field = getPreviewValue();
+			//return field.initializer.getValue();
+			return getInitializer();
+			//return org.alice.ide.IDE.getActiveInstance().createCopy( getInitializer() );
+		}
+
+		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
+			return null;
+		}
+	}
+
 	private class ResourceKeyInitializerCustomizer implements ItemStateCustomizer<org.lgna.project.ast.Expression> {
+		private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
+
 		public org.lgna.croquet.CascadeFillIn getFillInFor( org.lgna.project.ast.Expression value ) {
 			return null;
 		}
 
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			this.pushedContext = new InitializerContext();
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().pushContext( this.pushedContext );
+		}
+
+		public void epilogue() {
+			org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().popAndCheckContext( this.pushedContext );
+			this.pushedContext = null;
+		}
+
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+			org.lgna.project.ast.Expression initializer = getInitializer();
+			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
+				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
+				org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+				rv.add( org.alice.ide.croquet.models.declaration.InstanceCreationFillIn.getInstance( constructor ) );
+				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+			}
 			rv.add( org.alice.ide.croquet.models.declaration.ChangeResourceMenuModel.getInstance() );
 		}
 	}
@@ -101,4 +160,9 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		return new ResourceKeyInitializerCustomizer();
 	}
 
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePostHideDialog( completionStep );
+		this.initialInstanceCreation = null;
+	}
 }

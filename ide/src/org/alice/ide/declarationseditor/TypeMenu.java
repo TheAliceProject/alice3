@@ -59,6 +59,8 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		return rv;
 	}
 
+	private static final java.awt.Font TYPE_FONT = javax.swing.UIManager.getFont( "defaultFont" ).deriveFont( 18.0f );
+	private static final java.awt.Font BONUS_FONT = javax.swing.UIManager.getFont( "defaultFont" ).deriveFont( java.awt.Font.ITALIC );
 	private final org.lgna.project.ast.NamedUserType type;
 
 	private TypeMenu( org.lgna.project.ast.NamedUserType type ) {
@@ -69,21 +71,7 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 	@Override
 	protected void localize() {
 		super.localize();
-		final boolean ICON_IS_DESIRED = true;
-		if( ICON_IS_DESIRED ) {
-			this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.type, true ) );
-		} else {
-			int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( this.type );
-			StringBuilder sb = new StringBuilder();
-			if( depth > 0 ) {
-				for( int i = 0; i < depth; i++ ) {
-					sb.append( '-' );
-				}
-				sb.append( ' ' );
-			}
-			sb.append( this.type.getName() );
-			this.setName( sb.toString() );
-		}
+		this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.type, true, TYPE_FONT, BONUS_FONT ) );
 	}
 
 	@Override
@@ -111,11 +99,20 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 			}
 		}
 
+		final boolean EDIT = false;
 		for( org.lgna.project.ast.UserField field : this.type.fields ) {
 			if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-				managedFieldModels.add( org.alice.ide.ast.declaration.ManagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+				if( EDIT ) {
+					managedFieldModels.add( org.alice.ide.ast.declaration.ManagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+				} else {
+					managedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				}
 			} else {
-				unmanagedFieldModels.add( org.alice.ide.ast.declaration.UnmanagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+				if( EDIT ) {
+					unmanagedFieldModels.add( org.alice.ide.ast.declaration.UnmanagedEditFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+				} else {
+					unmanagedFieldModels.add( HighlightFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+				}
 			}
 		}
 
@@ -141,9 +138,8 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		models.add( operation.getMenuItemPrepModel() );
 
 		if( org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors.getInstance().getValue() ) {
-			org.lgna.project.ast.NamedUserConstructor constructor = type.getDeclaredConstructor();
-			if( constructor != null ) {
-				models.add( SEPARATOR );
+			models.add( SEPARATOR );
+			for( org.lgna.project.ast.NamedUserConstructor constructor : type.getDeclaredConstructors() ) {
 				org.lgna.croquet.StandardMenuItemPrepModel model = declarationTabState.getItemSelectionOperationForConstructor( constructor ).getMenuItemPrepModel();
 				if( data.contains( DeclarationComposite.getInstance( constructor ) ) ) {
 					set.add( model );
@@ -163,13 +159,21 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 				models.add( ManagedFieldsSeparator.getInstance() );
 				models.addAll( managedFieldModels );
 			}
-			models.add( org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
-			models.add( org.alice.ide.croquet.models.declaration.UnspecifiedValueTypeManagedFieldDeclarationOperation.getInstance().getMenuItemPrepModel() );
+			final boolean IS_SHOW_ME_HOW_PREFERRED = false;
+			if( IS_SHOW_ME_HOW_PREFERRED ) {
+				models.add( org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel() );
+			} else {
+				models.add( org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance().getOperation().getMenuItemPrepModel() );
+			}
 		}
 
 		models.add( SEPARATOR );
 		if( ( unmanagedFieldModels.size() > 0 ) || ( managedFieldModels.size() > 0 ) ) {
-			models.add( FieldsSeparator.getInstance() );
+			if( managedFieldModels.size() > 0 ) {
+				models.add( UnmanagedFieldsSeparator.getInstance() );
+			} else {
+				models.add( FieldsSeparator.getInstance() );
+			}
 			models.addAll( unmanagedFieldModels );
 		}
 		models.add( org.alice.ide.ast.declaration.AddUnmanagedFieldComposite.getInstance( type ).getOperation().getMenuItemPrepModel() );

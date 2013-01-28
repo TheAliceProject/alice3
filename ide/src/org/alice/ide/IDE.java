@@ -349,7 +349,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			type = null;
 		}
-		org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
+		//org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
@@ -482,18 +482,18 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
 		if( declarationComposite != null ) {
 			org.lgna.project.ast.AbstractDeclaration declaration = declarationComposite.getDeclaration();
-			org.lgna.project.ast.AbstractType<?, ?, ?> type;
-			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-				type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-			} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-				org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
-				type = code.getDeclaringType();
-			} else {
-				type = null;
-			}
-			if( type instanceof org.lgna.project.ast.NamedUserType ) {
-				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
-			}
+			//			org.lgna.project.ast.AbstractType<?, ?, ?> type;
+			//			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+			//				type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
+			//			} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			//				org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
+			//				type = code.getDeclaringType();
+			//			} else {
+			//				type = null;
+			//			}
+			//			if( type instanceof org.lgna.project.ast.NamedUserType ) {
+			//				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
+			//			}
 			org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 			//			if( tabState.containsItem( declarationComposite ) ) {
 			//				//pass

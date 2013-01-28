@@ -45,7 +45,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldsSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
+public final class FieldsSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
 	private static class SingletonHolder {
 		private static FieldsSeparator instance = new FieldsSeparator();
 	}

@@ -64,6 +64,11 @@ public abstract class MetaState<T> {
 		this.valueListeners.add( listener );
 	}
 
+	public void addAndInvokeMetaStateValueListener( MetaStateValueListener<T> listener, T bogusPrevValue ) {
+		listener.metaStateValueChanged( bogusPrevValue, this.prevValue );
+		this.addMetaStateValueListener( listener );
+	}
+
 	public void removeMetaStateValueListener( MetaStateValueListener<T> listener ) {
 		this.valueListeners.add( listener );
 	}

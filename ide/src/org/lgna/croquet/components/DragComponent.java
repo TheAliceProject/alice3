@@ -99,23 +99,6 @@ public abstract class DragComponent<J extends javax.swing.AbstractButton, M exte
 		return this;
 	}
 
-	//	public org.lgna.croquet.DragModel getDragModel() {
-	//		return this.dragModel;
-	//	}
-	//	private void setDragModel( org.lgna.croquet.DragModel dragModel ) {
-	//		if( this.dragModel != dragModel ) {
-	//			if( this.dragModel != null ) {
-	//				this.dragModel.removeComponent( this );
-	//			}
-	//			this.dragModel = dragModel;
-	//			if( this.dragModel != null ) {
-	//				this.dragModel.addComponent( this );
-	//			}
-	//		} else {
-	//			assert false;
-	//		}
-	//	}
-
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
 		return true;
 	}

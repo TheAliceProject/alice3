@@ -52,7 +52,8 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 		this.cls = cls;
 	}
 
-	public Class<? extends org.lgna.story.resources.ModelResource> getCls() {
+	@Override
+	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
 		return this.cls;
 	}
 
@@ -62,16 +63,22 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String getDisplayText() {
+		String simpleName = this.cls.getSimpleName().replace( "Resource", "" );
 		StringBuilder sb = new StringBuilder();
-		sb.append( "new " );
-		sb.append( this.cls.getSimpleName().replace( "Resource", "" ) );
-		sb.append( "(" );
-		if( this.isLeaf() ) {
-			//pass
+		if( this.cls.isEnum() ) {
+			sb.append( "new " );
+			sb.append( simpleName );
+			sb.append( "(" );
+			if( this.isLeaf() ) {
+				//pass
+			} else {
+				sb.append( " \u2423 " );
+			}
+			sb.append( ")" );
 		} else {
-			sb.append( " \u2423 " );
+			sb.append( simpleName );
+			sb.append( " classes" );
 		}
-		sb.append( ")" );
 		return sb.toString();
 	}
 
