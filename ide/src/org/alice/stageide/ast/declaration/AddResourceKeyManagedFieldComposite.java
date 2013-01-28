@@ -42,8 +42,6 @@
  */
 package org.alice.stageide.ast.declaration;
 
-import org.alice.ide.cascade.ExpressionCascadeContext;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -114,7 +112,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		}
 	}
 
-	private class InitializerContext implements ExpressionCascadeContext {
+	private class InitializerContext implements org.alice.ide.cascade.ExpressionCascadeContext {
 		public org.lgna.project.ast.Expression getPreviousExpression() {
 			//todo: investigate
 			//org.lgna.project.ast.UserField field = getPreviewValue();

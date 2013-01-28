@@ -53,7 +53,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 		this.setMinimumPreferredWidth( 480 );
 	}
 
-	public void handleValueTypeChanged( org.lgna.project.ast.AbstractType<?, ?, ?> nextType ) {
+	public void handleInitializerChanged( org.lgna.project.ast.Expression expression ) {
 	}
 
 	protected org.lgna.croquet.components.JComponent<?> createPageStartComponent() {

@@ -458,14 +458,10 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.Expression> mapTypeToInitializer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final org.lgna.croquet.State.ValueListener<Boolean> isArrayValueTypeListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<java.lang.Boolean> state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
-			//			assert state.getValue() == prevValue;
-			//			assert prevValue != nextValue;
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();
 		}
 
 		public void changed( org.lgna.croquet.State<java.lang.Boolean> state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
-			//			assert state.getValue() == nextValue;
-			//			assert prevValue != nextValue;
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};
@@ -476,6 +472,14 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 		public void changed( org.lgna.croquet.State<org.lgna.project.ast.AbstractType> state, org.lgna.project.ast.AbstractType prevValue, org.lgna.project.ast.AbstractType nextValue, boolean isAdjusting ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
+		}
+	};
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+			DeclarationLikeSubstanceComposite.this.getView().handleInitializerChanged( nextValue );
 		}
 	};
 
@@ -493,8 +497,6 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "restore:", nextType );
 		org.lgna.project.ast.Expression nextInitializer = this.mapTypeToInitializer.get( nextType );
 		this.initializerState.setValueTransactionlessly( nextInitializer );
-
-		this.getView().handleValueTypeChanged( nextType );
 	}
 
 	protected boolean getIsFinalInitialValue() {
@@ -554,13 +556,19 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 		this.mapTypeToInitializer.clear();
 
-		this.getView().handleValueTypeChanged( this.getValueType() );
+		if( this.isInitializerEditable() ) {
+			this.initializerState.addValueListener( this.initializerListener );
+		}
+		this.getView().handleInitializerChanged( this.getInitializer() );
 		super.handlePreShowDialog( step );
 	}
 
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
+		if( this.isInitializerEditable() ) {
+			this.initializerState.removeValueListener( this.initializerListener );
+		}
 		if( this.isValueComponentTypeEditable() || this.isInitializerEditable() ) {
 			if( this.isValueIsArrayTypeEditable() ) {
 				this.valueIsArrayTypeState.removeValueListener( this.isArrayValueTypeListener );
