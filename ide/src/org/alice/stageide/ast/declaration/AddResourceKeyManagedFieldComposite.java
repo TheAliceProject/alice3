@@ -103,6 +103,7 @@ public class AddResourceKeyManagedFieldComposite extends org.alice.ide.ast.decla
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = getDeclaringTypeFromInitializer( nextValue );
 		this.getValueComponentTypeState().setValueTransactionlessly( type );
 		this.getNameState().setValueTransactionlessly( this.getNameInitialValue() );
+		this.refreshStatus();
 		final org.lgna.croquet.components.AbstractWindow<?> root = this.getView().getRoot();
 		if( root != null ) {
 			java.awt.Dimension preferredSize = root.getAwtComponent().getPreferredSize();
