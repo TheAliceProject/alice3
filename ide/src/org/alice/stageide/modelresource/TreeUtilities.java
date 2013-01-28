@@ -225,11 +225,11 @@ public class TreeUtilities {
 	}
 
 	private static java.util.List<ResourceNode> createGroupTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup ) {
-		return createTagNodeList( mapGroup, false, "household" );
+		return createTagNodeList( mapGroup, false );
 	}
 
 	private static java.util.List<ResourceNode> createThemeTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme ) {
-		return createTagNodeList( mapTheme, true );
+		return createTagNodeList( mapTheme, true, "household" );
 	}
 
 	private static void createTreesBasedOnThemeAndGroup() {

@@ -246,10 +246,17 @@ public class StorytellingResources {
 						if( entry.getName().endsWith( ".xml" ) && !entry.getName().contains( "$" ) )
 						{
 							String baseName = getAliceResourceClassName( entry.getName() );
+
 							if( !rv.containsKey( resourceFile ) ) {
 								rv.put( resourceFile, new LinkedList<String>() );
 							}
 							rv.get( resourceFile ).add( baseName );
+						}
+						else {
+							if( entry.getName().endsWith( ".xml" ) )
+							{
+								System.out.println( "NOT ADDING CLASS: " + entry.getName() );
+							}
 						}
 					}
 				}
