@@ -41,15 +41,17 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.side;
 
-/**
- * @author Dennis Cosgrove
- */
-public enum View {
-	STARTING_CAMERA_VIEW,
-	LAYOUT_SCENE_VIEW,
-	TOP,
-	SIDE,
-	FRONT;
+import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
+
+public class ObjectPropertiesTab extends SideTab<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
+	public ObjectPropertiesTab() {
+		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel createView() {
+		return new org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel();
+	}
 }

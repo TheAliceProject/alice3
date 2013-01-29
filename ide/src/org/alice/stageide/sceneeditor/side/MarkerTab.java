@@ -41,15 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.side;
 
-/**
- * @author Dennis Cosgrove
- */
-public enum View {
-	STARTING_CAMERA_VIEW,
-	LAYOUT_SCENE_VIEW,
-	TOP,
-	SIDE,
-	FRONT;
+
+public class MarkerTab extends SideTab<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel> {
+	public MarkerTab() {
+		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
+		return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
+	}
 }

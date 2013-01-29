@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side;
 
-package org.alice.stageide.croquet.models.sceneditor;
+/**
+ * @author Dennis Cosgrove
+ */
+public class CameraMarkersTab extends SideTab<org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> {
+	private CameraMarkersListDataComposite listDataComposite;
 
-public class ObjectPropertiesTab extends SideTab<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> {
-	public ObjectPropertiesTab() {
-		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
+	public CameraMarkersTab() {
+		super( java.util.UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ) );
+	}
+
+	public CameraMarkersListDataComposite getListDataComposite() {
+
+		//todo: remove this hack
+		if( this.listDataComposite != null ) {
+			//pass
+		} else {
+			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: need to account for loading a new project", this, sceneType );
+			org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData fieldData = new org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData( sceneType );
+			this.listDataComposite = new CameraMarkersListDataComposite( fieldData );
+		}
+		return this.listDataComposite;
+	}
+
+	public org.lgna.croquet.Operation getAddOperation() {
+		return AddCameraMarkerFieldComposite.getInstance().getOperation();
 	}
 
 	@Override
-	protected org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel createView() {
-		return new org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel();
+	protected org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView( this );
 	}
 }

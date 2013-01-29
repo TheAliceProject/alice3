@@ -41,15 +41,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.side;
 
-/**
- * @author Dennis Cosgrove
- */
-public enum View {
-	STARTING_CAMERA_VIEW,
-	LAYOUT_SCENE_VIEW,
-	TOP,
-	SIDE,
-	FRONT;
+public enum PropertyAndMarkerPanelOptions
+{
+	PROPERTIES,
+	MARKERS,
 }

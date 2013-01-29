@@ -40,20 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.stageide.sceneeditor.side.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SideTab<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
-	public SideTab( java.util.UUID migrationId ) {
-		super( migrationId, IsCloseable.FALSE );
+public class CameraMarkersListDataView extends org.lgna.croquet.components.ListDataView<org.lgna.project.ast.UserField> {
+	public CameraMarkersListDataView( org.alice.stageide.sceneeditor.side.CameraMarkersListDataComposite composite ) {
+		super( composite );
 	}
 
 	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		button.scaleFont( 1.4f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
+		return new org.lgna.croquet.components.Label( field.getName() );
 	}
-}
+
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+	}
+};

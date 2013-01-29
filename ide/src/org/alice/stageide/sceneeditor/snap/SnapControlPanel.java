@@ -52,6 +52,7 @@ import java.awt.event.ActionListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite;
 import org.lgna.croquet.components.GridBagPanel;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.LineAxisPanel;

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum View {
-	STARTING_CAMERA_VIEW,
-	LAYOUT_SCENE_VIEW,
-	TOP,
-	SIDE,
-	FRONT;
+public abstract class SideTab<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
+	public SideTab( java.util.UUID migrationId ) {
+		super( migrationId, IsCloseable.FALSE );
+	}
+
+	@Override
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
+		button.scaleFont( 1.4f );
+		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+	}
 }

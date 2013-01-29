@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.views;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -69,6 +69,7 @@ import org.alice.stageide.properties.RoomWallPaintPropertyAdapter;
 import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.alice.stageide.properties.TextFontPropertyAdapter;
 import org.alice.stageide.properties.TextValuePropertyAdapter;
+import org.alice.stageide.sceneeditor.ShowJointedModelJointAxesState;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;

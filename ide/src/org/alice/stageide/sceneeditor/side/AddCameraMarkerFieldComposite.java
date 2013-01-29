@@ -40,23 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.snap.views;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.MigPanel {
-	public SnapDetailsToolPaletteCoreView( org.alice.stageide.sceneeditor.snap.SnapDetailsToolPaletteCoreComposite composite ) {
-		super( composite );
+public class AddCameraMarkerFieldComposite extends AddMarkerFieldComposite {
+	private static class SingletonHolder {
+		private static AddCameraMarkerFieldComposite instance = new AddCameraMarkerFieldComposite();
+	}
 
-		this.addComponent( composite.getIsGridShowingState().createCheckBox() );
-		this.addComponent( composite.getGridSpacingState().getSidekickLabel().createLabel(), "align right" );
-		this.addComponent( composite.getGridSpacingState().createSpinner(), "wrap, growx" );
+	public static AddCameraMarkerFieldComposite getInstance() {
+		return SingletonHolder.instance;
+	}
 
-		this.addComponent( composite.getIsRotationState().createCheckBox() );
-		this.addComponent( composite.getAngleState().getSidekickLabel().createLabel(), "align right" );
-		this.addComponent( composite.getAngleState().createSpinner(), "wrap, growx" );
+	private AddCameraMarkerFieldComposite() {
+		super( java.util.UUID.fromString( "4ba682d4-4375-4330-b809-266c1a08701e" ), org.lgna.story.SCameraMarker.class );
+	}
 
-		this.addComponent( composite.getIsSnapToGroundEnabledState().createCheckBox(), "wrap, gapy 6" );
+	@Override
+	protected org.lgna.story.Color getInitialMarkerColor() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewCameraMarker();
 	}
 }

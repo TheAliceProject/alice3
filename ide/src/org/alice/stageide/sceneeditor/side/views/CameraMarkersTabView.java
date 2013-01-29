@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.side.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum View {
-	STARTING_CAMERA_VIEW,
-	LAYOUT_SCENE_VIEW,
-	TOP,
-	SIDE,
-	FRONT;
+public class CameraMarkersTabView extends org.lgna.croquet.components.BorderPanel {
+	public CameraMarkersTabView( org.alice.stageide.sceneeditor.side.CameraMarkersTab composite ) {
+		super( composite );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
+		this.addCenterComponent( new CameraMarkersListDataView( composite.getListDataComposite() ) );
+		this.addPageEndComponent( composite.getAddOperation().createButton() );
+	}
 }

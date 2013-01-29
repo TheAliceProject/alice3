@@ -40,28 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.snap;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.stageide.sceneeditor.snap.views.SnapDetailsToolPaletteCoreView> {
-	private static class SingletonHolder {
-		private static SnapDetailsToolPaletteCoreComposite instance = new SnapDetailsToolPaletteCoreComposite();
-	}
-
-	public static SnapDetailsToolPaletteCoreComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.lgna.croquet.BooleanState isGridShowingState = this.createBooleanState( this.createKey( "isGridShowingState" ), true );
-	private final org.lgna.croquet.BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( this.createKey( "gridSpacingState" ), new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.0 ).maximum( 10.0 ).stepSize( 0.25 ) );
-	private final org.lgna.croquet.BooleanState isRotationState = this.createBooleanState( this.createKey( "isRotationState" ), true );
-	private final org.lgna.croquet.BoundedDoubleState angleState = this.createBoundedDoubleState( this.createKey( "angleState" ), new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 0.0 ).maximum( 360.0 ).stepSize( 5.0 ) );
-	private final org.lgna.croquet.BooleanState isSnapToGroundEnabledState = this.createBooleanState( this.createKey( "isSnapToGroundEnabledState" ), true );
-
-	private SnapDetailsToolPaletteCoreComposite() {
-		super( java.util.UUID.fromString( "ce1cebee-b951-4294-b4d6-e5979b7d13a5" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP, false );
+public class CameraMarkersListDataComposite extends org.lgna.croquet.ListDataComposite<org.lgna.project.ast.UserField, org.alice.stageide.sceneeditor.side.views.CameraMarkersListDataView> {
+	public CameraMarkersListDataComposite( org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData listData ) {
+		super( java.util.UUID.fromString( "a626f334-79f0-4282-a9b4-4b45ef3d6efd" ), listData );
 	}
 
 	@Override
@@ -69,28 +55,8 @@ public class SnapDetailsToolPaletteCoreComposite extends org.lgna.croquet.ToolPa
 		return null;
 	}
 
-	public org.lgna.croquet.BooleanState getIsGridShowingState() {
-		return this.isGridShowingState;
-	}
-
-	public org.lgna.croquet.BoundedDoubleState getGridSpacingState() {
-		return this.gridSpacingState;
-	}
-
-	public org.lgna.croquet.BooleanState getIsRotationState() {
-		return this.isRotationState;
-	}
-
-	public org.lgna.croquet.BoundedDoubleState getAngleState() {
-		return this.angleState;
-	}
-
-	public org.lgna.croquet.BooleanState getIsSnapToGroundEnabledState() {
-		return this.isSnapToGroundEnabledState;
-	}
-
 	@Override
-	protected org.alice.stageide.sceneeditor.snap.views.SnapDetailsToolPaletteCoreView createView() {
-		return new org.alice.stageide.sceneeditor.snap.views.SnapDetailsToolPaletteCoreView( this );
+	protected org.alice.stageide.sceneeditor.side.views.CameraMarkersListDataView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.CameraMarkersListDataView( this );
 	}
 }

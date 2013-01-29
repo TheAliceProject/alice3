@@ -154,7 +154,7 @@ public class SidePane extends org.lgna.croquet.components.GridBagPanel {
 		}
 	}
 
-	public SidePane( org.alice.stageide.sceneeditor.SideComposite composite ) {
+	public SidePane( org.alice.stageide.sceneeditor.side.SideComposite composite ) {
 		super( composite );
 
 		this.mainPanel = new GridBagPanel();
