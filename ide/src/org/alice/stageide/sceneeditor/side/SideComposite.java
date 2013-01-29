@@ -66,6 +66,8 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 
 	private final org.lgna.croquet.BooleanState isSnapEnabledState = this.createBooleanState( this.createKey( "isSnapEnabledState" ), false );
 
+	private final org.lgna.croquet.BooleanState areJointsShowingState = this.createBooleanState( this.createKey( "areJointsShowingState" ), false );
+
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.objectMarkersTab, this.cameraMarkersTab, this.DELETE_ME_markersTab );
 
 	private SideComposite() {
@@ -102,6 +104,10 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 	@Deprecated
 	public DELETE_ME_MarkersTab getMarkerTab() {
 		return this.DELETE_ME_markersTab;
+	}
+
+	public org.lgna.croquet.BooleanState getAreJointsShowingState() {
+		return this.areJointsShowingState;
 	}
 
 	public org.lgna.croquet.BooleanState getIsSnapEnabledState() {

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, OneShotMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static OneShotMenuModel getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		synchronized( map ) {
-			OneShotMenuModel rv = map.get( instanceFactory );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new OneShotMenuModel( instanceFactory, OneShotUtilities.createMenuItemPrepModels( instanceFactory ) );
-				map.put( instanceFactory, rv );
-			}
-			return rv;
-		}
+public class DynamicOneShotMenuModel extends org.lgna.croquet.MenuModel {
+	private static class SingletonHolder {
+		private static DynamicOneShotMenuModel instance = new DynamicOneShotMenuModel();
 	}
 
-	private OneShotMenuModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
-		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
+	public static DynamicOneShotMenuModel getInstance() {
+		return SingletonHolder.instance;
 	}
+
+	private DynamicOneShotMenuModel() {
+		super( java.util.UUID.fromString( "7d9c9a68-be0c-4593-943a-a2d11866646c" ) );
+	}
+
+	@Override
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, OneShotUtilities.createMenuItemPrepModels( instanceFactory ) );
+	}
+
 }

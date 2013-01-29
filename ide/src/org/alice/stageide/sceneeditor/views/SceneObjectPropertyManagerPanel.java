@@ -49,7 +49,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.IDE;
-import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.ColorPropertyAdapter;
 import org.alice.ide.properties.adapter.DoublePropertyAdapter;
 import org.alice.ide.properties.adapter.SceneFogDensityAdapter;
@@ -399,7 +398,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 					selectedField = fieldAccessFactory.getField();
 				}
 
-				propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
+				//propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
 
 				org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
 				boolean isPerson = false;

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,31 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, OneShotMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static OneShotMenuModel getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
-		synchronized( map ) {
-			OneShotMenuModel rv = map.get( instanceFactory );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new OneShotMenuModel( instanceFactory, OneShotUtilities.createMenuItemPrepModels( instanceFactory ) );
-				map.put( instanceFactory, rv );
-			}
-			return rv;
-		}
+public class OneShotUtilities {
+	private OneShotUtilities() {
+		throw new AssertionError();
 	}
 
-	private OneShotMenuModel( org.alice.ide.instancefactory.InstanceFactory instanceFactory, java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
-		super( java.util.UUID.fromString( "97a7d1e5-bbd3-429f-a853-30d7a7dee89f" ), models );
+	public static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createMenuItemPrepModels( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
+		models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
+		if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
+			org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
+			org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
+			models.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
+			if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) || field.getValueType().isAssignableTo( org.lgna.story.SScene.class ) ) {
+				//pass
+			} else {
+				models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+			}
+			models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+		}
+		return models;
 	}
 }
