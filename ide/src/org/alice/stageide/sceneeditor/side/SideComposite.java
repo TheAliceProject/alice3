@@ -58,14 +58,15 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 
 	private final SnapDetailsToolPaletteCoreComposite snapDetailsToolPaletteCoreComposite = new SnapDetailsToolPaletteCoreComposite();
 	private final ObjectPropertiesTab objectPropertiesTab = new ObjectPropertiesTab();
-	private final MarkerTab markerTab = new MarkerTab();
+	private final ObjectMarkersTab objectMarkersTab = new ObjectMarkersTab();
 	private final CameraMarkersTab cameraMarkersTab = new CameraMarkersTab();
+	private final DELETE_ME_MarkersTab DELETE_ME_markersTab = new DELETE_ME_MarkersTab();
 
 	private final org.lgna.croquet.ListSelectionState<HandleStyle> handleStyleState = this.createListSelectionStateForEnum( this.createKey( "handleStyleState" ), HandleStyle.class, HandleStyle.DEFAULT );
 
 	private final org.lgna.croquet.BooleanState isSnapEnabledState = this.createBooleanState( this.createKey( "isSnapEnabledState" ), false );
 
-	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.markerTab, this.cameraMarkersTab );
+	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.objectMarkersTab, this.cameraMarkersTab, this.DELETE_ME_markersTab );
 
 	private SideComposite() {
 		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
@@ -94,12 +95,13 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		return this.objectPropertiesTab;
 	}
 
-	public MarkerTab getMarkerTab() {
-		return this.markerTab;
-	}
-
 	public CameraMarkersTab getCameraMarkersTab() {
 		return this.cameraMarkersTab;
+	}
+
+	@Deprecated
+	public DELETE_ME_MarkersTab getMarkerTab() {
+		return this.DELETE_ME_markersTab;
 	}
 
 	public org.lgna.croquet.BooleanState getIsSnapEnabledState() {
