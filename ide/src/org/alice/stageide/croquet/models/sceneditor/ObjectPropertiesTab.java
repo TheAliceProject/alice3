@@ -43,9 +43,9 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-public class ObjectPropertiesTab extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> {
+public class ObjectPropertiesTab extends SideTab<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> {
 	public ObjectPropertiesTab() {
-		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ), IsCloseable.FALSE );
+		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
 	}
 
 	@Override

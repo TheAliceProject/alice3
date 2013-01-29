@@ -115,7 +115,7 @@ public class MarkerManagerPanel extends GridBagPanel
 				0, // ipadX
 				0 ) // ipadY
 		);
-		this.setBackgroundColor( Color.RED );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
 	}
 
 	@Override

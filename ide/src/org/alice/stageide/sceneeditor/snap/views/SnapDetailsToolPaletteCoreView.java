@@ -45,9 +45,18 @@ package org.alice.stageide.sceneeditor.snap.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.GridBagPanel {
+public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.MigPanel {
 	public SnapDetailsToolPaletteCoreView( org.alice.stageide.sceneeditor.snap.SnapDetailsToolPaletteCoreComposite composite ) {
 		super( composite );
-		//todo
+
+		this.addComponent( composite.getIsGridShowingState().createCheckBox() );
+		this.addComponent( composite.getGridSpacingState().getSidekickLabel().createLabel(), "align right" );
+		this.addComponent( composite.getGridSpacingState().createSpinner(), "wrap, growx" );
+
+		this.addComponent( composite.getIsRotationState().createCheckBox() );
+		this.addComponent( composite.getAngleState().getSidekickLabel().createLabel(), "align right" );
+		this.addComponent( composite.getAngleState().createSpinner(), "wrap, growx" );
+
+		this.addComponent( composite.getIsSnapToGroundEnabledState().createCheckBox(), "wrap, gapy 6" );
 	}
 }

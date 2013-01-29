@@ -43,9 +43,10 @@
 
 package org.alice.stageide.croquet.models.sceneditor;
 
-public class MarkerTab extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel> {
+
+public class MarkerTab extends SideTab<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel> {
 	public MarkerTab() {
-		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ), IsCloseable.FALSE );
+		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
 	}
 
 	@Override

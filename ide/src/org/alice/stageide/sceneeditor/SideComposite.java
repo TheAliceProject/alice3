@@ -45,7 +45,7 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.sceneeditor.views.SidePane> {
+public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.sceneeditor.views.SideView> {
 	private static class SingletonHolder {
 		private static SideComposite instance = new SideComposite();
 	}
@@ -57,10 +57,24 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 	private final org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab objectPropertiesTab = new org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab();
 	private final org.alice.stageide.croquet.models.sceneditor.MarkerTab markerTab = new org.alice.stageide.croquet.models.sceneditor.MarkerTab();
 
+	private final org.lgna.croquet.ListSelectionState<HandleStyle> handleStyleState = this.createListSelectionStateForEnum( this.createKey( "handleStyleState" ), HandleStyle.class, HandleStyle.DEFAULT );
+
+	private final org.lgna.croquet.BooleanState isSnapEnabledState = this.createBooleanState( this.createKey( "isSnapEnabledState" ), false );
+
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.markerTab );
 
 	private SideComposite() {
 		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		for( HandleStyle handleStyle : HandleStyle.values() ) {
+			org.lgna.croquet.BooleanState booleanState = this.handleStyleState.getItemSelectedState( handleStyle );
+			booleanState.setIconForBothTrueAndFalse( handleStyle.getIcon() );
+			booleanState.setToolTipText( handleStyle.getToolTipText() );
+		}
 	}
 
 	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getTabState() {
@@ -75,8 +89,16 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		return this.markerTab;
 	}
 
+	public org.lgna.croquet.BooleanState getIsSnapEnabledState() {
+		return this.isSnapEnabledState;
+	}
+
+	public org.lgna.croquet.ListSelectionState<HandleStyle> getHandleStyleState() {
+		return this.handleStyleState;
+	}
+
 	@Override
-	protected org.alice.stageide.sceneeditor.views.SidePane createView() {
-		return new org.alice.stageide.sceneeditor.views.SidePane( this );
+	protected org.alice.stageide.sceneeditor.views.SideView createView() {
+		return new org.alice.stageide.sceneeditor.views.SideView( this );
 	}
 }

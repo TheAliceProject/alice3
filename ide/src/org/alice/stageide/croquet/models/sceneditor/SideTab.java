@@ -40,57 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.snap;
+package org.alice.stageide.croquet.models.sceneditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.stageide.sceneeditor.snap.views.SnapDetailsToolPaletteCoreView> {
-	private static class SingletonHolder {
-		private static SnapDetailsToolPaletteCoreComposite instance = new SnapDetailsToolPaletteCoreComposite();
-	}
-
-	public static SnapDetailsToolPaletteCoreComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.lgna.croquet.BooleanState isGridShowingState = this.createBooleanState( this.createKey( "isGridShowingState" ), true );
-	private final org.lgna.croquet.BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( this.createKey( "gridSpacingState" ), new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.0 ).maximum( 10.0 ).stepSize( 0.25 ) );
-	private final org.lgna.croquet.BooleanState isRotationState = this.createBooleanState( this.createKey( "isRotationState" ), true );
-	private final org.lgna.croquet.BoundedDoubleState angleState = this.createBoundedDoubleState( this.createKey( "angleState" ), new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 0.0 ).maximum( 360.0 ).stepSize( 5.0 ) );
-	private final org.lgna.croquet.BooleanState isSnapToGroundEnabledState = this.createBooleanState( this.createKey( "isSnapToGroundEnabledState" ), true );
-
-	private SnapDetailsToolPaletteCoreComposite() {
-		super( java.util.UUID.fromString( "ce1cebee-b951-4294-b4d6-e5979b7d13a5" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP, false );
+public abstract class SideTab<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
+	public SideTab( java.util.UUID migrationId ) {
+		super( migrationId, IsCloseable.FALSE );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
-
-	public org.lgna.croquet.BooleanState getIsGridShowingState() {
-		return this.isGridShowingState;
-	}
-
-	public org.lgna.croquet.BoundedDoubleState getGridSpacingState() {
-		return this.gridSpacingState;
-	}
-
-	public org.lgna.croquet.BooleanState getIsRotationState() {
-		return this.isRotationState;
-	}
-
-	public org.lgna.croquet.BoundedDoubleState getAngleState() {
-		return this.angleState;
-	}
-
-	public org.lgna.croquet.BooleanState getIsSnapToGroundEnabledState() {
-		return this.isSnapToGroundEnabledState;
-	}
-
-	@Override
-	protected org.alice.stageide.sceneeditor.snap.views.SnapDetailsToolPaletteCoreView createView() {
-		return new org.alice.stageide.sceneeditor.snap.views.SnapDetailsToolPaletteCoreView( this );
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
+		button.scaleFont( 1.4f );
+		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 	}
 }

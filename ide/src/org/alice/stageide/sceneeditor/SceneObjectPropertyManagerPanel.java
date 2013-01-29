@@ -136,6 +136,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 		super();
 		this.classNameLabel = createLabel( "Class: " );
 		this.morePropertiesPanel = new GridBagPanel();
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
 	}
 
 	private void setShowJointsOfField( org.lgna.project.ast.AbstractField field, boolean showJoints ) {

@@ -124,7 +124,7 @@ public class SnapControlPanel extends GridBagPanel implements ChangeListener, Ac
 		rotationSnapPanel.addComponent( this.snapAngleSpinner );
 
 		//todo: move to SnapDetailsToolPaletteCoreView
-		org.lgna.croquet.components.GridBagPanel detailsPanel = SnapDetailsToolPaletteCoreComposite.getInstance().getView();
+		org.lgna.croquet.components.GridBagPanel detailsPanel = null;//SnapDetailsToolPaletteCoreComposite.getInstance().getView();
 		detailsPanel.addComponent( snapToGridPanel, new GridBagConstraints(
 				0, //gridX
 				1, //gridY
