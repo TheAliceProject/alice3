@@ -56,6 +56,7 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		return SingletonHolder.instance;
 	}
 
+	private final SnapDetailsToolPaletteCoreComposite snapDetailsToolPaletteCoreComposite = new SnapDetailsToolPaletteCoreComposite();
 	private final ObjectPropertiesTab objectPropertiesTab = new ObjectPropertiesTab();
 	private final MarkerTab markerTab = new MarkerTab();
 	private final CameraMarkersTab cameraMarkersTab = new CameraMarkersTab();
@@ -78,6 +79,11 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 			booleanState.setIconForBothTrueAndFalse( handleStyle.getIcon() );
 			booleanState.setToolTipText( handleStyle.getToolTipText() );
 		}
+		this.registerSubComposite( snapDetailsToolPaletteCoreComposite.getOuterComposite() );
+	}
+
+	public SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
+		return this.snapDetailsToolPaletteCoreComposite;
 	}
 
 	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getTabState() {

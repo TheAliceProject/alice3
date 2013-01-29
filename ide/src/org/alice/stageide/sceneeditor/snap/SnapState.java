@@ -65,7 +65,7 @@ public class SnapState
 	}
 
 	private org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
-		return org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite.getInstance();
+		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getSnapDetailsToolPaletteCoreComposite();
 	}
 
 	public BooleanState getIsSnapEnabledState()

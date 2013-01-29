@@ -76,7 +76,7 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( composite.getHandleStyleState().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "gapleft 4" );
 		this.addComponent( radioButtons, "wrap" );
 
-		org.lgna.croquet.components.ToolPaletteView toolPaletteView = org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite.getInstance().getOuterComposite().getView();
+		org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
 		org.lgna.croquet.components.ToolPaletteTitle title = toolPaletteView.getTitle();
 		title.setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
 
