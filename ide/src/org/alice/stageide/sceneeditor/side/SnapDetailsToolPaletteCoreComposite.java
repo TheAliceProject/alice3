@@ -47,9 +47,9 @@ package org.alice.stageide.sceneeditor.side;
  */
 public class SnapDetailsToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.stageide.sceneeditor.side.views.SnapDetailsToolPaletteCoreView> {
 	private final org.lgna.croquet.BooleanState isGridShowingState = this.createBooleanState( this.createKey( "isGridShowingState" ), true );
-	private final org.lgna.croquet.BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( this.createKey( "gridSpacingState" ), new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.0 ).maximum( 10.0 ).stepSize( 0.25 ) );
+	private final org.lgna.croquet.BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( this.createKey( "gridSpacingState" ), new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.05 ).maximum( 10.0 ).stepSize( 0.05 ) );
 	private final org.lgna.croquet.BooleanState isRotationState = this.createBooleanState( this.createKey( "isRotationState" ), true );
-	private final org.lgna.croquet.BoundedDoubleState angleState = this.createBoundedDoubleState( this.createKey( "angleState" ), new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 0.0 ).maximum( 360.0 ).stepSize( 5.0 ) );
+	private final org.lgna.croquet.BoundedDoubleState angleState = this.createBoundedDoubleState( this.createKey( "angleState" ), new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 15.0 ).maximum( 360.0 ).stepSize( 15.0 ) );
 	private final org.lgna.croquet.BooleanState isSnapToGroundEnabledState = this.createBooleanState( this.createKey( "isSnapToGroundEnabledState" ), true );
 
 	public SnapDetailsToolPaletteCoreComposite() {
