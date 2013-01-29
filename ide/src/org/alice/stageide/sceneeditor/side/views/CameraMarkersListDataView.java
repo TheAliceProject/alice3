@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side.views;
 
-package org.alice.stageide.sceneeditor.snap;
-
-import org.lgna.croquet.BooleanState;
-
-public class IsRotationSnapEnabledState extends BooleanState {
-	private static class SingletonHolder {
-		private static IsRotationSnapEnabledState instance = new IsRotationSnapEnabledState();
+/**
+ * @author Dennis Cosgrove
+ */
+public class CameraMarkersListDataView extends org.lgna.croquet.components.ListDataView<org.lgna.project.ast.UserField> {
+	public CameraMarkersListDataView( org.alice.stageide.sceneeditor.side.CameraMarkersListDataComposite composite ) {
+		super( composite );
 	}
 
-	public static IsRotationSnapEnabledState getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
+		return new org.lgna.croquet.components.Label( field.getName() );
 	}
 
-	private IsRotationSnapEnabledState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6933d462-d5c5-4ff6-9918-240511d2c731" ), true );
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
-}
+};

@@ -40,12 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.side;
+
+import org.alice.stageide.sceneeditor.HandleStyle;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.sceneeditor.views.SideView> {
+public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.sceneeditor.side.views.SideView> {
 	private static class SingletonHolder {
 		private static SideComposite instance = new SideComposite();
 	}
@@ -54,14 +56,19 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		return SingletonHolder.instance;
 	}
 
-	private final org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab objectPropertiesTab = new org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab();
-	private final org.alice.stageide.croquet.models.sceneditor.MarkerTab markerTab = new org.alice.stageide.croquet.models.sceneditor.MarkerTab();
+	private final SnapDetailsToolPaletteCoreComposite snapDetailsToolPaletteCoreComposite = new SnapDetailsToolPaletteCoreComposite();
+	private final ObjectPropertiesTab objectPropertiesTab = new ObjectPropertiesTab();
+	private final ObjectMarkersTab objectMarkersTab = new ObjectMarkersTab();
+	private final CameraMarkersTab cameraMarkersTab = new CameraMarkersTab();
+	private final DELETE_ME_MarkersTab DELETE_ME_markersTab = new DELETE_ME_MarkersTab();
 
 	private final org.lgna.croquet.ListSelectionState<HandleStyle> handleStyleState = this.createListSelectionStateForEnum( this.createKey( "handleStyleState" ), HandleStyle.class, HandleStyle.DEFAULT );
 
 	private final org.lgna.croquet.BooleanState isSnapEnabledState = this.createBooleanState( this.createKey( "isSnapEnabledState" ), false );
 
-	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.markerTab );
+	private final org.lgna.croquet.BooleanState areJointsShowingState = this.createBooleanState( this.createKey( "areJointsShowingState" ), false );
+
+	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.objectMarkersTab, this.cameraMarkersTab, this.DELETE_ME_markersTab );
 
 	private SideComposite() {
 		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
@@ -75,18 +82,32 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 			booleanState.setIconForBothTrueAndFalse( handleStyle.getIcon() );
 			booleanState.setToolTipText( handleStyle.getToolTipText() );
 		}
+		this.registerSubComposite( snapDetailsToolPaletteCoreComposite.getOuterComposite() );
+	}
+
+	public SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
+		return this.snapDetailsToolPaletteCoreComposite;
 	}
 
 	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getTabState() {
 		return this.tabState;
 	}
 
-	public org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab getObjectPropertiesTab() {
+	public ObjectPropertiesTab getObjectPropertiesTab() {
 		return this.objectPropertiesTab;
 	}
 
-	public org.alice.stageide.croquet.models.sceneditor.MarkerTab getMarkerTab() {
-		return this.markerTab;
+	public CameraMarkersTab getCameraMarkersTab() {
+		return this.cameraMarkersTab;
+	}
+
+	@Deprecated
+	public DELETE_ME_MarkersTab getMarkerTab() {
+		return this.DELETE_ME_markersTab;
+	}
+
+	public org.lgna.croquet.BooleanState getAreJointsShowingState() {
+		return this.areJointsShowingState;
 	}
 
 	public org.lgna.croquet.BooleanState getIsSnapEnabledState() {
@@ -98,7 +119,7 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 	}
 
 	@Override
-	protected org.alice.stageide.sceneeditor.views.SideView createView() {
-		return new org.alice.stageide.sceneeditor.views.SideView( this );
+	protected org.alice.stageide.sceneeditor.side.views.SideView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.SideView( this );
 	}
 }

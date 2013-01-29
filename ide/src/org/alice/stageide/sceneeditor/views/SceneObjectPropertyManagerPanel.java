@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.sceneeditor;
+package org.alice.stageide.sceneeditor.views;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -49,7 +49,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.alice.ide.IDE;
-import org.alice.ide.croquet.models.StandardExpressionState;
 import org.alice.ide.properties.adapter.ColorPropertyAdapter;
 import org.alice.ide.properties.adapter.DoublePropertyAdapter;
 import org.alice.ide.properties.adapter.SceneFogDensityAdapter;
@@ -69,6 +68,7 @@ import org.alice.stageide.properties.RoomWallPaintPropertyAdapter;
 import org.alice.stageide.properties.SelectedInstanceAdapter;
 import org.alice.stageide.properties.TextFontPropertyAdapter;
 import org.alice.stageide.properties.TextValuePropertyAdapter;
+import org.alice.stageide.sceneeditor.ShowJointedModelJointAxesState;
 import org.lgna.croquet.components.BoxUtilities;
 import org.lgna.croquet.components.Component;
 import org.lgna.croquet.components.GridBagPanel;
@@ -398,7 +398,7 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 					selectedField = fieldAccessFactory.getField();
 				}
 
-				propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
+				//propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
 
 				org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
 				boolean isPerson = false;

@@ -55,7 +55,7 @@ public class MarkerManagerPanel extends GridBagPanel
 	private SceneCameraMarkerManagerPanel cameraMarkerManagerPanel = null;
 	private SceneObjectMarkerManagerPanel objectMarkerManagerPanel = null;
 
-	public MarkerManagerPanel( org.alice.stageide.croquet.models.sceneditor.MarkerTab tab )
+	public MarkerManagerPanel( org.alice.stageide.sceneeditor.side.DELETE_ME_MarkersTab tab )
 	{
 		super( tab );
 		this.cameraMarkerManagerPanel = new SceneCameraMarkerManagerPanel();
@@ -115,7 +115,7 @@ public class MarkerManagerPanel extends GridBagPanel
 				0, // ipadX
 				0 ) // ipadY
 		);
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
+		this.setBackgroundColor( Color.RED );
 	}
 
 	@Override

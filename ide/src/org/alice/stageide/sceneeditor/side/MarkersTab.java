@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.snap;
-
-import org.lgna.croquet.BoundedDoubleState;
+package org.alice.stageide.sceneeditor.side;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class SnapGridSpacingState extends BoundedDoubleState {
-	private static class SingletonHolder {
-		private static SnapGridSpacingState instance = new SnapGridSpacingState();
-	}
-
-	public static SnapGridSpacingState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SnapGridSpacingState() {
-		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "f8a1a56f-70da-41c7-9fb0-8d874a37ec27" ) ).minimum( 0.05 ).maximum( 10.0 ).initialValue( 0.5 ).stepSize( 0.05 ) );
+public abstract class MarkersTab<V extends org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> extends SideTab<V> {
+	public MarkersTab( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 }

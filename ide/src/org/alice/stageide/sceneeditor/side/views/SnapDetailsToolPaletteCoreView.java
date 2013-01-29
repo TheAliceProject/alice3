@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,11 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side.views;
 
-package org.alice.stageide.sceneeditor;
+/**
+ * @author Dennis Cosgrove
+ */
+public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.MigPanel {
+	public SnapDetailsToolPaletteCoreView( org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite composite ) {
+		super( composite );
 
-public enum PropertyAndMarkerPanelOptions
-{
-	PROPERTIES,
-	MARKERS,
+		this.addComponent( composite.getIsGridShowingState().createCheckBox() );
+		this.addComponent( composite.getGridSpacingState().getSidekickLabel().createLabel(), "align right" );
+		this.addComponent( composite.getGridSpacingState().createSpinner(), "wrap, growx" );
+
+		this.addComponent( composite.getIsRotationState().createCheckBox() );
+		this.addComponent( composite.getAngleState().getSidekickLabel().createLabel(), "align right" );
+		this.addComponent( composite.getAngleState().createSpinner(), "wrap, growx" );
+
+		this.addComponent( composite.getIsSnapToGroundEnabledState().createCheckBox(), "wrap, gapy 6" );
+	}
 }

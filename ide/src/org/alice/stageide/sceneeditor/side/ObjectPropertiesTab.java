@@ -41,16 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.stageide.sceneeditor.side;
 
-
-public class MarkerTab extends SideTab<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel> {
-	public MarkerTab() {
-		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
+public class ObjectPropertiesTab extends SideTab<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
+	public ObjectPropertiesTab() {
+		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
-		return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
+	protected org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel createView() {
+		return new org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel();
 	}
 }

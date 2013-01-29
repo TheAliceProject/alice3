@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState<org.alice.stageide.sceneeditor.HandleStyle> {
-	private static class SingletonHolder {
-		private static HandleStyleListSelectionState instance = new HandleStyleListSelectionState();
+public class SnapDetailsToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.stageide.sceneeditor.side.views.SnapDetailsToolPaletteCoreView> {
+	private final org.lgna.croquet.BooleanState isGridShowingState = this.createBooleanState( this.createKey( "isGridShowingState" ), true );
+	private final org.lgna.croquet.BoundedDoubleState gridSpacingState = this.createBoundedDoubleState( this.createKey( "gridSpacingState" ), new BoundedDoubleDetails().initialValue( 0.5 ).minimum( 0.05 ).maximum( 10.0 ).stepSize( 0.05 ) );
+	private final org.lgna.croquet.BooleanState isRotationState = this.createBooleanState( this.createKey( "isRotationState" ), true );
+	private final org.lgna.croquet.BoundedDoubleState angleState = this.createBoundedDoubleState( this.createKey( "angleState" ), new BoundedDoubleDetails().initialValue( 30.0 ).minimum( 15.0 ).maximum( 360.0 ).stepSize( 15.0 ) );
+	private final org.lgna.croquet.BooleanState isSnapToGroundEnabledState = this.createBooleanState( this.createKey( "isSnapToGroundEnabledState" ), true );
+
+	public SnapDetailsToolPaletteCoreComposite() {
+		super( java.util.UUID.fromString( "ce1cebee-b951-4294-b4d6-e5979b7d13a5" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP, false );
 	}
 
-	public static HandleStyleListSelectionState getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
 
-	private HandleStyleListSelectionState() {
-		super(
-				org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ),
-				0,
-				org.alice.stageide.sceneeditor.HandleStyle.class );
+	public org.lgna.croquet.BooleanState getIsGridShowingState() {
+		return this.isGridShowingState;
+	}
+
+	public org.lgna.croquet.BoundedDoubleState getGridSpacingState() {
+		return this.gridSpacingState;
+	}
+
+	public org.lgna.croquet.BooleanState getIsRotationState() {
+		return this.isRotationState;
+	}
+
+	public org.lgna.croquet.BoundedDoubleState getAngleState() {
+		return this.angleState;
+	}
+
+	public org.lgna.croquet.BooleanState getIsSnapToGroundEnabledState() {
+		return this.isSnapToGroundEnabledState;
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.side.views.SnapDetailsToolPaletteCoreView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.SnapDetailsToolPaletteCoreView( this );
 	}
 }

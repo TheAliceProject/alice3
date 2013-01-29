@@ -40,20 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SideTab<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
-	public SideTab( java.util.UUID migrationId ) {
-		super( migrationId, IsCloseable.FALSE );
+public class CameraMarkersListDataComposite extends org.lgna.croquet.ListDataComposite<org.lgna.project.ast.UserField, org.alice.stageide.sceneeditor.side.views.CameraMarkersListDataView> {
+	public CameraMarkersListDataComposite( org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData listData ) {
+		super( java.util.UUID.fromString( "a626f334-79f0-4282-a9b4-4b45ef3d6efd" ), listData );
 	}
 
 	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		button.scaleFont( 1.4f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.side.views.CameraMarkersListDataView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.CameraMarkersListDataView( this );
 	}
 }

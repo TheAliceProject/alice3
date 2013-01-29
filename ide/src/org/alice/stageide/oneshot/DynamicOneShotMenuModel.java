@@ -40,23 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.snap.views;
+package org.alice.stageide.oneshot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.MigPanel {
-	public SnapDetailsToolPaletteCoreView( org.alice.stageide.sceneeditor.snap.SnapDetailsToolPaletteCoreComposite composite ) {
-		super( composite );
-
-		this.addComponent( composite.getIsGridShowingState().createCheckBox() );
-		this.addComponent( composite.getGridSpacingState().getSidekickLabel().createLabel(), "align right" );
-		this.addComponent( composite.getGridSpacingState().createSpinner(), "wrap, growx" );
-
-		this.addComponent( composite.getIsRotationState().createCheckBox() );
-		this.addComponent( composite.getAngleState().getSidekickLabel().createLabel(), "align right" );
-		this.addComponent( composite.getAngleState().createSpinner(), "wrap, growx" );
-
-		this.addComponent( composite.getIsSnapToGroundEnabledState().createCheckBox(), "wrap, gapy 6" );
+public class DynamicOneShotMenuModel extends org.lgna.croquet.MenuModel {
+	private static class SingletonHolder {
+		private static DynamicOneShotMenuModel instance = new DynamicOneShotMenuModel();
 	}
+
+	public static DynamicOneShotMenuModel getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private DynamicOneShotMenuModel() {
+		super( java.util.UUID.fromString( "7d9c9a68-be0c-4593-943a-a2d11866646c" ) );
+	}
+
+	@Override
+	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, OneShotUtilities.createMenuItemPrepModels( instanceFactory ) );
+	}
+
 }

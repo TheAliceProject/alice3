@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,22 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side.views;
 
-package org.alice.stageide.sceneeditor.snap;
-
-import org.lgna.croquet.BooleanState;
-
-public class IsSnapEnabledState extends BooleanState {
-	private static class SingletonHolder {
-		private static IsSnapEnabledState instance = new IsSnapEnabledState();
+/**
+ * @author Dennis Cosgrove
+ */
+public class MarkersTabView extends org.lgna.croquet.components.BorderPanel {
+	public MarkersTabView( org.alice.stageide.sceneeditor.side.CameraMarkersTab composite ) {
+		super( composite );
+		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
+		this.addCenterComponent( new CameraMarkersListDataView( composite.getListDataComposite() ) );
+		this.addPageEndComponent( composite.getAddOperation().createButton() );
 	}
-
-	public static IsSnapEnabledState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private IsSnapEnabledState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c4db1a3d-9d27-4c21-971d-78059b37abed" ), false );
-	}
-
 }

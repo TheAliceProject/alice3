@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side;
 
-package org.alice.stageide.sceneeditor.snap;
-
-import org.lgna.croquet.BooleanState;
-
-public class ShowSnapGridState extends BooleanState {
-	private static class SingletonHolder {
-		private static ShowSnapGridState instance = new ShowSnapGridState();
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite {
+	public AddMarkerFieldComposite( java.util.UUID migrationId, Class<? extends org.lgna.story.SMarker> cls ) {
+		super( migrationId, cls );
 	}
 
-	public static ShowSnapGridState getInstance() {
-		return SingletonHolder.instance;
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> colorIdState = this.createInitialPropertyValueExpressionState( this.createKey( "colorIdState" ), org.lgna.story.Color.RED, org.lgna.story.SMarker.class, "setColorId", org.lgna.story.Color.class, null );
+
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getColorIdState() {
+		return this.colorIdState;
 	}
 
-	private ShowSnapGridState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6537de4c-f4e9-475d-86ae-5d1ca873923e" ), true );
+	protected abstract org.lgna.story.Color getInitialMarkerColor();
+
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		org.lgna.story.Color initialMarkerColor = this.getInitialMarkerColor();
+		try {
+			org.lgna.project.ast.Expression colorExpresion = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( initialMarkerColor );
+			this.colorIdState.setValueTransactionlessly( colorExpresion );
+		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			ccee.printStackTrace();
+		}
+		super.handlePreShowDialog( step );
 	}
 }

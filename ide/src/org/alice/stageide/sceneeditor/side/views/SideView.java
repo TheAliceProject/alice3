@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.views;
+package org.alice.stageide.sceneeditor.side.views;
 
 /**
  * @author Dennis Cosgrove
@@ -50,8 +50,8 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 		return javax.swing.BorderFactory.createMatteBorder( top, 0, bottom, 0, org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor() );
 	}
 
-	public SideView( org.alice.stageide.sceneeditor.SideComposite composite ) {
-		super( composite, "insets 0, fill, aligny top", "", "4[grow 0]16[grow 0]16[grow 0]0[grow 0]16[grow]4" );
+	public SideView( org.alice.stageide.sceneeditor.side.SideComposite composite ) {
+		super( composite, "insets 0, fill, aligny top", "", "4[grow 0]16[grow 0]16[grow 0]0[grow 0]0[grow 0]4[grow 0]16[grow]4" );
 
 		org.lgna.croquet.components.FlowPanel undoRedoPanel = new org.lgna.croquet.components.FlowPanel(
 				org.lgna.croquet.components.FlowPanel.Alignment.CENTER,
@@ -73,10 +73,10 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 				return b;
 			}
 		};
-		this.addComponent( composite.getHandleStyleState().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "gapleft 4" );
+		this.addComponent( composite.getHandleStyleState().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "gapleft 4, align right" );
 		this.addComponent( radioButtons, "wrap" );
 
-		org.lgna.croquet.components.ToolPaletteView toolPaletteView = org.alice.stageide.sceneeditor.snap.SnapDetailsToolPaletteCoreComposite.getInstance().getOuterComposite().getView();
+		org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
 		org.lgna.croquet.components.ToolPaletteTitle title = toolPaletteView.getTitle();
 		title.setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
 
@@ -84,6 +84,15 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 				composite.getIsSnapEnabledState().createCheckBox(),
 				title ), "wrap, gapleft 4, span 2" );
 		this.addComponent( toolPaletteView, "wrap, span 2" );
+
+		this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
+		this.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ), "wrap" );
+
+		this.addComponent( new org.lgna.croquet.components.Label() );
+		this.addComponent( composite.getAreJointsShowingState().createCheckBox(), "wrap" );
+
+		this.addComponent( new org.lgna.croquet.components.Label() );
+		this.addComponent( org.alice.stageide.oneshot.DynamicOneShotMenuModel.getInstance().getPopupPrepModel().createPopupButton(), "wrap" );
 
 		org.lgna.croquet.components.ToolPaletteTabbedPane tabbedPane = composite.getTabState().createToolPaletteTabbedPane();
 		this.addComponent( tabbedPane, "wrap, span 2, aligny top, growx" );

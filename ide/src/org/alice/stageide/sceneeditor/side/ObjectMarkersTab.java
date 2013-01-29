@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.snap;
-
-import org.lgna.croquet.BoundedDoubleState;
+package org.alice.stageide.sceneeditor.side;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class SnapAngleInDegreesState extends BoundedDoubleState {
-	private static class SingletonHolder {
-		private static SnapAngleInDegreesState instance = new SnapAngleInDegreesState();
+public class ObjectMarkersTab extends SideTab<org.lgna.croquet.components.BorderPanel> {
+	public ObjectMarkersTab() {
+		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ) );
 	}
 
-	public static SnapAngleInDegreesState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SnapAngleInDegreesState() {
-		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "8427dc9c-2057-44c0-9cbd-0ea7d6283480" ) ).minimum( 15.0 ).maximum( 180.0 ).initialValue( 30.0 ).stepSize( 15.0 ) );
+	@Override
+	protected org.lgna.croquet.components.BorderPanel createView() {
+		return new org.lgna.croquet.components.BorderPanel.Builder().center( new org.lgna.croquet.components.Label( "todo" ) ).build();
 	}
 }
