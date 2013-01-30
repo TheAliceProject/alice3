@@ -40,31 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.snap;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SnapDetailsToolPaletteCoreComposite extends org.lgna.croquet.ToolPaletteCoreComposite<org.alice.stageide.sceneeditor.snap.views.SnapDetailsToolPaletteCoreView> {
-	private static class SingletonHolder {
-		private static SnapDetailsToolPaletteCoreComposite instance = new SnapDetailsToolPaletteCoreComposite();
-	}
+public abstract class MarkerFieldData extends org.alice.ide.ast.data.FilteredListPropertyData<org.lgna.project.ast.UserField> {
+	public MarkerFieldData() {
+		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
 
-	public static SnapDetailsToolPaletteCoreComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SnapDetailsToolPaletteCoreComposite() {
-		super( java.util.UUID.fromString( "ce1cebee-b951-4294-b4d6-e5979b7d13a5" ), org.lgna.croquet.Application.DOCUMENT_UI_GROUP, false );
+		//todo
+		this.setListProperty( org.alice.ide.IDE.getActiveInstance().getSceneType().fields );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
-
-	@Override
-	protected org.alice.stageide.sceneeditor.snap.views.SnapDetailsToolPaletteCoreView createView() {
-		return new org.alice.stageide.sceneeditor.snap.views.SnapDetailsToolPaletteCoreView( this );
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		return value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED;
 	}
 }

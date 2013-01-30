@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.sceneditor;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HandleStyleListSelectionState extends edu.cmu.cs.dennisc.toolkit.croquet.models.EnumConstantSelectionState<org.alice.stageide.sceneeditor.HandleStyle> {
-	private static class SingletonHolder {
-		private static HandleStyleListSelectionState instance = new HandleStyleListSelectionState();
+public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declaration.AddPredeterminedValueTypeManagedFieldComposite {
+	public AddMarkerFieldComposite( java.util.UUID migrationId, Class<? extends org.lgna.story.SMarker> cls ) {
+		super( migrationId, cls );
 	}
 
-	public static HandleStyleListSelectionState getInstance() {
-		return SingletonHolder.instance;
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> colorIdState = this.createInitialPropertyValueExpressionState( this.createKey( "colorIdState" ), org.lgna.story.Color.RED, org.lgna.story.SMarker.class, "setColorId", org.lgna.story.Color.class, null );
+
+	public org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> getColorIdState() {
+		return this.colorIdState;
 	}
 
-	private HandleStyleListSelectionState() {
-		super(
-				org.alice.ide.ProjectApplication.DOCUMENT_UI_GROUP,
-				java.util.UUID.fromString( "6e9c4eb8-a2a5-4d7e-bd7a-a96a82055d19" ),
-				0,
-				org.alice.stageide.sceneeditor.HandleStyle.class );
+	protected abstract org.lgna.story.Color getInitialMarkerColor();
+
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		org.lgna.story.Color initialMarkerColor = this.getInitialMarkerColor();
+		try {
+			org.lgna.project.ast.Expression colorExpresion = org.alice.stageide.StageIDE.getActiveInstance().getApiConfigurationManager().getExpressionCreator().createExpression( initialMarkerColor );
+			this.colorIdState.setValueTransactionlessly( colorExpresion );
+		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+			ccee.printStackTrace();
+		}
+		super.handlePreShowDialog( step );
 	}
 }

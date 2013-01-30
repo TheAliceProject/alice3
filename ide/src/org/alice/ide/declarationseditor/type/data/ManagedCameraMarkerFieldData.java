@@ -46,6 +46,8 @@ package org.alice.ide.declarationseditor.type.data;
  * @author dculyba
  * 
  */
+//todo: delete
+@Deprecated
 public class ManagedCameraMarkerFieldData extends AbstractManagedFieldData {
 	public ManagedCameraMarkerFieldData( org.lgna.project.ast.NamedUserType type ) {
 		super( type );
@@ -53,6 +55,6 @@ public class ManagedCameraMarkerFieldData extends AbstractManagedFieldData {
 
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableTo( org.lgna.story.CameraMarker.class ) && ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED );
+		return super.isAcceptableItem( value ) && value.valueType.getValue().isAssignableTo( org.lgna.story.SCameraMarker.class );
 	}
 }

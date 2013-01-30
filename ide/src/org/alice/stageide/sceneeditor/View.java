@@ -52,5 +52,4 @@ public enum View {
 	TOP,
 	SIDE,
 	FRONT;
-
 }

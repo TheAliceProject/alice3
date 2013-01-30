@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,22 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side;
 
-package org.alice.stageide.sceneeditor.snap;
-
-import org.lgna.croquet.BooleanState;
-
-public class IsSnapToGroundEnabledState extends BooleanState {
+/**
+ * @author Dennis Cosgrove
+ */
+public class AddObjectMarkerFieldComposite extends AddMarkerFieldComposite {
 	private static class SingletonHolder {
-		private static IsSnapToGroundEnabledState instance = new IsSnapToGroundEnabledState();
+		private static AddObjectMarkerFieldComposite instance = new AddObjectMarkerFieldComposite();
 	}
 
-	public static IsSnapToGroundEnabledState getInstance() {
+	public static AddObjectMarkerFieldComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private IsSnapToGroundEnabledState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "46b05c1f-b980-45c2-a587-4000400f7add" ), true );
+	private AddObjectMarkerFieldComposite() {
+		super( java.util.UUID.fromString( "d342bfca-8f67-481a-a0ce-1b8f51eb673c" ), org.lgna.story.SThingMarker.class );
 	}
 
+	@Override
+	protected org.lgna.story.Color getInitialMarkerColor() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewObjectMarker();
+	}
 }

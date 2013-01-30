@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,64 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource;
 
-/**
- * @author Dennis Cosgrove
- */
-public class RootResourceKey extends ResourceKey {
-	private final String displayText;
+package org.alice.stageide.sceneeditor.side;
 
-	public RootResourceKey( String displayText ) {
-		this.displayText = displayText;
-	}
-
-	@Override
-	public String getSearchText() {
-		return null;
-	}
-
-	@Override
-	public String getDisplayText() {
-		return this.displayText;
-	}
-
-	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return null;
-	}
-
-	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		throw new Error();
-	}
-
-	@Override
-	public String[] getTags() {
-		return null;
-	}
-
-	@Override
-	public String[] getGroupTags() {
-		return null;
-	}
-
-	@Override
-	public String[] getThemeTags() {
-		return null;
-	}
-
-	@Override
-	public boolean isLeaf() {
-		return false;
-	}
-
-	@Override
-	public boolean isInstanceCreator() {
-		return false;
-	}
-
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-	}
+public enum PropertyAndMarkerPanelOptions
+{
+	PROPERTIES,
+	MARKERS,
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side;
 
-package org.alice.stageide.sceneeditor.snap;
-
-import org.lgna.croquet.BooleanState;
-
-public class ShowSnapGridState extends BooleanState {
-	private static class SingletonHolder {
-		private static ShowSnapGridState instance = new ShowSnapGridState();
+/**
+ * @author Dennis Cosgrove
+ */
+public class ObjectMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView> {
+	public ObjectMarkersTab() {
+		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ), new ObjectMarkerFieldData() );
 	}
 
-	public static ShowSnapGridState getInstance() {
-		return SingletonHolder.instance;
+	@Override
+	public org.lgna.croquet.Operation getAddOperation() {
+		return AddObjectMarkerFieldComposite.getInstance().getOperation();
 	}
 
-	private ShowSnapGridState() {
-		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "6537de4c-f4e9-475d-86ae-5d1ca873923e" ), true );
+	@Override
+	protected org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView( this );
 	}
 }

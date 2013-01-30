@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side.views;
 
-package org.alice.stageide.croquet.models.sceneditor;
-
-public class MarkerTab extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel> {
-	public MarkerTab() {
-		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ), IsCloseable.FALSE );
-	}
-
-	@Override
-	protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
-		return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
+/**
+ * @author Dennis Cosgrove
+ */
+public class ObjectMarkersTabView extends MarkersTabView {
+	public ObjectMarkersTabView( org.alice.stageide.sceneeditor.side.ObjectMarkersTab composite ) {
+		super( composite, new org.lgna.croquet.components.Label( "todo" ) );
 	}
 }

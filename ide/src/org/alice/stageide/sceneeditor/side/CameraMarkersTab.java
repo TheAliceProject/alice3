@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.snap;
-
-import org.lgna.croquet.BoundedDoubleState;
+package org.alice.stageide.sceneeditor.side;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class SnapGridSpacingState extends BoundedDoubleState {
-	private static class SingletonHolder {
-		private static SnapGridSpacingState instance = new SnapGridSpacingState();
+public class CameraMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> {
+	private CameraMarkersListDataComposite listDataComposite;
+
+	public CameraMarkersTab() {
+		super( java.util.UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ), new CameraMarkerFieldData() );
 	}
 
-	public static SnapGridSpacingState getInstance() {
-		return SingletonHolder.instance;
+	public CameraMarkersListDataComposite getListDataComposite() {
+
+		//todo: remove this hack
+		if( this.listDataComposite != null ) {
+			//pass
+		} else {
+			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: need to account for loading a new project", this, sceneType );
+			org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData fieldData = new org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData( sceneType );
+			this.listDataComposite = new CameraMarkersListDataComposite( fieldData );
+		}
+		return this.listDataComposite;
 	}
 
-	private SnapGridSpacingState() {
-		super( new Details( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "f8a1a56f-70da-41c7-9fb0-8d874a37ec27" ) ).minimum( 0.05 ).maximum( 10.0 ).initialValue( 0.5 ).stepSize( 0.05 ) );
+	@Override
+	public org.lgna.croquet.Operation getAddOperation() {
+		return AddCameraMarkerFieldComposite.getInstance().getOperation();
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView( this );
 	}
 }

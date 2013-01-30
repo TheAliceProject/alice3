@@ -62,6 +62,7 @@ import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclaratio
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
+import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 import org.alice.stageide.sceneeditor.viewmanager.CameraViewCellRenderer;
@@ -72,6 +73,8 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActi
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.SceneCameraMarkerManagerPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SceneObjectMarkerManagerPanel;
+import org.alice.stageide.sceneeditor.views.InstanceFactorySelectionPanel;
+import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.DragComponent;

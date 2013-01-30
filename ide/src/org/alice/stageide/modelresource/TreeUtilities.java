@@ -84,7 +84,7 @@ public class TreeUtilities {
 	private static ClassHierarchyBasedResourceNode createTreeBasedOnClassHierarchy() {
 		org.lgna.story.resourceutilities.StorytellingResources storytellingResources = org.lgna.story.resourceutilities.StorytellingResources.getInstance();
 		org.lgna.story.resourceutilities.ModelResourceTreeNode root = storytellingResources.getGalleryTree();
-		return createNode( root, new RootResourceKey() );
+		return createNode( root, new RootResourceKey( "all classes" ) );
 	}
 
 	public static ClassHierarchyBasedResourceNode getTreeBasedOnClassHierarchy() {
@@ -244,8 +244,8 @@ public class TreeUtilities {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( themeNodes );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( groupNodes );
 
-		treeBasedOnGroup = new GroupBasedResourceNode( new RootResourceKey(), groupNodes );
-		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey(), themeNodes );
+		treeBasedOnGroup = new GroupBasedResourceNode( new RootResourceKey( "all groups" ), groupNodes );
+		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey( "all themes" ), themeNodes );
 	}
 
 	public static ThemeBasedResourceNode getTreeBasedOnTheme() {

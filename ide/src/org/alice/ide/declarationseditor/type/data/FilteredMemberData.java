@@ -50,8 +50,9 @@ public abstract class FilteredMemberData<T extends org.lgna.project.ast.UserMemb
 	private final org.lgna.project.ast.NamedUserType type;
 
 	public FilteredMemberData( Class<T> cls, org.lgna.project.ast.NamedUserType type, edu.cmu.cs.dennisc.property.ListProperty<T> listProperty ) {
-		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( cls ), listProperty );
+		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( cls ) );
 		this.type = type;
+		this.setListProperty( listProperty );
 	}
 
 	public org.lgna.project.ast.NamedUserType getType() {

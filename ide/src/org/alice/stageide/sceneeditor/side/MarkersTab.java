@@ -40,76 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.components.View<?, ?>> extends AbstractComposite<V> {
-	private static class InternalIsExpandedState extends BooleanState {
-		private final ToolPaletteCoreComposite<?> coreComposite;
+public abstract class MarkersTab<V extends org.alice.stageide.sceneeditor.side.views.MarkersTabView> extends SideTab<V> {
+	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerListState;
 
-		private InternalIsExpandedState( Group group, boolean initialValue, ToolPaletteCoreComposite<?> coreComposite ) {
-			super( group, java.util.UUID.fromString( "470a871b-61ec-495b-8007-06a573a7a126" ), initialValue );
-			this.coreComposite = coreComposite;
-		}
-
-		@Override
-		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
-			return this.coreComposite.getClassUsedForLocalization();
-		}
-	}
-
-	public static final class OuterComposite extends AbstractComposite<org.lgna.croquet.components.ToolPaletteView> {
-		private final BooleanState isExpandedState;
-		private final ToolPaletteCoreComposite<?> coreComposite;
-
-		private OuterComposite( BooleanState isExpandedState, ToolPaletteCoreComposite<?> coreComposite ) {
-			super( java.util.UUID.fromString( "92df5e68-7aa6-4bc7-9ab1-da5cf0a448c0" ) );
-			this.isExpandedState = isExpandedState;
-			this.coreComposite = coreComposite;
-		}
-
-		public BooleanState getIsExpandedState() {
-			return this.isExpandedState;
-		}
-
-		public ToolPaletteCoreComposite<?> getCoreComposite() {
-			return this.coreComposite;
-		}
-
-		@Override
-		protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-			return null;
-		}
-
-		@Override
-		protected org.lgna.croquet.components.ToolPaletteView createView() {
-			return new org.lgna.croquet.components.ToolPaletteView( this );
-		}
-
-		@Override
-		public void handlePreActivation() {
-			this.coreComposite.handlePreActivation();
-			super.handlePreActivation();
-		}
-
-		@Override
-		public void handlePostDeactivation() {
-			super.handlePostDeactivation();
-			this.coreComposite.handlePostDeactivation();
-		}
-	}
-
-	private final OuterComposite outerComposite;
-
-	public ToolPaletteCoreComposite( java.util.UUID migrationId, Group group, boolean initialValue ) {
+	public MarkersTab( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
 		super( migrationId );
-		InternalIsExpandedState isExpandedState = new InternalIsExpandedState( group, initialValue, this );
-		this.outerComposite = new OuterComposite( isExpandedState, this );
+		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
 	}
 
-	public OuterComposite getOuterComposite() {
-		return this.outerComposite;
+	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> getMarkerListState() {
+		return this.markerListState;
 	}
+
+	public abstract org.lgna.croquet.Operation getAddOperation();
 }

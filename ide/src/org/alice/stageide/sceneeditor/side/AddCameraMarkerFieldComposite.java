@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side;
 
-package org.alice.stageide.croquet.models.sceneditor;
+/**
+ * @author Dennis Cosgrove
+ */
+public class AddCameraMarkerFieldComposite extends AddMarkerFieldComposite {
+	private static class SingletonHolder {
+		private static AddCameraMarkerFieldComposite instance = new AddCameraMarkerFieldComposite();
+	}
 
-public class ObjectPropertiesTab extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel> {
-	public ObjectPropertiesTab() {
-		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ), IsCloseable.FALSE );
+	public static AddCameraMarkerFieldComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private AddCameraMarkerFieldComposite() {
+		super( java.util.UUID.fromString( "4ba682d4-4375-4330-b809-266c1a08701e" ), org.lgna.story.SCameraMarker.class );
 	}
 
 	@Override
-	protected org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel createView() {
-		return new org.alice.stageide.sceneeditor.SceneObjectPropertyManagerPanel();
+	protected org.lgna.story.Color getInitialMarkerColor() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewCameraMarker();
 	}
 }

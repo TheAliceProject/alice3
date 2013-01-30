@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,43 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor;
 
-/**
- * @author Dennis Cosgrove
- */
-public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.sceneeditor.views.SidePane> {
-	private static class SingletonHolder {
-		private static SideComposite instance = new SideComposite();
-	}
+package org.alice.stageide.sceneeditor.side;
 
-	public static SideComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private final org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab objectPropertiesTab = new org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab();
-	private final org.alice.stageide.croquet.models.sceneditor.MarkerTab markerTab = new org.alice.stageide.croquet.models.sceneditor.MarkerTab();
-
-	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.markerTab );
-
-	private SideComposite() {
-		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
-	}
-
-	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getTabState() {
-		return this.tabState;
-	}
-
-	public org.alice.stageide.croquet.models.sceneditor.ObjectPropertiesTab getObjectPropertiesTab() {
-		return this.objectPropertiesTab;
-	}
-
-	public org.alice.stageide.croquet.models.sceneditor.MarkerTab getMarkerTab() {
-		return this.markerTab;
+public class ObjectPropertiesTab extends SideTab<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
+	public ObjectPropertiesTab() {
+		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ) );
 	}
 
 	@Override
-	protected org.alice.stageide.sceneeditor.views.SidePane createView() {
-		return new org.alice.stageide.sceneeditor.views.SidePane( this );
+	protected org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel createView() {
+		return new org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel();
 	}
 }

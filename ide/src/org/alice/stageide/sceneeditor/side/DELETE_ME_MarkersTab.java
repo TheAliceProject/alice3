@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.snap.views;
 
-/**
- * @author Dennis Cosgrove
- */
-public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.GridBagPanel {
-	public SnapDetailsToolPaletteCoreView( org.alice.stageide.sceneeditor.snap.SnapDetailsToolPaletteCoreComposite composite ) {
-		super( composite );
-		//todo
+package org.alice.stageide.sceneeditor.side;
+
+
+public class DELETE_ME_MarkersTab extends SideTab<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel> {
+	public DELETE_ME_MarkersTab() {
+		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
+		return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
 	}
 }
