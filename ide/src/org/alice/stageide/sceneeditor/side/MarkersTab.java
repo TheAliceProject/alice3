@@ -45,8 +45,10 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MarkersTab<V extends org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> extends SideTab<V> {
+public abstract class MarkersTab<V extends org.alice.stageide.sceneeditor.side.views.MarkersTabView> extends SideTab<V> {
 	public MarkersTab( java.util.UUID migrationId ) {
 		super( migrationId );
 	}
+
+	public abstract org.lgna.croquet.Operation getAddOperation();
 }

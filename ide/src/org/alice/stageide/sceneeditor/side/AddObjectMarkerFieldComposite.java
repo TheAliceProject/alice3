@@ -45,18 +45,21 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public class ObjectMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView> {
-	public ObjectMarkersTab() {
-		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ) );
+public class AddObjectMarkerFieldComposite extends AddMarkerFieldComposite {
+	private static class SingletonHolder {
+		private static AddObjectMarkerFieldComposite instance = new AddObjectMarkerFieldComposite();
+	}
+
+	public static AddObjectMarkerFieldComposite getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private AddObjectMarkerFieldComposite() {
+		super( java.util.UUID.fromString( "d342bfca-8f67-481a-a0ce-1b8f51eb673c" ), org.lgna.story.SThingMarker.class );
 	}
 
 	@Override
-	public org.lgna.croquet.Operation getAddOperation() {
-		return AddObjectMarkerFieldComposite.getInstance().getOperation();
-	}
-
-	@Override
-	protected org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView createView() {
-		return new org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView( this );
+	protected org.lgna.story.Color getInitialMarkerColor() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewObjectMarker();
 	}
 }
