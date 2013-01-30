@@ -49,7 +49,7 @@ public abstract class MarkersTab<V extends org.alice.stageide.sceneeditor.side.v
 	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerListState;
 
 	public MarkersTab( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
-		super( migrationId );
+		super( migrationId, false );
 		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
 	}
 

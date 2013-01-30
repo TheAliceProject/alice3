@@ -51,7 +51,7 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 	}
 
 	public SideView( org.alice.stageide.sceneeditor.side.SideComposite composite ) {
-		super( composite, "fill, insets 0, aligny top", "", "[grow 0][grow 0][grow 0]push[grow 0][grow 0][grow 0][grow 0][grow]" );
+		super( composite, "fill, insets 0, aligny top", "", "" );//, "", "[grow 0][grow 0][grow 0]push[grow 0][grow 0][grow 0][grow 0][grow]" );
 
 		org.lgna.croquet.components.FlowPanel undoRedoPanel = new org.lgna.croquet.components.FlowPanel(
 				org.lgna.croquet.components.FlowPanel.Alignment.CENTER,
@@ -74,7 +74,7 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 			}
 		};
 		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
-				composite.getHandleStyleState().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ),
+				composite.getHandleStyleState().getSidekickLabel().createLabel( 1.2f ),
 				radioButtons
 				), "wrap" );
 
@@ -94,10 +94,23 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 
 		this.addComponent( org.alice.stageide.oneshot.DynamicOneShotMenuModel.getInstance().getPopupPrepModel().createPopupButton(), "wrap" );
 
-		org.lgna.croquet.components.ToolPaletteTabbedPane tabbedPane = composite.getTabState().createToolPaletteTabbedPane();
-		this.addComponent( tabbedPane, "wrap, aligny top, growx" );
+		org.lgna.croquet.ToolPaletteCoreComposite<?>[] toolPaletteCoreComposites = {
+				composite.getObjectPropertiesTab(),
+				composite.getCameraMarkersTab(),
+				composite.getObjectMarkersTab(),
+				composite.getMarkerTab(),
+
+		};
 
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
 		title.setBackgroundColor( this.getBackgroundColor() );
+		for( org.lgna.croquet.ToolPaletteCoreComposite<?> toolPaletteCoreComposite : toolPaletteCoreComposites ) {
+			org.lgna.croquet.components.ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
+			toolPaletteTitle.setBackgroundColor( this.getBackgroundColor() );
+			toolPaletteTitle.scaleFont( 1.4f );
+			toolPaletteTitle.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			this.addComponent( toolPaletteCoreComposite.getOuterComposite().getView(), "wrap, growx" );
+		}
+		this.addComponent( new org.lgna.croquet.components.Label(), "wrap, grow, push" );
 	}
 }
