@@ -40,44 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.meta;
+package org.lgna.croquet.meta.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MetaState<T> {
-	private final java.util.List<org.lgna.croquet.meta.event.MetaStateValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
-	private T prevValue;
-
-	protected void setPrevValue( T prevValue ) {
-		this.prevValue = prevValue;
-	}
-
-	public abstract T getValue();
-
-	public void addMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<T> listener ) {
-		this.valueListeners.add( listener );
-	}
-
-	public void addAndInvokeMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<T> listener, T bogusPrevValue ) {
-		listener.metaStateValueChanged( bogusPrevValue, this.prevValue );
-		this.addMetaStateValueListener( listener );
-	}
-
-	public void removeMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<T> listener ) {
-		this.valueListeners.add( listener );
-	}
-
-	protected void checkValueAndFireIfAppropriate() {
-		T nextValue = this.getValue();
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValue, nextValue ) ) {
-			//pass
-		} else {
-			for( org.lgna.croquet.meta.event.MetaStateValueListener<T> listener : this.valueListeners ) {
-				listener.metaStateValueChanged( this.prevValue, nextValue );
-			}
-			this.prevValue = nextValue;
-		}
-	}
+public interface MetaStateValueListener<T> {
+	public void metaStateValueChanged( T prevValue, T nextValue );
 }

@@ -47,7 +47,7 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "selected type:" );
 	private final org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.Label snapshotLabel = new org.lgna.croquet.components.Label();
-	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
+	private final org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
 		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
 			SelectedTypeView.this.handleTypeStateChanged( nextValue );
 		}
