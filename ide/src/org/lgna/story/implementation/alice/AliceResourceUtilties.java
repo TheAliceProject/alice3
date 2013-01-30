@@ -133,7 +133,9 @@ public class AliceResourceUtilties {
 				String rv = resourceBundle.getString( key );
 				return rv;
 			} catch( java.util.MissingResourceException mre ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key );
+				if( !locale.getLanguage().equals( "en" ) ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
+				}
 				return null;
 			}
 		} else {
@@ -939,7 +941,7 @@ public class AliceResourceUtilties {
 		return getCreationYear( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
-	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale )
+	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull )
 	{
 		ArrayList<String> localizedTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
 		for( String tag : tags ) {
@@ -957,6 +959,9 @@ public class AliceResourceUtilties {
 				}
 				String localizationKey = makeLocalizationKey( stringToUse );
 				String localizedTag = findLocalizedText( localizerBundleName, localizationKey, locale );
+				if( acceptNull && ( localizedTag == null ) ) {
+					localizedTag = stringToUse;
+				}
 				if( localizedTag != null ) {
 					if( i > 0 ) {
 						finalTag.append( ":" );
@@ -982,7 +987,8 @@ public class AliceResourceUtilties {
 				return info.getTags();
 			}
 			else {
-				return getLocalizedTags( info.getTags(), getTagsLocalizationBundleName(), locale );
+				boolean acceptNull = locale.getLanguage().equals( "en" );
+				return getLocalizedTags( info.getTags(), getTagsLocalizationBundleName(), locale, acceptNull );
 			}
 		}
 		return null;
@@ -1006,7 +1012,7 @@ public class AliceResourceUtilties {
 				return info.getGroupTags();
 			}
 			else {
-				return getLocalizedTags( info.getGroupTags(), getGroupTagsLocalizationBundleName(), locale );
+				return getLocalizedTags( info.getGroupTags(), getGroupTagsLocalizationBundleName(), locale, true );
 			}
 		}
 		return null;
@@ -1030,7 +1036,7 @@ public class AliceResourceUtilties {
 				return info.getThemeTags();
 			}
 			else {
-				return getLocalizedTags( info.getThemeTags(), getThemeTagsLocalizationBundleName(), locale );
+				return getLocalizedTags( info.getThemeTags(), getThemeTagsLocalizationBundleName(), locale, true );
 			}
 		}
 		return null;
