@@ -141,17 +141,17 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String[] getTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this.enumConstant.getClass() );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getGroupTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this.enumConstant.getClass() );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getThemeTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this.enumConstant.getClass() );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override

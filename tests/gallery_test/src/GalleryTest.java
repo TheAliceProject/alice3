@@ -2,6 +2,7 @@ import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
@@ -85,8 +86,8 @@ public class GalleryTest {
 			ResourceKey key = child.getResourceKey();
 			if (key instanceof ClassResourceKey) {
 				ClassResourceKey classKey = (ClassResourceKey)key;
-				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getCls());
-				test( brokenModels, child, modelClass, classKey.getCls() );
+				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getModelResourceCls());
+				test( brokenModels, child, modelClass, classKey.getModelResourceCls() );
 			}
 		}
 		

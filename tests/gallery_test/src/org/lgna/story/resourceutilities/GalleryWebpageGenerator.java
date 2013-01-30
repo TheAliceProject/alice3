@@ -314,7 +314,7 @@ public class GalleryWebpageGenerator {
 		Class<?> modelResource = node.getResourceClass();
 		String resourceName = node.getJavaField() != null ? node.getJavaField().getName() : null;
 		String name = getHTMLName(node);
-		String[] tags = org.lgna.story.implementation.alice.AliceResourceUtilties.getTags(modelResource, resourceName);
+		String[] tags = org.lgna.story.implementation.alice.AliceResourceUtilties.getTags(modelResource, resourceName, null);
 		String tagString = "";
 		for (String s : tags) {
 			if (tagString.length() > 0) {

@@ -1308,7 +1308,7 @@ public class ModelResourceExporter {
 		return thumbnailFiles;
 	}
 
-	public boolean addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile ) throws IOException
 	{
 		if( !sourceDirectory.endsWith( "/" ) && !sourceDirectory.endsWith( "\\" ) ) {
 			sourceDirectory += File.separator;
@@ -1380,15 +1380,17 @@ public class ModelResourceExporter {
 				throw new IOException( "FAILED ADDING RESROUCES TO SOURCE JAR." + e );
 			}
 		}
-		return true;
+		Document doc = XMLUtilities.read( xmlFile );
+		ModelResourceInfo returnInfo = new ModelResourceInfo( doc );
+		return returnInfo;
 	}
 
-	public boolean addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos ) throws IOException
 	{
 		return addToJar( sourceDirectory, resourceDirectory, jos, jos, true, true );
 	}
 
-	public boolean addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles ) throws IOException
 	{
 		return addToJar( sourceDirectory, resourceDirectory, jos, jos, rebuildFiles, rebuildFiles );
 	}

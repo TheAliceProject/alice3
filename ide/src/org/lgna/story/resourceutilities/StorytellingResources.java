@@ -7,6 +7,8 @@ import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -517,6 +519,15 @@ public class StorytellingResources {
 		this.findAndLoadAliceResourcesIfNecessary();
 		assert this.resourceClassLoader != null;
 		return this.resourceClassLoader.findResource( resourceString );
+	}
+
+	public ResourceBundle getLocalizationBundle( String bundleKey, Locale locale )
+	{
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleKey, locale, this.resourceClassLoader );
+		if( resourceBundle != null ) {
+			return resourceBundle;
+		}
+		return java.util.ResourceBundle.getBundle( bundleKey, locale );
 	}
 
 	public InputStream getAliceResourceAsStream( String resourceString ) {

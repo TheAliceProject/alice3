@@ -87,7 +87,7 @@ public class MigrationBuilder {
 			ResourceKey key = child.getResourceKey();
 			if (key instanceof ClassResourceKey) {
 				ClassResourceKey classKey = (ClassResourceKey)key;
-				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getCls());
+				Class<? extends org.lgna.story.SModel> modelClass = AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getModelResourceCls());
 				output( set, child );
 			}
 		}
