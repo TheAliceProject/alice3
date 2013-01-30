@@ -53,6 +53,6 @@ public class ManagedObjectMarkerFieldData extends AbstractManagedFieldData {
 
 	@Override
 	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.valueType.getValue().isAssignableTo( org.lgna.story.SThingMarker.class ) && ( value.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED );
+		return super.isAcceptableItem( value ) && value.valueType.getValue().isAssignableTo( org.lgna.story.SThingMarker.class );
 	}
 }
