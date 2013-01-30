@@ -46,11 +46,18 @@ package org.alice.stageide.sceneeditor.side;
  * @author Dennis Cosgrove
  */
 public abstract class MarkerFieldData extends org.alice.ide.ast.data.FilteredListPropertyData<org.lgna.project.ast.UserField> {
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+			MarkerFieldData.this.setListProperty( org.alice.ide.IDE.getActiveInstance().getSceneType().fields );
+		}
+	};
+
 	public MarkerFieldData() {
 		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
-
-		//todo
-		this.setListProperty( org.alice.ide.IDE.getActiveInstance().getSceneType().fields );
+		org.alice.ide.project.ProjectDocumentState.getInstance().addAndInvokeValueListener( this.projectListener );
 	}
 
 	@Override
