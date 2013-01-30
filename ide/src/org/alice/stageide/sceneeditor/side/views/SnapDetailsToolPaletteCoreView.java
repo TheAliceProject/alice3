@@ -46,8 +46,17 @@ package org.alice.stageide.sceneeditor.side.views;
  * @author Dennis Cosgrove
  */
 public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.MigPanel {
+	private final org.lgna.croquet.State.ValueListener<Boolean> isEnabledListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
+		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			handleEnabledChanged( nextValue );
+		}
+	};
+
 	public SnapDetailsToolPaletteCoreView( org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite composite ) {
-		super( composite );
+		super( composite, "", "24[][]" );
 
 		this.addComponent( composite.getIsGridShowingState().createCheckBox() );
 		this.addComponent( composite.getGridSpacingState().getSidekickLabel().createLabel(), "align right" );
@@ -58,5 +67,24 @@ public class SnapDetailsToolPaletteCoreView extends org.lgna.croquet.components.
 		this.addComponent( composite.getAngleState().createSpinner(), "wrap, growx" );
 
 		this.addComponent( composite.getIsSnapToGroundEnabledState().createCheckBox(), "wrap, gapy 6" );
+	}
+
+	private void handleEnabledChanged( boolean nextValue ) {
+		for( java.awt.Component awtComponent : this.getAwtComponent().getComponents() ) {
+			awtComponent.setEnabled( nextValue );
+		}
+	}
+
+	@Override
+	public void handleCompositePreActivation() {
+		super.handleCompositePreActivation();
+		org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getIsSnapEnabledState().addAndInvokeValueListener( this.isEnabledListener );
+
+	}
+
+	@Override
+	public void handleCompositePostDeactivation() {
+		org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getIsSnapEnabledState().removeValueListener( this.isEnabledListener );
+		super.handleCompositePostDeactivation();
 	}
 }
