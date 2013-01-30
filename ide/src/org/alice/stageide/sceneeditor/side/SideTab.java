@@ -45,15 +45,20 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SideTab<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
-	public SideTab( java.util.UUID migrationId ) {
-		super( migrationId, IsCloseable.FALSE );
+public abstract class SideTab<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
+	public SideTab( java.util.UUID migrationId, boolean initialValue ) {
+		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, initialValue );
 	}
 
 	@Override
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
-		super.customizeTitleComponentAppearance( button );
-		button.scaleFont( 1.4f );
-		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
+
+	//	@Override
+	//	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	//		super.customizeTitleComponentAppearance( button );
+	//		button.scaleFont( 1.4f );
+	//		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+	//	}
 }

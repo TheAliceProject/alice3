@@ -43,10 +43,9 @@
 
 package org.alice.stageide.sceneeditor.side;
 
-
 public class DELETE_ME_MarkersTab extends SideTab<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel> {
 	public DELETE_ME_MarkersTab() {
-		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ) );
+		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ), false );
 	}
 
 	@Override
