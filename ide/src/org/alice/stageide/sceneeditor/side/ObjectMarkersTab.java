@@ -45,13 +45,18 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public class ObjectMarkersTab extends SideTab<org.lgna.croquet.components.BorderPanel> {
+public class ObjectMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView> {
 	public ObjectMarkersTab() {
-		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ) );
+		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ), new ObjectMarkerFieldData() );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		return new org.lgna.croquet.components.BorderPanel.Builder().center( new org.lgna.croquet.components.Label( "todo" ) ).build();
+	public org.lgna.croquet.Operation getAddOperation() {
+		return AddObjectMarkerFieldComposite.getInstance().getOperation();
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView( this );
 	}
 }

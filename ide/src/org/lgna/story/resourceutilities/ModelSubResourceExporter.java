@@ -55,13 +55,23 @@ public class ModelSubResourceExporter {
 	private final String textureName;
 	private final String modelName;
 	private AxisAlignedBox bbox = null;
+	private final String typeString;
+	private final String attributionName;
+	private final String attributionYear;
 	List<String> tags = new LinkedList<String>();
 	List<String> groupTags = new LinkedList<String>();
 	List<String> themeTags = new LinkedList<String>();
 
-	public ModelSubResourceExporter( String modelName, String textureName ) {
+	//	public ModelSubResourceExporter( String modelName, String textureName, String typeString ) {
+	//		this( modelName, textureName, typeString, null );
+	//	}
+
+	public ModelSubResourceExporter( String modelName, String textureName, String typeString, String attributionName, String attributionYear ) {
 		this.modelName = modelName;
 		this.textureName = textureName;
+		this.typeString = typeString;
+		this.attributionName = attributionName;
+		this.attributionYear = attributionYear;
 	}
 
 	public AxisAlignedBox getBbox() {
@@ -78,6 +88,18 @@ public class ModelSubResourceExporter {
 
 	public String getTextureName() {
 		return textureName;
+	}
+
+	public String getTypeString() {
+		return this.typeString;
+	}
+
+	public String getAttributionName() {
+		return this.attributionName;
+	}
+
+	public String getAttributionYear() {
+		return this.attributionYear;
 	}
 
 	public List<String> getTags() {

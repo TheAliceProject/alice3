@@ -45,11 +45,8 @@ package org.alice.stageide.sceneeditor.side.views;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkersTabView extends org.lgna.croquet.components.BorderPanel {
+public class CameraMarkersTabView extends MarkersTabView {
 	public CameraMarkersTabView( org.alice.stageide.sceneeditor.side.CameraMarkersTab composite ) {
-		super( composite );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
-		this.addCenterComponent( new CameraMarkersListDataView( composite.getListDataComposite() ) );
-		this.addPageEndComponent( composite.getAddOperation().createButton() );
+		super( composite, new CameraMarkersListDataView( composite.getListDataComposite() ) );
 	}
 }

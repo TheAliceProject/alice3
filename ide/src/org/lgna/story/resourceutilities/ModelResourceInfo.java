@@ -114,6 +114,18 @@ public class ModelResourceInfo {
 			if( resourceElement.hasAttribute( "resourceName" ) ) {
 				resourceName = resourceElement.getAttribute( "resourceName" );
 			}
+			String creatorName = null;
+			if( resourceElement.hasAttribute( "creator" ) ) {
+				creatorName = resourceElement.getAttribute( "creator" );
+			}
+			int creationYearTemp = -1;
+			if( resourceElement.hasAttribute( "creationYear" ) ) {
+				try {
+					creationYearTemp = Integer.parseInt( resourceElement.getAttribute( "creationYear" ) );
+				} catch( Exception e ) {
+				}
+			}
+			int creationYear = creationYearTemp;
 			LinkedList<String> tagList = new LinkedList<String>();
 			NodeList tagNodeList = resourceElement.getElementsByTagName( "Tag" );
 			for( int i = 0; i < tagNodeList.getLength(); i++ ) {
@@ -135,7 +147,7 @@ public class ModelResourceInfo {
 			}
 			String[] themeTags = themeTagList.toArray( new String[ themeTagList.size() ] );
 
-			ModelResourceInfo resource = new ModelResourceInfo( parent, resourceName, null, -1, bbox, tags, groupTags, themeTags, modelName, textureName );
+			ModelResourceInfo resource = new ModelResourceInfo( parent, resourceName, creatorName, creationYear, bbox, tags, groupTags, themeTags, modelName, textureName );
 			return resource;
 		}
 

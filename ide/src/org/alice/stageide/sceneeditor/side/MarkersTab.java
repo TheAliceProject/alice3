@@ -45,8 +45,17 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MarkersTab<V extends org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> extends SideTab<V> {
-	public MarkersTab( java.util.UUID migrationId ) {
+public abstract class MarkersTab<V extends org.alice.stageide.sceneeditor.side.views.MarkersTabView> extends SideTab<V> {
+	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerListState;
+
+	public MarkersTab( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
 		super( migrationId );
+		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
 	}
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> getMarkerListState() {
+		return this.markerListState;
+	}
+
+	public abstract org.lgna.croquet.Operation getAddOperation();
 }

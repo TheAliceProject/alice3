@@ -45,11 +45,11 @@ package org.alice.stageide.sceneeditor.side.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MarkersTabView extends org.lgna.croquet.components.BorderPanel {
-	public MarkersTabView( org.alice.stageide.sceneeditor.side.CameraMarkersTab composite ) {
+public class MarkersTabView extends org.lgna.croquet.components.MigPanel {
+	public MarkersTabView( org.alice.stageide.sceneeditor.side.MarkersTab<?> composite, org.lgna.croquet.components.JComponent<?> mainComponent ) {
 		super( composite );
+		this.addComponent( composite.getMarkerListState().createList(), "wrap, growx" );
+		this.addComponent( composite.getAddOperation().createButton(), "wrap" );
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
-		this.addCenterComponent( new CameraMarkersListDataView( composite.getListDataComposite() ) );
-		this.addPageEndComponent( composite.getAddOperation().createButton() );
 	}
 }

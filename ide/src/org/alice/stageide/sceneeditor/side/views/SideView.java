@@ -51,7 +51,7 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 	}
 
 	public SideView( org.alice.stageide.sceneeditor.side.SideComposite composite ) {
-		super( composite, "insets 0, fill, aligny top", "", "4[grow 0]16[grow 0]16[grow 0]0[grow 0]0[grow 0]4[grow 0]16[grow]4" );
+		super( composite, "fill, insets 0, aligny top", "", "[grow 0][grow 0][grow 0]push[grow 0][grow 0][grow 0][grow 0][grow]" );
 
 		org.lgna.croquet.components.FlowPanel undoRedoPanel = new org.lgna.croquet.components.FlowPanel(
 				org.lgna.croquet.components.FlowPanel.Alignment.CENTER,
@@ -60,7 +60,7 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 				);
 
 		undoRedoPanel.setBorder( createSeparatorBorder( 0, 1 ) );
-		this.addComponent( undoRedoPanel, "wrap, span 2, growx" );
+		this.addComponent( undoRedoPanel, "wrap, growx" );
 
 		org.lgna.croquet.components.AbstractRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> radioButtons = new org.lgna.croquet.components.DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle>( composite.getHandleStyleState(), false ) {
 			@Override
@@ -73,8 +73,10 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 				return b;
 			}
 		};
-		this.addComponent( composite.getHandleStyleState().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "gapleft 4, align right" );
-		this.addComponent( radioButtons, "wrap" );
+		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
+				composite.getHandleStyleState().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ),
+				radioButtons
+				), "wrap" );
 
 		org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getSnapDetailsToolPaletteCoreComposite().getOuterComposite().getView();
 		org.lgna.croquet.components.ToolPaletteTitle title = toolPaletteView.getTitle();
@@ -82,20 +84,18 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 
 		this.addComponent( new org.lgna.croquet.components.FlowPanel(
 				composite.getIsSnapEnabledState().createCheckBox(),
-				title ), "wrap, gapleft 4, span 2" );
-		this.addComponent( toolPaletteView, "wrap, span 2" );
+				title ), "wrap, gapleft 4" );
+		this.addComponent( toolPaletteView, "wrap" );
 
-		this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
+		//this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
 		this.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ), "wrap" );
 
-		this.addComponent( new org.lgna.croquet.components.Label() );
 		this.addComponent( composite.getAreJointsShowingState().createCheckBox(), "wrap" );
 
-		this.addComponent( new org.lgna.croquet.components.Label() );
 		this.addComponent( org.alice.stageide.oneshot.DynamicOneShotMenuModel.getInstance().getPopupPrepModel().createPopupButton(), "wrap" );
 
 		org.lgna.croquet.components.ToolPaletteTabbedPane tabbedPane = composite.getTabState().createToolPaletteTabbedPane();
-		this.addComponent( tabbedPane, "wrap, span 2, aligny top, growx" );
+		this.addComponent( tabbedPane, "wrap, aligny top, growx" );
 
 		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
 		title.setBackgroundColor( this.getBackgroundColor() );

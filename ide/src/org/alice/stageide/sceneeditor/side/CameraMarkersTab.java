@@ -45,11 +45,11 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkersTab extends SideTab<org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> {
+public class CameraMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> {
 	private CameraMarkersListDataComposite listDataComposite;
 
 	public CameraMarkersTab() {
-		super( java.util.UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ) );
+		super( java.util.UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ), new CameraMarkerFieldData() );
 	}
 
 	public CameraMarkersListDataComposite getListDataComposite() {
@@ -66,6 +66,7 @@ public class CameraMarkersTab extends SideTab<org.alice.stageide.sceneeditor.sid
 		return this.listDataComposite;
 	}
 
+	@Override
 	public org.lgna.croquet.Operation getAddOperation() {
 		return AddCameraMarkerFieldComposite.getInstance().getOperation();
 	}

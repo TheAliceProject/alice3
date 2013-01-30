@@ -87,6 +87,18 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.compon
 		protected org.lgna.croquet.components.ToolPaletteView createView() {
 			return new org.lgna.croquet.components.ToolPaletteView( this );
 		}
+
+		@Override
+		public void handlePreActivation() {
+			this.coreComposite.handlePreActivation();
+			super.handlePreActivation();
+		}
+
+		@Override
+		public void handlePostDeactivation() {
+			super.handlePostDeactivation();
+			this.coreComposite.handlePostDeactivation();
+		}
 	}
 
 	private final OuterComposite outerComposite;
