@@ -85,32 +85,45 @@ public abstract class FilteredListPropertyData<E> extends org.lgna.croquet.data.
 		}
 	};
 
-	private final edu.cmu.cs.dennisc.property.ListProperty<E> listProperty;
+	private edu.cmu.cs.dennisc.property.ListProperty<E> listProperty;
 
-	public FilteredListPropertyData( org.lgna.croquet.ItemCodec<E> itemCodec, edu.cmu.cs.dennisc.property.ListProperty<E> listProperty ) {
+	public FilteredListPropertyData( org.lgna.croquet.ItemCodec<E> itemCodec ) {
 		super( itemCodec );
-		this.listProperty = listProperty;
-		this.listProperty.addPropertyListener( this.propertyListener );
-		this.listProperty.addListPropertyListener( this.listPropertyListener );
-		//this.updateData();
 	}
 
 	protected abstract boolean isAcceptableItem( E item );
 
 	@Override
 	protected java.util.List<E> createValues() {
-		java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		if( this.listProperty != null ) {
+			java.util.List<E> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-		for( E item : this.listProperty ) {
-			if( this.isAcceptableItem( item ) ) {
-				list.add( item );
+			for( E item : this.listProperty ) {
+				if( this.isAcceptableItem( item ) ) {
+					list.add( item );
+				}
 			}
-		}
 
-		return list;
+			return list;
+		} else {
+			return java.util.Collections.emptyList();
+		}
 	}
 
-	public edu.cmu.cs.dennisc.property.ListProperty<E> getListProperty() {
+	protected edu.cmu.cs.dennisc.property.ListProperty<E> getListProperty() {
 		return this.listProperty;
+	}
+
+	public void setListProperty( edu.cmu.cs.dennisc.property.ListProperty<E> listProperty ) {
+		if( this.listProperty != null ) {
+			this.listProperty.removePropertyListener( this.propertyListener );
+			this.listProperty.removeListPropertyListener( this.listPropertyListener );
+		}
+		this.listProperty = listProperty;
+		if( this.listProperty != null ) {
+			this.listProperty.addPropertyListener( this.propertyListener );
+			this.listProperty.addListPropertyListener( this.listPropertyListener );
+			this.refresh();
+		}
 	}
 }

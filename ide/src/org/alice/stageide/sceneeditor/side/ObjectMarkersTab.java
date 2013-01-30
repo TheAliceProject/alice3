@@ -47,7 +47,7 @@ package org.alice.stageide.sceneeditor.side;
  */
 public class ObjectMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView> {
 	public ObjectMarkersTab() {
-		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ) );
+		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ), new ObjectMarkerFieldData() );
 	}
 
 	@Override

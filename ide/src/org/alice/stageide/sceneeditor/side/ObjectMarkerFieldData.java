@@ -45,34 +45,9 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> {
-	private CameraMarkersListDataComposite listDataComposite;
-
-	public CameraMarkersTab() {
-		super( java.util.UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ), new CameraMarkerFieldData() );
-	}
-
-	public CameraMarkersListDataComposite getListDataComposite() {
-
-		//todo: remove this hack
-		if( this.listDataComposite != null ) {
-			//pass
-		} else {
-			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: need to account for loading a new project", this, sceneType );
-			org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData fieldData = new org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData( sceneType );
-			this.listDataComposite = new CameraMarkersListDataComposite( fieldData );
-		}
-		return this.listDataComposite;
-	}
-
+public class ObjectMarkerFieldData extends MarkerFieldData {
 	@Override
-	public org.lgna.croquet.Operation getAddOperation() {
-		return AddCameraMarkerFieldComposite.getInstance().getOperation();
-	}
-
-	@Override
-	protected org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView createView() {
-		return new org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView( this );
+	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
+		return super.isAcceptableItem( value ) && value.valueType.getValue().isAssignableTo( org.lgna.story.SThingMarker.class );
 	}
 }

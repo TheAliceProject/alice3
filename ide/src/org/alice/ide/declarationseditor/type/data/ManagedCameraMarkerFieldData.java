@@ -46,6 +46,8 @@ package org.alice.ide.declarationseditor.type.data;
  * @author dculyba
  * 
  */
+//todo: delete
+@Deprecated
 public class ManagedCameraMarkerFieldData extends AbstractManagedFieldData {
 	public ManagedCameraMarkerFieldData( org.lgna.project.ast.NamedUserType type ) {
 		super( type );

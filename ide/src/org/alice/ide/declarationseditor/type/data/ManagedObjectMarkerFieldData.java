@@ -46,6 +46,8 @@ package org.alice.ide.declarationseditor.type.data;
  * @author dculyba
  * 
  */
+//todo: delete
+@Deprecated
 public class ManagedObjectMarkerFieldData extends AbstractManagedFieldData {
 	public ManagedObjectMarkerFieldData( org.lgna.project.ast.NamedUserType type ) {
 		super( type );
