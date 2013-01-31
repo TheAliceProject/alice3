@@ -62,7 +62,11 @@ public class LocalDeclarationPane extends TypedDeclarationPane {
 	private void updateFinalLabel() {
 		String text;
 		if( userLocal.isFinal.getValue() ) {
-			text = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getFinalText() + " ";
+			if( userLocal.getParent() instanceof org.lgna.project.ast.EachInStatement ) {
+				text = "";
+			} else {
+				text = org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getFinalText() + " ";
+			}
 		} else {
 			text = "";
 		}

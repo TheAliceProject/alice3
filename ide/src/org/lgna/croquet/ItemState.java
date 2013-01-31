@@ -164,19 +164,25 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 	private static class InternalSelectItemOperation<T> extends ActionOperation {
 		private final ItemState<T> state;
 		private final java.util.concurrent.Callable<T> itemCallable;
+		private final boolean isAlternateLocalization;
 
-		private InternalSelectItemOperation( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable ) {
+		private InternalSelectItemOperation( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable, boolean isAlternateLocalization ) {
 			super( state.getGroup(), java.util.UUID.fromString( "6de1225e-3fb6-4bd0-9c78-1188c642325c" ) );
 			assert state != null;
 			this.state = state;
 			this.itemCallable = itemCallable;
+			this.isAlternateLocalization = isAlternateLocalization;
 		}
 
 		@Override
 		protected void localize() {
 			super.localize();
 			StringBuilder sb = new StringBuilder();
-			this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+			if( this.isAlternateLocalization ) {
+				sb.append( "Edit" );
+			} else {
+				this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+			}
 			this.setName( sb.toString() );
 		}
 
@@ -216,26 +222,54 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 	}
 
 	private java.util.Map<java.util.concurrent.Callable<T>, InternalSelectItemOperation<T>> mapItemCallableToSelectionOperation;
+	private java.util.Map<java.util.concurrent.Callable<T>, InternalSelectItemOperation<T>> mapItemCallableToSelectionOperationAlternate;
 
 	//note: itemCallable must be valid key
-	public ActionOperation getItemSelectionOperation( java.util.concurrent.Callable<T> itemCallable ) {
-		if( mapItemCallableToSelectionOperation != null ) {
-			//pass
+
+	private java.util.Map<java.util.concurrent.Callable<T>, InternalSelectItemOperation<T>> getMapItemCallableToSelectionOperation( boolean isAlternateLocalization ) {
+		if( isAlternateLocalization ) {
+			if( mapItemCallableToSelectionOperationAlternate != null ) {
+				//pass
+			} else {
+				this.mapItemCallableToSelectionOperationAlternate = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			}
+			return this.mapItemCallableToSelectionOperationAlternate;
 		} else {
-			this.mapItemCallableToSelectionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			if( mapItemCallableToSelectionOperation != null ) {
+				//pass
+			} else {
+				this.mapItemCallableToSelectionOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			}
+			return this.mapItemCallableToSelectionOperation;
 		}
-		InternalSelectItemOperation<T> rv = this.mapItemCallableToSelectionOperation.get( itemCallable );
+	}
+
+	private ActionOperation getItemSelectionOperation( java.util.concurrent.Callable<T> itemCallable, boolean isAlternateLocalization ) {
+		java.util.Map<java.util.concurrent.Callable<T>, InternalSelectItemOperation<T>> map = getMapItemCallableToSelectionOperation( isAlternateLocalization );
+		InternalSelectItemOperation<T> rv = map.get( itemCallable );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new InternalSelectItemOperation<T>( this, itemCallable );
-			this.mapItemCallableToSelectionOperation.put( itemCallable, rv );
+			rv = new InternalSelectItemOperation<T>( this, itemCallable, isAlternateLocalization );
+			map.put( itemCallable, rv );
 		}
 		return rv;
 	}
 
+	public ActionOperation getItemSelectionOperation( java.util.concurrent.Callable<T> itemCallable ) {
+		return this.getItemSelectionOperation( itemCallable, false );
+	}
+
 	public ActionOperation getItemSelectionOperation( final T item ) {
-		return getItemSelectionOperation( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
+		return this.getItemSelectionOperation( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
+	}
+
+	public ActionOperation getAlternateLocalizationItemSelectionOperation( java.util.concurrent.Callable<T> itemCallable ) {
+		return this.getItemSelectionOperation( itemCallable, true );
+	}
+
+	public ActionOperation getAlternateLocalizationItemSelectionOperation( final T item ) {
+		return this.getAlternateLocalizationItemSelectionOperation( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
 	}
 
 	@Override

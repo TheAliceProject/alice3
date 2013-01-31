@@ -62,7 +62,7 @@ public class TypeComponent extends org.lgna.croquet.components.JComponent<javax.
 		final javax.swing.JLabel rv = new javax.swing.JLabel();
 		final TypeIcon typeIcon = new TypeIcon( type ) {
 			@Override
-			protected java.awt.Font getFont() {
+			protected java.awt.Font getTypeFont() {
 				return rv.getFont();
 			}
 		};

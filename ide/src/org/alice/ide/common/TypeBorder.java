@@ -50,8 +50,9 @@ class TypeBorder implements javax.swing.border.Border {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
 			return ide.getTheme().getColorFor( org.lgna.project.ast.TypeExpression.class );
+			//return ide.getTheme().getTypeColor();
 		} else {
-			return new java.awt.Color( 0xe2ba84 );
+			return org.alice.ide.DefaultTheme.DEFAULT_TYPE_COLOR;
 		}
 	}
 

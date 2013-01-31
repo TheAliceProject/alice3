@@ -78,6 +78,7 @@ import org.lgna.project.License;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.ImplementationAndVisualType;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
@@ -410,8 +411,26 @@ public class ModelResourceExporter {
 		this.subResources.add( subResource );
 	}
 
-	public void addResource( String modelName, String textureName ) {
-		this.addSubResource( new ModelSubResourceExporter( modelName, textureName ) );
+	//	public void addResource( String modelName, String textureName, String resourceType ) {
+	//		this.addSubResource( new ModelSubResourceExporter( modelName, textureName, resourceType ) );
+	//	}
+
+	public void addResource( String modelName, String textureName, String resourceType, String attributionName, String attributionYear ) {
+		String attributionNameToUse = null;
+		String attributionYearToUse = null;
+		if( ( attributionName != null ) && !attributionName.equals( this.attributionName ) ) {
+			attributionNameToUse = attributionName;
+		}
+		if( ( attributionYear != null ) && !attributionYear.equals( this.attributionYear ) ) {
+			attributionYearToUse = attributionYear;
+		}
+		if( ( attributionNameToUse != null ) && ( attributionNameToUse.length() == 0 ) ) {
+			attributionNameToUse = null;
+		}
+		if( ( attributionYearToUse != null ) && ( attributionYearToUse.length() == 0 ) ) {
+			attributionYearToUse = null;
+		}
+		this.addSubResource( new ModelSubResourceExporter( modelName, textureName, resourceType, attributionNameToUse, attributionYearToUse ) );
 	}
 
 	public void addSubResourceTags( String modelName, String textureName, String... tags ) {
@@ -503,10 +522,10 @@ public class ModelResourceExporter {
 		this.boundingBoxes.put( modelName, boundingBox );
 	}
 
-	public void addThumbnail( String modelName, String textureName, Image thumbnail )
-	{
-		this.thumbnails.put( new ModelSubResourceExporter( modelName, textureName ), thumbnail );
-	}
+	//	public void addThumbnail( String modelName, String textureName, String resourceType, String attributionName, String attributionYear, Image thumbnail )
+	//	{
+	//		this.thumbnails.put( new ModelSubResourceExporter( modelName, textureName, resourceType, attributionName, attributionYear ), thumbnail );
+	//	}
 
 	public void addExistingThumbnail( String name, File thumbnailFile ) {
 		if( ( thumbnailFile != null ) && thumbnailFile.exists() ) {
@@ -586,6 +605,15 @@ public class ModelResourceExporter {
 		org.w3c.dom.Element resourceElement = doc.createElement( "Resource" );
 		resourceElement.setAttribute( "textureName", AliceResourceUtilties.makeEnumName( subResource.getTextureName() ) );
 		resourceElement.setAttribute( "resourceName", createResourceEnumName( parentMRE, subResource ) );
+		if( subResource.getModelName() != null ) {
+			resourceElement.setAttribute( "modelName", subResource.getModelName() );
+		}
+		if( subResource.getAttributionName() != null ) {
+			resourceElement.setAttribute( "creator", subResource.getAttributionName() );
+		}
+		if( subResource.getAttributionYear() != null ) {
+			resourceElement.setAttribute( "creationYear", subResource.getAttributionYear() );
+		}
 		if( subResource.getModelName() != null ) {
 			resourceElement.setAttribute( "modelName", subResource.getModelName() );
 		}
@@ -888,7 +916,8 @@ public class ModelResourceExporter {
 		sb.append( getCopyrightComment() );
 		sb.append( "\n" );
 		sb.append( "package " + this.classData.packageString + ";\n\n" );
-		sb.append( "import org.lgna.project.annotations.*;\n\n" );
+		sb.append( "import org.lgna.project.annotations.*;\n" );
+		sb.append( "import org.lgna.story.resources.ImplementationAndVisualType;\n\n" );
 		sb.append( "public enum " + this.getJavaClassName() + " implements " + this.classData.superClass.getCanonicalName() + " {\n" );
 		int numSubResources = this.subResources.size();
 		assert this.subResources.size() > 0;
@@ -896,7 +925,11 @@ public class ModelResourceExporter {
 		{
 			ModelSubResourceExporter resource = this.subResources.get( i );
 			String resourceEnumName = createResourceEnumName( this, resource );
-			sb.append( "\t" + resourceEnumName );
+			String typeString = "";
+			if( !resource.getTypeString().equals( ImplementationAndVisualType.ALICE.toString() ) ) {
+				typeString = "( ImplementationAndVisualType." + resource.getTypeString() + " )";
+			}
+			sb.append( "\t" + resourceEnumName + typeString );
 			if( i < ( this.subResources.size() - 1 ) )
 			{
 				sb.append( ",\n" );
@@ -949,6 +982,13 @@ public class ModelResourceExporter {
 			}
 		}
 		sb.append( "\n" );
+		sb.append( "\tprivate final ImplementationAndVisualType resourceType;\n" );
+		sb.append( "\tprivate " + this.getJavaClassName() + "() {\n" );
+		sb.append( "\t\tthis( ImplementationAndVisualType.ALICE );\n" );
+		sb.append( "\t}\n\n" );
+		sb.append( "\tprivate " + this.getJavaClassName() + "( ImplementationAndVisualType resourceType ) {\n" );
+		sb.append( "\t\tthis.resourceType = resourceType;\n" );
+		sb.append( "\t}\n\n" );
 		if( needsToDefineRootsMethod( this.classData.superClass ) )
 		{
 			sb.append( "\tpublic org.lgna.story.resources.JointId[] getRootJointIds(){\n" );
@@ -971,10 +1011,10 @@ public class ModelResourceExporter {
 			sb.append( "\t}\n" );
 		}
 		sb.append( "\n\tpublic org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {\n" );
-		sb.append( "\t\treturn " + this.jointAndVisualFactory.getCanonicalName() + ".getInstance( this );\n" );
+		sb.append( "\t\treturn this.resourceType.getFactory( this );\n" );
 		sb.append( "\t}\n" );
 		sb.append( "\tpublic " + this.classData.implementationClass.getCanonicalName() + " createImplementation( " + this.classData.abstractionClass.getCanonicalName() + " abstraction ) {\n" );
-		sb.append( "\t\treturn new " + this.classData.implementationClass.getCanonicalName() + "( abstraction, " + this.jointAndVisualFactory.getCanonicalName() + ".getInstance( this ) );\n" );
+		sb.append( "\t\treturn new " + this.classData.implementationClass.getCanonicalName() + "( abstraction, this.resourceType.getFactory( this ) );\n" );
 		sb.append( "\t}\n" );
 		sb.append( "}\n" );
 
@@ -1268,7 +1308,7 @@ public class ModelResourceExporter {
 		return thumbnailFiles;
 	}
 
-	public boolean addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile ) throws IOException
 	{
 		if( !sourceDirectory.endsWith( "/" ) && !sourceDirectory.endsWith( "\\" ) ) {
 			sourceDirectory += File.separator;
@@ -1340,15 +1380,17 @@ public class ModelResourceExporter {
 				throw new IOException( "FAILED ADDING RESROUCES TO SOURCE JAR." + e );
 			}
 		}
-		return true;
+		Document doc = XMLUtilities.read( xmlFile );
+		ModelResourceInfo returnInfo = new ModelResourceInfo( doc );
+		return returnInfo;
 	}
 
-	public boolean addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos ) throws IOException
 	{
 		return addToJar( sourceDirectory, resourceDirectory, jos, jos, true, true );
 	}
 
-	public boolean addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles ) throws IOException
 	{
 		return addToJar( sourceDirectory, resourceDirectory, jos, jos, rebuildFiles, rebuildFiles );
 	}

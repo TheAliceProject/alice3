@@ -62,6 +62,7 @@ import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclaratio
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
+import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 import org.alice.stageide.sceneeditor.viewmanager.CameraViewCellRenderer;
@@ -72,6 +73,8 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActi
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.SceneCameraMarkerManagerPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SceneObjectMarkerManagerPanel;
+import org.alice.stageide.sceneeditor.views.InstanceFactorySelectionPanel;
+import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.DragComponent;
@@ -229,13 +232,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory
 			.getInstance().createLightweightOnscreenLookingGlass();
 
-	private class LookingGlassPanel extends
-			org.lgna.croquet.components.CompassPointSpringPanel {
+	private class LookingGlassPanel extends org.lgna.croquet.components.CompassPointSpringPanel {
 		@Override
 		protected javax.swing.JPanel createJPanel() {
-			javax.swing.JPanel rv = StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
-			rv.setLayout( new javax.swing.SpringLayout() );
-			return rv;
+			return StorytellingSceneEditor.this.onscreenLookingGlass.getJPanel();
 		}
 	}
 

@@ -286,9 +286,18 @@ public class StageIDE extends org.alice.ide.IDE {
 			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 			org.lgna.project.ast.NamedUserType sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
-				String methodName = "myFirstMethod";
-				//methodName = StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME;
-				this.setFocusedCode( sceneType.findMethod( methodName ) );
+				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+				org.lgna.croquet.data.ListData<org.alice.ide.declarationseditor.DeclarationComposite> data = tabState.getData();
+
+				data.internalAddItem( org.alice.ide.declarationseditor.TypeComposite.getInstance( sceneType ) );
+				String[] methodNames = { INITIALIZE_EVENT_LISTENERS_METHOD_NAME, "myFirstMethod" };
+				for( String methodName : methodNames ) {
+					org.lgna.project.ast.AbstractMethod method = sceneType.findMethod( methodName );
+					if( method != null ) {
+						data.internalAddItem( org.alice.ide.declarationseditor.CodeComposite.getInstance( method ) );
+					}
+				}
+				tabState.setValueTransactionlessly( data.getItemAt( data.getItemCount() - 1 ) );
 			}
 		}
 		org.alice.stageide.icons.SceneIconFactory.getInstance().markAllIconsDirty();

@@ -71,7 +71,10 @@ public class MethodsSubView<C extends org.alice.ide.member.MethodsSubComposite> 
 			org.lgna.croquet.components.JComponent<?> component;
 			if( method instanceof org.lgna.project.ast.UserMethod ) {
 				org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
-				org.lgna.croquet.components.Hyperlink hyperlink = org.alice.ide.croquet.models.ast.EditMethodOperation.getLocalizedToEditInstance( userMethod ).createHyperlink();
+				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+				org.lgna.croquet.Operation operation = tabState.getItemSelectionOperationForMethod( method );
+				org.lgna.croquet.components.Hyperlink hyperlink = operation.createHyperlink();
+				hyperlink.setClobberText( "edit" );
 				component = new org.lgna.croquet.components.LineAxisPanel( hyperlink, org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ), dragComponent );
 			} else {
 				component = dragComponent;

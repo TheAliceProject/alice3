@@ -47,7 +47,7 @@ package org.alice.stageide.gallerybrowser.views;
  * @author Dennis Cosgrove
  */
 public final class GalleryView extends org.lgna.croquet.components.BorderPanel {
-	public final static java.awt.Color BACKGROUND_COLOR = org.alice.ide.IDE.getActiveInstance().getTheme().getConstructorColor();
+	public final static java.awt.Color BACKGROUND_COLOR = org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR.brighter();
 
 	public GalleryView( org.alice.stageide.gallerybrowser.GalleryComposite composite ) {
 		super( composite );

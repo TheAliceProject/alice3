@@ -67,6 +67,8 @@ public abstract class ListData<T> implements Iterable<T> {
 		return this.itemCodec;
 	}
 
+	public abstract boolean contains( T item );
+
 	public abstract T getItemAt( int index );
 
 	public abstract int getItemCount();

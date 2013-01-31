@@ -58,7 +58,7 @@ public class TreeUtilities {
 		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)key;
-			if( classResourceKey.getCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
+			if( classResourceKey.getModelResourceCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
 				java.util.List<ResourceNode> emptyList = java.util.Collections.emptyList();
 				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getInstance(), emptyList ) );
 			}
@@ -84,7 +84,7 @@ public class TreeUtilities {
 	private static ClassHierarchyBasedResourceNode createTreeBasedOnClassHierarchy() {
 		org.lgna.story.resourceutilities.StorytellingResources storytellingResources = org.lgna.story.resourceutilities.StorytellingResources.getInstance();
 		org.lgna.story.resourceutilities.ModelResourceTreeNode root = storytellingResources.getGalleryTree();
-		return createNode( root, new RootResourceKey() );
+		return createNode( root, new RootResourceKey( "all classes" ) );
 	}
 
 	public static ClassHierarchyBasedResourceNode getTreeBasedOnClassHierarchy() {
@@ -225,11 +225,11 @@ public class TreeUtilities {
 	}
 
 	private static java.util.List<ResourceNode> createGroupTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup ) {
-		return createTagNodeList( mapGroup, false, "household" );
+		return createTagNodeList( mapGroup, false );
 	}
 
 	private static java.util.List<ResourceNode> createThemeTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme ) {
-		return createTagNodeList( mapTheme, true );
+		return createTagNodeList( mapTheme, true, "household" );
 	}
 
 	private static void createTreesBasedOnThemeAndGroup() {
@@ -244,8 +244,8 @@ public class TreeUtilities {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( themeNodes );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( groupNodes );
 
-		treeBasedOnGroup = new GroupBasedResourceNode( new RootResourceKey(), groupNodes );
-		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey(), themeNodes );
+		treeBasedOnGroup = new GroupBasedResourceNode( new RootResourceKey( "all groups" ), groupNodes );
+		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey( "all themes" ), themeNodes );
 	}
 
 	public static ThemeBasedResourceNode getTreeBasedOnTheme() {
