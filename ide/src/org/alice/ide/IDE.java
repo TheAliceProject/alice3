@@ -360,8 +360,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 						i--;
 						org.lgna.project.ast.UserField field = sceneType.fields.get( i );
 						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-							org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
-							break;
+							if( getApiConfigurationManager().isInstanceFactoryDesiredForType( field.getValueType() ) ) {
+								org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+								break;
+							}
 						}
 					}
 				}
