@@ -48,15 +48,20 @@ import java.util.List;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.ModifierMask;
 import org.alice.interact.ModifierMask.ModifierKey;
+import org.alice.interact.MovementDirection;
 import org.alice.interact.PickHint;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
+import org.alice.interact.handle.HandleSet;
+import org.alice.interact.handle.ManipulationHandleIndirection;
 import org.alice.interact.manipulator.CameraMoveDragManipulator;
 import org.alice.interact.manipulator.CameraOrbitDragManipulator;
 import org.alice.interact.manipulator.CameraPanDragManipulator;
 import org.alice.interact.manipulator.CameraTiltDragManipulator;
+import org.alice.interact.manipulator.ObjectRotateDragManipulator;
 
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
@@ -126,10 +131,10 @@ public class PoserDragAdapter extends AbstractDragAdapter implements PoserSphere
 	protected void setUpControls() {
 		setUpSphereManipulators();
 		setUpCameraControls();
+		setUpJointRotators();
 		for( int i = 0; i < this.manipulators.size(); i++ ) {
 			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
 		}
-
 	}
 
 	private void setUpSphereManipulators() {
@@ -144,6 +149,27 @@ public class PoserDragAdapter extends AbstractDragAdapter implements PoserSphere
 		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.PickType.MOVEABLE.pickHint() ), new ModifierMask( ModifierKey.SHIFT ) );
 		mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
 		this.manipulators.add( mouseUpDownTranslateObject );
+
+	}
+
+	private void setUpJointRotators() {
+		ManipulationHandleIndirection rotateJointAboutZAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.BACKWARD, Color4f.BLUE ) );
+		rotateJointAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutZAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+		rotateJointAboutZAxis.setDragAdapterAndAddHandle( this );
+
+		ManipulationHandleIndirection rotateJointAboutYAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.UP, Color4f.GREEN ) );
+		rotateJointAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutYAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutYAxis.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+		rotateJointAboutYAxis.setDragAdapterAndAddHandle( this );
+
+		ManipulationHandleIndirection rotateJointAboutXAxis = new ManipulationHandleIndirection( new org.alice.interact.handle.JointRotationRingHandle( MovementDirection.LEFT, Color4f.RED ) );
+		rotateJointAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
+		rotateJointAboutXAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
+		rotateJointAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.JOINT );
+		rotateJointAboutXAxis.setDragAdapterAndAddHandle( this );
 	}
 
 	private void setUpCameraControls() {

@@ -45,7 +45,6 @@ package org.lgna.ik.poser;
 
 import java.util.ArrayList;
 
-import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MoveDirection;
@@ -53,8 +52,6 @@ import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
 import org.lgna.story.SProgram;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.implementation.JointImp;
-import org.lgna.story.resources.JointId;
 
 import test.ik.IkTestApplication;
 
@@ -65,12 +62,7 @@ class IkPoser extends SProgram {
 	private final SCamera camera = new SCamera();
 	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
 	public final PoserScene scene = new PoserScene( camera, ogre );
-	private PoserControllerAdapter adapter;
-	private org.lgna.ik.enforcer.JointedModelIkEnforcer ikEnforcer;
-	public final JointId DEFAULT_ANCHOR = ( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightClavicle() ) ).getJointId();
-	public final JointId DEFAULT_END = ( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightWrist() ) ).getJointId();
 
-	private boolean useTightIkEnforcer = false;
 	private PoserSplitComposite composite = new PoserSplitComposite( this );
 
 	private org.lgna.story.implementation.JointedModelImp<?, ?> getSubjectImp() {
@@ -114,16 +106,7 @@ class IkPoser extends SProgram {
 	}
 
 	public void setAdapter( PoserControllerAdapter adapter ) {
-		this.adapter = adapter;
 		scene.setAdapter( adapter );
-	}
-
-	public JointSelectionSphere getDefaultAnchorJoint( Limb rightArm ) {
-		return JointSelectionSphere.findSphereForJoint( DEFAULT_ANCHOR, getJointSelectionSheres() );
-	}
-
-	public JointSelectionSphere getDefaultEndJoint() {
-		return JointSelectionSphere.findSphereForJoint( DEFAULT_END, getJointSelectionSheres() );
 	}
 
 	public Pose getPose() {

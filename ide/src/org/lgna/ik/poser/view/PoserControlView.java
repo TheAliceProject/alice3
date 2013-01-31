@@ -56,16 +56,38 @@ public class PoserControlView extends BorderPanel {
 
 	public PoserControlView( PoserControlComposite poserControlComposite ) {
 		super( poserControlComposite );
-		GridPanel panel = GridPanel.createGridPane( 4, 1 );
+		GridPanel panel = GridPanel.createGridPane( 2, 2 );
+
+		BorderPanel raPanel = new BorderPanel();
+		raPanel.addPageStartComponent( poserControlComposite.getRightArmLabel().createLabel() );
+		JointSelectionSphereState rightArmAnchor = poserControlComposite.getRightArmAnchor();
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raDropDown = rightArmAnchor.createItemDropDown();
+		raPanel.addCenterComponent( raDropDown );
+
+		BorderPanel laPanel = new BorderPanel();
+		laPanel.addPageStartComponent( poserControlComposite.getLeftArmLabel().createLabel() );
+		JointSelectionSphereState leftArmAnchor = poserControlComposite.getLeftArmAnchor();
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laDropDown = leftArmAnchor.createItemDropDown();
+		laPanel.addCenterComponent( laDropDown );
+
+		BorderPanel rlPanel = new BorderPanel();
+		rlPanel.addPageStartComponent( poserControlComposite.getRightLegLabel().createLabel() );
+		JointSelectionSphereState rightLegAnchor = poserControlComposite.getRightLegAnchor();
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlDropDown = rightLegAnchor.createItemDropDown();
+		rlPanel.addCenterComponent( rlDropDown );
+
+		BorderPanel llPanel = new BorderPanel();
+		llPanel.addPageStartComponent( poserControlComposite.getLeftLegLabel().createLabel() );
+		JointSelectionSphereState leftLegAnchor = poserControlComposite.getLeftLegAnchor();
+		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
+		llPanel.addCenterComponent( llDropDown );
+
+		panel.addComponent( raPanel );
+		panel.addComponent( laPanel );
+		panel.addComponent( rlPanel );
+		panel.addComponent( llPanel );
+
 		this.addPageStartComponent( panel );
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raComponent = poserControlComposite.getRightArmAnchor().createItemDropDown();
-		panel.addComponent( raComponent );
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlComponent = poserControlComposite.getRightLegAnchor().createItemDropDown();
-		panel.addComponent( rlComponent );
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laComponent = poserControlComposite.getLeftArmAnchor().createItemDropDown();
-		panel.addComponent( laComponent );
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llComponent = poserControlComposite.getLeftLegAnchor().createItemDropDown();
-		panel.addComponent( llComponent );
 		this.addComponent( poserControlComposite.getDumpPose().createButton(), Constraint.PAGE_END );
 	}
 

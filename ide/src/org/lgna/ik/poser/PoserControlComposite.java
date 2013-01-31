@@ -48,11 +48,14 @@ import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.view.PoserControlView;
 import org.lgna.ik.walkandtouch.IKMagicWand;
+import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.ik.walkandtouch.PoserScene;
+import org.lgna.story.Color;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -67,6 +70,10 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 	private JointSelectionSphereState leftArmAnchor;
 	private JointSelectionSphereState rightLegAnchor;
 	private JointSelectionSphereState leftLegAnchor;
+	private StringValue rightArmLabel = this.createStringValue( createKey( "rightArm" ) );
+	private StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
+	private StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
+	private StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
 	private List<Pose> poses = Collections.newArrayList();
 
 	private ActionOperation dumpPose = createActionOperation( createKey( "dumpPose" ), new Action() {
@@ -86,6 +93,10 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		leftArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_ARM ) );
 		rightLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_LEG ) );
 		leftLegAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.LEFT_LEG ), scene.getJointsForLimb( IKMagicWand.Limb.LEFT_LEG ) );
+		rightArmAnchor.getValue().setPaint( Color.GREEN );
+		leftArmAnchor.getValue().setPaint( Color.GREEN );
+		rightLegAnchor.getValue().setPaint( Color.GREEN );
+		leftLegAnchor.getValue().setPaint( Color.GREEN );
 		ikPoser.setAdapter( new PoserControllerAdapter( this ) );
 	}
 
@@ -118,6 +129,22 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		leftLegAnchor.addValueListener( listener );
 	}
 
+	public StringValue getRightArmLabel() {
+		return this.rightArmLabel;
+	}
+
+	public StringValue getLeftArmLabel() {
+		return this.leftArmLabel;
+	}
+
+	public StringValue getRightLegLabel() {
+		return this.rightLegLabel;
+	}
+
+	public StringValue getLeftLegLabel() {
+		return this.leftLegLabel;
+	}
+
 	public JointSelectionSphereState getRightArmAnchor() {
 		return this.rightArmAnchor;
 	}
@@ -132,5 +159,22 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 
 	public JointSelectionSphereState getLeftLegAnchor() {
 		return this.leftLegAnchor;
+	}
+
+	public void updateSphere( Limb limb, JointSelectionSphere sphere ) {
+		switch( limb ) {
+		case LEFT_ARM:
+			leftArmAnchor.setValueTransactionlessly( sphere );
+			break;
+		case LEFT_LEG:
+			leftLegAnchor.setValueTransactionlessly( sphere );
+			break;
+		case RIGHT_ARM:
+			rightArmAnchor.setValueTransactionlessly( sphere );
+			break;
+		case RIGHT_LEG:
+			rightLegAnchor.setValueTransactionlessly( sphere );
+			break;
+		}
 	}
 }

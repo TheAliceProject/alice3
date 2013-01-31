@@ -45,6 +45,8 @@ package org.lgna.ik.poser;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
+import org.lgna.story.Color;
+import org.lgna.story.SetPaint;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
@@ -63,11 +65,11 @@ public class PoserControllerAdapter {
 		this.controlComposite = controlComposite;
 		this.controlComposite.addRightArmAnchorListener( rightArmAnchorJointListener );
 		rightLegAnchorJointID = controlComposite.getRightLegAnchor().getValue().getJoint().getJointId();
-		this.controlComposite.addRightLegAnchorListener( rightArmAnchorJointListener );
+		this.controlComposite.addRightLegAnchorListener( rightLegAnchorJointListener );
 		rightArmAnchorJointID = controlComposite.getRightArmAnchor().getValue().getJoint().getJointId();
-		this.controlComposite.addLeftArmAnchorListener( rightArmAnchorJointListener );
+		this.controlComposite.addLeftArmAnchorListener( leftArmAnchorJointListener );
 		leftLegAnchorJointID = controlComposite.getLeftLegAnchor().getValue().getJoint().getJointId();
-		this.controlComposite.addLeftLegAnchorListener( rightArmAnchorJointListener );
+		this.controlComposite.addLeftLegAnchorListener( leftLegAnchorJointListener );
 		leftArmAnchorJointID = controlComposite.getLeftArmAnchor().getValue().getJoint().getJointId();
 	}
 
@@ -77,6 +79,8 @@ public class PoserControllerAdapter {
 		}
 
 		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
+			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
 			PoserControllerAdapter.this.rightArmAnchorJointID = nextValue.getJoint().getJointId();
 		}
 	};
@@ -86,6 +90,8 @@ public class PoserControllerAdapter {
 		}
 
 		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
+			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
 			PoserControllerAdapter.this.rightLegAnchorJointID = nextValue.getJoint().getJointId();
 		}
 	};
@@ -95,6 +101,8 @@ public class PoserControllerAdapter {
 		}
 
 		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
+			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
+			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
 			PoserControllerAdapter.this.leftArmAnchorJointID = nextValue.getJoint().getJointId();
 		}
 	};
@@ -104,7 +112,8 @@ public class PoserControllerAdapter {
 		}
 
 		public void changed( State<JointSelectionSphere> state, JointSelectionSphere prevValue, JointSelectionSphere nextValue, boolean isAdjusting ) {
-			System.out.println( "update? (mmay)" );
+			prevValue.setPaint( Color.WHITE, SetPaint.duration( 0 ) );
+			nextValue.setPaint( Color.GREEN, SetPaint.duration( 0 ) );
 			PoserControllerAdapter.this.leftLegAnchorJointID = nextValue.getJoint().getJointId();
 		}
 	};
@@ -123,4 +132,7 @@ public class PoserControllerAdapter {
 		return null;
 	}
 
+	public void updateSphere( Limb limb, JointSelectionSphere sphere ) {
+		controlComposite.updateSphere( limb, sphere );
+	}
 }

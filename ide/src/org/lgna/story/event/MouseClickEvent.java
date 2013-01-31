@@ -119,6 +119,9 @@ public class MouseClickEvent extends AbstractEvent {
 		return this.modelAtMouseLocation;
 	}
 
+	public static boolean isThisRightClick( MouseClickEvent mouseClickEvent ) {
+		return mouseClickEvent.e.getButton() == 3;
+	}
 	//	private synchronized void pickIfNecessary() {
 	//		if( this.isPickPerformed ) {
 	//			//pass

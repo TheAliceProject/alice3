@@ -53,6 +53,7 @@ import org.lgna.ik.poser.PoserDragAdapter;
 import org.lgna.ik.poser.PoserEvent;
 import org.lgna.ik.poser.PoserSphereManipulatorListener;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
+import org.lgna.story.AddMouseClickOnObjectListener;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
@@ -61,10 +62,14 @@ import org.lgna.story.SJoint;
 import org.lgna.story.SScene;
 import org.lgna.story.SSun;
 import org.lgna.story.SpatialRelation;
+import org.lgna.story.event.MouseClickEvent;
+import org.lgna.story.event.MouseClickOnObjectEvent;
+import org.lgna.story.event.MouseClickOnObjectListener;
 import org.lgna.story.implementation.JointImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.resources.JointId;
 
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
@@ -83,6 +88,7 @@ public class PoserScene extends SScene {
 	private PoserDragAdapter dragAdapter;
 	private Map<IKMagicWand.Limb, List<JointSelectionSphere>> limbToJointMap = Collections.newHashMap();
 	private Map<JointImp, IKMagicWand.Limb> jointToLimbMap = Collections.newHashMap();
+	private JointImp currentlyShowingRotationHandles = null;
 
 	public PoserScene( SCamera camera, SBiped ogre ) {
 		this.camera = camera;
@@ -93,19 +99,19 @@ public class PoserScene extends SScene {
 		JointSelectionSphere c = createJSS( ogre.getRightAnkle(), b );
 		limbToJointMap.put( Limb.RIGHT_LEG, Collections.newArrayList( pelvis, a, b, c ) );
 		JointSelectionSphere d = createJSS( ogre.getRightClavicle(), null );
-		JointSelectionSphere m = createJSS( ogre.getRightShoulder(), d );
-		JointSelectionSphere e = createJSS( ogre.getRightElbow(), m );
-		JointSelectionSphere f = createJSS( ogre.getRightWrist(), e );
-		limbToJointMap.put( Limb.RIGHT_ARM, Collections.newArrayList( d, m, e, f ) );
-		JointSelectionSphere g = createJSS( ogre.getLeftHip(), pelvis );
-		JointSelectionSphere h = createJSS( ogre.getLeftKnee(), g );
-		JointSelectionSphere i = createJSS( ogre.getLeftAnkle(), h );
-		limbToJointMap.put( Limb.LEFT_LEG, Collections.newArrayList( pelvis, g, h, i ) );
-		JointSelectionSphere j = createJSS( ogre.getLeftClavicle(), null );
-		JointSelectionSphere n = createJSS( ogre.getLeftShoulder(), j );
-		JointSelectionSphere k = createJSS( ogre.getLeftElbow(), n );
-		JointSelectionSphere l = createJSS( ogre.getLeftWrist(), k );
-		limbToJointMap.put( Limb.LEFT_ARM, Collections.newArrayList( j, k, l ) );
+		JointSelectionSphere e = createJSS( ogre.getRightShoulder(), d );
+		JointSelectionSphere f = createJSS( ogre.getRightElbow(), e );
+		JointSelectionSphere g = createJSS( ogre.getRightWrist(), f );
+		limbToJointMap.put( Limb.RIGHT_ARM, Collections.newArrayList( d, e, f, g ) );
+		JointSelectionSphere h = createJSS( ogre.getLeftHip(), pelvis );
+		JointSelectionSphere i = createJSS( ogre.getLeftKnee(), h );
+		JointSelectionSphere j = createJSS( ogre.getLeftAnkle(), i );
+		limbToJointMap.put( Limb.LEFT_LEG, Collections.newArrayList( pelvis, h, i, j ) );
+		JointSelectionSphere k = createJSS( ogre.getLeftClavicle(), null );
+		JointSelectionSphere l = createJSS( ogre.getLeftShoulder(), k );
+		JointSelectionSphere m = createJSS( ogre.getLeftElbow(), l );
+		JointSelectionSphere n = createJSS( ogre.getLeftWrist(), m );
+		limbToJointMap.put( Limb.LEFT_ARM, Collections.newArrayList( k, l, m, n ) );
 
 		for( IKMagicWand.Limb limb : limbToJointMap.keySet() ) {
 			for( JointSelectionSphere sphere : limbToJointMap.get( limb ) ) {
@@ -113,7 +119,7 @@ public class PoserScene extends SScene {
 			}
 		}
 
-		this.jssArr = Collections.newArrayList( a, b, c, d, e, f, g, h, i, j, k, l );
+		this.jssArr = Collections.newArrayList( a, b, c, d, e, f, g, h, i, j, k, l, m, n );
 		ArrayList<SJoint> sJointList = Collections.newArrayList( ogre.getRightClavicle(), ogre.getLeftClavicle(), ogre.getRightHip(), ogre.getLeftHip() );
 		for( SJoint joint : sJointList ) {
 			anchorPoints.add( ( (JointImp)ImplementationAccessor.getImplementation( joint ) ).getJointId() );
@@ -148,11 +154,22 @@ public class PoserScene extends SScene {
 		//		impl.showVisualization();
 	}
 
-	/**
-	 * for tomorow fix the anchoring functions
-	 */
 	private void performInitializeEvents() {
 		addCustomDragAdapter();
+		addMouseClickOnObjectListener( new MouseClickOnObjectListener() {
+
+			public void mouseClicked( MouseClickOnObjectEvent e ) {
+
+				if( MouseClickEvent.isThisRightClick( e ) ) {
+					if( e.getModelAtMouseLocation() instanceof JointSelectionSphere ) {
+						JointSelectionSphere sphere = (JointSelectionSphere)e.getModelAtMouseLocation();
+						adapter.updateSphere( jointToLimbMap.get( sphere.getJoint() ), sphere );
+						toggleRotationHandles( sphere.getJoint() );
+					}
+				}
+			}
+
+		}, AddMouseClickOnObjectListener.setOfVisuals( ArrayUtilities.createArray( jssArr, JointSelectionSphere.class ) ) );
 	}
 
 	public void addCustomDragAdapter() {
@@ -169,8 +186,11 @@ public class PoserScene extends SScene {
 				JointSelectionSphere jss = poserEvent.getJSS();
 				jss.setVehicle( PoserScene.this );
 				JointImp end = jss.getJoint();
-				JointImp anchor2 = (JointImp)ImplementationAccessor.getImplementation( ogre.getJoint( getAnchorForEndJoint( end ) ) );
-				IKMagicWand.moveChainToPointInSceneSpace( anchor2, end, ImplementationAccessor.getImplementation( jss ).getAbsoluteTransformation().translation );
+				JointId anchor = getAnchorForEndJoint( end );
+				if( anchor != null ) {
+					JointImp anchor2 = (JointImp)ImplementationAccessor.getImplementation( ogre.getJoint( anchor ) );
+					IKMagicWand.moveChainToPointInSceneSpace( anchor2, end, ImplementationAccessor.getImplementation( jss ).getAbsoluteTransformation().translation );
+				}
 				jss.setVehicle( end.getAbstraction() );
 
 			}
@@ -185,12 +205,10 @@ public class PoserScene extends SScene {
 	private JointId getAnchorForEndJoint( JointImp joint ) {
 		Limb limb = jointToLimbMap.get( joint );
 		JointId anchorJointID = adapter.getAnchorJointID( limb, joint );
-		System.out.println( anchorJointID );
 		if( isAParentOfB( anchorJointID, joint.getJointId() ) ) {
 			return anchorJointID;
 		}
-		System.out.println( "hello?" );
-		return joint.getJointedModelImplementation().getJointImplementation( joint.getJointId().getParent() ).getJointId();
+		return null;//joint.getJointedModelImplementation().getJointImplementation( joint.getJointId().getParent() ).getJointId();
 	}
 
 	private boolean isAParentOfB( JointId parent, JointId joint ) {
@@ -204,12 +222,19 @@ public class PoserScene extends SScene {
 		return false;
 	}
 
-	//	private JointId findParent( JointId jointId ) {
-	//		if( anchorPoints.contains( jointId ) ) {
-	//			return jointId.getParent();
-	//		}
-	//		return findParent( jointId.getParent() );
-	//	}
+	private void toggleRotationHandles( JointImp joint ) {
+		if( this.currentlyShowingRotationHandles == joint ) {
+			hideRotationHandles();
+		} else {
+			showRotationHandles( joint );
+		}
+	}
+
+	private void hideRotationHandles() {
+	}
+
+	private void showRotationHandles( JointImp joint ) {
+	}
 
 	@Override
 	protected void handleActiveChanged( Boolean isActive, Integer activeCount ) {
@@ -238,6 +263,6 @@ public class PoserScene extends SScene {
 	}
 
 	public JointSelectionSphere getDefaultAnchorJoint( Limb key ) {
-		return limbToJointMap.get( key ).get( 0 );
+		return limbToJointMap.get( key ).get( 1 );
 	}
 }

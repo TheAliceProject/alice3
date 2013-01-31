@@ -77,14 +77,15 @@ public class IKMagicWand {
 	private static final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.GREEN );
 	private static final boolean USING_OLD = false;
 	private static List<JointId> defaultAnchors = Collections.newArrayList(
-			( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightClavicle() ) ).getJointId(),
-			( (JointImp)ImplementationAccessor.getImplementation( ogre.getLeftClavicle() ) ).getJointId(),
-			//			( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightHip() ) ).getJointId(),
-			//			( (JointImp)ImplementationAccessor.getImplementation( ogre.getLeftHip() ) ).getJointId()
-			( (JointImp)ImplementationAccessor.getImplementation( ogre.getPelvis() ) ).getJointId()
+			( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightShoulder() ) ).getJointId(),
+			( (JointImp)ImplementationAccessor.getImplementation( ogre.getLeftShoulder() ) ).getJointId(),
+			( (JointImp)ImplementationAccessor.getImplementation( ogre.getRightHip() ) ).getJointId(),
+			( (JointImp)ImplementationAccessor.getImplementation( ogre.getLeftHip() ) ).getJointId()
 			);
 
 	public static void moveChainToPointInSceneSpace( JointImp anchor, JointImp end, Point3 target ) {
+		//this because anchor does not behave as expected...
+		anchor = anchor.getJointedModelImplementation().getJointImplementation( anchor.getJointId().getParent() );
 		if( USING_OLD ) {
 			moveUsingOldJMIKEnforcer( anchor, end, target );
 		} else {
