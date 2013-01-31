@@ -569,7 +569,7 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 		final String DATA_LOCATIONS = "C:\\Users\\Alice\\Documents\\aliceBuildProcess\\Data_AliceVersions\\";
 		final String FILE_NAME = "\\galleryData.txt";
 		
-//		GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(), DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME, jarFiles);
+		GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(), DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME, jarFiles);
 
 		final String[] DATA_VERSIONS = {
 //				"3.1.0.0.0", //Not supported
@@ -584,7 +584,8 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 //				"3.1.47.0.0",
 				"3.1.56.0.0",
 				"3.1.57.0.0",
-				"3.1.58.0.0"
+				"3.1.58.0.0",
+				"3.1.59.0.0"
 		};
 		
 		StringBuilder sb = new StringBuilder();
