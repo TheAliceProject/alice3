@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.x;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectEditorAstI18nFactory extends AbstractProjectEditorAstI18nFactory {
+public class SceneEditorUpdatingProjectEditorAstI18nFactory extends AbstractProjectEditorAstI18nFactory {
 	private static class SingletonHolder {
-		private static ProjectEditorAstI18nFactory instance = new ProjectEditorAstI18nFactory();
+		private static SceneEditorUpdatingProjectEditorAstI18nFactory instance = new SceneEditorUpdatingProjectEditorAstI18nFactory();
 	}
 
-	public static ProjectEditorAstI18nFactory getInstance() {
+	public static SceneEditorUpdatingProjectEditorAstI18nFactory getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private ProjectEditorAstI18nFactory() {
+	private SceneEditorUpdatingProjectEditorAstI18nFactory() {
 	}
+
+	//	@Override
+	//	public org.lgna.croquet.components.JComponent<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredValueType ) {
+	//		return new org.lgna.croquet.components.Label( expressionProperty.toString() );
+	//	}
+
+	@Override
+	public org.lgna.croquet.components.JComponent<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.JComponent<?> prefixPane ) {
+		org.lgna.project.ast.InstanceCreation instanceCreation = argument.getFirstAncestorAssignableTo( org.lgna.project.ast.InstanceCreation.class );
+		if( instanceCreation != null ) {
+			org.lgna.project.ast.UserField field = instanceCreation.getFirstAncestorAssignableTo( org.lgna.project.ast.UserField.class );
+			if( field != null ) {
+				if( argument.parameter.getValue().getValueType().isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: create scene editor updating component" );
+				}
+			}
+		}
+		return super.createArgumentPane( argument, prefixPane );
+	}
+
 }
