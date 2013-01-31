@@ -42,49 +42,65 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.story.resources.JointId;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-
 /**
- * @author Matt May
+ * @author Dennis Cosgrove
  */
-public class JointQPair {
+public class JointQPairTreeAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
+	private static class JointInfo {
+		private final org.lgna.story.implementation.JointImp jointImp;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q0;
+		private final edu.cmu.cs.dennisc.math.UnitQuaternion q1;
 
-	private final JointQPair parent;
-	private final JointId joint;
-	private final AffineMatrix4x4 affineMatrix;
-	private JointQPair child;
+		public JointInfo( org.lgna.story.SJointedModel jointedModel, JointQPair jointQPair ) {
+			this.jointImp = org.lgna.story.ImplementationAccessor.getImplementation( jointedModel.getJoint( jointQPair.getJointId() ) );
+			this.q0 = this.jointImp.getLocalOrientation().createUnitQuaternion();
+			this.q1 = jointQPair.getUnitQuaternion();
+		}
 
-	public JointQPair( JointQPair parent, JointId joint, AffineMatrix4x4 affineMatrix4x4 ) {
-		this.parent = parent;
-		this.joint = joint;
-		this.affineMatrix = affineMatrix4x4;
+		public void setPortion( double portion ) {
+			edu.cmu.cs.dennisc.math.UnitQuaternion q = edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( this.q0, this.q1, portion );
+			jointImp.setLocalOrientation( q.createOrthogonalMatrix3x3() );
+		}
+
+		public void epilogue() {
+			jointImp.setLocalOrientation( this.q1.createOrthogonalMatrix3x3() );
+		}
 	}
 
-	public JointId getJointId() {
-		return this.joint;
+	private final org.lgna.story.SJointedModel jointedModel;
+	private final JointQPair jointQPair;
+	private transient java.util.List<JointInfo> jointInfos = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+	public JointQPairTreeAnimation( org.lgna.story.SJointedModel jointedModel, JointQPair jointQPair ) {
+		this.jointedModel = jointedModel;
+		this.jointQPair = jointQPair;
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getUnitQuaternion() {
-		return this.affineMatrix.orientation.createUnitQuaternion();
-	}
-
-	public void setChild( JointQPair rv ) {
-		this.child = rv;
-	}
-
-	public JointQPair getChild() {
-		return this.child;
-	}
-
-	public JointQPair getParent() {
-		return this.parent;
+	private static void appendJointInfos( java.util.List<JointInfo> jointInfos, org.lgna.story.SJointedModel jointedModel, JointQPair jointQPair ) {
+		jointInfos.add( new JointInfo( jointedModel, jointQPair ) );
+		JointQPair child = jointQPair.getChild();
+		if( child != null ) {
+			appendJointInfos( jointInfos, jointedModel, child );
+		}
 	}
 
 	@Override
-	public String toString() {
-		return "[ " + joint + " " + affineMatrix + " ]";
+	protected void prologue() {
+		this.jointInfos.clear();
+		appendJointInfos( this.jointInfos, this.jointedModel, this.jointQPair );
 	}
 
+	@Override
+	protected void setPortion( double portion ) {
+		for( JointInfo jointInfo : this.jointInfos ) {
+			jointInfo.setPortion( portion );
+		}
+	}
+
+	@Override
+	protected void epilogue() {
+		for( JointInfo jointInfo : this.jointInfos ) {
+			jointInfo.epilogue();
+		}
+	}
 }
