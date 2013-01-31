@@ -45,11 +45,11 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.CompletionModel> {
+public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.CompletionModel> {
 	private org.lgna.project.ast.UserType<?> declaringType;
 	private org.lgna.project.ast.UserMethod method;
 
-	private transient org.lgna.project.ast.AbstractCode prevFocusedCode;
+	private transient org.alice.ide.declarationseditor.DeclarationComposite prevDeclarationComposite;
 
 	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserMethod method ) {
 		super( completionStep );
@@ -80,10 +80,10 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
+		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		this.prevDeclarationComposite = declarationTabState.getValue();
 		this.declaringType.methods.add( this.method );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		this.prevFocusedCode = ide.getFocusedCode();
-		ide.setFocusedCode( method );
+		declarationTabState.setValueTransactionlessly( org.alice.ide.declarationseditor.CodeComposite.getInstance( this.method ) );
 	}
 
 	@Override
@@ -91,8 +91,12 @@ public class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croq
 		int index = this.declaringType.methods.indexOf( method );
 		if( index != -1 ) {
 			this.declaringType.methods.remove( index );
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			ide.setFocusedCode( this.prevFocusedCode );
+			if( this.prevDeclarationComposite != null ) {
+				org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+				if( declarationTabState.containsItem( this.prevDeclarationComposite ) ) {
+					declarationTabState.setValueTransactionlessly( this.prevDeclarationComposite );
+				}
+			}
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

@@ -57,7 +57,7 @@ public abstract class CodePanelWithDropReceptor extends org.lgna.croquet.compone
 
 		public final boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-			if( ide.getFocusedCode() == getCode() ) {
+			if( org.alice.ide.meta.DeclarationMeta.getDeclaration() == getCode() ) {
 				if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.AbstractStatementDragModel ) {
 					return true;
 				} else if( dragModel instanceof org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel ) {

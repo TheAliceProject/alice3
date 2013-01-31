@@ -49,18 +49,6 @@ import org.alice.ide.instancefactory.InstanceFactory;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank<InstanceFactory> {
-	private static org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringType( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
-			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
-			return method.getDeclaringType();
-		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-			return type;
-		} else {
-			return null;
-		}
-	}
-
 	private static class SingletonHolder {
 		private static InstanceFactoryState instance = new InstanceFactoryState();
 	}
@@ -158,7 +146,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<InstanceFactory> blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = getDeclaringType( org.alice.ide.MetaDeclarationFauxState.getInstance().getValue() );
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.meta.DeclarationMeta.getType();
 
 		rv.add(
 				createFillInMenuComboIfNecessary(

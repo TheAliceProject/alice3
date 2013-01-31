@@ -158,7 +158,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		}
 	}
 
-	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<java.net.URI> metaUriListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<java.net.URI>() {
+	private final org.lgna.croquet.meta.event.MetaStateValueListener<java.net.URI> metaUriListener = new org.lgna.croquet.meta.event.MetaStateValueListener<java.net.URI>() {
 		public void metaStateValueChanged( java.net.URI prevValue, java.net.URI nextValue ) {
 			handleMetaStateValueChanged( nextValue );
 		}
