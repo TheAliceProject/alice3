@@ -66,31 +66,18 @@ public class RevertProjectOperation extends UriActionOperation {
 		if( yesNoCancelOption == org.lgna.croquet.YesNoCancelOption.YES ) {
 			java.net.URI uri = application.getUri();
 			if( uri != null ) {
-				application.loadProjectFrom( uri );
-				step.finish();
+				org.alice.ide.uricontent.UriProjectLoader loader = org.alice.ide.uricontent.UriProjectLoader.createInstance( uri );
+				if( loader != null ) {
+					application.loadProjectFrom( loader );
+					step.finish();
+				} else {
+					application.showMessageDialog( "todo: revert loader null " + uri );
+					step.cancel();
+				}
 			} else {
 				application.showMessageDialog( "todo: revert uri == null" );
 				step.cancel();
 			}
-			//			context.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-			//				@Override
-			//				public void doOrRedo( boolean isDo ) {
-			//					getIDE().revert();
-			//				}
-			//				@Override
-			//				public void undo() {
-			//					throw new AssertionError();
-			//				}
-			//				@Override
-			//				public boolean canUndo() {
-			//					return false;
-			//				}
-			//				@Override
-			//				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-			//					rv.append( "revert" );
-			//					return rv;
-			//				}
-			//			} );
 		} else {
 			step.cancel();
 		}
