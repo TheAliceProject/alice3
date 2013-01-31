@@ -9,6 +9,7 @@ import java.util.zip.ZipEntry;
 import org.lgna.project.ProjectVersion;
 import org.lgna.project.Version;
 
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.util.zip.ZipUtilities;
 
 /*
@@ -219,6 +220,7 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 		
 		File outputFile = new File(outputFilename);
 		try {
+			FileUtilities.createParentDirectoriesIfNecessary(outputFile);
 			java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter(outputFile));
 			writer.write(version.toString()+"\n");
 			for (String s : symbols) {
@@ -492,10 +494,10 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 					org.lgna.story.resources.ModelResource[] enums = (org.lgna.story.resources.ModelResource[])cls.getEnumConstants();
 					for (org.lgna.story.resources.ModelResource resource : enums) {
 						String resourceSymbol = resource.toString();
-						symbols.add(resourceSymbol);
+						symbols.add(cls.getName()+"."+resourceSymbol);
 					}
 				}
-				symbols.add(cls.getName());
+//				symbols.add(cls.getName());
 			}
 			catch (ClassNotFoundException cnfe) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe("FAILED TO LOAD GALLERY CLASS: "+className);
@@ -566,10 +568,10 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 		System.out.println(jarDir);
 		
 		File[] jarFiles = edu.cmu.cs.dennisc.java.io.FileUtilities.listDescendants(jarDir, "jar");
-		final String DATA_LOCATIONS = "C:\\Users\\Alice\\Documents\\aliceBuildProcess\\Data_AliceVersions\\";
+		final String DATA_LOCATIONS = "C:\\batchOutput\\galleryVersionData\\";
 		final String FILE_NAME = "\\galleryData.txt";
 		
-//		GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(), DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME, jarFiles);
+		GalleryDiff.saveGalleryInfo(ProjectVersion.getCurrentVersion(), DATA_LOCATIONS+ProjectVersion.getCurrentVersion().toString()+FILE_NAME, jarFiles);
 
 		final String[] DATA_VERSIONS = {
 //				"3.1.0.0.0", //Not supported
@@ -584,7 +586,8 @@ public static File saveGalleryInfo(String version, String outputFilename, File..
 //				"3.1.47.0.0",
 				"3.1.56.0.0",
 				"3.1.57.0.0",
-				"3.1.58.0.0"
+				"3.1.58.0.0",
+				"3.1.59.0.0"
 		};
 		
 		StringBuilder sb = new StringBuilder();
