@@ -145,15 +145,29 @@ public class ThoughtBubbleAdapter extends BubbleAdapter<edu.cmu.cs.dennisc.scene
 			paintEllipses( gc, portion );
 		} else {
 			java.awt.geom.Rectangle2D.Double textBounds = bubble.getTextBounds();
-			final double MINIMUM_HEIGHT = Math.max( 40.0, textBounds.width * 0.15 );
-
-			double h = textBounds.getHeight() - MINIMUM_HEIGHT;
-			java.awt.geom.Rectangle2D.Double bounds;
-			if( h < 0.0 ) {
-				bounds = new java.awt.geom.Rectangle2D.Double( textBounds.x, textBounds.y + ( h / 2 ), textBounds.width, MINIMUM_HEIGHT );
+			final double MINIMUM_WIDTH = 48.0;
+			double w;
+			double halfWidthDelta;
+			if( textBounds.getWidth() < MINIMUM_WIDTH ) {
+				w = MINIMUM_WIDTH;
+				halfWidthDelta = ( textBounds.getWidth() - w ) * 0.5;
 			} else {
-				bounds = textBounds;
+				w = textBounds.getWidth();
+				halfWidthDelta = 0.0;
 			}
+
+			final double MINIMUM_HEIGHT = Math.max( 40.0, w * 0.15 );
+			double h;
+			double halfHeightDelta;
+			if( textBounds.getHeight() < MINIMUM_HEIGHT ) {
+				h = MINIMUM_HEIGHT;
+				halfHeightDelta = ( textBounds.getHeight() - h ) * 0.5;
+			} else {
+				h = textBounds.getHeight();
+				halfHeightDelta = 0.0;
+			}
+			java.awt.geom.Rectangle2D.Double bounds = new java.awt.geom.Rectangle2D.Double( textBounds.x + halfWidthDelta, textBounds.y + halfHeightDelta, w, h );
+
 			java.awt.Shape shape = createBubbleAround( bounds );
 			g2.setPaint( fillColor );
 			g2.fill( shape );
