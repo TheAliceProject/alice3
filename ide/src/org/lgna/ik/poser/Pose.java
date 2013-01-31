@@ -77,9 +77,25 @@ public class Pose {
 		createJQP( biped.getLeftAnkle(), lKnee );
 	}
 
+	public JointQPair getRightArmBase() {
+		return this.rightArmBase;
+	}
+
+	public JointQPair getLeftArmBase() {
+		return this.leftArmBase;
+	}
+
+	public JointQPair getRightLegBase() {
+		return this.rightLegBase;
+	}
+
+	public JointQPair getLeftLegBase() {
+		return this.leftLegBase;
+	}
+
 	private JointQPair createJQP( SJoint joint, JointQPair parent ) {
 		JointImp jointImp = ImplementationAccessor.getImplementation( joint );
-		JointQPair rv = new JointQPair( parent, jointImp.getJointId(), jointImp.getAbsoluteTransformation() );
+		JointQPair rv = new JointQPair( parent, jointImp.getJointId(), jointImp.getLocalTransformation() );
 		if( parent != base ) {
 			parent.setChild( rv );
 		}

@@ -74,6 +74,10 @@ class IkPoser extends SProgram {
 		return this.getSubjectImp().getJointImplementation( endId );
 	}
 
+	public SBiped getOgre() {
+		return this.ogre;
+	}
+
 	private void initializeTest() {
 		this.setActiveScene( this.scene );
 		this.camera.turn( TurnDirection.RIGHT, .5 );

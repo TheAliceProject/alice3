@@ -80,6 +80,13 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			Pose pose = ikPoser.getPose();
 			poses.add( pose );
+			org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
+
+			org.lgna.story.SBiped ogre = ikPoser.getOgre();
+
+			ogre.straightenOutJoints( org.lgna.story.StraightenOutJoints.duration( 0 ) );
+
+			programImp.getAnimator().invokeAndWait_ThrowRuntimeExceptionsIfNecessary( new JointQPairTreeAnimation( ikPoser.getOgre(), pose.getRightArmBase() ), null );
 			return null;
 		}
 	} );
