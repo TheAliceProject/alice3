@@ -145,7 +145,7 @@ public class ThoughtBubbleAdapter extends BubbleAdapter<edu.cmu.cs.dennisc.scene
 			paintEllipses( gc, portion );
 		} else {
 			java.awt.geom.Rectangle2D.Double textBounds = bubble.getTextBounds();
-			final double MINIMUM_HEIGHT = 40.0;
+			final double MINIMUM_HEIGHT = Math.max( 40.0, textBounds.width * 0.15 );
 
 			double h = textBounds.getHeight() - MINIMUM_HEIGHT;
 			java.awt.geom.Rectangle2D.Double bounds;

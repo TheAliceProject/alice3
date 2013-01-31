@@ -114,7 +114,7 @@ public class ThoughtBubbleTest {
 			}
 		} );
 
-		a.p1 = new java.awt.Point( a.p0.x + 400, a.p0.y + 40 );
+		a.p1 = new java.awt.Point( a.p0.x + 600, a.p0.y + 40 );
 
 		testCroquet.getFrame().getContentPanel().getAwtComponent().add( a );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
