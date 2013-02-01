@@ -90,7 +90,7 @@ public class EventListenerComponent extends BorderPanel {
 							.pageStart( singleAbstractMethodHeader )
 							.center( bodyPane )
 							.build();
-					codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );
+					codeContainer.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getEventBodyColor() );
 					codeContainer.setBorder( BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
 					this.addCenterComponent( codeContainer );
 					bottom = 8;

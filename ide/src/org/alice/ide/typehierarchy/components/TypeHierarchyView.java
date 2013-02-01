@@ -141,7 +141,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 
 	public TypeHierarchyView( org.alice.ide.typehierarchy.TypeHierarchyComposite composite ) {
 		super( composite, 0, 4 );
-		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getMutedTypeColor();
+		java.awt.Color color = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getMutedTypeColor();
 		this.jTree = new javax.swing.JTree( this.treeModel );
 		this.jTree.setRootVisible( false );
 		this.jTree.setCellRenderer( new NamedUserTypeTreeCellRenderer() );

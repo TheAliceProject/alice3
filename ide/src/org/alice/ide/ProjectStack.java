@@ -57,7 +57,12 @@ public class ProjectStack {
 		if( projectStack.size() > 0 ) {
 			return projectStack.peek();
 		} else {
-			return IDE.getActiveInstance().getProject();
+			IDE ide = IDE.getActiveInstance();
+			if( ide != null ) {
+				return ide.getProject();
+			} else {
+				return null;
+			}
 		}
 	}
 

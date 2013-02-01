@@ -68,7 +68,12 @@ public abstract class AddManagedFieldComposite extends AddFieldComposite {
 
 	@Override
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
-		return org.alice.ide.IDE.getActiveInstance().getSceneType();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		if( ide != null ) {
+			return ide.getSceneType();
+		} else {
+			return null;
+		}
 	}
 
 	@Override

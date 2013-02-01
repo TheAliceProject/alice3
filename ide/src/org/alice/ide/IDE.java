@@ -111,7 +111,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return new DefaultTheme();
 	}
 
-	public Theme getTheme() {
+	public final Theme getTheme() {
 		if( this.theme != null ) {
 			//pass
 		} else {
