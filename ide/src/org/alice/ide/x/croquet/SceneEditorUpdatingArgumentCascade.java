@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package org.alice.ide.x.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOperation {
-	private static java.util.Map<java.net.URI, OpenRecentProjectOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class SceneEditorUpdatingArgumentCascade extends org.alice.ide.croquet.models.ast.cascade.AbstractArgumentCascade {
+	private static java.util.Map<org.lgna.project.ast.SimpleArgument, SceneEditorUpdatingArgumentCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	public static synchronized OpenRecentProjectOperation getInstance( java.net.URI uri ) {
-		OpenRecentProjectOperation rv = map.get( uri );
+	public static synchronized SceneEditorUpdatingArgumentCascade getInstance( org.lgna.project.ast.SimpleArgument argument ) {
+		SceneEditorUpdatingArgumentCascade rv = map.get( argument );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new OpenRecentProjectOperation( uri );
-			map.put( uri, rv );
+			rv = new SceneEditorUpdatingArgumentCascade( argument );
+			map.put( argument, rv );
 		}
 		return rv;
 	}
 
-	private final java.net.URI uri;
-
-	private OpenRecentProjectOperation( java.net.URI uri ) {
-		super( java.util.UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), null );
-		this.uri = uri;
+	private SceneEditorUpdatingArgumentCascade( org.lgna.project.ast.SimpleArgument argument ) {
+		super( java.util.UUID.fromString( "1d04d5c7-8183-48d5-91b7-8acc5f0ce90d" ), argument );
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		java.io.File file = new java.io.File( this.uri );
-		this.setName( file.getAbsolutePath() );
+	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<SceneEditorUpdatingArgumentCascade> createResolver() {
+		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<SceneEditorUpdatingArgumentCascade>( this, org.lgna.project.ast.SimpleArgument.class, this.getArgument() );
 	}
 
 	@Override
-	protected org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		return new org.alice.ide.uricontent.FileProjectLoader( new java.io.File( this.uri ) );
+	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.Expression prevExpression, org.lgna.project.ast.Expression nextExpression ) {
+		org.lgna.project.ast.SimpleArgument simpleArgument = this.getArgument();
+		org.lgna.project.ast.InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo( org.lgna.project.ast.InstanceCreation.class );
+		if( instanceCreation != null ) {
+			org.lgna.project.ast.UserField field = instanceCreation.getFirstAncestorAssignableTo( org.lgna.project.ast.UserField.class );
+			if( field != null ) {
+				if( simpleArgument.parameter.getValue().getValueType().isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
+					return new org.alice.ide.x.croquet.edits.SceneEditorUpdatingExpressionPropertyEdit( step, expressionProperty, prevExpression, nextExpression, field );
+				}
+			}
+		}
+		return super.createExpressionPropertyEdit( step, expressionProperty, prevExpression, nextExpression );
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package org.alice.ide.x;
+
+import org.alice.ide.x.croquet.SceneEditorUpdatingArgumentCascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOperation {
-	private static java.util.Map<java.net.URI, OpenRecentProjectOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class SceneEditorUpdatingProjectEditorAstI18nFactory extends AbstractProjectEditorAstI18nFactory {
+	private static class SingletonHolder {
+		private static SceneEditorUpdatingProjectEditorAstI18nFactory instance = new SceneEditorUpdatingProjectEditorAstI18nFactory();
+	}
 
-	public static synchronized OpenRecentProjectOperation getInstance( java.net.URI uri ) {
-		OpenRecentProjectOperation rv = map.get( uri );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new OpenRecentProjectOperation( uri );
-			map.put( uri, rv );
+	public static SceneEditorUpdatingProjectEditorAstI18nFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private SceneEditorUpdatingProjectEditorAstI18nFactory() {
+	}
+
+	@Override
+	protected org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade getArgumentCascade( org.lgna.project.ast.SimpleArgument simpleArgument ) {
+		org.lgna.project.ast.InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo( org.lgna.project.ast.InstanceCreation.class );
+		if( instanceCreation != null ) {
+			org.lgna.project.ast.UserField field = instanceCreation.getFirstAncestorAssignableTo( org.lgna.project.ast.UserField.class );
+			if( field != null ) {
+				if( simpleArgument.parameter.getValue().getValueType().isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
+					return SceneEditorUpdatingArgumentCascade.getInstance( simpleArgument );
+				}
+			}
 		}
-		return rv;
-	}
-
-	private final java.net.URI uri;
-
-	private OpenRecentProjectOperation( java.net.URI uri ) {
-		super( java.util.UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), null );
-		this.uri = uri;
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		java.io.File file = new java.io.File( this.uri );
-		this.setName( file.getAbsolutePath() );
-	}
-
-	@Override
-	protected org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		return new org.alice.ide.uricontent.FileProjectLoader( new java.io.File( this.uri ) );
+		return super.getArgumentCascade( simpleArgument );
 	}
 }

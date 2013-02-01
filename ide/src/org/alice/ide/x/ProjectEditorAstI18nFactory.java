@@ -46,7 +46,7 @@ package org.alice.ide.x;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectEditorAstI18nFactory extends MutableAstI18nFactory {
+public class ProjectEditorAstI18nFactory extends AbstractProjectEditorAstI18nFactory {
 	private static class SingletonHolder {
 		private static ProjectEditorAstI18nFactory instance = new ProjectEditorAstI18nFactory();
 	}
@@ -56,11 +56,5 @@ public class ProjectEditorAstI18nFactory extends MutableAstI18nFactory {
 	}
 
 	private ProjectEditorAstI18nFactory() {
-		super( org.alice.ide.IDE.PROJECT_GROUP );
-	}
-
-	@Override
-	public java.awt.Paint getInvalidExpressionPaint( java.awt.Paint paint, int x, int y, int width, int height ) {
-		return java.awt.Color.RED;
 	}
 }

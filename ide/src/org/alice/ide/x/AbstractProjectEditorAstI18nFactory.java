@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,41 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package org.alice.ide.x;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OpenRecentProjectOperation extends UriPotentialClearanceIteratingOperation {
-	private static java.util.Map<java.net.URI, OpenRecentProjectOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static synchronized OpenRecentProjectOperation getInstance( java.net.URI uri ) {
-		OpenRecentProjectOperation rv = map.get( uri );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new OpenRecentProjectOperation( uri );
-			map.put( uri, rv );
-		}
-		return rv;
-	}
-
-	private final java.net.URI uri;
-
-	private OpenRecentProjectOperation( java.net.URI uri ) {
-		super( java.util.UUID.fromString( "f51873eb-06ad-4974-9890-7345adff3ac4" ), null );
-		this.uri = uri;
+public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18nFactory {
+	public AbstractProjectEditorAstI18nFactory() {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		java.io.File file = new java.io.File( this.uri );
-		this.setName( file.getAbsolutePath() );
+	public java.awt.Paint getInvalidExpressionPaint( java.awt.Paint paint, int x, int y, int width, int height ) {
+		return java.awt.Color.RED;
 	}
 
-	@Override
-	protected org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		return new org.alice.ide.uricontent.FileProjectLoader( new java.io.File( this.uri ) );
-	}
 }
