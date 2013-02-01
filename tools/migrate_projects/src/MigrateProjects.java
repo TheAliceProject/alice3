@@ -50,8 +50,19 @@ public class MigrateProjects extends Batch {
 	private int x = 0;
 	private int y = 0;
 	
-	private final java.util.List<Error> errors = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private final java.util.List<java.io.File> problematicFiles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	
+	private void outputProblematicFiles() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+		for( java.io.File problematicFile : this.problematicFiles ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( problematicFile );
+		}
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln();
+	}
 	@Override
 	protected void handle( java.io.File inFile, java.io.File outFile ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( inFile );
@@ -82,14 +93,15 @@ public class MigrateProjects extends Batch {
 				frame.dispose();
 			}
 			
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( project );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "success", project );
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
 			throw new RuntimeException( inFile.toString(), vnse );
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( inFile.toString(), ioe );
-		} catch( Error e ) {
-			errors.add( e );
-			e.printStackTrace();
+		} catch( Throwable t ) {
+			problematicFiles.add( inFile );
+			this.outputProblematicFiles();
+			t.printStackTrace();
 		}
 	}
 	@Override
@@ -98,12 +110,10 @@ public class MigrateProjects extends Batch {
 	}
 	public static void main( String[] args ) {
 		MigrateProjects migrateProjects = new MigrateProjects();
-		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/3.1.33.1.0";
+		String inRootPath = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory() + "/GalleryTest/3.1.58.0.0";
 		String outRootPath = inRootPath + "_FixedTo_" + org.lgna.project.ProjectVersion.getCurrentVersionText();
 		String ext = "a3p";
 		migrateProjects.process( inRootPath, outRootPath, ext, ext );
-		for( Error error : migrateProjects.errors ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( error );
-		}
+		migrateProjects.outputProblematicFiles();
 	}
 }
