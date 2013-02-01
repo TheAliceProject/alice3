@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,26 +45,21 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentCascade extends AbstractArgumentCascade {
-	private static java.util.Map<org.lgna.project.ast.SimpleArgument, ArgumentCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public abstract class AbstractArgumentCascade extends ProjectExpressionPropertyCascade {
+	private final org.lgna.project.ast.SimpleArgument argument;
 
-	public static synchronized ArgumentCascade getInstance( org.lgna.project.ast.SimpleArgument argument ) {
-		ArgumentCascade rv = map.get( argument );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ArgumentCascade( argument );
-			map.put( argument, rv );
-		}
-		return rv;
+	public AbstractArgumentCascade( java.util.UUID migrationId, org.lgna.project.ast.SimpleArgument argument ) {
+		super( migrationId, argument.expression, org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( argument.parameter.getValue() ) );
+		this.argument = argument;
 	}
 
-	private ArgumentCascade( org.lgna.project.ast.SimpleArgument argument ) {
-		super( java.util.UUID.fromString( "c60b0eec-d8ac-4256-a8be-54b16605fc0e" ), argument );
+	public final org.lgna.project.ast.SimpleArgument getArgument() {
+		return this.argument;
 	}
 
 	@Override
-	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ArgumentCascade> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ArgumentCascade>( this, org.lgna.project.ast.SimpleArgument.class, this.getArgument() );
+	protected final org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions ) {
+		assert expressions.length == 1;
+		return expressions[ 0 ];
 	}
 }

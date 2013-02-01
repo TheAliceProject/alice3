@@ -42,6 +42,8 @@
  */
 package org.alice.ide.x;
 
+import org.alice.ide.x.croquet.SceneEditorUpdatingArgumentCascade;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,23 +59,17 @@ public class SceneEditorUpdatingProjectEditorAstI18nFactory extends AbstractProj
 	private SceneEditorUpdatingProjectEditorAstI18nFactory() {
 	}
 
-	//	@Override
-	//	public org.lgna.croquet.components.JComponent<?> createExpressionPropertyPane( org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.AbstractType<?, ?, ?> desiredValueType ) {
-	//		return new org.lgna.croquet.components.Label( expressionProperty.toString() );
-	//	}
-
 	@Override
-	public org.lgna.croquet.components.JComponent<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.JComponent<?> prefixPane ) {
-		org.lgna.project.ast.InstanceCreation instanceCreation = argument.getFirstAncestorAssignableTo( org.lgna.project.ast.InstanceCreation.class );
+	protected org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade getArgumentCascade( org.lgna.project.ast.SimpleArgument simpleArgument ) {
+		org.lgna.project.ast.InstanceCreation instanceCreation = simpleArgument.getFirstAncestorAssignableTo( org.lgna.project.ast.InstanceCreation.class );
 		if( instanceCreation != null ) {
 			org.lgna.project.ast.UserField field = instanceCreation.getFirstAncestorAssignableTo( org.lgna.project.ast.UserField.class );
 			if( field != null ) {
-				if( argument.parameter.getValue().getValueType().isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: create scene editor updating component" );
+				if( simpleArgument.parameter.getValue().getValueType().isAssignableTo( org.lgna.story.resources.ModelResource.class ) ) {
+					return SceneEditorUpdatingArgumentCascade.getInstance( simpleArgument );
 				}
 			}
 		}
-		return super.createArgumentPane( argument, prefixPane );
+		return super.getArgumentCascade( simpleArgument );
 	}
-
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,31 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast.cascade;
+package org.alice.ide.x.croquet.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentCascade extends AbstractArgumentCascade {
-	private static java.util.Map<org.lgna.project.ast.SimpleArgument, ArgumentCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class SceneEditorUpdatingExpressionPropertyEdit extends org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit {
+	private final org.lgna.project.ast.UserField field;
 
-	public static synchronized ArgumentCascade getInstance( org.lgna.project.ast.SimpleArgument argument ) {
-		ArgumentCascade rv = map.get( argument );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new ArgumentCascade( argument );
-			map.put( argument, rv );
-		}
-		return rv;
+	public SceneEditorUpdatingExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.Expression prevExpression, org.lgna.project.ast.Expression nextExpression, org.lgna.project.ast.UserField field ) {
+		super( completionStep, expressionProperty, prevExpression, nextExpression );
+		this.field = field;
 	}
 
-	private ArgumentCascade( org.lgna.project.ast.SimpleArgument argument ) {
-		super( java.util.UUID.fromString( "c60b0eec-d8ac-4256-a8be-54b16605fc0e" ), argument );
+	public SceneEditorUpdatingExpressionPropertyEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.field = null; //todo
 	}
 
 	@Override
-	public org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ArgumentCascade> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<ArgumentCascade>( this, org.lgna.project.ast.SimpleArgument.class, this.getArgument() );
+	protected void setValue( org.lgna.project.ast.Expression expression ) {
+		super.setValue( expression );
+		// update Scene Editor
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor();
+		org.lgna.story.SJointedModel model = sceneEditor.getInstanceInJavaVMForField( this.field, org.lgna.story.SJointedModel.class );
+		org.lgna.story.implementation.JointedModelImp<?, ?> imp = org.lgna.story.ImplementationAccessor.getImplementation( model );
+
+		org.lgna.project.virtualmachine.VirtualMachine vm = org.alice.ide.IDE.getActiveInstance().getVirtualMachineForSceneEditor();
+		org.lgna.project.virtualmachine.UserInstance userInstance = null;
+		Object[] array = vm.ENTRY_POINT_evaluate( userInstance, new org.lgna.project.ast.Expression[] { expression } );
+		org.lgna.story.resources.JointedModelResource resource = (org.lgna.story.resources.JointedModelResource)array[ 0 ];
+		imp.setNewResource( resource );
 	}
+
 }
