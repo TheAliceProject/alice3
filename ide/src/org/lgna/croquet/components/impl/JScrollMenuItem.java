@@ -1,0 +1,149 @@
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Products derived from the software may not be called "Alice", nor may 
+ *    "Alice" appear in their name, without prior written permission of 
+ *    Carnegie Mellon University.
+ *
+ * 4. All advertising materials mentioning features or use of this software must
+ *    display the following acknowledgement: "This product includes software 
+ *    developed by Carnegie Mellon University"
+ *
+ * 5. The gallery of art assets and animations provided with this software is 
+ *    contributed by Electronic Arts Inc. and may be used for personal, 
+ *    non-commercial, and academic use only. Redistributions of any program 
+ *    source code that utilizes The Sims 2 Assets must also retain the copyright
+ *    notice, list of conditions and the disclaimer contained in 
+ *    The Alice 3.0 Art Gallery License.
+ * 
+ * DISCLAIMER:
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  
+ * ANY AND ALL EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A 
+ * PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT 
+ * SHALL THE AUTHORS, COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+package org.lgna.croquet.components.impl;
+
+import javax.swing.AbstractAction;
+
+/**
+ * @author Dennis Cosgrove
+ */
+/* package-private */class JScrollMenuItem extends javax.swing.JMenuItem {
+	private static final java.awt.Dimension ARROW_SIZE = new java.awt.Dimension( 10, 10 );
+
+	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			javax.swing.ButtonModel buttonModel = getModel();
+			if( buttonModel.isArmed() ) {
+				if( timer.isRunning() ) {
+					//pass
+				} else {
+					timer.start();
+				}
+			} else {
+				if( timer.isRunning() ) {
+					timer.stop();
+				} else {
+					//pass
+				}
+			}
+		}
+	};
+
+	private static class ScrollAction extends AbstractAction {
+		private final ScrollingPopupMenuImpl imp;
+		private final ScrollDirection scrollDirection;
+
+		public ScrollAction( final ScrollingPopupMenuImpl imp, ScrollDirection scrollDirection ) {
+			this.imp = imp;
+			this.scrollDirection = scrollDirection;
+		}
+
+		public ScrollDirection getScrollDirection() {
+			return this.scrollDirection;
+		}
+
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			this.imp.scroll( this.scrollDirection );
+		}
+	}
+
+	private final ScrollAction scrollAction;
+	private final javax.swing.Timer timer;
+
+	public JScrollMenuItem( final ScrollingPopupMenuImpl imp, ScrollDirection scrollDirection ) {
+		this.scrollAction = new ScrollAction( imp, scrollDirection );
+		this.timer = new javax.swing.Timer( 25, this.scrollAction );
+	}
+
+	@Override
+	protected void processMouseEvent( java.awt.event.MouseEvent e ) {
+		int id = e.getID();
+		if( ( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) || ( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) ) {
+			//pass
+		} else {
+			super.processMouseEvent( e );
+		}
+	}
+
+	@Override
+	public void addNotify() {
+		this.addChangeListener( this.changeListener );
+		super.addNotify();
+	}
+
+	@Override
+	public void removeNotify() {
+		super.removeNotify();
+		this.removeChangeListener( this.changeListener );
+	}
+
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), ARROW_SIZE.height + 4 );
+	}
+
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		super.paint( g );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		javax.swing.ButtonModel model = this.getModel();
+		java.awt.Paint paint;
+		if( model.isEnabled() ) {
+			if( model.isArmed() ) {
+				paint = java.awt.Color.WHITE;
+			} else {
+				paint = java.awt.Color.DARK_GRAY;
+			}
+		} else {
+			paint = java.awt.Color.GRAY;
+		}
+		g2.setPaint( paint );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading heading = this.scrollAction.getScrollDirection().getArrowHeading();
+		int x = ( this.getWidth() - ARROW_SIZE.width ) / 2;
+		int y = ( this.getHeight() - ARROW_SIZE.height ) / 2;
+		for( int i = -1; i < 2; i++ ) {
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, heading, x + ( i * ( ARROW_SIZE.width + 8 ) ), y, ARROW_SIZE.width, ARROW_SIZE.height );
+		}
+	}
+}

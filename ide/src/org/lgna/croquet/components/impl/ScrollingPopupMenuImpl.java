@@ -49,98 +49,10 @@ public class ScrollingPopupMenuImpl {
 	private final java.util.List<org.lgna.croquet.components.JComponent<?>> menuItems = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final javax.swing.JPopupMenu jPopupMenu;
 
+	private final javax.swing.JMenuItem jUpMenuItem = new JScrollMenuItem( this, ScrollDirection.UP );
+	private final javax.swing.JMenuItem jDownMenuItem = new JScrollMenuItem( this, ScrollDirection.DOWN );
+
 	private int index0;
-
-	private static final java.awt.Dimension ARROW_SIZE = new java.awt.Dimension( 10, 10 );
-
-	private final class JScrollMenuItem extends javax.swing.JMenuItem {
-		private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				javax.swing.ButtonModel buttonModel = getModel();
-				if( buttonModel.isArmed() ) {
-					if( timer.isRunning() ) {
-						//pass
-					} else {
-						timer.start();
-					}
-				} else {
-					if( timer.isRunning() ) {
-						timer.stop();
-					} else {
-						//pass
-					}
-				}
-			}
-		};
-
-		private final javax.swing.Timer timer;
-		private final int increment;
-
-		public JScrollMenuItem( int increment ) {
-			this.increment = increment;
-			this.timer = new javax.swing.Timer( 25, new javax.swing.AbstractAction() {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					index0 += JScrollMenuItem.this.increment;
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( index0 );
-				}
-			} );
-		}
-
-		@Override
-		protected void processMouseEvent( java.awt.event.MouseEvent e ) {
-			int id = e.getID();
-			if( ( id == java.awt.event.MouseEvent.MOUSE_PRESSED ) || ( id == java.awt.event.MouseEvent.MOUSE_RELEASED ) ) {
-				//pass
-			} else {
-				super.processMouseEvent( e );
-			}
-		}
-
-		@Override
-		public void addNotify() {
-			this.addChangeListener( this.changeListener );
-			super.addNotify();
-		}
-
-		@Override
-		public void removeNotify() {
-			super.removeNotify();
-			this.removeChangeListener( this.changeListener );
-		}
-
-		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), ARROW_SIZE.height + 4 );
-		}
-
-		@Override
-		public void paint( java.awt.Graphics g ) {
-			super.paint( g );
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			javax.swing.ButtonModel model = this.getModel();
-			java.awt.Paint paint;
-			if( model.isEnabled() ) {
-				if( model.isArmed() ) {
-					paint = java.awt.Color.WHITE;
-				} else {
-					paint = java.awt.Color.DARK_GRAY;
-				}
-			} else {
-				paint = java.awt.Color.GRAY;
-			}
-			g2.setPaint( paint );
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading heading = increment == 1 ? edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH : edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.NORTH;
-			int x = ( this.getWidth() - ARROW_SIZE.width ) / 2;
-			int y = ( this.getHeight() - ARROW_SIZE.height ) / 2;
-			for( int i = -1; i < 2; i++ ) {
-				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, heading, x + ( i * ( ARROW_SIZE.width + 8 ) ), y, ARROW_SIZE.width, ARROW_SIZE.height );
-			}
-		}
-	}
-
-	private final javax.swing.JMenuItem jUpMenuItem = new JScrollMenuItem( -1 );
-	private final javax.swing.JMenuItem jDownMenuItem = new JScrollMenuItem( +1 );
 
 	private int getNonSeparatorCount() {
 		int rv = 0;
@@ -152,55 +64,140 @@ public class ScrollingPopupMenuImpl {
 		return rv;
 	}
 
-	private final javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
-		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-			javax.swing.JPopupMenu menu = (javax.swing.JPopupMenu)e.getSource();
-			if( menu.getLayout() instanceof javax.swing.SpringLayout ) {
-				//pass
-			} else {
-				final int MAX_NON_SEPARATOR_COUNT = 4;
-				int nonSeparatorCount = getNonSeparatorCount();
-				if( nonSeparatorCount > MAX_NON_SEPARATOR_COUNT ) {
-					menu.removeAll();
-					menu.add( jUpMenuItem );
-					int i = 0;
-					for( org.lgna.croquet.components.JComponent<?> menuItem : menuItems ) {
-						if( menuItem != null ) {
-							menu.add( menuItem.getAwtComponent() );
-							i++;
-						} else {
-							menu.addSeparator();
-						}
-						if( i == MAX_NON_SEPARATOR_COUNT ) {
-							break;
-						}
-					}
-					menu.add( jDownMenuItem );
-					menu.revalidate();
-					menu.repaint();
-				}
-			}
-		}
-
-		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-			//			javax.swing.JPopupMenu popupMenu = (javax.swing.JPopupMenu)e.getSource();
-			//			popupMenu.removeAll();
-		}
-
-		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-			//			javax.swing.JPopupMenu popupMenu = (javax.swing.JPopupMenu)e.getSource();
-			//			popupMenu.removeAll();
+	private final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+			adjustIndex( e.getWheelRotation() );
+			e.consume();
 		}
 	};
 
+	//	private static class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
+	//		private javax.swing.SizeRequirements[] childWidthRequirements;
+	//		private javax.swing.SizeRequirements[] childHeightRequirements;
+	//		private javax.swing.SizeRequirements widthRequirement;
+	//		private javax.swing.SizeRequirements heightRequirement;
+	//
+	//		public float getLayoutAlignmentX( java.awt.Container target ) {
+	//			return 0.0f;
+	//		}
+	//
+	//		public float getLayoutAlignmentY( java.awt.Container target ) {
+	//			return 0.0f;
+	//		}
+	//
+	//		public void addLayoutComponent( String name, java.awt.Component comp ) {
+	//		}
+	//
+	//		public void addLayoutComponent( java.awt.Component comp, Object constraints ) {
+	//		}
+	//
+	//		public void removeLayoutComponent( java.awt.Component comp ) {
+	//		}
+	//
+	//		public synchronized void invalidateLayout( java.awt.Container target ) {
+	//			this.childWidthRequirements = null;
+	//			this.childHeightRequirements = null;
+	//			this.widthRequirement = null;
+	//			this.heightRequirement = null;
+	//		}
+	//
+	//		private void updateRequirementsIfNecessary( java.awt.Container target ) {
+	//			if( ( this.childWidthRequirements != null ) && ( this.childHeightRequirements != null ) ) {
+	//				//pass
+	//			} else {
+	//				final int N = target.getComponentCount();
+	//				this.childWidthRequirements = new javax.swing.SizeRequirements[ N ];
+	//				this.childHeightRequirements = new javax.swing.SizeRequirements[ N ];
+	//				for( int i = 0; i < N; i++ ) {
+	//					java.awt.Component componentI = target.getComponent( i );
+	//					if( componentI.isVisible() ) {
+	//
+	//					} else {
+	//
+	//					}
+	//				}
+	//			}
+	//		}
+	//
+	//		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+	//			return new java.awt.Dimension( 0, 0 );
+	//		}
+	//
+	//		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+	//			return new java.awt.Dimension( 100, 100 );
+	//		}
+	//
+	//		public java.awt.Dimension maximumLayoutSize( java.awt.Container target ) {
+	//			return this.preferredLayoutSize( target );
+	//		}
+	//
+	//		public void layoutContainer( java.awt.Container parent ) {
+	//		}
+	//	}
+
+	//	private final javax.swing.event.PopupMenuListener popupMenuListener = new javax.swing.event.PopupMenuListener() {
+	//		public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+	//			javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)e.getSource();
+	//			if( jPopupMenu.getLayout() instanceof javax.swing.SpringLayout ) {
+	//				//pass
+	//			} else {
+	//				final int MAX_NON_SEPARATOR_COUNT = 5;
+	//				int nonSeparatorCount = getNonSeparatorCount();
+	//				if( nonSeparatorCount > MAX_NON_SEPARATOR_COUNT ) {
+	//					jPopupMenu.removeAll();
+	//					jPopupMenu.add( jUpMenuItem );
+	//					int i = 0;
+	//					for( org.lgna.croquet.components.JComponent<?> menuItem : menuItems ) {
+	//						if( menuItem != null ) {
+	//							jPopupMenu.add( menuItem.getAwtComponent() );
+	//							i++;
+	//						} else {
+	//							jPopupMenu.addSeparator();
+	//						}
+	//						if( i == MAX_NON_SEPARATOR_COUNT ) {
+	//							break;
+	//						}
+	//					}
+	//					jPopupMenu.add( jDownMenuItem );
+	//					jPopupMenu.revalidate();
+	//					jPopupMenu.repaint();
+	//				}
+	//			}
+	//		}
+	//
+	//		public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+	//			//			javax.swing.JPopupMenu popupMenu = (javax.swing.JPopupMenu)e.getSource();
+	//			//			popupMenu.removeAll();
+	//		}
+	//
+	//		public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+	//			//			javax.swing.JPopupMenu popupMenu = (javax.swing.JPopupMenu)e.getSource();
+	//			//			popupMenu.removeAll();
+	//		}
+	//	};
+
 	public ScrollingPopupMenuImpl( javax.swing.JPopupMenu jPopupMenu ) {
 		this.jPopupMenu = jPopupMenu;
-		//this.jPopupMenu.addPopupMenuListener( this.popupMenuListener );
-		//todo: dispose()
+		//		final boolean IS_SCROLLING_READY_FOR_PRIME_TIME = true;
+		//		if( IS_SCROLLING_READY_FOR_PRIME_TIME ) {
+		//			this.jPopupMenu.setLayout( new ScrollingPopupMenuLayout() );
+		//			//this.jPopupMenu.addPopupMenuListener( this.popupMenuListener );
+		//			this.jPopupMenu.addMouseWheelListener( this.mouseWheelListener );
+		//			//todo: dispose()
+		//		}
 	}
 
 	public ScrollingPopupMenuImpl( javax.swing.JMenu jMenu ) {
 		this( jMenu.getPopupMenu() );
+	}
+
+	private void adjustIndex( int delta ) {
+		this.index0 += delta;
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( delta );
+	}
+
+	public void scroll( ScrollDirection scrollDirection ) {
+		this.adjustIndex( scrollDirection.getDelta() );
 	}
 
 	public void addMenu( org.lgna.croquet.components.Menu menu ) {
