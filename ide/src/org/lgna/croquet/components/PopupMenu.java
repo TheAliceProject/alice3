@@ -47,8 +47,11 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.croquet.PopupPrepModel> implements MenuItemContainer {
+	private final org.lgna.croquet.components.impl.ScrollingPopupMenuImpl scrollingPopupMenuImpl;
+
 	public PopupMenu( org.lgna.croquet.PopupPrepModel model ) {
 		super( model );
+		this.scrollingPopupMenuImpl = new org.lgna.croquet.components.impl.ScrollingPopupMenuImpl( this.getAwtComponent() );
 	}
 
 	public org.lgna.croquet.components.ViewController<?, ?> getViewController() {
@@ -100,23 +103,23 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 	}
 
 	public void addMenu( Menu menu ) {
-		this.getAwtComponent().add( menu.getAwtComponent() );
+		this.scrollingPopupMenuImpl.addMenu( menu );
 	}
 
 	public void addMenuItem( MenuItem menuItem ) {
-		this.getAwtComponent().add( menuItem.getAwtComponent() );
+		this.scrollingPopupMenuImpl.addMenuItem( menuItem );
 	}
 
 	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
-		this.getAwtComponent().add( cascadeMenu.getAwtComponent() );
+		this.scrollingPopupMenuImpl.addCascadeMenu( cascadeMenu );
 	}
 
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
-		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
+		this.scrollingPopupMenuImpl.addCascadeMenuItem( cascadeMenuItem );
 	}
 
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
-		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
+		this.scrollingPopupMenuImpl.addCheckBoxMenuItem( checkBoxMenuItem );
 	}
 
 	public void addSeparator() {
@@ -124,11 +127,15 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 	}
 
 	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
-		if( menuTextSeparator != null ) {
-			this.getAwtComponent().add( menuTextSeparator.getAwtComponent() );
-		} else {
-			this.getAwtComponent().addSeparator();
-		}
+		this.scrollingPopupMenuImpl.addSeparator( menuTextSeparator );
+	}
+
+	public void removeAllMenuItems() {
+		this.scrollingPopupMenuImpl.removeAllMenuItems();
+	}
+
+	public void forgetAndRemoveAllMenuItems() {
+		this.scrollingPopupMenuImpl.forgetAndRemoveAllMenuItems();
 	}
 
 	@Override
@@ -139,17 +146,6 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 				System.err.println( "stateChanged: " + e );
 			}
 		} );
-	}
-
-	public void removeAllMenuItems() {
-		//this.internalRemoveAllComponents();
-		this.getAwtComponent().removeAll();
-	}
-
-	public void forgetAndRemoveAllMenuItems() {
-		//this.internalForgetAndRemoveAllComponents();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );
-		this.getAwtComponent().removeAll();
 	}
 
 	public void showAtLocation( Component<?> invoker, int x, int y ) {
