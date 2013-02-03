@@ -90,9 +90,22 @@ import javax.swing.AbstractAction;
 	private final ScrollAction scrollAction;
 	private final javax.swing.Timer timer;
 
+	private int count;
+
 	public JScrollMenuItem( ScrollingPopupMenuLayout layout, ScrollDirection scrollDirection ) {
 		this.scrollAction = new ScrollAction( layout, scrollDirection );
-		this.timer = new javax.swing.Timer( 200, this.scrollAction );
+		this.timer = new javax.swing.Timer( 100, this.scrollAction );
+	}
+
+	public int getCount() {
+		return this.count;
+	}
+
+	public void setCount( int count ) {
+		if( this.count != count ) {
+			this.count = count;
+			this.repaint();
+		}
 	}
 
 	@Override
@@ -119,7 +132,10 @@ import javax.swing.AbstractAction;
 
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), ARROW_SIZE.height + 4 );
+		java.awt.Font font = this.getFont();
+		java.awt.FontMetrics fontMetrics = this.getFontMetrics( font );
+		int height = Math.max( fontMetrics.getHeight(), ARROW_SIZE.height );
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), height + 8 );
 	}
 
 	@Override
@@ -142,8 +158,18 @@ import javax.swing.AbstractAction;
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading heading = this.scrollAction.getScrollDirection().getArrowHeading();
 		int x = ( this.getWidth() - ARROW_SIZE.width ) / 2;
 		int y = ( this.getHeight() - ARROW_SIZE.height ) / 2;
+
+		final int SPACE = 10;
 		for( int i = -2; i < 3; i++ ) {
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, heading, x + ( i * ( ARROW_SIZE.width + 8 ) ), y, ARROW_SIZE.width, ARROW_SIZE.height );
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, heading, x + ( i * ( ARROW_SIZE.width + SPACE ) ), y, ARROW_SIZE.width, ARROW_SIZE.height );
+		}
+		if( count != 0 ) {
+			StringBuilder sb = new StringBuilder();
+			sb.append( "(" );
+			sb.append( this.count );
+			sb.append( ")" );
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+			g2.drawString( sb.toString(), x + ( 3 * ( ARROW_SIZE.width + SPACE ) ), ( y + ARROW_SIZE.height ) - 2 );
 		}
 	}
 }

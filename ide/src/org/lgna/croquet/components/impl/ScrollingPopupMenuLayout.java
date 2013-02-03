@@ -281,7 +281,15 @@ package org.lgna.croquet.components.impl;
 					}
 				}
 				this.index0 = firstIndex;
+			}
 
+			if( this.pageStartComponent instanceof JScrollMenuItem ) {
+				JScrollMenuItem pageStartScrollMenuItem = (JScrollMenuItem)this.pageStartComponent;
+				pageStartScrollMenuItem.setCount( firstIndex );
+			}
+			if( this.pageEndComponent instanceof JScrollMenuItem ) {
+				JScrollMenuItem pageEndScrollMenuItem = (JScrollMenuItem)this.pageEndComponent;
+				pageEndScrollMenuItem.setCount( N - 1 - lastIndex );
 			}
 		} else {
 			pageStartHeight = 0;
