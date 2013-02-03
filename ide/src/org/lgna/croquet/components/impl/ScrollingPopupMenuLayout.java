@@ -216,9 +216,20 @@ public class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
 		if( graphicsConfiguration != null ) {
 			//pass
 		} else {
-			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-			graphicsConfiguration = graphicsEnvironment.getDefaultScreenDevice().getDefaultConfiguration();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: determine correct graphicsConfiguration.  using default:", graphicsConfiguration );
+			if( target instanceof javax.swing.JPopupMenu ) {
+				javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)target;
+				java.awt.Component invoker = jPopupMenu.getInvoker();
+				if( invoker != null ) {
+					graphicsConfiguration = invoker.getGraphicsConfiguration();
+				}
+			}
+			if( graphicsConfiguration != null ) {
+				//pass
+			} else {
+				java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
+				graphicsConfiguration = graphicsEnvironment.getDefaultScreenDevice().getDefaultConfiguration();
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: determine correct graphicsConfiguration.  using default:", graphicsConfiguration );
+			}
 		}
 		java.awt.Rectangle bounds = graphicsConfiguration.getBounds();
 		rv.height = Math.min( rv.height, bounds.height - 64 );
