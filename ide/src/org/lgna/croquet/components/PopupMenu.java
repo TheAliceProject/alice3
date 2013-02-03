@@ -116,6 +116,11 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
 	}
 
+	public void addCascadeMenuItemCascadeMenuCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
+		this.addCascadeMenuItem( cascadeMenuItem );
+		this.addCascadeMenu( cascadeMenu );
+	}
+
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
 	}

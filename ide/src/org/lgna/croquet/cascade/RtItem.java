@@ -164,20 +164,42 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		if( nextNode.isAutomaticallyDetermined() ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextNode );
 		}
-		RtItem[] children = nextNode.getItemChildren();
-		for( RtItem<?, ?, ?, ?> rtItem : children ) {
+		RtBlank.ItemChildrenAndComboOffsetsPair itemChildrenAndComboOffsetsPair = nextNode.getItemChildrenAndComboOffsets();
+		RtItem[] children = itemChildrenAndComboOffsetsPair.getItemChildren();
+		final int N = children.length;
+		int i = 0;
+		while( i < N ) {
+			RtItem<?, ?, ?, ?> rtItem = children[ i ];
 			org.lgna.croquet.components.ViewController<?, ?> menuItem = rtItem.getMenuItem();
 			if( menuItem != null ) {
 				if( menuItem instanceof org.lgna.croquet.components.CascadeMenu ) {
 					parent.addCascadeMenu( (org.lgna.croquet.components.CascadeMenu)menuItem );
 				} else if( menuItem instanceof org.lgna.croquet.components.CascadeMenuItem ) {
-					parent.addCascadeMenuItem( (org.lgna.croquet.components.CascadeMenuItem)menuItem );
+					org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem = (org.lgna.croquet.components.CascadeMenuItem)menuItem;
+					if( itemChildrenAndComboOffsetsPair.isComboOffset( i ) ) {
+						i++;
+						RtItem<?, ?, ?, ?> rtItem2 = children[ i ];
+						org.lgna.croquet.components.ViewController<?, ?> menuItem2 = rtItem2.getMenuItem();
+						if( menuItem2 != null ) {
+							if( menuItem2 instanceof org.lgna.croquet.components.CascadeMenu ) {
+								org.lgna.croquet.components.CascadeMenu cascadeMenu = (org.lgna.croquet.components.CascadeMenu)menuItem2;
+								parent.addCascadeMenuItemCascadeMenuCombo( cascadeMenuItem, cascadeMenu );
+							} else {
+								assert false : menuItem2;
+							}
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rtItem2 );
+						}
+					} else {
+						parent.addCascadeMenuItem( cascadeMenuItem );
+					}
 				} else {
 					assert false : menuItem;
 				}
 			} else {
 				parent.addSeparator();
 			}
+			i++;
 		}
 
 		final boolean IS_SPRING_LAYOUT_ATTEMPT_DESIRED = false;

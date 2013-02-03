@@ -156,6 +156,11 @@ public class RecentProjectsMenuModel extends org.lgna.croquet.MenuModel {
 				public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
 				}
 
+				public void addCascadeMenuItemCascadeMenuCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
+					this.addCascadeMenuItem( cascadeMenuItem );
+					this.addCascadeMenu( cascadeMenu );
+				}
+
 				public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 				}
 
