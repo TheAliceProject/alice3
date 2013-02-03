@@ -47,18 +47,8 @@ package org.lgna.croquet.components.impl;
  */
 public class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
 	private final java.util.List<java.awt.Component> mainItems = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.Map<java.awt.Component, Integer> mapSideItemToIndex = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-	private static final class IndexComponentPair {
-		private final int index;
-		private final java.awt.Component component;
-
-		public IndexComponentPair( int index, java.awt.Component component ) {
-			this.index = index;
-			this.component = component;
-		}
-	}
-
-	private java.util.List<IndexComponentPair> sideItems;
 	private java.awt.Component pageStartComponent;
 	private java.awt.Component pageEndComponent;
 
@@ -125,14 +115,9 @@ public class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
 		if( constraints == ColumnConstraint.MAIN ) {
 			this.mainItems.add( comp );
 		} else if( constraints == ColumnConstraint.SIDE ) {
-			final boolean IS_SIDE_READY_FOR_PRIME_TIME = false;
+			final boolean IS_SIDE_READY_FOR_PRIME_TIME = true;
 			if( IS_SIDE_READY_FOR_PRIME_TIME ) {
-				if( this.sideItems != null ) {
-					//pass
-				} else {
-					this.sideItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				}
-				this.sideItems.add( new IndexComponentPair( this.mainItems.size() - 1, comp ) );
+				this.mapSideItemToIndex.put( comp, this.mainItems.size() - 1 );
 			} else {
 				this.mainItems.add( comp );
 			}
@@ -154,8 +139,13 @@ public class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
 		} else {
 			if( ( comp == this.pageStartComponent ) || ( comp == this.pageEndComponent ) ) {
 				//todo
+			} else {
+				if( this.mapSideItemToIndex.containsKey( comp ) ) {
+					this.mapSideItemToIndex.remove( comp );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( comp );
+				}
 			}
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( comp );
 		}
 	}
 
@@ -197,11 +187,15 @@ public class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
 		}
 	}
 
-	private static final int SIDE_WIDTH = 32;
+	private static final int SIDE_WIDTH = 20;
+
+	private int getSizeWidth() {
+		return this.mapSideItemToIndex.size() > 0 ? SIDE_WIDTH : 0;
+	}
 
 	private java.awt.Dimension getInsetSize( int width, int height, java.awt.Container target ) {
 		java.awt.Insets insets = target.getInsets();
-		int sideWidth = this.sideItems != null ? SIDE_WIDTH : 0;
+		int sideWidth = this.getSizeWidth();
 		return new java.awt.Dimension( width + insets.left + insets.right + sideWidth, height + insets.top + insets.bottom );
 	}
 
@@ -337,7 +331,7 @@ public class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
 				this.pageEndComponent.setBounds( 0, 0, 0, 0 );
 			}
 		}
-		int sideWidth = this.sideItems != null ? SIDE_WIDTH : 0;
+		int sideWidth = this.getSizeWidth();
 		int i = 0;
 		for( java.awt.Component component : this.mainItems ) {
 			if( ( firstIndex <= i ) && ( i <= lastIndex ) ) {
@@ -347,5 +341,17 @@ public class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
 			}
 			i++;
 		}
+
+		if( this.mapSideItemToIndex.size() > 0 ) {
+			for( java.awt.Component component : this.mapSideItemToIndex.keySet() ) {
+				i = this.mapSideItemToIndex.get( component );
+				if( ( firstIndex <= i ) && ( i <= lastIndex ) ) {
+					component.setBounds( size.width - sideWidth, ( ( insets.top + ys[ i ] ) + pageStartHeight ) - ys[ firstIndex ], sideWidth, heights[ i ] );
+				} else {
+					component.setBounds( 0, 0, 0, 0 );
+				}
+			}
+		}
+
 	}
 }
