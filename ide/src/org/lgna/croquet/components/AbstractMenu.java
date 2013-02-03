@@ -138,7 +138,7 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 		this.getAwtComponent().add( cascadeMenu.getAwtComponent() );
 	}
 
-	public void addCascadeMenuItemCascadeMenuCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
+	public void addCascadeCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
 		this.addCascadeMenuItem( cascadeMenuItem );
 		this.addCascadeMenu( cascadeMenu );
 	}

@@ -76,7 +76,7 @@ public interface MenuItemContainer {
 
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem );
 
-	public void addCascadeMenuItemCascadeMenuCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu );
+	public void addCascadeCombo( CascadeMenuItem cascadeMenuItem, CascadeMenu cascadeMenu );
 
 	public void addSeparator();
 

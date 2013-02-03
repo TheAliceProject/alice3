@@ -183,7 +183,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 						if( menuItem2 != null ) {
 							if( menuItem2 instanceof org.lgna.croquet.components.CascadeMenu ) {
 								org.lgna.croquet.components.CascadeMenu cascadeMenu = (org.lgna.croquet.components.CascadeMenu)menuItem2;
-								parent.addCascadeMenuItemCascadeMenuCombo( cascadeMenuItem, cascadeMenu );
+								parent.addCascadeCombo( cascadeMenuItem, cascadeMenu );
 							} else {
 								assert false : menuItem2;
 							}
