@@ -140,7 +140,7 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 
 	public void addCascadeCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
 		this.addCascadeMenuItem( cascadeMenuItem );
-		this.addCascadeMenu( cascadeMenu );
+		this.getAwtComponent().add( cascadeMenu.getAwtComponent(), org.lgna.croquet.components.impl.ScrollingPopupMenuLayout.ColumnConstraint.SIDE );
 	}
 
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {

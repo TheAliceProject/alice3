@@ -45,8 +45,20 @@ package org.lgna.croquet.components.impl;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
-	private final java.util.List<java.awt.Component> items = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+public class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
+	private final java.util.List<java.awt.Component> mainItems = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
+	private static final class IndexComponentPair {
+		private final int index;
+		private final java.awt.Component component;
+
+		public IndexComponentPair( int index, java.awt.Component component ) {
+			this.index = index;
+			this.component = component;
+		}
+	}
+
+	private java.util.List<IndexComponentPair> sideItems;
 	private java.awt.Component pageStartComponent;
 	private java.awt.Component pageEndComponent;
 
@@ -57,9 +69,14 @@ package org.lgna.croquet.components.impl;
 
 	private int index0;
 
-	public static enum Constraint {
+	public static enum ScrollConstraint {
 		PAGE_START,
 		PAGE_END;
+	}
+
+	public static enum ColumnConstraint {
+		MAIN,
+		SIDE
 	}
 
 	private final java.awt.Container target;
@@ -69,7 +86,7 @@ package org.lgna.croquet.components.impl;
 	}
 
 	private void constrainIndex() {
-		final int N = this.items.size();
+		final int N = this.mainItems.size();
 		this.index0 = Math.max( this.index0, 0 );
 		this.index0 = Math.min( this.index0, N - 1 );
 	}
@@ -77,7 +94,7 @@ package org.lgna.croquet.components.impl;
 	public void adjustIndex( int delta ) {
 		this.index0 += delta;
 		this.constrainIndex();
-		if( this.items.get( this.index0 ) instanceof javax.swing.JPopupMenu.Separator ) {
+		if( this.mainItems.get( this.index0 ) instanceof javax.swing.JPopupMenu.Separator ) {
 			this.index0 += delta;
 			this.constrainIndex();
 		}
@@ -101,23 +118,38 @@ package org.lgna.croquet.components.impl;
 
 	public void addLayoutComponent( java.awt.Component comp, Object constraints ) {
 		if( constraints != null ) {
-			if( constraints == Constraint.PAGE_START ) {
-				this.pageStartComponent = comp;
-			} else if( constraints == Constraint.PAGE_END ) {
-				this.pageEndComponent = comp;
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, comp, constraints );
-			}
+			//pass
 		} else {
-			this.items.add( comp );
+			constraints = ColumnConstraint.MAIN;
+		}
+		if( constraints == ColumnConstraint.MAIN ) {
+			this.mainItems.add( comp );
+		} else if( constraints == ColumnConstraint.SIDE ) {
+			final boolean IS_SIDE_READY_FOR_PRIME_TIME = false;
+			if( IS_SIDE_READY_FOR_PRIME_TIME ) {
+				if( this.sideItems != null ) {
+					//pass
+				} else {
+					this.sideItems = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				}
+				this.sideItems.add( new IndexComponentPair( this.mainItems.size() - 1, comp ) );
+			} else {
+				this.mainItems.add( comp );
+			}
+		} else if( constraints == ScrollConstraint.PAGE_START ) {
+			this.pageStartComponent = comp;
+		} else if( constraints == ScrollConstraint.PAGE_END ) {
+			this.pageEndComponent = comp;
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, comp, constraints );
 		}
 		this.invalidateLayout( comp.getParent() );
 	}
 
 	public void removeLayoutComponent( java.awt.Component comp ) {
 		this.invalidateLayout( comp.getParent() );
-		if( this.items.contains( comp ) ) {
-			this.items.remove( comp );
+		if( this.mainItems.contains( comp ) ) {
+			this.mainItems.remove( comp );
 			this.constrainIndex();
 		} else {
 			if( ( comp == this.pageStartComponent ) || ( comp == this.pageEndComponent ) ) {
@@ -139,11 +171,11 @@ package org.lgna.croquet.components.impl;
 		if( this.childWidthRequirements != null ) {
 			//pass
 		} else {
-			final int N = this.items.size();
+			final int N = this.mainItems.size();
 			this.childWidthRequirements = new javax.swing.SizeRequirements[ N ];
 			this.childHeightRequirements = new javax.swing.SizeRequirements[ N ];
 			int i = 0;
-			for( java.awt.Component componentI : this.items ) {
+			for( java.awt.Component componentI : this.mainItems ) {
 				java.awt.Dimension minimum;
 				java.awt.Dimension preferred;
 				java.awt.Dimension maximum;
@@ -165,9 +197,12 @@ package org.lgna.croquet.components.impl;
 		}
 	}
 
+	private static final int SIDE_WIDTH = 32;
+
 	private java.awt.Dimension getInsetSize( int width, int height, java.awt.Container target ) {
 		java.awt.Insets insets = target.getInsets();
-		return new java.awt.Dimension( width + insets.left + insets.right, height + insets.top + insets.bottom );
+		int sideWidth = this.sideItems != null ? SIDE_WIDTH : 0;
+		return new java.awt.Dimension( width + insets.left + insets.right + sideWidth, height + insets.top + insets.bottom );
 	}
 
 	public synchronized java.awt.Dimension minimumLayoutSize( java.awt.Container target ) {
@@ -222,7 +257,7 @@ package org.lgna.croquet.components.impl;
 		int layoutWidth = layoutSize.width - insets.left - insets.right;
 		int layoutHeight = layoutSize.height - insets.top - insets.bottom;
 
-		final int N = this.items.size();
+		final int N = this.mainItems.size();
 		int[] xs = new int[ N ];
 		int[] ys = new int[ N ];
 		int[] widths = new int[ N ];
@@ -302,10 +337,11 @@ package org.lgna.croquet.components.impl;
 				this.pageEndComponent.setBounds( 0, 0, 0, 0 );
 			}
 		}
+		int sideWidth = this.sideItems != null ? SIDE_WIDTH : 0;
 		int i = 0;
-		for( java.awt.Component component : this.items ) {
+		for( java.awt.Component component : this.mainItems ) {
 			if( ( firstIndex <= i ) && ( i <= lastIndex ) ) {
-				component.setBounds( insets.left + xs[ i ], ( ( insets.top + ys[ i ] ) + pageStartHeight ) - ys[ firstIndex ], widths[ i ], heights[ i ] );
+				component.setBounds( insets.left + xs[ i ], ( ( insets.top + ys[ i ] ) + pageStartHeight ) - ys[ firstIndex ], widths[ i ] - sideWidth, heights[ i ] );
 			} else {
 				component.setBounds( 0, 0, 0, 0 );
 			}
