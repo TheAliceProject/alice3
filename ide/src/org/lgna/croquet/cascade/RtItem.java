@@ -180,7 +180,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 			}
 		}
 
-		final boolean IS_SPRING_LAYOUT_ATTEMPT_DESIRED = true;
+		final boolean IS_SPRING_LAYOUT_ATTEMPT_DESIRED = false;
 		if( IS_SPRING_LAYOUT_ATTEMPT_DESIRED ) {
 			javax.swing.SpringLayout springLayout = null;
 			for( RtNode child : children ) {

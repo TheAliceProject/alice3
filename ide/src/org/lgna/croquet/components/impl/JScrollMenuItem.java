@@ -70,11 +70,11 @@ import javax.swing.AbstractAction;
 	};
 
 	private static class ScrollAction extends AbstractAction {
-		private final ScrollingPopupMenuImpl imp;
+		private final ScrollingPopupMenuLayout layout;
 		private final ScrollDirection scrollDirection;
 
-		public ScrollAction( final ScrollingPopupMenuImpl imp, ScrollDirection scrollDirection ) {
-			this.imp = imp;
+		public ScrollAction( ScrollingPopupMenuLayout layout, ScrollDirection scrollDirection ) {
+			this.layout = layout;
 			this.scrollDirection = scrollDirection;
 		}
 
@@ -83,16 +83,16 @@ import javax.swing.AbstractAction;
 		}
 
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			this.imp.scroll( this.scrollDirection );
+			this.layout.adjustIndex( this.scrollDirection.getDelta() );
 		}
 	}
 
 	private final ScrollAction scrollAction;
 	private final javax.swing.Timer timer;
 
-	public JScrollMenuItem( final ScrollingPopupMenuImpl imp, ScrollDirection scrollDirection ) {
-		this.scrollAction = new ScrollAction( imp, scrollDirection );
-		this.timer = new javax.swing.Timer( 25, this.scrollAction );
+	public JScrollMenuItem( ScrollingPopupMenuLayout layout, ScrollDirection scrollDirection ) {
+		this.scrollAction = new ScrollAction( layout, scrollDirection );
+		this.timer = new javax.swing.Timer( 200, this.scrollAction );
 	}
 
 	@Override
@@ -123,26 +123,26 @@ import javax.swing.AbstractAction;
 	}
 
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
+	protected void paintComponent( java.awt.Graphics g ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		javax.swing.ButtonModel model = this.getModel();
-		java.awt.Paint paint;
-		if( model.isEnabled() ) {
-			if( model.isArmed() ) {
-				paint = java.awt.Color.WHITE;
-			} else {
-				paint = java.awt.Color.DARK_GRAY;
-			}
+		//		if( model.isArmed() ) {
+		//			//g.setColor( javax.swing.UIManager.getColor( "textBackground" ) );
+		//		} else {
+		//			g.setColor( javax.swing.UIManager.getColor( "menu" ) );
+		//			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+		//		}
+		super.paintComponent( g );
+		if( model.isArmed() ) {
+			g.setColor( javax.swing.UIManager.getColor( "textHighlightText" ) );
 		} else {
-			paint = java.awt.Color.GRAY;
+			g.setColor( javax.swing.UIManager.getColor( "textForeground" ) );
 		}
-		g2.setPaint( paint );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading heading = this.scrollAction.getScrollDirection().getArrowHeading();
 		int x = ( this.getWidth() - ARROW_SIZE.width ) / 2;
 		int y = ( this.getHeight() - ARROW_SIZE.height ) / 2;
-		for( int i = -1; i < 2; i++ ) {
+		for( int i = -2; i < 3; i++ ) {
 			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g2, heading, x + ( i * ( ARROW_SIZE.width + 8 ) ), y, ARROW_SIZE.width, ARROW_SIZE.height );
 		}
 	}

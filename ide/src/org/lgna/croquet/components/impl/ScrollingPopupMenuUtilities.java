@@ -45,23 +45,41 @@ package org.lgna.croquet.components.impl;
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */enum ScrollDirection {
-	UP( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.NORTH, -1 ),
-	DOWN( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, 1 );
-
-	private final int delta;
-	private final edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading arrowHeading;
-
-	ScrollDirection( edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading arrowHeading, int delta ) {
-		this.delta = delta;
-		this.arrowHeading = arrowHeading;
+public class ScrollingPopupMenuUtilities {
+	private ScrollingPopupMenuUtilities() {
+		throw new AssertionError();
 	}
 
-	public int getDelta() {
-		return this.delta;
+	private static final java.awt.event.MouseWheelListener mouseWheelListener = new java.awt.event.MouseWheelListener() {
+		public void mouseWheelMoved( java.awt.event.MouseWheelEvent e ) {
+			java.awt.Component component = e.getComponent();
+			if( component instanceof javax.swing.JPopupMenu ) {
+				javax.swing.JPopupMenu jPopupMenu = (javax.swing.JPopupMenu)component;
+				java.awt.LayoutManager layoutManager = jPopupMenu.getLayout();
+				if( layoutManager instanceof ScrollingPopupMenuLayout ) {
+					ScrollingPopupMenuLayout scrollingPopupMenuLayout = (ScrollingPopupMenuLayout)layoutManager;
+					scrollingPopupMenuLayout.adjustIndex( e.getWheelRotation() );
+				}
+			}
+			e.consume();
+		}
+	};
+
+	public static void initializeScrollingCapability( javax.swing.JPopupMenu jPopupMenu ) {
+		ScrollingPopupMenuLayout layout = new ScrollingPopupMenuLayout( jPopupMenu );
+		jPopupMenu.setLayout( layout );
+		jPopupMenu.addMouseWheelListener( mouseWheelListener );
+		jPopupMenu.add( new JScrollMenuItem( layout, ScrollDirection.UP ), ScrollingPopupMenuLayout.Constraint.PAGE_START );
+		jPopupMenu.add( new JScrollMenuItem( layout, ScrollDirection.DOWN ), ScrollingPopupMenuLayout.Constraint.PAGE_END );
 	}
 
-	public edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading getArrowHeading() {
-		return this.arrowHeading;
+	public static void removeAllNonScrollComponents( javax.swing.JPopupMenu jPopupMenu ) {
+		for( java.awt.Component component : jPopupMenu.getComponents() ) {
+			if( component instanceof JScrollMenuItem ) {
+				//pass
+			} else {
+				jPopupMenu.remove( component );
+			}
+		}
 	}
 }

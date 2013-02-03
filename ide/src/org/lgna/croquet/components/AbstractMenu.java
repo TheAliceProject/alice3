@@ -50,11 +50,8 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 	private boolean isIconSet;
 	private javax.swing.Icon setIcon;
 
-	private final org.lgna.croquet.components.impl.ScrollingPopupMenuImpl scrollingPopupMenuImpl;
-
 	public AbstractMenu( M model ) {
 		super( model );
-		this.scrollingPopupMenuImpl = new org.lgna.croquet.components.impl.ScrollingPopupMenuImpl( this.getAwtComponent() );
 	}
 
 	protected javax.swing.Icon getSetIcon() {
@@ -96,6 +93,7 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 				}
 			}
 		};
+		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.initializeScrollingCapability( rv.getPopupMenu() );
 		return rv;
 	}
 
@@ -129,23 +127,23 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 	}
 
 	public void addMenu( Menu menu ) {
-		this.scrollingPopupMenuImpl.addMenu( menu );
+		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
 
 	public void addMenuItem( MenuItem menuItem ) {
-		this.scrollingPopupMenuImpl.addMenuItem( menuItem );
+		this.getAwtComponent().add( menuItem.getAwtComponent() );
 	}
 
 	public void addCascadeMenu( CascadeMenu cascadeMenu ) {
-		this.scrollingPopupMenuImpl.addCascadeMenu( cascadeMenu );
+		this.getAwtComponent().add( cascadeMenu.getAwtComponent() );
 	}
 
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
-		this.scrollingPopupMenuImpl.addCascadeMenuItem( cascadeMenuItem );
+		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
 	}
 
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
-		this.scrollingPopupMenuImpl.addCheckBoxMenuItem( checkBoxMenuItem );
+		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
 	}
 
 	public void addSeparator() {
@@ -153,14 +151,21 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 	}
 
 	public void addSeparator( MenuTextSeparator menuTextSeparator ) {
-		this.scrollingPopupMenuImpl.addSeparator( menuTextSeparator );
+		if( menuTextSeparator != null ) {
+			this.getAwtComponent().add( menuTextSeparator.getAwtComponent() );
+		} else {
+			this.getAwtComponent().addSeparator();
+		}
 	}
 
 	public void removeAllMenuItems() {
-		this.scrollingPopupMenuImpl.removeAllMenuItems();
+		//this.internalRemoveAllComponents();
+		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
 	}
 
 	public void forgetAndRemoveAllMenuItems() {
-		this.scrollingPopupMenuImpl.forgetAndRemoveAllMenuItems();
+		//this.internalForgetAndRemoveAllComponents();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );
+		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
 	}
 }
