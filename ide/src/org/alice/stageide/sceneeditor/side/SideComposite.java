@@ -58,8 +58,6 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 	private final ObjectPropertiesTab objectPropertiesTab = new ObjectPropertiesTab();
 	private final ObjectMarkersTab objectMarkersTab = new ObjectMarkersTab();
 	private final CameraMarkersTab cameraMarkersTab = new CameraMarkersTab();
-	private final DELETE_ME_MarkersTab DELETE_ME_markersTab = new DELETE_ME_MarkersTab();
-
 	private final org.lgna.croquet.ListSelectionState<HandleStyle> handleStyleState = this.createListSelectionStateForEnum( this.createKey( "handleStyleState" ), HandleStyle.class, HandleStyle.DEFAULT );
 
 	private final org.lgna.croquet.BooleanState isSnapEnabledState = this.createBooleanState( this.createKey( "isSnapEnabledState" ), false );
@@ -100,11 +98,6 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 
 	public ObjectMarkersTab getObjectMarkersTab() {
 		return this.objectMarkersTab;
-	}
-
-	@Deprecated
-	public DELETE_ME_MarkersTab getMarkerTab() {
-		return this.DELETE_ME_markersTab;
 	}
 
 	public org.lgna.croquet.BooleanState getAreJointsShowingState() {
