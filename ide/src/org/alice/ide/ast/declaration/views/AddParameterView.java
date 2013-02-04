@@ -45,7 +45,7 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public class AddParameterView extends AddDeclarationView<org.lgna.project.ast.UserParameter> {
+public class AddParameterView extends DeclarationView<org.lgna.project.ast.UserParameter> {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.BorderPanel warningPanel;
 
@@ -67,7 +67,7 @@ public class AddParameterView extends AddDeclarationView<org.lgna.project.ast.Us
 				.build();
 
 		this.warningPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 32, 8, 32, 8 ) );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getParameterColor() );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getParameterColor() );
 	}
 
 	@Override

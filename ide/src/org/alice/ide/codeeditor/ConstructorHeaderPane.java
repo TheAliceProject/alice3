@@ -54,8 +54,8 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 		} else {
 			this.addComponent( new org.lgna.croquet.components.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			this.addComponent( new org.lgna.croquet.components.Label( "constructor", NAME_SCALE ) );
-			this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userConstructor.getDeclaringType() ) );
+			//			this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			//			this.addComponent( org.alice.ide.common.TypeComponent.createInstance( userConstructor.getDeclaringType() ) );
 			this.addParametersPaneAndInstanceLineIfDesired();
 		}
 	}

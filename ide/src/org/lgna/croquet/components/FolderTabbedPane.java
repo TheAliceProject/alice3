@@ -142,20 +142,43 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
-	private static class FolderTabTitle extends BooleanStateButton<javax.swing.AbstractButton> {
-		public FolderTabTitle( BooleanState booleanState, java.awt.event.ActionListener closeButtonActionListener ) {
+	private class FolderTabTitle extends BooleanStateButton<javax.swing.AbstractButton> {
+		private final javax.swing.JButton closeButton;
+
+		public FolderTabTitle( final E item, BooleanState booleanState ) {
 			super( booleanState );
-			if( closeButtonActionListener != null ) {
-				javax.swing.AbstractButton awtButton = this.getAwtComponent();
-				javax.swing.JButton closeButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
-				closeButton.addActionListener( closeButtonActionListener );
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal horizontal;
-				if( this.getAwtComponent().getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
-					horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST;
-				} else {
-					horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
+
+			if( item.isPotentiallyCloseable() ) {
+				java.awt.event.ActionListener closeButtonActionListener = new java.awt.event.ActionListener() {
+					public void actionPerformed( java.awt.event.ActionEvent e ) {
+						FolderTabbedPane.this.getModel().removeItemAndSelectAppropriateReplacement( item );
+					}
+				};
+				this.closeButton = new edu.cmu.cs.dennisc.javax.swing.components.JCloseButton( true );
+				this.closeButton.addActionListener( closeButtonActionListener );
+			} else {
+				this.closeButton = null;
+			}
+		}
+
+		public void setCloseable( boolean isCloseable ) {
+			if( this.closeButton != null ) {
+				if( isCloseable != ( this.closeButton.getParent() != null ) ) {
+					javax.swing.AbstractButton awtButton = this.getAwtComponent();
+					if( isCloseable ) {
+						edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal horizontal;
+						if( this.getAwtComponent().getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+							horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST;
+						} else {
+							horizontal = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST;
+						}
+						edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, this.closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 2 );
+					} else {
+						awtButton.remove( this.closeButton );
+					}
+					awtButton.revalidate();
+					awtButton.repaint();
 				}
-				edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( awtButton, closeButton, horizontal, -1, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, 2 );
 			}
 		}
 
@@ -177,155 +200,153 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	//private static java.awt.Color SELECTED_BORDER_COLOR = java.awt.Color.RED;
 	private static java.awt.Color UNSELECTED_BORDER_COLOR = java.awt.Color.DARK_GRAY;
 
-	private static class TitlesPanel extends LineAxisPanel {
+	protected static class TitlesPanel extends LineAxisPanel {
 		private static final int NORTH_AREA_PAD = 1;
 		// private static java.awt.Stroke SELECTED_STROKE = new
 		// java.awt.BasicStroke( 3.0f );
 		private static java.awt.Stroke SELECTED_STROKE = new java.awt.BasicStroke( 1.0f );
 		private static java.awt.Stroke UNSELECTED_STROKE = new java.awt.BasicStroke( 2.0f );
 
-		@Override
-		protected javax.swing.JPanel createJPanel() {
-			javax.swing.JPanel rv = new javax.swing.JPanel() {
+		protected static class JTitlesPanel extends javax.swing.JPanel {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				java.awt.Dimension rv = super.getPreferredSize();
+				rv.width += TRAILING_TAB_PAD;
+				return rv;
+			}
 
-				@Override
-				public java.awt.Dimension getPreferredSize() {
-					java.awt.Dimension rv = super.getPreferredSize();
-					rv.width += TRAILING_TAB_PAD;
-					return rv;
+			private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, boolean isContinuation ) {
+				float a = height * 0.25f;
+
+				float xStart;
+				float xEnd;
+				float xA;
+				float tabPad;
+				if( this.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
+					xStart = x;
+					xEnd = ( x + width ) - 1;
+					tabPad = TRAILING_TAB_PAD;
+					xA = xStart + a;
+				} else {
+					xStart = ( x + width ) - 1;
+					xEnd = x;
+					tabPad = -TRAILING_TAB_PAD;
+					xA = xStart - a;
 				}
 
-				private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, boolean isContinuation ) {
-					float a = height * 0.25f;
+				float xCurve0 = xEnd - ( tabPad / 2 );
+				float xCurve1 = xEnd + tabPad;
+				float cx0 = xCurve0 + ( tabPad * 0.75f );
+				float cx1 = xCurve0;
 
-					float xStart;
-					float xEnd;
-					float xA;
-					float tabPad;
-					if( this.getComponentOrientation() == java.awt.ComponentOrientation.LEFT_TO_RIGHT ) {
-						xStart = x;
-						xEnd = ( x + width ) - 1;
-						tabPad = TRAILING_TAB_PAD;
-						xA = xStart + a;
-					} else {
-						xStart = ( x + width ) - 1;
-						xEnd = x;
-						tabPad = -TRAILING_TAB_PAD;
-						xA = xStart - a;
-					}
+				float y0 = y + NORTH_AREA_PAD;
+				float y1 = y + height + 1;// + this.contentBorderInsets.top;
+				float cy0 = y0;
+				float cy1 = y1;
 
-					float xCurve0 = xEnd - ( tabPad / 2 );
-					float xCurve1 = xEnd + tabPad;
-					float cx0 = xCurve0 + ( tabPad * 0.75f );
-					float cx1 = xCurve0;
+				float yA = y + a;
 
-					float y0 = y + NORTH_AREA_PAD;
-					float y1 = y + height + 1;// + this.contentBorderInsets.top;
-					float cy0 = y0;
-					float cy1 = y1;
-
-					float yA = y + a;
-
-					if( isContinuation ) {
-						rv.lineTo( xCurve1, y1 );
-					} else {
-						rv.moveTo( xCurve1, y1 );
-					}
-					rv.lineTo( xCurve1, y1 - 1 );
-					rv.curveTo( cx1, cy1, cx0, cy0, xCurve0, y0 );
-					rv.lineTo( xA, y0 );
-					rv.quadTo( xStart, y0, xStart, yA );
-					rv.lineTo( xStart, y1 );
-
-					return rv;
+				if( isContinuation ) {
+					rv.lineTo( xCurve1, y1 );
+				} else {
+					rv.moveTo( xCurve1, y1 );
 				}
+				rv.lineTo( xCurve1, y1 - 1 );
+				rv.curveTo( cx1, cy1, cx0, cy0, xCurve0, y0 );
+				rv.lineTo( xA, y0 );
+				rv.quadTo( xStart, y0, xStart, yA );
+				rv.lineTo( xStart, y1 );
 
-				private void paintTabBorder( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
+				return rv;
+			}
+
+			private void paintTabBorder( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
+				int x = button.getX();
+				int y = button.getY();
+				int width = button.getWidth();
+				int height = button.getHeight();
+				java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
+				java.awt.Shape prevClip = g2.getClip();
+				try {
+					if( button.getModel().isSelected() ) {
+						java.awt.Rectangle bounds = prevClip.getBounds();
+						bounds.height += 1;
+						//todo: investigate
+						//							java.awt.Rectangle lineBelow = new java.awt.Rectangle( , , , 1 );
+						//							java.awt.Shape clip = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( prevClip, lineBelow );
+						//							g2.setClip( clip );
+						g2.setClip( bounds );
+					}
+					g2.draw( path );
+				} finally {
+					g2.setClip( prevClip );
+				}
+			}
+
+			private void paintTabBackground( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
+				java.awt.Color prev = g2.getColor();
+				try {
 					int x = button.getX();
 					int y = button.getY();
 					int width = button.getWidth();
 					int height = button.getHeight();
-					java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
-					java.awt.Shape prevClip = g2.getClip();
-					try {
-						if( button.getModel().isSelected() ) {
-							java.awt.Rectangle bounds = prevClip.getBounds();
-							bounds.height += 1;
-							//todo: investigate
-							//							java.awt.Rectangle lineBelow = new java.awt.Rectangle( , , , 1 );
-							//							java.awt.Shape clip = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( prevClip, lineBelow );
-							//							g2.setClip( clip );
-							g2.setClip( bounds );
-						}
-						g2.draw( path );
-					} finally {
-						g2.setClip( prevClip );
-					}
-				}
-
-				private void paintTabBackground( java.awt.Graphics2D g2, javax.swing.AbstractButton button ) {
-					java.awt.Color prev = g2.getColor();
-					try {
-						int x = button.getX();
-						int y = button.getY();
-						int width = button.getWidth();
-						int height = button.getHeight();
-						boolean isSelected = button.isSelected();
-						boolean isRollover = button.getModel().isArmed();
-						java.awt.Color color = button.getBackground();
-						if( isSelected ) {
+					boolean isSelected = button.isSelected();
+					boolean isRollover = button.getModel().isArmed();
+					java.awt.Color color = button.getBackground();
+					if( isSelected ) {
+						// pass
+					} else {
+						color = color.darker();
+						if( isRollover ) {
 							// pass
 						} else {
 							color = color.darker();
-							if( isRollover ) {
-								// pass
-							} else {
-								color = color.darker();
-							}
 						}
-						g2.setColor( color );
-						java.awt.geom.GeneralPath path = addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
-						g2.fill( path );
-					} finally {
-						g2.setColor( prev );
 					}
+					g2.setColor( color );
+					java.awt.geom.GeneralPath path = addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, false );
+					g2.fill( path );
+				} finally {
+					g2.setColor( prev );
 				}
+			}
 
-				@Override
-				protected void paintChildren( java.awt.Graphics g ) {
-					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-					Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-					javax.swing.AbstractButton selectedButton = null;
-					java.awt.Component[] components = this.getComponents();
-					final int N = components.length;
-					for( int i = 0; i < N; i++ ) {
-						java.awt.Component component = components[ N - 1 - i ];
-						if( component instanceof javax.swing.AbstractButton ) {
-							javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
-							if( button.isSelected() ) {
-								selectedButton = button;
-							} else {
-								g2.setColor( UNSELECTED_BORDER_COLOR );
-								g2.setStroke( UNSELECTED_STROKE );
-								this.paintTabBorder( g2, button );
-								this.paintTabBackground( g2, button );
-							}
+			@Override
+			protected void paintChildren( java.awt.Graphics g ) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				javax.swing.AbstractButton selectedButton = null;
+				java.awt.Component[] components = this.getComponents();
+				final int N = components.length;
+				for( int i = 0; i < N; i++ ) {
+					java.awt.Component component = components[ N - 1 - i ];
+					if( component instanceof javax.swing.AbstractButton ) {
+						javax.swing.AbstractButton button = (javax.swing.AbstractButton)component;
+						if( button.isSelected() ) {
+							selectedButton = button;
+						} else {
+							g2.setColor( UNSELECTED_BORDER_COLOR );
+							g2.setStroke( UNSELECTED_STROKE );
+							this.paintTabBorder( g2, button );
+							this.paintTabBackground( g2, button );
 						}
 					}
-					if( selectedButton != null ) {
-						this.paintTabBackground( g2, selectedButton );
-						g2.setColor( SELECTED_BORDER_COLOR );
-						g2.setStroke( SELECTED_STROKE );
-						this.paintTabBorder( g2, selectedButton );
-					}
-					super.paintChildren( g2 );
-					g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
 				}
-			};
-			rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
-			//rv.setBackground( this.getBackgroundColor() );
-			return rv;
+				if( selectedButton != null ) {
+					this.paintTabBackground( g2, selectedButton );
+					g2.setColor( SELECTED_BORDER_COLOR );
+					g2.setStroke( SELECTED_STROKE );
+					this.paintTabBorder( g2, selectedButton );
+				}
+				super.paintChildren( g2 );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, prevAntialiasing );
+			}
+		}
+
+		@Override
+		protected javax.swing.JPanel createJPanel() {
+			return new JTitlesPanel();
 		}
 	}
 
@@ -336,9 +357,14 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	private final InternalCardOwnerComposite cardComposite = new InternalCardOwnerComposite();
-	private final TitlesPanel titlesPanel = new TitlesPanel();
+	private final TitlesPanel titlesPanel = this.createTitlesPanel();
+	private final ScrollPane titlesScrollPane = new ScrollPane( this.titlesPanel );
 	private final BorderPanel innerHeaderPanel = new BorderPanel();
 	private final BorderPanel outerHeaderPanel = new BorderPanel();
+
+	protected TitlesPanel createTitlesPanel() {
+		return new TitlesPanel();
+	}
 
 	//private java.util.Map<E, javax.swing.Action> mapItemToAction = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private javax.swing.Action getActionFor( E item ) {
@@ -365,10 +391,14 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 			javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 			for( E item : FolderTabbedPane.this.getModel() ) {
-				javax.swing.JCheckBoxMenuItem checkBox = new javax.swing.JCheckBoxMenuItem( getActionFor( item ) );
-				checkBox.setSelected( FolderTabbedPane.this.getModel().getValue() == item );
-				popupMenu.add( checkBox );
-				buttonGroup.add( checkBox );
+				if( item != null ) {
+					javax.swing.JCheckBoxMenuItem checkBox = new javax.swing.JCheckBoxMenuItem( getActionFor( item ) );
+					checkBox.setSelected( FolderTabbedPane.this.getModel().getValue() == item );
+					popupMenu.add( checkBox );
+					buttonGroup.add( checkBox );
+				} else {
+					popupMenu.addSeparator();
+				}
 			}
 			ViewController<?, ?> viewController = trigger.getViewController();
 			popupMenu.show( viewController.getAwtComponent(), 0, viewController.getHeight() );
@@ -427,6 +457,49 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
+	private class ScrollListener implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
+		private Integer pressedLocationX;
+		private Integer pressedViewPositionX;
+
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+			this.pressedLocationX = e.getPoint().x;
+			this.pressedViewPositionX = titlesScrollPane.getAwtComponent().getViewport().getViewPosition().x;
+		}
+
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+			this.pressedLocationX = null;
+			this.pressedViewPositionX = null;
+		}
+
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseMoved( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseDragged( java.awt.event.MouseEvent e ) {
+			if( this.pressedLocationX != null ) {
+				java.awt.Dimension viewSize = titlesScrollPane.getAwtComponent().getViewport().getView().getSize();
+				java.awt.Rectangle viewportRect = titlesScrollPane.getAwtComponent().getViewport().getViewRect();
+
+				int xDelta = this.pressedLocationX - e.getX();
+				int value = this.pressedViewPositionX + xDelta;
+				value = Math.max( value, 0 );
+				value = Math.min( value, viewSize.width - viewportRect.width );
+
+				titlesScrollPane.getAwtComponent().getViewport().setViewPosition( new java.awt.Point( value, 0 ) );
+			}
+		}
+	}
+
+	private final ScrollListener scrollListener = new ScrollListener();
+
 	public FolderTabbedPane( TabSelectionState<E> model ) {
 		super( model );
 		for( org.lgna.croquet.TabComposite<?> card : model ) {
@@ -434,8 +507,15 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 		this.cardComposite.getView().setBackgroundColor( null );
 		this.innerHeaderPanel.setBackgroundColor( null );
-		this.titlesPanel.setBackgroundColor( null );
-		this.innerHeaderPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
+		this.titlesPanel.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		this.titlesScrollPane.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		this.titlesScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		this.titlesScrollPane.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.NEVER );
+
+		this.titlesScrollPane.addMouseListener( this.scrollListener );
+		this.titlesScrollPane.addMouseMotionListener( this.scrollListener );
+
+		this.titlesScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
 		this.cardComposite.getView().setBorder( new javax.swing.border.Border() {
 			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 				return new java.awt.Insets( 1, 1, 0, 0 );
@@ -484,14 +564,22 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 				cardComposite.showCardRefrainingFromActivation( card );
 				this.repaint();
 			} else {
-				cardComposite.addCard( card );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note invoke later showCard", card );
-				javax.swing.SwingUtilities.invokeLater( new Runnable() {
-					public void run() {
-						cardComposite.showCardRefrainingFromActivation( card );
-						repaint();
-					}
-				} );
+				if( card != null ) {
+					cardComposite.addCard( card );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "note invoke later showCard", card );
+					javax.swing.SwingUtilities.invokeLater( new Runnable() {
+						public void run() {
+							cardComposite.showCardRefrainingFromActivation( card );
+							repaint();
+						}
+					} );
+				}
+			}
+		}
+		if( card != null ) {
+			BooleanStateButton<?> button = this.getItemDetails( card );
+			if( button != null ) {
+				button.scrollToVisible();
 			}
 		}
 	}
@@ -552,7 +640,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
-		this.innerHeaderPanel.addCenterComponent( this.titlesPanel );
+		this.innerHeaderPanel.addCenterComponent( this.titlesScrollPane );
 		this.outerHeaderPanel.addCenterComponent( this.innerHeaderPanel );
 		rv.add( this.outerHeaderPanel.getAwtComponent(), java.awt.BorderLayout.NORTH );
 		rv.add( this.cardComposite.getView().getAwtComponent(), java.awt.BorderLayout.CENTER );
@@ -565,8 +653,8 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	@Override
-	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, BooleanState itemSelectedState, java.awt.event.ActionListener closeButtonActionListener ) {
-		return new FolderTabTitle( itemSelectedState, closeButtonActionListener );
+	protected BooleanStateButton<? extends javax.swing.AbstractButton> createTitleButton( E item, BooleanState itemSelectedState ) {
+		return new FolderTabTitle( item, itemSelectedState );
 	}
 
 	/* package-private */CardPanel getCardPanel() {
@@ -585,76 +673,20 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	@Override
 	protected void addItem( E item, BooleanStateButton<?> button ) {
+		if( button instanceof FolderTabbedPane.FolderTabTitle ) {
+			FolderTabTitle title = (FolderTabTitle)button;
+			title.setCloseable( item.isCloseable() );
+		}
 		this.titlesPanel.addComponent( button );
 		this.cardComposite.getView().addComposite( item );
 	}
 
 	@Override
-	protected void addEpilogue() {
+	protected void addSeparator() {
+		this.titlesPanel.addComponent( BoxUtilities.createHorizontalSliver( 16 ) );
 	}
 
-	//	@Override
-	//	protected AbstractTabbedPane.Tab< E > createTab( E item, ItemSelectionOperation.TabCreator< E > tabCreator ) {
-	//		return new FolderTab<E>( item, tabCreator );
-	//	}
-	//	@Override
-	//	protected void addTab(AbstractTabbedPane.Tab<E> tab) {
-	//		this.headerPane.addComponent( tab.getOuterTitleComponent() );
-	//		this.cardPanel.addComponent( ((FolderTab<E>)tab).getCardPanelKey() );
-	////		this.revalidateAndRepaint();
-	//	}
-	//	@Override
-	//	protected void removeTab(AbstractTabbedPane.Tab<E> tab) {
-	//		this.headerPane.removeComponent( tab.getOuterTitleComponent() );
-	//		this.cardPanel.removeComponent( ((FolderTab<E>)tab).getCardPanelKey() );
-	//	}
-
-	//
-	//	/* package-private */class Key {
-	//		private AbstractButton<?> headerComponent;
-	//		private TabStateOperation tabStateOperation;
-	//		private CardPanel.Key mainComponentKey;
-	//
-	//		private Key( AbstractButton<?> headerComponent, Component<?> mainComponent, TabStateOperation tabStateOperation ) {
-	//			this.headerComponent = headerComponent;
-	//			this.mainComponentKey = FolderTabbedPane.this.cardPanel.createKey( mainComponent, tabStateOperation.getIndividualUUID().toString());
-	//			this.tabStateOperation = tabStateOperation;
-	//		}
-	//		public TabStateOperation getTabStateOperation() {
-	//			return this.tabStateOperation;
-	//		}
-	//	}
-	//	private java.util.Map<TabStateOperation, CardPanel.Key> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	//	private CardPanel.Key getKey( TabStateOperation tabStateOperation ) {
-	//		CardPanel.Key rv = this.map.get( tabStateOperation );
-	//		if( rv != null ) {
-	//			//pass
-	//		} else {
-	//			rv = this.cardPanel.createKey( tabStateOperation.getSingletonScrollPane(), tabStateOperation.getIndividualUUID().toString() );
-	//			this.map.put( tabStateOperation, rv );
-	//		}
-	//		return rv;
-	//	}
-	//	@Override
-	//	/* package-private */ void addTab(TabStateOperation<?> tabStateOperation) {
-	//		super.addTab(tabStateOperation);
-	//		this.headerPane.addComponent(tabStateOperation.getSingletonTabTitle( this ));
-	//		this.cardPanel.addComponent(this.getKey(tabStateOperation));
-	//	}
-	//	
-	//	@Override
-	//	/* package-private */ void removeTab(TabStateOperation<?> tabStateOperation) {
-	//		super.removeTab(tabStateOperation);
-	//		this.cardPanel.removeComponent(this.getKey(tabStateOperation));
-	//		this.headerPane.removeComponent(tabStateOperation.getSingletonTabTitle( this ));
-	//	}
-	//
-	//	@Override
-	//	/* package-private */ void selectTab(TabStateOperation<?> tabStateOperation) {
-	//		if( tabStateOperation != null ) {
-	//			this.cardPanel.show(this.getKey(tabStateOperation));
-	//		} else {
-	//			this.cardPanel.show( null );
-	//		}
-	//	}
+	@Override
+	protected void addEpilogue() {
+	}
 }

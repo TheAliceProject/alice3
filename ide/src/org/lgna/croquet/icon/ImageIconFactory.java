@@ -58,7 +58,8 @@ public class ImageIconFactory extends AbstractImageIconFactory {
 		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
 	}
 
-	public javax.swing.Icon getIcon( java.awt.Dimension size ) {
+	@Override
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
 		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
 		if( imageIcon != null ) {
 			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {

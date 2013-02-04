@@ -45,7 +45,15 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResolutionIndependantIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
+public abstract class ResolutionIndependantIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
+	public ResolutionIndependantIconFactory( IsCachingDesired isCachingDesired ) {
+		super( isCachingDesired );
+	}
+
+	public ResolutionIndependantIconFactory() {
+		this( IsCachingDesired.FALSE );
+	}
+
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
 		return sizeIfResolutionIndependent;
 	}

@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionOperation extends SingleThreadOperation {
+public abstract class ActionOperation extends Operation {
 	public ActionOperation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}

@@ -89,6 +89,23 @@ public class MenuBar extends View<javax.swing.JMenuBar, org.lgna.croquet.MenuBar
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( listener );
 	}
 
+	public Component<?> getMenuComponent( int i ) {
+		return Component.lookup( this.getAwtComponent().getMenu( i ) );
+	}
+
+	public int getMenuComponentCount() {
+		return this.getAwtComponent().getMenuCount();
+	}
+
+	public synchronized Component<?>[] getMenuComponents() {
+		final int N = this.getMenuComponentCount();
+		Component<?>[] rv = new Component<?>[ N ];
+		for( int i = 0; i < N; i++ ) {
+			rv[ i ] = this.getMenuComponent( i );
+		}
+		return rv;
+	}
+
 	public void addMenu( Menu menu ) {
 		this.getAwtComponent().add( menu.getAwtComponent() );
 	}
@@ -107,6 +124,11 @@ public class MenuBar extends View<javax.swing.JMenuBar, org.lgna.croquet.MenuBar
 
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( cascadeMenuItem );
+	}
+
+	public void addCascadeCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
+		this.addCascadeMenuItem( cascadeMenuItem );
+		this.addCascadeMenu( cascadeMenu );
 	}
 
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {

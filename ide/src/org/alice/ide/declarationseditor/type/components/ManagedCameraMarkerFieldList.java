@@ -52,7 +52,7 @@ import org.alice.stageide.croquet.models.declaration.CameraMarkerFieldDeclaratio
 public class ManagedCameraMarkerFieldList extends MarkerFieldList {
 	public ManagedCameraMarkerFieldList( org.lgna.project.ast.NamedUserType type ) {
 		super( ManagedCameraMarkerFieldState.getInstance( type ), CameraMarkerFieldDeclarationOperation.getInstance() );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFieldColor() );
 	}
 
 	//	@Override

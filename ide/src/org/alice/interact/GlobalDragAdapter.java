@@ -109,10 +109,6 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		super();
 	}
 
-	public org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState getInteractionSelectionStateList() {
-		return org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance();
-	}
-
 	@Override
 	protected void setUpControls()
 	{
@@ -526,7 +522,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			//			
 			//			this.interactionSelectionState.setSelectedItem(defaultInteraction);
 
-			org.alice.stageide.croquet.models.sceneditor.HandleStyleListSelectionState.getInstance().addAndInvokeValueListener( this.handleStateValueObserver );
+			org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getHandleStyleState().addAndInvokeValueListener( this.handleStateValueObserver );
 		}
 	}
 

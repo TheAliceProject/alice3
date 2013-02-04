@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna.project.ast.UserField> {
+public abstract class AddFieldComposite extends FieldComposite {
 	public static class FieldDetailsBuilder {
 		private ApplicabilityStatus isFinalStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private boolean inFinalInitialValue;
@@ -116,6 +116,12 @@ public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna
 	}
 
 	@Override
+	protected void localize() {
+		super.localize();
+		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+	}
+
+	@Override
 	public org.lgna.project.ast.UserField getPreviewValue() {
 		return this.createField();
 	}
@@ -159,28 +165,12 @@ public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna
 		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
 
-	//	protected void updateNameTextField() {
-	//		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
-	//			String name = generateNameFromInitializer();
-	//			this.getNameState().setValueTransactionlessly( name );
-	//			this.getNameState().selectAll();
-	////			javax.swing.JTextField jTextField = this.nameTextField.getAwtComponent();
-	////			if( jTextField.getSelectionStart() == 0 && jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) {
-	////				String name = generateNameFromInitializer();
-	////				model.getNameState().setValue( name );
-	////				this.nameTextField.requestFocus();
-	////				this.nameTextField.selectAll();
-	////				this.nameTextField.repaint();
-	////			}
-	//		}
-	//	}
-
 	@Override
-	protected java.lang.String getInitialNameValue() {
+	protected java.lang.String getNameInitialValue() {
 		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
 			return generateNameFromInitializer();
 		} else {
-			return super.getInitialNameValue();
+			return super.getNameInitialValue();
 		}
 	}
 }

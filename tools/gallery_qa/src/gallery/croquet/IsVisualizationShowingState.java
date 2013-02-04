@@ -11,6 +11,6 @@ public class IsVisualizationShowingState extends BooleanState {
 		return SingletonHolder.instance;
 	}
 	private IsVisualizationShowingState() {
-		super( Application.UI_STATE_GROUP, java.util.UUID.fromString( "27fa1607-a722-4001-aa82-74cf938fd100" ), false );
+		super( Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "27fa1607-a722-4001-aa82-74cf938fd100" ), false );
 	}
 }

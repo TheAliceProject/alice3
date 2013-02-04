@@ -90,7 +90,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 				};
 			}
 		};
-		this.label.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor() );
+		this.label.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getSelectedColor() );
 		this.label.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
 		Component itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );

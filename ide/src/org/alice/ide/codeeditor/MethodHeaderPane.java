@@ -104,19 +104,19 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 					);
 		}
 		this.addParametersPaneAndInstanceLineIfDesired();
-		if( declaringType != null ) {
-			//pass
-		} else {
-			declaringType = userMethod.getDeclaringType();
-		}
-		if( declaringType != null ) {
-			if( declaringType instanceof org.lgna.project.ast.AnonymousUserType ) {
-				//pass
-			} else {
-				this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
-				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( declaringType ) );
-			}
-		}
+		//		if( declaringType != null ) {
+		//			//pass
+		//		} else {
+		//			declaringType = userMethod.getDeclaringType();
+		//		}
+		//		if( declaringType != null ) {
+		//			if( declaringType instanceof org.lgna.project.ast.AnonymousUserType ) {
+		//				//pass
+		//			} else {
+		//				this.addComponent( new org.lgna.croquet.components.Label( " on class ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+		//				this.addComponent( org.alice.ide.common.TypeComponent.createInstance( declaringType ) );
+		//			}
+		//		}
 	}
 
 	public MethodHeaderPane( org.lgna.project.ast.UserMethod userMethod, ParametersPane parametersPane, boolean isPreview ) {

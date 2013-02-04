@@ -147,7 +147,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			text = null;
 		}
 		this.stepLabel.setText( text );
-		this.TEMPORARY_HACK_updateStatus();
+		this.refreshStatus();
 		this.updateEnabled();
 	}
 

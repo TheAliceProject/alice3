@@ -45,7 +45,7 @@ package org.alice.ide.ast.declaration.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMethodView extends AddDeclarationView<org.lgna.project.ast.UserMethod> {
+public abstract class AddMethodView extends DeclarationView<org.lgna.project.ast.UserMethod> {
 	public AddMethodView( org.alice.ide.ast.declaration.AddMethodComposite composite ) {
 		super( composite );
 	}

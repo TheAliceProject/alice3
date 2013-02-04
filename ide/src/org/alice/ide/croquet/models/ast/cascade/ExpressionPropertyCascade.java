@@ -75,8 +75,12 @@ public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade
 
 	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression[] expressions );
 
+	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createExpressionPropertyEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.ExpressionProperty expressionProperty, org.lgna.project.ast.Expression prevExpression, org.lgna.project.ast.Expression nextExpression ) {
+		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, expressionProperty, prevExpression, nextExpression );
+	}
+
 	@Override
-	protected org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
-		return new org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit( step, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression( values ) );
+	protected final org.alice.ide.croquet.edits.ast.ExpressionPropertyEdit createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> step, org.lgna.project.ast.Expression[] values ) {
+		return this.createExpressionPropertyEdit( step, this.expressionProperty, this.expressionProperty.getValue(), this.createExpression( values ) );
 	}
 }

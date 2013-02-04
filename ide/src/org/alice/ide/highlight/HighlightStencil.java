@@ -193,6 +193,12 @@ public class HighlightStencil extends org.lgna.croquet.components.LayerStencil {
 		this.unregisterKeyboardAction( HIDE_KEY_STROKE );
 	}
 
+	public void hideIfNecessary() {
+		if( this.isStencilShowing() ) {
+			this.hide();
+		}
+	}
+
 	protected void show( org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape> trackableShapeResolverA, org.lgna.croquet.resolvers.RuntimeResolver<org.lgna.croquet.components.TrackableShape> trackableShapeResolverB, final String noteText ) {
 		this.note.removeAllFeatures();
 

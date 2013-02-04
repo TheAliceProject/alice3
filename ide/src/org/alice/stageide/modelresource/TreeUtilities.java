@@ -58,7 +58,7 @@ public class TreeUtilities {
 		java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)key;
-			if( classResourceKey.getCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
+			if( classResourceKey.getModelResourceCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
 				java.util.List<ResourceNode> emptyList = java.util.Collections.emptyList();
 				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getInstance(), emptyList ) );
 			}
@@ -84,7 +84,7 @@ public class TreeUtilities {
 	private static ClassHierarchyBasedResourceNode createTreeBasedOnClassHierarchy() {
 		org.lgna.story.resourceutilities.StorytellingResources storytellingResources = org.lgna.story.resourceutilities.StorytellingResources.getInstance();
 		org.lgna.story.resourceutilities.ModelResourceTreeNode root = storytellingResources.getGalleryTree();
-		return createNode( root, new RootResourceKey() );
+		return createNode( root, new RootResourceKey( "all classes" ) );
 	}
 
 	public static ClassHierarchyBasedResourceNode getTreeBasedOnClassHierarchy() {
@@ -96,7 +96,19 @@ public class TreeUtilities {
 		return treeBasedOnClassHierarchy;
 	}
 
-	private static void buildMap( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map, ResourceNode node ) {
+	private static void addTags( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map, String[] tags, ResourceNode node ) {
+		if( tags != null ) {
+			for( String tag : tags ) {
+				if( tag.startsWith( "*" ) ) {
+					tag = tag.substring( 1 );
+				}
+				java.util.List<ResourceNode> list = map.getInitializingIfAbsentToLinkedList( tag );
+				list.add( node );
+			}
+		}
+	}
+
+	private static void buildMap( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup, edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme, ResourceNode node ) {
 		ResourceKey resourceKey = node.getResourceKey();
 		if( resourceKey instanceof EnumConstantResourceKey ) {
 			//pass
@@ -104,26 +116,27 @@ public class TreeUtilities {
 			if( resourceKey instanceof RootResourceKey ) {
 				//pass
 			} else {
-				String[] groupTags = node.getResourceKey().getGroupTags();
-				if( groupTags != null ) {
-					for( String groupTag : groupTags ) {
-						java.util.List<ResourceNode> list = map.getInitializingIfAbsentToLinkedList( groupTag );
-						list.add( node );
-					}
-				}
+				addTags( mapGroup, node.getResourceKey().getGroupTags(), node );
+				addTags( mapTheme, node.getResourceKey().getThemeTags(), node );
 			}
 			for( ResourceNode child : node.getNodeChildren() ) {
-				buildMap( map, child );
+				buildMap( mapGroup, mapTheme, child );
 			}
 		}
 	}
 
-	private static java.util.List<ResourceNode> convert( java.util.List<ResourceNode> srcNodes ) {
+	private static java.util.List<ResourceNode> convert( java.util.List<ResourceNode> srcNodes, boolean isTheme ) {
 		if( srcNodes != null ) {
 			java.util.List<ResourceNode> dstNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			for( ResourceNode srcNode : srcNodes ) {
-				java.util.List<ResourceNode> dstChildNodes = convert( srcNode.getNodeChildren() );
-				dstNodes.add( new ThemeBasedResourceNode( srcNode.getResourceKey(), dstChildNodes ) );
+				java.util.List<ResourceNode> dstChildNodes = convert( srcNode.getNodeChildren(), isTheme );
+				ResourceNode node;
+				if( isTheme ) {
+					node = new ThemeBasedResourceNode( srcNode.getResourceKey(), dstChildNodes );
+				} else {
+					node = new GroupBasedResourceNode( srcNode.getResourceKey(), dstChildNodes );
+				}
+				dstNodes.add( node );
 			}
 			java.util.Collections.sort( dstNodes );
 			return dstNodes;
@@ -132,97 +145,107 @@ public class TreeUtilities {
 		}
 	}
 
-	private static java.util.Set<String> themeNames = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "arctic" );
-
-	public static boolean isThemeName( String name ) {
-		return themeNames.contains( name );
-	}
-
-	private static void addGroupNode( String groupTag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> groupNodes, java.util.Map<String, ResourceNode> mapGroupTagToNode ) {
-		java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories;
-		if( isThemeName( groupTag ) ) {
-			iconFactories = java.util.Collections.emptyList();
-		} else {
-			iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			for( ResourceNode resourceNode : dstChildNodes ) {
-				ResourceKey resourceKey = resourceNode.getResourceKey();
-				//todo
-				org.lgna.croquet.icon.IconFactory iconFactory = resourceKey.getIconFactory();
-				if( iconFactory instanceof org.lgna.croquet.icon.AbstractImageIconFactory ) {
-					org.lgna.croquet.icon.AbstractImageIconFactory imageIconFactory = (org.lgna.croquet.icon.AbstractImageIconFactory)iconFactory;
-					iconFactories.add( imageIconFactory );
-				}
-				if( iconFactories.size() == 5 ) {
-					break;
-				}
+	private static java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> createIconFactories( java.util.List<ResourceNode> dstChildNodes ) {
+		java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		for( ResourceNode resourceNode : dstChildNodes ) {
+			ResourceKey resourceKey = resourceNode.getResourceKey();
+			//todo
+			org.lgna.croquet.icon.IconFactory iconFactory = resourceKey.getIconFactory();
+			if( iconFactory instanceof org.lgna.croquet.icon.AbstractImageIconFactory ) {
+				org.lgna.croquet.icon.AbstractImageIconFactory imageIconFactory = (org.lgna.croquet.icon.AbstractImageIconFactory)iconFactory;
+				iconFactories.add( imageIconFactory );
+			}
+			if( iconFactories.size() == 5 ) {
+				break;
 			}
 		}
-		GroupTagKey groupTagKey = new GroupTagKey( groupTag, iconFactories );
+		return iconFactories;
+	}
+
+	private static void addTagNode( String tag, java.util.List<ResourceNode> dstChildNodes, java.util.List<ResourceNode> tagNodes, java.util.Map<String, ResourceNode> mapTagToNode, boolean isTheme ) {
 		ResourceNode dstNode;
-		if( isThemeName( groupTag ) ) {
-			dstNode = new ThemeBasedResourceNode( groupTagKey, dstChildNodes );
+		if( isTheme ) {
+			TagKey tagKey;
+			if( tag.indexOf( TagKey.SEPARATOR ) == -1 ) {
+				tagKey = new ThemeTagKey( tag );
+			} else {
+				tagKey = new GroupTagKey( tag, createIconFactories( dstChildNodes ) );
+			}
+			dstNode = new ThemeBasedResourceNode( tagKey, dstChildNodes );
 		} else {
+			GroupTagKey groupTagKey = new GroupTagKey( tag, createIconFactories( dstChildNodes ) );
 			dstNode = new GroupBasedResourceNode( groupTagKey, dstChildNodes );
 		}
-		groupNodes.add( dstNode );
-		mapGroupTagToNode.put( groupTag, dstNode );
+		tagNodes.add( dstNode );
+		mapTagToNode.put( tag, dstNode );
 	}
 
-	private static void createTreesBasedOnThemeAndGroup() {
-		ResourceNode rootClassHierarchy = getTreeBasedOnClassHierarchy();
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
-		buildMap( map, rootClassHierarchy );
+	private static java.util.List<ResourceNode> createTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> map, boolean isTheme, String... emptyTagNames ) {
+		java.util.Map<String, ResourceNode> mapInternal = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-		java.util.Map<String, ResourceNode> mapGroupTagToNode = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		java.util.List<ResourceNode> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
-		java.util.List<ResourceNode> groupNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-
-		java.util.List<String> emptyGroupTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( "household" );
-		for( String emptyGroupTag : emptyGroupTags ) {
+		java.util.List<String> emptyTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( emptyTagNames );
+		for( String emptyGroupTag : emptyTags ) {
 			java.util.List<ResourceNode> childNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			addGroupNode( emptyGroupTag, childNodes, groupNodes, mapGroupTagToNode );
+			addTagNode( emptyGroupTag, childNodes, rv, mapInternal, isTheme );
 		}
 
-		for( String groupTag : map.keySet() ) {
-			if( emptyGroupTags.contains( groupTag ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( groupTag );
+		for( String tag : map.keySet() ) {
+			if( emptyTags.contains( tag ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( tag );
 			} else {
-				java.util.List<ResourceNode> srcChildNodes = map.get( groupTag );
-				java.util.List<ResourceNode> dstChildNodes = convert( srcChildNodes );
+				java.util.List<ResourceNode> srcChildNodes = map.get( tag );
+				java.util.List<ResourceNode> dstChildNodes = convert( srcChildNodes, isTheme );
 
-				addGroupNode( groupTag, dstChildNodes, groupNodes, mapGroupTagToNode );
+				addTagNode( tag, dstChildNodes, rv, mapInternal, isTheme );
 			}
 		}
-		java.util.ListIterator<ResourceNode> listIterator = groupNodes.listIterator();
+		java.util.ListIterator<ResourceNode> listIterator = rv.listIterator();
 		while( listIterator.hasNext() ) {
 			ResourceNode resourceNode = listIterator.next();
-			GroupTagKey groupTagKey = (GroupTagKey)resourceNode.getResourceKey();
-			String groupTag = groupTagKey.getGroupTag();
-			int lastIndex = groupTag.lastIndexOf( GroupTagKey.SEPARATOR );
+			TagKey tagKey = (TagKey)resourceNode.getResourceKey();
+			String tag = tagKey.getTag();
+			assert tag.startsWith( "*" ) == false : tag;
+			int lastIndex = tag.lastIndexOf( TagKey.SEPARATOR );
 			if( lastIndex != -1 ) {
-				String parentGroupTag = groupTag.substring( 0, lastIndex );
-				ResourceNode parentToBeNode = mapGroupTagToNode.get( parentGroupTag );
+				String parentTag = tag.substring( 0, lastIndex );
+				ResourceNode parentToBeNode = mapInternal.get( parentTag );
 				if( parentToBeNode != null ) {
 					listIterator.remove();
 					parentToBeNode.addNodeChild( 0, resourceNode );
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( groupTagKey );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( tagKey );
 				}
 			}
 		}
-		java.util.Collections.sort( groupNodes );
+		java.util.Collections.sort( rv );
 
-		java.util.List<ResourceNode> themeNodes = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		java.util.ListIterator<ResourceNode> listIteratorThemeGroup = groupNodes.listIterator();
-		while( listIteratorThemeGroup.hasNext() ) {
-			ResourceNode resourceNode = listIteratorThemeGroup.next();
-			if( resourceNode instanceof ThemeBasedResourceNode ) {
-				listIteratorThemeGroup.remove();
-				themeNodes.add( resourceNode );
-			}
-		}
-		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( themeNodes ) );
-		treeBasedOnGroup = new GroupBasedResourceNode( new RootResourceKey(), java.util.Collections.unmodifiableList( groupNodes ) );
+		return rv;
+	}
+
+	private static java.util.List<ResourceNode> createGroupTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup ) {
+		return createTagNodeList( mapGroup, false );
+	}
+
+	private static java.util.List<ResourceNode> createThemeTagNodeList( edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme ) {
+		return createTagNodeList( mapTheme, true, "household" );
+	}
+
+	private static void createTreesBasedOnThemeAndGroup() {
+		ResourceNode rootClassHierarchy = getTreeBasedOnClassHierarchy();
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapGroup = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<String, ResourceNode> mapTheme = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
+		buildMap( mapGroup, mapTheme, rootClassHierarchy );
+
+		java.util.List<ResourceNode> themeNodes = createThemeTagNodeList( mapTheme );
+		java.util.List<ResourceNode> groupNodes = createGroupTagNodeList( mapGroup );
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( themeNodes );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( groupNodes );
+
+		treeBasedOnGroup = new GroupBasedResourceNode( new RootResourceKey( "all groups" ), groupNodes );
+		treeBasedOnTheme = new ThemeBasedResourceNode( new RootResourceKey( "all themes" ), themeNodes );
 	}
 
 	public static ThemeBasedResourceNode getTreeBasedOnTheme() {

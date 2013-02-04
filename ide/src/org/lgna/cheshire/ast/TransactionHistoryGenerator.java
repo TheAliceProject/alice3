@@ -15,7 +15,6 @@ public class TransactionHistoryGenerator {
 
 		//cheshire cat does not recover since the procedure invocation drag model is found (albeit with the wrong state).  curses.
 		//so we manually place ide in correct configuration.
-		org.alice.ide.declarationseditor.TypeState.getInstance().addGeneratedStateChangeTransaction( history, null, (org.lgna.project.ast.NamedUserType)destinationMethod.getDeclaringType() );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addGeneratedStateChangeTransaction( history, null, org.alice.ide.declarationseditor.DeclarationComposite.getInstance( destinationMethod ) );
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory;
@@ -30,7 +29,6 @@ public class TransactionHistoryGenerator {
 			instanceFactory = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
 			instanceExpression = new org.lgna.project.ast.ThisExpression();
 		}
-		org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( (org.lgna.project.ast.NamedUserType)destinationMethod.getDeclaringType() );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
 		org.alice.ide.members.MembersComposite membersComposite = org.alice.ide.members.MembersComposite.getInstance();
 		membersComposite.getTabState().pushGeneratedValue( membersComposite.getProcedureTabComposite() );
@@ -45,7 +43,6 @@ public class TransactionHistoryGenerator {
 		} finally {
 			membersComposite.getTabState().popGeneratedValue();
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
-			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		}
 
 		org.alice.stageide.run.RunComposite runComposite = org.alice.stageide.run.RunComposite.getInstance();

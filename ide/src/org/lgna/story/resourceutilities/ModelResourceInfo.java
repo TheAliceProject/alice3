@@ -68,6 +68,7 @@ public class ModelResourceInfo {
 
 	private final String[] tags;
 	private final String[] groupTags;
+	private final String[] themeTags;
 
 	private static AxisAlignedBox getBoundingBoxFromXML( Element bboxElement )
 	{
@@ -113,6 +114,18 @@ public class ModelResourceInfo {
 			if( resourceElement.hasAttribute( "resourceName" ) ) {
 				resourceName = resourceElement.getAttribute( "resourceName" );
 			}
+			String creatorName = null;
+			if( resourceElement.hasAttribute( "creator" ) ) {
+				creatorName = resourceElement.getAttribute( "creator" );
+			}
+			int creationYearTemp = -1;
+			if( resourceElement.hasAttribute( "creationYear" ) ) {
+				try {
+					creationYearTemp = Integer.parseInt( resourceElement.getAttribute( "creationYear" ) );
+				} catch( Exception e ) {
+				}
+			}
+			int creationYear = creationYearTemp;
 			LinkedList<String> tagList = new LinkedList<String>();
 			NodeList tagNodeList = resourceElement.getElementsByTagName( "Tag" );
 			for( int i = 0; i < tagNodeList.getLength(); i++ ) {
@@ -126,14 +139,22 @@ public class ModelResourceInfo {
 				groupTagList.add( groupTagNodeList.item( i ).getTextContent() );
 			}
 			String[] groupTags = groupTagList.toArray( new String[ groupTagList.size() ] );
-			ModelResourceInfo resource = new ModelResourceInfo( parent, resourceName, null, -1, bbox, tags, groupTags, modelName, textureName );
+
+			LinkedList<String> themeTagList = new LinkedList<String>();
+			NodeList themeTagNodeList = resourceElement.getElementsByTagName( "ThemeTag" );
+			for( int i = 0; i < themeTagNodeList.getLength(); i++ ) {
+				themeTagList.add( themeTagNodeList.item( i ).getTextContent() );
+			}
+			String[] themeTags = themeTagList.toArray( new String[ themeTagList.size() ] );
+
+			ModelResourceInfo resource = new ModelResourceInfo( parent, resourceName, creatorName, creationYear, bbox, tags, groupTags, themeTags, modelName, textureName );
 			return resource;
 		}
 
 		return null;
 	}
 
-	public ModelResourceInfo( ModelResourceInfo parent, String resourceName, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String[] groupTags, String modelName, String textureName ) {
+	public ModelResourceInfo( ModelResourceInfo parent, String resourceName, String creator, int creationYear, AxisAlignedBox boundingBox, String[] tags, String[] groupTags, String[] themeTags, String modelName, String textureName ) {
 		this.parentInfo = parent;
 		this.resourceName = resourceName;
 		this.creator = creator;
@@ -143,6 +164,7 @@ public class ModelResourceInfo {
 		this.textureName = textureName;
 		this.modelName = modelName;
 		this.groupTags = groupTags;
+		this.themeTags = themeTags;
 	}
 
 	private static java.util.List<Element> getImmediateChildElementsByTagName( Element node, String tagName ) {
@@ -198,6 +220,16 @@ public class ModelResourceInfo {
 			}
 		}
 		this.groupTags = groupTagList.toArray( new String[ groupTagList.size() ] );
+
+		LinkedList<String> themeTagList = new LinkedList<String>();
+		java.util.List<Element> themeTagsElementList = getImmediateChildElementsByTagName( modelElement, "ThemeTags" );
+		for( Element themeTagsElement : themeTagsElementList ) {
+			java.util.List<Element> themeTagElementList = getImmediateChildElementsByTagName( themeTagsElement, "ThemeTag" );
+			for( Element themeTagElement : themeTagElementList ) {
+				themeTagList.add( themeTagElement.getTextContent() );
+			}
+		}
+		this.themeTags = themeTagList.toArray( new String[ themeTagList.size() ] );
 
 		java.util.List<Element> subResourcesList = getImmediateChildElementsByTagName( modelElement, "Resource" );
 		for( Element subResourceElement : subResourcesList ) {
@@ -276,12 +308,26 @@ public class ModelResourceInfo {
 			if( this.parentInfo.groupTags.length > 0 ) {
 				System.arraycopy( this.parentInfo.groupTags, 0, allTags, 0, this.parentInfo.groupTags.length );
 			}
-			if( this.tags.length > 0 ) {
+			if( this.groupTags.length > 0 ) {
 				System.arraycopy( this.groupTags, 0, allTags, this.parentInfo.groupTags.length, this.groupTags.length );
 			}
 			return allTags;
 		}
 		return groupTags;
+	}
+
+	public String[] getThemeTags() {
+		if( this.parentInfo != null ) {
+			String[] allTags = new String[ this.themeTags.length + this.parentInfo.themeTags.length ];
+			if( this.parentInfo.themeTags.length > 0 ) {
+				System.arraycopy( this.parentInfo.themeTags, 0, allTags, 0, this.parentInfo.themeTags.length );
+			}
+			if( this.themeTags.length > 0 ) {
+				System.arraycopy( this.themeTags, 0, allTags, this.parentInfo.themeTags.length, this.themeTags.length );
+			}
+			return allTags;
+		}
+		return themeTags;
 	}
 
 	public ModelResourceInfo getSubResource( String modelName, String textureName ) {

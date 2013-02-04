@@ -50,12 +50,13 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 
 	public FieldAccessView( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.FieldAccess fieldAccess ) {
 		super( factory, fieldAccess );
-		org.lgna.croquet.components.Component<?> prefixPane = org.alice.ide.IDE.getActiveInstance().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.lgna.croquet.components.Component<?> prefixPane = ide != null ? ide.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess ) : null;
 		if( prefixPane != null ) {
 			this.addComponent( prefixPane );
 		}
 
-		this.replacement = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().createReplacementForFieldAccessIfAppropriate( fieldAccess );
+		this.replacement = ide != null ? ide.getApiConfigurationManager().createReplacementForFieldAccessIfAppropriate( fieldAccess ) : null;
 		if( this.replacement != null ) {
 			this.addComponent( this.replacement );
 		} else {
@@ -77,8 +78,7 @@ public class FieldAccessView extends AbstractExpressionView<org.lgna.project.ast
 			org.alice.ide.ast.components.DeclarationNameLabel nodeNameLabel = new org.alice.ide.ast.components.DeclarationNameLabel( field );
 			//nodeNameLabel.scaleFont( 1.2f );
 			//nodeNameLabel.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-			org.alice.ide.IDE.AccessorAndMutatorDisplayStyle accessorAndMutatorDisplayStyle = org.alice.ide.IDE.getActiveInstance().getAccessorAndMutatorDisplayStyle( field );
-			boolean isGetter = accessorAndMutatorDisplayStyle == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+			boolean isGetter = ide != null ? ide.getAccessorAndMutatorDisplayStyle( field ) == org.alice.ide.IDE.AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER : false;
 			if( isExpressionDesired ) {
 				if( isGetter ) {
 					org.lgna.croquet.components.Label getLabel = new org.lgna.croquet.components.Label( "get" );

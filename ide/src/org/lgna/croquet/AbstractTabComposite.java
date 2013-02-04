@@ -53,6 +53,10 @@ public abstract class AbstractTabComposite<V extends org.lgna.croquet.components
 		super( id );
 	}
 
+	public boolean isPotentiallyCloseable() {
+		return this.isCloseable();
+	}
+
 	@Override
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
 		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();

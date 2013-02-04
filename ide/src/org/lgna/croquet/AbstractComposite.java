@@ -557,6 +557,10 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 		public CascadeFillIn<T, ?> getFillInFor( T value );
 
 		public void appendBlankChildren( java.util.List<CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode );
+
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger );
+
+		public void epilogue();
 	}
 
 	protected static final class InternalCustomItemState<T> extends DefaultCustomItemState<T> {
@@ -575,6 +579,18 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 
 		public ItemStateCustomizer<T> getCustomizer() {
 			return this.customizer;
+		}
+
+		@Override
+		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			super.prologue( trigger );
+			this.customizer.prologue( trigger );
+		}
+
+		@Override
+		protected void epilogue() {
+			this.customizer.epilogue();
+			super.epilogue();
 		}
 
 		@Override
@@ -797,7 +813,18 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 			AbstractInternalStringValue stringValue = this.mapKeyToStringValue.get( key );
 			stringValue.setText( this.findLocalizedText( key.getLocalizationKey() ) );
 		}
-		this.localizeSidekicks( this.mapKeyToActionOperation, this.mapKeyToBooleanState, this.mapKeyToBoundedDoubleState, this.mapKeyToBoundedIntegerState, this.mapKeyToCascade, this.mapKeyToItemState, this.mapKeyToImmutableListSelectionState, this.mapKeyToRefreshableListSelectionState, this.mapKeyToMutableListSelectionState, this.mapKeyToTabSelectionState, this.mapKeyToStringState );
+		this.localizeSidekicks(
+				this.mapKeyToActionOperation,
+				this.mapKeyToBooleanState,
+				this.mapKeyToBoundedDoubleState,
+				this.mapKeyToBoundedIntegerState,
+				this.mapKeyToCascade,
+				this.mapKeyToItemState,
+				this.mapKeyToImmutableListSelectionState,
+				this.mapKeyToRefreshableListSelectionState,
+				this.mapKeyToMutableListSelectionState,
+				this.mapKeyToTabSelectionState,
+				this.mapKeyToStringState );
 	}
 
 	public boolean contains( Model model ) {

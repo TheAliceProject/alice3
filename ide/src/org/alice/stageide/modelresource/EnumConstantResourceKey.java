@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class EnumConstantResourceKey extends ResourceKey {
+public final class EnumConstantResourceKey extends InstanceCreatorKey {
 	private static java.util.Map<org.lgna.project.ast.JavaType, org.lgna.project.ast.JavaType> mapResourceTypeToAbstractionType;
 
 	private final Enum<? extends org.lgna.story.resources.ModelResource> enumConstant;
@@ -55,7 +55,7 @@ public final class EnumConstantResourceKey extends ResourceKey {
 			//pass
 		} else {
 			mapResourceTypeToAbstractionType = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
+			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getTopLevelGalleryTypes();
 			for( org.lgna.project.ast.JavaType abstractionType : abstractionTypes ) {
 				org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
 				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
@@ -79,6 +79,11 @@ public final class EnumConstantResourceKey extends ResourceKey {
 		return this.enumConstant;
 	}
 
+	@Override
+	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
+		return this.enumConstant.getDeclaringClass();
+	}
+
 	public org.lgna.project.ast.JavaField getField() {
 		try {
 			return org.lgna.project.ast.JavaField.getInstance( this.enumConstant.getClass().getField( this.enumConstant.name() ) );
@@ -92,9 +97,13 @@ public final class EnumConstantResourceKey extends ResourceKey {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "new " );
 		sb.append( this.enumConstant.getClass().getSimpleName().replace( "Resource", "" ) );
-		sb.append( "( " );
-		sb.append( this.enumConstant.name() );
-		sb.append( " )" );
+		if( this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ) {
+			sb.append( "( " );
+			sb.append( this.enumConstant.name() );
+			sb.append( " )" );
+		} else {
+			sb.append( "()" );
+		}
 		return sb.toString();
 	}
 
@@ -132,12 +141,17 @@ public final class EnumConstantResourceKey extends ResourceKey {
 
 	@Override
 	public String[] getTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this.enumConstant.getClass() );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getGroupTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this.enumConstant.getClass() );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this, javax.swing.JComponent.getDefaultLocale() );
+	}
+
+	@Override
+	public String[] getThemeTags() {
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override

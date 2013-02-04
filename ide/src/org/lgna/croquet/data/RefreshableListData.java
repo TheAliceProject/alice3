@@ -96,6 +96,11 @@ public abstract class RefreshableListData<T> extends org.lgna.croquet.data.Abstr
 	}
 
 	@Override
+	public boolean contains( T item ) {
+		return this.values.contains( item );
+	}
+
+	@Override
 	public final T getItemAt( int index ) {
 		return this.values.get( index );
 	}

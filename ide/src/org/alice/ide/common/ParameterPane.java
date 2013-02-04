@@ -52,7 +52,7 @@ public class ParameterPane extends TransientPane {
 		super( org.alice.ide.ast.draganddrop.expression.ParameterAccessDragModel.getInstance( parameter ) );
 		this.parametersProperty = parametersProperty;
 		this.addComponent( new org.alice.ide.ast.components.DeclarationNameLabel( parameter ) );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.ParameterAccess.class ) );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.ParameterAccess.class ) );
 		if( this.parametersProperty != null ) {
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, parameter );
 			final org.alice.ide.ast.code.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.ast.code.ForwardShiftParameterOperation( this.parametersProperty, parameter );
@@ -71,7 +71,7 @@ public class ParameterPane extends TransientPane {
 					}
 					models.add( org.lgna.croquet.MenuModel.SEPARATOR );
 					models.add( deleteParameterOperation.getMenuItemPrepModel() );
-					org.lgna.croquet.components.MenuItemContainerUtilities.addMenuElements( popupMenu, models );
+					org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 				}
 			}.getPopupPrepModel() );
 		} else {

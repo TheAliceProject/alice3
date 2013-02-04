@@ -142,6 +142,6 @@ public class AliceFormatter extends Formatter {
 
 	@Override
 	public String getFinalText() {
-		return "permanently set";
+		return "constant";
 	}
 }

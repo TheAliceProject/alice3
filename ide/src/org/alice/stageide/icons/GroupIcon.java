@@ -53,7 +53,7 @@ public class GroupIcon extends ShapeIcon {
 
 	static {
 		xs = new double[ N ];
-		double xDelta = 0.2;
+		double xDelta = 0.15;
 		double x = 0.0;
 		for( int i = 0; i < N; i++ ) {
 			xs[ i ] = x;
@@ -75,37 +75,41 @@ public class GroupIcon extends ShapeIcon {
 
 	public GroupIcon( java.awt.Dimension size, java.util.List<? extends org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories ) {
 		super( size );
-		int subWidth = ( 2 * size.width ) / 3;
-		int subHeight = ( 2 * size.height ) / 3;
-		java.awt.Dimension subSize = new java.awt.Dimension( subWidth, subHeight );
-		for( int i = 0; i < iconFactories.size(); i++ ) {
-			this.icons[ i ] = iconFactories.get( i ).getSourceImageIcon();
-		}
-		switch( iconFactories.size() ) {
-		case 0:
+		if( size.width > 64 ) {
+			int subWidth = ( 2 * size.width ) / 3;
+			int subHeight = ( 2 * size.height ) / 3;
+			java.awt.Dimension subSize = new java.awt.Dimension( subWidth, subHeight );
+			for( int i = 0; i < iconFactories.size(); i++ ) {
+				this.icons[ i ] = iconFactories.get( i ).getSourceImageIcon();
+			}
+			switch( iconFactories.size() ) {
+			case 0:
+				this.drawOrder = new int[] {};
+				break;
+			case 1:
+				this.drawOrder = new int[] { 2 };
+				this.icons[ 2 ] = this.icons[ 0 ];
+				break;
+			case 2:
+				this.drawOrder = new int[] { 1, 3 };
+				this.icons[ 3 ] = this.icons[ 1 ];
+				this.icons[ 1 ] = this.icons[ 0 ];
+				break;
+			case 3:
+				this.drawOrder = new int[] { 0, 4, 2 };
+				this.icons[ 4 ] = this.icons[ 2 ];
+				this.icons[ 2 ] = this.icons[ 1 ];
+				break;
+			case 4:
+				this.drawOrder = new int[] { 0, 4, 1, 3 };
+				this.icons[ 4 ] = this.icons[ 3 ];
+				this.icons[ 3 ] = this.icons[ 2 ];
+				break;
+			default:
+				this.drawOrder = new int[] { 0, 4, 1, 3, 2 };
+			}
+		} else {
 			this.drawOrder = new int[] {};
-			break;
-		case 1:
-			this.drawOrder = new int[] { 2 };
-			this.icons[ 2 ] = this.icons[ 0 ];
-			break;
-		case 2:
-			this.drawOrder = new int[] { 1, 3 };
-			this.icons[ 3 ] = this.icons[ 1 ];
-			this.icons[ 1 ] = this.icons[ 0 ];
-			break;
-		case 3:
-			this.drawOrder = new int[] { 0, 4, 2 };
-			this.icons[ 4 ] = this.icons[ 2 ];
-			this.icons[ 2 ] = this.icons[ 1 ];
-			break;
-		case 4:
-			this.drawOrder = new int[] { 0, 4, 1, 3 };
-			this.icons[ 4 ] = this.icons[ 3 ];
-			this.icons[ 3 ] = this.icons[ 2 ];
-			break;
-		default:
-			this.drawOrder = new int[] { 0, 4, 1, 3, 2 };
 		}
 	}
 
@@ -148,23 +152,33 @@ public class GroupIcon extends ShapeIcon {
 
 			g2.setTransform( t );
 
-			for( int i : this.drawOrder ) {
-				javax.swing.Icon icon = this.icons[ i ];
-				int x = (int)( xs[ i ] * width );
-				int y = (int)( ys[ i ] * height );
+			if( this.drawOrder.length > 0 ) {
+				int totalAvailableArea = width * height;
+				int totalIconArea = 0;
+				for( int i : this.drawOrder ) {
+					javax.swing.Icon icon = this.icons[ i ];
+					int iconIArea = icon.getIconWidth() * icon.getIconHeight();
+					totalIconArea += iconIArea;
+				}
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( totalAvailableArea, totalIconArea );
+				double scale = 0.5;
+				for( int i : this.drawOrder ) {
+					javax.swing.Icon icon = this.icons[ i ];
+					int x = (int)( xs[ i ] * width );
+					int y = (int)( ys[ i ] * height );
 
-				if( icon instanceof javax.swing.ImageIcon ) {
-					javax.swing.ImageIcon imageIcon = (javax.swing.ImageIcon)icon;
-					int imageWidth = imageIcon.getIconWidth();
-					int imageHeight = imageIcon.getIconHeight();
+					if( icon instanceof javax.swing.ImageIcon ) {
+						javax.swing.ImageIcon imageIcon = (javax.swing.ImageIcon)icon;
+						int imageWidth = imageIcon.getIconWidth();
+						int imageHeight = imageIcon.getIconHeight();
 
-					double scale = ( width * 0.3 ) / imageWidth;
-					int dstWidth = (int)( imageWidth * scale );
-					int dstHeight = (int)( imageHeight * scale );
+						int dstWidth = (int)( imageWidth * scale );
+						int dstHeight = (int)( imageHeight * scale );
 
-					g2.drawImage( imageIcon.getImage(), x, y, ( x + dstWidth ) - 1, ( y + (int)dstHeight ) - 1, 0, 0, imageWidth - 1, imageHeight - 1, c );
-				} else {
-					icon.paintIcon( c, g2, x, y );
+						g2.drawImage( imageIcon.getImage(), x, y, ( x + dstWidth ) - 1, ( y + (int)dstHeight ) - 1, 0, 0, imageWidth - 1, imageHeight - 1, c );
+					} else {
+						icon.paintIcon( c, g2, x, y );
+					}
 				}
 			}
 

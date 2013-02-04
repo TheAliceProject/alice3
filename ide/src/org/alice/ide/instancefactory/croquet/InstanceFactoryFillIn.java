@@ -56,11 +56,8 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn<org.al
 		}
 	}
 
-	private org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
 			InstanceFactoryFillIn.this.markDirty();
 		}
 	};
@@ -87,7 +84,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn<org.al
 		this.value = value;
 
 		if( this.value == org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) {
-			org.alice.ide.declarationseditor.TypeState.getInstance().addValueListener( this.typeListener );
+			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addMetaStateValueListener( this.typeListener );
 		}
 
 		edu.cmu.cs.dennisc.property.InstanceProperty<?>[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();

@@ -52,7 +52,7 @@ import org.lgna.project.ast.MethodInvocation;
 public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDropReceptor {
 	private static class RootStatementListPropertyPane extends org.alice.ide.x.components.StatementListPropertyView {
 		public RootStatementListPropertyPane( org.lgna.project.ast.UserCode userCode ) {
-			super( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements, true );
+			super( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), userCode.getBodyProperty().getValue().statements );
 		}
 
 		@Override
@@ -98,7 +98,7 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		this.code = code;
 		this.rootPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)code );
 		this.addCenterComponent( this.rootPane );
-		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor();
+		java.awt.Color color = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getProcedureColor();
 		this.rootPane.setBackgroundColor( color );
 		this.setBackgroundColor( color );
 	}

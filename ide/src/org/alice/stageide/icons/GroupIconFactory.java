@@ -45,10 +45,11 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class GroupIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
+public class GroupIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
 	private final java.util.List<? extends org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories;
 
 	public GroupIconFactory( java.util.List<? extends org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories ) {
+		super( IsCachingDesired.TRUE );
 		this.iconFactories = iconFactories;
 	}
 

@@ -126,7 +126,7 @@ public class IconFactoryManager {
 				return new org.lgna.croquet.icon.TrimmedImageIconFactory( url, 160, 120 );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
-				return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+				return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 			}
 		}
 	}
@@ -220,7 +220,7 @@ public class IconFactoryManager {
 					return new org.lgna.croquet.icon.ImageIconFactory( image );
 				} catch( Throwable t ) {
 					t.printStackTrace();
-					return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+					return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 				}
 			} else {
 				return null;
@@ -395,7 +395,7 @@ public class IconFactoryManager {
 				}
 			}
 		}
-		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+		return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 	}
 
 	public static org.lgna.croquet.icon.IconFactory getIconFactoryForField( org.lgna.project.ast.UserField userField ) {
@@ -421,7 +421,7 @@ public class IconFactoryManager {
 			}
 			return getIconFactoryForType( userField.getValueType() );
 		}
-		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+		return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 	}
 
 	public static org.lgna.croquet.icon.IconFactory getIconFactoryForCameraMarker( org.lgna.story.Color color ) {

@@ -55,6 +55,7 @@ public class SceneIconFactory extends org.lgna.croquet.icon.ResolutionIndependan
 	}
 
 	private SceneIconFactory() {
+		super( IsCachingDesired.TRUE );
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class SceneIconFactory extends org.lgna.croquet.icon.ResolutionIndependan
 	}
 
 	public void markAllIconsDirty() {
-		for( javax.swing.Icon icon : this.getMap().values() ) {
+		for( javax.swing.Icon icon : this.getMapValues() ) {
 			if( icon instanceof SceneIcon ) {
 				SceneIcon sceneIcon = (SceneIcon)icon;
 				sceneIcon.markDirty();

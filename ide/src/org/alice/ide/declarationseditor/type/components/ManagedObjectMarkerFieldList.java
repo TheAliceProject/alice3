@@ -52,7 +52,7 @@ import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclaratio
 public class ManagedObjectMarkerFieldList extends MarkerFieldList {
 	public ManagedObjectMarkerFieldList( org.lgna.project.ast.NamedUserType type ) {
 		super( ManagedObjectMarkerFieldState.getInstance( type ), ObjectMarkerFieldDeclarationOperation.getInstance() );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFieldColor() );
 	}
 
 	//	@Override

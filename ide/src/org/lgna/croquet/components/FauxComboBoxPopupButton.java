@@ -58,75 +58,81 @@ public class FauxComboBoxPopupButton<T> extends AbstractPopupButton<org.lgna.cro
 	private static final java.awt.Color SELECTED_HIGHTLIGHT_COLOR = SELECTED_COLOR.brighter();
 	private static final java.awt.Color SELECTED_LINE_COLOR = java.awt.Color.DARK_GRAY;
 
+	protected class JFauxComboBoxPopupButton extends JPopupButton {
+		private final int OUTER_PAD = 6;
+
+		public JFauxComboBoxPopupButton() {
+			this.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+		}
+
+		private int getArrowSize() {
+			return this.getHeight() / 4;
+		}
+
+		private int getComboPad() {
+			return this.getArrowSize() / 2;
+		}
+
+		@Override
+		public java.awt.Insets getMargin() {
+			java.awt.Insets rv = super.getMargin();
+			if( rv != null ) {
+				rv.right += this.getArrowSize();
+				rv.right += this.getComboPad();
+				rv.right += OUTER_PAD;
+				rv.right += TRAILING_PAD;
+			}
+			return rv;
+		}
+
+		@Override
+		protected void paintBorder( java.awt.Graphics g ) {
+			super.paintBorder( g );
+			final int SIZE = this.getArrowSize();
+			final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( SIZE, java.awt.Color.WHITE );
+
+			java.awt.Insets insets = this.getInsets();
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			int width = this.getWidth();
+			int height = this.getHeight();
+			int x = ( ( width - insets.right ) + OUTER_PAD ) - TRAILING_PAD;
+			if( this.getUI().getClass().getSimpleName().contains( "Synth" ) ) {
+				javax.swing.ButtonModel buttonModel = this.getModel();
+				boolean isPressedOrSelected = buttonModel.isPressed() || buttonModel.isSelected();
+				double round = 8;
+				double inset = isPressedOrSelected ? 2 : 3;
+				double offsetY = isPressedOrSelected ? 1 : 0;
+
+				java.awt.geom.RoundRectangle2D r = new java.awt.geom.RoundRectangle2D.Double( inset, inset + offsetY, width - ( inset * 2 ), ( height - ( inset * 2 ) ), round, round );
+
+				java.awt.Shape prevClip = g2.getClip();
+
+				g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, r ) );
+
+				if( isPressedOrSelected ) {
+					g2.setPaint( new java.awt.GradientPaint( width, 0, SELECTED_HIGHTLIGHT_COLOR, width, height / 6, SELECTED_COLOR ) );
+					g.fillRect( x, 0, width - x, height / 2 );
+					g2.setPaint( new java.awt.GradientPaint( width, ( 5 * height ) / 6, SELECTED_COLOR, width, height, SELECTED_HIGHTLIGHT_COLOR ) );
+					g.fillRect( x, height / 2, width - x, ( height / 2 ) );
+				} else {
+					g2.setPaint( new java.awt.GradientPaint( width, 0, TOP_COLOR, width, ( 2 * height ) / 3, BOTTOM_COLOR ) );
+					g.fillRect( x, 0, width - x, height );
+				}
+				if( isPressedOrSelected ) {
+					g2.setPaint( SELECTED_LINE_COLOR );
+				} else {
+					g2.setPaint( LINE_COLOR );
+				}
+				g2.fillRect( x, 0, 1, height );
+				g2.setClip( prevClip );
+			}
+			ARROW_ICON.paintIcon( this, g2, x + this.getComboPad(), ( height - SIZE ) / 2 );
+		}
+	}
+
 	@Override
 	protected javax.swing.AbstractButton createSwingButton() {
-		final int OUTER_PAD = 6;
-		JPopupButton rv = new JPopupButton() {
-			private int getArrowSize() {
-				return this.getHeight() / 4;
-			}
-
-			private int getComboPad() {
-				return this.getArrowSize() / 2;
-			}
-
-			@Override
-			public java.awt.Insets getMargin() {
-				java.awt.Insets rv = super.getMargin();
-				if( rv != null ) {
-					rv.right += this.getArrowSize();
-					rv.right += this.getComboPad();
-					rv.right += OUTER_PAD;
-					rv.right += TRAILING_PAD;
-				}
-				return rv;
-			}
-
-			@Override
-			protected void paintBorder( java.awt.Graphics g ) {
-				super.paintBorder( g );
-				final int SIZE = this.getArrowSize();
-				final javax.swing.Icon ARROW_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon( SIZE, java.awt.Color.WHITE );
-
-				java.awt.Insets insets = this.getInsets();
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				int width = this.getWidth();
-				int height = this.getHeight();
-				int x = ( ( width - insets.right ) + OUTER_PAD ) - TRAILING_PAD;
-				if( this.getUI().getClass().getSimpleName().contains( "Synth" ) ) {
-					javax.swing.ButtonModel buttonModel = this.getModel();
-					boolean isPressedOrSelected = buttonModel.isPressed() || buttonModel.isSelected();
-					double round = 8;
-					double inset = isPressedOrSelected ? 2 : 3;
-					double offsetY = isPressedOrSelected ? 1 : 0;
-
-					java.awt.geom.RoundRectangle2D r = new java.awt.geom.RoundRectangle2D.Double( inset, inset + offsetY, width - ( inset * 2 ), ( height - ( inset * 2 ) ), round, round );
-
-					java.awt.Shape prevClip = g2.getClip();
-
-					g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, r ) );
-
-					if( isPressedOrSelected ) {
-						g2.setPaint( new java.awt.GradientPaint( width, 0, SELECTED_HIGHTLIGHT_COLOR, width, height / 6, SELECTED_COLOR ) );
-						g.fillRect( x, 0, width - x, height / 2 );
-						g2.setPaint( new java.awt.GradientPaint( width, ( 5 * height ) / 6, SELECTED_COLOR, width, height, SELECTED_HIGHTLIGHT_COLOR ) );
-						g.fillRect( x, height / 2, width - x, ( height / 2 ) );
-					} else {
-						g2.setPaint( new java.awt.GradientPaint( width, 0, TOP_COLOR, width, ( 2 * height ) / 3, BOTTOM_COLOR ) );
-						g.fillRect( x, 0, width - x, height );
-					}
-					if( isPressedOrSelected ) {
-						g2.setPaint( SELECTED_LINE_COLOR );
-					} else {
-						g2.setPaint( LINE_COLOR );
-					}
-					g2.fillRect( x, 0, 1, height );
-					g2.setClip( prevClip );
-				}
-				ARROW_ICON.paintIcon( this, g2, x + this.getComboPad(), ( height - SIZE ) / 2 );
-			}
-		};
-		rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+		JFauxComboBoxPopupButton rv = new JFauxComboBoxPopupButton();
 		return rv;
 	}
 }

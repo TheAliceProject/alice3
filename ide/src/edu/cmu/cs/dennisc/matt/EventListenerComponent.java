@@ -83,14 +83,14 @@ public class EventListenerComponent extends BorderPanel {
 							new org.alice.ide.eventseditor.components.EventAccessorMethodsPanel( lambda )
 							);
 
-					StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements, true );
+					StatementListPropertyView putCodeHere = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), lambda.body.getValue().statements );
 					org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( putCodeHere );
 
 					BorderPanel codeContainer = new BorderPanel.Builder()
 							.pageStart( singleAbstractMethodHeader )
 							.center( bodyPane )
 							.build();
-					codeContainer.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getEventBodyColor() );
+					codeContainer.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getEventBodyColor() );
 					codeContainer.setBorder( BorderFactory.createEmptyBorder( 8, 8, 4, 4 ) );
 					this.addCenterComponent( codeContainer );
 					bottom = 8;

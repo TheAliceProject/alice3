@@ -83,7 +83,7 @@ public class SimpleExpressionFillIn<E extends org.lgna.project.ast.Expression> e
 							if( iconFactory != null ) {
 								return iconFactory.getIcon( size );
 							} else {
-								return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON.getIcon( size );
+								return org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( size );
 							}
 						}
 					}

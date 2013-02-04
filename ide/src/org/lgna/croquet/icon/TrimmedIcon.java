@@ -45,28 +45,62 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public class TrimmedIcon implements javax.swing.Icon {
-	private final javax.swing.Icon icon;
-	private final int width;
-	private final int height;
+public class TrimmedIcon extends AbstractIcon {
+	private final javax.swing.ImageIcon imageIcon;
 
-	public TrimmedIcon( javax.swing.Icon icon, int width, int height ) {
-		this.icon = icon;
-		this.width = width;
-		this.height = height;
+	public TrimmedIcon( javax.swing.ImageIcon imageIcon, java.awt.Dimension size ) {
+		super( size );
+		this.imageIcon = imageIcon;
 	}
 
-	public int getIconWidth() {
-		return this.width;
+	public javax.swing.ImageIcon getImageIcon() {
+		return this.imageIcon;
 	}
 
-	public int getIconHeight() {
-		return this.height;
-	}
+	@Override
+	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
+		java.awt.Image image = this.imageIcon.getImage();
+		int imageWidth = image.getWidth( c );
+		int imageHeight = image.getHeight( c );
 
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		//		g.setColor( java.awt.Color.RED );
-		//		g.fillRect( x, y, this.getIconWidth(), this.getIconHeight() );
-		this.icon.paintIcon( c, g, x, y );
+		int width = this.getIconWidth();
+		int height = this.getIconHeight();
+
+		java.awt.geom.AffineTransform t = g2.getTransform();
+
+		//todo
+		int dx;
+		int dy;
+		if( ( height != imageHeight ) && ( width != imageWidth ) ) {
+			double factorX = width / (double)imageWidth;
+			double factorY = height / (double)imageHeight;
+			double factor;
+
+			//todo: handle icons larger than image
+			if( factorX > factorY ) {
+				factor = factorY;
+				dx = (int)( ( ( width / factor ) - imageWidth ) / 2 );
+				dy = 0;
+			} else {
+				factor = factorX;
+				dx = 0;
+				dy = (int)( ( ( height / factor ) - imageHeight ) / 2 );
+			}
+			g2.scale( factor, factor );
+		} else {
+			dx = ( width - imageWidth ) / 2;
+			dy = ( height - imageHeight ) / 2;
+			final boolean DEBUG = false;
+			if( DEBUG ) {
+				g2.setPaint( java.awt.Color.RED );
+				g2.fillRect( 0, 0, this.getIconWidth(), this.getIconHeight() );
+				g2.setPaint( java.awt.Color.GREEN );
+				g2.fillRect( dx, dy, this.imageIcon.getIconWidth(), this.imageIcon.getIconHeight() );
+			}
+		}
+
+		g2.translate( dx, dy );
+		g2.drawImage( image, 0, 0, imageWidth, imageHeight, c );
+		g2.setTransform( t );
 	}
 }

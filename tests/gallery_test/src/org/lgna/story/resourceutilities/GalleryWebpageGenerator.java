@@ -314,7 +314,7 @@ public class GalleryWebpageGenerator {
 		Class<?> modelResource = node.getResourceClass();
 		String resourceName = node.getJavaField() != null ? node.getJavaField().getName() : null;
 		String name = getHTMLName(node);
-		String[] tags = org.lgna.story.implementation.alice.AliceResourceUtilties.getTags(modelResource, resourceName);
+		String[] tags = org.lgna.story.implementation.alice.AliceResourceUtilties.getTags(modelResource, resourceName, null);
 		String tagString = "";
 		for (String s : tags) {
 			if (tagString.length() > 0) {
@@ -429,7 +429,7 @@ public class GalleryWebpageGenerator {
 	
 	public static void buildGalleryWebpage(String webpageDir) {
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
-		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS.getUri() );
+		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( new org.alice.ide.uricontent.BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS ) );
 		ModelResourceTreeNode galleryTree = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryTree();
 		createHTMLTree(galleryTree, webpageDir);
 	}

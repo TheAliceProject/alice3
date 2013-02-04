@@ -56,7 +56,7 @@ public class ThemeIcon extends org.lgna.croquet.icon.AbstractIcon {
 	@Override
 	protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2 ) {
 		if( this.icon != null ) {
-			this.icon.paintIcon( c, g2, 0, 0 );
+			g2.drawImage( this.icon.getImage(), 0, 0, this.getIconWidth(), this.getIconHeight(), c );
 		} else {
 			g2.setColor( java.awt.Color.RED );
 			g2.fillRect( 0, 0, this.getIconWidth(), this.getIconHeight() );

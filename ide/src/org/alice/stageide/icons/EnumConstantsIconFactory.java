@@ -46,10 +46,11 @@ package org.alice.stageide.icons;
  * @author Dennis Cosgrove
  */
 @Deprecated
-public class EnumConstantsIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
+public class EnumConstantsIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
 	private final java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories;
 
 	public EnumConstantsIconFactory( java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories ) {
+		super( IsCachingDesired.TRUE );
 		this.iconFactories = iconFactories;
 	}
 

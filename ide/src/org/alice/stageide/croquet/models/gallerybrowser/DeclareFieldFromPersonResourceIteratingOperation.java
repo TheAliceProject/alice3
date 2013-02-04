@@ -46,7 +46,7 @@ package org.alice.stageide.croquet.models.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.croquet.IteratingOperation {
+public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
 	private static class SingletonHolder {
 		private static DeclareFieldFromPersonResourceIteratingOperation instance = new DeclareFieldFromPersonResourceIteratingOperation();
 	}

@@ -164,8 +164,9 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	};
 
 	@Override
-	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		rv.addMenu( this.createMenu() );
+	public org.lgna.croquet.components.Menu createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+		org.lgna.croquet.components.Menu rv = this.createMenu();
+		menuItemContainer.addMenu( rv );
 		return rv;
 	}
 

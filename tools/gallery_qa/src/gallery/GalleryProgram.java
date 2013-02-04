@@ -46,29 +46,26 @@ package gallery;
 import java.lang.reflect.Field;
 import java.util.logging.Level;
 
-import org.alice.ide.croquet.models.gallerybrowser.ArgumentTypeGalleryNode;
-import org.alice.ide.croquet.models.gallerybrowser.FieldGalleryNode;
-import org.alice.ide.croquet.models.gallerybrowser.GalleryNode;
-import org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState;
+import org.alice.stageide.modelresource.ResourceNode;
 import org.lgna.croquet.State;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.JavaField;
 import org.lgna.project.ast.JavaType;
-import org.lgna.story.Biped;
-import org.lgna.story.Camera;
-import org.lgna.story.Flyer;
+import org.lgna.story.SBiped;
+import org.lgna.story.SCamera;
+import org.lgna.story.SFlyer;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.Joint;
-import org.lgna.story.JointedModel;
-import org.lgna.story.Model;
-import org.lgna.story.Program;
-import org.lgna.story.Prop;
-import org.lgna.story.Quadruped;
-import org.lgna.story.Swimmer;
+import org.lgna.story.SJoint;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SModel;
+import org.lgna.story.SProgram;
+import org.lgna.story.SProp;
+import org.lgna.story.SQuadruped;
+import org.lgna.story.SSwimmer;
 import org.lgna.story.Turn;
 import org.lgna.story.TurnDirection;
-import org.lgna.story.Vehicle;
+import org.lgna.story.SVehicle;
 import org.lgna.story.resources.BasicResource;
 import org.lgna.story.resources.BipedResource;
 import org.lgna.story.resources.FlyerResource;
@@ -90,81 +87,88 @@ import edu.cmu.cs.dennisc.java.util.logging.Logger;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryProgram extends Program {
-	private final Camera camera = new Camera();
+public class GalleryProgram extends SProgram {
+	private final SCamera camera = new SCamera();
 	private final GalleryScene scene = new GalleryScene( camera );
 	private final edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	private final edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter modelManipulationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.ModelManipulationDragAdapter();
 
-	private final Biped ogre = new Biped( org.lgna.story.resources.biped.Ogre.BROWN_OGRE );
-	private final State.ValueListener<GalleryNode> galleryListener = new State.ValueListener<GalleryNode>() {
-		public void changing(State<GalleryNode> state, GalleryNode prevValue,
-				GalleryNode nextValue, boolean isAdjusting) {
+	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
+	private final State.ValueListener<ResourceNode> galleryListener = new State.ValueListener<ResourceNode>() {
+		public void changing(State<ResourceNode> state, ResourceNode prevValue, ResourceNode nextValue, boolean isAdjusting) {
 		}
-		public void changed(State<GalleryNode> state, GalleryNode prevValue,
-				GalleryNode nextValue, boolean isAdjusting) {
-			JointedModel model;
-			if (nextValue instanceof FieldGalleryNode) {
-				FieldGalleryNode fieldGalleryNode = (FieldGalleryNode) nextValue;
-				AbstractField field = fieldGalleryNode.getDeclaration();
-				if (field instanceof JavaField) {
-					JavaField javaField = (JavaField) field;
-					Field fld = javaField.getFieldReflectionProxy().getReification();
-					try {
-						Object constant = fld.get( null );
-						if (constant instanceof BasicResource) {
-							BasicResource basicResource = (BasicResource) constant;
-							if (basicResource instanceof PropResource) {
-								PropResource propResource = (PropResource) basicResource;
-								model = new Prop( propResource );
-							}else{
+		
+		private SJointedModel createJointedModelFromModelResource( org.lgna.story.resources.ModelResource constant ) { 
+			if (constant instanceof BasicResource) {
+				BasicResource basicResource = (BasicResource) constant;
+				if (basicResource instanceof PropResource) {
+					PropResource propResource = (PropResource) basicResource;
+					return new SProp( propResource );
+				}else{
+					return null;
+				}
+			}else if (constant instanceof BipedResource) {
+				BipedResource bipedResource = (BipedResource) constant;
+				return new SBiped( bipedResource );
+			} else if (constant instanceof FlyerResource) {
+				FlyerResource flyerResource = (FlyerResource) constant;
+				return new SFlyer( flyerResource );
+			} else if (constant instanceof QuadrupedResource) {
+				QuadrupedResource quadrupedResource = (QuadrupedResource) constant;
+				return new SQuadruped( quadrupedResource );
+			} else if (constant instanceof SwimmerResource) {
+				SwimmerResource swimmerResource = (SwimmerResource) constant;
+				return new SSwimmer( swimmerResource );
+			} else if (constant instanceof VehicleResource) {
+				VehicleResource vehicleResource = (VehicleResource) constant;
+				return new SVehicle( vehicleResource );
+			} else {
+				return null;
+			}
+			
+		}
+		public void changed(State<ResourceNode> state, ResourceNode prevValue, ResourceNode nextValue, boolean isAdjusting) {
+			SJointedModel model;
+			org.alice.stageide.modelresource.ResourceKey resourceKey = nextValue.getResourceKey();
+			if( resourceKey.isLeaf() ) {
+				if (resourceKey instanceof org.alice.stageide.modelresource.EnumConstantResourceKey) {
+					org.alice.stageide.modelresource.EnumConstantResourceKey fieldResourceNode = (org.alice.stageide.modelresource.EnumConstantResourceKey)resourceKey;
+					AbstractField field = fieldResourceNode.getField();
+					if (field instanceof JavaField) {
+						JavaField javaField = (JavaField) field;
+						Field fld = javaField.getFieldReflectionProxy().getReification();
+						try {
+							Object constant = fld.get( null );
+							if (constant instanceof org.lgna.story.resources.ModelResource) {
+								org.lgna.story.resources.ModelResource modelResource = (org.lgna.story.resources.ModelResource) constant;
+								model = this.createJointedModelFromModelResource( modelResource );
+							} else {
 								model = null;
 							}
-						}else if (constant instanceof BipedResource) {
-							BipedResource bipedResource = (BipedResource) constant;
-							model = new Biped( bipedResource );
-						} else if (constant instanceof FlyerResource) {
-							FlyerResource flyerResource = (FlyerResource) constant;
-							model = new Flyer( flyerResource );
-						} else if (constant instanceof QuadrupedResource) {
-							QuadrupedResource quadrupedResource = (QuadrupedResource) constant;
-							model = new Quadruped( quadrupedResource );
-						} else if (constant instanceof SwimmerResource) {
-							SwimmerResource swimmerResource = (SwimmerResource) constant;
-							model = new Swimmer( swimmerResource );
-						} else if (constant instanceof VehicleResource) {
-							VehicleResource vehicleResource = (VehicleResource) constant;
-							model = new Vehicle( vehicleResource );
-						} else {
-							model = null;
+						} catch (IllegalArgumentException e) {
+							throw new RuntimeException( e );
+						} catch (IllegalAccessException e) {
+							throw new RuntimeException( e );
 						}
-					} catch (IllegalArgumentException e) {
-						throw new RuntimeException( e );
-					} catch (IllegalAccessException e) {
-						throw new RuntimeException( e );
-					}
-				} else {
-					model = null;
-				}
-			} else if( nextValue instanceof ArgumentTypeGalleryNode) {
-				ArgumentTypeGalleryNode argumentTypeGalleryNode = (ArgumentTypeGalleryNode) nextValue;
-				AbstractType<?,?,?> type = argumentTypeGalleryNode.getDeclaration();
-				if (type instanceof JavaType) {
-					JavaType javaType = (JavaType) type;
-					if( javaType.isAssignableTo( PersonResource.class ) ) {
-						LifeStage lifeStage = LifeStage.ADULT;
-						Gender gender = Gender.getRandom();
-						model = new Biped( new AdultPersonResource(
-								gender, 
-								BaseSkinTone.getRandom(), 
-								BaseEyeColor.getRandom(), 
-								HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender),
-								0.5,
-								FullBodyOutfitManager.getSingleton().getRandomEnumConstant(lifeStage, gender)
-						) );
 					} else {
 						model = null;
 					}
+				} else if( resourceKey instanceof org.alice.stageide.modelresource.ClassResourceKey) {
+					org.alice.stageide.modelresource.ClassResourceKey classResourceKey = (org.alice.stageide.modelresource.ClassResourceKey)resourceKey;
+					org.lgna.story.resources.ModelResource constant = classResourceKey.getModelResourceCls().getEnumConstants()[ 0 ];
+					model = this.createJointedModelFromModelResource( constant );
+				} else if( resourceKey instanceof org.alice.stageide.modelresource.PersonResourceKey) {
+					org.alice.stageide.modelresource.PersonResourceKey personResourceKey = (org.alice.stageide.modelresource.PersonResourceKey)resourceKey;
+					LifeStage lifeStage = LifeStage.ADULT;
+					Gender gender = Gender.getRandom();
+					model = new SBiped( new AdultPersonResource(
+							gender, 
+							BaseSkinTone.getRandom(), 
+							BaseEyeColor.getRandom(), 
+							HairManager.getSingleton().getRandomEnumConstant(lifeStage, gender),
+							0.5,
+							FullBodyOutfitManager.getSingleton().getRandomEnumConstant(lifeStage, gender)
+					) );
 				} else {
 					model = null;
 				}
@@ -176,29 +180,29 @@ public class GalleryProgram extends Program {
 		}
 	};
 	private void animate() {
-		Model model = scene.getModel();
-		if (model instanceof Biped) {
-			Biped biped = (Biped) model;
+		SModel model = scene.getModel();
+		if (model instanceof SBiped) {
+			SBiped biped = (SBiped) model;
 			warmUp(biped);
-		} else if (model instanceof Quadruped) {
-			Quadruped quadruped = (Quadruped) model;
+		} else if (model instanceof SQuadruped) {
+			SQuadruped quadruped = (SQuadruped) model;
 			warmUp(quadruped);
-		} else if (model instanceof Flyer) {
-			Flyer flyer = (Flyer) model;
+		} else if (model instanceof SFlyer) {
+			SFlyer flyer = (SFlyer) model;
 			warmUp(flyer);
 		}
 	}
 	
-	private void warmUp(Flyer flyer) {
-		final Joint rightKnee = flyer.getRightKnee();
-		final Joint rightHip = flyer.getRightHip();
-		final Joint leftKnee = flyer.getLeftKnee();
-		final Joint leftHip = flyer.getLeftHip();
-		final Joint rightShoulder = flyer.getRightShoulder();
-		final Joint rightElbow = flyer.getRightElbow();
-		final Joint leftShoulder = flyer.getLeftShoulder();
-		final Joint leftElbow = flyer.getLeftElbow();
-		final Joint head = flyer.getHead();
+	private void warmUp(SFlyer flyer) {
+		final SJoint rightKnee = flyer.getRightKnee();
+		final SJoint rightHip = flyer.getRightHip();
+		final SJoint leftKnee = flyer.getLeftKnee();
+		final SJoint leftHip = flyer.getLeftHip();
+		final SJoint rightShoulder = flyer.getRightWingShoulder();
+		final SJoint rightElbow = flyer.getRightWingElbow();
+		final SJoint leftShoulder = flyer.getLeftWingShoulder();
+		final SJoint leftElbow = flyer.getLeftWingElbow();
+		final SJoint head = flyer.getHead();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
 				head.turn( TurnDirection.FORWARD, .12, Turn.duration(0.5) );
@@ -246,17 +250,17 @@ public class GalleryProgram extends Program {
 		
 	}
 
-	private void warmUp(Quadruped quadruped) {
-		final Joint rightHip = quadruped.getBackRightHip();
-		final Joint leftHip = quadruped.getBackLeftHip();
-		final Joint leftKnee = quadruped.getBackLeftKnee();
-		final Joint rightKnee = quadruped.getBackRightKnee();
-		final Joint rightShoulder = quadruped.getFrontRightShoulder();
-		final Joint leftShoulder = quadruped.getFrontLeftShoulder();
-		final Joint leftElbow = quadruped.getFrontLeftKnee();
-		final Joint rightElbow = quadruped.getFrontRightKnee();
-		final Joint neck = quadruped.getNeck();
-		final Joint head = quadruped.getHead();
+	private void warmUp(SQuadruped quadruped) {
+		final SJoint rightHip = quadruped.getBackRightHip();
+		final SJoint leftHip = quadruped.getBackLeftHip();
+		final SJoint leftKnee = quadruped.getBackLeftKnee();
+		final SJoint rightKnee = quadruped.getBackRightKnee();
+		final SJoint rightShoulder = quadruped.getFrontRightShoulder();
+		final SJoint leftShoulder = quadruped.getFrontLeftShoulder();
+		final SJoint leftElbow = quadruped.getFrontLeftKnee();
+		final SJoint rightElbow = quadruped.getFrontRightKnee();
+		final SJoint neck = quadruped.getNeck();
+		final SJoint head = quadruped.getHead();
 		new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
 				neck.turn( TurnDirection.FORWARD, 0.25 );
@@ -301,16 +305,16 @@ public class GalleryProgram extends Program {
 		}, "leftBack" ).start();
 	}
 
-	private void warmUp(Biped biped) {
-		final Joint leftShoulder = biped.getLeftShoulder();
-		final Joint rightShoulder = biped.getRightShoulder();
-		final Joint rightElbow = biped.getRightElbow();
-		final Joint leftElbow = biped.getLeftElbow();
-		final Joint rightHip = biped.getRightHip();
-		final Joint leftHip = biped.getLeftHip();
-		final Joint rightKnee = biped.getRightKnee();
-		final Joint head = biped.getHead();
-		final Joint leftKnee = biped.getLeftKnee();new org.lgna.common.ComponentThread( new Runnable() {
+	private void warmUp(SBiped biped) {
+		final SJoint leftShoulder = biped.getLeftShoulder();
+		final SJoint rightShoulder = biped.getRightShoulder();
+		final SJoint rightElbow = biped.getRightElbow();
+		final SJoint leftElbow = biped.getLeftElbow();
+		final SJoint rightHip = biped.getRightHip();
+		final SJoint leftHip = biped.getLeftHip();
+		final SJoint rightKnee = biped.getRightKnee();
+		final SJoint head = biped.getHead();
+		final SJoint leftKnee = biped.getLeftKnee();new org.lgna.common.ComponentThread( new Runnable() {
 			public void run() {
 				head.turn( TurnDirection.FORWARD, .12, Turn.duration(0.5) );
 				head.turn( TurnDirection.BACKWARD, .12, Turn.duration(0.5) );
@@ -371,13 +375,14 @@ public class GalleryProgram extends Program {
 		this.cameraNavigationDragAdapter.requestTarget( new edu.cmu.cs.dennisc.math.Point3( 0.0, 1.0, 0.0 ) );
 		this.cameraNavigationDragAdapter.requestDistance( 8.0 );
 		
-		GalleryResourceTreeSelectionState.getInstance().addValueListener( this.galleryListener );
+		org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance().addValueListener( this.galleryListener );
 		
 		Logger.todo( "remove ogre" );
 		this.scene.setModel( this.ogre );
 	}
 	public static void main( String[] args ) {
 		Logger.setLevel( Level.WARNING );
+		ResourceNode.ACCEPTABLE_HACK_FOR_GALLERY_QA_setLeftClickModelAlwaysNull(true);
 		GalleryApplication app = new GalleryApplication();
 		app.initialize( args );
 		app.getFrame().setMainComposite( new gallery.croquet.GallerySplitComposite() );
@@ -388,5 +393,8 @@ public class GalleryProgram extends Program {
 
 		app.getFrame().setSize( 1200, 800 );
 		app.getFrame().setVisible( true );
+		
+		org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState treeState = org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance();
+		treeState.setValueTransactionlessly( treeState.getChildren( treeState.getTreeModel().getRoot() ).get( 0 ) );
 	}
 }

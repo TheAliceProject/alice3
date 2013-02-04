@@ -52,6 +52,6 @@ public class CurrentThisExpression extends IdeExpression {
 
 	@Override
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getType() {
-		return org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
+		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
 	}
 }

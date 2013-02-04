@@ -62,7 +62,7 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 
 		org.lgna.project.ast.BlockStatement body = userCode.getBodyProperty().getValue();
 
-		this.rootStatementListPropertyPane = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), body.statements, true );
+		this.rootStatementListPropertyPane = new StatementListPropertyView( org.alice.ide.x.ProjectEditorAstI18nFactory.getInstance(), body.statements, 32 );
 
 		org.lgna.croquet.components.JComponent<?> statementListComponent = null;
 		if( body instanceof org.lgna.project.ast.ConstructorBlockStatement ) {
@@ -144,9 +144,8 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		}
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		java.awt.Color color = ide.getTheme().getCodeColor( this.code );
-		color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
+		java.awt.Color color = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getCodeColor( this.code );
+		//color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0f, 1.1f, 1.1f );
 		this.setBackgroundColor( color );
 
 		this.handleAstChangeThatCouldBeOfInterest();
@@ -240,7 +239,6 @@ public class CodeEditor extends org.alice.ide.codedrop.CodePanelWithDropReceptor
 		} else {
 			rv = new javax.swing.JPanel();
 		}
-		rv.setLayout( new java.awt.BorderLayout() );
 		return rv;
 	}
 

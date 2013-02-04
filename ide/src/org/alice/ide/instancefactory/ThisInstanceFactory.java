@@ -77,12 +77,12 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 	}
 
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getValueType() {
-		return org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
+		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
 	}
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return org.alice.ide.ast.icons.ThisInstanceIconFactory.SINGLETON;
+		return org.alice.ide.ast.icons.ThisInstanceIconFactory.getInstance();
 	}
 
 	public String getRepr() {

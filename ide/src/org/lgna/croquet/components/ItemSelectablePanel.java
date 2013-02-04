@@ -125,6 +125,9 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 
 	protected abstract void addItem( E item, BooleanStateButton<?> button );
 
+	protected void addSeparator() {
+	}
+
 	protected abstract void addEpilogue();
 
 	private void handleListDataChanged() {
@@ -156,14 +159,18 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 					this.addPrologue( N );
 					for( int i = 0; i < N; i++ ) {
 						E item = data.getItemAt( i );
-						BooleanStateButton<?> button = this.mapItemToButton.get( item );
-						if( button != null ) {
-							//pass
+						if( item != null ) {
+							BooleanStateButton<?> button = this.mapItemToButton.get( item );
+							if( button != null ) {
+								//pass
+							} else {
+								button = this.createButtonForItemSelectedState( item, this.getModel().getItemSelectedState( item ) );
+								this.mapItemToButton.put( item, button );
+							}
+							this.addItem( item, button );
 						} else {
-							button = this.createButtonForItemSelectedState( item, this.getModel().getItemSelectedState( item ) );
-							this.mapItemToButton.put( item, button );
+							this.addSeparator();
 						}
-						this.addItem( item, button );
 					}
 					this.addEpilogue();
 				}
