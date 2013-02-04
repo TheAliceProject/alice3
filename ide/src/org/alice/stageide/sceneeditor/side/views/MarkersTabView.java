@@ -46,7 +46,7 @@ package org.alice.stageide.sceneeditor.side.views;
  * @author Dennis Cosgrove
  */
 public class MarkersTabView extends org.lgna.croquet.components.MigPanel {
-	public MarkersTabView( org.alice.stageide.sceneeditor.side.MarkersTab<?> composite, org.lgna.croquet.components.JComponent<?> mainComponent ) {
+	public MarkersTabView( org.alice.stageide.sceneeditor.side.MarkersTab<?> composite ) {
 		super( composite );
 		this.addComponent( composite.getMarkerListState().createList(), "wrap, growx" );
 		this.addComponent( composite.getAddOperation().createButton(), "wrap" );

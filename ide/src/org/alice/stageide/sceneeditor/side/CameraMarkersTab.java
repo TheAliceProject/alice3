@@ -46,24 +46,8 @@ package org.alice.stageide.sceneeditor.side;
  * @author Dennis Cosgrove
  */
 public class CameraMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> {
-	private CameraMarkersListDataComposite listDataComposite;
-
 	public CameraMarkersTab() {
 		super( java.util.UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ), new CameraMarkerFieldData() );
-	}
-
-	public CameraMarkersListDataComposite getListDataComposite() {
-
-		//todo: remove this hack
-		if( this.listDataComposite != null ) {
-			//pass
-		} else {
-			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo: need to account for loading a new project", this, sceneType );
-			org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData fieldData = new org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData( sceneType );
-			this.listDataComposite = new CameraMarkersListDataComposite( fieldData );
-		}
-		return this.listDataComposite;
 	}
 
 	@Override

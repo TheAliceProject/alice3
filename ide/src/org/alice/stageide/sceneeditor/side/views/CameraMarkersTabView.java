@@ -47,6 +47,6 @@ package org.alice.stageide.sceneeditor.side.views;
  */
 public class CameraMarkersTabView extends MarkersTabView {
 	public CameraMarkersTabView( org.alice.stageide.sceneeditor.side.CameraMarkersTab composite ) {
-		super( composite, new CameraMarkersListDataView( composite.getListDataComposite() ) );
+		super( composite );
 	}
 }

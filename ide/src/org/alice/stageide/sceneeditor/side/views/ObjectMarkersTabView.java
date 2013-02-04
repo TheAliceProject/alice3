@@ -47,6 +47,6 @@ package org.alice.stageide.sceneeditor.side.views;
  */
 public class ObjectMarkersTabView extends MarkersTabView {
 	public ObjectMarkersTabView( org.alice.stageide.sceneeditor.side.ObjectMarkersTab composite ) {
-		super( composite, new org.lgna.croquet.components.Label( "todo" ) );
+		super( composite );
 	}
 }
