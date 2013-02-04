@@ -48,12 +48,10 @@ import org.alice.stageide.sceneeditor.HandleStyle;
  * @author Dennis Cosgrove
  */
 public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.sceneeditor.side.views.SideView> {
-	private static class SingletonHolder {
-		private static SideComposite instance = new SideComposite();
-	}
-
+	//todo
+	@Deprecated
 	public static SideComposite getInstance() {
-		return SingletonHolder.instance;
+		return (SideComposite)org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance().getSceneLayoutComposite().getTrailingComposite();
 	}
 
 	private final SnapDetailsToolPaletteCoreComposite snapDetailsToolPaletteCoreComposite = new SnapDetailsToolPaletteCoreComposite();
@@ -68,7 +66,7 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 
 	private final org.lgna.croquet.BooleanState areJointsShowingState = this.createBooleanState( this.createKey( "areJointsShowingState" ), false );
 
-	private SideComposite() {
+	public SideComposite() {
 		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
 	}
 

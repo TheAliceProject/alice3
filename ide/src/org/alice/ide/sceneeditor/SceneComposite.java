@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives.scenesetup;
+package org.alice.ide.sceneeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class SceneLayoutComposite extends org.lgna.croquet.SplitComposite {
-	public SceneLayoutComposite() {
-		super( java.util.UUID.fromString( "c1bb78a0-814c-4658-93b5-2a00c058b756" ), new org.alice.ide.sceneeditor.SceneComposite(), new org.alice.stageide.sceneeditor.side.SideComposite() );
+public final class SceneComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.BorderPanel> {
+	public SceneComposite() {
+		super( java.util.UUID.fromString( "b334790e-d706-456b-b519-8fc3f585c098" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.SplitPane createView() {
-		org.lgna.croquet.components.SplitPane rv = this.createHorizontalSplitPane();
-		rv.setResizeWeight( 1.0 );
-		return rv;
+	protected org.lgna.croquet.components.BorderPanel createView() {
+		return new org.lgna.croquet.components.BorderPanel( this );
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.getView().addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		this.getView().removeAllComponents();
+		super.handlePostDeactivation();
 	}
 }

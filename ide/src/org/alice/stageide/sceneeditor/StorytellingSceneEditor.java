@@ -301,9 +301,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private boolean isInitialized = false;
 
 	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private javax.swing.JSplitPane propertiesSplitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
@@ -560,27 +558,23 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	private void showLookingGlassPanel()
 	{
-		this.addCenterComponent( this.mainPanel );
+		this.addCenterComponent( this.lookingGlassPanel );
 	}
 
 	private void hideLookingGlassPanel()
 	{
-		this.removeComponent( this.mainPanel );
+		this.removeComponent( this.lookingGlassPanel );
 	}
 
 	@Override
 	protected void handleExpandContractChange( boolean isExpanded ) {
 		//todo
 		synchronized( this.getTreeLock() ) {
-			this.mainPanel.removeAllComponents();
 			this.mainCameraNavigatorWidget.setExpanded( isExpanded );
 			this.lookingGlassPanel.setNorthEastComponent( this.runButton );
 			if( isExpanded )
 			{
 				this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
-				this.propertiesSplitPane.setLeftComponent( this.lookingGlassPanel.getAwtComponent() );
-				this.propertiesSplitPane.setRightComponent( SideComposite.getInstance().getView().getAwtComponent() );
-				this.mainPanel.getAwtComponent().add( this.propertiesSplitPane, java.awt.BorderLayout.CENTER );
 				this.lookingGlassPanel.setSouthEastComponent( this.contractButton );
 
 				this.lookingGlassPanel.setSouthComponent( this.mainCameraNavigatorWidget );
@@ -591,7 +585,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			}
 			else
 			{
-				this.mainPanel.addCenterComponent( this.lookingGlassPanel );
 				this.lookingGlassPanel.setNorthWestComponent( null );
 				this.lookingGlassPanel.setSouthEastComponent( this.expandButton );
 				this.lookingGlassPanel.setSouthComponent( null );
@@ -761,9 +754,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.contractButton.setClobberIcon( CONTRACT_ICON );
 			this.contractButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
-
-			this.propertiesSplitPane.setResizeWeight( 1.0 );
-			this.propertiesSplitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 1, 0 ) );
 
 			this.orthographicCameraImp = new OrthographicCameraImp();
 			this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue( .01d );
