@@ -46,64 +46,13 @@ package edu.cmu.cs.dennisc.video;
  * @author Dennis Cosgrove
  */
 public class VlcVideoPlayer implements VideoPlayer {
-	private static boolean isInitializationAttempted = false;
-	private static boolean isInitialized = false;
+	private java.awt.Component embeddedMediaPlayerComponent;
 
-	private static void initializeIfNecessary() {
-		if( isInitializationAttempted ) {
-			//pass
-		} else {
-			isInitializationAttempted = true;
-			com.sun.jna.NativeLibrary.addSearchPath( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), "c:/Program Files/VideoLAN/VLC/" );
-			com.sun.jna.Native.loadLibrary( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), uk.co.caprica.vlcj.binding.LibVlc.class );
-			isInitialized = true;
-		}
-	}
-
-	private uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent embeddedMediaPlayerComponent;
-
-	private uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent getEmbeddedMediaPlayerComponent() {
+	private java.awt.Component getEmbeddedMediaPlayerComponent() {
 		if( this.embeddedMediaPlayerComponent != null ) {
 			//pass
 		} else {
-			initializeIfNecessary();
-			this.embeddedMediaPlayerComponent = new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
-				@Override
-				public void error( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.error( mediaPlayer );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( mediaPlayer );
-				}
-
-				@Override
-				public void newMedia( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.newMedia( mediaPlayer );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "newMedia", mediaPlayer );
-				}
-
-				@Override
-				public void playing( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.playing( mediaPlayer );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "playing", mediaPlayer );
-				}
-
-				@Override
-				public void finished( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.finished( mediaPlayer );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "finished", mediaPlayer );
-				}
-
-				@Override
-				public void positionChanged( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer, float newPosition ) {
-					super.positionChanged( mediaPlayer, newPosition );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "positionChanged", mediaPlayer, newPosition );
-				}
-
-				@Override
-				public void stopped( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.stopped( mediaPlayer );
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "stopped", mediaPlayer );
-				}
-			};
+			this.embeddedMediaPlayerComponent = edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.createEmbeddedMediaPlayerComponent();
 			this.embeddedMediaPlayerComponent.setPreferredSize( new java.awt.Dimension( 320, 180 ) );
 			this.embeddedMediaPlayerComponent.setBackground( java.awt.Color.RED );
 		}
@@ -117,11 +66,6 @@ public class VlcVideoPlayer implements VideoPlayer {
 	public void playMedia( java.io.File file ) {
 		final String path = file.getAbsolutePath();
 		assert file.exists() : file;
-		//		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( path );
-		//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-		//			public void run() {
-		getEmbeddedMediaPlayerComponent().getMediaPlayer().playMedia( path );
-		//			}
-		//		} );
+		edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.playMedia( this.getEmbeddedMediaPlayerComponent(), path );
 	}
 }
