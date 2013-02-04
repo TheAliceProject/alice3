@@ -45,13 +45,29 @@ package org.alice.stageide.sceneeditor.side.views;
 /**
  * @author Dennis Cosgrove
  */
-public class MarkersTabView extends org.lgna.croquet.components.MigPanel {
+public abstract class MarkersTabView extends org.lgna.croquet.components.BorderPanel {
+	private class MarkerListView extends org.lgna.croquet.components.DefaultRadioButtons<org.lgna.project.ast.UserField> {
+		public MarkerListView( org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> model ) {
+			super( model, true );
+		}
+
+		@Override
+		protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState itemSelectedState ) {
+			itemSelectedState.setIconForBothTrueAndFalse( org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getIconForMarkerField( item ) );
+			org.lgna.croquet.components.BooleanStateButton<?> rv = new org.lgna.croquet.components.PushButton( itemSelectedState );
+			rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+			return rv;
+		}
+	}
+
 	public MarkersTabView( org.alice.stageide.sceneeditor.side.MarkersTab<?> composite ) {
 		super( composite );
-		this.addComponent( composite.getMoveToMarkerOperation().createButton() );
-		this.addComponent( composite.getMoveMarkerToOperation().createButton(), "wrap" );
-		this.addComponent( composite.getMarkerListState().createList(), "wrap, growx" );
-		this.addComponent( composite.getAddOperation().createButton(), "wrap" );
+		this.addPageStartComponent( new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.LEADING,
+				composite.getMoveToMarkerOperation().createButton(),
+				composite.getMoveMarkerToOperation().createButton() ) );
+		this.addCenterComponent( new MarkerListView( composite.getMarkerListState() ) );
+		this.addPageEndComponent( new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.LEADING,
+				composite.getAddOperation().createButton() ) );
 		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
 	}
 }
