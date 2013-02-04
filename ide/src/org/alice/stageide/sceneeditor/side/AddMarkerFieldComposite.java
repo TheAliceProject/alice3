@@ -42,6 +42,11 @@
  */
 package org.alice.stageide.sceneeditor.side;
 
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
+import org.lgna.story.ImplementationAccessor;
+
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -69,4 +74,39 @@ public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declarat
 		}
 		super.handlePreShowDialog( step );
 	}
+
+	protected abstract AffineMatrix4x4 getInitialMarkerTransform();
+
+	private static org.lgna.project.ast.JavaMethod COLOR_ID_SETTER = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SMarker.class, "setColorId", org.lgna.story.Color.class );
+
+	@Override
+	protected org.alice.ide.ast.declaration.AddManagedFieldComposite.EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.alice.ide.ast.declaration.AddManagedFieldComposite.EditCustomization rv ) {
+		super.customize( step, declaringType, field, rv );
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialMarkerTransform = this.getInitialMarkerTransform();
+		rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetterStatement(
+				false, field,
+				COLOR_ID_SETTER,
+				this.colorIdState.getValue()
+				) );
+		try {
+			org.lgna.project.ast.Statement orientationStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createOrientationStatement(
+					false, field,
+					ImplementationAccessor.createOrientation( initialMarkerTransform.orientation )
+					);
+			rv.addDoStatement( orientationStatement );
+		} catch( CannotCreateExpressionException ccee ) {
+			ccee.printStackTrace();
+		}
+		try {
+			org.lgna.project.ast.Statement positionStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement(
+					false, field,
+					ImplementationAccessor.createPosition( initialMarkerTransform.translation )
+					);
+			rv.addDoStatement( positionStatement );
+		} catch( CannotCreateExpressionException ccee ) {
+			ccee.printStackTrace();
+		}
+		return rv;
+	}
+
 }
