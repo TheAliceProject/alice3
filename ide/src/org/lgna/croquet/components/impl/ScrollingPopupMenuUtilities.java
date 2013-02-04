@@ -73,6 +73,10 @@ public class ScrollingPopupMenuUtilities {
 		jPopupMenu.add( new JScrollMenuItem( layout, ScrollDirection.DOWN ), ScrollingPopupMenuLayout.ScrollConstraint.PAGE_END );
 	}
 
+	public static void addSideMenu( javax.swing.JPopupMenu jPopupMenu, javax.swing.JMenu jSideMenu ) {
+		jPopupMenu.add( jSideMenu, ScrollingPopupMenuLayout.ColumnConstraint.SIDE );
+	}
+
 	public static void removeAllNonScrollComponents( javax.swing.JPopupMenu jPopupMenu ) {
 		for( java.awt.Component component : jPopupMenu.getComponents() ) {
 			if( component instanceof JScrollMenuItem ) {

@@ -189,6 +189,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 							}
 						} else {
 							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rtItem2 );
+							assert false : menuItem2;
 						}
 					} else {
 						parent.addCascadeMenuItem( cascadeMenuItem );

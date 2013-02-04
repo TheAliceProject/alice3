@@ -45,7 +45,7 @@ package org.lgna.croquet.components.impl;
 /**
  * @author Dennis Cosgrove
  */
-public class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
+/* package-private */class ScrollingPopupMenuLayout implements java.awt.LayoutManager2 {
 	private final java.util.List<java.awt.Component> mainItems = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private final java.util.Map<java.awt.Component, Integer> mapSideItemToIndex = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
