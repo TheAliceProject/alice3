@@ -51,6 +51,16 @@ public class ObjectMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.
 	}
 
 	@Override
+	public org.lgna.croquet.Operation getMoveMarkerToOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation.getInstance();
+	}
+
+	@Override
+	public org.lgna.croquet.Operation getMoveToMarkerOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation.getInstance();
+	}
+
+	@Override
 	public org.lgna.croquet.Operation getAddOperation() {
 		return AddObjectMarkerFieldComposite.getInstance().getOperation();
 	}

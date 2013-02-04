@@ -53,6 +53,10 @@ public abstract class MarkersTab<V extends org.alice.stageide.sceneeditor.side.v
 		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
 	}
 
+	public abstract org.lgna.croquet.Operation getMoveMarkerToOperation();
+
+	public abstract org.lgna.croquet.Operation getMoveToMarkerOperation();
+
 	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> getMarkerListState() {
 		return this.markerListState;
 	}

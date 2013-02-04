@@ -51,6 +51,16 @@ public class CameraMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.
 	}
 
 	@Override
+	public org.lgna.croquet.Operation getMoveMarkerToOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation.getInstance();
+	}
+
+	@Override
+	public org.lgna.croquet.Operation getMoveToMarkerOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation.getInstance();
+	}
+
+	@Override
 	public org.lgna.croquet.Operation getAddOperation() {
 		return AddCameraMarkerFieldComposite.getInstance().getOperation();
 	}
