@@ -46,11 +46,15 @@ package org.lgna.project.migration;
  * @author Dennis Cosgrove
  */
 public class ProjectMigrationManager extends AbstractMigrationManager {
+	private static final String WHITESPACE = "\\s*";
+
 	private static String createMoreSpecificFieldString( String fieldName, String clsName ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "name=\"" );
 		sb.append( fieldName );
-		sb.append( "\"><declaringClass name=\"" );
+		sb.append( "\">" );
+		sb.append( WHITESPACE );
+		sb.append( "<declaringClass name=\"" );
 		sb.append( clsName );
 		sb.append( "\"" );
 		return sb.toString();
@@ -60,7 +64,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "name=\"" );
 		sb.append( prevFieldName );
-		sb.append( "\"><declaringClass name=\"org\\.lgna\\.story\\.resources." );
+		sb.append( "\">" );
+		sb.append( WHITESPACE );
+		sb.append( "<declaringClass name=\"org\\.lgna\\.story\\.resources." );
 		sb.append( packageSubName );
 		sb.append( "\\.[A-Za-z]*\"" );
 		return sb.toString();
@@ -70,7 +76,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "name=\"" );
 		sb.append( prevFieldName );
-		sb.append( "\"><declaringClass name=\"org.lgna.story.resources." );
+		sb.append( "\">" );
+		sb.append( WHITESPACE );
+		sb.append( "<declaringClass name=\"org.lgna.story.resources." );
 		sb.append( clsName );
 		sb.append( "\"" );
 		return sb.toString();
@@ -80,7 +88,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "name=\"" );
 		sb.append( accessorName );
-		sb.append( "\"><declaringClass name=\"org.lgna.story." );
+		sb.append( "\">" );
+		sb.append( WHITESPACE );
+		sb.append( "<declaringClass name=\"org.lgna.story." );
 		sb.append( clsName );
 		sb.append( "\"" );
 		return sb.toString();
