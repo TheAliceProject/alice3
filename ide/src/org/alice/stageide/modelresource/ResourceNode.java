@@ -141,25 +141,35 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 
 	protected abstract ResourceNodeTreeSelectionState getState();
 
+	private static boolean ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull = false;
+
+	public static void ACCEPTABLE_HACK_FOR_GALLERY_QA_setLeftClickModelAlwaysNull( boolean ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull ) {
+		ResourceNode.ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull = ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull;
+	}
+
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
-			return this.getDropModel( null, null );
-		} else if( this.resourceKey instanceof ClassResourceKey ) {
-			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
-			if( classResourceKey.isLeaf() ) {
-				if( this.children.size() > 0 ) {
-					return this.children.get( 0 ).getLeftButtonClickModel();
-				} else {
-					return null;
-				}
-			} else {
-				return this.getState().getItemSelectionOperation( this );
-			}
-		} else if( this.resourceKey instanceof TagKey ) {
-			return this.getState().getItemSelectionOperation( this );
-		} else {
+		if( ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull ) {
 			return null;
+		} else {
+			if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
+				return this.getDropModel( null, null );
+			} else if( this.resourceKey instanceof ClassResourceKey ) {
+				ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
+				if( classResourceKey.isLeaf() ) {
+					if( this.children.size() > 0 ) {
+						return this.children.get( 0 ).getLeftButtonClickModel();
+					} else {
+						return null;
+					}
+				} else {
+					return this.getState().getItemSelectionOperation( this );
+				}
+			} else if( this.resourceKey instanceof TagKey ) {
+				return this.getState().getItemSelectionOperation( this );
+			} else {
+				return null;
+			}
 		}
 	}
 

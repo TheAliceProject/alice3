@@ -46,20 +46,21 @@ package org.alice.stageide.sceneeditor.side.views;
  * @author Dennis Cosgrove
  */
 public class SideView extends org.lgna.croquet.components.MigPanel {
-	private static javax.swing.border.Border createSeparatorBorder( int top, int bottom ) {
-		return javax.swing.BorderFactory.createMatteBorder( top, 0, bottom, 0, org.alice.ide.IDE.getActiveInstance().getTheme().getSecondaryBackgroundColor() );
+	private static javax.swing.border.Border createSeparatorBorder( int top, int bottom, java.awt.Color color ) {
+		return javax.swing.BorderFactory.createMatteBorder( top, 0, bottom, 0, color );
 	}
 
 	public SideView( org.alice.stageide.sceneeditor.side.SideComposite composite ) {
-		super( composite, "fill, insets 0, aligny top", "", "[grow 0][grow 0][grow 0]push[grow 0][grow 0][grow 0][grow 0][grow]" );
+		super( composite, "fill, insets 0, aligny top", "", "" );//, "", "[grow 0][grow 0][grow 0]push[grow 0][grow 0][grow 0][grow 0][grow]" );
 
+		final org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
 		org.lgna.croquet.components.FlowPanel undoRedoPanel = new org.lgna.croquet.components.FlowPanel(
 				org.lgna.croquet.components.FlowPanel.Alignment.CENTER,
 				org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(),
 				org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton()
 				);
 
-		undoRedoPanel.setBorder( createSeparatorBorder( 0, 1 ) );
+		undoRedoPanel.setBorder( createSeparatorBorder( 0, 1, theme.getSecondaryBackgroundColor() ) );
 		this.addComponent( undoRedoPanel, "wrap, growx" );
 
 		org.lgna.croquet.components.AbstractRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> radioButtons = new org.lgna.croquet.components.DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle>( composite.getHandleStyleState(), false ) {
@@ -68,13 +69,13 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 				org.lgna.croquet.components.PushButton b = itemSelectedState.createPushButton();
 				b.setVerticalTextPosition( org.lgna.croquet.components.VerticalTextPosition.BOTTOM );
 				b.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.CENTER );
-				b.setSelectedColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor() );
-				b.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
+				b.setSelectedColor( theme.getSelectedColor() );
+				b.setBackgroundColor( theme.getPrimaryBackgroundColor() );
 				return b;
 			}
 		};
 		this.addComponent( new org.lgna.croquet.components.LineAxisPanel(
-				composite.getHandleStyleState().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ),
+				composite.getHandleStyleState().getSidekickLabel().createLabel( 1.2f ),
 				radioButtons
 				), "wrap" );
 
@@ -94,10 +95,23 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 
 		this.addComponent( org.alice.stageide.oneshot.DynamicOneShotMenuModel.getInstance().getPopupPrepModel().createPopupButton(), "wrap" );
 
-		org.lgna.croquet.components.ToolPaletteTabbedPane tabbedPane = composite.getTabState().createToolPaletteTabbedPane();
-		this.addComponent( tabbedPane, "wrap, aligny top, growx" );
+		org.lgna.croquet.ToolPaletteCoreComposite<?>[] toolPaletteCoreComposites = {
+				composite.getObjectPropertiesTab(),
+				composite.getCameraMarkersTab(),
+				composite.getObjectMarkersTab(),
+				composite.getMarkerTab(),
 
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
+		};
+
+		this.setBackgroundColor( theme.getPrimaryBackgroundColor() );
 		title.setBackgroundColor( this.getBackgroundColor() );
+		for( org.lgna.croquet.ToolPaletteCoreComposite<?> toolPaletteCoreComposite : toolPaletteCoreComposites ) {
+			org.lgna.croquet.components.ToolPaletteTitle toolPaletteTitle = toolPaletteCoreComposite.getOuterComposite().getView().getTitle();
+			toolPaletteTitle.setBackgroundColor( this.getBackgroundColor() );
+			toolPaletteTitle.scaleFont( 1.4f );
+			toolPaletteTitle.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+			this.addComponent( toolPaletteCoreComposite.getOuterComposite().getView(), "wrap, growx" );
+		}
+		this.addComponent( new org.lgna.croquet.components.Label(), "wrap, grow, push" );
 	}
 }

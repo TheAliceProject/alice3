@@ -493,10 +493,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 
 	private void handleValueTypeChanged() {
-		org.lgna.project.ast.AbstractType<?, ?, ?> nextType = this.getValueType();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "restore:", nextType );
-		org.lgna.project.ast.Expression nextInitializer = this.mapTypeToInitializer.get( nextType );
-		this.initializerState.setValueTransactionlessly( nextInitializer );
+		if( this.initializerState != null ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> nextType = this.getValueType();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "restore:", nextType );
+			org.lgna.project.ast.Expression nextInitializer = this.mapTypeToInitializer.get( nextType );
+			this.initializerState.setValueTransactionlessly( nextInitializer );
+		}
 	}
 
 	protected boolean getIsFinalInitialValue() {

@@ -83,14 +83,18 @@ public class ExpressionPropertyEdit extends org.lgna.croquet.edits.Edit {
 		binaryEncoder.encode( this.nextExpression.getId() );
 	}
 
+	protected void setValue( org.lgna.project.ast.Expression expression ) {
+		this.expressionProperty.setValue( expression );
+	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.expressionProperty.setValue( this.nextExpression );
+		this.setValue( this.nextExpression );
 	}
 
 	@Override
 	protected final void undoInternal() {
-		this.expressionProperty.setValue( this.prevExpression );
+		this.setValue( this.prevExpression );
 	}
 
 	@Override

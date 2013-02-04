@@ -54,7 +54,7 @@ public abstract class FieldView extends DeclarationView<org.lgna.project.ast.Use
 
 	public FieldView( org.alice.ide.ast.declaration.AddFieldComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFieldColor() );
 	}
 
 	@Override

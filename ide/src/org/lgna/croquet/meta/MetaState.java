@@ -46,11 +46,7 @@ package org.lgna.croquet.meta;
  * @author Dennis Cosgrove
  */
 public abstract class MetaState<T> {
-	public static interface MetaStateValueListener<T> {
-		public void metaStateValueChanged( T prevValue, T nextValue );
-	}
-
-	private final java.util.List<MetaStateValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final java.util.List<org.lgna.croquet.meta.event.MetaStateValueListener<T>> valueListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private T prevValue;
 
@@ -60,16 +56,16 @@ public abstract class MetaState<T> {
 
 	public abstract T getValue();
 
-	public void addMetaStateValueListener( MetaStateValueListener<T> listener ) {
+	public void addMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<T> listener ) {
 		this.valueListeners.add( listener );
 	}
 
-	public void addAndInvokeMetaStateValueListener( MetaStateValueListener<T> listener, T bogusPrevValue ) {
+	public void addAndInvokeMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<T> listener, T bogusPrevValue ) {
 		listener.metaStateValueChanged( bogusPrevValue, this.prevValue );
 		this.addMetaStateValueListener( listener );
 	}
 
-	public void removeMetaStateValueListener( MetaStateValueListener<T> listener ) {
+	public void removeMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<T> listener ) {
 		this.valueListeners.add( listener );
 	}
 
@@ -78,7 +74,7 @@ public abstract class MetaState<T> {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.prevValue, nextValue ) ) {
 			//pass
 		} else {
-			for( MetaStateValueListener<T> listener : this.valueListeners ) {
+			for( org.lgna.croquet.meta.event.MetaStateValueListener<T> listener : this.valueListeners ) {
 				listener.metaStateValueChanged( this.prevValue, nextValue );
 			}
 			this.prevValue = nextValue;

@@ -100,7 +100,7 @@ class NamedUserTypeTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rende
  * @author Dennis Cosgrove
  */
 public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
+	private final org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
 		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
 			TypeHierarchyView.this.handleTypeStateChanged( nextValue );
 		}
@@ -141,7 +141,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 
 	public TypeHierarchyView( org.alice.ide.typehierarchy.TypeHierarchyComposite composite ) {
 		super( composite, 0, 4 );
-		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getMutedTypeColor();
+		java.awt.Color color = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getMutedTypeColor();
 		this.jTree = new javax.swing.JTree( this.treeModel );
 		this.jTree.setRootVisible( false );
 		this.jTree.setCellRenderer( new NamedUserTypeTreeCellRenderer() );

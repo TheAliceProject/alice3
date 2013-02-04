@@ -162,15 +162,15 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		return this.uri;
 	}
 
-	private void setUriProjectPair( org.alice.ide.projecturi.UriProjectPair uriProjectPair ) {
+	private void setUriProjectPair( org.alice.ide.uricontent.UriProjectLoader uriProjectLoader ) {
 		org.lgna.project.Project project;
 		java.net.URI uri;
 		java.io.File file;
-		if( uriProjectPair != null ) {
-			uri = uriProjectPair.getUri();
+		if( uriProjectLoader != null ) {
+			uri = uriProjectLoader.getUri();
 			file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
 			try {
-				project = uriProjectPair.getProjectWaitingIfNecessary();
+				project = uriProjectLoader.getContentWaitingIfNecessary();
 			} catch( InterruptedException ie ) {
 				throw new RuntimeException( ie );
 			} catch( java.util.concurrent.ExecutionException ee ) {
@@ -359,18 +359,14 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		return this.getDocument().getRootTransactionHistory();
 	}
 
-	public final void loadProjectFrom( org.alice.ide.projecturi.UriProjectPair uriProjectPair ) {
-		this.setUriProjectPair( uriProjectPair );
+	public final void loadProjectFrom( org.alice.ide.uricontent.UriProjectLoader uriProjectLoader ) {
+		this.setUriProjectPair( uriProjectLoader );
 		this.updateHistoryIndexFileSync();
 		this.updateUndoRedoEnabled();
 	}
 
-	public final void loadProjectFrom( java.net.URI uri ) {
-		this.loadProjectFrom( new org.alice.ide.projecturi.UriProjectPair( uri ) );
-	}
-
 	public final void loadProjectFrom( java.io.File file ) {
-		loadProjectFrom( file.toURI() );
+		this.loadProjectFrom( new org.alice.ide.uricontent.FileProjectLoader( file ) );
 	}
 
 	public final void loadProjectFrom( String path ) {

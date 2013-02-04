@@ -52,6 +52,7 @@ public class ShapesTab extends GalleryTab<org.alice.stageide.gallerybrowser.view
 			org.alice.stageide.gallerybrowser.shapes.CylinderDragModel.getInstance(),
 			org.alice.stageide.gallerybrowser.shapes.SphereDragModel.getInstance(),
 			org.alice.stageide.gallerybrowser.shapes.TorusDragModel.getInstance(),
+			org.alice.stageide.gallerybrowser.shapes.BoxDragModel.getInstance(),
 			org.alice.stageide.gallerybrowser.shapes.TextModelDragModel.getInstance(),
 			org.alice.stageide.gallerybrowser.shapes.BillboardDragModel.getInstance(),
 			org.alice.stageide.gallerybrowser.shapes.AxesDragModel.getInstance()

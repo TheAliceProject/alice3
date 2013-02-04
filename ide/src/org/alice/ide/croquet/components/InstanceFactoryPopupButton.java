@@ -48,7 +48,7 @@ package org.alice.ide.croquet.components;
  */
 public class InstanceFactoryPopupButton extends org.lgna.croquet.components.CustomItemStatePopupButton<org.alice.ide.instancefactory.InstanceFactory> {
 	// note: for singleton ThisInstanceFactory
-	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
+	private final org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
 		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
 			InstanceFactoryPopupButton.this.repaint();
 		}

@@ -196,6 +196,10 @@ public abstract class ApiConfigurationManager {
 
 	public abstract boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType<?> type );
 
+	public final boolean isSelectable( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		return this.isInstanceFactoryDesiredForType( type );
+	}
+
 	public abstract boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType<?, ?, ?> type );
 
 	public abstract org.lgna.croquet.CascadeMenuModel<org.alice.ide.instancefactory.InstanceFactory> getInstanceFactorySubMenuForThis( org.lgna.project.ast.AbstractType<?, ?, ?> type );

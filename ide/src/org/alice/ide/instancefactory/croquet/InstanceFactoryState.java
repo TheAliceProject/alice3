@@ -49,18 +49,6 @@ import org.alice.ide.instancefactory.InstanceFactory;
  * @author Dennis Cosgrove
  */
 public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithInternalBlank<InstanceFactory> {
-	private static org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringType( org.lgna.project.ast.AbstractDeclaration declaration ) {
-		if( declaration instanceof org.lgna.project.ast.AbstractMethod ) {
-			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)declaration;
-			return method.getDeclaringType();
-		} else if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-			org.lgna.project.ast.AbstractType<?, ?, ?> type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-			return type;
-		} else {
-			return null;
-		}
-	}
-
 	private static class SingletonHolder {
 		private static InstanceFactoryState instance = new InstanceFactoryState();
 	}
@@ -154,11 +142,14 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 				apiConfigurationManager.getInstanceFactorySubMenuForThisFieldAccess( field ) );
 	}
 
+	//todo
+	private final ParametersVariablesAndConstantsSeparator parametersVariablesConstantsSeparator = new ParametersVariablesAndConstantsSeparator();
+
 	@Override
 	protected java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<InstanceFactory> blankNode ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		org.alice.ide.ApiConfigurationManager apiConfigurationManager = ide.getApiConfigurationManager();
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = getDeclaringType( org.alice.ide.MetaDeclarationFauxState.getInstance().getValue() );
+		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.meta.DeclarationMeta.getType();
 
 		rv.add(
 				createFillInMenuComboIfNecessary(
@@ -202,11 +193,15 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 
 			org.lgna.project.ast.AbstractCode code = ide.getFocusedCode();
 			if( code instanceof org.lgna.project.ast.UserCode ) {
+
+				java.util.List<org.lgna.croquet.CascadeBlankChild> parameters = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.List<org.lgna.croquet.CascadeBlankChild> locals = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				boolean containsVariable = false;
+				boolean containsConstant = false;
 				org.lgna.project.ast.UserCode userCode = (org.lgna.project.ast.UserCode)code;
-				rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 				for( org.lgna.project.ast.UserParameter parameter : userCode.getRequiredParamtersProperty() ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( parameter.getValueType() ) ) {
-						rv.add(
+						parameters.add(
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.ParameterAccessFactory.getInstance( parameter ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForParameterAccess( parameter )
@@ -217,13 +212,45 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 
 				for( org.lgna.project.ast.UserLocal local : org.lgna.project.ProgramTypeUtilities.getLocals( userCode ) ) {
 					if( apiConfigurationManager.isInstanceFactoryDesiredForType( local.getValueType() ) ) {
-						rv.add(
+						if( local.isFinal.getValue() ) {
+							containsConstant = true;
+						} else {
+							containsVariable = true;
+						}
+						locals.add(
 								createFillInMenuComboIfNecessary(
 										InstanceFactoryFillIn.getInstance( org.alice.ide.instancefactory.LocalAccessFactory.getInstance( local ) ),
 										apiConfigurationManager.getInstanceFactorySubMenuForLocalAccess( local )
 								)
 								);
 					}
+				}
+				if( ( parameters.size() > 0 ) || ( locals.size() > 0 ) ) {
+					rv.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
+					rv.add( this.parametersVariablesConstantsSeparator );
+					StringBuilder sb = new StringBuilder();
+					org.lgna.project.ast.NodeUtilities.safeAppendRepr( sb, code );
+					sb.append( " " );
+					String prefix = "";
+					if( parameters.size() > 0 ) {
+						sb.append( "parameters" );
+						rv.addAll( parameters );
+						prefix = ", ";
+					}
+					if( locals.size() > 0 ) {
+						if( containsVariable ) {
+							sb.append( prefix );
+							sb.append( "variables" );
+							prefix = ", ";
+						}
+						if( containsConstant ) {
+							sb.append( prefix );
+							sb.append( "constants" );
+							prefix = ", ";
+						}
+						rv.addAll( locals );
+					}
+					this.parametersVariablesConstantsSeparator.setMenuItemText( sb.toString() );
 				}
 			}
 		}

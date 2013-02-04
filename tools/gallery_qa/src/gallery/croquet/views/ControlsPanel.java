@@ -43,35 +43,41 @@
 
 package gallery.croquet.views;
 
-import javax.swing.JLabel;
-import javax.swing.JTree;
-
-import org.alice.ide.croquet.models.gallerybrowser.GalleryNode;
-import org.lgna.croquet.components.ScrollPane;
-
 /**
  * @author Dennis Cosgrove
  */
 public class ControlsPanel extends org.lgna.croquet.components.BorderPanel {
 	public ControlsPanel( gallery.croquet.ControlsComposite composite ) {
 		super( composite );
-//		this.addComponent(composite.getNextOperation().createButton(), Constraint.PAGE_START);
-		this.addComponent(composite.getViz().createCheckBox(), Constraint.PAGE_START);
 
-		org.lgna.croquet.components.Tree< ? > tree = composite.getTreeState().createTree();
+		org.lgna.croquet.components.Tree< ? >  tree = composite.getTreeState().createTree();
 		tree.expandAllRows();
-		tree.setCellRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<GalleryNode>() {
+		tree.setCellRenderer(new edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<org.alice.stageide.modelresource.ResourceNode>() {
 			@Override
-			protected JLabel updateListCellRendererComponent(JLabel rv,
-					JTree tree, GalleryNode value, boolean sel, boolean expanded,
-					boolean leaf, int row, boolean hasFocus) {
-				rv.setIcon(value.getSmallIcon());
-				rv.setText(value.getText());
+			protected javax.swing.JLabel updateListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.stageide.modelresource.ResourceNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+				if( value != null ) {
+					org.lgna.croquet.icon.IconFactory iconFactory = value.getIconFactory();
+					javax.swing.Icon icon;
+					if( iconFactory != null ) {
+						icon = iconFactory.getIcon( new java.awt.Dimension( 64, 48 ) );
+					} else {
+						icon = null;
+					}
+					rv.setIcon(icon);
+					rv.setText(value.getText());
+				} else {
+					rv.setIcon(null);
+					rv.setText(null);
+				}
 				return rv;
 			}
 		});
 		
-		ScrollPane scrollPane = new ScrollPane( tree );
-		this.addComponent( scrollPane, Constraint.CENTER );
+		this.addCenterComponent( new org.lgna.croquet.components.ScrollPane( tree ) );
+
+		org.lgna.croquet.components.CheckBox checkBox = composite.getViz().createCheckBox();
+		this.addPageStartComponent(checkBox);
+		
+		checkBox.getAwtComponent().setFocusable( false );
 	}
 }

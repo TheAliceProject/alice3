@@ -55,7 +55,7 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
+	private final org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
 		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
 			CodeContextSplitComposite.this.handleTypeStateChanged( nextValue );
 		}

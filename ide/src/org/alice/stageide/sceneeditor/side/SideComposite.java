@@ -68,8 +68,6 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 
 	private final org.lgna.croquet.BooleanState areJointsShowingState = this.createBooleanState( this.createKey( "areJointsShowingState" ), false );
 
-	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, this.objectPropertiesTab, this.objectMarkersTab, this.cameraMarkersTab, this.DELETE_ME_markersTab );
-
 	private SideComposite() {
 		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
 	}
@@ -85,12 +83,13 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		this.registerSubComposite( snapDetailsToolPaletteCoreComposite.getOuterComposite() );
 	}
 
-	public SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
-		return this.snapDetailsToolPaletteCoreComposite;
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return new org.lgna.croquet.components.ScrollPane();
 	}
 
-	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getTabState() {
-		return this.tabState;
+	public SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
+		return this.snapDetailsToolPaletteCoreComposite;
 	}
 
 	public ObjectPropertiesTab getObjectPropertiesTab() {
@@ -99,6 +98,10 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 
 	public CameraMarkersTab getCameraMarkersTab() {
 		return this.cameraMarkersTab;
+	}
+
+	public ObjectMarkersTab getObjectMarkersTab() {
+		return this.objectMarkersTab;
 	}
 
 	@Deprecated

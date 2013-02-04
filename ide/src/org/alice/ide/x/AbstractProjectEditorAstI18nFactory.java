@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,19 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package gallery.croquet;
+package org.alice.ide.x;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryPerspective extends org.lgna.croquet.Perspective {
-	public GalleryPerspective() {
-		super( java.util.UUID.fromString( "db725789-5ad4-4f6f-9653-12f383f6815e" ), new GallerySplitComposite() );
+public abstract class AbstractProjectEditorAstI18nFactory extends MutableAstI18nFactory {
+	public AbstractProjectEditorAstI18nFactory() {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
 	}
+
+	@Override
+	public java.awt.Paint getInvalidExpressionPaint( java.awt.Paint paint, int x, int y, int width, int height ) {
+		return java.awt.Color.RED;
+	}
+
 }

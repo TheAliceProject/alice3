@@ -46,7 +46,7 @@ package org.alice.ide.projecturi;
 /**
  * @author Dennis Cosgrove
  */
-public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, UriProjectPair> {
+public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<org.lgna.croquet.components.Panel, org.alice.ide.uricontent.UriProjectLoader> {
 
 	private final ErrorStatus noSelectionError = this.createErrorStatus( this.createKey( "noSelectionError" ) );
 	private final TemplatesTab templatesTab = new TemplatesTab();
@@ -68,7 +68,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	}
 
 	private final SelectedUriMetaState metaState = new SelectedUriMetaState();
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, UriProjectPair> mapUriToUriProjectPair = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, org.alice.ide.uricontent.UriProjectLoader> mapUriToUriProjectLoader = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	private final ProjectSideComposite sideSubComposite;
 
@@ -104,12 +104,12 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	}
 
 	@Override
-	protected UriProjectPair createValue() {
+	protected org.alice.ide.uricontent.UriProjectLoader createValue() {
 		java.net.URI uri = this.metaState.getValue();
 		if( uri != null ) {
-			return this.mapUriToUriProjectPair.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, UriProjectPair>() {
-				public org.alice.ide.projecturi.UriProjectPair initialize( java.net.URI key ) {
-					return new UriProjectPair( key );
+			return this.mapUriToUriProjectLoader.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, org.alice.ide.uricontent.UriProjectLoader>() {
+				public org.alice.ide.uricontent.UriProjectLoader initialize( java.net.URI key ) {
+					return org.alice.ide.uricontent.UriProjectLoader.createInstance( key );
 				}
 			} );
 		} else {
@@ -158,7 +158,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		}
 	}
 
-	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<java.net.URI> metaUriListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<java.net.URI>() {
+	private final org.lgna.croquet.meta.event.MetaStateValueListener<java.net.URI> metaUriListener = new org.lgna.croquet.meta.event.MetaStateValueListener<java.net.URI>() {
 		public void metaStateValueChanged( java.net.URI prevValue, java.net.URI nextValue ) {
 			handleMetaStateValueChanged( nextValue );
 		}
@@ -173,7 +173,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		this.refresh();
-		this.mapUriToUriProjectPair.clear();
+		this.mapUriToUriProjectLoader.clear();
 		if( this.sideSubComposite != null ) {
 			this.metaState.pushActivation( completionStep );
 			this.metaState.addMetaStateValueListener( this.metaUriListener );

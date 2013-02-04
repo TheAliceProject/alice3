@@ -50,6 +50,6 @@ public class MarkersTabView extends org.lgna.croquet.components.MigPanel {
 		super( composite );
 		this.addComponent( composite.getMarkerListState().createList(), "wrap, growx" );
 		this.addComponent( composite.getAddOperation().createButton(), "wrap" );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getPrimaryBackgroundColor() );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
 	}
 }

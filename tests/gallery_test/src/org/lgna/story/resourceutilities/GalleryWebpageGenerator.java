@@ -429,7 +429,7 @@ public class GalleryWebpageGenerator {
 	
 	public static void buildGalleryWebpage(String webpageDir) {
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
-		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS.getUri() );
+		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( new org.alice.ide.uricontent.BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS ) );
 		ModelResourceTreeNode galleryTree = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryTree();
 		createHTMLTree(galleryTree, webpageDir);
 	}

@@ -73,6 +73,7 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 	@Override
 	protected javax.swing.JPopupMenu createAwtComponent() {
 		javax.swing.JPopupMenu rv = new javax.swing.JPopupMenu();
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.initializeScrollingCapability( rv );
 		return rv;
 	}
 
@@ -115,6 +116,11 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		this.getAwtComponent().add( cascadeMenuItem.getAwtComponent() );
 	}
 
+	public void addCascadeCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
+		this.addCascadeMenuItem( cascadeMenuItem );
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.addSideMenu( this.getAwtComponent(), cascadeMenu.getAwtComponent() );
+	}
+
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 		this.getAwtComponent().add( checkBoxMenuItem.getAwtComponent() );
 	}
@@ -131,26 +137,26 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 		}
 	}
 
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getAwtComponent().getSelectionModel().addChangeListener( new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				System.err.println( "stateChanged: " + e );
-			}
-		} );
-	}
-
 	public void removeAllMenuItems() {
 		//this.internalRemoveAllComponents();
-		this.getAwtComponent().removeAll();
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent() );
 	}
 
 	public void forgetAndRemoveAllMenuItems() {
 		//this.internalForgetAndRemoveAllComponents();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );
-		this.getAwtComponent().removeAll();
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent() );
 	}
+
+	//	@Override
+	//	protected void handleDisplayable() {
+	//		super.handleDisplayable();
+	//		this.getAwtComponent().getSelectionModel().addChangeListener( new javax.swing.event.ChangeListener() {
+	//			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+	//				System.err.println( "stateChanged: " + e );
+	//			}
+	//		} );
+	//	}
 
 	public void showAtLocation( Component<?> invoker, int x, int y ) {
 		java.awt.Component awtInvoker;
