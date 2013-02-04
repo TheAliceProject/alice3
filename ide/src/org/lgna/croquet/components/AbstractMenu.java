@@ -93,7 +93,7 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 				}
 			}
 		};
-		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.initializeScrollingCapability( rv.getPopupMenu() );
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.initializeScrollingCapability( rv.getPopupMenu() );
 		return rv;
 	}
 
@@ -140,7 +140,7 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 
 	public void addCascadeCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
 		this.addCascadeMenuItem( cascadeMenuItem );
-		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.addSideMenu( this.getAwtComponent().getPopupMenu(), cascadeMenu.getAwtComponent() );
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.addSideMenu( this.getAwtComponent().getPopupMenu(), cascadeMenu.getAwtComponent() );
 	}
 
 	public void addCascadeMenuItem( CascadeMenuItem cascadeMenuItem ) {
@@ -165,12 +165,12 @@ public abstract class AbstractMenu<M extends org.lgna.croquet.PrepModel> extends
 
 	public void removeAllMenuItems() {
 		//this.internalRemoveAllComponents();
-		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
 	}
 
 	public void forgetAndRemoveAllMenuItems() {
 		//this.internalForgetAndRemoveAllComponents();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );
-		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent().getPopupMenu() );
 	}
 }

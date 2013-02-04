@@ -73,7 +73,7 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 	@Override
 	protected javax.swing.JPopupMenu createAwtComponent() {
 		javax.swing.JPopupMenu rv = new javax.swing.JPopupMenu();
-		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.initializeScrollingCapability( rv );
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.initializeScrollingCapability( rv );
 		return rv;
 	}
 
@@ -118,7 +118,7 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 
 	public void addCascadeCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
 		this.addCascadeMenuItem( cascadeMenuItem );
-		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.addSideMenu( this.getAwtComponent(), cascadeMenu.getAwtComponent() );
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.addSideMenu( this.getAwtComponent(), cascadeMenu.getAwtComponent() );
 	}
 
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
@@ -139,13 +139,13 @@ public class PopupMenu extends ViewController<javax.swing.JPopupMenu, org.lgna.c
 
 	public void removeAllMenuItems() {
 		//this.internalRemoveAllComponents();
-		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent() );
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent() );
 	}
 
 	public void forgetAndRemoveAllMenuItems() {
 		//this.internalForgetAndRemoveAllComponents();
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "forget" );
-		org.lgna.croquet.components.impl.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent() );
+		org.lgna.croquet.components.imp.ScrollingPopupMenuUtilities.removeAllNonScrollComponents( this.getAwtComponent() );
 	}
 
 	//	@Override
