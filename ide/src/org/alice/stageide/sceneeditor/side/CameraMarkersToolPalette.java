@@ -45,21 +45,28 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MarkersTab<V extends org.alice.stageide.sceneeditor.side.views.MarkersTabView> extends SideTab<V> {
-	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerListState;
-
-	public MarkersTab( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
-		super( migrationId, false );
-		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
+public class CameraMarkersToolPalette extends MarkersToolPalette<org.alice.stageide.sceneeditor.side.views.CameraMarkersView> {
+	public CameraMarkersToolPalette() {
+		super( java.util.UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ), new CameraMarkerFieldData() );
 	}
 
-	public abstract org.lgna.croquet.Operation getMoveMarkerToOperation();
-
-	public abstract org.lgna.croquet.Operation getMoveToMarkerOperation();
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> getMarkerListState() {
-		return this.markerListState;
+	@Override
+	public org.lgna.croquet.Operation getMoveMarkerToOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation.getInstance();
 	}
 
-	public abstract org.lgna.croquet.Operation getAddOperation();
+	@Override
+	public org.lgna.croquet.Operation getMoveToMarkerOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation.getInstance();
+	}
+
+	@Override
+	public org.lgna.croquet.Operation getAddOperation() {
+		return AddCameraMarkerFieldComposite.getInstance().getOperation();
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.side.views.CameraMarkersView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.CameraMarkersView( this );
+	}
 }

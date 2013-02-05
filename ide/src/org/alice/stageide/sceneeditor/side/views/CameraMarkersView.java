@@ -40,33 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.side;
+package org.alice.stageide.sceneeditor.side.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ObjectMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView> {
-	public ObjectMarkersTab() {
-		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ), new ObjectMarkerFieldData() );
-	}
-
-	@Override
-	public org.lgna.croquet.Operation getMoveMarkerToOperation() {
-		return org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation.getInstance();
-	}
-
-	@Override
-	public org.lgna.croquet.Operation getMoveToMarkerOperation() {
-		return org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation.getInstance();
-	}
-
-	@Override
-	public org.lgna.croquet.Operation getAddOperation() {
-		return AddObjectMarkerFieldComposite.getInstance().getOperation();
-	}
-
-	@Override
-	protected org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView createView() {
-		return new org.alice.stageide.sceneeditor.side.views.ObjectMarkersTabView( this );
+public class CameraMarkersView extends MarkersView {
+	public CameraMarkersView( org.alice.stageide.sceneeditor.side.CameraMarkersToolPalette composite ) {
+		super( composite );
 	}
 }

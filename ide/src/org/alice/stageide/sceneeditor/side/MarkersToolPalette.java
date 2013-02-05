@@ -40,13 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.side.views;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkersTabView extends MarkersTabView {
-	public CameraMarkersTabView( org.alice.stageide.sceneeditor.side.CameraMarkersTab composite ) {
-		super( composite );
+public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneeditor.side.views.MarkersView> extends SideToolPalette<V> {
+	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerListState;
+
+	public MarkersToolPalette( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
+		super( migrationId, false );
+		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
 	}
+
+	public abstract org.lgna.croquet.Operation getMoveMarkerToOperation();
+
+	public abstract org.lgna.croquet.Operation getMoveToMarkerOperation();
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> getMarkerListState() {
+		return this.markerListState;
+	}
+
+	public abstract org.lgna.croquet.Operation getAddOperation();
 }

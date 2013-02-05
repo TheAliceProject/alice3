@@ -45,28 +45,20 @@ package org.alice.stageide.sceneeditor.side;
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkersTab extends MarkersTab<org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView> {
-	public CameraMarkersTab() {
-		super( java.util.UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ), new CameraMarkerFieldData() );
+public abstract class SideToolPalette<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
+	public SideToolPalette( java.util.UUID migrationId, boolean initialValue ) {
+		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, initialValue );
 	}
 
 	@Override
-	public org.lgna.croquet.Operation getMoveMarkerToOperation() {
-		return org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation.getInstance();
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
 
-	@Override
-	public org.lgna.croquet.Operation getMoveToMarkerOperation() {
-		return org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation.getInstance();
-	}
-
-	@Override
-	public org.lgna.croquet.Operation getAddOperation() {
-		return AddCameraMarkerFieldComposite.getInstance().getOperation();
-	}
-
-	@Override
-	protected org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView createView() {
-		return new org.alice.stageide.sceneeditor.side.views.CameraMarkersTabView( this );
-	}
+	//	@Override
+	//	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	//		super.customizeTitleComponentAppearance( button );
+	//		button.scaleFont( 1.4f );
+	//		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+	//	}
 }

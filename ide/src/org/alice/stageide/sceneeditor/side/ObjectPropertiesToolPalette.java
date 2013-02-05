@@ -43,8 +43,8 @@
 
 package org.alice.stageide.sceneeditor.side;
 
-public class ObjectPropertiesTab extends SideTab<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
-	public ObjectPropertiesTab() {
+public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
+	public ObjectPropertiesToolPalette() {
 		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ), true );
 	}
 
