@@ -97,10 +97,8 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 
 		org.lgna.croquet.ToolPaletteCoreComposite<?>[] toolPaletteCoreComposites = {
 				composite.getObjectPropertiesTab(),
-				composite.getCameraMarkersTab(),
 				composite.getObjectMarkersTab(),
-				composite.getMarkerTab(),
-
+				composite.getCameraMarkersTab()
 		};
 
 		this.setBackgroundColor( theme.getPrimaryBackgroundColor() );

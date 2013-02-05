@@ -41,44 +41,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.typecontext;
+package org.alice.stageide.sceneeditor.side;
 
-/**
- * @author Dennis Cosgrove
- */
-public class SceneTypeComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.typecontext.components.SceneTypeView> {
-	private static class SingletonHolder {
-		private static SceneTypeComposite instance = new SceneTypeComposite();
-	}
-
-	public static SceneTypeComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private SceneTypeComposite() {
-		super( java.util.UUID.fromString( "d0484679-2f78-4cc5-9ac5-0de8bcf31db1" ) );
+public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
+	public ObjectPropertiesToolPalette() {
+		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ), true );
 	}
 
 	@Override
-	protected org.alice.stageide.typecontext.components.SceneTypeView createView() {
-		return new org.alice.stageide.typecontext.components.SceneTypeView( this );
-	}
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		org.alice.stageide.typecontext.components.SceneTypeView view = this.getView();
-		synchronized( view.getTreeLock() ) {
-			view.addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
-		}
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		org.alice.stageide.typecontext.components.SceneTypeView view = this.getView();
-		synchronized( view.getTreeLock() ) {
-			view.removeComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
-		}
-		super.handlePostDeactivation();
+	protected org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel createView() {
+		return new org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel();
 	}
 }

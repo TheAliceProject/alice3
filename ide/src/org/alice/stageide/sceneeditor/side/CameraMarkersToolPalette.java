@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2011, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,63 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.declaration;
-
-import java.text.MessageFormat;
-
-import org.lgna.story.Color;
-
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+package org.alice.stageide.sceneeditor.side;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class ObjectMarkerFieldDeclarationOperation extends MarkerFieldDeclarationOperation {
-
-	private static class SingletonHolder {
-		private static ObjectMarkerFieldDeclarationOperation instance = new ObjectMarkerFieldDeclarationOperation();
-	}
-
-	public static ObjectMarkerFieldDeclarationOperation getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	public ObjectMarkerFieldDeclarationOperation() {
-		super( java.util.UUID.fromString( "830f80f7-da68-43cc-be8a-bbd64da78c24" ), org.lgna.story.SThingMarker.class );
+public class CameraMarkersToolPalette extends MarkersToolPalette<org.alice.stageide.sceneeditor.side.views.CameraMarkersView> {
+	public CameraMarkersToolPalette() {
+		super( java.util.UUID.fromString( "0e436ae7-b89b-4c8f-b48a-e4f658e6f82f" ), new CameraMarkerFieldData() );
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		String unformattedName = this.getName();
-		MessageFormat formatter = new MessageFormat( "" );
-		formatter.setLocale( javax.swing.JComponent.getDefaultLocale() );
-		formatter.applyPattern( unformattedName );
-		String defaultName = this.findLocalizedText( "defaultObjectName" );
-		String fieldNameParam = this.getSelectedField() == null ? defaultName : this.getSelectedField().getName();
-		String formattedName = formatter.format( new Object[] { fieldNameParam } );
-		this.setName( formattedName );
+	public org.lgna.croquet.Operation getMoveMarkerToOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation.getInstance();
 	}
 
 	@Override
-	protected org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<ObjectMarkerFieldDeclarationOperation> createMainComponent() {
-		return new org.alice.stageide.croquet.components.declaration.MarkerDeclarationPanel<ObjectMarkerFieldDeclarationOperation>( this );
+	public org.lgna.croquet.Operation getMoveToMarkerOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerActionOperation.getInstance();
 	}
 
 	@Override
-	protected Color getInitialMarkerColor() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewObjectMarker();
+	public org.lgna.croquet.Operation getAddOperation() {
+		return AddCameraMarkerFieldComposite.getInstance().getOperation();
 	}
 
 	@Override
-	protected String getInitialMarkerName( Color color ) {
-		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getSuggestedNameForNewObjectMarker( color );
+	protected org.alice.stageide.sceneeditor.side.views.CameraMarkersView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.CameraMarkersView( this );
 	}
-
-	@Override
-	protected AffineMatrix4x4 getInitialMarkerTransform() {
-		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getTransformForNewObjectMarker();
-	}
-
 }

@@ -53,6 +53,11 @@ public class FileProjectLoader extends UriProjectLoader {
 	}
 
 	@Override
+	protected boolean isCacheAndCopyStyle() {
+		return false;
+	}
+
+	@Override
 	public java.net.URI getUri() {
 		return this.file.toURI();
 	}
@@ -104,11 +109,12 @@ public class FileProjectLoader extends UriProjectLoader {
 		java.io.File file = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Alice3/MyProjects/a.a3p" );
 		FileProjectLoader uriProjectPair = new FileProjectLoader( file );
 
+		UriContentLoader.MutationPlan mutationPlan = MutationPlan.WILL_MUTATE;
 		for( int i = 0; i < 32; i++ ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( i );
 			final boolean IS_OBSERVER_DESIRED = true;
 			if( IS_OBSERVER_DESIRED ) {
-				uriProjectPair.getContentOnEventDispatchThread( new GetContentObserver<org.lgna.project.Project>() {
+				uriProjectPair.getContentOnEventDispatchThread( mutationPlan, new GetContentObserver<org.lgna.project.Project>() {
 					public void workStarted() {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "workStarted" );
 					}
@@ -120,9 +126,13 @@ public class FileProjectLoader extends UriProjectLoader {
 					public void completed( org.lgna.project.Project project ) {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( project );
 					}
+
+					public void failed( Throwable t ) {
+						t.printStackTrace();
+					}
 				} );
 			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( uriProjectPair.getContentWaitingIfNecessary() );
+				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( uriProjectPair.getContentWaitingIfNecessary( mutationPlan ) );
 			}
 			Thread.sleep( 100 );
 		}

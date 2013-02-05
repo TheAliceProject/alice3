@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.sceneeditor.side;
 
-public class DELETE_ME_MarkersTab extends SideTab<org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel> {
-	public DELETE_ME_MarkersTab() {
-		super( java.util.UUID.fromString( "2ae596b4-1871-4e30-ad22-c9c5b269257d" ), false );
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class MarkersToolPalette<V extends org.alice.stageide.sceneeditor.side.views.MarkersView> extends SideToolPalette<V> {
+	private final org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> markerListState;
+
+	public MarkersToolPalette( java.util.UUID migrationId, MarkerFieldData markerFieldData ) {
+		super( migrationId, false );
+		this.markerListState = this.createListSelectionState( this.createKey( "markerListState" ), markerFieldData, -1 );
 	}
 
-	@Override
-	protected org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel createView() {
-		return new org.alice.stageide.sceneeditor.viewmanager.MarkerManagerPanel( this );
+	public abstract org.lgna.croquet.Operation getMoveMarkerToOperation();
+
+	public abstract org.lgna.croquet.Operation getMoveToMarkerOperation();
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> getMarkerListState() {
+		return this.markerListState;
 	}
+
+	public abstract org.lgna.croquet.Operation getAddOperation();
 }

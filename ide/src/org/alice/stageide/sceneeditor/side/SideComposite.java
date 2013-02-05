@@ -48,27 +48,23 @@ import org.alice.stageide.sceneeditor.HandleStyle;
  * @author Dennis Cosgrove
  */
 public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.sceneeditor.side.views.SideView> {
-	private static class SingletonHolder {
-		private static SideComposite instance = new SideComposite();
-	}
-
+	//todo
+	@Deprecated
 	public static SideComposite getInstance() {
-		return SingletonHolder.instance;
+		return (SideComposite)org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance().getSceneLayoutComposite().getTrailingComposite();
 	}
 
 	private final SnapDetailsToolPaletteCoreComposite snapDetailsToolPaletteCoreComposite = new SnapDetailsToolPaletteCoreComposite();
-	private final ObjectPropertiesTab objectPropertiesTab = new ObjectPropertiesTab();
-	private final ObjectMarkersTab objectMarkersTab = new ObjectMarkersTab();
-	private final CameraMarkersTab cameraMarkersTab = new CameraMarkersTab();
-	private final DELETE_ME_MarkersTab DELETE_ME_markersTab = new DELETE_ME_MarkersTab();
-
+	private final ObjectPropertiesToolPalette objectPropertiesTab = new ObjectPropertiesToolPalette();
+	private final ObjectMarkersToolPalette objectMarkersTab = new ObjectMarkersToolPalette();
+	private final CameraMarkersToolPalette cameraMarkersTab = new CameraMarkersToolPalette();
 	private final org.lgna.croquet.ListSelectionState<HandleStyle> handleStyleState = this.createListSelectionStateForEnum( this.createKey( "handleStyleState" ), HandleStyle.class, HandleStyle.DEFAULT );
 
 	private final org.lgna.croquet.BooleanState isSnapEnabledState = this.createBooleanState( this.createKey( "isSnapEnabledState" ), false );
 
 	private final org.lgna.croquet.BooleanState areJointsShowingState = this.createBooleanState( this.createKey( "areJointsShowingState" ), false );
 
-	private SideComposite() {
+	public SideComposite() {
 		super( java.util.UUID.fromString( "3adc7b8a-f317-467d-8c8a-807086fffaea" ) );
 	}
 
@@ -92,21 +88,16 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		return this.snapDetailsToolPaletteCoreComposite;
 	}
 
-	public ObjectPropertiesTab getObjectPropertiesTab() {
+	public ObjectPropertiesToolPalette getObjectPropertiesTab() {
 		return this.objectPropertiesTab;
 	}
 
-	public CameraMarkersTab getCameraMarkersTab() {
+	public CameraMarkersToolPalette getCameraMarkersTab() {
 		return this.cameraMarkersTab;
 	}
 
-	public ObjectMarkersTab getObjectMarkersTab() {
+	public ObjectMarkersToolPalette getObjectMarkersTab() {
 		return this.objectMarkersTab;
-	}
-
-	@Deprecated
-	public DELETE_ME_MarkersTab getMarkerTab() {
-		return this.DELETE_ME_markersTab;
 	}
 
 	public org.lgna.croquet.BooleanState getAreJointsShowingState() {

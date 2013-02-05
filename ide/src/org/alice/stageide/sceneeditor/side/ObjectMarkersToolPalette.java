@@ -40,16 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.side.views;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MarkersTabView extends org.lgna.croquet.components.MigPanel {
-	public MarkersTabView( org.alice.stageide.sceneeditor.side.MarkersTab<?> composite, org.lgna.croquet.components.JComponent<?> mainComponent ) {
-		super( composite );
-		this.addComponent( composite.getMarkerListState().createList(), "wrap, growx" );
-		this.addComponent( composite.getAddOperation().createButton(), "wrap" );
-		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
+public class ObjectMarkersToolPalette extends MarkersToolPalette<org.alice.stageide.sceneeditor.side.views.ObjectMarkersView> {
+	public ObjectMarkersToolPalette() {
+		super( java.util.UUID.fromString( "00796918-1721-4618-ae51-24b2e38eab05" ), new ObjectMarkerFieldData() );
+	}
+
+	@Override
+	public org.lgna.croquet.Operation getMoveMarkerToOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation.getInstance();
+	}
+
+	@Override
+	public org.lgna.croquet.Operation getMoveToMarkerOperation() {
+		return org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation.getInstance();
+	}
+
+	@Override
+	public org.lgna.croquet.Operation getAddOperation() {
+		return AddObjectMarkerFieldComposite.getInstance().getOperation();
+	}
+
+	@Override
+	protected org.alice.stageide.sceneeditor.side.views.ObjectMarkersView createView() {
+		return new org.alice.stageide.sceneeditor.side.views.ObjectMarkersView( this );
 	}
 }

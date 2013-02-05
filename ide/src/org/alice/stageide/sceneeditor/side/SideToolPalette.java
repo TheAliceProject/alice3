@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side;
 
-package org.alice.stageide.sceneeditor.viewmanager;
-
-import org.alice.ide.declarationseditor.type.components.FieldList;
-import org.alice.ide.declarationseditor.type.components.ManagedObjectMarkerFieldList;
-import org.lgna.croquet.components.Button;
-import org.lgna.project.ast.NamedUserType;
-
-public class SceneObjectMarkerManagerPanel extends AbstractMarkerManagerPanel {
-
-	@Override
-	protected Button createMovetoMarkerButton()
-	{
-		return MoveSelectedObjectToMarkerActionOperation.getInstance().createButton();
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class SideToolPalette<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.ToolPaletteCoreComposite<V> {
+	public SideToolPalette( java.util.UUID migrationId, boolean initialValue ) {
+		super( migrationId, org.lgna.croquet.Application.DOCUMENT_UI_GROUP, initialValue );
 	}
 
 	@Override
-	protected Button createMoveToObjectButton()
-	{
-		return MoveMarkerToSelectedObjectActionOperation.getInstance().createButton();
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
 
-	@Override
-	protected FieldList createFieldList( org.lgna.project.ast.UserType<?> type ) {
-		assert type instanceof NamedUserType;
-		return new ManagedObjectMarkerFieldList( (NamedUserType)type );
-	}
-
+	//	@Override
+	//	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+	//		super.customizeTitleComponentAppearance( button );
+	//		button.scaleFont( 1.4f );
+	//		button.changeFont( edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+	//	}
 }

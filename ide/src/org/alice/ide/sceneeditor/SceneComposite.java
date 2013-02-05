@@ -40,23 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.side.views;
+package org.alice.ide.sceneeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkersListDataView extends org.lgna.croquet.components.ListDataView<org.lgna.project.ast.UserField> {
-	public CameraMarkersListDataView( org.alice.stageide.sceneeditor.side.CameraMarkersListDataComposite composite ) {
-		super( composite );
+public final class SceneComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.BorderPanel> {
+	public SceneComposite() {
+		super( java.util.UUID.fromString( "b334790e-d706-456b-b519-8fc3f585c098" ) );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.JComponent<?> createComponentForItem( org.lgna.project.ast.UserField field ) {
-		return new org.lgna.croquet.components.Label( field.getName() );
+	protected org.lgna.croquet.components.BorderPanel createView() {
+		return new org.lgna.croquet.components.BorderPanel( this );
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		org.lgna.croquet.components.BorderPanel view = this.getView();
+		synchronized( view.getTreeLock() ) {
+			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().handleShowing();
+			view.addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
+		}
 	}
-};
+
+	@Override
+	public void handlePostDeactivation() {
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().handleHiding();
+		org.lgna.croquet.components.BorderPanel view = this.getView();
+		synchronized( view.getTreeLock() ) {
+			this.getView().removeAllComponents();
+		}
+		super.handlePostDeactivation();
+	}
+}

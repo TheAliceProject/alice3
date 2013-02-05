@@ -91,13 +91,38 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 		}
 	};
 
+	private final org.lgna.croquet.CardOwnerComposite sceneOrNonSceneComposite;
+	private final org.lgna.croquet.CardOwnerComposite typeOrCodeCardOwnerComposite;
+	private int ignoreDividerChangeCount = 0;
+
+	private final org.alice.ide.sceneeditor.SceneComposite sceneComposite = new org.alice.ide.sceneeditor.SceneComposite();
+	private final org.alice.stageide.typecontext.NonSceneTypeComposite nonSceneTypeComposite = new org.alice.stageide.typecontext.NonSceneTypeComposite();
+
+	private final org.alice.ide.typehierarchy.TypeHierarchyComposite typeHierarchyComposite = new org.alice.ide.typehierarchy.TypeHierarchyComposite();
+
+	private CodeContextSplitComposite() {
+		super( java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ) );
+		this.sceneOrNonSceneComposite = this.createCardOwnerCompositeButDoNotRegister( this.sceneComposite, this.nonSceneTypeComposite );
+		this.typeOrCodeCardOwnerComposite = this.createCardOwnerCompositeButDoNotRegister( this.typeHierarchyComposite, org.alice.ide.members.MembersComposite.getInstance() );
+	}
+
+	@Override
+	public org.lgna.croquet.Composite<?> getLeadingComposite() {
+		return this.sceneOrNonSceneComposite;
+	}
+
+	@Override
+	public org.lgna.croquet.Composite<?> getTrailingComposite() {
+		return this.typeOrCodeCardOwnerComposite;
+	}
+
 	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
 		org.lgna.croquet.Composite<?> composite;
 		if( nextValue != null ) {
 			if( nextValue.isAssignableTo( org.lgna.story.SScene.class ) ) {
-				composite = org.alice.stageide.typecontext.SceneTypeComposite.getInstance();
+				composite = this.sceneComposite;
 			} else {
-				composite = org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance();
+				composite = this.nonSceneTypeComposite;
 			}
 			//			org.lgna.croquet.components.JComponent< ? > view = key.getView();
 			//			if( view instanceof NonSceneTypeView ) {
@@ -115,7 +140,7 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			if( nextValue != null ) {
 				if( nextValue.getDeclaration() instanceof org.lgna.project.ast.AbstractType ) {
-					composite = org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance();
+					composite = this.typeHierarchyComposite;
 				} else {
 					composite = org.alice.ide.members.MembersComposite.getInstance();
 				}
@@ -126,26 +151,6 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 			composite = org.alice.ide.members.MembersComposite.getInstance();
 		}
 		this.typeOrCodeCardOwnerComposite.showCard( composite );
-	}
-
-	private final org.lgna.croquet.CardOwnerComposite sceneOrNonSceneComposite;
-	private final org.lgna.croquet.CardOwnerComposite typeOrCodeCardOwnerComposite;
-	private int ignoreDividerChangeCount = 0;
-
-	private CodeContextSplitComposite() {
-		super( java.util.UUID.fromString( "c3336f34-9da4-4aaf-86ff-d742f4717d94" ) );
-		this.sceneOrNonSceneComposite = this.createCardOwnerCompositeButDoNotRegister( org.alice.stageide.typecontext.SceneTypeComposite.getInstance(), org.alice.stageide.typecontext.NonSceneTypeComposite.getInstance() );
-		this.typeOrCodeCardOwnerComposite = this.createCardOwnerCompositeButDoNotRegister( org.alice.ide.typehierarchy.TypeHierarchyComposite.getInstance(), org.alice.ide.members.MembersComposite.getInstance() );
-	}
-
-	@Override
-	public org.lgna.croquet.Composite<?> getLeadingComposite() {
-		return this.sceneOrNonSceneComposite;
-	}
-
-	@Override
-	public org.lgna.croquet.Composite<?> getTrailingComposite() {
-		return this.typeOrCodeCardOwnerComposite;
 	}
 
 	public void incrementIgnoreDividerLocationChangeCount() {

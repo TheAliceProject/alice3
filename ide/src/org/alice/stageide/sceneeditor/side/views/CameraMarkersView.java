@@ -40,23 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.sceneeditor.side;
+package org.alice.stageide.sceneeditor.side.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarkersListDataComposite extends org.lgna.croquet.ListDataComposite<org.lgna.project.ast.UserField, org.alice.stageide.sceneeditor.side.views.CameraMarkersListDataView> {
-	public CameraMarkersListDataComposite( org.alice.ide.declarationseditor.type.data.ManagedCameraMarkerFieldData listData ) {
-		super( java.util.UUID.fromString( "a626f334-79f0-4282-a9b4-4b45ef3d6efd" ), listData );
-	}
-
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
-	}
-
-	@Override
-	protected org.alice.stageide.sceneeditor.side.views.CameraMarkersListDataView createView() {
-		return new org.alice.stageide.sceneeditor.side.views.CameraMarkersListDataView( this );
+public class CameraMarkersView extends MarkersView {
+	public CameraMarkersView( org.alice.stageide.sceneeditor.side.CameraMarkersToolPalette composite ) {
+		super( composite );
 	}
 }
