@@ -171,7 +171,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		org.lgna.project.Project project;
 		if( uriProjectLoader != null ) {
 			try {
-				project = uriProjectLoader.getContentWaitingIfNecessary();
+				project = uriProjectLoader.getContentWaitingIfNecessary( org.alice.ide.uricontent.UriContentLoader.MutationPlan.WILL_MUTATE );
 			} catch( InterruptedException ie ) {
 				throw new RuntimeException( ie );
 			} catch( java.util.concurrent.ExecutionException ee ) {
