@@ -60,12 +60,14 @@ public final class SceneComposite extends org.lgna.croquet.SimpleComposite<org.l
 		super.handlePreActivation();
 		org.lgna.croquet.components.BorderPanel view = this.getView();
 		synchronized( view.getTreeLock() ) {
+			org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().handleShowing();
 			view.addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
 		}
 	}
 
 	@Override
 	public void handlePostDeactivation() {
+		org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().handleHiding();
 		org.lgna.croquet.components.BorderPanel view = this.getView();
 		synchronized( view.getTreeLock() ) {
 			this.getView().removeAllComponents();

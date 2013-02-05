@@ -1093,27 +1093,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		super.handleProjectOpened( nextProject );
 	}
 
-	//	private boolean HACK_isDisplayableAlreadyHandled = false;
-	//	
-	@Override
-	protected void handleDisplayable() {
-		//		if( HACK_isDisplayableAlreadyHandled ) {
-		//			System.err.println( "TODO: investigate is displayed" );
-		//		} else {
-		super.handleDisplayable();
-		//			HACK_isDisplayableAlreadyHandled = true;
-		//		}
+	public void handleShowing() {
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.showLookingGlassPanel();
 	}
 
-	@Override
-	protected void handleUndisplayable() {
+	public void handleHiding() {
 		this.hideLookingGlassPanel();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
-		super.handleUndisplayable();
 	}
 
 	private void paintHorizonLine( Graphics graphics, LightweightOnscreenLookingGlass lookingGlass, OrthographicCamera camera )
