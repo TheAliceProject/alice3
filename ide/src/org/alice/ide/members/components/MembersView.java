@@ -203,16 +203,15 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 
 	public MembersView( org.alice.ide.members.MembersComposite composite ) {
 		super( composite );
-		//		final float FONT_SCALAR = 1.4f;
-		//		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
-		//		instanceLabel.scaleFont( FONT_SCALAR );
-		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
-		//		instancePanel.addComponent( instanceLabel );
-		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
-		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
-
-		this.addPageStartComponent( instancePanel );
+		org.alice.ide.croquet.components.InstanceFactoryPopupButton instanceFactoryPopupButton = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+		//		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
+		//		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
+		//		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		//		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
+		//
+		//		this.addPageStartComponent( instancePanel );
+		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.addPageStartComponent( instanceFactoryPopupButton );
 		org.lgna.croquet.components.AbstractTabbedPane<?> tabbedPane;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			tabbedPane = composite.getTabState().createFolderTabbedPane();

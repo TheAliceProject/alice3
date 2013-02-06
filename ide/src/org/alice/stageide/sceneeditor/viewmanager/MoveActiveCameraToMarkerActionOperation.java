@@ -67,7 +67,7 @@ public class MoveActiveCameraToMarkerActionOperation extends CameraMoveActionOpe
 		TransformableImp markerImp = IDE.getActiveInstance().getSceneEditor().getImplementation( markerField );
 		String markerName = markerField != null ? markerField.getName() : "";
 
-		org.lgna.croquet.icon.IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForObjectMarker( markerField );
+		org.lgna.croquet.icon.IconFactory moveToIconFactory = MarkerUtilities.getIconFactoryForCameraMarker( markerField );
 		javax.swing.Icon moveToIcon = moveToIconFactory != null ? moveToIconFactory.getIcon( ObjectMarkerMoveActionOperation.ICON_DIMENSION ) : null;
 
 		org.lgna.croquet.icon.IconFactory toMoveIconFactory = MarkerUtilities.getIconFactoryForCameraMarkerImp( cameraMarkerImp );

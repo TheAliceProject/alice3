@@ -55,9 +55,9 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	private final FileSystemTab fileSystemTab = new FileSystemTab();
 	private final org.lgna.croquet.TabSelectionState<SelectUriTab> tabState = this.createTabSelectionState( this.createKey( "tabState" ), SelectUriTab.class, -1, this.templatesTab, this.myProjectsTab, this.recentProjectsTab, this.fileSystemTab );
 
-	private final class SelectedUriMetaState extends org.lgna.croquet.meta.TransactionHistoryTrackingMetaState<java.net.URI> {
+	private final class SelectedUriMetaState extends org.lgna.croquet.meta.TransactionHistoryTrackingMetaState<org.alice.ide.uricontent.UriProjectLoader> {
 		@Override
-		public java.net.URI getValue() {
+		public org.alice.ide.uricontent.UriProjectLoader getValue() {
 			SelectUriTab tab = tabState.getValue();
 			if( tab != null ) {
 				return tab.getSelectedUri();
@@ -68,7 +68,6 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	}
 
 	private final SelectedUriMetaState metaState = new SelectedUriMetaState();
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<java.net.URI, org.alice.ide.uricontent.UriProjectLoader> mapUriToUriProjectLoader = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	private final ProjectSideComposite sideSubComposite;
 
@@ -99,22 +98,13 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		return this.sideSubComposite;
 	}
 
-	public org.lgna.croquet.meta.MetaState<java.net.URI> getMetaState() {
+	public org.lgna.croquet.meta.MetaState<org.alice.ide.uricontent.UriProjectLoader> getMetaState() {
 		return this.metaState;
 	}
 
 	@Override
 	protected org.alice.ide.uricontent.UriProjectLoader createValue() {
-		java.net.URI uri = this.metaState.getValue();
-		if( uri != null ) {
-			return this.mapUriToUriProjectLoader.getInitializingIfAbsent( uri, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<java.net.URI, org.alice.ide.uricontent.UriProjectLoader>() {
-				public org.alice.ide.uricontent.UriProjectLoader initialize( java.net.URI key ) {
-					return org.alice.ide.uricontent.UriProjectLoader.createInstance( key );
-				}
-			} );
-		} else {
-			return null;
-		}
+		return this.metaState.getValue();
 	}
 
 	@Override
@@ -124,7 +114,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 
 	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		java.net.URI uri = this.metaState.getValue();
+		org.alice.ide.uricontent.UriProjectLoader uri = this.metaState.getValue();
 		if( uri != null ) {
 			return IS_GOOD_TO_GO_STATUS;
 		} else {
@@ -158,13 +148,13 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		}
 	}
 
-	private final org.lgna.croquet.meta.event.MetaStateValueListener<java.net.URI> metaUriListener = new org.lgna.croquet.meta.event.MetaStateValueListener<java.net.URI>() {
-		public void metaStateValueChanged( java.net.URI prevValue, java.net.URI nextValue ) {
+	private final org.lgna.croquet.meta.event.MetaStateValueListener<org.alice.ide.uricontent.UriProjectLoader> metaUriListener = new org.lgna.croquet.meta.event.MetaStateValueListener<org.alice.ide.uricontent.UriProjectLoader>() {
+		public void metaStateValueChanged( org.alice.ide.uricontent.UriProjectLoader prevValue, org.alice.ide.uricontent.UriProjectLoader nextValue ) {
 			handleMetaStateValueChanged( nextValue );
 		}
 	};
 
-	private void handleMetaStateValueChanged( java.net.URI uri ) {
+	private void handleMetaStateValueChanged( org.alice.ide.uricontent.UriProjectLoader uri ) {
 		if( this.sideSubComposite != null ) {
 			this.sideSubComposite.handleMetaStateValueChanged( uri );
 		}
@@ -173,7 +163,6 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		this.refresh();
-		this.mapUriToUriProjectLoader.clear();
 		if( this.sideSubComposite != null ) {
 			this.metaState.pushActivation( completionStep );
 			this.metaState.addMetaStateValueListener( this.metaUriListener );

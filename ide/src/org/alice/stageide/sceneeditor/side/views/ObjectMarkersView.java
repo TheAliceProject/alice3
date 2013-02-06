@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,16 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.sceneeditor.side.views;
 
-package org.alice.stageide.sceneeditor.side;
-
-public class ObjectPropertiesTab extends SideTab<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
-	public ObjectPropertiesTab() {
-		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ), true );
-	}
-
-	@Override
-	protected org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel createView() {
-		return new org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel();
+/**
+ * @author Dennis Cosgrove
+ */
+public class ObjectMarkersView extends MarkersView {
+	public ObjectMarkersView( org.alice.stageide.sceneeditor.side.ObjectMarkersToolPalette composite ) {
+		super( composite );
 	}
 }

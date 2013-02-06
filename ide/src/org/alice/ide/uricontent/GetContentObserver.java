@@ -51,4 +51,6 @@ public interface GetContentObserver<T> {
 	public void workEnded();
 
 	public void completed( T content );
+
+	public void failed( Throwable t );
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.typecontext.components;
+package org.alice.stageide.sceneeditor.side.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneTypeView extends org.lgna.croquet.components.BorderPanel {
-	public SceneTypeView( org.alice.stageide.typecontext.SceneTypeComposite composite ) {
+public abstract class MarkersView extends org.lgna.croquet.components.BorderPanel {
+	private class MarkerListView extends org.lgna.croquet.components.DefaultRadioButtons<org.lgna.project.ast.UserField> {
+		public MarkerListView( org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> model ) {
+			super( model, true );
+		}
+
+		@Override
+		protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState itemSelectedState ) {
+			itemSelectedState.setIconForBothTrueAndFalse( org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getIconForMarkerField( item ) );
+			org.lgna.croquet.components.BooleanStateButton<?> rv = new org.lgna.croquet.components.PushButton( itemSelectedState );
+			rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+			return rv;
+		}
+	}
+
+	public MarkersView( org.alice.stageide.sceneeditor.side.MarkersToolPalette<?> composite ) {
 		super( composite );
+		this.addPageStartComponent( new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.LEADING,
+				composite.getMoveToMarkerOperation().createButton(),
+				composite.getMoveMarkerToOperation().createButton() ) );
+		this.addCenterComponent( new MarkerListView( composite.getMarkerListState() ) );
+		this.addPageEndComponent( new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.LEADING,
+				composite.getAddOperation().createButton() ) );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
 	}
 }

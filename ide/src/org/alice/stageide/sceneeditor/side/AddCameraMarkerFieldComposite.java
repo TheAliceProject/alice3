@@ -62,4 +62,9 @@ public class AddCameraMarkerFieldComposite extends AddMarkerFieldComposite {
 	protected org.lgna.story.Color getInitialMarkerColor() {
 		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getColorForNewCameraMarker();
 	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 getInitialMarkerTransform() {
+		return org.alice.stageide.StageIDE.getActiveInstance().getSceneEditor().getTransformForNewCameraMarker();
+	}
 }

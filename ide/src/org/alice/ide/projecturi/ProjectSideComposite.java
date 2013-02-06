@@ -55,7 +55,7 @@ public class ProjectSideComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return new org.alice.ide.projecturi.views.ProjectSideView( this );
 	}
 
-	/* package-private */void handleMetaStateValueChanged( java.net.URI uri ) {
+	/* package-private */void handleMetaStateValueChanged( org.alice.ide.uricontent.UriProjectLoader uri ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "handleMetaStateValueChanged", uri );
 	}
 }
