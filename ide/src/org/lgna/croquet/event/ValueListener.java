@@ -40,11 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.meta.event;
+package org.lgna.croquet.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface MetaStateValueListener<T> {
-	public void metaStateValueChanged( T prevValue, T nextValue );
+public interface ValueListener<T> {
+	public void valueChanged( ValueEvent<T> e );
 }
