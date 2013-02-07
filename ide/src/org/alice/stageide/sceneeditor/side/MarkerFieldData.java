@@ -51,7 +51,22 @@ public abstract class MarkerFieldData extends org.alice.ide.ast.data.FilteredLis
 		}
 
 		public void changed( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
-			MarkerFieldData.this.setListProperty( org.alice.ide.IDE.getActiveInstance().getSceneType().fields );
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+			org.lgna.project.ast.NamedUserType sceneType;
+			if( ide != null ) {
+				sceneType = ide.getSceneType();
+			} else {
+				sceneType = null;
+			}
+
+			org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserField> fieldProperty;
+			if( sceneType != null ) {
+				fieldProperty = sceneType.fields;
+			} else {
+				fieldProperty = null;
+			}
+
+			MarkerFieldData.this.setListProperty( fieldProperty );
 		}
 	};
 

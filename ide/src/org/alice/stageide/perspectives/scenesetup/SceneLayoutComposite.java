@@ -46,25 +46,15 @@ package org.alice.stageide.perspectives.scenesetup;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneLayoutComposite extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.BorderPanel> {
+public final class SceneLayoutComposite extends org.lgna.croquet.SplitComposite {
 	public SceneLayoutComposite() {
-		super( java.util.UUID.fromString( "c1bb78a0-814c-4658-93b5-2a00c058b756" ) );
+		super( java.util.UUID.fromString( "c1bb78a0-814c-4658-93b5-2a00c058b756" ), new org.alice.ide.sceneeditor.SceneComposite(), new org.alice.stageide.sceneeditor.side.SideComposite() );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.BorderPanel createView() {
-		return new org.lgna.croquet.components.BorderPanel();
-	}
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.getView().addCenterComponent( org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance() );
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		this.getView().removeAllComponents();
-		super.handlePostDeactivation();
+	protected org.lgna.croquet.components.SplitPane createView() {
+		org.lgna.croquet.components.SplitPane rv = this.createHorizontalSplitPane();
+		rv.setResizeWeight( 1.0 );
+		return rv;
 	}
 }

@@ -67,8 +67,8 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 				CommentLine.this.handleUpdate();
 			}
 		} );
-		this.setBackground( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.Comment.class ) );
-		this.setForeground( org.alice.ide.IDE.getActiveInstance().getTheme().getCommentForegroundColor() );
+		this.setBackground( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.Comment.class ) );
+		this.setForeground( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getCommentForegroundColor() );
 		//this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
 		this.handleUpdate();
 		if( org.alice.ide.IDE.getActiveInstance().getCommentThatWantsFocus() == this.comment ) {

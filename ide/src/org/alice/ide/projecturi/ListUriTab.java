@@ -55,7 +55,7 @@ public abstract class ListUriTab extends SelectUriTab {
 	public abstract String getTextForZeroProjects();
 
 	@Override
-	public java.net.URI getSelectedUri() {
-		return this.getListSelectionState().getValue();
+	public org.alice.ide.uricontent.UriProjectLoader getSelectedUri() {
+		return org.alice.ide.uricontent.UriProjectLoader.createInstance( this.getListSelectionState().getValue() );
 	}
 }

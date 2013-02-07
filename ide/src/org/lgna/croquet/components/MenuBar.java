@@ -126,6 +126,11 @@ public class MenuBar extends View<javax.swing.JMenuBar, org.lgna.croquet.MenuBar
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( cascadeMenuItem );
 	}
 
+	public void addCascadeCombo( org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem, org.lgna.croquet.components.CascadeMenu cascadeMenu ) {
+		this.addCascadeMenuItem( cascadeMenuItem );
+		this.addCascadeMenu( cascadeMenu );
+	}
+
 	public void addCheckBoxMenuItem( CheckBoxMenuItem checkBoxMenuItem ) {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( checkBoxMenuItem );
 	}

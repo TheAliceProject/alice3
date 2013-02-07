@@ -46,16 +46,8 @@ package org.alice.ide.typehierarchy;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeHierarchyComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.typehierarchy.components.TypeHierarchyView> {
-	private static class SingletonHolder {
-		private static TypeHierarchyComposite instance = new TypeHierarchyComposite();
-	}
-
-	public static TypeHierarchyComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private TypeHierarchyComposite() {
+public final class TypeHierarchyComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.typehierarchy.components.TypeHierarchyView> {
+	public TypeHierarchyComposite() {
 		super( java.util.UUID.fromString( "fb9a3554-8ee3-478a-8773-5d73d26e39cf" ) );
 	}
 

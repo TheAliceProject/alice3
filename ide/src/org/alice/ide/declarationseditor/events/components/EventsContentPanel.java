@@ -98,7 +98,7 @@ public class EventsContentPanel extends org.alice.ide.codedrop.CodePanelWithDrop
 		this.code = code;
 		this.rootPane = new RootStatementListPropertyPane( (org.lgna.project.ast.UserCode)code );
 		this.addCenterComponent( this.rootPane );
-		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getProcedureColor();
+		java.awt.Color color = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getProcedureColor();
 		this.rootPane.setBackgroundColor( color );
 		this.setBackgroundColor( color );
 	}

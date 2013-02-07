@@ -91,8 +91,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		this.promptForLicenseAgreements();
-
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 	}
 
 	public abstract ApiConfigurationManager getApiConfigurationManager();
@@ -100,6 +98,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 		this.getPerspectiveState().addValueListener( this.perspectiveListener );
 	}
 
@@ -111,7 +110,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return new DefaultTheme();
 	}
 
-	public Theme getTheme() {
+	public final Theme getTheme() {
 		if( this.theme != null ) {
 			//pass
 		} else {
@@ -360,8 +359,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 						i--;
 						org.lgna.project.ast.UserField field = sceneType.fields.get( i );
 						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-							org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
-							break;
+							if( getApiConfigurationManager().isInstanceFactoryDesiredForType( field.getValueType() ) ) {
+								org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+								break;
+							}
 						}
 					}
 				}
@@ -372,6 +373,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.CodePerspective.getInstance() );
 		super.setProject( project );
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {

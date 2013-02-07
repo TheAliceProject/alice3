@@ -88,6 +88,11 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		}
 
 		@Override
+		protected String getSubKeyForLocalization() {
+			return "previous";
+		}
+
+		@Override
 		protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			WizardDialogCoreComposite mainComposite = this.getDialogCoreComposite();
@@ -101,6 +106,11 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	private static class NextOperation extends InternalWizardDialogOperation {
 		public NextOperation( WizardDialogCoreComposite composite ) {
 			super( java.util.UUID.fromString( "e1239539-1eb0-411d-b808-947d0b1c1e94" ), composite );
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return "next";
 		}
 
 		@Override

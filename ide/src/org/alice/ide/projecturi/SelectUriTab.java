@@ -51,7 +51,7 @@ public abstract class SelectUriTab extends org.lgna.croquet.SimpleTabComposite<o
 		super( migrationId, IsCloseable.FALSE );
 	}
 
-	public abstract java.net.URI getSelectedUri();
+	public abstract org.alice.ide.uricontent.UriProjectLoader getSelectedUri();
 
 	protected abstract void refresh();
 

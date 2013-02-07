@@ -47,9 +47,9 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "selected type:" );
 	private final org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.Label snapshotLabel = new org.lgna.croquet.components.Label();
-	private final org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
-			SelectedTypeView.this.handleTypeStateChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+			SelectedTypeView.this.handleTypeStateChanged( e.getNextValue() );
 		}
 	};
 
@@ -78,12 +78,12 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
 		super.handleAddedTo( parent );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeMetaStateValueListener( this.typeListener, null );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeMetaStateValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
 }

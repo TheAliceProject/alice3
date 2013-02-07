@@ -48,6 +48,6 @@ package org.alice.ide.member.views;
 public class FunctionTabView extends MemberTabView {
 	public FunctionTabView( org.alice.ide.member.FunctionTabComposite composite ) {
 		super( composite );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getFunctionColor() );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getFunctionColor() );
 	}
 }

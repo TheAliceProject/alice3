@@ -64,13 +64,17 @@ public class SnapState
 	{
 	}
 
+	private static org.alice.stageide.sceneeditor.side.SideComposite getSideComposite() {
+		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance();
+	}
+
 	private org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
-		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getSnapDetailsToolPaletteCoreComposite();
+		return getSideComposite().getSnapDetailsToolPaletteCoreComposite();
 	}
 
 	public BooleanState getIsSnapEnabledState()
 	{
-		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance().getIsSnapEnabledState();
+		return getSideComposite().getIsSnapEnabledState();
 	}
 
 	public BooleanState getIsSnapToGroundEnabledState()

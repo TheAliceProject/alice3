@@ -76,11 +76,11 @@ public class FileSystemTab extends SelectUriTab {
 	}
 
 	@Override
-	public java.net.URI getSelectedUri() {
+	public org.alice.ide.uricontent.UriProjectLoader getSelectedUri() {
 		String path = this.pathState.getValue();
 		java.io.File file = new java.io.File( path );
 		if( file.exists() ) {
-			return file.toURI();
+			return new org.alice.ide.uricontent.FileProjectLoader( file );
 		} else {
 			return null;
 		}

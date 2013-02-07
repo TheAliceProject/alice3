@@ -46,9 +46,30 @@ package test;
  * @author Dennis Cosgrove
  */
 public class ThoughtBubbleTest {
-	private static java.awt.Shape createBubbleAround( java.awt.Rectangle r ) {
-		int length = ( r.width * 2 ) + ( r.height * 2 );
-		return r;
+	private static java.awt.geom.Ellipse2D createScaledOffsetRectangle2D( java.awt.geom.Rectangle2D.Double r, double offsetPortionX, double offsetPortionY, double scaleX, double scaleY ) {
+		return new java.awt.geom.Ellipse2D.Double( r.x + ( offsetPortionX * r.width ), r.y + ( offsetPortionY * r.height ), r.width * scaleX, r.height * scaleY );
+	}
+
+	private static java.awt.geom.Area createRotatedAboutCenterArea( java.awt.geom.Ellipse2D e, double theta ) {
+		return new java.awt.geom.Area( e ).createTransformedArea( java.awt.geom.AffineTransform.getRotateInstance( theta, e.getCenterX(), e.getCenterY() ) );
+	}
+
+	private static java.awt.Shape createBubbleAround( java.awt.geom.Rectangle2D.Double r ) {
+		java.awt.geom.Ellipse2D rightEllipse = createScaledOffsetRectangle2D( r, 0.45, -0.05, 0.85, 1.25 );
+		java.awt.geom.Ellipse2D topEllipse = createScaledOffsetRectangle2D( r, 0.1, -0.4, 0.8, 1.2 );
+		java.awt.geom.Ellipse2D leftEllipse = createScaledOffsetRectangle2D( r, -0.2, -0.1, 0.7, 0.9 );
+		java.awt.geom.Ellipse2D bottomLeftEllipse = createScaledOffsetRectangle2D( r, -0.1, 0.15, 0.7, 1.2 );
+		java.awt.geom.Ellipse2D bottomRightEllipse = createScaledOffsetRectangle2D( r, 0.15, 0.45, 0.8, 1.0 );
+
+		java.awt.geom.AffineTransform m = java.awt.geom.AffineTransform.getRotateInstance( 0.1, topEllipse.getCenterX(), topEllipse.getCenterY() );
+
+		java.awt.geom.Area rv = new java.awt.geom.Area( r );
+		rv.add( createRotatedAboutCenterArea( rightEllipse, -0.1 ) );
+		rv.add( createRotatedAboutCenterArea( topEllipse, -0.05 ) );
+		rv.add( new java.awt.geom.Area( leftEllipse ) );
+		rv.add( createRotatedAboutCenterArea( bottomLeftEllipse, -0.1 ) );
+		rv.add( createRotatedAboutCenterArea( bottomRightEllipse, 0.1 ) );
+		return rv;
 	}
 
 	public static void main( String[] args ) {
@@ -66,27 +87,38 @@ public class ThoughtBubbleTest {
 				if( ( p0 != null ) && ( p1 != null ) ) {
 					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
-					g2.draw( createBubbleAround( new java.awt.Rectangle( p0.x, p0.y, p1.x - p0.x, p1.y - p0.y ) ) );
+					java.awt.geom.Rectangle2D.Double bounds = new java.awt.geom.Rectangle2D.Double( p0.x, p0.y, p1.x - p0.x, p1.y - p0.y );
+					g2.setPaint( java.awt.Color.RED );
+					g2.fill( bounds );
+					g2.setPaint( java.awt.Color.BLACK );
+					g2.draw( createBubbleAround( bounds ) );
 				}
 			}
 		}
 
 		final JBubble a = new JBubble();
 
-		a.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
+		a.addMouseListener( new java.awt.event.MouseAdapter() {
+			@Override
+			public void mousePressed( java.awt.event.MouseEvent e ) {
+				a.p0 = e.getPoint();
+				a.p1 = null;
+				a.repaint();
+			}
+		} );
+		a.addMouseMotionListener( new java.awt.event.MouseMotionAdapter() {
+			@Override
 			public void mouseDragged( java.awt.event.MouseEvent e ) {
 				a.p1 = e.getPoint();
 				a.repaint();
 			}
-
-			public void mouseMoved( java.awt.event.MouseEvent e ) {
-
-			}
 		} );
+
+		a.p1 = new java.awt.Point( a.p0.x + 600, a.p0.y + 40 );
 
 		testCroquet.getFrame().getContentPanel().getAwtComponent().add( a );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
-		testCroquet.getFrame().setSize( 320, 240 );
+		testCroquet.getFrame().setSize( 800, 450 );
 		testCroquet.getFrame().setVisible( true );
 	}
 }

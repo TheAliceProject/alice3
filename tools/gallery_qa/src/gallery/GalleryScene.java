@@ -46,35 +46,33 @@ package gallery;
 import gallery.croquet.IsVisualizationShowingState;
 
 import org.lgna.croquet.State;
-import org.lgna.story.Camera;
+import org.lgna.story.SCamera;
 import org.lgna.story.Color;
-import org.lgna.story.Cylinder;
-import org.lgna.story.Ground;
+import org.lgna.story.SCylinder;
+import org.lgna.story.SGround;
 import org.lgna.story.ImplementationAccessor;
-import org.lgna.story.JointedModel;
-import org.lgna.story.Model;
+import org.lgna.story.SJointedModel;
+import org.lgna.story.SModel;
 import org.lgna.story.MoveDirection;
-import org.lgna.story.Scene;
-import org.lgna.story.Sun;
+import org.lgna.story.SScene;
 import org.lgna.story.TurnDirection;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryScene extends Scene {
+public class GalleryScene extends SScene {
 	
-	private final Sun sun = new Sun();
-	private final Ground snow = new Ground();
-	private final Camera camera;
-	private final Cylinder measuringStick = new Cylinder();
-	private Model model;
+	private final SGround snow = new SGround();
+	private final SCamera camera;
+	private final SCylinder measuringStick = new SCylinder();
+	private SModel model;
 	private boolean shouldShow;
-	public GalleryScene( Camera camera ) {
+	public GalleryScene( SCamera camera ) {
 		this.camera = camera;
 		IsVisualizationShowingState.getInstance().addValueListener( this.isVizShowingListener );
 	}
 	
-	public void setModel(JointedModel model){
+	public void setModel(SJointedModel model){
 		if( this.model != null ) {
 			this.model.setVehicle( null );
 		}
@@ -116,10 +114,9 @@ public class GalleryScene extends Scene {
 		measuringStick.move( MoveDirection.LEFT, 1 );
 		measuringStick.setPaint( Color.BLACK );
 		this.snow.setVehicle( this );
-		this.sun.setVehicle( this );
 		this.camera.setVehicle( this );
 		this.measuringStick.setVehicle( this );
-		this.snow.setPaint( Ground.SurfaceAppearance.SNOW );
+		this.snow.setPaint( SGround.SurfaceAppearance.SNOW );
 
 		//camera vantage point taken care of by camera navigator
 		//this.camera.moveAndOrientToAGoodVantagePointOf( this.ogre );
@@ -143,7 +140,7 @@ public class GalleryScene extends Scene {
 		}
 	}
 
-	public Model getModel() {
+	public SModel getModel() {
 		return model;
 	}
 }

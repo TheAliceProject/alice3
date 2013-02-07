@@ -50,20 +50,20 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 	public TypeDeclarationView( org.alice.ide.declarationseditor.TypeComposite composite ) {
 		super( composite );
 		org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)composite.getDeclaration();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		this.setBackgroundColor( ide.getTheme().getMutedTypeColor() );
+		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+		this.setBackgroundColor( theme.getMutedTypeColor() );
 
 		org.lgna.croquet.components.ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();
-		constructorsToolPalette.setBackgroundColor( ide.getTheme().getConstructorColor() );
+		constructorsToolPalette.setBackgroundColor( theme.getConstructorColor() );
 
 		org.lgna.croquet.components.ToolPaletteView proceduresToolPalette = composite.getProceduresToolPaletteCoreComposite().getOuterComposite().getView();
-		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
+		proceduresToolPalette.setBackgroundColor( theme.getProcedureColor() );
 
 		org.lgna.croquet.components.ToolPaletteView functionsToolPalette = composite.getFunctionsToolPaletteCoreComposite().getOuterComposite().getView();
-		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
+		functionsToolPalette.setBackgroundColor( theme.getFunctionColor() );
 
 		org.lgna.croquet.components.ToolPaletteView fieldsToolPalette = composite.getFieldsToolPaletteCoreComposite().getOuterComposite().getView();
-		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );
+		fieldsToolPalette.setBackgroundColor( theme.getFieldColor() );
 
 		for( org.lgna.croquet.components.ToolPaletteView toolPalette : new org.lgna.croquet.components.ToolPaletteView[] { constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette } ) {
 			toolPalette.getPageStartComponent().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
