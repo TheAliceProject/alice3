@@ -42,11 +42,8 @@
  */
 package org.lgna.ik.poser.view;
 
-import org.lgna.croquet.components.BorderPanel;
-import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.ItemDropDown;
 import org.lgna.croquet.components.MigPanel;
-import org.lgna.croquet.components.ScrollPane;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.JointSelectionSphereState;
 import org.lgna.ik.poser.PoserControlComposite;
@@ -57,61 +54,39 @@ import org.lgna.ik.poser.PoserControlComposite;
 public class PoserControlView extends MigPanel {
 
 	public PoserControlView( PoserControlComposite poserControlComposite ) {
-		super( poserControlComposite, "debug" );
-		//		GridPanel panel = GridPanel.createGridPane( 2, 2 );
-		GridPanel bottomPanel = GridPanel.createGridPane( 1, 2 );
+		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]10[grow 0]0[grow 0]0[grow 0]0[grow 0]10[]10[grow 0]0" );
+		this.addComponent( poserControlComposite.getRightArmLabel().createLabel() );
+		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
 
-		BorderPanel raPanel = new BorderPanel();
-		raPanel.addPageStartComponent( poserControlComposite.getRightArmLabel().createLabel() );
 		JointSelectionSphereState rightArmAnchor = poserControlComposite.getRightArmAnchor();
 		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raDropDown = rightArmAnchor.createItemDropDown();
-		raPanel.addCenterComponent( raDropDown );
+		this.addComponent( raDropDown );
 
-		BorderPanel laPanel = new BorderPanel();
-		laPanel.addPageStartComponent( poserControlComposite.getLeftArmLabel().createLabel() );
 		JointSelectionSphereState leftArmAnchor = poserControlComposite.getLeftArmAnchor();
 		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laDropDown = leftArmAnchor.createItemDropDown();
-		laPanel.addCenterComponent( laDropDown );
+		this.addComponent( laDropDown, "wrap" );
 
-		BorderPanel rlPanel = new BorderPanel();
-		rlPanel.addPageStartComponent( poserControlComposite.getRightLegLabel().createLabel() );
+		this.addComponent( poserControlComposite.getRightLegLabel().createLabel() );
+
+		this.addComponent( poserControlComposite.getLeftLegLabel().createLabel(), "wrap" );
+
 		JointSelectionSphereState rightLegAnchor = poserControlComposite.getRightLegAnchor();
 		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlDropDown = rightLegAnchor.createItemDropDown();
-		rlPanel.addCenterComponent( rlDropDown );
-
-		BorderPanel llPanel = new BorderPanel();
-		llPanel.addPageStartComponent( poserControlComposite.getLeftLegLabel().createLabel() );
+		this.addComponent( rlDropDown );
 		JointSelectionSphereState leftLegAnchor = poserControlComposite.getLeftLegAnchor();
 		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
-		llPanel.addCenterComponent( llDropDown );
+		this.addComponent( llDropDown, "wrap" );
 
-		//		panel.addComponent( raPanel );
-		//		panel.addComponent( laPanel );
-		//		panel.addComponent( rlPanel );
-		//		panel.addComponent( llPanel );
+		this.addComponent( poserControlComposite.getSavePoseOperation().createButton(), "span 2, wrap" );
 
-		bottomPanel.addComponent( poserControlComposite.getSavePoseOperation().createButton() );
-		bottomPanel.addComponent( poserControlComposite.getRunAnimationOperation().createButton() );
+		this.addComponent( poserControlComposite.getDeselectPoseOperation().createButton(), "span 2, wrap" );
+		this.addComponent( poserControlComposite.getDeletePoseOperation().createButton(), "span 2, wrap" );
+		this.addComponent( poserControlComposite.getSaveUpdatedPoseOperation().createButton(), "span 2, wrap" );
 
-		BorderPanel listPanel = new BorderPanel();
-		listPanel.addPageStartComponent( poserControlComposite.getDeselectPoseOperation().createButton() );
-		listPanel.addPageEndComponent( GridPanel.createGridPane( 1, 2, poserControlComposite.getDeletePoseOperation().createButton(), poserControlComposite.getSaveUpdatedPoseOperation().createButton() ) );
-		listPanel.addCenterComponent( new ScrollPane( poserControlComposite.getPosesList().createVerticalDefaultRadioButtons() ) );
+		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = poserControlComposite.getPosesList().createVerticalDefaultRadioButtons();
+		radioButtons.makeStandOut();
+		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
 
-		//		this.addPageStartComponent( panel );
-		this.addComponent( raPanel );
-		this.addComponent( laPanel, "wrap" );
-		this.addComponent( rlPanel );
-		this.addComponent( llPanel, "wrap" );
-
-		this.addComponent( poserControlComposite.getDeselectPoseOperation().createButton(), "span 2, grow, wrap" );
-		this.addComponent( new ScrollPane( poserControlComposite.getPosesList().createVerticalDefaultRadioButtons() ),
-				"cell 0 3 2 6, growy" );
-		//	"height 100:100:100, growy, span 2, wrap" );
-		//		this.addComponent( listPanel, "span 2, wrap" );
-		//		this.addComponent( new ScrollPane( poserControlComposite.getPosesList().createVerticalDefaultRadioButtons() ) );
-		this.addComponent( bottomPanel, "span 2, dock south" );
-		//		this.addCenterComponent( listPanel );
-		//		this.addPageEndComponent( bottomPanel );
+		this.addComponent( poserControlComposite.getRunAnimationOperation().createButton(), "wrap" );
 	}
 }
