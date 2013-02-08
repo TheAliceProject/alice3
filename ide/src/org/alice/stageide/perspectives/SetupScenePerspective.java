@@ -64,7 +64,7 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPer
 	}
 
 	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		return null;
+		return org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite.getInstance();
 	}
 
 	@Override

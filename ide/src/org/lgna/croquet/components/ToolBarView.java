@@ -45,9 +45,10 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class ToolBarView extends LineAxisPanel {
+public class ToolBarView extends MigPanel {
 	public ToolBarView( org.lgna.croquet.ToolBarComposite composite ) {
-		super( composite );
+		super( composite, "insets 0 0 2 0, gap 0", "", "fill" );
+		String constraints = "";
 		for( org.lgna.croquet.Model model : composite.getSubModels() ) {
 			JComponent<?> component;
 			if( model != null ) {
@@ -60,15 +61,17 @@ public class ToolBarView extends LineAxisPanel {
 					button.tightenUpMargin();
 					component = button;
 				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model );
 					component = null;
 				}
+				if( component != null ) {
+					this.addComponent( component, constraints );
+				} else {
+
+				}
+				constraints = "";
 			} else {
-				component = BoxUtilities.createHorizontalSliver( 4 );
-			}
-			if( component != null ) {
-				this.addComponent( component );
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model );
+				constraints = "gap 10";
 			}
 		}
 

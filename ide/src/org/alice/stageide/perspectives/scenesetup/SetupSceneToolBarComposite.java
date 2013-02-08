@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.history;
+package org.alice.stageide.perspectives.scenesetup;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UndoOperation extends HistoryOperation {
+public class SetupSceneToolBarComposite extends org.lgna.croquet.ToolBarComposite {
 	private static class SingletonHolder {
-		private static UndoOperation instance = new UndoOperation();
+		private static SetupSceneToolBarComposite instance = new SetupSceneToolBarComposite();
 	}
 
-	public static UndoOperation getInstance() {
+	public static SetupSceneToolBarComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private UndoOperation() {
-		super( java.util.UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ) );
-		this.setButtonIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/undo.png" ) ) );
+	private final java.util.List<? extends org.lgna.croquet.Model> subModels;
+
+	private SetupSceneToolBarComposite() {
+		super( java.util.UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
+		this.subModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(),
+				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(),
+				SEPARATOR,
+				org.alice.ide.croquet.models.history.UndoOperation.getInstance(),
+				org.alice.ide.croquet.models.history.RedoOperation.getInstance(),
+				SEPARATOR,
+				org.alice.stageide.run.RunComposite.getInstance().getOperation()
+				) );
 	}
 
 	@Override
-	public boolean isToolBarTextClobbered() {
-		return false;
-	}
-
-	@Override
-	protected void performInternal( org.lgna.croquet.undo.UndoHistory historyManager ) {
-		historyManager.performUndo();
+	public Iterable<? extends org.lgna.croquet.Model> getSubModels() {
+		return this.subModels;
 	}
 }

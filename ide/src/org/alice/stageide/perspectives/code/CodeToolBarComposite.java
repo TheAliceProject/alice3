@@ -59,6 +59,9 @@ public final class CodeToolBarComposite extends org.lgna.croquet.ToolBarComposit
 	private CodeToolBarComposite() {
 		super( java.util.UUID.fromString( "633d89d9-9ddf-470b-a56b-e0169f3ba1d4" ) );
 		this.subModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(),
+				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(),
+				SEPARATOR,
 				org.alice.ide.croquet.models.history.UndoOperation.getInstance(),
 				org.alice.ide.croquet.models.history.RedoOperation.getInstance(),
 				SEPARATOR,

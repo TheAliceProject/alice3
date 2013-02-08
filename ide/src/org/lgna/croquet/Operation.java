@@ -60,6 +60,8 @@ public abstract class Operation extends AbstractCompletionModel {
 
 	private final SwingModel swingModel = new SwingModel();
 
+	private javax.swing.Icon buttonIcon;
+
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
@@ -151,6 +153,14 @@ public abstract class Operation extends AbstractCompletionModel {
 
 	public void setSmallIcon( javax.swing.Icon icon ) {
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+	}
+
+	public javax.swing.Icon getButtonIcon() {
+		return this.buttonIcon;
+	}
+
+	public void setButtonIcon( javax.swing.Icon icon ) {
+		this.buttonIcon = icon;
 	}
 
 	//	public int getMnemonicKey() {
