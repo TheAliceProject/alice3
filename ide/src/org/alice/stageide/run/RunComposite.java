@@ -57,7 +57,7 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	private RunComposite() {
 		super( java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ), org.alice.ide.IDE.RUN_GROUP );
 		//todo: move to localize
-		this.getOperation().setSmallIcon( new org.alice.stageide.run.views.icons.RunIcon() );
+		this.getOperation().setButtonIcon( new org.alice.stageide.run.views.icons.RunIcon() );
 	}
 
 	private transient org.alice.stageide.program.RunProgramContext programContext;

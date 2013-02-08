@@ -62,4 +62,10 @@ public class SaveProjectOperation extends AbstractSaveProjectOperation {
 	protected boolean isPromptNecessary( java.io.File file ) {
 		return ( ( file != null ) && file.canWrite() ) == false;
 	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		//todo?
+		return false;
+	}
 }
