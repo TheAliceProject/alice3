@@ -60,6 +60,11 @@ public class UndoOperation extends HistoryOperation {
 	}
 
 	@Override
+	public boolean isToolBarTextClobbered() {
+		return false;
+	}
+
+	@Override
 	protected void performInternal( org.lgna.croquet.undo.UndoHistory historyManager ) {
 		historyManager.performUndo();
 	}

@@ -40,11 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.meta.event;
+package org.lgna.croquet.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface MetaStateValueListener<T> {
-	public void metaStateValueChanged( T prevValue, T nextValue );
+public class ValueEvent<T> {
+	private final boolean isPreviousValueValid;
+	private final T previousValue;
+	private final T nextValue;
+
+	public static <T> ValueEvent<T> createInstance( T previousValue, T nextValue ) {
+		return new ValueEvent<T>( previousValue, nextValue );
+	}
+
+	public static <T> ValueEvent<T> createInstance( T nextValue ) {
+		return new ValueEvent<T>( nextValue );
+	}
+
+	private ValueEvent( T previousValue, T nextValue ) {
+		this.isPreviousValueValid = true;
+		this.previousValue = previousValue;
+		this.nextValue = nextValue;
+	}
+
+	private ValueEvent( T nextValue ) {
+		this.isPreviousValueValid = false;
+		this.previousValue = null;
+		this.nextValue = nextValue;
+	}
+
+	public boolean isPreviousValueValid() {
+		return this.isPreviousValueValid;
+	}
+
+	public T getPreviousValue() {
+		return this.previousValue;
+	}
+
+	public T getNextValue() {
+		return this.nextValue;
+	}
 }

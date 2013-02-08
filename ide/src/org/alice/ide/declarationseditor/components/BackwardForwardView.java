@@ -52,22 +52,19 @@ public class BackwardForwardView extends org.lgna.croquet.components.MigPanel {
 		// trigger side effect to initialize isEnabled
 		org.alice.ide.declarationseditor.DeclarationCompositeHistory.getInstance();
 
-		int y = 0;
-		int x = 2;
-		javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( y, x, y, x );
-
 		org.lgna.croquet.components.Button backwardButton = org.alice.ide.declarationseditor.BackwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.BackwardCascade.getInstance() );
 		org.lgna.croquet.components.Button forwardButton = org.alice.ide.declarationseditor.ForwardOperation.getInstance().createButtonWithRightClickCascade( org.alice.ide.declarationseditor.ForwardCascade.getInstance() );
 
-		forwardButton.setBorder( border );
+		backwardButton.tightenUpMargin();
+		forwardButton.tightenUpMargin();
 
 		final boolean ARE_CASCADE_BUTTONS_DESIRED = false;
 		if( ARE_CASCADE_BUTTONS_DESIRED ) {
 			org.lgna.croquet.components.PopupButton backwardPopupButton = org.alice.ide.declarationseditor.BackwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 			org.lgna.croquet.components.PopupButton forwardPopupButton = org.alice.ide.declarationseditor.ForwardCascade.getInstance().getRoot().getPopupPrepModel().createPopupButton();
 
-			backwardPopupButton.setBorder( border );
-			forwardPopupButton.setBorder( border );
+			backwardPopupButton.tightenUpMargin();
+			forwardPopupButton.tightenUpMargin();
 
 			org.lgna.croquet.components.BorderPanel backwardPanel = new org.lgna.croquet.components.BorderPanel.Builder()
 					.center( backwardButton )

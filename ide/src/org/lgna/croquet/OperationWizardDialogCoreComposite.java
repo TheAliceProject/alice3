@@ -63,6 +63,10 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		return this.getOperation().getName();
 	}
 
+	public boolean isToolBarTextClobbered() {
+		return true;
+	}
+
 	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
 	}
 

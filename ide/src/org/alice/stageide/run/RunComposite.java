@@ -68,6 +68,11 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	private java.awt.Dimension size = null;
 
 	@Override
+	public boolean isToolBarTextClobbered() {
+		return false;
+	}
+
+	@Override
 	protected GoldenRatioPolicy getGoldenRatioPolicy() {
 		return null;
 	}

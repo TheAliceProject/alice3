@@ -55,17 +55,21 @@ public abstract class PerspectiveApplication extends Application {
 	public void setPerspective( Perspective perspective ) {
 		if( this.perspective != perspective ) {
 			this.perspective = perspective;
-			Composite<?> mainComposite;
 			MenuBarComposite menuBarComposite;
+			ToolBarComposite toolBarComposite;
+			Composite<?> mainComposite;
 			if( this.perspective != null ) {
-				mainComposite = this.perspective.getMainComposite();
 				menuBarComposite = this.perspective.getMenuBarComposite();
+				toolBarComposite = this.perspective.getToolBarComposite();
+				mainComposite = this.perspective.getMainComposite();
 			} else {
-				mainComposite = null;
 				menuBarComposite = null;
+				toolBarComposite = null;
+				mainComposite = null;
 			}
-			this.getFrame().setMainComposite( mainComposite );
 			this.getFrame().setMenuBarComposite( menuBarComposite );
+			this.getFrame().setToolBarComposite( toolBarComposite );
+			this.getFrame().setMainComposite( mainComposite );
 		}
 	}
 }

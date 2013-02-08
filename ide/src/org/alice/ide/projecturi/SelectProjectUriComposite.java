@@ -148,9 +148,9 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		}
 	}
 
-	private final org.lgna.croquet.meta.event.MetaStateValueListener<org.alice.ide.uricontent.UriProjectLoader> metaUriListener = new org.lgna.croquet.meta.event.MetaStateValueListener<org.alice.ide.uricontent.UriProjectLoader>() {
-		public void metaStateValueChanged( org.alice.ide.uricontent.UriProjectLoader prevValue, org.alice.ide.uricontent.UriProjectLoader nextValue ) {
-			handleMetaStateValueChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.alice.ide.uricontent.UriProjectLoader> metaUriListener = new org.lgna.croquet.event.ValueListener<org.alice.ide.uricontent.UriProjectLoader>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.alice.ide.uricontent.UriProjectLoader> e ) {
+			handleMetaStateValueChanged( e.getNextValue() );
 		}
 	};
 
@@ -165,7 +165,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 		this.refresh();
 		if( this.sideSubComposite != null ) {
 			this.metaState.pushActivation( completionStep );
-			this.metaState.addMetaStateValueListener( this.metaUriListener );
+			this.metaState.addValueListener( this.metaUriListener );
 		}
 		super.handlePreShowDialog( completionStep );
 	}
@@ -173,7 +173,7 @@ public final class SelectProjectUriComposite extends org.lgna.croquet.ValueCreat
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		if( this.sideSubComposite != null ) {
-			this.metaState.removeMetaStateValueListener( this.metaUriListener );
+			this.metaState.removeValueListener( this.metaUriListener );
 			this.metaState.popActivation();
 		}
 		super.handlePostHideDialog( completionStep );
