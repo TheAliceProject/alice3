@@ -91,6 +91,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 	}
 
+	public boolean isToolBarTextClobbered() {
+		return true;
+	}
+
 	//	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
 	//		return "Press " + this.getTutorialNoteText( step, userInformation );
 	//	}

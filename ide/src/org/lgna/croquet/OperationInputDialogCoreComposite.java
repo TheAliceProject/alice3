@@ -63,6 +63,10 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 		return this.getOperation().getName();
 	}
 
+	public boolean isToolBarTextClobbered() {
+		return true;
+	}
+
 	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
 	}
 

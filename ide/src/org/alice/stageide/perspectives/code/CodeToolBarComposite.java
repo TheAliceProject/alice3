@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.perspectives;
+package org.alice.stageide.perspectives.code;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPerspective {
+public final class CodeToolBarComposite extends org.lgna.croquet.ToolBarComposite {
 	private static class SingletonHolder {
-		private static SetupScenePerspective instance = new SetupScenePerspective();
+		private static CodeToolBarComposite instance = new CodeToolBarComposite();
 	}
 
-	public static SetupScenePerspective getInstance() {
+	public static CodeToolBarComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ) );
-	}
+	private final java.util.List<? extends org.lgna.croquet.Model> subModels;
 
-	public org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite getMainComposite() {
-		return org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance();
-	}
-
-	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		return null;
-	}
-
-	@Override
-	public org.lgna.croquet.components.TrackableShape getRenderWindow() {
-		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
+	private CodeToolBarComposite() {
+		super( java.util.UUID.fromString( "633d89d9-9ddf-470b-a56b-e0169f3ba1d4" ) );
+		this.subModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+				org.alice.ide.croquet.models.history.UndoOperation.getInstance(),
+				org.alice.ide.croquet.models.history.RedoOperation.getInstance(),
+				SEPARATOR,
+				org.alice.stageide.run.RunComposite.getInstance().getOperation()
+				) );
 	}
 
 	@Override
-	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
-		return null;
-	}
-
-	@Override
-	protected void addPotentialDropReceptors( java.util.List<org.lgna.croquet.DropReceptor> out, org.alice.ide.croquet.models.IdeDragModel dragModel ) {
+	public Iterable<? extends org.lgna.croquet.Model> getSubModels() {
+		return this.subModels;
 	}
 }

@@ -312,17 +312,35 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	}
 
 	private org.lgna.croquet.MenuBarComposite menuBarComposite;
+	private org.lgna.croquet.ToolBarComposite toolBarComposite;
 	private org.lgna.croquet.Composite<?> mainComposite;
 
 	public org.lgna.croquet.Composite<?> getMainComposite() {
 		return this.mainComposite;
 	}
 
+	public void setToolBarComposite( org.lgna.croquet.ToolBarComposite toolBarComposite ) {
+		if( this.toolBarComposite != toolBarComposite ) {
+			synchronized( this.getAwtComponent().getTreeLock() ) {
+				if( this.toolBarComposite != null ) {
+					this.getContentPanel().removeComponent( this.toolBarComposite.getView() );
+					this.toolBarComposite.handlePostDeactivation();
+				}
+				this.toolBarComposite = toolBarComposite;
+				if( this.toolBarComposite != null ) {
+					this.toolBarComposite.handlePreActivation();
+					this.getContentPanel().addPageStartComponent( this.toolBarComposite.getView() );
+				}
+			}
+			this.getContentPanel().revalidateAndRepaint();
+		}
+	}
+
 	public void setMainComposite( org.lgna.croquet.Composite<?> mainComposite ) {
 		if( this.mainComposite != mainComposite ) {
 			synchronized( this.getAwtComponent().getTreeLock() ) {
-				this.getContentPanel().removeAllComponents();
 				if( this.mainComposite != null ) {
+					this.getContentPanel().removeComponent( this.mainComposite.getView() );
 					this.mainComposite.handlePostDeactivation();
 				}
 				this.mainComposite = mainComposite;
