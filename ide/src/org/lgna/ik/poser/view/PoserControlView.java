@@ -45,6 +45,8 @@ package org.lgna.ik.poser.view;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.ItemDropDown;
+import org.lgna.croquet.components.MigPanel;
+import org.lgna.croquet.components.ScrollPane;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.JointSelectionSphereState;
 import org.lgna.ik.poser.PoserControlComposite;
@@ -52,11 +54,12 @@ import org.lgna.ik.poser.PoserControlComposite;
 /**
  * @author Matt May
  */
-public class PoserControlView extends BorderPanel {
+public class PoserControlView extends MigPanel {
 
 	public PoserControlView( PoserControlComposite poserControlComposite ) {
-		super( poserControlComposite );
-		GridPanel panel = GridPanel.createGridPane( 2, 2 );
+		super( poserControlComposite, "debug" );
+		//		GridPanel panel = GridPanel.createGridPane( 2, 2 );
+		GridPanel bottomPanel = GridPanel.createGridPane( 1, 2 );
 
 		BorderPanel raPanel = new BorderPanel();
 		raPanel.addPageStartComponent( poserControlComposite.getRightArmLabel().createLabel() );
@@ -82,13 +85,33 @@ public class PoserControlView extends BorderPanel {
 		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
 		llPanel.addCenterComponent( llDropDown );
 
-		panel.addComponent( raPanel );
-		panel.addComponent( laPanel );
-		panel.addComponent( rlPanel );
-		panel.addComponent( llPanel );
+		//		panel.addComponent( raPanel );
+		//		panel.addComponent( laPanel );
+		//		panel.addComponent( rlPanel );
+		//		panel.addComponent( llPanel );
 
-		this.addPageStartComponent( panel );
-		this.addComponent( poserControlComposite.getDumpPose().createButton(), Constraint.PAGE_END );
+		bottomPanel.addComponent( poserControlComposite.getSavePoseOperation().createButton() );
+		bottomPanel.addComponent( poserControlComposite.getRunAnimationOperation().createButton() );
+
+		BorderPanel listPanel = new BorderPanel();
+		listPanel.addPageStartComponent( poserControlComposite.getDeselectPoseOperation().createButton() );
+		listPanel.addPageEndComponent( GridPanel.createGridPane( 1, 2, poserControlComposite.getDeletePoseOperation().createButton(), poserControlComposite.getSaveUpdatedPoseOperation().createButton() ) );
+		listPanel.addCenterComponent( new ScrollPane( poserControlComposite.getPosesList().createVerticalDefaultRadioButtons() ) );
+
+		//		this.addPageStartComponent( panel );
+		this.addComponent( raPanel );
+		this.addComponent( laPanel, "wrap" );
+		this.addComponent( rlPanel );
+		this.addComponent( llPanel, "wrap" );
+
+		this.addComponent( poserControlComposite.getDeselectPoseOperation().createButton(), "span 2, grow, wrap" );
+		this.addComponent( new ScrollPane( poserControlComposite.getPosesList().createVerticalDefaultRadioButtons() ),
+				"cell 0 3 2 6, growy" );
+		//	"height 100:100:100, growy, span 2, wrap" );
+		//		this.addComponent( listPanel, "span 2, wrap" );
+		//		this.addComponent( new ScrollPane( poserControlComposite.getPosesList().createVerticalDefaultRadioButtons() ) );
+		this.addComponent( bottomPanel, "span 2, dock south" );
+		//		this.addCenterComponent( listPanel );
+		//		this.addPageEndComponent( bottomPanel );
 	}
-
 }

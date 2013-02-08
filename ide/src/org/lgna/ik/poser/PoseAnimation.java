@@ -42,56 +42,43 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.story.resources.JointId;
+import org.lgna.story.SBiped;
+import org.lgna.story.implementation.ProgramImp;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.animation.AnimationThread;
 
 /**
  * @author Matt May
  */
-public class JointQPair {
+public class PoseAnimation {
 
-	private final JointQPair parent;
-	private final JointId joint;
-	private final AffineMatrix4x4 affineMatrix;
-	private JointQPair child;
+	private Pose pose;
 
-	public JointQPair( JointQPair parent, JointId joint, AffineMatrix4x4 affineMatrix4x4 ) {
-		this.parent = parent;
-		this.joint = joint;
-		this.affineMatrix = affineMatrix4x4;
+	public PoseAnimation( Pose pose ) {
+		this.pose = pose;
 	}
 
-	public JointId getJointId() {
-		return this.joint;
+	public void animate( final ProgramImp programImp, final SBiped ogre ) {
+		AnimationThread rAThread = new AnimationThread( programImp.getAnimator(), getRightArmAnimation( ogre ), null );
+		AnimationThread lAThread = new AnimationThread( programImp.getAnimator(), getLeftArmAnimation( ogre ), null );
+		AnimationThread rLThread = new AnimationThread( programImp.getAnimator(), getRightLegAnimation( ogre ), null );
+		AnimationThread lLThread = new AnimationThread( programImp.getAnimator(), getLeftLegAnimation( ogre ), null );
+		org.lgna.common.ThreadUtilities.doTogether( rAThread, lAThread, rLThread, lLThread );
 	}
 
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getUnitQuaternion() {
-		return this.affineMatrix.orientation.createUnitQuaternion();
+	private JointQPairTreeAnimation getRightArmAnimation( SBiped ogre ) {
+		return new JointQPairTreeAnimation( ogre, pose.getRightArmBase() );
 	}
 
-	public void setChild( JointQPair rv ) {
-		this.child = rv;
+	private JointQPairTreeAnimation getLeftArmAnimation( SBiped ogre ) {
+		return new JointQPairTreeAnimation( ogre, pose.getLeftArmBase() );
 	}
 
-	public JointQPair getChild() {
-		return this.child;
+	private JointQPairTreeAnimation getRightLegAnimation( SBiped ogre ) {
+		return new JointQPairTreeAnimation( ogre, pose.getRightLegBase() );
 	}
 
-	public JointQPair getParent() {
-		return this.parent;
-	}
-
-	@Override
-	public String toString() {
-		return "[ " + joint + " " + affineMatrix + " ]";
-	}
-
-	public boolean equals( JointQPair other ) {
-		if( getChild() == null ) {
-			return ( ( other.getChild() == null ) && getUnitQuaternion().equals( other.getUnitQuaternion() ) );
-		} else {
-			return ( getUnitQuaternion().equals( other.getUnitQuaternion() ) && getChild().equals( other.getChild() ) );
-		}
+	private JointQPairTreeAnimation getLeftLegAnimation( SBiped ogre ) {
+		return new JointQPairTreeAnimation( ogre, pose.getLeftLegBase() );
 	}
 }

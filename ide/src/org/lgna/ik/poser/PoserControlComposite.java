@@ -44,9 +44,12 @@ package org.lgna.ik.poser;
 
 import java.util.List;
 
+import org.lgna.common.ComponentThread;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
 import org.lgna.croquet.edits.Edit;
@@ -65,7 +68,6 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 
 	private IkPoser ikPoser;
-	//	private JointSelectionSphereState anchorJointState;
 	private JointSelectionSphereState rightArmAnchor;
 	private JointSelectionSphereState leftArmAnchor;
 	private JointSelectionSphereState rightLegAnchor;
@@ -74,19 +76,86 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 	private StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
 	private StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
 	private StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
-	private List<Pose> poses = Collections.newArrayList();
+	private ListSelectionState<PoseAnimation> posesList = createListSelectionState( createKey( "listOfPoses" ), PoseAnimation.class, PoseAnimationList.getCodec(), -1 );
+	ValueListener<PoseAnimation> poseAnimationListener = new ValueListener<PoseAnimation>() {
 
-	private ActionOperation dumpPose = createActionOperation( createKey( "dumpPose" ), new Action() {
+		public void changing( State<PoseAnimation> state, PoseAnimation prevValue, PoseAnimation nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<PoseAnimation> state, PoseAnimation prevValue, PoseAnimation nextValue, boolean isAdjusting ) {
+			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
+			final org.lgna.story.SBiped ogre = ikPoser.getOgre();
+			nextValue.animate( programImp, ogre );
+		}
+	};
+
+	private ActionOperation savePoseOperation = createActionOperation( createKey( "savePose" ), new Action() {
+
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			Pose pose = ikPoser.getPose();
-			poses.add( pose );
-			org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
+			PoseAnimation pAnimation = new PoseAnimation( pose );
+			posesList.addItem( pAnimation );
+			return null;
+		}
+	} );
 
-			org.lgna.story.SBiped ogre = ikPoser.getOgre();
+	private ActionOperation runAnimationOperation = createActionOperation( createKey( "runAnimation" ), new Action() {
 
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+
+			posesList.setSelectedIndex( -1 );
+
+			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
+			final org.lgna.story.SBiped ogre = ikPoser.getOgre();
 			ogre.straightenOutJoints( org.lgna.story.StraightenOutJoints.duration( 0 ) );
 
-			programImp.getAnimator().invokeAndWait_ThrowRuntimeExceptionsIfNecessary( new JointQPairTreeAnimation( ikPoser.getOgre(), pose.getRightArmBase() ), null );
+			ComponentThread thread = new ComponentThread( new Runnable() {
+				public void run() {
+					for( PoseAnimation pAnimation : posesList ) {
+						pAnimation.animate( programImp, ogre );
+					}
+				}
+			}, "noDescription" );
+			thread.start();
+			return null;
+		}
+	} );
+
+	private ActionOperation deletePoseOperation = createActionOperation( createKey( "deletePose" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			posesList.removeItem( posesList.getValue() );
+			return null;
+		}
+	} );
+	private ActionOperation deselectPoseOperation = createActionOperation( createKey( "deselectPose" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			posesList.setSelectedIndex( -1 );
+			return null;
+		}
+	} );
+	private ActionOperation saveUpdatedPoseOperation = createActionOperation( createKey( "savePoseChanges" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			int index = posesList.indexOf( posesList.getValue() );
+			List<PoseAnimation> newValues = Collections.newArrayList();
+			for( int i = 0; i != posesList.getItemCount(); ++i ) {
+				if( i == index ) {
+					newValues.add( new PoseAnimation( ikPoser.getPose() ) );
+				} else {
+					newValues.add( posesList.getItemAt( i ) );
+				}
+			}
+			posesList.setItems( newValues );
+			return null;
+		}
+	} );
+
+	private ActionOperation exportAnimation = createActionOperation( createKey( "exportAnimation" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			//TODO: write an animation exporter
 			return null;
 		}
 	} );
@@ -105,6 +174,7 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		rightLegAnchor.getValue().setPaint( Color.GREEN );
 		leftLegAnchor.getValue().setPaint( Color.GREEN );
 		ikPoser.setAdapter( new PoserControllerAdapter( this ) );
+		posesList.addValueListener( poseAnimationListener );
 	}
 
 	public IkPoser getIkPoser() {
@@ -116,8 +186,12 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		return new PoserControlView( this );
 	}
 
-	public ActionOperation getDumpPose() {
-		return this.dumpPose;
+	public ActionOperation getSavePoseOperation() {
+		return this.savePoseOperation;
+	}
+
+	public ActionOperation getRunAnimationOperation() {
+		return this.runAnimationOperation;
 	}
 
 	public void addRightArmAnchorListener( ValueListener<JointSelectionSphere> listener ) {
@@ -166,6 +240,22 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 
 	public JointSelectionSphereState getLeftLegAnchor() {
 		return this.leftLegAnchor;
+	}
+
+	public ListSelectionState<PoseAnimation> getPosesList() {
+		return this.posesList;
+	}
+
+	public ActionOperation getDeletePoseOperation() {
+		return this.deletePoseOperation;
+	}
+
+	public ActionOperation getDeselectPoseOperation() {
+		return this.deselectPoseOperation;
+	}
+
+	public ActionOperation getSaveUpdatedPoseOperation() {
+		return this.saveUpdatedPoseOperation;
 	}
 
 	public void updateSphere( Limb limb, JointSelectionSphere sphere ) {

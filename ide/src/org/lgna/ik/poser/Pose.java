@@ -61,16 +61,16 @@ public class Pose {
 	public Pose( SBiped biped ) {
 		rightArmBase = createJQP( biped.getRightClavicle(), base );
 		JointQPair rShoulder = createJQP( biped.getRightShoulder(), rightArmBase );
-		JointQPair rElbow = createJQP( biped.getRightShoulder(), rShoulder );
-		createJQP( biped.getRightShoulder(), rElbow );
-		leftArmBase = createJQP( biped.getRightClavicle(), base );
-		JointQPair lShoulder = createJQP( biped.getRightShoulder(), leftArmBase );
-		JointQPair lElbow = createJQP( biped.getRightShoulder(), lShoulder );
-		createJQP( biped.getRightShoulder(), lElbow );
+		JointQPair rElbow = createJQP( biped.getRightElbow(), rShoulder );
+		createJQP( biped.getRightWrist(), rElbow );
+		leftArmBase = createJQP( biped.getLeftClavicle(), base );
+		JointQPair lShoulder = createJQP( biped.getLeftShoulder(), leftArmBase );
+		JointQPair lElbow = createJQP( biped.getLeftElbow(), lShoulder );
+		createJQP( biped.getLeftWrist(), lElbow );
 		rightLegBase = createJQP( biped.getPelvis(), base );
-		JointQPair rHip = createJQP( biped.getLeftHip(), rightLegBase );
-		JointQPair rKnee = createJQP( biped.getLeftKnee(), rHip );
-		createJQP( biped.getLeftAnkle(), rKnee );
+		JointQPair rHip = createJQP( biped.getRightHip(), rightLegBase );
+		JointQPair rKnee = createJQP( biped.getRightKnee(), rHip );
+		createJQP( biped.getRightAnkle(), rKnee );
 		leftLegBase = createJQP( biped.getPelvis(), base );
 		JointQPair lHip = createJQP( biped.getLeftHip(), leftLegBase );
 		JointQPair lKnee = createJQP( biped.getLeftKnee(), lHip );
@@ -133,5 +133,9 @@ public class Pose {
 			jqpPointer = jqpPointer.getChild();
 		}
 		return rv;
+	}
+
+	public boolean equals( Pose other ) {
+		return ( rightArmBase.equals( other.rightArmBase ) && leftArmBase.equals( other.leftArmBase ) && rightLegBase.equals( other.rightLegBase ) && leftLegBase.equals( other.leftLegBase ) );
 	}
 }

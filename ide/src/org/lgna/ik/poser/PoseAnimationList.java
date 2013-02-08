@@ -42,56 +42,100 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.story.resources.JointId;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.data.AbstractMutableListData;
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class JointQPair {
+public class PoseAnimationList extends AbstractMutableListData<PoseAnimation> {
 
-	private final JointQPair parent;
-	private final JointId joint;
-	private final AffineMatrix4x4 affineMatrix;
-	private JointQPair child;
+	List<PoseAnimation> values = Collections.newArrayList();
 
-	public JointQPair( JointQPair parent, JointId joint, AffineMatrix4x4 affineMatrix4x4 ) {
-		this.parent = parent;
-		this.joint = joint;
-		this.affineMatrix = affineMatrix4x4;
+	private static ItemCodec<PoseAnimation> codec = new ItemCodec<PoseAnimation>() {
+
+		public Class<PoseAnimation> getValueClass() {
+			return PoseAnimation.class;
+		}
+
+		public PoseAnimation decodeValue( BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, PoseAnimation value ) {
+			throw new RuntimeException( "todo" );
+		}
+
+		public void appendRepresentation( StringBuilder sb, PoseAnimation value ) {
+			sb.append( value );
+		}
+
+	};
+
+	public static ItemCodec<PoseAnimation> getCodec() {
+		return codec;
 	}
 
-	public JointId getJointId() {
-		return this.joint;
-	}
-
-	public edu.cmu.cs.dennisc.math.UnitQuaternion getUnitQuaternion() {
-		return this.affineMatrix.orientation.createUnitQuaternion();
-	}
-
-	public void setChild( JointQPair rv ) {
-		this.child = rv;
-	}
-
-	public JointQPair getChild() {
-		return this.child;
-	}
-
-	public JointQPair getParent() {
-		return this.parent;
+	public PoseAnimationList() {
+		super( getCodec() );
 	}
 
 	@Override
-	public String toString() {
-		return "[ " + joint + " " + affineMatrix + " ]";
+	public boolean contains( PoseAnimation item ) {
+		return false;
 	}
 
-	public boolean equals( JointQPair other ) {
-		if( getChild() == null ) {
-			return ( ( other.getChild() == null ) && getUnitQuaternion().equals( other.getUnitQuaternion() ) );
-		} else {
-			return ( getUnitQuaternion().equals( other.getUnitQuaternion() ) && getChild().equals( other.getChild() ) );
-		}
+	@Override
+	public PoseAnimation getItemAt( int index ) {
+		return values.get( index );
+	}
+
+	@Override
+	public int getItemCount() {
+		return values.size();
+	}
+
+	@Override
+	public int indexOf( PoseAnimation item ) {
+		return values.indexOf( item );
+	}
+
+	@Override
+	public void internalAddItem( PoseAnimation item ) {
+		values.add( item );
+	}
+
+	@Override
+	public void internalRemoveItem( PoseAnimation item ) {
+		values.remove( item );
+	}
+
+	@Override
+	public void internalSetAllItems( Collection<PoseAnimation> items ) {
+		values = Collections.newArrayList( items );
+	}
+
+	@Override
+	public void internalSetItemAt( int index, PoseAnimation item ) {
+		values.set( index, item );
+	}
+
+	@Override
+	public Iterator<PoseAnimation> iterator() {
+		return values.iterator();
+	}
+
+	@Override
+	protected PoseAnimation[] toArray( Class<PoseAnimation> componentType ) {
+		return ArrayUtilities.createArray( values, PoseAnimation.class );
 	}
 }
