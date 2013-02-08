@@ -64,7 +64,7 @@ public class CodePerspective extends AbstractCodePerspective {
 	}
 
 	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
-		final boolean IS_TOOL_BAR_READY_FOR_PRIME_TIME = false;
+		final boolean IS_TOOL_BAR_READY_FOR_PRIME_TIME = true;
 		if( IS_TOOL_BAR_READY_FOR_PRIME_TIME ) {
 			return org.alice.stageide.perspectives.code.CodeToolBarComposite.getInstance();
 		} else {
