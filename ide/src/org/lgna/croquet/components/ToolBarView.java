@@ -40,11 +40,41 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.meta.event;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface MetaStateValueListener<T> {
-	public void metaStateValueChanged( T prevValue, T nextValue );
+public class ToolBarView extends MigPanel {
+	public ToolBarView( org.lgna.croquet.ToolBarComposite composite ) {
+		super( composite, "insets 0 0 2 0, gap 0", "", "fill" );
+		String constraints = "";
+		for( org.lgna.croquet.Model model : composite.getSubModels() ) {
+			JComponent<?> component;
+			if( model != null ) {
+				if( model instanceof org.lgna.croquet.Operation ) {
+					org.lgna.croquet.Operation operation = (org.lgna.croquet.Operation)model;
+					Button button = operation.createButton();
+					if( operation.isToolBarTextClobbered() ) {
+						button.setClobberText( "" );
+					}
+					button.tightenUpMargin();
+					component = button;
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model );
+					component = null;
+				}
+				if( component != null ) {
+					this.addComponent( component, constraints );
+				} else {
+
+				}
+				constraints = "";
+			} else {
+				constraints = "gap 10";
+			}
+		}
+
+		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+	}
 }

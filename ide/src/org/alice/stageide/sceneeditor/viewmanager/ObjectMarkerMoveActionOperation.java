@@ -73,7 +73,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		this.markerField = null;
 		this.selectedField = null;
 		this.imageIcon = new MoveToImageIcon();
-		this.setSmallIcon( imageIcon );
+		this.setButtonIcon( imageIcon );
 		this.updateBasedOnSettings();
 	}
 
@@ -121,7 +121,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 			this.setToolTipText( this.findLocalizedText( "disabledTooltip" ) );
 			this.setEnabled( false );
 		}
-		this.setSmallIcon( this.imageIcon );
+		this.setButtonIcon( this.imageIcon );
 	}
 
 	public void setMarkerField( UserField markerField )

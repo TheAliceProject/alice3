@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.croquet.models.help;
+package org.alice.stageide.perspectives.scenesetup;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AboutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class SetupSceneToolBarComposite extends org.lgna.croquet.ToolBarComposite {
 	private static class SingletonHolder {
-		private static AboutOperation instance = new AboutOperation();
+		private static SetupSceneToolBarComposite instance = new SetupSceneToolBarComposite();
 	}
 
-	public static AboutOperation getInstance() {
+	public static SetupSceneToolBarComposite getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private AboutOperation() {
-		super( java.util.UUID.fromString( "175834c9-b8f4-4714-a212-e7d346d77835" ) );
+	private final java.util.List<? extends org.lgna.croquet.Model> subModels;
+
+	private SetupSceneToolBarComposite() {
+		super( java.util.UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
+		this.subModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(),
+				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(),
+				SEPARATOR,
+				org.alice.ide.croquet.models.history.UndoOperation.getInstance(),
+				org.alice.ide.croquet.models.history.RedoOperation.getInstance(),
+				SEPARATOR,
+				org.alice.stageide.run.RunComposite.getInstance().getOperation()
+				) );
 	}
 
 	@Override
-	protected void performInternal( org.lgna.croquet.history.CompletionStep<?> step ) {
-		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
-		org.lgna.croquet.Application.getActiveInstance().showMessageDialog( aboutPane, "About " + org.alice.ide.IDE.getApplicationName(), org.lgna.croquet.MessageType.PLAIN );
+	public Iterable<? extends org.lgna.croquet.Model> getSubModels() {
+		return this.subModels;
 	}
 }

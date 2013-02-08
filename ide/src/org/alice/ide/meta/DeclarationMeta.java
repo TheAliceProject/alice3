@@ -67,8 +67,8 @@ public class DeclarationMeta {
 		}
 	};
 
-	private static final java.util.List<org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.AbstractDeclaration>> declarationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private static final java.util.List<org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>>> typeListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static final java.util.List<org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration>> declarationListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private static final java.util.List<org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>>> typeListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	private static org.lgna.project.ast.AbstractDeclaration prevDeclaration;
 	static {
@@ -77,19 +77,19 @@ public class DeclarationMeta {
 		prevDeclaration = getDeclaration();
 	}
 
-	public static void addTypeMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>> typeListener ) {
+	public static void addTypeMetaStateValueListener( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>> typeListener ) {
 		typeListeners.add( typeListener );
 	}
 
-	public static void removeTypeMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>> typeListener ) {
+	public static void removeTypeMetaStateValueListener( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>> typeListener ) {
 		typeListeners.remove( typeListener );
 	}
 
-	public static void addDeclarationMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.AbstractDeclaration> declarationListener ) {
+	public static void addDeclarationMetaStateValueListener( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration> declarationListener ) {
 		declarationListeners.add( declarationListener );
 	}
 
-	public static void removeDeclarationMetaStateValueListener( org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.AbstractDeclaration> declarationListener ) {
+	public static void removeDeclarationMetaStateValueListener( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration> declarationListener ) {
 		declarationListeners.remove( declarationListener );
 	}
 
@@ -125,12 +125,14 @@ public class DeclarationMeta {
 			org.lgna.project.ast.AbstractType<?, ?, ?> prevType = getType( prevDeclaration );
 			org.lgna.project.ast.AbstractType<?, ?, ?> nextType = getType( nextDeclaration );
 			if( prevType != nextType ) {
-				for( org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>> typeListener : typeListeners ) {
-					typeListener.metaStateValueChanged( prevType, nextType );
+				org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.AbstractType<?, ?, ?>> e = org.lgna.croquet.event.ValueEvent.createInstance( prevType, nextType );
+				for( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractType<?, ?, ?>> typeListener : typeListeners ) {
+					typeListener.valueChanged( e );
 				}
 			}
-			for( org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.AbstractDeclaration> declarationListener : declarationListeners ) {
-				declarationListener.metaStateValueChanged( prevDeclaration, nextDeclaration );
+			org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.AbstractDeclaration> e = org.lgna.croquet.event.ValueEvent.createInstance( prevDeclaration, nextDeclaration );
+			for( org.lgna.croquet.event.ValueListener<org.lgna.project.ast.AbstractDeclaration> declarationListener : declarationListeners ) {
+				declarationListener.valueChanged( e );
 			}
 			prevDeclaration = nextDeclaration;
 		}

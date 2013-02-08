@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.history;
+package org.lgna.croquet.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UndoOperation extends HistoryOperation {
-	private static class SingletonHolder {
-		private static UndoOperation instance = new UndoOperation();
+public class ValueEvent<T> {
+	private final boolean isPreviousValueValid;
+	private final T previousValue;
+	private final T nextValue;
+
+	public static <T> ValueEvent<T> createInstance( T previousValue, T nextValue ) {
+		return new ValueEvent<T>( previousValue, nextValue );
 	}
 
-	public static UndoOperation getInstance() {
-		return SingletonHolder.instance;
+	public static <T> ValueEvent<T> createInstance( T nextValue ) {
+		return new ValueEvent<T>( nextValue );
 	}
 
-	private UndoOperation() {
-		super( java.util.UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ) );
-		this.setButtonIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/undo.png" ) ) );
+	private ValueEvent( T previousValue, T nextValue ) {
+		this.isPreviousValueValid = true;
+		this.previousValue = previousValue;
+		this.nextValue = nextValue;
 	}
 
-	@Override
-	public boolean isToolBarTextClobbered() {
-		return false;
+	private ValueEvent( T nextValue ) {
+		this.isPreviousValueValid = false;
+		this.previousValue = null;
+		this.nextValue = nextValue;
 	}
 
-	@Override
-	protected void performInternal( org.lgna.croquet.undo.UndoHistory historyManager ) {
-		historyManager.performUndo();
+	public boolean isPreviousValueValid() {
+		return this.isPreviousValueValid;
+	}
+
+	public T getPreviousValue() {
+		return this.previousValue;
+	}
+
+	public T getNextValue() {
+		return this.nextValue;
 	}
 }

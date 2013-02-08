@@ -306,7 +306,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private org.lgna.croquet.components.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 
-	private org.lgna.croquet.components.Button runButton = org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton();
+	//private final org.lgna.croquet.components.Button runButton = org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton();
+	private final org.lgna.croquet.components.Button runButton = null;
 
 	private OrthographicCameraImp orthographicCameraImp = null;
 	private OrthographicCameraMarkerImp topOrthoMarkerImp = null;
@@ -568,7 +569,9 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		//todo
 		synchronized( this.getTreeLock() ) {
 			this.mainCameraNavigatorWidget.setExpanded( isExpanded );
-			this.lookingGlassPanel.setNorthEastComponent( this.runButton );
+			if( this.runButton != null ) {
+				this.lookingGlassPanel.setNorthEastComponent( this.runButton );
+			}
 			if( isExpanded )
 			{
 				this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );

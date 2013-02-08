@@ -55,7 +55,7 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
 		//todo: move to localize
 		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( valueType );
 		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
-			this.getOperation().setSmallIcon( iconFactory.getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
+			this.getOperation().setButtonIcon( iconFactory.getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
 		}
 	}
 

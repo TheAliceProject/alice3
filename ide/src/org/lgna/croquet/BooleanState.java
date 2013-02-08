@@ -357,11 +357,11 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 		if( this.trueOperation != null ) {
 			this.trueOperation.setName( this.trueText );
-			this.trueOperation.setSmallIcon( this.trueIcon );
+			this.trueOperation.setButtonIcon( this.trueIcon );
 		}
 		if( this.falseOperation != null ) {
 			this.falseOperation.setName( this.falseText );
-			this.falseOperation.setSmallIcon( this.falseIcon );
+			this.falseOperation.setButtonIcon( this.falseIcon );
 		}
 	}
 
@@ -403,7 +403,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		protected void localize() {
 			super.localize();
 			this.setName( this.value ? this.state.getTrueText() : this.state.getFalseText() );
-			this.setSmallIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
+			this.setButtonIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
 		}
 
 		@Override

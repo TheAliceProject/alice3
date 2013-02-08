@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,27 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.history;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UndoOperation extends HistoryOperation {
-	private static class SingletonHolder {
-		private static UndoOperation instance = new UndoOperation();
+public abstract class ToolBarComposite extends AbstractComposite<org.lgna.croquet.components.ToolBarView> {
+	protected static Model SEPARATOR = null;
+
+	public ToolBarComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
-	public static UndoOperation getInstance() {
-		return SingletonHolder.instance;
-	}
+	public abstract Iterable<? extends Model> getSubModels();
 
-	private UndoOperation() {
-		super( java.util.UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ) );
-		this.setButtonIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/undo.png" ) ) );
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
 
 	@Override
-	public boolean isToolBarTextClobbered() {
-		return false;
-	}
-
-	@Override
-	protected void performInternal( org.lgna.croquet.undo.UndoHistory historyManager ) {
-		historyManager.performUndo();
+	protected org.lgna.croquet.components.ToolBarView createView() {
+		return new org.lgna.croquet.components.ToolBarView( this );
 	}
 }
