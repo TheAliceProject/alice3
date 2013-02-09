@@ -54,14 +54,19 @@ public class SideView extends org.lgna.croquet.components.MigPanel {
 		super( composite, "fill, insets 0, aligny top", "", "" );//, "", "[grow 0][grow 0][grow 0]push[grow 0][grow 0][grow 0][grow 0][grow]" );
 
 		final org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
-		org.lgna.croquet.components.FlowPanel undoRedoPanel = new org.lgna.croquet.components.FlowPanel(
-				org.lgna.croquet.components.FlowPanel.Alignment.CENTER,
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(),
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton()
-				);
+		final boolean IS_TOOL_BAR_READY_FOR_PRIME_TIME = true;
+		if( IS_TOOL_BAR_READY_FOR_PRIME_TIME ) {
+			//pass
+		} else {
+			org.lgna.croquet.components.FlowPanel undoRedoPanel = new org.lgna.croquet.components.FlowPanel(
+					org.lgna.croquet.components.FlowPanel.Alignment.CENTER,
+					org.alice.ide.croquet.models.history.UndoOperation.getInstance().createButton(),
+					org.alice.ide.croquet.models.history.RedoOperation.getInstance().createButton()
+					);
 
-		undoRedoPanel.setBorder( createSeparatorBorder( 0, 1, theme.getSecondaryBackgroundColor() ) );
-		this.addComponent( undoRedoPanel, "wrap, growx" );
+			undoRedoPanel.setBorder( createSeparatorBorder( 0, 1, theme.getSecondaryBackgroundColor() ) );
+			this.addComponent( undoRedoPanel, "wrap, growx" );
+		}
 
 		org.lgna.croquet.components.AbstractRadioButtons<org.alice.stageide.sceneeditor.HandleStyle> radioButtons = new org.lgna.croquet.components.DefaultRadioButtons<org.alice.stageide.sceneeditor.HandleStyle>( composite.getHandleStyleState(), false ) {
 			@Override

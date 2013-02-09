@@ -61,7 +61,7 @@ public class ForwardOperation extends org.lgna.croquet.ActionOperation {
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setSmallIcon( org.alice.ide.icons.Icons.NEXT_SMALL );
+		this.setButtonIcon( org.alice.ide.icons.Icons.NEXT_SMALL );
 	}
 
 	@Override

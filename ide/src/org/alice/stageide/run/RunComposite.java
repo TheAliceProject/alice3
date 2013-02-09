@@ -57,7 +57,7 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	private RunComposite() {
 		super( java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ), org.alice.ide.IDE.RUN_GROUP );
 		//todo: move to localize
-		this.getOperation().setSmallIcon( new org.alice.stageide.run.views.icons.RunIcon() );
+		this.getOperation().setButtonIcon( new org.alice.stageide.run.views.icons.RunIcon() );
 	}
 
 	private transient org.alice.stageide.program.RunProgramContext programContext;
@@ -66,6 +66,11 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	private static final int DEFAULT_HEIGHT = (int)( DEFAULT_WIDTH / WIDTH_TO_HEIGHT_RATIO );
 	private java.awt.Point location = new java.awt.Point( 100, 100 );
 	private java.awt.Dimension size = null;
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return false;
+	}
 
 	@Override
 	protected GoldenRatioPolicy getGoldenRatioPolicy() {

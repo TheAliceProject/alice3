@@ -53,13 +53,20 @@ public class Button extends OperationButton<javax.swing.JButton, org.lgna.croque
 
 	@Override
 	protected final javax.swing.JButton createAwtComponent() {
+
 		return new javax.swing.JButton() {
 			@Override
 			public javax.swing.Icon getIcon() {
 				if( Button.this.isIconClobbered() ) {
 					return Button.this.getClobberIcon();
 				} else {
-					return super.getIcon();
+					org.lgna.croquet.Operation model = Button.this.getModel();
+					javax.swing.Icon buttonIcon = model.getButtonIcon();
+					if( buttonIcon != null ) {
+						return buttonIcon;
+					} else {
+						return super.getIcon();
+					}
 				}
 			}
 
