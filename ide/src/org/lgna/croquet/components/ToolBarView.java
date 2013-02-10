@@ -61,6 +61,10 @@ public class ToolBarView extends MigPanel {
 					}
 					button.tightenUpMargin();
 					component = button;
+				} else if( model instanceof org.lgna.croquet.ListSelectionState<?> ) {
+					org.lgna.croquet.ListSelectionState<?> listSelectionState = (org.lgna.croquet.ListSelectionState<?>)model;
+					ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBox();
+					component = comboBox;
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model );
 					component = null;

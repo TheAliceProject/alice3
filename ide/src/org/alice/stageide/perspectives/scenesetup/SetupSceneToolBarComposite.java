@@ -66,6 +66,8 @@ public class SetupSceneToolBarComposite extends org.lgna.croquet.ToolBarComposit
 				org.alice.ide.croquet.models.history.RedoOperation.getInstance(),
 				SEPARATOR,
 				org.alice.stageide.run.RunComposite.getInstance().getOperation()
+				//				SEPARATOR,
+				//				org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance()
 				) );
 	}
 
