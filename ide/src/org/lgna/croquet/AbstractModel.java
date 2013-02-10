@@ -43,8 +43,6 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.ComponentManager;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -112,23 +110,6 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 	//	public void setEnabled( boolean isEnabled ) {
 	//		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
 	//	}
-
-	private String toolTipText = null;
-
-	public String getToolTipText() {
-		return this.toolTipText;
-	}
-
-	public void setToolTipText( String toolTipText ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.toolTipText, toolTipText ) ) {
-			//pass
-		} else {
-			this.toolTipText = toolTipText;
-			for( org.lgna.croquet.components.JComponent<?> component : ComponentManager.getComponents( this ) ) {
-				component.setToolTipText( this.toolTipText );
-			}
-		}
-	}
 
 	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
 

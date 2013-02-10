@@ -343,6 +343,14 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		this.updateNameAndIcon();
 	}
 
+	public void setShortDescription( String shortDescription ) {
+		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	}
+
+	public void setToolTipText( String toolTipText ) {
+		this.setShortDescription( toolTipText );
+	}
+
 	private void updateNameAndIcon() {
 		String name;
 		javax.swing.Icon icon;

@@ -140,6 +140,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
 
+	public void setToolTipText( String toolTipText ) {
+		this.setShortDescription( toolTipText );
+	}
+
 	//	public String getLongDescription() {
 	//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
 	//	}

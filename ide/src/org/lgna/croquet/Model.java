@@ -55,8 +55,4 @@ public interface Model extends Element, org.lgna.croquet.resolvers.RuntimeResolv
 	public boolean isEnabled();
 
 	public void setEnabled( boolean isEnabled );
-
-	public String getToolTipText();
-
-	public void setToolTipText( String toolTipText );
 }

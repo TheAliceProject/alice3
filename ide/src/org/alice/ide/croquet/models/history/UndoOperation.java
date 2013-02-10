@@ -56,7 +56,7 @@ public class UndoOperation extends HistoryOperation {
 
 	private UndoOperation() {
 		super( java.util.UUID.fromString( "8580fdfd-6862-4aef-bf86-c7dad41e9ccb" ) );
-		this.setButtonIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/undo.png" ) ) );
+		this.setButtonIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( UndoOperation.class.getResource( "images/undo.png" ) ) );
 	}
 
 	@Override
