@@ -54,6 +54,8 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 		return SingletonHolder.instance;
 	}
 
+	private final org.lgna.croquet.PlainStringValue restartLabel = this.createStringValue( this.createKey( "restart" ) );
+
 	private RunComposite() {
 		super( java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ), org.alice.ide.IDE.RUN_GROUP );
 		//todo: move to localize
@@ -144,7 +146,7 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	@Override
 	protected void localize() {
 		super.localize();
-		this.restartAction.putValue( javax.swing.Action.NAME, "restart" );
+		this.restartAction.putValue( javax.swing.Action.NAME, this.restartLabel.getText() );
 	}
 
 	@Override
