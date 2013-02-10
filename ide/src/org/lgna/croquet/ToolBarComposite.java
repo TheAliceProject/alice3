@@ -46,8 +46,6 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ToolBarComposite extends AbstractComposite<org.lgna.croquet.components.ToolBarView> {
-	protected static Model SEPARATOR = null;
-
 	public ToolBarComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}

@@ -47,11 +47,16 @@ package org.lgna.croquet.components;
  */
 public class ToolBarView extends MigPanel {
 	public ToolBarView( org.lgna.croquet.ToolBarComposite composite ) {
-		super( composite, "insets 0 0 2 0, gap 0", "", "fill" );
+		super( composite, "insets 0 0 2 0, gap 0", "", "" );
 		String constraints = "";
 		for( org.lgna.croquet.Model model : composite.getSubModels() ) {
 			JComponent<?> component;
-			if( model != null ) {
+			if( model == org.lgna.croquet.GapToolBarSeparator.getInstance() ) {
+				constraints = "gap 10";
+			} else if( model == org.lgna.croquet.PushToolBarSeparator.getInstance() ) {
+				this.addComponent( new Label(), "push" );
+				constraints = "";
+			} else {
 				if( model instanceof org.lgna.croquet.Operation ) {
 					org.lgna.croquet.Operation operation = (org.lgna.croquet.Operation)model;
 					Button button = operation.createButton();
@@ -65,21 +70,28 @@ public class ToolBarView extends MigPanel {
 					org.lgna.croquet.ListSelectionState<?> listSelectionState = (org.lgna.croquet.ListSelectionState<?>)model;
 					ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBox();
 					component = comboBox;
+
+					//
+					//
+					//
+					//todo
+				} else if( model == org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() ) {
+					component = org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent();
+					//
+					//
+					//
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model );
 					component = null;
 				}
 				if( component != null ) {
 					this.addComponent( component, constraints );
-				} else {
-
 				}
 				constraints = "";
-			} else {
-				constraints = "gap 10";
 			}
 		}
 
-		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.DARK_GRAY ) );
+		//this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 	}
 }

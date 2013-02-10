@@ -80,7 +80,7 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 		if( "javax.swing.plaf.synth.SynthButtonUI".equals( jButton.getUI().getClass().getName() ) ) {
 			int right;
 			String text = jButton.getText();
-			final int PAD = 6;
+			final int PAD = 4;
 			if( ( text != null ) && ( text.length() > 0 ) ) {
 				right = PAD + 4;
 			} else {

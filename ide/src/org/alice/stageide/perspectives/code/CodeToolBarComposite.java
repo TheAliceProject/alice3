@@ -61,11 +61,13 @@ public final class CodeToolBarComposite extends org.lgna.croquet.ToolBarComposit
 		this.subModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
 				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(),
 				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(),
-				SEPARATOR,
+				org.lgna.croquet.GapToolBarSeparator.getInstance(),
 				org.alice.ide.croquet.models.history.UndoOperation.getInstance(),
 				org.alice.ide.croquet.models.history.RedoOperation.getInstance(),
-				SEPARATOR,
-				org.alice.stageide.run.RunComposite.getInstance().getOperation()
+				org.lgna.croquet.GapToolBarSeparator.getInstance(),
+				org.alice.stageide.run.RunComposite.getInstance().getOperation(),
+				org.lgna.croquet.PushToolBarSeparator.getInstance(),
+				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel()
 				) );
 	}
 

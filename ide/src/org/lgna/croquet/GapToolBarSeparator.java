@@ -40,39 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.perspectives.scenesetup;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetupSceneToolBarComposite extends org.lgna.croquet.ToolBarComposite {
+public class GapToolBarSeparator extends ToolBarSeparator {
 	private static class SingletonHolder {
-		private static SetupSceneToolBarComposite instance = new SetupSceneToolBarComposite();
+		private static GapToolBarSeparator instance = new GapToolBarSeparator();
 	}
 
-	public static SetupSceneToolBarComposite getInstance() {
+	public static GapToolBarSeparator getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<? extends org.lgna.croquet.Model> subModels;
-
-	private SetupSceneToolBarComposite() {
-		super( java.util.UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
-		this.subModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(),
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(),
-				org.lgna.croquet.GapToolBarSeparator.getInstance(),
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance(),
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance(),
-				org.lgna.croquet.GapToolBarSeparator.getInstance(),
-				org.alice.stageide.run.RunComposite.getInstance().getOperation()
-				//				org.lgna.croquet.GapToolBarSeparator.getInstance(),
-				//				org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance()
-				) );
-	}
-
-	@Override
-	public Iterable<? extends org.lgna.croquet.Model> getSubModels() {
-		return this.subModels;
+	private GapToolBarSeparator() {
+		super( java.util.UUID.fromString( "75b905d6-c7b0-4b83-9d85-1279df52dc66" ) );
 	}
 }
