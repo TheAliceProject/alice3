@@ -54,11 +54,11 @@ public class SetupSceneToolBarComposite extends org.lgna.croquet.ToolBarComposit
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<? extends org.lgna.croquet.Model> subModels;
+	private final java.util.List<? extends org.lgna.croquet.Model> subElements;
 
 	private SetupSceneToolBarComposite() {
 		super( java.util.UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
-		this.subModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+		this.subElements = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
 				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(),
 				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(),
 				org.lgna.croquet.GapToolBarSeparator.getInstance(),
@@ -72,7 +72,7 @@ public class SetupSceneToolBarComposite extends org.lgna.croquet.ToolBarComposit
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.Model> getSubModels() {
-		return this.subModels;
+	public Iterable<? extends org.lgna.croquet.Model> getSubElements() {
+		return this.subElements;
 	}
 }

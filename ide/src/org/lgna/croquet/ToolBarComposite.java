@@ -50,7 +50,7 @@ public abstract class ToolBarComposite extends AbstractComposite<org.lgna.croque
 		super( migrationId );
 	}
 
-	public abstract Iterable<? extends Model> getSubModels();
+	public abstract Iterable<? extends Element> getSubElements();
 
 	@Override
 	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {

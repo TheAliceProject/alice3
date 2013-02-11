@@ -54,11 +54,11 @@ public final class CodeToolBarComposite extends org.lgna.croquet.ToolBarComposit
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<? extends org.lgna.croquet.Model> subModels;
+	private final java.util.List<? extends org.lgna.croquet.Element> subElements;
 
 	private CodeToolBarComposite() {
 		super( java.util.UUID.fromString( "633d89d9-9ddf-470b-a56b-e0169f3ba1d4" ) );
-		this.subModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
+		this.subElements = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
 				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(),
 				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(),
 				org.lgna.croquet.GapToolBarSeparator.getInstance(),
@@ -72,7 +72,7 @@ public final class CodeToolBarComposite extends org.lgna.croquet.ToolBarComposit
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.Model> getSubModels() {
-		return this.subModels;
+	public Iterable<? extends org.lgna.croquet.Element> getSubElements() {
+		return this.subElements;
 	}
 }
