@@ -45,19 +45,9 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ToolBarSeparator extends AbstractModel {
+public abstract class ToolBarSeparator extends AbstractElement {
 	public ToolBarSeparator( java.util.UUID migrationId ) {
 		super( migrationId );
-	}
-
-	@Override
-	public org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger ) {
-		throw new RuntimeException();
-	}
-
-	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-		return rv;
 	}
 
 	@Override

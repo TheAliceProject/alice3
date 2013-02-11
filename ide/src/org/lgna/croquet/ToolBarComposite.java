@@ -46,6 +46,24 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class ToolBarComposite extends AbstractComposite<org.lgna.croquet.components.ToolBarView> {
+
+	protected static void appendDocumentSubElements( java.util.List<Element> subElements ) {
+		subElements.add( org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance() );
+		subElements.add( org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance() );
+		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
+	}
+
+	protected static void appendUndoRedoSubElements( java.util.List<Element> subElements ) {
+		subElements.add( org.alice.ide.croquet.models.history.UndoOperation.getInstance() );
+		subElements.add( org.alice.ide.croquet.models.history.RedoOperation.getInstance() );
+		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
+	}
+
+	protected static void appendRunSubElements( java.util.List<Element> subElements ) {
+		subElements.add( org.alice.stageide.run.RunComposite.getInstance().getOperation() );
+		subElements.add( org.lgna.croquet.GapToolBarSeparator.getInstance() );
+	}
+
 	public ToolBarComposite( java.util.UUID migrationId ) {
 		super( migrationId );
 	}

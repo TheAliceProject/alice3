@@ -70,19 +70,23 @@ public class ToolBarView extends MigPanel {
 					org.lgna.croquet.ListSelectionState<?> listSelectionState = (org.lgna.croquet.ListSelectionState<?>)element;
 					ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBox();
 					component = comboBox;
+				} else if( element instanceof org.lgna.croquet.Composite<?> ) {
+					org.lgna.croquet.Composite<?> subComposite = (org.lgna.croquet.Composite<?>)element;
+					component = subComposite.getView();
+				} else if( element instanceof org.lgna.croquet.PlainStringValue ) {
+					org.lgna.croquet.PlainStringValue stringValue = (org.lgna.croquet.PlainStringValue)element;
+					component = stringValue.createLabel();
 
 					//
 					//
 					//
 					//todo
-				} else if( element instanceof org.lgna.croquet.Composite<?> ) {
-					org.lgna.croquet.Composite<?> subComposite = (org.lgna.croquet.Composite<?>)element;
-					component = subComposite.getView();
 				} else if( element == org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() ) {
 					component = org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent();
 					//
 					//
 					//
+
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( element );
 					component = null;

@@ -54,25 +54,19 @@ public class SetupSceneToolBarComposite extends org.lgna.croquet.ToolBarComposit
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<? extends org.lgna.croquet.Model> subElements;
+	private final java.util.List<? extends org.lgna.croquet.Element> subElements;
 
 	private SetupSceneToolBarComposite() {
 		super( java.util.UUID.fromString( "c8f85598-a2dc-4b49-bf68-ef374763596f" ) );
-		this.subElements = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(),
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(),
-				org.lgna.croquet.GapToolBarSeparator.getInstance(),
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance(),
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance(),
-				org.lgna.croquet.GapToolBarSeparator.getInstance(),
-				org.alice.stageide.run.RunComposite.getInstance().getOperation()
-				//				org.lgna.croquet.GapToolBarSeparator.getInstance(),
-				//				org.alice.stageide.croquet.models.sceneditor.ViewListSelectionState.getInstance()
-				) );
+		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		appendDocumentSubElements( list );
+		appendUndoRedoSubElements( list );
+		appendRunSubElements( list );
+		this.subElements = java.util.Collections.unmodifiableList( list );
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.Model> getSubElements() {
+	public Iterable<? extends org.lgna.croquet.Element> getSubElements() {
 		return this.subElements;
 	}
 }
