@@ -68,4 +68,9 @@ public class SaveProjectOperation extends AbstractSaveProjectOperation {
 		super.localize();
 		this.setButtonIcon( org.alice.ide.icons.Icons.SAVE_DOCUMENT_SMALL );
 	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return true;
+	}
 }

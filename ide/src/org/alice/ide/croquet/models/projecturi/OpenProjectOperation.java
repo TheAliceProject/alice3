@@ -63,4 +63,9 @@ public class OpenProjectOperation extends PotentialClearanceUriCreatorIteratingO
 		super.localize();
 		this.setButtonIcon( org.alice.ide.icons.Icons.OPEN_DOCUMENT_SMALL );
 	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return true;
+	}
 }
