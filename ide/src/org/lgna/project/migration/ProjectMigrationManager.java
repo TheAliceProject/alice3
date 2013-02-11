@@ -2716,9 +2716,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "CAMEL", "org.lgna.story.resources.quadruped.CamelResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.quadruped.CamelResource" ),
 
-					"name=\"org.lgna.story.resources.prop.ShortMushroomResource",
-					"name=\"org.lgna.story.resources.prop.MushroomResource",
-
 					createMoreSpecificFieldString( "FALCON", "org.lgna.story.resources.flyer.FalconResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.flyer.FalconResource" ),
 
@@ -2964,12 +2961,6 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 
 					createMoreSpecificFieldString( "STUFFED_TIGER", "org.lgna.story.resources.biped.StuffedTigerResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.biped.StuffedTigerResource" ),
-
-					createMoreSpecificFieldString( "POINTY", "org.lgna.story.resources.prop.LanternResource" ),
-					createMoreSpecificFieldString( "ROUND_HOURGLASS", "org.lgna.story.resources.prop.LanternResource" ),
-
-					"name=\"org.lgna.story.resources.prop.LanternResource",
-					"name=\"org.lgna.story.resources.prop.SaucerResource",
 
 					createMoreSpecificFieldString( "MAGIC_SPOON", "org.lgna.story.resources.prop.MagicSpoonResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.MagicSpoonResource" ),
@@ -3371,13 +3362,13 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "SUITCASE", "org.lgna.story.resources.prop.SuitcaseResource" ),
 
 					createMoreSpecificFieldString( "CLUB_TABLE_DINING_CLUB_NEDAR", "org.lgna.story.resources.prop.DiningTableResource" ),
-					createMoreSpecificFieldString( "CLUB_CURLY_LIGHT_WOOD", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "CLUB_LIGHT_WOOD", "org.lgna.story.resources.prop.DiningTableResource" ),
 
 					createMoreSpecificFieldString( "CLUB_TABLE_DINING_CLUB_OAK", "org.lgna.story.resources.prop.DiningTableResource" ),
-					createMoreSpecificFieldString( "CLUB_CURLY_OAK", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "CLUB_OAK", "org.lgna.story.resources.prop.DiningTableResource" ),
 
 					createMoreSpecificFieldString( "CLUB_TABLE_DINING_CLUB_SEDAR", "org.lgna.story.resources.prop.DiningTableResource" ),
-					createMoreSpecificFieldString( "CLUB_CURLY_WOOD", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "CLUB_WOOD", "org.lgna.story.resources.prop.DiningTableResource" ),
 
 					createMoreSpecificFieldString( "MOROCCAN_TABLE_DINING_MOROCCAN_TURQ", "org.lgna.story.resources.prop.DiningTableResource" ),
 					createMoreSpecificFieldString( "MOROCCAN_TURQUOISE", "org.lgna.story.resources.prop.DiningTableResource" ),
@@ -3404,10 +3395,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "OUTDOOR_ASH", "org.lgna.story.resources.prop.DiningTableResource" ),
 
 					createMoreSpecificFieldString( "OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_REDOAK", "org.lgna.story.resources.prop.DiningTableResource" ),
-					createMoreSpecificFieldString( "OUTDOOR_RED", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "OUTDOOR_OAK", "org.lgna.story.resources.prop.DiningTableResource" ),
 
 					createMoreSpecificFieldString( "OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_REDWOOD", "org.lgna.story.resources.prop.DiningTableResource" ),
-					createMoreSpecificFieldString( "OUTDOOR_REDWOOD", "org.lgna.story.resources.prop.DiningTableResource" ),
+					createMoreSpecificFieldString( "OUTDOOR_RED", "org.lgna.story.resources.prop.DiningTableResource" ),
 
 					createMoreSpecificFieldString( "OUTDOOR_TABLE_DINING_OUTDOOR_WOOD_WHITE", "org.lgna.story.resources.prop.DiningTableResource" ),
 					createMoreSpecificFieldString( "OUTDOOR_WHITE", "org.lgna.story.resources.prop.DiningTableResource" ),
@@ -3542,7 +3533,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "MODERATE_BLUE", "org.lgna.story.resources.prop.ChairResource" ),
 
 					createMoreSpecificFieldString( "MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_BLUE_ORANGE", "org.lgna.story.resources.prop.ChairResource" ),
-					createMoreSpecificFieldString( "MOROCCAN_YELLOW", "org.lgna.story.resources.prop.LampResource" ),
+					createMoreSpecificFieldString( "MOROCCAN_YELLOW", "org.lgna.story.resources.prop.ChairResource" ),
 
 					createMoreSpecificFieldString( "MOROCCAN_CHAIR_DINING_MOROCCAN_SURFACES_RED_CIRCLES", "org.lgna.story.resources.prop.ChairResource" ),
 					createMoreSpecificFieldString( "MOROCCAN_RED", "org.lgna.story.resources.prop.ChairResource" ),
@@ -3665,10 +3656,10 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "VALUE_GREEN", "org.lgna.story.resources.prop.LampResource" ),
 
 					createMoreSpecificFieldString( "DARK_GREEN", "org.lgna.story.resources.prop.BambooThicketResource" ),
-					createMoreSpecificFieldString( "BAMBOO_THICKET_DARK_GREEN", "org.lgna.story.resources.prop.BambooResource" ),
+					createMoreSpecificFieldString( "THICKET_DARK_GREEN", "org.lgna.story.resources.prop.BambooResource" ),
 
 					createMoreSpecificFieldString( "LIGHT_GREEN", "org.lgna.story.resources.prop.BambooThicketResource" ),
-					createMoreSpecificFieldString( "BAMBOO_THICKET_LIGHT_GREEN", "org.lgna.story.resources.prop.BambooResource" ),
+					createMoreSpecificFieldString( "THICKET_LIGHT_GREEN", "org.lgna.story.resources.prop.BambooResource" ),
 
 					"name=\"org.lgna.story.resources.prop.BambooThicketResource",
 					"name=\"org.lgna.story.resources.prop.BambooResource",
@@ -3808,6 +3799,9 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "WHITE", "org.lgna.story.resources.prop.ShortMushroomResource" ),
 					createMoreSpecificFieldString( "SHORT_WHITE", "org.lgna.story.resources.prop.MushroomResource" ),
 
+					"name=\"org.lgna.story.resources.prop.ShortMushroomResource",
+					"name=\"org.lgna.story.resources.prop.MushroomResource",
+
 					createMoreSpecificFieldString( "CARD01", "org.lgna.story.resources.biped.PlayingCardResource" ),
 					createMoreSpecificFieldString( "ONE1", "org.lgna.story.resources.biped.PlayingCardResource" ),
 
@@ -3863,13 +3857,19 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					"name=\"org.lgna.story.resources.prop.RockyOutcropResource",
 
 					createMoreSpecificFieldString( "ROUND", "org.lgna.story.resources.prop.LanternResource" ),
-					createMoreSpecificFieldString( "SHORT_AND_ROUND", "org.lgna.story.resources.prop.LanternResource" ),
+					createMoreSpecificFieldString( "SHORT_AND_ROUND", "org.lgna.story.resources.prop.PaperLanternResource" ),
 
 					createMoreSpecificFieldString( "OVAL", "org.lgna.story.resources.prop.LanternResource" ),
-					createMoreSpecificFieldString( "TALL_AND_ROUND", "org.lgna.story.resources.prop.LanternResource" ),
+					createMoreSpecificFieldString( "TALL_AND_ROUND", "org.lgna.story.resources.prop.PaperLanternResource" ),
 
 					createMoreSpecificFieldString( "BOXY", "org.lgna.story.resources.prop.LanternResource" ),
-					createMoreSpecificFieldString( "SQUARE_HOURGLASS", "org.lgna.story.resources.prop.LanternResource" ),
+					createMoreSpecificFieldString( "SQUARE_HOURGLASS", "org.lgna.story.resources.prop.PaperLanternResource" ),
+
+					createMoreSpecificFieldString( "POINTY", "org.lgna.story.resources.prop.LanternResource" ),
+					createMoreSpecificFieldString( "ROUND_HOURGLASS", "org.lgna.story.resources.prop.PaperLanternResource" ),
+
+					"name=\"org.lgna.story.resources.prop.LanternResource",
+					"name=\"org.lgna.story.resources.prop.PaperLanternResource",
 
 					createMoreSpecificFieldString( "OAR", "org.lgna.story.resources.prop.OarResource" ),
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.OarResource" ),
@@ -4115,7 +4115,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "CLUB_LIGHT_WOOD", "org.lgna.story.resources.prop.ChairResource" ),
 
 					createMoreSpecificFieldString( "COLONIAL_CHAIR_DINING_COLONIAL1_PURPLE", "org.lgna.story.resources.prop.ChairResource" ),
-					createMoreSpecificFieldString( "COLONIALBLUE", "org.lgna.story.resources.prop.ChairResource" ),
+					createMoreSpecificFieldString( "COLONIAL_BLUE", "org.lgna.story.resources.prop.ChairResource" ),
 
 					createMoreSpecificFieldString( "COLONIAL_CHAIR_DINING_COLONIAL1_GOLDEN2", "org.lgna.story.resources.prop.ChairResource" ),
 					createMoreSpecificFieldString( "COLONIAL_YELLOW", "org.lgna.story.resources.prop.ChairResource" ),
