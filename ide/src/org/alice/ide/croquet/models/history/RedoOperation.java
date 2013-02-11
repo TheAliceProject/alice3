@@ -63,4 +63,9 @@ public class RedoOperation extends HistoryOperation {
 	protected void performInternal( org.lgna.croquet.undo.UndoHistory historyManager ) {
 		historyManager.performRedo();
 	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return true;
+	}
 }

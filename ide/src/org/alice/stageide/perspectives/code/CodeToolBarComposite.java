@@ -54,23 +54,21 @@ public final class CodeToolBarComposite extends org.lgna.croquet.ToolBarComposit
 		return SingletonHolder.instance;
 	}
 
-	private final java.util.List<? extends org.lgna.croquet.Model> subModels;
+	private final java.util.List<? extends org.lgna.croquet.Element> subElements;
 
 	private CodeToolBarComposite() {
 		super( java.util.UUID.fromString( "633d89d9-9ddf-470b-a56b-e0169f3ba1d4" ) );
-		this.subModels = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList(
-				org.alice.ide.croquet.models.projecturi.OpenProjectOperation.getInstance(),
-				org.alice.ide.croquet.models.projecturi.SaveProjectOperation.getInstance(),
-				SEPARATOR,
-				org.alice.ide.croquet.models.history.UndoOperation.getInstance(),
-				org.alice.ide.croquet.models.history.RedoOperation.getInstance(),
-				SEPARATOR,
-				org.alice.stageide.run.RunComposite.getInstance().getOperation()
-				) );
+		java.util.List<org.lgna.croquet.Element> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		appendDocumentSubElements( list );
+		appendUndoRedoSubElements( list );
+		appendRunSubElements( list );
+		list.add( org.lgna.croquet.PushToolBarSeparator.getInstance() );
+		list.add( org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() );
+		this.subElements = java.util.Collections.unmodifiableList( list );
 	}
 
 	@Override
-	public Iterable<? extends org.lgna.croquet.Model> getSubModels() {
-		return this.subModels;
+	public Iterable<? extends org.lgna.croquet.Element> getSubElements() {
+		return this.subElements;
 	}
 }

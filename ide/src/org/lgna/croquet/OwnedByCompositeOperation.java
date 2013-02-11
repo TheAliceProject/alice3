@@ -82,7 +82,7 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 
 	@Override
 	public boolean isToolBarTextClobbered() {
-		return this.composite.isToolBarTextClobbered();
+		return this.composite.isToolBarTextClobbered( super.isToolBarTextClobbered() );
 	}
 
 	public OperationOwningComposite getComposite() {

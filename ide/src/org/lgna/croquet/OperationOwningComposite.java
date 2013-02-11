@@ -50,7 +50,7 @@ public interface OperationOwningComposite<V extends org.lgna.croquet.components.
 
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
-	public boolean isToolBarTextClobbered();
+	public boolean isToolBarTextClobbered( boolean defaultValue );
 
 	public boolean isSubTransactionHistoryRequired();
 

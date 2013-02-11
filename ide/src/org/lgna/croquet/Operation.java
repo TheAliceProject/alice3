@@ -94,7 +94,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	}
 
 	public boolean isToolBarTextClobbered() {
-		return true;
+		return false;
 	}
 
 	//	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
@@ -138,6 +138,10 @@ public abstract class Operation extends AbstractCompletionModel {
 	//	}
 	public void setShortDescription( String shortDescription ) {
 		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	}
+
+	public void setToolTipText( String toolTipText ) {
+		this.setShortDescription( toolTipText );
 	}
 
 	//	public String getLongDescription() {
