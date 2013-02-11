@@ -161,8 +161,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				//return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 32 );
-				return new java.awt.Dimension( ICON.getOrigWidth(), ICON.getOrigHeight() );
+				return new java.awt.Dimension( ( ICON.getOrigWidth() * 4 ) / 5, ( ICON.getOrigHeight() * 4 ) / 5 );
 			}
 
 			@Override

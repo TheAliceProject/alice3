@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OpenProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
+public class PushToolBarSeparator extends ToolBarSeparator {
 	private static class SingletonHolder {
-		private static OpenProjectOperation instance = new OpenProjectOperation();
+		private static PushToolBarSeparator instance = new PushToolBarSeparator();
 	}
 
-	public static OpenProjectOperation getInstance() {
+	public static PushToolBarSeparator getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private OpenProjectOperation() {
-		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), false );
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setButtonIcon( org.alice.ide.icons.Icons.OPEN_DOCUMENT_SMALL );
-	}
-
-	@Override
-	public boolean isToolBarTextClobbered() {
-		return true;
+	private PushToolBarSeparator() {
+		super( java.util.UUID.fromString( "fb4d8be6-a808-47f4-9dfb-0e0555d9369f" ) );
 	}
 }

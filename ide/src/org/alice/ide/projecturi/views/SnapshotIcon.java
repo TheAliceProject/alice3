@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.projecturi;
+package org.alice.ide.projecturi.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class OpenProjectOperation extends PotentialClearanceUriCreatorIteratingOperation {
-	private static class SingletonHolder {
-		private static OpenProjectOperation instance = new OpenProjectOperation();
+public class SnapshotIcon implements javax.swing.Icon {
+	private static final int WIDTH = 160;
+	private static final int HEIGHT = ( WIDTH * 9 ) / 16;
+	private final java.awt.Image image;
+
+	public SnapshotIcon( java.awt.Image image ) {
+		this.image = image;
 	}
 
-	public static OpenProjectOperation getInstance() {
-		return SingletonHolder.instance;
+	public int getIconWidth() {
+		return WIDTH;
 	}
 
-	private OpenProjectOperation() {
-		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), false );
+	public int getIconHeight() {
+		return HEIGHT;
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setButtonIcon( org.alice.ide.icons.Icons.OPEN_DOCUMENT_SMALL );
-	}
-
-	@Override
-	public boolean isToolBarTextClobbered() {
-		return true;
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		g.drawImage( this.image, x, y, WIDTH, HEIGHT, c );
 	}
 }
