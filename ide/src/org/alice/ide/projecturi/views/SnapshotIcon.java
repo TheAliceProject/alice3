@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.openprojectpane.components;
+package org.alice.ide.projecturi.views;
 
-public class TemplatesTabContentPane extends org.alice.ide.projecturi.views.ListContentPanel {
-	public TemplatesTabContentPane( org.alice.ide.projecturi.TemplatesTab composite ) {
-		super( composite );
+/**
+ * @author Dennis Cosgrove
+ */
+public class SnapshotIcon implements javax.swing.Icon {
+	private static final int WIDTH = 160;
+	private static final int HEIGHT = ( WIDTH * 9 ) / 16;
+	private final java.awt.Image image;
+
+	public SnapshotIcon( java.awt.Image image ) {
+		this.image = image;
 	}
 
-	@Override
-	protected javax.swing.ListCellRenderer createListCellRenderer() {
-		return new org.alice.ide.projecturi.views.ProjectSnapshotListCellRenderer() {
-			@Override
-			protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
-				java.net.URI uri = (java.net.URI)value;
-				String text = uri.getFragment();
-				javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TemplatesTabContentPane.class.getResource( "images/" + text + ".png" ) );
-				javax.swing.Icon icon = imageIcon != null ? new org.alice.ide.projecturi.views.SnapshotIcon( imageIcon.getImage() ) : null;
-				rv.setIcon( icon );
-				rv.setText( text );
-				return rv;
-			}
-		};
+	public int getIconWidth() {
+		return WIDTH;
+	}
+
+	public int getIconHeight() {
+		return HEIGHT;
+	}
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		g.drawImage( this.image, x, y, WIDTH, HEIGHT, c );
 	}
 }
