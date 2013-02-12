@@ -46,9 +46,6 @@ package org.lgna.ik.poser;
 import java.util.ArrayList;
 
 import org.lgna.ik.walkandtouch.PoserScene;
-import org.lgna.project.ast.AnonymousUserType;
-import org.lgna.project.ast.UserField;
-import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MoveDirection;
@@ -64,24 +61,24 @@ import test.ik.IkTestApplication;
  */
 class IkPoser extends SProgram {
 	private final SCamera camera = new SCamera();
-	private final SBiped ogre;
+	private final SBiped biped;
 	public final PoserScene scene;
 
 	private PoserSplitComposite composite;
 	private UserType userType;
 
-	public IkPoser( UserType userType, SBiped ogre ) {
-		//		this.ogre = userType.getDeclaredConstructor().;
+	public IkPoser( UserType userType, SBiped biped ) {
+		//		this.biped = userType.getDeclaredConstructor().;
 		//		Object value = userType.superType.getValue();
 		//		TypeManager.getNamedUserTypeFromSuperType( (JavaType)value );
-		this.ogre = ogre;
-		scene = new PoserScene( camera, ogre );
+		this.biped = biped;
+		scene = new PoserScene( camera, biped );
 		this.userType = userType;
 		composite = new PoserSplitComposite( this );
 	}
 
 	private org.lgna.story.implementation.JointedModelImp<?, ?> getSubjectImp() {
-		return ImplementationAccessor.getImplementation( this.ogre );
+		return ImplementationAccessor.getImplementation( this.biped );
 	}
 
 	private org.lgna.story.implementation.JointImp getEndImp() {
@@ -89,8 +86,8 @@ class IkPoser extends SProgram {
 		return this.getSubjectImp().getJointImplementation( endId );
 	}
 
-	public SBiped getOgre() {
-		return this.ogre;
+	public SBiped getBiped() {
+		return this.biped;
 	}
 
 	private void initializeTest() {
@@ -98,30 +95,6 @@ class IkPoser extends SProgram {
 		this.camera.turn( TurnDirection.RIGHT, .5 );
 		this.camera.move( MoveDirection.BACKWARD, 8 );
 		this.camera.move( MoveDirection.UP, 1 );
-	}
-
-	public static void main( String[] args ) {
-		IkTestApplication app = new IkTestApplication();
-		app.initialize( args );
-		class MyOgre extends SBiped {
-
-			public MyOgre() {
-				super( org.lgna.story.resources.biped.OgreResource.BROWN );
-			}
-
-		}
-		AnonymousUserType type = new AnonymousUserType( MyOgre.class, new UserMethod[ 0 ], new UserField[ 0 ] );
-		IkPoser program = new IkPoser( type, new MyOgre() );
-		app.getFrame().setMainComposite( program.getComposite() );
-
-		test.ik.croquet.IsLinearEnabledState.getInstance().setValueTransactionlessly( true );
-		test.ik.croquet.IsAngularEnabledState.getInstance().setValueTransactionlessly( false );
-
-		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
-		program.initializeTest();
-
-		app.getFrame().setSize( 1200, 800 );
-		app.getFrame().setVisible( true );
 	}
 
 	private PoserSplitComposite getComposite() {
@@ -137,11 +110,51 @@ class IkPoser extends SProgram {
 	}
 
 	public Pose getPose() {
-		return new Pose( ogre );
+		return new Pose( biped );
 	}
 
 	public UserType<?> getDeclaringType() {
 		return userType;
 	}
 
+	public static void main( String[] args ) {
+		IkTestApplication app = new IkTestApplication();
+		app.initialize( args );
+
+		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+
+		org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.OgreResource.BROWN;
+		//org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.AlienResource.DEFAULT;
+
+		org.lgna.project.ast.JavaType ancestorType = org.lgna.project.ast.JavaType.getInstance( SBiped.class );
+		org.lgna.project.ast.JavaField argumentField = org.lgna.project.ast.JavaField.getInstance( bipedResource.getClass(), bipedResource.toString() );
+		org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField( ancestorType, argumentField );
+
+		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
+		final int N = userConstructor.requiredParameters.size();
+		Object[] arguments = new Object[ N ];
+		switch( N ) {
+		case 0:
+			break;
+		case 1:
+			arguments[ 0 ] = bipedResource;
+			break;
+		case 2:
+			assert false : N;
+		}
+		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
+
+		IkPoser program = new IkPoser( type, userInstance.getJavaInstance( SBiped.class ) );
+		app.getFrame().setMainComposite( program.getComposite() );
+
+		test.ik.croquet.IsLinearEnabledState.getInstance().setValueTransactionlessly( true );
+		test.ik.croquet.IsAngularEnabledState.getInstance().setValueTransactionlessly( false );
+
+		test.ik.croquet.SceneComposite.getInstance().getView().initializeInAwtContainer( program );
+		program.initializeTest();
+
+		app.getFrame().setSize( 1200, 800 );
+		app.getFrame().setVisible( true );
+	}
 }

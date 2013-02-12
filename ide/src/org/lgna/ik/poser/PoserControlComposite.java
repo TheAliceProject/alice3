@@ -88,7 +88,7 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 
 		public void changed( State<PoseAnimation> state, PoseAnimation prevValue, PoseAnimation nextValue, boolean isAdjusting ) {
 			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
-			final org.lgna.story.SBiped ogre = ikPoser.getOgre();
+			final org.lgna.story.SBiped ogre = ikPoser.getBiped();
 			nextValue.animate( programImp, ogre );
 		}
 	};
@@ -110,7 +110,7 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 			posesList.setSelectedIndex( -1 );
 
 			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
-			final org.lgna.story.SBiped ogre = ikPoser.getOgre();
+			final org.lgna.story.SBiped ogre = ikPoser.getBiped();
 			ogre.straightenOutJoints( org.lgna.story.StraightenOutJoints.duration( 0 ) );
 
 			ComponentThread thread = new ComponentThread( new Runnable() {
