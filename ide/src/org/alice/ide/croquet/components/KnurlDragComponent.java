@@ -199,9 +199,6 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 		if( shape != null ) {
 			java.awt.Stroke prevStroke = g2.getStroke();
 			if( this.isActive() ) {
-				//				g2.setPaint( SHADOW_COLOR );
-				//				g2.setStroke( ACTIVE_STROKE );
-				//				g2.draw( shape );
 				edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.draw3DishShape( g2, shape, HIGHLIGHT_COLOR, SHADOW_COLOR, ACTIVE_STROKE );
 			} else {
 				g2.setPaint( java.awt.Color.GRAY );
@@ -216,7 +213,8 @@ public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> e
 
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		this.paintOutline( g2, this.createShape( x, y, width, height ) );
+		java.awt.Shape shape = this.createShape( x, y, width, height );
+		this.paintOutline( g2, shape );
 		if( isKnurlDesired() ) {
 			int grayscale;
 			if( this.isActive() ) {

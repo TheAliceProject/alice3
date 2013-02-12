@@ -106,8 +106,8 @@ public class ProjectFilePerGalleryModelGeneration {
 			ResourceKey key = child.getResourceKey();
 			if (key instanceof ClassResourceKey) {
 				ClassResourceKey classKey = (ClassResourceKey)key;
-				Class<? extends org.lgna.story.SJointedModel> modelClass = (Class<? extends org.lgna.story.SJointedModel>)AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getCls());
-				test( brokenModels, child, modelClass, classKey.getCls() );
+				Class<? extends org.lgna.story.SJointedModel> modelClass = (Class<? extends org.lgna.story.SJointedModel>)AliceResourceClassUtilities.getModelClassForResourceClass(classKey.getModelResourceCls());
+				test( brokenModels, child, modelClass, classKey.getModelResourceCls() );
 			}
 		}
 		

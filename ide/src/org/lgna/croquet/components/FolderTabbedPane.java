@@ -358,6 +358,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 
 	private final InternalCardOwnerComposite cardComposite = new InternalCardOwnerComposite();
 	private final TitlesPanel titlesPanel = this.createTitlesPanel();
+	private final ScrollPane titlesScrollPane = new ScrollPane( this.titlesPanel );
 	private final BorderPanel innerHeaderPanel = new BorderPanel();
 	private final BorderPanel outerHeaderPanel = new BorderPanel();
 
@@ -456,6 +457,49 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 	}
 
+	private class ScrollListener implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
+		private Integer pressedLocationX;
+		private Integer pressedViewPositionX;
+
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+			this.pressedLocationX = e.getPoint().x;
+			this.pressedViewPositionX = titlesScrollPane.getAwtComponent().getViewport().getViewPosition().x;
+		}
+
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+			this.pressedLocationX = null;
+			this.pressedViewPositionX = null;
+		}
+
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseMoved( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseDragged( java.awt.event.MouseEvent e ) {
+			if( this.pressedLocationX != null ) {
+				java.awt.Dimension viewSize = titlesScrollPane.getAwtComponent().getViewport().getView().getSize();
+				java.awt.Rectangle viewportRect = titlesScrollPane.getAwtComponent().getViewport().getViewRect();
+
+				int xDelta = this.pressedLocationX - e.getX();
+				int value = this.pressedViewPositionX + xDelta;
+				value = Math.max( value, 0 );
+				value = Math.min( value, viewSize.width - viewportRect.width );
+
+				titlesScrollPane.getAwtComponent().getViewport().setViewPosition( new java.awt.Point( value, 0 ) );
+			}
+		}
+	}
+
+	private final ScrollListener scrollListener = new ScrollListener();
+
 	public FolderTabbedPane( TabSelectionState<E> model ) {
 		super( model );
 		for( org.lgna.croquet.TabComposite<?> card : model ) {
@@ -463,8 +507,15 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 		}
 		this.cardComposite.getView().setBackgroundColor( null );
 		this.innerHeaderPanel.setBackgroundColor( null );
-		this.titlesPanel.setBackgroundColor( null );
-		this.innerHeaderPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
+		this.titlesPanel.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		this.titlesScrollPane.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		this.titlesScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		this.titlesScrollPane.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.NEVER );
+
+		this.titlesScrollPane.addMouseListener( this.scrollListener );
+		this.titlesScrollPane.addMouseMotionListener( this.scrollListener );
+
+		this.titlesScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 0, 0 ) );
 		this.cardComposite.getView().setBorder( new javax.swing.border.Border() {
 			public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 				return new java.awt.Insets( 1, 1, 0, 0 );
@@ -525,6 +576,12 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 				}
 			}
 		}
+		if( card != null ) {
+			BooleanStateButton<?> button = this.getItemDetails( card );
+			if( button != null ) {
+				button.scrollToVisible();
+			}
+		}
 	}
 
 	public JComponent<?> getHeaderLeadingComponent() {
@@ -583,7 +640,7 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
 		javax.swing.JPanel rv = super.createAwtComponent();
-		this.innerHeaderPanel.addCenterComponent( this.titlesPanel );
+		this.innerHeaderPanel.addCenterComponent( this.titlesScrollPane );
 		this.outerHeaderPanel.addCenterComponent( this.innerHeaderPanel );
 		rv.add( this.outerHeaderPanel.getAwtComponent(), java.awt.BorderLayout.NORTH );
 		rv.add( this.cardComposite.getView().getAwtComponent(), java.awt.BorderLayout.CENTER );

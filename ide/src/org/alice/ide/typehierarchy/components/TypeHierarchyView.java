@@ -100,9 +100,9 @@ class NamedUserTypeTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.rende
  * @author Dennis Cosgrove
  */
 public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
-			TypeHierarchyView.this.handleTypeStateChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+			TypeHierarchyView.this.handleTypeStateChanged( e.getNextValue() );
 		}
 	};
 	private final org.alice.ide.ast.AstEventManager.TypeHierarchyListener typeHierarchyListener = new org.alice.ide.ast.AstEventManager.TypeHierarchyListener() {
@@ -141,7 +141,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 
 	public TypeHierarchyView( org.alice.ide.typehierarchy.TypeHierarchyComposite composite ) {
 		super( composite, 0, 4 );
-		java.awt.Color color = org.alice.ide.IDE.getActiveInstance().getTheme().getMutedTypeColor();
+		java.awt.Color color = org.alice.ide.theme.ThemeUtilities.getActiveTheme().getMutedTypeColor();
 		this.jTree = new javax.swing.JTree( this.treeModel );
 		this.jTree.setRootVisible( false );
 		this.jTree.setCellRenderer( new NamedUserTypeTreeCellRenderer() );
@@ -164,7 +164,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 		super.handleCompositePreActivation();
 		super.handleDisplayable();
 		org.alice.ide.ast.AstEventManager.addAndInvokeTypeHierarchyListener( this.typeHierarchyListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeMetaStateValueListener( this.typeListener, null );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeValueListener( this.typeListener );
 		this.jTree.addKeyListener( this.keyListener );
 		this.jTree.addTreeSelectionListener( this.treeSelectionListener );
 	}
@@ -173,7 +173,7 @@ public class TypeHierarchyView extends org.lgna.croquet.components.BorderPanel {
 	public void handleCompositePostDeactivation() {
 		this.jTree.removeTreeSelectionListener( this.treeSelectionListener );
 		this.jTree.removeKeyListener( this.keyListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeMetaStateValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
 		org.alice.ide.ast.AstEventManager.removeTypeHierarchyListener( this.typeHierarchyListener );
 		super.handleCompositePostDeactivation();
 	}

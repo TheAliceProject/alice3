@@ -55,21 +55,7 @@ public class OneShotMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
 			if( rv != null ) {
 				//pass
 			} else {
-				java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-				models.add( InstanceFactoryLabelSeparatorModel.getInstance( instanceFactory ) );
-				models.add( ProceduresCascade.getInstance( instanceFactory ).getMenuModel() );
-				if( instanceFactory instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) {
-					org.alice.ide.instancefactory.ThisFieldAccessFactory thisFieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)instanceFactory;
-					org.lgna.project.ast.UserField field = thisFieldAccessFactory.getField();
-					models.add( org.alice.ide.ast.rename.RenameFieldComposite.getInstance( field ).getOperation().getMenuItemPrepModel() );
-					if( field.getValueType().isAssignableTo( org.lgna.story.SCamera.class ) || field.getValueType().isAssignableTo( org.lgna.story.SScene.class ) ) {
-						//pass
-					} else {
-						models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-					}
-					models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
-				}
-				rv = new OneShotMenuModel( instanceFactory, models );
+				rv = new OneShotMenuModel( instanceFactory, OneShotUtilities.createMenuItemPrepModels( instanceFactory ) );
 				map.put( instanceFactory, rv );
 			}
 			return rv;

@@ -105,6 +105,10 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 		this( migrationId, operationGroup, true );
 	}
 
+	public boolean isToolBarTextClobbered( boolean defaultValue ) {
+		return defaultValue;
+	}
+
 	public OwnedByCompositeOperation getOperation() {
 		return this.operation;
 	}

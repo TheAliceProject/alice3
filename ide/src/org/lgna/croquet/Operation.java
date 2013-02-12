@@ -60,6 +60,8 @@ public abstract class Operation extends AbstractCompletionModel {
 
 	private final SwingModel swingModel = new SwingModel();
 
+	private javax.swing.Icon buttonIcon;
+
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
 	}
@@ -89,6 +91,10 @@ public abstract class Operation extends AbstractCompletionModel {
 			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
+	}
+
+	public boolean isToolBarTextClobbered() {
+		return false;
 	}
 
 	//	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
@@ -134,6 +140,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
 
+	public void setToolTipText( String toolTipText ) {
+		this.setShortDescription( toolTipText );
+	}
+
 	//	public String getLongDescription() {
 	//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
 	//	}
@@ -147,6 +157,14 @@ public abstract class Operation extends AbstractCompletionModel {
 
 	public void setSmallIcon( javax.swing.Icon icon ) {
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+	}
+
+	public javax.swing.Icon getButtonIcon() {
+		return this.buttonIcon;
+	}
+
+	public void setButtonIcon( javax.swing.Icon icon ) {
+		this.buttonIcon = icon;
 	}
 
 	//	public int getMnemonicKey() {

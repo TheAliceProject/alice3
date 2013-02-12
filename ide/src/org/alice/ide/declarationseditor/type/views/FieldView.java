@@ -57,6 +57,6 @@ public class FieldView extends MemberView {
 			label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
 			this.addComponent( label );
 		}
-		this.addComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.PreviewAstI18nFactory.getInstance(), field, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED ) );
+		this.addComponent( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), field, managementLevel != org.lgna.project.ast.ManagementLevel.MANAGED ) );
 	}
 }

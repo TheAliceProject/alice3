@@ -67,7 +67,7 @@ public class AddParameterView extends DeclarationView<org.lgna.project.ast.UserP
 				.build();
 
 		this.warningPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 32, 8, 32, 8 ) );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getParameterColor() );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getParameterColor() );
 	}
 
 	@Override

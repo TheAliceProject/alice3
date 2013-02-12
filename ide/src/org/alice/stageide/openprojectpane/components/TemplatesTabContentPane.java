@@ -54,7 +54,9 @@ public class TemplatesTabContentPane extends org.alice.ide.projecturi.views.List
 			protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
 				java.net.URI uri = (java.net.URI)value;
 				String text = uri.getFragment();
-				rv.setIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TemplatesTabContentPane.class.getResource( "images/" + text + ".png" ) ) );
+				javax.swing.ImageIcon imageIcon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( TemplatesTabContentPane.class.getResource( "images/" + text + ".png" ) );
+				javax.swing.Icon icon = imageIcon != null ? new org.alice.ide.projecturi.views.SnapshotIcon( imageIcon.getImage() ) : null;
+				rv.setIcon( icon );
 				rv.setText( text );
 				return rv;
 			}

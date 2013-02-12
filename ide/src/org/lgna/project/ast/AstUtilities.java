@@ -78,6 +78,20 @@ public class AstUtilities {
 		}
 	}
 
+	public static Expression getJavaKeyedArgumentSubArgument0Expression( JavaKeyedArgument argument ) {
+		Expression expresssion = argument.expression.getValue();
+		if( expresssion instanceof MethodInvocation ) {
+			MethodInvocation methodInvocation = (MethodInvocation)expresssion;
+			if( methodInvocation.requiredArguments.size() > 0 ) {
+				return methodInvocation.requiredArguments.get( 0 ).expression.getValue();
+			} else {
+				throw new RuntimeException();
+			}
+		} else {
+			throw new RuntimeException();
+		}
+	}
+
 	private static boolean isValidMethod( java.lang.reflect.Method mthd, AbstractType<?, ?, ?> valueType ) {
 		int modifiers = mthd.getModifiers();
 		if( java.lang.reflect.Modifier.isPublic( modifiers ) && java.lang.reflect.Modifier.isStatic( modifiers ) ) {

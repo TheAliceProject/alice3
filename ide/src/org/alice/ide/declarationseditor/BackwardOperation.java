@@ -61,7 +61,7 @@ public class BackwardOperation extends org.lgna.croquet.ActionOperation {
 	@Override
 	protected void localize() {
 		super.localize();
-		this.setSmallIcon( org.alice.ide.icons.Icons.PREVIOUS_SMALL );
+		this.setButtonIcon( org.alice.ide.icons.Icons.PREVIOUS_SMALL );
 	}
 
 	@Override

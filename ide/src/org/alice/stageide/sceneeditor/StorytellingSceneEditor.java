@@ -58,10 +58,10 @@ import org.alice.interact.SnapGrid;
 import org.alice.interact.condition.ClickedObjectCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.ManipulatorClickAdapter;
-import org.alice.stageide.croquet.models.declaration.ObjectMarkerFieldDeclarationOperation;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
 import org.alice.stageide.sceneeditor.draganddrop.SceneDropSite;
+import org.alice.stageide.sceneeditor.side.SideComposite;
 import org.alice.stageide.sceneeditor.snap.SnapState;
 import org.alice.stageide.sceneeditor.viewmanager.CameraMarkerTracker;
 import org.alice.stageide.sceneeditor.viewmanager.CameraViewCellRenderer;
@@ -70,8 +70,8 @@ import org.alice.stageide.sceneeditor.viewmanager.MoveActiveCameraToMarkerAction
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToActiveCameraActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveMarkerToSelectedObjectActionOperation;
 import org.alice.stageide.sceneeditor.viewmanager.MoveSelectedObjectToMarkerActionOperation;
-import org.alice.stageide.sceneeditor.viewmanager.SceneCameraMarkerManagerPanel;
-import org.alice.stageide.sceneeditor.viewmanager.SceneObjectMarkerManagerPanel;
+import org.alice.stageide.sceneeditor.views.InstanceFactorySelectionPanel;
+import org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.components.ComboBox;
 import org.lgna.croquet.components.DragComponent;
@@ -298,9 +298,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private boolean isInitialized = false;
 
 	private edu.cmu.cs.dennisc.animation.ClockBasedAnimator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
-	private org.lgna.croquet.components.BorderPanel mainPanel = new org.lgna.croquet.components.BorderPanel();
 	private LookingGlassPanel lookingGlassPanel = new LookingGlassPanel();
-	private javax.swing.JSplitPane propertiesSplitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	private org.lgna.story.implementation.SymmetricPerspectiveCameraImp sceneCameraImp;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
@@ -308,7 +306,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private org.lgna.croquet.components.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 
-	private org.lgna.croquet.components.Button runButton = org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton();
+	//private final org.lgna.croquet.components.Button runButton = org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton();
+	private final org.lgna.croquet.components.Button runButton = null;
 
 	private OrthographicCameraImp orthographicCameraImp = null;
 	private OrthographicCameraMarkerImp topOrthoMarkerImp = null;
@@ -441,10 +440,10 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			MoveSelectedObjectToMarkerActionOperation.getInstance().setSelectedField( field );
 			MoveMarkerToSelectedObjectActionOperation.getInstance().setSelectedField( field );
-			ObjectMarkerFieldDeclarationOperation.getInstance().setSelectedField( field );
-
-			this.getCameraMarkerPanel().revalidateAndRepaint();
-			this.getObjectMarkerPanel().revalidateAndRepaint();
+			//			ObjectMarkerFieldDeclarationOperation.getInstance().setSelectedField( field );
+			//
+			//			this.getCameraMarkerPanel().revalidateAndRepaint();
+			//			this.getObjectMarkerPanel().revalidateAndRepaint();
 
 			if( !this.selectionIsFromInstanceSelector )
 			{
@@ -557,27 +556,25 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	private void showLookingGlassPanel()
 	{
-		this.addCenterComponent( this.mainPanel );
+		this.addCenterComponent( this.lookingGlassPanel );
 	}
 
 	private void hideLookingGlassPanel()
 	{
-		this.removeComponent( this.mainPanel );
+		this.removeComponent( this.lookingGlassPanel );
 	}
 
 	@Override
 	protected void handleExpandContractChange( boolean isExpanded ) {
 		//todo
 		synchronized( this.getTreeLock() ) {
-			this.mainPanel.removeAllComponents();
 			this.mainCameraNavigatorWidget.setExpanded( isExpanded );
-			this.lookingGlassPanel.setNorthEastComponent( this.runButton );
+			if( this.runButton != null ) {
+				this.lookingGlassPanel.setNorthEastComponent( this.runButton );
+			}
 			if( isExpanded )
 			{
 				this.lookingGlassPanel.setNorthWestComponent( this.instanceFactorySelectionPanel );
-				this.propertiesSplitPane.setLeftComponent( this.lookingGlassPanel.getAwtComponent() );
-				this.propertiesSplitPane.setRightComponent( SideComposite.getInstance().getView().getAwtComponent() );
-				this.mainPanel.getAwtComponent().add( this.propertiesSplitPane, java.awt.BorderLayout.CENTER );
 				this.lookingGlassPanel.setSouthEastComponent( this.contractButton );
 
 				this.lookingGlassPanel.setSouthComponent( this.mainCameraNavigatorWidget );
@@ -588,7 +585,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			}
 			else
 			{
-				this.mainPanel.addCenterComponent( this.lookingGlassPanel );
 				this.lookingGlassPanel.setNorthWestComponent( null );
 				this.lookingGlassPanel.setSouthEastComponent( this.expandButton );
 				this.lookingGlassPanel.setSouthComponent( null );
@@ -605,15 +601,15 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		return SideComposite.getInstance().getObjectPropertiesTab().getView();
 	}
 
-	private SceneCameraMarkerManagerPanel getCameraMarkerPanel()
-	{
-		return SideComposite.getInstance().getMarkerTab().getView().getCameraMarkerPanel();
-	}
-
-	private SceneObjectMarkerManagerPanel getObjectMarkerPanel()
-	{
-		return SideComposite.getInstance().getMarkerTab().getView().getObjectMarkerPanel();
-	}
+	//	private SceneCameraMarkerManagerPanel getCameraMarkerPanel()
+	//	{
+	//		return SideComposite.getInstance().getMarkerTab().getView().getCameraMarkerPanel();
+	//	}
+	//
+	//	private SceneObjectMarkerManagerPanel getObjectMarkerPanel()
+	//	{
+	//		return SideComposite.getInstance().getMarkerTab().getView().getObjectMarkerPanel();
+	//	}
 
 	private void handleCameraMarkerFieldSelection( UserField cameraMarkerField )
 	{
@@ -621,7 +617,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		this.globalDragAdapter.setSelectedCameraMarker( newMarker );
 		MoveActiveCameraToMarkerActionOperation.getInstance().setMarkerField( cameraMarkerField );
 		MoveMarkerToActiveCameraActionOperation.getInstance().setMarkerField( cameraMarkerField );
-		this.getCameraMarkerPanel().updateButtons();
+		//		this.getCameraMarkerPanel().updateButtons();
 	}
 
 	private void handleObjectMarkerFieldSelection( UserField objectMarkerField )
@@ -630,7 +626,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		this.globalDragAdapter.setSelectedObjectMarker( newMarker );
 		MoveSelectedObjectToMarkerActionOperation.getInstance().setMarkerField( objectMarkerField );
 		MoveMarkerToSelectedObjectActionOperation.getInstance().setMarkerField( objectMarkerField );
-		this.getObjectMarkerPanel().updateButtons();
+		//		this.getObjectMarkerPanel().updateButtons();
 	}
 
 	private void handleManipulatorSelection( org.alice.interact.event.SelectionEvent e )
@@ -759,9 +755,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.contractButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 8 ) );
 			this.instanceFactorySelectionPanel = new InstanceFactorySelectionPanel();
 
-			this.propertiesSplitPane.setResizeWeight( 1.0 );
-			this.propertiesSplitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 1, 0 ) );
-
 			this.orthographicCameraImp = new OrthographicCameraImp();
 			this.orthographicCameraImp.getSgCamera().nearClippingPlaneDistance.setValue( .01d );
 
@@ -865,8 +858,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.getVM().ENTRY_POINT_invoke( sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME ) );
 
 			getPropertyPanel().setSceneInstance( sceneAliceInstance );
-			getObjectMarkerPanel().setType( sceneAliceInstance.getType() );
-			getCameraMarkerPanel().setType( sceneAliceInstance.getType() );
+			//			getObjectMarkerPanel().setType( sceneAliceInstance.getType() );
+			//			getCameraMarkerPanel().setType( sceneAliceInstance.getType() );
 			this.instanceFactorySelectionPanel.setType( sceneAliceInstance.getType() );
 			for( org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields() )
 			{
@@ -1103,27 +1096,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		super.handleProjectOpened( nextProject );
 	}
 
-	//	private boolean HACK_isDisplayableAlreadyHandled = false;
-	//	
-	@Override
-	protected void handleDisplayable() {
-		//		if( HACK_isDisplayableAlreadyHandled ) {
-		//			System.err.println( "TODO: investigate is displayed" );
-		//		} else {
-		super.handleDisplayable();
-		//			HACK_isDisplayableAlreadyHandled = true;
-		//		}
+	public void handleShowing() {
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.showLookingGlassPanel();
 	}
 
-	@Override
-	protected void handleUndisplayable() {
+	public void handleHiding() {
 		this.hideLookingGlassPanel();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().decrementAutomaticDisplayCount();
-		super.handleUndisplayable();
 	}
 
 	private void paintHorizonLine( Graphics graphics, LightweightOnscreenLookingGlass lookingGlass, OrthographicCamera camera )

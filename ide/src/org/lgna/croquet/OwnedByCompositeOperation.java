@@ -80,6 +80,11 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		this.composite.clobberLocalizationIfDesired( this );
 	}
 
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return this.composite.isToolBarTextClobbered( super.isToolBarTextClobbered() );
+	}
+
 	public OperationOwningComposite getComposite() {
 		return this.composite;
 	}

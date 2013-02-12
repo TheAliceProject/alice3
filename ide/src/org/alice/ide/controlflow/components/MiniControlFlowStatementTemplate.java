@@ -119,7 +119,7 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 		} else {
 			this.label = new org.lgna.croquet.components.Label( this.getLabelText() );
 			if( org.lgna.project.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
-				this.label.setForegroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getCommentForegroundColor() );
+				this.label.setForegroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getCommentForegroundColor() );
 			}
 			//this.label.setFontToScaledFont( 1.2f );
 			this.addComponent( this.label );

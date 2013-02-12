@@ -63,7 +63,8 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String getDisplayText() {
-		String simpleName = this.cls.getSimpleName().replace( "Resource", "" );
+		//		 = this.cls.getSimpleName().replace( "Resource", "" );
+		String simpleName = org.lgna.story.implementation.alice.AliceResourceUtilties.getModelClassName( this );
 		StringBuilder sb = new StringBuilder();
 		if( this.cls.isEnum() ) {
 			sb.append( "new " );
@@ -104,17 +105,17 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String[] getTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this.cls );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getGroupTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this.cls );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getThemeTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this.cls );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override

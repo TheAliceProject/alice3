@@ -55,7 +55,7 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 			//pass
 		} else {
 			mapResourceTypeToAbstractionType = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getTopLevelGalleryTypes();
+			java.util.List<org.lgna.project.ast.JavaType> abstractionTypes = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getTopLevelGalleryTypes();
 			for( org.lgna.project.ast.JavaType abstractionType : abstractionTypes ) {
 				org.lgna.project.ast.JavaType resourceType = (org.lgna.project.ast.JavaType)abstractionType.getDeclaredConstructors().get( 0 ).getRequiredParameters().get( 0 ).getValueType();
 				mapResourceTypeToAbstractionType.put( resourceType, abstractionType );
@@ -141,17 +141,17 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String[] getTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this.enumConstant.getClass() );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getGroupTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this.enumConstant.getClass() );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override
 	public String[] getThemeTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this.enumConstant.getClass() );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override

@@ -156,29 +156,28 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.showUnableToOpenFileDialog( file, sb.toString() );
 	}
 
-	private java.net.URI uri = null;
+	private org.alice.ide.uricontent.UriProjectLoader uriProjectLoader;
 
-	public java.net.URI getUri() {
-		return this.uri;
+	public org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader() {
+		return this.uriProjectLoader;
 	}
 
-	private void setUriProjectPair( org.alice.ide.projecturi.UriProjectPair uriProjectPair ) {
+	public final java.net.URI getUri() {
+		return this.uriProjectLoader != null ? this.uriProjectLoader.getUri() : null;
+	}
+
+	private void setUriProjectPair( org.alice.ide.uricontent.UriProjectLoader uriProjectLoader ) {
+		this.uriProjectLoader = null;
 		org.lgna.project.Project project;
-		java.net.URI uri;
-		java.io.File file;
-		if( uriProjectPair != null ) {
-			uri = uriProjectPair.getUri();
-			file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
+		if( uriProjectLoader != null ) {
 			try {
-				project = uriProjectPair.getProjectWaitingIfNecessary();
+				project = uriProjectLoader.getContentWaitingIfNecessary( org.alice.ide.uricontent.UriContentLoader.MutationPlan.WILL_MUTATE );
 			} catch( InterruptedException ie ) {
 				throw new RuntimeException( ie );
 			} catch( java.util.concurrent.ExecutionException ee ) {
 				throw new RuntimeException( ee );
 			}
 		} else {
-			uri = null;
-			file = null;
 			project = null;
 		}
 		if( project != null ) {
@@ -187,8 +186,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 				this.getProjectHistory().removeHistoryListener( this.projectHistoryListener );
 			}
 			this.setProject( project );
-			this.uri = uri;
+			this.uriProjectLoader = uriProjectLoader;
 			this.getProjectHistory().addHistoryListener( this.projectHistoryListener );
+			java.net.URI uri = this.uriProjectLoader.getUri();
+			java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
 			try {
 				if( ( file != null ) && file.canWrite() ) {
 					//org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
@@ -271,10 +272,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	protected StringBuffer updateTitle( StringBuffer rv ) {
 		this.updateTitlePrefix( rv );
-		if( this.uri != null ) {
-			String scheme = this.uri.getScheme();
-			if( "file".equalsIgnoreCase( scheme ) ) {
-				rv.append( new java.io.File( this.uri.getPath() ) );
+		java.net.URI uri = this.getUri();
+		if( uri != null ) {
+			java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
+			if( file != null ) {
+				rv.append( file );
 			}
 			rv.append( " " );
 		}
@@ -359,18 +361,14 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		return this.getDocument().getRootTransactionHistory();
 	}
 
-	public final void loadProjectFrom( org.alice.ide.projecturi.UriProjectPair uriProjectPair ) {
-		this.setUriProjectPair( uriProjectPair );
+	public final void loadProjectFrom( org.alice.ide.uricontent.UriProjectLoader uriProjectLoader ) {
+		this.setUriProjectPair( uriProjectLoader );
 		this.updateHistoryIndexFileSync();
 		this.updateUndoRedoEnabled();
 	}
 
-	public final void loadProjectFrom( java.net.URI uri ) {
-		this.loadProjectFrom( new org.alice.ide.projecturi.UriProjectPair( uri ) );
-	}
-
 	public final void loadProjectFrom( java.io.File file ) {
-		loadProjectFrom( file.toURI() );
+		this.loadProjectFrom( new org.alice.ide.uricontent.FileProjectLoader( file ) );
 	}
 
 	public final void loadProjectFrom( String path ) {
@@ -407,7 +405,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		}
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
 		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
-		this.uri = file.toURI();
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo", file );
+
+		this.uriProjectLoader = new org.alice.ide.uricontent.FileProjectLoader( file );
 		this.updateHistoryIndexFileSync();
 	}
 

@@ -132,6 +132,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			return org.alice.ide.croquet.models.ast.declaration.TypeFillIn.getInstance( type );
 		}
 
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		}
+
+		public void epilogue() {
+		}
+
 		private void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.project.ast.NamedUserType programType, edu.cmu.cs.dennisc.tree.DefaultNode<org.lgna.project.ast.NamedUserType> node ) {
 			org.lgna.project.ast.NamedUserType type = node.getValue();
 			if( type != null ) {
@@ -225,6 +231,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 			} else {
 				return null;
 			}
+		}
+
+		public void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+		}
+
+		public void epilogue() {
 		}
 
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
@@ -446,14 +458,10 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	private final java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, org.lgna.project.ast.Expression> mapTypeToInitializer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private final org.lgna.croquet.State.ValueListener<Boolean> isArrayValueTypeListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
 		public void changing( org.lgna.croquet.State<java.lang.Boolean> state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
-			//			assert state.getValue() == prevValue;
-			//			assert prevValue != nextValue;
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanging();
 		}
 
 		public void changed( org.lgna.croquet.State<java.lang.Boolean> state, java.lang.Boolean prevValue, java.lang.Boolean nextValue, boolean isAdjusting ) {
-			//			assert state.getValue() == nextValue;
-			//			assert prevValue != nextValue;
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
 		}
 	};
@@ -464,6 +472,14 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 		public void changed( org.lgna.croquet.State<org.lgna.project.ast.AbstractType> state, org.lgna.project.ast.AbstractType prevValue, org.lgna.project.ast.AbstractType nextValue, boolean isAdjusting ) {
 			DeclarationLikeSubstanceComposite.this.handleValueTypeChanged();
+		}
+	};
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> initializerListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+			DeclarationLikeSubstanceComposite.this.getView().handleInitializerChanged( nextValue );
 		}
 	};
 
@@ -477,12 +493,12 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 	}
 
 	private void handleValueTypeChanged() {
-		org.lgna.project.ast.AbstractType<?, ?, ?> nextType = this.getValueType();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.info( "restore:", nextType );
-		org.lgna.project.ast.Expression nextInitializer = this.mapTypeToInitializer.get( nextType );
-		this.initializerState.setValueTransactionlessly( nextInitializer );
-
-		this.getView().handleValueTypeChanged( nextType );
+		if( this.initializerState != null ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> nextType = this.getValueType();
+			edu.cmu.cs.dennisc.java.util.logging.Logger.info( "restore:", nextType );
+			org.lgna.project.ast.Expression nextInitializer = this.mapTypeToInitializer.get( nextType );
+			this.initializerState.setValueTransactionlessly( nextInitializer );
+		}
 	}
 
 	protected boolean getIsFinalInitialValue() {
@@ -518,6 +534,11 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 				falseOperation.setEnabled( isFinal == false );
 			}
 		}
+		if( this.initializerState != null ) {
+			//todo
+			this.initializerState.setValueTransactionlessly( this.getInitializerInitialValue() );
+		}
+
 		if( this.valueComponentTypeState != null ) {
 			this.valueComponentTypeState.setValueTransactionlessly( this.getValueComponentTypeInitialValue() );
 		}
@@ -527,12 +548,8 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		if( this.nameState != null ) {
 			this.nameState.setValueTransactionlessly( this.getNameInitialValue() );
 		}
-		if( this.initializerState != null ) {
-			//todo
-			this.initializerState.setValueTransactionlessly( this.getInitializerInitialValue() );
-		}
 
-		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {
+		if( this.isValueComponentTypeEditable() || this.isInitializerEditable() ) {
 			if( this.isValueIsArrayTypeEditable() ) {
 				this.valueIsArrayTypeState.addValueListener( this.isArrayValueTypeListener );
 			}
@@ -541,14 +558,20 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 
 		this.mapTypeToInitializer.clear();
 
-		this.getView().handleValueTypeChanged( this.getValueType() );
+		if( this.isInitializerEditable() ) {
+			this.initializerState.addValueListener( this.initializerListener );
+		}
+		this.getView().handleInitializerChanged( this.getInitializer() );
 		super.handlePreShowDialog( step );
 	}
 
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		super.handlePostHideDialog( completionStep );
-		if( this.isValueComponentTypeEditable() && this.isInitializerEditable() ) {
+		if( this.isInitializerEditable() ) {
+			this.initializerState.removeValueListener( this.initializerListener );
+		}
+		if( this.isValueComponentTypeEditable() || this.isInitializerEditable() ) {
 			if( this.isValueIsArrayTypeEditable() ) {
 				this.valueIsArrayTypeState.removeValueListener( this.isArrayValueTypeListener );
 			}

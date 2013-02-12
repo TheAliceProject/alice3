@@ -48,8 +48,8 @@ package org.alice.ide.croquet.components;
  */
 public class InstanceFactoryPopupButton extends org.lgna.croquet.components.CustomItemStatePopupButton<org.alice.ide.instancefactory.InstanceFactory> {
 	// note: for singleton ThisInstanceFactory
-	private final org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.MetaState.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			InstanceFactoryPopupButton.this.repaint();
 		}
 	};
@@ -133,12 +133,12 @@ public class InstanceFactoryPopupButton extends org.lgna.croquet.components.Cust
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		this.refreshLater();
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addMetaStateValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeMetaStateValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
 		super.handleUndisplayable();
 	}
 };
