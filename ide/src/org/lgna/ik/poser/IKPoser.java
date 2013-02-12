@@ -46,6 +46,10 @@ package org.lgna.ik.poser;
 import java.util.ArrayList;
 
 import org.lgna.ik.walkandtouch.PoserScene;
+import org.lgna.project.ast.AnonymousUserType;
+import org.lgna.project.ast.UserField;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserType;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
@@ -60,10 +64,21 @@ import test.ik.IkTestApplication;
  */
 class IkPoser extends SProgram {
 	private final SCamera camera = new SCamera();
-	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
-	public final PoserScene scene = new PoserScene( camera, ogre );
+	private final SBiped ogre;
+	public final PoserScene scene;
 
-	private PoserSplitComposite composite = new PoserSplitComposite( this );
+	private PoserSplitComposite composite;
+	private UserType userType;
+
+	public IkPoser( UserType userType, SBiped ogre ) {
+		//		this.ogre = userType.getDeclaredConstructor().;
+		//		Object value = userType.superType.getValue();
+		//		TypeManager.getNamedUserTypeFromSuperType( (JavaType)value );
+		this.ogre = ogre;
+		scene = new PoserScene( camera, ogre );
+		this.userType = userType;
+		composite = new PoserSplitComposite( this );
+	}
 
 	private org.lgna.story.implementation.JointedModelImp<?, ?> getSubjectImp() {
 		return ImplementationAccessor.getImplementation( this.ogre );
@@ -88,7 +103,15 @@ class IkPoser extends SProgram {
 	public static void main( String[] args ) {
 		IkTestApplication app = new IkTestApplication();
 		app.initialize( args );
-		IkPoser program = new IkPoser();
+		class MyOgre extends SBiped {
+
+			public MyOgre() {
+				super( org.lgna.story.resources.biped.OgreResource.BROWN );
+			}
+
+		}
+		AnonymousUserType type = new AnonymousUserType( MyOgre.class, new UserMethod[ 0 ], new UserField[ 0 ] );
+		IkPoser program = new IkPoser( type, new MyOgre() );
 		app.getFrame().setMainComposite( program.getComposite() );
 
 		test.ik.croquet.IsLinearEnabledState.getInstance().setValueTransactionlessly( true );
@@ -115,6 +138,10 @@ class IkPoser extends SProgram {
 
 	public Pose getPose() {
 		return new Pose( ogre );
+	}
+
+	public UserType<?> getDeclaringType() {
+		return userType;
 	}
 
 }

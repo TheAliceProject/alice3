@@ -40,56 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser;
-
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.story.AnimateToPose;
-import org.lgna.story.SBiped;
-import org.lgna.story.implementation.ProgramImp;
-
-import edu.cmu.cs.dennisc.animation.AnimationThread;
+package org.lgna.story;
 
 /**
  * @author Matt May
  */
-public class PoseAnimation {
+public class AnimateToPose extends DurationAnimationStyleArgumentFactory {
 
-	private Pose pose;
-	public static final JavaMethod ADD_POSE_ANIMATION = JavaMethod.getInstance( SBiped.class, "animateToPose", PoseAnimation.class, AnimateToPose.Detail[].class );
-
-	public PoseAnimation( Pose pose ) {
-		this.pose = pose;
+	public interface Detail {
 	}
 
-	public void animate( final ProgramImp programImp, final SBiped ogre ) {
-		AnimationThread rAThread = new AnimationThread( programImp.getAnimator(), getRightArmAnimation( ogre ), null );
-		AnimationThread lAThread = new AnimationThread( programImp.getAnimator(), getLeftArmAnimation( ogre ), null );
-		AnimationThread rLThread = new AnimationThread( programImp.getAnimator(), getRightLegAnimation( ogre ), null );
-		AnimationThread lLThread = new AnimationThread( programImp.getAnimator(), getLeftLegAnimation( ogre ), null );
-		org.lgna.common.ThreadUtilities.doTogether( rAThread, lAThread, rLThread, lLThread );
+	private AnimateToPose() {
+		super();
 	}
 
-	private JointQPairTreeAnimation getRightArmAnimation( SBiped ogre ) {
-		return new JointQPairTreeAnimation( ogre, pose.getRightArmBase() );
-	}
-
-	private JointQPairTreeAnimation getLeftArmAnimation( SBiped ogre ) {
-		return new JointQPairTreeAnimation( ogre, pose.getLeftArmBase() );
-	}
-
-	private JointQPairTreeAnimation getRightLegAnimation( SBiped ogre ) {
-		return new JointQPairTreeAnimation( ogre, pose.getRightLegBase() );
-	}
-
-	private JointQPairTreeAnimation getLeftLegAnimation( SBiped ogre ) {
-		return new JointQPairTreeAnimation( ogre, pose.getLeftLegBase() );
-	}
-
-	public MethodInvocation createAliceMethod() {
-		//		AstUtilities
-
-		//		MethodInvocation rv = new MethodInvocation( null, ADD_POSE_ANIMATION, this, variableArguments, keyedArguments )
-		return null;
-	}
 }

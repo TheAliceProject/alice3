@@ -44,6 +44,7 @@ package org.lgna.ik.poser;
 
 import java.util.List;
 
+import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.lgna.common.ComponentThread;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
@@ -58,6 +59,9 @@ import org.lgna.ik.poser.view.PoserControlView;
 import org.lgna.ik.walkandtouch.IKMagicWand;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.ik.walkandtouch.PoserScene;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.UserMethod;
+import org.lgna.project.ast.UserParameter;
 import org.lgna.story.Color;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -156,9 +160,22 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			//TODO: write an animation exporter
+			new DeclareMethodEdit( null, ikPoser.getDeclaringType(), createUserMethod() );
 			return null;
 		}
+
 	} );
+
+	private UserMethod createUserMethod() {
+		//		AbstractType<AbstractConstructor, AbstractMethod, AbstractField>
+		BlockStatement body = new BlockStatement();
+		for( PoseAnimation animation : posesList ) {
+			animation.createAliceMethod();
+		}
+		//		body.statements.add( elements );
+		UserMethod rv = new UserMethod( "newCustomKeyFrameAnimation", Void.class, new UserParameter[ 0 ], body );
+		return null;
+	}
 
 	public PoserControlComposite( IkPoser ikPoser ) {
 		super( java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
@@ -256,6 +273,10 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 
 	public ActionOperation getSaveUpdatedPoseOperation() {
 		return this.saveUpdatedPoseOperation;
+	}
+
+	public ActionOperation getExportAnimation() {
+		return this.exportAnimation;
 	}
 
 	public void updateSphere( Limb limb, JointSelectionSphere sphere ) {

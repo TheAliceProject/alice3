@@ -42,6 +42,9 @@
  */
 package org.lgna.ik.poser.view;
 
+import javax.swing.BorderFactory;
+import javax.swing.border.BevelBorder;
+
 import org.lgna.croquet.components.ItemDropDown;
 import org.lgna.croquet.components.MigPanel;
 import org.lgna.ik.poser.JointSelectionSphere;
@@ -54,7 +57,7 @@ import org.lgna.ik.poser.PoserControlComposite;
 public class PoserControlView extends MigPanel {
 
 	public PoserControlView( PoserControlComposite poserControlComposite ) {
-		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]10[grow 0]0[grow 0]0[grow 0]0[grow 0]10[]10[grow 0]0" );
+		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]10[grow 0]0[]10[grow 0]10[grow 0]0" );
 		this.addComponent( poserControlComposite.getRightArmLabel().createLabel() );
 		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
 
@@ -77,16 +80,17 @@ public class PoserControlView extends MigPanel {
 		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
 		this.addComponent( llDropDown, "wrap" );
 
-		this.addComponent( poserControlComposite.getSavePoseOperation().createButton(), "span 2, wrap" );
-
-		this.addComponent( poserControlComposite.getDeselectPoseOperation().createButton(), "span 2, wrap" );
-		this.addComponent( poserControlComposite.getDeletePoseOperation().createButton(), "span 2, wrap" );
-		this.addComponent( poserControlComposite.getSaveUpdatedPoseOperation().createButton(), "span 2, wrap" );
+		this.addComponent( poserControlComposite.getDeselectPoseOperation().createButton(), "grow" );
+		this.addComponent( poserControlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
 
 		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = poserControlComposite.getPosesList().createVerticalDefaultRadioButtons();
-		radioButtons.makeStandOut();
+		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
 		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
 
-		this.addComponent( poserControlComposite.getRunAnimationOperation().createButton(), "wrap" );
+		this.addComponent( poserControlComposite.getSavePoseOperation().createButton(), "grow" );
+		this.addComponent( poserControlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
+
+		this.addComponent( poserControlComposite.getRunAnimationOperation().createButton(), "grow" );
+		this.addComponent( poserControlComposite.getExportAnimation().createButton(), "grow, wrap" );
 	}
 }
