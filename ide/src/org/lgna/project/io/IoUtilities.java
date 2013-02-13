@@ -140,6 +140,18 @@ public abstract class IoUtilities {
 		}
 	}
 
+	private static org.lgna.project.Version safeReadVersion( ZipEntryContainer zipEntryContainer, String entryName, String absentVersion ) throws java.io.IOException {
+		try {
+			return readVersion( zipEntryContainer, entryName );
+		} catch( java.io.IOException e ) {
+			if( absentVersion != null ) {
+				return new org.lgna.project.Version( absentVersion );
+			} else {
+				throw e;
+			}
+		}
+	}
+
 	private static org.lgna.project.Project readProperties( org.lgna.project.Project rv, ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
 		assert zipEntryContainer != null;
 		java.io.InputStream is = zipEntryContainer.getInputStream( PROPERTIES_ENTRY_NAME );
@@ -183,8 +195,8 @@ public abstract class IoUtilities {
 		return readXML( is, migrationManagerDecodedVersionPairs );
 	}
 
-	private static org.lgna.project.ast.NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
-		org.lgna.project.Version decodedProjectVersion = readVersion( zipEntryContainer, VERSION_ENTRY_NAME );
+	private static org.lgna.project.ast.NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName, String versionIfAbsent ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+		org.lgna.project.Version decodedProjectVersion = safeReadVersion( zipEntryContainer, VERSION_ENTRY_NAME, versionIfAbsent );
 
 		MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs = {
 				new MigrationManagerDecodedVersionPair( org.lgna.project.migration.ProjectMigrationManager.getInstance(), decodedProjectVersion )
@@ -204,6 +216,11 @@ public abstract class IoUtilities {
 		}
 
 		return rv;
+	}
+
+	private static org.lgna.project.ast.NamedUserType readType( ZipEntryContainer zipEntryContainer, String entryName ) throws java.io.IOException, org.lgna.project.VersionNotSupportedException {
+		String versionIfAbsent = null; // throw exception
+		return readType( zipEntryContainer, entryName, versionIfAbsent );
 	}
 
 	private static java.util.Set<org.lgna.common.Resource> readResources( ZipEntryContainer zipEntryContainer ) throws java.io.IOException {
