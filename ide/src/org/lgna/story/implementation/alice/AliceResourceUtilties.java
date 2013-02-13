@@ -943,40 +943,44 @@ public class AliceResourceUtilties {
 
 	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull )
 	{
-		ArrayList<String> localizedTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-		for( String tag : tags ) {
-			String[] splitTags = tag.split( ":" );
-			StringBuilder finalTag = new StringBuilder();
-			for( int i = 0; i < splitTags.length; i++ ) {
-				String t = splitTags[ i ];
-				boolean hasStar = t.startsWith( "*" );
-				String stringToUse;
-				if( hasStar ) {
-					stringToUse = t.substring( 1 );
-				}
-				else {
-					stringToUse = t;
-				}
-				String localizationKey = makeLocalizationKey( stringToUse );
-				String localizedTag = findLocalizedText( localizerBundleName, localizationKey, locale );
-				if( acceptNull && ( localizedTag == null ) ) {
-					localizedTag = stringToUse;
-				}
-				if( localizedTag != null ) {
-					if( i > 0 ) {
-						finalTag.append( ":" );
-					}
+		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) ) {
+			ArrayList<String> localizedTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			for( String tag : tags ) {
+				String[] splitTags = tag.split( ":" );
+				StringBuilder finalTag = new StringBuilder();
+				for( int i = 0; i < splitTags.length; i++ ) {
+					String t = splitTags[ i ];
+					boolean hasStar = t.startsWith( "*" );
+					String stringToUse;
 					if( hasStar ) {
-						finalTag.append( "*" );
+						stringToUse = t.substring( 1 );
 					}
-					finalTag.append( localizedTag );
+					else {
+						stringToUse = t;
+					}
+					String localizationKey = makeLocalizationKey( stringToUse );
+					String localizedTag = findLocalizedText( localizerBundleName, localizationKey, locale );
+					if( acceptNull && ( localizedTag == null ) ) {
+						localizedTag = stringToUse;
+					}
+					if( localizedTag != null ) {
+						if( i > 0 ) {
+							finalTag.append( ":" );
+						}
+						if( hasStar ) {
+							finalTag.append( "*" );
+						}
+						finalTag.append( localizedTag );
+					}
+				}
+				if( finalTag.length() > 0 ) {
+					localizedTags.add( finalTag.toString() );
 				}
 			}
-			if( finalTag.length() > 0 ) {
-				localizedTags.add( finalTag.toString() );
-			}
+			return localizedTags.toArray( new String[ localizedTags.size() ] );
+		} else {
+			return new String[ 0 ];
 		}
-		return localizedTags.toArray( new String[ localizedTags.size() ] );
 	}
 
 	public static String[] getTags( Class<?> modelResource, String resourceName, Locale locale )
