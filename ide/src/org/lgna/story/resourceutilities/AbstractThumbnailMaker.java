@@ -270,11 +270,11 @@ public abstract class AbstractThumbnailMaker {
 		return this.scene;
 	}
 
-	protected int getWidth() {
+	public int getWidth() {
 		return this.width;
 	}
 
-	protected int getHeight() {
+	public int getHeight() {
 		return this.height;
 	}
 
