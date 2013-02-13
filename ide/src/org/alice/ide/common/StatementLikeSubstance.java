@@ -64,7 +64,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
 		return new javax.swing.BoxLayout( jComponent, this.axis );
 	}
 

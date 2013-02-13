@@ -51,7 +51,7 @@ public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
 		return new java.awt.BorderLayout();
 	}
 }

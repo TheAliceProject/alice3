@@ -47,7 +47,7 @@ import org.alice.ide.clipboard.DragReceptorState;
 /**
  * @author Dennis Cosgrove
  */
-public class ClipboardDragComponent extends org.lgna.croquet.components.DragComponent<javax.swing.AbstractButton, org.lgna.croquet.DragModel> {
+public class ClipboardDragComponent extends org.lgna.croquet.components.DragComponent<org.lgna.croquet.DragModel> {
 	private class ClipboardDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
 		private org.alice.ide.clipboard.DragReceptorState dragReceptorState = org.alice.ide.clipboard.DragReceptorState.IDLE;
 
@@ -157,8 +157,8 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 	private static final org.alice.ide.clipboard.icons.ClipboardIcon ICON = new org.alice.ide.clipboard.icons.ClipboardIcon();
 
 	@Override
-	protected javax.swing.AbstractButton createAwtComponent() {
-		javax.swing.AbstractButton rv = new javax.swing.AbstractButton() {
+	protected javax.swing.JPanel createAwtComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return new java.awt.Dimension( ( ICON.getOrigWidth() * 4 ) / 5, ( ICON.getOrigHeight() * 4 ) / 5 );
@@ -186,8 +186,6 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 				}
 			}
 		};
-		rv.setIcon( ICON );
-		rv.setModel( new javax.swing.DefaultButtonModel() );
 		return rv;
 	}
 
