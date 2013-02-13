@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,7 +40,6 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.croquet.models.cascade.keymenus;
 
 import org.lgna.story.Key;
@@ -48,17 +47,30 @@ import org.lgna.story.Key;
 /**
  * @author Dennis Cosgrove
  */
-public class LettersNThroughZKeyCascadeMenu extends AbstractKeyCascadeMenu {
+public class LettersKeyCascadeMenu extends AbstractKeyCascadeMenu {
 	private static class SingletonHolder {
-		private static LettersNThroughZKeyCascadeMenu instance = new LettersNThroughZKeyCascadeMenu();
+		private static LettersKeyCascadeMenu instance = new LettersKeyCascadeMenu();
 	}
 
-	public static LettersNThroughZKeyCascadeMenu getInstance() {
+	public static LettersKeyCascadeMenu getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	private LettersNThroughZKeyCascadeMenu() {
-		super( java.util.UUID.fromString( "2401b8d5-8feb-48a9-8f0d-d103c82e6077" ),
+	private LettersKeyCascadeMenu() {
+		super( java.util.UUID.fromString( "7acafa54-f6ed-4c69-b5fe-b00e68c549a6" ),
+				Key.A,
+				Key.B,
+				Key.C,
+				Key.D,
+				Key.E,
+				Key.F,
+				Key.G,
+				Key.H,
+				Key.I,
+				Key.J,
+				Key.K,
+				Key.L,
+				Key.M,
 				Key.N,
 				Key.O,
 				Key.P,
@@ -73,5 +85,4 @@ public class LettersNThroughZKeyCascadeMenu extends AbstractKeyCascadeMenu {
 				Key.Y,
 				Key.Z );
 	}
-
 }
