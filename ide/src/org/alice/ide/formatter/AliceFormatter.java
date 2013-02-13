@@ -59,17 +59,28 @@ public class AliceFormatter extends Formatter {
 	private AliceFormatter() {
 		super( new java.util.Locale( "en", "US", "alice" ), "Alice" );
 		java.util.Locale locale = java.util.Locale.getDefault();
+		//		String[] bundleNames = {
+		//				"AliceFormatter",
+		//				"java_lang_Functions",
+		//				"org_alice_integer_Functions",
+		//				"org_alice_random_Functions",
+		//				"org_alice_apis_moveandturn_Procedures",
+		//				"org_alice_apis_moveandturn_Functions",
+		//				"org_alice_apis_moveandturn_Fields",
+		//				"org_alice_apis_moveandturn_Parameters",
+		//				"edu_wustl_cse_lookingglass_apis_walkandtouch_Procedures",
+		//				"edu_wustl_cse_lookingglass_apis_walkandtouch_Functions",
+		//		};
 		String[] bundleNames = {
 				"AliceFormatter",
 				"java_lang_Functions",
 				"org_alice_integer_Functions",
 				"org_alice_random_Functions",
-				"org_alice_apis_moveandturn_Procedures",
-				"org_alice_apis_moveandturn_Functions",
-				"org_alice_apis_moveandturn_Fields",
+				"org_lgna_story_Procedures",
+				"org_lgna_story_Functions",
+				"org_lgna_story_Properties",
+				//"org_lgna_story_Parameters",
 				"org_alice_apis_moveandturn_Parameters",
-				"edu_wustl_cse_lookingglass_apis_walkandtouch_Procedures",
-				"edu_wustl_cse_lookingglass_apis_walkandtouch_Functions",
 				"edu_wustl_cse_lookingglass_apis_walkandtouch_Parameters"
 		};
 		for( String bundleName : bundleNames ) {
@@ -90,6 +101,18 @@ public class AliceFormatter extends Formatter {
 		if( rv != null ) {
 			return rv;
 		} else {
+			if( text.startsWith( "get" ) ) {
+				rv = this.map.get( text.substring( 3 ) );
+				if( rv != null ) {
+					return this.getTextForGet() + rv;
+				}
+			}
+			if( text.startsWith( "set" ) ) {
+				rv = this.map.get( text.substring( 3 ) );
+				if( rv != null ) {
+					return this.getTextForSet() + rv;
+				}
+			}
 			return rvIfNull;
 		}
 	}
@@ -109,6 +132,14 @@ public class AliceFormatter extends Formatter {
 	@Override
 	public String getTextForNull() {
 		return this.getLocalizedText( "null" );
+	}
+
+	public String getTextForGet() {
+		return this.getLocalizedText( "get" );
+	}
+
+	public String getTextForSet() {
+		return this.getLocalizedText( "set" );
 	}
 
 	@Override
