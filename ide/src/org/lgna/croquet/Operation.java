@@ -88,33 +88,7 @@ public abstract class Operation extends AbstractCompletionModel {
 		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
 			int mnemonicKey = this.getLocalizedMnemonicKey();
-			int index;
-			if( mnemonicKey == 0 ) {
-				char mnemonicChar = (char)this.getLocalizedMnemonicKey();
-
-				int upperCaseIndex = name.indexOf( Character.toUpperCase( mnemonicChar ) );
-				int lowerCaseIndex = name.indexOf( Character.toLowerCase( mnemonicChar ) );
-
-				if( upperCaseIndex == -1 ) {
-					index = lowerCaseIndex;
-				} else if( lowerCaseIndex == -1 ) {
-					index = upperCaseIndex;
-				} else {
-					if( lowerCaseIndex < upperCaseIndex ) {
-						index = lowerCaseIndex;
-					} else {
-						index = upperCaseIndex;
-					}
-				}
-			} else {
-				index = -1;
-			}
-
-			this.setMnemonicKey( 0 );
-			this.setName( name );
-			if( index == -1 ) {
-				this.setMnemonicKey( mnemonicKey );
-			}
+			safeSetNameAndMnemonic( this.swingModel.action, name, mnemonicKey );
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
@@ -193,9 +167,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.buttonIcon = icon;
 	}
 
-	//	public int getMnemonicKey() {
-	//		return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
-	//	}
 	private void setMnemonicKey( int mnemonicKey ) {
 		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
