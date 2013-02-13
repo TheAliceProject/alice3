@@ -155,24 +155,6 @@ public abstract class IoUtilities {
 		return rv;
 	}
 
-	private static final class MigrationManagerDecodedVersionPair {
-		private final org.lgna.project.migration.MigrationManager migrationManager;
-		private final org.lgna.project.Version decodedVersion;
-
-		public MigrationManagerDecodedVersionPair( org.lgna.project.migration.MigrationManager migrationManager, org.lgna.project.Version decodedVersion ) {
-			this.migrationManager = migrationManager;
-			this.decodedVersion = decodedVersion;
-		}
-
-		public org.lgna.project.migration.MigrationManager getMigrationManager() {
-			return this.migrationManager;
-		}
-
-		public org.lgna.project.Version getDecodedVersion() {
-			return this.decodedVersion;
-		}
-	}
-
 	public static org.w3c.dom.Document readXML( java.io.InputStream is, MigrationManagerDecodedVersionPair[] migrationManagerDecodedVersionPairs ) throws java.io.IOException {
 		String modifiedText = null;
 		for( MigrationManagerDecodedVersionPair migrationManagerDecodedVersionPair : migrationManagerDecodedVersionPairs ) {
