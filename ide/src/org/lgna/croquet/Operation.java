@@ -87,8 +87,34 @@ public abstract class Operation extends AbstractCompletionModel {
 	protected void localize() {
 		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
+			int mnemonicKey = this.getLocalizedMnemonicKey();
+			int index;
+			if( mnemonicKey == 0 ) {
+				char mnemonicChar = (char)this.getLocalizedMnemonicKey();
+
+				int upperCaseIndex = name.indexOf( Character.toUpperCase( mnemonicChar ) );
+				int lowerCaseIndex = name.indexOf( Character.toLowerCase( mnemonicChar ) );
+
+				if( upperCaseIndex == -1 ) {
+					index = lowerCaseIndex;
+				} else if( lowerCaseIndex == -1 ) {
+					index = upperCaseIndex;
+				} else {
+					if( lowerCaseIndex < upperCaseIndex ) {
+						index = lowerCaseIndex;
+					} else {
+						index = upperCaseIndex;
+					}
+				}
+			} else {
+				index = -1;
+			}
+
+			this.setMnemonicKey( 0 );
 			this.setName( name );
-			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
+			if( index == -1 ) {
+				this.setMnemonicKey( mnemonicKey );
+			}
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
