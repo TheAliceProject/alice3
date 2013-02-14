@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Troll">
+    <BoundingBox>
+        <Min x="-0.6983290910720825" y="0.0" z="-0.30079879611730576"/>
+        <Max x="0.6983290910720825" y="1.5524162277579308" z="0.30079879611730576"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>giant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Troll" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

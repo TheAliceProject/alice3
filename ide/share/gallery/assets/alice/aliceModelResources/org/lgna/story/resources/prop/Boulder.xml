@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="John DeRiggi" name="Boulder">
+    <BoundingBox>
+        <Min x="-0.8331664502620697" y="0.0" z="-0.5764281153678894"/>
+        <Max x="0.8331664502620697" y="0.7176304245367646" z="0.5764281153678894"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>rock</Tag>
+        <Tag>boulder</Tag>
+        <Tag>stone</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Boulder1" resourceName="BOULDER1_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.7228796482086182" y="0.0" z="-0.5764281153678894"/>
+            <Max x="0.7228796482086182" y="0.6140143582597375" z="0.5764281153678894"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>gray</Tag>
+            <Tag>grey</Tag>
+            <Tag>moon</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder1" resourceName="BOULDER1_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.7228796482086182" y="0.0" z="-0.5764281153678894"/>
+            <Max x="0.7228796482086182" y="0.6140143582597375" z="0.5764281153678894"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>red</Tag>
+            <Tag>mars</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder1" resourceName="BOULDER1_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.7228796482086182" y="0.0" z="-0.5764281153678894"/>
+            <Max x="0.7228796482086182" y="0.6140143582597375" z="0.5764281153678894"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>brown</Tag>
+            <Tag>desert</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder2" resourceName="BOULDER2_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.4922780990600586" y="0.0" z="-0.4491260349750519"/>
+            <Max x="0.4922780990600586" y="0.5431815469637513" z="0.4491260349750519"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>gray</Tag>
+            <Tag>grey</Tag>
+            <Tag>moon</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder2" resourceName="BOULDER2_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.4922780990600586" y="0.0" z="-0.4491260349750519"/>
+            <Max x="0.4922780990600586" y="0.5431815469637513" z="0.4491260349750519"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>red</Tag>
+            <Tag>mars</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder2" resourceName="BOULDER2_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.4922780990600586" y="0.0" z="-0.4491260349750519"/>
+            <Max x="0.4922780990600586" y="0.5431815469637513" z="0.4491260349750519"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>brown</Tag>
+            <Tag>desert</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder3" resourceName="BOULDER3_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.8331664502620697" y="0.0" z="-0.37759314477443695"/>
+            <Max x="0.8331664502620697" y="0.7176304245367646" z="0.37759314477443695"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>gray</Tag>
+            <Tag>grey</Tag>
+            <Tag>moon</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder3" resourceName="BOULDER3_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.8331664502620697" y="0.0" z="-0.37759314477443695"/>
+            <Max x="0.8331664502620697" y="0.7176304245367646" z="0.37759314477443695"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>red</Tag>
+            <Tag>mars</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder3" resourceName="BOULDER3_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.8331664502620697" y="0.0" z="-0.37759314477443695"/>
+            <Max x="0.8331664502620697" y="0.7176304245367646" z="0.37759314477443695"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>brown</Tag>
+            <Tag>desert</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder4" resourceName="BOULDER4_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.5217399001121521" y="0.0" z="-0.3544032871723175"/>
+            <Max x="0.5217399001121521" y="0.6838044049218297" z="0.3544032871723175"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>gray</Tag>
+            <Tag>grey</Tag>
+            <Tag>moon</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder4" resourceName="BOULDER4_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.5217399001121521" y="0.0" z="-0.3544032871723175"/>
+            <Max x="0.5217399001121521" y="0.6838044049218297" z="0.3544032871723175"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>red</Tag>
+            <Tag>mars</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder4" resourceName="BOULDER4_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.5217399001121521" y="0.0" z="-0.3544032871723175"/>
+            <Max x="0.5217399001121521" y="0.6838044049218297" z="0.3544032871723175"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>brown</Tag>
+            <Tag>desert</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder5" resourceName="BOULDER5_GRAY" textureName="GRAY">
+        <BoundingBox>
+            <Min x="-0.5198187232017517" y="0.0" z="-0.36822134256362915"/>
+            <Max x="0.5198187232017517" y="0.472017765045166" z="0.36822134256362915"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>gray</Tag>
+            <Tag>grey</Tag>
+            <Tag>moon</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder5" resourceName="BOULDER5_RED" textureName="RED">
+        <BoundingBox>
+            <Min x="-0.5198187232017517" y="0.0" z="-0.36822134256362915"/>
+            <Max x="0.5198187232017517" y="0.472017765045166" z="0.36822134256362915"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>red</Tag>
+            <Tag>mars</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="Boulder5" resourceName="BOULDER5_BROWN" textureName="BROWN">
+        <BoundingBox>
+            <Min x="-0.5198187232017517" y="0.0" z="-0.36822134256362915"/>
+            <Max x="0.5198187232017517" y="0.472017765045166" z="0.36822134256362915"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>brown</Tag>
+            <Tag>desert</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

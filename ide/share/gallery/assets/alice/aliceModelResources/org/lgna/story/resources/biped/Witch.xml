@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="Witch">
+    <BoundingBox>
+        <Min x="-0.6865870356559753" y="0.0" z="-0.6241956502199173"/>
+        <Max x="0.6865870356559753" y="1.4934817482717335" z="0.6241956502199173"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>hag</Tag>
+        <Tag>villain</Tag>
+        <Tag>crone</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Witch" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

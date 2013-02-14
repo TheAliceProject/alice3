@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="FishingBasketLid">
+    <BoundingBox>
+        <Min x="-0.38905663788318634" y="0.0" z="-0.3930574208498001"/>
+        <Max x="0.38905663788318634" y="0.07690765289589763" z="0.3930574208498001"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>basket</Tag>
+        <Tag>lid</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles:fishing boat</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:fishing boat</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FishingBasketLid" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

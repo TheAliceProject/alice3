@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="PeridexionTree">
+    <BoundingBox>
+        <Min x="-2.272798001766205" y="0.0" z="-2.281840443611145"/>
+        <Max x="2.272798001766205" y="9.790239036083221" z="2.281840443611145"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>tree</Tag>
+        <Tag>plant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Tall" resourceName="TALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.272798001766205" y="0.0" z="-2.281840443611145"/>
+            <Max x="2.272798001766205" y="9.790239036083221" z="2.281840443611145"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Short" resourceName="SHORT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.218540132045746" y="0.0" z="-2.281840443611145"/>
+            <Max x="2.218540132045746" y="6.327671229839325" z="2.281840443611145"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

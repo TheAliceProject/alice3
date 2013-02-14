@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Fox">
+    <BoundingBox>
+        <Min x="-0.0788223147392273" y="0.0" z="-0.4270252138376236"/>
+        <Max x="0.0788223147392273" y="0.37925954232923687" z="0.4270252138376236"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>fox</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.0788223147392273" y="0.0" z="-0.4270252138376236"/>
+            <Max x="0.0788223147392273" y="0.37925954232923687" z="0.4270252138376236"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="WithScarf" resourceName="WITH_SCARF" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.0788223147392273" y="0.0" z="-0.4270252138376236"/>
+            <Max x="0.0788223147392273" y="0.37925954232923687" z="0.4270252138376236"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

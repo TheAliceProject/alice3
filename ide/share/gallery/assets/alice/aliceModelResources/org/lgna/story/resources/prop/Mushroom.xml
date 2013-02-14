@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Mushroom">
+    <BoundingBox>
+        <Min x="-0.9330357909202576" y="0.0" z="-0.9144903421401978"/>
+        <Max x="0.9330357909202576" y="3.034182623028755" z="0.9144903421401978"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>mushroom</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="ShortRed" resourceName="SHORT_RED" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.9330357909202576" y="0.0" z="-0.9144903421401978"/>
+            <Max x="0.9330357909202576" y="1.5227740686386824" z="0.9144903421401978"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>red</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="ShortWhite" resourceName="SHORT_WHITE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.6789024472236633" y="0.0" z="-0.673011302947998"/>
+            <Max x="0.6789024472236633" y="0.6594447633251548" z="0.673011302947998"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>white</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="TallRed" resourceName="TALL_RED" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.8172305226325989" y="0.0" z="-0.8008902370929718"/>
+            <Max x="0.8172305226325989" y="3.034182623028755" z="0.8008902370929718"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>red</Tag>
+        </Tags>
+    </Resource>
+    <Resource modelName="TallWhite" resourceName="TALL_WHITE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.5966286659240723" y="0.0" z="-0.6689149141311646"/>
+            <Max x="0.5966286659240723" y="2.8217640658840537" z="0.6689149141311646"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>white</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Poodle">
+    <BoundingBox>
+        <Min x="-0.18471302837133408" y="0.0" z="-0.39436373114585876"/>
+        <Max x="0.18471302837133408" y="0.6317837484530173" z="0.39436373114585876"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>dog</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Poodle" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

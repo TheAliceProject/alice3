@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="CandyFactory">
+    <BoundingBox>
+        <Min x="-1.3120280504226685" y="0.0" z="-1.7144747972488403"/>
+        <Max x="1.312027931213379" y="2.6794838905334473" z="1.7144747972488403"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>candy</Tag>
+        <Tag>factory</Tag>
+        <Tag>machine</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="CandyFactory" resourceName="CANDY_FACTORY" textureName="CANDY_FACTORY"/>
+</AliceModel>

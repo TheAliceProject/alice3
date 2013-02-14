@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Curupira">
+    <BoundingBox>
+        <Min x="-0.31849414110183716" y="0.0" z="-0.2644396647810936"/>
+        <Max x="0.31849414110183716" y="0.8686881493777037" z="0.2644396647810936"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>imp</Tag>
+        <Tag>spirit</Tag>
+        <Tag>elf</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Curupira" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="HibiscusTree">
+    <BoundingBox>
+        <Min x="-1.3966954946517944" y="0.0" z="-1.4004625082015991"/>
+        <Max x="1.3966954946517944" y="2.8173580169677734" z="1.4004625082015991"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="HibiscusTree" resourceName="RED" textureName="RED"/>
+    <Resource modelName="HibiscusTree" resourceName="WHITE" textureName="WHITE"/>
+    <Resource modelName="HibiscusTree" resourceName="YELLOW" textureName="YELLOW"/>
+</AliceModel>

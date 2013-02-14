@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="RiverRock">
+    <BoundingBox>
+        <Min x="-1.0689117312431335" y="0.0" z="-1.4153876900672913"/>
+        <Max x="1.0689117312431335" y="2.051267147064209" z="1.4153876900672913"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>river</Tag>
+        <Tag>stream</Tag>
+        <Tag>creek</Tag>
+        <Tag>rock</Tag>
+        <Tag>stone</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BigRock" resourceName="BIG_ROCK" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.0689117312431335" y="0.0" z="-1.4153876900672913"/>
+            <Max x="1.0689117312431335" y="2.051267147064209" z="1.4153876900672913"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LittleRock" resourceName="LITTLE_ROCK" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2623448371887207" y="0.0" z="-0.2660122811794281"/>
+            <Max x="0.2623448371887207" y="0.627853661775589" z="0.2660122811794281"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

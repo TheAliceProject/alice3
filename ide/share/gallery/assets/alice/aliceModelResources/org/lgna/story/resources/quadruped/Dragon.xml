@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Dragon">
+    <BoundingBox>
+        <Min x="-2.6918671131134033" y="0.0" z="-4.051839113235474"/>
+        <Max x="2.6918671131134033" y="5.39917459897697" z="4.051839113235474"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>dragon</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Dragon" resourceName="PURPLE" textureName="PURPLE"/>
+    <Resource modelName="Dragon" resourceName="GREEN" textureName="GREEN"/>
+    <Resource modelName="Dragon" resourceName="BLUE" textureName="BLUE"/>
+    <Resource modelName="Dragon" resourceName="ORANGE" textureName="ORANGE"/>
+    <Resource modelName="Dragon" resourceName="RED" textureName="RED"/>
+</AliceModel>
