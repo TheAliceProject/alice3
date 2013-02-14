@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="John DeRiggi" name="RedRover">
+    <BoundingBox>
+        <Min x="-0.8562644124031067" y="0.0" z="-0.843026340007782"/>
+        <Max x="0.8562644124031067" y="1.8615507166832685" z="0.843026340007782"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>robot</Tag>
+        <Tag>moon</Tag>
+        <Tag>rover</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="RedRover" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

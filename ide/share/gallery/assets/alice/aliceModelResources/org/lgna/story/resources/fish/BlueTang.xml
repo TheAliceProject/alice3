@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="BlueTang">
+    <BoundingBox>
+        <Min x="-0.2316141501069069" y="0.0" z="-0.631576731801033"/>
+        <Max x="0.2316141501069069" y="0.5158614804968238" z="0.631576731801033"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>fish</Tag>
+        <Tag>underwater</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BlueTang" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

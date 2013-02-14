@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Bunny">
+    <BoundingBox>
+        <Min x="-0.18442708998918533" y="0.0" z="-0.19085930287837982"/>
+        <Max x="0.18442708998918533" y="0.5893100039102137" z="0.19085930287837982"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bunny</Tag>
+        <Tag>rabbit</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Bunny" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

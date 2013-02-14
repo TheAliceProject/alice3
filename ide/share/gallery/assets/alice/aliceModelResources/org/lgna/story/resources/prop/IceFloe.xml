@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="IceFloe">
+    <BoundingBox>
+        <Min x="-1.4928491711616516" y="0.0" z="-1.759799599647522"/>
+        <Max x="1.4928491711616516" y="1.0514581799507141" z="1.759799599647522"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>ice</Tag>
+        <Tag>iceberg</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="IceFloe" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>
