@@ -223,6 +223,8 @@ public abstract class AbstractThumbnailMaker {
 		if( this.antAliasFactor != 0 ) {
 			int finalWidth = this.width;
 			int finalHeight = this.height;
+			int currentWidth = rv.getWidth();
+			int currentHeight = rv.getHeight();
 			if( trimWhitespace ) {
 				double actualAspectRatio = ( (double)rv.getWidth() ) / rv.getHeight();
 				double targetAspectRatio = ( (double)this.width ) / this.height;

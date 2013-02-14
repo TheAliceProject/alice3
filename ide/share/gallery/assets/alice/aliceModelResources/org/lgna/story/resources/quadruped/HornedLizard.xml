@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2013" creator="Pei Hong Tan" name="HornedLizard">
     <BoundingBox>
-        <Min x="-0.25553005933761597" y="0.0" z="-0.3609019070863724"/>
-        <Max x="0.25553005933761597" y="0.16538001922890544" z="0.3609019070863724"/>
+        <Min x="-0.22280779480934143" y="0.0" z="-0.3609019070863724"/>
+        <Max x="0.22280779480934143" y="0.17515505943447351" z="0.3609019070863724"/>
     </BoundingBox>
     <Tags>
         <Tag>southwest</Tag>
