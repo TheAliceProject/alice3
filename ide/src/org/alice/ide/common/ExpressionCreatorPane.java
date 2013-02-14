@@ -56,12 +56,14 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	}
 
 	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			org.alice.ide.IDE.getActiveInstance().showDropReceptorsStencilOver( this, getExpressionType() );
-		} else {
-			org.alice.ide.IDE.getActiveInstance().hideDropReceptorsStencil();
-		}
+	protected void handleMouseQuoteEnteredUnquote() {
+		super.handleMouseQuoteEnteredUnquote();
+		org.alice.ide.IDE.getActiveInstance().showDropReceptorsStencilOver( this, getExpressionType() );
+	}
+
+	@Override
+	protected void handleMouseQuoteExitedUnquote() {
+		org.alice.ide.IDE.getActiveInstance().hideDropReceptorsStencil();
+		super.handleMouseQuoteExitedUnquote();
 	}
 }

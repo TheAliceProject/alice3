@@ -87,14 +87,14 @@ public abstract class Operation extends AbstractCompletionModel {
 	protected void localize() {
 		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
-			this.setName( name );
-			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
+			int mnemonicKey = this.getLocalizedMnemonicKey();
+			safeSetNameAndMnemonic( this.swingModel.action, name, mnemonicKey );
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
 	}
 
 	public boolean isToolBarTextClobbered() {
-		return true;
+		return false;
 	}
 
 	//	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
@@ -140,6 +140,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
 
+	public void setToolTipText( String toolTipText ) {
+		this.setShortDescription( toolTipText );
+	}
+
 	//	public String getLongDescription() {
 	//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
 	//	}
@@ -163,9 +167,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.buttonIcon = icon;
 	}
 
-	//	public int getMnemonicKey() {
-	//		return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
-	//	}
 	private void setMnemonicKey( int mnemonicKey ) {
 		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}

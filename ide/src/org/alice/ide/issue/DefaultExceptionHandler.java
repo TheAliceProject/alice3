@@ -139,7 +139,21 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 					}
 				}
 			} finally {
+				boolean isSystemExitDesired = true;
+				org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+				if( application != null ) {
+					org.lgna.croquet.components.Frame frame = application.getFrame();
+					if( frame != null ) {
+						if( frame.isVisible() ) {
+							isSystemExitDesired = false;
+						}
+					}
+				}
 				this.isInTheMidstOfHandlingAThrowable = false;
+				if( isSystemExitDesired ) {
+					javax.swing.JOptionPane.showMessageDialog( null, "Exception occurred before application was able to show window.  Exiting." );
+					System.exit( -1 );
+				}
 			}
 		}
 	}

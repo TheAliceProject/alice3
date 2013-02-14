@@ -96,8 +96,19 @@ public abstract class VirtualMachine {
 		this.invoke( instance, method, arguments );
 	}
 
-	public UserInstance ENTRY_POINT_createInstance( org.lgna.project.ast.UserType<? extends org.lgna.project.ast.NamedUserConstructor> entryPointType, Object... arguments ) {
-		return this.createInstanceFromUserConstructor( entryPointType.getDeclaredConstructor(), arguments );
+	private org.lgna.project.ast.NamedUserConstructor getConstructor( org.lgna.project.ast.NamedUserType entryPointType, Object[] arguments ) {
+		for( org.lgna.project.ast.NamedUserConstructor constructor : entryPointType.constructors ) {
+			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
+			if( parameters.size() == arguments.length ) {
+				//todo: check types
+				return constructor;
+			}
+		}
+		return null;
+	}
+
+	public UserInstance ENTRY_POINT_createInstance( org.lgna.project.ast.NamedUserType entryPointType, Object... arguments ) {
+		return this.createInstanceFromUserConstructor( getConstructor( entryPointType, arguments ), arguments );
 	}
 
 	public UserInstance ACCEPTABLE_HACK_FOR_SCENE_EDITOR_createInstanceWithInverseMap( org.lgna.project.ast.NamedUserType entryPointType, Object... arguments ) {

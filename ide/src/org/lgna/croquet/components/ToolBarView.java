@@ -47,34 +47,58 @@ package org.lgna.croquet.components;
  */
 public class ToolBarView extends MigPanel {
 	public ToolBarView( org.lgna.croquet.ToolBarComposite composite ) {
-		super( composite, "insets 0 0 2 0, gap 0", "", "fill" );
+		super( composite, "insets 0 0 2 0, gap 0", "", "" );
 		String constraints = "";
-		for( org.lgna.croquet.Model model : composite.getSubModels() ) {
+		for( org.lgna.croquet.Element element : composite.getSubElements() ) {
 			JComponent<?> component;
-			if( model != null ) {
-				if( model instanceof org.lgna.croquet.Operation ) {
-					org.lgna.croquet.Operation operation = (org.lgna.croquet.Operation)model;
+			if( element == org.lgna.croquet.GapToolBarSeparator.getInstance() ) {
+				constraints = "gap 10";
+			} else if( element == org.lgna.croquet.PushToolBarSeparator.getInstance() ) {
+				this.addComponent( new Label(), "push" );
+				constraints = "";
+			} else {
+				if( element instanceof org.lgna.croquet.Operation ) {
+					org.lgna.croquet.Operation operation = (org.lgna.croquet.Operation)element;
 					Button button = operation.createButton();
 					if( operation.isToolBarTextClobbered() ) {
+						button.setToolTipText( operation.getName() );
 						button.setClobberText( "" );
 					}
 					button.tightenUpMargin();
 					component = button;
+				} else if( element instanceof org.lgna.croquet.ListSelectionState<?> ) {
+					org.lgna.croquet.ListSelectionState<?> listSelectionState = (org.lgna.croquet.ListSelectionState<?>)element;
+					ComboBox<?> comboBox = listSelectionState.getPrepModel().createComboBox();
+					component = comboBox;
+				} else if( element instanceof org.lgna.croquet.Composite<?> ) {
+					org.lgna.croquet.Composite<?> subComposite = (org.lgna.croquet.Composite<?>)element;
+					component = subComposite.getView();
+				} else if( element instanceof org.lgna.croquet.PlainStringValue ) {
+					org.lgna.croquet.PlainStringValue stringValue = (org.lgna.croquet.PlainStringValue)element;
+					component = stringValue.createLabel();
+
+					//
+					//
+					//
+					//todo
+				} else if( element == org.alice.ide.clipboard.Clipboard.SINGLETON.getDragModel() ) {
+					component = org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent();
+					//
+					//
+					//
+
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( model );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( element );
 					component = null;
 				}
 				if( component != null ) {
 					this.addComponent( component, constraints );
-				} else {
-
 				}
 				constraints = "";
-			} else {
-				constraints = "gap 10";
 			}
 		}
 
-		this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.DARK_GRAY ) );
+		//this.setBackgroundColor( FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
 	}
 }

@@ -254,15 +254,7 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 				}
 			}
 		}
-		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
-	}
-
-	//	public int getMnemonicKey() {
-	//	return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
-	//}
-	private void setMnemonicKey( int mnemonicKey ) {
-		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
 
 	//public javax.swing.KeyStroke getAcceleratorKey() {
@@ -341,6 +333,14 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		this.trueIcon = trueIcon;
 		this.falseIcon = falseIcon;
 		this.updateNameAndIcon();
+	}
+
+	public void setShortDescription( String shortDescription ) {
+		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	}
+
+	public void setToolTipText( String toolTipText ) {
+		this.setShortDescription( toolTipText );
 	}
 
 	private void updateNameAndIcon() {

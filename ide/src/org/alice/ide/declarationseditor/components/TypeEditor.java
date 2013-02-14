@@ -63,16 +63,18 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 
 	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.FlowPanel headerTrailingComponent = new org.lgna.croquet.components.FlowPanel(
-				composite.getControlsComposite().getView(),
-				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
-				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
-				);
+		//		org.lgna.croquet.components.FlowPanel headerTrailingComponent = new org.lgna.croquet.components.FlowPanel(
+		//				composite.getControlsComposite().getView(),
+		//				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
+		//				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
+		//				);
 
-		final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
-		if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
-			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBinView() );
-		}
+		org.lgna.croquet.components.JComponent<?> headerTrailingComponent = composite.getControlsComposite().getView();
+
+		//		final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
+		//		if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
+		//			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBinView() );
+		//		}
 		headerTrailingComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 0, 2 ) );
 
 		final boolean IS_CUSTOM_DRAWING_DESIRED = false;

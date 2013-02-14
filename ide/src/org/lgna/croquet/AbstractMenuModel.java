@@ -70,8 +70,7 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 
 	@Override
 	protected void localize() {
-		this.setName( this.findDefaultLocalizedText() );
-		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, this.getLocalizedMnemonicKey() );
+		safeSetNameAndMnemonic( this.action, this.findDefaultLocalizedText(), this.getLocalizedMnemonicKey() );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke() );
 	}
 

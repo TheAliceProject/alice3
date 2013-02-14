@@ -62,7 +62,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
 		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
 	}
 
@@ -165,7 +165,6 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		if( this.isVoid || ( this.isExpressionTypeFeedbackDesired() == false ) ) {
 			//pass
 		} else {
-			//edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
 			edu.cmu.cs.dennisc.java.awt.BevelState bevelState = edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
 			edu.cmu.cs.dennisc.java.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
 			g2.setPaint( this.getBackgroundPaint( x, y, width, height ) );
