@@ -279,60 +279,8 @@ public class StageIDE extends org.alice.ide.IDE {
 		return org.alice.stageide.about.AboutComposite.getInstance().getOperation();
 	}
 
-	private void appendUserMethodsInvokedFromSceneActivationListeners( java.util.List<? super org.lgna.project.ast.UserMethod> methods ) {
-		org.lgna.project.ast.NamedUserType sceneType = this.getSceneType();
-		if( sceneType != null ) {
-			org.lgna.project.ast.UserMethod initializeEventListenersMethod = sceneType.getDeclaredMethod( INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
-			if( initializeEventListenersMethod != null ) {
-				java.util.List<org.lgna.project.ast.UserMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-
-				for( org.lgna.project.ast.Statement statement : initializeEventListenersMethod.body.getValue().statements ) {
-					if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-						org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-						org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-						if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-							org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-							if( methodInvocation.method.getValue() == org.alice.ide.declarationseditor.events.TimeEventListenerMenu.ADD_SCENE_ACTIVATION_LISTENER_METHOD ) {
-								org.lgna.project.ast.SimpleArgument arg0 = methodInvocation.requiredArguments.get( 0 );
-								org.lgna.project.ast.Expression arg0Expression = arg0.expression.getValue();
-								if( arg0Expression instanceof org.lgna.project.ast.LambdaExpression ) {
-									org.lgna.project.ast.LambdaExpression lambdaExpression = (org.lgna.project.ast.LambdaExpression)arg0Expression;
-									org.lgna.project.ast.Lambda lambda = lambdaExpression.value.getValue();
-									if( lambda instanceof org.lgna.project.ast.UserLambda ) {
-										org.lgna.project.ast.UserLambda userLambda = (org.lgna.project.ast.UserLambda)lambda;
-										edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.MethodInvocation> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<org.lgna.project.ast.MethodInvocation>( org.lgna.project.ast.MethodInvocation.class ) {
-											@Override
-											protected boolean isAcceptable( org.lgna.project.ast.MethodInvocation methodInvocation ) {
-												return methodInvocation.method.getValue().isUserAuthored();
-											}
-										};
-										userLambda.crawl( crawler, org.lgna.project.ast.CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
-										for( org.lgna.project.ast.MethodInvocation mi : crawler.getList() ) {
-											org.lgna.project.ast.AbstractMethod m = mi.method.getValue();
-											if( m instanceof org.lgna.project.ast.UserMethod ) {
-												org.lgna.project.ast.UserMethod um = (org.lgna.project.ast.UserMethod)m;
-												if( methods.contains( um ) ) {
-													//pass
-												} else {
-													methods.add( um );
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-
-					}
-				}
-			}
-		}
-	}
-
 	public java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedFromSceneActivationListeners() {
-		java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		this.appendUserMethodsInvokedFromSceneActivationListeners( methods );
-		return methods;
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners( this.getSceneType() );
 	}
 
 	@Override
@@ -349,7 +297,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 				java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				methods.add( sceneType.findMethod( INITIALIZE_EVENT_LISTENERS_METHOD_NAME ) );
-				this.appendUserMethodsInvokedFromSceneActivationListeners( methods );
+				methods.addAll( this.getUserMethodsInvokedFromSceneActivationListeners() );
 
 				for( org.lgna.project.ast.AbstractMethod method : methods ) {
 					if( method != null ) {
