@@ -97,22 +97,26 @@ public class AliceFormatter extends Formatter {
 	}
 
 	private String getLocalizedText( String text, String rvIfNull ) {
-		String rv = this.map.get( text );
-		if( rv != null ) {
-			return rv;
+		if( text != null ) {
+			String rv = this.map.get( text );
+			if( rv != null ) {
+				return rv;
+			} else {
+				if( text.startsWith( "get" ) ) {
+					rv = this.map.get( text.substring( 3 ) );
+					if( rv != null ) {
+						return this.getTextForGet() + rv;
+					}
+				}
+				if( text.startsWith( "set" ) ) {
+					rv = this.map.get( text.substring( 3 ) );
+					if( rv != null ) {
+						return this.getTextForSet() + rv;
+					}
+				}
+				return rvIfNull;
+			}
 		} else {
-			if( text.startsWith( "get" ) ) {
-				rv = this.map.get( text.substring( 3 ) );
-				if( rv != null ) {
-					return this.getTextForGet() + rv;
-				}
-			}
-			if( text.startsWith( "set" ) ) {
-				rv = this.map.get( text.substring( 3 ) );
-				if( rv != null ) {
-					return this.getTextForSet() + rv;
-				}
-			}
 			return rvIfNull;
 		}
 	}
