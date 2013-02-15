@@ -51,7 +51,7 @@ import org.lgna.story.SpatialRelation;
  * @author Dennis Cosgrove
  */
 class TestPlaceProgram extends SProgram {
-	private final SBiped babyYeti = new SBiped( org.lgna.story.resources.biped.BabyYetiResource.WITH_SCARF );
+	private final SBiped babyYeti = new SBiped( org.lgna.story.resources.biped.MonkeyKingResource.DEFAULT );
 	private final SBiped ogre = new SBiped( org.lgna.story.resources.biped.OgreResource.BROWN );
 	private final TestScene testScene = new TestScene( babyYeti, ogre );
 
@@ -60,8 +60,11 @@ class TestPlaceProgram extends SProgram {
 		ogre.setOpacity( 0.7, SetOpacity.duration( 0.0 ) );
 		this.testScene.addSceneActivationListener( new org.lgna.story.event.SceneActivationListener() {
 			public void sceneActivated( org.lgna.story.event.SceneActivationEvent e ) {
-				for( SpatialRelation spatialRelation : SpatialRelation.values() ) {
-					babyYeti.place( spatialRelation, ogre );
+				while( true ) {
+					for( SpatialRelation spatialRelation : SpatialRelation.values() ) {
+						babyYeti.place( spatialRelation, ogre );
+					}
+					ogre.turn( org.lgna.story.TurnDirection.LEFT, 0.25 );
 				}
 			}
 		} );
