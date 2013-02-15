@@ -51,13 +51,13 @@ public class AstUtilities {
 		throw new AssertionError();
 	}
 
-	public static <N extends org.lgna.project.ast.AbstractNode> N createCopy( N original, org.lgna.project.ast.NamedUserType root ) {
-		java.util.Set<org.lgna.project.ast.AbstractDeclaration> abstractDeclarations = root.createDeclarationSet();
+	public static <N extends AbstractNode> N createCopy( N original, NamedUserType root ) {
+		java.util.Set<AbstractDeclaration> abstractDeclarations = root.createDeclarationSet();
 		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
-		java.util.Map<Integer, org.lgna.project.ast.AbstractDeclaration> map = org.lgna.project.ast.AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
+		java.util.Map<Integer, AbstractDeclaration> map = AbstractNode.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
 		try {
-			org.lgna.project.ast.AbstractNode dst = org.lgna.project.ast.AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, false );
+			AbstractNode dst = AbstractNode.decode( xmlDocument, org.lgna.project.ProjectVersion.getCurrentVersion(), map, false );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "check copy", dst );
 			return (N)dst;
 		} catch( org.lgna.project.VersionNotSupportedException vnse ) {
@@ -539,14 +539,14 @@ public class AstUtilities {
 	}
 
 	public static boolean isAddEventListenerMethodInvocationStatement( Statement statement ) {
-		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
-			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
-			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
-			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
-				org.lgna.project.ast.MethodInvocation methodInvocation = (org.lgna.project.ast.MethodInvocation)expression;
-				org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
-				if( method instanceof org.lgna.project.ast.JavaMethod ) {
-					org.lgna.project.ast.JavaMethod javaMethod = (org.lgna.project.ast.JavaMethod)method;
+		if( statement instanceof ExpressionStatement ) {
+			ExpressionStatement expressionStatement = (ExpressionStatement)statement;
+			Expression expression = expressionStatement.expression.getValue();
+			if( expression instanceof MethodInvocation ) {
+				MethodInvocation methodInvocation = (MethodInvocation)expression;
+				AbstractMethod method = methodInvocation.method.getValue();
+				if( method instanceof JavaMethod ) {
+					JavaMethod javaMethod = (JavaMethod)method;
 					return javaMethod.isAnnotationPresent( org.lgna.project.annotations.AddEventListenerTemplate.class );
 				}
 			}
@@ -594,5 +594,33 @@ public class AstUtilities {
 	public static AbstractMethod getOverridenMethod( AbstractMethod method ) {
 		AbstractType<?, ?, ?> type = method.getDeclaringType();
 		return getOverridenMethod( type.getSuperType(), method.getName(), getParameterTypes( method ) );
+	}
+
+	private static void addInvokedMethods( java.util.Set<UserMethod> set, UserMethod from ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<MethodInvocation> crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler<MethodInvocation>( MethodInvocation.class ) {
+			@Override
+			protected boolean isAcceptable( MethodInvocation methodInvocation ) {
+				return true;
+			}
+		};
+		from.body.getValue().crawl( crawler, CrawlPolicy.EXCLUDE_REFERENCES_ENTIRELY );
+		for( MethodInvocation methodInvocation : crawler.getList() ) {
+			AbstractMethod m = methodInvocation.method.getValue();
+			if( m instanceof UserMethod ) {
+				UserMethod userMethod = (UserMethod)m;
+				if( set.contains( userMethod ) ) {
+					//pass
+				} else {
+					set.add( userMethod );
+					addInvokedMethods( set, userMethod );
+				}
+			}
+		}
+	}
+
+	public static java.util.Set<UserMethod> getAllInvokedMethods( UserMethod seed ) {
+		java.util.Set<UserMethod> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		addInvokedMethods( set, seed );
+		return set;
 	}
 }
