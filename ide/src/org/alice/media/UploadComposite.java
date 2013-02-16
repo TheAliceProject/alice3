@@ -81,10 +81,14 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final ActionOperation exportToFileOperation = this.createActionOperation( this.createKey( "exportToFileOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 
-			File file = FileDialogUtilities.showSaveFileDialog( java.util.UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
+			File exportFile = FileDialogUtilities.showSaveFileDialog( java.util.UUID.fromString( "ba9423c8-2b6a-4d6f-a208-013136d1a680" ),
 					UploadComposite.this.getView().getAwtComponent(), "Save Video", owner.getFile(), titleState.getValue(), FileUtilities.createFilenameFilter( ".webm" ), ".webm" );
-			if( file != null ) {
-				owner.getFile().renameTo( file );
+			if( exportFile != null ) {
+				try {
+					FileUtilities.copyFile( owner.getFile(), exportFile );
+				} catch( IOException ioe ) {
+					org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "cannot export file: " + exportFile );
+				}
 			}
 			return null;
 		}
