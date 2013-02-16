@@ -279,6 +279,10 @@ public class StageIDE extends org.alice.ide.IDE {
 		return org.alice.stageide.about.AboutComposite.getInstance().getOperation();
 	}
 
+	public java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedFromSceneActivationListeners() {
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners( this.getSceneType() );
+	}
+
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
@@ -290,13 +294,22 @@ public class StageIDE extends org.alice.ide.IDE {
 				org.lgna.croquet.data.ListData<org.alice.ide.declarationseditor.DeclarationComposite> data = tabState.getData();
 
 				data.internalAddItem( org.alice.ide.declarationseditor.TypeComposite.getInstance( sceneType ) );
-				String[] methodNames = { INITIALIZE_EVENT_LISTENERS_METHOD_NAME, "myFirstMethod" };
-				for( String methodName : methodNames ) {
-					org.lgna.project.ast.AbstractMethod method = sceneType.findMethod( methodName );
+
+				java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				methods.add( sceneType.findMethod( INITIALIZE_EVENT_LISTENERS_METHOD_NAME ) );
+				methods.addAll( this.getUserMethodsInvokedFromSceneActivationListeners() );
+
+				for( org.lgna.project.ast.AbstractMethod method : methods ) {
 					if( method != null ) {
-						data.internalAddItem( org.alice.ide.declarationseditor.CodeComposite.getInstance( method ) );
+						if( method.getDeclaringType() == sceneType ) {
+							data.internalAddItem( org.alice.ide.declarationseditor.CodeComposite.getInstance( method ) );
+						}
 					}
 				}
+				//				String[] methodNames = { INITIALIZE_EVENT_LISTENERS_METHOD_NAME, "myFirstMethod" };
+				//				for( String methodName : methodNames ) {
+				//					org.lgna.project.ast.AbstractMethod method = sceneType.findMethod( methodName );
+				//				}
 				tabState.setValueTransactionlessly( data.getItemAt( data.getItemCount() - 1 ) );
 			}
 		}

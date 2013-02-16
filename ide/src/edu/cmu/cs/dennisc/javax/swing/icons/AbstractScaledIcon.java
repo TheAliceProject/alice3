@@ -74,7 +74,7 @@ public abstract class AbstractScaledIcon implements javax.swing.Icon {
 
 	protected abstract int getSourceHeight();
 
-	protected abstract void paintSource( java.awt.Component c, java.awt.Graphics g, int x, int y );
+	protected abstract void paintSource( java.awt.Component c, java.awt.Graphics g );
 
 	public final void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		double xScale = Float.isNaN( this.factor ) ? this.width / (double)this.getSourceWidth() : this.factor;
@@ -83,7 +83,7 @@ public abstract class AbstractScaledIcon implements javax.swing.Icon {
 		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
 		g2.translate( x, y );
 		g2.scale( xScale, yScale );
-		this.paintSource( c, g2, 0, 0 );
+		this.paintSource( c, g2 );
 		g2.setTransform( prevTransform );
 	}
 }

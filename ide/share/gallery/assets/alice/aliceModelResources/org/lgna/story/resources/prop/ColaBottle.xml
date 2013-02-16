@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="ColaBottle">
+    <BoundingBox>
+        <Min x="-0.03531002439558506" y="0.0" z="-0.037127161398530006"/>
+        <Max x="0.03531002439558506" y="0.24031283974909456" z="0.037127161398530006"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>cola</Tag>
+        <Tag>bottle</Tag>
+        <Tag>soda</Tag>
+        <Tag>drink</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>household:kitchen</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="ColaBottle" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

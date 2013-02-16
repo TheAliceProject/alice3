@@ -216,8 +216,15 @@ public class IconFactoryManager {
 			if( this.instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
 				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.instance;
 				try {
-					java.awt.image.BufferedImage image = org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance().createThumbnailFromPersonResource( personResource );
-					return new org.lgna.croquet.icon.ImageIconFactory( image );
+					org.lgna.story.resourceutilities.AliceThumbnailMaker thumbnailMaker = org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance();
+					java.awt.image.BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource( personResource );
+					int width = thumbnailMaker.getWidth();
+					int height = thumbnailMaker.getHeight();
+					if( ( width == image.getWidth() ) && ( height == image.getHeight() ) ) {
+						return new org.lgna.croquet.icon.ImageIconFactory( image );
+					} else {
+						return new org.lgna.croquet.icon.TrimmedImageIconFactory( image, width, height );
+					}
 				} catch( Throwable t ) {
 					t.printStackTrace();
 					return org.lgna.croquet.icon.EmptyIconFactory.getInstance();

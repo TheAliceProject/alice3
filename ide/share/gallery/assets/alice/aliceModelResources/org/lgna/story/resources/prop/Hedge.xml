@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Hedge">
+    <BoundingBox>
+        <Min x="-0.6367309093475342" y="0.0" z="-0.6086636781692505"/>
+        <Max x="0.6367309093475342" y="1.4940661191940308" z="0.6086636781692505"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>hedge</Tag>
+        <Tag>bush</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Hedge" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

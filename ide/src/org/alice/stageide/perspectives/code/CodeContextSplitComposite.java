@@ -55,9 +55,9 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 		return SingletonHolder.instance;
 	}
 
-	private final org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.meta.event.MetaStateValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void metaStateValueChanged( org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue ) {
-			CodeContextSplitComposite.this.handleTypeStateChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+			CodeContextSplitComposite.this.handleTypeStateChanged( e.getNextValue() );
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
@@ -172,14 +172,14 @@ public class CodeContextSplitComposite extends org.lgna.croquet.ImmutableSplitCo
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeMetaStateValueListener( this.typeListener, null );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeValueListener( this.typeListener );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addAndInvokeValueListener( this.declarationListener );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeValueListener( this.declarationListener );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeMetaStateValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
 		super.handlePostDeactivation();
 	}
 }

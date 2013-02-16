@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="CastleWall">
+    <BoundingBox>
+        <Min x="-2.7787097692489624" y="0.0" z="-0.6095958054065704"/>
+        <Max x="2.7787097692489624" y="5.793804168701172" z="0.6095958054065704"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>castle</Tag>
+        <Tag>rampart</Tag>
+        <Tag>wall</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props:castle</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy:castle</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.632662773132324" y="0.0" z="-0.6095958054065704"/>
+            <Max x="2.632662773132324" y="3.658020496368408" z="0.6095958054065704"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="WallWithFlag" resourceName="WALL_WITH_FLAG" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.7787097692489624" y="0.0" z="-0.6095958054065704"/>
+            <Max x="2.7787097692489624" y="5.793804168701172" z="0.6095958054065704"/>
+        </BoundingBox>
+        <Tags>
+            <Tag>flag</Tag>
+        </Tags>
+    </Resource>
+</AliceModel>

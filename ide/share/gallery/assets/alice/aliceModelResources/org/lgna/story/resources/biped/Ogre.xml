@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Ogre">
+    <BoundingBox>
+        <Min x="-0.5337330102920532" y="0.0" z="-0.3678039610385895"/>
+        <Max x="0.5337330102920532" y="1.9996050596237183" z="0.3678039610385895"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>monster</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Ogre" resourceName="BROWN" textureName="BROWN"/>
+    <Resource modelName="Ogre" resourceName="GREEN" textureName="GREEN"/>
+</AliceModel>

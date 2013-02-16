@@ -52,7 +52,7 @@ public abstract class NodeLikeSubstance extends org.alice.ide.croquet.components
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
 		return new javax.swing.BoxLayout( jComponent, javax.swing.BoxLayout.LINE_AXIS );
 	}
 }

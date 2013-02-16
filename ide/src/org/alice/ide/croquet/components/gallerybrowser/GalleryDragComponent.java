@@ -141,7 +141,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
 		return new java.awt.LayoutManager() {
 			public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
 			}
@@ -242,7 +242,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		java.awt.geom.RoundRectangle2D.Float shape = this.createShape( x, y, width, height );
-		if( this.getAwtComponent().getModel().isPressed() ) {
+		if( this.isPressed() ) {
 			g2.setPaint( this.baseColor );
 			g2.fill( shape );
 		} else {

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="JunglePlant">
+    <BoundingBox>
+        <Min x="-1.0819414854049683" y="0.0" z="-1.1348388195037842"/>
+        <Max x="1.0819414854049683" y="1.28797447681427" z="1.1348388195037842"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>bush</Tag>
+        <Tag>shrub</Tag>
+        <Tag>plant</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Shrub1" resourceName="SHRUB1" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.7955175638198853" y="0.0" z="-0.8646522462368011"/>
+            <Max x="0.7955175638198853" y="0.9191215820610523" z="0.8646522462368011"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Shrub2" resourceName="SHRUB2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.5426464229822159" y="0.0" z="-0.5724865645170212"/>
+            <Max x="0.5426464229822159" y="0.5293162195011973" z="0.5724865645170212"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Shrub3" resourceName="SHRUB3" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.0819414854049683" y="0.0" z="-1.1348388195037842"/>
+            <Max x="1.0819414854049683" y="1.28797447681427" z="1.1348388195037842"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Shrub4" resourceName="SHRUB4" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.8209226727485657" y="0.0" z="-0.8263989090919495"/>
+            <Max x="0.8209226727485657" y="1.209256872534752" z="0.8263989090919495"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

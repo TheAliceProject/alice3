@@ -77,7 +77,7 @@ public class ComponentManager {
 			}
 			components.add( component );
 			//		component.getAwtComponent().setEnabled( this.isEnabled );
-			component.setToolTipText( model.getToolTipText() );
+			//component.setToolTipText( model.getToolTipText() );
 		}
 	}
 

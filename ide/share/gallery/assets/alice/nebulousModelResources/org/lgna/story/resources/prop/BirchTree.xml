@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="BirchTree">
+    <BoundingBox>
+        <Min x="-2.7630605697631836" y="0.0" z="-3.303849458694458"/>
+        <Max x="2.7630605697631836" y="6.628803730010986" z="3.303849458694458"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="BirchTree" resourceName="YELLOW" textureName="YELLOW"/>
+    <Resource modelName="BirchTree" resourceName="GREEN" textureName="GREEN"/>
+</AliceModel>

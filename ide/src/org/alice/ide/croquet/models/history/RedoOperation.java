@@ -56,11 +56,16 @@ public class RedoOperation extends HistoryOperation {
 
 	private RedoOperation() {
 		super( java.util.UUID.fromString( "6391ae51-0ae5-4592-8fd9-441a72bb814a" ) );
-		this.setSmallIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/redo.png" ) ) );
+		this.setButtonIcon( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( RedoOperation.class.getResource( "images/redo.png" ) ) );
 	}
 
 	@Override
 	protected void performInternal( org.lgna.croquet.undo.UndoHistory historyManager ) {
 		historyManager.performRedo();
+	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return true;
 	}
 }

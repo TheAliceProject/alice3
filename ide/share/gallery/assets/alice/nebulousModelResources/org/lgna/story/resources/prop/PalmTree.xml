@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="PalmTree">
+    <BoundingBox>
+        <Min x="-1.7879161834716797" y="0.0" z="-1.9463738203048706"/>
+        <Max x="1.7879161834716797" y="6.524755001068115" z="1.9463738203048706"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+        <Tag>tropical</Tag>
+        <Tag>jungle</Tag>
+        <Tag>beach</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="PalmTree" resourceName="PALM_TREE" textureName="PALM_TREE"/>
+</AliceModel>

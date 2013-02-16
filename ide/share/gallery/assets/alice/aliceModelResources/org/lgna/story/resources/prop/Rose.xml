@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Rose">
+    <BoundingBox>
+        <Min x="-0.18087530136108398" y="0.0" z="-0.15292774885892868"/>
+        <Max x="0.18087530136108398" y="0.3578644394874573" z="0.15292774885892868"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>rose</Tag>
+        <Tag>flower</Tag>
+        <Tag>white</Tag>
+        <Tag>red</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Rose" resourceName="ROSE_RED" textureName="ROSE_RED"/>
+    <Resource modelName="Rose" resourceName="ROSE_WHITE" textureName="ROSE_WHITE"/>
+</AliceModel>

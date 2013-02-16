@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="CheshireCat">
+    <BoundingBox>
+        <Min x="-0.5047890096902847" y="0.0" z="-0.6493610367178917"/>
+        <Max x="0.5047890096902847" y="1.3586319351452403" z="0.6493610367178917"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>wonderland</Tag>
+        <Tag>alice</Tag>
+        <Tag>cat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CheshireCat" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>
