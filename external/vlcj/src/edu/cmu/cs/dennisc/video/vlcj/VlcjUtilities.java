@@ -64,7 +64,7 @@ public class VlcjUtilities {
 		}
 	}
 
-	public static java.awt.Component createEmbeddedMediaPlayerComponent() {
+	public static Object createVideoPlayer() {
 		initializeIfNecessary();
 		if( isInitialized ) {
 			return new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
@@ -109,12 +109,30 @@ public class VlcjUtilities {
 		}
 	}
 	
-	public static void playMedia( java.awt.Component component, String path ) {
-		if( component instanceof uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent ) {
-			uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent  embeddedMediaPlayerComponent = (uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent )component;
+	public static java.awt.Component getVideoSurface( Object videoPlayer ) {
+		if( videoPlayer instanceof uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent ) {
+			uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent  embeddedMediaPlayerComponent = (uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent )videoPlayer;
+			return embeddedMediaPlayerComponent.getVideoSurface();
+		} else {
+			return (javax.swing.JLabel)videoPlayer;
+		}
+	}
+	
+	public static void playMedia( Object videoPlayer, String path ) {
+		if( videoPlayer instanceof uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent ) {
+			uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent  embeddedMediaPlayerComponent = (uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent )videoPlayer;
 			embeddedMediaPlayerComponent.getMediaPlayer().playMedia( path );
 		} else {
-			System.err.println( "playMedia: " + path );
+			System.err.println( "playMedia: " + path + " " + videoPlayer );
+		}
+	}
+
+	public static void pause( Object videoPlayer ) {
+		if( videoPlayer instanceof uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent ) {
+			uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent  embeddedMediaPlayerComponent = (uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent )videoPlayer;
+			embeddedMediaPlayerComponent.getMediaPlayer().pause();
+		} else {
+			System.err.println( "pause: " + videoPlayer );
 		}
 	}
 }

@@ -49,4 +49,10 @@ public interface VideoPlayer {
 	public java.awt.Component getAwtComponent();
 
 	public void playMedia( java.io.File file );
+
+	public void pause();
+
+	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
+
+	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
 }

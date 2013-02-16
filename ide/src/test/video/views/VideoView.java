@@ -180,9 +180,52 @@ abstract class PlayView extends org.lgna.croquet.components.View<javax.swing.JTo
  */
 public class VideoView extends PlayView {
 	private java.io.File file;
+	private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
+	private final javax.swing.JSlider jSlider = new javax.swing.JSlider( 0, 100, 0 );
+
+	private final edu.cmu.cs.dennisc.video.event.MediaListener mediaListener = new edu.cmu.cs.dennisc.video.event.MediaListener() {
+		public void newMedia() {
+		}
+
+		public void positionChanged( float f ) {
+			jSlider.setValue( (int)( f * 100 ) );
+		}
+
+		public void playing() {
+		}
+
+		public void finished() {
+		}
+
+		public void stopped() {
+		}
+
+		public void error() {
+		}
+	};
+
+	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+			getAwtComponent().setSelected( getAwtComponent().isSelected() == false );
+		}
+
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		}
+	};
 
 	public VideoView( test.video.VideoComposite composite ) {
 		super( composite );
+
+		this.getAwtComponent().add( jSlider, java.awt.BorderLayout.PAGE_END );
 	}
 
 	public void setFile( java.io.File file ) {
@@ -196,37 +239,44 @@ public class VideoView extends PlayView {
 		this.file = file;
 	}
 
-	private void initializeAndPlay() {
-		edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilties.createVideoPlayer();
-		this.getAwtComponent().add( videoPlayer.getAwtComponent(), java.awt.BorderLayout.CENTER );
-		this.revalidateAndRepaint();
-		videoPlayer.playMedia( this.file );
+	public edu.cmu.cs.dennisc.video.VideoPlayer getVideoPlayer() {
+		if( this.videoPlayer != null ) {
+			//pass
+		} else {
+			this.videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilties.createVideoPlayer();
+
+			java.awt.Component component = this.videoPlayer.getAwtComponent();
+			if( component instanceof java.awt.Canvas ) {
+				java.awt.Canvas canvas = (java.awt.Canvas)component;
+				canvas.addMouseListener( this.mouseListener );
+			}
+
+			this.getAwtComponent().add( component, java.awt.BorderLayout.CENTER );
+			this.revalidateAndRepaint();
+			this.videoPlayer.addMediaListener( this.mediaListener );
+		}
+		return this.videoPlayer;
 	}
 
 	private void play() {
-		java.awt.Component component = this.getAwtComponent().getComponent( 0 );
-		if( component instanceof edu.cmu.cs.dennisc.video.VideoPlayer ) {
-			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = (edu.cmu.cs.dennisc.video.VideoPlayer)component;
+		if( this.file != null ) {
+			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = this.getVideoPlayer();
 			videoPlayer.playMedia( this.file );
 		}
 	}
 
-	private void setPlaying( boolean isPlaying ) {
-		if( this.file != null ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( isPlaying );
+	private void pause() {
+		if( this.videoPlayer != null ) {
+			this.videoPlayer.pause();
+		}
+	}
 
-			javax.swing.JToggleButton jView = this.getAwtComponent();
-			int N = jView.getComponentCount();
-			switch( N ) {
-			case 0:
-				this.initializeAndPlay();
-				break;
-			case 1:
-				this.play();
-				break;
-			default:
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
-			}
+	private void setPlaying( boolean isPlaying ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( isPlaying );
+		if( isPlaying ) {
+			this.play();
+		} else {
+			this.pause();
 		}
 	}
 
