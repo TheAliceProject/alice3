@@ -362,4 +362,26 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.cardComposite.handlePostDeactivation();
 		super.handlePostDeactivation();
 	}
+
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		for( Composite<?> subComposite : this.cardComposite.getCards() ) {
+			if( subComposite instanceof WizardPageComposite<?> ) {
+				WizardPageComposite<?> wizardPage = (WizardPageComposite<?>)subComposite;
+				wizardPage.handlePreShowDialog( step );
+			}
+		}
+		super.handlePreShowDialog( step );
+	}
+
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super.handlePostHideDialog( step );
+		for( Composite<?> subComposite : this.cardComposite.getCards() ) {
+			if( subComposite instanceof WizardPageComposite<?> ) {
+				WizardPageComposite<?> wizardPage = (WizardPageComposite<?>)subComposite;
+				wizardPage.handlePostHideDialog( step );
+			}
+		}
+	}
 }

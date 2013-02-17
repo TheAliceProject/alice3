@@ -78,4 +78,10 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 	public boolean isOptional() {
 		return false;
 	}
+
+	public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	}
+
+	public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	}
 }
