@@ -42,6 +42,47 @@
  */
 package org.alice.ide.video.preview;
 
+class PlayIcon implements javax.swing.Icon {
+	private final java.awt.Dimension size;
+
+	public PlayIcon( java.awt.Dimension size ) {
+		this.size = size;
+	}
+
+	public int getIconWidth() {
+		return this.size.width;
+	}
+
+	public int getIconHeight() {
+		return this.size.width;
+	}
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, size.width, size.height );
+	}
+}
+
+class PauseIcon implements javax.swing.Icon {
+	private final java.awt.Dimension size;
+
+	public PauseIcon( java.awt.Dimension size ) {
+		this.size = size;
+	}
+
+	public int getIconWidth() {
+		return this.size.width;
+	}
+
+	public int getIconHeight() {
+		return this.size.width;
+	}
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		g.fillRect( x, y, 6, this.getIconHeight() );
+		g.fillRect( ( x + this.getIconWidth() ) - 6, y, 6, this.getIconHeight() );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -54,6 +95,13 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 	public VideoComposite() {
 		super( java.util.UUID.fromString( "ffa047e2-9bce-4a46-8a16-70c19ced4d00" ) );
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		java.awt.Dimension SIZE = new java.awt.Dimension( 16, 16 );
+		this.playPauseState.setIconForTrueAndIconForFalse( new PauseIcon( SIZE ), new PlayIcon( SIZE ) );
 	}
 
 	public org.lgna.croquet.BooleanState getPlayPauseState() {

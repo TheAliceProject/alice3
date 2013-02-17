@@ -152,7 +152,6 @@ class JPlayView extends javax.swing.JToggleButton {
 		this.setRolloverEnabled( true );
 		this.setPreferredSize( new java.awt.Dimension( 640, 360 ) );
 		this.setLayout( new PlayLayout() );
-		this.setBackground( java.awt.Color.BLACK );
 	}
 
 	@Override
@@ -255,18 +254,24 @@ class PositionSliderUI extends javax.swing.plaf.basic.BasicSliderUI {
 	}
 }
 
+class JPositionSlider extends javax.swing.JSlider {
+	public JPositionSlider( int min, int max, int value ) {
+		super( min, max, value );
+	}
+
+	@Override
+	public void updateUI() {
+		this.setUI( new PositionSliderUI( this ) );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
 public class VideoView extends PlayView {
 	private java.io.File file;
 	private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
-	private final javax.swing.JSlider jSlider = new javax.swing.JSlider( 0, 100, 0 ) {
-		@Override
-		public void updateUI() {
-			this.setUI( new PositionSliderUI( this ) );
-		}
-	};
+	private final javax.swing.JSlider jSlider = new JPositionSlider( 0, 100, 0 );
 
 	private boolean isIgnoringSliderValueChanges;
 
@@ -349,7 +354,13 @@ public class VideoView extends PlayView {
 		super( composite );
 
 		this.jSlider.addChangeListener( this.sliderValueChangeListener );
-		this.getAwtComponent().add( this.jSlider, java.awt.BorderLayout.PAGE_END );
+
+		org.lgna.croquet.components.ToggleButton playPauseButton = composite.getPlayPauseState().createToggleButton();
+		playPauseButton.tightenUpMargin();
+		org.lgna.croquet.components.BorderPanel pageEndPanel = new org.lgna.croquet.components.BorderPanel();
+		pageEndPanel.addLineStartComponent( playPauseButton );
+		pageEndPanel.getAwtComponent().add( this.jSlider, java.awt.BorderLayout.CENTER );
+		this.internalAddComponent( pageEndPanel, java.awt.BorderLayout.PAGE_END );
 	}
 
 	public void setFile( java.io.File file ) {
