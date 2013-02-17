@@ -15,7 +15,6 @@
 	<classpathentry kind="lib" path="lib/swingworker/swing-worker-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/tools/tools.jar"/>
 	<classpathentry kind="lib" path="lib/wrapped_flow_layout/wrapped_flow_layout.jar"/>
-	<classpathentry kind="lib" path="lib/quicktime/QuickTimeDemo2.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/gdata-youtube-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/guava-r07.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/gdata-client-1.0.jar"/>
