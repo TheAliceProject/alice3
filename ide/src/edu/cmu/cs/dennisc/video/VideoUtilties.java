@@ -46,7 +46,16 @@ package edu.cmu.cs.dennisc.video;
  * @author Dennis Cosgrove
  */
 public class VideoUtilties {
+	private static java.lang.reflect.Method getVlcjUtilitiesMethodNamed( String methodName, Class<?>... parameterTypes ) {
+		Class<?> vlcjUtilitiesCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( "edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities" );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( vlcjUtilitiesCls, methodName, parameterTypes );
+	}
+
+	private static Object invokeVlcjUtilitiesMethod( java.lang.reflect.Method mthd, Object... args ) {
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( null, mthd, args );
+	}
+
 	public static VideoPlayer createVideoPlayer() {
-		return new VlcVideoPlayer();
+		return (VideoPlayer)invokeVlcjUtilitiesMethod( getVlcjUtilitiesMethodNamed( "createVideoPlayer" ) );
 	}
 }

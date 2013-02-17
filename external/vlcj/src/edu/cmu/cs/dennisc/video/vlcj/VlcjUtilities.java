@@ -64,75 +64,39 @@ public class VlcjUtilities {
 		}
 	}
 
-	public static Object createVideoPlayer() {
+	public static edu.cmu.cs.dennisc.video.VideoPlayer createVideoPlayer() {
 		initializeIfNecessary();
 		if( isInitialized ) {
-			return new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
-				@Override
-				public void error( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.error( mediaPlayer );
-					System.out.println( mediaPlayer );
-				}
-
-				@Override
-				public void newMedia( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.newMedia( mediaPlayer );
-					System.out.println( "newMedia: " + mediaPlayer );
-				}
-
-				@Override
-				public void playing( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.playing( mediaPlayer );
-					System.out.println( "playing: " + mediaPlayer );
-				}
-
-				@Override
-				public void finished( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.finished( mediaPlayer );
-					System.out.println( "finished: " + mediaPlayer );
-				}
-
-				@Override
-				public void positionChanged( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer, float newPosition ) {
-					super.positionChanged( mediaPlayer, newPosition );
-					System.out.println( "positionChanged: " + mediaPlayer + " " + newPosition );
-				}
-
-				@Override
-				public void stopped( uk.co.caprica.vlcj.player.MediaPlayer mediaPlayer ) {
-					super.stopped( mediaPlayer );
-					System.out.println( "stopped: " + mediaPlayer );
-				}
-			};
+			return new VlcjVideoPlayer();
 		} else {
-			return new javax.swing.JLabel( "unable to initialize vlcj" );
+			return null;
 		}
 	}
 	
-	public static java.awt.Component getVideoSurface( Object videoPlayer ) {
-		if( videoPlayer instanceof uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent ) {
-			uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent  embeddedMediaPlayerComponent = (uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent )videoPlayer;
-			return embeddedMediaPlayerComponent.getVideoSurface();
-		} else {
-			return (javax.swing.JLabel)videoPlayer;
-		}
-	}
-	
-	public static void playMedia( Object videoPlayer, String path ) {
-		if( videoPlayer instanceof uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent ) {
-			uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent  embeddedMediaPlayerComponent = (uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent )videoPlayer;
-			embeddedMediaPlayerComponent.getMediaPlayer().playMedia( path );
-		} else {
-			System.err.println( "playMedia: " + path + " " + videoPlayer );
-		}
-	}
-
-	public static void pause( Object videoPlayer ) {
-		if( videoPlayer instanceof uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent ) {
-			uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent  embeddedMediaPlayerComponent = (uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent )videoPlayer;
-			embeddedMediaPlayerComponent.getMediaPlayer().pause();
-		} else {
-			System.err.println( "pause: " + videoPlayer );
-		}
-	}
+//	public static java.awt.Component getVideoSurface( Object videoPlayer ) {
+//		if( videoPlayer instanceof VlcjVideoPlayer ) {
+//			VlcjVideoPlayer vlcjObject = (VlcjVideoPlayer)videoPlayer;
+//			return vlcjObject.getVideoSurface();
+//		} else {
+//			return null;
+//		}
+//	}
+//	
+//	public static void playMedia( Object videoPlayer, String path ) {
+//		if( videoPlayer instanceof VlcjVideoPlayer ) {
+//			VlcjVideoPlayer vlcjObject = (VlcjVideoPlayer)videoPlayer;
+//			vlcjObject.playMedia( path );
+//		} else {
+//			System.err.println( "playMedia: " + path + " " + videoPlayer );
+//		}
+//	}
+//
+//	public static void pause( Object videoPlayer ) {
+//		if( videoPlayer instanceof VlcjVideoPlayer ) {
+//			VlcjVideoPlayer vlcjObject = (VlcjVideoPlayer)videoPlayer;
+//			vlcjObject.pause();
+//		} else {
+//			System.err.println( "pause: " + videoPlayer );
+//		}
+//	}
 }

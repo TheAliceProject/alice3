@@ -40,19 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.video;
+package edu.cmu.cs.dennisc.video.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface VideoPlayer {
-	public java.awt.Component getAwtComponent();
+public interface MediaListener {
+	public void newMedia();
 
-	public void playMedia( java.io.File file );
+	public void playing();
 
-	public void pause();
+	public void positionChanged( float position );
 
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
+	public void finished();
 
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
+	public void stopped();
+
+	public void error();
 }

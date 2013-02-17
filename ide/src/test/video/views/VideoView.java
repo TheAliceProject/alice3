@@ -118,6 +118,30 @@ class PlayButtonUI extends javax.swing.plaf.basic.BasicToggleButtonUI {
 	}
 }
 
+class PlayLayout extends java.awt.BorderLayout {
+	@Override
+	public void layoutContainer( java.awt.Container target ) {
+		super.layoutContainer( target );
+		if( target instanceof javax.swing.AbstractButton ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)target;
+			javax.swing.ButtonModel buttonModel = button.getModel();
+			if( buttonModel.isSelected() ) {
+				//pass
+			} else {
+				java.awt.Component centerComponent = this.getLayoutComponent( target, CENTER );
+				if( centerComponent instanceof java.awt.Canvas ) {
+					java.awt.Canvas canvas = (java.awt.Canvas)centerComponent;
+					if( canvas.isEnabled() ) {
+						//pass
+					} else {
+						canvas.setBounds( 0, 0, 0, 0 );
+					}
+				}
+			}
+		}
+	}
+}
+
 class JPlayView extends javax.swing.JToggleButton {
 	private static final int SIZE = 64;
 
@@ -127,18 +151,10 @@ class JPlayView extends javax.swing.JToggleButton {
 		this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
 		this.setRolloverEnabled( true );
 		this.setPreferredSize( new java.awt.Dimension( 640, 360 ) );
-		this.setLayout( new java.awt.BorderLayout() );
+		this.setLayout( new PlayLayout() );
+		this.setBackground( java.awt.Color.BLACK );
 	}
 
-	//	@Override
-	//	protected void paintChildren( java.awt.Graphics g ) {
-	//		if( this.isSelected() ) {
-	//			super.paintChildren( g );
-	//		} else {
-	//			//pass
-	//		}
-	//	}
-	//
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
@@ -182,19 +198,40 @@ public class VideoView extends PlayView {
 	private java.io.File file;
 	private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
 	private final javax.swing.JSlider jSlider = new javax.swing.JSlider( 0, 100, 0 );
+	//	{
+	//		@Override
+	//		public void updateUI() {
+	//			this.setUI( new javax.swing.plaf.basic.BasicSliderUI( this ) {
+	//				@Override
+	//				public void paintTrack( java.awt.Graphics g ) {
+	//					super.paintTrack( g );
+	//					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+	//					g2.setColor( java.awt.Color.BLUE );
+	//					g2.fill( this.trackRect );
+	//					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.trackRect );
+	//				}
+	//			} );
+	//		}
+	//	};
+
+	private boolean isIgnoringSliderValueChanges;
 
 	private final edu.cmu.cs.dennisc.video.event.MediaListener mediaListener = new edu.cmu.cs.dennisc.video.event.MediaListener() {
 		public void newMedia() {
 		}
 
 		public void positionChanged( float f ) {
+			isIgnoringSliderValueChanges = true;
 			jSlider.setValue( (int)( f * 100 ) );
+			isIgnoringSliderValueChanges = false;
 		}
 
 		public void playing() {
 		}
 
 		public void finished() {
+			videoPlayer.getVideoSurface().setEnabled( false );
+			getAwtComponent().setSelected( false );
 		}
 
 		public void stopped() {
@@ -222,10 +259,24 @@ public class VideoView extends PlayView {
 		}
 	};
 
+	private final javax.swing.event.ChangeListener sliderValueChangeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			if( isIgnoringSliderValueChanges ) {
+				//pass
+			} else {
+				if( videoPlayer.isPlaying() ) {
+					videoPlayer.pause();
+				}
+				videoPlayer.setPosition( jSlider.getValue() * 0.01f );
+			}
+		}
+	};
+
 	public VideoView( test.video.VideoComposite composite ) {
 		super( composite );
 
-		this.getAwtComponent().add( jSlider, java.awt.BorderLayout.PAGE_END );
+		this.jSlider.addChangeListener( this.sliderValueChangeListener );
+		this.getAwtComponent().add( this.jSlider, java.awt.BorderLayout.PAGE_END );
 	}
 
 	public void setFile( java.io.File file ) {
@@ -245,12 +296,14 @@ public class VideoView extends PlayView {
 		} else {
 			this.videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilties.createVideoPlayer();
 
-			java.awt.Component component = this.videoPlayer.getAwtComponent();
-			if( component instanceof java.awt.Canvas ) {
-				java.awt.Canvas canvas = (java.awt.Canvas)component;
-				canvas.addMouseListener( this.mouseListener );
+			java.awt.Canvas videoSurface = this.videoPlayer.getVideoSurface();
+			java.awt.Component component;
+			if( videoSurface != null ) {
+				videoSurface.addMouseListener( this.mouseListener );
+				component = videoSurface;
+			} else {
+				component = new javax.swing.JLabel( "error" );
 			}
-
 			this.getAwtComponent().add( component, java.awt.BorderLayout.CENTER );
 			this.revalidateAndRepaint();
 			this.videoPlayer.addMediaListener( this.mediaListener );
@@ -261,13 +314,21 @@ public class VideoView extends PlayView {
 	private void play() {
 		if( this.file != null ) {
 			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = this.getVideoPlayer();
-			videoPlayer.playMedia( this.file );
+			videoPlayer.getVideoSurface().setEnabled( true );
+			this.revalidateAndRepaint();
+			if( videoPlayer.isPlayable() ) {
+				//pass
+			} else {
+				videoPlayer.prepareMedia( this.file );
+			}
+			videoPlayer.playResume();
 		}
 	}
 
 	private void pause() {
 		if( this.videoPlayer != null ) {
 			this.videoPlayer.pause();
+			this.revalidateAndRepaint();
 		}
 	}
 

@@ -45,39 +45,22 @@ package edu.cmu.cs.dennisc.video;
 /**
  * @author Dennis Cosgrove
  */
-public class VlcVideoPlayer implements VideoPlayer {
-	private final java.util.List<edu.cmu.cs.dennisc.video.event.MediaListener> mediaListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private Object videoPlayer;
+public interface VideoPlayer {
+	public java.awt.Canvas getVideoSurface();
 
-	private Object getEmbeddedMediaPlayerComponent() {
-		if( this.videoPlayer != null ) {
-			//pass
-		} else {
-			this.videoPlayer = edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.createVideoPlayer();
-		}
-		return this.videoPlayer;
-	}
+	public void prepareMedia( java.io.File file );
+	
+	public boolean isPlayable();
 
-	public java.awt.Component getAwtComponent() {
-		return edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.getVideoSurface( this.getEmbeddedMediaPlayerComponent() );
-	}
+	public boolean isPlaying();
+	
+	public void playResume();
 
-	public void playMedia( java.io.File file ) {
-		final String path = file.getAbsolutePath();
-		assert file.exists() : file;
-		edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.playMedia( this.getEmbeddedMediaPlayerComponent(), path );
-	}
+	public void pause();
 
-	public void pause() {
-		edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.pause( this.getEmbeddedMediaPlayerComponent() );
-	}
+	public void setPosition( float position );
 
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
-		this.mediaListeners.add( listener );
-	}
+	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
 
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
-		this.mediaListeners.remove( listener );
-	}
-
+	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
 }

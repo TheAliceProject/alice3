@@ -53,7 +53,7 @@ import org.lgna.croquet.components.BorderPanel;
 public class MoviePlayerView extends BorderPanel {
 	public MoviePlayerView( MoviePlayerComposite composite ) {
 		super( composite );
-		this.getAwtComponent().add( composite.getVideoPlayer().getAwtComponent(), BorderLayout.CENTER );
+		this.getAwtComponent().add( composite.getVideoPlayer().getVideoSurface(), BorderLayout.CENTER );
 		this.addPageEndComponent( composite.getPlayOperation().createButton() );
 	}
 }

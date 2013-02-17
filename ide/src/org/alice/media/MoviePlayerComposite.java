@@ -55,7 +55,8 @@ public class MoviePlayerComposite extends org.lgna.croquet.SimpleComposite<Movie
 	private java.io.File file;
 	private final ActionOperation previewOperation = this.createActionOperation( this.createKey( "previewOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			videoPlayer.playMedia( file );
+			videoPlayer.prepareMedia( file );
+			videoPlayer.playResume();
 			return null;
 		}
 	} );
