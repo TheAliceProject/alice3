@@ -54,13 +54,18 @@ public class VlcjUtilities {
 			//pass
 		} else {
 			isInitializationAttempted = true;
-			String lowercaseOSName = System.getProperty( "os.name" ).toLowerCase();
-			if( lowercaseOSName.contains( "windows" ) ) {
-				//todo
-				com.sun.jna.NativeLibrary.addSearchPath( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), "c:/Program Files/VideoLAN/VLC/" );
+			try {
+				uk.co.caprica.vlcj.discovery.NativeDiscovery nativeDiscovery = new uk.co.caprica.vlcj.discovery.NativeDiscovery();
+				if( nativeDiscovery.discover() ) {
+					//pass
+				} else {
+					System.err.println( "vlcj native discovery failed" );
+				}
+				com.sun.jna.Native.loadLibrary( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), uk.co.caprica.vlcj.binding.LibVlc.class );
+				isInitialized = true;
+			} catch( UnsatisfiedLinkError ule ) {
+				ule.printStackTrace();
 			}
-			com.sun.jna.Native.loadLibrary( uk.co.caprica.vlcj.runtime.RuntimeUtil.getLibVlcLibraryName(), uk.co.caprica.vlcj.binding.LibVlc.class );
-			isInitialized = true;
 		}
 	}
 
@@ -72,31 +77,4 @@ public class VlcjUtilities {
 			return null;
 		}
 	}
-	
-//	public static java.awt.Component getVideoSurface( Object videoPlayer ) {
-//		if( videoPlayer instanceof VlcjVideoPlayer ) {
-//			VlcjVideoPlayer vlcjObject = (VlcjVideoPlayer)videoPlayer;
-//			return vlcjObject.getVideoSurface();
-//		} else {
-//			return null;
-//		}
-//	}
-//	
-//	public static void playMedia( Object videoPlayer, String path ) {
-//		if( videoPlayer instanceof VlcjVideoPlayer ) {
-//			VlcjVideoPlayer vlcjObject = (VlcjVideoPlayer)videoPlayer;
-//			vlcjObject.playMedia( path );
-//		} else {
-//			System.err.println( "playMedia: " + path + " " + videoPlayer );
-//		}
-//	}
-//
-//	public static void pause( Object videoPlayer ) {
-//		if( videoPlayer instanceof VlcjVideoPlayer ) {
-//			VlcjVideoPlayer vlcjObject = (VlcjVideoPlayer)videoPlayer;
-//			vlcjObject.pause();
-//		} else {
-//			System.err.println( "pause: " + videoPlayer );
-//		}
-//	}
 }

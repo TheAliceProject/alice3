@@ -60,7 +60,11 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<test.
 		if( lookAndFeelInfo != null ) {
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
-		java.io.File file = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "Videos/a.webm" );
+		java.io.File directory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			directory = directory.getParentFile();
+		}
+		java.io.File file = new java.io.File( directory, "Videos/a.webm" );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
 		VideoComposite videoComposite = new VideoComposite();
