@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package test.video.views;
+package org.alice.ide.video.preview.views;
 
 class PlayIcon implements javax.swing.Icon {
 	public static void paint( java.awt.Component c, java.awt.Graphics g, javax.swing.ButtonModel buttonModel, java.awt.Stroke stroke, int x, int y, int width, int height ) {
@@ -171,14 +171,14 @@ class JPlayView extends javax.swing.JToggleButton {
 	}
 }
 
-abstract class PlayView extends org.lgna.croquet.components.View<javax.swing.JToggleButton, test.video.VideoComposite> {
+abstract class PlayView extends org.lgna.croquet.components.View<javax.swing.JToggleButton, org.alice.ide.video.preview.VideoComposite> {
 	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged( java.awt.event.ItemEvent e ) {
 			PlayView.this.handleItemStateChanged( e );
 		}
 	};
 
-	public PlayView( test.video.VideoComposite composite ) {
+	public PlayView( org.alice.ide.video.preview.VideoComposite composite ) {
 		super( composite );
 		this.getAwtComponent().addItemListener( this.itemListener );
 	}
@@ -345,7 +345,7 @@ public class VideoView extends PlayView {
 		videoPlayer.setPosition( jSlider.getValue() * 0.01f );
 	}
 
-	public VideoView( test.video.VideoComposite composite ) {
+	public VideoView( org.alice.ide.video.preview.VideoComposite composite ) {
 		super( composite );
 
 		this.jSlider.addChangeListener( this.sliderValueChangeListener );

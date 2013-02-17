@@ -40,19 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package test.video;
+package org.alice.ide.video.preview;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class VideoComposite extends org.lgna.croquet.SimpleComposite<test.video.views.VideoView> {
+public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.video.preview.views.VideoView> {
+	private final org.lgna.croquet.BooleanState playPauseState = this.createBooleanState( this.createKey( "playPauseState" ), false );
+
+	//todo
+	//private java.io.File file;
+	//private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
+
 	public VideoComposite() {
 		super( java.util.UUID.fromString( "ffa047e2-9bce-4a46-8a16-70c19ced4d00" ) );
 	}
 
+	public org.lgna.croquet.BooleanState getPlayPauseState() {
+		return this.playPauseState;
+	}
+
 	@Override
-	protected test.video.views.VideoView createView() {
-		return new test.video.views.VideoView( this );
+	protected org.alice.ide.video.preview.views.VideoView createView() {
+		return new org.alice.ide.video.preview.views.VideoView( this );
 	}
 
 	public static void main( String[] args ) throws Exception {
