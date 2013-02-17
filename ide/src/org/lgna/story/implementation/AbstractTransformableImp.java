@@ -898,7 +898,7 @@ public abstract class AbstractTransformableImp extends EntityImp {
 					return m;
 				}
 			} else {
-				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.target.getTransformation( this.asSeenBy );
+				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
 				m.translation.set( t0.translation.x, -bbSubject.getMinimum().y, t0.translation.z );
 				return m;
 			}
