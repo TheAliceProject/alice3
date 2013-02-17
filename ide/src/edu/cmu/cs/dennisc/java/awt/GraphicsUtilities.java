@@ -58,6 +58,13 @@ public class GraphicsUtilities {
 		return prevAntialiasing;
 	}
 
+	public static java.awt.Shape setClip( java.awt.Graphics g, java.awt.Shape nextClip ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Shape prevClip = g2.getClip();
+		g2.setClip( nextClip );
+		return prevClip;
+	}
+
 	public static void drawCenteredImage( java.awt.Graphics g, java.awt.Image image, java.awt.Component component ) {
 		int x = ( component.getWidth() - image.getWidth( component ) ) / 2;
 		int y = ( component.getHeight() - image.getHeight( component ) ) / 2;

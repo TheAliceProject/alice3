@@ -191,28 +191,82 @@ abstract class PlayView extends org.lgna.croquet.components.View<javax.swing.JTo
 	}
 }
 
+class PositionSliderUI extends javax.swing.plaf.basic.BasicSliderUI {
+	private static final java.awt.Color TRACK_LEADING_COLOR = java.awt.Color.BLUE.darker();
+	private static final java.awt.Color TRACK_TRAILING_COLOR = java.awt.Color.LIGHT_GRAY;
+	private static final java.awt.Color THUMB_FILL_COLOR = new java.awt.Color( 191, 191, 255 );
+	private static final java.awt.Color THUMB_DRAW_COLOR = java.awt.Color.BLACK;
+
+	public PositionSliderUI( javax.swing.JSlider slider ) {
+		super( slider );
+	}
+
+	@Override
+	public void paintTrack( java.awt.Graphics g ) {
+		//super.paintTrack( g );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.Shape prevClip = g2.getClip();
+		Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+
+		int h = this.trackRect.height / 2;
+		int offset = h / 2;
+
+		java.awt.Shape shape = new java.awt.geom.RoundRectangle2D.Float( this.trackRect.x, this.trackRect.y + offset, this.trackRect.width, h, h, h );
+		try {
+			int centerX = this.thumbRect.x + ( this.thumbRect.width / 2 );
+
+			g2.setColor( TRACK_TRAILING_COLOR );
+			g2.fill( shape );
+
+			java.awt.Shape leadingRect = new java.awt.Rectangle( this.trackRect.x, this.trackRect.y, centerX - this.trackRect.x, this.trackRect.height );
+			java.awt.geom.Area leadingClip = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, leadingRect );
+			g2.setClip( leadingClip );
+
+			g2.setPaint( TRACK_LEADING_COLOR );
+			g2.fill( shape );
+		} finally {
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
+			g2.setClip( prevClip );
+		}
+	}
+
+	@Override
+	protected java.awt.Dimension getThumbSize() {
+		java.awt.Dimension size = super.getThumbSize();
+		int max = Math.max( size.width, size.height );
+		return new java.awt.Dimension( max, max );
+	}
+
+	@Override
+	public void paintThumb( java.awt.Graphics g ) {
+		//super.paintThumb( g );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		java.awt.Shape shape = new java.awt.geom.Ellipse2D.Float( this.thumbRect.x, this.thumbRect.y, this.thumbRect.width - 1, this.thumbRect.height - 1 );
+		try {
+			g2.setPaint( THUMB_FILL_COLOR );
+			g2.fill( shape );
+			g2.setPaint( THUMB_DRAW_COLOR );
+			g2.draw( shape );
+		} finally {
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
+		}
+
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
 public class VideoView extends PlayView {
 	private java.io.File file;
 	private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
-	private final javax.swing.JSlider jSlider = new javax.swing.JSlider( 0, 100, 0 );
-	//	{
-	//		@Override
-	//		public void updateUI() {
-	//			this.setUI( new javax.swing.plaf.basic.BasicSliderUI( this ) {
-	//				@Override
-	//				public void paintTrack( java.awt.Graphics g ) {
-	//					super.paintTrack( g );
-	//					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-	//					g2.setColor( java.awt.Color.BLUE );
-	//					g2.fill( this.trackRect );
-	//					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.trackRect );
-	//				}
-	//			} );
-	//		}
-	//	};
+	private final javax.swing.JSlider jSlider = new javax.swing.JSlider( 0, 100, 0 ) {
+		@Override
+		public void updateUI() {
+			this.setUI( new PositionSliderUI( this ) );
+		}
+	};
 
 	private boolean isIgnoringSliderValueChanges;
 
@@ -249,6 +303,7 @@ public class VideoView extends PlayView {
 		}
 
 		public void mousePressed( java.awt.event.MouseEvent e ) {
+			System.out.println( e );
 			getAwtComponent().setSelected( getAwtComponent().isSelected() == false );
 		}
 
@@ -264,13 +319,31 @@ public class VideoView extends PlayView {
 			if( isIgnoringSliderValueChanges ) {
 				//pass
 			} else {
-				if( videoPlayer.isPlaying() ) {
-					videoPlayer.pause();
-				}
-				videoPlayer.setPosition( jSlider.getValue() * 0.01f );
+				handleSliderValueChanged( jSlider.getValue() * 0.01f );
 			}
 		}
 	};
+
+	private void handleSliderValueChanged( float position ) {
+		if( this.videoPlayer != null ) {
+			//pass
+		} else {
+			this.getVideoPlayer();
+			videoPlayer.getVideoSurface().setEnabled( true );
+			revalidateAndRepaint();
+			if( videoPlayer.isPlayable() ) {
+				//pass
+			} else {
+				videoPlayer.prepareMedia( file );
+			}
+			//videoPlayer.playResume();
+			revalidateAndRepaint();
+		}
+		if( videoPlayer.isPlaying() ) {
+			videoPlayer.pause();
+		}
+		videoPlayer.setPosition( jSlider.getValue() * 0.01f );
+	}
 
 	public VideoView( test.video.VideoComposite composite ) {
 		super( composite );
@@ -295,11 +368,15 @@ public class VideoView extends PlayView {
 			//pass
 		} else {
 			this.videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilties.createVideoPlayer();
+			if( this.file != null ) {
+				this.videoPlayer.prepareMedia( this.file );
+			}
 
 			java.awt.Canvas videoSurface = this.videoPlayer.getVideoSurface();
 			java.awt.Component component;
 			if( videoSurface != null ) {
 				videoSurface.addMouseListener( this.mouseListener );
+				videoSurface.setEnabled( true );
 				component = videoSurface;
 			} else {
 				component = new javax.swing.JLabel( "error" );
@@ -314,21 +391,15 @@ public class VideoView extends PlayView {
 	private void play() {
 		if( this.file != null ) {
 			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = this.getVideoPlayer();
-			videoPlayer.getVideoSurface().setEnabled( true );
-			this.revalidateAndRepaint();
-			if( videoPlayer.isPlayable() ) {
-				//pass
-			} else {
-				videoPlayer.prepareMedia( this.file );
-			}
 			videoPlayer.playResume();
+			//this.revalidateAndRepaint();
 		}
 	}
 
 	private void pause() {
 		if( this.videoPlayer != null ) {
 			this.videoPlayer.pause();
-			this.revalidateAndRepaint();
+			//this.revalidateAndRepaint();
 		}
 	}
 

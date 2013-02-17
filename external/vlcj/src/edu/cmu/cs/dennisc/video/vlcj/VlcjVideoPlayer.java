@@ -188,6 +188,13 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 	
 	public void setPosition(float position) {
-		this.embeddedMediaPlayerComponent.getMediaPlayer().setPosition( position );
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		if( mediaPlayer.isSeekable() ) {
+			//pass
+		} else {
+			mediaPlayer.start();
+			mediaPlayer.pause();
+		}
+		mediaPlayer.setPosition( position );
 	}
 }
