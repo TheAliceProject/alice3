@@ -137,7 +137,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 
 	private boolean isLoggedIn = false;
 
-	private MoviePlayerComposite moviePlayerComposite = new MoviePlayerComposite();
+	private org.alice.ide.video.preview.VideoComposite videoComposite = new org.alice.ide.video.preview.VideoComposite();
 
 	public UploadComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "5c7ee7ee-1c0e-4a92-ac4e-bca554a0d6bc" ) );
@@ -145,11 +145,11 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		UploadComposite.initializeCategories();
 		uploader.addYouTubeListener( this.getUploadOperation() );
 		this.videoCategoryState = this.createListSelectionState( this.createKey( "videoCategoryState" ), String.class, org.alice.ide.croquet.codecs.StringCodec.SINGLETON, 0, categoryStrings.toArray( new String[ 0 ] ) );
-		this.registerSubComposite( this.moviePlayerComposite );
+		this.registerSubComposite( this.videoComposite );
 	}
 
-	public MoviePlayerComposite getMoviePlayerComposite() {
-		return this.moviePlayerComposite;
+	public org.alice.ide.video.preview.VideoComposite getVideoComposite() {
+		return this.videoComposite;
 	}
 
 	public org.lgna.croquet.StringState getIdState() {
@@ -216,12 +216,12 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.moviePlayerComposite.setMovie( owner.getFile() );
+		this.videoComposite.getView().setFile( owner.getFile() );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		this.moviePlayerComposite.setMovie( null );
+		this.videoComposite.getView().setFile( null );
 		super.handlePostDeactivation();
 	}
 

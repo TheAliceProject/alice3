@@ -120,6 +120,19 @@ class PlayButtonUI extends javax.swing.plaf.basic.BasicToggleButtonUI {
 
 class PlayLayout extends java.awt.BorderLayout {
 	@Override
+	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
+		java.awt.Dimension rv = super.preferredLayoutSize( target );
+		java.awt.Component centerComponent = this.getLayoutComponent( target, CENTER );
+		if( centerComponent != null ) {
+			//pass
+		} else {
+			rv.width = Math.max( rv.width, 320 );
+			rv.height += 180;
+		}
+		return rv;
+	}
+
+	@Override
 	public void layoutContainer( java.awt.Container target ) {
 		super.layoutContainer( target );
 		if( target instanceof javax.swing.AbstractButton ) {
@@ -150,7 +163,6 @@ class JPlayView extends javax.swing.JToggleButton {
 	public JPlayView() {
 		this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
 		this.setRolloverEnabled( true );
-		this.setPreferredSize( new java.awt.Dimension( 640, 360 ) );
 		this.setLayout( new PlayLayout() );
 	}
 
@@ -386,6 +398,7 @@ public class VideoView extends PlayView {
 			java.awt.Canvas videoSurface = this.videoPlayer.getVideoSurface();
 			java.awt.Component component;
 			if( videoSurface != null ) {
+				videoSurface.setPreferredSize( new java.awt.Dimension( 320, 180 ) );
 				videoSurface.addMouseListener( this.mouseListener );
 				videoSurface.setEnabled( true );
 				component = videoSurface;

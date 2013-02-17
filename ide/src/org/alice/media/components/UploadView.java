@@ -143,26 +143,15 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 			this.youtubeDetailsPanel = gridBagPanel;
 		}
 
-		//panel.addComponent( composite.getUploadOperation().getOperation().createButton(), gbc );
-
 		this.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().pageStart( loginPanel ).center( this.youtubeDetailsPanel ).build() );
 
-		this.addLineStartComponent( new org.lgna.croquet.components.PageAxisPanel(
-				new org.lgna.croquet.components.Label( "Preview:" ),
-				//new PreviewVideoView(),
-				composite.getMoviePlayerComposite().getView(),
-				org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ),
-				composite.getExportToFileOperation().createButton(),
-				org.lgna.croquet.components.BoxUtilities.createGlue() ) );
-		//		this.moviePlayerComposite = new MoviePlayerComposite( composite.getFile() );
-		//
-		//		org.lgna.croquet.components.PageAxisPanel sidePanel = new org.lgna.croquet.components.PageAxisPanel();
-		//		sidePanel.addComponent( panel );
-		//		sidePanel.addComponent( composite.getSaveToFileOperation().createButton() );
-		//		//		this.addComponent( new PreserveAspectRatioPanel( panel, new Dimension( 16, 9 ) ), "wrap, aligny top" );
-		//		this.addLineEndComponent( sidePanel );
+		org.lgna.croquet.components.MigPanel lineStartPanel = new org.lgna.croquet.components.MigPanel( null, "insets 0, fill", "", "" );
+		lineStartPanel.addComponent( new org.lgna.croquet.components.Label( "Preview:" ), "wrap" );
+		lineStartPanel.addComponent( composite.getVideoComposite().getView(), "wrap" );
+		lineStartPanel.addComponent( composite.getExportToFileOperation().createButton(), "wrap" );
+		lineStartPanel.addComponent( new org.lgna.croquet.components.Label(), "push" );
 
-		//this.disableable = (java.util.List)edu.cmu.cs.dennisc.java.util.Collections.newLinkedList( titleField, categories, description, tags );
+		this.addLineStartComponent( lineStartPanel );
 	}
 
 	public org.lgna.croquet.components.Panel getYoutubeDetailsPanel() {
