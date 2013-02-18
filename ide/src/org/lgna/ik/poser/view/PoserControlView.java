@@ -91,6 +91,6 @@ public class PoserControlView extends MigPanel {
 		this.addComponent( poserControlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
 
 		this.addComponent( poserControlComposite.getRunAnimationOperation().createButton(), "grow" );
-		this.addComponent( poserControlComposite.getExportAnimation().createButton(), "grow, wrap" );
+		this.addComponent( poserControlComposite.getExportAnimation().getOperation().createButton(), "grow, wrap" );
 	}
 }

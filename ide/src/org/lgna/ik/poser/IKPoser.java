@@ -46,6 +46,7 @@ package org.lgna.ik.poser;
 import java.util.ArrayList;
 
 import org.lgna.ik.walkandtouch.PoserScene;
+import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MoveDirection;
@@ -67,14 +68,37 @@ class IkPoser extends SProgram {
 	private PoserSplitComposite composite;
 	private UserType userType;
 
-	public IkPoser( UserType userType, SBiped biped ) {
+	public IkPoser( NamedUserType userType ) {
 		//		this.biped = userType.getDeclaredConstructor().;
 		//		Object value = userType.superType.getValue();
 		//		TypeManager.getNamedUserTypeFromSuperType( (JavaType)value );
-		this.biped = biped;
+		this.biped = deriveBipedFromUserType( userType );
 		scene = new PoserScene( camera, biped );
 		this.userType = userType;
 		composite = new PoserSplitComposite( this );
+	}
+
+	private SBiped deriveBipedFromUserType( NamedUserType type ) {
+
+		org.lgna.project.virtualmachine.ReleaseVirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
+
+		org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.OgreResource.BROWN;
+		//org.lgna.story.resources.BipedResource bipedResource = org.lgna.story.resources.biped.AlienResource.DEFAULT;
+
+		org.lgna.project.ast.NamedUserConstructor userConstructor = type.constructors.get( 0 );
+		final int N = userConstructor.requiredParameters.size();
+		Object[] arguments = new Object[ N ];
+		switch( N ) {
+		case 0:
+			break;
+		case 1:
+			arguments[ 0 ] = bipedResource;
+			break;
+		case 2:
+			assert false : N;
+		}
+		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
+		return userInstance.getJavaInstance( SBiped.class );
 	}
 
 	private org.lgna.story.implementation.JointedModelImp<?, ?> getSubjectImp() {
@@ -144,8 +168,8 @@ class IkPoser extends SProgram {
 		}
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
-
-		IkPoser program = new IkPoser( type, userInstance.getJavaInstance( SBiped.class ) );
+		userInstance.getJavaInstance( SBiped.class );
+		IkPoser program = new IkPoser( type );
 		app.getFrame().setMainComposite( program.getComposite() );
 
 		test.ik.croquet.IsLinearEnabledState.getInstance().setValueTransactionlessly( true );

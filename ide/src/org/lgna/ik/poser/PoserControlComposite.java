@@ -44,7 +44,6 @@ package org.lgna.ik.poser;
 
 import java.util.List;
 
-import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
 import org.lgna.common.ComponentThread;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.CancelException;
@@ -60,8 +59,10 @@ import org.lgna.ik.walkandtouch.IKMagicWand;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserParameter;
+import org.lgna.story.AnimateToPose;
 import org.lgna.story.Color;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -81,6 +82,7 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 	private StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
 	private StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
 	private ListSelectionState<PoseAnimation> posesList = createListSelectionState( createKey( "listOfPoses" ), PoseAnimation.class, PoseAnimationList.getCodec(), -1 );
+	private NameAndExportAnimationCompositeInHonorOfJenLapp nameAndExportAnimationComposite = new NameAndExportAnimationCompositeInHonorOfJenLapp( this );
 	ValueListener<PoseAnimation> poseAnimationListener = new ValueListener<PoseAnimation>() {
 
 		public void changing( State<PoseAnimation> state, PoseAnimation prevValue, PoseAnimation nextValue, boolean isAdjusting ) {
@@ -156,25 +158,26 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		}
 	} );
 
-	private ActionOperation exportAnimation = createActionOperation( createKey( "exportAnimation" ), new Action() {
+	//	private ActionOperation exportAnimation = createActionOperation( createKey( "exportAnimation" ), new Action() {
+	//
+	//		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+	//			//TODO: write an animation exporter
+	//			new DeclareMethodEdit( null, ikPoser.getDeclaringType(), createUserMethod() );
+	//			return null;
+	//		}
+	//
+	//	} );
 
-		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			//TODO: write an animation exporter
-			new DeclareMethodEdit( null, ikPoser.getDeclaringType(), createUserMethod() );
-			return null;
-		}
-
-	} );
-
-	private UserMethod createUserMethod() {
-		//		AbstractType<AbstractConstructor, AbstractMethod, AbstractField>
-		BlockStatement body = new BlockStatement();
+	public UserMethod createUserMethod( String name ) {
+		ExpressionStatement[] miArr = new ExpressionStatement[ posesList.getItemCount() ];
+		int i = 0;
 		for( PoseAnimation animation : posesList ) {
-			animation.createAliceMethod();
+			miArr[ i ] = new ExpressionStatement( animation.createAliceMethod( new AnimateToPose.Detail[ 0 ] ) );
+			++i;
 		}
-		//		body.statements.add( elements );
-		UserMethod rv = new UserMethod( "newCustomKeyFrameAnimation", Void.class, new UserParameter[ 0 ], body );
-		return null;
+		BlockStatement body = new BlockStatement( miArr );
+		UserMethod rv = new UserMethod( name, Void.class, new UserParameter[ 0 ], body );
+		return rv;
 	}
 
 	public PoserControlComposite( IkPoser ikPoser ) {
@@ -275,8 +278,8 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		return this.saveUpdatedPoseOperation;
 	}
 
-	public ActionOperation getExportAnimation() {
-		return this.exportAnimation;
+	public NameAndExportAnimationCompositeInHonorOfJenLapp getExportAnimation() {
+		return this.nameAndExportAnimationComposite;
 	}
 
 	public void updateSphere( Limb limb, JointSelectionSphere sphere ) {
