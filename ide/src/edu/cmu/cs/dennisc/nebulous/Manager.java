@@ -10,13 +10,14 @@ package edu.cmu.cs.dennisc.nebulous;
 public class Manager {
 	public static final double NEBULOUS_VERSION = 1.7;
 
-	static boolean s_isInitialized = false;
-	static boolean s_isLicensePromptDesired = true;
-	static java.util.List<java.io.File> s_pendingBundles;
+	private static boolean s_isInitialized = false;
+	private static boolean s_isLicensePromptDesired = true;
+	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
+
+	private static java.util.List<java.io.File> s_pendingBundles;
 
 	private static native void setVersion( double version );
 
-	//	private static native void setDebugDraw(boolean debugDraw);
 	private static native void addBundlePath( String bundlePath );
 
 	private static native void removeBundlePath( String bundlePath );
@@ -26,8 +27,6 @@ public class Manager {
 	private static native void unloadActiveModelData();
 
 	private static native void unloadUnusedTextures( javax.media.opengl.GL gl );
-
-	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 
 	private static void doInitializationIfNecessary() {
 		try {
@@ -66,9 +65,6 @@ public class Manager {
 		if( isInitialized() ) {
 			//pass
 		} else {
-
-			System.out.println( System.getProperty( "java.library.path" ) );
-
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
 			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 				try {
@@ -112,7 +108,9 @@ public class Manager {
 
 				s_isInitialized = true;
 			} else {
-				throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
+				if( s_isLicensePromptDesired ) {
+					throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
+				}
 			}
 		}
 	}
@@ -147,7 +145,4 @@ public class Manager {
 			Manager.getPendingBundles().remove( file );
 		}
 	}
-
-	//	public static void main( String[] args ) {
-	//	}
 }
