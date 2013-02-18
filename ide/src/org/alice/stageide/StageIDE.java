@@ -293,11 +293,12 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
+		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		tabState.clear();
 		if( project != null ) {
 			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 			org.lgna.project.ast.NamedUserType sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
-				org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 				org.lgna.croquet.data.ListData<org.alice.ide.declarationseditor.DeclarationComposite> data = tabState.getData();
 
 				data.internalAddItem( org.alice.ide.declarationseditor.TypeComposite.getInstance( sceneType ) );
@@ -313,10 +314,6 @@ public class StageIDE extends org.alice.ide.IDE {
 						}
 					}
 				}
-				//				String[] methodNames = { INITIALIZE_EVENT_LISTENERS_METHOD_NAME, "myFirstMethod" };
-				//				for( String methodName : methodNames ) {
-				//					org.lgna.project.ast.AbstractMethod method = sceneType.findMethod( methodName );
-				//				}
 				tabState.setValueTransactionlessly( data.getItemAt( data.getItemCount() - 1 ) );
 			}
 		}

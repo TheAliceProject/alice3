@@ -556,12 +556,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	private void showLookingGlassPanel()
 	{
-		this.addCenterComponent( this.lookingGlassPanel );
+		synchronized( this.getTreeLock() ) {
+			this.addCenterComponent( this.lookingGlassPanel );
+		}
 	}
 
 	private void hideLookingGlassPanel()
 	{
-		this.removeComponent( this.lookingGlassPanel );
+		synchronized( this.getTreeLock() ) {
+			this.removeComponent( this.lookingGlassPanel );
+		}
 	}
 
 	@Override
