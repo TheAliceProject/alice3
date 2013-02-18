@@ -69,7 +69,7 @@ public class Manager {
 				edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary(
 						edu.cmu.cs.dennisc.nebulous.License.class,
 						IS_LICENSE_ACCEPTED_PREFERENCE_KEY,
-						"License Agreement (Part 2 of 2): The Sims (TM) 2 Art Assets",
+						"License Agreement: The Sims (TM) 2 Art Assets",
 						edu.cmu.cs.dennisc.nebulous.License.TEXT,
 						"The Sims (TM) 2 Art Assets" );
 				java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
