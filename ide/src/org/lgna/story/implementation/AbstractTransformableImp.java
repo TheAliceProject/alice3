@@ -878,22 +878,12 @@ public abstract class AbstractTransformableImp extends EntityImp {
 			this.asSeenBy = asSeenBy;
 		}
 
-		//		public AbstractTransformableImp getSubject() {
-		//			return this.subject;
-		//		}
-		//		public EntityImp getTarget() {
-		//			return this.target;
-		//		}
-		//		public ReferenceFrame getAsSeenBy() {
-		//			return this.asSeenBy;
-		//		}
-
-		public edu.cmu.cs.dennisc.math.Point3 calculateTranslation0() {
-			return this.subject.getTransformation( this.asSeenBy ).translation;
+		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateTranslation0() {
+			return this.subject.getTransformation( this.asSeenBy );
 		}
 
-		public edu.cmu.cs.dennisc.math.Point3 calculateTranslation1( edu.cmu.cs.dennisc.math.Point3 t0 ) {
-			edu.cmu.cs.dennisc.math.AxisAlignedBox bbSubject = this.subject.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
+		public edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateTranslation1( edu.cmu.cs.dennisc.math.AffineMatrix4x4 t0 ) {
+			edu.cmu.cs.dennisc.math.AxisAlignedBox bbSubject = this.subject.getAxisAlignedMinimumBoundingBox();
 			if( this.target != null ) {
 				edu.cmu.cs.dennisc.math.AxisAlignedBox bbTarget;
 				bbTarget = this.target.getAxisAlignedMinimumBoundingBox( this.asSeenBy );
@@ -903,24 +893,28 @@ public abstract class AbstractTransformableImp extends EntityImp {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "bounding box is NaN", bbSubject, bbTarget );
 					return t0;
 				} else {
-					return this.spatialRelation.getPlaceLocation( this.alongAxisOffset, bbSubject, bbTarget );
+					edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = this.target.getTransformation( this.asSeenBy );
+					m.translation.set( this.spatialRelation.getPlaceLocation( this.alongAxisOffset, bbSubject, bbTarget ) );
+					return m;
 				}
 			} else {
-				//double extent = 100;
-				//bbTarget = new edu.cmu.cs.dennisc.math.AxisAlignedBox( -extent, 0, -extent, extent, 0, extent ); 
-				return new edu.cmu.cs.dennisc.math.Point3( t0.x, -bbSubject.getMinimum().y, t0.z );
+				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+				m.translation.set( t0.translation.x, -bbSubject.getMinimum().y, t0.translation.z );
+				return m;
 			}
 		}
 
-		public void setTranslation( edu.cmu.cs.dennisc.math.Point3 translation ) {
-			this.subject.getSgComposite().setTranslationOnly( translation, this.asSeenBy.getSgReferenceFrame() );
+		public void setTranslation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 translation ) {
+			this.subject.getSgComposite().setTransformation( translation, this.asSeenBy.getSgReferenceFrame() );
 		}
 	}
 
 	private static class PlaceAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
 		private final PlaceData placeData;
-		private edu.cmu.cs.dennisc.math.Point3 t0;
-		private edu.cmu.cs.dennisc.math.Point3 t1;
+		private edu.cmu.cs.dennisc.math.Point3 p0;
+		private edu.cmu.cs.dennisc.math.UnitQuaternion q0;
+		private edu.cmu.cs.dennisc.math.Point3 p1;
+		private edu.cmu.cs.dennisc.math.UnitQuaternion q1;
 
 		public PlaceAnimation( PlaceData placeData, double duration, edu.cmu.cs.dennisc.animation.Style style ) {
 			super( duration, style );
@@ -929,19 +923,24 @@ public abstract class AbstractTransformableImp extends EntityImp {
 
 		@Override
 		protected void prologue() {
-			this.t0 = this.placeData.calculateTranslation0();
-			this.t1 = this.placeData.calculateTranslation1( this.t0 );
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = this.placeData.calculateTranslation0();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m1 = this.placeData.calculateTranslation1( m0 );
+			this.p0 = m0.translation;
+			this.q0 = m0.orientation.createUnitQuaternion();
+			this.p1 = m1.translation;
+			this.q1 = m1.orientation.createUnitQuaternion();
 		}
 
 		@Override
 		protected void setPortion( double portion ) {
-			edu.cmu.cs.dennisc.math.Point3 t = edu.cmu.cs.dennisc.math.Point3.createInterpolation( this.t0, this.t1, portion );
-			this.placeData.setTranslation( t );
+			edu.cmu.cs.dennisc.math.Point3 p = edu.cmu.cs.dennisc.math.Point3.createInterpolation( this.p0, this.p1, portion );
+			edu.cmu.cs.dennisc.math.UnitQuaternion q = edu.cmu.cs.dennisc.math.UnitQuaternion.createInterpolation( this.q0, this.q1, portion );
+			this.placeData.setTranslation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( q, p ) );
 		}
 
 		@Override
 		protected void epilogue() {
-			this.placeData.setTranslation( this.t1 );
+			this.placeData.setTranslation( new edu.cmu.cs.dennisc.math.AffineMatrix4x4( this.q1, this.p1 ) );
 		}
 	}
 

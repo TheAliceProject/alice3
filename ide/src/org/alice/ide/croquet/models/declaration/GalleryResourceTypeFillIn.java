@@ -63,9 +63,8 @@ public class GalleryResourceTypeFillIn extends org.alice.ide.croquet.models.casc
 	private final org.lgna.project.ast.JavaType ancestorType;
 
 	private GalleryResourceTypeFillIn( org.lgna.project.ast.JavaType ancestorType ) {
-		super( java.util.UUID.fromString( "281ad60a-090e-4fd8-bb47-da03a2508a4a" ) );
+		super( java.util.UUID.fromString( "281ad60a-090e-4fd8-bb47-da03a2508a4a" ), GalleryResourceBlank.getInstance( org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( ancestorType ) ) );
 		this.ancestorType = ancestorType;
-		this.addBlank( GalleryResourceBlank.getInstance( org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0Parameter0Type( this.ancestorType ) ) );
 	}
 
 	@Override

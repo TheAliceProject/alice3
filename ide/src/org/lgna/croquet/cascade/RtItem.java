@@ -66,17 +66,18 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		super( element, node );
 		this.owner = owner;
 		this.index = index;
-		CascadeBlank<B>[] blanks = this.getModelBlanks();
+		java.util.List<? extends CascadeBlank<B>> blanks = this.getModelBlanks();
 		final int N;
 		if( blanks != null ) {
-			N = blanks.length;
+			N = blanks.size();
 		} else {
 			N = 0;
 		}
 		this.rtBlanks = new RtBlank[ N ];
-		for( int i = 0; i < this.rtBlanks.length; i++ ) {
-			assert blanks[ i ] != null : this;
-			this.rtBlanks[ i ] = new RtBlank<B>( blanks[ i ] );
+		for( int i = 0; i < N; i++ ) {
+			CascadeBlank<B> blankI = blanks.get( i );
+			assert blankI != null : this;
+			this.rtBlanks[ i ] = new RtBlank<B>( blankI );
 		}
 		this.updateParentsAndNextSiblings( this.rtBlanks );
 	}
@@ -89,7 +90,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		return this.index;
 	}
 
-	protected abstract CascadeBlank<B>[] getModelBlanks();
+	protected abstract java.util.List<? extends CascadeBlank<B>> getModelBlanks();
 
 	public int getBlankStepCount() {
 		return this.rtBlanks.length;
@@ -283,7 +284,7 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner<F, B>, C extends o
 	}
 
 	@Override
-	protected final CascadeBlank<B>[] getModelBlanks() {
+	protected final java.util.List<? extends CascadeBlank<B>> getModelBlanks() {
 		return this.getElement().getBlanks();
 	}
 }
@@ -315,8 +316,8 @@ class RtSeparator extends RtItem<Void, Void, CascadeSeparator, org.lgna.croquet.
 	}
 
 	@Override
-	protected CascadeBlank<Void>[] getModelBlanks() {
-		return new CascadeBlank[] {};
+	protected java.util.List<CascadeBlank<Void>> getModelBlanks() {
+		return java.util.Collections.emptyList();
 	}
 
 	@Override
@@ -338,7 +339,7 @@ class RtCancel<F> extends RtItem<F, Void, CascadeCancel<F>, org.lgna.croquet.cas
 	}
 
 	@Override
-	protected CascadeBlank<Void>[] getModelBlanks() {
-		return new CascadeBlank[] {};
+	protected java.util.List<CascadeBlank<Void>> getModelBlanks() {
+		return java.util.Collections.emptyList();
 	}
 }

@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFillIn extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.AbstractType<?, ?, ?>, Void> {
+public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna.project.ast.AbstractType<?, ?, ?>, Void> {
 	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized TypeFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {

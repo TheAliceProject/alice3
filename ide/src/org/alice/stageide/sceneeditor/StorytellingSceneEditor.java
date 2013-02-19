@@ -303,8 +303,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	private org.lgna.croquet.components.Button contractButton;
 	private InstanceFactorySelectionPanel instanceFactorySelectionPanel = null;
 
-	//private final org.lgna.croquet.components.Button runButton = org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton();
-	private final org.lgna.croquet.components.Button runButton = null;
+	private final org.lgna.croquet.components.Button runButton = org.alice.ide.preferences.IsToolBarShowing.getValue() ? null : org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton();
 
 	private OrthographicCameraImp orthographicCameraImp = null;
 	private OrthographicCameraMarkerImp topOrthoMarkerImp = null;
@@ -564,12 +563,16 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	private void showLookingGlassPanel()
 	{
-		this.addCenterComponent( this.lookingGlassPanel );
+		synchronized( this.getTreeLock() ) {
+			this.addCenterComponent( this.lookingGlassPanel );
+		}
 	}
 
 	private void hideLookingGlassPanel()
 	{
-		this.removeComponent( this.lookingGlassPanel );
+		synchronized( this.getTreeLock() ) {
+			this.removeComponent( this.lookingGlassPanel );
+		}
 	}
 
 	@Override

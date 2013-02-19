@@ -171,6 +171,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 
 			@Override
 			public void paint( java.awt.Graphics g ) {
+				super.paint( g );
 				synchronized( ICON ) {
 					ICON.setDimension( this.getSize() );
 					ICON.setFull( org.alice.ide.clipboard.Clipboard.SINGLETON.isStackEmpty() == false );
@@ -186,6 +187,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 				}
 			}
 		};
+		rv.setOpaque( false );
 		return rv;
 	}
 
