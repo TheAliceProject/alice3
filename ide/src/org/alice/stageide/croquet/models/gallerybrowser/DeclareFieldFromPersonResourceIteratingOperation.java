@@ -73,8 +73,9 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.c
 			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
 			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
 				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
-				CreateFieldFromPersonResourceOperation.getInstance().setPersonResource( personResource );
-				return CreateFieldFromPersonResourceOperation.getInstance();
+				org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite.getInstance();
+				addPersonResourceManagedFieldComposite.setPersonResource( personResource );
+				return addPersonResourceManagedFieldComposite.getOperation();
 			} else {
 				return null;
 			}
