@@ -64,7 +64,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  */
 public class Pose {
 
-	public class Builder {
+	public static class Builder {
 		private JointQPair rightArmBase;
 		private JointQPair leftArmBase;
 		private JointQPair rightLegBase;
