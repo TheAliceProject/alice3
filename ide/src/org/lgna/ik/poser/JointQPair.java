@@ -42,6 +42,10 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.InstanceCreation;
+import org.lgna.project.ast.JavaConstructor;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -51,15 +55,18 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
  */
 public class JointQPair {
 
-	private final JointQPair parent;
 	private final JointId joint;
 	private final AffineMatrix4x4 affineMatrix;
-	private JointQPair child;
+	private final JointQPair child;
 
-	public JointQPair( JointQPair parent, JointId joint, AffineMatrix4x4 affineMatrix4x4 ) {
-		this.parent = parent;
+	public JointQPair( JointId joint, AffineMatrix4x4 matrix ) {
+		this( joint, matrix, null );
+	}
+
+	public JointQPair( JointId joint, AffineMatrix4x4 matrix, JointQPair child ) {
 		this.joint = joint;
-		this.affineMatrix = affineMatrix4x4;
+		this.affineMatrix = matrix;
+		this.child = child;
 	}
 
 	public JointId getJointId() {
@@ -70,16 +77,8 @@ public class JointQPair {
 		return this.affineMatrix.orientation.createUnitQuaternion();
 	}
 
-	public void setChild( JointQPair rv ) {
-		this.child = rv;
-	}
-
 	public JointQPair getChild() {
 		return this.child;
-	}
-
-	public JointQPair getParent() {
-		return this.parent;
 	}
 
 	@Override
@@ -93,5 +92,16 @@ public class JointQPair {
 		} else {
 			return ( getUnitQuaternion().equals( other.getUnitQuaternion() ) && getChild().equals( other.getChild() ) );
 		}
+	}
+
+	public static Expression createInstance( JointQPair jqPair ) {
+		Expression child;
+		if( jqPair.child != null ) {
+			child = createInstance( jqPair.child );
+		}
+
+		//		AstUtilities.createInstanceCreation( Java, argumentExpressions )
+		InstanceCreation rv = AstUtilities.createInstanceCreation( JavaConstructor.getInstance( JointQPair.class, JointId.class, AffineMatrix4x4.class, JointQPair.class ), null );
+		return rv;
 	}
 }

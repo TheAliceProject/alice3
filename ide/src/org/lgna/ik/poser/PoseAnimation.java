@@ -42,14 +42,7 @@
  */
 package org.lgna.ik.poser;
 
-import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.stageide.ast.ExpressionCreator;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.ThisExpression;
-import org.lgna.story.AnimateToPose;
 import org.lgna.story.SBiped;
 import org.lgna.story.implementation.ProgramImp;
 
@@ -61,7 +54,6 @@ import edu.cmu.cs.dennisc.animation.AnimationThread;
 public class PoseAnimation {
 
 	private Pose pose;
-	public static final JavaMethod ADD_POSE_ANIMATION = JavaMethod.getInstance( SBiped.class, "animateToPose", PoseAnimation.class, AnimateToPose.Detail[].class );
 	ExpressionCreator blah = new ExpressionCreator();
 
 	public PoseAnimation( Pose pose ) {
@@ -92,21 +84,31 @@ public class PoseAnimation {
 		return new JointQPairTreeAnimation( ogre, pose.getLeftLegBase() );
 	}
 
-	public MethodInvocation createAliceMethod( AnimateToPose.Detail[] details ) {
-		Expression[] exArr = new Expression[ details.length ];
-		int i = 0;
-		for( AnimateToPose.Detail detail : details ) {
-			try {
-				exArr[ i ] = blah.createExpression( detail );
-			} catch( CannotCreateExpressionException e ) {
-				e.printStackTrace();
-			}
-			++i;
-		}
-		//newThisExpresson
-		//		AddProcedureComposite
-		AstUtilities.createMethodInvocation( new ThisExpression(), ADD_POSE_ANIMATION, exArr );
-		//		MethodInvocation rv = new MethodInvocation( null, ADD_POSE_ANIMATION, this, details, details );
-		return null;
+	public Pose getPose() {
+		return this.pose;
 	}
+
+	//	public MethodInvocation createAliceMethod( AnimateToPose.Detail[] details ) {
+	//		Expression[] exArr = new Expression[ details.length + 1 ];
+	//		try {
+	//			exArr[ 0 ] = blah.createExpression( this );
+	//		} catch( CannotCreateExpressionException e1 ) {
+	//			e1.printStackTrace();
+	//		}
+	//		int i = 1;
+	//		for( AnimateToPose.Detail detail : details ) {
+	//			try {
+	//				exArr[ i ] = blah.createExpression( detail );
+	//			} catch( CannotCreateExpressionException e ) {
+	//				e.printStackTrace();
+	//			}
+	//			++i;
+	//		}
+	//		AstUtilities.createI
+	//		//newThisExpresson
+	//		//		AddProcedureComposite
+	//		AstUtilities.createMethodInvocation( new ThisExpression(), ADD_POSE_ANIMATION, exArr );
+	//		//		MethodInvocation rv = new MethodInvocation( null, ADD_POSE_ANIMATION, this, details, details );
+	//		return null;
+	//	}
 }

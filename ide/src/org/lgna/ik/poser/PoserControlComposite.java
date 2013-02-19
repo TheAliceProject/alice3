@@ -172,7 +172,7 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		ExpressionStatement[] miArr = new ExpressionStatement[ posesList.getItemCount() ];
 		int i = 0;
 		for( PoseAnimation animation : posesList ) {
-			miArr[ i ] = new ExpressionStatement( animation.createAliceMethod( new AnimateToPose.Detail[ 0 ] ) );
+			miArr[ i ] = new ExpressionStatement( animation.getPose().createAliceMethod( new AnimateToPose.Detail[ 0 ] ) );
 			++i;
 		}
 		BlockStatement body = new BlockStatement( miArr );
