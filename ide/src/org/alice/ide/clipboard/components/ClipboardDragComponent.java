@@ -187,6 +187,7 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 				}
 			}
 		};
+		rv.setOpaque( false );
 		return rv;
 	}
 
