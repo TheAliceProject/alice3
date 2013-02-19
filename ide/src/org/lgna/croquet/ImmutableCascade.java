@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,54 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.cascade;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviousExpressionBasedFillInWithBlanks<F extends org.lgna.project.ast.Expression, B> extends ExpressionFillInWithBlanks<F, B> {
-	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id, Class<B> cls, org.lgna.croquet.CascadeBlank<B>... blanks ) {
-		super( id, cls, blanks );
-	}
+public abstract class ImmutableCascade<T> extends Cascade<T> {
+	private final java.util.List<CascadeBlank<T>> blanks;
 
-	private org.lgna.project.ast.Expression getPreviousExpression() {
-		return org.alice.ide.IDE.getActiveInstance().getExpressionCascadeManager().getPreviousExpression();
-	}
-
-	private org.lgna.project.ast.Expression createCopyOfPreviousExpression() {
-		org.lgna.project.ast.Expression prevExpression = this.getPreviousExpression();
-		if( prevExpression != null ) {
-			return org.alice.ide.IDE.getActiveInstance().createCopy( prevExpression );
-		} else {
-			return null;
-		}
-	}
-
-	private org.lgna.project.ast.Expression cleanExpression;
-
-	@Override
-	protected void markClean() {
-		super.markClean();
-		this.cleanExpression = this.getPreviousExpression();
+	public ImmutableCascade( Group group, java.util.UUID id, Class<T> componentType, CascadeBlank<T>... blanks ) {
+		super( group, id, componentType );
+		this.blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( blanks ) );
 	}
 
 	@Override
-	protected boolean isDirty() {
-		boolean isPrevExpressionChanged = this.cleanExpression != this.getPreviousExpression();
-		return super.isDirty() || isPrevExpressionChanged;
-	}
-
-	//	protected abstract boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInStep<F,B> context, org.lgna.project.ast.Expression previousExpression );
-	//	@Override
-	//	public final boolean isInclusionDesired( org.lgna.croquet.steps.CascadeFillInPrepStep<F,B> context ) {
-	//		org.lgna.project.ast.Expression previousExpression = this.getPreviousExpression();
-	//		return super.isInclusionDesired( context ) && previousExpression != null && this.isInclusionDesired( context, previousExpression );
-	//	}
-	protected abstract F createValue( org.lgna.project.ast.Expression previousExpression, B[] expressions );
-
-	@Override
-	protected final F createValue( B[] expressions ) {
-		return this.createValue( this.createCopyOfPreviousExpression(), expressions );
+	protected java.util.List<? extends CascadeBlank<T>> getBlanks() {
+		return this.blanks;
 	}
 }

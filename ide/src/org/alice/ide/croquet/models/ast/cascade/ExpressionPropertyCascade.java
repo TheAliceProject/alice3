@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionPropertyCascade extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> {
+public abstract class ExpressionPropertyCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.Expression> {
 	private final org.lgna.project.ast.ExpressionProperty expressionProperty;
 	private org.alice.ide.cascade.ExpressionCascadeContext pushedContext;
 

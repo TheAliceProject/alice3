@@ -65,9 +65,14 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	public static final class InternalRoot<T> extends CascadeRoot<T, Cascade<T>> {
 		private final Cascade<T> cascade;
 
-		private InternalRoot( Cascade<T> cascade, CascadeBlank<T>[] blanks ) {
-			super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ), blanks );
+		private InternalRoot( Cascade<T> cascade ) {
+			super( java.util.UUID.fromString( "40fe9d1b-003d-4108-9f38-73fccb29b978" ) );
 			this.cascade = cascade;
+		}
+
+		@Override
+		public java.util.List<? extends CascadeBlank<T>> getBlanks() {
+			return this.cascade.getBlanks();
 		}
 
 		@Override
@@ -124,15 +129,13 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	private final Class<T> componentType;
 	private final InternalRoot<T> root;
 
-	public Cascade( Group group, java.util.UUID id, Class<T> componentType, CascadeBlank<T>[] blanks ) {
+	public Cascade( Group group, java.util.UUID id, Class<T> componentType ) {
 		super( group, id );
 		this.componentType = componentType;
-		this.root = new InternalRoot<T>( this, blanks );
+		this.root = new InternalRoot<T>( this );
 	}
 
-	public Cascade( Group group, java.util.UUID id, Class<T> componentType, CascadeBlank<T> blank ) {
-		this( group, id, componentType, new CascadeBlank[] { blank } );
-	}
+	protected abstract java.util.List<? extends CascadeBlank<T>> getBlanks();
 
 	@Override
 	public Iterable<? extends PrepModel> getPotentialRootPrepModels() {
