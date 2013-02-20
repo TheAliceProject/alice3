@@ -134,8 +134,7 @@ class IkPoser extends SProgram {
 	}
 
 	public Pose getPose() {
-		Pose.Builder builder = new Pose.Builder();
-		return builder.buildFromBiped( biped );
+		return Pose.createPoseFromBiped( biped );
 	}
 
 	public UserType<?> getDeclaringType() {
