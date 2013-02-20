@@ -85,12 +85,12 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 	public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 	}
 
-	protected boolean isAutoAdvanceEnabled() {
+	protected boolean isAutoAdvanceWorthAttempting() {
 		return false;
 	}
 
 	public boolean isAutoAdvanceDesired( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.isAutoAdvanceEnabled() ) {
+		if( this.isAutoAdvanceWorthAttempting() ) {
 			if( this.isOptional() ) {
 				return true;
 			} else {

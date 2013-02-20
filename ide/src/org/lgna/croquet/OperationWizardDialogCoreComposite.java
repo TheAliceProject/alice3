@@ -70,7 +70,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
 	}
 
-	protected boolean isAutoCommitEnabled() {
+	protected boolean isAutoCommitWorthAttempting() {
 		return false;
 	}
 
@@ -91,7 +91,7 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		boolean isAutoCommitDesired;
-		if( this.isAutoCommitEnabled() ) {
+		if( this.isAutoCommitWorthAttempting() ) {
 			java.util.Iterator<WizardPageComposite<?>> iterator = this.getWizardPageIterator();
 			isAutoCommitDesired = true;
 			while( iterator.hasNext() ) {
