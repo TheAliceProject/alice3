@@ -42,13 +42,23 @@
  */
 package org.alice.media;
 
+import org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu;
+import org.alice.ide.declarationseditor.events.MouseEventListenerMenu;
 import org.alice.media.components.EventRecordView;
+import org.alice.stageide.StageIDE;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserMethod;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
@@ -58,6 +68,13 @@ import edu.cmu.cs.dennisc.matt.EventScript;
  * @author Matt May
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
+	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods;
+	static {
+		java.util.List<org.lgna.project.ast.JavaMethod> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		list.addAll( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
+		list.addAll( KeyboardEventListenerMenu.ALL_KEYBOARD_EVENT_METHODS );
+		interactiveMethods = java.util.Collections.unmodifiableList( list );
+	};
 
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private RunProgramContext programContext;
@@ -120,8 +137,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	@Override
 	public void handlePostDeactivation() {
-		if( programContext == null ) {
+		if( programContext != null ) {
 			programContext.cleanUpProgram();
+			programContext = null;
 		}
 		super.handlePostDeactivation();
 	}
@@ -146,5 +164,39 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return isRecordingState.getValue() ? cannotAdvanceBecauseRecording : IS_GOOD_TO_GO_STATUS;
+	}
+
+	@Override
+	public boolean isAutoAdvanceDesired( org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( this.isInputEvents() ) {
+			return super.isAutoAdvanceDesired( step );
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	protected boolean isAutoAdvanceEnabled() {
+		return true;
+	}
+
+	private boolean isInputEvents() {
+		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
+		UserMethod initializeEventListeners = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
+		BlockStatement body = initializeEventListeners.body.getValue();
+		for( Statement statement : body.statements ) {
+			if( statement.isEnabled.getValue() ) {
+				if( statement instanceof ExpressionStatement ) {
+					ExpressionStatement expressionStatement = (ExpressionStatement)statement;
+					if( expressionStatement.expression.getValue() instanceof MethodInvocation ) {
+						AbstractMethod method = ( (MethodInvocation)expressionStatement.expression.getValue() ).method.getValue();
+						if( interactiveMethods.contains( method ) ) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 }

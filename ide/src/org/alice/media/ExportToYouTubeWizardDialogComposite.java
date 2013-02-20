@@ -43,22 +43,9 @@
 package org.alice.media;
 
 import java.io.File;
-import java.util.List;
 
 import org.alice.ide.IDE;
-import org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu;
-import org.alice.ide.declarationseditor.events.MouseEventListenerMenu;
-import org.alice.stageide.StageIDE;
-import org.lgna.project.ast.AbstractMethod;
-import org.lgna.project.ast.BlockStatement;
-import org.lgna.project.ast.ExpressionStatement;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.NamedUserType;
-import org.lgna.project.ast.Statement;
-import org.lgna.project.ast.UserMethod;
 
-import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.matt.EventScript;
 
 /**
@@ -80,11 +67,6 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	private org.lgna.project.Project project;
 	private EventScript script;
 	private File file;
-	private static final List<JavaMethod> interactiveMethods = Collections.newLinkedList();
-	static {
-		interactiveMethods.addAll( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
-		interactiveMethods.addAll( KeyboardEventListenerMenu.ALL_KEYBOARD_EVENT_METHODS );
-	};
 
 	private ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
@@ -141,32 +123,11 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		return null;
 	}
 
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		if( !isInputEvents() ) {
-			setIndex( 1 );
-		}
-	}
-
-	private boolean isInputEvents() {
-		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
-		UserMethod initializeEventListeners = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
-		BlockStatement body = initializeEventListeners.body.getValue();
-		for( Statement statement : body.statements ) {
-			if( statement.isEnabled.getValue() ) {
-				if( statement instanceof ExpressionStatement ) {
-					ExpressionStatement expressionStatement = (ExpressionStatement)statement;
-					if( expressionStatement.expression.getValue() instanceof MethodInvocation ) {
-						AbstractMethod method = ( (MethodInvocation)expressionStatement.expression.getValue() ).method.getValue();
-						if( interactiveMethods.contains( method ) ) {
-							return true;
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-
+	//	@Override
+	//	public void handlePreActivation() {
+	//		super.handlePreActivation();
+	//		if( !isInputEvents() ) {
+	//			setIndex( 1 );
+	//		}
+	//	}
 }
