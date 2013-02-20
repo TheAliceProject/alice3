@@ -170,7 +170,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 
 	private void prev() {
-		int prevIndex = this.getIndex() + 1;
+		int prevIndex = this.getIndex() - 1;
 		this.setIndex( prevIndex );
 	}
 
