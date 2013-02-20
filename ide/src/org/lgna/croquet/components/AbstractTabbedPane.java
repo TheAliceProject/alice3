@@ -53,9 +53,26 @@ public abstract class AbstractTabbedPane<E extends org.lgna.croquet.TabComposite
 				//pass
 			} else {
 				org.lgna.croquet.ListSelectionState<E> model = getModel();
-				int indexFromSwingModel = model.getSwingModel().getListSelectionModel().getLeadSelectionIndex();
-				E cardFromSwingModel = (E)model.getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
-				AbstractTabbedPane.this.handleValueChanged( cardFromSwingModel );
+				int indexFromSwingModel = model.getSwingModel().getSelectionIndex();
+				int indexFromCroquet = model.getSelectedIndex();
+				final boolean USE_CROQUET_OVER_SWING;
+				if( indexFromSwingModel != indexFromCroquet ) {
+					if( ( -1 <= indexFromSwingModel ) && ( indexFromSwingModel < model.getItemCount() ) ) {
+						USE_CROQUET_OVER_SWING = false;
+					} else {
+						USE_CROQUET_OVER_SWING = true;
+					}
+				} else {
+					USE_CROQUET_OVER_SWING = false;
+				}
+				E card;
+				if( USE_CROQUET_OVER_SWING ) {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( indexFromSwingModel, indexFromCroquet, this );
+					card = model.getItemAt( indexFromCroquet );
+				} else {
+					card = (E)model.getSwingModel().getComboBoxModel().getElementAt( indexFromSwingModel );
+				}
+				AbstractTabbedPane.this.handleValueChanged( card );
 			}
 		}
 	};

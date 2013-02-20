@@ -65,8 +65,14 @@ public abstract class I18nFactory {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
 		String propertyName = propertyChunk.getPropertyName();
 		edu.cmu.cs.dennisc.property.InstanceProperty<?> property = owner.getInstancePropertyNamed( propertyName );
-		assert property != null : propertyName;
-		return createPropertyComponent( property, underscoreCount );
+		if( property != null ) {
+			return createPropertyComponent( property, underscoreCount );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( propertyName, owner );
+			org.lgna.croquet.components.Label rv = new org.lgna.croquet.components.Label( "TODO: " + propertyName );
+			rv.setBackgroundColor( java.awt.Color.RED );
+			return rv;
+		}
 	}
 
 	protected org.lgna.croquet.components.JComponent<?> createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {

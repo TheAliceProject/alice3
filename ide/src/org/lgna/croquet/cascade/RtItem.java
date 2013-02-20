@@ -66,7 +66,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		super( element, node );
 		this.owner = owner;
 		this.index = index;
-		java.util.List<CascadeBlank<B>> blanks = this.getModelBlanks();
+		java.util.List<? extends CascadeBlank<B>> blanks = this.getModelBlanks();
 		final int N;
 		if( blanks != null ) {
 			N = blanks.size();
@@ -90,7 +90,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		return this.index;
 	}
 
-	protected abstract java.util.List<CascadeBlank<B>> getModelBlanks();
+	protected abstract java.util.List<? extends CascadeBlank<B>> getModelBlanks();
 
 	public int getBlankStepCount() {
 		return this.rtBlanks.length;
@@ -284,7 +284,7 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner<F, B>, C extends o
 	}
 
 	@Override
-	protected final java.util.List<CascadeBlank<B>> getModelBlanks() {
+	protected final java.util.List<? extends CascadeBlank<B>> getModelBlanks() {
 		return this.getElement().getBlanks();
 	}
 }

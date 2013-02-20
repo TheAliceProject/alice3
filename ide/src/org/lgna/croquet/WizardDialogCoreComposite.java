@@ -170,11 +170,24 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 
 	private void prev() {
-		this.setIndex( this.getIndex() - 1 );
+		int prevIndex = this.getIndex() + 1;
+		this.setIndex( prevIndex );
 	}
 
 	private void next() {
-		this.setIndex( this.getIndex() + 1 );
+		int nextIndex = this.getIndex();
+		java.util.List<Composite<?>> cards = this.cardComposite.getCards();
+		while( nextIndex < ( cards.size() - 1 ) ) {
+			nextIndex++;
+			WizardPageComposite wizardPageComposite = (WizardPageComposite)cards.get( nextIndex );
+			org.lgna.croquet.history.CompletionStep<?> step = null;
+			if( wizardPageComposite.isAutoAdvanceDesired( step ) ) {
+				//pass
+			} else {
+				break;
+			}
+		}
+		this.setIndex( nextIndex );
 	}
 
 	private final edu.cmu.cs.dennisc.javax.swing.models.ListModel<WizardPageComposite<?>> listModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractListModel<WizardPageComposite<?>>() {
@@ -245,6 +258,10 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 
 	public void removePage( WizardPageComposite<?> page ) {
 		this.cardComposite.removeCard( page );
+	}
+
+	public java.util.Iterator<WizardPageComposite<?>> getWizardPageIterator() {
+		return (java.util.Iterator)this.cardComposite.getCards().iterator();
 	}
 
 	private org.lgna.croquet.components.PageAxisPanel createAdornmentPageAxisPanel( org.lgna.croquet.components.JComponent<?> header ) {
@@ -339,7 +356,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			java.util.List<Composite<?>> cards = this.cardComposite.getCards();
 			for( int i = this.index + 1; i < cards.size(); i++ ) {
 				WizardPageComposite page = (WizardPageComposite)cards.get( i );
-				if( page.isOptional() ) {
+				if( page.isClearToCommit() ) {
 					//pass
 				} else {
 					isCommitEnabled = false;
@@ -353,7 +370,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.setIndex( 0 );
+		this.index = -1;
+		this.next();
 		this.cardComposite.handlePreActivation();
 	}
 

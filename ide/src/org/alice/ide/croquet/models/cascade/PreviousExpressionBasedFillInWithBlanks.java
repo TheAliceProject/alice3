@@ -47,8 +47,8 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class PreviousExpressionBasedFillInWithBlanks<F extends org.lgna.project.ast.Expression, B> extends ExpressionFillInWithBlanks<F, B> {
-	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id, Class<B> cls ) {
-		super( id, cls );
+	public PreviousExpressionBasedFillInWithBlanks( java.util.UUID id, Class<B> cls, org.lgna.croquet.CascadeBlank<B>... blanks ) {
+		super( id, cls, blanks );
 	}
 
 	private org.lgna.project.ast.Expression getPreviousExpression() {

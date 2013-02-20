@@ -68,7 +68,11 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		public T getElementAt( int index ) {
-			return this.data.getItemAt( index );
+			if( index != -1 ) {
+				return this.data.getItemAt( index );
+			} else {
+				return null;
+			}
 		}
 
 		public T getSelectedItem() {
@@ -81,20 +85,24 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 		public void setSelectedItem( Object item ) {
 			int index = this.data.indexOf( (T)item );
-			ListSelectionState.this.swingModel.listSelectionModel.setSelectionInterval( index, index );
+			ListSelectionState.this.swingModel.setSelectionIndex( index );
 		}
 	}
 
 	private final javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			int index = swingModel.listSelectionModel.getLeadSelectionIndex();
-			T nextValue;
-			if( index != -1 ) {
-				nextValue = (T)ListSelectionState.this.swingModel.comboBoxModel.getElementAt( index );
+			if( isInTheMidstOfSettingSwingValue ) {
+				//pass
 			} else {
-				nextValue = null;
+				int index = swingModel.getSelectionIndex();
+				T nextValue;
+				if( index != -1 ) {
+					nextValue = (T)ListSelectionState.this.swingModel.comboBoxModel.getElementAt( index );
+				} else {
+					nextValue = null;
+				}
+				ListSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 			}
-			ListSelectionState.this.changeValueFromSwing( nextValue, IsAdjusting.valueOf( e.getValueIsAdjusting() ), org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 		}
 	};
 
@@ -113,6 +121,22 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 		public javax.swing.ListSelectionModel getListSelectionModel() {
 			return this.listSelectionModel;
+		}
+
+		public int getSelectionIndex() {
+			if( this.listSelectionModel.isSelectionEmpty() ) {
+				return -1;
+			} else {
+				return this.listSelectionModel.getLeadSelectionIndex();
+			}
+		}
+
+		public void setSelectionIndex( int index ) {
+			if( index != -1 ) {
+				this.listSelectionModel.setSelectionInterval( index, index );
+			} else {
+				this.listSelectionModel.clearSelection();
+			}
 		}
 
 		/* package-private */void fireListSelectionChanged( int firstIndex, int lastIndex, boolean isAdjusting ) {
@@ -200,8 +224,14 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 	}
 
 	@Override
+	protected boolean isSwingValueValid() {
+		int index = this.swingModel.getSelectionIndex();
+		return ( -1 <= index ) && ( index < this.getItemCount() );
+	}
+
+	@Override
 	protected T getSwingValue() {
-		int index = this.swingModel.listSelectionModel.getLeadSelectionIndex();
+		int index = this.swingModel.getSelectionIndex();
 		if( index != -1 ) {
 			return (T)this.swingModel.comboBoxModel.getElementAt( index );
 		} else {
@@ -209,14 +239,27 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 	}
 
+	private boolean isInTheMidstOfSettingSwingValue;
+
 	@Override
 	protected void setSwingValue( T nextValue ) {
 		if( this.dataIndexPair != null ) {
 			int index = this.dataIndexPair.data.indexOf( nextValue );
-			this.swingModel.listSelectionModel.setSelectionInterval( index, index );
+			if( index != this.dataIndexPair.index ) {
+				if( ( -1 <= index ) && ( index < this.dataIndexPair.data.getItemCount() ) ) {
+					//pass.getLeadSelectionIndex()
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "indices do not match", index, this.dataIndexPair.index, nextValue, this );
+					index = this.dataIndexPair.index;
+				}
+			}
+			isInTheMidstOfSettingSwingValue = true;
+			try {
+				this.swingModel.setSelectionIndex( index );
+			} finally {
+				isInTheMidstOfSettingSwingValue = false;
+			}
 			this.swingModel.fireListSelectionChanged( index, index, false );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
 		}
 	}
 

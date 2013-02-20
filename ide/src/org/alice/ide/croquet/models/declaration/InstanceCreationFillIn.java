@@ -54,7 +54,14 @@ public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new InstanceCreationFillIn( constructor );
+			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
+			GalleryResourceBlank[] blanks = new GalleryResourceBlank[ parameters.size() ];
+			int i = 0;
+			for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
+				blanks[ i ] = GalleryResourceBlank.getInstance( parameter.getValueType() );
+				i++;
+			}
+			rv = new InstanceCreationFillIn( constructor, blanks );
 			map.put( constructor, rv );
 		}
 		return rv;
@@ -62,11 +69,8 @@ public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade
 
 	private final org.lgna.project.ast.InstanceCreation transientValue;
 
-	private InstanceCreationFillIn( org.lgna.project.ast.AbstractConstructor constructor ) {
-		super( java.util.UUID.fromString( "98dde1d1-ad25-463a-bbbf-67e96e11f87f" ) );
-		for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
-			this.addBlank( GalleryResourceBlank.getInstance( parameter.getValueType() ) );
-		}
+	private InstanceCreationFillIn( org.lgna.project.ast.AbstractConstructor constructor, GalleryResourceBlank... blanks ) {
+		super( java.util.UUID.fromString( "98dde1d1-ad25-463a-bbbf-67e96e11f87f" ), blanks );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteInstanceCreation( constructor );
 	}
 

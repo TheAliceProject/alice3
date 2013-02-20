@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class AddFieldCascade extends org.lgna.croquet.Cascade<ResourceNode> {
+public class AddFieldCascade extends org.lgna.croquet.ImmutableCascade<ResourceNode> {
 	private final org.lgna.croquet.DropSite dropSite;
 
 	public AddFieldCascade( ResourceNode resourceNode, org.lgna.croquet.DropSite dropSite ) {
