@@ -118,7 +118,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			WizardDialogCoreComposite mainComposite = this.getDialogCoreComposite();
 			if( mainComposite.isNextPageAvailable() ) {
-				mainComposite.next();
+				mainComposite.next( false );
 			}
 			step.finish();
 		}
@@ -140,19 +140,23 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return this.index;
 	}
 
-	protected void setIndex( int index ) {
+	private void setIndex( int index, boolean isInTheMidstOfPreActivation ) {
 		this.index = index;
-		this.cardComposite.showCard( this.cardComposite.getCards().get( index ) );
-		this.listSelectionModel.setSelectionInterval( this.index, this.index );
-		String text;
+		Composite<?> card = this.index != -1 ? this.cardComposite.getCards().get( index ) : null;
+		if( isInTheMidstOfPreActivation ) {
+			this.cardComposite.showCardRefrainingFromActivation( card );
+		} else {
+			this.cardComposite.showCard( card );
+		}
 		if( this.index != -1 ) {
-			Composite<?> composite = this.cardComposite.getCards().get( this.index );
-			if( composite instanceof WizardPageComposite ) {
-				WizardPageComposite wizardPageComposite = (WizardPageComposite)composite;
-				text = wizardPageComposite.getName();
-			} else {
-				text = null;
-			}
+			this.listSelectionModel.setSelectionInterval( this.index, this.index );
+		} else {
+			this.listSelectionModel.clearSelection();
+		}
+		String text;
+		if( card instanceof WizardPageComposite ) {
+			WizardPageComposite wizardPageComposite = (WizardPageComposite)card;
+			text = wizardPageComposite.getName();
 		} else {
 			text = null;
 		}
@@ -171,10 +175,10 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 
 	private void prev() {
 		int prevIndex = this.getIndex() - 1;
-		this.setIndex( prevIndex );
+		this.setIndex( prevIndex, false );
 	}
 
-	private void next() {
+	private void next( boolean isInTheMidstOfPreActivation ) {
 		int nextIndex = this.getIndex();
 		java.util.List<Composite<?>> cards = this.cardComposite.getCards();
 		while( nextIndex < ( cards.size() - 1 ) ) {
@@ -187,7 +191,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 				break;
 			}
 		}
-		this.setIndex( nextIndex );
+		this.setIndex( nextIndex, isInTheMidstOfPreActivation );
 	}
 
 	private final edu.cmu.cs.dennisc.javax.swing.models.ListModel<WizardPageComposite<?>> listModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractListModel<WizardPageComposite<?>>() {
@@ -371,7 +375,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		this.index = -1;
-		this.next();
+		this.next( true );
 		this.cardComposite.handlePreActivation();
 	}
 
