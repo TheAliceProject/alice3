@@ -192,6 +192,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			}
 		}
 		this.setIndex( nextIndex, isInTheMidstOfPreActivation );
+		this.refreshStatus();
 	}
 
 	private final edu.cmu.cs.dennisc.javax.swing.models.ListModel<WizardPageComposite<?>> listModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractListModel<WizardPageComposite<?>>() {

@@ -59,6 +59,8 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pattern.Releasable {
 
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer();
 
+	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown );
+
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv );
 
 	public java.awt.image.BufferedImage getColorBuffer();
