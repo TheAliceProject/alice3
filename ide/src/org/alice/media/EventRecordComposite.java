@@ -176,7 +176,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	}
 
 	@Override
-	protected boolean isAutoAdvanceEnabled() {
+	protected boolean isAutoAdvanceWorthAttempting() {
 		return true;
 	}
 
