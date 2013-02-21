@@ -42,10 +42,15 @@
  */
 package org.lgna.ik.poser;
 
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
+import org.alice.stageide.ast.ExpressionCreator;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.JavaConstructor;
+import org.lgna.story.ImplementationAccessor;
+import org.lgna.story.SJoint;
+import org.lgna.story.implementation.JointImp;
 import org.lgna.story.resources.JointId;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -58,9 +63,20 @@ public class JointQPair {
 	private final JointId joint;
 	private final AffineMatrix4x4 affineMatrix;
 	private final JointQPair child;
+	private static final ExpressionCreator blah = new ExpressionCreator();
 
 	public JointQPair( JointId joint, AffineMatrix4x4 matrix ) {
 		this( joint, matrix, null );
+	}
+
+	public JointQPair( SJoint sJoint, JointQPair child ) {
+		this.joint = ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getJointId();
+		this.affineMatrix = ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation();
+		this.child = child;
+	}
+
+	public JointQPair( SJoint sJoint ) {
+		this( sJoint, null );
 	}
 
 	public JointQPair( JointId joint, AffineMatrix4x4 matrix, JointQPair child ) {
@@ -95,13 +111,27 @@ public class JointQPair {
 	}
 
 	public static Expression createInstance( JointQPair jqPair ) {
-		Expression child;
+		Expression child = null;
 		if( jqPair.child != null ) {
 			child = createInstance( jqPair.child );
 		}
-
+		Expression jointExpression = null;
+		Expression matrixExpression = null;
+		try {
+			matrixExpression = blah.createExpression( jqPair.affineMatrix );
+		} catch( CannotCreateExpressionException e ) {
+			System.out.println( "blablah" );
+			e.printStackTrace();
+			assert false;
+		}
+		try {
+			jointExpression = blah.createExpression( jqPair.joint );
+		} catch( CannotCreateExpressionException e ) {
+			System.out.println( "hello?" );
+			e.printStackTrace();
+		}
 		//		AstUtilities.createInstanceCreation( Java, argumentExpressions )
-		InstanceCreation rv = AstUtilities.createInstanceCreation( JavaConstructor.getInstance( JointQPair.class, JointId.class, AffineMatrix4x4.class, JointQPair.class ), null );
+		InstanceCreation rv = AstUtilities.createInstanceCreation( JavaConstructor.getInstance( JointQPair.class, JointId.class, AffineMatrix4x4.class, JointQPair.class ), jointExpression, matrixExpression, child );
 		return rv;
 	}
 }
