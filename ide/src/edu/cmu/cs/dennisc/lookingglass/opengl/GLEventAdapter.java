@@ -58,6 +58,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private java.awt.image.BufferedImage rvColorBuffer = null;
 	private java.nio.FloatBuffer rvDepthBuffer = null;
+	private boolean[] atIsUpsideDown = null;
 
 	private boolean isDisplayIgnoredDueToPreviousException = false;
 
@@ -198,7 +199,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 						this.reusableLookingGlassRenderEvent.epilogue();
 					}
 					if( ( this.rvColorBuffer != null ) || ( this.rvDepthBuffer != null ) ) {
-						this.renderContext.captureBuffers( this.rvColorBuffer, this.rvDepthBuffer );
+						this.renderContext.captureBuffers( this.rvColorBuffer, this.rvDepthBuffer, this.atIsUpsideDown );
 					}
 
 				} catch( RuntimeException re ) {
@@ -277,8 +278,8 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		return createBufferedImageForUseAsColorBuffer( type );
 	}
 
-	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
-		return this.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, null );
+	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
+		return this.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, null, atIsUpsideDown );
 	}
 
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBufferWithTransparencyBasedOnDepthBuffer() {
@@ -301,18 +302,23 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		return rv;
 	}
 
-	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
+	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer, boolean[] atIsUpsideDown ) {
 		if( this.drawable.getContext() == javax.media.opengl.GLContext.getCurrent() ) {
-			this.renderContext.captureBuffers( rv, depthBuffer );
+			this.renderContext.captureBuffers( rv, depthBuffer, atIsUpsideDown );
 		} else {
+			if( this.rvColorBuffer != null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.rvColorBuffer );
+			}
 			this.rvColorBuffer = rv;
 			this.rvDepthBuffer = depthBuffer;
+			this.atIsUpsideDown = atIsUpsideDown;
 			this.drawable.setAutoSwapBufferMode( false );
 			try {
 				this.drawable.display();
 			} finally {
 				this.rvColorBuffer = null;
 				this.rvDepthBuffer = null;
+				this.atIsUpsideDown = null;
 				this.drawable.setAutoSwapBufferMode( true );
 			}
 		}
