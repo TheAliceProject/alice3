@@ -45,6 +45,7 @@ package org.lgna.ik.poser.view;
 import javax.swing.BorderFactory;
 import javax.swing.border.BevelBorder;
 
+import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.ItemDropDown;
 import org.lgna.croquet.components.MigPanel;
 import org.lgna.ik.poser.JointSelectionSphere;
@@ -55,6 +56,8 @@ import org.lgna.ik.poser.PoserControlComposite;
  * @author Matt May
  */
 public class PoserControlView extends MigPanel {
+
+	private Button exportButton;
 
 	public PoserControlView( PoserControlComposite poserControlComposite ) {
 		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]10[grow 0]0[]10[grow 0]10[grow 0]0" );
@@ -91,6 +94,23 @@ public class PoserControlView extends MigPanel {
 		this.addComponent( poserControlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
 
 		this.addComponent( poserControlComposite.getRunAnimationOperation().createButton(), "grow" );
-		this.addComponent( poserControlComposite.getExportAnimation().getOperation().createButton(), "grow, wrap" );
+		exportButton = poserControlComposite.getExportAnimation().getOperation().createButton();
+		this.addComponent( exportButton, "grow, wrap" );
+		if( poserControlComposite.getPosesList().getItemCount() == 0 ) {
+			disableExport();
+		}
 	}
+
+	public void enableExport() {
+		if( !exportButton.getAwtComponent().isEnabled() ) {
+			exportButton.getAwtComponent().setEnabled( true );
+		}
+	}
+
+	public void disableExport() {
+		if( exportButton.getAwtComponent().isEnabled() ) {
+			exportButton.getAwtComponent().setEnabled( false );
+		}
+	}
+
 }

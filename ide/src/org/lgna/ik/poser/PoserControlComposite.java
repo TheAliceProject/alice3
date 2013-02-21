@@ -43,6 +43,7 @@
 package org.lgna.ik.poser;
 
 import java.util.List;
+import java.util.Map;
 
 import org.lgna.common.ComponentThread;
 import org.lgna.croquet.ActionOperation;
@@ -62,7 +63,7 @@ import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserParameter;
-import org.lgna.story.AnimateToPose;
+import org.lgna.story.AnimateToPose.Detail;
 import org.lgna.story.Color;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -83,21 +84,25 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 	private StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
 	private ListSelectionState<PoseAnimation> posesList = createListSelectionState( createKey( "listOfPoses" ), PoseAnimation.class, PoseAnimationList.getCodec(), -1 );
 	private NameAndExportAnimationCompositeInHonorOfJenLapp nameAndExportAnimationComposite = new NameAndExportAnimationCompositeInHonorOfJenLapp( this );
-	ValueListener<PoseAnimation> poseAnimationListener = new ValueListener<PoseAnimation>() {
+	private Map<PoseAnimation, Detail[]> animationToDetailMap = Collections.newHashMap();
+	private ValueListener<PoseAnimation> poseAnimationListener = new ValueListener<PoseAnimation>() {
 
 		public void changing( State<PoseAnimation> state, PoseAnimation prevValue, PoseAnimation nextValue, boolean isAdjusting ) {
 		}
 
 		public void changed( State<PoseAnimation> state, PoseAnimation prevValue, PoseAnimation nextValue, boolean isAdjusting ) {
+			if(nextValue != null) {
 			final org.lgna.story.implementation.ProgramImp programImp = org.lgna.story.ImplementationAccessor.getImplementation( ikPoser );
 			final org.lgna.story.SBiped ogre = ikPoser.getBiped();
 			nextValue.animate( programImp, ogre );
+			}
 		}
 	};
 
 	private ActionOperation savePoseOperation = createActionOperation( createKey( "savePose" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			PoserControlComposite.this.getView().enableExport();
 			Pose pose = ikPoser.getPose();
 			PoseAnimation pAnimation = new PoseAnimation( pose );
 			posesList.addItem( pAnimation );
@@ -131,6 +136,9 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
 			posesList.removeItem( posesList.getValue() );
+			if( posesList.getItemCount() == 0 ) {
+				PoserControlComposite.this.getView().disableExport();
+			}
 			return null;
 		}
 	} );
@@ -158,26 +166,23 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 		}
 	} );
 
-	//	private ActionOperation exportAnimation = createActionOperation( createKey( "exportAnimation" ), new Action() {
-	//
-	//		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-	//			//TODO: write an animation exporter
-	//			new DeclareMethodEdit( null, ikPoser.getDeclaringType(), createUserMethod() );
-	//			return null;
-	//		}
-	//
-	//	} );
-
 	public UserMethod createUserMethod( String name ) {
 		ExpressionStatement[] miArr = new ExpressionStatement[ posesList.getItemCount() ];
 		int i = 0;
 		for( PoseAnimation animation : posesList ) {
-			miArr[ i ] = new ExpressionStatement( animation.getPose().createAliceMethod( new AnimateToPose.Detail[ 0 ] ) );
+			miArr[ i ] = new ExpressionStatement( animation.getPose().createAliceMethod( getParametersForAnimation( animation ) ) );
 			++i;
 		}
 		BlockStatement body = new BlockStatement( miArr );
 		UserMethod rv = new UserMethod( name, Void.class, new UserParameter[ 0 ], body );
 		return rv;
+	}
+
+	private Detail[] getParametersForAnimation( PoseAnimation animation ) {
+		if( animationToDetailMap.get( animation ) != null ) {
+			return animationToDetailMap.get( animation );
+		}
+		return new Detail[ 0 ];
 	}
 
 	public PoserControlComposite( IkPoser ikPoser ) {
