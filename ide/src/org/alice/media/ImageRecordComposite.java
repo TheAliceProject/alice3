@@ -116,8 +116,11 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 					//					image = new BufferedImage( lookingGlass.getWidth(), lookingGlass.getHeight(), BufferedImage.TYPE_3BYTE_BGR );
 				}
 				if( image != null ) {
-					image = lookingGlass.getColorBuffer( image );
-					handleImage( image, imageCount );
+					boolean[] atIsUpsideDown = { false };
+					synchronized( image ) {
+						image = lookingGlass.getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
+						handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
+					}
 					imageCount++;
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
@@ -208,9 +211,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		super.handlePostDeactivation();
 	}
 
-	private void handleImage( java.awt.image.BufferedImage image, int imageCount ) {
+	private void handleImage( java.awt.image.BufferedImage image, int imageCount, boolean isUpsideDown ) {
 		if( image != null ) {
-			encoder.addBufferedImage( image );
+			encoder.addBufferedImage( image, isUpsideDown );
 		}
 	}
 

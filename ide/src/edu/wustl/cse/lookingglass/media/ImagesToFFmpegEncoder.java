@@ -125,7 +125,7 @@ public abstract class ImagesToFFmpegEncoder {
 			javax.imageio.ImageIO.setUseCache( false );
 
 			// Start ffmpeg
-			ProcessBuilder ffmpegProcessBuilder = new ProcessBuilder( this.ffmpegCommand, "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vcodec", this.getVideoCodec(), "-b", this.getVideoBitrate(), "-pix_fmt", "yuv420p", this.videoPath );
+			ProcessBuilder ffmpegProcessBuilder = new ProcessBuilder( this.ffmpegCommand, "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", this.getVideoCodec(), "-b", this.getVideoBitrate(), "-pix_fmt", "yuv420p", this.videoPath );
 			this.ffmpegProcess = ffmpegProcessBuilder.start();
 
 			this.ffmpegStdOut = new java.io.BufferedOutputStream( this.ffmpegProcess.getOutputStream() );
@@ -158,11 +158,12 @@ public abstract class ImagesToFFmpegEncoder {
 		return this.success;
 	}
 
-	public synchronized void addBufferedImage( java.awt.image.BufferedImage frame ) {
+	public synchronized void addBufferedImage( java.awt.image.BufferedImage frame, boolean isUpsideDown ) {
 		assert this.isRunning;
 		assert frame != null;
 		assert ( frame.getWidth() == this.frameDimension.getWidth() );
 		assert ( frame.getHeight() == this.frameDimension.getHeight() );
+		assert isUpsideDown : "option \"-vf vflip\" passed to ffmpeg";
 
 		this.frameCount++;
 		try {

@@ -99,8 +99,8 @@ public class WebmAdapter implements MediaPlayerObserver {
 		encoder.mergeAudio();
 	}
 
-	public void addBufferedImage( BufferedImage image ) {
-		encoder.addBufferedImage( image );
+	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) {
+		encoder.addBufferedImage( image, isUpsideDown );
 	}
 
 }
