@@ -43,7 +43,6 @@
 
 package org.lgna.story;
 
-import org.lgna.ik.poser.PoseAnimation;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
 import org.lgna.project.annotations.MethodTemplate;
 import org.lgna.project.annotations.Visibility;
@@ -254,7 +253,6 @@ public class SBiped extends SJointedModel implements Articulable {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_PINKY_FINGER_KNUCKLE );
 	}
 
-	public void animateToPose( PoseAnimation animation, AnimateToPose.Detail[] details ) {
-
+	public void setPose( org.lgna.ik.poser.Pose pose, SetPose.Detail... details ) {
 	}
 }

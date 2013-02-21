@@ -62,8 +62,8 @@ import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserParameter;
-import org.lgna.story.AnimateToPose;
 import org.lgna.story.Color;
+import org.lgna.story.SetPose;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -168,15 +168,26 @@ public class PoserControlComposite extends SimpleComposite<PoserControlView> {
 	//
 	//	} );
 
+	private static final org.lgna.project.ast.JavaMethod SET_POSE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SBiped.class, "setPose", Pose.class, SetPose.Detail[].class );
+
 	public UserMethod createUserMethod( String name ) {
+		org.alice.ide.ApiConfigurationManager apiConfigurationManager = org.alice.stageide.StoryApiConfigurationManager.getInstance();
+		org.alice.ide.ast.ExpressionCreator expressionCreator = apiConfigurationManager.getExpressionCreator();
+
 		ExpressionStatement[] miArr = new ExpressionStatement[ posesList.getItemCount() ];
 		int i = 0;
 		for( PoseAnimation animation : posesList ) {
-			miArr[ i ] = new ExpressionStatement( animation.getPose().createAliceMethod( new AnimateToPose.Detail[ 0 ] ) );
+			try {
+				miArr[ i ] = org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( new org.lgna.project.ast.ThisExpression(), SET_POSE_METHOD, expressionCreator.createExpression( animation.getPose() ) );
+			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
+				throw new RuntimeException( ccee );
+			}
+			//miArr[ i ] = new ExpressionStatement( animation.getPose().createAliceMethod( new SetPose.Detail[ 0 ] ) );
 			++i;
 		}
 		BlockStatement body = new BlockStatement( miArr );
-		UserMethod rv = new UserMethod( name, Void.class, new UserParameter[ 0 ], body );
+		UserMethod rv = new UserMethod( name, Void.TYPE, new UserParameter[ 0 ], body );
+
 		return rv;
 	}
 

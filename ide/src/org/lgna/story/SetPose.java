@@ -45,12 +45,12 @@ package org.lgna.story;
 /**
  * @author Matt May
  */
-public class AnimateToPose extends DurationAnimationStyleArgumentFactory {
+public class SetPose {
 
 	public interface Detail {
 	}
 
-	private AnimateToPose() {
+	private SetPose() {
 		super();
 	}
 

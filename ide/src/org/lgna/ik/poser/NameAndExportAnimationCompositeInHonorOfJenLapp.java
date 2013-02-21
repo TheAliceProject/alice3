@@ -52,6 +52,7 @@ import org.lgna.ik.poser.view.AnimationNamingView;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 
+import org.lgna.story.SBiped;import org.lgna.story.Orientation;import org.lgna.ik.poser.Pose.Builder;class Bogus extends SBiped{public Void a(){this.setPose(new Builder().rightArm(new Orientation(-0.334632,-0.82115,0.236049,0.397511),new Orientation(-0.468727,0.138878,0.183267,0.85289),new Orientation(0.0,0.00323889,0.0,0.999995),new Orientation(0.0,0.0,0.0,1.0)).leftArm(new Orientation(-0.707107,0.0,0.0,0.707107),new Orientation(0.037113,0.0,0.0,0.999311),new Orientation(-0.129062,0.0,0.0,0.991636),new Orientation(0.476142,0.0,0.0,0.879369)).rightLeg(new Orientation(-0.334631,0.82115,-0.23605,0.397511),new Orientation(-0.460776,-0.140577,-0.181968,0.857211),new Orientation(0.0,-0.00323889,0.0,0.999995),new Orientation(0.0,0.0,0.0,1.0)).leftLeg(new Orientation(-0.334631,0.82115,-0.23605,0.397511),new Orientation(0.0371134,0.0,0.0,0.999311),new Orientation(-0.129063,0.0,0.0,0.991636),new Orientation(0.476141,0.0,0.0,0.879369)).build());this.setPose(new Builder().rightArm(new Orientation(-0.334632,-0.82115,0.236049,0.397511),new Orientation(-0.468727,0.138878,0.183267,0.85289),new Orientation(0.0,0.00323889,0.0,0.999995),new Orientation(0.0,0.0,0.0,1.0)).leftArm(new Orientation(-0.707107,0.0,0.0,0.707107),new Orientation(0.037113,0.0,0.0,0.999311),new Orientation(-0.129062,0.0,0.0,0.991636),new Orientation(0.476142,0.0,0.0,0.879369)).rightLeg(new Orientation(-0.334631,0.82115,-0.23605,0.397511),new Orientation(-0.460776,-0.140577,-0.181968,0.857211),new Orientation(0.0,-0.00323889,0.0,0.999995),new Orientation(0.0,0.0,0.0,1.0)).leftLeg(new Orientation(-0.334631,0.82115,-0.23605,0.397511),new Orientation(0.0371134,0.0,0.0,0.999311),new Orientation(-0.129063,0.0,0.0,0.991636),new Orientation(0.476141,0.0,0.0,0.879369)).build());}}
 /**
  * @author Matt May
  */
@@ -101,7 +102,20 @@ public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationIn
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		UserMethod method = parent.createUserMethod( animationName.getValue() );
-		UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
-		return new DeclareMethodEdit( completionStep, declaringType, method );
+		boolean IS_READY_FOR_PRIME_TIME = false;
+		if( IS_READY_FOR_PRIME_TIME ) {
+			UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
+			return new DeclareMethodEdit( completionStep, declaringType, method );
+		} else {
+			org.lgna.project.ast.NamedUserType bogusType = new org.lgna.project.ast.NamedUserType();
+			bogusType.name.setValue( "Bogus" );
+			bogusType.superType.setValue( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class ) );
+			bogusType.methods.add( method );
+			String javaCode = bogusType.generateJavaCode( true );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( javaCode );
+			return null;
+		}
 	}
 }
+
+

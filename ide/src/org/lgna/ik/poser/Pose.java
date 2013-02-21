@@ -42,14 +42,6 @@
  */
 package org.lgna.ik.poser;
 
-import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
-import org.alice.stageide.ast.ExpressionCreator;
-import org.lgna.project.ast.AstUtilities;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.JavaConstructor;
-import org.lgna.project.ast.JavaMethod;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.story.AnimateToPose;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SBiped;
 import org.lgna.story.SJoint;
@@ -68,69 +60,6 @@ public class Pose {
 
 	private static AffineMatrix4x4 getOrientation( SJoint sJoint ) {
 		return ( (JointImp)ImplementationAccessor.getImplementation( sJoint ) ).getLocalTransformation();
-	}
-
-	public static class Builder {
-		private JointQPair rightArmBase;
-		private JointQPair leftArmBase;
-		private JointQPair rightLegBase;
-		private JointQPair leftLegBase;
-
-		public Builder rightArmBase( JointQPair rightArmBase ) {
-			assert this.rightArmBase == null;
-			this.rightArmBase = rightArmBase;
-			return this;
-		}
-
-		public Builder leftArmBase( JointQPair leftArmBase ) {
-			assert this.leftArmBase == null;
-			this.leftArmBase = rightArmBase;
-			return this;
-		}
-
-		public Builder rightLegBase( JointQPair rightLegBase ) {
-			assert this.rightLegBase == null;
-			this.rightLegBase = rightLegBase;
-			return this;
-		}
-
-		public Builder leftLegBase( JointQPair leftLegBase ) {
-			assert this.leftLegBase == null;
-			this.leftLegBase = leftLegBase;
-			return this;
-		}
-
-		public Pose build() {
-			return new Pose( rightArmBase, rightLegBase, leftArmBase, leftLegBase );
-		}
-
-		public Pose buildFromBiped( SBiped biped ) {
-			rightArmBase = new JointQPair( biped.getRightClavicle(),
-					new JointQPair( biped.getRightShoulder(),
-							new JointQPair( biped.getRightElbow(),
-									new JointQPair( biped.getRightWrist() ) ) ) );
-
-			leftArmBase = new JointQPair( biped.getLeftClavicle(),
-					new JointQPair( biped.getLeftShoulder(),
-							new JointQPair( biped.getLeftElbow(),
-									new JointQPair( biped.getLeftWrist() ) ) ) );
-
-			rightLegBase = new JointQPair( biped.getPelvis(),
-					new JointQPair( biped.getRightHip(),
-							new JointQPair( biped.getRightKnee(),
-									new JointQPair( biped.getRightAnkle() ) ) ) );
-
-			leftLegBase = new JointQPair( biped.getPelvis(),
-					new JointQPair( biped.getLeftHip(),
-							new JointQPair( biped.getLeftKnee(),
-									new JointQPair( biped.getLeftAnkle() ) ) ) );
-
-			return this.rightArmBase( rightArmBase )
-					.leftArmBase( leftArmBase )
-					.rightLegBase( rightLegBase )
-					.leftLegBase( leftLegBase )
-					.build();
-		}
 	}
 
 	public static Pose createPoseFromBiped( SBiped biped ) {
@@ -166,13 +95,13 @@ public class Pose {
 		return ImplementationAccessor.getOrthogonalMatrix3x3( orientation ).createUnitQuaternion();
 	}
 
-	public static class Builder2SonOfBuilder {
+	public static class Builder {
 		private JointQPair rightArmBase;
 		private JointQPair leftArmBase;
 		private JointQPair rightLegBase;
 		private JointQPair leftLegBase;
 
-		public Builder2SonOfBuilder rightArm( org.lgna.story.Orientation rightClavicleOrientation, org.lgna.story.Orientation rightShoulderOrientation, org.lgna.story.Orientation rightElbowOrientation, org.lgna.story.Orientation rightWristOrientation ) {
+		public Builder rightArm( org.lgna.story.Orientation rightClavicleOrientation, org.lgna.story.Orientation rightShoulderOrientation, org.lgna.story.Orientation rightElbowOrientation, org.lgna.story.Orientation rightWristOrientation ) {
 			assert this.rightArmBase == null : this;
 			assert rightClavicleOrientation == null : this;
 			assert rightShoulderOrientation == null : this;
@@ -186,7 +115,7 @@ public class Pose {
 			return this;
 		}
 
-		public Builder2SonOfBuilder leftArm( org.lgna.story.Orientation leftClavicleOrientation, org.lgna.story.Orientation leftShoulderOrientation, org.lgna.story.Orientation leftElbowOrientation, org.lgna.story.Orientation leftWristOrientation ) {
+		public Builder leftArm( org.lgna.story.Orientation leftClavicleOrientation, org.lgna.story.Orientation leftShoulderOrientation, org.lgna.story.Orientation leftElbowOrientation, org.lgna.story.Orientation leftWristOrientation ) {
 			assert this.leftArmBase == null : this;
 			assert leftClavicleOrientation == null : this;
 			assert leftShoulderOrientation == null : this;
@@ -200,7 +129,7 @@ public class Pose {
 			return this;
 		}
 
-		public Builder2SonOfBuilder rightLeg( org.lgna.story.Orientation pelvisOrientation, org.lgna.story.Orientation rightHipOrientation, org.lgna.story.Orientation rightKneeOrientation, org.lgna.story.Orientation rightAnkleOrientation ) {
+		public Builder rightLeg( org.lgna.story.Orientation pelvisOrientation, org.lgna.story.Orientation rightHipOrientation, org.lgna.story.Orientation rightKneeOrientation, org.lgna.story.Orientation rightAnkleOrientation ) {
 			assert this.rightLegBase == null : this;
 			assert pelvisOrientation == null : this;
 			assert rightHipOrientation == null : this;
@@ -214,7 +143,7 @@ public class Pose {
 			return this;
 		}
 
-		public Builder2SonOfBuilder leftLeg( org.lgna.story.Orientation pelvisOrientation, org.lgna.story.Orientation leftHipOrientation, org.lgna.story.Orientation leftKneeOrientation, org.lgna.story.Orientation leftAnkleOrientation ) {
+		public Builder leftLeg( org.lgna.story.Orientation pelvisOrientation, org.lgna.story.Orientation leftHipOrientation, org.lgna.story.Orientation leftKneeOrientation, org.lgna.story.Orientation leftAnkleOrientation ) {
 			assert this.leftLegBase == null : this;
 			assert pelvisOrientation == null : this;
 			assert leftHipOrientation == null : this;
@@ -237,14 +166,76 @@ public class Pose {
 	private final JointQPair leftArmBase;
 	private final JointQPair rightLegBase;
 	private final JointQPair leftLegBase;
-	public static final JavaMethod ADD_POSE_ANIMATION = JavaMethod.getInstance( SBiped.class, "animateToPose", PoseAnimation.class, AnimateToPose.Detail[].class );
-	private static final ExpressionCreator blah = new ExpressionCreator();
 
 	public Pose( JointQPair raBase, JointQPair rlBase, JointQPair laBase, JointQPair llBase ) {
 		this.rightArmBase = raBase;
 		this.rightLegBase = rlBase;
 		this.leftArmBase = laBase;
 		this.leftLegBase = llBase;
+	}
+
+	private static org.lgna.story.Orientation createOrientation( edu.cmu.cs.dennisc.math.UnitQuaternion q ) {
+		return new org.lgna.story.Orientation( q.x, q.y, q.z, q.w );
+	}
+
+	public org.lgna.story.Orientation getRightClavicleOrientation() {
+		return createOrientation( this.rightArmBase.getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getRightShoulderOrientation() {
+		return createOrientation( this.rightArmBase.getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getRightElbowOrientation() {
+		return createOrientation( this.rightArmBase.getChild().getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getRightWristOrientation() {
+		return createOrientation( this.rightArmBase.getChild().getChild().getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getLeftClavicleOrientation() {
+		return createOrientation( this.leftArmBase.getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getLeftShoulderOrientation() {
+		return createOrientation( this.leftArmBase.getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getLeftElbowOrientation() {
+		return createOrientation( this.leftArmBase.getChild().getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getLeftWristOrientation() {
+		return createOrientation( this.leftArmBase.getChild().getChild().getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getPelvisOrientation() {
+		return createOrientation( this.rightLegBase.getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getRightHipOrientation() {
+		return createOrientation( this.rightLegBase.getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getRightKneeOrientation() {
+		return createOrientation( this.rightLegBase.getChild().getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getRightAnkleOrientation() {
+		return createOrientation( this.rightLegBase.getChild().getChild().getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getLeftHipOrientation() {
+		return createOrientation( this.leftLegBase.getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getLeftKneeOrientation() {
+		return createOrientation( this.leftLegBase.getChild().getChild().getUnitQuaternion() );
+	}
+
+	public org.lgna.story.Orientation getLeftAnkleOrientation() {
+		return createOrientation( this.leftLegBase.getChild().getChild().getChild().getUnitQuaternion() );
 	}
 
 	public JointQPair getRightArmBase() {
@@ -300,39 +291,39 @@ public class Pose {
 		return ( rightArmBase.equals( other.rightArmBase ) && leftArmBase.equals( other.leftArmBase ) && rightLegBase.equals( other.rightLegBase ) && leftLegBase.equals( other.leftLegBase ) );
 	}
 
-	public MethodInvocation createAliceMethod( AnimateToPose.Detail[] details ) {
-		Expression[] exArr = new Expression[ details.length + 1 ];
-		try {
-			exArr[ 0 ] = blah.createExpression( this );
-		} catch( CannotCreateExpressionException e1 ) {
-			e1.printStackTrace();
-		}
-		int i = 1;
-		for( AnimateToPose.Detail detail : details ) {
-			try {
-				exArr[ i ] = blah.createExpression( detail );
-			} catch( CannotCreateExpressionException e ) {
-				e.printStackTrace();
-			}
-			++i;
-		}
-		//		Constructor constructor = this.getClass().getConstructor( JointQPair.class, JointQPair.class, JointQPair.class, JointQPair.class );
-		JavaConstructor blah = JavaConstructor.getInstance( this.getClass(), JointQPair.class, JointQPair.class, JointQPair.class, JointQPair.class );
-		Expression[] constArgs = this.createExpressionArrForBases();
-		AstUtilities.createInstanceCreation( blah, constArgs );//getRightArmBase(), getRightLegBase(), getLeftArmBase(), getLeftLegBase() );
-		//newThisExpresson
-		//		AddProcedureComposite
-		Builder builder = new Builder();
-		Pose pose = builder.build();
-		//		AstUtilities.createMethodInvocation( new ThisExpression(), ADD_POSE_ANIMATION, pose,  );
-		//		MethodInvocation rv = new MethodInvocation( null, ADD_POSE_ANIMATION, this, details, details );
-		return null;
-	}
-
-	private Expression[] createExpressionArrForBases() {
-		Expression[] rv = new Expression[ 4 ];
-		Expression bleh = JointQPair.createInstance( getRightArmBase() );
-		//		rv[ 0 ] = ;
-		return null;
-	}
+	//	public MethodInvocation createAliceMethod( AnimateToPose.Detail[] details ) {
+	//		Expression[] exArr = new Expression[ details.length + 1 ];
+	//		try {
+	//			exArr[ 0 ] = blah.createExpression( this );
+	//		} catch( CannotCreateExpressionException e1 ) {
+	//			e1.printStackTrace();
+	//		}
+	//		int i = 1;
+	//		for( AnimateToPose.Detail detail : details ) {
+	//			try {
+	//				exArr[ i ] = blah.createExpression( detail );
+	//			} catch( CannotCreateExpressionException e ) {
+	//				e.printStackTrace();
+	//			}
+	//			++i;
+	//		}
+	//		//		Constructor constructor = this.getClass().getConstructor( JointQPair.class, JointQPair.class, JointQPair.class, JointQPair.class );
+	//		JavaConstructor blah = JavaConstructor.getInstance( this.getClass(), JointQPair.class, JointQPair.class, JointQPair.class, JointQPair.class );
+	//		Expression[] constArgs = this.createExpressionArrForBases();
+	//		AstUtilities.createInstanceCreation( blah, constArgs );//getRightArmBase(), getRightLegBase(), getLeftArmBase(), getLeftLegBase() );
+	//		//newThisExpresson
+	//		//		AddProcedureComposite
+	//		Builder builder = new Builder();
+	//		Pose pose = builder.build();
+	//		//		AstUtilities.createMethodInvocation( new ThisExpression(), ADD_POSE_ANIMATION, pose,  );
+	//		//		MethodInvocation rv = new MethodInvocation( null, ADD_POSE_ANIMATION, this, details, details );
+	//		return null;
+	//	}
+	//
+	//	private Expression[] createExpressionArrForBases() {
+	//		Expression[] rv = new Expression[ 4 ];
+	//		Expression bleh = JointQPair.createInstance( getRightArmBase() );
+	//		//		rv[ 0 ] = ;
+	//		return null;
+	//	}
 }
