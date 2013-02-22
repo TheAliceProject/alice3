@@ -101,7 +101,18 @@ public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationIn
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		UserMethod method = parent.createUserMethod( animationName.getValue() );
-		UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
-		return new DeclareMethodEdit( completionStep, declaringType, method );
+		boolean IS_READY_FOR_PRIME_TIME = false;
+		if( IS_READY_FOR_PRIME_TIME ) {
+			UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
+			return new DeclareMethodEdit( completionStep, declaringType, method );
+		} else {
+			org.lgna.project.ast.NamedUserType bogusType = new org.lgna.project.ast.NamedUserType();
+			bogusType.name.setValue( "Bogus" );
+			bogusType.superType.setValue( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class ) );
+			bogusType.methods.add( method );
+			String javaCode = bogusType.generateJavaCode( true );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( javaCode );
+			return null;
+		}
 	}
 }
