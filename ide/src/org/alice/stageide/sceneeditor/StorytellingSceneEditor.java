@@ -1092,7 +1092,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.onscreenLookingGlass.forgetAllCachedItems();
 			edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
 		}
-		org.alice.stageide.personresource.PreviewComposite.getInstance().unloadPerson();
+
+		org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviewComposite().unloadPerson();
 		if( this.globalDragAdapter != null ) {
 			this.globalDragAdapter.clear();
 		}

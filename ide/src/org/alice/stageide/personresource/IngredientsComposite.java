@@ -229,6 +229,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		//		this.setStates( personResource );
 		if( activeCount == 0 ) {
 			this.addListeners();
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.activeCount );
 		}
 		this.activeCount++;
 		this.popAtomic();
@@ -366,7 +368,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			} finally {
 				this.addListenersIfAppropriate();
 			}
-			PreviewComposite.getInstance().getView().getPerson().updateNebPerson();
+
+			PersonResourceComposite.getInstance().getPreviewComposite().getView().getPerson().updateNebPerson();
 			this.getView().repaint();
 
 			this.prevPersonResource = this.createResourceFromStates();

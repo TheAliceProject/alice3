@@ -87,8 +87,10 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> adultExpressionValueConverter = new PersonResourceToExpressionConverter( this.adultValueCreator );
 	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> childExpressionValueConverter = new PersonResourceToExpressionConverter( this.childValueCreator );
 
+	private final PreviewComposite previewComposite = new PreviewComposite();
 	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
-	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( PreviewComposite.getInstance(), this.ingredientsComposite, 0.0f );
+
+	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( this.previewComposite, this.ingredientsComposite, 0.0f );
 
 	private PersonResourceComposite() {
 		super( java.util.UUID.fromString( "a875beea-1feb-48a7-9fe0-5903af846d72" ) );
@@ -96,6 +98,10 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 
 	public IngredientsComposite getIngredientsComposite() {
 		return this.ingredientsComposite;
+	}
+
+	public PreviewComposite getPreviewComposite() {
+		return this.previewComposite;
 	}
 
 	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getAdultExpressionValueConverter() {
@@ -175,21 +181,21 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		this.splitComposite.handlePreActivation();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo remove handlePreActivation" );
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo remove handlePostDeactivation" );
-		this.splitComposite.handlePostDeactivation();
-		super.handlePostDeactivation();
-	}
-
-	@Override
 	protected Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		new org.alice.stageide.StageIDE();
+		try {
+			org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
+			//PersonResourceComposite.getInstance().getAdultValueCreator().fire();
+		} catch( org.lgna.croquet.CancelException ce ) {
+			//pass
+		}
 	}
 }
