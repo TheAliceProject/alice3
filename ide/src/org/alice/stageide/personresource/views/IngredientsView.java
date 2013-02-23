@@ -46,31 +46,38 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class IngredientsView extends org.lgna.croquet.components.BorderPanel {
+public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 	public static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
 	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
 	public IngredientsView( final org.alice.stageide.personresource.IngredientsComposite composite ) {
-		super( composite );
-		org.lgna.croquet.components.FormPanel rowSpringPanel = new org.lgna.croquet.components.FormPanel() {
-			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-				org.lgna.croquet.ListSelectionState<?>[] states = new org.lgna.croquet.ListSelectionState<?>[] { composite.getLifeStageState(), composite.getGenderState(), composite.getBaseSkinToneState() };
-				for( org.lgna.croquet.ListSelectionState<?> state : states ) {
-					rows.add( new org.lgna.croquet.components.LabeledFormRow( state.getSidekickLabel(), new HorizontalWrapList( state, 1 ) ) );
-				}
-			}
-		};
+		super( composite, "insets 0, fill" );
 
 		java.awt.Color backgroundColor = BACKGROUND_COLOR;
+		org.lgna.croquet.components.PushButton isLifeStageLockedButton = composite.getIsLifeStageLockedState().createPushButton();
+		isLifeStageLockedButton.setBackgroundColor( backgroundColor );
+		isLifeStageLockedButton.setSelectedColor( backgroundColor );
+		//isLifeStageLockedButton.tightenUpMargin();
+		this.addComponent( isLifeStageLockedButton );
+		this.addComponent( composite.getLifeStageState().getSidekickLabel().createLabel(), "align right" );
+		this.addComponent( new HorizontalWrapList( composite.getLifeStageState(), 1 ), "push" );
+		this.addComponent( composite.getRandomize().createButton(), "wrap" );
+
+		this.addComponent( composite.getGenderState().getSidekickLabel().createLabel(), "align right, skip" );
+		this.addComponent( new HorizontalWrapList( composite.getGenderState(), 1 ), "wrap" );
+
+		this.addComponent( composite.getBaseSkinToneState().getSidekickLabel().createLabel(), "align right, skip" );
+		this.addComponent( new HorizontalWrapList( composite.getBaseSkinToneState(), 1 ), "wrap" );
 
 		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( backgroundColor );
-		org.lgna.croquet.components.BorderPanel centerPanel = new org.lgna.croquet.components.BorderPanel.Builder().pageStart( rowSpringPanel ).center( tabbedPane ).build();
-
-		this.addPageStartComponent( composite.getRandomize().createButton() );
-		this.addCenterComponent( centerPanel );
+		this.addComponent( tabbedPane, "span 4, grow" );
+		//
+		//		org.lgna.croquet.components.BorderPanel centerPanel = new org.lgna.croquet.components.BorderPanel.Builder().pageStart( rowSpringPanel ).center( tabbedPane ).build();
+		//
+		//		this.addPageStartComponent( composite.getRandomize().createButton() );
+		//		this.addCenterComponent( centerPanel );
 		this.setBackgroundColor( backgroundColor );
 	}
 }
