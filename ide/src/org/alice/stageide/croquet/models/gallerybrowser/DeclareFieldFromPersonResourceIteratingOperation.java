@@ -48,15 +48,27 @@ package org.alice.stageide.croquet.models.gallerybrowser;
  */
 public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.croquet.SingleThreadIteratingOperation {
 	private static class SingletonHolder {
-		private static DeclareFieldFromPersonResourceIteratingOperation instance = new DeclareFieldFromPersonResourceIteratingOperation();
+		private static DeclareFieldFromPersonResourceIteratingOperation adultInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.ADULT );
+		private static DeclareFieldFromPersonResourceIteratingOperation childInstance = new DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage.CHILD );
 	}
 
-	public static DeclareFieldFromPersonResourceIteratingOperation getInstance() {
-		return SingletonHolder.instance;
+	public static DeclareFieldFromPersonResourceIteratingOperation getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+			return SingletonHolder.adultInstance;
+		} else {
+			return SingletonHolder.childInstance;
+		}
 	}
 
-	private DeclareFieldFromPersonResourceIteratingOperation() {
+	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
+
+	private DeclareFieldFromPersonResourceIteratingOperation( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "0ec73a7c-f272-4ff1-87eb-f5f25e480ace" ) );
+		this.lifeStage = lifeStage;
+	}
+
+	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+		return this.lifeStage;
 	}
 
 	@Override
@@ -68,7 +80,7 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.c
 	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
-			return org.alice.stageide.personresource.RandomPersonResourceComposite.getInstance().getValueCreator();
+			return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getValueCreatorForLifeStage( this.lifeStage );
 		case 1:
 			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
 			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {

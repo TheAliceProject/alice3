@@ -51,25 +51,6 @@ public class GalleryResourceUtilities {
 		throw new AssertionError();
 	}
 
-	//	public static <B> java.util.List< org.lgna.croquet.CascadeBlankChild > updateChildren( java.util.List< org.lgna.croquet.CascadeBlankChild > rv, org.lgna.croquet.cascade.BlankNode< B > blankNode, AbstractTy ) {
-	//		if( treeNode != null ) {
-	//			final int N = treeNode.getChildCount();
-	//			for( int i=0; i<N; i++ ) {
-	//				edu.cmu.cs.dennisc.javax.swing.models.TreeNode<?> child = treeNode.getChildAt( i );
-	//				Object childValue = child.getValue();
-	//				if( childValue instanceof org.lgna.project.ast.AbstractType< ?,?,? > ) {		
-	//					org.lgna.project.ast.AbstractType< ?,?,? > childType = (org.lgna.project.ast.AbstractType< ?,?,? >)childValue;
-	//					rv.add( GalleryResourceMenu.getInstance( childType ) );
-	//				} else if( childValue instanceof org.lgna.project.ast.AbstractField ) {
-	//					org.lgna.project.ast.AbstractField childField = (org.lgna.project.ast.AbstractField)childValue;
-	//					rv.add( GalleryResourceFillIn.getInstance( childField ) );
-	//				} else {
-	//					throw new AssertionError();
-	//				}
-	//			}
-	//		}
-	//		return rv;
-	//	}
 	public static <B> java.util.List<org.lgna.croquet.CascadeBlankChild> updateChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<B> blankNode, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
 		Iterable<org.lgna.project.ast.AbstractDeclaration> declarations = org.alice.ide.IDE.getActiveInstance().getApiConfigurationManager().getGalleryResourceChildrenFor( type );
 		for( org.lgna.project.ast.AbstractDeclaration declaration : declarations ) {
@@ -78,7 +59,7 @@ public class GalleryResourceUtilities {
 				if( childType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
 					boolean isInitializer = false; //todo
 					if( isInitializer ) {
-						rv.add( org.alice.stageide.personresource.RandomPersonResourceComposite.getInstance().getExpressionValueCreator().getFillIn() );
+						rv.add( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getAdultExpressionValueCreator().getFillIn() );
 					} else {
 						rv.add( GalleryPersonResourceFillIn.getInstance( childType ) );
 					}

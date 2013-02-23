@@ -70,9 +70,13 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 		return ( (AbstractComposite)this.composite ).getClassUsedForLocalization();
 	}
 
+	protected void preCompositeCreateValue( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+	}
+
 	@Override
 	protected T createValue( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
+		this.preCompositeCreateValue( completionStep );
 		T value = this.composite.createValue( completionStep );
 		if( completionStep.isCanceled() ) {
 			throw new CancelException();
