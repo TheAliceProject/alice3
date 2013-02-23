@@ -82,7 +82,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 	}
 
 	/* package-private */void updateNebPerson() {
-		IngredientsComposite composite = IngredientsComposite.getInstance();
+		IngredientsComposite composite = PersonResourceComposite.getInstance().getIngredientsComposite();
 		org.lgna.story.resources.sims2.LifeStage lifeStage = composite.getLifeStageState().getValue();
 		edu.cmu.cs.dennisc.nebulous.Person nebPerson = this.mapLifeStageToNebPerson.get( lifeStage );
 		if( nebPerson != null ) {

@@ -43,7 +43,6 @@
 
 package org.alice.stageide.personresource;
 
-import org.lgna.croquet.OwnedByCompositeValueCreator;
 import org.lgna.croquet.ValueCreator;
 
 /**
@@ -74,24 +73,45 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		}
 	}
 
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> adultValueCreator = new OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this );
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> childValueCreator = new OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this );
+	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> adultValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+			PersonResourceComposite.this.initializeAdult();
+		}
+	} );
+	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> childValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+			PersonResourceComposite.this.initializeChild();
+		}
+	} );
 
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> adultExpressionValueCreator = new PersonResourceToExpressionConverter( this.adultValueCreator );
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> childExpressionValueCreator = new PersonResourceToExpressionConverter( this.childValueCreator );
+	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> adultExpressionValueConverter = new PersonResourceToExpressionConverter( this.adultValueCreator );
+	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> childExpressionValueConverter = new PersonResourceToExpressionConverter( this.childValueCreator );
 
-	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( PreviewComposite.getInstance(), IngredientsComposite.getInstance(), 0.0f );
+	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
+	private final org.lgna.croquet.SplitComposite splitComposite = this.createHorizontalSplitComposite( PreviewComposite.getInstance(), this.ingredientsComposite, 0.0f );
 
 	private PersonResourceComposite() {
 		super( java.util.UUID.fromString( "a875beea-1feb-48a7-9fe0-5903af846d72" ) );
 	}
 
-	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getAdultExpressionValueCreator() {
-		return this.adultExpressionValueCreator;
+	public IngredientsComposite getIngredientsComposite() {
+		return this.ingredientsComposite;
 	}
 
-	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getChildExpressionValueCreator() {
-		return this.childExpressionValueCreator;
+	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getAdultExpressionValueConverter() {
+		return this.adultExpressionValueConverter;
+	}
+
+	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getChildExpressionValueConverter() {
+		return this.childExpressionValueConverter;
+	}
+
+	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getExpressionValueConverterForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+			return this.getAdultExpressionValueConverter();
+		} else {
+			return this.getChildExpressionValueConverter();
+		}
 	}
 
 	private org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getAdultValueCreator() {
@@ -110,6 +130,14 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		}
 	}
 
+	private void initializeAdult() {
+
+	}
+
+	private void initializeChild() {
+
+	}
+
 	public org.lgna.croquet.SplitComposite getSplitComposite() {
 		return this.splitComposite;
 	}
@@ -121,7 +149,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 
 	@Override
 	protected org.lgna.story.resources.sims2.PersonResource createValue() {
-		return IngredientsComposite.getInstance().createResourceFromStates();
+		return this.ingredientsComposite.createResourceFromStates();
 	}
 
 	@Override

@@ -47,14 +47,6 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.IngredientsView> {
-	private static class SingletonHolder {
-		private static IngredientsComposite instance = new IngredientsComposite();
-	}
-
-	public static IngredientsComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final org.lgna.croquet.Operation randomize = this.createActionOperation( this.createKey( "randomize" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			return new org.alice.stageide.personresource.edits.RandomizeEdit( step );
@@ -142,7 +134,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	};
 
-	private IngredientsComposite() {
+	public IngredientsComposite() {
 		super( java.util.UUID.fromString( "dd127381-09a8-4f78-bfd5-f3bffc1af98b" ) );
 	}
 

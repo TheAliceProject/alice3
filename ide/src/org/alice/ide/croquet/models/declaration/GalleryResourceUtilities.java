@@ -59,7 +59,9 @@ public class GalleryResourceUtilities {
 				if( childType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
 					boolean isInitializer = false; //todo
 					if( isInitializer ) {
-						rv.add( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getAdultExpressionValueCreator().getFillIn() );
+						//todo
+						org.lgna.story.resources.sims2.LifeStage lifeStage = org.lgna.story.resources.sims2.LifeStage.ADULT;
+						rv.add( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getExpressionValueConverterForLifeStage( lifeStage ).getFillIn() );
 					} else {
 						rv.add( GalleryPersonResourceFillIn.getInstance( childType ) );
 					}
