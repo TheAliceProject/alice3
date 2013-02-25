@@ -118,7 +118,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
 			WizardDialogCoreComposite mainComposite = this.getDialogCoreComposite();
 			if( mainComposite.isNextPageAvailable() ) {
-				mainComposite.next();
+				mainComposite.next( false );
 			}
 			step.finish();
 		}
@@ -140,19 +140,23 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		return this.index;
 	}
 
-	private void setIndex( int index ) {
+	private void setIndex( int index, boolean isInTheMidstOfPreActivation ) {
 		this.index = index;
-		this.cardComposite.showCard( this.cardComposite.getCards().get( index ) );
-		this.listSelectionModel.setSelectionInterval( this.index, this.index );
-		String text;
+		Composite<?> card = this.index != -1 ? this.cardComposite.getCards().get( index ) : null;
+		if( isInTheMidstOfPreActivation ) {
+			this.cardComposite.showCardRefrainingFromActivation( card );
+		} else {
+			this.cardComposite.showCard( card );
+		}
 		if( this.index != -1 ) {
-			Composite<?> composite = this.cardComposite.getCards().get( this.index );
-			if( composite instanceof WizardPageComposite ) {
-				WizardPageComposite wizardPageComposite = (WizardPageComposite)composite;
-				text = wizardPageComposite.getName();
-			} else {
-				text = null;
-			}
+			this.listSelectionModel.setSelectionInterval( this.index, this.index );
+		} else {
+			this.listSelectionModel.clearSelection();
+		}
+		String text;
+		if( card instanceof WizardPageComposite ) {
+			WizardPageComposite wizardPageComposite = (WizardPageComposite)card;
+			text = wizardPageComposite.getName();
 		} else {
 			text = null;
 		}
@@ -169,11 +173,25 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	}
 
 	private void prev() {
-		this.setIndex( this.getIndex() - 1 );
+		int prevIndex = this.getIndex() - 1;
+		this.setIndex( prevIndex, false );
 	}
 
-	private void next() {
-		this.setIndex( this.getIndex() + 1 );
+	private void next( boolean isInTheMidstOfPreActivation ) {
+		int nextIndex = this.getIndex();
+		java.util.List<Composite<?>> cards = this.cardComposite.getCards();
+		while( nextIndex < ( cards.size() - 1 ) ) {
+			nextIndex++;
+			WizardPageComposite wizardPageComposite = (WizardPageComposite)cards.get( nextIndex );
+			org.lgna.croquet.history.CompletionStep<?> step = null;
+			if( wizardPageComposite.isAutoAdvanceDesired( step ) ) {
+				//pass
+			} else {
+				break;
+			}
+		}
+		this.setIndex( nextIndex, isInTheMidstOfPreActivation );
+		this.refreshStatus();
 	}
 
 	private final edu.cmu.cs.dennisc.javax.swing.models.ListModel<WizardPageComposite<?>> listModel = new edu.cmu.cs.dennisc.javax.swing.models.AbstractListModel<WizardPageComposite<?>>() {
@@ -244,6 +262,10 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 
 	public void removePage( WizardPageComposite<?> page ) {
 		this.cardComposite.removeCard( page );
+	}
+
+	public java.util.Iterator<WizardPageComposite<?>> getWizardPageIterator() {
+		return (java.util.Iterator)this.cardComposite.getCards().iterator();
 	}
 
 	private org.lgna.croquet.components.PageAxisPanel createAdornmentPageAxisPanel( org.lgna.croquet.components.JComponent<?> header ) {
@@ -338,7 +360,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			java.util.List<Composite<?>> cards = this.cardComposite.getCards();
 			for( int i = this.index + 1; i < cards.size(); i++ ) {
 				WizardPageComposite page = (WizardPageComposite)cards.get( i );
-				if( page.isOptional() ) {
+				if( page.isClearToCommit() ) {
 					//pass
 				} else {
 					isCommitEnabled = false;
@@ -352,7 +374,8 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.setIndex( 0 );
+		this.index = -1;
+		this.next( true );
 		this.cardComposite.handlePreActivation();
 	}
 
