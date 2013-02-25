@@ -506,6 +506,12 @@ public class RenderContext extends Context {
 		return this.currDiffuseColorTextureAdapter != null;
 	}
 
+	//Forget information that might be used across renders
+	//This is primarily for cases where we're rendering on the native side and setting up textures and whatnot
+	public void clearDiffuseColorTextureAdapter() {
+		this.currDiffuseColorTextureAdapter = null;
+	}
+
 	public void setDiffuseColorTextureAdapter( TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> diffuseColorTextureAdapter, boolean isDiffuseColorTextureClamped ) {
 		if( ( diffuseColorTextureAdapter != null ) && diffuseColorTextureAdapter.isValid() ) {
 			gl.glEnable( GL_TEXTURE_2D );

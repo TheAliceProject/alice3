@@ -26,6 +26,7 @@ public class ModelAdapter<E extends Model> extends GenericModelAdapter<E> {
 		//			m_element.forget();
 		//		}
 		float globalBrightness = rc.getGlobalBrightness();
+		rc.clearDiffuseColorTextureAdapter();
 		m_element.render( rc.gl, globalBrightness );
 	}
 
