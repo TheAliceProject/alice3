@@ -104,6 +104,10 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 
 	public abstract org.lgna.project.ast.Statement[] getUndoStatementsForRemoveField( org.lgna.project.ast.UserField field );
 
+	public abstract void preScreenCapture();
+
+	public abstract void postScreenCapture();
+
 	protected abstract void handleExpandContractChange( boolean isExpanded );
 
 	//Initialization

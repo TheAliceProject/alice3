@@ -973,6 +973,18 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 		}
 	}
 
+	@Override
+	public void preScreenCapture()
+	{
+		this.globalDragAdapter.setHandlVisibility( false );
+	}
+
+	@Override
+	public void postScreenCapture()
+	{
+		this.globalDragAdapter.setHandlVisibility( true );
+	}
+
 	private void fillInAutomaticSetUpMethod( org.lgna.project.ast.StatementListProperty bodyStatementsProperty, boolean isThis, org.lgna.project.ast.AbstractField field, boolean getFullFieldState ) {
 		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaVMForField( field ), this.getActiveSceneInstance(), getFullFieldState );
 	}
