@@ -47,15 +47,7 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
-	private static class SingletonHolder {
-		private static HeadTabComposite instance = new HeadTabComposite();
-	}
-
-	public static HeadTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private HeadTabComposite() {
+	public HeadTabComposite() {
 		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
 	}
 

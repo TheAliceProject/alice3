@@ -46,15 +46,15 @@ package org.alice.stageide.personresource.edits;
 /**
  * @author Dennis Cosgrove
  */
-public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
+public class SetPersonResourceEdit extends org.lgna.croquet.edits.Edit {
 	private final org.lgna.story.resources.sims2.PersonResource prevResource;
 	private final org.lgna.story.resources.sims2.PersonResource nextResource;
 
-	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
+	public SetPersonResourceEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.story.resources.sims2.PersonResource nextResource ) {
 		super( step );
 		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
 		this.prevResource = ingredientsComposite.createResourceFromStates();
-		this.nextResource = org.alice.stageide.personresource.RandomPersonUtilities.createRandomResource();
+		this.nextResource = nextResource;
 	}
 
 	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {

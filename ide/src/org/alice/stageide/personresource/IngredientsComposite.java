@@ -49,13 +49,16 @@ package org.alice.stageide.personresource;
 public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.IngredientsView> {
 	private final org.lgna.croquet.Operation randomize = this.createActionOperation( this.createKey( "randomize" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			return new org.alice.stageide.personresource.edits.RandomizeEdit( step );
+			return createRandomEdit( step );
 		}
 	} );
+
+	private final BodyTabComposite bodyTab = new BodyTabComposite();
+	private final HeadTabComposite headTab = new HeadTabComposite();
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneState = this.createListSelectionStateForEnum( this.createKey( "baseSkinToneState" ), org.lgna.story.resources.sims2.BaseSkinTone.class, org.lgna.story.resources.sims2.BaseSkinTone.getRandom() );
-	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, BodyTabComposite.getInstance(), HeadTabComposite.getInstance() );
+	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, this.bodyTab, this.headTab );
 
 	private final edu.cmu.cs.dennisc.map.MapToMap<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.resources.sims2.Gender, org.lgna.story.resources.sims2.PersonResource> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage> lifeStageListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage>() {
@@ -163,23 +166,23 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return HeadTabComposite.getInstance().getHairState();
+		return this.headTab.getHairState();
 	}
 
 	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return HeadTabComposite.getInstance().getHairColorNameState();
+		return this.headTab.getHairColorNameState();
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
-		return HeadTabComposite.getInstance().getBaseEyeColorState();
+		return this.headTab.getBaseEyeColorState();
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
-		return BodyTabComposite.getInstance().getFullBodyOutfitState();
+		return this.bodyTab.getFullBodyOutfitState();
 	}
 
 	public org.lgna.croquet.BoundedDoubleState getObesityLevelState() {
-		return BodyTabComposite.getInstance().getObesityLevelState();
+		return this.bodyTab.getObesityLevelState();
 	}
 
 	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getBodyHeadTabState() {
@@ -188,6 +191,17 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 	//	private void handleCataclysm( boolean isLifeStage, boolean isGender, boolean isHairColor ) {
 	//	}
+
+	private org.lgna.croquet.edits.Edit createRandomEdit( org.lgna.croquet.history.CompletionStep<?> step ) {
+		org.lgna.story.resources.sims2.LifeStage lifeStage;
+		if( this.lifeStageState.isEnabled() ) {
+			lifeStage = null;
+		} else {
+			lifeStage = this.lifeStageState.getValue();
+		}
+		org.lgna.story.resources.sims2.PersonResource nextPersonResource = org.alice.stageide.personresource.RandomPersonUtilities.createRandomResource( lifeStage );
+		return new org.alice.stageide.personresource.edits.SetPersonResourceEdit( step, nextPersonResource );
+	}
 
 	private void addListeners() {
 		this.getLifeStageState().addValueListener( this.lifeStageListener );

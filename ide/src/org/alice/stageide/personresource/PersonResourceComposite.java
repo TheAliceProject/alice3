@@ -197,5 +197,6 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		} catch( org.lgna.croquet.CancelException ce ) {
 			//pass
 		}
+		System.exit( 0 );
 	}
 }

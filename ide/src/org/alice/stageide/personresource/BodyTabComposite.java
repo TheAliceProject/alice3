@@ -47,14 +47,6 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public class BodyTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.BodyTabView> {
-	private static class SingletonHolder {
-		private static BodyTabComposite instance = new BodyTabComposite();
-	}
-
-	public static BodyTabComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private class SetObesityLevelAction implements Action {
 		private final double value;
 
@@ -72,7 +64,7 @@ public class BodyTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.
 	private final org.lgna.croquet.Operation setToInShape = this.createActionOperation( this.createKey( "obesityLevelState(0.0)" ), new SetObesityLevelAction( 0.0 ) );
 	private final org.lgna.croquet.Operation setToOutOfShape = this.createActionOperation( this.createKey( "obesityLevelState(1.0)" ), new SetObesityLevelAction( 1.0 ) );
 
-	private BodyTabComposite() {
+	public BodyTabComposite() {
 		super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ) );
 	}
 
