@@ -73,20 +73,14 @@ public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.de
 				.build() );
 	}
 
-	public void setPersonResource( org.lgna.story.resources.sims2.PersonResource personResource ) {
-		if( personResource != null ) {
-			try {
-				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
+	public void setPersonResourceInstanceCreation( org.lgna.project.ast.InstanceCreation argumentExpression ) {
+		if( argumentExpression != null ) {
+			org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResourceInstanceCreation( argumentExpression );
 
-				org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource( personResource );
-
-				this.initialInstanceCreation = org.lgna.project.ast.AstUtilities.createInstanceCreation(
-						type.getDeclaredConstructors().get( 0 ),
-						argumentExpression
-						);
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-				this.initialInstanceCreation = null;
-			}
+			this.initialInstanceCreation = org.lgna.project.ast.AstUtilities.createInstanceCreation(
+					type.getDeclaredConstructors().get( 0 ),
+					argumentExpression
+					);
 		} else {
 			this.initialInstanceCreation = null;
 		}
