@@ -58,15 +58,15 @@ public abstract class DeclarationLikeSubstanceComposite<N extends org.lgna.proje
 		}
 
 		public boolean isEditable() {
-			return this.value >= 3;
+			return this.value >= EDITABLE.value;
 		}
 
 		public boolean isDisplayed() {
-			return this.value >= 2;
+			return this.value >= DISPLAYED.value;
 		}
 
 		public boolean isApplicable() {
-			return this.value >= 1;
+			return this.value >= APPLICABLE_BUT_NOT_DISPLAYED.value;
 		}
 	}
 

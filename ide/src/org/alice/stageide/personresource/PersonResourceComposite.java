@@ -83,6 +83,11 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 			PersonResourceComposite.this.initializeChild();
 		}
 	} );
+	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> previousExpressionValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+			PersonResourceComposite.this.initializePreviousExpression();
+		}
+	} );
 
 	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> adultExpressionValueConverter = new PersonResourceToExpressionConverter( this.adultValueCreator );
 	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> childExpressionValueConverter = new PersonResourceToExpressionConverter( this.childValueCreator );
@@ -128,6 +133,10 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		return this.childValueCreator;
 	}
 
+	public org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getValueCreatorForPreviousExpression() {
+		return this.previousExpressionValueCreator;
+	}
+
 	public org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getValueCreatorForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
 			return this.getAdultValueCreator();
@@ -137,11 +146,21 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	private void initializeAdult() {
-		this.ingredientsComposite.getLifeStageState().setEnabled( false );
+		this.ingredientsComposite.getLifeStageState().setEnabled( true );
+		this.ingredientsComposite.getLifeStageState().setValueTransactionlessly( org.lgna.story.resources.sims2.LifeStage.ADULT );
 	}
 
 	private void initializeChild() {
 		this.ingredientsComposite.getLifeStageState().setEnabled( true );
+		this.ingredientsComposite.getLifeStageState().setValueTransactionlessly( org.lgna.story.resources.sims2.LifeStage.CHILD );
+	}
+
+	private void initializePreviousExpression() {
+		org.alice.ide.cascade.ExpressionCascadeManager expressionCascadeManager = org.alice.stageide.StageIDE.getActiveInstance().getExpressionCascadeManager();
+		org.lgna.project.ast.Expression expression = expressionCascadeManager.getPreviousExpression();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( expression );
+		this.ingredientsComposite.getLifeStageState().setEnabled( false );
+		this.ingredientsComposite.getLifeStageState().setValueTransactionlessly( org.lgna.story.resources.sims2.LifeStage.CHILD );
 	}
 
 	public org.lgna.croquet.SplitComposite getSplitComposite() {
@@ -190,6 +209,8 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		if( lookAndFeelInfo != null ) {
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
+
+		//org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		new org.alice.stageide.StageIDE();
 		try {
 			org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( org.lgna.story.resources.sims2.LifeStage.ADULT ).fire();
