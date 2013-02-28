@@ -112,6 +112,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	@Override
 	protected void setUpControls()
 	{
+		PickHint.PickType.MOVEABLE.pickHint();
+
 		MovementKey[] movementKeys = {
 				//Forward
 				new MovementKey( KeyEvent.VK_UP, new MovementDescription( MovementDirection.FORWARD ) ),
@@ -165,11 +167,11 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		cameraTranslateManip.addKeys( zoomKeys );
 		ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet( cameraTranslateManip );
 		for( MovementKey movementKey : movementKeys ) {
-			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( movementKey.keyValue ), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
+			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( movementKey.keyValue ), new SelectedObjectCondition( PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
 			cameraTranslate.addCondition( keyAndNotSelected );
 		}
 		for( MovementKey zoomKey : zoomKeys ) {
-			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( zoomKey.keyValue, noModifiers ), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
+			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( zoomKey.keyValue, noModifiers ), new SelectedObjectCondition( PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
 			cameraTranslate.addCondition( keyAndNotSelected );
 		}
 		//	this.manipulators.add( cameraTranslate );
@@ -183,17 +185,17 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 
 		ManipulatorConditionSet cameraRotate = new ManipulatorConditionSet( new CameraRotateKeyManipulator( turnKeys ) );
 		for( MovementKey turnKey : turnKeys ) {
-			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( turnKey.keyValue ), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
+			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( turnKey.keyValue ), new SelectedObjectCondition( PickHint.getNonInteractiveHint(), InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
 			cameraRotate.addCondition( keyAndNotSelected );
 		}
 		this.manipulators.add( cameraRotate );
 
 		//Camera mouse control
-		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
-		MouseDragCondition leftAndShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.JUST_SHIFT ) );
-		MouseDragCondition leftAndControl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.JUST_CONTROL ) );
-		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2, new PickCondition( PickHint.ANYTHING ) );
-		MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3, new PickCondition( PickHint.NON_INTERACTIVE ) );
+		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+		MouseDragCondition leftAndShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_SHIFT ) );
+		MouseDragCondition leftAndControl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) );
+		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
+		MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3, new PickCondition( PickHint.getNonInteractiveHint() ) );
 
 		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
 		//		cameraOrbit.addCondition(rightMouseAndNonInteractive);
@@ -289,8 +291,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		//		handleAxis.addToSet( HandleSet.JOINT_ROTATION_INTERACTION );
 		//		handleAxis.addToSet( HandleSet.TRANSLATION_INTERACTION );
 
-		handleAxis.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Rotate, null, PickHint.ANYTHING ) );
-		handleAxis.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Translate, null, PickHint.ANYTHING ) );
+		handleAxis.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Rotate, null, PickHint.getAnythingHint() ) );
+		handleAxis.addCondition( new ManipulationEventCriteria( ManipulationEvent.EventType.Translate, null, PickHint.getAnythingHint() ) );
 		this.manipulationEventManager.addManipulationListener( handleAxis );
 		handleAxis.setDragAdapterAndAddHandle( this );
 

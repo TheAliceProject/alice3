@@ -65,15 +65,17 @@ public class PickHint extends BitSet {
 		JOINT,
 		SUN;
 
-		private PickHint pickHint;
+		private PickHint pickHint = null;
 
 		private PickType()
 		{
-			this.pickHint = new PickHint( this );
 		}
 
 		public PickHint pickHint()
 		{
+			if( this.pickHint == null ) {
+				this.pickHint = new PickHint( this );
+			}
 			return this.pickHint;
 		}
 
@@ -81,24 +83,58 @@ public class PickHint extends BitSet {
 
 	public static final edu.cmu.cs.dennisc.scenegraph.Element.Key<PickHint> PICK_HINT_KEY = edu.cmu.cs.dennisc.scenegraph.Element.Key.createInstance( "PICK_HINT_KEY" );
 
-	protected static final int NUM_TYPES = PickType.values().length;
+	//	protected static final int NUM_TYPES = PickType.values().length;
 
-	public static final PickHint MARKERS = new PickHint( PickType.CAMERA_MARKER, PickType.OBJECT_MARKER );
-	public static final PickHint ANYTHING = createEverythingHint();
+	private static PickHint MARKERS = null;
+
+	public static PickHint getMarkersHint()
+	{
+		if( MARKERS == null ) {
+			MARKERS = new PickHint( PickType.CAMERA_MARKER, PickType.OBJECT_MARKER );
+		}
+		return MARKERS;
+	}
+
+	private static PickHint ANYTHING = null;
+
+	public static PickHint getAnythingHint()
+	{
+		if( ANYTHING == null ) {
+			ANYTHING = createEverythingHint();
+		}
+		return ANYTHING;
+	}
 
 	//	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT, PickType.MARKER );
 
-	public static final PickHint ALL_HANDLES = new PickHint( PickType.TWO_D_HANDLE, PickType.THREE_D_HANDLE );
-	public static final PickHint NON_INTERACTIVE = new PickHint( PickType.NOTHING );
+	private static PickHint ALL_HANDLES = null;
+
+	public static PickHint getAllHandlesHint()
+	{
+		if( ALL_HANDLES == null ) {
+			ALL_HANDLES = new PickHint( PickType.TWO_D_HANDLE, PickType.THREE_D_HANDLE );
+		}
+		return ALL_HANDLES;
+	}
+
+	private static PickHint NON_INTERACTIVE = null;
+
+	public static PickHint getNonInteractiveHint()
+	{
+		if( NON_INTERACTIVE == null ) {
+			NON_INTERACTIVE = new PickHint( PickType.NOTHING );
+		}
+		return NON_INTERACTIVE;
+	}
 
 	public PickHint()
 	{
-		super( NUM_TYPES );
+		super( getNumTypes() );
 	}
 
 	public PickHint( PickType... pickTypes )
 	{
-		super( NUM_TYPES );
+		super( getNumTypes() );
 		for( PickType pickType : pickTypes )
 		{
 			this.set( pickType.ordinal() );
@@ -108,11 +144,16 @@ public class PickHint extends BitSet {
 	public static PickHint createEverythingHint()
 	{
 		PickHint toReturn = new PickHint();
-		for( int i = 0; i < NUM_TYPES; i++ )
+		for( int i = 0; i < getNumTypes(); i++ )
 		{
 			toReturn.set( i );
 		}
 		return toReturn;
+	}
+
+	protected static int getNumTypes()
+	{
+		return PickType.values().length;
 	}
 
 	public boolean get( PickType pickType )

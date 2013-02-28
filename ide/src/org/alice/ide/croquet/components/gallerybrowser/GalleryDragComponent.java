@@ -115,9 +115,9 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 				if( modelResourceInterfaces.length > 0 ) {
 					Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
 					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
-						org.lgna.croquet.icon.IconFactory superclsIconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
-						if( ( superclsIconFactory != null ) && ( superclsIconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
-							javax.swing.Icon icon = superclsIconFactory.getIcon( new java.awt.Dimension( 32, 24 ) );
+						javax.swing.Icon icon = org.alice.stageide.icons.IconFactoryManager.getSmallImageIconFor( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
+						if( icon != null ) {
+							icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( icon, 0.8f );
 							SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
 							superclsLabel.getAwtComponent().setIcon( icon );
 							this.internalAddComponent( superclsLabel, java.awt.BorderLayout.LINE_START );
