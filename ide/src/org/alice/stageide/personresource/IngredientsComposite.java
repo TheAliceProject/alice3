@@ -189,9 +189,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.bodyHeadTabState;
 	}
 
-	//	private void handleCataclysm( boolean isLifeStage, boolean isGender, boolean isHairColor ) {
-	//	}
-
 	private org.lgna.croquet.edits.Edit createRandomEdit( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.story.resources.sims2.LifeStage lifeStage;
 		if( this.lifeStageState.isEnabled() ) {
@@ -265,28 +262,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 		super.handlePostDeactivation();
 	}
-
-	//	public org.alice.stageide.person.components.PersonViewer allocatePersonViewer( org.lgna.story.resources.sims2.PersonResource personResource ) {
-	//		assert activeCount == 0; //todo
-	//		this.pushAtomic();
-	//		this.setStates( personResource );
-	//		if( activeCount == 0 ) {
-	//			this.addListeners();
-	//		}
-	//		this.activeCount++;
-	//		this.popAtomic();
-	//		//return org.alice.stageide.person.components.PersonViewer.getInstance( this.personImp );
-	//		return null;
-	//	}
-	//
-	//	public void releasePersonViewer( org.alice.stageide.person.components.PersonViewer personViewer ) {
-	//		this.activeCount--;
-	//		if( activeCount == 0 ) {
-	//			this.removeListeners();
-	//		}
-	//		//personViewer.setPerson( null );
-	//		assert activeCount == 0; //todo
-	//	}
 
 	private static org.lgna.story.resources.sims2.LifeStage getLifeStage( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		return personResource != null ? personResource.getLifeStage() : null;

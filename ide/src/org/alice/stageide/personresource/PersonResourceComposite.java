@@ -91,6 +91,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 
 	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> adultExpressionValueConverter = new PersonResourceToExpressionConverter( this.adultValueCreator );
 	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> childExpressionValueConverter = new PersonResourceToExpressionConverter( this.childValueCreator );
+	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> previousExpressionValueConverter = new PersonResourceToExpressionConverter( this.previousExpressionValueCreator );
 
 	private final PreviewComposite previewComposite = new PreviewComposite();
 	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
@@ -115,6 +116,10 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 
 	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getChildExpressionValueConverter() {
 		return this.childExpressionValueConverter;
+	}
+
+	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getPreviousExpressionValueConverter() {
+		return this.previousExpressionValueConverter;
 	}
 
 	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.Expression> getExpressionValueConverterForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {

@@ -74,7 +74,13 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 		RtBlank<T>[] rtBlanks = this.getBlankChildren();
 		T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
 		for( int i = 0; i < rtBlanks.length; i++ ) {
-			rv[ i ] = rtBlanks[ i ].createValue( transactionHistory );
+			T value = rtBlanks[ i ].createValue( transactionHistory );
+			try {
+				rv[ i ] = value;
+			} catch( ArrayStoreException ase ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "value:", value, "componentType:", componentType );
+				throw ase;
+			}
 		}
 		return rv;
 	}
