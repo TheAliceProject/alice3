@@ -137,11 +137,11 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	}
 
 	private void initializeAdult() {
-
+		this.ingredientsComposite.getLifeStageState().setEnabled( false );
 	}
 
 	private void initializeChild() {
-
+		this.ingredientsComposite.getLifeStageState().setEnabled( true );
 	}
 
 	public org.lgna.croquet.SplitComposite getSplitComposite() {

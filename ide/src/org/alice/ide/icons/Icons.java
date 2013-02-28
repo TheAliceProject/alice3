@@ -72,7 +72,4 @@ public class Icons {
 
 	public static final javax.swing.Icon TRASH_CAN_FULL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/fulltrash.png" ) );
 	public static final javax.swing.Icon TRASH_CAN_EMPTY_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/32x40/emptytrash.png" ) );
-
-	public static final javax.swing.Icon LOCKED_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/locked.png" ) );
-	public static final javax.swing.Icon UNLOCKED_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( Icons.class.getResource( "images/24x24/unlocked.png" ) );
 }

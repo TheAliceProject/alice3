@@ -51,17 +51,19 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
 	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 
-	public IngredientsView( final org.alice.stageide.personresource.IngredientsComposite composite ) {
+	private final org.lgna.croquet.components.Label isLifeStageLockedLabel = new org.lgna.croquet.components.Label();
+	private final HorizontalWrapList<org.lgna.story.resources.sims2.LifeStage> lifeStageList;
+
+	private static final javax.swing.Icon LOCKED_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.personresource.IngredientsComposite.class.getResource( "images/locked.png" ) );
+
+	public IngredientsView( org.alice.stageide.personresource.IngredientsComposite composite ) {
 		super( composite, "insets 0, fill" );
 
-		java.awt.Color backgroundColor = BACKGROUND_COLOR;
-		org.lgna.croquet.components.PushButton isLifeStageLockedButton = composite.getIsLifeStageLockedState().createPushButton();
-		isLifeStageLockedButton.setBackgroundColor( backgroundColor );
-		isLifeStageLockedButton.setSelectedColor( backgroundColor );
-		//isLifeStageLockedButton.tightenUpMargin();
-		this.addComponent( isLifeStageLockedButton );
+		this.addComponent( this.isLifeStageLockedLabel );
 		this.addComponent( composite.getLifeStageState().getSidekickLabel().createLabel(), "align right" );
-		this.addComponent( new HorizontalWrapList( composite.getLifeStageState(), 1 ), "push" );
+
+		this.lifeStageList = new HorizontalWrapList( composite.getLifeStageState(), 1 );
+		this.addComponent( this.lifeStageList, "push" );
 		this.addComponent( composite.getRandomize().createButton(), "wrap" );
 
 		this.addComponent( composite.getGenderState().getSidekickLabel().createLabel(), "align right, skip" );
@@ -71,13 +73,15 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( new HorizontalWrapList( composite.getBaseSkinToneState(), 1 ), "wrap" );
 
 		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadTabState().createFolderTabbedPane();
-		tabbedPane.setBackgroundColor( backgroundColor );
+		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
 		this.addComponent( tabbedPane, "span 4, grow" );
-		//
-		//		org.lgna.croquet.components.BorderPanel centerPanel = new org.lgna.croquet.components.BorderPanel.Builder().pageStart( rowSpringPanel ).center( tabbedPane ).build();
-		//
-		//		this.addPageStartComponent( composite.getRandomize().createButton() );
-		//		this.addCenterComponent( centerPanel );
-		this.setBackgroundColor( backgroundColor );
+		this.setBackgroundColor( BACKGROUND_COLOR );
+	}
+
+	@Override
+	public void handleCompositePreActivation() {
+		org.alice.stageide.personresource.IngredientsComposite composite = (org.alice.stageide.personresource.IngredientsComposite)this.getComposite();
+		this.isLifeStageLockedLabel.setIcon( composite.getLifeStageState().isEnabled() ? null : LOCKED_ICON );
+		super.handleCompositePreActivation();
 	}
 }

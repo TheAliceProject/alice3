@@ -53,7 +53,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	} );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
-	private final org.lgna.croquet.BooleanState isLifeStageLockedState = this.createBooleanState( this.createKey( "isLifeStageLockedState" ), false );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneState = this.createListSelectionStateForEnum( this.createKey( "baseSkinToneState" ), org.lgna.story.resources.sims2.BaseSkinTone.class, org.lgna.story.resources.sims2.BaseSkinTone.getRandom() );
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, BodyTabComposite.getInstance(), HeadTabComposite.getInstance() );
@@ -135,13 +134,11 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	};
 
+	private static final javax.swing.Icon RANDOM_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IngredientsComposite.class.getResource( "images/random.png" ) );
+
 	public IngredientsComposite() {
 		super( java.util.UUID.fromString( "dd127381-09a8-4f78-bfd5-f3bffc1af98b" ) );
-		this.isLifeStageLockedState.setIconForTrueAndIconForFalse( org.alice.ide.icons.Icons.LOCKED_ICON, org.alice.ide.icons.Icons.UNLOCKED_ICON );
-	}
-
-	public org.lgna.croquet.BooleanState getIsLifeStageLockedState() {
-		return this.isLifeStageLockedState;
+		this.randomize.setButtonIcon( RANDOM_ICON );
 	}
 
 	@Override

@@ -65,6 +65,8 @@ public enum SimpleListCellRenderer implements javax.swing.ListCellRenderer {
 			this.label.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
 		} else {
 			this.label.setBackground( org.alice.stageide.personresource.views.IngredientsView.UNSELECTED_COLOR );
+			this.label.setForeground( list.isEnabled() ? java.awt.Color.BLACK : java.awt.Color.GRAY );
+			this.label.setOpaque( list.isEnabled() );
 		}
 		return this.pane;
 	}
