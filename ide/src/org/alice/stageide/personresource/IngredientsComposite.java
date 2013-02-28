@@ -239,15 +239,12 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.pushAtomic();
-		//		this.setStates( personResource );
 		if( activeCount == 0 ) {
 			this.addListeners();
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.activeCount );
 		}
 		this.activeCount++;
-		this.popAtomic();
 	}
 
 	@Override
@@ -256,7 +253,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		if( activeCount == 0 ) {
 			this.removeListeners();
 		}
-		//personViewer.setPerson( null );
 		if( activeCount != 0 ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo" );
 		}
@@ -361,7 +357,10 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				this.addListenersIfAppropriate();
 			}
 
-			PersonResourceComposite.getInstance().getPreviewComposite().getView().getPerson().updateNebPerson();
+			PersonImp personImp = PersonResourceComposite.getInstance().getPreviewComposite().getView().getPerson();
+			if( personImp != null ) {
+				personImp.updateNebPerson();
+			}
 			this.getView().repaint();
 
 			this.prevPersonResource = this.createResourceFromStates();

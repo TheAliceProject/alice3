@@ -47,8 +47,6 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public final class PreviewComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.PersonViewer> {
-	private final PersonImp personImp = new PersonImp();
-
 	public PreviewComposite() {
 		super( java.util.UUID.fromString( "f9cd8c6a-5307-49ca-ae72-5cf4b629758f" ) );
 	}
@@ -61,16 +59,15 @@ public final class PreviewComposite extends org.lgna.croquet.SimpleComposite<org
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.getView().setPerson( personImp );
 	}
 
 	public void unloadPerson() {
-		this.personImp.unload();
+		this.getView().getPerson().unload();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		this.unloadPerson();
 		super.handlePostDeactivation();
+		this.unloadPerson();
 	}
 }
