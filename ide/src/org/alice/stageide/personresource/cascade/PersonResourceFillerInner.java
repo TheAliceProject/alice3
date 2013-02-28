@@ -55,6 +55,23 @@ public abstract class PersonResourceFillerInner extends org.alice.ide.cascade.fi
 
 	@Override
 	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage ).getFillIn() );
+		org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.InstanceCreation, Void> fillIn = null;
+		if( prevExpression instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)prevExpression;
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceCreation.getType();
+			if( type instanceof org.lgna.project.ast.JavaType ) {
+				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+				if( javaType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
+					fillIn = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn();
+
+				}
+			}
+		}
+		if( fillIn != null ) {
+			//pass
+		} else {
+			fillIn = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage ).getFillIn();
+		}
+		items.add( fillIn );
 	}
 }

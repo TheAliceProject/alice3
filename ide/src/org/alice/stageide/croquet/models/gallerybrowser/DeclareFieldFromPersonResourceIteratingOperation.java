@@ -85,7 +85,6 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.c
 			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
 			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
 				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
-				//org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
 				org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite.getInstance();
 				addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation( instanceCreation );
 				return addPersonResourceManagedFieldComposite.getOperation();
@@ -101,45 +100,4 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.c
 	protected void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
 		step.finish();
 	}
-
-	//	protected abstract org.alice.stageide.person.PersonComposite getPersonComposite();
-	//
-	//	//	protected abstract org.lgna.story.resources.sims2.PersonResource createInitialPersonResource();
-	//	@Override
-	//	protected org.lgna.croquet.components.SplitPane prologue( org.lgna.croquet.history.CompletionStep<?> step ) {
-	//		//		org.lgna.story.resources.sims2.PersonResource personResource = this.createInitialPersonResource();
-	//		//		org.alice.stageide.person.components.PersonViewer personViewer = org.alice.stageide.person.PersonResourceManager.SINGLETON.allocatePersonViewer( personResource );
-	//		//		org.alice.stageide.person.components.MainPanel rv = new org.alice.stageide.person.components.MainPanel( personViewer );
-	//		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.MODAL_DIALOG_WITH_RENDER_WINDOW_OF_ITS_OWN ); //todo
-	//		return this.getPersonComposite().getView();
-	//	}
-	//
-	//	@Override
-	//	protected void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog ) {
-	//		dialog.setSize( 1000, 700 );
-	//	}
-	//
-	//	protected abstract org.lgna.croquet.edits.Edit<?> createEdit( org.lgna.story.resources.sims2.PersonResource personResource );
-	//
-	//	@Override
-	//	protected void epilogue( org.lgna.croquet.history.CompletionStep<?> step, boolean isCommit ) {
-	//		//		org.alice.stageide.person.components.MainPanel mainPanel = (org.alice.stageide.person.components.MainPanel)step.getMainPanel();
-	//		//		org.alice.stageide.person.components.PersonViewer personViewer = mainPanel.getPersonViewer();
-	//		//		org.alice.stageide.person.PersonResourceManager.SINGLETON.releasePersonViewer( personViewer );
-	//		this.getPersonComposite().releaseView();
-	//		org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getValue().enableRendering();
-	//		if( isCommit ) {
-	//			org.lgna.story.resources.sims2.PersonResource personResource = org.alice.stageide.person.PersonResourceManager.SINGLETON.createResourceFromStates();
-	//			if( personResource != null ) {
-	//				org.lgna.croquet.edits.Edit edit = this.createEdit( personResource );
-	//				if( edit != null ) {
-	//					step.commitAndInvokeDo( edit );
-	//				} else {
-	//					step.putEphemeralDataFor( VALUE_KEY, personResource );
-	//				}
-	//			}
-	//		} else {
-	//			step.cancel();
-	//		}
-	//	}
 }

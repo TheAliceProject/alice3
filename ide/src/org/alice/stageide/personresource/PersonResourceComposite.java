@@ -137,9 +137,34 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	private void initializePreviousExpression() {
 		org.alice.ide.cascade.ExpressionCascadeManager expressionCascadeManager = org.alice.stageide.StageIDE.getActiveInstance().getExpressionCascadeManager();
 		org.lgna.project.ast.Expression expression = expressionCascadeManager.getPreviousExpression();
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( expression );
-		this.ingredientsComposite.getLifeStageState().setEnabled( false );
-		this.ingredientsComposite.getLifeStageState().setValueTransactionlessly( org.lgna.story.resources.sims2.LifeStage.CHILD );
+		boolean isLifeStageStateEnabled = true;
+		if( expression instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)expression;
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceCreation.getType();
+			if( type instanceof org.lgna.project.ast.JavaType ) {
+				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+				if( javaType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
+					isLifeStageStateEnabled = false;
+
+					Class<?> cls = javaType.getClassReflectionProxy().getReification();
+					org.lgna.story.resources.sims2.LifeStage lifeStage;
+					if( cls == org.lgna.story.resources.sims2.AdultPersonResource.class ) {
+						lifeStage = org.lgna.story.resources.sims2.LifeStage.ADULT;
+					} else if( cls == org.lgna.story.resources.sims2.ChildPersonResource.class ) {
+						lifeStage = org.lgna.story.resources.sims2.LifeStage.CHILD;
+					} else {
+						lifeStage = null;
+					}
+
+					if( lifeStage != null ) {
+						this.ingredientsComposite.getLifeStageState().setValueTransactionlessly( lifeStage );
+					} else {
+						this.ingredientsComposite.getLifeStageState().setEnabled( true );
+					}
+				}
+			}
+		}
+		this.ingredientsComposite.getLifeStageState().setEnabled( isLifeStageStateEnabled );
 	}
 
 	public org.lgna.croquet.SplitComposite getSplitComposite() {

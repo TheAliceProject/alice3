@@ -125,7 +125,8 @@ public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.de
 		}
 
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
-			rv.add( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn() );
+			//todo: get converter from person resource instance creation to person instance creation
+			//rv.add( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn() );
 		}
 	}
 
