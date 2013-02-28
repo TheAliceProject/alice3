@@ -80,14 +80,14 @@ public class DeclareFieldFromPersonResourceIteratingOperation extends org.lgna.c
 	protected org.lgna.croquet.Model getNext( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps, java.lang.Object iteratingData ) {
 		switch( subSteps.size() ) {
 		case 0:
-			return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getExpressionValueConverterForLifeStage( this.lifeStage );
+			return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
 		case 1:
 			org.lgna.croquet.history.Step<?> prevSubStep = subSteps.get( 0 );
 			if( prevSubStep.containsEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY ) ) {
 				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
 				//org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)prevSubStep.getEphemeralDataFor( org.lgna.croquet.ValueCreator.VALUE_KEY );
 				org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite addPersonResourceManagedFieldComposite = org.alice.stageide.ast.declaration.AddPersonResourceManagedFieldComposite.getInstance();
-				addPersonResourceManagedFieldComposite.setPersonResourceInstanceCreation( instanceCreation );
+				addPersonResourceManagedFieldComposite.setInitialPersonResourceInstanceCreation( instanceCreation );
 				return addPersonResourceManagedFieldComposite.getOperation();
 			} else {
 				return null;

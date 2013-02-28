@@ -78,7 +78,7 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	}
 
 	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getPersonResourceValueCreator() {
-		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getExpressionValueConverterForLifeStage( this.lifeStage );
+		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
 	}
 
 	@Override
@@ -102,15 +102,6 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	@Override
 	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
 		return this.getPersonResourceValueCreator().fireAndGetValue( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
-		//		org.lgna.story.resources.sims2.PersonResource personResource = this.getPersonResourceValueCreator().fireAndGetValue( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
-		//		org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource( personResource );
-		//		org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
-		//		try {
-		//			org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
-		//			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, argumentExpression );
-		//		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-		//			throw new RuntimeException( ccee );
-		//		}
 	}
 
 	@Override

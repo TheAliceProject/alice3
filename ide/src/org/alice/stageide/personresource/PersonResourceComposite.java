@@ -73,25 +73,25 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		}
 	}
 
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> adultValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> randomAdultValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
 		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 			PersonResourceComposite.this.initializeRandom( org.lgna.story.resources.sims2.LifeStage.ADULT );
 		}
 	} );
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> childValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> randomChildValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
 		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 			PersonResourceComposite.this.initializeRandom( org.lgna.story.resources.sims2.LifeStage.CHILD );
 		}
 	} );
-	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> previousExpressionValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
+	private final org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> previousResourceExpressionValueCreator = new org.lgna.croquet.OwnedByCompositeValueCreator<org.lgna.story.resources.sims2.PersonResource>( this, new org.lgna.croquet.OwnedByCompositeValueCreator.Initializer() {
 		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 			PersonResourceComposite.this.initializePreviousExpression();
 		}
 	} );
 
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> adultExpressionValueConverter = new PersonResourceToExpressionConverter( this.adultValueCreator );
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> childExpressionValueConverter = new PersonResourceToExpressionConverter( this.childValueCreator );
-	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> previousExpressionValueConverter = new PersonResourceToExpressionConverter( this.previousExpressionValueCreator );
+	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> randomAdultExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomAdultValueCreator );
+	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> randomChildExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomChildValueCreator );
+	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> previousResourceExpressionValueConverter = new PersonResourceToExpressionConverter( this.previousResourceExpressionValueCreator );
 
 	private final PreviewComposite previewComposite = new PreviewComposite();
 	private final IngredientsComposite ingredientsComposite = new IngredientsComposite();
@@ -110,44 +110,16 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		return this.previewComposite;
 	}
 
-	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getAdultExpressionValueConverter() {
-		return this.adultExpressionValueConverter;
-	}
-
-	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getChildExpressionValueConverter() {
-		return this.childExpressionValueConverter;
-	}
-
-	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getPreviousExpressionValueConverter() {
-		return this.previousExpressionValueConverter;
-	}
-
-	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getExpressionValueConverterForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getRandomPersonExpressionValueConverter( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
-			return this.getAdultExpressionValueConverter();
+			return this.randomAdultExpressionValueConverter;
 		} else {
-			return this.getChildExpressionValueConverter();
+			return this.randomChildExpressionValueConverter;
 		}
 	}
 
-	private org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getAdultValueCreator() {
-		return this.adultValueCreator;
-	}
-
-	private org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getChildValueCreator() {
-		return this.childValueCreator;
-	}
-
-	private org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getValueCreatorForPreviousExpression() {
-		return this.previousExpressionValueCreator;
-	}
-
-	private org.lgna.croquet.ValueCreator<org.lgna.story.resources.sims2.PersonResource> getValueCreatorForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
-			return this.getAdultValueCreator();
-		} else {
-			return this.getChildValueCreator();
-		}
+	public org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getPreviousResourceExpressionValueConverter() {
+		return this.previousResourceExpressionValueConverter;
 	}
 
 	private void initializeRandom( org.lgna.story.resources.sims2.LifeStage lifeStage ) {

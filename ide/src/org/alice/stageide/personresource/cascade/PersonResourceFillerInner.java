@@ -55,6 +55,6 @@ public abstract class PersonResourceFillerInner extends org.alice.ide.cascade.fi
 
 	@Override
 	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getExpressionValueConverterForLifeStage( this.lifeStage ).getFillIn() );
+		items.add( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage ).getFillIn() );
 	}
 }
