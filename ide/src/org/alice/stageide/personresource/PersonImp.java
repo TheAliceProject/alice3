@@ -102,7 +102,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		double obesityLevel = composite.getObesityLevelState().getValue();
 		org.lgna.story.resources.sims2.Hair hair = composite.getHairState().getValue();
 		org.lgna.story.resources.sims2.Outfit outfit = composite.getFullBodyOutfitState().getValue();
-		org.lgna.story.resources.sims2.Face face = composite.getFaceState().getValue();
+		org.lgna.story.resources.sims2.Face face = composite.getBaseFaceState().getValue();
 		if( ( gender == null ) || ( outfit == null ) || ( skinTone == null ) || ( eyeColor == null ) || ( hair == null ) || ( face == null ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skintTone=" + skinTone + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face );
 		}

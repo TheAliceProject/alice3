@@ -45,35 +45,6 @@ package org.lgna.story.resources.sims2;
 /**
  * @author Alice Build
  */
-public enum Face {
-	BASE,
-	ALIEN,
-	HEART,
-	ARA,
-	AUS,
-	BAN,
-	CEL,
-	IND,
-	INO,
-	MAS,
-	MAY,
-	PER,
-	PLA,
-	POL,
-	SLA,
-	TEU,
-	AFR,
-	ASI,
-	CER,
-	EAS,
-	ELF,
-	ENG,
-	MED,
-	RUS,
-	STE,
-	TGE;
+public interface Face {
 
-	public static Face getRandom() {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( Face.class );
-	}
 }

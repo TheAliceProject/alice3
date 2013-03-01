@@ -83,6 +83,8 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseEyeColor.class );
 		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.SkinTone.class ) ) {
 			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseSkinTone.class );
+		} else if( interfaceType == org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.Face.class ) ) {
+			return org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.BaseFace.class );
 		} else {
 			return super.getEnumTypeForInterfaceType( interfaceType );
 		}

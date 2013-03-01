@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource.views;
+package org.lgna.story.resources.sims2;
 
 /**
- * @author Dennis Cosgrove
+ * @author Alice Build
  */
-public class IngredientsView extends org.lgna.croquet.components.BorderPanel {
-	public static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
-	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+public enum BaseFace implements Face {
+	BASE,
+	ALIEN,
+	HEART,
+	ARA,
+	AUS,
+	BAN,
+	CEL,
+	IND,
+	INO,
+	MAS,
+	MAY,
+	PER,
+	PLA,
+	POL,
+	SLA,
+	TEU,
+	AFR,
+	ASI,
+	CER,
+	EAS,
+	ELF,
+	ENG,
+	MED,
+	RUS,
+	STE,
+	TGE;
 
-	public IngredientsView( final org.alice.stageide.personresource.IngredientsComposite composite ) {
-		super( composite );
-		org.lgna.croquet.components.FormPanel rowSpringPanel = new org.lgna.croquet.components.FormPanel() {
-			@Override
-			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-				org.lgna.croquet.ListSelectionState<?>[] states = new org.lgna.croquet.ListSelectionState<?>[] { composite.getLifeStageState(), composite.getGenderState(), composite.getBaseSkinToneState(), composite.getBaseFaceState() };
-				for( org.lgna.croquet.ListSelectionState<?> state : states ) {
-					int rowCount = state.getItemCount() / 8;
-					rows.add( new org.lgna.croquet.components.LabeledFormRow( state.getSidekickLabel(), new HorizontalWrapList( state, rowCount ) ) );
-				}
-			}
-		};
-
-		java.awt.Color backgroundColor = BACKGROUND_COLOR;
-
-		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadTabState().createFolderTabbedPane();
-		tabbedPane.setBackgroundColor( backgroundColor );
-		org.lgna.croquet.components.BorderPanel centerPanel = new org.lgna.croquet.components.BorderPanel.Builder().pageStart( rowSpringPanel ).center( tabbedPane ).build();
-
-		this.addPageStartComponent( composite.getRandomize().createButton() );
-		this.addCenterComponent( centerPanel );
-		this.setBackgroundColor( backgroundColor );
+	public static BaseFace getRandom() {
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BaseFace.class );
 	}
 }

@@ -62,7 +62,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	} );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Face> faceState = this.createListSelectionStateForEnum( this.createKey( "faceState" ), org.lgna.story.resources.sims2.Face.class, org.lgna.story.resources.sims2.Face.getRandom() );
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> baseFaceState = this.createListSelectionStateForEnum( this.createKey( "baseFaceState" ), org.lgna.story.resources.sims2.BaseFace.class, org.lgna.story.resources.sims2.BaseFace.getRandom() );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneState = this.createListSelectionStateForEnum( this.createKey( "baseSkinToneState" ), org.lgna.story.resources.sims2.BaseSkinTone.class, org.lgna.story.resources.sims2.BaseSkinTone.getRandom() );
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, BodyTabComposite.getInstance(), HeadTabComposite.getInstance() );
 
@@ -87,12 +87,12 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Face> faceListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Face>() {
-		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.Face> state, org.lgna.story.resources.sims2.Face prevValue, org.lgna.story.resources.sims2.Face nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseFace> faceListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseFace>() {
+		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseFace> state, org.lgna.story.resources.sims2.BaseFace prevValue, org.lgna.story.resources.sims2.BaseFace nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
-		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.Face> state, org.lgna.story.resources.sims2.Face prevValue, org.lgna.story.resources.sims2.Face nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseFace> state, org.lgna.story.resources.sims2.BaseFace prevValue, org.lgna.story.resources.sims2.BaseFace nextValue, boolean isAdjusting ) {
 			//			handleCataclysm( false, true, false );
 			popAtomic();
 		}
@@ -174,8 +174,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.genderState;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Face> getFaceState() {
-		return this.faceState;
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
+		return this.baseFaceState;
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> getBaseSkinToneState() {
@@ -212,7 +212,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private void addListeners() {
 		this.getLifeStageState().addValueListener( this.lifeStageListener );
 		this.getGenderState().addValueListener( this.genderListener );
-		this.getFaceState().addValueListener( this.faceListener );
+		this.getBaseFaceState().addValueListener( this.faceListener );
 		this.getBaseSkinToneState().addValueListener( this.baseSkinToneListener );
 		this.getBaseEyeColorState().addValueListener( this.baseEyeColorListener );
 		this.getHairColorNameState().addValueListener( this.hairColorNameListener );
@@ -224,7 +224,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private void removeListeners() {
 		this.getLifeStageState().removeValueListener( this.lifeStageListener );
 		this.getGenderState().removeValueListener( this.genderListener );
-		this.getFaceState().removeValueListener( this.faceListener );
+		this.getBaseFaceState().removeValueListener( this.faceListener );
 		this.getBaseSkinToneState().removeValueListener( this.baseSkinToneListener );
 		this.getBaseEyeColorState().removeValueListener( this.baseEyeColorListener );
 		this.getHairColorNameState().removeValueListener( this.hairColorNameListener );
@@ -408,7 +408,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		org.lgna.story.resources.sims2.EyeColor eyeColor = this.getBaseEyeColorState().getValue();
 		org.lgna.story.resources.sims2.Outfit outfit = this.getFullBodyOutfitState().getValue();
 		org.lgna.story.resources.sims2.Hair hair = this.getHairState().getValue();
-		org.lgna.story.resources.sims2.Face face = this.getFaceState().getValue();
+		org.lgna.story.resources.sims2.BaseFace face = this.getBaseFaceState().getValue();
 		double obesityLevel = this.getObesityLevelState().getValue();
 		if( lifeStage != null ) {
 			return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit, face );
@@ -430,7 +430,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			this.getHairState().setValueTransactionlessly( hair );
 			this.getHairColorNameState().setValueTransactionlessly( hair != null ? hair.toString() : null );
 			this.getObesityLevelState().setValueTransactionlessly( personResource.getObesityLevel() );
-			this.getFaceState().setValueTransactionlessly( personResource.getFace() );
+			this.getBaseFaceState().setValueTransactionlessly( (org.lgna.story.resources.sims2.BaseFace)personResource.getFace() );
 		} finally {
 			this.addListenersIfAppropriate();
 		}

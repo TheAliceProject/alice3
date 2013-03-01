@@ -151,6 +151,9 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		if( this.outfit != null ) {
 			rv = ( 37 * rv ) + this.outfit.hashCode();
 		}
+		if( this.face != null ) {
+			rv = ( 37 * rv ) + this.face.hashCode();
+		}
 		long lng = Double.doubleToLongBits( this.obesityLevel );
 		rv = ( 37 * rv ) + (int)( lng ^ ( lng >>> 32 ) );
 		return rv;
