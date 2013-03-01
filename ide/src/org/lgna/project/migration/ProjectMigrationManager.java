@@ -2603,7 +2603,7 @@ public class ProjectMigrationManager extends AbstractMigrationManager {
 					createMoreSpecificFieldString( "DEFAULT", "org.lgna.story.resources.prop.StaffResource" ),
 
 					"org.lgna.story.resources.prop.LogBridgeResource",
-					NO_REPLACEMENT,
+					"org.lgna.story.resources.prop.JungleLogResource",
 
 					createMoreSpecificFieldString( "DRAGON_BABY_GREEN", "org.lgna.story.resources.quadruped.BabyDragonResource" ),
 					createMoreSpecificFieldString( "GREEN", "org.lgna.story.resources.quadruped.BabyDragonResource" ),

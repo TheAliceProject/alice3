@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.story.resources.sims2;
 
 /**
- * @author Dennis Cosgrove
+ * @author Alice Build
  */
-public class AdultPersonResource extends PersonResource {
-	public AdultPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit, face );
-	}
+public enum Face {
+	BASE,
+	ALIEN,
+	HEART,
+	ARA,
+	AUS,
+	BAN,
+	CEL,
+	IND,
+	INO,
+	MAS,
+	MAY,
+	PER,
+	PLA,
+	POL,
+	SLA,
+	TEU,
+	AFR,
+	ASI,
+	CER,
+	EAS,
+	ELF,
+	ENG,
+	MED,
+	RUS,
+	STE,
+	TGE;
 
-	@Override
-	public LifeStage getLifeStage() {
-		return LifeStage.ADULT;
+	public static Face getRandom() {
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( Face.class );
 	}
 }

@@ -47,8 +47,8 @@ package org.lgna.story.resources.sims2;
  * @author Dennis Cosgrove
  */
 public class ChildPersonResource extends PersonResource {
-	public ChildPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
+	public ChildPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit, face );
 	}
 
 	@Override

@@ -56,7 +56,7 @@ public class IngredientsView extends org.lgna.croquet.components.BorderPanel {
 		org.lgna.croquet.components.FormPanel rowSpringPanel = new org.lgna.croquet.components.FormPanel() {
 			@Override
 			protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-				org.lgna.croquet.ListSelectionState<?>[] states = new org.lgna.croquet.ListSelectionState<?>[] { composite.getLifeStageState(), composite.getGenderState(), composite.getBaseSkinToneState() };
+				org.lgna.croquet.ListSelectionState<?>[] states = new org.lgna.croquet.ListSelectionState<?>[] { composite.getLifeStageState(), composite.getGenderState(), composite.getBaseSkinToneState(), composite.getFaceState() };
 				for( org.lgna.croquet.ListSelectionState<?> state : states ) {
 					rows.add( new org.lgna.croquet.components.LabeledFormRow( state.getSidekickLabel(), new HorizontalWrapList( state, 1 ) ) );
 				}

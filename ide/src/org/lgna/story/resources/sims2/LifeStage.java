@@ -48,7 +48,7 @@ package org.lgna.story.resources.sims2;
 public enum LifeStage {
 	TODDLER {
 		@Override
-		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return null;
 		}
 
@@ -59,8 +59,8 @@ public enum LifeStage {
 	},
 	CHILD {
 		@Override
-		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-			return new ChildPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
+		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+			return new ChildPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit, face );
 		}
 
 		@Override
@@ -70,7 +70,7 @@ public enum LifeStage {
 	},
 	TEEN {
 		@Override
-		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return null;
 		}
 
@@ -81,8 +81,8 @@ public enum LifeStage {
 	},
 	ADULT {
 		@Override
-		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-			return new AdultPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit );
+		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
+			return new AdultPersonResource( gender, skinTone, eyeColor, hair, obseityLevel, outfit, face );
 		}
 
 		@Override
@@ -92,7 +92,7 @@ public enum LifeStage {
 	},
 	ELDER {
 		@Override
-		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
+		public PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return null;
 		}
 
@@ -151,7 +151,7 @@ public enum LifeStage {
 		return s_mapLifeStageUnisexHair.get( this );
 	}
 
-	public abstract PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit );
+	public abstract PersonResource createResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face );
 
 	public abstract String[] getHairColors();
 }

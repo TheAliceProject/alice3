@@ -32,5 +32,12 @@ public class Person extends Model {
 
 	public native void setHair( Object o );
 
-	public native void setAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair );
+	public native void setFace( Object o );
+
+	public native void setAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair, Object face );
+
+	public void setAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair )
+	{
+		setAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair, "" );
+	}
 }

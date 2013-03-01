@@ -53,14 +53,16 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 	private final Hair hair;
 	private final double obesityLevel;
 	private final Outfit outfit;
+	private final Face face;
 
-	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit ) {
+	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
 		this.gender = gender;
 		this.skinTone = skinTone;
 		this.eyeColor = eyeColor;
 		this.hair = hair;
 		this.obesityLevel = obesityLevel.doubleValue();
 		this.outfit = outfit;
+		this.face = face;
 	}
 
 	public abstract LifeStage getLifeStage();
@@ -89,6 +91,10 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		return this.outfit;
 	}
 
+	public Face getFace() {
+		return this.face;
+	}
+
 	public org.lgna.story.resources.JointId[] getRootJointIds() {
 		return org.lgna.story.resources.BipedResource.JOINT_ID_ROOTS;
 	}
@@ -113,8 +119,10 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.skinTone, other.skinTone ) ) {
 						if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.eyeColor, other.eyeColor ) ) {
 							if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hair, other.hair ) ) {
-								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.outfit, other.outfit ) ) {
-									return this.obesityLevel == other.obesityLevel;
+								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.face, other.face ) ) {
+									if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.outfit, other.outfit ) ) {
+										return this.obesityLevel == other.obesityLevel;
+									}
 								}
 							}
 						}
