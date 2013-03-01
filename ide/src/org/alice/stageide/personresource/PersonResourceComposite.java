@@ -125,13 +125,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 	private void initializeRandom( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		this.ingredientsComposite.getLifeStageState().setEnabled( true );
 		org.lgna.story.resources.sims2.PersonResource personResource = RandomPersonUtilities.createRandomResource( lifeStage );
-		this.ingredientsComposite.pushAtomic();
 		this.ingredientsComposite.setStates( personResource );
-		this.ingredientsComposite.popAtomic();
-		//		PersonImp personImp = this.getPreviewComposite().getView().getPerson();
-		//		if( personImp != null ) {
-		//			personImp.updateNebPerson();
-		//		}
 	}
 
 	private static final class InstanceCreatingVirtualMachine extends org.lgna.project.virtualmachine.ReleaseVirtualMachine {
@@ -158,28 +152,11 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 
 					if( instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
 						org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)instance;
-						this.ingredientsComposite.pushAtomic();
 						this.ingredientsComposite.setStates( personResource );
-						this.ingredientsComposite.popAtomic();
 						isLifeStageStateEnabled = false;
 					} else {
 						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
 					}
-					//					Class<?> cls = javaType.getClassReflectionProxy().getReification();
-					//					org.lgna.story.resources.sims2.LifeStage lifeStage;
-					//					if( cls == org.lgna.story.resources.sims2.AdultPersonResource.class ) {
-					//						lifeStage = org.lgna.story.resources.sims2.LifeStage.ADULT;
-					//					} else if( cls == org.lgna.story.resources.sims2.ChildPersonResource.class ) {
-					//						lifeStage = org.lgna.story.resources.sims2.LifeStage.CHILD;
-					//					} else {
-					//						lifeStage = null;
-					//					}
-					//
-					//					if( lifeStage != null ) {
-					//						this.ingredientsComposite.getLifeStageState().setValueTransactionlessly( lifeStage );
-					//					} else {
-					//						this.ingredientsComposite.getLifeStageState().setEnabled( true );
-					//					}
 				}
 			}
 		}

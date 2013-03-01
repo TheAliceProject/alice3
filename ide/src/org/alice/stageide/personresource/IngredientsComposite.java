@@ -283,6 +283,19 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private org.lgna.story.resources.sims2.PersonResource prevPersonResource;
 	private int atomicCount = 0;
 
+	private void syncPersonImp() {
+		PersonImp personImp = PersonResourceComposite.getInstance().getPreviewComposite().getView().getPerson();
+		if( personImp != null ) {
+			personImp.updateNebPerson();
+		}
+		this.getView().repaint();
+
+		this.prevPersonResource = this.createResourceFromStates();
+		if( this.prevPersonResource != null ) {
+			this.mapToMap.put( this.prevPersonResource.getLifeStage(), this.prevPersonResource.getGender(), this.prevPersonResource );
+		}
+	}
+
 	public void pushAtomic() {
 		if( this.atomicCount == 0 ) {
 		}
@@ -291,6 +304,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 	public void popAtomic() {
 		this.atomicCount--;
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.atomicCount );
 		if( this.atomicCount == 0 ) {
 			this.removeListenersIfAppropriate();
 			try {
@@ -317,6 +331,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				String prevHairColorName = getHairColorName( this.prevPersonResource );
 				final String nextHairColorName = this.getHairColorNameState().getValue();
 				boolean isHairColorChanged = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( prevHairColorName, nextHairColorName );
+
 				if( isLifeStageChanged || isGenderChanged || isHairColorChanged ) {
 					java.util.List<org.lgna.story.resources.sims2.Hair> list = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
 							org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( nextLifeStage, nextGender ),
@@ -356,17 +371,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			} finally {
 				this.addListenersIfAppropriate();
 			}
-
-			PersonImp personImp = PersonResourceComposite.getInstance().getPreviewComposite().getView().getPerson();
-			if( personImp != null ) {
-				personImp.updateNebPerson();
-			}
-			this.getView().repaint();
-
-			this.prevPersonResource = this.createResourceFromStates();
-			if( this.prevPersonResource != null ) {
-				this.mapToMap.put( this.prevPersonResource.getLifeStage(), this.prevPersonResource.getGender(), this.prevPersonResource );
-			}
+			this.syncPersonImp();
 		}
 	}
 
@@ -401,6 +406,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		} finally {
 			this.addListenersIfAppropriate();
 		}
+		this.syncPersonImp();
 	}
-
 }

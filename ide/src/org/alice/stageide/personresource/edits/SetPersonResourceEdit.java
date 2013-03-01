@@ -59,9 +59,7 @@ public class SetPersonResourceEdit extends org.lgna.croquet.edits.Edit {
 
 	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
 		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
-		ingredientsComposite.pushAtomic();
 		ingredientsComposite.setStates( resource );
-		ingredientsComposite.popAtomic();
 	}
 
 	@Override
