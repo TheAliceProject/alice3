@@ -110,7 +110,6 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		}
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
 		if( nebPerson != sgGeometry ) {
-			//			Thread.dumpStack();
 			this.setSgGeometry( nebPerson );
 		}
 	}

@@ -296,19 +296,31 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private void updateHairColorName( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Hair hair ) {
 		this.getHairColorNameState().setValueTransactionlessly( null );
 		this.headTab.getHairColorNameData().setLifeStage( lifeStage );
-		this.getHairColorNameState().setValueTransactionlessly( hair != null ? hair.toString() : null );
+		if( hair != null ) {
+			this.getHairColorNameState().setValueTransactionlessly( hair != null ? hair.toString() : null );
+		} else {
+			this.getHairColorNameState().setRandomSelectedValue();
+		}
 	}
 
 	private void updateHair( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender, org.lgna.story.resources.sims2.Hair hair ) {
 		this.getHairState().setValueTransactionlessly( null );
 		this.headTab.getHairData().setLifeStageGenderAndColorName( lifeStage, gender, hair != null ? hair.toString() : null );
-		this.getHairState().setValueTransactionlessly( hair );
+		if( hair != null ) {
+			this.getHairState().setValueTransactionlessly( hair );
+		} else {
+			this.getHairState().setRandomSelectedValue();
+		}
 	}
 
 	private void updateOutfit( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender, org.lgna.story.resources.sims2.FullBodyOutfit fullBodyOutfit ) {
 		this.getFullBodyOutfitState().setValueTransactionlessly( null );
 		this.bodyTab.getFullBodyOutfitData().setLifeStageAndGender( lifeStage, gender );
-		this.getFullBodyOutfitState().setValueTransactionlessly( fullBodyOutfit );
+		if( fullBodyOutfit != null ) {
+			this.getFullBodyOutfitState().setValueTransactionlessly( fullBodyOutfit );
+		} else {
+			this.getFullBodyOutfitState().setRandomSelectedValue();
+		}
 	}
 
 	public void pushAtomic() {
