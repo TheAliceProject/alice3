@@ -134,6 +134,14 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		//		}
 	}
 
+	private static final class InstanceCreatingVirtualMachine extends org.lgna.project.virtualmachine.ReleaseVirtualMachine {
+		public Object ENTRY_POINT_createInstance( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+			return this.evaluate( instanceCreation );
+		}
+	};
+
+	private final InstanceCreatingVirtualMachine vm = new InstanceCreatingVirtualMachine();
+
 	private void initializePreviousExpression() {
 		org.alice.ide.cascade.ExpressionCascadeManager expressionCascadeManager = org.alice.stageide.StageIDE.getActiveInstance().getExpressionCascadeManager();
 		org.lgna.project.ast.Expression expression = expressionCascadeManager.getPreviousExpression();
@@ -146,21 +154,32 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 				if( javaType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
 					isLifeStageStateEnabled = false;
 
-					Class<?> cls = javaType.getClassReflectionProxy().getReification();
-					org.lgna.story.resources.sims2.LifeStage lifeStage;
-					if( cls == org.lgna.story.resources.sims2.AdultPersonResource.class ) {
-						lifeStage = org.lgna.story.resources.sims2.LifeStage.ADULT;
-					} else if( cls == org.lgna.story.resources.sims2.ChildPersonResource.class ) {
-						lifeStage = org.lgna.story.resources.sims2.LifeStage.CHILD;
-					} else {
-						lifeStage = null;
-					}
+					Object instance = vm.ENTRY_POINT_createInstance( instanceCreation );
 
-					if( lifeStage != null ) {
-						this.ingredientsComposite.getLifeStageState().setValueTransactionlessly( lifeStage );
+					if( instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
+						org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)instance;
+						this.ingredientsComposite.pushAtomic();
+						this.ingredientsComposite.setStates( personResource );
+						this.ingredientsComposite.popAtomic();
+						isLifeStageStateEnabled = false;
 					} else {
-						this.ingredientsComposite.getLifeStageState().setEnabled( true );
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instance );
 					}
+					//					Class<?> cls = javaType.getClassReflectionProxy().getReification();
+					//					org.lgna.story.resources.sims2.LifeStage lifeStage;
+					//					if( cls == org.lgna.story.resources.sims2.AdultPersonResource.class ) {
+					//						lifeStage = org.lgna.story.resources.sims2.LifeStage.ADULT;
+					//					} else if( cls == org.lgna.story.resources.sims2.ChildPersonResource.class ) {
+					//						lifeStage = org.lgna.story.resources.sims2.LifeStage.CHILD;
+					//					} else {
+					//						lifeStage = null;
+					//					}
+					//
+					//					if( lifeStage != null ) {
+					//						this.ingredientsComposite.getLifeStageState().setValueTransactionlessly( lifeStage );
+					//					} else {
+					//						this.ingredientsComposite.getLifeStageState().setEnabled( true );
+					//					}
 				}
 			}
 		}

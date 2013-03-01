@@ -334,6 +334,7 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 			edu.cmu.cs.dennisc.property.InstanceProperty[] newScaleProperties = this.getScaleProperties();
 			for( int i = 0; i < oldScaleProperties.length; i++ ) {
 				edu.cmu.cs.dennisc.property.InstanceProperty oldProp = oldScaleProperties[ i ];
+				assert oldProp != null : i;
 				for( edu.cmu.cs.dennisc.property.event.PropertyListener propListener : (Iterable<edu.cmu.cs.dennisc.property.event.PropertyListener>)oldProp.accessPropertyListeners() )
 				{
 					newScaleProperties[ i ].addPropertyListener( propListener );
