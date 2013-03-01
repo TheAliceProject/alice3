@@ -61,6 +61,7 @@ import test.ik.IkTestApplication;
  * @author Matt May
  */
 class IkPoser extends SProgram {
+	private static final boolean SHOULD_I_ANIMATE = false;
 	private final SCamera camera = new SCamera();
 	private final SBiped biped;
 	public final PoserScene scene;
@@ -68,14 +69,14 @@ class IkPoser extends SProgram {
 	private PoserSplitComposite composite;
 	private UserType userType;
 
-	public IkPoser( NamedUserType userType ) {
+	public IkPoser( NamedUserType userType, boolean isAnimationDesired ) {
 		//		this.biped = userType.getDeclaredConstructor().;
 		//		Object value = userType.superType.getValue();
 		//		TypeManager.getNamedUserTypeFromSuperType( (JavaType)value );
 		this.biped = deriveBipedFromUserType( userType );
 		scene = new PoserScene( camera, biped );
 		this.userType = userType;
-		composite = new PoserSplitComposite( this );
+		composite = new PoserSplitComposite( this, isAnimationDesired );
 	}
 
 	private SBiped deriveBipedFromUserType( NamedUserType type ) {
@@ -169,7 +170,7 @@ class IkPoser extends SProgram {
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
 		userInstance.getJavaInstance( SBiped.class );
-		IkPoser program = new IkPoser( type );
+		IkPoser program = new IkPoser( type, SHOULD_I_ANIMATE );
 		app.getFrame().setMainComposite( program.getComposite() );
 
 		test.ik.croquet.IsLinearEnabledState.getInstance().setValueTransactionlessly( true );

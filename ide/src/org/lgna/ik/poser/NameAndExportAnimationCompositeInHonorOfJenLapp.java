@@ -58,10 +58,10 @@ import org.lgna.project.ast.UserType;
 public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationInputDialogCoreComposite<AnimationNamingView> {
 
 	StringState animationName = createStringState( createKey( "animationName" ) );
-	private final PoserControlComposite parent;
+	private final AnimatorControlComposite parent;
 	private MethodNameValidator validator;
 
-	public NameAndExportAnimationCompositeInHonorOfJenLapp( PoserControlComposite poserControlComposite ) {
+	public NameAndExportAnimationCompositeInHonorOfJenLapp( AnimatorControlComposite poserControlComposite ) {
 		super( java.util.UUID.fromString( "c1a0cf60-a454-4b31-a4f1-718279d8e8e2" ), null );
 		this.parent = poserControlComposite;
 	}

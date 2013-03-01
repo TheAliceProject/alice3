@@ -52,8 +52,8 @@ import test.ik.croquet.SceneComposite;
  */
 public class PoserSplitComposite extends org.lgna.croquet.SplitComposite {
 
-	public PoserSplitComposite( IkPoser ikPoser ) {
-		super( java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ), new PoserControlComposite( ikPoser ), SceneComposite.getInstance() );
+	public PoserSplitComposite( IkPoser ikPoser, boolean isAnimationDesired ) {
+		super( java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ), isAnimationDesired ? new AnimatorControlComposite( ikPoser ) : new PoserControlComposite( ikPoser ), SceneComposite.getInstance() );
 	}
 
 	@Override

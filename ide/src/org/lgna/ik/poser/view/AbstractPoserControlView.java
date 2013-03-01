@@ -42,24 +42,18 @@
  */
 package org.lgna.ik.poser.view;
 
-import javax.swing.BorderFactory;
-import javax.swing.border.BevelBorder;
-
-import org.lgna.croquet.components.Button;
 import org.lgna.croquet.components.ItemDropDown;
 import org.lgna.croquet.components.MigPanel;
+import org.lgna.ik.poser.AbstractPoserControlComposite;
 import org.lgna.ik.poser.JointSelectionSphere;
 import org.lgna.ik.poser.JointSelectionSphereState;
-import org.lgna.ik.poser.PoserControlComposite;
 
 /**
  * @author Matt May
  */
-public class PoserControlView extends MigPanel {
+public class AbstractPoserControlView extends MigPanel {
 
-	private Button exportButton;
-
-	public PoserControlView( PoserControlComposite poserControlComposite ) {
+	public AbstractPoserControlView( AbstractPoserControlComposite poserControlComposite ) {
 		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]10[grow 0]0[]10[grow 0]10[grow 0]0" );
 		this.addComponent( poserControlComposite.getRightArmLabel().createLabel() );
 		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
@@ -82,35 +76,6 @@ public class PoserControlView extends MigPanel {
 		JointSelectionSphereState leftLegAnchor = poserControlComposite.getLeftLegAnchor();
 		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
 		this.addComponent( llDropDown, "wrap" );
-
-		this.addComponent( poserControlComposite.getDeselectPoseOperation().createButton(), "grow" );
-		this.addComponent( poserControlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
-
-		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = poserControlComposite.getPosesList().createVerticalDefaultRadioButtons();
-		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
-
-		this.addComponent( poserControlComposite.getSavePoseOperation().createButton(), "grow" );
-		this.addComponent( poserControlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
-
-		this.addComponent( poserControlComposite.getRunAnimationOperation().createButton(), "grow" );
-		exportButton = poserControlComposite.getExportAnimation().getOperation().createButton();
-		this.addComponent( exportButton, "grow, wrap" );
-		if( poserControlComposite.getPosesList().getItemCount() == 0 ) {
-			disableExport();
-		}
-	}
-
-	public void enableExport() {
-		if( !exportButton.getAwtComponent().isEnabled() ) {
-			exportButton.getAwtComponent().setEnabled( true );
-		}
-	}
-
-	public void disableExport() {
-		if( exportButton.getAwtComponent().isEnabled() ) {
-			exportButton.getAwtComponent().setEnabled( false );
-		}
 	}
 
 }

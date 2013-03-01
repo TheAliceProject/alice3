@@ -55,13 +55,13 @@ import org.lgna.story.resources.JointId;
  */
 public class PoserControllerAdapter {
 
-	private PoserControlComposite controlComposite;
+	private AbstractPoserControlComposite controlComposite;
 	private JointId rightLegAnchorJointID;
 	private JointId rightArmAnchorJointID;
 	private JointId leftLegAnchorJointID;
 	private JointId leftArmAnchorJointID;
 
-	public PoserControllerAdapter( PoserControlComposite controlComposite ) {
+	public PoserControllerAdapter( AbstractPoserControlComposite controlComposite ) {
 		this.controlComposite = controlComposite;
 		this.controlComposite.addRightArmAnchorListener( rightArmAnchorJointListener );
 		rightLegAnchorJointID = controlComposite.getRightLegAnchor().getValue().getJoint().getJointId();
