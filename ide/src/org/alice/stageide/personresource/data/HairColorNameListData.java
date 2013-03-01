@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitState extends IngredientListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> {
-	private static class SingletonHolder {
-		private static FullBodyOutfitState instance = new FullBodyOutfitState();
+public class HairColorNameListData extends org.lgna.croquet.data.RefreshableListData<String> {
+	private org.lgna.story.resources.sims2.LifeStage lifeStage;
+
+	public HairColorNameListData() {
+		super( org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
 	}
 
-	public static FullBodyOutfitState getInstance() {
-		return SingletonHolder.instance;
+	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+		return this.lifeStage;
 	}
 
-	private FullBodyOutfitState() {
-		super( java.util.UUID.fromString( "67cd45d9-639a-4315-b6a1-6a7e1f8d7671" ), new org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.FullBodyOutfit>() {
-			public Class<org.lgna.story.resources.sims2.FullBodyOutfit> getValueClass() {
-				return org.lgna.story.resources.sims2.FullBodyOutfit.class;
-			}
+	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( this.lifeStage == lifeStage ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.refresh();
+		}
+	}
 
-			public org.lgna.story.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-				throw new RuntimeException( "todo" );
-			}
-
-			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.FullBodyOutfit t ) {
-				throw new RuntimeException( "todo" );
-			}
-
-			public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
-				sb.append( value );
-			}
-		} );
+	@Override
+	protected java.util.List<String> createValues() {
+		if( this.lifeStage != null ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.lifeStage.getHairColors() );
+		} else {
+			return java.util.Collections.emptyList();
+		}
 	}
 }

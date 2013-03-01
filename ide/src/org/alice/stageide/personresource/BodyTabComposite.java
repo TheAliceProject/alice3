@@ -46,7 +46,7 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public class BodyTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.BodyTabView> {
+public class BodyTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.BodyTabView> {
 	private class SetObesityLevelAction implements Action {
 		private final double value;
 
@@ -60,12 +60,20 @@ public class BodyTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.
 		}
 	}
 
+	private final org.alice.stageide.personresource.data.FullBodyOutfitData fullBodyOutfitData = new org.alice.stageide.personresource.data.FullBodyOutfitData();
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> fullBodyOutfitState = this.createListSelectionState( this.createKey( "fullBodyOutfitState" ), this.fullBodyOutfitData, -1 );
+
 	private final org.lgna.croquet.BoundedDoubleState obesityLevelState = this.createBoundedDoubleState( this.createKey( "obesityLevelState" ), new BoundedDoubleDetails() );
 	private final org.lgna.croquet.Operation setToInShape = this.createActionOperation( this.createKey( "obesityLevelState(0.0)" ), new SetObesityLevelAction( 0.0 ) );
 	private final org.lgna.croquet.Operation setToOutOfShape = this.createActionOperation( this.createKey( "obesityLevelState(1.0)" ), new SetObesityLevelAction( 1.0 ) );
 
 	public BodyTabComposite() {
-		super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ) );
+		super( java.util.UUID.fromString( "10c0d057-a5d7-4a36-8cd7-c30f46f5aac2" ), IsCloseable.FALSE );
+	}
+
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
 
 	public org.lgna.croquet.BoundedDoubleState getObesityLevelState() {
@@ -85,8 +93,12 @@ public class BodyTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.
 		return new org.alice.stageide.personresource.views.BodyTabView( this );
 	}
 
+	public org.alice.stageide.personresource.data.FullBodyOutfitData getFullBodyOutfitData() {
+		return this.fullBodyOutfitData;
+	}
+
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
-		return FullBodyOutfitState.getInstance();
+		return this.fullBodyOutfitState;
 	}
 
 }

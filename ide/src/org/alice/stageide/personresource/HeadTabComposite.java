@@ -46,24 +46,42 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabComposite extends BodyOrHeadTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
+public class HeadTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
+
+	private final org.alice.stageide.personresource.data.HairListData hairData = new org.alice.stageide.personresource.data.HairListData();
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> hairState = this.createListSelectionState( this.createKey( "hairState" ), this.hairData, -1 );
+	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
+	private final org.lgna.croquet.ListSelectionState<String> hairColorNameState = this.createListSelectionState( this.createKey( "hairColorNameState" ), this.hairColorNameData, -1 );
+
 	public HeadTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ) );
+		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
 	}
 
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
 
 	@Override
 	protected org.alice.stageide.personresource.views.HeadTabView createView() {
 		return new org.alice.stageide.personresource.views.HeadTabView( this );
 	}
 
+	public org.alice.stageide.personresource.data.HairColorNameListData getHairColorNameData() {
+		return this.hairColorNameData;
+	}
+
 	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return HairColorNameState.getInstance();
+		return this.hairColorNameState;
+	}
+
+	public org.alice.stageide.personresource.data.HairListData getHairData() {
+		return this.hairData;
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return HairState.getInstance();
+		return this.hairState;
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {

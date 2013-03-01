@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,19 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BodyOrHeadTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
-	public BodyOrHeadTabComposite( java.util.UUID id ) {
-		super( id, IsCloseable.FALSE );
+public enum HairCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.Hair> {
+	SINGLETON;
+	public Class<org.lgna.story.resources.sims2.Hair> getValueClass() {
+		return org.lgna.story.resources.sims2.Hair.class;
 	}
 
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
+	public org.lgna.story.resources.sims2.Hair decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
+	}
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.Hair value ) {
+		throw new RuntimeException( "todo" );
+	}
+
+	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.Hair value ) {
+		sb.append( value );
 	}
 }

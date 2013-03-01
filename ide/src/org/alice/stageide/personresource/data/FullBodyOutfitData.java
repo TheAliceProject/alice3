@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,65 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IngredientListSelectionState<E> extends org.lgna.croquet.MutableDataListSelectionState<E> {
-	public IngredientListSelectionState( java.util.UUID individualId, org.lgna.croquet.ItemCodec<E> codec, E... elements ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
+public class FullBodyOutfitData extends org.lgna.croquet.data.RefreshableListData<org.lgna.story.resources.sims2.FullBodyOutfit> {
+	private org.lgna.story.resources.sims2.LifeStage lifeStage;
+	private org.lgna.story.resources.sims2.Gender gender;
+
+	public FullBodyOutfitData() {
+		super( org.alice.stageide.personresource.codecs.FullBodyOutfitCodec.SINGLETON );
+	}
+
+	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+		return this.lifeStage;
+	}
+
+	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( this.lifeStage == lifeStage ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.refresh();
+		}
+	}
+
+	public org.lgna.story.resources.sims2.Gender getGender() {
+		return this.gender;
+	}
+
+	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
+		if( this.gender == gender ) {
+			//pass
+		} else {
+			this.gender = gender;
+			this.refresh();
+		}
+	}
+
+	public void setLifeStageAndGender( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+		if( ( this.lifeStage == lifeStage ) && ( this.gender == gender ) ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.gender = gender;
+			this.refresh();
+		}
+	}
+
+	@Override
+	protected java.util.List<org.lgna.story.resources.sims2.FullBodyOutfit> createValues() {
+		if( ( this.lifeStage != null ) && ( this.gender != null ) ) {
+			java.util.List<org.lgna.story.resources.sims2.FullBodyOutfit> list = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
+					org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( this.lifeStage, this.gender ),
+					null
+					);
+			return list;
+		} else {
+			return java.util.Collections.emptyList();
+		}
 	}
 }
