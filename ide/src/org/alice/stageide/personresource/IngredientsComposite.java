@@ -67,7 +67,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.LifeStage> state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {
-			//			handleCataclysm( true, false, false );
 			popAtomic();
 		}
 	};
@@ -77,7 +76,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.Gender> state, org.lgna.story.resources.sims2.Gender prevValue, org.lgna.story.resources.sims2.Gender nextValue, boolean isAdjusting ) {
-			//			handleCataclysm( false, true, false );
 			popAtomic();
 		}
 	};
@@ -105,7 +103,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 
 		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			//			handleCataclysm( false, false, true );
 			popAtomic();
 		}
 	};
@@ -322,7 +319,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 	public void popAtomic() {
 		this.atomicCount--;
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.atomicCount );
 		if( this.atomicCount == 0 ) {
 			this.removeListenersIfAppropriate();
 			try {
