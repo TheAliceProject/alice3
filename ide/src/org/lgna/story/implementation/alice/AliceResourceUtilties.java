@@ -1012,7 +1012,7 @@ public class AliceResourceUtilties {
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
-			if( locale == null ) {
+			if( ( locale == null ) || true ) {
 				return info.getGroupTags();
 			}
 			else {
@@ -1036,7 +1036,7 @@ public class AliceResourceUtilties {
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
-			if( locale == null ) {
+			if( ( locale == null ) || true ) {
 				return info.getThemeTags();
 			}
 			else {
