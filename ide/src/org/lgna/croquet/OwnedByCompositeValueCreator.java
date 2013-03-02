@@ -53,11 +53,17 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 
 	private final ValueCreatorOwningComposite<?, T> composite;
 	private final Initializer initializer;
+	private final String subKeyForLocalization;
 
-	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?, T> composite, Initializer initializer ) {
+	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?, T> composite, Initializer initializer, String subKeyForLocalization ) {
 		super( java.util.UUID.fromString( "d8315541-a441-4e09-b102-3e7730fbc960" ) );
 		this.composite = composite;
 		this.initializer = initializer;
+		this.subKeyForLocalization = subKeyForLocalization;
+	}
+
+	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?, T> composite, Initializer initializer ) {
+		this( composite, initializer, null );
 	}
 
 	public OwnedByCompositeValueCreator( ValueCreatorOwningComposite<?, T> composite ) {
@@ -66,6 +72,11 @@ public final class OwnedByCompositeValueCreator<T> extends ValueCreator<T> {
 
 	public ValueCreatorOwningComposite<?, T> getComposite() {
 		return this.composite;
+	}
+
+	@Override
+	protected String getSubKeyForLocalization() {
+		return this.subKeyForLocalization;
 	}
 
 	@Override

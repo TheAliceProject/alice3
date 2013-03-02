@@ -87,7 +87,7 @@ public final class PersonResourceComposite extends org.lgna.croquet.ValueCreator
 		public void initialize( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 			PersonResourceComposite.this.initializePreviousExpression();
 		}
-	} );
+	}, "edit" );
 
 	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> randomAdultExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomAdultValueCreator );
 	private final org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> randomChildExpressionValueConverter = new PersonResourceToExpressionConverter( this.randomChildValueCreator );
