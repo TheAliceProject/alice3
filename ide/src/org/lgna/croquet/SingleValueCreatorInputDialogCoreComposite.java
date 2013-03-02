@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairState extends IngredientListSelectionState<org.lgna.story.resources.sims2.Hair> {
-	private static class SingletonHolder {
-		private static HairState instance = new HairState();
+public abstract class SingleValueCreatorInputDialogCoreComposite<V extends org.lgna.croquet.components.View<?, ?>, T> extends ValueCreatorInputDialogCoreComposite<V, T> {
+	private final ValueCreator<T> valueCreator = new OwnedByCompositeValueCreator<T>( this );
+
+	public SingleValueCreatorInputDialogCoreComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
-	public static HairState getInstance() {
-		return SingletonHolder.instance;
+	public ValueCreator<T> getValueCreator() {
+		return this.valueCreator;
 	}
 
-	private HairState() {
-		super( java.util.UUID.fromString( "f8e40b32-96ce-4094-9578-1a458f757162" ), new org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.Hair>() {
-			public Class<org.lgna.story.resources.sims2.Hair> getValueClass() {
-				return org.lgna.story.resources.sims2.Hair.class;
-			}
-
-			public org.lgna.story.resources.sims2.Hair decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-				throw new RuntimeException( "todo" );
-			}
-
-			public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.Hair t ) {
-				throw new RuntimeException( "todo" );
-			}
-
-			public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.Hair value ) {
-				sb.append( value );
-			}
-		} );
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.valueCreator.initializeIfNecessary();
 	}
 }

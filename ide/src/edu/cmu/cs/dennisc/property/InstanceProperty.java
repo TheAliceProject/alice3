@@ -50,7 +50,7 @@ public class InstanceProperty<E> implements Property<E> {
 	private String m_name;
 	private transient E m_value;
 	//private boolean m_isLocked = false;
-	private java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> m_propertyListeners = null;
+	private final java.util.List<edu.cmu.cs.dennisc.property.event.PropertyListener> propertyListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	public InstanceProperty( InstancePropertyOwner owner, E value ) {
 		m_owner = owner;
@@ -67,34 +67,21 @@ public class InstanceProperty<E> implements Property<E> {
 	}
 
 	public void addPropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
-		if( m_propertyListeners != null ) {
-			//pass
-		} else {
-			m_propertyListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.property.event.PropertyListener>();
-		}
-		synchronized( m_propertyListeners ) {
-			m_propertyListeners.add( propertyListener );
-		}
+		assert propertyListener != null : this;
+		this.propertyListeners.add( propertyListener );
 	}
 
 	public void removePropertyListener( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener ) {
-		assert m_propertyListeners != null;
-		synchronized( m_propertyListeners ) {
-			m_propertyListeners.remove( propertyListener );
-		}
+		this.propertyListeners.remove( propertyListener );
 	}
 
 	public Iterable<edu.cmu.cs.dennisc.property.event.PropertyListener> accessPropertyListeners() {
-		return m_propertyListeners;
+		return this.propertyListeners;
 	}
 
 	private void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		if( m_propertyListeners != null ) {
-			synchronized( m_propertyListeners ) {
-				for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
-					propertyListener.propertyChanging( e );
-				}
-			}
+		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : this.propertyListeners ) {
+			propertyListener.propertyChanging( e );
 		}
 		PropertyOwner owner = this.getOwner();
 		if( owner != null ) {
@@ -103,12 +90,8 @@ public class InstanceProperty<E> implements Property<E> {
 	}
 
 	private void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-		if( m_propertyListeners != null ) {
-			synchronized( m_propertyListeners ) {
-				for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
-					propertyListener.propertyChanged( e );
-				}
-			}
+		for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : this.propertyListeners ) {
+			propertyListener.propertyChanged( e );
 		}
 		PropertyOwner owner = this.getOwner();
 		if( owner != null ) {

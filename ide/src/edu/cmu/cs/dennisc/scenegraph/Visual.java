@@ -62,6 +62,14 @@ public class Visual extends Leaf {
 			//todo?
 			return src;
 		}
+
+		@Override
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.scenegraph.Geometry[] value ) {
+			for( Geometry geometry : value ) {
+				assert geometry != null : this;
+			}
+			super.setValue( owner, value );
+		}
 	};
 
 	@Override
@@ -98,7 +106,13 @@ public class Visual extends Leaf {
 
 	@Deprecated
 	public void setGeometry( Geometry geometry ) {
-		geometries.setValue( new Geometry[] { geometry } );
+		Geometry[] geometries;
+		if( geometry != null ) {
+			geometries = new Geometry[] { geometry };
+		} else {
+			geometries = new Geometry[] {};
+		}
+		this.geometries.setValue( geometries );
 	}
 
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {

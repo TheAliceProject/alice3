@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource.edits;
+package org.alice.stageide.personresource.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
-	private final org.lgna.story.resources.sims2.PersonResource prevResource;
-	private final org.lgna.story.resources.sims2.PersonResource nextResource;
+public abstract class PersonResourceFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
 
-	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
-		super( step );
-		this.prevResource = org.alice.stageide.personresource.IngredientsComposite.getInstance().createResourceFromStates();
-		this.nextResource = org.alice.stageide.personresource.RandomPersonUtilities.createRandomResource();
-	}
-
-	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
-		org.alice.stageide.personresource.IngredientsComposite.getInstance().pushAtomic();
-		org.alice.stageide.personresource.IngredientsComposite.getInstance().setStates( resource );
-		org.alice.stageide.personresource.IngredientsComposite.getInstance().popAtomic();
+	public PersonResourceFillerInner( Class<? extends org.lgna.story.resources.sims2.PersonResource> cls, org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		super( cls );
+		this.lifeStage = lifeStage;
 	}
 
 	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.setResource( this.nextResource );
-	}
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.InstanceCreation, Void> fillIn = null;
+		if( prevExpression instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)prevExpression;
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceCreation.getType();
+			if( type instanceof org.lgna.project.ast.JavaType ) {
+				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+				if( javaType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
+					fillIn = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn();
 
-	@Override
-	protected final void undoInternal() {
-		this.setResource( this.prevResource );
-	}
-
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "randomize" );
+				}
+			}
+		}
+		if( fillIn != null ) {
+			//pass
+		} else {
+			fillIn = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage ).getFillIn();
+		}
+		items.add( fillIn );
 	}
 }

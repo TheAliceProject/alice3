@@ -40,92 +40,84 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.modelresource;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PersonResourceKey extends InstanceCreatorKey {
-	private static final org.lgna.croquet.icon.IconFactory ADULT_ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( PersonResourceKey.class.getResource( "images/adult.png" ) );
-	private static final org.lgna.croquet.icon.IconFactory CHILD_ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( PersonResourceKey.class.getResource( "images/child.png" ) );
+public class HairListData extends org.lgna.croquet.data.RefreshableListData<org.lgna.story.resources.sims2.Hair> {
+	private org.lgna.story.resources.sims2.LifeStage lifeStage;
+	private org.lgna.story.resources.sims2.Gender gender;
+	private String colorName;
 
-	private static class SingletonHolder {
-		private static PersonResourceKey adultInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.ADULT );
-		private static PersonResourceKey childInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.CHILD );
-	}
-
-	public static PersonResourceKey getAdultInstance() {
-		return SingletonHolder.adultInstance;
-	}
-
-	public static PersonResourceKey getChildInstance() {
-		return SingletonHolder.childInstance;
-	}
-
-	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
-
-	private PersonResourceKey( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		this.lifeStage = lifeStage;
+	public HairListData() {
+		super( org.alice.stageide.personresource.codecs.HairCodec.SINGLETON );
 	}
 
 	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
 		return this.lifeStage;
 	}
 
-	@Override
-	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
-		return org.lgna.story.resources.sims2.PersonResource.class;
-	}
-
-	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getPersonResourceValueCreator() {
-		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
-	}
-
-	@Override
-	public String getDisplayText() {
-		if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
-			return "Adult";
+	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( this.lifeStage == lifeStage ) {
+			//pass
 		} else {
-			return "Child";
+			this.lifeStage = lifeStage;
+			this.refresh();
+		}
+	}
+
+	public org.lgna.story.resources.sims2.Gender getGender() {
+		return this.gender;
+	}
+
+	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
+		if( this.gender == gender ) {
+			//pass
+		} else {
+			this.gender = gender;
+			this.refresh();
+		}
+	}
+
+	public String getColorName() {
+		return this.colorName;
+	}
+
+	public void setColorName( String colorName ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.colorName, colorName ) ) {
+			//pass
+		} else {
+			this.colorName = colorName;
+			this.refresh();
+		}
+	}
+
+	public void setLifeStageGenderAndColorName( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender, String colorName ) {
+		if( ( this.lifeStage == lifeStage ) && ( this.gender == gender ) && ( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.colorName, colorName ) ) ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.gender = gender;
+			this.colorName = colorName;
+			this.refresh();
 		}
 	}
 
 	@Override
-	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
-			return ADULT_ICON_FACTORY;
+	protected java.util.List<org.lgna.story.resources.sims2.Hair> createValues() {
+		if( ( this.lifeStage != null ) && ( this.gender != null ) && ( this.colorName != null ) ) {
+			java.util.List<org.lgna.story.resources.sims2.Hair> list = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
+					org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( this.lifeStage, this.gender ),
+					new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.story.resources.sims2.Hair>() {
+						public boolean accept( org.lgna.story.resources.sims2.Hair hair ) {
+							return hair.toString().equals( colorName );
+						}
+					}
+					);
+			return list;
 		} else {
-			return CHILD_ICON_FACTORY;
+			return java.util.Collections.emptyList();
 		}
-	}
-
-	@Override
-	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		return this.getPersonResourceValueCreator().fireAndGetValue( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
-	}
-
-	@Override
-	public String[] getTags() {
-		return null;
-	}
-
-	@Override
-	public String[] getGroupTags() {
-		return null;
-	}
-
-	@Override
-	public String[] getThemeTags() {
-		return null;
-	}
-
-	@Override
-	public boolean isLeaf() {
-		return true;
-	}
-
-	@Override
-	protected void appendRep( StringBuilder sb ) {
-		sb.append( this.getDisplayText() );
 	}
 }

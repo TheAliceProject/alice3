@@ -40,49 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RandomPersonResourceComposite extends PersonResourceComposite {
-	private static class SingletonHolder {
-		private static RandomPersonResourceComposite instance = new RandomPersonResourceComposite();
-	}
-
-	public static RandomPersonResourceComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private RandomPersonResourceComposite() {
-		super( java.util.UUID.fromString( "9527895d-ee3f-43ed-86fe-b94538b1ff23" ) );
-	}
-
-	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		//todo
-		IngredientsComposite.getInstance().getRandomize().fire();
-	}
-
-	@Override
-	public void handlePostDeactivation() {
-		super.handlePostDeactivation();
-	}
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
-		new org.alice.stageide.StageIDE();
-		try {
-			org.lgna.croquet.triggers.Trigger trigger = null;
-			org.lgna.story.resources.sims2.PersonResource resource = new RandomPersonResourceComposite().getValueCreator().fireAndGetValue( trigger );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( resource );
-		} catch( org.lgna.croquet.CancelException ce ) {
-			//pass
-		}
-		System.exit( 0 );
+public class AdultPersonResourceFillerInner extends PersonResourceFillerInner {
+	public AdultPersonResourceFillerInner() {
+		super( org.lgna.story.resources.sims2.AdultPersonResource.class, org.lgna.story.resources.sims2.LifeStage.ADULT );
 	}
 }

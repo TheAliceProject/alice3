@@ -46,10 +46,12 @@ package org.alice.stageide.personresource.views;
  * @author Dennis Cosgrove
  */
 public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
-	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
+	private final org.alice.stageide.personresource.PersonImp personImp = new org.alice.stageide.personresource.PersonImp();
+	private final org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
 
 	public PersonViewer() {
 		this.setMinimumPreferredWidth( 300 );
+		this.setPerson( this.personImp );
 	}
 
 	private void positionAndOrientCamera( double height, int index, double duration ) {
@@ -93,14 +95,8 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	public void setPerson( org.alice.stageide.personresource.PersonImp person ) {
 		this.setModel( person );
 		this.dragAdapter.setSelectedImplementation( person );
-		if( person != null ) {
-			double height = person.getSize().y;
-			if( Double.isNaN( height ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( person );
-			}
-			height = 1.7;
-			this.positionAndOrientCamera( height, 0, 0.0 );
-		}
+		double height = 1.7;
+		this.positionAndOrientCamera( height, 0, 0.0 );
 	}
 
 	@Override

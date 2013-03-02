@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,37 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameState extends IngredientListSelectionState<String> {
-	private static class SingletonHolder {
-		private static HairColorNameState instance = new HairColorNameState();
+public class HairColorNameListData extends org.lgna.croquet.data.RefreshableListData<String> {
+	private org.lgna.story.resources.sims2.LifeStage lifeStage;
+
+	public HairColorNameListData() {
+		super( org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
 	}
 
-	public static HairColorNameState getInstance() {
-		return SingletonHolder.instance;
+	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+		return this.lifeStage;
 	}
 
-	private HairColorNameState() {
-		super( java.util.UUID.fromString( "7c4d1bb3-fca3-4b7f-b92d-ffb7ee9296fb" ), org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
+	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( this.lifeStage == lifeStage ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.refresh();
+		}
+	}
+
+	@Override
+	protected java.util.List<String> createValues() {
+		if( this.lifeStage != null ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.lifeStage.getHairColors() );
+		} else {
+			return java.util.Collections.emptyList();
+		}
 	}
 }
