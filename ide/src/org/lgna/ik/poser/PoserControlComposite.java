@@ -42,13 +42,12 @@
  */
 package org.lgna.ik.poser;
 
-import org.lgna.ik.poser.view.AbstractPoserControlView;
 import org.lgna.ik.poser.view.PoserControlView;
 
 /**
  * @author Matt May
  */
-public class PoserControlComposite extends AbstractPoserControlComposite {
+public class PoserControlComposite extends AbstractPoserControlComposite<PoserControlView> {
 
 	public PoserControlComposite( IkPoser ikPoser ) {
 		super( ikPoser,
@@ -56,7 +55,7 @@ public class PoserControlComposite extends AbstractPoserControlComposite {
 	}
 
 	@Override
-	protected AbstractPoserControlView createView() {
+	protected PoserControlView createView() {
 		return new PoserControlView( this );
 	}
 }

@@ -42,41 +42,15 @@
  */
 package org.lgna.ik.poser.view;
 
-import org.lgna.croquet.components.ItemDropDown;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.ik.poser.AbstractPoserControlComposite;
-import org.lgna.ik.poser.JointSelectionSphere;
-import org.lgna.ik.poser.JointSelectionSphereState;
+import org.lgna.ik.poser.PoserControlComposite;
 
 /**
  * @author Matt May
  */
-public class AbstractPoserControlView extends MigPanel {
+public class PoserControlView extends AbstractPoserControlView {
 
-	public AbstractPoserControlView( AbstractPoserControlComposite poserControlComposite ) {
-		//											[			BaseJointHandles		][][ikbool][delete] [radioB] [savePose andRun]
-		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0][grow 0][grow 0]10[grow 0]0[]10[grow 0]10[grow 0]0" );
-		this.addComponent( poserControlComposite.getRightArmLabel().createLabel() );
-		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
-
-		JointSelectionSphereState rightArmAnchor = poserControlComposite.getRightArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raDropDown = rightArmAnchor.createItemDropDown();
-		this.addComponent( raDropDown );
-
-		JointSelectionSphereState leftArmAnchor = poserControlComposite.getLeftArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laDropDown = leftArmAnchor.createItemDropDown();
-		this.addComponent( laDropDown, "wrap" );
-
-		this.addComponent( poserControlComposite.getRightLegLabel().createLabel() );
-
-		this.addComponent( poserControlComposite.getLeftLegLabel().createLabel(), "wrap" );
-
-		JointSelectionSphereState rightLegAnchor = poserControlComposite.getRightLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlDropDown = rightLegAnchor.createItemDropDown();
-		this.addComponent( rlDropDown );
-		JointSelectionSphereState leftLegAnchor = poserControlComposite.getLeftLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
-		this.addComponent( llDropDown, "wrap" );
+	public PoserControlView( PoserControlComposite controlComposite ) {
+		super( controlComposite );
 	}
 
 }

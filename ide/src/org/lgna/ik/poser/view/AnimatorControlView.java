@@ -42,41 +42,51 @@
  */
 package org.lgna.ik.poser.view;
 
-import org.lgna.croquet.components.ItemDropDown;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.ik.poser.AbstractPoserControlComposite;
-import org.lgna.ik.poser.JointSelectionSphere;
-import org.lgna.ik.poser.JointSelectionSphereState;
+import javax.swing.BorderFactory;
+import javax.swing.border.BevelBorder;
+
+import org.lgna.croquet.components.Button;
+import org.lgna.ik.poser.AnimatorControlComposite;
 
 /**
  * @author Matt May
  */
-public class AbstractPoserControlView extends MigPanel {
+public class AnimatorControlView extends AbstractPoserControlView {
 
-	public AbstractPoserControlView( AbstractPoserControlComposite poserControlComposite ) {
-		//											[			BaseJointHandles		][][ikbool][delete] [radioB] [savePose andRun]
-		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0][grow 0][grow 0]10[grow 0]0[]10[grow 0]10[grow 0]0" );
-		this.addComponent( poserControlComposite.getRightArmLabel().createLabel() );
-		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
+	private Button exportButton;
 
-		JointSelectionSphereState rightArmAnchor = poserControlComposite.getRightArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raDropDown = rightArmAnchor.createItemDropDown();
-		this.addComponent( raDropDown );
+	public AnimatorControlView( AnimatorControlComposite controlComposite ) {
+		super( controlComposite );
 
-		JointSelectionSphereState leftArmAnchor = poserControlComposite.getLeftArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laDropDown = leftArmAnchor.createItemDropDown();
-		this.addComponent( laDropDown, "wrap" );
+		this.addComponent( controlComposite.getDeselectPoseOperation().createButton(), "grow" );
+		this.addComponent( controlComposite.getDeletePoseOperation().createButton(), "grow, wrap" );
 
-		this.addComponent( poserControlComposite.getRightLegLabel().createLabel() );
+		org.lgna.croquet.components.DefaultRadioButtons<?> radioButtons = controlComposite.getPosesList().createVerticalDefaultRadioButtons();
+		radioButtons.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
+		this.addComponent( new org.lgna.croquet.components.ScrollPane( radioButtons ), "span 2, grow 100, wrap" );
 
-		this.addComponent( poserControlComposite.getLeftLegLabel().createLabel(), "wrap" );
+		this.addComponent( controlComposite.getSavePoseOperation().createButton(), "grow" );
+		this.addComponent( controlComposite.getSaveUpdatedPoseOperation().createButton(), "grow, wrap" );
 
-		JointSelectionSphereState rightLegAnchor = poserControlComposite.getRightLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlDropDown = rightLegAnchor.createItemDropDown();
-		this.addComponent( rlDropDown );
-		JointSelectionSphereState leftLegAnchor = poserControlComposite.getLeftLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
-		this.addComponent( llDropDown, "wrap" );
+		this.addComponent( controlComposite.getRunAnimationOperation().createButton(), "grow" );
+		exportButton = controlComposite.getExportAnimation().getOperation().createButton();
+		this.addComponent( exportButton, "grow, wrap" );
+
+		this.addComponent( new TimeLineView( controlComposite.getTimeLine() ), "grow, span 2" );
+		if( controlComposite.getPosesList().getItemCount() == 0 ) {
+			disableExport();
+		}
 	}
 
+	public void enableExport() {
+		if( !exportButton.getAwtComponent().isEnabled() ) {
+			exportButton.getAwtComponent().setEnabled( true );
+		}
+	}
+
+	public void disableExport() {
+		if( exportButton.getAwtComponent().isEnabled() ) {
+			exportButton.getAwtComponent().setEnabled( false );
+		}
+	}
 }

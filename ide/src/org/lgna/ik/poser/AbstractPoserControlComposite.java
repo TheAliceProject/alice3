@@ -44,9 +44,14 @@ package org.lgna.ik.poser;
 
 import java.util.UUID;
 
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringValue;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.view.AbstractPoserControlView;
 import org.lgna.ik.walkandtouch.IKMagicWand;
 import org.lgna.ik.walkandtouch.IKMagicWand.Limb;
@@ -67,6 +72,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	protected StringValue leftArmLabel = this.createStringValue( createKey( "leftArm" ) );
 	protected StringValue rightLegLabel = this.createStringValue( createKey( "rightLeg" ) );
 	protected StringValue leftLegLabel = this.createStringValue( createKey( "leftLeg" ) );
+	protected BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
 
 	public AbstractPoserControlComposite( IkPoser ikPoser, UUID uid ) {
 		super( java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
@@ -82,6 +88,23 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 		rightLegAnchor.getValue().setPaint( Color.GREEN );
 		leftLegAnchor.getValue().setPaint( Color.GREEN );
 		ikPoser.setAdapter( new PoserControllerAdapter( this ) );
+	}
+
+	protected ActionOperation straightenJointsOperation = createActionOperation( createKey( "straightenJoints" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			ikPoser.getBiped().straightenOutJoints();
+			return null;
+		}
+
+	} );
+
+	public BooleanState getIsUsingIK() {
+		return this.isUsingIK;
+	}
+
+	public ActionOperation getStraightenJointsOperation() {
+		return this.straightenJointsOperation;
 	}
 
 	public IkPoser getIkPoser() {

@@ -40,43 +40,105 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser.view;
+package org.lgna.ik.poser;
 
-import org.lgna.croquet.components.ItemDropDown;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.ik.poser.AbstractPoserControlComposite;
-import org.lgna.ik.poser.JointSelectionSphere;
-import org.lgna.ik.poser.JointSelectionSphereState;
+import java.util.List;
+
+import org.lgna.ik.poser.events.TimeLineListener;
+import org.lgna.story.AnimationStyle;
+import org.lgna.story.Duration;
+import org.lgna.story.SetPose.Detail;
+
+import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
 /**
  * @author Matt May
  */
-public class AbstractPoserControlView extends MigPanel {
+public class TimeLine {
+	private int startTime = 0;
+	private int currTime = 0;
+	private int endTime = 0;
 
-	public AbstractPoserControlView( AbstractPoserControlComposite poserControlComposite ) {
-		//											[			BaseJointHandles		][][ikbool][delete] [radioB] [savePose andRun]
-		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0][grow 0][grow 0]10[grow 0]0[]10[grow 0]10[grow 0]0" );
-		this.addComponent( poserControlComposite.getRightArmLabel().createLabel() );
-		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
+	private final List<PoseEvent> posesInTimeline = Collections.newCopyOnWriteArrayList();
 
-		JointSelectionSphereState rightArmAnchor = poserControlComposite.getRightArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raDropDown = rightArmAnchor.createItemDropDown();
-		this.addComponent( raDropDown );
+	private final List<TimeLineListener> listeners = Collections.newCopyOnWriteArrayList();
 
-		JointSelectionSphereState leftArmAnchor = poserControlComposite.getLeftArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laDropDown = leftArmAnchor.createItemDropDown();
-		this.addComponent( laDropDown, "wrap" );
+	public class PoseEvent {
 
-		this.addComponent( poserControlComposite.getRightLegLabel().createLabel() );
+		private int eventTime;
+		private Pose pose;
+		private AnimationStyle style = AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY;
 
-		this.addComponent( poserControlComposite.getLeftLegLabel().createLabel(), "wrap" );
+		PoseEvent( int time, Pose pose ) {
+			this.eventTime = time;
+			this.pose = pose;
+		}
 
-		JointSelectionSphereState rightLegAnchor = poserControlComposite.getRightLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlDropDown = rightLegAnchor.createItemDropDown();
-		this.addComponent( rlDropDown );
-		JointSelectionSphereState leftLegAnchor = poserControlComposite.getLeftLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
-		this.addComponent( llDropDown, "wrap" );
+		public void setStyle( AnimationStyle style ) {
+			this.style = style;
+		}
+
+		public int getEventTime() {
+			return this.eventTime;
+		}
+
 	}
 
+	public void addTimeLineListener( TimeLineListener listener ) {
+		this.listeners.add( listener );
+	}
+
+	public void removeTimeLineListener( TimeLineListener listener ) {
+		this.listeners.remove( listener );
+	}
+
+	private void fireChanged() {
+		for( TimeLineListener listener : this.listeners ) {
+			listener.changed();
+		}
+	}
+
+	public void addEventAtCurrentTime( Pose pose ) {
+		PoseEvent poseEvent = new PoseEvent( currTime, pose );
+		insertPoseEvent( poseEvent );
+	}
+
+	private void insertPoseEvent( PoseEvent poseEvent ) {
+		for( int i = 0; i != posesInTimeline.size(); ++i ) {
+			if( posesInTimeline.get( i ).eventTime < poseEvent.eventTime ) {
+				posesInTimeline.add( i, poseEvent );
+				return;
+			}
+		}
+		posesInTimeline.add( poseEvent );
+		this.fireChanged();
+	}
+
+	public Detail[] getParametersForPose( Pose pose ) {
+		Detail[] rv = new Detail[ 2 ];//duration, style
+		for( int i = 0; i != posesInTimeline.size(); ++i ) {
+			PoseEvent itr = posesInTimeline.get( i );
+			if( itr.pose.equals( pose ) ) {
+				rv[ 0 ] = itr.style;
+				if( i == 0 ) {
+					rv[ 1 ] = new Duration( 0 );
+				} else {
+					rv[ 1 ] = new Duration( itr.eventTime - itr.eventTime );
+				}
+			}
+		}
+		return rv;
+	}
+
+	public List<PoseEvent> getPosesInTimeline() {
+		return this.posesInTimeline;
+	}
+
+	public int getStartTime() {
+		return startTime;
+	}
+
+	public int getEndTime() {
+		return endTime;
+	}
 }

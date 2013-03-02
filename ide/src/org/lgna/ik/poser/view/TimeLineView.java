@@ -42,41 +42,67 @@
  */
 package org.lgna.ik.poser.view;
 
-import org.lgna.croquet.components.ItemDropDown;
-import org.lgna.croquet.components.MigPanel;
-import org.lgna.ik.poser.AbstractPoserControlComposite;
-import org.lgna.ik.poser.JointSelectionSphere;
-import org.lgna.ik.poser.JointSelectionSphereState;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.beans.Transient;
+
+import org.lgna.croquet.components.JComponent;
+import org.lgna.ik.poser.TimeLine;
+import org.lgna.ik.poser.TimeLine.PoseEvent;
+import org.lgna.ik.poser.events.TimeLineListener;
+
+import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
+
+class JTimeLineView extends javax.swing.JComponent {
+	private final TimeLine timeLine;
+	private final TimeLineListener timeLineListener = new TimeLineListener() {
+		public void changed() {
+			repaint();
+		}
+	};
+
+	public JTimeLineView( TimeLine timeLine ) {
+		this.timeLine = timeLine;
+		this.timeLine.addTimeLineListener( this.timeLineListener );
+	}
+
+	@Override
+	@Transient
+	public Dimension getPreferredSize() {
+		return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 100 );
+	}
+
+	@Override
+	public void paint( Graphics g ) {
+		super.paint( g );
+		g.setColor( Color.RED );
+		g.fillOval( 0, 0, this.getWidth(), this.getHeight() );
+		int start = timeLine.getStartTime();
+		int end = timeLine.getEndTime();
+		for( PoseEvent o : timeLine.getPosesInTimeline() ) {
+			int x = calculateX( start, o.getEventTime(), end );
+			g.drawLine( x, 0, x, getHeight() );
+		}
+	}
+
+	private int calculateX( int start, int eventTime, int end ) {
+		return 0;//(( double ) end - start ) / 
+	}
+}
 
 /**
  * @author Matt May
  */
-public class AbstractPoserControlView extends MigPanel {
+public class TimeLineView extends JComponent<JTimeLineView> {
+	private final TimeLine timeLine;
 
-	public AbstractPoserControlView( AbstractPoserControlComposite poserControlComposite ) {
-		//											[			BaseJointHandles		][][ikbool][delete] [radioB] [savePose andRun]
-		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0][grow 0][grow 0]10[grow 0]0[]10[grow 0]10[grow 0]0" );
-		this.addComponent( poserControlComposite.getRightArmLabel().createLabel() );
-		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
-
-		JointSelectionSphereState rightArmAnchor = poserControlComposite.getRightArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> raDropDown = rightArmAnchor.createItemDropDown();
-		this.addComponent( raDropDown );
-
-		JointSelectionSphereState leftArmAnchor = poserControlComposite.getLeftArmAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> laDropDown = leftArmAnchor.createItemDropDown();
-		this.addComponent( laDropDown, "wrap" );
-
-		this.addComponent( poserControlComposite.getRightLegLabel().createLabel() );
-
-		this.addComponent( poserControlComposite.getLeftLegLabel().createLabel(), "wrap" );
-
-		JointSelectionSphereState rightLegAnchor = poserControlComposite.getRightLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> rlDropDown = rightLegAnchor.createItemDropDown();
-		this.addComponent( rlDropDown );
-		JointSelectionSphereState leftLegAnchor = poserControlComposite.getLeftLegAnchor();
-		ItemDropDown<JointSelectionSphere, JointSelectionSphereState> llDropDown = leftLegAnchor.createItemDropDown();
-		this.addComponent( llDropDown, "wrap" );
+	public TimeLineView( TimeLine timeLine ) {
+		this.timeLine = timeLine;
 	}
 
+	@Override
+	protected JTimeLineView createAwtComponent() {
+		return new JTimeLineView( this.timeLine );
+	}
 }
