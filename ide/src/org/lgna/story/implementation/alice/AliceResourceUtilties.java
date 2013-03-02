@@ -133,9 +133,9 @@ public class AliceResourceUtilties {
 				String rv = resourceBundle.getString( key );
 				return rv;
 			} catch( java.util.MissingResourceException mre ) {
-				if( !locale.getLanguage().equals( "en" ) ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
-				}
+				//				if( !locale.getLanguage().equals( "en" ) ) {
+				//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
+				//				}
 				return null;
 			}
 		} else {
@@ -865,7 +865,13 @@ public class AliceResourceUtilties {
 			return className;
 		}
 		else {
-			return findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + className, locale );
+			String localizedText = findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + className, locale );
+			if( localizedText != null ) {
+				//pass
+			} else {
+				localizedText = className;
+			}
+			return localizedText;
 		}
 	}
 
