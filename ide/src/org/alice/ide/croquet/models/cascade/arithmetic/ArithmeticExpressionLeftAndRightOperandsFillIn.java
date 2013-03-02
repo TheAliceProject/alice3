@@ -50,12 +50,10 @@ public abstract class ArithmeticExpressionLeftAndRightOperandsFillIn extends org
 	private final org.lgna.project.ast.ArithmeticInfixExpression transientValue;
 
 	public ArithmeticExpressionLeftAndRightOperandsFillIn( java.util.UUID id, org.lgna.project.ast.AbstractType<?, ?, ?> resultType, org.lgna.project.ast.AbstractType<?, ?, ?> leftOperandType, org.lgna.project.ast.ArithmeticInfixExpression.Operator operator, org.lgna.project.ast.AbstractType<?, ?, ?> rightOperandType ) {
-		super( id );
+		super( id, org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( leftOperandType ), org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( rightOperandType ) );
 		assert resultType != null : this;
 		assert leftOperandType != null : this;
 		assert rightOperandType != null : this;
-		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( leftOperandType ) );
-		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( rightOperandType ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, resultType );
 	}
 

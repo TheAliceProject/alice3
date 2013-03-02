@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Flamingo">
+    <BoundingBox>
+        <Min x="-0.5017948150634766" y="0.0" z="-0.5554107427597046"/>
+        <Max x="0.5017948150634766" y="1.6470328855793923" z="0.5554107427597046"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bird</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Flamingo" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

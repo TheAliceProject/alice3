@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="BillyGoat">
+    <BoundingBox>
+        <Min x="-0.39913979172706604" y="0.0" z="-0.5533297955989838"/>
+        <Max x="0.39913979172706604" y="1.2769812869955786" z="0.5533297955989838"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>goat</Tag>
+        <Tag>gruff</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="BigHorns" resourceName="BIG_HORNS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.39913979172706604" y="0.0" z="-0.5533297955989838"/>
+            <Max x="0.39913979172706604" y="1.2769812869955786" z="0.5533297955989838"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="LittleHorns" resourceName="LITTLE_HORNS" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.16709516197443008" y="0.0" z="-0.5533297955989838"/>
+            <Max x="0.16709516197443008" y="1.0244029092718847" z="0.5533297955989838"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

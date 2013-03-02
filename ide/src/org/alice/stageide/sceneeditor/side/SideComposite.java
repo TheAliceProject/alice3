@@ -79,11 +79,6 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 		this.registerSubComposite( snapDetailsToolPaletteCoreComposite.getOuterComposite() );
 	}
 
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return new org.lgna.croquet.components.ScrollPane();
-	}
-
 	public SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
 		return this.snapDetailsToolPaletteCoreComposite;
 	}

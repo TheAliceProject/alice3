@@ -65,7 +65,7 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 	}
 
-	private static final class InternalFillIn<F> extends CascadeFillIn<F, Void> {
+	private static final class InternalFillIn<F> extends ImmutableCascadeFillIn<F, Void> {
 		private final ValueCreator<F> valueCreator;
 		private String text;
 
@@ -87,6 +87,11 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		@Override
 		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.valueCreator.getClassUsedForLocalization();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return this.valueCreator.getSubKeyForLocalization();
 		}
 
 		@Override

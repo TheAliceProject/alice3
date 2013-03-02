@@ -10,13 +10,14 @@ package edu.cmu.cs.dennisc.nebulous;
 public class Manager {
 	public static final double NEBULOUS_VERSION = 1.7;
 
-	static boolean s_isInitialized = false;
-	static boolean s_isLicensePromptDesired = true;
-	static java.util.List<java.io.File> s_pendingBundles;
+	private static boolean s_isInitialized = false;
+	private static boolean s_isLicensePromptDesired = true;
+	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
+
+	private static java.util.List<java.io.File> s_pendingBundles;
 
 	private static native void setVersion( double version );
 
-	//	private static native void setDebugDraw(boolean debugDraw);
 	private static native void addBundlePath( String bundlePath );
 
 	private static native void removeBundlePath( String bundlePath );
@@ -26,8 +27,6 @@ public class Manager {
 	private static native void unloadActiveModelData();
 
 	private static native void unloadUnusedTextures( javax.media.opengl.GL gl );
-
-	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 
 	private static void doInitializationIfNecessary() {
 		try {
@@ -66,53 +65,33 @@ public class Manager {
 		if( isInitialized() ) {
 			//pass
 		} else {
-
-			System.out.println( System.getProperty( "java.library.path" ) );
-
-			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
-				try {
-					userPreferences.clear();
-				} catch( java.util.prefs.BackingStoreException bse ) {
-					throw new RuntimeException( bse );
-				}
-			}
-			boolean isLicenseAccepted = userPreferences.getBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, false );
-			if( isLicenseAccepted ) {
-				//pass
-			} else {
-				if( s_isLicensePromptDesired ) {
-					edu.cmu.cs.dennisc.ui.eula.EULAPane pane = new edu.cmu.cs.dennisc.ui.eula.EULAPane( License.TEXT );
-					java.awt.Component owner = null;
-					while( true ) {
-						isLicenseAccepted = pane.showInJDialog( owner, "License Agreement" ) == Boolean.TRUE;
-						if( isLicenseAccepted ) {
-							break;
-						} else {
-							String message = "You must accept the license agreement in order to use The Sims 2 art assets and animations.\n\nWould you like to return to the license agreement?";
-							String title = "Return to license agreement?";
-							if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION ) ) {
-								//pass
-							} else {
-								break;
-							}
-						}
-					}
+			if( s_isLicensePromptDesired ) {
+				edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary(
+						edu.cmu.cs.dennisc.nebulous.License.class,
+						IS_LICENSE_ACCEPTED_PREFERENCE_KEY,
+						"License Agreement: The Sims (TM) 2 Art Assets",
+						edu.cmu.cs.dennisc.nebulous.License.TEXT,
+						"The Sims (TM) 2 Art Assets" );
+				java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
+				boolean isLicenseAccepted = userPreferences.getBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, false );
+				if( isLicenseAccepted ) {
+					//pass
+				} else {
 					s_isLicensePromptDesired = false;
 				}
-			}
-			if( isLicenseAccepted ) {
-				userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
-				String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryNameIfAppropriate( "jni_nebulous" );
-				System.loadLibrary( platformSpecificLibraryName );
-				for( java.io.File directory : Manager.getPendingBundles() ) {
-					Manager.addBundlePath( directory.getAbsolutePath() );
-				}
-				Manager.setVersion( NEBULOUS_VERSION );
+				if( isLicenseAccepted ) {
+					userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
+					String platformSpecificLibraryName = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPlatformSpecificLibraryNameIfAppropriate( "jni_nebulous" );
+					System.loadLibrary( platformSpecificLibraryName );
+					for( java.io.File directory : Manager.getPendingBundles() ) {
+						Manager.addBundlePath( directory.getAbsolutePath() );
+					}
+					Manager.setVersion( NEBULOUS_VERSION );
 
-				s_isInitialized = true;
-			} else {
-				throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
+					s_isInitialized = true;
+				} else {
+					throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
+				}
 			}
 		}
 	}
@@ -147,7 +126,4 @@ public class Manager {
 			Manager.getPendingBundles().remove( file );
 		}
 	}
-
-	//	public static void main( String[] args ) {
-	//	}
 }

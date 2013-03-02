@@ -78,4 +78,32 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 	public boolean isOptional() {
 		return false;
 	}
+
+	public void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	}
+
+	public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	}
+
+	protected boolean isAutoAdvanceWorthAttempting() {
+		return false;
+	}
+
+	public boolean isAutoAdvanceDesired( org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( this.isAutoAdvanceWorthAttempting() ) {
+			if( this.isOptional() ) {
+				return true;
+			} else {
+				Status status = this.getPageStatus( step );
+				return status == IS_GOOD_TO_GO_STATUS;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isClearToCommit() {
+		org.lgna.croquet.history.CompletionStep<?> step = null;
+		return this.isOptional() || this.isAutoAdvanceDesired( step );
+	}
 }

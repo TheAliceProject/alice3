@@ -67,7 +67,7 @@ public class MethodsSubView<C extends org.alice.ide.member.MethodsSubComposite> 
 		composite.updateTabTitle();
 
 		for( org.lgna.project.ast.AbstractMethod method : composite.getMethods() ) {
-			org.lgna.croquet.components.DragComponent<?, ?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getMethodInvocationTemplate( method );
+			org.lgna.croquet.components.DragComponent<?> dragComponent = org.alice.ide.members.components.templates.TemplateFactory.getMethodInvocationTemplate( method );
 			org.lgna.croquet.components.JComponent<?> component;
 			if( method instanceof org.lgna.project.ast.UserMethod ) {
 				org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;

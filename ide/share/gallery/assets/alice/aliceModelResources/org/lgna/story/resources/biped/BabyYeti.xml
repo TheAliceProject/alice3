@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="BabyYeti">
+    <BoundingBox>
+        <Min x="-0.23027353733778" y="0.0" z="-0.203617624938488"/>
+        <Max x="0.23027353733778" y="0.7233875393867493" z="0.203617624938488"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>yeti</Tag>
+        <Tag>monster</Tag>
+        <Tag>abominable</Tag>
+        <Tag>baby</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WithScarf" resourceName="WITH_SCARF" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.22710515558719635" y="0.0" z="-0.203617624938488"/>
+            <Max x="0.22710515558719635" y="0.7233875393867493" z="0.203617624938488"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.23027353733778" y="0.0" z="-0.1934479996562004"/>
+            <Max x="0.23027353733778" y="0.7233875393867493" z="0.1934479996562004"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Penguin">
+    <BoundingBox>
+        <Min x="-0.21404705941677094" y="0.0" z="-0.1679525226354599"/>
+        <Max x="0.21404705941677094" y="0.6506712132977555" z="0.1679525226354599"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>bird</Tag>
+        <Tag>snow</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Penguin" resourceName="ADULT" textureName="ADULT"/>
+    <Resource modelName="Penguin" resourceName="BABY" textureName="BABY"/>
+</AliceModel>

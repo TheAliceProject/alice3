@@ -55,7 +55,9 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new StaticMethodInvocationFillIn( method );
+				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = method.getRequiredParameters();
+				//note: assuming static methods are in java, which therefore do not change their signatures
+				rv = new StaticMethodInvocationFillIn( method, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 				map.put( method, rv );
 			}
 			return rv;
@@ -74,12 +76,9 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 
-	private StaticMethodInvocationFillIn( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ) );
+	private StaticMethodInvocationFillIn( org.lgna.project.ast.AbstractMethod method, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>[] blanks ) {
+		super( java.util.UUID.fromString( "fb3e7243-639b-43e7-8b70-ef7988ed7a97" ), blanks );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteStaticMethodInvocation( method );
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
-			this.addBlank( ParameterBlank.getInstance( parameter ) );
-		}
 	}
 
 	@Override

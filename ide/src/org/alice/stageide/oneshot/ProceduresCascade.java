@@ -46,7 +46,7 @@ package org.alice.stageide.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public class ProceduresCascade extends org.lgna.croquet.Cascade<MethodInvocationEditFactory> {
+public class ProceduresCascade extends org.lgna.croquet.ImmutableCascade<MethodInvocationEditFactory> {
 	private static java.util.Map<org.alice.ide.instancefactory.InstanceFactory, ProceduresCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static ProceduresCascade getInstance( org.alice.ide.instancefactory.InstanceFactory instanceFactory ) {

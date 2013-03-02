@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Chicken">
+    <BoundingBox>
+        <Min x="-0.19230569899082184" y="0.0" z="-0.23453839868307114"/>
+        <Max x="0.19230569899082184" y="0.6239221096038818" z="0.23453839868307114"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>chicken</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Chicken" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="MeanChicken" resourceName="MEAN_CHICKEN" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.1955900937318802" y="0.0" z="-0.2270028069615364"/>
+            <Max x="0.1955900937318802" y="0.6026810407638549" z="0.2270028069615364"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

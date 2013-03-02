@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="WillowTree">
+    <BoundingBox>
+        <Min x="-3.7185161113739014" y="0.0" z="-3.7284886837005615"/>
+        <Max x="3.7185161113739014" y="8.522756576538086" z="3.7284886837005615"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="WillowTree" resourceName="GREEN" textureName="GREEN"/>
+    <Resource modelName="WillowTree" resourceName="LIGHT_GREEN" textureName="LIGHT_GREEN"/>
+    <Resource modelName="WillowTree" resourceName="YELLOW" textureName="YELLOW"/>
+</AliceModel>

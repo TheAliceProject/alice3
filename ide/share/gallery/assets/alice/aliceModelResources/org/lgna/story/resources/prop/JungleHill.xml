@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Gillmeister" name="JungleHill">
+    <BoundingBox>
+        <Min x="-2.2633179426193237" y="0.0" z="-3.0374948978424072"/>
+        <Max x="2.2633179426193237" y="2.886698693037033" z="3.0374948978424072"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>river</Tag>
+        <Tag>bridge</Tag>
+        <Tag>rock</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Hill1" resourceName="HILL1_LOG_BRIDGE" textureName="LOG_BRIDGE">
+        <BoundingBox>
+            <Min x="-2.0251994729042053" y="0.0" z="-2.5178847312927246"/>
+            <Max x="2.0251994729042053" y="2.886698693037033" z="2.5178847312927246"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Hill1" resourceName="HILL1_LOG_BRIDGE1_DIFFUSE_ORIGINAL" textureName="LOG_BRIDGE1_DIFFUSE_ORIGINAL">
+        <BoundingBox>
+            <Min x="-2.0251994729042053" y="0.0" z="-2.5178847312927246"/>
+            <Max x="2.0251994729042053" y="2.886698693037033" z="2.5178847312927246"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Hill2" resourceName="HILL2_LOGBRIDGE_2" textureName="LOGBRIDGE_2">
+        <BoundingBox>
+            <Min x="-2.2633179426193237" y="0.0" z="-3.0374948978424072"/>
+            <Max x="2.2633179426193237" y="2.278206989169121" z="3.0374948978424072"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Hill2" resourceName="HILL2_LOGBRIDGE_2_DIFFUSE_ORIGINAL" textureName="LOGBRIDGE_2_DIFFUSE_ORIGINAL">
+        <BoundingBox>
+            <Min x="-2.2633179426193237" y="0.0" z="-3.0374948978424072"/>
+            <Max x="2.2633179426193237" y="2.278206989169121" z="3.0374948978424072"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

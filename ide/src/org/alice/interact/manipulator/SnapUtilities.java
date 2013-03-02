@@ -402,27 +402,28 @@ public class SnapUtilities
 
 			returnSnapPosition.x = currentPos;
 		}
-		if( movementDelta.y != 0 )
-		{
-			double currentPos = originalPosition.y;
-
-			int lowerMultiplier = (int)( currentPos / gridSpacing );
-			int upperMultiplier = ( currentPos < 0 ) ? lowerMultiplier - 1 : lowerMultiplier + 1;
-			double lowerSnap = gridSpacing * lowerMultiplier;
-			double upperSnap = gridSpacing * upperMultiplier;
-			if( Math.abs( lowerSnap - currentPos ) <= SNAP_TO_GRID_DISTANCE )
-			{
-				didSnap = true;
-				currentPos = gridSpacing * lowerMultiplier;
-			}
-			else if( Math.abs( upperSnap - currentPos ) <= SNAP_TO_GRID_DISTANCE )
-			{
-				didSnap = true;
-				currentPos = gridSpacing * upperMultiplier;
-			}
-
-			returnSnapPosition.y = currentPos;
-		}
+		//Don't snap in Y
+		//		if( movementDelta.y != 0 )
+		//		{
+		//			double currentPos = originalPosition.y;
+		//
+		//			int lowerMultiplier = (int)( currentPos / gridSpacing );
+		//			int upperMultiplier = ( currentPos < 0 ) ? lowerMultiplier - 1 : lowerMultiplier + 1;
+		//			double lowerSnap = gridSpacing * lowerMultiplier;
+		//			double upperSnap = gridSpacing * upperMultiplier;
+		//			if( Math.abs( lowerSnap - currentPos ) <= SNAP_TO_GRID_DISTANCE )
+		//			{
+		//				didSnap = true;
+		//				currentPos = gridSpacing * lowerMultiplier;
+		//			}
+		//			else if( Math.abs( upperSnap - currentPos ) <= SNAP_TO_GRID_DISTANCE )
+		//			{
+		//				didSnap = true;
+		//				currentPos = gridSpacing * upperMultiplier;
+		//			}
+		//
+		//			returnSnapPosition.y = currentPos;
+		//		}
 		if( movementDelta.z != 0 )
 		{
 			double currentPos = originalPosition.z;

@@ -52,6 +52,16 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	private static final double DEFAULT_SEARCH_FACTOR = .25;
 	private static AdaptiveRecenteringThumbnailMaker instance;
 
+	public static AdaptiveRecenteringThumbnailMaker getInstance( int width, int height ) {
+		if( ( instance == null ) || ( instance.getWidth() != width ) || ( instance.getHeight() != height ) ) {
+			instance = new AdaptiveRecenteringThumbnailMaker( width, height );
+		}
+		else {
+			instance.clear();
+		}
+		return instance;
+	}
+
 	public static AdaptiveRecenteringThumbnailMaker getInstance() {
 		if( instance == null ) {
 			instance = new AdaptiveRecenteringThumbnailMaker();
@@ -65,11 +75,15 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	private final double searchFactor;
 	private final edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass testImageOffscreenLookingGlass;
 
-	private AdaptiveRecenteringThumbnailMaker() {
-		super( AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR );
+	private AdaptiveRecenteringThumbnailMaker( int width, int height ) {
+		super( width, height, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR );
 		this.searchFactor = DEFAULT_SEARCH_FACTOR;
 		this.testImageOffscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( (int)( this.getWidth() * this.searchFactor ), (int)( this.getHeight() * this.searchFactor ), null );
 		setUpCamera( this.testImageOffscreenLookingGlass );
+	}
+
+	private AdaptiveRecenteringThumbnailMaker() {
+		this( AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT );
 	}
 
 	@Override

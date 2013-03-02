@@ -46,7 +46,7 @@ package org.alice.ide.croquet.models.ast.keyed;
 /**
  * @author Dennis Cosgrove
  */
-public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> {
+public class JavaKeyedArgumentFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna.project.ast.JavaKeyedArgument, org.lgna.project.ast.Expression> {
 	private static java.util.Map<org.lgna.project.ast.JavaMethod, JavaKeyedArgumentFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static JavaKeyedArgumentFillIn getInstance( org.lgna.project.ast.JavaMethod value ) {
@@ -55,7 +55,7 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn<org.
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new JavaKeyedArgumentFillIn( value );
+				rv = new JavaKeyedArgumentFillIn( value, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( value ) );
 				map.put( value, rv );
 			}
 			return rv;
@@ -64,13 +64,10 @@ public class JavaKeyedArgumentFillIn extends org.lgna.croquet.CascadeFillIn<org.
 
 	private final org.lgna.project.ast.JavaKeyedArgument transientValue;
 
-	private JavaKeyedArgumentFillIn( org.lgna.project.ast.JavaMethod keyMethod ) {
-		super( java.util.UUID.fromString( "484ff351-b7a9-4c7a-b2de-a6479b97ade7" ) );
+	private JavaKeyedArgumentFillIn( org.lgna.project.ast.JavaMethod keyMethod, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>[] blanks ) {
+		super( java.util.UUID.fromString( "484ff351-b7a9-4c7a-b2de-a6479b97ade7" ), blanks );
 		this.transientValue = new org.lgna.project.ast.JavaKeyedArgument();
 		this.transientValue.expression.setValue( org.alice.ide.ast.IncompleteAstUtilities.createIncompleteStaticMethodInvocation( keyMethod ) );
-		for( org.lgna.project.ast.AbstractParameter requiredParameter : keyMethod.getRequiredParameters() ) {
-			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( requiredParameter ) );
-		}
 	}
 
 	@Override

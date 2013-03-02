@@ -167,14 +167,8 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 	private final java.util.List<CascadeRejector> cascadeRejectors = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private String text;
 
-	public CascadeRoot( java.util.UUID id, CascadeBlank<T>[] blanks ) {
+	public CascadeRoot( java.util.UUID id ) {
 		super( id );
-		if( blanks != null ) {
-			for( CascadeBlank<T> blank : blanks ) {
-				assert blank != null : this;
-				this.addBlank( blank );
-			}
-		}
 	}
 
 	@Override

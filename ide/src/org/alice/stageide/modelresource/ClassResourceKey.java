@@ -64,7 +64,7 @@ public final class ClassResourceKey extends InstanceCreatorKey {
 	@Override
 	public String getDisplayText() {
 		//		 = this.cls.getSimpleName().replace( "Resource", "" );
-		String simpleName = org.lgna.story.implementation.alice.AliceResourceUtilties.getModelClassName( this );
+		String simpleName = org.lgna.story.implementation.alice.AliceResourceUtilties.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
 		StringBuilder sb = new StringBuilder();
 		if( this.cls.isEnum() ) {
 			sb.append( "new " );

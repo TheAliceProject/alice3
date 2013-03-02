@@ -46,13 +46,26 @@ package edu.cmu.cs.dennisc.eula;
  * @author Dennis Cosgrove
  */
 public class EULAUtilities {
+	private static java.util.List<Class<?>> alreadyClearedPreferences;
+
 	public static void promptUserToAcceptEULAIfNecessary( Class<?> preferencesCls, String preferencesKey, String title, String license, String name ) throws LicenseRejectedException {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( preferencesCls );
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
-			try {
-				userPreferences.clear();
-			} catch( java.util.prefs.BackingStoreException bse ) {
-				throw new RuntimeException( bse );
+			if( alreadyClearedPreferences != null ) {
+				//pass
+			} else {
+				alreadyClearedPreferences = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			}
+			if( alreadyClearedPreferences.contains( preferencesCls ) ) {
+				//pass
+			} else {
+				alreadyClearedPreferences.add( preferencesCls );
+				try {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "clearing", userPreferences );
+					userPreferences.clear();
+				} catch( java.util.prefs.BackingStoreException bse ) {
+					throw new RuntimeException( bse );
+				}
 			}
 		}
 		boolean isLicenseAccepted = userPreferences.getBoolean( preferencesKey, false );

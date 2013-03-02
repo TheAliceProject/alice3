@@ -46,7 +46,7 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.ValueCreatorInputDialogCoreComposite<V, T> {
+public abstract class PreviewContainingValueCreatorInputDialogCoreComposite<V extends org.alice.ide.preview.components.PanelWithPreview, T> extends org.lgna.croquet.SingleValueCreatorInputDialogCoreComposite<V, T> {
 	public PreviewContainingValueCreatorInputDialogCoreComposite( java.util.UUID id ) {
 		super( id );
 	}

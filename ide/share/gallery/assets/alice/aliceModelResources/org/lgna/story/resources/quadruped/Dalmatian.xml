@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Dalmatian">
+    <BoundingBox>
+        <Min x="-0.17186520993709564" y="0.0" z="-0.6190243661403656"/>
+        <Max x="0.17186520993709564" y="0.8764222493045963" z="0.6190243661403656"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>dog</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="Dalmatian" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

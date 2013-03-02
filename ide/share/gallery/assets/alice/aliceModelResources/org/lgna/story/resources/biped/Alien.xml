@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="Alien">
+    <BoundingBox>
+        <Min x="-0.3184794485569" y="0.0" z="-0.289037324488163"/>
+        <Max x="0.3184794485569" y="1.4424412393709645" z="0.289037324488163"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alien</Tag>
+        <Tag>space</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*outer space</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Alien" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

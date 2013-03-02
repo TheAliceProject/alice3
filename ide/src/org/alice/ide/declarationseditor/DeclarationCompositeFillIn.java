@@ -45,7 +45,7 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationCompositeFillIn extends org.lgna.croquet.CascadeFillIn<DeclarationComposite, Void> {
+public class DeclarationCompositeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<DeclarationComposite, Void> {
 	private static final java.util.Map<DeclarationComposite, DeclarationCompositeFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized DeclarationCompositeFillIn getInstance( DeclarationComposite declarationComposite ) {

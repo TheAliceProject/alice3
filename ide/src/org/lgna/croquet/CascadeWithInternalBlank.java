@@ -80,16 +80,20 @@ public abstract class CascadeWithInternalBlank<T> extends Cascade<T> {
 		}
 	}
 
-	private final InternalBlank<T> internalBlank = new InternalBlank<T>( this );
+	private final java.util.List<InternalBlank<T>> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new InternalBlank<T>( this ) ) );
 
 	public CascadeWithInternalBlank( Group group, java.util.UUID id, Class<T> componentType ) {
-		super( group, id, componentType, (CascadeBlank<T>[])null );
-		this.getRoot().addBlank( this.internalBlank );
+		super( group, id, componentType );
+	}
+
+	@Override
+	protected java.util.List<? extends CascadeBlank<T>> getBlanks() {
+		return this.blanks;
 	}
 
 	protected abstract java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode );
 
 	private InternalBlank<T> getInternalBlank() {
-		return this.internalBlank;
+		return this.blanks.get( 0 );
 	}
 }

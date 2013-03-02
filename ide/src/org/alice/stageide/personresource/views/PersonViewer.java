@@ -46,10 +46,12 @@ package org.alice.stageide.personresource.views;
  * @author Dennis Cosgrove
  */
 public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
-	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
+	private final org.alice.stageide.personresource.PersonImp personImp = new org.alice.stageide.personresource.PersonImp();
+	private final org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
 
 	public PersonViewer() {
 		this.setMinimumPreferredWidth( 300 );
+		this.setPerson( this.personImp );
 	}
 
 	private void positionAndOrientCamera( double height, int index, double duration ) {
@@ -60,18 +62,19 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		} else {
 			xzFactor = 1.0;
 		}
-		double yFactor;
+		double pointAtFactor;
+		double yFactor = 1.5;
 		if( index == 0 ) {
-			yFactor = 1.5;
+			pointAtFactor = 0.5;
 		} else {
-			yFactor = 1.5;
+			pointAtFactor = 0.9;
 		}
 		yFactor *= 0.65;
 		xzFactor *= 0.65;
 		if( this.getScene() != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevPOV = this.getCamera().getLocalTransformation();
 			this.getCamera().setTransformation( this.getScene().createOffsetStandIn( -0.3 * xzFactor, height * yFactor, -height * xzFactor ) );
-			this.getCamera().setOrientationOnlyToPointAt( this.getScene().createOffsetStandIn( 0, height * .5, 0 ) );
+			this.getCamera().setOrientationOnlyToPointAt( this.getScene().createOffsetStandIn( 0, height * pointAtFactor, 0 ) );
 			edu.cmu.cs.dennisc.animation.Animator animator = this.getAnimator();
 			if( ( duration > 0.0 ) && ( animator != null ) ) {
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextPOV = this.getCamera().getLocalTransformation();
@@ -86,6 +89,23 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
+	private final double ADULT_HEIGHT = 1.7;
+	private final double CHILD_HEIGHT = 1.2;
+
+	public void setCameraToFullView( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		this.positionAndOrientCamera( ADULT_HEIGHT, 0, 0.5 );
+	}
+
+	public void setCameraToCloseUp( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		double height;
+		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+			height = ADULT_HEIGHT;
+		} else {
+			height = CHILD_HEIGHT;
+		}
+		this.positionAndOrientCamera( height, 1, 0.5 );
+	}
+
 	public org.alice.stageide.personresource.PersonImp getPerson() {
 		return (org.alice.stageide.personresource.PersonImp)this.getModel();
 	}
@@ -93,14 +113,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	public void setPerson( org.alice.stageide.personresource.PersonImp person ) {
 		this.setModel( person );
 		this.dragAdapter.setSelectedImplementation( person );
-		if( person != null ) {
-			double height = person.getSize().y;
-			if( Double.isNaN( height ) ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( person );
-			}
-			height = 1.7;
-			this.positionAndOrientCamera( height, 0, 0.0 );
-		}
+		this.positionAndOrientCamera( ADULT_HEIGHT, 0, 0.0 );
 	}
 
 	@Override

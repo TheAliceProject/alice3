@@ -81,6 +81,13 @@ public class BackwardForwardView extends org.lgna.croquet.components.MigPanel {
 			this.addComponent( backwardButton );
 			this.addComponent( forwardButton, "growy" );
 		}
+
+		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
+			//pass
+		} else {
+			this.addComponent( org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent(), "gap 8" );
+		}
+
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 }

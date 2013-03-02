@@ -59,7 +59,7 @@ class TreeNodeUtilities {
 
 }
 
-class TreeNodeFillIn<T> extends CascadeFillIn<T, Void> {
+class TreeNodeFillIn<T> extends ImmutableCascadeFillIn<T, Void> {
 	private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, TreeNodeFillIn> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static synchronized <T> TreeNodeFillIn<T> getInstance( TreeSelectionState<T> model, T node ) {
@@ -158,7 +158,7 @@ class TreeBlank<T> extends CascadeBlank<T> {
 	}
 }
 
-class TreeNodeCascade<T> extends Cascade<T> {
+class TreeNodeCascade<T> extends ImmutableCascade<T> {
 	private static edu.cmu.cs.dennisc.map.MapToMap<TreeSelectionState, Object, TreeNodeCascade> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 
 	public static <T> TreeNodeCascade<T> getInstance( TreeSelectionState<T> model, T node ) {

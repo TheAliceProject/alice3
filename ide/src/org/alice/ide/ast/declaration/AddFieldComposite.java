@@ -165,10 +165,47 @@ public abstract class AddFieldComposite extends FieldComposite {
 		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
 
+	protected boolean isNumberAppendedToNameOfFirstField() {
+		return false;
+	}
+
+	protected boolean isNameGenerationDesired() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue();
+	}
+
 	@Override
 	protected java.lang.String getNameInitialValue() {
-		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
-			return generateNameFromInitializer();
+		if( this.isNameGenerationDesired() ) {
+			String baseName = generateNameFromInitializer();
+			boolean isNumberAppendedToNameOfFirstField = this.isNumberAppendedToNameOfFirstField();
+			final boolean IS_GENERATING_AVAILABLE_NAME_ENABLED = true;
+			if( IS_GENERATING_AVAILABLE_NAME_ENABLED ) {
+				boolean isSearchFrom2Desired;
+				if( isNumberAppendedToNameOfFirstField || this.isNameAvailable( baseName ) ) {
+					if( this.isNameAvailable( baseName + 1 ) ) {
+						isSearchFrom2Desired = false;
+					} else {
+						isSearchFrom2Desired = true;
+					}
+				} else {
+					isSearchFrom2Desired = true;
+				}
+				if( isSearchFrom2Desired ) {
+					int i = 2;
+					while( true ) {
+						if( this.isNameAvailable( baseName + i ) ) {
+							break;
+						}
+						i++;
+					}
+					return baseName + i;
+				}
+			}
+			if( isNumberAppendedToNameOfFirstField ) {
+				return baseName + 1;
+			} else {
+				return baseName;
+			}
 		} else {
 			return super.getNameInitialValue();
 		}

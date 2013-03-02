@@ -46,18 +46,15 @@ package org.alice.stageide.oneshot;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MethodInvocationFillIn extends org.lgna.croquet.CascadeFillIn<MethodInvocationEditFactory, org.lgna.project.ast.Expression> {
+public abstract class MethodInvocationFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<MethodInvocationEditFactory, org.lgna.project.ast.Expression> {
 	private final org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 
 	public MethodInvocationFillIn( java.util.UUID id, org.alice.ide.instancefactory.InstanceFactory instanceFactory, org.lgna.project.ast.AbstractMethod method ) {
-		super( id );
+		super( id, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 		this.instanceFactory = instanceFactory;
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( method );
 		this.transientValue.expression.setValue( instanceFactory.createExpression() );
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
-			this.addBlank( org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameter ) );
-		}
 	}
 
 	private org.lgna.project.ast.AbstractMethod getMethod() {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="WonderlandTree">
+    <BoundingBox>
+        <Min x="-0.9896050691604614" y="0.0" z="-0.8448549807071686"/>
+        <Max x="0.9896050691604614" y="2.9494192075729373" z="0.8448549807071686"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>alice</Tag>
+        <Tag>wonderland</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>wonderland</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="WonderlandTree" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

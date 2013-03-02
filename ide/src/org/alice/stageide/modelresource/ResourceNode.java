@@ -116,7 +116,7 @@ public abstract class ResourceNode extends org.alice.ide.croquet.models.galleryb
 			return addResourceKeyManagedFieldComposite.getOperation();
 		} else if( this.resourceKey instanceof PersonResourceKey ) {
 			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
-			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstance();
+			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( personResourceKey.getLifeStage() );
 			//todo
 			//		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
 			//			return new org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite( this.resourceKey ).getOperation();

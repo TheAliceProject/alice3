@@ -81,7 +81,7 @@ public class ControlFlowTabView extends org.lgna.croquet.components.MigPanel {
 	}
 
 	private void addDragComponent( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel ) {
-		org.lgna.croquet.components.DragComponent<?, ?> dragComponent;
+		org.lgna.croquet.components.DragComponent<?> dragComponent;
 		if( IS_MINI_DESIRED ) {
 			dragComponent = new org.alice.ide.controlflow.components.MiniControlFlowStatementTemplate( dragModel );
 		} else {

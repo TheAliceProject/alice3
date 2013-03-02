@@ -45,7 +45,6 @@ package org.lgna.ik.poser.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.beans.Transient;
 
 import org.lgna.croquet.components.JComponent;
 import org.lgna.ik.poser.TimeLine;
@@ -68,7 +67,6 @@ class JTimeLineView extends javax.swing.JComponent {
 	}
 
 	@Override
-	@Transient
 	public Dimension getPreferredSize() {
 		return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 100 );
 	}

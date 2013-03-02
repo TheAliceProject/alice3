@@ -74,7 +74,13 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 		RtBlank<T>[] rtBlanks = this.getBlankChildren();
 		T[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( componentType, rtBlanks.length );
 		for( int i = 0; i < rtBlanks.length; i++ ) {
-			rv[ i ] = rtBlanks[ i ].createValue( transactionHistory );
+			T value = rtBlanks[ i ].createValue( transactionHistory );
+			try {
+				rv[ i ] = value;
+			} catch( ArrayStoreException ase ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "value:", value, "componentType:", componentType );
+				throw ase;
+			}
 		}
 		return rv;
 	}
@@ -88,7 +94,7 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 
 	public org.lgna.croquet.history.CompletionStep<CM> complete( org.lgna.croquet.triggers.Trigger trigger ) {
 		CascadeRoot<T, CM> root = this.getElement();
-		org.lgna.croquet.history.TransactionHistory transactionHistory = Application.getActiveInstance().getDocument().getRootTransactionHistory().getActiveTransactionHistory();
+		org.lgna.croquet.history.TransactionHistory transactionHistory = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
 		org.lgna.croquet.history.CompletionStep<CM> completionStep;
 		try {
 			//T[] values = this.createValues( transactionHistory, root.getComponentType() );
@@ -123,7 +129,8 @@ public class RtRoot<T, CM extends CompletionModel> extends RtBlankOwner<T[], T, 
 			}
 
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-				org.lgna.croquet.history.TransactionHistory transactionHistory = Application.getActiveInstance().getDocument().getRootTransactionHistory().getActiveTransactionHistory();
+				//todo
+				org.lgna.croquet.history.TransactionHistory transactionHistory = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
 				RtRoot.this.cancel( transactionHistory, org.lgna.croquet.triggers.PopupMenuEventTrigger.createUserInstance( e ), null );
 			}
 		};

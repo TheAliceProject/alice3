@@ -133,9 +133,9 @@ public class AliceResourceUtilties {
 				String rv = resourceBundle.getString( key );
 				return rv;
 			} catch( java.util.MissingResourceException mre ) {
-				if( !locale.getLanguage().equals( "en" ) ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
-				}
+				//				if( !locale.getLanguage().equals( "en" ) ) {
+				//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
+				//				}
 				return null;
 			}
 		} else {
@@ -865,7 +865,13 @@ public class AliceResourceUtilties {
 			return className;
 		}
 		else {
-			return findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + className, locale );
+			String localizedText = findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + className, locale );
+			if( localizedText != null ) {
+				//pass
+			} else {
+				localizedText = className;
+			}
+			return localizedText;
 		}
 	}
 
@@ -943,40 +949,44 @@ public class AliceResourceUtilties {
 
 	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull )
 	{
-		ArrayList<String> localizedTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
-		for( String tag : tags ) {
-			String[] splitTags = tag.split( ":" );
-			StringBuilder finalTag = new StringBuilder();
-			for( int i = 0; i < splitTags.length; i++ ) {
-				String t = splitTags[ i ];
-				boolean hasStar = t.startsWith( "*" );
-				String stringToUse;
-				if( hasStar ) {
-					stringToUse = t.substring( 1 );
-				}
-				else {
-					stringToUse = t;
-				}
-				String localizationKey = makeLocalizationKey( stringToUse );
-				String localizedTag = findLocalizedText( localizerBundleName, localizationKey, locale );
-				if( acceptNull && ( localizedTag == null ) ) {
-					localizedTag = stringToUse;
-				}
-				if( localizedTag != null ) {
-					if( i > 0 ) {
-						finalTag.append( ":" );
-					}
+		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) ) {
+			ArrayList<String> localizedTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			for( String tag : tags ) {
+				String[] splitTags = tag.split( ":" );
+				StringBuilder finalTag = new StringBuilder();
+				for( int i = 0; i < splitTags.length; i++ ) {
+					String t = splitTags[ i ];
+					boolean hasStar = t.startsWith( "*" );
+					String stringToUse;
 					if( hasStar ) {
-						finalTag.append( "*" );
+						stringToUse = t.substring( 1 );
 					}
-					finalTag.append( localizedTag );
+					else {
+						stringToUse = t;
+					}
+					String localizationKey = makeLocalizationKey( stringToUse );
+					String localizedTag = findLocalizedText( localizerBundleName, localizationKey, locale );
+					if( acceptNull && ( localizedTag == null ) ) {
+						localizedTag = stringToUse;
+					}
+					if( localizedTag != null ) {
+						if( i > 0 ) {
+							finalTag.append( ":" );
+						}
+						if( hasStar ) {
+							finalTag.append( "*" );
+						}
+						finalTag.append( localizedTag );
+					}
+				}
+				if( finalTag.length() > 0 ) {
+					localizedTags.add( finalTag.toString() );
 				}
 			}
-			if( finalTag.length() > 0 ) {
-				localizedTags.add( finalTag.toString() );
-			}
+			return localizedTags.toArray( new String[ localizedTags.size() ] );
+		} else {
+			return new String[ 0 ];
 		}
-		return localizedTags.toArray( new String[ localizedTags.size() ] );
 	}
 
 	public static String[] getTags( Class<?> modelResource, String resourceName, Locale locale )
@@ -1008,7 +1018,7 @@ public class AliceResourceUtilties {
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
-			if( locale == null ) {
+			if( ( locale == null ) || true ) {
 				return info.getGroupTags();
 			}
 			else {
@@ -1032,7 +1042,7 @@ public class AliceResourceUtilties {
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
-			if( locale == null ) {
+			if( ( locale == null ) || true ) {
 				return info.getThemeTags();
 			}
 			else {

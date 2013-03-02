@@ -52,6 +52,7 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.operations.AbstractPredeterminedSetLocalTransformationActionOperation;
 import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
+import org.lgna.story.implementation.EntityImp;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
@@ -121,11 +122,13 @@ public abstract class AbstractManipulator {
 
 	public boolean doesManipulatedObjectHaveHandles()
 	{
-		//		if (!(this.manipulatedTransformable instanceof org.lookingglassandalice.storytelling.implementation.MarkerImplementation))
-		//		{
-		//			return true;
-		//		}
-		return true;
+		if( this.manipulatedTransformable != null ) {
+			EntityImp entityImplementation = EntityImp.getInstance( this.manipulatedTransformable );
+			if( !( entityImplementation instanceof org.lgna.story.implementation.MarkerImp ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public List<ManipulationEvent> getManipulationEvents()

@@ -74,8 +74,8 @@ public abstract class CascadeFillIn<F, B> extends CascadeBlankOwner<F, B> {
 	}
 
 	private B[] runBlanks( org.lgna.croquet.cascade.ItemNode<? super F, B> itemNode, org.lgna.croquet.history.TransactionHistory transactionHistory, BlankActor blankActor, Class<B> cls ) {
-		org.lgna.croquet.CascadeBlank<B>[] blanks = this.getBlanks();
-		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( cls, blanks.length );
+		java.util.List<? extends CascadeBlank<B>> blanks = this.getBlanks();
+		B[] rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newTypedArrayInstance( cls, blanks.size() );
 		for( int i = 0; i < rv.length; i++ ) {
 			org.lgna.croquet.cascade.BlankNode<B> blankStep = itemNode.getBlankStepAt( i );
 			org.lgna.croquet.cascade.AbstractItemNode<B, ?, ?> selectedFillInContext = blankStep.getSelectedFillInContext();
