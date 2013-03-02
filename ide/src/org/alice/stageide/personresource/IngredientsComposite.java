@@ -68,6 +68,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.LifeStage> state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {
 			popAtomic();
+			updateCameraPointOfView();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Gender> genderListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Gender>() {
@@ -139,7 +140,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 
 		public void changed( org.lgna.croquet.State<org.lgna.croquet.SimpleTabComposite> state, org.lgna.croquet.SimpleTabComposite prevValue, org.lgna.croquet.SimpleTabComposite nextValue, boolean isAdjusting ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "set point of view" );
+			updateCameraPointOfView();
 		}
 	};
 
@@ -148,6 +149,22 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	public IngredientsComposite() {
 		super( java.util.UUID.fromString( "dd127381-09a8-4f78-bfd5-f3bffc1af98b" ) );
 		this.randomize.setButtonIcon( RANDOM_ICON );
+	}
+
+	private void updateCameraPointOfView() {
+		org.lgna.croquet.SimpleTabComposite nextValue = this.bodyHeadTabState.getValue();
+		org.alice.stageide.personresource.views.PersonViewer personViewer = PersonResourceComposite.getInstance().getPreviewComposite().getView();
+		org.lgna.story.resources.sims2.LifeStage lifeStage = lifeStageState.getValue();
+		if( lifeStage != null ) {
+			//pass
+		} else {
+			lifeStage = org.lgna.story.resources.sims2.LifeStage.ADULT;
+		}
+		if( nextValue == headTab ) {
+			personViewer.setCameraToCloseUp( lifeStage );
+		} else {
+			personViewer.setCameraToFullView( lifeStage );
+		}
 	}
 
 	@Override
