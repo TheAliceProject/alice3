@@ -134,6 +134,15 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	};
 
+	private final org.lgna.croquet.State.ValueListener<org.lgna.croquet.SimpleTabComposite> tabListener = new org.lgna.croquet.State.ValueListener<org.lgna.croquet.SimpleTabComposite>() {
+		public void changing( org.lgna.croquet.State<org.lgna.croquet.SimpleTabComposite> state, org.lgna.croquet.SimpleTabComposite prevValue, org.lgna.croquet.SimpleTabComposite nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.lgna.croquet.SimpleTabComposite> state, org.lgna.croquet.SimpleTabComposite prevValue, org.lgna.croquet.SimpleTabComposite nextValue, boolean isAdjusting ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "set point of view" );
+		}
+	};
+
 	private static final javax.swing.Icon RANDOM_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IngredientsComposite.class.getResource( "images/random.png" ) );
 
 	public IngredientsComposite() {
@@ -238,6 +247,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		super.handlePreActivation();
 		if( activeCount == 0 ) {
 			this.addListeners();
+
+			this.bodyHeadTabState.addAndInvokeValueListener( this.tabListener );
 		} else {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.activeCount );
 		}
@@ -248,6 +259,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	public void handlePostDeactivation() {
 		this.activeCount--;
 		if( activeCount == 0 ) {
+			this.bodyHeadTabState.removeValueListener( this.tabListener );
 			this.removeListeners();
 		}
 		if( activeCount != 0 ) {
