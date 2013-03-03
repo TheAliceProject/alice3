@@ -164,7 +164,12 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 
 	private static <T> T getItemAt( org.lgna.croquet.data.ListData<T> data, int index ) {
 		if( index != -1 ) {
-			return data.getItemAt( index );
+			if( index < data.getItemCount() ) {
+				return data.getItemAt( index );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "note: index out of bounds", index, data.getItemCount(), data );
+				return null;
+			}
 		} else {
 			return null;
 		}
