@@ -40,76 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.data;
+package org.alice.stageide.sceneeditor.side;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class ImmutableListData<T> extends ListData<T> {
-	private final T[] values;
+public final class MarkerColorIdCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.Expression> {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, MarkerColorIdCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
-	public ImmutableListData( org.lgna.croquet.ItemCodec<T> itemCodec, T[] values ) {
-		super( itemCodec );
-		this.values = values;
+	public static MarkerColorIdCascade getInstance( org.lgna.project.ast.UserField field ) {
+		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, MarkerColorIdCascade>() {
+			public MarkerColorIdCascade initialize( org.lgna.project.ast.UserField key ) {
+				return new MarkerColorIdCascade( key );
+			}
+		} );
+	}
+
+	private final org.lgna.project.ast.UserField field;
+
+	private MarkerColorIdCascade( org.lgna.project.ast.UserField field ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "1f6171eb-193b-46a9-a49a-22bacab341de" ), org.lgna.project.ast.Expression.class, org.alice.ide.croquet.models.cascade.CascadeManager.createBlanks( org.lgna.story.Color.class ) );
+		this.field = field;
 	}
 
 	@Override
-	public final void addListener( javax.swing.event.ListDataListener listener ) {
-	}
-
-	@Override
-	public final void removeListener( javax.swing.event.ListDataListener listener ) {
-	}
-
-	@Override
-	public boolean contains( T item ) {
-		return java.util.Arrays.asList( this.values ).contains( item );
-	}
-
-	@Override
-	public T getItemAt( int index ) {
-		return this.values[ index ];
-	}
-
-	@Override
-	public int getItemCount() {
-		return this.values.length;
-	}
-
-	@Override
-	public int indexOf( T item ) {
-		return java.util.Arrays.asList( this.values ).indexOf( item );
-	}
-
-	@Override
-	public void internalAddItem( int index, T item ) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void internalRemoveItem( T item ) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void internalSetAllItems( java.util.Collection<T> items ) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void internalSetItemAt( int index, T item ) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public java.util.Iterator<T> iterator() {
-		return java.util.Arrays.asList( this.values ).iterator();
-	}
-
-	@Override
-	protected final T[] toArray( Class<T> componentType ) {
-		//todo: check type
-		//todo: copy?
-		return this.values;
+	protected org.lgna.croquet.edits.Edit<? extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> createEdit( org.lgna.croquet.history.CompletionStep<org.lgna.croquet.Cascade<org.lgna.project.ast.Expression>> completionStep, org.lgna.project.ast.Expression[] values ) {
+		assert values.length == 1;
+		return new org.alice.stageide.sceneeditor.side.edits.MarkerColorIdEdit( completionStep, this.field, values[ 0 ] );
 	}
 }

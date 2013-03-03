@@ -103,8 +103,8 @@ public final class MutableListData<T> extends AbstractMutableListData<T> {
 	}
 
 	@Override
-	public void internalAddItem( T item ) {
-		this.values.add( item );
+	public void internalAddItem( int index, T item ) {
+		this.values.add( index, item );
 		this.fireContentsChanged();
 	}
 
