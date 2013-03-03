@@ -88,19 +88,34 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 				return new JPopupButton() {
 					@Override
 					public void paint( java.awt.Graphics g ) {
-						if( isFieldSelected() ) {
-							super.paint( g );
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						boolean isAlphaDesired = isFieldSelected();
+						java.awt.Composite prevComposite = g2.getComposite();
+						if( isAlphaDesired ) {
+							//pass
+						} else {
+							g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 0.2f ) );
 						}
+						try {
+							super.paint( g );
+						} finally {
+							if( isAlphaDesired ) {
+								//pass
+							} else {
+								g2.setComposite( prevComposite );
+							}
+						}
+
 					}
 
-					@Override
-					public boolean contains( int x, int y ) {
-						if( isFieldSelected() ) {
-							return super.contains( x, y );
-						} else {
-							return false;
-						}
-					}
+					//					@Override
+					//					public boolean contains( int x, int y ) {
+					//						if( isFieldSelected() ) {
+					//							return super.contains( x, y );
+					//						} else {
+					//							return false;
+					//						}
+					//					}
 				};
 			}
 		}
