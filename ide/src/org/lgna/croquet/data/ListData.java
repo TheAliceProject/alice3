@@ -75,7 +75,11 @@ public abstract class ListData<T> implements Iterable<T> {
 
 	public abstract int indexOf( T item );
 
-	public abstract void internalAddItem( T item );
+	public abstract void internalAddItem( int index, T item );
+
+	public final void internalAddItem( T item ) {
+		this.internalAddItem( this.getItemCount(), item );
+	}
 
 	public abstract void internalRemoveItem( T item );
 

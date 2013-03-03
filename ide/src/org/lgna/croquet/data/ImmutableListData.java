@@ -82,7 +82,7 @@ public final class ImmutableListData<T> extends ListData<T> {
 	}
 
 	@Override
-	public void internalAddItem( T item ) {
+	public void internalAddItem( int index, T item ) {
 		throw new UnsupportedOperationException();
 	}
 
