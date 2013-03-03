@@ -45,6 +45,10 @@ package org.lgna.ik.poser.view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.beans.Transient;
 
 import org.lgna.croquet.components.JComponent;
@@ -62,6 +66,30 @@ class JTimeLineView extends javax.swing.JComponent {
 		}
 	};
 
+	public int getTimeFromLocation( int x ) {
+		int time = (int)( ( (double)( x - getXMin() ) / ( getXMax() - getXMin() ) ) * ( timeLine.getEndTime() - timeLine.getStartTime() ) );
+		if( time < timeLine.getStartTime() ) {
+			return timeLine.getStartTime();
+		}
+		if( time > timeLine.getEndTime() ) {
+			return timeLine.getEndTime();
+		}
+		return time;
+	}
+
+	public int getXforTime( int time ) {
+		return (int)( ( (double)( time - timeLine.getStartTime() ) / ( (double)timeLine.getEndTime() - timeLine.getStartTime() ) )
+				* ( getXMax() - getXMin() ) ) + getXMin();
+	}
+
+	private int getXMin() {
+		return ( getWidth() * 1 ) / 32;
+	}
+
+	private int getXMax() {
+		return getWidth() - ( ( getWidth() * 1 ) / 24 );
+	}
+
 	public JTimeLineView( TimeLine timeLine ) {
 		this.timeLine = timeLine;
 		this.timeLine.addTimeLineListener( this.timeLineListener );
@@ -77,32 +105,88 @@ class JTimeLineView extends javax.swing.JComponent {
 	public void paint( Graphics g ) {
 		super.paint( g );
 		g.setColor( Color.RED );
-		g.fillOval( 0, 0, this.getWidth(), this.getHeight() );
-		int start = timeLine.getStartTime();
-		int end = timeLine.getEndTime();
+		g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), this.getHeight() / 4, this.getHeight() / 4 );
+		g.setColor( Color.BLACK );
+		g.drawLine( getXMin(), (int)( getHeight() * .5 ), getXMax(), (int)( getHeight() * .5 ) );
+		g.drawLine( getXMin(), (int)( ( getHeight() * .5 ) + ( getHeight() / 16 ) ), getXMin(), (int)( ( getHeight() * .5 ) - ( getHeight() / 16 ) ) );
+		g.drawLine( getXMax(), (int)( ( getHeight() * .5 ) + ( getHeight() / 16 ) ), getXMax(), (int)( ( getHeight() * .5 ) - ( getHeight() / 16 ) ) );
+		Point[] pArr = this.getPointsForSlider();
+		int[] xArr = new int[ pArr.length ];
+		int[] yArr = new int[ pArr.length ];
+		for( int i = 0; i != pArr.length; ++i ) {
+			xArr[ i ] = pArr[ i ].x;
+			yArr[ i ] = pArr[ i ].y;
+		}
+		g.fillPolygon( xArr, yArr, pArr.length );
 		for( PoseEvent o : timeLine.getPosesInTimeline() ) {
-			int x = calculateX( start, o.getEventTime(), end );
+			int x = getXforTime( o.getEventTime() );
 			g.drawLine( x, 0, x, getHeight() );
 		}
 	}
 
-	private int calculateX( int start, int eventTime, int end ) {
-		return 0;//(( double ) end - start ) / 
+	private Point[] getPointsForSlider() {
+		Point arrow = new Point( getXforTime( timeLine.getCurrentTime() ), ( this.getHeight() ) / 2 );
+		Point leftBase = new Point( arrow.x + ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
+		Point rightBase = new Point( arrow.x - ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
+		int[] xPoints = { arrow.x, leftBase.x, rightBase.x };
+		int[] yPoints = { arrow.y, leftBase.y, rightBase.y };
+		Point[] rv = { arrow, leftBase, rightBase };
+		return rv;
+	}
+
+	public void updateSlider( MouseEvent e ) {
+		this.timeLine.setCurrentTime( getTimeFromLocation( e.getLocationOnScreen().x ) );
+	}
+
+	public boolean isClickingOnSlider( Point locationOnScreen ) {
+
+		return false;
 	}
 }
 
 /**
  * @author Matt May
  */
-public class TimeLineView extends JComponent<JTimeLineView> {
+public class TimeLineView extends JComponent<JTimeLineView> implements MouseListener, MouseMotionListener {
 	private final TimeLine timeLine;
+	private boolean isSliding = false;
 
 	public TimeLineView( TimeLine timeLine ) {
 		this.timeLine = timeLine;
+		addMouseMotionListener( this );
+		addMouseListener( this );
 	}
 
 	@Override
 	protected JTimeLineView createAwtComponent() {
 		return new JTimeLineView( this.timeLine );
+	}
+
+	public void mouseClicked( MouseEvent e ) {
+	}
+
+	public void mousePressed( MouseEvent e ) {
+		if( getAwtComponent().isClickingOnSlider( e.getLocationOnScreen() ) ) {
+			isSliding = true;
+		}
+	}
+
+	public void mouseReleased( MouseEvent e ) {
+		isSliding = false;
+	}
+
+	public void mouseEntered( MouseEvent e ) {
+	}
+
+	public void mouseExited( MouseEvent e ) {
+	}
+
+	public void mouseDragged( MouseEvent e ) {
+		if( isSliding ) {
+			this.getAwtComponent().updateSlider( e );
+		}
+	}
+
+	public void mouseMoved( MouseEvent e ) {
 	}
 }

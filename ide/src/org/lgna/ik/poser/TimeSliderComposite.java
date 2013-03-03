@@ -44,32 +44,35 @@ package org.lgna.ik.poser;
 
 import java.util.List;
 
-import org.lgna.ik.poser.events.TimeLineListener;
+import org.lgna.croquet.FrameComposite;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;
 import org.lgna.story.SetPose.Detail;
 
-import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class TimeLine {
-	private int startTime = 0;
-	private int currTime = 5;
-	private int endTime = 10;
+public class TimeSliderComposite extends FrameComposite<TimeSliderView> {
 
-	private final List<PoseEvent> posesInTimeline = Collections.newCopyOnWriteArrayList();
+	public TimeSliderComposite() {
+		super( java.util.UUID.fromString( "28729b9b-9934-4c5f-8822-fba9cb91fb6c" ), null );
+	}
 
-	private final List<TimeLineListener> listeners = Collections.newCopyOnWriteArrayList();
+	private double startTime = 0;
+	private double currTime = 0;
+	private double endTime = 0;
 
-	public class PoseEvent {
+	private List<PoseEvent> posesInTimeline = Collections.newLinkedList();
 
-		private int eventTime;
+	private class PoseEvent {
+
+		private double eventTime;
 		private Pose pose;
 		private AnimationStyle style = AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY;
 
-		PoseEvent( int time, Pose pose ) {
+		PoseEvent( double time, Pose pose ) {
 			this.eventTime = time;
 			this.pose = pose;
 		}
@@ -78,40 +81,11 @@ public class TimeLine {
 			this.style = style;
 		}
 
-		public int getEventTime() {
-			return this.eventTime;
-		}
-
-	}
-
-	public void addTimeLineListener( TimeLineListener listener ) {
-		this.listeners.add( listener );
-	}
-
-	public void removeTimeLineListener( TimeLineListener listener ) {
-		this.listeners.remove( listener );
-	}
-
-	private void fireChanged() {
-		for( TimeLineListener listener : this.listeners ) {
-			listener.changed();
-		}
 	}
 
 	public void addEventAtCurrentTime( Pose pose ) {
 		PoseEvent poseEvent = new PoseEvent( currTime, pose );
 		insertPoseEvent( poseEvent );
-	}
-
-	private void insertPoseEvent( PoseEvent poseEvent ) {
-		for( int i = 0; i != posesInTimeline.size(); ++i ) {
-			if( posesInTimeline.get( i ).eventTime < poseEvent.eventTime ) {
-				posesInTimeline.add( i, poseEvent );
-				return;
-			}
-		}
-		posesInTimeline.add( poseEvent );
-		this.fireChanged();
 	}
 
 	public Detail[] getParametersForPose( Pose pose ) {
@@ -130,24 +104,19 @@ public class TimeLine {
 		return rv;
 	}
 
-	public List<PoseEvent> getPosesInTimeline() {
-		return this.posesInTimeline;
+	private void insertPoseEvent( PoseEvent poseEvent ) {
+		for( int i = 0; i != posesInTimeline.size(); ++i ) {
+			if( posesInTimeline.get( i ).eventTime < poseEvent.eventTime ) {
+				posesInTimeline.add( i, poseEvent );
+				return;
+			}
+		}
+		posesInTimeline.add( poseEvent );
 	}
 
-	public int getStartTime() {
-		return startTime;
+	@Override
+	protected TimeSliderView createView() {
+		return new TimeSliderView( this );
 	}
 
-	public int getEndTime() {
-		return endTime;
-	}
-
-	public int getCurrentTime() {
-		return currTime;
-	}
-
-	public void setCurrentTime( int time ) {
-		this.currTime = time;
-		fireChanged();
-	}
 }
