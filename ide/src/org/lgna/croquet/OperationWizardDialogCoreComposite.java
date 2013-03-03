@@ -70,33 +70,60 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
 	}
 
+	protected boolean isAutoCommitWorthAttempting() {
+		return false;
+	}
+
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
+	private void createAndCommitEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		try {
+			org.lgna.croquet.edits.Edit edit = this.createEdit( completionStep );
+			if( edit != null ) {
+				completionStep.commitAndInvokeDo( edit );
+			} else {
+				completionStep.finish();
+			}
+		} catch( CancelException ce ) {
+			completionStep.cancel();
+		}
+	}
+
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
-			@Override
-			public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-				super.handlePostHideDialog( completionStep );
-				Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
-				if( isCommited != null ) { // close button condition
-					if( isCommited ) {
-						try {
-							org.lgna.croquet.edits.Edit edit = createEdit( completionStep );
-							if( edit != null ) {
-								completionStep.commitAndInvokeDo( edit );
-							} else {
-								completionStep.finish();
-							}
-						} catch( CancelException ce ) {
+		boolean isAutoCommitDesired;
+		if( this.isAutoCommitWorthAttempting() ) {
+			java.util.Iterator<WizardPageComposite<?>> iterator = this.getWizardPageIterator();
+			isAutoCommitDesired = true;
+			while( iterator.hasNext() ) {
+				WizardPageComposite<?> page = iterator.next();
+				if( page.isAutoAdvanceDesired( completionStep ) ) {
+					//pass
+				} else {
+					isAutoCommitDesired = false;
+				}
+			}
+		} else {
+			isAutoCommitDesired = false;
+		}
+		if( isAutoCommitDesired ) {
+			this.createAndCommitEdit( completionStep );
+		} else {
+			org.lgna.croquet.dialog.DialogUtilities.showDialog( new DialogOwner( this ) {
+				@Override
+				public void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+					super.handlePostHideDialog( completionStep );
+					Boolean isCommited = completionStep.getEphemeralDataFor( IS_COMMITED_KEY );
+					if( isCommited != null ) { // close button condition
+						if( isCommited ) {
+							createAndCommitEdit( completionStep );
+						} else {
 							completionStep.cancel();
 						}
 					} else {
 						completionStep.cancel();
 					}
-				} else {
-					completionStep.cancel();
 				}
-			}
-		}, completionStep );
+			}, completionStep );
+		}
 	}
 }

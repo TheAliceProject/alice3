@@ -46,11 +46,11 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillIn<F extends org.lgna.project.ast.Expression, B> extends org.lgna.croquet.CascadeFillIn<F, B> {
+public abstract class ExpressionFillIn<F extends org.lgna.project.ast.Expression, B> extends org.lgna.croquet.ImmutableCascadeFillIn<F, B> {
 	private String text;
 
-	public ExpressionFillIn( java.util.UUID id ) {
-		super( id );
+	public ExpressionFillIn( java.util.UUID id, org.lgna.croquet.CascadeBlank<B>... blanks ) {
+		super( id, blanks );
 	}
 
 	@Override

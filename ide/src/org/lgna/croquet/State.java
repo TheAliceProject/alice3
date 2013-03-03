@@ -223,12 +223,24 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 
 	protected abstract void setSwingValue( T nextValue );
 
+	protected boolean isSwingValueValid() {
+		return true;
+	}
+
 	private void updateSwingModelIfAppropriate( T nextValue, Origin origin ) {
 		if( origin.isUpdatingSwingAppropriate() ) {
-			T prevSwingValue = this.getSwingValue();
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevSwingValue, nextValue ) ) {
-				//pass
+			boolean isUpdatingSwingValueAppropriate;
+			if( this.isSwingValueValid() ) {
+				T prevSwingValue = this.getSwingValue();
+				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevSwingValue, nextValue ) ) {
+					isUpdatingSwingValueAppropriate = false;
+				} else {
+					isUpdatingSwingValueAppropriate = true;
+				}
 			} else {
+				isUpdatingSwingValueAppropriate = true;
+			}
+			if( isUpdatingSwingValueAppropriate ) {
 				this.setSwingValue( nextValue );
 			}
 		}
@@ -306,9 +318,6 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 		if( this.atomicCount == 0 ) {
 			T nextValue = this.getCurrentTruthAndBeautyValue();
 			this.changeValue( this.prevValueAtStartOfAtomicChange, nextValue, IsAdjusting.FALSE, NULL_TRIGGER, Origin.FROM_SET_VALUE_TRANSACTIONLESSLY );
-		}
-		if( this.atomicCount < 0 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.atomicCount );
 		}
 	}
 

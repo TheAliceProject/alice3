@@ -295,8 +295,13 @@ public class TypeManager {
 
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromPersonResource( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		org.lgna.project.ast.JavaType bipedType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class );
-		//org.lgna.project.ast.JavaType bipedResourceType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.BipedResource.class );
 		org.lgna.project.ast.AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( bipedType, org.lgna.project.ast.JavaType.getInstance( personResource.getClass() ) );
+		return getNamedUserTypeFor( bipedType, argumentTypes, 0, null );
+	}
+
+	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromPersonResourceInstanceCreation( org.lgna.project.ast.InstanceCreation instanceCreation ) {
+		org.lgna.project.ast.JavaType bipedType = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class );
+		org.lgna.project.ast.AbstractType<?, ?, ?>[] argumentTypes = getArgumentTypes( bipedType, instanceCreation.getType() );
 		return getNamedUserTypeFor( bipedType, argumentTypes, 0, null );
 	}
 

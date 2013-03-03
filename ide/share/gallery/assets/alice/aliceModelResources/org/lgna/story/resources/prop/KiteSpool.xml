@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="KiteSpool">
+    <BoundingBox>
+        <Min x="-0.19670552015304565" y="0.0" z="-0.07733761519193649"/>
+        <Max x="0.19670552015304565" y="0.14710479974746704" z="0.07733761519193649"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>toy</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props:kite</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:kite</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="KiteSpool" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

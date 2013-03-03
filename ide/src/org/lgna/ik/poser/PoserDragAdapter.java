@@ -173,11 +173,11 @@ public class PoserDragAdapter extends AbstractDragAdapter implements PoserSphere
 	}
 
 	private void setUpCameraControls() {
-		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
-		MouseDragCondition leftAndShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.JUST_SHIFT ) );
-		MouseDragCondition leftAndControl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.JUST_CONTROL ) );
-		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2, new PickCondition( PickHint.ANYTHING ) );
-		MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3, new PickCondition( PickHint.NON_INTERACTIVE ) );
+		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ) );
+		MouseDragCondition leftAndShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_SHIFT ) );
+		MouseDragCondition leftAndControl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.getNonInteractiveHint() ), new ModifierMask( ModifierMask.JUST_CONTROL ) );
+		MouseDragCondition middleMouseAndAnything = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON2, new PickCondition( PickHint.getAnythingHint() ) );
+		MouseDragCondition rightMouseAndNonInteractive = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3, new PickCondition( PickHint.getNonInteractiveHint() ) );
 
 		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
 		cameraOrbit.addCondition( middleMouseAndAnything );

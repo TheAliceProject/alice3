@@ -46,7 +46,7 @@ package org.alice.ide.instancefactory.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, Void> {
+public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, Void> {
 	private class PropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}

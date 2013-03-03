@@ -392,6 +392,13 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 
+	public void setHandlVisibility( boolean isVisible )
+	{
+		if( this.handleManager != null ) {
+			this.handleManager.setHandlesShowing( isVisible );
+		}
+	}
+
 	public void triggerImplementationSelection( AbstractTransformableImp selected )
 	{
 		if( this.selectedObject != selected )

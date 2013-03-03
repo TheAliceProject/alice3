@@ -75,7 +75,7 @@ public class ScaledIcon extends AbstractScaledIcon {
 	}
 
 	@Override
-	protected void paintSource( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+	protected void paintSource( java.awt.Component c, java.awt.Graphics g ) {
 		this.sourceIcon.paintIcon( c, g, 0, 0 );
 	}
 }

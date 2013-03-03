@@ -58,8 +58,7 @@ public class StringConcatinationRightOperandOnlyFillIn extends org.alice.ide.cro
 	private final org.lgna.project.ast.StringConcatenation transientValue;
 
 	private StringConcatinationRightOperandOnlyFillIn() {
-		super( java.util.UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ) );
-		this.addBlank( org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
+		super( java.util.UUID.fromString( "1470e7b1-4f71-4d1b-8f3d-bbd708d64282" ), org.alice.ide.croquet.models.cascade.CascadeManager.getBlankForType( Object.class ) );
 		this.transientValue = new org.lgna.project.ast.StringConcatenation(
 				new org.alice.ide.ast.PreviousValueExpression( Object.class ),
 				new org.alice.ide.ast.EmptyExpression( Object.class )

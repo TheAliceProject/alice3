@@ -47,23 +47,11 @@ package org.lgna.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class CascadeBlankOwner<F, B> extends CascadeItem<F, B> {
-	private java.util.List<CascadeBlank<B>> blanks = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-
 	public CascadeBlankOwner( java.util.UUID id ) {
 		super( id );
 	}
 
-	public void addBlank( CascadeBlank<B> blank ) {
-		assert blank != null : this;
-		this.blanks.add( blank );
-	}
-
-	//	@Override
-	public CascadeBlank<B>[] getBlanks() {
-		CascadeBlank<B>[] rv = new CascadeBlank[ this.blanks.size() ];
-		this.blanks.toArray( rv );
-		return rv;
-	}
+	public abstract java.util.List<? extends CascadeBlank<B>> getBlanks();
 
 	@Override
 	public Iterable<CascadeItem<B, ?>> getChildren() {

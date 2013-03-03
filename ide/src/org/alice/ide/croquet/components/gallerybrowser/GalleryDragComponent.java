@@ -115,9 +115,9 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 				if( modelResourceInterfaces.length > 0 ) {
 					Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
 					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
-						org.lgna.croquet.icon.IconFactory superclsIconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
-						if( ( superclsIconFactory != null ) && ( superclsIconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
-							javax.swing.Icon icon = superclsIconFactory.getIcon( new java.awt.Dimension( 32, 24 ) );
+						javax.swing.Icon icon = org.alice.stageide.icons.IconFactoryManager.getSmallImageIconFor( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
+						if( icon != null ) {
+							icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( icon, 0.8f );
 							SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
 							superclsLabel.getAwtComponent().setIcon( icon );
 							this.internalAddComponent( superclsLabel, java.awt.BorderLayout.LINE_START );
@@ -141,7 +141,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
 		return new java.awt.LayoutManager() {
 			public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
 			}
@@ -242,7 +242,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		java.awt.geom.RoundRectangle2D.Float shape = this.createShape( x, y, width, height );
-		if( this.getAwtComponent().getModel().isPressed() ) {
+		if( this.isPressed() ) {
 			g2.setPaint( this.baseColor );
 			g2.fill( shape );
 		} else {

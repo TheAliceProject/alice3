@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="Yeti">
+    <BoundingBox>
+        <Min x="-0.8277931809425354" y="0.0" z="-0.6280850470066071"/>
+        <Max x="0.8277931809425354" y="2.4585642595775425" z="0.6280850470066071"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>yeti</Tag>
+        <Tag>monster</Tag>
+        <Tag>abominable</Tag>
+        <Tag>villain</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>characters</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Yeti" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

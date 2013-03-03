@@ -78,8 +78,8 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		this.addComponent( org.alice.ide.x.TemplateAstI18nFactory.getInstance().createComponent( incompleteExpression ) );
 	}
 
-	@Override
-	protected boolean isPressed() {
-		return false;
-	}
+	//	@Override
+	//	protected boolean isPressed() {
+	//		return false;
+	//	}
 }

@@ -79,15 +79,16 @@ public abstract class ListDataView<T> extends Panel {
 
 	@Override
 	protected void handleDisplayable() {
-		super.handleDisplayable();
 		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
 		composite.getData().addListener( this.listDataListener );
+		this.refreshLater();
+		super.handleDisplayable();
 	}
 
 	@Override
 	protected void handleUndisplayable() {
+		super.handleUndisplayable();
 		org.lgna.croquet.ListDataComposite<T, ?> composite = (org.lgna.croquet.ListDataComposite<T, ?>)this.getComposite();
 		composite.getData().removeListener( this.listDataListener );
-		super.handleUndisplayable();
 	}
 }

@@ -58,6 +58,8 @@ public final class ThumbnailGenerator {
 			org.alice.stageide.sceneeditor.StorytellingSceneEditor sceneEditor = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();
 			if( sgCamera != null ) {
+				sceneEditor.preScreenCapture();
+
 				boolean isClearingAndAddingRequired;
 				if( offscreenLookingGlass.getCameraCount() == 1 ) {
 					if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {
@@ -72,7 +74,10 @@ public final class ThumbnailGenerator {
 					offscreenLookingGlass.clearCameras();
 					offscreenLookingGlass.addCamera( sgCamera );
 				}
-				return offscreenLookingGlass.getColorBuffer();
+				java.awt.image.BufferedImage thumbImage = offscreenLookingGlass.getColorBuffer();
+
+				sceneEditor.postScreenCapture();
+				return thumbImage;
 			} else {
 				return null;
 			}

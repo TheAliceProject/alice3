@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="Piranha">
+    <BoundingBox>
+        <Min x="-0.14227499067783356" y="0.0" z="-0.31873810291290283"/>
+        <Max x="0.14227499067783356" y="0.37740590795874596" z="0.31873810291290283"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>river</Tag>
+        <Tag>underwater</Tag>
+        <Tag>fish</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Piranha" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

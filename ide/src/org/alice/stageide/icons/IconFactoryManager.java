@@ -64,17 +64,30 @@ public class IconFactoryManager {
 		return setOfClassesWithIcons;
 	}
 
-	private static javax.swing.ImageIcon getIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+	private static javax.swing.ImageIcon getIcon( Class<?> cls, boolean isSmall ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "images/" );
 		sb.append( cls.getName().replace( ".", "/" ) );
+		if( isSmall ) {
+			sb.append( "_small" );
+		}
 		sb.append( ".png" );
 		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel.class.getResource( sb.toString() ) );
 	}
 
-	private static javax.swing.ImageIcon getIcon( Class<?> cls ) {
-		return getIcon( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	private static java.util.Map<Class<? extends org.lgna.story.resources.ModelResource>, javax.swing.ImageIcon> mapClsToSmallImageIcon = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static javax.swing.ImageIcon getSmallImageIconFor( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
+		synchronized( mapClsToSmallImageIcon ) {
+			javax.swing.ImageIcon rv = mapClsToSmallImageIcon.get( cls );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = getIcon( cls, true );
+				mapClsToSmallImageIcon.put( cls, rv );
+			}
+			return rv;
+		}
 	}
 
 	private static abstract class UrlResourceDeclaration implements ResourceDeclaration {
@@ -89,7 +102,7 @@ public class IconFactoryManager {
 				//pass
 			} else {
 				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
-					javax.swing.ImageIcon imageIcon = getIcon( modelResourceCls );
+					javax.swing.ImageIcon imageIcon = getIcon( modelResourceCls, false );
 					//return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
 					return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
 				}
@@ -216,8 +229,15 @@ public class IconFactoryManager {
 			if( this.instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
 				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.instance;
 				try {
-					java.awt.image.BufferedImage image = org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance().createThumbnailFromPersonResource( personResource );
-					return new org.lgna.croquet.icon.ImageIconFactory( image );
+					org.lgna.story.resourceutilities.AliceThumbnailMaker thumbnailMaker = org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance();
+					java.awt.image.BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource( personResource );
+					int width = thumbnailMaker.getWidth();
+					int height = thumbnailMaker.getHeight();
+					if( ( width == image.getWidth() ) && ( height == image.getHeight() ) ) {
+						return new org.lgna.croquet.icon.ImageIconFactory( image );
+					} else {
+						return new org.lgna.croquet.icon.TrimmedImageIconFactory( image, width, height );
+					}
 				} catch( Throwable t ) {
 					t.printStackTrace();
 					return org.lgna.croquet.icon.EmptyIconFactory.getInstance();

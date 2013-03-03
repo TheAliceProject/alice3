@@ -65,9 +65,14 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 	public static class InternalRoot<T> extends org.lgna.croquet.CascadeRoot<T, CustomItemState<T>> {
 		private final CustomItemState<T> state;
 
-		private InternalRoot( CustomItemState<T> state, CascadeBlank<T>... blanks ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
+		private InternalRoot( CustomItemState<T> state ) {
+			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ) );
 			this.state = state;
+		}
+
+		@Override
+		public java.util.List<? extends CascadeBlank<T>> getBlanks() {
+			return this.state.getBlanks();
 		}
 
 		@Override
@@ -119,10 +124,12 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 
 	private final InternalRoot<T> root;
 
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec, CascadeBlank<T>... blanks ) {
+	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec ) {
 		super( group, id, initialValue, itemCodec );
-		this.root = new InternalRoot<T>( this, blanks );
+		this.root = new InternalRoot<T>( this );
 	}
+
+	protected abstract java.util.List<? extends CascadeBlank<T>> getBlanks();
 
 	public InternalRoot<T> getCascadeRoot() {
 		return this.root;

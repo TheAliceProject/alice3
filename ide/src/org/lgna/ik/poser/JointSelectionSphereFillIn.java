@@ -48,7 +48,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.lgna.croquet.CascadeBlankChild;
-import org.lgna.croquet.CascadeFillIn;
 import org.lgna.croquet.cascade.ItemNode;
 import org.lgna.croquet.history.TransactionHistory;
 
@@ -57,7 +56,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class JointSelectionSphereFillIn extends CascadeFillIn<JointSelectionSphere, Void> {
+public class JointSelectionSphereFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<JointSelectionSphere, Void> {
 
 	private static Map<JointSelectionSphere, JointSelectionSphereFillIn> map = Collections.newHashMap();
 	private final JointSelectionSphere sphere;

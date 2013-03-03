@@ -77,6 +77,17 @@ public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declarat
 
 	protected abstract AffineMatrix4x4 getInitialMarkerTransform();
 
+	@Override
+	protected boolean isNameGenerationDesired() {
+		//todo?
+		return true;
+	}
+
+	@Override
+	protected boolean isNumberAppendedToNameOfFirstField() {
+		return true;
+	}
+
 	private static org.lgna.project.ast.JavaMethod COLOR_ID_SETTER = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SMarker.class, "setColorId", org.lgna.story.Color.class );
 
 	@Override

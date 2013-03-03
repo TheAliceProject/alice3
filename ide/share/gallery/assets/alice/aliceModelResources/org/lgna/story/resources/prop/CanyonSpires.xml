@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="CanyonSpires">
+    <BoundingBox>
+        <Min x="-0.6374193131923676" y="0.0" z="-0.9021695256233215"/>
+        <Max x="0.6374193131923676" y="2.216184681688901" z="0.9021695256233215"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>cliff</Tag>
+        <Tag>mountain</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="CanyonSpires" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -687,6 +687,13 @@ public class FolderTabbedPane<E extends org.lgna.croquet.TabComposite<?>> extend
 	}
 
 	@Override
+	public void setBackgroundColor( java.awt.Color color ) {
+		super.setBackgroundColor( color );
+		this.titlesPanel.setBackgroundColor( color );
+		this.titlesScrollPane.setBackgroundColor( color );
+	}
+
+	@Override
 	protected void addEpilogue() {
 	}
 }

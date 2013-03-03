@@ -72,6 +72,9 @@ public class ExpressionCascadeManager extends org.alice.ide.cascade.ExpressionCa
 		this.addExpressionFillerInner( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		//this.addExpressionFillerInner( org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner.getInstance( org.lgna.story.Color.class ) );
 
+		this.addExpressionFillerInner( new org.alice.stageide.personresource.cascade.AdultPersonResourceFillerInner() );
+		this.addExpressionFillerInner( new org.alice.stageide.personresource.cascade.ChildPersonResourceFillerInner() );
+
 		this.addRelationalTypeToBooleanFillerInner( org.lgna.story.SThing.class );
 	}
 

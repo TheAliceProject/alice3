@@ -499,8 +499,12 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return m_glEventAdapter.createBufferedImageForUseAsColorBuffer();
 	}
 
+	public java.awt.image.BufferedImage getColorBufferNotBotheringToFlipVertically( java.awt.image.BufferedImage rv, boolean[] atIsUpsideDown ) {
+		return m_glEventAdapter.getColorBuffer( rv, atIsUpsideDown );
+	}
+
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
-		return m_glEventAdapter.getColorBuffer( rv );
+		return m_glEventAdapter.getColorBuffer( rv, null );
 	}
 
 	public final java.awt.image.BufferedImage getColorBuffer() {
@@ -524,7 +528,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	}
 
 	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
-		return m_glEventAdapter.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer );
+		return m_glEventAdapter.getColorBufferWithTransparencyBasedOnDepthBuffer( rv, depthBuffer, null );
 	}
 
 	public final java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer() {

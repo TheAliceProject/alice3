@@ -49,7 +49,6 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.beans.Transient;
 
 import org.lgna.croquet.components.JComponent;
 import org.lgna.ik.poser.TimeLine;
@@ -96,7 +95,6 @@ class JTimeLineView extends javax.swing.JComponent {
 	}
 
 	@Override
-	@Transient
 	public Dimension getPreferredSize() {
 		return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 100 );
 	}
@@ -128,8 +126,6 @@ class JTimeLineView extends javax.swing.JComponent {
 		Point arrow = new Point( getXforTime( timeLine.getCurrentTime() ), ( this.getHeight() ) / 2 );
 		Point leftBase = new Point( arrow.x + ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
 		Point rightBase = new Point( arrow.x - ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
-		int[] xPoints = { arrow.x, leftBase.x, rightBase.x };
-		int[] yPoints = { arrow.y, leftBase.y, rightBase.y };
 		Point[] rv = { arrow, leftBase, rightBase };
 		return rv;
 	}

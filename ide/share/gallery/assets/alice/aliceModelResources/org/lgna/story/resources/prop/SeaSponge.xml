@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="SeaSponge">
+    <BoundingBox>
+        <Min x="-0.048655590042471886" y="0.0" z="-0.042144592851400375"/>
+        <Max x="0.048655590042471886" y="0.2002411037683487" z="0.042144592851400375"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>seaweed</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Double" resourceName="DOUBLE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.048655590042471886" y="0.0" z="-0.042144592851400375"/>
+            <Max x="0.048655590042471886" y="0.2002411037683487" z="0.042144592851400375"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Short" resourceName="SHORT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.01968715712428093" y="0.0" z="-0.02004417683929205"/>
+            <Max x="0.01968715712428093" y="0.05555680944235064" z="0.02004417683929205"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tall" resourceName="TALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.02303522452712059" y="0.0" z="-0.02266610972583294"/>
+            <Max x="0.02303522452712059" y="0.1410539597272873" z="0.02266610972583294"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

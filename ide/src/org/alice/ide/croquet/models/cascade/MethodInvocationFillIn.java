@@ -50,15 +50,20 @@ public abstract class MethodInvocationFillIn extends ExpressionFillInWithExpress
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 
 	public MethodInvocationFillIn( java.util.UUID id, org.lgna.project.ast.Expression transientValueExpression, org.lgna.project.ast.AbstractMethod method ) {
-		super( id );
+		super( id, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( transientValueExpression, method );
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
-			ParameterBlank parameterBlank = ParameterBlank.getInstance( parameter );
-			this.addBlank( parameterBlank );
-		}
 	}
 
 	protected abstract org.lgna.project.ast.Expression createExpression( org.lgna.project.ast.Expression transientValueExpression );
+
+	@Override
+	public java.util.List<org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>> getBlanks() {
+		if( this.transientValue.method.getValue().isUserAuthored() ) {
+			return (java.util.List)edu.cmu.cs.dennisc.java.util.Collections.newArrayList( org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( this.transientValue.method.getValue() ) );
+		} else {
+			return super.getBlanks();
+		}
+	}
 
 	@Override
 	protected org.lgna.project.ast.MethodInvocation createValue( org.lgna.project.ast.Expression[] expressions ) {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="CoralShelf">
+    <BoundingBox>
+        <Min x="-0.2625688686966896" y="0.0" z="-0.19232005602680147"/>
+        <Max x="0.2625688686966896" y="0.1742551868665032" z="0.19232005602680147"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>coral</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Pink" resourceName="PINK" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2625688686966896" y="0.0" z="-0.19232005602680147"/>
+            <Max x="0.2625688686966896" y="0.1698756772093475" z="0.19232005602680147"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Yellow" resourceName="YELLOW" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.13606040179729462" y="0.0" z="-0.08780177496373653"/>
+            <Max x="0.13606040179729462" y="0.1742551868665032" z="0.08780177496373653"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>
