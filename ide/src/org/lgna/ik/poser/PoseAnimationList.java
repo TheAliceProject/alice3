@@ -110,8 +110,8 @@ public class PoseAnimationList extends AbstractMutableListData<PoseAnimation> {
 	}
 
 	@Override
-	public void internalAddItem( PoseAnimation item ) {
-		values.add( item );
+	public void internalAddItem( int index, org.lgna.ik.poser.PoseAnimation item ) {
+		values.add( index, item );
 	}
 
 	@Override
