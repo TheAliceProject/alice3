@@ -73,6 +73,8 @@ public class ToolPaletteTabbedPane<E extends org.lgna.croquet.TabComposite<?>> e
 					javax.swing.ButtonModel buttonModel = button.getModel();
 					rv.width = Math.max( rv.width, button.getPreferredSize().width );
 					rv.width = Math.max( rv.width, contents.getPreferredSize().width );
+
+					//todo: investigate why not preferredSize
 					rv.height += button.getHeight();
 					if( buttonModel.isSelected() ) {
 						rv.height += contents.getPreferredSize().height;

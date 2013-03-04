@@ -66,11 +66,10 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 		fieldsToolPalette.setBackgroundColor( theme.getFieldColor() );
 
 		for( org.lgna.croquet.components.ToolPaletteView toolPalette : new org.lgna.croquet.components.ToolPaletteView[] { constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette } ) {
-			toolPalette.getPageStartComponent().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-			toolPalette.getPageStartComponent().scaleFont( 1.4f );
+			toolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+			toolPalette.getTitle().scaleFont( 1.4f );
 			toolPalette.getTitle().setRoundedOnTop( true );
-			org.lgna.croquet.components.JComponent<?> centerComponent = (org.lgna.croquet.components.JComponent<?>)toolPalette.getCenterComponent();
-			centerComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
+			toolPalette.getCenterView().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
 		}
 
 		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
