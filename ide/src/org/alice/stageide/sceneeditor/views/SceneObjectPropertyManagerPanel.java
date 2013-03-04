@@ -476,22 +476,24 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 						this.addPropertyToPanel( fieldNamePair, this, mainPropertyCount++ );
 					}
 
-					org.lgna.croquet.components.JComponent<?> initializerComponent = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false );
-					initializerComponent.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.LIGHT_GRAY ) );
+					if( selectedField != null ) {
+						org.lgna.croquet.components.JComponent<?> initializerComponent = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false );
+						initializerComponent.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.LIGHT_GRAY ) );
 
-					this.addComponent( initializerComponent, new GridBagConstraints(
-							0, //gridX
-							mainPropertyCount++, //gridY 
-							2, //gridWidth
-							1, //gridHeight
-							0.0, //weightX
-							0.0, //weightY
-							GridBagConstraints.WEST, //anchor 
-							GridBagConstraints.NONE, //fill
-							new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
-							0, //ipadX
-							0 ) //ipadY
-					);
+						this.addComponent( initializerComponent, new GridBagConstraints(
+								0, //gridX
+								mainPropertyCount++, //gridY 
+								2, //gridWidth
+								1, //gridHeight
+								0.0, //weightX
+								0.0, //weightY
+								GridBagConstraints.WEST, //anchor 
+								GridBagConstraints.NONE, //fill
+								new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
+								0, //ipadX
+								0 ) //ipadY
+						);
+					}
 
 					//Lastly, add the extra palette if there are any extra properties
 					if( extraPropertyCount > 0 )
