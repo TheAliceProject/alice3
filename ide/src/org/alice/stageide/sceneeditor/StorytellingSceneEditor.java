@@ -873,6 +873,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.getVM().ENTRY_POINT_invoke( sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME ) );
 
 			getPropertyPanel().setSceneInstance( sceneAliceInstance );
+
 			//			getObjectMarkerPanel().setType( sceneAliceInstance.getType() );
 			//			getCameraMarkerPanel().setType( sceneAliceInstance.getType() );
 			this.instanceFactorySelectionPanel.setType( sceneAliceInstance.getType() );
@@ -942,6 +943,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			for( org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields() )
 			{
+				//Turn markers on so they're visible in the scene editor (note: markers are hidden by default so that when a world runs they aren't scene. we have to manually make them visible to see them in the scene editor)
+				if( field.getValueType().isAssignableTo( org.lgna.story.SMarker.class ) ) {
+					org.lgna.story.SMarker marker = this.getInstanceInJavaVMForField( field, org.lgna.story.SMarker.class );
+					MarkerImp markerImp = ImplementationAccessor.getImplementation( marker );
+					markerImp.setDisplayVisuals( true );
+					markerImp.setShowing( true );
+				}
 				if( field instanceof UserField )
 				{
 					UserField userField = (UserField)field;
