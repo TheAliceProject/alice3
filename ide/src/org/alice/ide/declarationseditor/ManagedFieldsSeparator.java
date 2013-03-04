@@ -54,7 +54,7 @@ public final class ManagedFieldsSeparator extends org.lgna.croquet.LabelMenuSepa
 		return SingletonHolder.instance;
 	}
 
-	public ManagedFieldsSeparator() {
+	private ManagedFieldsSeparator() {
 		super( java.util.UUID.fromString( "caf3cea7-4ddc-4951-9657-f165ebdbdeab" ) );
 	}
 }

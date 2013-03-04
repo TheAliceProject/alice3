@@ -45,32 +45,28 @@ package org.alice.ide.declarationseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationMenu extends org.lgna.croquet.MenuModel {
-	public DeclarationMenu() {
-		super( java.util.UUID.fromString( "dabfd4e0-d835-4d7c-b3b0-922fb67bada1" ) );
+public class ClassesSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static class SingletonHolder {
+		private static ClassesSeparator instance = new ClassesSeparator();
 	}
 
-	private void addTypeFillIns( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> node ) {
-		org.lgna.project.ast.NamedUserType type = node.getValue();
-		if( type != null ) {
-			models.add( TypeMenu.getInstance( type ) );
-		}
-		for( edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> child : node.getChildren() ) {
-			addTypeFillIns( models, child );
-		}
+	public static ClassesSeparator getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ClassesSeparator() {
+		super( java.util.UUID.fromString( "4fefc3e8-3440-4177-b644-48551de6bb33" ) );
 	}
 
 	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	protected void localize() {
+		super.localize();
+		String text = super.getName();
+		this.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.TextIcon( text, java.awt.Color.GRAY, new java.awt.Font( java.awt.Font.SANS_SERIF, java.awt.Font.ITALIC, 12 ) ) );
+	}
 
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
-
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		models.add( ClassesSeparator.getInstance() );
-		addTypeFillIns( models, root );
-
-		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
+	@Override
+	public String getName() {
+		return null;
 	}
 }
