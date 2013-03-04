@@ -1069,10 +1069,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	@Override
 	public org.lgna.project.ast.Statement[] getDoStatementsForAddField( org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform ) {
-		return this.getDoStatementsForAddField( field, initialTransform, null );
-	}
-
-	public org.lgna.project.ast.Statement[] getDoStatementsForAddField( org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform, org.lgna.story.Paint initialPaint ) {
 		if( ( initialTransform == null ) && field.getValueType().isAssignableTo( org.lgna.story.SModel.class ) )
 		{
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
@@ -1086,7 +1082,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			Point3 location = new Point3( 0, y, 0 );
 			initialTransform = new AffineMatrix4x4( OrthogonalMatrix3x3.createIdentity(), location );
 		}
-		return SetUpMethodGenerator.getSetupStatementsForField( false, field, this.getActiveSceneInstance(), null, initialTransform, initialPaint );
+		return SetUpMethodGenerator.getSetupStatementsForField( false, field, this.getActiveSceneInstance(), null, initialTransform );
 	}
 
 	@Override

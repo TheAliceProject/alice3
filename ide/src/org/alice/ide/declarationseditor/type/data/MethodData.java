@@ -65,7 +65,7 @@ public abstract class MethodData extends FilteredMemberData<org.lgna.project.ast
 				return true;
 			}
 		} else {
-			return false;
+			return true;
 		}
 	}
 }
