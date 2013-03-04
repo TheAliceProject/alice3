@@ -305,6 +305,7 @@ public class TypeManager {
 									SET_JOINTED_MODEL_RESOURCE_METHOD,
 									new org.lgna.project.ast.ParameterAccess( parameter ) ) );
 
+					setResourceMethod.isSignatureLocked.setValue( true );
 					rv.methods.add( setResourceMethod );
 				}
 			}

@@ -86,7 +86,8 @@ public abstract class SJointedModel extends SModel {
 	}
 
 	@MethodTemplate( visibility = org.lgna.project.annotations.Visibility.COMPLETELY_HIDDEN )
-	protected void setJointedModelResource( org.lgna.story.resources.JointedModelResource resource ) {
+	//todo: reduce visibility to protected
+	public void setJointedModelResource( org.lgna.story.resources.JointedModelResource resource ) {
 		this.getImplementation().setNewResource( resource );
 	}
 
