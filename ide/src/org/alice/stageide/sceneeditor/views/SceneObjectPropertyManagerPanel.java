@@ -128,15 +128,14 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 	}
 
 	private List<LabelValueControllerPair> activeControllers = new LinkedList<LabelValueControllerPair>();
-	private Label classNameLabel;
 	private GridBagPanel morePropertiesPanel;
 
 	public SceneObjectPropertyManagerPanel()
 	{
 		super();
-		this.classNameLabel = createLabel( "Class: " );
 		this.morePropertiesPanel = new GridBagPanel();
 		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 
 	private void setShowJointsOfField( org.lgna.project.ast.AbstractField field, boolean showJoints ) {
@@ -400,18 +399,18 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 
 				//propertyAdapters.add( new SelectedInstanceAdapter( this.selectedInstance, (StandardExpressionState)null ) );
 
-				org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
-				boolean isPerson = false;
-				if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
-					JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
-					if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
-					{
-						isPerson = true;
-					}
-				}
-				if( ( fieldInitializerState != null ) && !isPerson ) {
-					propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
-				}
+				//				org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State fieldInitializerState = org.alice.ide.ast.FieldInitializerInstanceCreationArgument0State.getInstance( selectedField );
+				//				boolean isPerson = false;
+				//				if( this.selectedImp instanceof JointedModelImp<?, ?> ) {
+				//					JointedModelImp<?, ?> jointedModelImp = (JointedModelImp<?, ?>)this.selectedImp;
+				//					if( jointedModelImp.getResource() instanceof org.lgna.story.resources.sims2.PersonResource )
+				//					{
+				//						isPerson = true;
+				//					}
+				//				}
+				//				if( ( fieldInitializerState != null ) && !isPerson ) {
+				//					propertyAdapters.add( new org.alice.stageide.properties.ResourcePropertyAdapter( (JointedModelImp<?, ?>)this.selectedImp, fieldInitializerState ) );
+				//				}
 
 				for( org.lgna.project.ast.JavaMethod getter : getterMethods )
 				{
@@ -476,19 +475,23 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 					{
 						this.addPropertyToPanel( fieldNamePair, this, mainPropertyCount++ );
 					}
-					//Add the object's class
-					this.addNameAndControllerToPanel( this.classNameLabel, org.alice.ide.common.TypeComponent.createInstance( valueType ), this, mainPropertyCount++ );
 
-					if( ( this.selectedImp instanceof JointedModelImp ) && ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
-						org.alice.ide.instancefactory.ThisFieldAccessFactory fieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.selectedInstance;
-						if( this.showJointsState != null ) {
-							this.showJointsState.removeValueListener( this.showJointsStateObserver );
-						}
+					org.lgna.croquet.components.JComponent<?> initializerComponent = new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.x.SceneEditorUpdatingProjectEditorAstI18nFactory.getInstance(), selectedField, false, false );
+					initializerComponent.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.LIGHT_GRAY ) );
 
-						this.showJointsState = ShowJointedModelJointAxesState.getInstance( fieldAccessFactory.getField() );
-						this.showJointsState.addValueListener( this.showJointsStateObserver );
-						this.addNameAndControllerToPanel( createLabel( "Show Joints: " ), this.showJointsState.createCheckBox(), this, mainPropertyCount++ );
-					}
+					this.addComponent( initializerComponent, new GridBagConstraints(
+							0, //gridX
+							mainPropertyCount++, //gridY 
+							2, //gridWidth
+							1, //gridHeight
+							0.0, //weightX
+							0.0, //weightY
+							GridBagConstraints.WEST, //anchor 
+							GridBagConstraints.NONE, //fill
+							new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
+							0, //ipadX
+							0 ) //ipadY
+					);
 
 					//Lastly, add the extra palette if there are any extra properties
 					if( extraPropertyCount > 0 )
@@ -507,6 +510,32 @@ public class SceneObjectPropertyManagerPanel extends GridBagPanel
 								0 ) //ipadY
 						);
 					}
+
+					if( ( this.selectedImp instanceof JointedModelImp ) && ( this.selectedInstance instanceof org.alice.ide.instancefactory.ThisFieldAccessFactory ) ) {
+						this.addComponent( BoxUtilities.createVerticalSliver( 8 ), new GridBagConstraints(
+								0, //gridX
+								mainPropertyCount++, //gridY 
+								2, //gridWidth
+								1, //gridHeight
+								0.0, //weightX
+								0.0, //weightY
+								GridBagConstraints.WEST, //anchor 
+								GridBagConstraints.NONE, //fill
+								new Insets( 2, 2, 2, 2 ), // insets (top, left, bottom, right)
+								0, //ipadX
+								0 ) //ipadY
+						);
+
+						org.alice.ide.instancefactory.ThisFieldAccessFactory fieldAccessFactory = (org.alice.ide.instancefactory.ThisFieldAccessFactory)this.selectedInstance;
+						if( this.showJointsState != null ) {
+							this.showJointsState.removeValueListener( this.showJointsStateObserver );
+						}
+
+						this.showJointsState = ShowJointedModelJointAxesState.getInstance( fieldAccessFactory.getField() );
+						this.showJointsState.addValueListener( this.showJointsStateObserver );
+						this.addNameAndControllerToPanel( createLabel( "Show Joints: " ), this.showJointsState.createCheckBox(), this, mainPropertyCount++ );
+					}
+
 					this.addComponent( BoxUtilities.createVerticalGlue(), new GridBagConstraints(
 							0, //gridX
 							mainPropertyCount++, //gridY
