@@ -46,8 +46,8 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public class PersonResourceKey extends InstanceCreatorKey {
-	private static final org.lgna.croquet.icon.IconFactory ADULT_ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( PersonResourceKey.class.getResource( "images/adult.png" ) );
-	private static final org.lgna.croquet.icon.IconFactory CHILD_ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( PersonResourceKey.class.getResource( "images/child.png" ) );
+	private static final org.lgna.croquet.icon.IconFactory ADULT_ICON_FACTORY = new org.lgna.croquet.icon.TrimmedImageIconFactory( PersonResourceKey.class.getResource( "images/adult.png" ), 160, 120 );
+	private static final org.lgna.croquet.icon.IconFactory CHILD_ICON_FACTORY = new org.lgna.croquet.icon.TrimmedImageIconFactory( PersonResourceKey.class.getResource( "images/child.png" ), 160, 120 );
 
 	private static class SingletonHolder {
 		private static PersonResourceKey adultInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.ADULT );
@@ -84,9 +84,9 @@ public class PersonResourceKey extends InstanceCreatorKey {
 	@Override
 	public String getDisplayText() {
 		if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
-			return "Adult";
+			return "new Adult( ... )";
 		} else {
-			return "Child";
+			return "new Child( ... )";
 		}
 	}
 

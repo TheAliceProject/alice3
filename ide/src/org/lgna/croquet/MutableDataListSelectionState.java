@@ -61,4 +61,9 @@ public abstract class MutableDataListSelectionState<T> extends ListSelectionStat
 	public MutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, int selectionIndex, T... data ) {
 		super( group, migrationId, new org.lgna.croquet.data.MutableListData<T>( itemCodec, data ), selectionIndex );
 	}
+
+	@Override
+	public org.lgna.croquet.data.MutableListData<T> getData() {
+		return (org.lgna.croquet.data.MutableListData<T>)super.getData();
+	}
 }
