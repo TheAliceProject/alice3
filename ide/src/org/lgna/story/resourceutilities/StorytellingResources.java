@@ -367,6 +367,25 @@ public class StorytellingResources {
 		this.galleryTree = new ModelResourceTree( modelResourceClasses );
 	}
 
+
+	private void clearAliceResourceInfo()
+	{
+		ResourcePathManager.clearPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
+		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
+
+	}
+
+	private void clearSimsResourceInfo()
+	{
+		ResourcePathManager.clearPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
+		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
+
+	}
+
 	public void findAndLoadAliceResourcesIfNecessary() {
 		if( this.aliceClassesLoaded == null ) {
 			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
@@ -375,18 +394,26 @@ public class StorytellingResources {
 			}
 			this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
 			if( aliceClassesLoaded.size() == 0 ) {
-				if( FindResourcesPanel.getInstance().getGalleryDir() != null ) {
-					setGalleryResourceDir( FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath() );
-				}
-				else
+				//Clear previously cached info
+				clearAliceResourceInfo();
+				File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
+				if( galleryDir == null )
 				{
-					getGalleryLocationFromUser();
+					FindResourcesPanel.getInstance().show( null );
+					galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
 				}
-				//Try again
-				resourcePaths = findAliceResources();
-				this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
+				if( galleryDir != null ) {
+					//Save the directory to the preference
+					setGalleryResourceDir( galleryDir.getAbsolutePath() );
+					//Try finding the resources again
+					resourcePaths = findAliceResources();
+					this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
+				}
 			}
 			if( this.aliceClassesLoaded.size() == 0 ) {
+				//No resources were found
+				//Clear the cached data and display an error
+				clearAliceResourceInfo();
 				StringBuilder sb = new StringBuilder();
 				sb.append( "Cannot find the Alice gallery resources." );
 				if( ( resourcePaths == null ) || ( resourcePaths.size() == 0 ) ) {
@@ -446,18 +473,24 @@ public class StorytellingResources {
 		}
 		int loaded = loadSimsBundlesFromPaths( resourcePaths );
 		if( ( loaded == 0 ) && ( simsPathsLoaded.size() == 0 ) ) {
-			if( FindResourcesPanel.getInstance().getGalleryDir() != null ) {
-				setGalleryResourceDir( FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath() );
-			}
-			else
+			//Clear previously cached info
+			clearSimsResourceInfo();
+			File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
+			if( galleryDir == null )
 			{
-				getGalleryLocationFromUser();
+				FindResourcesPanel.getInstance().show( null );
+				galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
 			}
-			//Try again
-			resourcePaths = findSimsBundles();
-			loaded = loadSimsBundlesFromPaths( resourcePaths );
+			if( galleryDir != null ) {
+				//Save the directory to the preference
+				setGalleryResourceDir( galleryDir.getAbsolutePath() );
+				//Try finding the resources again
+				resourcePaths = findSimsBundles();
+				loaded = loadSimsBundlesFromPaths( resourcePaths );
+			}
 		}
 		if( ( loaded == 0 ) && ( simsPathsLoaded.size() == 0 ) ) {
+			clearSimsResourceInfo();
 			StringBuilder sb = new StringBuilder();
 			sb.append( "Cannot find The Sims (TM) 2 Art Assets." );
 			if( ( resourcePaths == null ) || ( resourcePaths.size() == 0 ) ) {
