@@ -49,9 +49,9 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 	private org.lgna.project.ast.UserField field;
 	private org.lgna.croquet.components.Label finalLabel = new org.lgna.croquet.components.Label();
 
-	public FieldDeclarationPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserField field, boolean isDropDownDesired ) {
+	public FieldDeclarationPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserField field, boolean isDropDownDesired, boolean isFinalDesiredIfAppropriate ) {
 		this.field = field;
-		if( org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
+		if( isFinalDesiredIfAppropriate && org.alice.ide.croquet.models.ui.preferences.IsExposingReassignableStatusState.getInstance().getValue() ) {
 			this.addComponent( finalLabel );
 		}
 		this.addComponent( TypeComponent.createInstance( field.getValueType() ) );
@@ -69,6 +69,10 @@ public class FieldDeclarationPane extends org.lgna.croquet.components.LineAxisPa
 			component = new org.alice.ide.x.components.ExpressionPropertyView( factory, field.initializer );
 		}
 		this.addComponent( component );
+	}
+
+	public FieldDeclarationPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserField field, boolean isDropDownDesired ) {
+		this( factory, field, isDropDownDesired, true );
 	}
 
 	public FieldDeclarationPane( org.alice.ide.x.AstI18nFactory factory, org.lgna.project.ast.UserField field ) {

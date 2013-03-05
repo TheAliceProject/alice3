@@ -133,9 +133,9 @@ public class AliceResourceUtilties {
 				String rv = resourceBundle.getString( key );
 				return rv;
 			} catch( java.util.MissingResourceException mre ) {
-				if( !locale.getLanguage().equals( "en" ) ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
-				}
+				//				if( !locale.getLanguage().equals( "en" ) ) {
+				//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
+				//				}
 				return null;
 			}
 		} else {
@@ -865,7 +865,13 @@ public class AliceResourceUtilties {
 			return className;
 		}
 		else {
-			return findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + className, locale );
+			String localizedText = findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + className, locale );
+			if( localizedText != null ) {
+				//pass
+			} else {
+				localizedText = className;
+			}
+			return localizedText;
 		}
 	}
 
@@ -1012,7 +1018,7 @@ public class AliceResourceUtilties {
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
-			if( locale == null ) {
+			if( ( locale == null ) || true ) {
 				return info.getGroupTags();
 			}
 			else {
@@ -1036,7 +1042,7 @@ public class AliceResourceUtilties {
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
-			if( locale == null ) {
+			if( ( locale == null ) || true ) {
 				return info.getThemeTags();
 			}
 			else {

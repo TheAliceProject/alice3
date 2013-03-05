@@ -46,7 +46,7 @@ package org.lgna.story.resources.sims2;
 /**
  * @author Dennis Cosgrove
  */
-public class AdultPersonResource extends PersonResource {
+public final class AdultPersonResource extends PersonResource {
 	public AdultPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 		super( gender, skinTone, eyeColor, hair, obseityLevel, outfit, face );
 	}

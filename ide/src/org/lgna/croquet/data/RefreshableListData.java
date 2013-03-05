@@ -121,7 +121,7 @@ public abstract class RefreshableListData<T> extends org.lgna.croquet.data.Abstr
 	}
 
 	@Override
-	public void internalAddItem( T item ) {
+	public void internalAddItem( int index, T item ) {
 		throw new UnsupportedOperationException();
 	}
 

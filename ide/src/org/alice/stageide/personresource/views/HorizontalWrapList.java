@@ -53,6 +53,7 @@ public class HorizontalWrapList<T> extends org.lgna.croquet.components.List<T> {
 		this.setVisibleRowCount( visibleRowCount );
 		this.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
 		this.setCellRenderer( cellRenderer );
+		this.getAwtComponent().setEnabled( model.isEnabled() );
 	}
 
 	public HorizontalWrapList( org.lgna.croquet.ListSelectionState<T> model, int visibleRowCount ) {

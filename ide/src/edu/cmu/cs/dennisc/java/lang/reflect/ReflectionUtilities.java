@@ -81,6 +81,10 @@ public final class ReflectionUtilities {
 		return java.lang.reflect.Modifier.isAbstract( cls.getModifiers() );
 	}
 
+	public static boolean isFinal( Class<?> cls ) {
+		return java.lang.reflect.Modifier.isFinal( cls.getModifiers() );
+	}
+
 	//todo: add the rest of the modifiers
 
 	@Deprecated

@@ -60,7 +60,8 @@ public class TreeUtilities {
 			ClassResourceKey classResourceKey = (ClassResourceKey)key;
 			if( classResourceKey.getModelResourceCls().equals( org.lgna.story.resources.BipedResource.class ) ) {
 				java.util.List<ResourceNode> emptyList = java.util.Collections.emptyList();
-				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getInstance(), emptyList ) );
+				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getAdultInstance(), emptyList ) );
+				childNodes.add( new ClassHierarchyBasedResourceNode( PersonResourceKey.getChildInstance(), emptyList ) );
 			}
 		}
 		for( org.lgna.story.resourceutilities.ModelResourceTreeNode childSource : source.childrenList() ) {

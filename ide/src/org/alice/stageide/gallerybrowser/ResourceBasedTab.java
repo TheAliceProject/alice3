@@ -47,9 +47,6 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class ResourceBasedTab extends TreeOwningGalleryTab {
-	public static final javax.swing.ImageIcon CREATE_PERSON_LARGE_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.gallerybrowser.views.GalleryView.class.getResource( "images/create_person.png" ) );
-	public static final javax.swing.ImageIcon CREATE_PERSON_SMALL_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.gallerybrowser.views.GalleryView.class.getResource( "images/create_person_24.png" ) );
-
 	public ResourceBasedTab() {
 		super( java.util.UUID.fromString( "811380db-5339-4a2e-84e3-695b502188af" ) );
 	}

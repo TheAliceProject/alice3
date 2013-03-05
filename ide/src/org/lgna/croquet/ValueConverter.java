@@ -58,6 +58,11 @@ public abstract class ValueConverter<T, TPRIME> extends ValueCreator<TPRIME> {
 		return this.source.getClassUsedForLocalization();
 	}
 
+	@Override
+	protected String getSubKeyForLocalization() {
+		return this.source.getSubKeyForLocalization();
+	}
+
 	protected abstract TPRIME convert( T value );
 
 	@Override

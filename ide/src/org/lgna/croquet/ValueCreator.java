@@ -90,6 +90,11 @@ public abstract class ValueCreator<T> extends AbstractCompletionModel {
 		}
 
 		@Override
+		protected String getSubKeyForLocalization() {
+			return this.valueCreator.getSubKeyForLocalization();
+		}
+
+		@Override
 		protected InternalFillInResolver<F> createResolver() {
 			return new InternalFillInResolver<F>( this.valueCreator );
 		}

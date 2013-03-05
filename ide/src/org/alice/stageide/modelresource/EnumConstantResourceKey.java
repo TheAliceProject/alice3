@@ -94,9 +94,10 @@ public final class EnumConstantResourceKey extends InstanceCreatorKey {
 
 	@Override
 	public String getDisplayText() {
+		String simpleName = org.lgna.story.implementation.alice.AliceResourceUtilties.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
 		StringBuilder sb = new StringBuilder();
 		sb.append( "new " );
-		sb.append( this.enumConstant.getClass().getSimpleName().replace( "Resource", "" ) );
+		sb.append( simpleName );
 		if( this.enumConstant.getDeclaringClass().getEnumConstants().length > 1 ) {
 			sb.append( "( " );
 			sb.append( this.enumConstant.name() );
