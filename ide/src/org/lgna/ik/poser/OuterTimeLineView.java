@@ -43,14 +43,16 @@
 package org.lgna.ik.poser;
 
 import org.lgna.croquet.components.BorderPanel;
+import org.lgna.ik.poser.view.TimeLineView;
 
 /**
  * @author Matt May
  */
-public class TimeSliderView extends BorderPanel {
+public class OuterTimeLineView extends BorderPanel {
 
-	public TimeSliderView( TimeSliderComposite timeSliderComposite ) {
-		super( timeSliderComposite );
+	public OuterTimeLineView( TimeLineComposite composite ) {
+		super( composite );
+		this.addCenterComponent( new TimeLineView( composite ) );
 	}
 
 }

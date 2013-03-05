@@ -47,6 +47,7 @@ import javax.swing.border.BevelBorder;
 
 import org.lgna.croquet.components.Button;
 import org.lgna.ik.poser.AnimatorControlComposite;
+import org.lgna.ik.poser.OuterTimeLineView;
 
 /**
  * @author Matt May
@@ -72,7 +73,8 @@ public class AnimatorControlView extends AbstractPoserControlView {
 		exportButton = controlComposite.getExportAnimation().getOperation().createButton();
 		this.addComponent( exportButton, "grow, wrap" );
 
-		this.addComponent( new TimeLineView( controlComposite.getTimeLine() ), "grow, span 2" );
+		OuterTimeLineView component = controlComposite.getTimeLine().createView();
+		this.addComponent( component, "grow, span 2, wrap" );
 		if( controlComposite.getPosesList().getItemCount() == 0 ) {
 			disableExport();
 		}

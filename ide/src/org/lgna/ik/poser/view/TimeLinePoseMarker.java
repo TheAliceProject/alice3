@@ -40,102 +40,103 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser;
+package org.lgna.ik.poser.view;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.beans.Transient;
 
-import org.lgna.croquet.ItemCodec;
-import org.lgna.croquet.data.AbstractMutableListData;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JComponent;
+import javax.swing.JToggleButton;
+import javax.swing.plaf.basic.BasicToggleButtonUI;
 
-import edu.cmu.cs.dennisc.codec.BinaryDecoder;
-import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
-import edu.cmu.cs.dennisc.java.util.Collections;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.components.BooleanStateButton;
+import org.lgna.ik.poser.TimeLineComposite.PoseEvent;
+
+class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
+	@Override
+	public void paint( Graphics g, JComponent c ) {
+		//note: do not invoke super
+		Graphics2D g2 = (Graphics2D)g;
+		AbstractButton button = (AbstractButton)c;
+		ButtonModel buttonModel = button.getModel();
+		Paint circlePaint;
+		if( buttonModel.isPressed() ) {
+			circlePaint = Color.RED;
+		} else {
+			if( buttonModel.isRollover() ) {
+				circlePaint = Color.GREEN;
+			} else {
+				circlePaint = Color.BLUE;
+			}
+		}
+		g2.setPaint( Color.BLACK );
+		g2.fillRect( button.getWidth() / 4, button.getWidth() / 4, button.getWidth() / 2, button.getHeight() - ( button.getWidth() / 4 ) );
+		g2.setPaint( circlePaint );
+		g2.fillOval( 0, 0, button.getWidth(), button.getWidth() );
+	}
+}
+
+class JTimeLinePoseMarker extends JToggleButton {
+	private TimeLinePoseMarker timeLinePoseMarker;
+
+	public JTimeLinePoseMarker( TimeLinePoseMarker timeLinePoseMarker ) {
+		this.timeLinePoseMarker = timeLinePoseMarker;
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension( 32, 64 );
+	}
+
+	@Override
+	@Transient
+	public Dimension getMinimumSize() {
+		return new Dimension( 32, 64 );
+	}
+
+	@Override
+	public boolean contains( int x, int y ) {
+		return super.contains( x, y );
+	}
+
+	@Override
+	public void updateUI() {
+		this.setUI( new TimeLinePoseMarkerUI() );
+	}
+
+	public TimeLinePoseMarker getTimeLinePoseMarker() {
+		return timeLinePoseMarker;
+	}
+}
 
 /**
  * @author Matt May
  */
-public class PoseAnimationList extends AbstractMutableListData<PoseAnimation> {
+public class TimeLinePoseMarker extends BooleanStateButton<AbstractButton> {
+	private final PoseEvent item;
 
-	List<PoseAnimation> values = Collections.newArrayList();
-
-	private static ItemCodec<PoseAnimation> codec = new ItemCodec<PoseAnimation>() {
-
-		public Class<PoseAnimation> getValueClass() {
-			return PoseAnimation.class;
-		}
-
-		public PoseAnimation decodeValue( BinaryDecoder binaryDecoder ) {
-			throw new RuntimeException( "todo" );
-		}
-
-		public void encodeValue( BinaryEncoder binaryEncoder, PoseAnimation value ) {
-			throw new RuntimeException( "todo" );
-		}
-
-		public void appendRepresentation( StringBuilder sb, PoseAnimation value ) {
-			sb.append( value );
-		}
-
-	};
-
-	public static ItemCodec<PoseAnimation> getCodec() {
-		return codec;
-	}
-
-	public PoseAnimationList() {
-		super( getCodec() );
+	public TimeLinePoseMarker( BooleanState model, PoseEvent item ) {
+		super( model );
+		this.item = item;
 	}
 
 	@Override
-	public boolean contains( PoseAnimation item ) {
-		return false;
+	protected AbstractButton createAwtComponent() {
+		JTimeLinePoseMarker rv = new JTimeLinePoseMarker( this );
+		rv.setRolloverEnabled( true );
+		rv.setFocusPainted( false );
+		rv.setBorder( null );
+		return rv;
 	}
 
-	@Override
-	public PoseAnimation getItemAt( int index ) {
-		return values.get( index );
-	}
-
-	@Override
-	public int getItemCount() {
-		return values.size();
-	}
-
-	@Override
-	public int indexOf( PoseAnimation item ) {
-		return values.indexOf( item );
-	}
-
-	@Override
-	public void internalAddItem( PoseAnimation item ) {
-		values.add( item );
-	}
-
-	@Override
-	public void internalRemoveItem( PoseAnimation item ) {
-		values.remove( item );
-	}
-
-	@Override
-	public void internalSetAllItems( Collection<PoseAnimation> items ) {
-		values = Collections.newArrayList( items );
-	}
-
-	@Override
-	public void internalSetItemAt( int index, PoseAnimation item ) {
-		values.set( index, item );
-	}
-
-	@Override
-	public Iterator<PoseAnimation> iterator() {
-		return values.iterator();
-	}
-
-	@Override
-	protected PoseAnimation[] toArray( Class<PoseAnimation> componentType ) {
-		return ArrayUtilities.createArray( values, PoseAnimation.class );
+	public PoseEvent getItem() {
+		return this.item;
 	}
 }

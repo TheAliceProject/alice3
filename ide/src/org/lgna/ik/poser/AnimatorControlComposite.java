@@ -47,7 +47,9 @@ import java.util.Map;
 
 import org.lgna.common.ComponentThread;
 import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
@@ -61,6 +63,8 @@ import org.lgna.project.ast.UserParameter;
 import org.lgna.story.SetPose;
 import org.lgna.story.SetPose.Detail;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
@@ -73,9 +77,30 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		posesList.addValueListener( poseAnimationListener );
 	}
 
-	protected ListSelectionState<PoseAnimation> posesList = createListSelectionState( createKey( "listOfPoses" ), PoseAnimation.class, PoseAnimationList.getCodec(), -1 );
+	protected ListSelectionState<PoseAnimation> posesList = createListSelectionState( createKey( "listOfPoses" ), PoseAnimation.class,
+			new ItemCodec<PoseAnimation>() {
+
+				public Class<PoseAnimation> getValueClass() {
+					return PoseAnimation.class;
+				}
+
+				public PoseAnimation decodeValue( BinaryDecoder binaryDecoder ) {
+					throw new RuntimeException( "todo" );
+				}
+
+				public void encodeValue( BinaryEncoder binaryEncoder, PoseAnimation value ) {
+					throw new RuntimeException( "todo" );
+				}
+
+				public void appendRepresentation( StringBuilder sb, PoseAnimation value ) {
+					sb.append( value );
+				}
+
+			}, -1 );
 	protected Map<PoseAnimation, Detail[]> animationToDetailMap = Collections.newHashMap();
-	protected TimeLine timeLine = new TimeLine();
+	protected TimeLineComposite timeLine = new TimeLineComposite();
+
+	private final BooleanState bogusBooleanState = this.createBooleanState( this.createKey( "DO NOT LOCALIZE" ), true );
 
 	private ValueListener<PoseAnimation> poseAnimationListener = new ValueListener<PoseAnimation>() {
 
@@ -219,8 +244,14 @@ public class AnimatorControlComposite extends AbstractPoserControlComposite<Anim
 		return this.posesList;
 	}
 
-	public TimeLine getTimeLine() {
+	public TimeLineComposite getTimeLine() {
 		return this.timeLine;
+	}
+
+	@Deprecated
+	//TODO: DELETE
+	public BooleanState getBogusBooleanState() {
+		return this.bogusBooleanState;
 	}
 
 	@Override

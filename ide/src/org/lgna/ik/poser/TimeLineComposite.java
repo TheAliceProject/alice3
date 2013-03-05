@@ -44,22 +44,50 @@ package org.lgna.ik.poser;
 
 import java.util.List;
 
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.ListSelectionState;
+import org.lgna.croquet.MutableDataListSelectionState;
+import org.lgna.croquet.SimpleComposite;
 import org.lgna.ik.poser.events.TimeLineListener;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;
 import org.lgna.story.SetPose.Detail;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.concurrent.Collections;
 
 /**
  * @author Matt May
  */
-public class TimeLine {
+public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
+	public TimeLineComposite() {
+		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
+	}
+
 	private int startTime = 0;
 	private int currTime = 5;
 	private int endTime = 10;
 
-	private final List<PoseEvent> posesInTimeline = Collections.newCopyOnWriteArrayList();
+	//	private final List<PoseEvent> internalPosesInTimelineList = Collections.newCopyOnWriteArrayList();
+	private final MutableDataListSelectionState<PoseEvent> posesInTimeline = createListSelectionState( createKey( "asdf" ), PoseEvent.class, new ItemCodec<PoseEvent>() {
+
+		public Class<PoseEvent> getValueClass() {
+			return PoseEvent.class;
+		}
+
+		public PoseEvent decodeValue( BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, PoseEvent value ) {
+			throw new RuntimeException( "todo" );
+		}
+
+		public void appendRepresentation( StringBuilder sb, PoseEvent value ) {
+			sb.append( value );
+		}
+	}, -1 );
 
 	private final List<TimeLineListener> listeners = Collections.newCopyOnWriteArrayList();
 
@@ -99,25 +127,35 @@ public class TimeLine {
 	}
 
 	public void addEventAtCurrentTime( Pose pose ) {
-		PoseEvent poseEvent = new PoseEvent( currTime, pose );
-		insertPoseEvent( poseEvent );
+		if( getPoseAtGivenTime( this.currTime ) == null ) {
+			PoseEvent poseEvent = new PoseEvent( currTime, pose );
+			insertPoseEvent( poseEvent );
+		}
+		++currTime;
+	}
+
+	private PoseEvent getPoseAtGivenTime( int givenTime ) {
+		for( int i = 0; i != posesInTimeline.getItemCount(); ++i ) {
+			PoseEvent event = posesInTimeline.getItemAt( i );
+			if( event.getEventTime() > givenTime ) {
+				return null;
+			}
+			if( event.getEventTime() == givenTime ) {
+				return event;
+			}
+		}
+		return null;
 	}
 
 	private void insertPoseEvent( PoseEvent poseEvent ) {
-		for( int i = 0; i != posesInTimeline.size(); ++i ) {
-			if( posesInTimeline.get( i ).eventTime < poseEvent.eventTime ) {
-				posesInTimeline.add( i, poseEvent );
-				return;
-			}
-		}
-		posesInTimeline.add( poseEvent );
+		posesInTimeline.addItem( poseEvent );
 		this.fireChanged();
 	}
 
 	public Detail[] getParametersForPose( Pose pose ) {
 		Detail[] rv = new Detail[ 2 ];//duration, style
-		for( int i = 0; i != posesInTimeline.size(); ++i ) {
-			PoseEvent itr = posesInTimeline.get( i );
+		for( int i = 0; i != posesInTimeline.getItemCount(); ++i ) {
+			PoseEvent itr = posesInTimeline.getItemAt( i );
 			if( itr.pose.equals( pose ) ) {
 				rv[ 0 ] = itr.style;
 				if( i == 0 ) {
@@ -131,7 +169,7 @@ public class TimeLine {
 	}
 
 	public List<PoseEvent> getPosesInTimeline() {
-		return this.posesInTimeline;
+		return Collections.newCopyOnWriteArrayList( this.posesInTimeline.getData().toArray() );
 	}
 
 	public int getStartTime() {
@@ -149,5 +187,14 @@ public class TimeLine {
 	public void setCurrentTime( int time ) {
 		this.currTime = time;
 		fireChanged();
+	}
+
+	@Override
+	public OuterTimeLineView createView() {
+		return new OuterTimeLineView( this );
+	}
+
+	public ListSelectionState<PoseEvent> getPoseEventListSelectionState() {
+		return posesInTimeline;
 	}
 }

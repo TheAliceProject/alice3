@@ -43,22 +43,27 @@
 package org.lgna.ik.poser.view;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
-import org.lgna.croquet.components.JComponent;
-import org.lgna.ik.poser.TimeLine;
-import org.lgna.ik.poser.TimeLine.PoseEvent;
+import javax.swing.JPanel;
+
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.components.BooleanStateButton;
+import org.lgna.croquet.components.CustomRadioButtons;
+import org.lgna.ik.poser.TimeLineComposite;
+import org.lgna.ik.poser.TimeLineComposite.PoseEvent;
 import org.lgna.ik.poser.events.TimeLineListener;
 
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 
-class JTimeLineView extends javax.swing.JComponent {
-	private final TimeLine timeLine;
+class JTimeLineView extends JPanel {
+	private final TimeLineComposite timeLine;
 	private final TimeLineListener timeLineListener = new TimeLineListener() {
 		public void changed() {
 			repaint();
@@ -86,10 +91,10 @@ class JTimeLineView extends javax.swing.JComponent {
 	}
 
 	private int getXMax() {
-		return getWidth() - ( ( getWidth() * 1 ) / 24 );
+		return getWidth() - ( getWidth() / 24 );
 	}
 
-	public JTimeLineView( TimeLine timeLine ) {
+	public JTimeLineView( TimeLineComposite timeLine ) {
 		this.timeLine = timeLine;
 		this.timeLine.addTimeLineListener( this.timeLineListener );
 	}
@@ -100,8 +105,8 @@ class JTimeLineView extends javax.swing.JComponent {
 	}
 
 	@Override
-	public void paint( Graphics g ) {
-		super.paint( g );
+	public void paintComponent( Graphics g ) {
+		super.paintComponent( g );
 		g.setColor( Color.RED );
 		g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), this.getHeight() / 4, this.getHeight() / 4 );
 		g.setColor( Color.BLACK );
@@ -135,54 +140,128 @@ class JTimeLineView extends javax.swing.JComponent {
 	}
 
 	public boolean isClickingOnSlider( Point locationOnScreen ) {
-
-		return false;
+		return true;
 	}
+}
+
+class TimeLineLayout implements LayoutManager {
+
+	private final TimeLineComposite timeLine;
+
+	public TimeLineLayout( TimeLineComposite masterComposite ) {
+		super();
+		this.timeLine = masterComposite;
+	}
+
+	public void layoutContainer( Container parent ) {
+		for( Component child : parent.getComponents() ) {
+			int x = 100;
+			if( child instanceof JTimeLinePoseMarker ) {
+				JTimeLinePoseMarker jMarker = (JTimeLinePoseMarker)child;
+				x = getXforTime( jMarker.getTimeLinePoseMarker().getItem().getEventTime(), parent );
+			}
+			child.setLocation( x, 0 );
+			child.setSize( child.getPreferredSize() );
+			child.repaint();
+		}
+	}
+
+	public int getXforTime( int time, Container parent ) {
+		return (int)( ( (double)( time - timeLine.getStartTime() ) / ( (double)timeLine.getEndTime() - timeLine.getStartTime() ) )
+				* ( getXMax( parent ) - getXMin( parent ) ) ) + getXMin( parent );
+	}
+
+	private int getXMin( Container parent ) {
+		return minimumLayoutSize( parent ).width / 24;
+	}
+
+	private int getXMax( Container parent ) {
+		return minimumLayoutSize( parent ).width - ( ( minimumLayoutSize( parent ).width * 1 ) / 24 );
+	}
+
+	public Dimension minimumLayoutSize( Container parent ) {
+		Component[] children = parent.getComponents();
+		int width = 0;
+		int height = 0;
+		for( Component component : children ) {
+			if( component.getMinimumSize().width > width ) {
+				width = component.getMinimumSize().width;
+			}
+			if( component.getMinimumSize().height > height ) {
+				height = component.getMinimumSize().height;
+			}
+		}
+		return new Dimension( width, height );
+	}
+
+	public Dimension preferredLayoutSize( Container parent ) {
+		Component[] children = parent.getComponents();
+		int width = 0;
+		int height = 0;
+		for( Component component : children ) {
+			if( component.getPreferredSize().width > width ) {
+				width = component.getPreferredSize().width;
+			}
+			if( component.getPreferredSize().height > height ) {
+				height = component.getPreferredSize().height;
+			}
+		}
+		return new Dimension( width, height );
+	}
+
+	public void removeLayoutComponent( Component comp ) {
+	}
+
+	public void addLayoutComponent( String name, Component comp ) {
+	}
+
 }
 
 /**
  * @author Matt May
  */
-public class TimeLineView extends JComponent<JTimeLineView> implements MouseListener, MouseMotionListener {
-	private final TimeLine timeLine;
-	private boolean isSliding = false;
 
-	public TimeLineView( TimeLine timeLine ) {
-		this.timeLine = timeLine;
-		addMouseMotionListener( this );
-		addMouseListener( this );
+public class TimeLineView extends CustomRadioButtons<PoseEvent> {
+
+	private TimeLineComposite composite;
+
+	public TimeLineView( TimeLineComposite composite ) {
+		super( composite.getPoseEventListSelectionState() );
+		this.composite = composite;
 	}
 
 	@Override
-	protected JTimeLineView createAwtComponent() {
-		return new JTimeLineView( this.timeLine );
+	protected LayoutManager createLayoutManager( JPanel jPanel ) {
+		return new TimeLineLayout( composite );
 	}
 
-	public void mouseClicked( MouseEvent e ) {
+	@Override
+	protected void addPrologue( int count ) {
 	}
 
-	public void mousePressed( MouseEvent e ) {
-		if( getAwtComponent().isClickingOnSlider( e.getLocationOnScreen() ) ) {
-			isSliding = true;
-		}
+	@Override
+	protected void addItem( PoseEvent item, BooleanStateButton<?> button ) {
+		this.internalAddComponent( button );
 	}
 
-	public void mouseReleased( MouseEvent e ) {
-		isSliding = false;
+	@Override
+	protected void addEpilogue() {
 	}
 
-	public void mouseEntered( MouseEvent e ) {
+	@Override
+	protected BooleanStateButton<?> createButtonForItemSelectedState( PoseEvent item, BooleanState itemSelectedState ) {
+		return new TimeLinePoseMarker( itemSelectedState, item );
 	}
 
-	public void mouseExited( MouseEvent e ) {
+	@Override
+	protected void removeAllDetails() {
+		this.internalRemoveAllComponents();
 	}
 
-	public void mouseDragged( MouseEvent e ) {
-		if( isSliding ) {
-			this.getAwtComponent().updateSlider( e );
-		}
+	@Override
+	protected JPanel createAwtComponent() {
+		//		super.createAwtComponent();
+		return new JTimeLineView( composite );
 	}
 
-	public void mouseMoved( MouseEvent e ) {
-	}
 }
