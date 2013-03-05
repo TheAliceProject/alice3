@@ -62,88 +62,6 @@ import org.lgna.ik.poser.events.TimeLineListener;
 
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 
-class JTimeLineView extends JPanel {
-	private final TimeLineComposite timeLine;
-	private final TimeLineListener timeLineListener = new TimeLineListener() {
-		public void changed() {
-			repaint();
-		}
-	};
-
-	public int getTimeFromLocation( int x ) {
-		int time = (int)( ( (double)( x - getXMin() ) / ( getXMax() - getXMin() ) ) * ( timeLine.getEndTime() - timeLine.getStartTime() ) );
-		if( time < timeLine.getStartTime() ) {
-			return timeLine.getStartTime();
-		}
-		if( time > timeLine.getEndTime() ) {
-			return timeLine.getEndTime();
-		}
-		return time;
-	}
-
-	public int getXforTime( int time ) {
-		return (int)( ( (double)( time - timeLine.getStartTime() ) / ( (double)timeLine.getEndTime() - timeLine.getStartTime() ) )
-				* ( getXMax() - getXMin() ) ) + getXMin();
-	}
-
-	private int getXMin() {
-		return ( getWidth() * 1 ) / 32;
-	}
-
-	private int getXMax() {
-		return getWidth() - ( getWidth() / 24 );
-	}
-
-	public JTimeLineView( TimeLineComposite timeLine ) {
-		this.timeLine = timeLine;
-		this.timeLine.addTimeLineListener( this.timeLineListener );
-	}
-
-	@Override
-	public Dimension getPreferredSize() {
-		return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 100 );
-	}
-
-	@Override
-	public void paintComponent( Graphics g ) {
-		super.paintComponent( g );
-		g.setColor( Color.RED );
-		g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), this.getHeight() / 4, this.getHeight() / 4 );
-		g.setColor( Color.BLACK );
-		g.drawLine( getXMin(), (int)( getHeight() * .5 ), getXMax(), (int)( getHeight() * .5 ) );
-		g.drawLine( getXMin(), (int)( ( getHeight() * .5 ) + ( getHeight() / 16 ) ), getXMin(), (int)( ( getHeight() * .5 ) - ( getHeight() / 16 ) ) );
-		g.drawLine( getXMax(), (int)( ( getHeight() * .5 ) + ( getHeight() / 16 ) ), getXMax(), (int)( ( getHeight() * .5 ) - ( getHeight() / 16 ) ) );
-		Point[] pArr = this.getPointsForSlider();
-		int[] xArr = new int[ pArr.length ];
-		int[] yArr = new int[ pArr.length ];
-		for( int i = 0; i != pArr.length; ++i ) {
-			xArr[ i ] = pArr[ i ].x;
-			yArr[ i ] = pArr[ i ].y;
-		}
-		g.fillPolygon( xArr, yArr, pArr.length );
-		for( PoseEvent o : timeLine.getPosesInTimeline() ) {
-			int x = getXforTime( o.getEventTime() );
-			g.drawLine( x, 0, x, getHeight() );
-		}
-	}
-
-	private Point[] getPointsForSlider() {
-		Point arrow = new Point( getXforTime( timeLine.getCurrentTime() ), ( this.getHeight() ) / 2 );
-		Point leftBase = new Point( arrow.x + ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
-		Point rightBase = new Point( arrow.x - ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
-		Point[] rv = { arrow, leftBase, rightBase };
-		return rv;
-	}
-
-	public void updateSlider( MouseEvent e ) {
-		this.timeLine.setCurrentTime( getTimeFromLocation( e.getLocationOnScreen().x ) );
-	}
-
-	public boolean isClickingOnSlider( Point locationOnScreen ) {
-		return true;
-	}
-}
-
 class TimeLineLayout implements LayoutManager {
 
 	private final TimeLineComposite timeLine;
@@ -159,6 +77,7 @@ class TimeLineLayout implements LayoutManager {
 			if( child instanceof JTimeLinePoseMarker ) {
 				JTimeLinePoseMarker jMarker = (JTimeLinePoseMarker)child;
 				x = getXforTime( jMarker.getTimeLinePoseMarker().getItem().getEventTime(), parent );
+				x = makeCenter( jMarker, x );
 			}
 			child.setLocation( x, 0 );
 			child.setSize( child.getPreferredSize() );
@@ -166,17 +85,21 @@ class TimeLineLayout implements LayoutManager {
 		}
 	}
 
+	private int makeCenter( JTimeLinePoseMarker jMarker, int x ) {
+		return x - ( jMarker.getWidth() / 2 );
+	}
+
 	public int getXforTime( int time, Container parent ) {
 		return (int)( ( (double)( time - timeLine.getStartTime() ) / ( (double)timeLine.getEndTime() - timeLine.getStartTime() ) )
-				* ( getXMax( parent ) - getXMin( parent ) ) ) + getXMin( parent );
+				* ( getXMax() - getXMin() ) ) + getXMin();
 	}
 
-	private int getXMin( Container parent ) {
-		return minimumLayoutSize( parent ).width / 24;
+	private int getXMin() {
+		return timeLine.getViewWidth() / 24;
 	}
 
-	private int getXMax( Container parent ) {
-		return minimumLayoutSize( parent ).width - ( ( minimumLayoutSize( parent ).width * 1 ) / 24 );
+	private int getXMax() {
+		return timeLine.getViewWidth() - ( timeLine.getViewWidth() / 24 );
 	}
 
 	public Dimension minimumLayoutSize( Container parent ) {
@@ -223,11 +146,94 @@ class TimeLineLayout implements LayoutManager {
 
 public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 
+	private class JTimeLineView extends JItemSelectablePanel {
+		private final TimeLineComposite timeLine;
+		private final TimeLineListener timeLineListener = new TimeLineListener() {
+			public void changed() {
+				repaint();
+			}
+		};
+
+		public int getTimeFromLocation( int x ) {
+			int time = (int)( ( (double)( x - getXMin() ) / ( getXMax() - getXMin() ) ) * ( timeLine.getEndTime() - timeLine.getStartTime() ) );
+			if( time < timeLine.getStartTime() ) {
+				return timeLine.getStartTime();
+			}
+			if( time > timeLine.getEndTime() ) {
+				return timeLine.getEndTime();
+			}
+			return time;
+		}
+
+		public int getXforTime( int time ) {
+			return (int)( ( (double)( time - timeLine.getStartTime() ) / ( (double)timeLine.getEndTime() - timeLine.getStartTime() ) )
+					* ( getXMax() - getXMin() ) ) + getXMin();
+		}
+
+		private int getXMin() {
+			return getWidth() / 24;
+		}
+
+		private int getXMax() {
+			return getWidth() - ( getWidth() / 24 );
+		}
+
+		public JTimeLineView( TimeLineComposite timeLine ) {
+			this.timeLine = timeLine;
+			this.timeLine.addTimeLineListener( this.timeLineListener );
+		}
+
+		@Override
+		public Dimension getPreferredSize() {
+			return DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), 100 );
+		}
+
+		@Override
+		public void paintComponent( Graphics g ) {
+			super.paintComponent( g );
+			g.setColor( Color.RED );
+			g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), this.getHeight() / 4, this.getHeight() / 4 );
+			g.setColor( Color.BLACK );
+			g.drawLine( getXMin(), (int)( getHeight() * .5 ), getXMax(), (int)( getHeight() * .5 ) );
+			g.drawLine( getXMin(), (int)( ( getHeight() * .5 ) + ( getHeight() / 16 ) ), getXMin(), (int)( ( getHeight() * .5 ) - ( getHeight() / 16 ) ) );
+			g.drawLine( getXMax(), (int)( ( getHeight() * .5 ) + ( getHeight() / 16 ) ), getXMax(), (int)( ( getHeight() * .5 ) - ( getHeight() / 16 ) ) );
+			Point[] pArr = this.getPointsForSlider();
+			int[] xArr = new int[ pArr.length ];
+			int[] yArr = new int[ pArr.length ];
+			for( int i = 0; i != pArr.length; ++i ) {
+				xArr[ i ] = pArr[ i ].x;
+				yArr[ i ] = pArr[ i ].y;
+			}
+			g.fillPolygon( xArr, yArr, pArr.length );
+			for( PoseEvent o : timeLine.getPosesInTimeline() ) {
+				int x = getXforTime( o.getEventTime() );
+				g.drawLine( x, 0, x, getHeight() );
+			}
+		}
+
+		private Point[] getPointsForSlider() {
+			Point arrow = new Point( getXforTime( timeLine.getCurrentTime() ), ( this.getHeight() ) / 2 );
+			Point leftBase = new Point( arrow.x + ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
+			Point rightBase = new Point( arrow.x - ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
+			Point[] rv = { arrow, leftBase, rightBase };
+			return rv;
+		}
+
+		public void updateSlider( MouseEvent e ) {
+			this.timeLine.setCurrentTime( getTimeFromLocation( e.getLocationOnScreen().x ) );
+		}
+
+		public boolean isClickingOnSlider( Point locationOnScreen ) {
+			return true;
+		}
+	}
+
 	private TimeLineComposite composite;
 
 	public TimeLineView( TimeLineComposite composite ) {
 		super( composite.getPoseEventListSelectionState() );
 		this.composite = composite;
+		composite.setJComponent( this );
 	}
 
 	@Override
@@ -259,8 +265,7 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 	}
 
 	@Override
-	protected JPanel createAwtComponent() {
-		//		super.createAwtComponent();
+	protected JPanel createJPanel() {
 		return new JTimeLineView( composite );
 	}
 

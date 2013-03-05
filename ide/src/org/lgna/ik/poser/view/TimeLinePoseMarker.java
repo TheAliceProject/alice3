@@ -133,6 +133,7 @@ public class TimeLinePoseMarker extends BooleanStateButton<AbstractButton> {
 		rv.setRolloverEnabled( true );
 		rv.setFocusPainted( false );
 		rv.setBorder( null );
+		rv.setOpaque( false );
 		return rv;
 	}
 

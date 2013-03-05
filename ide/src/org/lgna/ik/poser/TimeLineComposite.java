@@ -49,6 +49,7 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.MutableDataListSelectionState;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.ik.poser.events.TimeLineListener;
+import org.lgna.ik.poser.view.TimeLineView;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;
 import org.lgna.story.SetPose.Detail;
@@ -90,6 +91,7 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 	}, -1 );
 
 	private final List<TimeLineListener> listeners = Collections.newCopyOnWriteArrayList();
+	private TimeLineView jTimeLineView;
 
 	public class PoseEvent {
 
@@ -196,5 +198,17 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 
 	public ListSelectionState<PoseEvent> getPoseEventListSelectionState() {
 		return posesInTimeline;
+	}
+
+	public int getViewWidth() {
+		return jTimeLineView.getWidth();
+	}
+
+	public int getViewHeight() {
+		return jTimeLineView.getHeight();
+	}
+
+	public void setJComponent( TimeLineView jTimeLineView ) {
+		this.jTimeLineView = jTimeLineView;
 	}
 }
