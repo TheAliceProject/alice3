@@ -51,7 +51,7 @@ class DeclarationMenuIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DropDownA
 
 	public DeclarationMenuIcon() {
 		super( 10, java.awt.Color.DARK_GRAY );
-		this.typeFont = new java.awt.Font( java.awt.Font.SANS_SERIF, 0, 12 );
+		this.typeFont = new java.awt.Font( null, 0, 12 );
 	}
 
 	private static java.awt.geom.Rectangle2D getTextBounds( String text, java.awt.Font font ) {

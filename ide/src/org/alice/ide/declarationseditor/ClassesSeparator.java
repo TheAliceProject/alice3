@@ -62,7 +62,7 @@ public class ClassesSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
 	protected void localize() {
 		super.localize();
 		String text = super.getName();
-		this.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.TextIcon( text, java.awt.Color.GRAY, new java.awt.Font( java.awt.Font.SANS_SERIF, java.awt.Font.ITALIC, 12 ) ) );
+		this.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.TextIcon( text, java.awt.Color.GRAY, new java.awt.Font( null, java.awt.Font.ITALIC, 12 ) ) );
 	}
 
 	@Override
