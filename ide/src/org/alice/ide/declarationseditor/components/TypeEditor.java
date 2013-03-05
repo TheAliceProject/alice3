@@ -43,7 +43,90 @@
 
 package org.alice.ide.declarationseditor.components;
 
-import org.alice.ide.declarationseditor.DeclarationComposite;
+class DeclarationMenuIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DropDownArrowIcon {
+	private final org.alice.ide.common.TypeBorder border = org.alice.ide.common.TypeBorder.getSingletonForUserType();
+	private final java.awt.Font typeFont;
+
+	private final int PAD = 4;
+
+	public DeclarationMenuIcon() {
+		super( 10, java.awt.Color.DARK_GRAY );
+		this.typeFont = new java.awt.Font( java.awt.Font.SANS_SERIF, 0, 12 );
+	}
+
+	private static java.awt.geom.Rectangle2D getTextBounds( String text, java.awt.Font font ) {
+		if( text != null ) {
+			java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
+			java.awt.FontMetrics fm;
+			if( font != null ) {
+				fm = g.getFontMetrics( font );
+			} else {
+				fm = g.getFontMetrics();
+			}
+			return fm.getStringBounds( text, g );
+		} else {
+			return new java.awt.geom.Rectangle2D.Float( 0, 0, 0, 0 );
+		}
+	}
+
+	protected java.awt.Font getTypeFont() {
+		return this.typeFont;
+	}
+
+	private String getTypeText() {
+		return "    ";
+	}
+
+	private java.awt.geom.Rectangle2D getTypeTextBounds() {
+		return getTextBounds( this.getTypeText(), this.getTypeFont() );
+	}
+
+	private int getBorderWidth() {
+		java.awt.Insets insets = this.border.getBorderInsets( null );
+		java.awt.geom.Rectangle2D typeTextBounds = this.getTypeTextBounds();
+		return insets.left + insets.right + (int)typeTextBounds.getWidth() + PAD;
+	}
+
+	private int getBorderHeight() {
+		java.awt.Insets insets = this.border.getBorderInsets( null );
+		java.awt.geom.Rectangle2D bounds = this.getTypeTextBounds();
+		return insets.top + insets.bottom + (int)bounds.getHeight();
+	}
+
+	@Override
+	public int getIconWidth() {
+		return super.getIconWidth() + this.getBorderWidth();
+	}
+
+	@Override
+	public int getIconHeight() {
+		return Math.max( super.getIconHeight(), this.getBorderHeight() );
+	}
+
+	@Override
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+
+		int w = this.getBorderWidth();
+		int h = this.getBorderHeight();
+
+		org.alice.ide.common.TypeBorder.getSingletonForUserType().paintBorder( c, g, x, y, w, h );
+		g.setColor( c.getForeground() );
+
+		java.awt.Font prevFont = g.getFont();
+		g.setFont( this.getTypeFont() );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawCenteredText( g, this.getTypeText(), x, y, w, h );
+
+		g.setFont( prevFont );
+		g2.setTransform( prevTransform );
+
+		int superHeight = super.getIconHeight();
+		int yOffset = ( h - superHeight ) / 2;
+		super.paintIcon( c, g, x + w + PAD, y + yOffset );
+	}
+}
 
 /**
  * @author Dennis Cosgrove
@@ -79,7 +162,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 
 		final boolean IS_CUSTOM_DRAWING_DESIRED = false;
 		if( IS_CUSTOM_DRAWING_DESIRED ) {
-			this.tabbedPane = new org.lgna.croquet.components.FolderTabbedPane<DeclarationComposite>( composite.getTabState() ) {
+			this.tabbedPane = new org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite>( composite.getTabState() ) {
 				@Override
 				protected TitlesPanel createTitlesPanel() {
 					return new TitlesPanel() {
@@ -103,6 +186,7 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
 		this.startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
 
+		this.startButton.setClobberIcon( new DeclarationMenuIcon() );
 		this.addCenterComponent( tabbedPane );
 	}
 

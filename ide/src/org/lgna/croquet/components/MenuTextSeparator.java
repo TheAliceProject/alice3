@@ -62,9 +62,13 @@ public class MenuTextSeparator extends ViewController<javax.swing.JMenuItem, org
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
 		org.lgna.croquet.LabelMenuSeparatorModel model = this.getModel();
-		this.getAwtComponent().setText( model.getName() + ":" );
-		this.getAwtComponent().setIcon( model.getIcon() );
-		this.getAwtComponent().setDisabledIcon( model.getIcon() );
+		String modelName = model.getName();
+		if( ( modelName != null ) && ( modelName.length() > 0 ) ) {
+			this.getAwtComponent().setText( modelName + ":" );
+		}
+		javax.swing.Icon icon = model.getIcon();
+		this.getAwtComponent().setIcon( icon );
+		this.getAwtComponent().setDisabledIcon( icon );
 		super.handleAddedTo( parent );
 	}
 }

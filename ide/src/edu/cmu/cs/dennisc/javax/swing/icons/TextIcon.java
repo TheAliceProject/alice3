@@ -40,37 +40,52 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor;
+package edu.cmu.cs.dennisc.javax.swing.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationMenu extends org.lgna.croquet.MenuModel {
-	public DeclarationMenu() {
-		super( java.util.UUID.fromString( "dabfd4e0-d835-4d7c-b3b0-922fb67bada1" ) );
+public class TextIcon implements javax.swing.Icon {
+	private final String text;
+	private final java.awt.Paint paint;
+	private final java.awt.Font font;
+
+	public TextIcon( String text, java.awt.Paint paint, java.awt.Font font ) {
+		this.text = text;
+		this.paint = paint;
+		this.font = font;
 	}
 
-	private void addTypeFillIns( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> node ) {
-		org.lgna.project.ast.NamedUserType type = node.getValue();
-		if( type != null ) {
-			models.add( TypeMenu.getInstance( type ) );
-		}
-		for( edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> child : node.getChildren() ) {
-			addTypeFillIns( models, child );
-		}
+	private java.awt.geom.Rectangle2D getTextBounds( java.awt.Graphics g ) {
+		java.awt.FontMetrics fm = g.getFontMetrics();
+		return fm.getStringBounds( this.text, g );
 	}
 
-	@Override
-	public void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
-		super.handlePopupMenuPrologue( popupMenu, context );
+	public int getIconWidth() {
+		return this.getTextBounds( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics() ).getBounds().width;
+	}
 
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
+	public int getIconHeight() {
+		return this.getTextBounds( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics() ).getBounds().height;
+	}
 
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		models.add( ClassesSeparator.getInstance() );
-		addTypeFillIns( models, root );
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
-		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
+		Object prevAntialiasing = g2.getRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+
+		java.awt.Paint prevPaint = g2.getPaint();
+		g2.setPaint( this.paint );
+
+		java.awt.Font prevFont = g2.getFont();
+		g2.setFont( this.font );
+
+		java.awt.FontMetrics fm = g.getFontMetrics();
+		g.drawString( this.text, x, y + fm.getMaxAscent() );
+
+		g2.setFont( prevFont );
+		g2.setPaint( prevPaint );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, prevAntialiasing );
 	}
 }

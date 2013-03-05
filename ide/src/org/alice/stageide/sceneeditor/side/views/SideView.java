@@ -126,5 +126,7 @@ public class SideView extends org.lgna.croquet.components.BorderPanel {
 		migPanel.setBackgroundColor( color );
 		scrollPane.setBackgroundColor( color );
 		this.setBackgroundColor( color );
+
+		this.setMaximumPreferredWidth( 400 );
 	}
 }

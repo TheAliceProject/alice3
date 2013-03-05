@@ -54,7 +54,7 @@ public class ProceduresSeparator extends org.lgna.croquet.LabelMenuSeparatorMode
 		return SingletonHolder.instance;
 	}
 
-	public ProceduresSeparator() {
+	private ProceduresSeparator() {
 		super( java.util.UUID.fromString( "eac11370-3415-4b12-b917-df62be7bec19" ) );
 	}
 }
