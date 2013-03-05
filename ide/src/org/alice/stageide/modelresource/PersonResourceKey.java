@@ -46,18 +46,30 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public class PersonResourceKey extends InstanceCreatorKey {
-
-	private static final org.lgna.croquet.icon.IconFactory ICON_FACTORY = new org.lgna.croquet.icon.ImageIconFactory( org.alice.stageide.gallerybrowser.ResourceBasedTab.CREATE_PERSON_LARGE_ICON.getImage() );
+	private static final org.lgna.croquet.icon.IconFactory ADULT_ICON_FACTORY = new org.lgna.croquet.icon.TrimmedImageIconFactory( PersonResourceKey.class.getResource( "images/adult.png" ), 160, 120 );
+	private static final org.lgna.croquet.icon.IconFactory CHILD_ICON_FACTORY = new org.lgna.croquet.icon.TrimmedImageIconFactory( PersonResourceKey.class.getResource( "images/child.png" ), 160, 120 );
 
 	private static class SingletonHolder {
-		private static PersonResourceKey instance = new PersonResourceKey();
+		private static PersonResourceKey adultInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.ADULT );
+		private static PersonResourceKey childInstance = new PersonResourceKey( org.lgna.story.resources.sims2.LifeStage.CHILD );
 	}
 
-	public static PersonResourceKey getInstance() {
-		return SingletonHolder.instance;
+	public static PersonResourceKey getAdultInstance() {
+		return SingletonHolder.adultInstance;
 	}
 
-	private PersonResourceKey() {
+	public static PersonResourceKey getChildInstance() {
+		return SingletonHolder.childInstance;
+	}
+
+	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
+
+	private PersonResourceKey( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		this.lifeStage = lifeStage;
+	}
+
+	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+		return this.lifeStage;
 	}
 
 	@Override
@@ -65,27 +77,31 @@ public class PersonResourceKey extends InstanceCreatorKey {
 		return org.lgna.story.resources.sims2.PersonResource.class;
 	}
 
+	private org.lgna.croquet.ValueConverter<org.lgna.story.resources.sims2.PersonResource, org.lgna.project.ast.InstanceCreation> getPersonResourceValueCreator() {
+		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage );
+	}
+
 	@Override
 	public String getDisplayText() {
-		return "Person";
+		if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+			return "new Adult( ... )";
+		} else {
+			return "new Child( ... )";
+		}
 	}
 
 	@Override
 	public org.lgna.croquet.icon.IconFactory getIconFactory() {
-		return ICON_FACTORY;
+		if( this.lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
+			return ADULT_ICON_FACTORY;
+		} else {
+			return CHILD_ICON_FACTORY;
+		}
 	}
 
 	@Override
 	public org.lgna.project.ast.InstanceCreation createInstanceCreation() {
-		org.lgna.story.resources.sims2.PersonResource personResource = org.alice.stageide.personresource.RandomPersonResourceComposite.getInstance().getValueCreator().fireAndGetValue( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
-		org.lgna.project.ast.NamedUserType userType = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource( personResource );
-		org.lgna.project.ast.NamedUserConstructor constructor = userType.getDeclaredConstructors().get( 0 );
-		try {
-			org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
-			return org.lgna.project.ast.AstUtilities.createInstanceCreation( constructor, argumentExpression );
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-			throw new RuntimeException( ccee );
-		}
+		return this.getPersonResourceValueCreator().fireAndGetValue( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 	}
 
 	@Override

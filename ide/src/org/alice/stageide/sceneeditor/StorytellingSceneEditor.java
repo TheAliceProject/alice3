@@ -873,6 +873,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.getVM().ENTRY_POINT_invoke( sceneAliceInstance, sceneAliceInstance.getType().getDeclaredMethod( org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME ) );
 
 			getPropertyPanel().setSceneInstance( sceneAliceInstance );
+
 			//			getObjectMarkerPanel().setType( sceneAliceInstance.getType() );
 			//			getCameraMarkerPanel().setType( sceneAliceInstance.getType() );
 			this.instanceFactorySelectionPanel.setType( sceneAliceInstance.getType() );
@@ -942,6 +943,13 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 			for( org.lgna.project.ast.AbstractField field : sceneField.getValueType().getDeclaredFields() )
 			{
+				//Turn markers on so they're visible in the scene editor (note: markers are hidden by default so that when a world runs they aren't scene. we have to manually make them visible to see them in the scene editor)
+				if( field.getValueType().isAssignableTo( org.lgna.story.SMarker.class ) ) {
+					org.lgna.story.SMarker marker = this.getInstanceInJavaVMForField( field, org.lgna.story.SMarker.class );
+					MarkerImp markerImp = ImplementationAccessor.getImplementation( marker );
+					markerImp.setDisplayVisuals( true );
+					markerImp.setShowing( true );
+				}
 				if( field instanceof UserField )
 				{
 					UserField userField = (UserField)field;
@@ -1069,10 +1077,6 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 
 	@Override
 	public org.lgna.project.ast.Statement[] getDoStatementsForAddField( org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform ) {
-		return this.getDoStatementsForAddField( field, initialTransform, null );
-	}
-
-	public org.lgna.project.ast.Statement[] getDoStatementsForAddField( org.lgna.project.ast.UserField field, AffineMatrix4x4 initialTransform, org.lgna.story.Paint initialPaint ) {
 		if( ( initialTransform == null ) && field.getValueType().isAssignableTo( org.lgna.story.SModel.class ) )
 		{
 			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
@@ -1086,7 +1090,7 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			Point3 location = new Point3( 0, y, 0 );
 			initialTransform = new AffineMatrix4x4( OrthogonalMatrix3x3.createIdentity(), location );
 		}
-		return SetUpMethodGenerator.getSetupStatementsForField( false, field, this.getActiveSceneInstance(), null, initialTransform, initialPaint );
+		return SetUpMethodGenerator.getSetupStatementsForField( false, field, this.getActiveSceneInstance(), null, initialTransform );
 	}
 
 	@Override
@@ -1119,7 +1123,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			this.onscreenLookingGlass.forgetAllCachedItems();
 			edu.cmu.cs.dennisc.nebulous.Manager.unloadNebulousModelData();
 		}
-		org.alice.stageide.personresource.PreviewComposite.getInstance().unloadPerson();
+
+		org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviewComposite().unloadPerson();
 		if( this.globalDragAdapter != null ) {
 			this.globalDragAdapter.clear();
 		}

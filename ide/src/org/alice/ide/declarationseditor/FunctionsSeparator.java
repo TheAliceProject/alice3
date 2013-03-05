@@ -54,7 +54,7 @@ public class FunctionsSeparator extends org.lgna.croquet.LabelMenuSeparatorModel
 		return SingletonHolder.instance;
 	}
 
-	public FunctionsSeparator() {
+	private FunctionsSeparator() {
 		super( java.util.UUID.fromString( "cb116b27-a728-44f5-ad65-1dacda9e98b8" ) );
 	}
 }

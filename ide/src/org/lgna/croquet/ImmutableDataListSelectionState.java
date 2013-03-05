@@ -49,4 +49,9 @@ public abstract class ImmutableDataListSelectionState<T> extends ListSelectionSt
 	public ImmutableDataListSelectionState( Group group, java.util.UUID migrationId, ItemCodec<T> itemCodec, T[] values, int selectionIndex ) {
 		super( group, migrationId, new org.lgna.croquet.data.ImmutableListData<T>( itemCodec, values ), selectionIndex );
 	}
+
+	@Override
+	public org.lgna.croquet.data.ImmutableListData<T> getData() {
+		return (org.lgna.croquet.data.ImmutableListData<T>)super.getData();
+	}
 }

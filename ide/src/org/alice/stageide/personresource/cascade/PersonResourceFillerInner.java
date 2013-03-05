@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,21 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameState extends IngredientListSelectionState<String> {
-	private static class SingletonHolder {
-		private static HairColorNameState instance = new HairColorNameState();
+public abstract class PersonResourceFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	private final org.lgna.story.resources.sims2.LifeStage lifeStage;
+
+	public PersonResourceFillerInner( Class<? extends org.lgna.story.resources.sims2.PersonResource> cls, org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		super( cls );
+		this.lifeStage = lifeStage;
 	}
 
-	public static HairColorNameState getInstance() {
-		return SingletonHolder.instance;
-	}
+	@Override
+	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
+		org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.InstanceCreation, Void> fillIn = null;
+		if( prevExpression instanceof org.lgna.project.ast.InstanceCreation ) {
+			org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)prevExpression;
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceCreation.getType();
+			if( type instanceof org.lgna.project.ast.JavaType ) {
+				org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+				if( javaType.isAssignableTo( org.lgna.story.resources.sims2.PersonResource.class ) ) {
+					fillIn = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter().getFillIn();
 
-	private HairColorNameState() {
-		super( java.util.UUID.fromString( "7c4d1bb3-fca3-4b7f-b92d-ffb7ee9296fb" ), org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
+				}
+			}
+		}
+		if( fillIn != null ) {
+			//pass
+		} else {
+			fillIn = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getRandomPersonExpressionValueConverter( this.lifeStage ).getFillIn();
+		}
+		items.add( fillIn );
 	}
 }

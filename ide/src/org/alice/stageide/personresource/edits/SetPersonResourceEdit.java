@@ -41,18 +41,39 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.edits;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BodyOrHeadTabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends org.lgna.croquet.SimpleTabComposite<V> {
-	public BodyOrHeadTabComposite( java.util.UUID id ) {
-		super( id, IsCloseable.FALSE );
+public class SetPersonResourceEdit extends org.lgna.croquet.edits.Edit {
+	private final org.lgna.story.resources.sims2.PersonResource prevResource;
+	private final org.lgna.story.resources.sims2.PersonResource nextResource;
+
+	public SetPersonResourceEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.story.resources.sims2.PersonResource nextResource ) {
+		super( step );
+		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
+		this.prevResource = ingredientsComposite.createResourceFromStates();
+		this.nextResource = nextResource;
+	}
+
+	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
+		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
+		ingredientsComposite.setStates( resource );
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
+	protected final void doOrRedoInternal( boolean isDo ) {
+		this.setResource( this.nextResource );
+	}
+
+	@Override
+	protected final void undoInternal() {
+		this.setResource( this.prevResource );
+	}
+
+	@Override
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
+		rv.append( "randomize" );
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource.edits;
+package org.alice.ide.declarationseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RandomizeEdit extends org.lgna.croquet.edits.Edit {
-	private final org.lgna.story.resources.sims2.PersonResource prevResource;
-	private final org.lgna.story.resources.sims2.PersonResource nextResource;
-
-	public RandomizeEdit( org.lgna.croquet.history.CompletionStep step ) {
-		super( step );
-		this.prevResource = org.alice.stageide.personresource.IngredientsComposite.getInstance().createResourceFromStates();
-		this.nextResource = org.alice.stageide.personresource.RandomPersonUtilities.createRandomResource();
+public class ClassesSeparator extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static class SingletonHolder {
+		private static ClassesSeparator instance = new ClassesSeparator();
 	}
 
-	private void setResource( org.lgna.story.resources.sims2.PersonResource resource ) {
-		org.alice.stageide.personresource.IngredientsComposite.getInstance().pushAtomic();
-		org.alice.stageide.personresource.IngredientsComposite.getInstance().setStates( resource );
-		org.alice.stageide.personresource.IngredientsComposite.getInstance().popAtomic();
+	public static ClassesSeparator getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ClassesSeparator() {
+		super( java.util.UUID.fromString( "4fefc3e8-3440-4177-b644-48551de6bb33" ) );
 	}
 
 	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		this.setResource( this.nextResource );
+	protected void localize() {
+		super.localize();
+		String text = super.getName();
+		this.setIcon( new edu.cmu.cs.dennisc.javax.swing.icons.TextIcon( text, java.awt.Color.GRAY, new java.awt.Font( java.awt.Font.SANS_SERIF, java.awt.Font.ITALIC, 12 ) ) );
 	}
 
 	@Override
-	protected final void undoInternal() {
-		this.setResource( this.prevResource );
-	}
-
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "randomize" );
+	public String getName() {
+		return null;
 	}
 }

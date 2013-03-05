@@ -68,6 +68,7 @@ public class DeclarationMenu extends org.lgna.croquet.MenuModel {
 		edu.cmu.cs.dennisc.tree.Node<org.lgna.project.ast.NamedUserType> root = ide.getApiConfigurationManager().getNamedUserTypesAsTreeFilteredForSelection();
 
 		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		models.add( ClassesSeparator.getInstance() );
 		addTypeFillIns( models, root );
 
 		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );

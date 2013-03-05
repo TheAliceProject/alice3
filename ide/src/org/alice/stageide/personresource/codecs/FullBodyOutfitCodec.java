@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,13 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IngredientListSelectionState<E> extends org.lgna.croquet.MutableDataListSelectionState<E> {
-	public IngredientListSelectionState( java.util.UUID individualId, org.lgna.croquet.ItemCodec<E> codec, E... elements ) {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, individualId, codec, -1, elements );
+public enum FullBodyOutfitCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.FullBodyOutfit> {
+	SINGLETON;
+	public Class<org.lgna.story.resources.sims2.FullBodyOutfit> getValueClass() {
+		return org.lgna.story.resources.sims2.FullBodyOutfit.class;
+	}
+
+	public org.lgna.story.resources.sims2.FullBodyOutfit decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
+	}
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
+		throw new RuntimeException( "todo" );
+	}
+
+	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.FullBodyOutfit value ) {
+		sb.append( value );
 	}
 }
