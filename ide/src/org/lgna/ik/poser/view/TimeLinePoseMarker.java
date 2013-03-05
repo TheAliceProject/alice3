@@ -47,7 +47,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.beans.Transient;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
@@ -84,6 +83,7 @@ class TimeLinePoseMarkerUI extends BasicToggleButtonUI {
 }
 
 class JTimeLinePoseMarker extends JToggleButton {
+	public static Dimension SIZE = new Dimension( 32, 64 );
 	private TimeLinePoseMarker timeLinePoseMarker;
 
 	public JTimeLinePoseMarker( TimeLinePoseMarker timeLinePoseMarker ) {
@@ -92,13 +92,7 @@ class JTimeLinePoseMarker extends JToggleButton {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension( 32, 64 );
-	}
-
-	@Override
-	@Transient
-	public Dimension getMinimumSize() {
-		return new Dimension( 32, 64 );
+		return SIZE;
 	}
 
 	@Override

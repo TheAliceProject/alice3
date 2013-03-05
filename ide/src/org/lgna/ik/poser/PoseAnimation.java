@@ -88,6 +88,13 @@ public class PoseAnimation {
 		return this.pose;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getSimpleName() );
+		return sb.toString();
+	}
+
 	//	public MethodInvocation createAliceMethod( AnimateToPose.Detail[] details ) {
 	//		Expression[] exArr = new Expression[ details.length + 1 ];
 	//		try {

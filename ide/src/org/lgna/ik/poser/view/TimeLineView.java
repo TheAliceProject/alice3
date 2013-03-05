@@ -48,8 +48,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
@@ -63,6 +61,28 @@ import org.lgna.ik.poser.events.TimeLineListener;
 import edu.cmu.cs.dennisc.java.awt.DimensionUtilities;
 
 class TimeLineLayout implements LayoutManager {
+	public static int calculateMinX( Container parent ) {
+		java.awt.Insets insets = parent.getInsets();
+		return insets.left + ( JTimeLinePoseMarker.SIZE.width / 2 );
+	}
+
+	public static int calculateMaxX( Container parent ) {
+		java.awt.Insets insets = parent.getInsets();
+		return parent.getWidth() - insets.right - ( JTimeLinePoseMarker.SIZE.width / 2 );
+	}
+
+	public static int calculateCenterXForJTimeLinePoseMarker( Container parent, double portion ) {
+		int minX = calculateMinX( parent );
+		int maxX = calculateMaxX( parent );
+
+		double x = ( maxX - minX ) * portion;
+
+		return (int)Math.round( x );
+	}
+
+	public static int calculateLeftXForJTimeLinePoseMarker( Container parent, double portion ) {
+		return calculateCenterXForJTimeLinePoseMarker( parent, portion ) - ( JTimeLinePoseMarker.SIZE.width / 2 );
+	}
 
 	private final TimeLineComposite timeLine;
 
@@ -73,33 +93,16 @@ class TimeLineLayout implements LayoutManager {
 
 	public void layoutContainer( Container parent ) {
 		for( Component child : parent.getComponents() ) {
-			int x = 100;
 			if( child instanceof JTimeLinePoseMarker ) {
 				JTimeLinePoseMarker jMarker = (JTimeLinePoseMarker)child;
-				x = getXforTime( jMarker.getTimeLinePoseMarker().getItem().getEventTime(), parent );
-				x = makeCenter( jMarker, x );
+				double time = jMarker.getTimeLinePoseMarker().getItem().getEventTime();
+				int x = calculateLeftXForJTimeLinePoseMarker( parent, time / timeLine.getEndTime() );
+				child.setLocation( x, 0 );
+				child.setSize( child.getPreferredSize() );
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( child );
 			}
-			child.setLocation( x, 0 );
-			child.setSize( child.getPreferredSize() );
-			child.repaint();
 		}
-	}
-
-	private int makeCenter( JTimeLinePoseMarker jMarker, int x ) {
-		return x - ( jMarker.getWidth() / 2 );
-	}
-
-	public int getXforTime( int time, Container parent ) {
-		return (int)( ( (double)( time - timeLine.getStartTime() ) / ( (double)timeLine.getEndTime() - timeLine.getStartTime() ) )
-				* ( getXMax() - getXMin() ) ) + getXMin();
-	}
-
-	private int getXMin() {
-		return timeLine.getViewWidth() / 24;
-	}
-
-	private int getXMax() {
-		return timeLine.getViewWidth() - ( timeLine.getViewWidth() / 24 );
 	}
 
 	public Dimension minimumLayoutSize( Container parent ) {
@@ -146,6 +149,19 @@ class TimeLineLayout implements LayoutManager {
 
 public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 
+	private static java.awt.Shape createArrow() {
+		final int HALF_ARROW = 8;
+		final int ARROW_HEIGHT = 24;
+		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
+		rv.moveTo( 0, 0 );
+		rv.lineTo( HALF_ARROW, ARROW_HEIGHT );
+		rv.lineTo( -HALF_ARROW, ARROW_HEIGHT );
+		rv.closePath();
+		return rv;
+	}
+
+	private static final java.awt.Shape ARROW = createArrow();
+
 	private class JTimeLineView extends JItemSelectablePanel {
 		private final TimeLineComposite timeLine;
 		private final TimeLineListener timeLineListener = new TimeLineListener() {
@@ -153,30 +169,6 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 				repaint();
 			}
 		};
-
-		public int getTimeFromLocation( int x ) {
-			int time = (int)( ( (double)( x - getXMin() ) / ( getXMax() - getXMin() ) ) * ( timeLine.getEndTime() - timeLine.getStartTime() ) );
-			if( time < timeLine.getStartTime() ) {
-				return timeLine.getStartTime();
-			}
-			if( time > timeLine.getEndTime() ) {
-				return timeLine.getEndTime();
-			}
-			return time;
-		}
-
-		public int getXforTime( int time ) {
-			return (int)( ( (double)( time - timeLine.getStartTime() ) / ( (double)timeLine.getEndTime() - timeLine.getStartTime() ) )
-					* ( getXMax() - getXMin() ) ) + getXMin();
-		}
-
-		private int getXMin() {
-			return getWidth() / 24;
-		}
-
-		private int getXMax() {
-			return getWidth() - ( getWidth() / 24 );
-		}
 
 		public JTimeLineView( TimeLineComposite timeLine ) {
 			this.timeLine = timeLine;
@@ -193,38 +185,33 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 			super.paintComponent( g );
 			g.setColor( Color.RED );
 			g.fillRoundRect( 0, 0, this.getWidth(), this.getHeight(), this.getHeight() / 4, this.getHeight() / 4 );
+
+			int minY = ( this.getHeight() * 2 ) / 5;
+			int maxY = this.getHeight() - minY;
+			int centerY = ( minY + maxY ) / 2;
+
+			int minX = TimeLineLayout.calculateMinX( this );
+			int maxX = TimeLineLayout.calculateMaxX( this );
+
 			g.setColor( Color.BLACK );
-			g.drawLine( getXMin(), (int)( getHeight() * .5 ), getXMax(), (int)( getHeight() * .5 ) );
-			g.drawLine( getXMin(), (int)( ( getHeight() * .5 ) + ( getHeight() / 16 ) ), getXMin(), (int)( ( getHeight() * .5 ) - ( getHeight() / 16 ) ) );
-			g.drawLine( getXMax(), (int)( ( getHeight() * .5 ) + ( getHeight() / 16 ) ), getXMax(), (int)( ( getHeight() * .5 ) - ( getHeight() / 16 ) ) );
-			Point[] pArr = this.getPointsForSlider();
-			int[] xArr = new int[ pArr.length ];
-			int[] yArr = new int[ pArr.length ];
-			for( int i = 0; i != pArr.length; ++i ) {
-				xArr[ i ] = pArr[ i ].x;
-				yArr[ i ] = pArr[ i ].y;
+			g.drawLine( minX, minY, minX, maxY );
+			g.drawLine( maxX, minY, maxX, maxY );
+			g.drawLine( minX, centerY, maxX, centerY );
+
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+
+			int currentTimeX = TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, timeLine.getCurrentTime() / timeLine.getEndTime() );
+
+			java.awt.geom.AffineTransform prevTransform = g2.getTransform();
+
+			g2.translate( currentTimeX, centerY );
+			g2.fill( ARROW );
+			g2.setTransform( prevTransform );
+
+			for( PoseEvent poseEvent : timeLine.getPosesInTimeline() ) {
+				int poseX = TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, poseEvent.getEventTime() / timeLine.getEndTime() );
+				g.drawLine( poseX, 0, poseX, getHeight() );
 			}
-			g.fillPolygon( xArr, yArr, pArr.length );
-			for( PoseEvent o : timeLine.getPosesInTimeline() ) {
-				int x = getXforTime( o.getEventTime() );
-				g.drawLine( x, 0, x, getHeight() );
-			}
-		}
-
-		private Point[] getPointsForSlider() {
-			Point arrow = new Point( getXforTime( timeLine.getCurrentTime() ), ( this.getHeight() ) / 2 );
-			Point leftBase = new Point( arrow.x + ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
-			Point rightBase = new Point( arrow.x - ( this.getWidth() / 32 ), ( this.getHeight() * 3 ) / 4 );
-			Point[] rv = { arrow, leftBase, rightBase };
-			return rv;
-		}
-
-		public void updateSlider( MouseEvent e ) {
-			this.timeLine.setCurrentTime( getTimeFromLocation( e.getLocationOnScreen().x ) );
-		}
-
-		public boolean isClickingOnSlider( Point locationOnScreen ) {
-			return true;
 		}
 	}
 

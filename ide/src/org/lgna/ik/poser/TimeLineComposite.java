@@ -66,9 +66,8 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		super( java.util.UUID.fromString( "45b24458-c06e-4480-873a-f1698bf03edb" ) );
 	}
 
-	private int startTime = 0;
-	private int currTime = 5;
-	private int endTime = 10;
+	private double currTime = 5;
+	private double endTime = 10;
 
 	//	private final List<PoseEvent> internalPosesInTimelineList = Collections.newCopyOnWriteArrayList();
 	private final MutableDataListSelectionState<PoseEvent> posesInTimeline = createListSelectionState( createKey( "asdf" ), PoseEvent.class, new ItemCodec<PoseEvent>() {
@@ -95,11 +94,11 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 
 	public class PoseEvent {
 
-		private int eventTime;
+		private double eventTime;
 		private Pose pose;
 		private AnimationStyle style = AnimationStyle.BEGIN_ABRUPTLY_AND_END_GENTLY;
 
-		PoseEvent( int time, Pose pose ) {
+		PoseEvent( double time, Pose pose ) {
 			this.eventTime = time;
 			this.pose = pose;
 		}
@@ -108,7 +107,7 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 			this.style = style;
 		}
 
-		public int getEventTime() {
+		public double getEventTime() {
 			return this.eventTime;
 		}
 
@@ -136,7 +135,7 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		++currTime;
 	}
 
-	private PoseEvent getPoseAtGivenTime( int givenTime ) {
+	private PoseEvent getPoseAtGivenTime( double givenTime ) {
 		for( int i = 0; i != posesInTimeline.getItemCount(); ++i ) {
 			PoseEvent event = posesInTimeline.getItemAt( i );
 			if( event.getEventTime() > givenTime ) {
@@ -174,15 +173,11 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		return Collections.newCopyOnWriteArrayList( this.posesInTimeline.getData().toArray() );
 	}
 
-	public int getStartTime() {
-		return startTime;
-	}
-
-	public int getEndTime() {
+	public double getEndTime() {
 		return endTime;
 	}
 
-	public int getCurrentTime() {
+	public double getCurrentTime() {
 		return currTime;
 	}
 
