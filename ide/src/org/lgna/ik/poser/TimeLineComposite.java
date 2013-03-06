@@ -69,7 +69,6 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 	private double currTime = 5;
 	private double endTime = 10;
 
-	//	private final List<PoseEvent> internalPosesInTimelineList = Collections.newCopyOnWriteArrayList();
 	private final MutableDataListSelectionState<PoseEvent> posesInTimeline = createListSelectionState( createKey( "asdf" ), PoseEvent.class, new ItemCodec<PoseEvent>() {
 
 		public Class<PoseEvent> getValueClass() {
@@ -132,7 +131,6 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 			PoseEvent poseEvent = new PoseEvent( currTime, pose );
 			insertPoseEvent( poseEvent );
 		}
-		++currTime;
 	}
 
 	private PoseEvent getPoseAtGivenTime( double givenTime ) {
@@ -181,7 +179,15 @@ public class TimeLineComposite extends SimpleComposite<OuterTimeLineView> {
 		return currTime;
 	}
 
-	public void setCurrentTime( int time ) {
+	public void setCurrentTime( double time ) {
+		if( time > endTime ) {
+			this.currTime = endTime;
+			return;
+		}
+		if( time < 0 ) {
+			this.currTime = 0;
+			return;
+		}
 		this.currTime = time;
 		fireChanged();
 	}

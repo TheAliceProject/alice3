@@ -48,6 +48,10 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
@@ -75,9 +79,17 @@ class TimeLineLayout implements LayoutManager {
 		int minX = calculateMinX( parent );
 		int maxX = calculateMaxX( parent );
 
-		double x = ( maxX - minX ) * portion;
+		double x = ( ( maxX - minX ) * portion ) + minX;
 
 		return (int)Math.round( x );
+	}
+
+	public double calculateTimeForX( int x, Container parent ) {
+		double xActual = x;
+		double xMin = calculateMinX( parent );
+		double xMax = calculateMaxX( parent );
+		double rv = ( ( xActual - xMin ) / ( xMax - xMin ) ) * timeLine.getEndTime();
+		return rv;
 	}
 
 	public static int calculateLeftXForJTimeLinePoseMarker( Container parent, double portion ) {
@@ -173,6 +185,8 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 		public JTimeLineView( TimeLineComposite timeLine ) {
 			this.timeLine = timeLine;
 			this.timeLine.addTimeLineListener( this.timeLineListener );
+			this.addMouseListener( mlAdapter );
+			this.addMouseMotionListener( mmlAdapter );
 		}
 
 		@Override
@@ -208,11 +222,49 @@ public class TimeLineView extends CustomRadioButtons<PoseEvent> {
 			g2.fill( ARROW );
 			g2.setTransform( prevTransform );
 
-			for( PoseEvent poseEvent : timeLine.getPosesInTimeline() ) {
-				int poseX = TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, poseEvent.getEventTime() / timeLine.getEndTime() );
-				g.drawLine( poseX, 0, poseX, getHeight() );
-			}
+			//			for( PoseEvent poseEvent : timeLine.getPosesInTimeline() ) {
+			//				int poseX = TimeLineLayout.calculateCenterXForJTimeLinePoseMarker( this, poseEvent.getEventTime() / timeLine.getEndTime() );
+			//				g.drawLine( poseX, 0, poseX, getHeight() );
+			//			}
 		}
+
+		private boolean isSliding = false;
+
+		MouseMotionListener mmlAdapter = new MouseMotionListener() {
+
+			public void mouseMoved( MouseEvent e ) {
+			}
+
+			public void mouseDragged( MouseEvent e ) {
+				if( isSliding ) {
+					timeLine.setCurrentTime( ( (TimeLineLayout)getLayout() ).calculateTimeForX( e.getPoint().x, TimeLineView.this.getAwtComponent() ) );
+				}
+			}
+		};
+
+		MouseListener mlAdapter = new MouseListener() {
+
+			public void mouseReleased( MouseEvent e ) {
+				isSliding = false;
+			}
+
+			public void mousePressed( MouseEvent e ) {
+				Point locationOnScreen = e.getPoint();
+				double deltax = ( (TimeLineLayout)getLayout() ).calculateTimeForX( locationOnScreen.x, JTimeLineView.this ) / timeLine.getEndTime();
+				locationOnScreen.x = (int)( deltax );
+				locationOnScreen.y = locationOnScreen.y - ( getHeight() / 2 );
+				isSliding = ARROW.contains( locationOnScreen );
+			}
+
+			public void mouseExited( MouseEvent e ) {
+			}
+
+			public void mouseEntered( MouseEvent e ) {
+			}
+
+			public void mouseClicked( MouseEvent e ) {
+			}
+		};
 	}
 
 	private TimeLineComposite composite;
