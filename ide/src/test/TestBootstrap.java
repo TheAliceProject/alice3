@@ -50,7 +50,7 @@ public class TestBootstrap {
 	public static void main( String[] args ) {
 		org.lgna.project.ast.NamedUserType programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( org.lgna.story.SGround.SurfaceAppearance.GRASS, null, Double.NaN, org.lgna.story.Color.WHITE, null );
 		org.lgna.project.virtualmachine.VirtualMachine vm = new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
-		vm.registerAnonymousAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
+		vm.registerAbstractClassAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
 		if( false ) {
 			org.lgna.project.virtualmachine.UserInstance programInstance = vm.ENTRY_POINT_createInstance( programType );
 			vm.ENTRY_POINT_invoke( programInstance, programType.findMethod( "initializeInFrame", String[].class ), (Object)args );

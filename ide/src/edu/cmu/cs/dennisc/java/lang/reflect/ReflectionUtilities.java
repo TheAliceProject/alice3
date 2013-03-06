@@ -85,6 +85,18 @@ public final class ReflectionUtilities {
 		return java.lang.reflect.Modifier.isFinal( cls.getModifiers() );
 	}
 
+	public static boolean isStatic( Class<?> cls ) {
+		return java.lang.reflect.Modifier.isStatic( cls.getModifiers() );
+	}
+
+	public static boolean isStatic( java.lang.reflect.Method mthd ) {
+		return java.lang.reflect.Modifier.isStatic( mthd.getModifiers() );
+	}
+
+	public static boolean isStatic( java.lang.reflect.Field fld ) {
+		return java.lang.reflect.Modifier.isStatic( fld.getModifiers() );
+	}
+
 	//todo: add the rest of the modifiers
 
 	@Deprecated

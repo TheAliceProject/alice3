@@ -62,23 +62,27 @@ public abstract class ProgramContext {
 	public ProgramContext( org.lgna.project.ast.NamedUserType programType ) {
 		assert programType != null;
 		this.vm = this.createVirtualMachine();
-		this.vm.registerAnonymousAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseClickOnScreenListener.class, org.alice.stageide.apis.story.event.MouseClickOnScreenAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.MouseClickOnObjectListener.class, org.alice.stageide.apis.story.event.MouseClickOnObjectAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.KeyPressListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.ArrowKeyPressListener.class, org.alice.stageide.apis.story.event.ArrowKeyAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.NumberKeyPressListener.class, org.alice.stageide.apis.story.event.NumberKeyAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.PointOfViewChangeListener.class, org.alice.stageide.apis.story.event.TransformationEventAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.ViewEnterListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.ViewExitListener.class, org.alice.stageide.apis.story.event.ComesOutOfViewEventAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionStartListener.class, org.alice.stageide.apis.story.event.StartCollisionAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.CollisionEndListener.class, org.alice.stageide.apis.story.event.EndCollisionAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityEnterListener.class, org.alice.stageide.apis.story.event.EnterProximityAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.ProximityExitListener.class, org.alice.stageide.apis.story.event.ExitProximityAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionStartListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.OcclusionEndListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
-		this.vm.registerAnonymousAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.MouseClickOnScreenListener.class, org.alice.stageide.apis.story.event.MouseClickOnScreenAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.MouseClickOnObjectListener.class, org.alice.stageide.apis.story.event.MouseClickOnObjectAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.KeyPressListener.class, org.alice.stageide.apis.story.event.KeyAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.ArrowKeyPressListener.class, org.alice.stageide.apis.story.event.ArrowKeyAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.NumberKeyPressListener.class, org.alice.stageide.apis.story.event.NumberKeyAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.PointOfViewChangeListener.class, org.alice.stageide.apis.story.event.TransformationEventAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.ViewEnterListener.class, org.alice.stageide.apis.story.event.ComesIntoViewEventAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.ViewExitListener.class, org.alice.stageide.apis.story.event.ComesOutOfViewEventAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.CollisionStartListener.class, org.alice.stageide.apis.story.event.StartCollisionAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.CollisionEndListener.class, org.alice.stageide.apis.story.event.EndCollisionAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.ProximityEnterListener.class, org.alice.stageide.apis.story.event.EnterProximityAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.ProximityExitListener.class, org.alice.stageide.apis.story.event.ExitProximityAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.OcclusionStartListener.class, org.alice.stageide.apis.story.event.StartOcclusionEventAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.OcclusionEndListener.class, org.alice.stageide.apis.story.event.EndOcclusionEventAdapter.class );
+		this.vm.registerAbstractClassAdapter( org.lgna.story.event.TimeListener.class, org.alice.stageide.apis.story.event.TimerEventAdapter.class );
+
+		vm.registerProtectedMethodAdapter(
+				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class ),
+				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.EmployeesOnly.class, "invokeSetJointedModelResource", org.lgna.story.SJointedModel.class, org.lgna.story.resources.JointedModelResource.class ) );
 
 		org.alice.ide.issue.UserProgramRunningStateUtilities.setUserProgramRunning( true );
 		this.programInstance = this.createProgramInstance( programType );
