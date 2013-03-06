@@ -126,6 +126,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	private static final org.lgna.project.ast.JavaType COLOR_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class );
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointedModelResource.class );
+	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
 
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
 		if( field == null ) {
@@ -235,7 +236,7 @@ public class StageIDE extends org.alice.ide.IDE {
 							org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 							if( constructor != null ) {
 								org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
-								return COLOR_TYPE.isAssignableFrom( type ) == false;
+								return ( COLOR_TYPE.isAssignableFrom( type ) || PERSON_RESOURCE_TYPE.isAssignableFrom( type ) ) == false;
 							}
 						}
 					}
