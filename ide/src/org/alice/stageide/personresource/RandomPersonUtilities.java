@@ -66,8 +66,4 @@ public class RandomPersonUtilities {
 		double obesityLevel = org.lgna.common.RandomUtilities.nextDouble();
 		return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit );
 	}
-
-	public static org.lgna.story.resources.sims2.PersonResource createRandomResource() {
-		return createRandomResource( null );
-	}
 }

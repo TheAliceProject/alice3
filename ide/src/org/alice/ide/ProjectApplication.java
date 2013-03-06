@@ -406,7 +406,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
 		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
 
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo", file );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: better handling of file project loader", file );
 
 		this.uriProjectLoader = new org.alice.ide.uricontent.FileProjectLoader( file );
 		this.updateHistoryIndexFileSync();

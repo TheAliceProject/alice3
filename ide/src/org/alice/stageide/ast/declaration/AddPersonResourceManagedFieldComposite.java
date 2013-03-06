@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.ast.declaration;
 
+import org.lgna.croquet.ValueCreator;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -73,23 +75,21 @@ public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.de
 				.build() );
 	}
 
-	public void setPersonResource( org.lgna.story.resources.sims2.PersonResource personResource ) {
-		if( personResource != null ) {
-			try {
-				org.lgna.project.ast.InstanceCreation argumentExpression = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSims2PersonRecourseInstanceCreation( personResource );
+	private static org.lgna.project.ast.InstanceCreation createPersonInstanceCreationFromPersonResourceInstanceCreation( org.lgna.project.ast.InstanceCreation personResourceInstanceCreation ) {
+		if( personResourceInstanceCreation != null ) {
+			org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResourceInstanceCreation( personResourceInstanceCreation );
 
-				org.lgna.project.ast.NamedUserType type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromPersonResource( personResource );
-
-				this.initialInstanceCreation = org.lgna.project.ast.AstUtilities.createInstanceCreation(
-						type.getDeclaredConstructors().get( 0 ),
-						argumentExpression
-						);
-			} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-				this.initialInstanceCreation = null;
-			}
+			return org.lgna.project.ast.AstUtilities.createInstanceCreation(
+					type.getDeclaredConstructors().get( 0 ),
+					personResourceInstanceCreation
+					);
 		} else {
-			this.initialInstanceCreation = null;
+			return null;
 		}
+	}
+
+	public void setInitialPersonResourceInstanceCreation( org.lgna.project.ast.InstanceCreation argumentExpression ) {
+		this.initialInstanceCreation = createPersonInstanceCreationFromPersonResourceInstanceCreation( argumentExpression );
 	}
 
 	@Override
@@ -102,10 +102,30 @@ public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.de
 		return getDeclaringTypeFromInitializer( this.getInitializer() );
 	}
 
+	private static final class PersonResourceToPersonConverter extends org.lgna.croquet.ValueConverter<org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.InstanceCreation> {
+		public PersonResourceToPersonConverter( ValueCreator<org.lgna.project.ast.InstanceCreation> valueCreator ) {
+			super( java.util.UUID.fromString( "f04fd1b1-24a6-444d-af92-b885e18a3887" ), valueCreator );
+		}
+
+		@Override
+		protected org.lgna.project.ast.InstanceCreation convert( org.lgna.project.ast.InstanceCreation value ) {
+			return createPersonInstanceCreationFromPersonResourceInstanceCreation( value );
+		}
+	}
+
+	private final org.lgna.croquet.ValueConverter<org.lgna.project.ast.InstanceCreation, org.lgna.project.ast.InstanceCreation> previousResourceExpressionValueConverter = new PersonResourceToPersonConverter( org.alice.stageide.personresource.PersonResourceComposite.getInstance().getPreviousResourceExpressionValueConverter() );
+
 	private class InitializerContext implements org.alice.ide.cascade.ExpressionCascadeContext {
 		public org.lgna.project.ast.Expression getPreviousExpression() {
 			//todo: investigate
-			return getInitializer();
+			org.lgna.project.ast.Expression initializer = getInitializer();
+			if( initializer instanceof org.lgna.project.ast.InstanceCreation ) {
+				org.lgna.project.ast.InstanceCreation instanceCreation = (org.lgna.project.ast.InstanceCreation)initializer;
+				if( instanceCreation.requiredArguments.size() == 1 ) {
+					return instanceCreation.requiredArguments.get( 0 ).expression.getValue();
+				}
+			}
+			return null;
 		}
 
 		public org.alice.ide.ast.draganddrop.BlockStatementIndexPair getBlockStatementIndexPair() {
@@ -131,6 +151,7 @@ public class AddPersonResourceManagedFieldComposite extends org.alice.ide.ast.de
 		}
 
 		public void appendBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<org.lgna.project.ast.Expression> blankNode ) {
+			rv.add( previousResourceExpressionValueConverter.getFillIn() );
 		}
 	}
 

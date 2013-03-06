@@ -112,23 +112,6 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
-	//	private boolean isEnabled = true;
-	//	public boolean isEnabled() {
-	//		return this.isEnabled;
-	//	}
-	//	public void setEnabled( boolean isEnabled ) {
-	//		if( this.isEnabled != isEnabled ) {
-	//			this.isEnabled = isEnabled;
-	//			synchronized( this.components ) {
-	//				for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
-	//					component.getAwtComponent().setEnabled( this.isEnabled );
-	//				}
-	//			}
-	//		}
-	//	}
-
-	//	public abstract boolean isEnabled();
-	//	public abstract void setEnabled( boolean isEnabled );
 	private boolean isEnabled = true;
 
 	public boolean isEnabled() {
@@ -137,17 +120,13 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: override setEnabled", this, isEnabled );
 			this.isEnabled = isEnabled;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: override setEnabled", this, isEnabled );
+			for( org.lgna.croquet.components.JComponent<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+				component.getAwtComponent().setEnabled( this.isEnabled );
+			}
 		}
 	}
-
-	//	public boolean isEnabled() {
-	//		throw new RuntimeException( "todo" );
-	//	}
-	//	public void setEnabled( boolean isEnabled ) {
-	//		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
-	//	}
 
 	protected abstract StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
 

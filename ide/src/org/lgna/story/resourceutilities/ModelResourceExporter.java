@@ -44,9 +44,7 @@
 package org.lgna.story.resourceutilities;
 
 import java.awt.Image;
-import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -1245,17 +1243,17 @@ public class ModelResourceExporter {
 	}
 
 	public static BufferedImage createClassThumb( BufferedImage imgSrc ) {
-		ColorConvertOp colorConvert =
-				new ColorConvertOp( ColorSpace.getInstance( ColorSpace.CS_GRAY ), null );
-		if( imgSrc == null ) {
-			System.out.println( "NULL!" );
-		}
-		try {
-			colorConvert.filter( imgSrc, imgSrc );
-		} catch( NullPointerException e ) {
-			e.printStackTrace();
-			throw e;
-		}
+		//		ColorConvertOp colorConvert =
+		//				new ColorConvertOp( ColorSpace.getInstance( ColorSpace.CS_GRAY ), null );
+		//		if( imgSrc == null ) {
+		//			System.out.println( "NULL!" );
+		//		}
+		//		try {
+		//			colorConvert.filter( imgSrc, imgSrc );
+		//		} catch( NullPointerException e ) {
+		//			e.printStackTrace();
+		//			throw e;
+		//		}
 		return imgSrc;
 	}
 
@@ -1263,18 +1261,9 @@ public class ModelResourceExporter {
 	{
 		List<File> thumbnailFiles = new LinkedList<File>();
 		List<String> thumbnailsCreated = new LinkedList<String>();
-		boolean gotBase = false;
 		if( ( this.existingThumbnails != null ) && !this.existingThumbnails.isEmpty() ) {
 			for( Entry<String, File> entry : this.existingThumbnails.entrySet() )
 			{
-				if( !gotBase ) {
-					String thumbName = AliceResourceUtilties.getThumbnailResourceFileName( this.getClassName(), null );
-					File thumb = new File( getThumbnailPath( root, thumbName ) );
-					BufferedImage classThumb = createClassThumb( ImageUtilities.read( entry.getValue() ) );
-					ImageUtilities.write( thumb, classThumb );
-					thumbnailFiles.add( thumb );
-					gotBase = true;
-				}
 				if( entry.getValue().exists() ) {
 					thumbnailFiles.add( entry.getValue() );
 					thumbnailsCreated.add( entry.getKey() );
@@ -1288,15 +1277,6 @@ public class ModelResourceExporter {
 		for( Entry<ModelSubResourceExporter, Image> entry : this.thumbnails.entrySet() )
 		{
 			if( !thumbnailsCreated.contains( entry.getKey() ) ) {
-				if( !gotBase )
-				{
-					String thumbName = AliceResourceUtilties.getThumbnailResourceFileName( this.getClassName(), null );
-					File f = saveImageToFile( getThumbnailPath( root, thumbName ), entry.getValue() );
-					if( f != null ) {
-						thumbnailFiles.add( f );
-					}
-					gotBase = true;
-				}
 				String thumbnailName = AliceResourceUtilties.getThumbnailResourceFileName( entry.getKey().getModelName(), entry.getKey().getTextureName() );
 				File f = saveImageToFile( getThumbnailPath( root, thumbnailName ), entry.getValue() );
 				if( f != null ) {
@@ -1305,6 +1285,15 @@ public class ModelResourceExporter {
 				}
 			}
 		}
+		ModelSubResourceExporter firstSubResource = this.subResources.get( 0 );
+		String firstThumbName = AliceResourceUtilties.getThumbnailResourceFileName( firstSubResource.getModelName(), firstSubResource.getTextureName() );
+		String classThumbName = AliceResourceUtilties.getThumbnailResourceFileName( this.getClassName(), null );
+		File firstThumbFile = new File( getThumbnailPath( root, firstThumbName ) );
+		File classThumbFile = new File( getThumbnailPath( root, classThumbName ) );
+		BufferedImage classThumb = createClassThumb( ImageUtilities.read( firstThumbFile ) );
+		ImageUtilities.write( classThumbFile, classThumb );
+		thumbnailFiles.add( classThumbFile );
+
 		return thumbnailFiles;
 	}
 

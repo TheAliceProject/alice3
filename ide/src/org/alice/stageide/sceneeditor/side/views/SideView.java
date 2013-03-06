@@ -99,7 +99,8 @@ public class SideView extends org.lgna.croquet.components.BorderPanel {
 		//this.addComponent( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getSidekickLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD ), "align right" );
 		migPanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ), "wrap" );
 
-		migPanel.addComponent( composite.getAreJointsShowingState().createCheckBox(), "wrap" );
+		//todo
+		//migPanel.addComponent( composite.getAreJointsShowingState().createCheckBox(), "wrap" );
 
 		migPanel.addComponent( org.alice.stageide.oneshot.DynamicOneShotMenuModel.getInstance().getPopupPrepModel().createPopupButton(), "wrap" );
 
@@ -125,5 +126,7 @@ public class SideView extends org.lgna.croquet.components.BorderPanel {
 		migPanel.setBackgroundColor( color );
 		scrollPane.setBackgroundColor( color );
 		this.setBackgroundColor( color );
+
+		this.setMaximumPreferredWidth( 400 );
 	}
 }

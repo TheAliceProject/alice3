@@ -75,7 +75,7 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 
 	public abstract Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step );
 
-	public boolean isOptional() {
+	protected boolean isOptional() {
 		return false;
 	}
 
@@ -86,17 +86,17 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 	}
 
 	protected boolean isAutoAdvanceWorthAttempting() {
-		return false;
+		return this.isOptional();
 	}
 
-	public boolean isAutoAdvanceDesired( org.lgna.croquet.history.CompletionStep<?> step ) {
+	protected boolean isClearedForAutoAdvance( org.lgna.croquet.history.CompletionStep<?> step ) {
+		Status status = this.getPageStatus( step );
+		return status == IS_GOOD_TO_GO_STATUS;
+	}
+
+	public final boolean isAutoAdvanceDesired( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( this.isAutoAdvanceWorthAttempting() ) {
-			if( this.isOptional() ) {
-				return true;
-			} else {
-				Status status = this.getPageStatus( step );
-				return status == IS_GOOD_TO_GO_STATUS;
-			}
+			return this.isClearedForAutoAdvance( step );
 		} else {
 			return false;
 		}

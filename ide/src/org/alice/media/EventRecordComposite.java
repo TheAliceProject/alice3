@@ -167,12 +167,8 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	}
 
 	@Override
-	public boolean isAutoAdvanceDesired( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.isInputEvents() ) {
-			return super.isAutoAdvanceDesired( step );
-		} else {
-			return true;
-		}
+	protected boolean isOptional() {
+		return true;
 	}
 
 	@Override
@@ -180,7 +176,17 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		return true;
 	}
 
-	private boolean isInputEvents() {
+	@Override
+	protected boolean isClearedForAutoAdvance( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return ( this.containsInputEvents() || this.containsRandom() ) == false;
+	}
+
+	private boolean containsRandom() {
+		//todo: search for use of random in project
+		return false;
+	}
+
+	private boolean containsInputEvents() {
 		NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
 		UserMethod initializeEventListeners = sceneType.getDeclaredMethod( StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME );
 		BlockStatement body = initializeEventListeners.body.getValue();

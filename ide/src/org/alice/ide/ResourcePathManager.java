@@ -90,6 +90,11 @@ public class ResourcePathManager {
 		return false;
 	}
 
+	public static void clearPaths( String key )
+	{
+		resourcePathMap.remove( key );
+	}
+
 	public static java.util.List<java.io.File> getPaths( String key )
 	{
 		if( resourcePathMap.containsKey( key ) )

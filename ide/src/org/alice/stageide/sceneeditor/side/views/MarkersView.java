@@ -46,19 +46,168 @@ package org.alice.stageide.sceneeditor.side.views;
  * @author Dennis Cosgrove
  */
 public abstract class MarkersView extends org.lgna.croquet.components.BorderPanel {
-	private class MarkerListView extends org.lgna.croquet.components.DefaultRadioButtons<org.lgna.project.ast.UserField> {
-		public MarkerListView( org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> model ) {
-			super( model, true );
+	private static class MarkerView extends org.lgna.croquet.components.BooleanStateButton<javax.swing.AbstractButton> {
+		public MarkerView( org.lgna.croquet.BooleanState model ) {
+			super( model );
 		}
 
 		@Override
-		protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( org.lgna.project.ast.UserField item, org.lgna.croquet.BooleanState itemSelectedState ) {
-			itemSelectedState.setIconForBothTrueAndFalse( org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getIconForMarkerField( item ) );
-			org.lgna.croquet.components.BooleanStateButton<?> rv = new org.lgna.croquet.components.PushButton( itemSelectedState );
-			rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+		protected javax.swing.AbstractButton createAwtComponent() {
+			javax.swing.JToggleButton rv = new javax.swing.JToggleButton() {
+				@Override
+				public java.awt.Color getBackground() {
+					if( this.isSelected() ) {
+						return org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR;
+					} else {
+						return org.alice.stageide.personresource.views.IngredientsView.UNSELECTED_COLOR;
+					}
+				}
+			};
+
+			//rv.setLayout( new java.awt.BorderLayout() );
+			//rv.add( new javax.swing.JLabel( "hello" ), java.awt.BorderLayout.LINE_END );
 			return rv;
 		}
 	}
+
+	private static class MarkerListView extends org.lgna.croquet.components.CustomRadioButtons<org.lgna.project.ast.UserField> {
+		private class MarkerPopupButton extends org.lgna.croquet.components.PopupButton {
+			private final org.lgna.project.ast.UserField field;
+
+			public MarkerPopupButton( org.lgna.project.ast.UserField field ) {
+				super( org.alice.ide.declarationseditor.type.FieldMenuModel.getInstance( field ).getPopupPrepModel() );
+				this.field = field;
+			}
+
+			private boolean isFieldSelected() {
+				return MarkerListView.this.getModel().getValue() == field;
+			}
+
+			@Override
+			protected javax.swing.AbstractButton createSwingButton() {
+				return new JPopupButton() {
+					@Override
+					public void paint( java.awt.Graphics g ) {
+						java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+						boolean isAlphaDesired = isFieldSelected();
+						java.awt.Composite prevComposite = g2.getComposite();
+						if( isAlphaDesired ) {
+							//pass
+						} else {
+							g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, 0.2f ) );
+						}
+						try {
+							super.paint( g );
+						} finally {
+							if( isAlphaDesired ) {
+								//pass
+							} else {
+								g2.setComposite( prevComposite );
+							}
+						}
+
+					}
+
+					//					@Override
+					//					public boolean contains( int x, int y ) {
+					//						if( isFieldSelected() ) {
+					//							return super.contains( x, y );
+					//						} else {
+					//							return false;
+					//						}
+					//					}
+				};
+			}
+		}
+
+		private final java.util.Map<org.lgna.project.ast.UserField, MarkerPopupButton> mapFieldToPopupButton = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+		private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.UserField> selectionListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.UserField>() {
+			public void changing( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( org.lgna.croquet.State<org.lgna.project.ast.UserField> state, org.lgna.project.ast.UserField prevValue, org.lgna.project.ast.UserField nextValue, boolean isAdjusting ) {
+				repaint();
+			}
+		};
+
+		public MarkerListView( org.lgna.croquet.ListSelectionState<org.lgna.project.ast.UserField> model ) {
+			super( model );
+		}
+
+		@Override
+		protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
+			super.handleAddedTo( parent );
+			this.getModel().addValueListener( this.selectionListener );
+		}
+
+		@Override
+		protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
+			this.getModel().removeValueListener( this.selectionListener );
+			super.handleRemovedFrom( parent );
+		}
+
+		@Override
+		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+			return new net.miginfocom.swing.MigLayout();
+		}
+
+		@Override
+		protected void removeAllDetails() {
+			this.internalRemoveAllComponents();
+		}
+
+		@Override
+		protected void addPrologue( int count ) {
+		}
+
+		@Override
+		protected void addItem( org.lgna.project.ast.UserField item, org.lgna.croquet.components.BooleanStateButton<?> button ) {
+			this.internalAddComponent( this.mapFieldToPopupButton.get( item ) );
+			this.internalAddComponent( button, "wrap, grow" );
+		}
+
+		@Override
+		protected void addEpilogue() {
+		}
+
+		@Override
+		protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( final org.lgna.project.ast.UserField item, final org.lgna.croquet.BooleanState itemSelectedState ) {
+			itemSelectedState.setIconForBothTrueAndFalse( org.alice.stageide.sceneeditor.viewmanager.MarkerUtilities.getIconForMarkerField( item ) );
+
+			item.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				}
+
+				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+					itemSelectedState.setTextForBothTrueAndFalse( item.name.getValue() );
+				}
+			} );
+
+			MarkerView rv = new MarkerView( itemSelectedState );
+			rv.setHorizontalAlignment( org.lgna.croquet.components.HorizontalAlignment.LEADING );
+			this.mapFieldToPopupButton.put( item, new MarkerPopupButton( item ) );
+			return rv;
+		}
+	}
+
+	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+			unselectMarker();
+		}
+
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		}
+
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		}
+	};
 
 	public MarkersView( org.alice.stageide.sceneeditor.side.MarkersToolPalette<?> composite ) {
 		super( composite );
@@ -69,5 +218,23 @@ public abstract class MarkersView extends org.lgna.croquet.components.BorderPane
 		this.addPageEndComponent( new org.lgna.croquet.components.FlowPanel( org.lgna.croquet.components.FlowPanel.Alignment.LEADING,
 				composite.getAddOperation().createButton() ) );
 		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getPrimaryBackgroundColor() );
+	}
+
+	private void unselectMarker() {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "unselectMarker" );
+		org.alice.stageide.sceneeditor.side.MarkersToolPalette<?> composite = (org.alice.stageide.sceneeditor.side.MarkersToolPalette<?>)this.getComposite();
+		composite.getMarkerListState().clearSelection();
+	}
+
+	@Override
+	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
+		super.handleAddedTo( parent );
+		this.addMouseListener( this.mouseListener );
+	}
+
+	@Override
+	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
+		this.removeMouseListener( this.mouseListener );
+		super.handleRemovedFrom( parent );
 	}
 }

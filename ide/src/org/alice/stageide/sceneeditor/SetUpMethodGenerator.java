@@ -140,14 +140,26 @@ public class SetUpMethodGenerator {
 				paintExpression = null;
 			}
 			if( paintExpression != null ) {
-				if( field.getValueType().isAssignableFrom( org.lgna.story.SModel.class ) )
-				{
+				if( field.getValueType().isAssignableFrom( org.lgna.story.SModel.class ) ) {
 					return createStatement( org.lgna.story.SModel.class, "setPaint", new Class<?>[] { org.lgna.story.Paint.class, org.lgna.story.SetPaint.Detail[].class }, SetUpMethodGenerator.createInstanceExpression( false, field ), paintExpression );
 				}
-				else if( field.getValueType().isAssignableTo( org.lgna.story.SMarker.class ) )
-				{
-					assert paint instanceof org.lgna.story.Color;
-					return createStatement( org.lgna.story.SMarker.class, "setColorId", new Class<?>[] { org.lgna.story.Color.class }, SetUpMethodGenerator.createInstanceExpression( false, field ), paintExpression );
+			}
+		}
+		return null;
+	}
+
+	public static org.lgna.project.ast.ExpressionStatement createSetColorIdStatement( org.lgna.project.ast.AbstractField field, org.lgna.story.Color colorId )
+	{
+		if( colorId != null ) {
+			org.lgna.project.ast.Expression colorIdExpression = null;
+			try {
+				colorIdExpression = getExpressionCreator().createExpression( colorId );
+			} catch( Exception e ) {
+				colorIdExpression = null;
+			}
+			if( colorIdExpression != null ) {
+				if( field.getValueType().isAssignableTo( org.lgna.story.SMarker.class ) ) {
+					return createStatement( org.lgna.story.SMarker.class, "setColorId", new Class<?>[] { org.lgna.story.Color.class }, SetUpMethodGenerator.createInstanceExpression( false, field ), colorIdExpression );
 				}
 			}
 		}
@@ -198,11 +210,6 @@ public class SetUpMethodGenerator {
 
 	public static org.lgna.project.ast.Statement[] getSetupStatementsForField( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform )
 	{
-		return getSetupStatementsForField( isThis, field, sceneInstance, initialVehicle, initialTransform, null );
-	}
-
-	public static org.lgna.project.ast.Statement[] getSetupStatementsForField( boolean isThis, org.lgna.project.ast.AbstractField field, org.lgna.project.virtualmachine.UserInstance sceneInstance, org.lgna.project.ast.AbstractField initialVehicle, edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform, org.lgna.story.Paint initialPaint )
-	{
 		java.util.List<org.lgna.project.ast.Statement> statements = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 
 		org.lgna.project.ast.AbstractType<?, ?, ?> abstractType = field.getValueType();
@@ -245,13 +252,6 @@ public class SetUpMethodGenerator {
 				} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
 					throw new RuntimeException( ccee );
 				}
-			}
-		}
-		if( initialPaint != null )
-		{
-			org.lgna.project.ast.Statement setPaintStatement = createSetPaintStatement( field, initialPaint );
-			if( setPaintStatement != null ) {
-				statements.add( setPaintStatement );
 			}
 		}
 		return edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray( statements, org.lgna.project.ast.Statement.class );
@@ -435,6 +435,14 @@ public class SetUpMethodGenerator {
 								}
 							}
 						}
+					}
+				}
+
+				if( instance instanceof org.lgna.story.SMarker ) {
+					org.lgna.story.SMarker marker = (org.lgna.story.SMarker)instance;
+					org.lgna.project.ast.Statement colorIdStatement = createSetColorIdStatement( field, marker.getColorId() );
+					if( colorIdStatement != null ) {
+						statements.add( colorIdStatement );
 					}
 				}
 			}
