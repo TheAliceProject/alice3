@@ -60,7 +60,13 @@ public abstract class ApiConfigurationManager {
 
 	public abstract java.util.Comparator<org.lgna.project.ast.AbstractType<?, ?, ?>> getTypeComparator();
 
-	public abstract java.util.List<org.alice.ide.member.FilteredJavaProceduresSubComposite> getFilteredProceduresComposites();
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryProcedureSubComposites();
+
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryFunctionSubComposites();
+
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalProcedureSubComposites();
+
+	public abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getCategoryOrAlphabeticalFunctionSubComposites();
 
 	//override to create user types if desired
 	public org.lgna.project.ast.AbstractType<?, ?, ?> getTypeFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
@@ -189,6 +195,10 @@ public abstract class ApiConfigurationManager {
 	}
 
 	public abstract boolean isDeclaringTypeForManagedFields( org.lgna.project.ast.UserType<?> type );
+
+	public final boolean isSelectable( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		return this.isInstanceFactoryDesiredForType( type );
+	}
 
 	public abstract boolean isInstanceFactoryDesiredForType( org.lgna.project.ast.AbstractType<?, ?, ?> type );
 

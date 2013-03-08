@@ -50,7 +50,7 @@ public class RenamePanel extends org.lgna.croquet.components.BorderPanel {
 	public RenamePanel( org.alice.ide.ast.rename.RenameComposite composite ) {
 		super( composite );
 		org.lgna.croquet.components.BorderPanel line = new org.lgna.croquet.components.BorderPanel.Builder()
-				.lineStart( composite.getNameState().getSidekickLabel().createImmutableTextField() )
+				.lineStart( composite.getNameState().getSidekickLabel().createLabel() )
 				.center( composite.getNameState().createTextField() )
 				.build();
 		this.addPageStartComponent( line );

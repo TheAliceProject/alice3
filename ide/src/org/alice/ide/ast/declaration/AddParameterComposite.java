@@ -45,7 +45,7 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public final class AddParameterComposite extends AddDeclarationComposite<org.lgna.project.ast.UserParameter> {
+public final class AddParameterComposite extends DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserParameter> {
 	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserCode, AddParameterComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static AddParameterComposite getInstance( org.lgna.project.ast.UserCode code ) {
@@ -140,7 +140,7 @@ public final class AddParameterComposite extends AddDeclarationComposite<org.lgn
 	@Override
 	public void handlePreActivation() {
 		java.util.List<org.lgna.project.ast.SimpleArgumentListProperty> argumentLists = org.alice.ide.IDE.getActiveInstance().getArgumentLists( code );
-		this.isRequirementToUpdateInvocationsUnderstoodState.setValue( argumentLists.size() == 0 );
+		this.isRequirementToUpdateInvocationsUnderstoodState.setValueTransactionlessly( argumentLists.size() == 0 );
 		super.handlePreActivation();
 	}
 

@@ -52,6 +52,16 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	private static final double DEFAULT_SEARCH_FACTOR = .25;
 	private static AdaptiveRecenteringThumbnailMaker instance;
 
+	public static AdaptiveRecenteringThumbnailMaker getInstance( int width, int height ) {
+		if( ( instance == null ) || ( instance.getWidth() != width ) || ( instance.getHeight() != height ) ) {
+			instance = new AdaptiveRecenteringThumbnailMaker( width, height );
+		}
+		else {
+			instance.clear();
+		}
+		return instance;
+	}
+
 	public static AdaptiveRecenteringThumbnailMaker getInstance() {
 		if( instance == null ) {
 			instance = new AdaptiveRecenteringThumbnailMaker();
@@ -65,121 +75,21 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 	private final double searchFactor;
 	private final edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass testImageOffscreenLookingGlass;
 
-	private AdaptiveRecenteringThumbnailMaker() {
-		super( AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR );
+	private AdaptiveRecenteringThumbnailMaker( int width, int height ) {
+		super( width, height, AbstractThumbnailMaker.DEFAULT_ANTI_ALIAS_FACTOR );
 		this.searchFactor = DEFAULT_SEARCH_FACTOR;
 		this.testImageOffscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getInstance().createOffscreenLookingGlass( (int)( this.getWidth() * this.searchFactor ), (int)( this.getHeight() * this.searchFactor ), null );
 		setUpCamera( this.testImageOffscreenLookingGlass );
+	}
+
+	private AdaptiveRecenteringThumbnailMaker() {
+		this( AbstractThumbnailMaker.DEFAULT_THUMBNAIL_WIDTH, AbstractThumbnailMaker.DEFAULT_THUMBNAIL_HEIGHT );
 	}
 
 	@Override
 	protected void clear() {
 		super.clear();
 		this.testImageOffscreenLookingGlass.forgetAllCachedItems();
-	}
-
-	private boolean isTransparent( int pixel ) {
-		int alpha = pixel >> 24;
-		return alpha == 0;
-	}
-
-	private int getLeftBorder( java.awt.image.BufferedImage image )
-	{
-		int width = image.getWidth();
-		int height = image.getHeight();
-		for( int x = 0; x < width; x++ )
-		{
-			for( int y = 0; y < height; y++ )
-			{
-				if( !isTransparent( image.getRGB( x, y ) ) )
-				{
-					return x;
-				}
-			}
-		}
-		return width;
-	}
-
-	private int getRightBorder( java.awt.image.BufferedImage image ) {
-		int width = image.getWidth();
-		int height = image.getHeight();
-		for( int x = width - 1; x >= 0; x-- )
-		{
-			for( int y = 0; y < height; y++ )
-			{
-				if( !isTransparent( image.getRGB( x, y ) ) )
-				{
-					return width - x;
-				}
-			}
-		}
-		return width;
-	}
-
-	private int getTopBorder( java.awt.image.BufferedImage image ) {
-		int width = image.getWidth();
-		int height = image.getHeight();
-		for( int y = 0; y < height; y++ )
-		{
-			for( int x = 0; x < width; x++ )
-			{
-				if( !isTransparent( image.getRGB( x, y ) ) )
-				{
-					return y;
-				}
-			}
-		}
-		return height;
-	}
-
-	private int getBottomBorder( java.awt.image.BufferedImage image ) {
-		int width = image.getWidth();
-		int height = image.getHeight();
-		for( int y = height - 1; y >= 0; y-- )
-		{
-			for( int x = 0; x < width; x++ )
-			{
-				if( !isTransparent( image.getRGB( x, y ) ) )
-				{
-					return height - y;
-				}
-			}
-		}
-		return height;
-	}
-
-	private boolean isFullyFramed( java.awt.image.BufferedImage image ) {
-		int width = image.getWidth();
-		int right = width - 1;
-		int height = image.getHeight();
-		int bottom = height - 1;
-		for( int x = 0; x < width; x++ )
-		{
-			int topPixel = image.getRGB( x, 0 );
-			if( !isTransparent( topPixel ) )
-			{
-				return false;
-			}
-			int bottomPixel = image.getRGB( x, bottom );
-			if( !isTransparent( bottomPixel ) )
-			{
-				return false;
-			}
-		}
-		for( int y = 0; y < height; y++ )
-		{
-			int leftPixel = image.getRGB( 0, y );
-			if( !isTransparent( leftPixel ) )
-			{
-				return false;
-			}
-			int rightPixel = image.getRGB( right, y );
-			if( !isTransparent( rightPixel ) )
-			{
-				return false;
-			}
-		}
-		return true;
 	}
 
 	private Point3 getRecenterPositionBasedOnImage( java.awt.image.BufferedImage testImage, Point3 currentPosition, AxisAlignedBox bbox ) {

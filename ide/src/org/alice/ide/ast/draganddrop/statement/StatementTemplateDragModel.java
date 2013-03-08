@@ -58,7 +58,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
 			// pass
 		} else {
-			this.addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+			this.addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
 		}
 	}
 

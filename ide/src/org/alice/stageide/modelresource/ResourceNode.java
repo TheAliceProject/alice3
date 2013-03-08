@@ -45,14 +45,14 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel {
+public abstract class ResourceNode extends org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel implements Comparable<ResourceNode> {
 	private ResourceNode parent;
 	private final ResourceKey resourceKey;
 	private final java.util.List<ResourceNode> children;
 	private final org.lgna.croquet.CascadeBlankChild<ResourceNode> blankChild;
 
-	public ResourceNode( ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
-		super( java.util.UUID.fromString( "3829c7ee-e604-4917-9384-2913b5df28b3" ) );
+	public ResourceNode( java.util.UUID migrationId, ResourceKey resourceKey, java.util.List<ResourceNode> children ) {
+		super( migrationId );
 		this.resourceKey = resourceKey;
 		for( ResourceNode child : children ) {
 			assert child.parent == null : parent;
@@ -82,6 +82,11 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 		return this.children;
 	}
 
+	public void addNodeChild( int index, ResourceNode nodeChild ) {
+		nodeChild.parent = this;
+		this.children.add( index, nodeChild );
+	}
+
 	@Override
 	public String getText() {
 		return this.resourceKey.getDisplayText();
@@ -106,40 +111,71 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.lgna.croquet.DropSite dropSite ) {
 		if( ( this.resourceKey instanceof EnumConstantResourceKey ) ) {
 			EnumConstantResourceKey enumConstantResourceKey = (EnumConstantResourceKey)this.resourceKey;
-			return org.alice.ide.croquet.models.declaration.ArgumentFieldSpecifiedManagedFieldDeclarationOperation.getInstance( enumConstantResourceKey.getField(), dropSite );
+			org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite addResourceKeyManagedFieldComposite = org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite.getInstance();
+			addResourceKeyManagedFieldComposite.setResourceKeyToBeUsedByGetInitializerInitialValue( this.resourceKey );
+			return addResourceKeyManagedFieldComposite.getOperation();
 		} else if( this.resourceKey instanceof PersonResourceKey ) {
 			PersonResourceKey personResourceKey = (PersonResourceKey)this.resourceKey;
-			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstance();
+			return org.alice.stageide.croquet.models.gallerybrowser.DeclareFieldFromPersonResourceIteratingOperation.getInstanceForLifeStage( personResourceKey.getLifeStage() );
 			//todo
 			//		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
 			//			return new org.alice.stageide.ast.declaration.AddResourceKeyManagedFieldComposite( this.resourceKey ).getOperation();
 		} else if( this.resourceKey instanceof ClassResourceKey ) {
 			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
 			if( classResourceKey.isLeaf() ) {
-				return this.children.get( 0 ).getDropModel( step, dropSite );
+				if( this.children.size() > 0 ) {
+					return this.children.get( 0 ).getDropModel( step, dropSite );
+				} else {
+					return null;
+				}
 			} else {
 				//return ResourceCascade.getInstance( classResourceKey.getType(), dropSite );
 				return new AddFieldCascade( this, dropSite );
 			}
+		} else if( this.resourceKey instanceof TagKey ) {
+			return new AddFieldCascade( this, dropSite );
 		} else {
 			return null;
 		}
 	}
 
+	protected abstract ResourceNodeTreeSelectionState getState();
+
+	private static boolean ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull = false;
+
+	public static void ACCEPTABLE_HACK_FOR_GALLERY_QA_setLeftClickModelAlwaysNull( boolean ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull ) {
+		ResourceNode.ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull = ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull;
+	}
+
 	@Override
 	public org.lgna.croquet.Model getLeftButtonClickModel() {
-		if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
-			return this.getDropModel( null, null );
-		} else if( this.resourceKey instanceof ClassResourceKey ) {
-			ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
-			if( classResourceKey.isLeaf() ) {
-				return this.children.get( 0 ).getLeftButtonClickModel();
-			} else {
-				return ResourceNodeTreeSelectionState.getInstance().getItemSelectionOperation( this );
-			}
-		} else {
+		if( ACCEPTABLE_HACK_FOR_GALLERY_QA_isLeftClickModelAlwaysNull ) {
 			return null;
+		} else {
+			if( ( this.resourceKey instanceof EnumConstantResourceKey ) || ( this.resourceKey instanceof PersonResourceKey ) ) {
+				return this.getDropModel( null, null );
+			} else if( this.resourceKey instanceof ClassResourceKey ) {
+				ClassResourceKey classResourceKey = (ClassResourceKey)this.resourceKey;
+				if( classResourceKey.isLeaf() ) {
+					if( this.children.size() > 0 ) {
+						return this.children.get( 0 ).getLeftButtonClickModel();
+					} else {
+						return null;
+					}
+				} else {
+					return this.getState().getItemSelectionOperation( this );
+				}
+			} else if( this.resourceKey instanceof TagKey ) {
+				return this.getState().getItemSelectionOperation( this );
+			} else {
+				return null;
+			}
 		}
+	}
+
+	@Override
+	public boolean isInstanceCreator() {
+		return this.resourceKey.isInstanceCreator();
 	}
 
 	@Override
@@ -147,4 +183,14 @@ public final class ResourceNode extends org.alice.ide.croquet.models.gallerybrow
 		return org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( this.resourceKey );
 	}
 
+	public int compareTo( org.alice.stageide.modelresource.ResourceNode other ) {
+		return this.getText().toLowerCase().compareTo( other.getText().toLowerCase() );
+	}
+
+	@Override
+	protected void appendRepr( java.lang.StringBuilder sb ) {
+		super.appendRepr( sb );
+		sb.append( "key=" );
+		sb.append( this.resourceKey );
+	}
 }

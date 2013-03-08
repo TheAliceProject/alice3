@@ -127,7 +127,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		return rv.replaceAll( " ", "" );
 	}
 
-	private void showUnableToOpenFileDialog( java.io.File file, String message ) {
+	public void showUnableToOpenFileDialog( java.io.File file, String message ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Unable to open file " );
 		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
@@ -148,7 +148,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.showUnableToOpenFileDialog( file, sb.toString() );
 	}
 
-	private void showUnableToOpenProjectMessageDialog( java.io.File file, boolean isValidZip ) {
+	public void showUnableToOpenProjectMessageDialog( java.io.File file, boolean isValidZip ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "Look for files with an " );
 		sb.append( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION );
@@ -156,67 +156,29 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.showUnableToOpenFileDialog( file, sb.toString() );
 	}
 
-	private java.net.URI uri = null;
+	private org.alice.ide.uricontent.UriProjectLoader uriProjectLoader;
 
-	public java.net.URI getUri() {
-		return this.uri;
+	public org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader() {
+		return this.uriProjectLoader;
 	}
 
-	public void setUri( java.net.URI uri ) {
-		org.lgna.project.Project project = null;
-		java.io.File file = null;
-		if( uri != null ) {
-			file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
-			if( file != null ) {
-				if( file.exists() ) {
-					String lcFilename = file.getName().toLowerCase();
-					if( lcFilename.endsWith( ".a2w" ) ) {
-						this.showMessageDialog( "Alice3 does not load Alice2 worlds", "Cannot read file", org.lgna.croquet.MessageType.ERROR );
-					} else if( lcFilename.endsWith( org.lgna.project.io.IoUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-						this.showMessageDialog( file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + org.lgna.project.io.IoUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", org.lgna.croquet.MessageType.ERROR );
-					} else {
-						boolean isWorthyOfException = lcFilename.endsWith( org.lgna.project.io.IoUtilities.PROJECT_EXTENSION.toLowerCase() );
-						java.util.zip.ZipFile zipFile;
-						try {
-							zipFile = new java.util.zip.ZipFile( file );
-						} catch( java.io.IOException ioe ) {
-							if( isWorthyOfException ) {
-								throw new RuntimeException( file.getAbsolutePath(), ioe );
-							} else {
-								this.showUnableToOpenProjectMessageDialog( file, false );
-								zipFile = null;
-							}
-						}
-						if( zipFile != null ) {
-							try {
-								project = org.lgna.project.io.IoUtilities.readProject( zipFile );
-							} catch( org.lgna.project.VersionNotSupportedException vnse ) {
-								this.handleVersionNotSupported( file, vnse );
-							} catch( java.io.IOException ioe ) {
-								if( isWorthyOfException ) {
-									throw new RuntimeException( file.getAbsolutePath(), ioe );
-								} else {
-									this.showUnableToOpenProjectMessageDialog( file, true );
-								}
-							}
-						} else {
-							//actionContext.cancel();
-						}
-					}
-				} else {
-					this.showUnableToOpenFileDialog( file, "It does not exist." );
-				}
-			} else {
-				org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template template = org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.getSurfaceAppearance( uri );
-				org.lgna.project.ast.NamedUserType programType;
-				if( template.isRoom() ) {
-					programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getFloorAppearance(), template.getWallAppearance(), template.getCeilingAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
-				}
-				else {
-					programType = org.alice.stageide.ast.BootstrapUtilties.createProgramType( template.getSurfaceAppearance(), template.getAtmospherColor(), template.getFogDensity(), template.getAboveLightColor(), template.getBelowLightColor() );
-				}
-				project = new org.lgna.project.Project( programType );
+	public final java.net.URI getUri() {
+		return this.uriProjectLoader != null ? this.uriProjectLoader.getUri() : null;
+	}
+
+	private void setUriProjectPair( org.alice.ide.uricontent.UriProjectLoader uriProjectLoader ) {
+		this.uriProjectLoader = null;
+		org.lgna.project.Project project;
+		if( uriProjectLoader != null ) {
+			try {
+				project = uriProjectLoader.getContentWaitingIfNecessary( org.alice.ide.uricontent.UriContentLoader.MutationPlan.WILL_MUTATE );
+			} catch( InterruptedException ie ) {
+				throw new RuntimeException( ie );
+			} catch( java.util.concurrent.ExecutionException ee ) {
+				throw new RuntimeException( ee );
 			}
+		} else {
+			project = null;
 		}
 		if( project != null ) {
 			// Remove the old project history listener, so the old project can be cleaned up
@@ -224,8 +186,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 				this.getProjectHistory().removeHistoryListener( this.projectHistoryListener );
 			}
 			this.setProject( project );
-			this.uri = uri;
+			this.uriProjectLoader = uriProjectLoader;
 			this.getProjectHistory().addHistoryListener( this.projectHistoryListener );
+			java.net.URI uri = this.uriProjectLoader.getUri();
+			java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
 			try {
 				if( ( file != null ) && file.canWrite() ) {
 					//org.alice.ide.croquet.models.openproject.RecentProjectsUriSelectionState.getInstance().handleOpen( file );
@@ -308,10 +272,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	protected StringBuffer updateTitle( StringBuffer rv ) {
 		this.updateTitlePrefix( rv );
-		if( this.uri != null ) {
-			String scheme = this.uri.getScheme();
-			if( "file".equalsIgnoreCase( scheme ) ) {
-				rv.append( new java.io.File( this.uri.getPath() ) );
+		java.net.URI uri = this.getUri();
+		if( uri != null ) {
+			java.io.File file = edu.cmu.cs.dennisc.java.net.UriUtilities.getFile( uri );
+			if( file != null ) {
+				rv.append( file );
 			}
 			rv.append( " " );
 		}
@@ -335,7 +300,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 	}
 
 	private void setDocument( ProjectDocument document ) {
-		org.alice.ide.project.ProjectDocumentState.getInstance().setValue( document );
+		org.alice.ide.project.ProjectDocumentState.getInstance().setValueTransactionlessly( document );
 	}
 
 	public org.lgna.project.Project getProject() {
@@ -396,14 +361,14 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		return this.getDocument().getRootTransactionHistory();
 	}
 
-	public void loadProjectFrom( java.net.URI uri ) {
-		setUri( uri );
+	public final void loadProjectFrom( org.alice.ide.uricontent.UriProjectLoader uriProjectLoader ) {
+		this.setUriProjectPair( uriProjectLoader );
 		this.updateHistoryIndexFileSync();
 		this.updateUndoRedoEnabled();
 	}
 
 	public final void loadProjectFrom( java.io.File file ) {
-		loadProjectFrom( file.toURI() );
+		this.loadProjectFrom( new org.alice.ide.uricontent.FileProjectLoader( file ) );
 	}
 
 	public final void loadProjectFrom( String path ) {
@@ -439,7 +404,11 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] {};
 		}
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
-		this.uri = file.toURI();
+		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
+
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: better handling of file project loader", file );
+
+		this.uriProjectLoader = new org.alice.ide.uricontent.FileProjectLoader( file );
 		this.updateHistoryIndexFileSync();
 	}
 

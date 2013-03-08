@@ -46,17 +46,31 @@ package org.alice.ide.croquet.models.cascade;
  * @author Dennis Cosgrove
  */
 public class MethodInvocationFillInWithInstance extends ExpressionFillInWithExpressionBlanks<org.lgna.project.ast.MethodInvocation> {
+	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.JavaMethod, MethodInvocationFillInWithInstance> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+
+	public static MethodInvocationFillInWithInstance getInstance( org.lgna.project.ast.JavaMethod code ) {
+		return map.getInitializingIfAbsent( code, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.JavaMethod, MethodInvocationFillInWithInstance>() {
+			public MethodInvocationFillInWithInstance initialize( org.lgna.project.ast.JavaMethod key ) {
+				org.lgna.project.ast.AbstractType<?, ?, ?> type = key.getDeclaringType();
+				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = key.getRequiredParameters();
+				org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>[] blanks = new org.lgna.croquet.CascadeBlank[ 1 + parameters.size() ];
+				blanks[ 0 ] = CascadeManager.getBlankForType( type );
+				int i = 1;
+				for( org.lgna.project.ast.AbstractParameter parameter : parameters ) {
+					blanks[ i ] = org.alice.ide.croquet.models.cascade.ParameterBlank.getInstance( parameter );
+					i++;
+				}
+				return new MethodInvocationFillInWithInstance( key, blanks );
+			}
+		} );
+	}
+
 	private final org.lgna.project.ast.MethodInvocation transientValue;
 
-	public MethodInvocationFillInWithInstance( org.lgna.project.ast.AbstractMethod method ) {
-		super( java.util.UUID.fromString( "8f3d3ba6-7c5f-411d-b3a8-432a5216e9eb" ) );
+	private MethodInvocationFillInWithInstance( org.lgna.project.ast.JavaMethod method, org.lgna.croquet.CascadeBlank<org.lgna.project.ast.Expression>... blanks ) {
+		super( java.util.UUID.fromString( "8f3d3ba6-7c5f-411d-b3a8-432a5216e9eb" ), blanks );
 		org.lgna.project.ast.AbstractType<?, ?, ?> type = method.getDeclaringType();
-		this.addBlank( CascadeManager.getBlankForType( type ) );
 		this.transientValue = org.alice.ide.ast.IncompleteAstUtilities.createIncompleteMethodInvocation( new org.alice.ide.ast.EmptyExpression( type ), method );
-		for( org.lgna.project.ast.AbstractParameter parameter : method.getRequiredParameters() ) {
-			ParameterBlank parameterBlank = ParameterBlank.getInstance( parameter );
-			this.addBlank( parameterBlank );
-		}
 	}
 
 	@Override

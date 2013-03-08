@@ -56,4 +56,9 @@ public abstract class TemplateStatementInsertOperation extends StatementInsertOp
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep step ) {
 		return new org.alice.ide.croquet.edits.ast.InsertStatementEdit<StatementInsertOperation>( step, this.getBlockStatementIndexPair(), this.createStatement() );
 	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+		return this.createEdit( step );
+	}
 }

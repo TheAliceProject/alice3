@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeFillIn extends org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.AbstractType<?, ?, ?>, Void> {
+public class TypeFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.lgna.project.ast.AbstractType<?, ?, ?>, Void> {
 	private static java.util.Map<org.lgna.project.ast.AbstractType<?, ?, ?>, TypeFillIn> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized TypeFillIn getInstance( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
@@ -86,17 +86,9 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn<org.lgna.project.
 		return this.type;
 	}
 
-	private int getDepth( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		if( type instanceof org.lgna.project.ast.JavaType ) {
-			return -1;
-		} else {
-			return 1 + this.getDepth( type.getSuperType() );
-		}
-	}
-
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
-		int depth = this.getDepth( this.type );
+		int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( this.type );
 		if( depth > 0 ) {
 			StringBuilder sb = new StringBuilder();
 			for( int i = 0; i < depth; i++ ) {
@@ -110,7 +102,7 @@ public class TypeFillIn extends org.lgna.croquet.CascadeFillIn<org.lgna.project.
 
 	@Override
 	public javax.swing.Icon getMenuItemIcon( org.lgna.croquet.cascade.ItemNode<? super org.lgna.project.ast.AbstractType<?, ?, ?>, Void> node ) {
-		int depth = this.getDepth( this.type );
+		int depth = org.lgna.project.ast.StaticAnalysisUtilities.getUserTypeDepth( this.type );
 		if( depth > 0 ) {
 			return super.getMenuItemIcon( node );
 		} else {

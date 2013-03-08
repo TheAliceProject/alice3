@@ -56,6 +56,8 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 
 	private InternalTestingMenuModel() {
 		super( java.util.UUID.fromString( "6ee5bc6c-f45f-4eb9-bc4b-67fc524a05e8" ),
+				org.alice.stageide.showme.ShowMeHowToAddGalleryModelsIteratingOperation.getInstance().getMenuItemPrepModel(),
+				SEPARATOR,
 				org.alice.ide.croquet.models.ui.debug.ThrowBogusExceptionOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.debug.ThrowBogusGlExceptionOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.debug.ThrowBogusLgnaExceptionOperation.getInstance().getMenuItemPrepModel(),
@@ -66,14 +68,12 @@ public class InternalTestingMenuModel extends org.lgna.croquet.PredeterminedMenu
 				org.alice.ide.croquet.models.ui.debug.ActiveTransactionHistoryComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
 				//org.alice.ide.croquet.models.ui.debug.IsAbstractSyntaxTreeShowingState.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.preferences.IsFullTypeHierarchyDesiredState.getInstance().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getMenuItemPrepModel(),
 				org.alice.ide.video.ProofOfConceptRecordVideoOperation.getInstance().getMenuItemPrepModel(),
 				org.alice.stageide.raytrace.ExportToPovRayOperation.getInstance().getMenuItemPrepModel(),
 				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation().getMenuItemPrepModel(),
-				new org.lgna.cheshire.test.IsShowingHackTutorialState().getMenuItemPrepModel(),
 				new org.alice.ide.highlight.ShowMeOperation().getMenuItemPrepModel() );
 	}
 }

@@ -45,28 +45,22 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState<ResourceNode> {
+public abstract class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState<ResourceNode> {
 	private static final javax.swing.Icon EMPTY_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height );
 
-	private static class SingletonHolder {
-		private static ResourceNodeTreeSelectionState instance = new ResourceNodeTreeSelectionState();
-	}
+	private final ResourceNode root;
 
-	public static ResourceNodeTreeSelectionState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private ResourceNodeTreeSelectionState() {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "c37c9803-2482-4f1b-9731-b110f1f6fde7" ), ResourceNodeCodec.SINGLETON, TreeUtilities.getTreeBasedOnClassHierarchy() );
+	public ResourceNodeTreeSelectionState( java.util.UUID migrationId, ResourceNode root ) {
+		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, migrationId, root, ResourceNodeCodec.SINGLETON );
+		this.root = root;
 	}
 
 	@Override
-	protected void updateSwingModel( org.alice.stageide.modelresource.ResourceNode nextValue ) {
-		super.updateSwingModel( nextValue );
+	protected void setCurrentTruthAndBeautyValue( org.alice.stageide.modelresource.ResourceNode nextValue ) {
+		super.setCurrentTruthAndBeautyValue( nextValue );
 		if( nextValue.getResourceKey().isLeaf() ) {
 			org.lgna.croquet.Model model = nextValue.getLeftButtonClickModel();
 			if( model != null ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( model );
 				model.fire( org.lgna.croquet.triggers.NullTrigger.createUserInstance() );
 			}
 		}
@@ -109,11 +103,13 @@ public class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeS
 
 	@Override
 	protected ResourceNode getRoot() {
-		return TreeUtilities.getTreeBasedOnClassHierarchy();
+		return this.root;
 	}
 
 	@Override
 	public boolean isLeaf( ResourceNode node ) {
+		assert node != null : this;
+		assert node.getResourceKey() != null : node;
 		return node.getResourceKey().isLeaf();
 	}
 }

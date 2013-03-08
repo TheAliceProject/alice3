@@ -46,16 +46,20 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public class RootResourceKey extends ResourceKey {
-	public RootResourceKey() {
+	private final String displayText;
+
+	public RootResourceKey( String displayText ) {
+		this.displayText = displayText;
 	}
 
 	@Override
 	public String getSearchText() {
 		return null;
 	}
+
 	@Override
 	public String getDisplayText() {
-		return "all models";
+		return this.displayText;
 	}
 
 	@Override
@@ -74,7 +78,22 @@ public class RootResourceKey extends ResourceKey {
 	}
 
 	@Override
+	public String[] getGroupTags() {
+		return null;
+	}
+
+	@Override
+	public String[] getThemeTags() {
+		return null;
+	}
+
+	@Override
 	public boolean isLeaf() {
+		return false;
+	}
+
+	@Override
+	public boolean isInstanceCreator() {
 		return false;
 	}
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="MagicStone">
+    <BoundingBox>
+        <Min x="-0.722836971282959" y="0.0" z="-0.5544053614139557"/>
+        <Max x="0.722836971282959" y="2.256232775747776" z="0.5544053614139557"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>magic</Tag>
+        <Tag>rock</Tag>
+        <Tag>stone</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>fantasy</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Small" resourceName="SMALL" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.22992263734340668" y="0.0" z="-0.27337902784347534"/>
+            <Max x="0.22992263734340668" y="0.5277148764580488" z="0.27337902784347534"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Medium" resourceName="MEDIUM" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.345733106136322" y="0.0" z="-0.312946617603302"/>
+            <Max x="0.345733106136322" y="1.322312392294407" z="0.312946617603302"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Large" resourceName="LARGE" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.722836971282959" y="0.0" z="-0.5544053614139557"/>
+            <Max x="0.722836971282959" y="2.256232775747776" z="0.5544053614139557"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

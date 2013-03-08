@@ -47,53 +47,43 @@ package org.alice.ide.declarationseditor.type.components;
  * @author Dennis Cosgrove
  */
 public class TypeDeclarationView extends org.alice.ide.declarationseditor.components.DeclarationView {
-	public TypeDeclarationView( org.alice.ide.declarationseditor.DeclarationComposite composite ) {
+	public TypeDeclarationView( org.alice.ide.declarationseditor.TypeComposite composite ) {
 		super( composite );
 		org.lgna.project.ast.NamedUserType type = (org.lgna.project.ast.NamedUserType)composite.getDeclaration();
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
-		this.setBackgroundColor( ide.getTheme().getTypeColor() );
+		org.alice.ide.Theme theme = org.alice.ide.theme.ThemeUtilities.getActiveTheme();
+		this.setBackgroundColor( theme.getMutedTypeColor() );
 
-		org.lgna.croquet.components.ToolPalette constructorsToolPalette = org.alice.ide.declarationseditor.type.ConstructorsOpenState.getInstance( type ).createToolPalette( new ConstructorList( type ) );
-		constructorsToolPalette.setBackgroundColor( ide.getTheme().getConstructorColor() );
+		org.lgna.croquet.components.ToolPaletteView constructorsToolPalette = composite.getConstructorsToolPaletteCoreComposite().getOuterComposite().getView();
+		constructorsToolPalette.setBackgroundColor( theme.getConstructorColor() );
 
-		org.lgna.croquet.components.ToolPalette proceduresToolPalette = org.alice.ide.declarationseditor.type.ProceduresOpenState.getInstance( type ).createToolPalette( new ProcedureList( type ) );
-		proceduresToolPalette.setBackgroundColor( ide.getTheme().getProcedureColor() );
+		org.lgna.croquet.components.ToolPaletteView proceduresToolPalette = composite.getProceduresToolPaletteCoreComposite().getOuterComposite().getView();
+		proceduresToolPalette.setBackgroundColor( theme.getProcedureColor() );
 
-		org.lgna.croquet.components.ToolPalette functionsToolPalette = org.alice.ide.declarationseditor.type.FunctionsOpenState.getInstance( type ).createToolPalette( new FunctionList( type ) );
-		functionsToolPalette.setBackgroundColor( ide.getTheme().getFunctionColor() );
+		org.lgna.croquet.components.ToolPaletteView functionsToolPalette = composite.getFunctionsToolPaletteCoreComposite().getOuterComposite().getView();
+		functionsToolPalette.setBackgroundColor( theme.getFunctionColor() );
 
-		org.lgna.croquet.components.JComponent<?> fieldPanel;
-		if( ide.getApiConfigurationManager().isDeclaringTypeForManagedFields( type ) ) {
-			fieldPanel = new org.lgna.croquet.components.PageAxisPanel(
-					new org.lgna.croquet.components.Label( "managed", 1.2f ),
-					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ),
-					new ManagedFieldList( type ),
-					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 24 ),
-					new org.lgna.croquet.components.Label( "unmanaged", 1.2f ),
-					org.lgna.croquet.components.BoxUtilities.createVerticalStrut( 4 ),
-					new UnmanagedFieldList( type )
-					);
-		} else {
-			fieldPanel = new UnmanagedFieldList( type );
-		}
-		org.lgna.croquet.components.ToolPalette fieldsToolPalette = org.alice.ide.declarationseditor.type.FieldsOpenState.getInstance( type ).createToolPalette( fieldPanel );
-		fieldsToolPalette.setBackgroundColor( ide.getTheme().getFieldColor() );
+		org.lgna.croquet.components.ToolPaletteView fieldsToolPalette = composite.getFieldsToolPaletteCoreComposite().getOuterComposite().getView();
+		fieldsToolPalette.setBackgroundColor( theme.getFieldColor() );
 
-		for( org.lgna.croquet.components.ToolPalette toolPalette : new org.lgna.croquet.components.ToolPalette[] { constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette } ) {
+		for( org.lgna.croquet.components.ToolPaletteView toolPalette : new org.lgna.croquet.components.ToolPaletteView[] { constructorsToolPalette, proceduresToolPalette, functionsToolPalette, fieldsToolPalette } ) {
 			toolPalette.getTitle().changeFont( edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-			toolPalette.getTitle().scaleFont( 1.5f );
-			toolPalette.getMainComponent().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
+			toolPalette.getTitle().scaleFont( 1.4f );
+			toolPalette.getTitle().setRoundedOnTop( true );
+			toolPalette.getCenterView().setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 4, 4 ) );
 		}
 
 		org.lgna.croquet.components.PageAxisPanel pageAxisPanel = new org.lgna.croquet.components.PageAxisPanel();
-		pageAxisPanel.addComponent( constructorsToolPalette );
-		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
+
+		if( org.alice.ide.croquet.models.ui.preferences.IsIncludingConstructors.getInstance().getValue() ) {
+			pageAxisPanel.addComponent( constructorsToolPalette );
+			pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
+		}
 		pageAxisPanel.addComponent( proceduresToolPalette );
 		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 		pageAxisPanel.addComponent( functionsToolPalette );
 		pageAxisPanel.addComponent( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) );
 		pageAxisPanel.addComponent( fieldsToolPalette );
-		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 14, 0, 0 ) );
+		pageAxisPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 24, 0, 0 ) );
 		pageAxisPanel.setBackgroundColor( this.getBackgroundColor() );
 
 		org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
@@ -103,7 +93,6 @@ public class TypeDeclarationView extends org.alice.ide.declarationseditor.compon
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( borderPanel );
 		scrollPane.setBorder( null );
-		scrollPane.setBothScrollBarIncrements( 12, 24 );
 		scrollPane.setBackgroundColor( this.getBackgroundColor() );
 
 		org.alice.ide.ast.declaration.views.TypeHeader typeHeader = new org.alice.ide.ast.declaration.views.TypeHeader( type );

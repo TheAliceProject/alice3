@@ -56,7 +56,19 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPer
 	}
 
 	private SetupScenePerspective() {
-		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ), org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance() );
+		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ) );
+	}
+
+	public org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite getMainComposite() {
+		return org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite.getInstance();
+	}
+
+	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
+		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
+			return org.alice.stageide.perspectives.scenesetup.SetupSceneToolBarComposite.getInstance();
+		} else {
+			return null;
+		}
 	}
 
 	@Override

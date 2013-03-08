@@ -67,45 +67,45 @@ public class JavaConstructorParameter extends JavaParameter {
 		return rv;
 	}
 
-	private JavaConstructor m_constructor;
-	private int m_index;
-	private String m_name;
-	private JavaType m_valueType;
+	private final JavaConstructor constructor;
+	private final int index;
+	private final String name;
+	private final JavaType valueType;
 
 	/* package-private */JavaConstructorParameter( JavaConstructor constructor, int index, java.lang.annotation.Annotation[] annotations ) {
 		super( annotations );
-		m_constructor = constructor;
-		m_index = index;
+		this.constructor = constructor;
+		this.index = index;
 		ConstructorReflectionProxy constructorReflectionProxy = constructor.getConstructorReflectionProxy();
-		m_name = getParameterNameFor( constructorReflectionProxy, m_index );
-		m_valueType = JavaType.getInstance( constructorReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
-		assert m_valueType != null;
+		this.name = getParameterNameFor( constructorReflectionProxy, this.index );
+		this.valueType = JavaType.getInstance( constructorReflectionProxy.getParameterClassReflectionProxies()[ this.index ] );
+		assert this.valueType != null;
 	}
 
 	@Override
 	public JavaConstructor getCode() {
-		return m_constructor;
+		return this.constructor;
 	}
 
 	public int getIndex() {
-		return m_index;
+		return this.index;
 	}
 
 	@Override
 	public String getName() {
-		return m_name;
+		return this.name;
 	}
 
 	@Override
 	public AbstractType<?, ?, ?> getValueType() {
-		return m_valueType;
+		return this.valueType;
 	}
 
 	@Override
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaConstructorParameter ) {
-			JavaConstructorParameter otherPDIJC = (JavaConstructorParameter)other;
-			return m_constructor.equals( otherPDIJC.m_constructor ) && ( m_index == otherPDIJC.m_index ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJC.m_name ) && m_valueType.equals( otherPDIJC.m_valueType );
+			JavaConstructorParameter otherJCP = (JavaConstructorParameter)other;
+			return this.constructor.equals( otherJCP.constructor ) && ( this.index == otherJCP.index ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.name, otherJCP.name ) && this.valueType.equals( otherJCP.valueType );
 		} else {
 			return false;
 		}

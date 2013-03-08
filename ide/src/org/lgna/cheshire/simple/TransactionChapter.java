@@ -68,7 +68,10 @@ public class TransactionChapter extends Chapter {
 			//todo
 			org.lgna.croquet.history.CompletionStep<?> step = null;
 			org.lgna.croquet.Retargeter retargeter = org.alice.ide.IDE.getActiveInstance().getSimplePresentation().getRetargeter();
-			org.lgna.croquet.edits.Edit<?> replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( step, originalEdit, retargeter );
+
+			//note: i believe this should be a fourth kind of trigger
+			org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.AutomaticCompletionTrigger.createUserInstance();
+			org.lgna.croquet.edits.Edit<?> replacementEdit = originalEdit.getModel().commitTutorialCompletionEdit( step, originalEdit, retargeter, trigger );
 			if( replacementEdit != null ) {
 				//todo
 				org.alice.ide.IDE.getActiveInstance().getSimplePresentation().retargetAll( retargeter );

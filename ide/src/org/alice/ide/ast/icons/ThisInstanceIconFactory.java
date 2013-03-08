@@ -45,9 +45,21 @@ package org.alice.ide.ast.icons;
 /**
  * @author Dennis Cosgrove
  */
-public enum ThisInstanceIconFactory implements org.lgna.croquet.icon.IconFactory {
-	SINGLETON;
-	public javax.swing.Icon getIcon( final java.awt.Dimension size ) {
+public class ThisInstanceIconFactory extends org.lgna.croquet.icon.ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static ThisInstanceIconFactory instance = new ThisInstanceIconFactory();
+	}
+
+	public static ThisInstanceIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private ThisInstanceIconFactory() {
+		super( IsCachingDesired.TRUE );
+	}
+
+	@Override
+	protected javax.swing.Icon createIcon( final java.awt.Dimension size ) {
 		return new javax.swing.Icon() {
 			public int getIconWidth() {
 				return size.width;
@@ -58,7 +70,7 @@ public enum ThisInstanceIconFactory implements org.lgna.croquet.icon.IconFactory
 			}
 
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
+				org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
 				if( type != null ) {
 					org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( type );
 					if( iconFactory != null ) {
@@ -70,9 +82,5 @@ public enum ThisInstanceIconFactory implements org.lgna.croquet.icon.IconFactory
 				}
 			}
 		};
-	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return sizeIfResolutionIndependent;
 	}
 }

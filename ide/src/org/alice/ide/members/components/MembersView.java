@@ -42,6 +42,8 @@
  */
 package org.alice.ide.members.components;
 
+import org.alice.ide.recyclebin.RecycleBin;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,28 +59,201 @@ public class MembersView extends org.lgna.croquet.components.BorderPanel {
 		} );
 	}
 
+	private static final int SIZE = 32;
+
+	private static enum DragReceptorState {
+		IDLE( null, null, null, 0 ),
+		STARTED( java.awt.Color.YELLOW, new java.awt.Color( 191, 191, 191, 0 ), null, SIZE ),
+		ENTERED( java.awt.Color.YELLOW, new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.recyclebin.icons.ClosedTrashCanSymbolicStyleIcon( 128, 128, java.awt.Color.LIGHT_GRAY ), SIZE ),
+		ENTERED_FAR_ENOUGH( new java.awt.Color( 0xCCFF99 ), new java.awt.Color( 127, 127, 127, 191 ), new org.alice.ide.recyclebin.icons.OpenTrashCanSymbolicStyleIcon( 128, 128, java.awt.Color.WHITE ), SIZE );
+		private final java.awt.Color colorA;
+		private final java.awt.Color colorB;
+		private final javax.swing.Icon icon;
+		private final int gradientAmount;
+
+		private DragReceptorState( java.awt.Color colorA, java.awt.Color colorB, javax.swing.Icon icon, int gradientAmount ) {
+			this.colorA = colorA;
+			this.colorB = colorB;
+			this.icon = icon;
+			this.gradientAmount = gradientAmount;
+		}
+
+		public java.awt.Color getColorA() {
+			return this.colorA;
+		}
+
+		public java.awt.Color getColorB() {
+			return this.colorB;
+		}
+
+		public int getGradientAmount() {
+			return this.gradientAmount;
+		}
+
+		public javax.swing.Icon getIcon() {
+			return this.icon;
+		}
+	};
+
+	private class RecycleBinDropReceptor extends org.lgna.croquet.AbstractDropReceptor {
+		private DragReceptorState dragReceptorState = DragReceptorState.IDLE;
+
+		public boolean isPotentiallyAcceptingOf( org.lgna.croquet.DragModel dragModel ) {
+			return dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel;
+		}
+
+		private void setDragReceptorState( DragReceptorState dragReceptorState ) {
+			this.dragReceptorState = dragReceptorState;
+			MembersView.this.repaint();
+		}
+
+		public void dragStarted( org.lgna.croquet.history.DragStep step ) {
+			this.setDragReceptorState( DragReceptorState.STARTED );
+		}
+
+		public void dragEntered( org.lgna.croquet.history.DragStep step ) {
+			this.setDragReceptorState( DragReceptorState.ENTERED );
+		}
+
+		public org.lgna.croquet.DropSite dragUpdated( org.lgna.croquet.history.DragStep step ) {
+			java.awt.event.MouseEvent e = step.getLatestMouseEvent();
+			java.awt.Point p = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertPoint( e.getComponent(), e.getPoint(), MembersView.this.getAwtComponent() );
+
+			final int FAR_ENOUGH = 64;
+			if( p.x < ( MembersView.this.getWidth() - FAR_ENOUGH ) ) {
+				this.setDragReceptorState( DragReceptorState.ENTERED_FAR_ENOUGH );
+				return MembersView.this.dropSite;
+			} else {
+				this.setDragReceptorState( DragReceptorState.ENTERED );
+				return null;
+			}
+		}
+
+		@Override
+		protected org.lgna.croquet.Model dragDroppedPostRejectorCheck( org.lgna.croquet.history.DragStep step ) {
+			org.lgna.croquet.DropSite dropSite = step.getCurrentPotentialDropSite();
+			if( dropSite != null ) {
+				org.lgna.croquet.DragModel dragModel = step.getModel();
+				if( dragModel instanceof org.alice.ide.ast.draganddrop.statement.StatementDragModel ) {
+					org.alice.ide.ast.draganddrop.statement.StatementDragModel statementDragModel = (org.alice.ide.ast.draganddrop.statement.StatementDragModel)dragModel;
+					org.lgna.project.ast.Statement statement = statementDragModel.getStatement();
+					return org.alice.ide.ast.delete.DeleteStatementOperation.getInstance( statement );
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+
+		public void dragExited( org.lgna.croquet.history.DragStep step, boolean isDropRecipient ) {
+			//			step.getDragSource().showDragProxy();
+			this.setDragReceptorState( DragReceptorState.STARTED );
+		}
+
+		public void dragStopped( org.lgna.croquet.history.DragStep step ) {
+			this.setDragReceptorState( DragReceptorState.IDLE );
+		}
+
+		public org.lgna.croquet.components.TrackableShape getTrackableShape( org.lgna.croquet.DropSite potentialDropSite ) {
+			return MembersView.this;
+		}
+
+		public org.lgna.croquet.components.JComponent<?> getViewController() {
+			return MembersView.this;
+		}
+
+	}
+
+	//todo
+	private static class RecycleBinDropSite implements org.lgna.croquet.DropSite {
+		public RecycleBinDropSite() {
+		}
+
+		public RecycleBinDropSite( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			//todo
+		}
+
+		public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+			//todo
+		}
+
+		@Override
+		public int hashCode() {
+			return 0;
+		}
+
+		@Override
+		public boolean equals( Object obj ) {
+			return obj instanceof RecycleBinDropSite;
+		}
+
+		public org.lgna.croquet.DropReceptor getOwningDropReceptor() {
+			return RecycleBin.SINGLETON.getDropReceptor();
+		}
+
+		public RecycleBinDropSite createReplacement( org.lgna.croquet.Retargeter retargeter ) {
+			return this;
+		}
+	}
+
+	private final RecycleBinDropSite dropSite = new RecycleBinDropSite();
+
+	private final RecycleBinDropReceptor recycleBinDropReceptor = new RecycleBinDropReceptor();
+
 	public MembersView( org.alice.ide.members.MembersComposite composite ) {
 		super( composite );
-		//		final float FONT_SCALAR = 1.4f;
-		//		org.lgna.croquet.components.Label instanceLabel = new org.lgna.croquet.components.Label( "instance:" );
-		//		instanceLabel.scaleFont( FONT_SCALAR );
-		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
-		//		instancePanel.addComponent( instanceLabel );
-		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
-		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
-		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
-
-		this.addPageStartComponent( instancePanel );
-		org.lgna.croquet.components.AbstractTabbedPane<?, ?> tabbedPane;
+		org.alice.ide.croquet.components.InstanceFactoryPopupButton instanceFactoryPopupButton = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
+		//		org.lgna.croquet.components.LineAxisPanel instancePanel = new org.lgna.croquet.components.LineAxisPanel();
+		//		instancePanel.addComponent( new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() ) );
+		//		instancePanel.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		//		instancePanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 0, 4 ) );
+		//
+		//		this.addPageStartComponent( instancePanel );
+		this.setBackgroundColor( org.lgna.croquet.components.FolderTabbedPane.DEFAULT_BACKGROUND_COLOR );
+		this.addPageStartComponent( instanceFactoryPopupButton );
+		org.lgna.croquet.components.AbstractTabbedPane<?> tabbedPane;
 		if( org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() ) {
-			if( false && org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-				tabbedPane = org.alice.ide.member.MemberTabSelectionState.getInstance().createFolderTabbedPane();
-			} else {
-				tabbedPane = org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().createTabbedPane();
-			}
+			tabbedPane = composite.getTabState().createFolderTabbedPane();
 		} else {
-			tabbedPane = org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance().createToolPaletteTabbedPane();
+			tabbedPane = composite.getTabState().createToolPaletteTabbedPane();
 		}
 		this.addCenterComponent( tabbedPane );
+	}
+
+	@Override
+	protected javax.swing.JPanel createJPanel() {
+		javax.swing.JPanel rv = new DefaultJPanel() {
+			@Override
+			public void paint( java.awt.Graphics g ) {
+				super.paint( g );
+				if( recycleBinDropReceptor.dragReceptorState == DragReceptorState.IDLE ) {
+					//pass
+				} else {
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					int width = this.getWidth();
+					int height = this.getHeight();
+					java.awt.Color colorA = recycleBinDropReceptor.dragReceptorState.getColorA();
+					java.awt.Color colorB = recycleBinDropReceptor.dragReceptorState.getColorB();
+					int gradientAmount = recycleBinDropReceptor.dragReceptorState.getGradientAmount();
+					java.awt.Paint paint = new java.awt.GradientPaint( width, 0, colorA, width - gradientAmount, gradientAmount, colorB );
+					g2.setPaint( paint );
+					g2.fillRect( 0, 0, width, height );
+					javax.swing.Icon icon = recycleBinDropReceptor.dragReceptorState.getIcon();
+					if( icon != null ) {
+						g2.setPaint( new java.awt.Color( 221, 221, 221 ) );
+						int x = ( width - icon.getIconWidth() ) / 2;
+						int y = ( height - icon.getIconHeight() ) / 2;
+						y = Math.min( y, 100 );
+						icon.paintIcon( this, g2, x, y );
+					}
+				}
+			}
+		};
+		return rv;
+	}
+
+	public RecycleBinDropReceptor getRecycleBinDropReceptor() {
+		return this.recycleBinDropReceptor;
 	}
 }

@@ -47,22 +47,15 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public class JavaConstructor extends AbstractConstructor {
-	private static final java.util.Map<ConstructorReflectionProxy, JavaConstructor> s_map = new java.util.HashMap<ConstructorReflectionProxy, JavaConstructor>();
-
-	private final ConstructorReflectionProxy constructorReflectionProxy;
-	private final java.util.ArrayList<JavaConstructorParameter> requiredParameters;
-	private final AbstractParameter variableOrKeyedParameter;
+	private static final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<ConstructorReflectionProxy, JavaConstructor> mapReflectionProxyToInstance = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	public static JavaConstructor getInstance( ConstructorReflectionProxy constructorReflectionProxy ) {
 		if( constructorReflectionProxy != null ) {
-			JavaConstructor rv = s_map.get( constructorReflectionProxy );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = new JavaConstructor( constructorReflectionProxy );
-				s_map.put( constructorReflectionProxy, rv );
-			}
-			return rv;
+			return mapReflectionProxyToInstance.getInitializingIfAbsent( constructorReflectionProxy, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<ConstructorReflectionProxy, JavaConstructor>() {
+				public org.lgna.project.ast.JavaConstructor initialize( org.lgna.project.ast.ConstructorReflectionProxy key ) {
+					return new JavaConstructor( key );
+				}
+			} );
 		} else {
 			return null;
 		}
@@ -75,6 +68,10 @@ public class JavaConstructor extends AbstractConstructor {
 	public static JavaConstructor getInstance( Class<?> declaringCls, Class<?>... parameterClses ) {
 		return getInstance( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
 	}
+
+	private final ConstructorReflectionProxy constructorReflectionProxy;
+	private final java.util.ArrayList<JavaConstructorParameter> requiredParameters;
+	private final AbstractParameter variableOrKeyedParameter;
 
 	private JavaConstructor( ConstructorReflectionProxy constructorReflectionProxy ) {
 		this.constructorReflectionProxy = constructorReflectionProxy;

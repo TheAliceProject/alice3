@@ -7,6 +7,8 @@ import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -15,6 +17,7 @@ import org.lgna.project.ast.JavaType;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
 
 public class StorytellingResources {
@@ -37,7 +40,7 @@ public class StorytellingResources {
 	private final List<File> simsPathsLoaded = new LinkedList<File>();
 	private List<Class<? extends org.lgna.story.resources.ModelResource>> aliceClassesLoaded = null;
 
-	private URLClassLoader classLoader;
+	private URLClassLoader resourceClassLoader;
 	private static final java.io.FileFilter DIR_FILE_FILTER = new java.io.FileFilter() {
 		public boolean accept( java.io.File file ) {
 			return file.isDirectory();
@@ -205,29 +208,58 @@ public class StorytellingResources {
 	private StorytellingResources() {
 	}
 
-	public static java.util.Map<File, List<String>> getClassNamesFromResources( File... resourceJars ) {
+	private static String getAliceResourceClassName( String resourcePath ) {
+		String className = resourcePath.replace( '/', '.' );
+		className = className.replace( '\\', '.' );
+		int lastDot = className.lastIndexOf( "." );
+		String baseName = className.substring( 0, lastDot );
+		if( baseName.startsWith( "." ) ) {
+			baseName = baseName.substring( 1 );
+		}
+		baseName += AliceResourceClassUtilities.RESOURCE_SUFFIX;
+		return baseName;
+	}
+
+	public static java.util.Map<File, List<String>> getClassNamesFromResources( File... resourceFiles ) {
 		java.util.HashMap<File, List<String>> rv = new java.util.HashMap<File, List<String>>();
-		for( File resourceJar : resourceJars ) {
+		for( File resourceFile : resourceFiles ) {
 			try
 			{
-				ZipFile zip = new ZipFile( resourceJar );
-				Enumeration<? extends ZipEntry> entries = zip.entries();
-				while( entries.hasMoreElements() )
-				{
-					ZipEntry entry = entries.nextElement();
-					if( entry.getName().endsWith( ".xml" ) && !entry.getName().contains( "$" ) )
+				if( resourceFile.isDirectory() ) {
+					File[] xmlFiles = FileUtilities.listDescendants( resourceFile, "xml" );
+					for( File xmlFile : xmlFiles ) {
+						if( !xmlFile.getName().contains( "$" ) )
+						{
+							String relativePath = xmlFile.getAbsolutePath().substring( resourceFile.getAbsolutePath().length() );
+							String baseName = getAliceResourceClassName( relativePath );
+							if( !rv.containsKey( resourceFile ) ) {
+								rv.put( resourceFile, new LinkedList<String>() );
+							}
+							rv.get( resourceFile ).add( baseName );
+						}
+					}
+				}
+				else {
+					ZipFile zip = new ZipFile( resourceFile );
+					Enumeration<? extends ZipEntry> entries = zip.entries();
+					while( entries.hasMoreElements() )
 					{
-						String className = entry.getName().replace( '/', '.' );
-						int lastDot = className.lastIndexOf( "." );
-						String baseName = className.substring( 0, lastDot );
-						if( baseName.startsWith( "." ) ) {
-							baseName = baseName.substring( 1 );
+						ZipEntry entry = entries.nextElement();
+						if( entry.getName().endsWith( ".xml" ) && !entry.getName().contains( "$" ) )
+						{
+							String baseName = getAliceResourceClassName( entry.getName() );
+
+							if( !rv.containsKey( resourceFile ) ) {
+								rv.put( resourceFile, new LinkedList<String>() );
+							}
+							rv.get( resourceFile ).add( baseName );
 						}
-						baseName += AliceResourceClassUtilities.RESOURCE_SUFFIX;
-						if( !rv.containsKey( resourceJar ) ) {
-							rv.put( resourceJar, new LinkedList<String>() );
+						else {
+							if( entry.getName().endsWith( ".xml" ) )
+							{
+								System.out.println( "NOT ADDING CLASS: " + entry.getName() );
+							}
 						}
-						rv.get( resourceJar ).add( baseName );
 					}
 				}
 			} catch( Exception e )
@@ -238,14 +270,14 @@ public class StorytellingResources {
 		return rv;
 	}
 
-	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadResourceJarFile( File... resourceJars )
+	public List<Class<? extends org.lgna.story.resources.ModelResource>> loadResourcesFromFiles( File... resourceFiles )
 	{
 		List<Class<? extends org.lgna.story.resources.ModelResource>> classes = new LinkedList<Class<? extends org.lgna.story.resources.ModelResource>>();
 
 		List<String> classNames = new LinkedList<String>();
 		LinkedList<URL> urls = new LinkedList<URL>();
 
-		java.util.Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceJars );
+		java.util.Map<File, List<String>> classNameMap = getClassNamesFromResources( resourceFiles );
 
 		for( java.util.Map.Entry<File, List<String>> entry : classNameMap.entrySet() ) {
 			try {
@@ -274,7 +306,7 @@ public class StorytellingResources {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "FAILED TO LOAD GALLERY CLASS: " + className );
 				}
 			}
-			this.classLoader = cl;
+			this.resourceClassLoader = cl;
 
 		} catch( Exception e )
 		{
@@ -291,11 +323,13 @@ public class StorytellingResources {
 			if( modelPath.exists() ) {
 				try {
 					if( modelPath.isDirectory() ) {
-						File[] jarFiles = FileUtilities.listDescendants( modelPath, "jar" );
-						galleryClasses.addAll( this.loadResourceJarFile( jarFiles ) );
+						File[] jarFiles = FileUtilities.listFiles( modelPath, "jar" );
+						File[] dirs = FileUtilities.listDirectories( modelPath );
+						File[] resourceFiles = ArrayUtilities.concatArrays( File.class, dirs, jarFiles );
+						galleryClasses.addAll( this.loadResourcesFromFiles( resourceFiles ) );
 					}
 					else {
-						galleryClasses.addAll( this.loadResourceJarFile( modelPath ) );
+						galleryClasses.addAll( this.loadResourcesFromFiles( modelPath ) );
 					}
 				} catch( Exception e )
 				{
@@ -333,6 +367,25 @@ public class StorytellingResources {
 		this.galleryTree = new ModelResourceTree( modelResourceClasses );
 	}
 
+
+	private void clearAliceResourceInfo()
+	{
+		ResourcePathManager.clearPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		rv.put( ALICE_RESOURCE_DIRECTORY_PREF_KEY, "" );
+		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
+
+	}
+
+	private void clearSimsResourceInfo()
+	{
+		ResourcePathManager.clearPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
+		java.util.prefs.Preferences rv = java.util.prefs.Preferences.userRoot();
+		rv.put( NEBULOUS_RESOURCE_DIRECTORY_PREF_KEY, "" );
+		rv.put( GALLERY_DIRECTORY_PREF_KEY, "" );
+
+	}
+
 	public void findAndLoadAliceResourcesIfNecessary() {
 		if( this.aliceClassesLoaded == null ) {
 			List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.MODEL_RESOURCE_KEY );
@@ -341,18 +394,26 @@ public class StorytellingResources {
 			}
 			this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
 			if( aliceClassesLoaded.size() == 0 ) {
-				if( FindResourcesPanel.getInstance().getGalleryDir() != null ) {
-					setGalleryResourceDir( FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath() );
-				}
-				else
+				//Clear previously cached info
+				clearAliceResourceInfo();
+				File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
+				if( galleryDir == null )
 				{
-					getGalleryLocationFromUser();
+					FindResourcesPanel.getInstance().show( null );
+					galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
 				}
-				//Try again
-				resourcePaths = findAliceResources();
-				this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
+				if( galleryDir != null ) {
+					//Save the directory to the preference
+					setGalleryResourceDir( galleryDir.getAbsolutePath() );
+					//Try finding the resources again
+					resourcePaths = findAliceResources();
+					this.aliceClassesLoaded = this.getAndLoadModelResourceClasses( resourcePaths );
+				}
 			}
 			if( this.aliceClassesLoaded.size() == 0 ) {
+				//No resources were found
+				//Clear the cached data and display an error
+				clearAliceResourceInfo();
 				StringBuilder sb = new StringBuilder();
 				sb.append( "Cannot find the Alice gallery resources." );
 				if( ( resourcePaths == null ) || ( resourcePaths.size() == 0 ) ) {
@@ -412,18 +473,24 @@ public class StorytellingResources {
 		}
 		int loaded = loadSimsBundlesFromPaths( resourcePaths );
 		if( ( loaded == 0 ) && ( simsPathsLoaded.size() == 0 ) ) {
-			if( FindResourcesPanel.getInstance().getGalleryDir() != null ) {
-				setGalleryResourceDir( FindResourcesPanel.getInstance().getGalleryDir().getAbsolutePath() );
-			}
-			else
+			//Clear previously cached info
+			clearSimsResourceInfo();
+			File galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
+			if( galleryDir == null )
 			{
-				getGalleryLocationFromUser();
+				FindResourcesPanel.getInstance().show( null );
+				galleryDir = FindResourcesPanel.getInstance().getGalleryDir();
 			}
-			//Try again
-			resourcePaths = findSimsBundles();
-			loaded = loadSimsBundlesFromPaths( resourcePaths );
+			if( galleryDir != null ) {
+				//Save the directory to the preference
+				setGalleryResourceDir( galleryDir.getAbsolutePath() );
+				//Try finding the resources again
+				resourcePaths = findSimsBundles();
+				loaded = loadSimsBundlesFromPaths( resourcePaths );
+			}
 		}
 		if( ( loaded == 0 ) && ( simsPathsLoaded.size() == 0 ) ) {
+			clearSimsResourceInfo();
 			StringBuilder sb = new StringBuilder();
 			sb.append( "Cannot find The Sims (TM) 2 Art Assets." );
 			if( ( resourcePaths == null ) || ( resourcePaths.size() == 0 ) ) {
@@ -483,14 +550,23 @@ public class StorytellingResources {
 
 	public URL getAliceResource( String resourceString ) {
 		this.findAndLoadAliceResourcesIfNecessary();
-		assert this.classLoader != null;
-		return this.classLoader.findResource( resourceString );
+		assert this.resourceClassLoader != null;
+		return this.resourceClassLoader.findResource( resourceString );
+	}
+
+	public ResourceBundle getLocalizationBundle( String bundleKey, Locale locale )
+	{
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( bundleKey, locale, this.resourceClassLoader );
+		if( resourceBundle != null ) {
+			return resourceBundle;
+		}
+		return java.util.ResourceBundle.getBundle( bundleKey, locale );
 	}
 
 	public InputStream getAliceResourceAsStream( String resourceString ) {
 		this.findAndLoadAliceResourcesIfNecessary();
-		assert this.classLoader != null;
-		return this.classLoader.getResourceAsStream( resourceString );
+		assert this.resourceClassLoader != null;
+		return this.resourceClassLoader.getResourceAsStream( resourceString );
 	}
 
 	public List<org.lgna.project.ast.AbstractDeclaration> getGalleryResourceChildrenFor( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {

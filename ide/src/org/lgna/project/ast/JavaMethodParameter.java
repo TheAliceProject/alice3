@@ -67,37 +67,37 @@ public class JavaMethodParameter extends JavaParameter {
 		return rv;
 	}
 
-	private JavaMethod m_method;
-	private int m_index;
-	private String m_name;
-	private JavaType m_valueType;
+	private final JavaMethod method;
+	private final int index;
+	private final String name;
+	private final JavaType valueType;
 
 	/* package-private */JavaMethodParameter( JavaMethod method, int index, java.lang.annotation.Annotation[] annotations ) {
 		super( annotations );
-		m_method = method;
-		m_index = index;
-		MethodReflectionProxy methodReflectionProxy = m_method.getMethodReflectionProxy();
-		m_name = getParameterNameFor( methodReflectionProxy, m_index );
-		m_valueType = JavaType.getInstance( methodReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
+		this.method = method;
+		this.index = index;
+		MethodReflectionProxy methodReflectionProxy = this.method.getMethodReflectionProxy();
+		this.name = getParameterNameFor( methodReflectionProxy, this.index );
+		this.valueType = JavaType.getInstance( methodReflectionProxy.getParameterClassReflectionProxies()[ this.index ] );
 	}
 
 	@Override
 	public JavaMethod getCode() {
-		return m_method;
+		return this.method;
 	}
 
 	public int getIndex() {
-		return m_index;
+		return this.index;
 	}
 
 	@Override
 	public String getName() {
-		return m_name;
+		return this.name;
 	}
 
 	@Override
 	public AbstractType<?, ?, ?> getValueType() {
-		return m_valueType;
+		return this.valueType;
 	}
 
 	@Override
@@ -108,8 +108,8 @@ public class JavaMethodParameter extends JavaParameter {
 	@Override
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof JavaMethodParameter ) {
-			JavaMethodParameter otherPDIJM = (JavaMethodParameter)other;
-			return m_method.equals( otherPDIJM.m_method ) && ( m_index == otherPDIJM.m_index ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJM.m_name ) && m_valueType.equals( otherPDIJM.m_valueType );
+			JavaMethodParameter otherJMP = (JavaMethodParameter)other;
+			return this.method.equals( otherJMP.method ) && ( this.index == otherJMP.index ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.name, otherJMP.name ) && this.valueType.equals( otherJMP.valueType );
 		} else {
 			return false;
 		}

@@ -65,9 +65,14 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 	public static class InternalRoot<T> extends org.lgna.croquet.CascadeRoot<T, CustomItemState<T>> {
 		private final CustomItemState<T> state;
 
-		private InternalRoot( CustomItemState<T> state, CascadeBlank<T>... blanks ) {
-			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ), blanks );
+		private InternalRoot( CustomItemState<T> state ) {
+			super( java.util.UUID.fromString( "8a973789-9896-443f-b701-4a819fc61d46" ) );
 			this.state = state;
+		}
+
+		@Override
+		public java.util.List<? extends CascadeBlank<T>> getBlanks() {
+			return this.state.getBlanks();
 		}
 
 		@Override
@@ -91,25 +96,40 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 		}
 
 		@Override
-		public void prologue() {
+		protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+			super.prologue( trigger );
+			this.state.prologue( trigger );
 		}
 
 		@Override
-		public void epilogue() {
+		protected void epilogue() {
+			this.state.epilogue();
+			super.epilogue();
 		}
 
 		@Override
-		protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep completionStep, T[] values ) {
-			return this.state.TEMPORARY_HACK_createEdit( completionStep, values[ 0 ] );
+		public org.lgna.croquet.history.CompletionStep handleCompletion( org.lgna.croquet.history.TransactionHistory transactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.cascade.RtRoot<T, org.lgna.croquet.CustomItemState<T>> rtRoot ) {
+			try {
+				//todo: investigate
+				org.lgna.croquet.history.Transaction transaction = transactionHistory.acquireActiveTransaction();
+				org.lgna.croquet.history.CompletionStep<CustomItemState<T>> completionStep = this.createCompletionStep( transaction, trigger );
+				org.lgna.croquet.history.TransactionHistory subTransactionHistory = completionStep.getTransactionHistory();
+				T[] values = rtRoot.createValues( subTransactionHistory, this.getComponentType() );
+				return this.state.changeValueFromIndirectModel( values[ 0 ], IsAdjusting.FALSE, trigger );
+			} finally {
+				this.getPopupPrepModel().handleFinally();
+			}
 		}
 	}
 
 	private final InternalRoot<T> root;
 
-	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<T> itemCodec, CascadeBlank<T>... blanks ) {
-		super( group, id, null, itemCodec );
-		this.root = new InternalRoot<T>( this, blanks );
+	public CustomItemState( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec ) {
+		super( group, id, initialValue, itemCodec );
+		this.root = new InternalRoot<T>( this );
 	}
+
+	protected abstract java.util.List<? extends CascadeBlank<T>> getBlanks();
 
 	public InternalRoot<T> getCascadeRoot() {
 		return this.root;
@@ -124,10 +144,26 @@ public abstract class CustomItemState<T> extends ItemState<T> {
 	protected void localize() {
 	}
 
+	protected void prologue( org.lgna.croquet.triggers.Trigger trigger ) {
+	}
+
+	protected void epilogue() {
+	}
+
 	@Override
 	public org.lgna.croquet.history.Transaction addGeneratedStateChangeTransaction( org.lgna.croquet.history.TransactionHistory history, T prevValue, T nextValue ) throws UnsupportedGenerationException {
 		org.lgna.croquet.history.Transaction rv = super.addGeneratedStateChangeTransaction( history, prevValue, nextValue );
 		org.lgna.croquet.history.PopupPrepStep.createAndAddToTransaction( rv, this.getCascadeRoot().getPopupPrepModel(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance() );
 		return rv;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return this.getCascadeRoot().getPopupPrepModel().isEnabled();
+	}
+
+	@Override
+	public void setEnabled( boolean isEnabled ) {
+		this.getCascadeRoot().getPopupPrepModel().setEnabled( isEnabled );
 	}
 }

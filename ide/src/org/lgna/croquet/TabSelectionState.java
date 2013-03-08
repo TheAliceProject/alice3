@@ -46,21 +46,9 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSelectionState<T> {
-	public TabSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex ) {
-		super( group, id, codec, selectionIndex );
-	}
-
-	public TabSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec ) {
-		super( group, id, codec );
-	}
-
-	public TabSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex, java.util.Collection<T> data ) {
-		super( group, id, codec, selectionIndex, data );
-	}
-
-	public TabSelectionState( Group group, java.util.UUID id, ItemCodec<T> codec, int selectionIndex, T... data ) {
-		super( group, id, codec, selectionIndex, data );
+public abstract class TabSelectionState<T extends TabComposite<?>> extends ListSelectionState<T> {
+	public TabSelectionState( Group group, java.util.UUID id, org.lgna.croquet.data.ListData<T> data, int selectionIndex ) {
+		super( group, id, data, selectionIndex );
 	}
 
 	public org.lgna.croquet.components.FolderTabbedPane<T> createFolderTabbedPane() {
@@ -72,7 +60,7 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 	}
 
 	public org.lgna.croquet.components.JComponent<?> getMainComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane<T> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( tabbedPane != null ) {
 			return tabbedPane.getMainComponentFor( item );
 		} else {
@@ -81,7 +69,7 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 	}
 
 	public org.lgna.croquet.components.ScrollPane getScrollPaneFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane<T> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( tabbedPane != null ) {
 			return tabbedPane.getScrollPaneFor( item );
 		} else {
@@ -90,7 +78,7 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 	}
 
 	public org.lgna.croquet.components.JComponent<?> getRootComponentFor( T item ) {
-		org.lgna.croquet.components.AbstractTabbedPane<T, ?> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
+		org.lgna.croquet.components.AbstractTabbedPane<T> tabbedPane = org.lgna.croquet.components.ComponentManager.getFirstComponent( this, org.lgna.croquet.components.AbstractTabbedPane.class );
 		if( tabbedPane != null ) {
 			return tabbedPane.getRootComponentFor( item );
 		} else {
@@ -102,7 +90,21 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 		this.getItemSelectedState( item ).setIconForBothTrueAndFalse( icon );
 	}
 
-	private boolean isActive;
+	@Override
+	protected void fireChanging( T prevValue, T nextValue, org.lgna.croquet.State.IsAdjusting isAdjusting ) {
+		if( prevValue != null ) {
+			prevValue.handlePostDeactivation();
+		}
+		super.fireChanging( prevValue, nextValue, isAdjusting );
+	}
+
+	@Override
+	protected void fireChanged( T prevValue, T nextValue, org.lgna.croquet.State.IsAdjusting isAdjusting ) {
+		super.fireChanged( prevValue, nextValue, isAdjusting );
+		if( nextValue != null ) {
+			nextValue.handlePreActivation();
+		}
+	}
 
 	public void handlePreActivation() {
 		this.initializeIfNecessary();
@@ -110,32 +112,9 @@ public class TabSelectionState<T extends TabComposite<?>> extends DefaultListSel
 		if( selected != null ) {
 			selected.handlePreActivation();
 		}
-		this.isActive = true;
-	}
-
-	@Override
-	protected void fireChanged( T prevValue, T nextValue, boolean isAdjusting ) {
-		if( isAdjusting ) {
-			//pass
-		} else {
-			if( prevValue != nextValue ) {
-				if( this.isActive ) {
-					if( prevValue != null ) {
-						prevValue.handlePostDeactivation();
-					}
-				}
-				super.fireChanged( prevValue, nextValue, isAdjusting );
-				if( this.isActive ) {
-					if( nextValue != null ) {
-						nextValue.handlePreActivation();
-					}
-				}
-			}
-		}
 	}
 
 	public void handlePostDeactivation() {
-		this.isActive = false;
 		TabComposite<?> selected = this.getValue();
 		if( selected != null ) {
 			selected.handlePostDeactivation();

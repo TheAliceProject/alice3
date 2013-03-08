@@ -59,6 +59,10 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 		super( java.util.UUID.fromString( "2c299a2c-98fa-44d8-9d63-74c19da4bd2b" ), org.alice.ide.ProjectApplication.INFORMATION_GROUP );
 		//todo: investigate
 		this.initializeIfNecessary();
+		final boolean IS_SHOWING_BY_DEFAULT = false;
+		if( IS_SHOWING_BY_DEFAULT ) {
+			this.getBooleanState().getSwingModel().getButtonModel().setSelected( true );
+		}
 	}
 
 	@Override
@@ -66,7 +70,7 @@ public class ActiveTransactionHistoryComposite extends TransactionHistoryComposi
 		super.localize();
 		// do not want to bother localizers with this composite
 		this.getBooleanState().setTextForBothTrueAndFalse( "Transaction History" );
-		this.getBooleanState().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 ) );
+		this.getBooleanState().getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F8, 0 ) );
 	}
 
 	@Override

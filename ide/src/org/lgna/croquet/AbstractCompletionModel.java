@@ -48,7 +48,6 @@ package org.lgna.croquet;
  */
 public abstract class AbstractCompletionModel extends AbstractModel implements CompletionModel {
 	private final Group group;
-	private int ignoreCount = 0;
 
 	private static final class SidekickLabel extends PlainStringValue {
 		private final AbstractCompletionModel completionModel;
@@ -59,7 +58,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		}
 
 		@Override
-		protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
+		protected java.lang.Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.completionModel.getClassUsedForLocalization();
 		}
 
@@ -82,6 +81,13 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 
 	protected abstract void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger );
 
+	protected org.lgna.croquet.history.CompletionStep<?> createTransactionAndInvokePerform( org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
+		org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
+		this.perform( transaction, trigger );
+		return transaction.getCompletionStep();
+	}
+
 	@Deprecated
 	protected Model getSurrogateModel() {
 		return null;
@@ -97,10 +103,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		} else {
 			if( this.isEnabled() ) {
 				this.initializeIfNecessary();
-				org.lgna.croquet.history.TransactionHistory history = Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory();
-				org.lgna.croquet.history.Transaction transaction = history.acquireActiveTransaction();
-				this.perform( transaction, trigger );
-				return transaction.getCompletionStep();
+				return this.createTransactionAndInvokePerform( trigger );
 			} else {
 				return null;
 			}
@@ -126,19 +129,6 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		return this.sidekickLabel;
 	}
 
-	protected void pushIgnore() {
-		this.ignoreCount++;
-	}
-
-	protected void popIgnore() {
-		this.ignoreCount--;
-		assert this.ignoreCount >= 0;
-	}
-
-	protected boolean isAppropriateToComplete() {
-		return ( Manager.isInTheMidstOfUndoOrRedo() == false ) && ( this.ignoreCount == 0 );
-	}
-
 	public final String getTutorialTransactionTitle( org.lgna.croquet.history.CompletionStep<?> step ) {
 		this.initializeIfNecessary();
 		org.lgna.croquet.edits.Edit<?> edit = step.getEdit();
@@ -150,12 +140,24 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 		}
 	}
 
-	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit );
-
-	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> completionStep, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( originalEdit );
-		return null;
+	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
+		org.lgna.croquet.edits.Edit<?> replacementEdit = org.lgna.croquet.edits.Edit.createCopy( originalEdit );
+		replacementEdit.retarget( retargeter );
+		return replacementEdit;
 	}
+
+	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.edits.Edit<?> replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
+		org.lgna.croquet.history.Transaction owner = org.lgna.croquet.Application.getActiveInstance().getApplicationOrDocumentTransactionHistory().getActiveTransactionHistory().acquireActiveTransaction();
+		org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( owner, this, trigger, null );
+		completionStep.commitAndInvokeDo( replacementEdit );
+
+		originalEdit.addKeyValuePairs( retargeter, replacementEdit );
+
+		return replacementEdit;
+	}
+
+	public abstract boolean isAlreadyInState( org.lgna.croquet.edits.Edit<?> edit );
 
 	public abstract Iterable<? extends PrepModel> getPotentialRootPrepModels();
 

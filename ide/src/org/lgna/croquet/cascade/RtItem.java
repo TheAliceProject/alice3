@@ -66,17 +66,18 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		super( element, node );
 		this.owner = owner;
 		this.index = index;
-		CascadeBlank<B>[] blanks = this.getModelBlanks();
+		java.util.List<? extends CascadeBlank<B>> blanks = this.getModelBlanks();
 		final int N;
 		if( blanks != null ) {
-			N = blanks.length;
+			N = blanks.size();
 		} else {
 			N = 0;
 		}
 		this.rtBlanks = new RtBlank[ N ];
-		for( int i = 0; i < this.rtBlanks.length; i++ ) {
-			assert blanks[ i ] != null : this;
-			this.rtBlanks[ i ] = new RtBlank<B>( blanks[ i ] );
+		for( int i = 0; i < N; i++ ) {
+			CascadeBlank<B> blankI = blanks.get( i );
+			assert blankI != null : this;
+			this.rtBlanks[ i ] = new RtBlank<B>( blankI );
 		}
 		this.updateParentsAndNextSiblings( this.rtBlanks );
 	}
@@ -89,7 +90,7 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		return this.index;
 	}
 
-	protected abstract CascadeBlank<B>[] getModelBlanks();
+	protected abstract java.util.List<? extends CascadeBlank<B>> getModelBlanks();
 
 	public int getBlankStepCount() {
 		return this.rtBlanks.length;
@@ -164,112 +165,43 @@ abstract class RtItem<F, B, M extends CascadeItem<F, B>, C extends org.lgna.croq
 		if( nextNode.isAutomaticallyDetermined() ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( nextNode );
 		}
-		RtItem[] children = nextNode.getItemChildren();
-		for( RtItem<?, ?, ?, ?> rtItem : children ) {
+		RtBlank.ItemChildrenAndComboOffsetsPair itemChildrenAndComboOffsetsPair = nextNode.getItemChildrenAndComboOffsets();
+		RtItem[] children = itemChildrenAndComboOffsetsPair.getItemChildren();
+		final int N = children.length;
+		int i = 0;
+		while( i < N ) {
+			RtItem<?, ?, ?, ?> rtItem = children[ i ];
 			org.lgna.croquet.components.ViewController<?, ?> menuItem = rtItem.getMenuItem();
 			if( menuItem != null ) {
 				if( menuItem instanceof org.lgna.croquet.components.CascadeMenu ) {
 					parent.addCascadeMenu( (org.lgna.croquet.components.CascadeMenu)menuItem );
 				} else if( menuItem instanceof org.lgna.croquet.components.CascadeMenuItem ) {
-					parent.addCascadeMenuItem( (org.lgna.croquet.components.CascadeMenuItem)menuItem );
+					org.lgna.croquet.components.CascadeMenuItem cascadeMenuItem = (org.lgna.croquet.components.CascadeMenuItem)menuItem;
+					if( itemChildrenAndComboOffsetsPair.isComboOffset( i ) ) {
+						i++;
+						RtItem<?, ?, ?, ?> rtItem2 = children[ i ];
+						org.lgna.croquet.components.ViewController<?, ?> menuItem2 = rtItem2.getMenuItem();
+						if( menuItem2 != null ) {
+							if( menuItem2 instanceof org.lgna.croquet.components.CascadeMenu ) {
+								org.lgna.croquet.components.CascadeMenu cascadeMenu = (org.lgna.croquet.components.CascadeMenu)menuItem2;
+								parent.addCascadeCombo( cascadeMenuItem, cascadeMenu );
+							} else {
+								assert false : menuItem2;
+							}
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( rtItem2 );
+							assert false : menuItem2;
+						}
+					} else {
+						parent.addCascadeMenuItem( cascadeMenuItem );
+					}
 				} else {
 					assert false : menuItem;
 				}
 			} else {
 				parent.addSeparator();
 			}
-		}
-
-		final boolean IS_SPRING_LAYOUT_ATTEMPT_DESIRED = true;
-		if( IS_SPRING_LAYOUT_ATTEMPT_DESIRED ) {
-			javax.swing.SpringLayout springLayout = null;
-			for( RtNode child : children ) {
-				RtItem<?, ?, ?, ?> rtItem = (RtItem<?, ?, ?, ?>)child;
-				CascadeBlankChild owner = rtItem.getOwner();
-				int itemCount = owner != null ? owner.getItemCount() : 0;
-				if( itemCount > 1 ) {
-					springLayout = new javax.swing.SpringLayout();
-					break;
-				}
-			}
-			javax.swing.JComponent jParent = parent.getViewController().getAwtComponent();
-			if( jParent instanceof javax.swing.JMenu ) {
-				javax.swing.JMenu jMenu = (javax.swing.JMenu)jParent;
-				jParent = jMenu.getPopupMenu();
-			}
-			assert jParent instanceof javax.swing.JPopupMenu : jParent;
-			if( springLayout != null ) {
-				jParent.setLayout( springLayout );
-
-				CascadeBlank blank = (CascadeBlank)nextNode.getElement();
-				CascadeBlankChild[] blankChildren = blank.getFilteredChildren( (BlankNode)nextNode.getNode() );
-
-				javax.swing.Spring widthA = javax.swing.Spring.constant( 0 );
-				javax.swing.Spring widthB = javax.swing.Spring.constant( 0 );
-				int index;
-
-				index = 0;
-				for( CascadeBlankChild child : blankChildren ) {
-					java.awt.Component componentA = jParent.getComponent( index + 0 );
-					javax.swing.SpringLayout.Constraints contraintsA = springLayout.getConstraints( componentA );
-					widthA = javax.swing.Spring.max( widthA, contraintsA.getWidth() );
-					int itemCount = child.getItemCount();
-					if( itemCount == 2 ) {
-						java.awt.Component componentB = jParent.getComponent( index + 1 );
-						javax.swing.SpringLayout.Constraints contraintsB = springLayout.getConstraints( componentB );
-
-						widthB = javax.swing.Spring.max( widthB, contraintsB.getWidth() );
-						//todo: try to find a better way to account for the wasted icon/text space
-						if( componentB instanceof javax.swing.JMenu ) {
-							javax.swing.JMenu jMenu = (javax.swing.JMenu)componentB;
-							if( ( jMenu.getText() != null ) || ( jMenu.getIcon() != null ) ) {
-								//pass
-							} else {
-								//widthB = Spring.constant( 24 );
-								widthB = contraintsA.getHeight();
-							}
-						}
-					}
-					index += itemCount;
-				}
-				javax.swing.Spring xA = javax.swing.Spring.constant( 0 );
-				javax.swing.Spring xB = javax.swing.Spring.sum( xA, widthA );
-				javax.swing.Spring widthAB = javax.swing.Spring.sum( xB, widthB );
-
-				javax.swing.Spring y = javax.swing.Spring.constant( 0 );
-				index = 0;
-				for( CascadeBlankChild child : blankChildren ) {
-
-					java.awt.Component componentA = jParent.getComponent( index + 0 );
-					javax.swing.SpringLayout.Constraints contraintsA = springLayout.getConstraints( componentA );
-
-					contraintsA.setX( xA );
-					contraintsA.setY( y );
-
-					javax.swing.Spring height;
-					int itemCount = child.getItemCount();
-					if( itemCount == 1 ) {
-						contraintsA.setWidth( widthAB );
-						height = contraintsA.getHeight();
-					} else {
-						assert itemCount == 2;
-						contraintsA.setWidth( widthA );
-						java.awt.Component componentB = jParent.getComponent( index + 1 );
-						javax.swing.SpringLayout.Constraints contraintsB = springLayout.getConstraints( componentB );
-						contraintsB.setX( xB );
-						contraintsB.setY( y );
-						contraintsB.setWidth( widthB );
-						height = javax.swing.Spring.max( contraintsA.getHeight(), contraintsB.getHeight() );
-						contraintsA.setHeight( height );
-						contraintsB.setHeight( height );
-					}
-					y = javax.swing.Spring.sum( y, height );
-					index += itemCount;
-				}
-				javax.swing.SpringLayout.Constraints pCons = springLayout.getConstraints( jParent );
-				pCons.setConstraint( javax.swing.SpringLayout.SOUTH, y );
-				pCons.setConstraint( javax.swing.SpringLayout.EAST, widthAB );
-			}
+			i++;
 		}
 	}
 
@@ -352,7 +284,7 @@ abstract class RtBlankOwner<F, B, M extends CascadeBlankOwner<F, B>, C extends o
 	}
 
 	@Override
-	protected final CascadeBlank<B>[] getModelBlanks() {
+	protected final java.util.List<? extends CascadeBlank<B>> getModelBlanks() {
 		return this.getElement().getBlanks();
 	}
 }
@@ -384,8 +316,8 @@ class RtSeparator extends RtItem<Void, Void, CascadeSeparator, org.lgna.croquet.
 	}
 
 	@Override
-	protected CascadeBlank<Void>[] getModelBlanks() {
-		return new CascadeBlank[] {};
+	protected java.util.List<CascadeBlank<Void>> getModelBlanks() {
+		return java.util.Collections.emptyList();
 	}
 
 	@Override
@@ -407,7 +339,7 @@ class RtCancel<F> extends RtItem<F, Void, CascadeCancel<F>, org.lgna.croquet.cas
 	}
 
 	@Override
-	protected CascadeBlank<Void>[] getModelBlanks() {
-		return new CascadeBlank[] {};
+	protected java.util.List<CascadeBlank<Void>> getModelBlanks() {
+		return java.util.Collections.emptyList();
 	}
 }

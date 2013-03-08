@@ -43,12 +43,48 @@
 
 package org.lgna.croquet;
 
-import org.lgna.croquet.components.ComponentManager;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractModel extends AbstractElement implements Model {
+	private static int getMnemonicKey( javax.swing.Action action ) {
+		Object rv = action.getValue( javax.swing.Action.MNEMONIC_KEY );
+		return rv != null ? Integer.class.cast( rv ) : 0;
+	}
+
+	protected static void safeSetNameAndMnemonic( javax.swing.Action action, String nextName, int nextMnemonicKey ) {
+		int index;
+		if( nextMnemonicKey != 0 ) {
+			char mnemonicChar = (char)nextMnemonicKey;
+
+			int upperCaseIndex = nextName.indexOf( Character.toUpperCase( mnemonicChar ) );
+			int lowerCaseIndex = nextName.indexOf( Character.toLowerCase( mnemonicChar ) );
+
+			if( upperCaseIndex == -1 ) {
+				index = lowerCaseIndex;
+			} else if( lowerCaseIndex == -1 ) {
+				index = upperCaseIndex;
+			} else {
+				if( lowerCaseIndex < upperCaseIndex ) {
+					index = lowerCaseIndex;
+				} else {
+					index = upperCaseIndex;
+				}
+			}
+		} else {
+			index = -1;
+		}
+
+		int prevMnemonicKey = getMnemonicKey( action );
+		if( prevMnemonicKey != 0 ) {
+			action.putValue( javax.swing.Action.MNEMONIC_KEY, 0 );
+		}
+		action.putValue( javax.swing.Action.NAME, nextName );
+		if( index != -1 ) {
+			action.putValue( javax.swing.Action.MNEMONIC_KEY, nextMnemonicKey );
+		}
+	}
+
 	private final java.util.List<ContextFactory<?>> contextFactories = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
 	//TODO: contemplate passing context factories on construction
@@ -76,23 +112,6 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 
 	public abstract org.lgna.croquet.history.Step<?> fire( org.lgna.croquet.triggers.Trigger trigger );
 
-	//	private boolean isEnabled = true;
-	//	public boolean isEnabled() {
-	//		return this.isEnabled;
-	//	}
-	//	public void setEnabled( boolean isEnabled ) {
-	//		if( this.isEnabled != isEnabled ) {
-	//			this.isEnabled = isEnabled;
-	//			synchronized( this.components ) {
-	//				for( org.lgna.croquet.components.JComponent<?> component : this.components ) {
-	//					component.getAwtComponent().setEnabled( this.isEnabled );
-	//				}
-	//			}
-	//		}
-	//	}
-
-	//	public abstract boolean isEnabled();
-	//	public abstract void setEnabled( boolean isEnabled );
 	private boolean isEnabled = true;
 
 	public boolean isEnabled() {
@@ -101,31 +120,10 @@ public abstract class AbstractModel extends AbstractElement implements Model {
 
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: override setEnabled", this, isEnabled );
 			this.isEnabled = isEnabled;
-		}
-	}
-
-	//	public boolean isEnabled() {
-	//		throw new RuntimeException( "todo" );
-	//	}
-	//	public void setEnabled( boolean isEnabled ) {
-	//		edu.cmu.cs.dennisc.java.util.logging.Logger.todo( this );
-	//	}
-
-	private String toolTipText = null;
-
-	public String getToolTipText() {
-		return this.toolTipText;
-	}
-
-	public void setToolTipText( String toolTipText ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.toolTipText, toolTipText ) ) {
-			//pass
-		} else {
-			this.toolTipText = toolTipText;
-			for( org.lgna.croquet.components.JComponent<?> component : ComponentManager.getComponents( this ) ) {
-				component.setToolTipText( this.toolTipText );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: override setEnabled", this, isEnabled );
+			for( org.lgna.croquet.components.JComponent<?> component : org.lgna.croquet.components.ComponentManager.getComponents( this ) ) {
+				component.getAwtComponent().setEnabled( this.isEnabled );
 			}
 		}
 	}

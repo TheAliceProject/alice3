@@ -65,7 +65,26 @@ public class AreaUtilities {
 			if( b != null ) {
 				rv.intersect( new java.awt.geom.Area( b ) );
 			} else {
-				return new java.awt.geom.Area( a );
+				//pass
+			}
+			return rv;
+		} else {
+			if( b != null ) {
+				return new java.awt.geom.Area( b );
+			} else {
+				//todo: return null?
+				return new java.awt.geom.Area();
+			}
+		}
+	}
+
+	public static java.awt.geom.Area createUnion( java.awt.Shape a, java.awt.Shape b ) {
+		if( a != null ) {
+			java.awt.geom.Area rv = new java.awt.geom.Area( a );
+			if( b != null ) {
+				rv.add( new java.awt.geom.Area( b ) );
+			} else {
+				//pass
 			}
 			return rv;
 		} else {

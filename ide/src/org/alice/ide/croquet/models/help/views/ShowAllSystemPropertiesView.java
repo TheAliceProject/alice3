@@ -83,7 +83,6 @@ public class ShowAllSystemPropertiesView extends org.lgna.croquet.components.Bor
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
-		int width = 640;
-		this.setPreferredSize( new java.awt.Dimension( width, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( width ) ) );
+		this.setPreferredSize( edu.cmu.cs.dennisc.math.GoldenRatio.createWiderSizeFromWidth( 640 ) );
 	}
 }

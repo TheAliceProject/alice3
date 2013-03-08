@@ -46,7 +46,7 @@ package org.alice.ide.controlflow;
 /**
  * @author Dennis Cosgrove
  */
-public class ControlFlowComposite extends org.alice.ide.members.TemplateComposite<org.alice.ide.controlflow.components.ControlFlowPanel> {
+public class ControlFlowComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.controlflow.components.ControlFlowPanel> {
 
 	private static java.util.Map<org.lgna.project.ast.AbstractCode, ControlFlowComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 

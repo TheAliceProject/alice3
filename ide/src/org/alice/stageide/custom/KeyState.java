@@ -65,7 +65,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 	}
 
 	@Override
-	protected org.lgna.story.Key getActualValue() {
+	protected org.lgna.story.Key getSwingValue() {
 		return this.value;
 	}
 
@@ -85,7 +85,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 	}
 
 	@Override
-	protected void updateSwingModel( org.lgna.story.Key nextValue ) {
+	protected void setSwingValue( org.lgna.story.Key nextValue ) {
 		this.value = nextValue;
 		this.updateViewControllers();
 	}
@@ -99,7 +99,7 @@ public final class KeyState extends org.lgna.croquet.SimpleItemState<org.lgna.st
 		org.lgna.story.Key nextValue = org.lgna.story.ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() );
 		org.lgna.croquet.triggers.Trigger trigger = org.lgna.croquet.triggers.KeyEventTrigger.createUserInstance( viewController, e );
 		this.value = nextValue;
-		this.changeValueFromSwing( this.value, false, trigger );
+		this.changeValueFromSwing( this.value, IsAdjusting.FALSE, trigger );
 		this.updateViewControllers();
 	}
 

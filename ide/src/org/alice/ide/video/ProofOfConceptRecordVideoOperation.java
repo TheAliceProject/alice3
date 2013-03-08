@@ -75,7 +75,7 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 
 	@Override
 	protected org.lgna.croquet.components.Component<?> createControlsPanel( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
-		IsRecordingState.getInstance().setValue( false );
+		IsRecordingState.getInstance().setValueTransactionlessly( false );
 		IsRecordingState.getInstance().addValueListener( this.isRecordingListener );
 		return super.createControlsPanel( step, dialog );
 	}
@@ -87,7 +87,10 @@ public class ProofOfConceptRecordVideoOperation extends RecordVideoOperation {
 	}
 
 	@Override
-	protected void handleImage( java.awt.image.BufferedImage image, int i ) {
+	protected void handleImage( java.awt.image.BufferedImage image, int i, boolean isUpsideDown ) {
+		if( isUpsideDown ) {
+			//todo: flip vertically
+		}
 		java.io.File directory = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), "ProofOfConceptVideoExport" );
 		java.io.File file = new java.io.File( directory, "image" + new java.text.DecimalFormat( "#0000" ).format( i ) + ".png" );
 		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );

@@ -55,13 +55,34 @@ public class DeclarationsEditorComposite extends org.lgna.croquet.SimpleComposit
 		return SingletonHolder.instance;
 	}
 
+	private final org.alice.ide.declarationseditor.DeclarationMenu declarationMenu = new org.alice.ide.declarationseditor.DeclarationMenu();
 	private final DeclarationTabState tabState = new DeclarationTabState();
-	private final BackwardForwardComposite backwardForwardComposite = new org.alice.ide.declarationseditor.BackwardForwardComposite();
+	private final BackwardForwardComposite backwardForwardComposite;
+
+	private final org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> metaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, DeclarationComposite>( this.tabState ) {
+		@Override
+		public org.lgna.project.ast.NamedUserType getValue() {
+			DeclarationComposite<?, ?> declarationComposite = tabState.getValue();
+			if( declarationComposite != null ) {
+				return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( declarationComposite.getType(), org.lgna.project.ast.NamedUserType.class );
+			} else {
+				return null;
+			}
+		}
+	};
 
 	private DeclarationsEditorComposite() {
 		super( java.util.UUID.fromString( "bdf8f46f-1c77-4e01-83d1-952cbf63504e" ) );
-		this.registerSubComposite( this.backwardForwardComposite );
+		this.backwardForwardComposite = this.registerSubComposite( new BackwardForwardComposite() );
 		this.registerTabSelectionState( this.tabState );
+	}
+
+	public org.alice.ide.declarationseditor.DeclarationMenu getDeclarationMenu() {
+		return this.declarationMenu;
+	}
+
+	public org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> getMetaState() {
+		return this.metaState;
 	}
 
 	public DeclarationTabState getTabState() {

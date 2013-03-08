@@ -15,7 +15,6 @@ public class TransactionHistoryGenerator {
 
 		//cheshire cat does not recover since the procedure invocation drag model is found (albeit with the wrong state).  curses.
 		//so we manually place ide in correct configuration.
-		org.alice.ide.declarationseditor.TypeState.getInstance().addGeneratedStateChangeTransaction( history, null, (org.lgna.project.ast.NamedUserType)destinationMethod.getDeclaringType() );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addGeneratedStateChangeTransaction( history, null, org.alice.ide.declarationseditor.DeclarationComposite.getInstance( destinationMethod ) );
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory;
@@ -30,9 +29,9 @@ public class TransactionHistoryGenerator {
 			instanceFactory = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
 			instanceExpression = new org.lgna.project.ast.ThisExpression();
 		}
-		org.alice.ide.declarationseditor.TypeState.getInstance().pushGeneratedValue( (org.lgna.project.ast.NamedUserType)destinationMethod.getDeclaringType() );
 		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
-		org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().pushGeneratedValue( org.alice.ide.members.ProcedureTemplateComposite.getInstance() );
+		org.alice.ide.members.MembersComposite membersComposite = org.alice.ide.members.MembersComposite.getInstance();
+		membersComposite.getTabState().pushGeneratedValue( membersComposite.getProcedureTabComposite() );
 		try {
 			org.lgna.project.ast.Expression[] argumentExpressions = {};
 			org.lgna.project.ast.ExpressionStatement invocationStatement = org.lgna.project.ast.AstUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
@@ -42,19 +41,18 @@ public class TransactionHistoryGenerator {
 			destinationMethod.body.getValue().statements.remove( index );
 
 		} finally {
-			org.alice.ide.members.ProcedureFunctionPropertyTabState.getInstance().popGeneratedValue();
+			membersComposite.getTabState().popGeneratedValue();
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popGeneratedValue();
-			org.alice.ide.declarationseditor.TypeState.getInstance().popGeneratedValue();
 		}
 
-		org.alice.stageide.croquet.models.run.RunOperation runOperation = org.alice.stageide.croquet.models.run.RunOperation.getInstance();
+		org.alice.stageide.run.RunComposite runComposite = org.alice.stageide.run.RunComposite.getInstance();
 		// Call run
 		org.lgna.croquet.history.Transaction transaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( history );
 
 		org.lgna.croquet.history.TransactionHistory subTransactionHistory = new org.lgna.croquet.history.TransactionHistory();
 		org.lgna.croquet.history.Transaction closeTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( subTransactionHistory );
-		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( closeTransaction, runOperation.getCloseOperation(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), null );
-		org.lgna.croquet.history.CompletionStep<?> commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, runOperation, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), subTransactionHistory );
+		org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( closeTransaction, runComposite.getCloseOperation(), org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), null );
+		org.lgna.croquet.history.CompletionStep<?> commitStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, runComposite.getOperation(), org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), subTransactionHistory );
 		commitStep.finish();
 
 		return history;

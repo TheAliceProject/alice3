@@ -46,6 +46,10 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class DropProxy extends Proxy {
+	public static interface Hider {
+		public void setDragSource( org.lgna.croquet.components.DragComponent dragSource );
+	}
+
 	public DropProxy( DragComponent dragComponent ) {
 		super( dragComponent );
 	}

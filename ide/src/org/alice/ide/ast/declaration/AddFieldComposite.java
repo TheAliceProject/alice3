@@ -46,7 +46,7 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna.project.ast.UserField> {
+public abstract class AddFieldComposite extends FieldComposite {
 	public static class FieldDetailsBuilder {
 		private ApplicabilityStatus isFinalStatus = ApplicabilityStatus.NOT_APPLICABLE;
 		private boolean inFinalInitialValue;
@@ -116,6 +116,12 @@ public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna
 	}
 
 	@Override
+	protected void localize() {
+		super.localize();
+		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+	}
+
+	@Override
 	public org.lgna.project.ast.UserField getPreviewValue() {
 		return this.createField();
 	}
@@ -159,28 +165,49 @@ public abstract class AddFieldComposite extends AddDeclarationComposite<org.lgna
 		return org.alice.ide.identifier.IdentifierNameGenerator.SINGLETON.createIdentifierNameFromInstanceCreation( instanceCreation );
 	}
 
-	//	protected void updateNameTextField() {
-	//		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
-	//			String name = generateNameFromInitializer();
-	//			this.getNameState().setValueTransactionlessly( name );
-	//			this.getNameState().selectAll();
-	////			javax.swing.JTextField jTextField = this.nameTextField.getAwtComponent();
-	////			if( jTextField.getSelectionStart() == 0 && jTextField.getSelectionEnd() == jTextField.getDocument().getLength() ) {
-	////				String name = generateNameFromInitializer();
-	////				model.getNameState().setValue( name );
-	////				this.nameTextField.requestFocus();
-	////				this.nameTextField.selectAll();
-	////				this.nameTextField.repaint();
-	////			}
-	//		}
-	//	}
+	protected boolean isNumberAppendedToNameOfFirstField() {
+		return false;
+	}
+
+	protected boolean isNameGenerationDesired() {
+		return org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue();
+	}
 
 	@Override
-	protected java.lang.String getInitialNameValue() {
-		if( org.alice.stageide.croquet.models.gallerybrowser.preferences.IsPromptProvidingInitialFieldNamesState.getInstance().getValue() ) {
-			return generateNameFromInitializer();
+	protected java.lang.String getNameInitialValue() {
+		if( this.isNameGenerationDesired() ) {
+			String baseName = generateNameFromInitializer();
+			boolean isNumberAppendedToNameOfFirstField = this.isNumberAppendedToNameOfFirstField();
+			final boolean IS_GENERATING_AVAILABLE_NAME_ENABLED = true;
+			if( IS_GENERATING_AVAILABLE_NAME_ENABLED ) {
+				boolean isSearchFrom2Desired;
+				if( isNumberAppendedToNameOfFirstField || this.isNameAvailable( baseName ) ) {
+					if( this.isNameAvailable( baseName + 1 ) ) {
+						isSearchFrom2Desired = false;
+					} else {
+						isSearchFrom2Desired = true;
+					}
+				} else {
+					isSearchFrom2Desired = true;
+				}
+				if( isSearchFrom2Desired ) {
+					int i = 2;
+					while( true ) {
+						if( this.isNameAvailable( baseName + i ) ) {
+							break;
+						}
+						i++;
+					}
+					return baseName + i;
+				}
+			}
+			if( isNumberAppendedToNameOfFirstField ) {
+				return baseName + 1;
+			} else {
+				return baseName;
+			}
 		} else {
-			return super.getInitialNameValue();
+			return super.getNameInitialValue();
 		}
 	}
 }

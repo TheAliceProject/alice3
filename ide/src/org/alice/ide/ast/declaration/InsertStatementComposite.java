@@ -84,11 +84,6 @@ public abstract class InsertStatementComposite<S extends org.lgna.project.ast.St
 	}
 
 	@Override
-	protected boolean isNameValid( String name ) {
-		return this.nameValidator.isNameValid( name );
-	}
-
-	@Override
 	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
 		return new org.alice.ide.ast.declaration.views.InsertStatementView( this );
 	}

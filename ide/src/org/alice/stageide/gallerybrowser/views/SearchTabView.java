@@ -108,8 +108,8 @@ public class SearchTabView extends GalleryTabView {
 		}
 	}
 
-	private final org.lgna.croquet.components.ImmutableTextField noMatchesLabel;
-	private final org.lgna.croquet.components.ImmutableTextField noEntryLabel;
+	private final org.lgna.croquet.components.AbstractLabel noMatchesLabel;
+	private final org.lgna.croquet.components.AbstractLabel noEntryLabel;
 
 	private class FilteredResourcesView extends org.lgna.croquet.components.LineAxisPanel {
 		@Override
@@ -149,15 +149,16 @@ public class SearchTabView extends GalleryTabView {
 	public SearchTabView( org.alice.stageide.gallerybrowser.SearchTab composite ) {
 		super( composite );
 
-		this.noMatchesLabel = composite.getNoMatchesLabel().createImmutableTextField( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-		this.noEntryLabel = composite.getNoEntryLabel().createImmutableTextField( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		this.noMatchesLabel = composite.getNoMatchesLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+		this.noEntryLabel = composite.getNoEntryLabel().createLabel( 1.4f, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 		this.noMatchesLabel.setForegroundColor( java.awt.Color.DARK_GRAY );
 		this.noEntryLabel.setForegroundColor( java.awt.Color.DARK_GRAY );
 
 		this.filterTextField = composite.getFilterState().createTextField();
 		this.filterTextField.setMinimumPreferredWidth( 320 );
 		this.filterTextField.setMaximumSizeClampedToPreferredSize( true );
-		this.filterTextField.scaleFont( 1.5f );
+		this.filterTextField.scaleFont( 1.2f );
+		this.filterTextField.enableSelectAllWhenFocusGained();
 
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.filteredResourcesView ) {
 			@Override
@@ -166,39 +167,30 @@ public class SearchTabView extends GalleryTabView {
 			}
 		};
 		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
-		scrollPane.setBorder( null );
 		scrollPane.setBothScrollBarIncrements( 16, 160 );
 		scrollPane.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 		this.filteredResourcesView.setBackgroundColor( GalleryView.BACKGROUND_COLOR );
 
 		this.addPageStartComponent( new org.lgna.croquet.components.LineAxisPanel(
-				composite.getFilterState().getSidekickLabel().createImmutableTextField(),
+				composite.getFilterState().getSidekickLabel().createLabel(),
 				this.filterTextField
 				) );
 		this.addCenterComponent( scrollPane );
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
+	public void handleCompositePreActivation() {
+		super.handleCompositePreActivation();
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
 		composite.getFilterState().addAndInvokeValueListener( this.filterListener );
+		this.filterTextField.requestFocusLater();
 	}
 
 	@Override
-	protected void handleUndisplayable() {
+	public void handleCompositePostDeactivation() {
 		org.alice.stageide.gallerybrowser.SearchTab composite = (org.alice.stageide.gallerybrowser.SearchTab)this.getComposite();
 		composite.getFilterState().removeValueListener( this.filterListener );
-		super.handleUndisplayable();
-	}
-
-	public void TEMPORARY_HACK_handleSelected() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				filterTextField.requestFocus();
-			}
-		} );
-		//		this.filterTextField.requestFocus();
+		super.handleCompositePostDeactivation();
 	}
 
 	private void handleFilterChanged( String filter ) {

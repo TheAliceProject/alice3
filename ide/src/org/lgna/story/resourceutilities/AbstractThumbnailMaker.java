@@ -60,7 +60,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public abstract class AbstractThumbnailMaker {
 	public static final int DEFAULT_THUMBNAIL_WIDTH = 160;
-	public static final int DEFAULT_THUMBNAIL_HEIGHT = ( DEFAULT_THUMBNAIL_WIDTH * 3 ) / 4;
+	public static final int DEFAULT_THUMBNAIL_HEIGHT = ( DEFAULT_THUMBNAIL_WIDTH * 9 ) / 16;
 	protected static final int DEFAULT_ANTI_ALIAS_FACTOR = 4;
 
 	private final int width;
@@ -100,13 +100,144 @@ public abstract class AbstractThumbnailMaker {
 		this.offscreenLookingGlass.clearUnusedTextures();
 	}
 
-	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform ) throws Exception {
+	protected static boolean isTransparent( int pixel ) {
+		int alpha = pixel >> 24;
+		return alpha == 0;
+	}
+
+	protected static int getLeftBorder( java.awt.image.BufferedImage image )
+	{
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for( int x = 0; x < width; x++ )
+		{
+			for( int y = 0; y < height; y++ )
+			{
+				if( !isTransparent( image.getRGB( x, y ) ) )
+				{
+					return x;
+				}
+			}
+		}
+		return width;
+	}
+
+	protected static int getRightBorder( java.awt.image.BufferedImage image ) {
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for( int x = width - 1; x >= 0; x-- )
+		{
+			for( int y = 0; y < height; y++ )
+			{
+				if( !isTransparent( image.getRGB( x, y ) ) )
+				{
+					return width - x;
+				}
+			}
+		}
+		return width;
+	}
+
+	protected static int getTopBorder( java.awt.image.BufferedImage image ) {
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for( int y = 0; y < height; y++ )
+		{
+			for( int x = 0; x < width; x++ )
+			{
+				if( !isTransparent( image.getRGB( x, y ) ) )
+				{
+					return y;
+				}
+			}
+		}
+		return height;
+	}
+
+	protected static int getBottomBorder( java.awt.image.BufferedImage image ) {
+		int width = image.getWidth();
+		int height = image.getHeight();
+		for( int y = height - 1; y >= 0; y-- )
+		{
+			for( int x = 0; x < width; x++ )
+			{
+				if( !isTransparent( image.getRGB( x, y ) ) )
+				{
+					return height - y;
+				}
+			}
+		}
+		return height;
+	}
+
+	protected static boolean isFullyFramed( java.awt.image.BufferedImage image ) {
+		int width = image.getWidth();
+		int right = width - 1;
+		int height = image.getHeight();
+		int bottom = height - 1;
+		for( int x = 0; x < width; x++ )
+		{
+			int topPixel = image.getRGB( x, 0 );
+			if( !isTransparent( topPixel ) )
+			{
+				return false;
+			}
+			int bottomPixel = image.getRGB( x, bottom );
+			if( !isTransparent( bottomPixel ) )
+			{
+				return false;
+			}
+		}
+		for( int y = 0; y < height; y++ )
+		{
+			int leftPixel = image.getRGB( 0, y );
+			if( !isTransparent( leftPixel ) )
+			{
+				return false;
+			}
+			int rightPixel = image.getRGB( right, y );
+			if( !isTransparent( rightPixel ) )
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace ) throws Exception {
 		getSGCameraVehicle().setLocalTransformation( cameraTransform );
 		//offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
+		if( trimWhitespace ) {
+			int topBorder = getTopBorder( rv );
+			int bottomBorder = getBottomBorder( rv );
+			int rightBorder = getRightBorder( rv );
+			int leftBorder = getLeftBorder( rv );
+
+			int newHeight = rv.getHeight() - topBorder - bottomBorder;
+			int newWidth = rv.getWidth() - leftBorder - rightBorder;
+
+			rv = rv.getSubimage( leftBorder, topBorder, newWidth, newHeight );
+		}
 		Image returnImage;
 		if( this.antAliasFactor != 0 ) {
-			returnImage = rv.getScaledInstance( this.width, this.height, Image.SCALE_SMOOTH );
+			int finalWidth = this.width;
+			int finalHeight = this.height;
+			int currentWidth = rv.getWidth();
+			int currentHeight = rv.getHeight();
+			if( trimWhitespace ) {
+				double actualAspectRatio = ( (double)rv.getWidth() ) / rv.getHeight();
+				double targetAspectRatio = ( (double)this.width ) / this.height;
+				if( actualAspectRatio > targetAspectRatio ) {
+					finalWidth = this.width;
+					finalHeight = (int)( this.width / actualAspectRatio );
+				}
+				else {
+					finalHeight = this.height;
+					finalWidth = (int)( this.height * actualAspectRatio );
+				}
+			}
+			returnImage = rv.getScaledInstance( finalWidth, finalHeight, Image.SCALE_SMOOTH );
 		}
 		else {
 			returnImage = rv;
@@ -141,11 +272,11 @@ public abstract class AbstractThumbnailMaker {
 		return this.scene;
 	}
 
-	protected int getWidth() {
+	public int getWidth() {
 		return this.width;
 	}
 
-	protected int getHeight() {
+	public int getHeight() {
 		return this.height;
 	}
 
@@ -184,16 +315,24 @@ public abstract class AbstractThumbnailMaker {
 
 	protected abstract AffineMatrix4x4 getThumbnailTransform( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox );
 
-	public synchronized java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox ) throws Exception {
+	public synchronized java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, boolean trimWhitespace ) throws Exception {
 		v.setParent( this.sgModelTransformable );
 		AffineMatrix4x4 finalCameraTransform = getThumbnailTransform( v, bbox );
-		java.awt.image.BufferedImage returnImage = takePicture( finalCameraTransform );
+		java.awt.image.BufferedImage returnImage = takePicture( finalCameraTransform, trimWhitespace );
 		v.setParent( null );
 		return returnImage;
 	}
 
+	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox ) throws Exception {
+		return createThumbnail( v, bbox, true );
+	}
+
 	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v ) throws Exception {
-		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox() );
+		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), true );
+	}
+
+	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, boolean trimWhitespace ) throws Exception {
+		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), trimWhitespace );
 	}
 
 	protected void setUpCamera( edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass lookingGlass )

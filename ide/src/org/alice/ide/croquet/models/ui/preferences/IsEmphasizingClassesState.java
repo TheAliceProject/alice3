@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ui.preferences;
 /**
  * @author Dennis Cosgrove
  */
-public class IsEmphasizingClassesState extends org.lgna.croquet.preferences.PreferenceBooleanState {
+public class IsEmphasizingClassesState extends org.lgna.croquet.BooleanState {
 	private static class SingletonHolder {
 		private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
 	}

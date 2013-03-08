@@ -51,7 +51,7 @@ public class ControlFlowPanel extends org.lgna.croquet.components.Panel {
 		super( composite );
 		for( org.alice.ide.ast.draganddrop.statement.StatementTemplateDragModel dragModel : composite.getModels() ) {
 			if( dragModel != null ) {
-				this.internalAddComponent( new ControlFlowStatementTemplate( dragModel ) );
+				this.internalAddComponent( new MiniControlFlowStatementTemplate( dragModel ) );
 			} else {
 				this.internalAddComponent( org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 8 ) );
 			}

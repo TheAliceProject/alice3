@@ -75,8 +75,11 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 					image = lookingGlass.createBufferedImageForUseAsColorBuffer();
 				}
 				if( image != null ) {
-					image = lookingGlass.getColorBuffer( image );
-					handleImage( image, imageCount );
+					boolean[] atIsUpsideDown = { false };
+					synchronized( image ) {
+						image = lookingGlass.getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
+						handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
+					}
 					imageCount++;
 				} else {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "image is null" );
@@ -93,7 +96,7 @@ public abstract class RecordVideoOperation extends org.lgna.croquet.InputDialogO
 	private java.awt.image.BufferedImage image;
 	private int imageCount;
 
-	protected abstract void handleImage( java.awt.image.BufferedImage image, int i );
+	protected abstract void handleImage( java.awt.image.BufferedImage image, int i, boolean isUpsideDown );
 
 	private boolean isRecording;
 

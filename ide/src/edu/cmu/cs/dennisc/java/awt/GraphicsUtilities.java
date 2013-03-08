@@ -241,4 +241,38 @@ public class GraphicsUtilities {
 
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, antialiasingValue );
 	}
+
+	public static void fillGradientRectangle( java.awt.Graphics g, java.awt.Rectangle rect, java.awt.Color colorA, float yA, java.awt.Color colorB, float yB, java.awt.Color colorC, float yC, java.awt.Color colorD, float yD ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		int x = 0;
+		int y0 = rect.y;
+		int y1 = y0 + rect.height;
+		int yCenter = y1 / 2;
+
+		java.awt.GradientPaint paintTop = new java.awt.GradientPaint( x, y0 + ( yA * rect.height ), colorA, x, y0 + ( yB * rect.height ), colorB );
+		java.awt.GradientPaint paintBottom = new java.awt.GradientPaint( x, y0 + ( yC * rect.height ), colorC, x, y0 + ( yD * rect.height ), colorD );
+
+		java.awt.Paint prevPaint = g2.getPaint();
+		java.awt.Shape prevClip = g2.getClip();
+
+		try {
+			java.awt.geom.Area topArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, rect.y, rect.width, yCenter - rect.y ) );
+			g2.setClip( topArea );
+			g2.setPaint( paintTop );
+			g2.fill( rect );
+
+			java.awt.geom.Area bottomArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, yCenter, rect.width, y1 - yCenter ) );
+			g2.setClip( bottomArea );
+			g2.setPaint( paintBottom );
+			g2.fill( rect );
+		} finally {
+			g2.setClip( prevClip );
+			g2.setPaint( prevPaint );
+		}
+
+	}
+
+	public static void fillGradientRectangle( java.awt.Graphics g, java.awt.Rectangle rect, java.awt.Color colorTop, java.awt.Color colorInner, java.awt.Color colorBottom, float portion ) {
+		fillGradientRectangle( g, rect, colorTop, 0.0f, colorInner, portion, colorInner, 1.0f - portion, colorBottom, 1.0f );
+	}
 }

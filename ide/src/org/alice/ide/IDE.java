@@ -91,9 +91,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} );
 
 		this.promptForLicenseAgreements();
-
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
-		org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().addValueListener( this.isAlwaysShowingBlocksListener );
 	}
 
 	public abstract ApiConfigurationManager getApiConfigurationManager();
@@ -101,6 +98,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
 		this.getPerspectiveState().addValueListener( this.perspectiveListener );
 	}
 
@@ -112,7 +110,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return new DefaultTheme();
 	}
 
-	public Theme getTheme() {
+	public final Theme getTheme() {
 		if( this.theme != null ) {
 			//pass
 		} else {
@@ -127,10 +125,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract org.lgna.croquet.ListSelectionState<org.alice.ide.perspectives.ProjectPerspective> getPerspectiveState();
-
-	public abstract org.lgna.croquet.Operation getRunOperation();
-
-	public abstract org.lgna.croquet.Operation getRestartOperation();
 
 	public abstract org.lgna.croquet.Operation createPreviewOperation( org.alice.ide.members.components.templates.ProcedureInvocationTemplate procedureInvocationTemplate );
 
@@ -306,14 +300,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 			}
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<Boolean> isAlwaysShowingBlocksListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			org.lgna.croquet.Application.getActiveInstance().showMessageDialog( "restart required" );
-		}
-	};
 
 	public abstract org.alice.ide.cascade.ExpressionCascadeManager getExpressionCascadeManager();
 
@@ -356,7 +342,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-		org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)rootField.getValueType() );
+		org.lgna.project.ast.NamedUserType type;
+		if( rootField != null ) {
+			type = (org.lgna.project.ast.NamedUserType)rootField.getValueType();
+		} else {
+			type = null;
+		}
+		//org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
@@ -367,8 +359,10 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 						i--;
 						org.lgna.project.ast.UserField field = sceneType.fields.get( i );
 						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-							org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValue( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
-							break;
+							if( getApiConfigurationManager().isInstanceFactoryDesiredForType( field.getValueType() ) ) {
+								org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+								break;
+							}
 						}
 					}
 				}
@@ -379,6 +373,7 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
+		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.CodePerspective.getInstance() );
 		super.setProject( project );
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {
@@ -489,24 +484,24 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	public void selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite declarationComposite ) {
 		if( declarationComposite != null ) {
 			org.lgna.project.ast.AbstractDeclaration declaration = declarationComposite.getDeclaration();
-			org.lgna.project.ast.AbstractType<?, ?, ?> type;
-			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
-				type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
-			} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
-				org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
-				type = code.getDeclaringType();
-			} else {
-				type = null;
-			}
-			if( type instanceof org.lgna.project.ast.NamedUserType ) {
-				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
-			}
+			//			org.lgna.project.ast.AbstractType<?, ?, ?> type;
+			//			if( declaration instanceof org.lgna.project.ast.AbstractType<?, ?, ?> ) {
+			//				type = (org.lgna.project.ast.AbstractType<?, ?, ?>)declaration;
+			//			} else if( declaration instanceof org.lgna.project.ast.AbstractCode ) {
+			//				org.lgna.project.ast.AbstractCode code = (org.lgna.project.ast.AbstractCode)declaration;
+			//				type = code.getDeclaringType();
+			//			} else {
+			//				type = null;
+			//			}
+			//			if( type instanceof org.lgna.project.ast.NamedUserType ) {
+			//				org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( (org.lgna.project.ast.NamedUserType)type );
+			//			}
 			org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
-			if( tabState.containsItem( declarationComposite ) ) {
-				//pass
-			} else {
-				tabState.addItem( declarationComposite );
-			}
+			//			if( tabState.containsItem( declarationComposite ) ) {
+			//				//pass
+			//			} else {
+			//				tabState.addItem( declarationComposite );
+			//			}
 			tabState.setValueTransactionlessly( declarationComposite );
 		}
 	}

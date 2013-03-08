@@ -134,7 +134,7 @@ class IkProgram extends SProgram {
 		edu.cmu.cs.dennisc.print.PrintUtilities.appendLines( sb, this.getTargetImp().getLocalTransformation() );
 		sb.append( "\n" );
 
-		test.ik.croquet.InfoState.getInstance().setValue( sb.toString() );
+		test.ik.croquet.InfoState.getInstance().setValueTransactionlessly( sb.toString() );
 	}
 
 	private org.lgna.ik.Chain createChain() {
@@ -181,8 +181,8 @@ class IkProgram extends SProgram {
 		org.lgna.story.resources.JointId initialAnchor = org.lgna.story.resources.BipedResource.LEFT_CLAVICLE;
 		org.lgna.story.resources.JointId initialEnd = org.lgna.story.resources.BipedResource.LEFT_WRIST;
 
-		test.ik.croquet.AnchorJointIdState.getInstance().setValue( initialAnchor );
-		test.ik.croquet.EndJointIdState.getInstance().setValue( initialEnd );
+		test.ik.croquet.AnchorJointIdState.getInstance().setValueTransactionlessly( initialAnchor );
+		test.ik.croquet.EndJointIdState.getInstance().setValueTransactionlessly( initialEnd );
 
 		IkProgram program = new IkProgram();
 

@@ -104,21 +104,27 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected void promptForLicenseAgreements() {
 		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 		try {
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( org.lgna.project.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 3): Alice 3", org.lgna.project.License.TEXT, "Alice" );
-			//			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.wustl.cse.lookingglass.apis.walkandtouch.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 3): Looking Glass Walk & Touch API",
-			//					edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "the Looking Glass Walk & Touch API" );
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 3 of 3): The Sims (TM) 2 Art Assets",
-					edu.cmu.cs.dennisc.nebulous.License.TEXT, "The Sims (TM) 2 Art Assets" );
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary(
+					org.lgna.project.License.class,
+					IS_LICENSE_ACCEPTED_PREFERENCE_KEY,
+					"License Agreement (Part 1 of 2): Alice 3",
+					org.lgna.project.License.TEXT,
+					"Alice" );
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary(
+					edu.cmu.cs.dennisc.nebulous.License.class,
+					IS_LICENSE_ACCEPTED_PREFERENCE_KEY,
+					"License Agreement (Part 2 of 2): The Sims (TM) 2 Art Assets",
+					edu.cmu.cs.dennisc.nebulous.License.TEXT,
+					"The Sims (TM) 2 Art Assets" );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			this.showMessageDialog( "You must accept the license agreements in order to use Alice 3, the Looking Glass Walk & Touch API, and The Sims (TM) 2 Art Assets.  Exiting." );
+			this.showMessageDialog( "You must accept the license agreements in order to use Alice 3 and The Sims (TM) 2 Art Assets.  Exiting." );
 			System.exit( -1 );
 		}
 	}
 
 	private static final org.lgna.project.ast.JavaType COLOR_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class );
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointedModelResource.class );
-
-	private java.util.Map<org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon> mapFieldToIcon = new java.util.HashMap<org.lgna.project.ast.AbstractField, org.alice.ide.swing.icons.ColorIcon>();
+	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
 
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
 		if( field == null ) {
@@ -128,27 +134,28 @@ public class StageIDE extends org.alice.ide.IDE {
 		org.lgna.project.ast.AbstractType<?, ?, ?> valueType = field.getValueType();
 		if( ( declaringType != null ) && ( valueType != null ) ) {
 			if( ( declaringType == COLOR_TYPE ) && ( valueType == COLOR_TYPE ) ) {
-				org.alice.ide.swing.icons.ColorIcon rv = this.mapFieldToIcon.get( field );
-				if( rv != null ) {
+				try {
+					org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+					org.lgna.story.Color color = (org.lgna.story.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( javaField.getFieldReflectionProxy().getReification(), null );
+					java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor();
+					return new org.alice.stageide.icons.ColorIconFactory( awtColor ).getIcon( new java.awt.Dimension( 15, 15 ) );
+				} catch( RuntimeException re ) {
 					//pass
-				} else {
-					try {
-						org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
-						org.lgna.story.Color color = (org.lgna.story.Color)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( javaField.getFieldReflectionProxy().getReification(), null );
-						rv = new org.alice.ide.swing.icons.ColorIcon( org.lgna.story.ImplementationAccessor.getColor4f( color ).getAsAWTColor() );
-						this.mapFieldToIcon.put( field, rv );
-					} catch( RuntimeException re ) {
-						//pass
-					}
+					edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( re, field );
+					return null;
 				}
-				return rv;
 			} else if( declaringType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) && valueType.isAssignableTo( JOINTED_MODEL_RESOURCE_TYPE ) ) {
-				Class<?> resourceClass = ( (org.lgna.project.ast.JavaType)field.getValueType() ).getClassReflectionProxy().getReification();
-				java.awt.image.BufferedImage thumbnail = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail( resourceClass, field.getName() );
-				if( thumbnail != null ) {
-					return edu.cmu.cs.dennisc.javax.swing.icons.ScaledImageIcon.createSafeInstanceInPixels( thumbnail, 20, 20 );
+				if( field instanceof org.lgna.project.ast.JavaField ) {
+					org.lgna.project.ast.JavaField javaField = (org.lgna.project.ast.JavaField)field;
+					try {
+						org.lgna.story.resources.ModelResource modelResource = (org.lgna.story.resources.ModelResource)javaField.getFieldReflectionProxy().getReification().get( null );
+						org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceInstance( modelResource );
+						return iconFactory.getIcon( new java.awt.Dimension( 20, 15 ) );
+					} catch( Exception e ) {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( e, field );
+						return null;
+					}
 				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.warning( resourceClass, field.getName() );
 					return null;
 				}
 			} else {
@@ -227,7 +234,7 @@ public class StageIDE extends org.alice.ide.IDE {
 							org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 							if( constructor != null ) {
 								org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
-								return COLOR_TYPE.isAssignableFrom( type ) == false;
+								return ( COLOR_TYPE.isAssignableFrom( type ) || PERSON_RESOURCE_TYPE.isAssignableFrom( type ) ) == false;
 							}
 						}
 					}
@@ -237,16 +244,6 @@ public class StageIDE extends org.alice.ide.IDE {
 		} else {
 			return false;
 		}
-	}
-
-	@Override
-	public org.lgna.croquet.Operation getRunOperation() {
-		return org.alice.stageide.croquet.models.run.RunOperation.getInstance();
-	}
-
-	@Override
-	public org.lgna.croquet.Operation getRestartOperation() {
-		return org.alice.stageide.croquet.models.run.RestartOperation.getInstance();
 	}
 
 	@Override
@@ -290,16 +287,35 @@ public class StageIDE extends org.alice.ide.IDE {
 		return org.alice.stageide.about.AboutComposite.getInstance().getOperation();
 	}
 
+	public java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedFromSceneActivationListeners() {
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners( this.getSceneType() );
+	}
+
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
+		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
+		tabState.clear();
 		if( project != null ) {
 			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
 			org.lgna.project.ast.NamedUserType sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
-				String methodName = "myFirstMethod";
-				//methodName = StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME;
-				this.setFocusedCode( sceneType.findMethod( methodName ) );
+				org.lgna.croquet.data.ListData<org.alice.ide.declarationseditor.DeclarationComposite> data = tabState.getData();
+
+				data.internalAddItem( org.alice.ide.declarationseditor.TypeComposite.getInstance( sceneType ) );
+
+				java.util.List<org.lgna.project.ast.AbstractMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				methods.add( sceneType.findMethod( INITIALIZE_EVENT_LISTENERS_METHOD_NAME ) );
+				methods.addAll( this.getUserMethodsInvokedFromSceneActivationListeners() );
+
+				for( org.lgna.project.ast.AbstractMethod method : methods ) {
+					if( method != null ) {
+						if( method.getDeclaringType() == sceneType ) {
+							data.internalAddItem( org.alice.ide.declarationseditor.CodeComposite.getInstance( method ) );
+						}
+					}
+				}
+				tabState.setValueTransactionlessly( data.getItemAt( data.getItemCount() - 1 ) );
 			}
 		}
 		org.alice.stageide.icons.SceneIconFactory.getInstance().markAllIconsDirty();

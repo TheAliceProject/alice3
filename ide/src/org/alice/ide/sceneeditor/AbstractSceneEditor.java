@@ -104,6 +104,10 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 
 	public abstract org.lgna.project.ast.Statement[] getUndoStatementsForRemoveField( org.lgna.project.ast.UserField field );
 
+	public abstract void preScreenCapture();
+
+	public abstract void postScreenCapture();
+
 	protected abstract void handleExpandContractChange( boolean isExpanded );
 
 	//Initialization
@@ -282,10 +286,12 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 
 	public org.lgna.project.ast.NamedUserType getActiveSceneType()
 	{
-		org.lgna.project.ast.AbstractType type = this.getActiveSceneField().getValueType();
-		if( type instanceof org.lgna.project.ast.NamedUserType )
-		{
-			return (org.lgna.project.ast.NamedUserType)type;
+		org.lgna.project.ast.UserField field = this.getActiveSceneField();
+		if( field != null ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = field.getValueType();
+			if( type instanceof org.lgna.project.ast.NamedUserType ) {
+				return (org.lgna.project.ast.NamedUserType)type;
+			}
 		}
 		return null;
 	}

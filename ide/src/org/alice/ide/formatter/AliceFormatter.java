@@ -61,16 +61,34 @@ public class AliceFormatter extends Formatter {
 		java.util.Locale locale = java.util.Locale.getDefault();
 		String[] bundleNames = {
 				"AliceFormatter",
-				"java_lang_Functions",
-				"org_alice_integer_Functions",
-				"org_alice_random_Functions",
-				"org_alice_apis_moveandturn_Procedures",
-				"org_alice_apis_moveandturn_Functions",
-				"org_alice_apis_moveandturn_Fields",
-				"org_alice_apis_moveandturn_Parameters",
-				"edu_wustl_cse_lookingglass_apis_walkandtouch_Procedures",
-				"edu_wustl_cse_lookingglass_apis_walkandtouch_Functions",
-				"edu_wustl_cse_lookingglass_apis_walkandtouch_Parameters"
+
+				"java-lang-Math-Functions",
+
+				"org-lnga-common-IntegerUtilities-Functions",
+				"org-lnga-common-Random-Functions",
+
+				"org-lgna-story-AnimationStyle-EnumConstants",
+				"org-lgna-story-Color-PublicStaticFinalFields",
+				"org-lgna-story-Functions",
+				"org-lgna-story-MoveDirection-EnumConstants",
+				"org-lgna-story-MultipleEventPolicy-EnumConstants",
+				"org-lgna-story-PathStyle-EnumConstants",
+				"org-lgna-story-Procedures",
+				"org-lgna-story-Properties",
+				"org-lgna-story-RollDirection-EnumConstants",
+				"org-lgna-story-SetDimensionPolicy-EnumConstants",
+				"org-lgna-story-SpatialRelation-EnumConstants",
+				"org-lgna-story-TurnDirection-EnumConstants",
+
+				//todo
+				"org-alice-apis-moveandturn-HowMuch-EnumConstants",
+				"org-alice-apis-moveandturn-Parameters",
+				"edu-wustl-cse-lookingglass-apis-walkandtouch-Amount-EnumConstants",
+				"edu-wustl-cse-lookingglass-apis-walkandtouch-ExitDirection-EnumConstants",
+				"edu-wustl-cse-lookingglass-apis-walkandtouch-FallDirection-EnumConstants",
+				"edu-wustl-cse-lookingglass-apis-walkandtouch-LookDirection-EnumConstants",
+				"edu-wustl-cse-lookingglass-apis-walkandtouch-Parameters",
+				"edu-wustl-cse-lookingglass-apis-walkandtouch-SitDirection-EnumConstants",
 		};
 		for( String bundleName : bundleNames ) {
 			try {
@@ -86,9 +104,25 @@ public class AliceFormatter extends Formatter {
 	}
 
 	private String getLocalizedText( String text, String rvIfNull ) {
-		String rv = this.map.get( text );
-		if( rv != null ) {
-			return rv;
+		if( text != null ) {
+			String rv = this.map.get( text );
+			if( rv != null ) {
+				return rv;
+			} else {
+				if( text.startsWith( "get" ) ) {
+					rv = this.map.get( text.substring( 3 ) );
+					if( rv != null ) {
+						return this.getTextForGet() + rv;
+					}
+				}
+				if( text.startsWith( "set" ) ) {
+					rv = this.map.get( text.substring( 3 ) );
+					if( rv != null ) {
+						return this.getTextForSet() + rv;
+					}
+				}
+				return rvIfNull;
+			}
 		} else {
 			return rvIfNull;
 		}
@@ -109,6 +143,14 @@ public class AliceFormatter extends Formatter {
 	@Override
 	public String getTextForNull() {
 		return this.getLocalizedText( "null" );
+	}
+
+	public String getTextForGet() {
+		return this.getLocalizedText( "get" );
+	}
+
+	public String getTextForSet() {
+		return this.getLocalizedText( "set" );
 	}
 
 	@Override
@@ -142,6 +184,6 @@ public class AliceFormatter extends Formatter {
 
 	@Override
 	public String getFinalText() {
-		return "permanently set";
+		return "constant";
 	}
 }

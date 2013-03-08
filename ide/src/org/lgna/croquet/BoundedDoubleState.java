@@ -258,7 +258,7 @@ public abstract class BoundedDoubleState extends BoundedNumberState<Double> {
 	}
 
 	@Override
-	protected Double getActualValue() {
+	protected Double getSwingValue() {
 		Number value = (Number)this.getSwingModel().getSpinnerModel().getValue();
 		return value.doubleValue();
 	}

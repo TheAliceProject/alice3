@@ -56,6 +56,14 @@ public abstract class AbstractMouseEventTrigger extends ComponentEventTrigger<ja
 
 	@Override
 	protected java.awt.Point getPoint() {
-		return this.getEvent().getPoint();
+		java.awt.event.MouseEvent e = this.getEvent();
+		java.awt.Point p = e.getPoint();
+		org.lgna.croquet.components.ViewController<?, ?> viewController = this.getViewController();
+		java.awt.Component awtComponent = viewController != null ? viewController.getAwtComponent() : null;
+		if( ( awtComponent == null ) || ( e.getComponent() == awtComponent ) ) {
+			return p;
+		} else {
+			return javax.swing.SwingUtilities.convertPoint( e.getComponent(), p, awtComponent );
+		}
 	}
 }

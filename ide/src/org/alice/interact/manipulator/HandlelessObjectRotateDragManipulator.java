@@ -185,6 +185,14 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 			if( ( currentAngle != null ) && ( previousAngle != null ) )
 			{
 				Angle angleDif = AngleUtilities.createSubtraction( currentAngle, previousAngle );
+				//The angleDif is the amount the object as rotated relative to the start of the manipulation
+				//By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
+				Angle snappedAngle = SnapUtilities.doRotationSnapping( angleDif, this.dragAdapter );
+				boolean didSnap = snappedAngle.getAsDegrees() != angleDif.getAsDegrees();
+				if( didSnap )
+				{
+					angleDif = snappedAngle;
+				}
 				this.standUpReference.setParent( this.manipulatedTransformable );
 				this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
 				this.standUpReference.setAxesOnlyToStandUp();

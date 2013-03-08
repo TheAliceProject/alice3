@@ -83,12 +83,64 @@ public abstract class TransactionNode<P extends TransactionNode<?>> implements e
 		return (N)rv;
 	}
 
+	private Step<?> findAcceptableStep( edu.cmu.cs.dennisc.pattern.Criterion<Step<?>> criterion, boolean isThisIncludedInSearch ) {
+		TransactionNode<?> rv;
+		if( isThisIncludedInSearch ) {
+			rv = this;
+		} else {
+			rv = this.getOwner();
+		}
+		while( rv != null ) {
+			if( rv instanceof Step ) {
+				Step<?> step = (Step<?>)rv;
+				if( criterion.accept( step ) ) {
+					return step;
+				}
+			} else if( rv instanceof Transaction ) {
+				Transaction transaction = (Transaction)rv;
+				final int N = transaction.getPrepStepCount();
+				for( int i = 0; i < N; i++ ) {
+					PrepStep<?> prepStep = transaction.getPrepStepAt( N - 1 - i );
+					if( criterion.accept( prepStep ) ) {
+						return prepStep;
+					}
+				}
+			}
+			rv = rv.getOwner();
+		}
+		return null;
+	}
+
 	public final <N extends TransactionNode<?>> N getFirstAssignableTo( Class<N> cls ) {
 		return this.findNodeAssignableTo( cls, true );
 	}
 
 	public final <N extends TransactionNode<?>> N getFirstAncestorAssignableTo( Class<N> cls ) {
 		return this.findNodeAssignableTo( cls, false );
+	}
+
+	public org.lgna.croquet.DropSite findDropSite() {
+		Step<?> step = this.findAcceptableStep( new edu.cmu.cs.dennisc.pattern.Criterion<Step<?>>() {
+			public boolean accept( Step<?> step ) {
+				org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+				if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+					org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
+					return true;
+				}
+				return false;
+			}
+		}, true );
+		if( step != null ) {
+			org.lgna.croquet.triggers.Trigger trigger = step.getTrigger();
+			if( trigger instanceof org.lgna.croquet.triggers.DropTrigger ) {
+				org.lgna.croquet.triggers.DropTrigger dropTrigger = (org.lgna.croquet.triggers.DropTrigger)trigger;
+				return dropTrigger.getDropSite();
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
 	protected <S extends Step<? super M>, M extends org.lgna.croquet.Model> S findStepOfEquivalentModel( M model, Class<S> stepCls, boolean isThisIncludedInSearch ) {

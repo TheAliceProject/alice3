@@ -48,19 +48,19 @@ package org.lgna.croquet;
  */
 public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	public static final StandardMenuItemPrepModel SEPARATOR = null;
-	private Class<? extends org.lgna.croquet.Model> clsForI18N;
+	private final Class<? extends AbstractElement> clsForI18N;
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
 
-	public AbstractMenuModel( java.util.UUID individualId, Class<? extends org.lgna.croquet.Model> clsForI18N ) {
+	public AbstractMenuModel( java.util.UUID individualId, Class<? extends AbstractElement> clsForI18N ) {
 		super( individualId );
 		this.clsForI18N = clsForI18N;
 	}
 
 	@Override
-	protected Class<? extends org.lgna.croquet.Model> getClassUsedForLocalization() {
+	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 		if( this.clsForI18N != null ) {
 			return this.clsForI18N;
 		} else {
@@ -70,8 +70,7 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 
 	@Override
 	protected void localize() {
-		this.setName( this.findDefaultLocalizedText() );
-		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, this.getLocalizedMnemonicKey() );
+		safeSetNameAndMnemonic( this.action, this.findDefaultLocalizedText(), this.getLocalizedMnemonicKey() );
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, this.getLocalizedAcceleratorKeyStroke() );
 	}
 
@@ -164,8 +163,9 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	};
 
 	@Override
-	public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-		rv.addMenu( this.createMenu() );
+	public org.lgna.croquet.components.Menu createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+		org.lgna.croquet.components.Menu rv = this.createMenu();
+		menuItemContainer.addMenu( rv );
 		return rv;
 	}
 

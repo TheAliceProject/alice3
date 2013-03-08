@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Pei Hong Tan" name="FishingBoat">
+    <BoundingBox>
+        <Min x="-0.6760492324829102" y="0.0" z="-3.3271820545196533"/>
+        <Max x="0.6760492324829102" y="1.162422388792038" z="3.3271820545196533"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>vehicle</Tag>
+        <Tag>boat</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>vehicles:fishing boat</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east:fishing boat</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="FishingBoat" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

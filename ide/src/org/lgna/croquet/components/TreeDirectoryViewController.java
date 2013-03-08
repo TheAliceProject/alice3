@@ -47,7 +47,11 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public abstract class TreeDirectoryViewController<T> extends PanelViewController<org.lgna.croquet.TreeSelectionState<T>> {
-	private static class InternalPanel<T> extends LineAxisPanel {
+	private static class InternalPanel<T> extends MigPanel {
+		public InternalPanel() {
+			super( null, "insets 0", "", "" );
+		}
+
 		@Override
 		protected void internalRefresh() {
 			this.internalRemoveAllComponents();

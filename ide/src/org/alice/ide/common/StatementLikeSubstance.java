@@ -64,7 +64,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	}
 
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.AbstractButton jComponent ) {
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
 		return new javax.swing.BoxLayout( jComponent, this.axis );
 	}
 
@@ -101,7 +101,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
-		return org.alice.ide.IDE.getActiveInstance().getTheme().getPaintFor( this.statementCls, x, y, width, height );
+		return org.alice.ide.theme.ThemeUtilities.getActiveTheme().getPaintFor( this.statementCls, x, y, width, height );
 	}
 
 	@Override

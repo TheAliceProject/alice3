@@ -67,12 +67,10 @@ public abstract class FindFrameComposite extends FrameComposite<FindFrameView> {
 		methodSearchComposite = new MethodSearchTabComposite();
 		fieldSearchComposite = new FieldSearchTabCompsoite();
 		tabState = this.createTabSelectionState( this.createKey( "tabState" ), 0, methodSearchComposite, fieldSearchComposite );
-		getState().addItem( methodSearchComposite );
-		getState().addItem( fieldSearchComposite );
 		return new FindFrameView( this );
 	}
 
-	public TabSelectionState<SimpleTabComposite> getState() {
+	public final TabSelectionState<SimpleTabComposite> getState() {
 		return this.tabState;
 	}
 }

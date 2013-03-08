@@ -61,7 +61,7 @@ public abstract class PlainDialogOperation extends DialogOperation {
 		}
 	}
 
-	public static class InternalCloseOperation extends SingleThreadOperation {
+	public static class InternalCloseOperation extends Operation {
 		private final PlainDialogOperation plainDialogOperation;
 
 		private InternalCloseOperation( PlainDialogOperation plainDialogOperation ) {

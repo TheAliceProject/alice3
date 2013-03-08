@@ -47,12 +47,9 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	private final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( "selected type:" );
 	private final org.lgna.croquet.components.Label typeLabel = new org.lgna.croquet.components.Label();
 	private final org.lgna.croquet.components.Label snapshotLabel = new org.lgna.croquet.components.Label();
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-			SelectedTypeView.this.handleTypeStateChanged( nextValue );
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
+			SelectedTypeView.this.handleTypeStateChanged( e.getNextValue() );
 		}
 	};
 
@@ -81,12 +78,12 @@ class SelectedTypeView extends org.lgna.croquet.components.BorderPanel {
 	@Override
 	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
 		super.handleAddedTo( parent );
-		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addAndInvokeValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
-		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().removeValueListener( this.typeListener );
 		super.handleRemovedFrom( parent );
 	}
 }
@@ -144,7 +141,7 @@ public class NonSceneTypeView extends org.lgna.croquet.components.CornerSpringPa
 	public NonSceneTypeView( org.alice.stageide.typecontext.NonSceneTypeComposite composite ) {
 		super( composite );
 		this.setNorthWestComponent( new SelectedTypeView() );
-		this.setNorthEastComponent( org.alice.stageide.croquet.models.run.RunOperation.getInstance().createButton() );
+		this.setNorthEastComponent( org.alice.stageide.run.RunComposite.getInstance().getOperation().createButton() );
 
 		org.lgna.croquet.Operation returnToSceneTypeOperation = composite.getSelectSceneTypeOperation();
 		returnToSceneTypeOperation.initializeIfNecessary();

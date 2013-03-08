@@ -60,7 +60,24 @@ public class HtmlMultiLineLabel extends MultiLineLabel<javax.swing.JEditorPane> 
 
 	@Override
 	protected javax.swing.JEditorPane createJTextComponent( javax.swing.text.AbstractDocument document ) {
-		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", "" ) {
+		//todo: investigate
+		//String text = "";
+		String text = this.getText();
+		javax.swing.JEditorPane rv = new javax.swing.JEditorPane( "text/html", text ) {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+			}
+
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				java.awt.Dimension rv = super.getMaximumSize();
+				if( HtmlMultiLineLabel.this.isMaximumSizeClampedToPreferredSize() ) {
+					rv.setSize( this.getPreferredSize() );
+				}
+				return rv;
+			}
+
 			@Override
 			public java.awt.Color getBackground() {
 				return getDesiredBackgroundColor( this.getParent() );
@@ -71,7 +88,8 @@ public class HtmlMultiLineLabel extends MultiLineLabel<javax.swing.JEditorPane> 
 				this.setUI( new javax.swing.plaf.basic.BasicEditorPaneUI() );
 			}
 		};
-		rv.setDocument( document );
+		//todo: investigate
+		//rv.setDocument( document );
 		return rv;
 	}
 }

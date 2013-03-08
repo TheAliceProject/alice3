@@ -303,6 +303,12 @@ public abstract class GatedCommitDialogOperation extends DialogOperation {
 	}
 
 	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super.handlePreShowDialog( step );
+		this.updateExplanation( step );
+	}
+
+	@Override
 	protected final org.lgna.croquet.components.Container<?> createContentPane( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
 		org.lgna.croquet.components.Component<?> mainPanel = this.createMainPanel( step, dialog, this.explanationLabel );
 		if( mainPanel != null ) {

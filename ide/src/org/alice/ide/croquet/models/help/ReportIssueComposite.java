@@ -66,7 +66,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 	private final LogInCard logInCard = new LogInCard();
 	private final LogOutCard logOutCard = new LogOutCard();
 
-	private final org.lgna.croquet.CardOwnerComposite logInOutComposite = this.createCardOwnerComposite( this.logInCard, this.logOutCard );
+	private final org.lgna.croquet.CardOwnerComposite logInOutComposite = this.createAndRegisterCardOwnerComposite( this.logInCard, this.logOutCard );
 
 	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
 
@@ -94,7 +94,6 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		super( migrationId, false );
 		this.initialReportTypeValue = initialReportTypeValue;
 		this.reportTypeState = createListSelectionStateForEnum( createKey( "reportTypeState" ), JIRAReport.Type.class, this.initialReportTypeValue );
-		this.registerSubComposite( this.logInOutComposite );
 	}
 
 	@Override
@@ -195,7 +194,7 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 		this.descriptionState.setValueTransactionlessly( "" );
 		this.visibilityState.setValueTransactionlessly( BugSubmitVisibility.PUBLIC );
 		this.attachmentState.setValueTransactionlessly( null );
-		this.reportTypeState.setValue( this.initialReportTypeValue );
+		this.reportTypeState.setValueTransactionlessly( this.initialReportTypeValue );
 
 		this.summaryState.addAndInvokeValueListener( this.adapter );
 		this.logInCard.getLoginDialogComposite().getIsLoggedIn().addAndInvokeValueListener( this.isLoggedInAdapter );

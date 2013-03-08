@@ -49,7 +49,7 @@ public abstract class Operation extends AbstractCompletionModel {
 	public class SwingModel {
 		private javax.swing.Action action = new javax.swing.AbstractAction() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				Operation.this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
+				Operation.this.handleActionPerformed( e );
 			}
 		};
 
@@ -60,8 +60,14 @@ public abstract class Operation extends AbstractCompletionModel {
 
 	private final SwingModel swingModel = new SwingModel();
 
+	private javax.swing.Icon buttonIcon;
+
 	public Operation( Group group, java.util.UUID id ) {
 		super( group, id );
+	}
+
+	private void handleActionPerformed( java.awt.event.ActionEvent e ) {
+		this.fire( org.lgna.croquet.triggers.ActionEventTrigger.createUserInstance( e ) );
 	}
 
 	@Override
@@ -81,10 +87,14 @@ public abstract class Operation extends AbstractCompletionModel {
 	protected void localize() {
 		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
-			this.setName( name );
-			this.setMnemonicKey( this.getLocalizedMnemonicKey() );
+			int mnemonicKey = this.getLocalizedMnemonicKey();
+			safeSetNameAndMnemonic( this.swingModel.action, name, mnemonicKey );
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
 		}
+	}
+
+	public boolean isToolBarTextClobbered() {
+		return false;
 	}
 
 	//	public String getTutorialStartNoteText( S step, UserInformation userInformation ) {
@@ -103,27 +113,6 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 		rv.append( "</strong>" );
 		return rv;
-	}
-
-	protected org.lgna.croquet.edits.Edit<?> createTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		return null;
-	}
-
-	@Override
-	public org.lgna.croquet.edits.Edit<?> commitTutorialCompletionEdit( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.edits.Edit<?> originalEdit, org.lgna.croquet.Retargeter retargeter ) {
-		org.lgna.croquet.edits.Edit<?> replacementEdit = this.createTutorialCompletionEdit( step, originalEdit, retargeter );
-		//		if( replacementEdit != null ) {
-		//			final S step = this.createAndPushStep( null, null );
-		//			try {
-		//				step.commitAndInvokeDo( replacementEdit );
-		//			} finally {
-		//				ModelContext< ? > popContext = ContextManager.popContext();
-		//				assert popContext == step : popContext.getClass() + " " + step.getClass();
-		//			}
-		//		} else {
-		//			System.err.println( "createTutorialCompletionEdit returned null" );
-		//		}
-		return replacementEdit;
 	}
 
 	@Override
@@ -151,6 +140,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
 
+	public void setToolTipText( String toolTipText ) {
+		this.setShortDescription( toolTipText );
+	}
+
 	//	public String getLongDescription() {
 	//		return String.class.cast( this.swingModel.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
 	//	}
@@ -166,9 +159,14 @@ public abstract class Operation extends AbstractCompletionModel {
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 
-	//	public int getMnemonicKey() {
-	//		return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
-	//	}
+	public javax.swing.Icon getButtonIcon() {
+		return this.buttonIcon;
+	}
+
+	public void setButtonIcon( javax.swing.Icon icon ) {
+		this.buttonIcon = icon;
+	}
+
 	private void setMnemonicKey( int mnemonicKey ) {
 		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
@@ -238,9 +236,10 @@ public abstract class Operation extends AbstractCompletionModel {
 		}
 
 		@Override
-		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-			rv.addMenuItem( new org.lgna.croquet.components.MenuItem( this.getOperation() ) );
-			return rv;
+		public org.lgna.croquet.components.MenuItem createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+			org.lgna.croquet.components.MenuItem menuItem = new org.lgna.croquet.components.MenuItem( this.getOperation() );
+			menuItemContainer.addMenuItem( menuItem );
+			return menuItem;
 		}
 
 		@Override

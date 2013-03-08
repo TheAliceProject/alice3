@@ -44,9 +44,7 @@
 package org.lgna.story.resourceutilities;
 
 import java.awt.Image;
-import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorConvertOp;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -78,6 +76,7 @@ import org.lgna.project.License;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.BipedResource;
+import org.lgna.story.resources.ImplementationAndVisualType;
 import org.w3c.dom.Document;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
@@ -134,6 +133,7 @@ public class ModelResourceExporter {
 	private String className;
 	private List<String> tags = new LinkedList<String>();
 	private List<String> groupTags = new LinkedList<String>();
+	private List<String> themeTags = new LinkedList<String>();
 	private Map<String, AxisAlignedBox> boundingBoxes = new HashMap<String, AxisAlignedBox>();
 	private File xmlFile;
 	private File javaFile;
@@ -409,8 +409,26 @@ public class ModelResourceExporter {
 		this.subResources.add( subResource );
 	}
 
-	public void addResource( String modelName, String textureName ) {
-		this.addSubResource( new ModelSubResourceExporter( modelName, textureName ) );
+	//	public void addResource( String modelName, String textureName, String resourceType ) {
+	//		this.addSubResource( new ModelSubResourceExporter( modelName, textureName, resourceType ) );
+	//	}
+
+	public void addResource( String modelName, String textureName, String resourceType, String attributionName, String attributionYear ) {
+		String attributionNameToUse = null;
+		String attributionYearToUse = null;
+		if( ( attributionName != null ) && !attributionName.equals( this.attributionName ) ) {
+			attributionNameToUse = attributionName;
+		}
+		if( ( attributionYear != null ) && !attributionYear.equals( this.attributionYear ) ) {
+			attributionYearToUse = attributionYear;
+		}
+		if( ( attributionNameToUse != null ) && ( attributionNameToUse.length() == 0 ) ) {
+			attributionNameToUse = null;
+		}
+		if( ( attributionYearToUse != null ) && ( attributionYearToUse.length() == 0 ) ) {
+			attributionYearToUse = null;
+		}
+		this.addSubResource( new ModelSubResourceExporter( modelName, textureName, resourceType, attributionNameToUse, attributionYearToUse ) );
 	}
 
 	public void addSubResourceTags( String modelName, String textureName, String... tags ) {
@@ -431,6 +449,18 @@ public class ModelResourceExporter {
 				if( subResource.getModelName().equalsIgnoreCase( modelName ) ) {
 					if( ( textureName == null ) || subResource.getTextureName().equalsIgnoreCase( textureName ) ) {
 						subResource.addGroupTags( tags );
+					}
+				}
+			}
+		}
+	}
+
+	public void addSubResourceThemeTags( String modelName, String textureName, String... tags ) {
+		if( ( tags != null ) && ( tags.length > 0 ) ) {
+			for( ModelSubResourceExporter subResource : this.subResources ) {
+				if( subResource.getModelName().equalsIgnoreCase( modelName ) ) {
+					if( ( textureName == null ) || subResource.getTextureName().equalsIgnoreCase( textureName ) ) {
+						subResource.addThemeTags( tags );
 					}
 				}
 			}
@@ -459,6 +489,14 @@ public class ModelResourceExporter {
 		}
 	}
 
+	public void addThemeTags( String... tags ) {
+		if( tags != null ) {
+			for( String s : tags ) {
+				this.themeTags.add( s );
+			}
+		}
+	}
+
 	public boolean isSims() {
 		return this.isSims;
 	}
@@ -482,10 +520,10 @@ public class ModelResourceExporter {
 		this.boundingBoxes.put( modelName, boundingBox );
 	}
 
-	public void addThumbnail( String modelName, String textureName, Image thumbnail )
-	{
-		this.thumbnails.put( new ModelSubResourceExporter( modelName, textureName ), thumbnail );
-	}
+	//	public void addThumbnail( String modelName, String textureName, String resourceType, String attributionName, String attributionYear, Image thumbnail )
+	//	{
+	//		this.thumbnails.put( new ModelSubResourceExporter( modelName, textureName, resourceType, attributionName, attributionYear ), thumbnail );
+	//	}
 
 	public void addExistingThumbnail( String name, File thumbnailFile ) {
 		if( ( thumbnailFile != null ) && thumbnailFile.exists() ) {
@@ -549,11 +587,31 @@ public class ModelResourceExporter {
 		return tagsElement;
 	}
 
+	private static org.w3c.dom.Element createThemeTagsElement( Document doc, List<String> tagList )
+	{
+		org.w3c.dom.Element tagsElement = doc.createElement( "ThemeTags" );
+		for( String tag : tagList ) {
+			org.w3c.dom.Element tagElement = doc.createElement( "ThemeTag" );
+			tagElement.setTextContent( tag );
+			tagsElement.appendChild( tagElement );
+		}
+		return tagsElement;
+	}
+
 	private static org.w3c.dom.Element createSubResourceElement( Document doc, ModelSubResourceExporter subResource, ModelResourceExporter parentMRE )
 	{
 		org.w3c.dom.Element resourceElement = doc.createElement( "Resource" );
 		resourceElement.setAttribute( "textureName", AliceResourceUtilties.makeEnumName( subResource.getTextureName() ) );
 		resourceElement.setAttribute( "resourceName", createResourceEnumName( parentMRE, subResource ) );
+		if( subResource.getModelName() != null ) {
+			resourceElement.setAttribute( "modelName", subResource.getModelName() );
+		}
+		if( subResource.getAttributionName() != null ) {
+			resourceElement.setAttribute( "creator", subResource.getAttributionName() );
+		}
+		if( subResource.getAttributionYear() != null ) {
+			resourceElement.setAttribute( "creationYear", subResource.getAttributionYear() );
+		}
 		if( subResource.getModelName() != null ) {
 			resourceElement.setAttribute( "modelName", subResource.getModelName() );
 		}
@@ -581,6 +639,18 @@ public class ModelResourceExporter {
 			}
 			if( !uniqueTags.isEmpty() ) {
 				resourceElement.appendChild( createGroupTagsElement( doc, uniqueTags ) );
+			}
+		}
+
+		if( subResource.getThemeTags().size() > 0 ) {
+			List<String> uniqueTags = new ArrayList<String>();
+			for( String t : subResource.getThemeTags() ) {
+				if( ( parentMRE.themeTags == null ) || !parentMRE.themeTags.contains( t ) ) {
+					uniqueTags.add( t );
+				}
+			}
+			if( !uniqueTags.isEmpty() ) {
+				resourceElement.appendChild( createThemeTagsElement( doc, uniqueTags ) );
 			}
 		}
 		return resourceElement;
@@ -612,6 +682,7 @@ public class ModelResourceExporter {
 			modelRoot.appendChild( createBoundingBoxElement( doc, this.boundingBoxes.get( this.className ) ) );
 			modelRoot.appendChild( createTagsElement( doc, this.tags ) );
 			modelRoot.appendChild( createGroupTagsElement( doc, this.groupTags ) );
+			modelRoot.appendChild( createThemeTagsElement( doc, this.themeTags ) );
 
 			for( ModelSubResourceExporter subResource : this.subResources ) {
 				if( !subResource.getModelName().equalsIgnoreCase( this.className ) && this.boundingBoxes.containsKey( subResource.getModelName() ) ) {
@@ -814,7 +885,7 @@ public class ModelResourceExporter {
 		if( modelName.equalsIgnoreCase( parentExporter.getClassName() ) ) {
 			return AliceResourceUtilties.makeEnumName( textureName );
 		}
-		else if( modelName.equalsIgnoreCase( textureName ) ) {
+		else if( modelName.equalsIgnoreCase( textureName ) || textureName.equalsIgnoreCase( AliceResourceUtilties.getDefaultTextureEnumName( modelName ) ) ) {
 			return AliceResourceUtilties.makeEnumName( modelName );
 		}
 		else {
@@ -843,7 +914,8 @@ public class ModelResourceExporter {
 		sb.append( getCopyrightComment() );
 		sb.append( "\n" );
 		sb.append( "package " + this.classData.packageString + ";\n\n" );
-		sb.append( "import org.lgna.project.annotations.*;\n\n" );
+		sb.append( "import org.lgna.project.annotations.*;\n" );
+		sb.append( "import org.lgna.story.resources.ImplementationAndVisualType;\n\n" );
 		sb.append( "public enum " + this.getJavaClassName() + " implements " + this.classData.superClass.getCanonicalName() + " {\n" );
 		int numSubResources = this.subResources.size();
 		assert this.subResources.size() > 0;
@@ -851,7 +923,11 @@ public class ModelResourceExporter {
 		{
 			ModelSubResourceExporter resource = this.subResources.get( i );
 			String resourceEnumName = createResourceEnumName( this, resource );
-			sb.append( "\t" + resourceEnumName );
+			String typeString = "";
+			if( !resource.getTypeString().equals( ImplementationAndVisualType.ALICE.toString() ) ) {
+				typeString = "( ImplementationAndVisualType." + resource.getTypeString() + " )";
+			}
+			sb.append( "\t" + resourceEnumName + typeString );
 			if( i < ( this.subResources.size() - 1 ) )
 			{
 				sb.append( ",\n" );
@@ -904,6 +980,13 @@ public class ModelResourceExporter {
 			}
 		}
 		sb.append( "\n" );
+		sb.append( "\tprivate final ImplementationAndVisualType resourceType;\n" );
+		sb.append( "\tprivate " + this.getJavaClassName() + "() {\n" );
+		sb.append( "\t\tthis( ImplementationAndVisualType.ALICE );\n" );
+		sb.append( "\t}\n\n" );
+		sb.append( "\tprivate " + this.getJavaClassName() + "( ImplementationAndVisualType resourceType ) {\n" );
+		sb.append( "\t\tthis.resourceType = resourceType;\n" );
+		sb.append( "\t}\n\n" );
 		if( needsToDefineRootsMethod( this.classData.superClass ) )
 		{
 			sb.append( "\tpublic org.lgna.story.resources.JointId[] getRootJointIds(){\n" );
@@ -926,10 +1009,10 @@ public class ModelResourceExporter {
 			sb.append( "\t}\n" );
 		}
 		sb.append( "\n\tpublic org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {\n" );
-		sb.append( "\t\treturn " + this.jointAndVisualFactory.getCanonicalName() + ".getInstance( this );\n" );
+		sb.append( "\t\treturn this.resourceType.getFactory( this );\n" );
 		sb.append( "\t}\n" );
 		sb.append( "\tpublic " + this.classData.implementationClass.getCanonicalName() + " createImplementation( " + this.classData.abstractionClass.getCanonicalName() + " abstraction ) {\n" );
-		sb.append( "\t\treturn new " + this.classData.implementationClass.getCanonicalName() + "( abstraction, " + this.jointAndVisualFactory.getCanonicalName() + ".getInstance( this ) );\n" );
+		sb.append( "\t\treturn new " + this.classData.implementationClass.getCanonicalName() + "( abstraction, this.resourceType.getFactory( this ) );\n" );
 		sb.append( "\t}\n" );
 		sb.append( "}\n" );
 
@@ -1160,17 +1243,17 @@ public class ModelResourceExporter {
 	}
 
 	public static BufferedImage createClassThumb( BufferedImage imgSrc ) {
-		ColorConvertOp colorConvert =
-				new ColorConvertOp( ColorSpace.getInstance( ColorSpace.CS_GRAY ), null );
-		if( imgSrc == null ) {
-			System.out.println( "NULL!" );
-		}
-		try {
-			colorConvert.filter( imgSrc, imgSrc );
-		} catch( NullPointerException e ) {
-			e.printStackTrace();
-			throw e;
-		}
+		//		ColorConvertOp colorConvert =
+		//				new ColorConvertOp( ColorSpace.getInstance( ColorSpace.CS_GRAY ), null );
+		//		if( imgSrc == null ) {
+		//			System.out.println( "NULL!" );
+		//		}
+		//		try {
+		//			colorConvert.filter( imgSrc, imgSrc );
+		//		} catch( NullPointerException e ) {
+		//			e.printStackTrace();
+		//			throw e;
+		//		}
 		return imgSrc;
 	}
 
@@ -1178,18 +1261,9 @@ public class ModelResourceExporter {
 	{
 		List<File> thumbnailFiles = new LinkedList<File>();
 		List<String> thumbnailsCreated = new LinkedList<String>();
-		boolean gotBase = false;
 		if( ( this.existingThumbnails != null ) && !this.existingThumbnails.isEmpty() ) {
 			for( Entry<String, File> entry : this.existingThumbnails.entrySet() )
 			{
-				if( !gotBase ) {
-					String thumbName = AliceResourceUtilties.getThumbnailResourceFileName( this.getClassName(), null );
-					File thumb = new File( getThumbnailPath( root, thumbName ) );
-					BufferedImage classThumb = createClassThumb( ImageUtilities.read( entry.getValue() ) );
-					ImageUtilities.write( thumb, classThumb );
-					thumbnailFiles.add( thumb );
-					gotBase = true;
-				}
 				if( entry.getValue().exists() ) {
 					thumbnailFiles.add( entry.getValue() );
 					thumbnailsCreated.add( entry.getKey() );
@@ -1203,15 +1277,6 @@ public class ModelResourceExporter {
 		for( Entry<ModelSubResourceExporter, Image> entry : this.thumbnails.entrySet() )
 		{
 			if( !thumbnailsCreated.contains( entry.getKey() ) ) {
-				if( !gotBase )
-				{
-					String thumbName = AliceResourceUtilties.getThumbnailResourceFileName( this.getClassName(), null );
-					File f = saveImageToFile( getThumbnailPath( root, thumbName ), entry.getValue() );
-					if( f != null ) {
-						thumbnailFiles.add( f );
-					}
-					gotBase = true;
-				}
 				String thumbnailName = AliceResourceUtilties.getThumbnailResourceFileName( entry.getKey().getModelName(), entry.getKey().getTextureName() );
 				File f = saveImageToFile( getThumbnailPath( root, thumbnailName ), entry.getValue() );
 				if( f != null ) {
@@ -1220,10 +1285,19 @@ public class ModelResourceExporter {
 				}
 			}
 		}
+		ModelSubResourceExporter firstSubResource = this.subResources.get( 0 );
+		String firstThumbName = AliceResourceUtilties.getThumbnailResourceFileName( firstSubResource.getModelName(), firstSubResource.getTextureName() );
+		String classThumbName = AliceResourceUtilties.getThumbnailResourceFileName( this.getClassName(), null );
+		File firstThumbFile = new File( getThumbnailPath( root, firstThumbName ) );
+		File classThumbFile = new File( getThumbnailPath( root, classThumbName ) );
+		BufferedImage classThumb = createClassThumb( ImageUtilities.read( firstThumbFile ) );
+		ImageUtilities.write( classThumbFile, classThumb );
+		thumbnailFiles.add( classThumbFile );
+
 		return thumbnailFiles;
 	}
 
-	public boolean addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream resourceJarStream, JarOutputStream sourceJarStream, boolean rebuildJavaFile, boolean rebuildXmlFile ) throws IOException
 	{
 		if( !sourceDirectory.endsWith( "/" ) && !sourceDirectory.endsWith( "\\" ) ) {
 			sourceDirectory += File.separator;
@@ -1295,15 +1369,17 @@ public class ModelResourceExporter {
 				throw new IOException( "FAILED ADDING RESROUCES TO SOURCE JAR." + e );
 			}
 		}
-		return true;
+		Document doc = XMLUtilities.read( xmlFile );
+		ModelResourceInfo returnInfo = new ModelResourceInfo( doc );
+		return returnInfo;
 	}
 
-	public boolean addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos ) throws IOException
 	{
 		return addToJar( sourceDirectory, resourceDirectory, jos, jos, true, true );
 	}
 
-	public boolean addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles ) throws IOException
+	public ModelResourceInfo addToJar( String sourceDirectory, String resourceDirectory, JarOutputStream jos, boolean rebuildFiles ) throws IOException
 	{
 		return addToJar( sourceDirectory, resourceDirectory, jos, jos, rebuildFiles, rebuildFiles );
 	}

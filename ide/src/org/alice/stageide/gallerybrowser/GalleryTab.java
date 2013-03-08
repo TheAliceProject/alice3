@@ -59,6 +59,7 @@ public abstract class GalleryTab<V extends org.lgna.croquet.components.Panel> ex
 	@Override
 	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
 		super.customizeTitleComponentAppearance( button );
-		button.scaleFont( 1.5f );
+		button.scaleFont( 1.2f );
+		button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
 	}
 }

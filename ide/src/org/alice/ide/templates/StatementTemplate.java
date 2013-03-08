@@ -50,8 +50,8 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		super( model, cls, javax.swing.BoxLayout.LINE_AXIS );
 	}
 
-	@Override
-	protected boolean isPressed() {
-		return false;
-	}
+	//	@Override
+	//	protected boolean isPressed() {
+	//		return false;
+	//	}
 }

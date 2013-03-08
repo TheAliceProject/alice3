@@ -82,7 +82,7 @@ public class ConsoleFormatter extends java.util.logging.Formatter {
 		if( index >= 0 ) {
 			int N;
 			if( java.util.logging.Level.SEVERE.intValue() <= level.intValue() ) {
-				N = index + 8;
+				N = index + 16;
 			} else {
 				N = index + 1;
 			}

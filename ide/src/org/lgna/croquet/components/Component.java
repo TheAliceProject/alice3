@@ -263,6 +263,21 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 		}
 	}
 
+	private boolean isTreeLockRequired() {
+		//todo
+		return this.getAwtComponent().isDisplayable();
+	}
+
+	protected void checkTreeLock() {
+		if( this.isTreeLockRequired() ) {
+			if( Thread.holdsLock( this.getTreeLock() ) ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "tree lock required", this );
+			}
+		}
+	}
+
 	public java.util.Locale getLocale() {
 		return this.getAwtComponent().getLocale();
 	}
@@ -390,6 +405,7 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 	}
 
 	public void setVisible( boolean isVisible ) {
+		this.checkTreeLock();
 		this.getAwtComponent().setVisible( isVisible );
 	}
 
@@ -536,6 +552,14 @@ public abstract class Component<J extends java.awt.Component> extends ScreenElem
 
 	public void requestFocus() {
 		this.getAwtComponent().requestFocus();
+	}
+
+	public void requestFocusLater() {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				requestFocus();
+			}
+		} );
 	}
 
 	@Deprecated

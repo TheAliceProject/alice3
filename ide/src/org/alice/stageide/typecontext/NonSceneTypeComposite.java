@@ -43,10 +43,10 @@
 
 package org.alice.stageide.typecontext;
 
-enum SceneTypeCallable implements java.util.concurrent.Callable<org.lgna.project.ast.NamedUserType> {
+enum SceneTypeCallable implements java.util.concurrent.Callable<org.alice.ide.declarationseditor.DeclarationComposite> {
 	SINGLEON() {
-		public org.lgna.project.ast.NamedUserType call() throws java.lang.Exception {
-			return org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
+		public org.alice.ide.declarationseditor.TypeComposite call() throws java.lang.Exception {
+			return org.alice.ide.declarationseditor.TypeComposite.getInstance( org.alice.stageide.StageIDE.getActiveInstance().getSceneType() );
 		}
 	};
 }
@@ -54,21 +54,13 @@ enum SceneTypeCallable implements java.util.concurrent.Callable<org.lgna.project
 /**
  * @author Dennis Cosgrove
  */
-public class NonSceneTypeComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.typecontext.components.NonSceneTypeView> {
-	private static class SingletonHolder {
-		private static NonSceneTypeComposite instance = new NonSceneTypeComposite();
-	}
-
-	public static NonSceneTypeComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private NonSceneTypeComposite() {
+public final class NonSceneTypeComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.typecontext.components.NonSceneTypeView> {
+	public NonSceneTypeComposite() {
 		super( java.util.UUID.fromString( "866337e5-9309-4f31-9214-c319056e705d" ) );
 	}
 
 	public org.lgna.croquet.Operation getSelectSceneTypeOperation() {
-		return org.alice.ide.declarationseditor.TypeState.getInstance().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
+		return org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getItemSelectionOperation( SceneTypeCallable.SINGLEON );
 	}
 
 	@Override

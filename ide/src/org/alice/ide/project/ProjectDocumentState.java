@@ -46,7 +46,7 @@ package org.alice.ide.project;
 /**
  * @author Dennis Cosgrove
  */
-public class ProjectDocumentState extends org.lgna.croquet.CustomItemState<org.alice.ide.ProjectDocument> {
+public class ProjectDocumentState extends org.lgna.croquet.ItemState<org.alice.ide.ProjectDocument> {
 	private static class SingletonHolder {
 		private static ProjectDocumentState instance = new ProjectDocumentState();
 	}
@@ -58,7 +58,12 @@ public class ProjectDocumentState extends org.lgna.croquet.CustomItemState<org.a
 	private org.alice.ide.ProjectDocument value;
 
 	private ProjectDocumentState() {
-		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), org.alice.ide.project.codecs.ProjectDocumentCodec.SINGLETON );
+		super( org.lgna.croquet.Application.APPLICATION_UI_GROUP, java.util.UUID.fromString( "2ba8f0e1-d572-425b-b7f2-7e8136fb9d85" ), null, org.alice.ide.project.codecs.ProjectDocumentCodec.SINGLETON );
+	}
+
+	@Override
+	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
+		return java.util.Collections.emptyList();
 	}
 
 	@Override
@@ -66,12 +71,12 @@ public class ProjectDocumentState extends org.lgna.croquet.CustomItemState<org.a
 	}
 
 	@Override
-	protected void updateSwingModel( org.alice.ide.ProjectDocument nextValue ) {
+	protected void setSwingValue( org.alice.ide.ProjectDocument nextValue ) {
 		this.value = nextValue;
 	}
 
 	@Override
-	protected org.alice.ide.ProjectDocument getActualValue() {
+	protected org.alice.ide.ProjectDocument getSwingValue() {
 		return this.value;
 	}
 }

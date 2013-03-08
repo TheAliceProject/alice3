@@ -55,7 +55,7 @@ public interface DialogOwner<V extends org.lgna.croquet.components.JComponent<?>
 
 	public String getDialogTitle( org.lgna.croquet.history.CompletionStep<?> step );
 
-	public void modifyPackedDialogSizeIfDesired( org.lgna.croquet.components.Dialog dialog );
+	public void updateDialogSize( org.lgna.croquet.components.Dialog dialog );
 
 	public java.awt.Point getDesiredDialogLocation();
 

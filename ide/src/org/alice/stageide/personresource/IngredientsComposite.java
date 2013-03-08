@@ -47,23 +47,18 @@ package org.alice.stageide.personresource;
  * @author Dennis Cosgrove
  */
 public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.alice.stageide.personresource.views.IngredientsView> {
-	private static class SingletonHolder {
-		private static IngredientsComposite instance = new IngredientsComposite();
-	}
-
-	public static IngredientsComposite getInstance() {
-		return SingletonHolder.instance;
-	}
-
 	private final org.lgna.croquet.Operation randomize = this.createActionOperation( this.createKey( "randomize" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			return new org.alice.stageide.personresource.edits.RandomizeEdit( step );
+			return createRandomEdit( step );
 		}
 	} );
+
+	private final BodyTabComposite bodyTab = new BodyTabComposite();
+	private final HeadTabComposite headTab = new HeadTabComposite();
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneState = this.createListSelectionStateForEnum( this.createKey( "baseSkinToneState" ), org.lgna.story.resources.sims2.BaseSkinTone.class, org.lgna.story.resources.sims2.BaseSkinTone.getRandom() );
-	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, BodyTabComposite.getInstance(), HeadTabComposite.getInstance() );
+	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, this.bodyTab, this.headTab );
 
 	private final edu.cmu.cs.dennisc.map.MapToMap<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.resources.sims2.Gender, org.lgna.story.resources.sims2.PersonResource> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage> lifeStageListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage>() {
@@ -72,8 +67,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.LifeStage> state, org.lgna.story.resources.sims2.LifeStage prevValue, org.lgna.story.resources.sims2.LifeStage nextValue, boolean isAdjusting ) {
-			//			handleCataclysm( true, false, false );
 			popAtomic();
+			updateCameraPointOfView();
 		}
 	};
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Gender> genderListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.Gender>() {
@@ -82,7 +77,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 
 		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.Gender> state, org.lgna.story.resources.sims2.Gender prevValue, org.lgna.story.resources.sims2.Gender nextValue, boolean isAdjusting ) {
-			//			handleCataclysm( false, true, false );
 			popAtomic();
 		}
 	};
@@ -110,7 +104,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 
 		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			//			handleCataclysm( false, false, true );
 			popAtomic();
 		}
 	};
@@ -142,8 +135,36 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	};
 
-	private IngredientsComposite() {
+	private final org.lgna.croquet.State.ValueListener<org.lgna.croquet.SimpleTabComposite> tabListener = new org.lgna.croquet.State.ValueListener<org.lgna.croquet.SimpleTabComposite>() {
+		public void changing( org.lgna.croquet.State<org.lgna.croquet.SimpleTabComposite> state, org.lgna.croquet.SimpleTabComposite prevValue, org.lgna.croquet.SimpleTabComposite nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.lgna.croquet.SimpleTabComposite> state, org.lgna.croquet.SimpleTabComposite prevValue, org.lgna.croquet.SimpleTabComposite nextValue, boolean isAdjusting ) {
+			updateCameraPointOfView();
+		}
+	};
+
+	private static final javax.swing.Icon RANDOM_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IngredientsComposite.class.getResource( "images/random.png" ) );
+
+	public IngredientsComposite() {
 		super( java.util.UUID.fromString( "dd127381-09a8-4f78-bfd5-f3bffc1af98b" ) );
+		this.randomize.setButtonIcon( RANDOM_ICON );
+	}
+
+	private void updateCameraPointOfView() {
+		org.lgna.croquet.SimpleTabComposite nextValue = this.bodyHeadTabState.getValue();
+		org.alice.stageide.personresource.views.PersonViewer personViewer = PersonResourceComposite.getInstance().getPreviewComposite().getView();
+		org.lgna.story.resources.sims2.LifeStage lifeStage = lifeStageState.getValue();
+		if( lifeStage != null ) {
+			//pass
+		} else {
+			lifeStage = org.lgna.story.resources.sims2.LifeStage.ADULT;
+		}
+		if( nextValue == headTab ) {
+			personViewer.setCameraToCloseUp( lifeStage );
+		} else {
+			personViewer.setCameraToFullView( lifeStage );
+		}
 	}
 
 	@Override
@@ -168,31 +189,39 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return HeadTabComposite.getInstance().getHairState();
+		return this.headTab.getHairState();
 	}
 
 	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return HeadTabComposite.getInstance().getHairColorNameState();
+		return this.headTab.getHairColorNameState();
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
-		return HeadTabComposite.getInstance().getBaseEyeColorState();
+		return this.headTab.getBaseEyeColorState();
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.FullBodyOutfit> getFullBodyOutfitState() {
-		return BodyTabComposite.getInstance().getFullBodyOutfitState();
+		return this.bodyTab.getFullBodyOutfitState();
 	}
 
 	public org.lgna.croquet.BoundedDoubleState getObesityLevelState() {
-		return BodyTabComposite.getInstance().getObesityLevelState();
+		return this.bodyTab.getObesityLevelState();
 	}
 
 	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getBodyHeadTabState() {
 		return this.bodyHeadTabState;
 	}
 
-	//	private void handleCataclysm( boolean isLifeStage, boolean isGender, boolean isHairColor ) {
-	//	}
+	private org.lgna.croquet.edits.Edit createRandomEdit( org.lgna.croquet.history.CompletionStep<?> step ) {
+		org.lgna.story.resources.sims2.LifeStage lifeStage;
+		if( this.lifeStageState.isEnabled() ) {
+			lifeStage = null;
+		} else {
+			lifeStage = this.lifeStageState.getValue();
+		}
+		org.lgna.story.resources.sims2.PersonResource nextPersonResource = org.alice.stageide.personresource.RandomPersonUtilities.createRandomResource( lifeStage );
+		return new org.alice.stageide.personresource.edits.SetPersonResourceEdit( step, nextPersonResource );
+	}
 
 	private void addListeners() {
 		this.getLifeStageState().addValueListener( this.lifeStageListener );
@@ -233,47 +262,28 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.pushAtomic();
-		//		this.setStates( personResource );
 		if( activeCount == 0 ) {
 			this.addListeners();
+
+			this.bodyHeadTabState.addAndInvokeValueListener( this.tabListener );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, this.activeCount );
 		}
 		this.activeCount++;
-		this.popAtomic();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
 		this.activeCount--;
 		if( activeCount == 0 ) {
+			this.bodyHeadTabState.removeValueListener( this.tabListener );
 			this.removeListeners();
 		}
-		//personViewer.setPerson( null );
-		assert activeCount == 0; //todo
+		if( activeCount != 0 ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "todo" );
+		}
 		super.handlePostDeactivation();
 	}
-
-	//	public org.alice.stageide.person.components.PersonViewer allocatePersonViewer( org.lgna.story.resources.sims2.PersonResource personResource ) {
-	//		assert activeCount == 0; //todo
-	//		this.pushAtomic();
-	//		this.setStates( personResource );
-	//		if( activeCount == 0 ) {
-	//			this.addListeners();
-	//		}
-	//		this.activeCount++;
-	//		this.popAtomic();
-	//		//return org.alice.stageide.person.components.PersonViewer.getInstance( this.personImp );
-	//		return null;
-	//	}
-	//
-	//	public void releasePersonViewer( org.alice.stageide.person.components.PersonViewer personViewer ) {
-	//		this.activeCount--;
-	//		if( activeCount == 0 ) {
-	//			this.removeListeners();
-	//		}
-	//		//personViewer.setPerson( null );
-	//		assert activeCount == 0; //todo
-	//	}
 
 	private static org.lgna.story.resources.sims2.LifeStage getLifeStage( org.lgna.story.resources.sims2.PersonResource personResource ) {
 		return personResource != null ? personResource.getLifeStage() : null;
@@ -299,6 +309,107 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private org.lgna.story.resources.sims2.PersonResource prevPersonResource;
 	private int atomicCount = 0;
 
+	private void syncPersonImpAndMaps() {
+		PersonImp personImp = PersonResourceComposite.getInstance().getPreviewComposite().getView().getPerson();
+		if( personImp != null ) {
+			personImp.updateNebPerson();
+		}
+		this.getView().repaint();
+
+		this.prevPersonResource = this.createResourceFromStates();
+
+		if( this.prevPersonResource != null ) {
+			this.mapToMap.put( this.prevPersonResource.getLifeStage(), this.prevPersonResource.getGender(), this.prevPersonResource );
+		}
+	}
+
+	private void updateHairColorName( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender, String hairColorName ) {
+		if( hairColorName != null ) {
+			//pass
+		} else {
+			hairColorName = this.getHairColorNameState().getValue();
+		}
+		this.getHairColorNameState().setValueTransactionlessly( null );
+		org.alice.stageide.personresource.data.HairColorNameListData data = this.headTab.getHairColorNameData();
+		data.setLifeStage( lifeStage );
+		if( hairColorName != null ) {
+			if( data.contains( hairColorName ) ) {
+				//pass
+			} else {
+				hairColorName = null;
+			}
+		}
+		if( hairColorName != null ) {
+			//pass
+		} else {
+			org.lgna.story.resources.sims2.PersonResource personResource = this.mapToMap.get( lifeStage, gender );
+			if( personResource != null ) {
+				org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
+				if( hair != null ) {
+					hairColorName = hair.toString();
+				}
+			}
+		}
+		if( hairColorName != null ) {
+			this.getHairColorNameState().setValueTransactionlessly( hairColorName );
+		} else {
+			this.getHairColorNameState().setRandomSelectedValue();
+		}
+	}
+
+	private void updateHair( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender, org.lgna.story.resources.sims2.Hair hair ) {
+		this.getHairState().setValueTransactionlessly( null );
+
+		String hairColorName;
+		if( hair != null ) {
+			hairColorName = hair.toString();
+		} else {
+			hairColorName = this.getHairColorNameState().getValue();
+			if( hairColorName != null ) {
+				org.lgna.story.resources.sims2.PersonResource previousPersonResource = this.mapToMap.get( lifeStage, gender );
+				if( previousPersonResource != null ) {
+					org.lgna.story.resources.sims2.Hair previousHairValue = previousPersonResource.getHair();
+					if( previousHairValue != null ) {
+						Class<?> cls = previousHairValue.getClass();
+						if( cls.isEnum() ) {
+							try {
+								hair = (org.lgna.story.resources.sims2.Hair)cls.getField( hairColorName ).get( null );
+							} catch( Exception e ) {
+								edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( e, previousHairValue );
+								hair = null;
+							}
+						}
+					}
+				}
+			}
+		}
+		this.headTab.getHairData().setLifeStageGenderAndColorName( lifeStage, gender, hairColorName );
+
+		if( hair != null ) {
+			this.getHairState().setValueTransactionlessly( hair );
+		} else {
+			this.getHairState().setRandomSelectedValue();
+		}
+	}
+
+	private void updateOutfit( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender, org.lgna.story.resources.sims2.FullBodyOutfit fullBodyOutfit ) {
+		this.getFullBodyOutfitState().setValueTransactionlessly( null );
+		this.bodyTab.getFullBodyOutfitData().setLifeStageAndGender( lifeStage, gender );
+		if( fullBodyOutfit != null ) {
+			//pass
+		} else {
+			org.lgna.story.resources.sims2.PersonResource previousPersonResource = this.mapToMap.get( lifeStage, gender );
+			if( previousPersonResource != null ) {
+				fullBodyOutfit = (org.lgna.story.resources.sims2.FullBodyOutfit)previousPersonResource.getOutfit();
+			}
+		}
+		if( fullBodyOutfit != null ) {
+			this.getFullBodyOutfitState().setValueTransactionlessly( fullBodyOutfit );
+		} else {
+			this.getFullBodyOutfitState().setRandomSelectedValue();
+		}
+	}
+
 	public void pushAtomic() {
 		if( this.atomicCount == 0 ) {
 		}
@@ -313,19 +424,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				org.lgna.story.resources.sims2.LifeStage prevLifeStage = getLifeStage( this.prevPersonResource );
 				org.lgna.story.resources.sims2.LifeStage nextLifeStage = this.getLifeStageState().getValue();
 				boolean isLifeStageChanged = prevLifeStage != nextLifeStage;
-				if( isLifeStageChanged ) {
-					String[] hairColors = getHairColors( nextLifeStage );
-					if( hairColors != getHairColors( getLifeStage( this.prevPersonResource ) ) ) {
-						String hairColor = this.getHairColorNameState().getValue();
-						int index = java.util.Arrays.asList( hairColors ).indexOf( hairColor );
-						if( index != -1 ) {
-							//pass
-						} else {
-							index = org.lgna.common.RandomUtilities.nextIntegerFrom0ToNExclusive( hairColors.length );
-						}
-						this.getHairColorNameState().setListData( index, hairColors );
-					}
-				}
+
 				org.lgna.story.resources.sims2.Gender nextGender = this.getGenderState().getValue();
 				org.lgna.story.resources.sims2.Gender prevGender = getGender( this.prevPersonResource );
 				boolean isGenderChanged = prevGender != nextGender;
@@ -333,52 +432,24 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				String prevHairColorName = getHairColorName( this.prevPersonResource );
 				final String nextHairColorName = this.getHairColorNameState().getValue();
 				boolean isHairColorChanged = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( prevHairColorName, nextHairColorName );
-				if( isLifeStageChanged || isGenderChanged || isHairColorChanged ) {
-					java.util.List<org.lgna.story.resources.sims2.Hair> list = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
-							org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( nextLifeStage, nextGender ),
-							new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.story.resources.sims2.Hair>() {
-								public boolean accept( org.lgna.story.resources.sims2.Hair hair ) {
-									return hair.toString().equals( nextHairColorName );
-								}
-							}
-							);
-					int index;
-					org.lgna.story.resources.sims2.Hair hair = this.getHairState().getValue();
-					if( hair != null ) {
-						index = list.indexOf( hair );
-					} else {
-						index = -1;
+
+				if( isLifeStageChanged ) {
+					String[] hairColors = getHairColors( nextLifeStage );
+					if( hairColors != getHairColors( getLifeStage( this.prevPersonResource ) ) ) {
+						this.updateHairColorName( nextLifeStage, nextGender, null );
 					}
-					index = 0;
-					this.getHairState().setListData(
-							index,
-							edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray(
-									list,
-									org.lgna.story.resources.sims2.Hair.class
-									)
-							);
+				}
+
+				if( isLifeStageChanged || isGenderChanged || isHairColorChanged ) {
+					this.updateHair( nextLifeStage, nextGender, null );
 				}
 				if( isLifeStageChanged || isGenderChanged ) {
-					java.util.List<org.lgna.story.resources.sims2.FullBodyOutfit> list = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
-							org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( nextLifeStage, nextGender ),
-							null
-							);
-					int index = 0;
-					this.getFullBodyOutfitState().setListData( index, edu.cmu.cs.dennisc.java.lang.ArrayUtilities.createArray(
-							list,
-							org.lgna.story.resources.sims2.FullBodyOutfit.class
-							) );
+					this.updateOutfit( nextLifeStage, nextGender, null );
 				}
 			} finally {
 				this.addListenersIfAppropriate();
 			}
-			PreviewComposite.getInstance().getView().getPerson().updateNebPerson();
-			this.getView().repaint();
-
-			this.prevPersonResource = this.createResourceFromStates();
-			if( this.prevPersonResource != null ) {
-				this.mapToMap.put( this.prevPersonResource.getLifeStage(), this.prevPersonResource.getGender(), this.prevPersonResource );
-			}
+			this.syncPersonImpAndMaps();
 		}
 	}
 
@@ -404,15 +475,15 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			this.getGenderState().setValueTransactionlessly( personResource.getGender() );
 			this.getBaseEyeColorState().setValueTransactionlessly( (org.lgna.story.resources.sims2.BaseEyeColor)personResource.getEyeColor() );
 			this.getBaseSkinToneState().setValueTransactionlessly( (org.lgna.story.resources.sims2.BaseSkinTone)personResource.getSkinTone() );
-			this.getFullBodyOutfitState().setValueTransactionlessly( (org.lgna.story.resources.sims2.FullBodyOutfit)personResource.getOutfit() );
 
 			org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
-			this.getHairState().setValueTransactionlessly( hair );
-			this.getHairColorNameState().setValueTransactionlessly( hair != null ? hair.toString() : null );
+			this.updateOutfit( personResource.getLifeStage(), personResource.getGender(), (org.lgna.story.resources.sims2.FullBodyOutfit)personResource.getOutfit() );
+			this.updateHairColorName( personResource.getLifeStage(), personResource.getGender(), hair != null ? hair.toString() : null );
+			this.updateHair( personResource.getLifeStage(), personResource.getGender(), hair );
 			this.getObesityLevelState().setValueTransactionlessly( personResource.getObesityLevel() );
 		} finally {
 			this.addListenersIfAppropriate();
 		}
+		this.syncPersonImpAndMaps();
 	}
-
 }

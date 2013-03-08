@@ -131,7 +131,7 @@ public class DeleteFieldFrameComposite extends OperationInputDialogCoreComposite
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		FindFieldsFrameComposite composite = FindFieldsFrameComposite.getFrameFor( getField() );
-		composite.getBooleanState().setValue( true );
+		composite.getBooleanState().setValueTransactionlessly( true );
 		return null;
 	}
 

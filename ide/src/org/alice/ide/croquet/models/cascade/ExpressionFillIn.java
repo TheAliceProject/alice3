@@ -46,11 +46,11 @@ package org.alice.ide.croquet.models.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionFillIn<F extends org.lgna.project.ast.Expression, B> extends org.lgna.croquet.CascadeFillIn<F, B> {
+public abstract class ExpressionFillIn<F extends org.lgna.project.ast.Expression, B> extends org.lgna.croquet.ImmutableCascadeFillIn<F, B> {
 	private String text;
 
-	public ExpressionFillIn( java.util.UUID id ) {
-		super( id );
+	public ExpressionFillIn( java.util.UUID id, org.lgna.croquet.CascadeBlank<B>... blanks ) {
+		super( id, blanks );
 	}
 
 	@Override
@@ -59,13 +59,33 @@ public abstract class ExpressionFillIn<F extends org.lgna.project.ast.Expression
 		this.text = this.findDefaultLocalizedText();
 	}
 
+	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.cascade.ItemNode<? super F, B> step ) {
+		return null;
+	}
+
 	@Override
 	protected javax.swing.JComponent createMenuItemIconProxy( org.lgna.croquet.cascade.ItemNode<? super F, B> step ) {
 		org.lgna.project.ast.Expression expression = this.getTransientValue( step );
-		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
+
+		javax.swing.Icon leadingIcon = this.getLeadingIcon( step );
+		javax.swing.JLabel trailingLabel;
 		if( ( this.text != null ) && ( this.text.length() > 0 ) ) {
-			javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
-			return new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( expressionPane, javax.swing.Box.createHorizontalStrut( 16 ), label );
+			trailingLabel = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT );
+		} else {
+			trailingLabel = null;
+		}
+		javax.swing.JComponent expressionPane = org.alice.ide.x.PreviewAstI18nFactory.getInstance().createExpressionPane( expression ).getAwtComponent();
+		if( ( leadingIcon != null ) || ( trailingLabel != null ) ) {
+			edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
+			if( leadingIcon != null ) {
+				rv.add( new javax.swing.JLabel( leadingIcon ) );
+			}
+			rv.add( expressionPane );
+			if( trailingLabel != null ) {
+				trailingLabel.setBorder( new edu.cmu.cs.dennisc.javax.swing.border.EmptyBorder( 0, 16, 0, 0 ) );
+				rv.add( trailingLabel );
+			}
+			return rv;
 		} else {
 			return expressionPane;
 		}

@@ -45,20 +45,25 @@ package org.alice.ide.ast.declaration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddMethodComposite extends AddDeclarationComposite<org.lgna.project.ast.UserMethod> {
+public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposite<org.lgna.project.ast.UserMethod> {
 	private final org.lgna.project.ast.UserType<?> declaringType;
 
 	public AddMethodComposite( java.util.UUID migrationId, Details details, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( migrationId, details );
 		// <kjh/> Should we use meta-context factories instead?
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.TypeState.getInstance() );
 			this.getOperation().addContextFactory( org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState() );
 		} else {
 			this.getOperation().addContextFactory( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
-			this.getOperation().addContextFactory( org.alice.ide.members.ProcedureFunctionControlFlowTabState.getInstance() );
+			this.getOperation().addContextFactory( org.alice.ide.members.MembersComposite.getInstance().getTabState() );
 		}
 		this.declaringType = declaringType;
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
 	}
 
 	private org.lgna.project.ast.UserMethod createMethod() {

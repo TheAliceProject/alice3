@@ -65,14 +65,13 @@ public class AddDiscManagedFieldComposite extends AddModelManagedFieldComposite 
 	}
 
 	@Override
-	protected EditCustomization customize( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, EditCustomization rv ) {
-		super.customize( step, declaringType, field, rv );
-		try {
-			//todo: better z-fighting avoidance
-			rv.addDoStatement( org.alice.stageide.sceneeditor.SetUpMethodGenerator.createPositionStatement( false, field, new org.lgna.story.Position( 0.0, 0.01, 0.0 ) ) );
-		} catch( org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException ccee ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( ccee );
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 updateInitialTransformIfNecessary( edu.cmu.cs.dennisc.math.AffineMatrix4x4 initialTransform ) {
+		if( initialTransform != null ) {
+			//pass
+		} else {
+			initialTransform = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
 		}
-		return rv;
+		initialTransform.translation.y += 0.01;
+		return initialTransform;
 	}
 }

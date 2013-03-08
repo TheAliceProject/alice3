@@ -46,9 +46,8 @@ import java.text.MessageFormat;
 
 import javax.swing.Icon;
 
-import org.alice.stageide.operations.ast.oneshot.LocalTransformationEdit;
+import org.alice.stageide.oneshot.edits.LocalTransformationEdit;
 import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.Element;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.UserField;
@@ -74,7 +73,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 		this.markerField = null;
 		this.selectedField = null;
 		this.imageIcon = new MoveToImageIcon();
-		this.setSmallIcon( imageIcon );
+		this.setButtonIcon( imageIcon );
 		this.updateBasedOnSettings();
 	}
 
@@ -101,7 +100,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 	}
 
 	@Override
-	protected Class<? extends Element> getClassUsedForLocalization() {
+	protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
 		return ObjectMarkerMoveActionOperation.class;
 	}
 
@@ -122,7 +121,7 @@ public abstract class ObjectMarkerMoveActionOperation extends ActionOperation {
 			this.setToolTipText( this.findLocalizedText( "disabledTooltip" ) );
 			this.setEnabled( false );
 		}
-		this.setSmallIcon( this.imageIcon );
+		this.setButtonIcon( this.imageIcon );
 	}
 
 	public void setMarkerField( UserField markerField )

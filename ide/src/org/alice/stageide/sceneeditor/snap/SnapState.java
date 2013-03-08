@@ -64,39 +64,47 @@ public class SnapState
 	{
 	}
 
+	private static org.alice.stageide.sceneeditor.side.SideComposite getSideComposite() {
+		return org.alice.stageide.sceneeditor.side.SideComposite.getInstance();
+	}
+
+	private org.alice.stageide.sceneeditor.side.SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {
+		return getSideComposite().getSnapDetailsToolPaletteCoreComposite();
+	}
+
 	public BooleanState getIsSnapEnabledState()
 	{
-		return IsSnapEnabledState.getInstance();
+		return getSideComposite().getIsSnapEnabledState();
 	}
 
 	public BooleanState getIsSnapToGroundEnabledState()
 	{
-		return IsSnapToGroundEnabledState.getInstance();
+		return getSnapDetailsToolPaletteCoreComposite().getIsSnapToGroundEnabledState();
 	}
 
 	public BooleanState getIsSnapToGridEnabledState()
 	{
-		return IsSnapToGridEnabledState.getInstance();
+		return getIsSnapEnabledState();
 	}
 
 	public BooleanState getIsRotationSnapEnabledState()
 	{
-		return IsRotationSnapEnabledState.getInstance();
+		return getSnapDetailsToolPaletteCoreComposite().getIsRotationState();
 	}
 
 	public BooleanState getShowSnapGridState()
 	{
-		return ShowSnapGridState.getInstance();
+		return getSnapDetailsToolPaletteCoreComposite().getIsGridShowingState();
 	}
 
 	public BoundedDoubleState getSnapGridSpacingState()
 	{
-		return SnapGridSpacingState.getInstance();
+		return getSnapDetailsToolPaletteCoreComposite().getGridSpacingState();
 	}
 
 	public BoundedDoubleState getSnapAngleInDegreesState()
 	{
-		return SnapAngleInDegreesState.getInstance();
+		return getSnapDetailsToolPaletteCoreComposite().getAngleState();
 	}
 
 	//	public void setShouldSnapToGroundEnabled(boolean shouldSnapToGround)

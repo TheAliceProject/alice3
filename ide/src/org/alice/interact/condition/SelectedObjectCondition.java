@@ -56,7 +56,7 @@ public class SelectedObjectCondition extends InputCondition {
 		IGNORE_SWITCH,
 	}
 
-	PickHint acceptableType = PickHint.ANYTHING;
+	PickHint acceptableType = PickHint.getAnythingHint();
 
 	protected boolean isNot = false;
 	private ObjectSwitchBehavior switchBehavior = ObjectSwitchBehavior.END_ON_SWITCH;

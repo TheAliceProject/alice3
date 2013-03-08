@@ -43,15 +43,10 @@
 
 package gallery.croquet;
 
-import org.alice.ide.croquet.models.gallerybrowser.GalleryResourceTreeSelectionState;
-
 /**
  * @author Dennis Cosgrove
  */
-public class ControlsComposite extends org.lgna.croquet.Composite< gallery.croquet.views.ControlsPanel > {
-	
-	private final NextOperation next = new NextOperation();
-	
+public class ControlsComposite extends org.lgna.croquet.AbstractComposite< gallery.croquet.views.ControlsPanel > {
 	public ControlsComposite() {
 		super( java.util.UUID.fromString( "76991dd9-0b64-43b0-9ca9-c60e6a914dfc" ) );
 	}
@@ -67,11 +62,12 @@ public class ControlsComposite extends org.lgna.croquet.Composite< gallery.croqu
 		return new gallery.croquet.views.ControlsPanel( this );
 	}
 	
-	public NextOperation getNextOperation() {
-		return next;
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
 	}
-	public GalleryResourceTreeSelectionState getTreeState() {
-		return GalleryResourceTreeSelectionState.getInstance();
+	public org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState getTreeState() {
+		return org.alice.stageide.modelresource.ClassHierarchyBasedResourceNodeTreeSelectionState.getInstance();
 	}
 	public IsVisualizationShowingState getViz() {
 		return IsVisualizationShowingState.getInstance();

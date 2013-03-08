@@ -51,5 +51,5 @@ public abstract class ItemSelectable<J extends javax.swing.JComponent, T, M exte
 		super( model );
 	}
 
-	public abstract org.lgna.croquet.components.TrackableShape getTrackableShapeFor( T item );
+	public abstract TrackableShape getTrackableShapeFor( T item );
 }

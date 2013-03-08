@@ -206,7 +206,7 @@ public class MethodSearchComposite extends SimpleComposite<MethodSearchView> {
 
 	public SearchTreeNode setSelected( UserMethod method ) {
 		SearchTreeNode find = manager.getRoot().find( method );
-		manager.setValue( find );
+		manager.setValueTransactionlessly( find );
 		return find;
 	}
 

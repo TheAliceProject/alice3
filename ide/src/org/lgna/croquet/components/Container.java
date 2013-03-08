@@ -105,21 +105,6 @@ public abstract class Container<J extends java.awt.Container> extends Component<
 		return this.getAwtComponent().isAncestorOf( other.getAwtComponent() );
 	}
 
-	private boolean isTreeLockRequired() {
-		//todo
-		return this.getAwtComponent().isDisplayable();
-	}
-
-	private void checkTreeLock() {
-		if( this.isTreeLockRequired() ) {
-			if( Thread.holdsLock( this.getTreeLock() ) ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "tree lock required", this );
-			}
-		}
-	}
-
 	protected final void internalAddComponent( Component<?> component ) {
 		assert component != null : this;
 		assert component != this : this;

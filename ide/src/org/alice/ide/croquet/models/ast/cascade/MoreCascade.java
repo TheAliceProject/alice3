@@ -45,7 +45,7 @@ package org.alice.ide.croquet.models.ast.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MoreCascade extends org.lgna.croquet.Cascade<org.lgna.project.ast.Expression> {
+public class MoreCascade extends org.lgna.croquet.ImmutableCascade<org.lgna.project.ast.Expression> {
 	private static java.util.Map<org.lgna.project.ast.MethodInvocation, MoreCascade> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized MoreCascade getInstance( org.lgna.project.ast.MethodInvocation methodInvocation ) {

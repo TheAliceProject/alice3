@@ -45,7 +45,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BooleanState extends State<Boolean> {
+public abstract class BooleanState extends SimpleValueState<Boolean> {
 	public static final class InternalMenuItemPrepModelResolver extends IndirectResolver<InternalMenuItemPrepModel, BooleanState> {
 		private InternalMenuItemPrepModelResolver( BooleanState indirect ) {
 			super( indirect );
@@ -99,9 +99,10 @@ public abstract class BooleanState extends State<Boolean> {
 		}
 
 		@Override
-		public org.lgna.croquet.components.MenuItemContainer createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer rv ) {
-			rv.addCheckBoxMenuItem( new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() ) );
-			return rv;
+		public org.lgna.croquet.components.CheckBoxMenuItem createMenuItemAndAddTo( org.lgna.croquet.components.MenuItemContainer menuItemContainer ) {
+			org.lgna.croquet.components.CheckBoxMenuItem checkBoxMenuItem = new org.lgna.croquet.components.CheckBoxMenuItem( this.getBooleanState() );
+			menuItemContainer.addCheckBoxMenuItem( checkBoxMenuItem );
+			return checkBoxMenuItem;
 		}
 
 		@Override
@@ -172,7 +173,7 @@ public abstract class BooleanState extends State<Boolean> {
 		}
 	};
 
-	public BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
+	protected BooleanState( Group group, java.util.UUID id, boolean initialValue, javax.swing.ButtonModel buttonModel ) {
 		super( group, id, initialValue );
 		this.swingModel = new SwingModel( buttonModel );
 		this.swingModel.buttonModel.setSelected( initialValue );
@@ -226,10 +227,14 @@ public abstract class BooleanState extends State<Boolean> {
 		return this.swingModel;
 	}
 
-	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
-		if( this.isAppropriateToComplete() ) {
+	private boolean isItemStateChangedToBeIgnored = false;
+
+	protected void handleItemStateChanged( java.awt.event.ItemEvent e ) {
+		if( this.isItemStateChangedToBeIgnored ) {
+			//pass
+		} else {
 			boolean nextValue = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-			this.commitStateEdit( !nextValue, nextValue, false, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
+			this.changeValueFromSwing( nextValue, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
 		}
 	}
 
@@ -249,15 +254,7 @@ public abstract class BooleanState extends State<Boolean> {
 				}
 			}
 		}
-		this.setMnemonicKey( this.getLocalizedMnemonicKey() );
 		this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );
-	}
-
-	//	public int getMnemonicKey() {
-	//	return Integer.class.cast( this.swingModel.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
-	//}
-	private void setMnemonicKey( int mnemonicKey ) {
-		this.swingModel.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
 
 	//public javax.swing.KeyStroke getAcceleratorKey() {
@@ -268,17 +265,21 @@ public abstract class BooleanState extends State<Boolean> {
 	}
 
 	@Override
-	protected Boolean getActualValue() {
+	protected Boolean getSwingValue() {
 		return this.swingModel.buttonModel.isSelected();
 	}
 
 	@Override
-	protected void updateSwingModel( Boolean nextValue ) {
-		this.swingModel.buttonModel.removeItemListener( this.itemListener );
-		try {
-			this.swingModel.buttonModel.setSelected( nextValue );
-		} finally {
-			this.swingModel.buttonModel.addItemListener( this.itemListener );
+	protected void setSwingValue( Boolean nextValue ) {
+		if( this.swingModel.buttonModel.isSelected() != nextValue ) {
+			//pass
+		} else {
+			this.isItemStateChangedToBeIgnored = true;
+			try {
+				this.swingModel.buttonModel.setSelected( nextValue );
+			} finally {
+				this.isItemStateChangedToBeIgnored = false;
+			}
 		}
 	}
 
@@ -334,6 +335,14 @@ public abstract class BooleanState extends State<Boolean> {
 		this.updateNameAndIcon();
 	}
 
+	public void setShortDescription( String shortDescription ) {
+		this.swingModel.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	}
+
+	public void setToolTipText( String toolTipText ) {
+		this.setShortDescription( toolTipText );
+	}
+
 	private void updateNameAndIcon() {
 		String name;
 		javax.swing.Icon icon;
@@ -348,11 +357,11 @@ public abstract class BooleanState extends State<Boolean> {
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 		if( this.trueOperation != null ) {
 			this.trueOperation.setName( this.trueText );
-			this.trueOperation.setSmallIcon( this.trueIcon );
+			this.trueOperation.setButtonIcon( this.trueIcon );
 		}
 		if( this.falseOperation != null ) {
 			this.falseOperation.setName( this.falseText );
-			this.falseOperation.setSmallIcon( this.falseIcon );
+			this.falseOperation.setButtonIcon( this.falseIcon );
 		}
 	}
 
@@ -371,11 +380,6 @@ public abstract class BooleanState extends State<Boolean> {
 	@Deprecated
 	public org.lgna.croquet.components.PushButton createPushButton() {
 		return new org.lgna.croquet.components.PushButton( this );
-	}
-
-	//todo: convert to composite
-	public org.lgna.croquet.components.ToolPalette createToolPalette( org.lgna.croquet.components.JComponent<?> component ) {
-		return new org.lgna.croquet.components.ToolPalette( this, component );
 	}
 
 	private static class InternalSelectValueOperation extends ActionOperation {
@@ -399,7 +403,7 @@ public abstract class BooleanState extends State<Boolean> {
 		protected void localize() {
 			super.localize();
 			this.setName( this.value ? this.state.getTrueText() : this.state.getFalseText() );
-			this.setSmallIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
+			this.setButtonIcon( this.value ? this.state.getTrueIcon() : this.state.getFalseIcon() );
 		}
 
 		@Override
@@ -431,7 +435,94 @@ public abstract class BooleanState extends State<Boolean> {
 		return this.falseOperation;
 	}
 
-	private class InternalRadioButton extends org.lgna.croquet.components.OperationButton<javax.swing.JRadioButton, Operation> {
+	public static final class InternalMenuModelResolver extends IndirectResolver<InternalMenuModel, BooleanState> {
+		private InternalMenuModelResolver( BooleanState indirect ) {
+			super( indirect );
+		}
+
+		public InternalMenuModelResolver( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+			super( binaryDecoder );
+		}
+
+		@Override
+		protected InternalMenuModel getDirect( BooleanState indirect ) {
+			return indirect.getMenuModel();
+		}
+	}
+
+	private static final class InternalMenuModel<T> extends MenuModel {
+		private BooleanState state;
+
+		public InternalMenuModel( BooleanState state ) {
+			super( java.util.UUID.fromString( "89447818-3c15-4707-9464-79c3f0283262" ), state.getClass() );
+			this.state = state;
+		}
+
+		@Override
+		protected void initialize() {
+			this.state.initializeIfNecessary();
+			super.initialize();
+		}
+
+		@Override
+		protected String getSubKeyForLocalization() {
+			return "menu";
+		}
+
+		public BooleanState getBooleanState() {
+			return this.state;
+		}
+
+		@Override
+		public boolean isEnabled() {
+			return this.state.isEnabled();
+		}
+
+		@Override
+		public void setEnabled( boolean isEnabled ) {
+			this.state.setEnabled( isEnabled );
+		}
+
+		@Override
+		protected InternalMenuModelResolver createResolver() {
+			return new InternalMenuModelResolver( this.state );
+		}
+
+		@Override
+		protected void handleShowing( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( menuItemContainer, e );
+			super.handleShowing( menuItemContainer, e );
+			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+			for( boolean isTrue : new boolean[] { true, false } ) {
+				Operation operation = isTrue ? this.state.getSetToTrueOperation() : this.state.getSetToFalseOperation();
+				operation.initializeIfNecessary();
+				javax.swing.Action action = operation.getSwingModel().getAction();
+				javax.swing.JCheckBoxMenuItem jMenuItem = new javax.swing.JCheckBoxMenuItem( action );
+				buttonGroup.add( jMenuItem );
+				jMenuItem.setSelected( this.state.getValue() == isTrue );
+				menuItemContainer.getViewController().getAwtComponent().add( jMenuItem );
+			}
+		}
+
+		@Override
+		protected void handleHiding( org.lgna.croquet.components.MenuItemContainer menuItemContainer, javax.swing.event.PopupMenuEvent e ) {
+			menuItemContainer.forgetAndRemoveAllMenuItems();
+			super.handleHiding( menuItemContainer, e );
+		}
+	}
+
+	private InternalMenuModel menuModel;
+
+	public synchronized InternalMenuModel getMenuModel() {
+		if( this.menuModel != null ) {
+			//pass
+		} else {
+			this.menuModel = new InternalMenuModel( this );
+		}
+		return this.menuModel;
+	}
+
+	private final static class InternalRadioButton extends org.lgna.croquet.components.OperationButton<javax.swing.JRadioButton, Operation> {
 		public InternalRadioButton( Operation operation ) {
 			super( operation );
 		}
@@ -442,30 +533,55 @@ public abstract class BooleanState extends State<Boolean> {
 		}
 	}
 
-	private class RadioButtonsPanel extends org.lgna.croquet.components.Panel {
+	private final class RadioButtonsPanel extends org.lgna.croquet.components.Panel {
+		private final javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+		private final InternalRadioButton trueButton;
+		private final InternalRadioButton falseButton;
 		private final int axis;
+		private final ValueListener<Boolean> valueListener = new ValueListener<Boolean>() {
+			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+				handleChanged( nextValue );
+			}
+		};
 
 		public RadioButtonsPanel( boolean isVertical, boolean isTrueFirst ) {
 			this.axis = isVertical ? javax.swing.BoxLayout.PAGE_AXIS : javax.swing.BoxLayout.LINE_AXIS;
-			InternalRadioButton trueButton = new InternalRadioButton( getSetToTrueOperation() );
-			InternalRadioButton falseButton = new InternalRadioButton( getSetToFalseOperation() );
+			this.trueButton = new InternalRadioButton( getSetToTrueOperation() );
+			this.falseButton = new InternalRadioButton( getSetToFalseOperation() );
 			if( isTrueFirst ) {
-				this.internalAddComponent( trueButton );
-				this.internalAddComponent( falseButton );
+				this.internalAddComponent( this.trueButton );
+				this.internalAddComponent( this.falseButton );
 			} else {
-				this.internalAddComponent( falseButton );
-				this.internalAddComponent( trueButton );
+				this.internalAddComponent( this.falseButton );
+				this.internalAddComponent( this.trueButton );
 			}
-			javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-			buttonGroup.add( trueButton.getAwtComponent() );
-			buttonGroup.add( falseButton.getAwtComponent() );
-			InternalRadioButton selected = getValue() ? trueButton : falseButton;
-			buttonGroup.setSelected( selected.getAwtComponent().getModel(), true );
+			this.buttonGroup.add( trueButton.getAwtComponent() );
+			this.buttonGroup.add( falseButton.getAwtComponent() );
 		}
 
 		@Override
 		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 			return new javax.swing.BoxLayout( jPanel, axis );
+		}
+
+		private void handleChanged( Boolean nextValue ) {
+			InternalRadioButton selected = nextValue ? this.trueButton : this.falseButton;
+			this.buttonGroup.setSelected( selected.getAwtComponent().getModel(), true );
+		}
+
+		@Override
+		protected void handleDisplayable() {
+			super.handleDisplayable();
+			BooleanState.this.addAndInvokeValueListener( this.valueListener );
+		}
+
+		@Override
+		protected void handleUndisplayable() {
+			BooleanState.this.removeValueListener( this.valueListener );
+			super.handleUndisplayable();
 		}
 	}
 

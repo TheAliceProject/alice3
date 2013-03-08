@@ -58,9 +58,15 @@ public abstract class CustomItemStateWithInternalBlank<T> extends CustomItemStat
 		}
 	}
 
-	public CustomItemStateWithInternalBlank( org.lgna.croquet.Group group, java.util.UUID id, org.lgna.croquet.ItemCodec<T> itemCodec ) {
-		super( group, id, itemCodec );
-		this.getCascadeRoot().addBlank( new CustomBlank() );
+	private final java.util.List<CustomBlank> blanks = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new CustomBlank() ) );
+
+	public CustomItemStateWithInternalBlank( org.lgna.croquet.Group group, java.util.UUID id, T initialValue, org.lgna.croquet.ItemCodec<T> itemCodec ) {
+		super( group, id, initialValue, itemCodec );
+	}
+
+	@Override
+	protected java.util.List<? extends CascadeBlank<T>> getBlanks() {
+		return this.blanks;
 	}
 
 	protected abstract java.util.List<org.lgna.croquet.CascadeBlankChild> updateBlankChildren( java.util.List<org.lgna.croquet.CascadeBlankChild> rv, org.lgna.croquet.cascade.BlankNode<T> blankNode );

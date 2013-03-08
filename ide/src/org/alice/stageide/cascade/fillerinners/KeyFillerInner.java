@@ -52,8 +52,7 @@ public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.Expressio
 
 	@Override
 	public void appendItems( java.util.List<org.lgna.croquet.CascadeBlankChild> items, org.lgna.project.annotations.ValueDetails<?> details, boolean isTop, org.lgna.project.ast.Expression prevExpression ) {
-		items.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersAThroughMKeyCascadeMenu.getInstance() );
-		items.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersNThroughZKeyCascadeMenu.getInstance() );
+		items.add( org.alice.stageide.croquet.models.cascade.keymenus.LettersKeyCascadeMenu.getInstance() );
 		items.add( org.alice.stageide.croquet.models.cascade.keymenus.DigitsKeyCascadeMenu.getInstance() );
 		items.add( org.alice.stageide.croquet.models.cascade.keymenus.ArrowsKeyCascadeMenu.getInstance() );
 		items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );

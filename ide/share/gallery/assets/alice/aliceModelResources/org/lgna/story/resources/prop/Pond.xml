@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Matt Kline" name="Pond">
+    <BoundingBox>
+        <Min x="-7.193677186965942" y="0.0" z="-7.774641513824463"/>
+        <Max x="7.193677186965942" y="0.2668165664537048" z="7.774641513824463"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>asia</Tag>
+        <Tag>water</Tag>
+        <Tag>lake</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>far east</ThemeTag>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Pond" resourceName="DESERT_OASIS" textureName="DESERT_OASIS"/>
+    <Resource modelName="Pond" resourceName="LIGHT_BLUE" textureName="LIGHT_BLUE"/>
+</AliceModel>

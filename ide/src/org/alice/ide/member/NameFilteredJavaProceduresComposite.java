@@ -46,38 +46,13 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NameFilteredJavaProceduresComposite extends FilteredJavaProceduresSubComposite {
-	private final java.util.Map<String, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private final java.util.Comparator<org.lgna.project.ast.JavaMethod> comparator = new java.util.Comparator<org.lgna.project.ast.JavaMethod>() {
-		public int compare( org.lgna.project.ast.JavaMethod methodA, org.lgna.project.ast.JavaMethod methodB ) {
-			Integer valueA = map.get( methodA.getName() );
-			Integer valueB = map.get( methodB.getName() );
-			if( ( valueA != null ) && ( valueB != null ) ) {
-				int rv = ( valueA < valueB ) ? -1 : ( ( valueA == valueB ) ? 0 : 1 );
-				if( rv == 0 ) {
-					rv = compareMethodNames( methodA, methodB );
-				}
-				return rv;
-			} else {
-				return compareMethodNames( methodA, methodB );
-			}
-		}
-	};
-
+public abstract class NameFilteredJavaProceduresComposite extends NameFilteredJavaMethodsSubComposite {
 	public NameFilteredJavaProceduresComposite( java.util.UUID migrationId, String... methodNames ) {
-		super( migrationId );
-		for( int i = 0; i < methodNames.length; i++ ) {
-			map.put( methodNames[ i ], i );
-		}
-	}
-
-	@Override
-	public java.util.Comparator<org.lgna.project.ast.JavaMethod> getComparator() {
-		return this.comparator;
+		super( migrationId, methodNames );
 	}
 
 	@Override
 	protected boolean isAcceptingOf( org.lgna.project.ast.JavaMethod method ) {
-		return map.keySet().contains( method.getName() );
+		return method.isProcedure() && super.isAcceptingOf( method );
 	}
 }

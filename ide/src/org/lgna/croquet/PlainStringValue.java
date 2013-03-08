@@ -55,12 +55,12 @@ public abstract class PlainStringValue extends StringValue {
 		return new org.lgna.croquet.components.ImmutableTextArea( this, fontScalar, textAttributes );
 	}
 
-	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
-		return new org.lgna.croquet.components.ImmutableTextField( this, fontScalar, textAttributes );
-	}
-
 	public org.lgna.croquet.components.ImmutableTextArea createImmutableTextArea( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
 		return this.createImmutableTextArea( 1.0f, textAttributes );
+	}
+
+	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField( float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {
+		return new org.lgna.croquet.components.ImmutableTextField( this, fontScalar, textAttributes );
 	}
 
 	public org.lgna.croquet.components.ImmutableTextField createImmutableTextField( edu.cmu.cs.dennisc.java.awt.font.TextAttribute<?>... textAttributes ) {

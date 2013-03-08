@@ -1,10 +1,25 @@
 package org.lgna.story.resourceutilities;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.io.File;
 
+import javax.swing.Icon;
+
+import org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
+import org.alice.stageide.modelresource.GroupBasedResourceNode;
+import org.alice.stageide.modelresource.GroupTagKey;
 import org.alice.stageide.modelresource.ResourceKey;
+import org.alice.stageide.modelresource.ResourceNode;
+import org.alice.stageide.modelresource.ThemeBasedResourceNode;
+import org.alice.stageide.modelresource.ThemeTagKey;
+import org.alice.stageide.modelresource.TreeUtilities;
+import org.lgna.project.ast.JavaField;
+import org.lgna.project.ast.JavaType;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 
 /*
@@ -71,27 +86,47 @@ public class GalleryWebpageGenerator {
 	private static final String HTML_FOOTER =	"</body>\n</html>\n";
 	private static final String TABLE_BORDER = 	"border=\"1\"";
 	
-	private static String getClassName(ModelResourceTreeNode node) {
-		if (node.getUserType() != null) {
-			return node.getUserType().getName();
+	private static String getClassName(ResourceNode node) {
+		if (hasClassData(node)) {
+			return AliceResourceUtilties.getModelClassName(node.getResourceKey());
 		}
 		return null;
 	}
 	
-	private static String getHTMLFileName(ModelResourceTreeNode node) {
-		if (node.getUserType() != null) {
-			return node.getUserType().getName();
+	private static String getHTMLName(ResourceNode node) {
+		String name = getFilenameForNode(node);
+		if (name == null) {
+			if (node instanceof ClassHierarchyBasedResourceNode) {
+				return "Classes";
+			}
+			else if (node instanceof ThemeBasedResourceNode) {
+				return "Themes";
+			}
+			else if (node instanceof GroupBasedResourceNode) {
+				return "Groups";
+			}
 		}
-		return null;
+		return name;
 	}
 	
-	private static String getHTMLName(ModelResourceTreeNode node) {
-		if (node.getUserType() == null) {
-			return "Main";
+	private static boolean hasClassData(ResourceNode node) {
+		if (node == null) {
+			return false;
 		}
-		else {
-			return getClassName(node);
+		ResourceKey key = node.getResourceKey();
+		return key instanceof ClassResourceKey || 
+				key instanceof EnumConstantResourceKey;
+	}
+	
+	private static boolean hasImageData(ResourceNode node) {
+		if (node == null) {
+			return false;
 		}
+		ResourceKey key = node.getResourceKey();
+		return key instanceof ClassResourceKey || 
+				key instanceof EnumConstantResourceKey ||
+				key instanceof GroupTagKey ||
+				key instanceof ThemeTagKey;
 	}
 	
 	private static String getRelativePath(String absPath, String absPathOther) {
@@ -123,71 +158,93 @@ public class GalleryWebpageGenerator {
 		return relativePath.toString();
 	}
 	
-	private static String getRelativePagePath(ModelResourceTreeNode node, ModelResourceTreeNode relativeTo) {
+	private static String getRelativePagePath(ResourceNode node, ResourceNode relativeTo) {
 		String absPath = getAbsoluteURLForClassPage(node);
 		String absPathOther = getAbsoluteURLForClassPage(relativeTo);
 		return getRelativePath(absPath, absPathOther);
 	}
 	
-	private static String getRelativeThumbnailPath(ModelResourceTreeNode node, ModelResourceTreeNode relativeTo) {
+	private static String getRelativeThumbnailPath(ResourceNode node, ResourceNode relativeTo) {
 		String absPath = getAbsoluteURLForThumbnail(node);
 		String absPathOther = getAbsoluteURLForClassPage(relativeTo);
 		return getRelativePath(absPath, absPathOther);
 	}
 	
-	private static String getResourcePath(ModelResourceTreeNode node) {
+	private static String getResourcePath(ResourceNode node) {
 		StringBuilder sb =  new StringBuilder();
-		ModelResourceTreeNode parent = (ModelResourceTreeNode)node.getParent();
+		ResourceNode parent = node.getParent();
 		while (parent != null) {
-			String className = getClassName(parent);
+			String className = getFilenameForNode(parent);
 			if (className != null) {
 				sb.insert(0, className+"/");
 			}
-			parent = (ModelResourceTreeNode)parent.getParent();
+			parent = parent.getParent();
 		}
 		return sb.toString();
 	}
 	
-	private static String getAbsoluteURLForClassPage(ModelResourceTreeNode node) {
-		String className = getClassName(node);
-		if (className != null) {
-			return getResourcePath(node) + className+".html";
+	private static String getFilenameForNode(ResourceNode node) {
+		ResourceKey key = node.getResourceKey();
+		String name = null;
+		if (key instanceof ClassResourceKey) {
+			name = getClassName(node);
+		}
+		else if (key instanceof EnumConstantResourceKey) {
+			name = getClassName(node)+((EnumConstantResourceKey)key).getEnumConstant().toString();
+		}
+		else if (key instanceof ThemeTagKey || key instanceof GroupTagKey) {
+			name = key.getDisplayText();
+		}
+		return name;
+	}
+	
+	private static String getAbsoluteURLForClassPage(ResourceNode node) {
+		String name = getFilenameForNode(node);
+		if (name != null) {
+			return getResourcePath(node) + name+".html";
 		}
 		return "index.html";
 	}
 	
-	private static String getAbsoluteURLForThumbnail(ModelResourceTreeNode node) {
-		String className = getClassName(node);
-		if (className != null) {
-			return getResourcePath(node) + className+".png";
+	private static String getAbsoluteURLForThumbnail(ResourceNode node) {
+		String imageName = getFilenameForNode(node);
+		if (imageName != null) {
+			return getResourcePath(node) + imageName+".png";
 		}
 		return null;
 	}
 	
-	private static String getLinkForNode(ModelResourceTreeNode node, ModelResourceTreeNode relativeTo) {
+	private static String getLinkForNode(ResourceNode node, ResourceNode relativeTo) {
 		return "<a href=\""+getRelativePagePath(node, relativeTo)+"\">"+getHTMLName(node)+"</a>";
 	}
 	
-	private static void saveThumbnailForNode(ModelResourceTreeNode node, String basePath) {
-		if (node.getUserType() != null) {
+	private static void saveThumbnailForNode(ResourceNode node, String basePath) {
+		if (hasImageData(node)) {
 			java.awt.image.BufferedImage image = null;
-			if (node.isLeaf()) {
-				image = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(node.getResourceClass(), node.getJavaField().getName());
-			}
-			else if (node.getChildAt(0).isLeaf()){
-				image = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(node.getResourceClass());
+			ResourceKey key = node.getResourceKey();
+			if (key instanceof ThemeTagKey || key instanceof GroupTagKey) {
+				org.lgna.croquet.icon.IconFactory iconFactory = node.getIconFactory();
+				Dimension d = iconFactory.getDefaultSizeForHeight(120);
+				Icon icon = iconFactory.getIcon(d);
+				image = new java.awt.image.BufferedImage(d.width, d.height, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+		        Graphics2D g2d = (Graphics2D) image.getGraphics();
+		        icon.paintIcon(null, g2d, 0, 0);
+		        g2d.dispose();
 			}
 			else {
-				StringBuilder sb = new StringBuilder();
-				sb.append( "images/" );
-				sb.append( node.getResourceClass().getName().replace( ".", "/" ) );
-				sb.append( ".png" );
-				try {
-					image = javax.imageio.ImageIO.read(org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel.class.getResource( sb.toString() ));
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-					image = null;
+				image = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnail(node.getResourceKey());
+				if (image == null ) {
+					StringBuilder sb = new StringBuilder();
+					sb.append( "images/" );
+					sb.append( AliceResourceUtilties.getClassFromKey(node.getResourceKey()).getName().replace( ".", "/" ) );
+					sb.append( ".png" );
+					try {
+						image = javax.imageio.ImageIO.read(org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel.class.getResource( sb.toString() ));
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+						image = null;
+					}
 				}
 			}
 			if (image != null) {
@@ -200,19 +257,19 @@ public class GalleryWebpageGenerator {
 		
 	}
 	
-	private static String getImageCodeForNode(ModelResourceTreeNode node, ModelResourceTreeNode relativeTo) {
-		if (node.getUserType() != null) {
+	private static String getImageCodeForNode(ResourceNode node, ResourceNode relativeTo) {
+		if (hasImageData(node)) {
 			return "<img src=\""+getRelativeThumbnailPath(node, relativeTo)+"\" alt=\""+getHTMLName(node)+"\"/>";
 		}
 		return "";
 	}
 	
-	private static String getImageLinkForNode(ModelResourceTreeNode node, ModelResourceTreeNode relativeTo) {
+	private static String getImageLinkForNode(ResourceNode node, ResourceNode relativeTo) {
 		return "<a href=\""+getRelativePagePath(node, relativeTo)+"\">"+getImageCodeForNode(node, relativeTo)+"</a>";
 	}
 	
-	private static String getNavBar(ModelResourceTreeNode node) {
-		ModelResourceTreeNode parent = (ModelResourceTreeNode)node.getParent();
+	private static String getNavBar(ResourceNode node) {
+		ResourceNode parent = node.getParent();
 		StringBuilder sb = new StringBuilder();
 		boolean isFirst = true;
 		while (parent != null) {
@@ -224,12 +281,12 @@ public class GalleryWebpageGenerator {
 				link += "/";
 			}
 			sb.insert(0, link);
-			parent = (ModelResourceTreeNode)parent.getParent();
+			parent = parent.getParent();
 		}
 		return sb.toString();
 	}
 	
-	private static String getSubclassTableLink(ModelResourceTreeNode node, ModelResourceTreeNode relativeTo) {
+	private static String getSubclassTableLink(ResourceNode node, ResourceNode relativeTo) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table class=\"wrapTable\">\n");
 		sb.append("\t<tr>\n");
@@ -257,19 +314,24 @@ public class GalleryWebpageGenerator {
 		return sb.toString();
 	}
 	
-	private static String getCodeHTML(ModelResourceTreeNode node) {
+	private static String getCodeHTML(ResourceNode node) {
 		StringBuilder sb = new StringBuilder();
-		if (node.getUserType() != null) {
+		if (hasClassData(node)) {
 			org.lgna.project.ast.NamedUserType nut = null;
-			ModelResourceTreeNode parent = (ModelResourceTreeNode)node.getParent();
-			if (parent.getUserType() != null) {
-				if (node.getChildCount() > 0 && node.getChildAt(0).isLeaf()) {
-					ModelResourceTreeNode child = (ModelResourceTreeNode)node.getChildAt(0);
-					nut = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField(parent.getUserType().getFirstEncounteredJavaType(), child.getJavaField());
+			ResourceNode parent = node.getParent();
+			ResourceKey parentKey = parent.getResourceKey();
+			if (hasClassData(parent) && parentKey instanceof ClassResourceKey) {
+				if (hasLeaves(node)) {
+					ClassResourceKey classKey = (ClassResourceKey)parentKey;
+					ResourceNode child = childAt(node, 0);
+					EnumConstantResourceKey enumKey = (EnumConstantResourceKey)child.getResourceKey();
+					JavaType ancestorType = enumKey.getField().getDeclaringType();
+					JavaField argumentField = enumKey.getField();
+					nut = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromArgumentField(ancestorType, argumentField);
 				}
 			}
 			else {
-				nut = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromSuperType(node.getUserType().getFirstEncounteredJavaType());
+				nut = null; //org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromSuperType(node.getUserType().getFirstEncounteredJavaType());
 			}
 			if (nut != null) {
 				sb.append("<blockquote>\n");
@@ -310,11 +372,10 @@ public class GalleryWebpageGenerator {
 		 return sb.toString();
 	}
 	
-	private static String createInfoRow(ModelResourceTreeNode node, ModelResourceTreeNode relativeTo) {
-		Class<?> modelResource = node.getResourceClass();
-		String resourceName = node.getJavaField() != null ? node.getJavaField().getName() : null;
-		String name = getHTMLName(node);
-		String[] tags = org.lgna.story.implementation.alice.AliceResourceUtilties.getTags(modelResource, resourceName);
+	private static String createInfoRow(ResourceNode node, ResourceNode relativeTo) {
+		Class<?> modelResource = AliceResourceUtilties.getClassFromKey(node.getResourceKey());
+		String resourceName = AliceResourceUtilties.getEnumNameFromKey(node.getResourceKey());
+		String[] tags = org.lgna.story.implementation.alice.AliceResourceUtilties.getTags(node.getResourceKey(), null);
 		String tagString = "";
 		for (String s : tags) {
 			if (tagString.length() > 0) {
@@ -322,21 +383,7 @@ public class GalleryWebpageGenerator {
 			}
 			tagString += s;
 		}
-		ResourceKey key;
-		
-		if( node.getJavaField() != null ) {
-			try {
-				key = new EnumConstantResourceKey( (Enum<? extends org.lgna.story.resources.ModelResource>)node.getJavaField().getFieldReflectionProxy().getReification().get( null ) );
-			} catch( IllegalAccessException iae ) {
-				throw new RuntimeException( iae );
-			}
-		} else {
-			key = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)modelResource );
-		}
-		
-		
-		
-		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(key);
+		edu.cmu.cs.dennisc.math.AxisAlignedBox bbox = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox(node.getResourceKey());
 		String bboxString = getBBoxString(bbox);
 		String creator = org.lgna.story.implementation.alice.AliceResourceUtilties.getCreator(modelResource, resourceName);
 		if (creator == null) { creator = ""; }
@@ -344,7 +391,7 @@ public class GalleryWebpageGenerator {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<tr>\n");
 		sb.append("\t<td>"+getImageCodeForNode(node, relativeTo)+"</td>\n");
-		sb.append("\t<td><strong>"+name+"</strong></td>\n");
+		sb.append("\t<td><strong>"+node.getResourceKey().getDisplayText()+"</strong></td>\n");
 		sb.append("\t<td>"+tagString+"</td>\n");
 		sb.append("\t<td>"+bboxString+"</td>\n");
 		sb.append("\t<td>"+creator+"</td>\n");
@@ -353,43 +400,68 @@ public class GalleryWebpageGenerator {
 		return sb.toString();
 	}
 	
-	private static File createClassWebpage(ModelResourceTreeNode node, String basePath) {
-		String className = getHTMLName(node);
-		
+	private static int childCount(ResourceNode node) {
+		java.util.List<ResourceNode> children = node.getNodeChildren();
+		if (children != null) {
+			return children.size();
+		}
+		return 0;
+	}
+	
+	private static boolean isLeaf(ResourceNode node) {
+		java.util.List<ResourceNode> children = node.getNodeChildren();
+		return children == null || children.isEmpty();
+	}
+	
+	private static boolean hasLeaves(ResourceNode node) {
+		for (ResourceNode child : node.getNodeChildren()) {
+			if (child.getResourceKey() instanceof EnumConstantResourceKey)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private static ResourceNode childAt(ResourceNode node, int index) {
+		java.util.List<ResourceNode> children = node.getNodeChildren();
+		if (children != null) {
+			return children.get(index);
+		}
+		return null;
+	}
+	
+	private static String createClassWebpageBodyHTML(ResourceNode node) {
 		StringBuilder html = new StringBuilder();
-		html.append(HTML_HEADER);
-		html.append("<title>"+className+"</title>\n</head>\n");
-		html.append("<body>\n");
 		
+		String className = getHTMLName(node);
 		html.append("<h1>"+getNavBar(node)+"/"+className+"</h1>\n");
 		
-		for (ModelResourceTreeNode childNode : node.childrenList()) {
-			if (!childNode.isLeaf()) {
+		for (ResourceNode childNode : node.getNodeChildren()) {
+			if (!isLeaf(childNode)) {
 				html.append(getSubclassTableLink(childNode, node));
 			}
 		}
-		if (node.getChildCount() > 0 && node.getChildAt(0).isLeaf()) {
+		if (hasLeaves(node)) {
 			html.append("<table>\n");
 			html.append(getInfoHeaderRow());
 			html.append(createInfoRow(node, node));
-			for (ModelResourceTreeNode childNode : node.childrenList()) {
+			for (ResourceNode childNode : node.getNodeChildren()) {
 				html.append(createInfoRow(childNode, node));
 			}
 			html.append("</table>\n");
 		}
 		html.append("<div class=\"newLine\"/>\n");
-		if (node.getUserType() != null) {
-			html.append("<br/>\n");
-			html.append("<hr width=\"100%\">\n");
-			html.append("<h3>Methods</h3>\n");
-			html.append(getCodeHTML(node));
-		}
+//		if (hasClassData(node)) {
+//			html.append("<br/>\n");
+//			html.append("<hr width=\"100%\">\n");
+//			html.append("<h3>Methods</h3>\n");
+//			html.append(getCodeHTML(node));
+//		}
+//		
+		Class<?> resourceClass = AliceResourceUtilties.getClassFromKey(node.getResourceKey());
 		
-		Class<?> resourceClass = node.getResourceClass();
-		
-		
-		
-		if (resourceClass != null && !node.isLeaf()) {
+		if (resourceClass != null && !isLeaf(node)) {
 			String javaCode = org.lgna.story.implementation.alice.AliceResourceUtilties.getJavaCode(resourceClass);
 			if (javaCode != null) {
 				html.append("<br/>\n");
@@ -400,6 +472,20 @@ public class GalleryWebpageGenerator {
 				html.append("\n</pre>\n");
 			}
 		}
+		
+		return html.toString();
+	}
+	
+	private static File createClassWebpage(ResourceNode node, String basePath) {
+		String className = getHTMLName(node);
+		
+		StringBuilder html = new StringBuilder();
+		html.append(HTML_HEADER);
+		html.append("<title>"+className+"</title>\n</head>\n");
+		html.append("<body>\n");
+		
+		html.append(createClassWebpageBodyHTML(node));
+		
 		html.append(HTML_FOOTER);
 		
 		
@@ -412,16 +498,16 @@ public class GalleryWebpageGenerator {
 		return htmlFile;
 	}
 	
-	private static void createHTMLTree(ModelResourceTreeNode currentNode, String rootPath) {
+	private static void createHTMLTree(ResourceNode currentNode, String rootPath) {
 		saveThumbnailForNode(currentNode, rootPath);
-		for (ModelResourceTreeNode childNode : currentNode.childrenList()) {
-			if (childNode.isLeaf()) {
+		for (ResourceNode childNode : currentNode.getNodeChildren()) {
+			if (isLeaf(childNode)) {
 				saveThumbnailForNode(childNode, rootPath);
 			}
 		}
 		createClassWebpage(currentNode, rootPath);
-		for (ModelResourceTreeNode childNode : currentNode.childrenList()) {
-			if (!childNode.isLeaf()) {
+		for (ResourceNode childNode : currentNode.getNodeChildren()) {
+			if (!isLeaf(childNode)) {
 				createHTMLTree(childNode, rootPath);
 			}
 		}
@@ -429,16 +515,48 @@ public class GalleryWebpageGenerator {
 	
 	public static void buildGalleryWebpage(String webpageDir) {
 		org.alice.stageide.StageIDE usedOnlyForSideEffect = new org.alice.stageide.StageIDE();
-		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS.getUri() );
-		ModelResourceTreeNode galleryTree = org.lgna.story.resourceutilities.StorytellingResources.getInstance().getGalleryTree();
-		createHTMLTree(galleryTree, webpageDir);
+		org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( new org.alice.ide.uricontent.BlankSlateProjectLoader( org.alice.stageide.openprojectpane.models.TemplateUriSelectionState.Template.GRASS ) );
+		
+		StringBuilder indexPageContent = new StringBuilder();
+		ResourceNode classBasedNode = TreeUtilities.getTreeBasedOnClassHierarchy();
+		ResourceNode themeBasedNode = TreeUtilities.getTreeBasedOnTheme();
+		ResourceNode groupBasedNode = TreeUtilities.getTreeBasedOnGroup();
+		createHTMLTree(classBasedNode, webpageDir);
+		createHTMLTree(themeBasedNode, webpageDir);
+		createHTMLTree(groupBasedNode, webpageDir);
+		
+		indexPageContent.append(createClassWebpageBodyHTML(classBasedNode));
+		indexPageContent.append("<br/>\n");
+		indexPageContent.append(createClassWebpageBodyHTML(themeBasedNode));
+		indexPageContent.append("<br/>\n");
+		indexPageContent.append(createClassWebpageBodyHTML(groupBasedNode));
+
+		StringBuilder html = new StringBuilder();
+		html.append(HTML_HEADER);
+		html.append("<title>Alice 3.1 Gallery</title>\n</head>\n");
+		html.append("<body>\n");
+		html.append(indexPageContent);
+		html.append(HTML_FOOTER);
+		
+		
+		String relativeURL = "index.html";
+		File htmlFile = new File(webpageDir + "/"+relativeURL);
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary(htmlFile);
+		edu.cmu.cs.dennisc.java.io.TextFileUtilities.write(htmlFile, html.toString());
+		
+		System.out.println("\nDONE");
+		System.out.println("DONE");
+		System.out.println("DONE!!!");
+		usedOnlyForSideEffect = null;
+		System.gc();
+		
 	}
 	
 	public static void main( String[] args ) throws Exception {
 		edu.cmu.cs.dennisc.java.util.logging.Logger.setLevel( java.util.logging.Level.INFO );
-		String webpageDir = "C:/batchOutput/webpage";
+		String webpageDir = "C:/batchOutput/webpageTest";
 		FileUtilities.delete(webpageDir);
-		GalleryWebpageGenerator.buildGalleryWebpage("C:/batchOutput/webpage");
+		GalleryWebpageGenerator.buildGalleryWebpage(webpageDir);
 		
 	}
 

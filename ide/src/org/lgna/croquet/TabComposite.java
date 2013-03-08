@@ -48,7 +48,7 @@ package org.lgna.croquet;
 public interface TabComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
 	public boolean isCloseable();
 
-	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button );
+	public boolean isPotentiallyCloseable();
 
-	public void TEMPORARY_HACK_handleSelected();
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button );
 }

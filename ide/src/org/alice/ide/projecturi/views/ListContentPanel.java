@@ -46,44 +46,29 @@ package org.alice.ide.projecturi.views;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ListContentPanel<M extends org.alice.ide.projecturi.UriSelectionState> extends TabContentPanel {
-	private final M state;
-	private final java.awt.event.ActionListener refreshListener = new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			ListContentPanel.this.refreshState();
-		}
-	};
+public class ListContentPanel extends TabContentPanel {
+	private final org.lgna.croquet.components.List<java.net.URI> list;
 
-	private void refreshState() {
-		this.state.refresh();
-		this.revalidateAndRepaint();
+	public ListContentPanel( org.alice.ide.projecturi.ListUriTab tab ) {
+		super( tab );
+		this.list = tab.getListSelectionState().createList();
+		this.list.setBackgroundColor( DEFAULT_BACKGROUND_COLOR );
+		this.list.setCellRenderer( this.createListCellRenderer() );
+		this.list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
+		this.list.setVisibleRowCount( -1 );
+		this.list.enableClickingDefaultButtonOnDoubleClick();
+		this.list.setMaximumSizeClampedToPreferredSize( true );
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( this.list );
+		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		scrollPane.setVerticalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.VerticalScrollbarPolicy.AS_NEEDED );
+		this.addCenterComponent( scrollPane );
 	}
 
-	public ListContentPanel( org.lgna.croquet.AbstractTabComposite<?> composite, M state ) {
-		super( composite );
-		this.state = state;
-		org.lgna.croquet.components.List<java.net.URI> list = this.state.createList();
-		list.setBackgroundColor( null );
-		list.setCellRenderer( this.createListCellRenderer() );
-		list.setLayoutOrientation( org.lgna.croquet.components.List.LayoutOrientation.HORIZONTAL_WRAP );
-		list.setVisibleRowCount( -1 );
-		list.enableClickingDefaultButtonOnDoubleClick();
-		list.registerKeyboardAction( this.refreshListener, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F5, 0 ), Condition.WHEN_IN_FOCUSED_WINDOW );
-		this.addCenterComponent( list );
-	}
-
-	protected M getState() {
-		return this.state;
+	public org.lgna.croquet.components.List<java.net.URI> getList() {
+		return this.list;
 	}
 
 	protected javax.swing.ListCellRenderer createListCellRenderer() {
 		return new ProjectSnapshotListCellRenderer();
-	}
-
-	protected abstract String getTextForZeroProjects();
-
-	@Override
-	public java.net.URI getSelectedUri() {
-		return this.state.getValue();
 	}
 }

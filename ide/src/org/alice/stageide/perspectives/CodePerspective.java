@@ -56,6 +56,18 @@ public class CodePerspective extends AbstractCodePerspective {
 	}
 
 	private CodePerspective() {
-		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ), org.alice.stageide.perspectives.code.CodePerspectiveComposite.getInstance() );
+		super( java.util.UUID.fromString( "b48ade6a-7af7-46fa-9b31-46fb4df79ed3" ) );
+	}
+
+	public org.lgna.croquet.Composite<?> getMainComposite() {
+		return org.alice.stageide.perspectives.code.CodePerspectiveComposite.getInstance();
+	}
+
+	public org.lgna.croquet.ToolBarComposite getToolBarComposite() {
+		if( org.alice.ide.preferences.IsToolBarShowing.getValue() ) {
+			return org.alice.stageide.perspectives.code.CodeToolBarComposite.getInstance();
+		} else {
+			return null;
+		}
 	}
 }

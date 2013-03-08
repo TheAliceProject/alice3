@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creator="EA" name="CypressTree">
+    <BoundingBox>
+        <Min x="-5.2468109130859375" y="0.0" z="-5.13647985458374"/>
+        <Max x="5.2468109130859375" y="8.030850410461426" z="5.13647985458374"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags/>
+    <Resource modelName="CypressTree" resourceName="CYPRESS_TREE" textureName="CYPRESS_TREE"/>
+</AliceModel>

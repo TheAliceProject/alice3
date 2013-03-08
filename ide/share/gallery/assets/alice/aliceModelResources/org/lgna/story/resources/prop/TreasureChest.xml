@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2011" creator="Laura Paoletti" name="TreasureChest">
+    <BoundingBox>
+        <Min x="-0.7566548883914948" y="0.0" z="-0.4661484509706497"/>
+        <Max x="0.7566548883914948" y="1.126922161579131" z="0.4661484509706497"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>underwater</Tag>
+        <Tag>treasure</Tag>
+        <Tag>booty</Tag>
+        <Tag>look</Tag>
+        <Tag>pirate</Tag>
+        <Tag>chest</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>props</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>ocean</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="TreasureChest" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

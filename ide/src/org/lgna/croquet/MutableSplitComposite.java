@@ -68,14 +68,14 @@ public abstract class MutableSplitComposite extends AbstractSplitComposite<org.l
 	public void setLeadingComposite( Composite<?> leadingComposite ) {
 		if( this.leadingComposite != leadingComposite ) {
 			this.leadingComposite = leadingComposite;
-			this.getView().setLeadingComponent( this.leadingComposite != null ? this.leadingComposite.getView() : null );
+			this.getView().setLeadingComponent( this.leadingComposite != null ? this.leadingComposite.getRootComponent() : null );
 		}
 	}
 
 	public void setTrailingComposite( Composite<?> trailingComposite ) {
 		if( this.trailingComposite != trailingComposite ) {
 			this.trailingComposite = trailingComposite;
-			this.getView().setTrailingComponent( this.trailingComposite != null ? this.trailingComposite.getView() : null );
+			this.getView().setTrailingComponent( this.trailingComposite != null ? this.trailingComposite.getRootComponent() : null );
 		}
 	}
 

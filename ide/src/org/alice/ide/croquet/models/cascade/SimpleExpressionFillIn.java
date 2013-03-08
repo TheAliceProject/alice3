@@ -49,10 +49,12 @@ package org.alice.ide.croquet.models.cascade;
 @Deprecated
 public class SimpleExpressionFillIn<E extends org.lgna.project.ast.Expression> extends org.alice.ide.croquet.models.cascade.ExpressionFillInWithoutBlanks<E> {
 	private final E transientValue;
+	private final boolean isLeadingIconDesired;
 
-	public SimpleExpressionFillIn( E value ) {
+	public SimpleExpressionFillIn( E value, boolean isLeadingIconDesired ) {
 		super( java.util.UUID.fromString( "7479f074-b5f1-4c72-96da-5ebc3c547db5" ) );
 		this.transientValue = value;
+		this.isLeadingIconDesired = true;
 	}
 
 	@Override
@@ -63,6 +65,32 @@ public class SimpleExpressionFillIn<E extends org.lgna.project.ast.Expression> e
 	@Override
 	public E getTransientValue( org.lgna.croquet.cascade.ItemNode<? super E, Void> node ) {
 		return this.transientValue;
+	}
+
+	@Override
+	protected javax.swing.Icon getLeadingIcon( org.lgna.croquet.cascade.ItemNode<? super E, java.lang.Void> step ) {
+		if( this.isLeadingIconDesired ) {
+			if( this.transientValue instanceof org.lgna.project.ast.FieldAccess ) {
+				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)this.transientValue;
+				org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+				if( field instanceof org.lgna.project.ast.UserField ) {
+					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
+					org.lgna.project.ast.AbstractType<?, ?, ?> type = userField.getValueType();
+					if( type != null ) {
+						if( type.isAssignableTo( org.lgna.story.SThing.class ) ) {
+							java.awt.Dimension size = new java.awt.Dimension( 24, 18 );
+							org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForField( userField );
+							if( iconFactory != null ) {
+								return iconFactory.getIcon( size );
+							} else {
+								return org.lgna.croquet.icon.EmptyIconFactory.getInstance().getIcon( size );
+							}
+						}
+					}
+				}
+			}
+		}
+		return super.getLeadingIcon( step );
 	}
 
 	@Override

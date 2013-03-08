@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2012" creator="Laura Paoletti" name="IceMountain">
+    <BoundingBox>
+        <Min x="-3.801686465740204" y="0.0" z="-4.111785888671875"/>
+        <Max x="3.801686465740204" y="7.168438465595244" z="4.111785888671875"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>snow</Tag>
+        <Tag>mountain</Tag>
+        <Tag>peak. cave</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>scenery</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>*snow</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="IceMountain" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

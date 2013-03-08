@@ -68,13 +68,31 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 		this.composite = composite;
 	}
 
+	@Override
+	protected void initialize() {
+		this.composite.initializeIfNecessary();
+		super.initialize();
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.composite.clobberLocalizationIfDesired( this );
+	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return this.composite.isToolBarTextClobbered( super.isToolBarTextClobbered() );
+	}
+
 	public OperationOwningComposite getComposite() {
 		return this.composite;
 	}
 
 	@Override
-	protected java.lang.Class<? extends org.lgna.croquet.Element> getClassUsedForLocalization() {
-		return this.composite.getClass();
+	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
+		//todo
+		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
 	}
 
 	@Override

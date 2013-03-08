@@ -45,7 +45,7 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceFillIn extends org.lgna.croquet.CascadeFillIn<ResourceNode, Void> {
+public class ResourceFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<ResourceNode, Void> {
 	private final ResourceNode resourceNode;
 
 	public ResourceFillIn( ResourceNode resourceNode ) {

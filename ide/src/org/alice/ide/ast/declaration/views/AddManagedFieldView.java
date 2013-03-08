@@ -50,37 +50,16 @@ public class AddManagedFieldView extends AddFieldView {
 		super( composite );
 	}
 
-	protected org.lgna.croquet.components.JComponent<?> createPropertiesSidePanel() {
-		return null;
-	}
-
 	@Override
 	protected org.lgna.croquet.components.BorderPanel createMainComponent() {
 		org.lgna.croquet.components.BorderPanel rv = super.createMainComponent();
 		org.alice.ide.ast.declaration.AddManagedFieldComposite composite = (org.alice.ide.ast.declaration.AddManagedFieldComposite)this.getComposite();
-		final java.util.List<org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression>> states = composite.getInitialPropertyValueExpressionStates();
-		if( states.size() > 0 ) {
-			final org.alice.ide.x.AstI18nFactory factory = org.alice.ide.x.PreviewAstI18nFactory.getInstance();
-			org.lgna.croquet.components.FormPanel propertiesPanel = new org.lgna.croquet.components.FormPanel() {
-				@Override
-				protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-					for( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> state : states ) {
-						rows.add( new org.lgna.croquet.components.LabeledFormRow( state.getSidekickLabel(), new org.alice.ide.croquet.components.ExpressionDropDown( state, factory ) ) );
-					}
-				}
-			};
-
-			org.lgna.croquet.components.JComponent<?> propertiesSidePanel = this.createPropertiesSidePanel();
-
-			org.lgna.croquet.components.JComponent<?> component;
-			if( propertiesSidePanel != null ) {
-				component = new org.lgna.croquet.components.BorderPanel.Builder().center( propertiesPanel ).lineEnd( propertiesSidePanel ).build();
-			} else {
-				component = propertiesPanel;
-			}
-			org.lgna.croquet.components.ToolPalette toolPalette = composite.getInitialPropertyValuesExpandedState().createToolPalette( component );
-
-			rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPalette ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
+		if( composite.getInitialPropertyValuesToolPaletteCoreComposite().getInitialPropertyValueExpressionStateCount() > 0 ) {
+			org.lgna.croquet.components.ToolPaletteView toolPaletteView = composite.getInitialPropertyValuesToolPaletteCoreComposite().getOuterComposite().getView();
+			toolPaletteView.getTitle().setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
+			//rv.addCenterComponent( new org.lgna.croquet.components.BorderPanel.Builder().center( toolPaletteView ).pageStart( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 24 ) ).pageEnd( org.lgna.croquet.components.BoxUtilities.createVerticalSliver( 16 ) ).build() );
+			toolPaletteView.setBackgroundColor( this.getBackgroundColor() );
+			rv.addCenterComponent( toolPaletteView );
 		}
 		return rv;
 	}

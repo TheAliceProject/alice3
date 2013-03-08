@@ -56,6 +56,8 @@ public abstract class SplitPane extends AbstractSplitPane<org.lgna.croquet.Immut
 		org.lgna.croquet.ImmutableSplitComposite composite = this.getComposite();
 		org.lgna.croquet.Composite<?> leadingComposite = composite.getLeadingComposite();
 		org.lgna.croquet.Composite<?> trailingComposite = composite.getTrailingComposite();
-		return new javax.swing.JSplitPane( orientation, leadingComposite != null ? leadingComposite.getView().getAwtComponent() : null, trailingComposite != null ? trailingComposite.getView().getAwtComponent() : null );
+		javax.swing.JSplitPane rv = new javax.swing.JSplitPane( orientation, leadingComposite != null ? leadingComposite.getRootComponent().getAwtComponent() : null, trailingComposite != null ? trailingComposite.getRootComponent().getAwtComponent() : null );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		return rv;
 	}
 }

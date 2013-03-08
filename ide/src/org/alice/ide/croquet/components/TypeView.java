@@ -52,7 +52,13 @@ public class TypeView<T extends org.lgna.project.ast.AbstractType<?, ?, ?>> exte
 		}
 
 		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
-			TypeView.this.getAwtComponent().setIcon( org.alice.ide.common.TypeIcon.getInstance( nextValue ) );
+			org.lgna.project.ast.AbstractType<?, ?, ?> type;
+			if( isArray ) {
+				type = nextValue.getArrayType();
+			} else {
+				type = nextValue;
+			}
+			TypeView.this.getAwtComponent().setIcon( org.alice.ide.common.TypeIcon.getInstance( type ) );
 		}
 	};
 	private final boolean isArray;

@@ -47,7 +47,7 @@ import org.lgna.croquet.components.Dialog;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DialogOperation extends SingleThreadOperation {
+public abstract class DialogOperation extends Operation {
 	protected static final Group DIALOG_IMPLEMENTATION_GROUP = Group.getInstance( java.util.UUID.fromString( "35b47d9d-d17b-4862-ac22-5ece4e317242" ), "DIALOG_IMPLEMENTATION_GROUP" );
 	protected static final Group ENCLOSING_DIALOG_GROUP = Group.getInstance( java.util.UUID.fromString( "8dc8d3e5-9153-423e-bf1b-caa94597f57c" ), "ENCLOSING_DIALOG_GROUP" );
 
@@ -85,6 +85,12 @@ public abstract class DialogOperation extends SingleThreadOperation {
 
 	protected boolean isClearedToClose( Dialog dialog ) {
 		return true;
+	}
+
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+	}
+
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 	}
 
 	protected void handleClosing() {
@@ -143,7 +149,9 @@ public abstract class DialogOperation extends SingleThreadOperation {
 				}
 
 				dialog.setTitle( this.getDialogTitle( step ) );
+				this.handlePreShowDialog( step );
 				dialog.setVisible( true );
+				this.handlePostHideDialog( step );
 				this.handleClosing();
 				this.releaseContentPane( step, dialog, contentPane );
 				dialog.dispose();

@@ -45,7 +45,7 @@ package org.alice.stageide.croquet.models.sceneditor;
 
 import org.lgna.project.ast.UserField;
 
-public class ObjectMarkerFieldListSelectionState extends org.lgna.croquet.DefaultListSelectionState<UserField> {
+public class ObjectMarkerFieldListSelectionState extends org.lgna.croquet.MutableDataListSelectionState<UserField> {
 	private static class SingletonHolder {
 		private static ObjectMarkerFieldListSelectionState instance = new ObjectMarkerFieldListSelectionState();
 	}

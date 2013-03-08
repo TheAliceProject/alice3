@@ -45,9 +45,21 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public enum EmptyIconFactory implements IconFactory {
-	SINGLETON;
-	public javax.swing.Icon getIcon( final java.awt.Dimension size ) {
+public class EmptyIconFactory extends ResolutionIndependantIconFactory {
+	private static class SingletonHolder {
+		private static EmptyIconFactory instance = new EmptyIconFactory();
+	}
+
+	public static EmptyIconFactory getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private EmptyIconFactory() {
+		super( IsCachingDesired.FALSE );
+	}
+
+	@Override
+	protected javax.swing.Icon createIcon( final java.awt.Dimension size ) {
 		return new javax.swing.Icon() {
 			public int getIconWidth() {
 				return size.width;
@@ -62,7 +74,13 @@ public enum EmptyIconFactory implements IconFactory {
 		};
 	}
 
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		return sizeIfResolutionIndependent;
+	@Override
+	public java.awt.Dimension getTrimmedSizeForWidth( int width ) {
+		return new java.awt.Dimension( width, 0 );
+	}
+
+	@Override
+	public java.awt.Dimension getTrimmedSizeForHeight( int height ) {
+		return new java.awt.Dimension( 0, height );
 	}
 }

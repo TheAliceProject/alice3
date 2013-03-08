@@ -45,7 +45,20 @@ package org.alice.ide.member;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.ide.member.views.MemberTabView> {
+public abstract class MemberTabComposite<V extends org.alice.ide.member.views.MemberTabView> extends MemberOrControlFlowTabComposite<V> {
+	public static boolean ARE_TOOL_PALETTES_INERT = true;
+
+	public static boolean getExpandedAccountingForInert( boolean isExpanded ) {
+		if( ARE_TOOL_PALETTES_INERT ) {
+			return true;
+		} else {
+			return isExpanded;
+		}
+	}
+
+	protected static final String GROUP_BY_CATEGORY = "group by category";
+	protected static final String SORT_ALPHABETICALLY = "sort alphabetically";
+
 	public static org.alice.ide.member.MethodsSubComposite SEPARATOR = null;
 
 	protected static boolean isInclusionDesired( org.lgna.project.ast.AbstractMember member ) {
@@ -68,7 +81,21 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 		}
 	}
 
-	private org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactorySelectionObserver = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+	private class InstanceFactoryListener implements org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> {
+		private boolean isActive;
+
+		public boolean isActive() {
+			return this.isActive;
+		}
+
+		public void setActive( boolean isActive ) {
+			this.isActive = isActive;
+		}
+
+		private void repaintTitlesIfNecessary() {
+
+		}
+
 		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 
@@ -76,18 +103,56 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 			if( isAdjusting ) {
 				//pass
 			} else {
-				MemberTabComposite.this.handleInstanceFactoryChanged( prevValue, nextValue );
+				if( this.isActive ) {
+					MemberTabComposite.this.refreshContentsLater();
+				}
+				MemberTabComposite.this.repaintTitles();
 			}
+		}
+	}
+
+	private final InstanceFactoryListener instanceFactoryListener = new InstanceFactoryListener();
+
+	private final org.lgna.croquet.State.ValueListener<String> sortListener = new org.lgna.croquet.State.ValueListener<String>() {
+		public void changing( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+			MemberTabComposite.this.getView().refreshLater();
 		}
 	};
 
+	private final java.util.List<javax.swing.JComponent> jTitlesInNeedOfRepaintWhenInstanceFactoryChanges = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	public MemberTabComposite( java.util.UUID migrationId ) {
-		super( migrationId, IsCloseable.FALSE );
-		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: handlePreActivation tab composites" );
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactorySelectionObserver );
+		super( migrationId );
 	}
 
-	private void handleInstanceFactoryChanged( org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue ) {
+	@Override
+	protected void initialize() {
+		super.initialize();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addValueListener( this.instanceFactoryListener );
+	}
+
+	public abstract org.lgna.croquet.ListSelectionState<String> getSortState();
+
+	@Override
+	protected final org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
+
+	private void repaintTitles() {
+		try {
+			for( javax.swing.JComponent jComponent : this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges ) {
+				jComponent.repaint();
+			}
+		} catch( Throwable t ) {
+			// deemed not worth an exception
+			t.printStackTrace();
+		}
+	}
+
+	private void refreshContentsLater() {
 		for( MethodsSubComposite subComposite : this.getSubComposites() ) {
 			if( subComposite != null ) {
 				subComposite.getView().refreshLater();
@@ -96,5 +161,128 @@ public abstract class MemberTabComposite extends org.lgna.croquet.SimpleTabCompo
 		this.getView().refreshLater();
 	}
 
-	public abstract java.util.List<MethodsSubComposite> getSubComposites();
+	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
+
+	protected abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategorySubComposites();
+
+	protected abstract java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> getPotentialCategoryOrAlphabeticalSubComposites();
+
+	protected abstract UserMethodsSubComposite getUserMethodsSubComposite( org.lgna.project.ast.NamedUserType type );
+
+	protected abstract UnclaimedJavaMethodsComposite getUnclaimedJavaMethodsComposite();
+
+	public java.util.List<org.alice.ide.member.MethodsSubComposite> getSubComposites() {
+		java.util.List<org.alice.ide.member.MethodsSubComposite> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+		java.util.List<org.lgna.project.ast.JavaMethod> javaMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		if( instanceFactory != null ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+			while( type != null ) {
+				if( type instanceof org.lgna.project.ast.NamedUserType ) {
+					org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+					rv.add( this.getUserMethodsSubComposite( namedUserType ) );
+				} else if( type instanceof org.lgna.project.ast.JavaType ) {
+					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
+					for( org.lgna.project.ast.JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
+						if( this.isAcceptable( javaMethod ) ) {
+							if( isInclusionDesired( javaMethod ) ) {
+								javaMethods.add( javaMethod );
+							}
+						}
+					}
+				}
+				if( type.isFollowToSuperClassDesired() ) {
+					type = type.getSuperType();
+				} else {
+					break;
+				}
+			}
+		}
+
+		if( rv.size() > 0 ) {
+			rv.add( SEPARATOR );
+		}
+
+		String sortValue = this.getSortState().getValue();
+		if( SORT_ALPHABETICALLY.equals( sortValue ) ) {
+			//todo
+		} else {
+			java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategorySubComposites();
+			for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
+				java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+				java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaMethods.listIterator();
+				while( methodIterator.hasNext() ) {
+					org.lgna.project.ast.JavaMethod method = methodIterator.next();
+					if( potentialSubComposite.isAcceptingOf( method ) ) {
+						acceptedMethods.add( method );
+						methodIterator.remove();
+					}
+				}
+
+				if( acceptedMethods.size() > 0 ) {
+					potentialSubComposite.sortAndSetMethods( acceptedMethods );
+					rv.add( potentialSubComposite );
+				}
+			}
+		}
+
+		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> postSubComposites = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
+		java.util.List<org.alice.ide.member.FilteredJavaMethodsSubComposite> potentialSubComposites = this.getPotentialCategoryOrAlphabeticalSubComposites();
+		for( FilteredJavaMethodsSubComposite potentialSubComposite : potentialSubComposites ) {
+			java.util.List<org.lgna.project.ast.JavaMethod> acceptedMethods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.ListIterator<org.lgna.project.ast.JavaMethod> methodIterator = javaMethods.listIterator();
+			while( methodIterator.hasNext() ) {
+				org.lgna.project.ast.JavaMethod method = methodIterator.next();
+				if( potentialSubComposite.isAcceptingOf( method ) ) {
+					acceptedMethods.add( method );
+					methodIterator.remove();
+				}
+			}
+
+			if( acceptedMethods.size() > 0 ) {
+				potentialSubComposite.sortAndSetMethods( acceptedMethods );
+				postSubComposites.add( potentialSubComposite );
+			}
+		}
+
+		if( javaMethods.size() > 0 ) {
+			UnclaimedJavaMethodsComposite unclaimedJavaMethodsComposite = this.getUnclaimedJavaMethodsComposite();
+			unclaimedJavaMethodsComposite.sortAndSetMethods( javaMethods );
+			rv.add( unclaimedJavaMethodsComposite );
+		}
+
+		rv.addAll( postSubComposites );
+
+		return rv;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		this.instanceFactoryListener.setActive( true );
+		this.getSortState().addValueListener( this.sortListener );
+		this.refreshContentsLater();
+		this.repaintTitles();
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		this.getSortState().removeValueListener( this.sortListener );
+		this.instanceFactoryListener.setActive( false );
+		super.handlePostDeactivation();
+	}
+
+	@Override
+	public void customizeTitleComponentAppearance( org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		super.customizeTitleComponentAppearance( button );
+		final boolean IS_ICON_DESIRED = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() == false;
+		if( IS_ICON_DESIRED ) {
+			button.getAwtComponent().setIcon( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
+			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
+			this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges.add( button.getAwtComponent() );
+		}
+	}
 }

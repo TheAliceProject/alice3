@@ -50,6 +50,6 @@ public class LocalPane extends TransientPane {
 		super( org.alice.ide.ast.draganddrop.expression.LocalAccessDragModel.getInstance( local ) );
 		this.addComponent( new org.alice.ide.ast.components.LocalValidNameLabel( local ) );
 		this.setPopupPrepModel( org.alice.ide.croquet.models.ast.LocalMenuModel.getInstance( local ).getPopupPrepModel() );
-		this.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getColorFor( org.lgna.project.ast.LocalAccess.class ) );
+		this.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getColorFor( org.lgna.project.ast.LocalAccess.class ) );
 	}
 }

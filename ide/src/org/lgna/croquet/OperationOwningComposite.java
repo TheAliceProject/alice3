@@ -50,6 +50,8 @@ public interface OperationOwningComposite<V extends org.lgna.croquet.components.
 
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
+	public boolean isToolBarTextClobbered( boolean defaultValue );
+
 	public boolean isSubTransactionHistoryRequired();
 
 	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
@@ -59,4 +61,6 @@ public interface OperationOwningComposite<V extends org.lgna.croquet.components.
 	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException;
 
 	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
+
+	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation );
 }

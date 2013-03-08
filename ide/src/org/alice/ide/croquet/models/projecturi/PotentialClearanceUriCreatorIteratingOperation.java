@@ -46,14 +46,24 @@ package org.alice.ide.croquet.models.projecturi;
  * @author Dennis Cosgrove
  */
 public abstract class PotentialClearanceUriCreatorIteratingOperation extends UriPotentialClearanceIteratingOperation {
-	public PotentialClearanceUriCreatorIteratingOperation( java.util.UUID migrationId, org.lgna.croquet.ValueCreator<java.net.URI> uriCreator ) {
-		super( migrationId, uriCreator );
+	private final boolean isNew;
+
+	public PotentialClearanceUriCreatorIteratingOperation( java.util.UUID migrationId, boolean isNew ) {
+		super( migrationId, org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().getValueCreator() );
+		this.isNew = isNew;
 	}
 
 	@Override
-	protected java.net.URI getURI( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
+	protected java.util.Iterator<org.lgna.croquet.Model> createIteratingData() {
+		java.util.Iterator<org.lgna.croquet.Model> rv = super.createIteratingData();
+		org.alice.ide.projecturi.SelectProjectUriComposite.getInstance().selectAppropriateTab( this.isNew );
+		return rv;
+	}
+
+	@Override
+	protected org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
 		if( subSteps.size() > 0 ) {
-			return (java.net.URI)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+			return (org.alice.ide.uricontent.UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
 		} else {
 			return null;
 		}

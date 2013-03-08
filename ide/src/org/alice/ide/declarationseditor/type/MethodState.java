@@ -47,21 +47,7 @@ package org.alice.ide.declarationseditor.type;
  * @author Dennis Cosgrove
  */
 public abstract class MethodState extends FilteredMemberState<org.lgna.project.ast.UserMethod> {
-	public MethodState( java.util.UUID id, org.lgna.project.ast.NamedUserType type ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, id, org.lgna.project.ast.UserMethod.class, type.methods );
-	}
-
-	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserMethod value ) {
-		org.lgna.project.ast.AccessLevel accessLevel = value.getAccessLevel();
-		if( accessLevel == org.lgna.project.ast.AccessLevel.PRIVATE ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPrivateUserMethods.getInstance().getValue();
-		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PROTECTED ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingProtectedUserMethods.getInstance().getValue();
-		} else if( accessLevel == org.lgna.project.ast.AccessLevel.PACKAGE ) {
-			return org.alice.ide.croquet.models.ui.preferences.IsIncludingPackagePrivateUserMethods.getInstance().getValue();
-		} else {
-			return true;
-		}
+	public MethodState( java.util.UUID id, org.alice.ide.declarationseditor.type.data.MethodData data ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP, id, data );
 	}
 }

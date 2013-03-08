@@ -127,10 +127,10 @@ public class IdeHighlightStencil extends HighlightStencil {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
-						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
-						for( javax.swing.AbstractButton jButton : jButtons ) {
+						java.util.List<javax.swing.JPanel> jPanels = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.JPanel.class );
+						for( javax.swing.JPanel jPanel : jPanels ) {
 							org.lgna.project.ast.Statement candidate = null;
-							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jButton );
+							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPanel );
 							if( component instanceof org.alice.ide.common.AbstractStatementPane ) {
 								org.alice.ide.common.AbstractStatementPane statementPane = (org.alice.ide.common.AbstractStatementPane)component;
 								candidate = statementPane.getStatement();
@@ -184,10 +184,10 @@ public class IdeHighlightStencil extends HighlightStencil {
 					org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().getValue();
 					if( declarationComposite != null ) {
 						org.alice.ide.declarationseditor.components.DeclarationView view = declarationComposite.getView();
-						java.util.List<javax.swing.AbstractButton> jButtons = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.AbstractButton.class );
-						for( javax.swing.AbstractButton jButton : jButtons ) {
+						java.util.List<javax.swing.JPanel> jPanels = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( view.getAwtComponent(), javax.swing.JPanel.class );
+						for( javax.swing.JPanel jPanel : jPanels ) {
 							org.lgna.project.ast.Statement candidate = null;
-							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jButton );
+							org.lgna.croquet.components.Component<?> component = org.lgna.croquet.components.Component.lookup( jPanel );
 							if( component instanceof org.alice.ide.common.AbstractStatementPane ) {
 								org.alice.ide.common.AbstractStatementPane statementPane = (org.alice.ide.common.AbstractStatementPane)component;
 								candidate = statementPane.getStatement();

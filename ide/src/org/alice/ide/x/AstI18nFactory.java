@@ -57,14 +57,18 @@ public abstract class AstI18nFactory extends I18nFactory {
 		return paint;
 	}
 
-	public org.lgna.croquet.components.JComponent<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.Component<?> prefixPane ) {
+	protected org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade getArgumentCascade( org.lgna.project.ast.SimpleArgument simpleArgument ) {
+		return org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( simpleArgument );
+	}
+
+	public org.lgna.croquet.components.JComponent<?> createArgumentPane( org.lgna.project.ast.AbstractArgument argument, org.lgna.croquet.components.JComponent<?> prefixPane ) {
 		if( argument instanceof org.lgna.project.ast.SimpleArgument ) {
 			org.lgna.project.ast.SimpleArgument simpleArgument = (org.lgna.project.ast.SimpleArgument)argument;
 			org.lgna.project.ast.ExpressionProperty expressionProperty = simpleArgument.expression;
 			org.lgna.project.ast.Expression expression = expressionProperty.getValue();
 			org.lgna.croquet.components.JComponent<?> rv = new org.alice.ide.x.components.ExpressionPropertyView( this, expressionProperty );
 			if( org.alice.ide.IDE.getActiveInstance().isDropDownDesiredFor( expression ) ) {
-				org.alice.ide.croquet.models.ast.cascade.ArgumentCascade model = org.alice.ide.croquet.models.ast.cascade.ArgumentCascade.getInstance( simpleArgument );
+				org.alice.ide.croquet.models.ast.cascade.ExpressionPropertyCascade model = this.getArgumentCascade( simpleArgument );
 				org.alice.ide.codeeditor.ExpressionPropertyDropDownPane expressionPropertyDropDownPane = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( model.getRoot().getPopupPrepModel(), prefixPane, rv, expressionProperty );
 				rv = expressionPropertyDropDownPane;
 			}

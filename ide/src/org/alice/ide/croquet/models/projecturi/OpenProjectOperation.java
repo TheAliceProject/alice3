@@ -55,6 +55,17 @@ public class OpenProjectOperation extends PotentialClearanceUriCreatorIteratingO
 	}
 
 	private OpenProjectOperation() {
-		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), new org.alice.ide.projecturi.SelectExistingProjectWithPreviewComposite().getValueCreator() );
+		super( java.util.UUID.fromString( "89b65a9c-f36a-44ba-8aed-c2922d40f297" ), false );
+	}
+
+	@Override
+	protected void localize() {
+		super.localize();
+		this.setButtonIcon( org.alice.ide.icons.Icons.OPEN_DOCUMENT_SMALL );
+	}
+
+	@Override
+	public boolean isToolBarTextClobbered() {
+		return true;
 	}
 }

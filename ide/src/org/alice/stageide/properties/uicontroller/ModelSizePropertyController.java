@@ -380,7 +380,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		depthField.setEnabled( hasZ );
 		depthField.setEditable( hasZ );
 
-		IsAllScaleLinkedState.getInstance().setValue( hasLinkAll );
+		IsAllScaleLinkedState.getInstance().setValueTransactionlessly( hasLinkAll );
 		boolean enableLinkAll = ( hasIndependentX && hasLinkYZ ) ||
 				( hasIndependentY && hasLinkXZ ) ||
 				( hasIndependentZ && hasLinkXY ) ||
@@ -389,15 +389,15 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 
 		boolean enableXYLink = hasIndependentX && hasIndependentY;
 		IsXYScaleLinkedState.getInstance().setEnabled( enableXYLink );
-		IsXYScaleLinkedState.getInstance().setValue( hasLinkXY && ( !hasLinkAll || !enableXYLink ) );
+		IsXYScaleLinkedState.getInstance().setValueTransactionlessly( hasLinkXY && ( !hasLinkAll || !enableXYLink ) );
 
 		boolean enableXZLink = hasIndependentX && hasIndependentZ;
 		IsXZScaleLinkedState.getInstance().setEnabled( enableXZLink );
-		IsXZScaleLinkedState.getInstance().setValue( hasLinkXZ && ( !hasLinkAll || !enableXZLink ) );
+		IsXZScaleLinkedState.getInstance().setValueTransactionlessly( hasLinkXZ && ( !hasLinkAll || !enableXZLink ) );
 
 		boolean enableYZLink = hasIndependentY && hasIndependentZ;
 		IsYZScaleLinkedState.getInstance().setEnabled( enableYZLink );
-		IsYZScaleLinkedState.getInstance().setValue( hasLinkYZ && ( !hasLinkAll || !enableYZLink ) );
+		IsYZScaleLinkedState.getInstance().setValueTransactionlessly( hasLinkYZ && ( !hasLinkAll || !enableYZLink ) );
 
 		isUpdatingState = false;
 		setResetButton();
@@ -544,24 +544,24 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 			isUpdatingState = true;
 			if( nextValue ) {
 				if( state == IsAllScaleLinkedState.getInstance() ) {
-					IsXYScaleLinkedState.getInstance().setValue( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
-					IsXZScaleLinkedState.getInstance().setValue( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
-					IsYZScaleLinkedState.getInstance().setValue( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
+					IsXYScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
+					IsXZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
+					IsYZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
 				}
 				else if( state == IsXYScaleLinkedState.getInstance() ) {
-					IsAllScaleLinkedState.getInstance().setValue( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
-					IsXZScaleLinkedState.getInstance().setValue( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
-					IsYZScaleLinkedState.getInstance().setValue( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
+					IsAllScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
+					IsXZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
+					IsYZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
 				}
 				else if( state == IsXZScaleLinkedState.getInstance() ) {
-					IsAllScaleLinkedState.getInstance().setValue( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
-					IsXYScaleLinkedState.getInstance().setValue( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
-					IsYZScaleLinkedState.getInstance().setValue( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
+					IsAllScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
+					IsXYScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
+					IsYZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsYZScaleLinkedState.getInstance().isEnabled() );
 				}
 				else if( state == IsYZScaleLinkedState.getInstance() ) {
-					IsAllScaleLinkedState.getInstance().setValue( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
-					IsXZScaleLinkedState.getInstance().setValue( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
-					IsXYScaleLinkedState.getInstance().setValue( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
+					IsAllScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsAllScaleLinkedState.getInstance().isEnabled() );
+					IsXZScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXZScaleLinkedState.getInstance().isEnabled() );
+					IsXYScaleLinkedState.getInstance().setValueTransactionlessly( false || !IsXYScaleLinkedState.getInstance().isEnabled() );
 				}
 			}
 			isUpdatingState = false;

@@ -64,17 +64,30 @@ public class IconFactoryManager {
 		return setOfClassesWithIcons;
 	}
 
-	private static javax.swing.ImageIcon getIcon( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
-		Class<?> cls = type.getFirstEncounteredJavaType().getClassReflectionProxy().getReification();
+	private static javax.swing.ImageIcon getIcon( Class<?> cls, boolean isSmall ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "images/" );
 		sb.append( cls.getName().replace( ".", "/" ) );
+		if( isSmall ) {
+			sb.append( "_small" );
+		}
 		sb.append( ".png" );
 		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel.class.getResource( sb.toString() ) );
 	}
 
-	private static javax.swing.ImageIcon getIcon( Class<?> cls ) {
-		return getIcon( org.lgna.project.ast.JavaType.getInstance( cls ) );
+	private static java.util.Map<Class<? extends org.lgna.story.resources.ModelResource>, javax.swing.ImageIcon> mapClsToSmallImageIcon = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+
+	public static javax.swing.ImageIcon getSmallImageIconFor( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
+		synchronized( mapClsToSmallImageIcon ) {
+			javax.swing.ImageIcon rv = mapClsToSmallImageIcon.get( cls );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = getIcon( cls, true );
+				mapClsToSmallImageIcon.put( cls, rv );
+			}
+			return rv;
+		}
 	}
 
 	private static abstract class UrlResourceDeclaration implements ResourceDeclaration {
@@ -89,21 +102,44 @@ public class IconFactoryManager {
 				//pass
 			} else {
 				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
-					javax.swing.ImageIcon imageIcon = getIcon( modelResourceCls );
-					return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
+					javax.swing.ImageIcon imageIcon = getIcon( modelResourceCls, false );
+					//return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
+					return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
 				}
 			}
+			//			if( modelResourceName != null ) {
+			//				//pass
+			//			} else {
+			//				if( modelResourceCls.isEnum() ) {
+			//					org.lgna.story.resources.ModelResource[] constants = modelResourceCls.getEnumConstants();
+			//					if( constants.length > 1 ) {
+			//						int MAXIMUM_CONSTANTS_TO_USE = 5;
+			//						java.util.List<org.lgna.croquet.icon.IconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( Math.min( constants.length, MAXIMUM_CONSTANTS_TO_USE ) );
+			//
+			//						java.util.List<org.lgna.story.resources.ModelResource> sortedConstants = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( constants );
+			//						java.util.Collections.sort( sortedConstants, new Comparator<org.lgna.story.resources.ModelResource>() {
+			//							public int compare( org.lgna.story.resources.ModelResource o1, org.lgna.story.resources.ModelResource o2 ) {
+			//								return o1.toString().compareTo( o2.toString() );
+			//							}
+			//						} );
+			//						int i = 0;
+			//						for( org.lgna.story.resources.ModelResource constant : sortedConstants ) {
+			//							iconFactories.add( getIconFactoryForResourceInstance( constant ) );
+			//							i += 1;
+			//							if( i == MAXIMUM_CONSTANTS_TO_USE ) {
+			//								break;
+			//							}
+			//						}
+			//						return new EnumConstantsIconFactory( iconFactories );
+			//					}
+			//				}
+			//			}
 			java.net.URL url = org.lgna.story.implementation.alice.AliceResourceUtilties.getThumbnailURL( modelResourceCls, modelResourceName );
 			if( url != null ) {
-				org.lgna.croquet.icon.IconFactory iconFactory = new org.lgna.croquet.icon.ImageIconFactory( url );
-				if( modelResourceName != null ) {
-					return iconFactory;
-				} else {
-					return new FolderIconFactory( iconFactory );
-				}
+				return new org.lgna.croquet.icon.TrimmedImageIconFactory( url, 160, 120 );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( modelResourceCls, modelResourceName );
-				return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+				return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 			}
 		}
 	}
@@ -193,11 +229,18 @@ public class IconFactoryManager {
 			if( this.instance instanceof org.lgna.story.resources.sims2.PersonResource ) {
 				org.lgna.story.resources.sims2.PersonResource personResource = (org.lgna.story.resources.sims2.PersonResource)this.instance;
 				try {
-					java.awt.image.BufferedImage image = org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance().createThumbnailFromPersonResource( personResource );
-					return new org.lgna.croquet.icon.ImageIconFactory( image );
+					org.lgna.story.resourceutilities.AliceThumbnailMaker thumbnailMaker = org.lgna.story.resourceutilities.AliceThumbnailMaker.getInstance();
+					java.awt.image.BufferedImage image = thumbnailMaker.createThumbnailFromPersonResource( personResource );
+					int width = thumbnailMaker.getWidth();
+					int height = thumbnailMaker.getHeight();
+					if( ( width == image.getWidth() ) && ( height == image.getHeight() ) ) {
+						return new org.lgna.croquet.icon.ImageIconFactory( image );
+					} else {
+						return new org.lgna.croquet.icon.TrimmedImageIconFactory( image, width, height );
+					}
 				} catch( Throwable t ) {
 					t.printStackTrace();
-					return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+					return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 				}
 			} else {
 				return null;
@@ -372,7 +415,7 @@ public class IconFactoryManager {
 				}
 			}
 		}
-		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+		return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 	}
 
 	public static org.lgna.croquet.icon.IconFactory getIconFactoryForField( org.lgna.project.ast.UserField userField ) {
@@ -398,7 +441,7 @@ public class IconFactoryManager {
 			}
 			return getIconFactoryForType( userField.getValueType() );
 		}
-		return org.lgna.croquet.icon.EmptyIconFactory.SINGLETON;
+		return org.lgna.croquet.icon.EmptyIconFactory.getInstance();
 	}
 
 	public static org.lgna.croquet.icon.IconFactory getIconFactoryForCameraMarker( org.lgna.story.Color color ) {

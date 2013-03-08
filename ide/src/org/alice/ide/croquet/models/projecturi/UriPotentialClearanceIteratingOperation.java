@@ -50,19 +50,19 @@ public abstract class UriPotentialClearanceIteratingOperation extends PotentialC
 		super( org.alice.ide.ProjectApplication.URI_GROUP, migrationId, postClearanceModel );
 	}
 
-	protected abstract java.net.URI getURI( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps );
+	protected abstract org.alice.ide.uricontent.UriProjectLoader getUriProjectLoader( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps );
 
 	@Override
 	protected final void handleSuccessfulCompletionOfSubModels( org.lgna.croquet.history.CompletionStep<?> step, java.util.List<org.lgna.croquet.history.Step<?>> subSteps ) {
-		java.net.URI uri = this.getURI( step, subSteps );
-		if( uri != null ) {
-			org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( uri );
+		org.alice.ide.uricontent.UriProjectLoader uriProjectPair = this.getUriProjectLoader( step, subSteps );
+		if( uriProjectPair != null ) {
+			org.alice.ide.ProjectApplication.getActiveInstance().loadProjectFrom( uriProjectPair );
 			step.finish();
 		} else {
 			step.cancel();
 		}
 		if( subSteps.size() > 0 ) {
-			java.net.URI value = (java.net.URI)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
+			org.alice.ide.uricontent.UriProjectLoader value = (org.alice.ide.uricontent.UriProjectLoader)subSteps.get( subSteps.size() - 1 ).getOwnerTransaction().getCompletionStep().getEphemeralDataFor( ( org.lgna.croquet.ValueCreator.VALUE_KEY ) );
 
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( value );
 

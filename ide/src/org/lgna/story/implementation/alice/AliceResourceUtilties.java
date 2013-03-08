@@ -48,7 +48,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -56,6 +58,7 @@ import javax.imageio.ImageIO;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.story.resources.BasicResource;
 import org.lgna.story.resourceutilities.ModelResourceExporter;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
 import org.lgna.story.resourceutilities.StorytellingResources;
@@ -121,6 +124,48 @@ public class AliceResourceUtilties {
 	}
 
 	private AliceResourceUtilties() {
+	}
+
+	private static String findLocalizedText( String bundleName, String key, Locale locale ) {
+		if( ( bundleName != null ) && ( key != null ) ) {
+			try {
+				java.util.ResourceBundle resourceBundle = StorytellingResources.getInstance().getLocalizationBundle( bundleName, locale );
+				String rv = resourceBundle.getString( key );
+				return rv;
+			} catch( java.util.MissingResourceException mre ) {
+				//				if( !locale.getLanguage().equals( "en" ) ) {
+				//					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Failed to find localized text for " + bundleName + ": " + key + " in " + locale );
+				//				}
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	private static String CLASS_NAME_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryNames";
+	private static String GROUP_TAGS_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryTags";
+	private static String THEME_TAGS_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryTags";
+	private static String TAGS_LOCALIZATION_BUNDLE = BasicResource.class.getPackage().getName() + ".GalleryTags";
+
+	private static String getClassNameLocalizationBundleName()
+	{
+		return CLASS_NAME_LOCALIZATION_BUNDLE;
+	}
+
+	private static String getGroupTagsLocalizationBundleName()
+	{
+		return GROUP_TAGS_LOCALIZATION_BUNDLE;
+	}
+
+	private static String getThemeTagsLocalizationBundleName()
+	{
+		return THEME_TAGS_LOCALIZATION_BUNDLE;
+	}
+
+	private static String getTagsLocalizationBundleName()
+	{
+		return TAGS_LOCALIZATION_BUNDLE;
 	}
 
 	public static edu.cmu.cs.dennisc.scenegraph.SkeletonVisual decodeVisual( URL url ) {
@@ -230,6 +275,10 @@ public class AliceResourceUtilties {
 		else {
 			return camelCaseToEnum( name );
 		}
+	}
+
+	public static String makeLocalizationKey( String key ) {
+		return key.replace( ' ', '_' );
 	}
 
 	public static String arrayToCamelCase( String[] nameArray, int start, int end ) {
@@ -405,11 +454,15 @@ public class AliceResourceUtilties {
 		return getThumbnailResourceFileName( resource.getClass(), resource.toString() );
 	}
 
+	public static String getDefaultTextureEnumName( String resourceName ) {
+		return "DEFAULT";
+	}
+
 	private static String createTextureBaseName( String modelName, String textureName ) {
 		if( textureName == null ) {
 			textureName = "_cls";
 		}
-		else if( modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) ) {
+		else if( textureName.equalsIgnoreCase( getDefaultTextureEnumName( modelName ) ) || modelName.equalsIgnoreCase( enumToCamelCase( textureName ) ) ) {
 			textureName = "";
 		}
 		else if( textureName.length() > 0 ) {
@@ -655,10 +708,10 @@ public class AliceResourceUtilties {
 		return getThumbnailURLInternal( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
-	private static Class<?> getClassFromKey( ResourceKey key ) {
+	public static Class<?> getClassFromKey( ResourceKey key ) {
 		if( key instanceof ClassResourceKey ) {
 			ClassResourceKey clsKey = (ClassResourceKey)key;
-			return clsKey.getCls();
+			return clsKey.getModelResourceCls();
 		}
 		else if( key instanceof EnumConstantResourceKey ) {
 			EnumConstantResourceKey enumKey = (EnumConstantResourceKey)key;
@@ -667,7 +720,7 @@ public class AliceResourceUtilties {
 		return null;
 	}
 
-	private static String getEnumNameFromKey( ResourceKey key ) {
+	public static String getEnumNameFromKey( ResourceKey key ) {
 		if( key instanceof ClassResourceKey ) {
 			return null;
 		}
@@ -714,7 +767,7 @@ public class AliceResourceUtilties {
 						classToInfoMap.put( parentKey, parentInfo );
 					}
 					else {
-						Logger.severe( "Failed to find class info for " + name );
+						Logger.errln( "Failed to find class info for " + name );
 						classToInfoMap.put( parentKey, null );
 					}
 				} catch( Exception e )
@@ -773,22 +826,61 @@ public class AliceResourceUtilties {
 		return getBoundingBox( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
-	public static String getModelName( Class<?> modelResource, String resourceName )
+	private static String getModelName( Class<?> modelResource, String resourceName, Locale locale )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
-			return info.getModelName();
+			if( locale == null ) {
+				return info.getModelName();
+			}
+			else {
+				String packageName = modelResource.getPackage().getName();
+				return findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + info.getModelName(), locale );
+			}
 		}
 		return null;
 	}
 
-	public static String getModelName( Class<?> modelResource )
-	{
-		return getModelName( modelResource, null );
+	public static String getModelName( ResourceKey key ) {
+		return getModelName( getClassFromKey( key ), getEnumNameFromKey( key ), null );
 	}
 
-	public static String getModelName( ResourceKey key ) {
-		return getModelName( getClassFromKey( key ), getEnumNameFromKey( key ) );
+	public static String getModelName( ResourceKey key, Locale locale ) {
+		return getModelName( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
+	}
+
+	private static String getModelClassName( Class<?> modelResource, String resourceName, Locale locale )
+	{
+		ModelResourceInfo info = getModelResourceInfo( modelResource, null );
+		String className;
+		String packageName = modelResource.getPackage().getName();
+		if( info != null ) {
+			className = info.getModelName();
+		}
+		else {
+			className = modelResource.getSimpleName().replace( "Resource", "" );
+		}
+
+		if( locale == null ) {
+			return className;
+		}
+		else {
+			String localizedText = findLocalizedText( getClassNameLocalizationBundleName(), packageName + "." + className, locale );
+			if( localizedText != null ) {
+				//pass
+			} else {
+				localizedText = className;
+			}
+			return localizedText;
+		}
+	}
+
+	public static String getModelClassName( ResourceKey key ) {
+		return getModelClassName( getClassFromKey( key ), getEnumNameFromKey( key ), null );
+	}
+
+	public static String getModelClassName( ResourceKey key, Locale locale ) {
+		return getModelClassName( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
 	}
 
 	public static String getJavaCode( Class<?> modelResource ) {
@@ -855,42 +947,119 @@ public class AliceResourceUtilties {
 		return getCreationYear( getClassFromKey( key ), getEnumNameFromKey( key ) );
 	}
 
-	public static String[] getTags( Class<?> modelResource, String resourceName )
+	private static String[] getLocalizedTags( String[] tags, String localizerBundleName, Locale locale, boolean acceptNull )
+	{
+		if( Locale.ENGLISH.getLanguage().equals( locale.getLanguage() ) ) {
+			ArrayList<String> localizedTags = edu.cmu.cs.dennisc.java.util.Collections.newArrayList();
+			for( String tag : tags ) {
+				String[] splitTags = tag.split( ":" );
+				StringBuilder finalTag = new StringBuilder();
+				for( int i = 0; i < splitTags.length; i++ ) {
+					String t = splitTags[ i ];
+					boolean hasStar = t.startsWith( "*" );
+					String stringToUse;
+					if( hasStar ) {
+						stringToUse = t.substring( 1 );
+					}
+					else {
+						stringToUse = t;
+					}
+					String localizationKey = makeLocalizationKey( stringToUse );
+					String localizedTag = findLocalizedText( localizerBundleName, localizationKey, locale );
+					if( acceptNull && ( localizedTag == null ) ) {
+						localizedTag = stringToUse;
+					}
+					if( localizedTag != null ) {
+						if( i > 0 ) {
+							finalTag.append( ":" );
+						}
+						if( hasStar ) {
+							finalTag.append( "*" );
+						}
+						finalTag.append( localizedTag );
+					}
+				}
+				if( finalTag.length() > 0 ) {
+					localizedTags.add( finalTag.toString() );
+				}
+			}
+			return localizedTags.toArray( new String[ localizedTags.size() ] );
+		} else {
+			return new String[ 0 ];
+		}
+	}
+
+	public static String[] getTags( Class<?> modelResource, String resourceName, Locale locale )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
-			return info.getTags();
+			if( locale == null ) {
+				return info.getTags();
+			}
+			else {
+				boolean acceptNull = locale.getLanguage().equals( "en" );
+				return getLocalizedTags( info.getTags(), getTagsLocalizationBundleName(), locale, acceptNull );
+			}
 		}
 		return null;
-	}
-
-	public static String[] getTags( Class<?> modelResource )
-	{
-		return getTags( modelResource, null );
 	}
 
 	public static String[] getTags( ResourceKey key )
 	{
-		return getTags( getClassFromKey( key ), getEnumNameFromKey( key ) );
+		return getTags( getClassFromKey( key ), getEnumNameFromKey( key ), null );
 	}
 
-	public static String[] getGroupTags( Class<?> modelResource, String resourceName )
+	public static String[] getTags( ResourceKey key, Locale locale )
+	{
+		return getTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
+	}
+
+	public static String[] getGroupTags( Class<?> modelResource, String resourceName, Locale locale )
 	{
 		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
 		if( info != null ) {
-			return info.getGroupTags();
+			if( ( locale == null ) || true ) {
+				return info.getGroupTags();
+			}
+			else {
+				return getLocalizedTags( info.getGroupTags(), getGroupTagsLocalizationBundleName(), locale, true );
+			}
 		}
 		return null;
 	}
 
-	public static String[] getGroupTags( Class<?> modelResource )
-	{
-		return getGroupTags( modelResource, null );
-	}
-
 	public static String[] getGroupTags( ResourceKey key )
 	{
-		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ) );
+		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ), null );
+	}
+
+	public static String[] getGroupTags( ResourceKey key, Locale locale )
+	{
+		return getGroupTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
+	}
+
+	public static String[] getThemeTags( Class<?> modelResource, String resourceName, Locale locale )
+	{
+		ModelResourceInfo info = getModelResourceInfo( modelResource, resourceName );
+		if( info != null ) {
+			if( ( locale == null ) || true ) {
+				return info.getThemeTags();
+			}
+			else {
+				return getLocalizedTags( info.getThemeTags(), getThemeTagsLocalizationBundleName(), locale, true );
+			}
+		}
+		return null;
+	}
+
+	public static String[] getThemeTags( ResourceKey key )
+	{
+		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ), null );
+	}
+
+	public static String[] getThemeTags( ResourceKey key, Locale locale )
+	{
+		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
 	}
 
 }

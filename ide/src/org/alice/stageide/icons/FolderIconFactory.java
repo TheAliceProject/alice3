@@ -45,10 +45,12 @@ package org.alice.stageide.icons;
 /**
  * @author Dennis Cosgrove
  */
-public class FolderIconFactory extends org.lgna.croquet.icon.CachingIconFactory {
+@Deprecated
+public class FolderIconFactory extends org.lgna.croquet.icon.AbstractIconFactory {
 	private final org.lgna.croquet.icon.IconFactory iconFactory;
 
 	public FolderIconFactory( org.lgna.croquet.icon.IconFactory iconFactory ) {
+		super( IsCachingDesired.FALSE );
 		this.iconFactory = iconFactory;
 	}
 
@@ -62,7 +64,7 @@ public class FolderIconFactory extends org.lgna.croquet.icon.CachingIconFactory 
 		} else {
 			subIconSize = size;
 		}
-		return new FolderIcon( size, this.iconFactory.getIcon( subIconSize ) );
+		return new FolderIcon( size, this.iconFactory != null ? this.iconFactory.getIcon( subIconSize ) : null );
 	}
 
 	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {

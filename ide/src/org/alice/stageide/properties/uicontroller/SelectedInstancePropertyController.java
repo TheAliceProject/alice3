@@ -90,7 +90,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 				};
 			}
 		};
-		this.label.setBackgroundColor( org.alice.ide.IDE.getActiveInstance().getTheme().getSelectedColor() );
+		this.label.setBackgroundColor( org.alice.ide.theme.ThemeUtilities.getActiveTheme().getSelectedColor() );
 		this.label.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 
 		Component itemSelector = new org.alice.ide.croquet.components.InstanceFactoryPopupButton( org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance() );
@@ -111,7 +111,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 		);
 
 		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-		org.lgna.croquet.components.JComponent<?> oneShotComponent = org.alice.stageide.operations.ast.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
+		org.lgna.croquet.components.JComponent<?> oneShotComponent = org.alice.stageide.oneshot.OneShotMenuModel.getInstance( instanceFactory ).getPopupPrepModel().createPopupButton();
 		componentPanel.addComponent( oneShotComponent, new GridBagConstraints(
 				xIndex++, // gridX
 				0, // gridY
@@ -138,7 +138,7 @@ public class SelectedInstancePropertyController extends BasicPropertyController<
 	@Override
 	protected void setValueOnUI( org.alice.ide.instancefactory.InstanceFactory value )
 	{
-		edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "NOT SUPPORTED" );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "NOT SUPPORTED", this, value );
 
 	}
 

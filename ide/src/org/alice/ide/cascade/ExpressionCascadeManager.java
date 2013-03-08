@@ -93,17 +93,18 @@ public abstract class ExpressionCascadeManager {
 
 	public void pushContext( ExpressionCascadeContext context ) {
 		assert context != null;
-		if( this.contextStack.size() > 0 ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this.contextStack );
-		}
 		this.contextStack.push( context );
+	}
+
+	public void pushNullContext() {
+		this.pushContext( NULL_CONTEXT );
 	}
 
 	public ExpressionCascadeContext popContext() {
 		if( this.contextStack.size() > 0 ) {
 			return this.contextStack.pop();
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "contextStack is empty", this );
 			//todo?
 			return NULL_CONTEXT;
 		}
@@ -115,6 +116,10 @@ public abstract class ExpressionCascadeManager {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( poppedContext, expectedContext );
 		}
 		return poppedContext;
+	}
+
+	public void popAndCheckNullContext() {
+		this.popAndCheckContext( NULL_CONTEXT );
 	}
 
 	public org.lgna.project.ast.Expression getPreviousExpression() {
@@ -196,7 +201,8 @@ public abstract class ExpressionCascadeManager {
 		org.lgna.croquet.CascadeBlankChild blankChild;
 		org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression, ?> expressionFillIn;
 		if( this.isApplicableForFillIn( desiredType, expressionType ) ) {
-			expressionFillIn = new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn<org.lgna.project.ast.Expression>( expression );
+			boolean isLeadingIconDesired = true;
+			expressionFillIn = new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn<org.lgna.project.ast.Expression>( expression, isLeadingIconDesired );
 		} else {
 			expressionFillIn = null;
 		}
@@ -241,7 +247,7 @@ public abstract class ExpressionCascadeManager {
 			arrayLengthFillIns = null;
 		}
 
-		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
+		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
 		if( this.isApplicableForFillInAndPossiblyPartFillIns( type, selectedType ) ) {
 			this.appendFillInAndPossiblyPartFillIns( blankChildren, type, new org.lgna.project.ast.ThisExpression(), selectedType );
 		}
@@ -381,8 +387,7 @@ public abstract class ExpressionCascadeManager {
 			this.appendExpressionBonusFillInsForType( items, blankNode, type );
 			items.add( org.lgna.croquet.CascadeLineSeparator.getInstance() );
 			if( type.isArray() ) {
-				items.add( org.alice.ide.croquet.models.custom.CustomArrayInputDialogOperation.getInstance( type.getComponentType() ).getFillIn() );
-				//rv.add( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( type ).getValueCreator().getFillIn() );
+				items.add( org.alice.ide.custom.ArrayCustomExpressionCreatorComposite.getInstance( type ).getValueCreator().getFillIn() );
 			}
 			if( this.isNullLiteralAllowedForType( type, items ) ) {
 				items.add( org.alice.ide.croquet.models.cascade.literals.NullLiteralFillIn.getInstance() );

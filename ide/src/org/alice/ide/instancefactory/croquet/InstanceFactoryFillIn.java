@@ -46,7 +46,7 @@ package org.alice.ide.instancefactory.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, Void> {
+public class InstanceFactoryFillIn extends org.lgna.croquet.ImmutableCascadeFillIn<org.alice.ide.instancefactory.InstanceFactory, Void> {
 	private class PropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
@@ -56,11 +56,8 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn<org.al
 		}
 	}
 
-	private org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.event.ValueListener<org.lgna.project.ast.NamedUserType>() {
+		public void valueChanged( org.lgna.croquet.event.ValueEvent<org.lgna.project.ast.NamedUserType> e ) {
 			InstanceFactoryFillIn.this.markDirty();
 		}
 	};
@@ -87,7 +84,7 @@ public class InstanceFactoryFillIn extends org.lgna.croquet.CascadeFillIn<org.al
 		this.value = value;
 
 		if( this.value == org.alice.ide.instancefactory.ThisInstanceFactory.getInstance() ) {
-			org.alice.ide.declarationseditor.TypeState.getInstance().addValueListener( this.typeListener );
+			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().addValueListener( this.typeListener );
 		}
 
 		edu.cmu.cs.dennisc.property.InstanceProperty<?>[] mutablePropertiesOfInterest = this.value.getMutablePropertiesOfInterest();

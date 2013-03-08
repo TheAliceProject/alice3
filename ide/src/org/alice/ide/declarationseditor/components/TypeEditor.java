@@ -43,6 +43,8 @@
 
 package org.alice.ide.declarationseditor.components;
 
+import org.alice.ide.declarationseditor.DeclarationComposite;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -55,34 +57,52 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 			TypeEditor.this.handleIsEmphasizingClassesChanged();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType> typeListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.NamedUserType>() {
-		public void changing( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.lgna.project.ast.NamedUserType> state, org.lgna.project.ast.NamedUserType prevValue, org.lgna.project.ast.NamedUserType nextValue, boolean isAdjusting ) {
-			TypeEditor.this.handleTypeStateChanged( nextValue );
-		}
-	};
 
 	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
-	private final org.lgna.croquet.components.PopupButton popupButton;
+	private final org.lgna.croquet.components.AbstractPopupButton<?> startButton;
 
 	public TypeEditor( org.alice.ide.declarationseditor.DeclarationsEditorComposite composite ) {
 		super( composite );
-		org.lgna.croquet.components.LineAxisPanel headerTrailingComponent = new org.lgna.croquet.components.LineAxisPanel(
-				composite.getControlsComposite().getView(),
-				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
-				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
-				);
+		//		org.lgna.croquet.components.FlowPanel headerTrailingComponent = new org.lgna.croquet.components.FlowPanel(
+		//				composite.getControlsComposite().getView(),
+		//				org.lgna.croquet.components.BoxUtilities.createHorizontalSliver( 12 ),
+		//				org.alice.ide.clipboard.Clipboard.SINGLETON.getDragComponent()
+		//				);
 
-		final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
-		if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
-			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBin() );
-		}
+		org.lgna.croquet.components.JComponent<?> headerTrailingComponent = composite.getControlsComposite().getView();
+
+		//		final boolean IS_RECYCLE_BIN_READY_FOR_PRIME_TIME = false;
+		//		if( IS_RECYCLE_BIN_READY_FOR_PRIME_TIME ) {
+		//			headerTrailingComponent.addComponent( new org.alice.ide.recyclebin.RecycleBinView() );
+		//		}
 		headerTrailingComponent.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 0, 2 ) );
-		this.tabbedPane = composite.getTabState().createFolderTabbedPane();
+
+		final boolean IS_CUSTOM_DRAWING_DESIRED = false;
+		if( IS_CUSTOM_DRAWING_DESIRED ) {
+			this.tabbedPane = new org.lgna.croquet.components.FolderTabbedPane<DeclarationComposite>( composite.getTabState() ) {
+				@Override
+				protected TitlesPanel createTitlesPanel() {
+					return new TitlesPanel() {
+						@Override
+						protected javax.swing.JPanel createJPanel() {
+							return new JTitlesPanel() {
+								@Override
+								public void paint( java.awt.Graphics g ) {
+									super.paint( g );
+									g.setColor( java.awt.Color.RED );
+									g.drawString( "possibilities abound", 100, 10 );
+								}
+							};
+						}
+					};
+				}
+			};
+		} else {
+			this.tabbedPane = composite.getTabState().createFolderTabbedPane();
+		}
 		this.tabbedPane.setHeaderTrailingComponent( headerTrailingComponent );
-		this.popupButton = org.alice.ide.declarationseditor.TypeState.getInstance().getCascadeRoot().getPopupPrepModel().createPopupButton();
+		this.startButton = composite.getDeclarationMenu().getPopupPrepModel().createPopupButton();
+
 		this.addCenterComponent( tabbedPane );
 	}
 
@@ -101,30 +121,21 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 	private void handleIsEmphasizingClassesChanged() {
 		org.lgna.croquet.components.JComponent<?> component;
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			component = this.popupButton;
+			component = this.startButton;
 		} else {
 			component = null;
 		}
 		this.tabbedPane.setHeaderLeadingComponent( component );
 	}
 
-	private void handleTypeStateChanged( org.lgna.project.ast.NamedUserType nextValue ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> type = org.alice.ide.declarationseditor.TypeState.getInstance().getValue();
-		org.alice.ide.common.TypeDropDownIcon icon = new org.alice.ide.common.TypeDropDownIcon( type, this.popupButton.getAwtComponent().getModel() );
-		this.popupButton.setClobberIcon( icon );
-		this.popupButton.revalidateAndRepaint();
-	}
-
 	@Override
 	protected void handleDisplayable() {
 		super.handleDisplayable();
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueListener( this.isEmphasizingClassesListener );
-		org.alice.ide.declarationseditor.TypeState.getInstance().addAndInvokeValueListener( this.typeListener );
 	}
 
 	@Override
 	protected void handleUndisplayable() {
-		org.alice.ide.declarationseditor.TypeState.getInstance().removeValueListener( this.typeListener );
 		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueListener( this.isEmphasizingClassesListener );
 		super.handleUndisplayable();
 	}

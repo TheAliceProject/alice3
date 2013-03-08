@@ -45,14 +45,15 @@ package org.alice.stageide.modelresource;
 /**
  * @author Dennis Cosgrove
  */
-public final class ClassResourceKey extends ResourceKey {
+public final class ClassResourceKey extends InstanceCreatorKey {
 	private final Class<? extends org.lgna.story.resources.ModelResource> cls;
 
 	public ClassResourceKey( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
 		this.cls = cls;
 	}
 
-	public Class<? extends org.lgna.story.resources.ModelResource> getCls() {
+	@Override
+	public Class<? extends org.lgna.story.resources.ModelResource> getModelResourceCls() {
 		return this.cls;
 	}
 
@@ -62,7 +63,24 @@ public final class ClassResourceKey extends ResourceKey {
 
 	@Override
 	public String getDisplayText() {
-		return cls.getSimpleName().replace( "Resource", "" );
+		//		 = this.cls.getSimpleName().replace( "Resource", "" );
+		String simpleName = org.lgna.story.implementation.alice.AliceResourceUtilties.getModelClassName( this, javax.swing.JComponent.getDefaultLocale() );
+		StringBuilder sb = new StringBuilder();
+		if( this.cls.isEnum() ) {
+			sb.append( "new " );
+			sb.append( simpleName );
+			sb.append( "(" );
+			if( this.isLeaf() ) {
+				//pass
+			} else {
+				sb.append( " \u2423 " );
+			}
+			sb.append( ")" );
+		} else {
+			sb.append( simpleName );
+			sb.append( " classes" );
+		}
+		return sb.toString();
 	}
 
 	@Override
@@ -87,7 +105,17 @@ public final class ClassResourceKey extends ResourceKey {
 
 	@Override
 	public String[] getTags() {
-		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this.cls );
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getTags( this, javax.swing.JComponent.getDefaultLocale() );
+	}
+
+	@Override
+	public String[] getGroupTags() {
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getGroupTags( this, javax.swing.JComponent.getDefaultLocale() );
+	}
+
+	@Override
+	public String[] getThemeTags() {
+		return org.lgna.story.implementation.alice.AliceResourceUtilties.getThemeTags( this, javax.swing.JComponent.getDefaultLocale() );
 	}
 
 	@Override

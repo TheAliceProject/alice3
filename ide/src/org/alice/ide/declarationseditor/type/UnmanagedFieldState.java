@@ -61,11 +61,6 @@ public class UnmanagedFieldState extends FieldState {
 	}
 
 	private UnmanagedFieldState( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "97e016de-d944-4305-8fd5-acf5507778e3" ), type );
-	}
-
-	@Override
-	protected boolean isAcceptableItem( org.lgna.project.ast.UserField value ) {
-		return value.managementLevel.getValue() != org.lgna.project.ast.ManagementLevel.MANAGED;
+		super( java.util.UUID.fromString( "97e016de-d944-4305-8fd5-acf5507778e3" ), new org.alice.ide.declarationseditor.type.data.UnmanagedFieldData( type ) );
 	}
 }
