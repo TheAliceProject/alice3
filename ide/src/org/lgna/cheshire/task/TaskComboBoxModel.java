@@ -51,12 +51,6 @@ public class TaskComboBoxModel extends edu.cmu.cs.dennisc.javax.swing.models.Abs
 	private int index = -1;
 
 	public TaskComboBoxModel() {
-		org.lgna.cheshire.test.TransactionHistoryGeneratorTest test = org.lgna.cheshire.test.TransactionHistoryGeneratorTest.getColorCrazyGenerator();
-		test.generate( test.getProject() );
-		org.lgna.croquet.history.TransactionHistory history = test.getReuseTransactionHistory();
-		for( org.lgna.croquet.history.Transaction transaction : history ) {
-			tasks.add( new Task( transaction ) );
-		}
 		this.index = 0;
 		//		
 		//
