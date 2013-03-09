@@ -67,6 +67,26 @@ public class IconUtilities {
 		}
 	}
 
+	public static javax.swing.ImageIcon[] createImageIcons( java.net.URL... urls ) {
+		javax.swing.ImageIcon[] rv = new javax.swing.ImageIcon[ urls.length ];
+		int i = 0;
+		for( java.net.URL url : urls ) {
+			rv[ i ] = createImageIcon( url );
+			i++;
+		}
+		return rv;
+	}
+
+	public static javax.swing.ImageIcon[] createImageIcons( java.awt.Image... images ) {
+		javax.swing.ImageIcon[] rv = new javax.swing.ImageIcon[ images.length ];
+		int i = 0;
+		for( java.awt.Image image : images ) {
+			rv[ i ] = createImageIcon( image );
+			i++;
+		}
+		return rv;
+	}
+
 	public static boolean areSizesEqual( javax.swing.Icon prevIcon, javax.swing.Icon nextIcon ) {
 		int prevWidth = prevIcon != null ? prevIcon.getIconWidth() : 0;
 		int prevHeight = prevIcon != null ? prevIcon.getIconHeight() : 0;

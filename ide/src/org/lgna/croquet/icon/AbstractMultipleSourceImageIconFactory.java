@@ -45,20 +45,55 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractImageIconFactory extends AbstractIconFactory {
-	private final javax.swing.ImageIcon imageIcon;
+public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIconFactory {
+	private final java.util.List<javax.swing.ImageIcon> sortedByWithSourceImageIcons;
+	private final javax.swing.ImageIcon defaultImageIcon;
 
-	public AbstractImageIconFactory( javax.swing.ImageIcon imageIcon ) {
+	public AbstractMultipleSourceImageIconFactory( int defaultIndex, javax.swing.ImageIcon... imageIcons ) {
 		super( IsCachingDesired.FALSE );
-		this.imageIcon = imageIcon;
+		assert imageIcons.length > 0 : this;
+		assert defaultIndex >= 0 : defaultIndex;
+		assert defaultIndex < imageIcons.length : defaultIndex;
+
+		this.defaultImageIcon = imageIcons[ defaultIndex ];
+
+		java.util.List<javax.swing.ImageIcon> list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( imageIcons );
+		assert list.contains( null ) == false : this;
+
+		java.util.Collections.sort( list, new java.util.Comparator<javax.swing.ImageIcon>() {
+			public int compare( javax.swing.ImageIcon o1, javax.swing.ImageIcon o2 ) {
+				return Integer.compare( o1.getIconWidth(), o2.getIconWidth() );
+			}
+		} );
+
+		this.sortedByWithSourceImageIcons = java.util.Collections.unmodifiableList( list );
 	}
 
-	public javax.swing.ImageIcon getSourceImageIcon() {
-		return this.imageIcon;
+	public Iterable<javax.swing.ImageIcon> getSortedByWidthSourceImageIcons() {
+		return this.sortedByWithSourceImageIcons;
+	}
+
+	protected javax.swing.ImageIcon getDefaultImageIcon() {
+		return this.defaultImageIcon;
+	}
+
+	protected javax.swing.ImageIcon getSourceImageIcon( java.awt.Dimension size ) {
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( size );
+		for( javax.swing.ImageIcon icon : this.sortedByWithSourceImageIcons ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( icon.getIconWidth() );
+			if( icon.getIconWidth() >= size.width ) {
+				return icon;
+			}
+		}
+		return this.sortedByWithSourceImageIcons.get( this.sortedByWithSourceImageIcons.size() - 1 );
 	}
 
 	@Override
 	protected double getTrimmedWidthToHeightAspectRatio() {
-		return this.imageIcon.getIconWidth() / (double)this.imageIcon.getIconHeight();
+		return this.defaultImageIcon.getIconWidth() / (double)this.defaultImageIcon.getIconHeight();
+	}
+
+	public final java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+		return new java.awt.Dimension( this.defaultImageIcon.getIconWidth(), this.defaultImageIcon.getIconHeight() );
 	}
 }

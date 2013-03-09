@@ -87,6 +87,8 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		}
 	}
 
+	private static final java.awt.Dimension SUPER_CLASS_ICON_SIZE = new java.awt.Dimension( 32, 24 );
+
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model );
 
@@ -115,9 +117,9 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 				if( modelResourceInterfaces.length > 0 ) {
 					Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
 					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
-						javax.swing.Icon icon = org.alice.stageide.icons.IconFactoryManager.getSmallImageIconFor( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
-						if( icon != null ) {
-							icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( icon, 0.8f );
+						org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
+						if( iconFactory != null ) {
+							javax.swing.Icon icon = iconFactory.getIcon( SUPER_CLASS_ICON_SIZE );
 							SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
 							superclsLabel.getAwtComponent().setIcon( icon );
 							this.internalAddComponent( superclsLabel, java.awt.BorderLayout.LINE_START );

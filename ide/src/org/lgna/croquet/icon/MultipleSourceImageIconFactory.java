@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,22 +45,22 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
-		super( imageIcon );
+public class MultipleSourceImageIconFactory extends AbstractMultipleSourceImageIconFactory {
+	public MultipleSourceImageIconFactory( int defaultIndex, javax.swing.ImageIcon... imageIcons ) {
+		super( defaultIndex, imageIcons );
 	}
 
-	public ImageIconFactory( java.net.URL resource ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
+	public MultipleSourceImageIconFactory( int defaultIndex, java.net.URL... resources ) {
+		this( defaultIndex, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcons( resources ) );
 	}
 
-	public ImageIconFactory( java.awt.Image image ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
+	public MultipleSourceImageIconFactory( int defaultIndex, java.awt.Image... images ) {
+		this( defaultIndex, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcons( images ) );
 	}
 
 	@Override
 	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
+		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon( size );
 		if( imageIcon != null ) {
 			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
 				return imageIcon;
@@ -69,15 +69,6 @@ public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
 			}
 		} else {
 			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
-		}
-	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			return new java.awt.Dimension( imageIcon.getIconWidth(), imageIcon.getIconHeight() );
-		} else {
-			return sizeIfResolutionIndependent;
 		}
 	}
 }
