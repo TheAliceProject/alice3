@@ -119,6 +119,8 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 		}
 	}
 
+	private static java.awt.Insets MARGIN = new java.awt.Insets( 2, 2, 2, 0 );
+
 	private static class SelectDirectoryPanel<T> extends Panel {
 		private SelectDirectoryPanel( TreeSelectionState<T> treeSelectionState, T treeNode, java.awt.Color breadCrumbColor ) {
 			PopupButton selectChildButton = treeSelectionState.getCascadeFor( treeNode ).getRoot().getPopupPrepModel().createPopupButton();
@@ -130,6 +132,10 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 			ActionOperation operation = treeSelectionState.getItemSelectionOperation( treeNode );
 			operation.initializeIfNecessary();
 			Button button = operation.createButton();
+
+			button.tightenUpMargin( MARGIN );
+			button.setIconTextGap( 0 );
+
 			this.internalAddComponent( selectChildButton, java.awt.BorderLayout.LINE_END );
 			this.internalAddComponent( button, java.awt.BorderLayout.CENTER );
 
