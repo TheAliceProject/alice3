@@ -120,7 +120,7 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 	}
 
 	private static class SelectDirectoryPanel<T> extends Panel {
-		private SelectDirectoryPanel( TreeSelectionState<T> treeSelectionState, T treeNode ) {
+		private SelectDirectoryPanel( TreeSelectionState<T> treeSelectionState, T treeNode, java.awt.Color breadCrumbColor ) {
 			PopupButton selectChildButton = treeSelectionState.getCascadeFor( treeNode ).getRoot().getPopupPrepModel().createPopupButton();
 			if( javax.swing.UIManager.getLookAndFeel().getName().contains( "Nimbus" ) ) {
 				selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 4, 0, 4 ) );
@@ -132,6 +132,11 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 			Button button = operation.createButton();
 			this.internalAddComponent( selectChildButton, java.awt.BorderLayout.LINE_END );
 			this.internalAddComponent( button, java.awt.BorderLayout.CENTER );
+
+			if( breadCrumbColor != null ) {
+				button.getAwtComponent().setBackground( breadCrumbColor );
+				selectChildButton.getAwtComponent().setBackground( breadCrumbColor );
+			}
 			this.setMaximumSizeClampedToPreferredSize( true );
 		}
 
@@ -142,7 +147,10 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 	}
 
 	private static class InternalPanel<T> extends LineAxisPanel {
-		public InternalPanel() {
+		private final java.awt.Color breadCrumbColor;
+
+		public InternalPanel( java.awt.Color breadCrumbColor ) {
+			this.breadCrumbColor = breadCrumbColor;
 			this.setBackgroundColor( null );
 		}
 
@@ -167,7 +175,7 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 					if( treeModel.isLeaf( treeNode ) ) {
 						//pass
 					} else {
-						SelectDirectoryPanel<T> selectDirectoryPanel = new SelectDirectoryPanel( owner.getModel(), treeNode );
+						SelectDirectoryPanel<T> selectDirectoryPanel = new SelectDirectoryPanel( owner.getModel(), treeNode, this.breadCrumbColor );
 						this.internalAddComponent( selectDirectoryPanel );
 					}
 				}
@@ -182,8 +190,8 @@ public class TreePathViewController<T> extends PanelViewController<TreeSelection
 		}
 	};
 
-	public TreePathViewController( TreeSelectionState<T> model ) {
-		super( model, new InternalPanel<T>() );
+	public TreePathViewController( TreeSelectionState<T> model, java.awt.Color breadCrumbColor ) {
+		super( model, new InternalPanel<T>( breadCrumbColor ) );
 		this.setBackgroundColor( null );
 		this.setSwingTreeSelectionModel( model.getSwingModel().getTreeSelectionModel() );
 	}
