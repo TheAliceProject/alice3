@@ -78,9 +78,7 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 	}
 
 	protected javax.swing.ImageIcon getSourceImageIcon( java.awt.Dimension size ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( size );
 		for( javax.swing.ImageIcon icon : this.sortedByWithSourceImageIcons ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( icon.getIconWidth() );
 			if( icon.getIconWidth() >= size.width ) {
 				return icon;
 			}
