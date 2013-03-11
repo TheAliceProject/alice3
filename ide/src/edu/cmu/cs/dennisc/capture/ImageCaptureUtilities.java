@@ -94,8 +94,6 @@ public class ImageCaptureUtilities {
 			return rv;
 		} else {
 			if( dpiImage != null ) {
-				//pass
-			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( awtComponent, "is heavyweight." );
 			}
 			try {

@@ -48,6 +48,8 @@ package org.alice.ide.capture.views;
 public class ImageCaptureView extends org.lgna.croquet.components.MigPanel {
 	public ImageCaptureView( org.alice.ide.capture.ImageCaptureComposite composite ) {
 		super( composite );
+		this.addComponent( composite.getCaptureEntireWindowOperation().createButton() );
+		this.addComponent( composite.getCaptureRectangleOperation().createButton() );
 		this.addComponent( new org.lgna.croquet.components.Label( "coming soon" ) );
 		this.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 	}
