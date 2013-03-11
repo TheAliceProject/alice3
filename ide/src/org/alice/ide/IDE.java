@@ -539,36 +539,13 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	@Deprecated
-	protected static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
-		if( programType != null ) {
-			if( programType.fields.size() > 0 ) {
-				return programType.fields.get( 0 );
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	@Deprecated
-	protected static org.lgna.project.ast.NamedUserType getSceneTypeFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
-		org.lgna.project.ast.UserField sceneField = getSceneFieldFromProgramType( programType );
-		if( sceneField != null ) {
-			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
-		} else {
-			return null;
-		}
-	}
-
-	@Deprecated
 	public org.lgna.project.ast.UserField getSceneField() {
-		return getSceneFieldFromProgramType( this.getProgramType() );
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( this.getProgramType() );
 	}
 
 	@Deprecated
 	public org.lgna.project.ast.NamedUserType getSceneType() {
-		return getSceneTypeFromProgramType( this.getProgramType() );
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( this.getProgramType() );
 	}
 
 	public String getInstanceTextForAccessible( org.lgna.project.ast.Accessible accessible ) {

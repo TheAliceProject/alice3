@@ -46,6 +46,27 @@ package org.alice.stageide.ast;
  * @author Dennis Cosgrove
  */
 public class StoryApiSpecificAstUtilities {
+	public static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
+		if( programType != null ) {
+			if( programType.fields.size() > 0 ) {
+				return programType.fields.get( 0 );
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	public static org.lgna.project.ast.NamedUserType getSceneTypeFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
+		org.lgna.project.ast.UserField sceneField = getSceneFieldFromProgramType( programType );
+		if( sceneField != null ) {
+			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
+		} else {
+			return null;
+		}
+	}
+
 	public static java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedSceneActivationListeners( org.lgna.project.ast.NamedUserType sceneType ) {
 		if( sceneType != null ) {
 			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

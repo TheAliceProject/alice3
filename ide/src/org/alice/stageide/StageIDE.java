@@ -300,7 +300,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		tabState.clear();
 		if( project != null ) {
 			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-			org.lgna.project.ast.NamedUserType sceneType = getSceneTypeFromProgramType( programType );
+			org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
 				org.lgna.croquet.data.ListData<org.alice.ide.declarationseditor.DeclarationComposite> data = tabState.getData();
 
