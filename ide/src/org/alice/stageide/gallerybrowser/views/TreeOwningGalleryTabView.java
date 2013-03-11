@@ -83,9 +83,17 @@ public class TreeOwningGalleryTabView extends GalleryTabView {
 		};
 		this.scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.ALWAYS );
 		this.scrollPane.setBothScrollBarIncrements( 16, 160 );
+
+		final boolean IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES = false;
+		java.awt.Color breadCrumbColor;
+		if( IS_BREAD_CRUMB_COLOR_DESIRED_UNDER_ANY_CIRCUMSTANCES && composite instanceof org.alice.stageide.gallerybrowser.ResourceBasedTab ) {
+			breadCrumbColor = org.alice.ide.DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
+		} else {
+			breadCrumbColor = null;
+		}
 		org.lgna.croquet.components.BorderPanel panel = new org.lgna.croquet.components.BorderPanel.Builder()
 				.vgap( PAD )
-				.pageStart( new org.lgna.croquet.components.TreePathViewController( state ) )
+				.pageStart( new org.lgna.croquet.components.TreePathViewController( state, breadCrumbColor ) )
 				.center( scrollPane )
 				.build();
 

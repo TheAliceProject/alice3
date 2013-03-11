@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-class TypeBorder implements javax.swing.border.Border {
+public class TypeBorder implements javax.swing.border.Border {
 	private static final int X_INSET = 8;
 	private static final int Y_INSET = 2;
 	private static java.awt.Insets insets = new java.awt.Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
@@ -71,6 +71,18 @@ class TypeBorder implements javax.swing.border.Border {
 		} else {
 			return TypeBorder.singletonForNull;
 		}
+	}
+
+	public static TypeBorder getSingletonForUserType() {
+		return singletonForUser;
+	}
+
+	public static TypeBorder getSingletonForJavaType() {
+		return singletonForJava;
+	}
+
+	public static TypeBorder getSingletonForNull() {
+		return singletonForNull;
 	}
 
 	private Boolean isDeclaredByUser;

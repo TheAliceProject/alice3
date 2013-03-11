@@ -87,6 +87,8 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		}
 	}
 
+	private static final java.awt.Dimension SUPER_CLASS_ICON_SIZE = new java.awt.Dimension( 32, 24 );
+
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
 		super( model );
 
@@ -106,21 +108,25 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 		}
 
 		if( model instanceof org.alice.stageide.modelresource.ResourceNode ) {
-			org.alice.stageide.modelresource.ResourceNode resourceNode = (org.alice.stageide.modelresource.ResourceNode)model;
-			org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
-			if( resourceKey instanceof org.alice.stageide.modelresource.InstanceCreatorKey ) {
-				org.alice.stageide.modelresource.InstanceCreatorKey instanceCreatorKey = (org.alice.stageide.modelresource.InstanceCreatorKey)resourceKey;
-				Class<?> modelResourceCls = instanceCreatorKey.getModelResourceCls();
-				Class<?>[] modelResourceInterfaces = modelResourceCls.getInterfaces();
-				if( modelResourceInterfaces.length > 0 ) {
-					Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
-					if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
-						javax.swing.Icon icon = org.alice.stageide.icons.IconFactoryManager.getSmallImageIconFor( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
-						if( icon != null ) {
-							icon = new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( icon, 0.8f );
-							SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
-							superclsLabel.getAwtComponent().setIcon( icon );
-							this.internalAddComponent( superclsLabel, java.awt.BorderLayout.LINE_START );
+			if( model instanceof org.alice.stageide.modelresource.ClassHierarchyBasedResourceNode ) {
+				//pass
+			} else {
+				org.alice.stageide.modelresource.ResourceNode resourceNode = (org.alice.stageide.modelresource.ResourceNode)model;
+				org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
+				if( resourceKey instanceof org.alice.stageide.modelresource.InstanceCreatorKey ) {
+					org.alice.stageide.modelresource.InstanceCreatorKey instanceCreatorKey = (org.alice.stageide.modelresource.InstanceCreatorKey)resourceKey;
+					Class<?> modelResourceCls = instanceCreatorKey.getModelResourceCls();
+					Class<?>[] modelResourceInterfaces = modelResourceCls.getInterfaces();
+					if( modelResourceInterfaces.length > 0 ) {
+						Class<?> modelResourceInterface = modelResourceInterfaces[ 0 ];
+						if( org.lgna.story.resources.ModelResource.class.isAssignableFrom( modelResourceInterface ) ) {
+							org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForResourceCls( (Class<org.lgna.story.resources.ModelResource>)modelResourceInterface );
+							if( iconFactory != null ) {
+								javax.swing.Icon icon = iconFactory.getIcon( SUPER_CLASS_ICON_SIZE );
+								SuperclassIconLabel superclsLabel = new SuperclassIconLabel( modelResourceInterface );
+								superclsLabel.getAwtComponent().setIcon( icon );
+								this.internalAddComponent( superclsLabel, java.awt.BorderLayout.LINE_START );
+							}
 						}
 					}
 				}
@@ -306,31 +312,34 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 
 			org.alice.stageide.modelresource.ResourceKey resourceKey = resourceNode.getResourceKey();
 			if( resourceKey instanceof org.alice.stageide.modelresource.PersonResourceKey ) {
-				org.alice.stageide.modelresource.PersonResourceKey personResourceKey = (org.alice.stageide.modelresource.PersonResourceKey)resourceKey;
 
-				final int PAD_X = 6;
-				final int PAD_Y = 4;
-				final int WIDTH = 24;
-				final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH );
+				final boolean IS_PERSON_EDITOR_ICON_DESIRED = false;
 
-				final int X_OFFSET = ( x + width ) - WIDTH - PAD_X;
-				final int Y_OFFSET = y + PAD_Y;
+				if( IS_PERSON_EDITOR_ICON_DESIRED ) {
+					final int PAD_X = 6;
+					final int PAD_Y = 4;
+					final int WIDTH = 24;
+					final int HEIGHT = edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( WIDTH );
 
-				final int TITLE_HEIGHT = 3;
+					final int X_OFFSET = ( x + width ) - WIDTH - PAD_X;
+					final int Y_OFFSET = y + PAD_Y;
 
-				g2.setPaint( java.awt.Color.BLUE );
-				g2.fillRect( X_OFFSET, Y_OFFSET, WIDTH, TITLE_HEIGHT );
+					final int TITLE_HEIGHT = 3;
 
-				final int LEADING_WIDTH = ( WIDTH * 2 ) / 5;
+					g2.setPaint( java.awt.Color.BLUE );
+					g2.fillRect( X_OFFSET, Y_OFFSET, WIDTH, TITLE_HEIGHT );
 
-				g2.setPaint( new java.awt.Color( 0x7f7fff ) );
-				g2.fillRect( X_OFFSET, Y_OFFSET + TITLE_HEIGHT, LEADING_WIDTH, HEIGHT - TITLE_HEIGHT );
+					final int LEADING_WIDTH = ( WIDTH * 2 ) / 5;
 
-				g2.setPaint( new java.awt.Color( 0xada7d0 ) );
-				g2.fillRect( X_OFFSET + LEADING_WIDTH, Y_OFFSET + TITLE_HEIGHT, WIDTH - LEADING_WIDTH, HEIGHT - TITLE_HEIGHT );
+					g2.setPaint( new java.awt.Color( 0x7f7fff ) );
+					g2.fillRect( X_OFFSET, Y_OFFSET + TITLE_HEIGHT, LEADING_WIDTH, HEIGHT - TITLE_HEIGHT );
 
-				g2.setPaint( java.awt.Color.DARK_GRAY );
-				g2.draw3DRect( X_OFFSET, Y_OFFSET, WIDTH, HEIGHT, true );
+					g2.setPaint( new java.awt.Color( 0xada7d0 ) );
+					g2.fillRect( X_OFFSET + LEADING_WIDTH, Y_OFFSET + TITLE_HEIGHT, WIDTH - LEADING_WIDTH, HEIGHT - TITLE_HEIGHT );
+
+					g2.setPaint( java.awt.Color.DARK_GRAY );
+					g2.draw3DRect( X_OFFSET, Y_OFFSET, WIDTH, HEIGHT, true );
+				}
 
 			} else {
 				java.util.List<org.alice.stageide.modelresource.ResourceNode> nodeChildren = resourceNode.getNodeChildren();

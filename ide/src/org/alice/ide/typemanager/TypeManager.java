@@ -224,6 +224,8 @@ public class TypeManager {
 		return sb.toString();
 	}
 
+	private static final org.lgna.project.ast.JavaMethod SET_JOINTED_MODEL_RESOURCE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class );
+
 	private static org.lgna.project.ast.NamedUserType getNamedUserTypeFor( org.lgna.project.ast.JavaType ancestorType, org.lgna.project.ast.AbstractType<?, ?, ?>[] argumentTypes, int i, org.lgna.project.ast.AbstractField argumentField ) {
 		org.lgna.project.ast.AbstractType<?, ?, ?> superType;
 		final int LAST_INDEX = argumentTypes.length - 1;
@@ -269,7 +271,46 @@ public class TypeManager {
 			expressions = USE_PARAMETER_ACCESSES_AS_ARGUMENTS_TO_SUPER;
 		}
 		String name = createClassNameFromResourceType( argumentTypes[ i ] );
-		return createTypeFor( superType, name, new org.lgna.project.ast.AbstractType[] { argumentTypes[ i ] }, expressions );
+		org.lgna.project.ast.NamedUserType rv = createTypeFor( superType, name, new org.lgna.project.ast.AbstractType[] { argumentTypes[ i ] }, expressions );
+		if( argumentTypes[ i ] instanceof org.lgna.project.ast.JavaType ) {
+			org.lgna.project.ast.JavaType javaArgumentTypeI = (org.lgna.project.ast.JavaType)argumentTypes[ i ];
+			Class<?> cls = javaArgumentTypeI.getClassReflectionProxy().getReification();
+			if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.isFinal( cls ) ) {
+				boolean isSetResourceMethodDesired;
+				if( cls.isEnum() ) {
+					isSetResourceMethodDesired = cls.getEnumConstants().length > 1;
+				} else {
+					isSetResourceMethodDesired = true;
+				}
+				if( isSetResourceMethodDesired ) {
+					String simpleClsName = cls.getSimpleName();
+					org.lgna.project.ast.UserMethod setResourceMethod = new org.lgna.project.ast.UserMethod();
+					setResourceMethod.name.setValue( "set" + simpleClsName );
+					setResourceMethod.returnType.setValue( org.lgna.project.ast.JavaType.VOID_TYPE );
+					org.lgna.project.ast.BlockStatement body = new org.lgna.project.ast.BlockStatement();
+					setResourceMethod.body.setValue( body );
+
+					StringBuilder parameterNameSB = new StringBuilder();
+					parameterNameSB.append( Character.toLowerCase( simpleClsName.charAt( 0 ) ) );
+					parameterNameSB.append( simpleClsName.substring( 1 ) );
+					org.lgna.project.ast.UserParameter parameter = new org.lgna.project.ast.UserParameter();
+					parameter.name.setValue( parameterNameSB.toString() );
+					parameter.valueType.setValue( javaArgumentTypeI );
+
+					setResourceMethod.requiredParameters.add( parameter );
+
+					body.statements.add(
+							org.lgna.project.ast.AstUtilities.createMethodInvocationStatement(
+									new org.lgna.project.ast.ThisExpression(),
+									SET_JOINTED_MODEL_RESOURCE_METHOD,
+									new org.lgna.project.ast.ParameterAccess( parameter ) ) );
+
+					setResourceMethod.isSignatureLocked.setValue( true );
+					rv.methods.add( setResourceMethod );
+				}
+			}
+		}
+		return rv;
 	}
 
 	public static org.lgna.project.ast.JavaField getEnumConstantFieldIfOneAndOnly( org.lgna.project.ast.AbstractType<?, ?, ?> type ) {

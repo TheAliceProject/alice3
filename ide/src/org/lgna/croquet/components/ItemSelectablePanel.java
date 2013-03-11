@@ -84,28 +84,37 @@ public abstract class ItemSelectablePanel<E> extends ItemSelectable<javax.swing.
 
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 
+	protected class JItemSelectablePanel extends javax.swing.JPanel {
+		public JItemSelectablePanel() {
+			this.setOpaque( false );
+			this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+			this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+		}
+
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return ItemSelectablePanel.this.constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+		}
+
+		@Override
+		public java.awt.Dimension getMaximumSize() {
+			java.awt.Dimension rv = super.getMaximumSize();
+			if( ItemSelectablePanel.this.isMaximumSizeClampedToPreferredSize() ) {
+				rv.setSize( this.getPreferredSize() );
+			}
+			return rv;
+		}
+	}
+
+	protected javax.swing.JPanel createJPanel() {
+		return new JItemSelectablePanel();
+	}
+
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel() {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
-
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				java.awt.Dimension rv = super.getMaximumSize();
-				if( ItemSelectablePanel.this.isMaximumSizeClampedToPreferredSize() ) {
-					rv.setSize( this.getPreferredSize() );
-				}
-				return rv;
-			}
-		};
+		javax.swing.JPanel rv = this.createJPanel();
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
-		rv.setOpaque( false );
-		rv.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		rv.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 		return rv;
 	}
 

@@ -73,9 +73,17 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 		this.isIconClobbered = true;
 	}
 
+	public int getIconTextGap() {
+		return this.getAwtComponent().getIconTextGap();
+	}
+
+	public void setIconTextGap( int iconTextGap ) {
+		this.getAwtComponent().setIconTextGap( iconTextGap );
+	}
+
 	private static final java.awt.Insets ZERO_MARGIN = new java.awt.Insets( 0, 0, 0, 0 );
 
-	public void tightenUpMargin() {
+	public void tightenUpMargin( java.awt.Insets margin ) {
 		javax.swing.AbstractButton jButton = this.getAwtComponent();
 		if( "javax.swing.plaf.synth.SynthButtonUI".equals( jButton.getUI().getClass().getName() ) ) {
 			int right;
@@ -87,11 +95,15 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 				right = PAD;
 			}
 			javax.swing.UIDefaults uiDefaults = new javax.swing.UIDefaults();
-			uiDefaults.put( "Button.contentMargins", new java.awt.Insets( PAD, PAD, PAD, right ) );
+			uiDefaults.put( "Button.contentMargins", new java.awt.Insets( PAD + margin.top, PAD + margin.left, PAD + margin.bottom, right + margin.right ) );
 			this.getAwtComponent().putClientProperty( "Nimbus.Overrides", uiDefaults );
 		} else {
-			this.setMargin( ZERO_MARGIN );
+			this.setMargin( margin );
 		}
+	}
+
+	public void tightenUpMargin() {
+		this.tightenUpMargin( ZERO_MARGIN );
 	}
 
 	/* package-private */void setSwingButtonModel( javax.swing.ButtonModel model ) {
