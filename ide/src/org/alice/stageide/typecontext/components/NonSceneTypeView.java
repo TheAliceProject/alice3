@@ -112,7 +112,7 @@ class ReturnToSceneTypeButton extends org.lgna.croquet.components.Button {
 		org.alice.stageide.icons.SceneIconFactory.getInstance().markAllIconsDirty();
 
 		//todo:
-		org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
+		org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
 		this.typeIconLabel.setIcon( org.alice.ide.common.TypeIcon.getInstance( sceneType ) );
 		this.revalidateAndRepaint();
 	}

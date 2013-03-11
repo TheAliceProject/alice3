@@ -341,36 +341,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return accessible.getValueType().isArray() == false;
 	}
 
-	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-		org.lgna.project.ast.NamedUserType type;
-		if( rootField != null ) {
-			type = (org.lgna.project.ast.NamedUserType)rootField.getValueType();
-		} else {
-			type = null;
-		}
-		//org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
-				if( sceneType != null ) {
-					final int N = sceneType.fields.size();
-					int i = N;
-					while( i > 0 ) {
-						i--;
-						org.lgna.project.ast.UserField field = sceneType.fields.get( i );
-						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-							if( getApiConfigurationManager().isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-								org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
-								break;
-							}
-						}
-					}
-				}
-			}
-		} );
-		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
-	}
-
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.CodePerspective.getInstance() );
@@ -378,13 +348,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {
 			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
-		}
-
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
-		try {
-			this.setRootField( this.getSceneField() );
-		} finally {
-			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popIgnoreAstChanges();
 		}
 	}
 
@@ -536,16 +499,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			return null;
 		}
-	}
-
-	@Deprecated
-	public org.lgna.project.ast.UserField getSceneField() {
-		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( this.getProgramType() );
-	}
-
-	@Deprecated
-	public org.lgna.project.ast.NamedUserType getSceneType() {
-		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( this.getProgramType() );
 	}
 
 	public String getInstanceTextForAccessible( org.lgna.project.ast.Accessible accessible ) {

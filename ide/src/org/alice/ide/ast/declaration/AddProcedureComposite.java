@@ -81,7 +81,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
 		} else {
-			org.lgna.project.ast.NamedUserType sceneType = org.alice.ide.IDE.getActiveInstance().getSceneType();
+			org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.StageIDE.getActiveInstance().getSceneType();
 			org.alice.ide.instancefactory.InstanceFactory instanceFactory;
 			if( sceneType == declaringType ) {
 				instanceFactory = org.alice.ide.instancefactory.ThisInstanceFactory.getInstance();
