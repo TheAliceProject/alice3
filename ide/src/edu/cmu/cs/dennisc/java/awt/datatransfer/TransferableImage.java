@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,20 +45,28 @@ package edu.cmu.cs.dennisc.java.awt.datatransfer;
 /**
  * @author Dennis Cosgrove
  */
-public class ClipboardUtilities {
-	private static class DoNothingOnLostOwnershipClipboardOwner implements java.awt.datatransfer.ClipboardOwner {
-		public void lostOwnership( java.awt.datatransfer.Clipboard clipboard, java.awt.datatransfer.Transferable contents ) {
-			//pass
+public class TransferableImage implements java.awt.datatransfer.Transferable {
+	private static final java.awt.datatransfer.DataFlavor[] DATA_FLAVORS = { java.awt.datatransfer.DataFlavor.imageFlavor };
+	private final java.awt.Image image;
+
+	public TransferableImage( java.awt.Image image ) {
+		assert image != null : this;
+		this.image = image;
+	}
+
+	public java.awt.datatransfer.DataFlavor[] getTransferDataFlavors() {
+		return DATA_FLAVORS;
+	}
+
+	public boolean isDataFlavorSupported( java.awt.datatransfer.DataFlavor flavor ) {
+		return java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor );
+	}
+
+	public Object getTransferData( java.awt.datatransfer.DataFlavor flavor ) throws java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException {
+		if( java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor ) ) {
+			return this.image;
+		} else {
+			throw new java.awt.datatransfer.UnsupportedFlavorException( flavor );
 		}
-	}
-
-	public static void setClipboardContents( String s ) {
-		java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents( new java.awt.datatransfer.StringSelection( s ), new DoNothingOnLostOwnershipClipboardOwner() );
-	}
-
-	public static void setClipboardContents( java.awt.Image image ) {
-		java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents( new TransferableImage( image ), new DoNothingOnLostOwnershipClipboardOwner() );
 	}
 }
