@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,38 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.capture.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class WindowMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static WindowMenuModel instance = new WindowMenuModel();
-	}
-
-	public static WindowMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private static java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> createModels() {
-		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		rv.add( org.alice.ide.IDE.getActiveInstance().getPerspectiveState().getMenuModel() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( org.alice.ide.croquet.models.history.ProjectHistoryComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
-		rv.add( org.alice.ide.croquet.models.ui.MemoryUsageComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( org.alice.ide.capture.ImageCaptureComposite.getInstance().getBooleanState().getMenuItemPrepModel() );
-		rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-		rv.add( PreferencesMenuModel.getInstance() );
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.internalTesting" ) ) {
-			rv.add( org.lgna.croquet.MenuModel.SEPARATOR );
-			rv.add( InternalTestingMenuModel.getInstance() );
-		}
-		return rv;
-	}
-
-	private WindowMenuModel() {
-		super( java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), createModels() );
+public class ImageCaptureView extends org.lgna.croquet.components.MigPanel {
+	public ImageCaptureView( org.alice.ide.capture.ImageCaptureComposite composite ) {
+		super( composite );
+		this.addComponent( new org.lgna.croquet.components.Label( "coming soon" ) );
+		this.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 	}
 }
