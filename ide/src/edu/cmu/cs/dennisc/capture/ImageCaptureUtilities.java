@@ -99,8 +99,10 @@ public class ImageCaptureUtilities {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( awtComponent, "is heavyweight." );
 			}
 			try {
-				java.awt.Robot robot = new java.awt.Robot();
-				java.awt.Rectangle rect = new java.awt.Rectangle( awtComponent.getLocationOnScreen(), awtComponent.getSize() );
+				java.awt.GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
+				java.awt.Robot robot = new java.awt.Robot( graphicsConfiguration.getDevice() );
+				java.awt.Point locationOnScreen = awtComponent.getLocationOnScreen();
+				java.awt.Rectangle rect = new java.awt.Rectangle( locationOnScreen, awtComponent.getSize() );
 				return robot.createScreenCapture( rect );
 			} catch( java.awt.AWTException awte ) {
 				throw new RuntimeException( awte );
