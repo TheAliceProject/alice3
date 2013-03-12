@@ -53,6 +53,7 @@ public class ControlFlowTabComposite extends MemberOrControlFlowTabComposite<org
 	private final org.lgna.croquet.PlainStringValue eachInTogetherHeader = this.createStringValue( this.createKey( "eachInTogetherHeader" ) );
 	private final org.lgna.croquet.PlainStringValue commentHeader = this.createStringValue( this.createKey( "commentHeader" ) );
 	private final org.lgna.croquet.PlainStringValue localHeader = this.createStringValue( this.createKey( "localHeader" ) );
+	private final org.lgna.croquet.PlainStringValue returnHeader = this.createStringValue( this.createKey( "returnHeader" ) );
 
 	public ControlFlowTabComposite() {
 		super( java.util.UUID.fromString( "80073c5b-1308-4c32-9081-edf8e4573ab3" ) );
@@ -84,6 +85,10 @@ public class ControlFlowTabComposite extends MemberOrControlFlowTabComposite<org
 
 	public org.lgna.croquet.PlainStringValue getLocalHeader() {
 		return this.localHeader;
+	}
+
+	public org.lgna.croquet.PlainStringValue getReturnHeader() {
+		return this.returnHeader;
 	}
 
 	@Override
