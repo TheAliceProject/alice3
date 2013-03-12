@@ -101,4 +101,14 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 	protected org.alice.ide.capture.views.ImageCaptureView createView() {
 		return new org.alice.ide.capture.views.ImageCaptureView( this );
 	}
+
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		ImageCaptureComposite.getInstance().getBooleanState().getSwingModel().getButtonModel().setSelected( true );
+	}
+
 }
