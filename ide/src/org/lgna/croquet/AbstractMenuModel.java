@@ -174,8 +174,7 @@ public abstract class AbstractMenuModel extends StandardMenuItemPrepModel {
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-		rv.append( " <strong>" + this.getTutorialNoteName() + "</strong>" );
-		return rv;
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		text.append( " <strong>" + this.getTutorialNoteName() + "</strong>" );
 	}
 }

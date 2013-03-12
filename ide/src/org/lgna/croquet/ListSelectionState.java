@@ -634,19 +634,18 @@ public abstract class ListSelectionState<T> extends ItemState<T> implements Iter
 		}
 
 		@Override
-		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 			if( edit != null ) {
 				org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)edit;
-				rv.append( "First press on " );
-				rv.append( "<strong>" );
-				this.getListSelectionState().appendRepresentation( rv, stateEdit.getPreviousValue() );
-				rv.append( "</strong>" );
-				rv.append( " in order to change it to " );
-				rv.append( "<strong>" );
-				this.getListSelectionState().appendRepresentation( rv, stateEdit.getNextValue() );
-				rv.append( "</strong>." );
+				text.append( "First press on " );
+				text.append( "<strong>" );
+				this.getListSelectionState().appendRepresentation( text, stateEdit.getPreviousValue() );
+				text.append( "</strong>" );
+				text.append( " in order to change it to " );
+				text.append( "<strong>" );
+				this.getListSelectionState().appendRepresentation( text, stateEdit.getNextValue() );
+				text.append( "</strong>." );
 			}
-			return rv;
 		}
 	}
 }

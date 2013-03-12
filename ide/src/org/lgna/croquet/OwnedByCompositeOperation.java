@@ -131,6 +131,11 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		this.composite.appendTutorialStepText( text, step, edit );
+	}
+
+	@Override
 	protected Resolver createResolver() {
 		return new Resolver( this.composite );
 	}

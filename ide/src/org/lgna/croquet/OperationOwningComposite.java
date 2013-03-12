@@ -62,5 +62,7 @@ public interface OperationOwningComposite<V extends org.lgna.croquet.components.
 
 	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
 
+	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
+
 	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation );
 }

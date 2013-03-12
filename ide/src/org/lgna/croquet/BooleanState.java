@@ -106,8 +106,8 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		}
 
 		@Override
-		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-			return this.booleanState.updateTutorialStepText( rv, step, edit );
+		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+			this.booleanState.appendTutorialStepText( text, step, edit );
 		}
 	}
 
