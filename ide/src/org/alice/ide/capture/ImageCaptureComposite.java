@@ -57,13 +57,13 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		return SingletonHolder.instance;
 	}
 
-	private static final int LAYER_ID = javax.swing.JLayeredPane.POPUP_LAYER - 3;
+	private static final int LAYER_ID = javax.swing.JLayeredPane.POPUP_LAYER + 1;
 
 	private final org.lgna.croquet.Operation captureEntireWindowOperation = this.createActionOperation( this.createKey( "captureEntireWindow" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.components.Frame frame = app.getFrame();
-			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureImage( frame.getAwtComponent(), null );
+			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureImage( frame.getAwtComponent(), null, null );
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 			return null;
 		}
@@ -80,7 +80,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 					return new org.alice.ide.capture.views.ImageCaptureRectangleStencilView( key, LAYER_ID );
 				}
 			} );
-			stencilView.setStencilShowing( true );
+			stencilView.setStencilShowing( stencilView.isStencilShowing() == false );
 			return null;
 		}
 	} );

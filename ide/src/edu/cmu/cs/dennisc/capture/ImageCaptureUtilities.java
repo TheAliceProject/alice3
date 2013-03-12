@@ -49,7 +49,7 @@ public class ImageCaptureUtilities {
 	private ImageCaptureUtilities() {
 	}
 
-	public static java.awt.Image captureImage( java.awt.Component awtComponent, Integer dpiImage ) {
+	public static java.awt.Image captureImage( java.awt.Component awtComponent, java.awt.Rectangle bounds, Integer dpiImage ) {
 		java.awt.Toolkit toolkit = awtComponent.getToolkit();
 
 		if( awtComponent.isLightweight() ) { //todo: check descendants?
@@ -60,18 +60,23 @@ public class ImageCaptureUtilities {
 			} else {
 				dpiImageActual = dpiScreen;
 			}
-			java.awt.Dimension componentSizeScreen = awtComponent.getSize();
+			java.awt.Dimension sizeScreen;
+			if( bounds != null ) {
+				sizeScreen = bounds.getSize();
+			} else {
+				sizeScreen = awtComponent.getSize();
+			}
 			int imageWidth;
 			int imageHeight;
 			double scale;
 			if( dpiImageActual == dpiScreen ) {
 				scale = Double.NaN;
-				imageWidth = componentSizeScreen.width;
-				imageHeight = componentSizeScreen.height;
+				imageWidth = sizeScreen.width;
+				imageHeight = sizeScreen.height;
 			} else {
 				scale = dpiImageActual / (double)dpiScreen;
-				imageWidth = (int)Math.floor( componentSizeScreen.width * scale );
-				imageHeight = (int)Math.floor( componentSizeScreen.height * scale );
+				imageWidth = (int)Math.floor( sizeScreen.width * scale );
+				imageHeight = (int)Math.floor( sizeScreen.height * scale );
 			}
 
 			java.awt.Image rv = awtComponent.createImage( imageWidth, imageHeight );
@@ -79,11 +84,16 @@ public class ImageCaptureUtilities {
 			java.awt.Graphics g = rv.getGraphics();
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 			java.awt.geom.AffineTransform prevTrans = g2.getTransform();
 			if( Double.isNaN( scale ) ) {
 				//pass
 			} else {
 				g2.scale( scale, scale );
+			}
+			if( bounds != null ) {
+				g2.translate( -bounds.x, -bounds.y );
 			}
 
 			awtComponent.print( g );
@@ -100,7 +110,12 @@ public class ImageCaptureUtilities {
 				java.awt.GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
 				java.awt.Robot robot = new java.awt.Robot( graphicsConfiguration.getDevice() );
 				java.awt.Point locationOnScreen = awtComponent.getLocationOnScreen();
-				java.awt.Rectangle rect = new java.awt.Rectangle( locationOnScreen, awtComponent.getSize() );
+				java.awt.Rectangle rect;
+				if( bounds != null ) {
+					rect = new java.awt.Rectangle( locationOnScreen.x + bounds.x, locationOnScreen.y + bounds.y, bounds.width, bounds.height );
+				} else {
+					rect = new java.awt.Rectangle( locationOnScreen, awtComponent.getSize() );
+				}
 				return robot.createScreenCapture( rect );
 			} catch( java.awt.AWTException awte ) {
 				throw new RuntimeException( awte );
@@ -120,7 +135,7 @@ public class ImageCaptureUtilities {
 					@Override
 					public void run() {
 						edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
-						java.awt.Image image = captureImage( frame, 300 );
+						java.awt.Image image = captureImage( frame, null, 300 );
 						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( image );
 						edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 					}
