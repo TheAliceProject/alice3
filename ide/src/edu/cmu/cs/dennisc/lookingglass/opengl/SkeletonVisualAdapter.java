@@ -68,6 +68,8 @@ import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter<SkeletonVisual> implements PropertyListener {
 
+	private static float ALPHA_THRESHOLD = .5f;
+
 	private boolean skeletonIsDirty = true;
 	private Joint currentSkeleton = null;
 	protected Map<Integer, TexturedAppearanceAdapter> appearanceIdToAdapterMap = new HashMap<Integer, TexturedAppearanceAdapter>();
@@ -150,7 +152,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 					if( wmc.weightedMesh.useAlphaTest.getValue() )
 					{
 						pc.gl.glEnable( GL_ALPHA_TEST );
-						pc.gl.glAlphaFunc( GL_GREATER, .1f );
+						pc.gl.glAlphaFunc( GL_GREATER, ALPHA_THRESHOLD );
 					}
 					else
 					{
@@ -180,7 +182,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 					if( ( (Mesh)ma.m_element ).useAlphaTest.getValue() )
 					{
 						pc.gl.glEnable( GL_ALPHA_TEST );
-						pc.gl.glAlphaFunc( GL_GREATER, .1f );
+						pc.gl.glAlphaFunc( GL_GREATER, ALPHA_THRESHOLD );
 					}
 					else
 					{
@@ -223,7 +225,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 					if( wmc.weightedMesh.useAlphaTest.getValue() )
 					{
 						rc.gl.glEnable( GL_ALPHA_TEST );
-						rc.gl.glAlphaFunc( GL_GREATER, .1f );
+						rc.gl.glAlphaFunc( GL_GREATER, ALPHA_THRESHOLD );
 					}
 					else
 					{
@@ -251,7 +253,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 					if( ( (Mesh)ma.m_element ).useAlphaTest.getValue() )
 					{
 						rc.gl.glEnable( GL_ALPHA_TEST );
-						rc.gl.glAlphaFunc( GL_GREATER, .1f );
+						rc.gl.glAlphaFunc( GL_GREATER, ALPHA_THRESHOLD );
 					}
 					else
 					{
