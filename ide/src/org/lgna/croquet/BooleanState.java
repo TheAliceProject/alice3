@@ -296,11 +296,11 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 	}
 
 	public String getTrueText() {
-		return this.trueText;
+		return this.modifyTextIfNecessary( this.trueText, true );
 	}
 
 	public String getFalseText() {
-		return this.falseText;
+		return this.modifyTextIfNecessary( this.falseText, false );
 	}
 
 	public void setTextForBothTrueAndFalse( String text ) {
@@ -343,24 +343,30 @@ public abstract class BooleanState extends SimpleValueState<Boolean> {
 		this.setShortDescription( toolTipText );
 	}
 
-	private void updateNameAndIcon() {
+	protected String modifyTextIfNecessary( String text, boolean isTrue ) {
+		return text;
+	}
+
+	public void updateNameAndIcon() {
 		String name;
 		javax.swing.Icon icon;
+		String possiblyModifiedTrueText = this.getTrueText();
+		String possiblyModifiedFalseText = this.getFalseText();
 		if( this.getValue() ) {
-			name = this.trueText;
+			name = possiblyModifiedTrueText;
 			icon = this.trueIcon;
 		} else {
-			name = this.falseText;
+			name = possiblyModifiedFalseText;
 			icon = this.falseIcon;
 		}
 		this.swingModel.action.putValue( javax.swing.Action.NAME, name );
 		this.swingModel.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 		if( this.trueOperation != null ) {
-			this.trueOperation.setName( this.trueText );
+			this.trueOperation.setName( possiblyModifiedTrueText );
 			this.trueOperation.setButtonIcon( this.trueIcon );
 		}
 		if( this.falseOperation != null ) {
-			this.falseOperation.setName( this.falseText );
+			this.falseOperation.setName( possiblyModifiedFalseText );
 			this.falseOperation.setButtonIcon( this.falseIcon );
 		}
 	}
