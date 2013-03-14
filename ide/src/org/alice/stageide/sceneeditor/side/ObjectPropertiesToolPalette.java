@@ -66,9 +66,20 @@ public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stage
 	@Override
 	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
 		text = super.modifyTextIfNecessary( text, isExpanded );
-		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
-		if( instanceFactory != null ) {
-			text = instanceFactory.getRepr() + text;
+		if( text != null ) {
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+			String repr;
+			if( instanceFactory != null ) {
+				repr = instanceFactory.getRepr();
+			} else {
+				repr = null;
+			}
+			if( repr != null ) {
+				//pass
+			} else {
+				repr = "";
+			}
+			text = text.replace( "</selection/>", repr );
 		}
 		return text;
 	}
