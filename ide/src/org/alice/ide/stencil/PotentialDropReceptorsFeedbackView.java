@@ -145,26 +145,35 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 				final int BUFFER = 6;
 				for( org.lgna.croquet.DropReceptor dropReceptor : this.holes ) {
 					org.lgna.croquet.components.JComponent<?> component = dropReceptor.getViewController();
-					java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent().getAwtComponent(), component.getBounds(), this.getAwtComponent() );
-					holeBounds.x -= BUFFER;
-					holeBounds.y -= BUFFER;
-					holeBounds.width += 2 * BUFFER;
-					holeBounds.height += 2 * BUFFER;
+					if( component != null ) {
+						java.awt.Container awtContainer = component.getAwtComponent().getParent();
+						if( awtContainer != null ) {
+							java.awt.Rectangle holeBounds = javax.swing.SwingUtilities.convertRectangle( awtContainer, component.getBounds(), this.getAwtComponent() );
+							holeBounds.x -= BUFFER;
+							holeBounds.y -= BUFFER;
+							holeBounds.width += 2 * BUFFER;
+							holeBounds.height += 2 * BUFFER;
 
-					g2.setColor( new java.awt.Color( 0, 0, 0 ) );
-					g2.draw( holeBounds );
-					if( this.currentDropReceptorComponent == component ) {
-						g2.setColor( new java.awt.Color( 0, 255, 0 ) );
-						g2.setStroke( THIN_STROKE );
-						g2.draw( holeBounds );
-						if( this.currentDropReceptorComponent == component ) {
-							g2.setColor( new java.awt.Color( 0, 255, 0 ) );
-							g2.setStroke( THIN_STROKE );
+							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
 							g2.draw( holeBounds );
-							g2.setStroke( THICK_STROKE );
-							g2.setColor( new java.awt.Color( 191, 255, 191, 63 ) );
-							g2.fill( holeBounds );
+							if( this.currentDropReceptorComponent == component ) {
+								g2.setColor( new java.awt.Color( 0, 255, 0 ) );
+								g2.setStroke( THIN_STROKE );
+								g2.draw( holeBounds );
+								if( this.currentDropReceptorComponent == component ) {
+									g2.setColor( new java.awt.Color( 0, 255, 0 ) );
+									g2.setStroke( THIN_STROKE );
+									g2.draw( holeBounds );
+									g2.setStroke( THICK_STROKE );
+									g2.setColor( new java.awt.Color( 191, 255, 191, 63 ) );
+									g2.fill( holeBounds );
+								}
+							}
+						} else {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropReceptor );
 						}
+					} else {
+						edu.cmu.cs.dennisc.java.util.logging.Logger.severe( dropReceptor );
 					}
 				}
 			}
