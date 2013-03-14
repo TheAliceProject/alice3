@@ -280,7 +280,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		super.customizeTitleComponentAppearance( button );
 		final boolean IS_ICON_DESIRED = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() == false;
 		if( IS_ICON_DESIRED ) {
-			button.getAwtComponent().setIcon( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
+			button.getModel().setIconForBothTrueAndFalse( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
 			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
 			this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges.add( button.getAwtComponent() );
 		}

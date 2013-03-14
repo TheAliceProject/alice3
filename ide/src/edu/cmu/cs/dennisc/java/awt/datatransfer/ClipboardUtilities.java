@@ -46,13 +46,19 @@ package edu.cmu.cs.dennisc.java.awt.datatransfer;
  * @author Dennis Cosgrove
  */
 public class ClipboardUtilities {
+	private static class DoNothingOnLostOwnershipClipboardOwner implements java.awt.datatransfer.ClipboardOwner {
+		public void lostOwnership( java.awt.datatransfer.Clipboard clipboard, java.awt.datatransfer.Transferable contents ) {
+			//pass
+		}
+	}
+
 	public static void setClipboardContents( String s ) {
-		java.awt.datatransfer.StringSelection stringSelection = new java.awt.datatransfer.StringSelection( s );
 		java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents( stringSelection, new java.awt.datatransfer.ClipboardOwner() {
-			public void lostOwnership( java.awt.datatransfer.Clipboard clipboard, java.awt.datatransfer.Transferable contents ) {
-				//pass
-			}
-		} );
+		clipboard.setContents( new java.awt.datatransfer.StringSelection( s ), new DoNothingOnLostOwnershipClipboardOwner() );
+	}
+
+	public static void setClipboardContents( java.awt.Image image ) {
+		java.awt.datatransfer.Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents( new TransferableImage( image ), new DoNothingOnLostOwnershipClipboardOwner() );
 	}
 }

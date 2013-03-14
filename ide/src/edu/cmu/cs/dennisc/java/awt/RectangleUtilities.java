@@ -120,4 +120,11 @@ public class RectangleUtilities {
 		return rv;
 	}
 
+	public static void setBounds( java.awt.Rectangle hole, int xA, int yA, int xB, int yB ) {
+		hole.x = Math.min( xA, xB );
+		hole.y = Math.min( yA, yB );
+		hole.width = Math.abs( xB - xA );
+		hole.height = Math.abs( yB - yA );
+	}
+
 }

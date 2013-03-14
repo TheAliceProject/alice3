@@ -272,7 +272,9 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
 		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
 			this.updateProxyPosition( e );
-			this.step.handleMouseDragged( e );
+			if( this.step != null ) {
+				this.step.handleMouseDragged( e );
+			}
 		}
 	}
 
@@ -445,7 +447,9 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 			layeredPane.remove( this.dragProxy );
 			layeredPane.repaint( bounds );
 		}
-		this.step.handleCancel( e );
+		if( this.step != null ) {
+			this.step.handleCancel( e );
+		}
 	}
 
 	protected abstract void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height );

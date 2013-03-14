@@ -70,6 +70,10 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
 	}
 
+	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		text.append( this.getName() );
+	}
+
 	protected abstract org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep );
 
 	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep ) {

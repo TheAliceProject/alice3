@@ -44,12 +44,55 @@
 package org.alice.stageide.sceneeditor.side;
 
 public class ObjectPropertiesToolPalette extends SideToolPalette<org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel> {
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory> instanceFactoryListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.instancefactory.InstanceFactory>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
+			ObjectPropertiesToolPalette.this.getOuterComposite().getIsExpandedState().updateNameAndIcon();
+		}
+	};
+
 	public ObjectPropertiesToolPalette() {
 		super( java.util.UUID.fromString( "d1a8567a-672a-40e0-967c-96cef5005e28" ), true );
+		this.getOuterComposite().getIsExpandedState().setIconForBothTrueAndFalse( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
 	}
 
 	@Override
 	protected org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel createView() {
 		return new org.alice.stageide.sceneeditor.views.SceneObjectPropertyManagerPanel();
+	}
+
+	@Override
+	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
+		text = super.modifyTextIfNecessary( text, isExpanded );
+		if( text != null ) {
+			org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+			String repr;
+			if( instanceFactory != null ) {
+				repr = instanceFactory.getRepr();
+			} else {
+				repr = null;
+			}
+			if( repr != null ) {
+				//pass
+			} else {
+				repr = "";
+			}
+			text = text.replace( "</selection/>", repr );
+		}
+		return text;
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().addAndInvokeValueListener( this.instanceFactoryListener );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().removeValueListener( this.instanceFactoryListener );
+		super.handlePostDeactivation();
 	}
 }

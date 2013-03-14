@@ -68,6 +68,16 @@ public class StageIDE extends org.alice.ide.IDE {
 		} );
 	}
 
+	@Deprecated
+	public org.lgna.project.ast.UserField getSceneField() {
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneFieldFromProgramType( this.getProgramType() );
+	}
+
+	@Deprecated
+	public org.lgna.project.ast.NamedUserType getSceneType() {
+		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( this.getProgramType() );
+	}
+
 	@Override
 	public org.alice.stageide.sceneeditor.StorytellingSceneEditor getSceneEditor() {
 		return org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance();
@@ -90,9 +100,11 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	protected void registerAdapters( org.lgna.project.virtualmachine.VirtualMachine vm ) {
-		vm.registerAnonymousAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
-		vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
+	protected void registerAdaptersForSceneEditorVm( org.lgna.project.virtualmachine.VirtualMachine vm ) {
+		vm.registerAbstractClassAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
+		vm.registerProtectedMethodAdapter(
+				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class ),
+				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.EmployeesOnly.class, "invokeSetJointedModelResource", org.lgna.story.SJointedModel.class, org.lgna.story.resources.JointedModelResource.class ) );
 	}
 
 	@Override
@@ -124,6 +136,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	private static final org.lgna.project.ast.JavaType COLOR_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class );
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointedModelResource.class );
+	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
 
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
 		if( field == null ) {
@@ -233,7 +246,7 @@ public class StageIDE extends org.alice.ide.IDE {
 							org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 							if( constructor != null ) {
 								org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
-								return COLOR_TYPE.isAssignableFrom( type ) == false;
+								return ( COLOR_TYPE.isAssignableFrom( type ) || PERSON_RESOURCE_TYPE.isAssignableFrom( type ) ) == false;
 							}
 						}
 					}
@@ -290,14 +303,51 @@ public class StageIDE extends org.alice.ide.IDE {
 		return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getUserMethodsInvokedSceneActivationListeners( this.getSceneType() );
 	}
 
+	private void setRootField( final org.lgna.project.ast.UserField rootField ) {
+		final org.lgna.project.ast.NamedUserType type;
+		if( rootField != null ) {
+			type = (org.lgna.project.ast.NamedUserType)rootField.getValueType();
+		} else {
+			type = null;
+		}
+		if( type != null ) {
+			//org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					final int N = type.fields.size();
+					int i = N;
+					while( i > 0 ) {
+						i--;
+						org.lgna.project.ast.UserField field = type.fields.get( i );
+						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+							if( getApiConfigurationManager().isInstanceFactoryDesiredForType( field.getValueType() ) ) {
+								org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
+								break;
+							}
+						}
+					}
+				}
+			} );
+		}
+		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
+	}
+
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		super.setProject( project );
+
+		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
+		try {
+			this.setRootField( this.getSceneField() );
+		} finally {
+			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popIgnoreAstChanges();
+		}
+
 		org.alice.ide.declarationseditor.DeclarationTabState tabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 		tabState.clear();
 		if( project != null ) {
 			org.lgna.project.ast.NamedUserType programType = project.getProgramType();
-			org.lgna.project.ast.NamedUserType sceneType = getSceneTypeFromProgramType( programType );
+			org.lgna.project.ast.NamedUserType sceneType = org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
 				org.lgna.croquet.data.ListData<org.alice.ide.declarationseditor.DeclarationComposite> data = tabState.getData();
 

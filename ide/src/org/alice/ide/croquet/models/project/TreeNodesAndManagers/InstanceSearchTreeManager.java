@@ -66,7 +66,7 @@ public class InstanceSearchTreeManager extends CustomTreeSelectionState<FieldRef
 	}
 
 	public void refresh() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
+		org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
 		root.removeAllChildren();
 		IsInstanceCrawler<FieldAccess> crawler = IsInstanceCrawler.createInstance( FieldAccess.class );
 		ide.crawlFilteredProgramType( crawler );

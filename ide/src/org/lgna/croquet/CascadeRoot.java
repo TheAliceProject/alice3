@@ -149,13 +149,12 @@ public abstract class CascadeRoot<T, CM extends CompletionModel> extends Cascade
 		}
 
 		@Override
-		protected java.lang.StringBuilder updateTutorialStepText( java.lang.StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-			super.updateTutorialStepText( rv, step, edit );
-			rv.append( "<strong>" );
+		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+			super.appendTutorialStepText( text, step, edit );
+			text.append( "<strong>" );
 			CompletionModel completionModel = this.root.getCompletionModel();
-			completionModel.appendUserRepr( rv );
-			rv.append( "</strong>" );
-			return rv;
+			completionModel.appendUserRepr( text );
+			text.append( "</strong>" );
 		}
 
 		public org.lgna.croquet.components.FauxComboBoxPopupButton<T> createFauxComboBoxPopupButton() {
