@@ -67,6 +67,22 @@ public class StoryApiSpecificAstUtilities {
 		}
 	}
 
+	public static org.lgna.project.ast.NamedUserType getSceneTypeFromProject( org.lgna.project.Project project ) {
+		if( project != null ) {
+			return getSceneTypeFromProgramType( project.getProgramType() );
+		} else {
+			return null;
+		}
+	}
+
+	public static org.lgna.project.ast.NamedUserType getSceneTypeFromDocument( org.alice.ide.ProjectDocument document ) {
+		if( document != null ) {
+			return getSceneTypeFromProject( document.getProject() );
+		} else {
+			return null;
+		}
+	}
+
 	public static java.util.List<org.lgna.project.ast.UserMethod> getUserMethodsInvokedSceneActivationListeners( org.lgna.project.ast.NamedUserType sceneType ) {
 		if( sceneType != null ) {
 			java.util.List<org.lgna.project.ast.UserMethod> methods = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

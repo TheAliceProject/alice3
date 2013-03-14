@@ -70,8 +70,6 @@ public abstract class MethodsSubComposite extends org.lgna.croquet.ToolPaletteCo
 	public void updateTabTitle() {
 		org.lgna.croquet.BooleanState isExpandedState = this.getOuterComposite().getIsExpandedState();
 		isExpandedState.updateNameAndIcon();
-		//		String trueText = isExpandedState.getTrueText();
-		//		this.getOuterComposite().getIsExpandedState().setTextForTrueAndTextForFalse( trueText, trueText + " (" + methods.size() + ")" );
 	}
 
 	public boolean isShowingDesired() {

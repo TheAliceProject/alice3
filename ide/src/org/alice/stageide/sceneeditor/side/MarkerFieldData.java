@@ -46,33 +46,8 @@ package org.alice.stageide.sceneeditor.side;
  * @author Dennis Cosgrove
  */
 public abstract class MarkerFieldData extends org.alice.ide.ast.data.FilteredListPropertyData<org.lgna.project.ast.UserField> {
-	private final org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument> projectListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.ProjectDocument>() {
-		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
-			org.alice.stageide.StageIDE ide = org.alice.stageide.StageIDE.getActiveInstance();
-			org.lgna.project.ast.NamedUserType sceneType;
-			if( ide != null ) {
-				sceneType = ide.getSceneType();
-			} else {
-				sceneType = null;
-			}
-
-			org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.UserField> fieldProperty;
-			if( sceneType != null ) {
-				fieldProperty = sceneType.fields;
-			} else {
-				fieldProperty = null;
-			}
-
-			MarkerFieldData.this.setListProperty( fieldProperty );
-		}
-	};
-
 	public MarkerFieldData() {
 		super( org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ) );
-		org.alice.ide.project.ProjectDocumentState.getInstance().addAndInvokeValueListener( this.projectListener );
 	}
 
 	@Override
