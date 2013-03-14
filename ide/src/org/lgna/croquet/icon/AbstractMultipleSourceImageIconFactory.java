@@ -49,6 +49,18 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 	private final java.util.List<javax.swing.ImageIcon> sortedByWithSourceImageIcons;
 	private final javax.swing.ImageIcon defaultImageIcon;
 
+	private static int compareInts( int a, int b ) {
+		if( a < b ) {
+			return -1;
+		} else {
+			if( a == b ) {
+				return 0;
+			} else {
+				return 1;
+			}
+		}
+	}
+
 	public AbstractMultipleSourceImageIconFactory( int defaultIndex, javax.swing.ImageIcon... imageIcons ) {
 		super( IsCachingDesired.FALSE );
 		assert imageIcons.length > 0 : this;
@@ -62,7 +74,7 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 
 		java.util.Collections.sort( list, new java.util.Comparator<javax.swing.ImageIcon>() {
 			public int compare( javax.swing.ImageIcon o1, javax.swing.ImageIcon o2 ) {
-				return Integer.compare( o1.getIconWidth(), o2.getIconWidth() );
+				return compareInts( o1.getIconWidth(), o2.getIconWidth() );
 			}
 		} );
 
