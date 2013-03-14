@@ -99,6 +99,14 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 		return new org.alice.ide.member.views.UserMethodsSubView( this );
 	}
 
+	public boolean isRelevant() {
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			return true;
+		} else {
+			return this.getMethods().size() > 0;
+		}
+	}
+
 	//	@Override
 	//	public void handlePreActivation() {
 	//		super.handlePreActivation();

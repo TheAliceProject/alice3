@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.preferences;
+package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsEmphasizingClassesState {
-	private static boolean value = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.value", true );
-
-	private static class SingletonHolder {
-		private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
+public final class AddProcedureMenuModel extends AddMethodMenuModel {
+	public AddProcedureMenuModel() {
+		super( java.util.UUID.fromString( "29e26e37-387d-4e07-a6fb-13fcdbd1fb28" ) );
 	}
 
-	public static IsEmphasizingClassesState getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private IsEmphasizingClassesState() {
-	}
-
-	public boolean getValue() {
-		return value;
+	@Override
+	protected org.alice.ide.ast.declaration.AddMethodComposite getAddMethodComposite( org.lgna.project.ast.NamedUserType declaringType ) {
+		return org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType );
 	}
 }

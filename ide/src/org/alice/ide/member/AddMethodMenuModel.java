@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,26 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ui.preferences;
+package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsEmphasizingClassesState {
-	private static boolean value = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.value", true );
-
-	private static class SingletonHolder {
-		private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
+public abstract class AddMethodMenuModel extends org.lgna.croquet.MenuModel {
+	public AddMethodMenuModel( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
-	public static IsEmphasizingClassesState getInstance() {
-		return SingletonHolder.instance;
+	private org.lgna.project.ast.NamedUserType getInstanceFactoryNamedUserType() {
+		org.alice.ide.instancefactory.InstanceFactory instanceFactory = org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().getValue();
+		if( instanceFactory != null ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> type = instanceFactory.getValueType();
+			if( type instanceof org.lgna.project.ast.NamedUserType ) {
+				return (org.lgna.project.ast.NamedUserType)type;
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
-	private IsEmphasizingClassesState() {
+	public boolean isRelevant() {
+		return this.getInstanceFactoryNamedUserType() != null;
 	}
 
-	public boolean getValue() {
-		return value;
+	protected abstract org.alice.ide.ast.declaration.AddMethodComposite getAddMethodComposite( org.lgna.project.ast.NamedUserType declaringType );
+
+	private void appendMenuItemPrepModelsForType( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models, org.lgna.project.ast.AbstractType<?, ?, ?> type ) {
+		if( type instanceof org.lgna.project.ast.NamedUserType ) {
+			org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
+			models.add( this.getAddMethodComposite( namedUserType ).getOperation().getMenuItemPrepModel() );
+			appendMenuItemPrepModelsForType( models, namedUserType.superType.getValue() );
+		}
+	}
+
+	@Override
+	public final void handlePopupMenuPrologue( org.lgna.croquet.components.PopupMenu popupMenu, org.lgna.croquet.history.PopupPrepStep context ) {
+		super.handlePopupMenuPrologue( popupMenu, context );
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		this.appendMenuItemPrepModelsForType( models, this.getInstanceFactoryNamedUserType() );
+		org.lgna.croquet.components.MenuItemContainerUtilities.setMenuElements( popupMenu, models );
 	}
 }
