@@ -15,5 +15,6 @@
     <ThemeTags>
         <ThemeTag>southwest</ThemeTag>
     </ThemeTags>
-    <Resource modelName="CliffWall" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="CliffWall" resourceName="DESERT" textureName="DESERT"/>
+    <Resource modelName="CliffWall" resourceName="MARS" textureName="MARS"/>
 </AliceModel>

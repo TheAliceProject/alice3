@@ -15,5 +15,6 @@
     <ThemeTags>
         <ThemeTag>southwest</ThemeTag>
     </ThemeTags>
-    <Resource modelName="CanyonSpires" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="CanyonSpires" resourceName="DESERT" textureName="DESERT"/>
+    <Resource modelName="CanyonSpires" resourceName="MARS" textureName="MARS"/>
 </AliceModel>

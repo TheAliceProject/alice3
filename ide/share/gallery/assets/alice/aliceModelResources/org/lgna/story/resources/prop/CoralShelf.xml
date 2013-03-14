@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="CoralShelf">
     <BoundingBox>
-        <Min x="-0.2625688686966896" y="0.0" z="-0.19232005602680147"/>
-        <Max x="0.2625688686966896" y="0.1742551868665032" z="0.19232005602680147"/>
+        <Min x="-1.1157399415969849" y="0.0" z="-0.406866654753685"/>
+        <Max x="1.1157399415969849" y="0.6304527916945517" z="0.406866654753685"/>
     </BoundingBox>
     <Tags>
         <Tag>underwater</Tag>
@@ -16,14 +16,38 @@
     </ThemeTags>
     <Resource modelName="Pink" resourceName="PINK" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.2625688686966896" y="0.0" z="-0.19232005602680147"/>
-            <Max x="0.2625688686966896" y="0.1698756772093475" z="0.19232005602680147"/>
+            <Min x="-0.5264306515455246" y="0.0" z="-0.38558708247728646"/>
+            <Max x="0.5264306515455246" y="0.34058781946077943" z="0.38558708247728646"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Yellow" resourceName="YELLOW" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.13606040179729462" y="0.0" z="-0.08780177496373653"/>
-            <Max x="0.13606040179729462" y="0.1742551868665032" z="0.08780177496373653"/>
+            <Min x="-0.49226461350917816" y="0.0" z="-0.31766559183597565"/>
+            <Max x="0.49226461350917816" y="0.6304527916945517" z="0.31766559183597565"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="TallPink" resourceName="TALL_PINK" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.46418581902980804" y="0.0" z="-0.38558708247728646"/>
+            <Max x="0.46418581902980804" y="0.49576728348620236" z="0.38558708247728646"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="TallYellow" resourceName="TALL_YELLOW" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2692769020795822" y="0.0" z="-0.406866654753685"/>
+            <Max x="0.2692769020795822" y="0.5789622402517125" z="0.406866654753685"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="WidePink" resourceName="WIDE_PINK" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-0.2625688761472702" y="0.0" z="-0.19232007069513202"/>
+            <Max x="0.2625688761472702" y="0.16987569187767804" z="0.19232007069513202"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="WideYellow" resourceName="WIDE_YELLOW" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.1157399415969849" y="0.0" z="-0.39760182797908783"/>
+            <Max x="1.1157399415969849" y="0.6304527916945517" z="0.39760182797908783"/>
         </BoundingBox>
     </Resource>
 </AliceModel>
