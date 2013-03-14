@@ -62,7 +62,7 @@ public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIco
 
 		java.util.Collections.sort( list, new java.util.Comparator<javax.swing.ImageIcon>() {
 			public int compare( javax.swing.ImageIcon o1, javax.swing.ImageIcon o2 ) {
-				return Integer.compare( o1.getIconWidth(), o2.getIconWidth() );
+				return new Integer( o1.getIconWidth() ).compareTo( new Integer( o2.getIconWidth() ) );
 			}
 		} );
 
