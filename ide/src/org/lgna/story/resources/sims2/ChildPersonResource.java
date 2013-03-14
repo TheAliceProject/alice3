@@ -53,7 +53,7 @@ public final class ChildPersonResource extends PersonResource {
 
 	@Deprecated
 	public ChildPersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit ) {
-		this( gender, skinTone, eyeColor, hair, obseityLevel, outfit, BaseFace.BASE );
+		this( gender, skinTone, eyeColor, hair, obseityLevel, outfit, BaseFace.HUMAN_00 );
 	}
 
 	@Override
