@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -45,39 +45,53 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
-		super( imageIcon );
+public abstract class AbstractMultipleSourceImageIconFactory extends AbstractIconFactory {
+	private final java.util.List<javax.swing.ImageIcon> sortedByWithSourceImageIcons;
+	private final javax.swing.ImageIcon defaultImageIcon;
+
+	public AbstractMultipleSourceImageIconFactory( int defaultIndex, javax.swing.ImageIcon... imageIcons ) {
+		super( IsCachingDesired.FALSE );
+		assert imageIcons.length > 0 : this;
+		assert defaultIndex >= 0 : defaultIndex;
+		assert defaultIndex < imageIcons.length : defaultIndex;
+
+		this.defaultImageIcon = imageIcons[ defaultIndex ];
+
+		java.util.List<javax.swing.ImageIcon> list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( imageIcons );
+		assert list.contains( null ) == false : this;
+
+		java.util.Collections.sort( list, new java.util.Comparator<javax.swing.ImageIcon>() {
+			public int compare( javax.swing.ImageIcon o1, javax.swing.ImageIcon o2 ) {
+				return Integer.compare( o1.getIconWidth(), o2.getIconWidth() );
+			}
+		} );
+
+		this.sortedByWithSourceImageIcons = java.util.Collections.unmodifiableList( list );
 	}
 
-	public ImageIconFactory( java.net.URL resource ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
+	public Iterable<javax.swing.ImageIcon> getSortedByWidthSourceImageIcons() {
+		return this.sortedByWithSourceImageIcons;
 	}
 
-	public ImageIconFactory( java.awt.Image image ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
+	protected javax.swing.ImageIcon getDefaultImageIcon() {
+		return this.defaultImageIcon;
+	}
+
+	protected javax.swing.ImageIcon getSourceImageIcon( java.awt.Dimension size ) {
+		for( javax.swing.ImageIcon icon : this.sortedByWithSourceImageIcons ) {
+			if( icon.getIconWidth() >= size.width ) {
+				return icon;
+			}
+		}
+		return this.sortedByWithSourceImageIcons.get( this.sortedByWithSourceImageIcons.size() - 1 );
 	}
 
 	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
-				return imageIcon;
-			} else {
-				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( imageIcon, size.width, size.height );
-			}
-		} else {
-			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
-		}
+	protected double getTrimmedWidthToHeightAspectRatio() {
+		return this.defaultImageIcon.getIconWidth() / (double)this.defaultImageIcon.getIconHeight();
 	}
 
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			return new java.awt.Dimension( imageIcon.getIconWidth(), imageIcon.getIconHeight() );
-		} else {
-			return sizeIfResolutionIndependent;
-		}
+	public final java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
+		return new java.awt.Dimension( this.defaultImageIcon.getIconWidth(), this.defaultImageIcon.getIconHeight() );
 	}
 }

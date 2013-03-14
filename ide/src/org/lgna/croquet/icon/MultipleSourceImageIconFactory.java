@@ -45,20 +45,30 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractImageIconFactory extends AbstractIconFactory {
-	private final javax.swing.ImageIcon imageIcon;
-
-	public AbstractImageIconFactory( javax.swing.ImageIcon imageIcon ) {
-		super( IsCachingDesired.FALSE );
-		this.imageIcon = imageIcon;
+public class MultipleSourceImageIconFactory extends AbstractMultipleSourceImageIconFactory {
+	public MultipleSourceImageIconFactory( int defaultIndex, javax.swing.ImageIcon... imageIcons ) {
+		super( defaultIndex, imageIcons );
 	}
 
-	public javax.swing.ImageIcon getSourceImageIcon() {
-		return this.imageIcon;
+	public MultipleSourceImageIconFactory( int defaultIndex, java.net.URL... resources ) {
+		this( defaultIndex, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcons( resources ) );
+	}
+
+	public MultipleSourceImageIconFactory( int defaultIndex, java.awt.Image... images ) {
+		this( defaultIndex, edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcons( images ) );
 	}
 
 	@Override
-	protected double getTrimmedWidthToHeightAspectRatio() {
-		return this.imageIcon.getIconWidth() / (double)this.imageIcon.getIconHeight();
+	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
+		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon( size );
+		if( imageIcon != null ) {
+			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
+				return imageIcon;
+			} else {
+				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( imageIcon, size.width, size.height );
+			}
+		} else {
+			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
+		}
 	}
 }

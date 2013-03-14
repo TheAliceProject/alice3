@@ -46,13 +46,39 @@ package org.alice.stageide.modelresource;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceNodeTreeSelectionState extends org.lgna.croquet.CustomTreeSelectionState<ResourceNode> {
+
+	//todo
 	private static final javax.swing.Icon EMPTY_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE.height );
+
+	private static final java.awt.Dimension BUTTON_ICON_SIZE = new java.awt.Dimension( 24, 18 );
+	private static final javax.swing.Icon EMPTY_BUTTON_ICON = new edu.cmu.cs.dennisc.javax.swing.icons.EmptyIcon( 0, BUTTON_ICON_SIZE.height );
+	//
 
 	private final ResourceNode root;
 
 	public ResourceNodeTreeSelectionState( java.util.UUID migrationId, ResourceNode root ) {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, migrationId, root, ResourceNodeCodec.SINGLETON );
 		this.root = root;
+	}
+
+	protected abstract boolean isBreadcrumbButtonIconDesired();
+
+	@Override
+	public org.lgna.croquet.ActionOperation getItemSelectionOperation( java.util.concurrent.Callable<org.alice.stageide.modelresource.ResourceNode> itemCallable ) {
+		org.lgna.croquet.ActionOperation rv = super.getItemSelectionOperation( itemCallable );
+
+		if( this.isBreadcrumbButtonIconDesired() ) {
+			org.alice.stageide.modelresource.ResourceNode resourceNode;
+			try {
+				resourceNode = itemCallable.call();
+			} catch( Exception e ) {
+				resourceNode = null;
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( e, this, itemCallable );
+			}
+			rv.setButtonIcon( this.getIconForNode( resourceNode, BUTTON_ICON_SIZE, EMPTY_BUTTON_ICON ) );
+		}
+
+		return rv;
 	}
 
 	@Override
@@ -66,10 +92,18 @@ public abstract class ResourceNodeTreeSelectionState extends org.lgna.croquet.Cu
 		}
 	}
 
+	private javax.swing.Icon getIconForNode( ResourceNode node, java.awt.Dimension size, javax.swing.Icon emptyIcon ) {
+		if( node != null ) {
+			org.lgna.croquet.icon.IconFactory iconFactory = node.getResourceKey().getIconFactory();
+			return iconFactory != null ? iconFactory.getIcon( size ) : emptyIcon;
+		} else {
+			return emptyIcon;
+		}
+	}
+
 	@Override
 	protected javax.swing.Icon getIconForNode( ResourceNode node ) {
-		org.lgna.croquet.icon.IconFactory iconFactory = node.getResourceKey().getIconFactory();
-		return iconFactory != null ? iconFactory.getIcon( org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE ) : EMPTY_ICON;
+		return this.getIconForNode( node, org.alice.ide.Theme.DEFAULT_SMALL_ICON_SIZE, EMPTY_ICON );
 	}
 
 	@Override

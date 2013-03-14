@@ -452,14 +452,14 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return new org.lgna.project.virtualmachine.ReleaseVirtualMachine();
 	}
 
-	protected abstract void registerAdapters( org.lgna.project.virtualmachine.VirtualMachine vm );
+	protected abstract void registerAdaptersForSceneEditorVm( org.lgna.project.virtualmachine.VirtualMachine vm );
 
 	public final org.lgna.project.virtualmachine.VirtualMachine getVirtualMachineForSceneEditor() {
 		if( this.vmForSceneEditor != null ) {
 			//pass
 		} else {
 			this.vmForSceneEditor = this.createVirtualMachineForSceneEditor();
-			this.registerAdapters( this.vmForSceneEditor );
+			this.registerAdaptersForSceneEditorVm( this.vmForSceneEditor );
 		}
 		return this.vmForSceneEditor;
 	}

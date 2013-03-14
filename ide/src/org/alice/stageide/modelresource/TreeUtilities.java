@@ -146,14 +146,14 @@ public class TreeUtilities {
 		}
 	}
 
-	private static java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> createIconFactories( java.util.List<ResourceNode> dstChildNodes ) {
-		java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private static java.util.List<org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> createIconFactories( java.util.List<ResourceNode> dstChildNodes ) {
+		java.util.List<org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( ResourceNode resourceNode : dstChildNodes ) {
 			ResourceKey resourceKey = resourceNode.getResourceKey();
 			//todo
 			org.lgna.croquet.icon.IconFactory iconFactory = resourceKey.getIconFactory();
-			if( iconFactory instanceof org.lgna.croquet.icon.AbstractImageIconFactory ) {
-				org.lgna.croquet.icon.AbstractImageIconFactory imageIconFactory = (org.lgna.croquet.icon.AbstractImageIconFactory)iconFactory;
+			if( iconFactory instanceof org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory ) {
+				org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory imageIconFactory = (org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory)iconFactory;
 				iconFactories.add( imageIconFactory );
 			}
 			if( iconFactories.size() == 5 ) {

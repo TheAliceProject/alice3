@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.icon;
+package edu.cmu.cs.dennisc.java.awt.datatransfer;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
-	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
-		super( imageIcon );
+public class TransferableImage implements java.awt.datatransfer.Transferable {
+	private static final java.awt.datatransfer.DataFlavor[] DATA_FLAVORS = { java.awt.datatransfer.DataFlavor.imageFlavor };
+	private final java.awt.Image image;
+
+	public TransferableImage( java.awt.Image image ) {
+		assert image != null : this;
+		this.image = image;
 	}
 
-	public ImageIconFactory( java.net.URL resource ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( resource ) );
+	public java.awt.datatransfer.DataFlavor[] getTransferDataFlavors() {
+		return DATA_FLAVORS;
 	}
 
-	public ImageIconFactory( java.awt.Image image ) {
-		this( edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( image ) );
+	public boolean isDataFlavorSupported( java.awt.datatransfer.DataFlavor flavor ) {
+		return java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor );
 	}
 
-	@Override
-	protected javax.swing.Icon createIcon( java.awt.Dimension size ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			if( ( imageIcon.getIconWidth() == size.width ) && ( imageIcon.getIconHeight() == size.height ) ) {
-				return imageIcon;
-			} else {
-				return new edu.cmu.cs.dennisc.javax.swing.icons.ScaledIcon( imageIcon, size.width, size.height );
-			}
+	public Object getTransferData( java.awt.datatransfer.DataFlavor flavor ) throws java.awt.datatransfer.UnsupportedFlavorException, java.io.IOException {
+		if( java.awt.datatransfer.DataFlavor.imageFlavor.equals( flavor ) ) {
+			return this.image;
 		} else {
-			return new org.alice.ide.swing.icons.ColorIcon( java.awt.Color.RED, size.width, size.height );
-		}
-	}
-
-	public java.awt.Dimension getDefaultSize( java.awt.Dimension sizeIfResolutionIndependent ) {
-		javax.swing.ImageIcon imageIcon = this.getSourceImageIcon();
-		if( imageIcon != null ) {
-			return new java.awt.Dimension( imageIcon.getIconWidth(), imageIcon.getIconHeight() );
-		} else {
-			return sizeIfResolutionIndependent;
+			throw new java.awt.datatransfer.UnsupportedFlavorException( flavor );
 		}
 	}
 }

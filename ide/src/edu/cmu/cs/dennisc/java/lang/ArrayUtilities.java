@@ -58,6 +58,20 @@ public class ArrayUtilities {
 		}
 	}
 
+	public static <E extends Object> E[] concat( Class<E> cls, E a, E... bs ) {
+		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, 1 + bs.length );
+		rv[ 0 ] = a;
+		System.arraycopy( bs, 0, rv, 1, bs.length );
+		return rv;
+	}
+
+	public static <E extends Object> E[] concat( Class<E> cls, E[] as, E b ) {
+		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, as.length + 1 );
+		System.arraycopy( as, 0, rv, 0, as.length );
+		rv[ as.length ] = b;
+		return rv;
+	}
+
 	public static <E extends Object> E[] concatArrays( Class<E> cls, E[]... arrays ) {
 		int totalLength = 0;
 		for( E[] array : arrays ) {

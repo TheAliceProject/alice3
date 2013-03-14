@@ -90,9 +90,11 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	protected void registerAdapters( org.lgna.project.virtualmachine.VirtualMachine vm ) {
-		vm.registerAnonymousAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
-		vm.registerAnonymousAdapter( org.lgna.story.event.SceneActivationListener.class, org.alice.stageide.apis.story.event.SceneActivationAdapter.class );
+	protected void registerAdaptersForSceneEditorVm( org.lgna.project.virtualmachine.VirtualMachine vm ) {
+		vm.registerAbstractClassAdapter( org.lgna.story.SScene.class, org.alice.stageide.ast.SceneAdapter.class );
+		vm.registerProtectedMethodAdapter(
+				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class ),
+				edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getDeclaredMethod( org.lgna.story.EmployeesOnly.class, "invokeSetJointedModelResource", org.lgna.story.SJointedModel.class, org.lgna.story.resources.JointedModelResource.class ) );
 	}
 
 	@Override
@@ -124,6 +126,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	private static final org.lgna.project.ast.JavaType COLOR_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.Color.class );
 	private static final org.lgna.project.ast.JavaType JOINTED_MODEL_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.JointedModelResource.class );
+	private static final org.lgna.project.ast.JavaType PERSON_RESOURCE_TYPE = org.lgna.project.ast.JavaType.getInstance( org.lgna.story.resources.sims2.PersonResource.class );
 
 	private javax.swing.Icon getIconFor( org.lgna.project.ast.AbstractField field ) {
 		if( field == null ) {
@@ -233,7 +236,7 @@ public class StageIDE extends org.alice.ide.IDE {
 							org.lgna.project.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 							if( constructor != null ) {
 								org.lgna.project.ast.AbstractType<?, ?, ?> type = constructor.getDeclaringType();
-								return COLOR_TYPE.isAssignableFrom( type ) == false;
+								return ( COLOR_TYPE.isAssignableFrom( type ) || PERSON_RESOURCE_TYPE.isAssignableFrom( type ) ) == false;
 							}
 						}
 					}
