@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Kline" name="RockyOutcrop">
     <BoundingBox>
-        <Min x="-1.831091746687889" y="0.0" z="-0.8434260189533234"/>
-        <Max x="1.831091746687889" y="4.489936485886574" z="0.8434260189533234"/>
+        <Min x="-1.8310917243361473" y="0.0" z="-0.8434260189533234"/>
+        <Max x="1.8310917243361473" y="4.489935949444771" z="0.8434260189533234"/>
     </BoundingBox>
     <Tags>
         <Tag>asia</Tag>
@@ -20,8 +20,8 @@
     </ThemeTags>
     <Resource modelName="Large" resourceName="LARGE" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-1.831091746687889" y="0.0" z="-0.8434260189533234"/>
-            <Max x="1.831091746687889" y="4.489936485886574" z="0.8434260189533234"/>
+            <Min x="-1.8310917243361473" y="0.0" z="-0.8434260189533234"/>
+            <Max x="1.8310917243361473" y="4.489935949444771" z="0.8434260189533234"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Medium" resourceName="MEDIUM" textureName="DEFAULT">

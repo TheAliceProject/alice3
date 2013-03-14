@@ -18,5 +18,16 @@
     <ThemeTags>
         <ThemeTag>amazon</ThemeTag>
     </ThemeTags>
-    <Resource modelName="Treehouse" resourceName="DEFAULT" textureName="DEFAULT"/>
+    <Resource modelName="Default" resourceName="DEFAULT" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-3.298032283782959" y="0.0" z="-3.7194114923477173"/>
+            <Max x="3.298032283782959" y="4.899870038032532" z="3.7194114923477173"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="WithWater" resourceName="WITH_WATER" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-3.298032283782959" y="0.0" z="-3.7194114923477173"/>
+            <Max x="3.298032283782959" y="4.899870038032532" z="3.7194114923477173"/>
+        </BoundingBox>
+    </Resource>
 </AliceModel>
