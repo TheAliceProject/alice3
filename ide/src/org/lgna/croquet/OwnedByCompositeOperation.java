@@ -96,6 +96,11 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
+	protected String modifyNameIfNecessary( String text ) {
+		return this.composite.modifyNameIfNecessary( super.modifyNameIfNecessary( text ) );
+	}
+
+	@Override
 	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 		org.lgna.croquet.history.CompletionStep<OwnedByCompositeOperation> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, new org.lgna.croquet.history.TransactionHistory() );
 		this.composite.perform( completionStep );

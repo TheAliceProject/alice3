@@ -124,6 +124,10 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
 	}
 
+	public String modifyNameIfNecessary( String text ) {
+		return text;
+	}
+
 	@Override
 	protected org.lgna.croquet.components.View<?, ?> allocateView( org.lgna.croquet.history.CompletionStep<?> step ) {
 		//todo
