@@ -72,7 +72,7 @@ public final class Layer {
 
 	private void updateComponentSize() {
 		if( this.component != null ) {
-			this.component.getAwtComponent().setSize( this.window.getRootPane().getLayeredPane().getSize() );
+			this.component.getAwtComponent().setSize( this.window.getJRootPane().getLayeredPane().getSize() );
 		}
 	}
 
@@ -82,7 +82,7 @@ public final class Layer {
 
 	public void setComponent( JComponent<?> component ) {
 		if( this.component != component ) {
-			javax.swing.JLayeredPane jLayeredPane = this.window.getRootPane().getLayeredPane();
+			javax.swing.JLayeredPane jLayeredPane = this.window.getJRootPane().getLayeredPane();
 			if( this.component != null ) {
 				jLayeredPane.removeComponentListener( this.componentListener );
 				jLayeredPane.remove( this.component.getAwtComponent() );

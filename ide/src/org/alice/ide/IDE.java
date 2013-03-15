@@ -95,6 +95,36 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 
 	public abstract ApiConfigurationManager getApiConfigurationManager();
 
+	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.SHIFT_MASK );
+	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK );
+	private static final javax.swing.KeyStroke CAPTURE_RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, 0 );
+
+	private void registerScreenCaptureKeyStrokes( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite = org.alice.ide.capture.ImageCaptureComposite.getInstance();
+		window.getContentPanel().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		window.getContentPanel().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		window.getContentPanel().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+	}
+
+	private void unregisterScreenCaptureKeyStrokes( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		window.getContentPanel().unregisterKeyboardAction( CAPTURE_ENTIRE_WINDOW_KEY_STROKE );
+		window.getContentPanel().unregisterKeyboardAction( CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE );
+		window.getContentPanel().unregisterKeyboardAction( CAPTURE_RECTANGLE_KEY_STROKE );
+	}
+
+	@Override
+	public void pushWindow( final org.lgna.croquet.components.AbstractWindow<?> window ) {
+		this.registerScreenCaptureKeyStrokes( window );
+		super.pushWindow( window );
+	}
+
+	@Override
+	public org.lgna.croquet.components.AbstractWindow<?> popWindow() {
+		org.lgna.croquet.components.AbstractWindow<?> window = super.popWindow();
+		this.unregisterScreenCaptureKeyStrokes( window );
+		return window;
+	}
+
 	@Override
 	public void initialize( String[] args ) {
 		super.initialize( args );

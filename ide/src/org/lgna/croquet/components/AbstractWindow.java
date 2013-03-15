@@ -62,15 +62,20 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 
 	private final java.util.Map<Integer, Layer> mapIdToLayer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
+	private final ContentPane contentPane;
+	private final RootPane rootPane;
 	//<kjh/>
 	private final LayeredPane layeredPane;
 
 	public AbstractWindow( W window ) {
 		this.window = window;
 		this.layeredPane = new LayeredPane( getJLayeredPane() );
-		this.getRootPane().setContentPane( this.contentPanel.getAwtComponent() );
+		this.contentPane = new ContentPane( this );
+		this.rootPane = new RootPane( this );
 		AbstractWindow.map.put( window, this );
 	}
+
+	/* package-private */abstract java.awt.Container getJContentPane();
 
 	@Override
 	public final W getAwtComponent() {
@@ -95,20 +100,22 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		return this;
 	}
 
-	protected abstract javax.swing.JRootPane getRootPane();
+	/* package-private */abstract javax.swing.JRootPane getJRootPane();
 
 	protected final javax.swing.JLayeredPane getJLayeredPane() {
-		return this.getRootPane().getLayeredPane();
+		return this.getJRootPane().getLayeredPane();
 	}
 
 	public LayeredPane getLayeredPane() {
 		return this.layeredPane;
 	}
 
-	private BorderPanel contentPanel = new BorderPanel();
+	public ContentPane getContentPanel() {
+		return this.contentPane;
+	}
 
-	public BorderPanel getContentPanel() {
-		return this.contentPanel;
+	public RootPane getRootPane() {
+		return this.rootPane;
 	}
 
 	public void addWindowListener( java.awt.event.WindowListener listener ) {
@@ -274,11 +281,11 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	}
 
 	public Button getDefaultButton() {
-		return lookupButton( this.getRootPane().getDefaultButton() );
+		return lookupButton( this.getJRootPane().getDefaultButton() );
 	}
 
 	public void setDefaultButton( Button button ) {
-		this.getRootPane().setDefaultButton( button.getAwtComponent() );
+		this.getJRootPane().setDefaultButton( button.getAwtComponent() );
 	}
 
 	private java.util.Stack<javax.swing.JButton> defaultJButtonStack;
@@ -289,7 +296,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 		} else {
 			this.defaultJButtonStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 		}
-		this.defaultJButtonStack.push( this.getRootPane().getDefaultButton() );
+		this.defaultJButtonStack.push( this.getJRootPane().getDefaultButton() );
 		this.setDefaultButton( button );
 	}
 
@@ -301,7 +308,7 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 				rv = null;
 			} else {
 				javax.swing.JButton jButton = this.defaultJButtonStack.pop();
-				this.getRootPane().setDefaultButton( jButton );
+				this.getJRootPane().setDefaultButton( jButton );
 				rv = lookupButton( jButton );
 			}
 		} else {

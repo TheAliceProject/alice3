@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,55 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class Window extends AbstractWindow<javax.swing.JWindow> {
+public class RootPane extends JComponent<javax.swing.JRootPane> {
+	private final AbstractWindow<?> window;
 
-	private static javax.swing.JWindow createJWindow( Component<?> owner ) {
-		javax.swing.JWindow rv;
-		if( owner != null ) {
-			AbstractWindow<?> root = owner.getRoot();
-			if( root != null ) {
-				java.awt.Window ownerWindow = root.getAwtComponent();
-				if( ownerWindow instanceof java.awt.Frame ) {
-					rv = new javax.swing.JWindow( (java.awt.Frame)ownerWindow );
-				} else {
-					rv = new javax.swing.JWindow( ownerWindow );
-				}
-			} else {
-				rv = new javax.swing.JWindow();
-			}
-		} else {
-			rv = new javax.swing.JWindow();
-		}
-		return rv;
-	}
-
-	public Window() {
-		this( null );
-	}
-
-	public Window( Component<?> owner ) {
-		super( Window.createJWindow( owner ) );
+	/* package-private */RootPane( AbstractWindow<?> window ) {
+		this.window = window;
 	}
 
 	@Override
-	/* package-private */java.awt.Container getJContentPane() {
-		return this.getAwtComponent().getContentPane();
-	}
-
-	@Override
-	/* package-private */javax.swing.JRootPane getJRootPane() {
-		return this.getAwtComponent().getRootPane();
-	}
-
-	@Override
-	protected void setJMenuBar( javax.swing.JMenuBar jMenuBar ) {
-		assert jMenuBar == null;
-		// TODO: ???
+	protected javax.swing.JRootPane createAwtComponent() {
+		return this.window.getJRootPane();
 	}
 }

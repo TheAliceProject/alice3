@@ -178,7 +178,12 @@ public class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	}
 
 	@Override
-	protected javax.swing.JRootPane getRootPane() {
+	/* package-private */java.awt.Container getJContentPane() {
+		return this.getAwtComponent().getContentPane();
+	}
+
+	@Override
+	/* package-private */javax.swing.JRootPane getJRootPane() {
 		return this.getAwtComponent().getRootPane();
 	}
 
