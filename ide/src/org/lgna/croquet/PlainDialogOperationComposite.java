@@ -121,9 +121,6 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 		return this.getOperation().getName();
 	}
 
-	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
-	}
-
 	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}

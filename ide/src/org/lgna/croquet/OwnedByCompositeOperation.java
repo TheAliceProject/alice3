@@ -75,12 +75,6 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		this.composite.clobberLocalizationIfDesired( this );
-	}
-
-	@Override
 	public boolean isToolBarTextClobbered() {
 		return this.composite.isToolBarTextClobbered( super.isToolBarTextClobbered() );
 	}

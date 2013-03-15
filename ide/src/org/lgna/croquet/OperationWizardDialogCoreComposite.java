@@ -71,9 +71,6 @@ public abstract class OperationWizardDialogCoreComposite extends WizardDialogCor
 		text.append( this.getName() );
 	}
 
-	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
-	}
-
 	public String modifyNameIfNecessary( String text ) {
 		return text;
 	}
