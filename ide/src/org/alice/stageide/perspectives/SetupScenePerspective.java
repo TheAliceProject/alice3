@@ -55,8 +55,21 @@ public class SetupScenePerspective extends org.alice.ide.perspectives.ProjectPer
 		return SingletonHolder.instance;
 	}
 
+	private final org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> sceneTypeMetaState;
+
 	private SetupScenePerspective() {
 		super( java.util.UUID.fromString( "50d334d1-ccf9-421e-bce9-0134db6d6bc7" ) );
+		this.sceneTypeMetaState = new org.lgna.croquet.meta.StateTrackingMetaState<org.lgna.project.ast.NamedUserType, org.alice.ide.ProjectDocument>( org.alice.ide.project.ProjectDocumentState.getInstance() ) {
+			@Override
+			public org.lgna.project.ast.NamedUserType getValue() {
+				org.alice.ide.ProjectDocument projectDocument = org.alice.ide.project.ProjectDocumentState.getInstance().getValue();
+				return org.alice.stageide.ast.StoryApiSpecificAstUtilities.getSceneTypeFromDocument( projectDocument );
+			}
+		};
+	}
+
+	public org.lgna.croquet.meta.MetaState<org.lgna.project.ast.NamedUserType> getSceneTypeMetaState() {
+		return this.sceneTypeMetaState;
 	}
 
 	public org.alice.stageide.perspectives.scenesetup.SetupScenePerspectiveComposite getMainComposite() {

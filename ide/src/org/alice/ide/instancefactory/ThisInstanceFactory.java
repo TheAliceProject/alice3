@@ -87,11 +87,7 @@ public class ThisInstanceFactory extends AbstractInstanceFactory {
 
 	public String getRepr() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		//		sb.append( "<strong>" );
 		sb.append( "this" );
-		//		sb.append( "</strong>" );
-		sb.append( "</html>" );
 		return sb.toString();
 	}
 }

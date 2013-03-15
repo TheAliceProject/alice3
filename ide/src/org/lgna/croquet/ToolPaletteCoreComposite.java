@@ -58,6 +58,11 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.compon
 		protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 			return this.coreComposite.getClassUsedForLocalization();
 		}
+
+		@Override
+		protected String modifyTextIfNecessary( String text, boolean isTrue ) {
+			return this.coreComposite.modifyTextIfNecessary( super.modifyTextIfNecessary( text, isTrue ), isTrue );
+		}
 	}
 
 	public static final class OuterComposite extends AbstractComposite<org.lgna.croquet.components.ToolPaletteView> {
@@ -107,6 +112,10 @@ public abstract class ToolPaletteCoreComposite<V extends org.lgna.croquet.compon
 		super( migrationId );
 		InternalIsExpandedState isExpandedState = new InternalIsExpandedState( group, initialValue, this );
 		this.outerComposite = new OuterComposite( isExpandedState, this );
+	}
+
+	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
+		return text;
 	}
 
 	public OuterComposite getOuterComposite() {

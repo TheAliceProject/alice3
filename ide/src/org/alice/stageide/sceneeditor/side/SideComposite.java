@@ -77,6 +77,10 @@ public class SideComposite extends org.lgna.croquet.SimpleComposite<org.alice.st
 			booleanState.setToolTipText( handleStyle.getToolTipText() );
 		}
 		this.registerSubComposite( snapDetailsToolPaletteCoreComposite.getOuterComposite() );
+
+		this.registerSubComposite( this.objectPropertiesTab );
+		this.registerSubComposite( this.objectMarkersTab );
+		this.registerSubComposite( this.cameraMarkersTab );
 	}
 
 	public SnapDetailsToolPaletteCoreComposite getSnapDetailsToolPaletteCoreComposite() {

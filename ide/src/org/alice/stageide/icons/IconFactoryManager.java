@@ -75,21 +75,6 @@ public class IconFactoryManager {
 		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel.class.getResource( sb.toString() ) );
 	}
 
-	private static java.util.Map<Class<? extends org.lgna.story.resources.ModelResource>, javax.swing.ImageIcon> mapClsToSmallImageIcon = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static javax.swing.ImageIcon getSmallImageIconFor( Class<? extends org.lgna.story.resources.ModelResource> cls ) {
-		synchronized( mapClsToSmallImageIcon ) {
-			javax.swing.ImageIcon rv = mapClsToSmallImageIcon.get( cls );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = getIcon( cls, true );
-				mapClsToSmallImageIcon.put( cls, rv );
-			}
-			return rv;
-		}
-	}
-
 	private static abstract class UrlResourceDeclaration implements ResourceDeclaration {
 		protected abstract Class<? extends org.lgna.story.resources.ModelResource> getModelResourceClass();
 
@@ -102,9 +87,10 @@ public class IconFactoryManager {
 				//pass
 			} else {
 				if( getSetOfClassesWithIcons().contains( modelResourceCls ) ) {
-					javax.swing.ImageIcon imageIcon = getIcon( modelResourceCls, false );
-					//return new FolderIconFactory( new org.lgna.croquet.icon.ImageIconFactory( imageIcon ) );
-					return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
+					javax.swing.ImageIcon smallIcon = getIcon( modelResourceCls, true );
+					javax.swing.ImageIcon largeIcon = getIcon( modelResourceCls, false );
+					return new org.lgna.croquet.icon.MultipleSourceImageIconFactory( 1, smallIcon, largeIcon );
+					//return new org.lgna.croquet.icon.TrimmedImageIconFactory( imageIcon, 160, 120 );
 				}
 			}
 			//			if( modelResourceName != null ) {

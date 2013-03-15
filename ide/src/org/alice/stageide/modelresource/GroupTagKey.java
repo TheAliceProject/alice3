@@ -48,7 +48,7 @@ package org.alice.stageide.modelresource;
 public class GroupTagKey extends TagKey {
 	private final org.lgna.croquet.icon.IconFactory iconFactory;
 
-	public GroupTagKey( String groupTag, java.util.List<org.lgna.croquet.icon.AbstractImageIconFactory> iconFactories ) {
+	public GroupTagKey( String groupTag, java.util.List<org.lgna.croquet.icon.AbstractSingleSourceImageIconFactory> iconFactories ) {
 		super( groupTag );
 		this.iconFactory = new org.alice.stageide.icons.GroupIconFactory( iconFactories );
 	}

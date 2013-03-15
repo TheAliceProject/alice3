@@ -333,7 +333,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 
 	public void setLoggedIn( boolean isLoggedIn ) {
 		this.isLoggedIn = isLoggedIn;
-		this.getOwner().refreshStatus();
+		//this.getOwner().refreshStatus();
 	}
 
 	@Override

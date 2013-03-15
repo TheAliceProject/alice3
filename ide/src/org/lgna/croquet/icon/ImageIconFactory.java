@@ -45,7 +45,7 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageIconFactory extends AbstractImageIconFactory {
+public class ImageIconFactory extends AbstractSingleSourceImageIconFactory {
 	public ImageIconFactory( javax.swing.ImageIcon imageIcon ) {
 		super( imageIcon );
 	}

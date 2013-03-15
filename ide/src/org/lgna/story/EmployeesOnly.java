@@ -54,6 +54,10 @@ public class EmployeesOnly {
 		scene.handleActiveChanged( isActive, activationCount );
 	}
 
+	public static void invokeSetJointedModelResource( SJointedModel jointedModel, org.lgna.story.resources.JointedModelResource resource ) {
+		jointedModel.setJointedModelResource( resource );
+	}
+
 	public static double checkArgumentDoubleValuePositive( Number value, int index ) {
 		double rv = value.doubleValue();
 		if( rv <= 0.0 ) {

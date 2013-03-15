@@ -113,12 +113,15 @@ public class BootstrapUtilties {
 
 	public static String GET_MY_SCENE_METHOD_NAME = "getMyScene";
 
+	//todo
+	public static String MY_FIRST_PROCEDURE_NAME = "myFirstMethod";
+
 	public static org.lgna.project.ast.NamedUserType createProgramType( org.lgna.project.ast.UserField[] modelFields, org.lgna.project.ast.ExpressionStatement[] setupStatements, org.lgna.story.Color atmosphereColor, double fogDensity, org.lgna.story.Color aboveLightColor, org.lgna.story.Color belowLightColor ) {
 		org.lgna.project.ast.UserField cameraField = createPrivateFinalField( org.lgna.story.SCamera.class, "camera" );
 		cameraField.isDeletionAllowed.setValue( false );
 		cameraField.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );
 
-		org.lgna.project.ast.UserMethod myFirstMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, "myFirstMethod" );
+		org.lgna.project.ast.UserMethod myFirstMethod = createMethod( org.lgna.project.ast.AccessLevel.PUBLIC, Void.TYPE, MY_FIRST_PROCEDURE_NAME );
 
 		org.lgna.project.ast.UserMethod performGeneratedSetupMethod = createMethod( org.lgna.project.ast.AccessLevel.PRIVATE, Void.TYPE, org.alice.stageide.StageIDE.PERFORM_GENERATED_SET_UP_METHOD_NAME );
 		performGeneratedSetupMethod.managementLevel.setValue( org.lgna.project.ast.ManagementLevel.MANAGED );

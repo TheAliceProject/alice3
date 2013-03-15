@@ -92,14 +92,9 @@ public abstract class MethodInvocationFactory extends AbstractInstanceFactory {
 
 	public final String getRepr() {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "<html>" );
-		//		sb.append( "</strong>" );
 		this.addAccessRepr( sb );
 		sb.append( "'s " );
-		//		sb.append( "<strong>" );
 		sb.append( this.method.getName().substring( 3 ) );
-		//		sb.append( "</strong>" );
-		sb.append( "</html>" );
 		return sb.toString();
 	}
 }
