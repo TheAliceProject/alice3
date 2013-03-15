@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,58 +40,84 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help.views;
+package org.alice.ide.croquet.models.help;
 
-import java.util.List;
+import java.util.UUID;
 
-import org.alice.ide.croquet.models.help.BugLoginComposite;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
-import org.lgna.croquet.components.FormPanel;
-import org.lgna.croquet.components.LabeledFormRow;
+import org.alice.ide.croquet.models.help.views.LoginView;
+import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.Group;
+import org.lgna.croquet.OperationInputDialogCoreComposite;
+import org.lgna.croquet.StringState;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
 
 /**
  * @author Matt May
  */
-public class BugLoginView extends FormPanel {
-	private final ValueListener<Boolean> isPasswordExposedListener = new ValueListener<Boolean>() {
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+public abstract class AbstractLoginComposite<V extends LoginView> extends OperationInputDialogCoreComposite<V> {
+
+	protected final StringState userNameState = createStringState( createKey( "userNameState" ) );
+	protected final StringState passwordState = createStringState( createKey( "passwordState" ) );
+	protected final BooleanState displayPasswordValue = createBooleanState( createKey( "displayPasswordState" ), false );
+	protected final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
+	private Status status;
+	protected Status loginFailedStatus = createWarningStatus( createKey( "warningLoginFailed" ) );
+
+	public StringState getUserNameState() {
+		return this.userNameState;
+	}
+
+	public StringState getPasswordState() {
+		return this.passwordState;
+	}
+
+	public BooleanState getDisplayPasswordValue() {
+		return this.displayPasswordValue;
+	}
+
+	public BooleanState getIsLoggedIn() {
+		return this.isLoggedIn;
+	}
+
+	public AbstractLoginComposite( UUID migrationId, Group operationGroup ) {
+		super( migrationId, operationGroup );
+	}
+
+	@Override
+	protected Edit createEdit( CompletionStep<?> completionStep ) {
+		//note: work is done in isClearedForCommit
+		return null;
+	}
+
+	@Override
+	protected boolean isClearedForCommit() {
+		if( super.isClearedForCommit() ) {
+			boolean loginSuccess = tryToLogin();
+			if( loginSuccess ) {
+				status = IS_GOOD_TO_GO_STATUS;
+			} else {
+				status = loginFailedStatus;
+			}
+			refreshStatus();
+			return loginSuccess;
+		} else {
+			return false;
 		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			passwordField.setExposed( nextValue );
-		}
-	};
-	private final org.lgna.croquet.components.TextField userNameField;
-	private final org.lgna.croquet.components.PasswordField passwordField;
-
-	public BugLoginView( BugLoginComposite bugLoginComposite ) {
-		super( bugLoginComposite );
-		this.userNameField = bugLoginComposite.getUserNameState().createTextField();
-		this.passwordField = bugLoginComposite.getPasswordState().createPasswordField();
-		this.setMinimumPreferredHeight( 240 );
 	}
 
 	@Override
-	protected void appendRows( List<LabeledFormRow> rows ) {
-		BugLoginComposite bugLoginComposite = (BugLoginComposite)this.getComposite();
-		rows.add( new LabeledFormRow( bugLoginComposite.getUserNameState().getSidekickLabel(), this.userNameField ) );
-		rows.add( new LabeledFormRow( bugLoginComposite.getPasswordState().getSidekickLabel(), this.passwordField ) );
-		rows.add( new LabeledFormRow( null, bugLoginComposite.getDisplayPasswordValue().createCheckBox() ) );
+	protected V createView() {
+		return (V)new LoginView( this );
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		BugLoginComposite bugLoginComposite = (BugLoginComposite)this.getComposite();
-		bugLoginComposite.getDisplayPasswordValue().addAndInvokeValueListener( this.isPasswordExposedListener );
-		this.userNameField.requestFocus();
-		super.handleDisplayable();
+	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( CompletionStep<?> step ) {
+		return this.status;
 	}
 
-	@Override
-	protected void handleUndisplayable() {
-		super.handleUndisplayable();
-		BugLoginComposite bugLoginComposite = (BugLoginComposite)this.getComposite();
-		bugLoginComposite.getDisplayPasswordValue().removeValueListener( this.isPasswordExposedListener );
-	}
+	protected abstract boolean tryToLogin();
+
+	public abstract void logout();
+
 }

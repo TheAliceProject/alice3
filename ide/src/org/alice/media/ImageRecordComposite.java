@@ -46,19 +46,28 @@ import java.io.File;
 import java.io.IOException;
 
 import org.alice.media.components.ImageRecordView;
+import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.virtualmachine.UserInstance;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.SScene;
 import org.lgna.story.implementation.SceneImp;
 
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.matt.EventManager;
 import edu.cmu.cs.dennisc.matt.EventScript;
+import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 
@@ -74,6 +83,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private final BoundedIntegerState frameRateState = this.createBoundedIntegerState( this.createKey( "frameRateState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
 	private final Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
 	private final Status errorHasNotYetRecorded = createErrorStatus( this.createKey( "errorNothingIsRecorded" ) );
+	private double timerInSeconds = 0;
 
 	private final ValueListener<Boolean> isRecordingListener = new ValueListener<Boolean>() {
 		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
@@ -83,6 +93,37 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			toggleRecording();
 		}
 	};
+	private final ListSelectionState<EventWithTime> eventList = createListSelectionState( createKey( "eventList" ), EventWithTime.class, new ItemCodec<EventWithTime>() {
+
+		public Class<EventWithTime> getValueClass() {
+			return EventWithTime.class;
+		}
+
+		public EventWithTime decodeValue( BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, EventWithTime value ) {
+			throw new RuntimeException( "todo" );
+		}
+
+		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
+			sb.append( value );
+		}
+	}, -1 );
+
+	private ActionOperation restartOperation = createActionOperation( this.createKey( "restartImageRecorder" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
+			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
+			encoder.stop();
+			resetData();
+			restartOperation.setEnabled( false );
+			return null;
+		}
+
+	} );
 
 	private File tempFile;
 
@@ -90,12 +131,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
 		try {
 			tempFile = File.createTempFile( "temp", ".webm" );
-			//			encoder = new MattsMovieEncoder( tempFile );
 		} catch( IOException e ) {
 			e.printStackTrace();
 		}
 		this.owner = owner;
 		this.isRecordingState.setIconForBothTrueAndFalse( new IsRecordingIcon() );
+		this.isRecordingState.addValueListener( this.isRecordingListener );
+		restartOperation.setEnabled( false );
 	}
 
 	@Override
@@ -107,6 +149,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private int imageCount;
 	private final edu.cmu.cs.dennisc.animation.FrameObserver frameListener = new edu.cmu.cs.dennisc.animation.FrameObserver() {
 		public void update( double tCurrent ) {
+			timerInSeconds = tCurrent;
+			getView().updateTime();
 			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lookingGlass = programContext.getProgramImp().getOnscreenLookingGlass();
 			if( ( lookingGlass.getWidth() > 0 ) && ( lookingGlass.getHeight() > 0 ) ) {
 				if( image != null ) {
@@ -142,17 +186,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		if( this.isRecordingState.getValue() != isRecording ) {
 			if( !this.isRecordingState.getValue() ) {
 				programContext.getProgramImp().stopAnimator();
-				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
-				encoder.stop();
-				programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			} else {
-				encoder = new WebmAdapter( tempFile );
-				encoder.setFrameRate( frameRateState.getValue() );
-				encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
 				programContext.getProgramImp().startAnimator();
-				programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
-				MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
-				encoder.start();
+				restartOperation.setEnabled( true );
 			}
 		} else {
 			System.out.println( "SHOULD NOT HIT THIS (mmay)" );
@@ -168,43 +204,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		final org.lgna.project.ast.NamedUserType programType = this.owner.getProject().getProgramType();
-		final ImageRecordView recordView = this.getView();
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				org.lgna.croquet.components.BorderPanel lookingGlassContainer = recordView.getLookingGlassContainer();
-				image = null;
-				imageCount = 0;
-
-				programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRateState.getValue() );
-				programContext.initializeInContainer( lookingGlassContainer.getAwtComponent() );
-
-				getView().revalidateAndRepaint();
-
-				EventScript script = owner.getScript();
-
-				UserInstance programInstance = programContext.getProgramInstance();
-				UserField sceneField = programInstance.getType().fields.get( 0 );
-				SScene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, SScene.class );
-				SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
-				EventManager manager = sceneImp.getEventManager();
-				programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( script, manager ) );
-				programContext.setActiveScene();
-			}
-		}.start();
-
-		this.isRecordingState.addValueListener( this.isRecordingListener );
-	}
-
-	@Override
 	public void handlePostDeactivation() {
-		this.isRecordingState.removeValueListener( this.isRecordingListener );
-		programContext.getProgramImp().getAnimator().removeFrameObserver( this.frameListener );
-		programContext.cleanUpProgram();
 		if( ( encoder != null ) ) {
 			owner.setFile( tempFile );
 		}
@@ -229,5 +229,56 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	public BooleanState getIsRecordingState() {
 		return this.isRecordingState;
+	}
+
+	public double getTimerInSeconds() {
+		return this.timerInSeconds;
+	}
+
+	public ListSelectionState<EventWithTime> getEventList() {
+		return eventList;
+	}
+
+	private void restartProgramContext() {
+		org.lgna.project.ast.NamedUserType programType = this.owner.getProject().getProgramType();
+		image = null;
+		imageCount = 0;
+
+		programContext = new org.alice.stageide.program.VideoEncodingProgramContext( programType, frameRateState.getValue() );
+		programContext.initializeInContainer( this.getView().getLookingGlassContainer().getAwtComponent() );
+
+		getView().revalidateAndRepaint();
+
+		EventScript script = owner.getScript();
+
+		eventList.clear();
+		for( EventWithTime event : script.getEventList() ) {
+			eventList.addItem( event );
+		}
+
+		UserInstance programInstance = programContext.getProgramInstance();
+		UserField sceneField = programInstance.getType().fields.get( 0 );
+		SScene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, SScene.class );
+		SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
+		EventManager manager = sceneImp.getEventManager();
+		programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( script, manager ) );
+		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
+		programContext.setActiveScene();
+		MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
+		this.timerInSeconds = 0;
+		getView().updateTime();
+		encoder = new WebmAdapter( tempFile );
+		encoder.setFrameRate( frameRateState.getValue() );
+		encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
+		encoder.start();
+	}
+
+	public ActionOperation getRestartOperation() {
+		return this.restartOperation;
+	}
+
+	@Override
+	public void resetData() {
+		restartProgramContext();
 	}
 }

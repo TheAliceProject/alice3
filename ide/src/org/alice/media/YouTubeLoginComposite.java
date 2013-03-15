@@ -42,39 +42,38 @@
  */
 package org.alice.media;
 
-import org.alice.media.components.LoginView;
-import org.lgna.croquet.PlainDialogOperationComposite;
+import org.alice.ide.croquet.models.help.AbstractLoginComposite;
+import org.alice.ide.croquet.models.help.views.LoginView;
 
 import com.google.gdata.util.AuthenticationException;
 
 /**
  * @author Matt May
  */
-public class LoginComposite extends PlainDialogOperationComposite<LoginView> {
+public class YouTubeLoginComposite extends AbstractLoginComposite<LoginView> {
 
 	private final UploadComposite uploadComposite;
 
-	public LoginComposite( UploadComposite uploadComposite ) {
+	public YouTubeLoginComposite( UploadComposite uploadComposite ) {
 		super( java.util.UUID.fromString( "511e94a5-dc9b-4b2f-be3a-873f94dd6f93" ), null );
 		this.uploadComposite = uploadComposite;
 	}
 
 	@Override
-	protected LoginView createView() {
-		return new LoginView( this );
+	protected boolean tryToLogin() {
+		try {
+			this.uploadComposite.getUploader().logIn( this.getUserNameState().getValue(), this.getPasswordState().getValue() );
+			this.uploadComposite.setLoggedIn( true );
+			return true;
+		} catch( AuthenticationException e ) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
-	public void handlePreActivation() {
-		super.handlePreActivation();
-		try {
-			this.uploadComposite.getUploader().logIn( this.uploadComposite.getIdState().getValue(), this.uploadComposite.getPasswordState().getValue() );
-			this.uploadComposite.setLoggedIn( true );
-			getView().update( true );
-		} catch( AuthenticationException e ) {
-			getView().update( false );
-			e.printStackTrace();
-		}
+	public void logout() {
+		//		this.uploadComposite.getUploader().
 	}
 
 }

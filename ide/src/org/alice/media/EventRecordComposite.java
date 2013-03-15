@@ -49,6 +49,8 @@ import org.alice.stageide.StageIDE;
 import org.alice.stageide.program.RunProgramContext;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
@@ -62,7 +64,12 @@ import org.lgna.project.ast.UserMethod;
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.implementation.SceneImp;
 
+import edu.cmu.cs.dennisc.animation.FrameObserver;
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.matt.EventScript;
+import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
+import edu.cmu.cs.dennisc.matt.EventScriptListener;
 
 /**
  * @author Matt May
@@ -80,7 +87,33 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	private RunProgramContext programContext;
 	private EventScript script;
 	org.lgna.croquet.components.BorderPanel lookingGlassContainer;
+	private double timeInSeconds = 0;
 	private final ErrorStatus cannotAdvanceBecauseRecording = this.createErrorStatus( this.createKey( "cannotAdvanceBecauseRecording" ) );
+	private final ListSelectionState<EventWithTime> eventList = createListSelectionState( createKey( "eventList" ), EventWithTime.class, new ItemCodec<EventWithTime>() {
+
+		public Class<EventWithTime> getValueClass() {
+			return EventWithTime.class;
+		}
+
+		public EventWithTime decodeValue( BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "todo" );
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, EventWithTime value ) {
+			throw new RuntimeException( "todo" );
+		}
+
+		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
+			sb.append( value );
+		}
+	}, -1 );
+
+	private final EventScriptListener listener = new EventScriptListener() {
+
+		public void fireChanged( EventWithTime event ) {
+			eventList.addItem( event );
+		}
+	};
 
 	private BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
 
@@ -105,18 +138,26 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		//isRecordingState.setIconForBothTrueAndFalse(  );
 	}
 
+	private FrameObserver frameListener = new FrameObserver() {
+
+		public void update( double tCurrent ) {
+			timeInSeconds = tCurrent;
+			getView().updateTime();
+		}
+
+		public void complete() {
+		}
+	};
 	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
+
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			lookingGlassContainer.removeAllComponents();
-			lookingGlassContainer = getView().getLookingGlassContainer();
-			programContext = new RunProgramContext( owner.getProject().getProgramType() );
-			programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
-			programContext.getProgramImp().stopAnimator();
-			programContext.setActiveScene();
-			script = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
-			owner.setScript( script );
+			if( isRecordingState.getValue() ) {
+				//				re
+			}
+			resetData();
 			return null;
 		}
+
 	} );
 
 	@Override
@@ -124,24 +165,26 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		super.handlePreActivation();
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		if( programContext == null ) {
-			programContext = new RunProgramContext( owner.getProject().getProgramType() );
-			programContext.getProgramImp().setControlPanelDesired( false );
-			programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
-			programContext.getProgramImp().stopAnimator();
-			programContext.setActiveScene();
+			restartProgramContext();
 		}
-		script = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
-		owner.setScript( script );
-
 	}
 
-	@Override
-	public void handlePostDeactivation() {
-		if( programContext != null ) {
-			programContext.cleanUpProgram();
-			programContext = null;
+	private void restartProgramContext() {
+		if( ( programContext != null ) ) {
+			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 		}
-		super.handlePostDeactivation();
+		programContext = new RunProgramContext( owner.getProject().getProgramType() );
+		programContext.getProgramImp().setControlPanelDesired( false );
+		programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
+		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
+		programContext.getProgramImp().stopAnimator();
+		programContext.setActiveScene();
+		script = ( (SceneImp)ImplementationAccessor.getImplementation( programContext.getProgram().getActiveScene() ) ).getTranscript();
+		owner.setScript( script );
+		eventList.clear();
+		script.addListener( this.listener );
+		this.timeInSeconds = 0;
+		getView().updateTime();
 	}
 
 	public BooleanState getPlayRecordedOperation() {
@@ -204,5 +247,20 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 			}
 		}
 		return false;
+	}
+
+	public ListSelectionState<EventWithTime> getEventList() {
+		return this.eventList;
+	}
+
+	public double getTimeInSeconds() {
+		return this.timeInSeconds;
+	}
+
+	@Override
+	public void resetData() {
+		lookingGlassContainer.removeAllComponents();
+		lookingGlassContainer = getView().getLookingGlassContainer();
+		restartProgramContext();
 	}
 }

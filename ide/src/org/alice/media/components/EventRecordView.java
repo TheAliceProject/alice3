@@ -42,21 +42,41 @@
  */
 package org.alice.media.components;
 
+import java.awt.Dimension;
+
+import org.alice.media.EventRecordComposite;
+import org.lgna.croquet.components.Label;
+import org.lgna.croquet.components.List;
+
+import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
+
 /**
  * @author Matt May
  */
 public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 
 	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
+	private final Label timerLabel;
 
-	public EventRecordView( org.alice.media.EventRecordComposite eventRecordComposite ) {
+	public EventRecordView( EventRecordComposite eventRecordComposite ) {
+		super( eventRecordComposite, "", "[grow 1][grow 1][grow 1]" );
 		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer );
-		this.addComponent( panel, "wrap, span 2" );
+		this.addComponent( panel, "wrap, span 3" );
 		this.addComponent( eventRecordComposite.getPlayRecordedOperation().createToggleButton() );
+		timerLabel = new Label( String.valueOf( eventRecordComposite.getTimeInSeconds() ) );
+		this.addComponent( timerLabel, "align center" );
 		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
+		List<EventWithTime> list = eventRecordComposite.getEventList().createList();
+		list.setOpaque( false );
+		list.getAwtComponent().setMinimumSize( new Dimension( 400, lookingGlassContainer.getHeight() ) );
+		this.addComponent( list, "east" );
 	}
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
+	}
+
+	public void updateTime() {
+		timerLabel.setText( String.valueOf( ( (EventRecordComposite)this.getComposite() ).getTimeInSeconds() ) );
 	}
 }

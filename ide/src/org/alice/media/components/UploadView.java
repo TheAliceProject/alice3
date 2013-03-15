@@ -52,14 +52,6 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 		super( composite, 24, 0 );
 
 		org.lgna.croquet.components.MigPanel loginPanel = new org.lgna.croquet.components.MigPanel( null, "fill, inset 0", "", "[]0[]4[]0[]4[]" );
-		loginPanel.addComponent( composite.getIdState().getSidekickLabel().createImmutableTextField(), "wrap" );
-
-		loginPanel.addComponent( composite.getIdState().createTextField(), "wrap, growx" );
-
-		loginPanel.addComponent( composite.getPasswordState().getSidekickLabel().createImmutableTextField(), "wrap" );
-
-		loginPanel.addComponent( composite.getPasswordState().createPasswordField(), "wrap, growx" );
-
 		loginPanel.addComponent( composite.getLoginComposite().getOperation().createButton(), "wrap" );
 
 		org.lgna.croquet.components.JComponent<?> titleSidekickLabel = composite.getTitleState().getSidekickLabel().createImmutableTextField();

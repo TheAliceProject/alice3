@@ -40,23 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media.components;
+package edu.cmu.cs.dennisc.matt;
 
-import org.alice.media.LoginComposite;
-import org.lgna.croquet.components.BorderPanel;
+import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 
 /**
  * @author Matt May
  */
-public class LoginView extends BorderPanel {
+public interface EventScriptListener {
 
-	public LoginView( LoginComposite loginComposite ) {
-		super( loginComposite );
+	public void fireChanged( EventWithTime event );
 
-	}
-
-	public void update( boolean isLoginSuccessful ) {
-
-		refreshLater();
-	}
 }

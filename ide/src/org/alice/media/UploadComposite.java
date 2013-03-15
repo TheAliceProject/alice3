@@ -77,7 +77,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final StringState descriptionState = this.createStringState( this.createKey( "descriptionState" ), "" );
 	private final StringState tagsState = this.createStringState( this.createKey( "tagsState" ), "Alice3" );
 
-	private final LoginComposite loginComposite = new LoginComposite( this );
+	private final YouTubeLoginComposite loginComposite = new YouTubeLoginComposite( this );
 	private final ActionOperation exportToFileOperation = this.createActionOperation( this.createKey( "exportToFileOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 
@@ -152,14 +152,6 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		return this.videoComposite;
 	}
 
-	public org.lgna.croquet.StringState getIdState() {
-		return this.idState;
-	}
-
-	public org.lgna.croquet.StringState getPasswordState() {
-		return this.passwordState;
-	}
-
 	public YouTubeUploader getUploader() {
 		return this.uploader;
 	}
@@ -168,7 +160,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		return this.owner;
 	}
 
-	public LoginComposite getLoginComposite() {
+	public YouTubeLoginComposite getLoginComposite() {
 		return this.loginComposite;
 	}
 
@@ -341,5 +333,13 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 
 	public void setLoggedIn( boolean isLoggedIn ) {
 		this.isLoggedIn = isLoggedIn;
+		this.getOwner().refreshStatus();
+	}
+
+	@Override
+	public void resetData() {
+		titleState.setValueTransactionlessly( "" );
+		descriptionState.setValueTransactionlessly( "" );
+		tagsState.setValueTransactionlessly( "Alice3" );
 	}
 }

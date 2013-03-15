@@ -42,7 +42,6 @@ public class ImagesToWebmEncoder extends ImagesToFFmpegEncoder {
 	public void mergeAudio() {
 		File soundTrack = getSoundTrack();
 		if( soundTrack != null ) {
-			System.out.println( "merge Audio" );
 			String tempVideoPath = this.getVideoPath();
 			String newPath = tempVideoPath.substring( 0, tempVideoPath.length() - 5 );
 			newPath += "1.webm";

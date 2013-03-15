@@ -40,44 +40,58 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media.components;
+package org.alice.ide.croquet.models.help.views;
 
-import java.awt.Dimension;
+import java.util.List;
 
-import org.alice.media.ImageRecordComposite;
-import org.lgna.croquet.components.Label;
-import org.lgna.croquet.components.List;
-
-import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
+import org.alice.ide.croquet.models.help.AbstractLoginComposite;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.components.FormPanel;
+import org.lgna.croquet.components.LabeledFormRow;
 
 /**
  * @author Matt May
  */
-public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
-	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
-	private final Label timerLabel;
+public class LoginView extends FormPanel {
+	private final ValueListener<Boolean> isPasswordExposedListener = new ValueListener<Boolean>() {
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
 
-	public ImageRecordView( org.alice.media.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "", "[grow 1][grow 1][grow 1][grow 1]" );
-		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( this.lookingGlassContainer );
-		this.addComponent( panel, "wrap, span 4" );
-		this.addComponent( recordComposite.getIsRecordingState().createToggleButton() );
-		timerLabel = new Label( String.valueOf( recordComposite.getTimerInSeconds() ) );
-		this.addComponent( new org.lgna.croquet.components.LineAxisPanel( recordComposite.getFrameRateState().getSidekickLabel().createImmutableTextField(), recordComposite.getFrameRateState().createSpinner() ), "align right" );
-		this.addComponent( timerLabel, "align left" );
-		this.addComponent( recordComposite.getRestartOperation().createButton(), "wrap, align right" );
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			passwordField.setExposed( nextValue );
+		}
+	};
+	private final org.lgna.croquet.components.TextField userNameField;
+	private final org.lgna.croquet.components.PasswordField passwordField;
 
-		List<EventWithTime> list = recordComposite.getEventList().createList();
-		list.setOpaque( false );
-		list.getAwtComponent().setMinimumSize( new Dimension( 400, lookingGlassContainer.getHeight() ) );
-		this.addComponent( list, "east" );
+	public LoginView( AbstractLoginComposite bugLoginComposite ) {
+		super( bugLoginComposite );
+		this.userNameField = bugLoginComposite.getUserNameState().createTextField();
+		this.passwordField = bugLoginComposite.getPasswordState().createPasswordField();
+		this.setMinimumPreferredHeight( 240 );
 	}
 
-	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
-		return this.lookingGlassContainer;
+	@Override
+	protected void appendRows( List<LabeledFormRow> rows ) {
+		AbstractLoginComposite loginComposite = (AbstractLoginComposite)this.getComposite();
+		rows.add( new LabeledFormRow( loginComposite.getUserNameState().getSidekickLabel(), this.userNameField ) );
+		rows.add( new LabeledFormRow( loginComposite.getPasswordState().getSidekickLabel(), this.passwordField ) );
+		rows.add( new LabeledFormRow( null, loginComposite.getDisplayPasswordValue().createCheckBox() ) );
 	}
 
-	public void updateTime() {
-		this.timerLabel.setText( String.valueOf( ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() ) );
+	@Override
+	protected void handleDisplayable() {
+		AbstractLoginComposite bugLoginComposite = (AbstractLoginComposite)this.getComposite();
+		bugLoginComposite.getDisplayPasswordValue().addAndInvokeValueListener( this.isPasswordExposedListener );
+		this.userNameField.requestFocus();
+		super.handleDisplayable();
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		super.handleUndisplayable();
+		AbstractLoginComposite loginComposite = (AbstractLoginComposite)this.getComposite();
+		loginComposite.getDisplayPasswordValue().removeValueListener( this.isPasswordExposedListener );
 	}
 }

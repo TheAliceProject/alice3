@@ -60,9 +60,9 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		return SingletonHolder.instance;
 	}
 
-	private final EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
-	private final ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
-	private final UploadComposite uploadComposite = new UploadComposite( this );
+	private EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
+	private ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
+	private UploadComposite uploadComposite = new UploadComposite( this );
 
 	private org.lgna.project.Project project;
 	private EventScript script;
@@ -72,7 +72,6 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
 		this.addPage( this.eventRecordComposite );
 		this.addPage( this.imageRecordComposite );
-		//		this.addPage( this.videoEditorComposite );
 		this.addPage( this.uploadComposite );
 	}
 
@@ -122,12 +121,4 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
 	}
-
-	//	@Override
-	//	public void handlePreActivation() {
-	//		super.handlePreActivation();
-	//		if( !isInputEvents() ) {
-	//			setIndex( 1 );
-	//		}
-	//	}
 }

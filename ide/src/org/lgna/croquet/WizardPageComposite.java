@@ -106,4 +106,7 @@ public abstract class WizardPageComposite<V extends org.lgna.croquet.components.
 		org.lgna.croquet.history.CompletionStep<?> step = null;
 		return this.isOptional() || this.isAutoAdvanceDesired( step );
 	}
+
+	public abstract void resetData();
+
 }

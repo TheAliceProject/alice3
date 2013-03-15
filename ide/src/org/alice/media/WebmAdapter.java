@@ -49,6 +49,7 @@ import java.io.File;
 import org.alice.media.audio.ScheduledAudioStream;
 
 import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
 
@@ -100,7 +101,11 @@ public class WebmAdapter implements MediaPlayerObserver {
 	}
 
 	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) {
-		encoder.addBufferedImage( image, isUpsideDown );
+		if( encoder.isRunning() ) {
+			encoder.addBufferedImage( image, isUpsideDown );
+		} else {
+			Logger.severe( "GETTING BUFFERED IMAGE AFTER STOP" );
+		}
 	}
 
 }

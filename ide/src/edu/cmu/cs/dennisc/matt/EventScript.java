@@ -54,9 +54,18 @@ public class EventScript {
 	List<EventWithTime> eventList = Collections.newLinkedList();
 	List<EventWithTime> list = Collections.newLinkedList();
 	private boolean isVirgin = true;
+	private List<EventScriptListener> listeners = Collections.newLinkedList();
 
 	public void record( double currentTime, Object e ) {
-		eventList.add( new EventWithTime( currentTime, e ) );
+		EventWithTime event = new EventWithTime( currentTime, e );
+		eventList.add( event );
+		fireChanged( event );
+	}
+
+	private void fireChanged( EventWithTime event ) {
+		for( EventScriptListener listener : listeners ) {
+			listener.fireChanged( event );
+		}
 	}
 
 	public List<Object> getEventsForTime( double time ) {
@@ -75,7 +84,7 @@ public class EventScript {
 		list = Collections.newLinkedList( eventList );
 	}
 
-	private class EventWithTime {
+	public class EventWithTime {
 		Object event;
 		double time;
 
@@ -91,10 +100,23 @@ public class EventScript {
 		public double getTime() {
 			return this.time;
 		}
+
+		@Override
+		public String toString() {
+			return event.getClass().getSimpleName() + ": " + ( (int)( time * 100 ) / 100.0 );
+		}
 	}
 
 	public int size() {
 		return eventList.size();
+	}
+
+	public void addListener( EventScriptListener listener ) {
+		this.listeners.add( listener );
+	}
+
+	public List<EventWithTime> getEventList() {
+		return eventList;
 	}
 
 }
