@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Pei Hong Tan" name="CoconutPalm">
     <BoundingBox>
-        <Min x="-1.9010220766067505" y="0.0" z="-1.7730962038040161"/>
-        <Max x="1.9010220766067505" y="4.811116695404053" z="1.7730962038040161"/>
+        <Min x="-1.9163802862167358" y="0.0" z="-1.717828631401062"/>
+        <Max x="1.8856638669967651" y="4.811116695404053" z="1.8283637762069702"/>
     </BoundingBox>
     <Tags>
         <Tag>amazon</Tag>
@@ -19,14 +19,14 @@
     </ThemeTags>
     <Resource modelName="NoCoconuts" resourceName="NO_COCONUTS" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-1.9010220766067505" y="0.0" z="-1.7730962038040161"/>
-            <Max x="1.9010220766067505" y="4.811116695404053" z="1.7730962038040161"/>
+            <Min x="-1.9163802862167358" y="0.0" z="-1.717828631401062"/>
+            <Max x="1.8856638669967651" y="4.811116695404053" z="1.8283637762069702"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="WithCoconuts" resourceName="WITH_COCONUTS" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-1.9010220766067505" y="0.0" z="-1.7730962038040161"/>
-            <Max x="1.9010220766067505" y="4.811116695404053" z="1.7730962038040161"/>
+            <Min x="-1.9163802862167358" y="0.0" z="-1.717828631401062"/>
+            <Max x="1.8856638669967651" y="4.811116695404053" z="1.8283637762069702"/>
         </BoundingBox>
     </Resource>
 </AliceModel>

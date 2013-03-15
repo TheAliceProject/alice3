@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Laura Paoletti" name="CanyonSpires">
     <BoundingBox>
-        <Min x="-0.6374193131923676" y="0.0" z="-0.9021695256233215"/>
-        <Max x="0.6374193131923676" y="2.216184681688901" z="0.9021695256233215"/>
+        <Min x="-0.7468770146369934" y="6.200611242093146E-4" z="-1.1032594442367554"/>
+        <Max x="0.5279616117477417" y="2.2168047428131104" z="0.7010796070098877"/>
     </BoundingBox>
     <Tags>
         <Tag>southwest</Tag>

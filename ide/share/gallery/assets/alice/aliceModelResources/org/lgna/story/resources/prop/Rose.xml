@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="Rose">
     <BoundingBox>
-        <Min x="-0.18087530136108398" y="0.0" z="-0.15292774885892868"/>
-        <Max x="0.18087530136108398" y="0.3578644394874573" z="0.15292774885892868"/>
+        <Min x="-0.16466766595840454" y="-0.1811755746603012" z="-0.14828640222549438"/>
+        <Max x="0.19708293676376343" y="0.17668886482715607" z="0.15756909549236298"/>
     </BoundingBox>
     <Tags>
         <Tag>alice</Tag>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Kline" name="Bamboo">
     <BoundingBox>
-        <Min x="-0.9838810861110687" y="0.0" z="-0.7212141752243042"/>
-        <Max x="0.9838810861110687" y="3.6309807300567627" z="0.7212141752243042"/>
+        <Min x="-0.8181501030921936" y="-0.00838720053434372" z="-0.7957033514976501"/>
+        <Max x="1.1496120691299438" y="3.6309807300567627" z="0.6806513667106628"/>
     </BoundingBox>
     <Tags>
         <Tag>asia</Tag>
@@ -17,50 +17,50 @@
     </ThemeTags>
     <Resource modelName="Shoot1" resourceName="SHOOT1" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.21063374355435371" y="0.0" z="-0.22003338485956192"/>
-            <Max x="0.21063374355435371" y="2.333094596862793" z="0.22003338485956192"/>
+            <Min x="-0.11100194603204727" y="0.0" z="-0.23665019869804382"/>
+            <Max x="0.31026554107666016" y="2.333094596862793" z="0.20341657102108002"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Shoot2" resourceName="SHOOT2" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.2844129651784897" y="0.0" z="-0.29838041961193085"/>
-            <Max x="0.2844129651784897" y="1.8311585104092956" z="0.29838041961193085"/>
+            <Min x="-0.3301275372505188" y="-0.008387199603021145" z="-0.29674747586250305"/>
+            <Max x="0.23869839310646057" y="1.8227713108062744" z="0.30001336336135864"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Shoot3" resourceName="SHOOT3" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.24885986000299454" y="0.0" z="-0.266802653670311"/>
-            <Max x="0.24885986000299454" y="3.0000052452087402" z="0.266802653670311"/>
+            <Min x="-0.24841897189617157" y="0.0" z="-0.25029999017715454"/>
+            <Max x="0.2493007481098175" y="3.0000052452087402" z="0.2833053171634674"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Shoot4" resourceName="SHOOT4" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.278191402554512" y="0.0" z="-0.2656223215162754"/>
-            <Max x="0.278191402554512" y="2.305521249771118" z="0.2656223215162754"/>
+            <Min x="-0.3986733555793762" y="0.0" z="-0.4070066809654236"/>
+            <Max x="0.15770944952964783" y="2.305521249771118" z="0.12423796206712723"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Cluster1" resourceName="CLUSTER1" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.6632669866085052" y="0.0" z="-0.6044257283210754"/>
-            <Max x="0.6632669866085052" y="2.1160289444960654" z="0.6044257283210754"/>
+            <Min x="-0.5135949850082397" y="-0.005899349693208933" z="-0.528200089931488"/>
+            <Max x="0.8129389882087708" y="2.1101295948028564" z="0.6806513667106628"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Cluster2" resourceName="CLUSTER2" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.5734735727310181" y="0.0" z="-0.7212141752243042"/>
-            <Max x="0.5734735727310181" y="3.008392445743084" z="0.7212141752243042"/>
+            <Min x="-0.6462200284004211" y="-0.00838720053434372" z="-0.775834321975708"/>
+            <Max x="0.500727117061615" y="3.0000052452087402" z="0.6665940284729004"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Cluster3" resourceName="CLUSTER3" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.9838810861110687" y="0.0" z="-0.47094912827014923"/>
-            <Max x="0.9838810861110687" y="3.008392684161663" z="0.47094912827014923"/>
+            <Min x="-0.8181501030921936" y="-0.00838720053434372" z="-0.5863398313522339"/>
+            <Max x="1.1496120691299438" y="3.0000054836273193" z="0.3555584251880646"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Cluster4" resourceName="CLUSTER4" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.44026999175548553" y="0.0" z="-0.6164049357175827"/>
-            <Max x="0.44026999175548553" y="2.535353772342205" z="0.6164049357175827"/>
+            <Min x="-0.371542364358902" y="-0.00838720053434372" z="-0.7957033514976501"/>
+            <Max x="0.5089976191520691" y="2.5269665718078613" z="0.43710651993751526"/>
         </BoundingBox>
     </Resource>
     <Resource creator="EA" modelName="Thicket" resourceName="THICKET_DARK_GREEN" textureName="DARK_GREEN">

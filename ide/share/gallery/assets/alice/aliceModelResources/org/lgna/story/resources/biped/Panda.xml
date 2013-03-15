@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Laura Paoletti" name="Panda">
     <BoundingBox>
-        <Min x="-0.48987331986427307" y="0.0" z="-0.2938680127263069"/>
-        <Max x="0.48987331986427307" y="1.1677696127444506" z="0.2938680127263069"/>
+        <Min x="-0.5045931339263916" y="-0.013405265286564827" z="-0.4059273302555084"/>
+        <Max x="0.47515350580215454" y="1.1543643474578857" z="0.1818086951971054"/>
     </BoundingBox>
     <Tags>
         <Tag>asia</Tag>

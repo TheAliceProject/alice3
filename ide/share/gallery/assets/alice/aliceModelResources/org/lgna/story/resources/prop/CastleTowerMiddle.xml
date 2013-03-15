@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Kline" name="CastleTowerMiddle">
     <BoundingBox>
-        <Min x="-1.407393217086792" y="0.0" z="-1.3507983684539795"/>
-        <Max x="1.407393217086792" y="1.4847958087921143" z="1.3507983684539795"/>
+        <Min x="-1.407393217086792" y="-0.035460829734802246" z="-1.350798487663269"/>
+        <Max x="1.407393217086792" y="1.449334979057312" z="1.35079824924469"/>
     </BoundingBox>
     <Tags>
         <Tag>magic</Tag>

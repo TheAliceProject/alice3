@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Pei Hong Tan" name="Carp">
     <BoundingBox>
-        <Min x="-0.09018462896347046" y="0.0" z="-0.2744300663471222"/>
-        <Max x="0.09018462896347046" y="0.17767858318984509" z="0.2744300663471222"/>
+        <Min x="-0.09018462896347046" y="0.010661067441105843" z="-0.24694553017616272"/>
+        <Max x="0.09018462896347046" y="0.18833965063095093" z="0.30191460251808167"/>
     </BoundingBox>
     <Tags>
         <Tag>asia</Tag>

@@ -58,6 +58,7 @@ import javax.imageio.ImageIO;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.story.resources.BasicResource;
 import org.lgna.story.resourceutilities.ModelResourceExporter;
 import org.lgna.story.resourceutilities.ModelResourceInfo;
@@ -1060,6 +1061,11 @@ public class AliceResourceUtilties {
 	public static String[] getThemeTags( ResourceKey key, Locale locale )
 	{
 		return getThemeTags( getClassFromKey( key ), getEnumNameFromKey( key ), locale );
+	}
+
+	public static boolean shouldPlaceModelAboveGround( AbstractType<?, ?, ?> type )
+	{
+		return false;
 	}
 
 }

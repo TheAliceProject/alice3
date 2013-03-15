@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Gillmeister" name="Banana">
     <BoundingBox>
-        <Min x="-0.03840109519660473" y="0.0" z="-0.11297263577580452"/>
-        <Max x="0.03840109519660473" y="0.4880942702293396" z="0.11297263577580452"/>
+        <Min x="-0.04975961521267891" y="-0.24482721090316772" z="-0.1079828068614006"/>
+        <Max x="0.027042575180530548" y="0.24326705932617188" z="0.11796246469020844"/>
     </BoundingBox>
     <Tags>
         <Tag>amazon</Tag>
