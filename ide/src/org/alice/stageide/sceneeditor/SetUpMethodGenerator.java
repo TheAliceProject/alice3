@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -235,7 +237,7 @@ public class SetUpMethodGenerator {
 					statements.add( createPositionStatement( isThis, field, org.lgna.story.ImplementationAccessor.createPosition( initialTransform.translation ), 0 ) );
 
 					//todo
-					if( initialTransform.translation.y == 0.0 ) {
+					if( ( initialTransform.translation.y == 0.0 ) && AliceResourceUtilties.shouldPlaceModelAboveGround( abstractType ) ) {
 						//place above ground
 						org.lgna.project.ast.Expression targetExpression = new org.lgna.project.ast.NullLiteral();
 						org.lgna.project.ast.ExpressionStatement placeStatement = createStatement(

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="AbyssinianCat">
     <BoundingBox>
-        <Min x="-0.1524689644575119" y="0.0" z="-0.627193033695221"/>
-        <Max x="0.1524689644575119" y="0.8314734256127849" z="0.627193033695221"/>
+        <Min x="-0.1524689644575119" y="0.0014014685293659568" z="-0.4117898941040039"/>
+        <Max x="0.1524689644575119" y="0.8328748941421509" z="0.842596173286438"/>
     </BoundingBox>
     <Tags>
         <Tag>cat</Tag>

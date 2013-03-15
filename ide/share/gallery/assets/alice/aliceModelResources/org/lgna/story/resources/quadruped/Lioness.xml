@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Ethan Gagorik" name="Lioness">
     <BoundingBox>
-        <Min x="-0.1846935898065567" y="0.0" z="-0.847896933555603"/>
-        <Max x="0.1846935898065567" y="0.8919598814100027" z="0.847896933555603"/>
+        <Min x="-0.18470220267772675" y="-0.01600865088403225" z="-0.9037272334098816"/>
+        <Max x="0.18468497693538666" y="0.8759512305259705" z="0.7920666337013245"/>
     </BoundingBox>
     <Tags>
         <Tag>lion</Tag>

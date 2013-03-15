@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="John DeRiggi" name="BabyWalrus">
     <BoundingBox>
-        <Min x="-0.42466455698013306" y="0.0" z="-0.6562323272228241"/>
-        <Max x="0.42466455698013306" y="0.6648414805531502" z="0.6562323272228241"/>
+        <Min x="-0.42466455698013306" y="-0.0040577128529548645" z="-0.6369282603263855"/>
+        <Max x="0.42466455698013306" y="0.6607837677001953" z="0.6755363941192627"/>
     </BoundingBox>
     <Tags>
         <Tag>snow</Tag>

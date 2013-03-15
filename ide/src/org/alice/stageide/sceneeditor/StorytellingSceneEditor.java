@@ -100,6 +100,7 @@ import org.lgna.story.implementation.PerspectiveCameraMarkerImp;
 import org.lgna.story.implementation.ProgramImp;
 import org.lgna.story.implementation.SceneImp;
 import org.lgna.story.implementation.TransformableImp;
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
 
 import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
@@ -1086,7 +1087,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 			ResourceKey childKey = new ClassResourceKey( (Class<? extends org.lgna.story.resources.ModelResource>)cls );
 
 			AxisAlignedBox box = org.lgna.story.implementation.alice.AliceResourceUtilties.getBoundingBox( childKey );
-			double y = box != null ? -box.getXMinimum() : 0;
+			boolean shouldPlaceOnGround = AliceResourceUtilties.shouldPlaceModelAboveGround( type );
+			double y = ( box != null ) && shouldPlaceOnGround ? -box.getXMinimum() : 0;
 			Point3 location = new Point3( 0, y, 0 );
 			initialTransform = new AffineMatrix4x4( OrthogonalMatrix3x3.createIdentity(), location );
 		}
