@@ -65,6 +65,18 @@ public final class ContentPane extends JComponent<javax.swing.JPanel> {//Contain
 		this.internalAddComponent( component, java.awt.BorderLayout.PAGE_START );
 	}
 
+	public void addPageEndComponent( Component<?> component ) {
+		this.internalAddComponent( component, java.awt.BorderLayout.PAGE_END );
+	}
+
+	public void addLineStartComponent( Component<?> component ) {
+		this.internalAddComponent( component, java.awt.BorderLayout.LINE_START );
+	}
+
+	public void addLineEndComponent( Component<?> component ) {
+		this.internalAddComponent( component, java.awt.BorderLayout.LINE_END );
+	}
+
 	public void removeComponent( Component<?> component ) {
 		this.internalRemoveComponent( component );
 	}
