@@ -48,8 +48,15 @@ package org.lgna.croquet.components;
 public class RootPane extends JComponent<javax.swing.JRootPane> {
 	private final AbstractWindow<?> window;
 
+	private final LayeredPaneBareBones layeredPane;
+
 	/* package-private */RootPane( AbstractWindow<?> window ) {
 		this.window = window;
+		this.layeredPane = new LayeredPaneBareBones( this );
+	}
+
+	public LayeredPaneBareBones getLayeredPane() {
+		return this.layeredPane;
 	}
 
 	@Override

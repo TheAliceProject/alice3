@@ -63,7 +63,7 @@ public class DialogUtilities {
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
-				owner = application.getFrame().getContentPanel();
+				owner = application.getFrame().getContentPane();
 			}
 		}
 		boolean isModal = dialogOwner.isModal();

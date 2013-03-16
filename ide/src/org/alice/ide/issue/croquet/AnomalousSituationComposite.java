@@ -74,7 +74,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 
 		org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 		org.lgna.croquet.components.Frame frame = app.getFrame();
-		org.lgna.croquet.components.ContentPane contentPane = frame.getContentPanel();
+		org.lgna.croquet.components.ContentPane contentPane = frame.getContentPane();
 
 		this.applicationContentPanelImage = new java.awt.image.BufferedImage( contentPane.getWidth(), contentPane.getHeight(), java.awt.image.BufferedImage.TYPE_INT_RGB );
 		java.awt.Graphics g = applicationContentPanelImage.getGraphics();
@@ -143,7 +143,7 @@ public final class AnomalousSituationComposite extends org.alice.ide.croquet.mod
 	public static void main( String[] args ) throws Exception {
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		app.initialize( args );
-		app.getFrame().getContentPanel().addCenterComponent( new org.lgna.croquet.components.Label( "hello" ) );
+		app.getFrame().getContentPane().addCenterComponent( new org.lgna.croquet.components.Label( "hello" ) );
 		app.getFrame().pack();
 		app.getFrame().setVisible( true );
 		Thread.sleep( 1000 );

@@ -54,7 +54,7 @@ public final class ContentPane extends JComponent<javax.swing.JPanel> {//Contain
 
 	@Override
 	protected javax.swing.JPanel createAwtComponent() {
-		return (javax.swing.JPanel)this.window.getJContentPane();
+		return (javax.swing.JPanel)this.window.getAwtContentPane();
 	}
 
 	public void addCenterComponent( Component<?> component ) {

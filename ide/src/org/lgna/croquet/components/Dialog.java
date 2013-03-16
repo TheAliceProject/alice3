@@ -178,7 +178,7 @@ public class Dialog extends AbstractWindow<javax.swing.JDialog> {
 	}
 
 	@Override
-	/* package-private */java.awt.Container getJContentPane() {
+	/* package-private */java.awt.Container getAwtContentPane() {
 		return this.getAwtComponent().getContentPane();
 	}
 

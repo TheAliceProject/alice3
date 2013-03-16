@@ -77,7 +77,7 @@ public final class Frame extends AbstractWindow<javax.swing.JFrame> {
 	}
 
 	@Override
-	/* package-private */java.awt.Container getJContentPane() {
+	/* package-private */java.awt.Container getAwtContentPane() {
 		return this.getAwtComponent().getContentPane();
 	}
 

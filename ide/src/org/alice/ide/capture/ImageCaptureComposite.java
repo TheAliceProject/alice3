@@ -73,7 +73,7 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
 			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
-			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureImage( window.getContentPanel().getAwtComponent(), null, 300 );
+			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureImage( window.getContentPane().getAwtComponent(), null, 300 );
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 			return null;
 		}
