@@ -56,4 +56,12 @@ public class RootPane extends JComponent<javax.swing.JRootPane> {
 	protected javax.swing.JRootPane createAwtComponent() {
 		return this.window.getJRootPane();
 	}
+
+	public Component<?> getGlassPane() {
+		return Component.lookup( this.getAwtComponent().getGlassPane() );
+	}
+
+	public void setGlassPane( Component<?> component ) {
+		this.getAwtComponent().setGlassPane( component != null ? component.getAwtComponent() : null );
+	}
 }
