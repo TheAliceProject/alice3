@@ -204,7 +204,7 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 	protected javax.swing.JLayeredPane getLayeredPane() {
 		AbstractWindow<?> root = this.getRoot();
 		if( root != null ) {
-			javax.swing.JRootPane rootPane = root.getRootPane();
+			javax.swing.JRootPane rootPane = root.getJRootPane();
 			if( rootPane != null ) {
 				return rootPane.getLayeredPane();
 			} else {

@@ -55,7 +55,7 @@ public class ShowMeOperation extends org.alice.ide.operations.InconsequentialAct
 	protected void localize() {
 		super.localize();
 		this.setName( "Show me" );
-		this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, 0 ) );
+		//this.getSwingModel().getAction().putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, 0 ) );
 	}
 
 	@Override
