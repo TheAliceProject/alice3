@@ -213,6 +213,17 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		super.handlePostDeactivation();
 	}
 
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		eventList.clear();
+		EventScript script = owner.getScript();
+		for( EventWithTime event : script.getEventList() ) {
+			eventList.addItem( event );
+			System.out.println( "addEvent: " + event );
+		}
+	}
+
 	private void handleImage( java.awt.image.BufferedImage image, int imageCount, boolean isUpsideDown ) {
 		if( image != null ) {
 			encoder.addBufferedImage( image, isUpsideDown );
@@ -253,11 +264,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		getView().revalidateAndRepaint();
 
 		EventScript script = owner.getScript();
-
-		eventList.clear();
-		for( EventWithTime event : script.getEventList() ) {
-			eventList.addItem( event );
-		}
 
 		UserInstance programInstance = programContext.getProgramInstance();
 		UserField sceneField = programInstance.getType().fields.get( 0 );
