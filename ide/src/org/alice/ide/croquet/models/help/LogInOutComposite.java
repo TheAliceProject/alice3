@@ -70,8 +70,12 @@ public class LogInOutComposite extends CardOwnerComposite {
 	public LogInOutComposite( UUID id, AbstractLoginComposite loginComposite ) {
 		super( id, new LogInCard( loginComposite ), new LogOutCard( loginComposite.getLogOutOperation() ) );
 		this.composite = loginComposite;
-		loginCard = new LogInCard( loginComposite );
-		logoutCard = new LogOutCard( loginComposite.getLogOutOperation() );
+		this.loginCard = new LogInCard( loginComposite );
+		this.logoutCard = new LogOutCard( loginComposite.getLogOutOperation() );
+
+		this.addCard( this.loginCard );
+		this.addCard( this.logoutCard );
+
 		composite.getIsLoggedIn().addValueListener( isLoggedInAdapter );
 	}
 
