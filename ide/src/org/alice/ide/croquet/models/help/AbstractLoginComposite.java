@@ -45,7 +45,9 @@ package org.alice.ide.croquet.models.help;
 import java.util.UUID;
 
 import org.alice.ide.croquet.models.help.views.LoginView;
+import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
@@ -95,6 +97,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 		if( super.isClearedForCommit() ) {
 			boolean loginSuccess = tryToLogin();
 			if( loginSuccess ) {
+				isLoggedIn.setValueTransactionlessly( true );
 				status = IS_GOOD_TO_GO_STATUS;
 			} else {
 				status = loginFailedStatus;
@@ -119,5 +122,20 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	protected abstract boolean tryToLogin();
 
 	public abstract void logout();
+
+	public final ActionOperation getLogOutOperation() {
+		return createActionOperation( createKey( "logOut" ), new Action() {
+
+			public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+				logout();
+				isLoggedIn.setValueTransactionlessly( false );
+				return null;
+			}
+		} );
+	}
+
+	public String updateUserNameForWelcomeString() {
+		return "";
+	}
 
 }

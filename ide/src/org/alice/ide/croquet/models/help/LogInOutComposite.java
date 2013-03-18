@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -42,28 +42,46 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import java.util.UUID;
+
+import org.lgna.croquet.CardOwnerComposite;
+import org.lgna.croquet.State;
+import org.lgna.croquet.State.ValueListener;
+
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
-	private AbstractLoginComposite loginComposite;
+public class LogInOutComposite extends CardOwnerComposite {
 
-	//	private final BugLoginComposite loginDialogComposite = BugLoginComposite.getInstance();
+	private final LogInCard loginCard;
+	private final LogOutCard logoutCard;
+	private AbstractLoginComposite composite;
+	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
 
-	public LogInCard( AbstractLoginComposite composite ) {
-		super( java.util.UUID.fromString( "7229bd12-7078-46b6-9bd3-509edd2dc203" ) );
-		this.loginComposite = composite;
+		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
+			updateLogInOutComposite();
+		}
+
+	};
+
+	public LogInOutComposite( UUID id, AbstractLoginComposite loginComposite ) {
+		super( id, new LogInCard( loginComposite ), new LogOutCard( loginComposite.getLogOutOperation() ) );
+		this.composite = loginComposite;
+		loginCard = new LogInCard( loginComposite );
+		logoutCard = new LogOutCard( loginComposite.getLogOutOperation() );
+		composite.getIsLoggedIn().addValueListener( isLoggedInAdapter );
 	}
 
-	@Override
-	protected org.lgna.croquet.components.Panel createView() {
-		return new org.lgna.croquet.components.FlowPanel(
-				this,
-				org.lgna.croquet.components.FlowPanel.Alignment.TRAILING,
-				loginComposite.getOperation().createButton() );
-	}
-
-	public AbstractLoginComposite getLoginDialogComposite() {
-		return this.loginComposite;
+	private void updateLogInOutComposite() {
+		if( composite.getIsLoggedIn().getValue() ) {
+			logoutCard.updateWelcomeString( composite.updateUserNameForWelcomeString() );
+			this.showCard( logoutCard );
+		} else {
+			this.showCard( loginCard );
+		}
+		this.getView().getAwtComponent().repaint();
 	}
 }

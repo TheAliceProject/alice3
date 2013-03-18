@@ -100,7 +100,6 @@ public abstract class CardOwnerComposite extends AbstractComposite<org.lgna.croq
 		}
 	}
 
-	public java.util.List<Composite<?>> getCards() {
 		return this.cards;
 	}
 

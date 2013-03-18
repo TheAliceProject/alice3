@@ -82,7 +82,6 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 				try {
 					remoteUser = service.getUser( token, username );
 					edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
-					isLoggedIn.setValueTransactionlessly( true );
 				} finally {
 					service.logout( token );
 				}
@@ -102,6 +101,15 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 	public void logout() {
 		edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 		isLoggedIn.setValueTransactionlessly( false );
+	}
+
+	@Override
+	public String updateUserNameForWelcomeString() {
+		if( BugLoginComposite.getInstance().getRemoteUser() != null ) {
+			return BugLoginComposite.getInstance().getRemoteUser().getFullname();
+		} else {
+			return "";
+		}
 	}
 
 	public static void main( String[] args ) throws Exception {

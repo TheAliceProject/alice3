@@ -177,6 +177,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		public void complete() {
 		}
 	};
+	private boolean hasStartedRecording = false;
 
 	public boolean isRecording() {
 		return this.isRecordingState.getValue();
@@ -189,6 +190,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			} else {
 				programContext.getProgramImp().startAnimator();
 				restartOperation.setEnabled( true );
+				hasStartedRecording = true;
 			}
 		} else {
 			System.out.println( "SHOULD NOT HIT THIS (mmay)" );
@@ -221,7 +223,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
 		if( isRecordingState.getValue() ) {
 			return errorIsRecording;
-		} else if( ( encoder == null ) || ( tempFile == null ) ) {
+		} else if( !hasStartedRecording ) {
 			return errorHasNotYetRecorded;
 		}
 		return IS_GOOD_TO_GO_STATUS;
@@ -240,6 +242,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	private void restartProgramContext() {
+		hasStartedRecording = false;
 		org.lgna.project.ast.NamedUserType programType = this.owner.getProject().getProgramType();
 		image = null;
 		imageCount = 0;

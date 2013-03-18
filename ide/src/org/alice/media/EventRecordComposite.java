@@ -259,7 +259,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	@Override
 	public void resetData() {
-		lookingGlassContainer.removeAllComponents();
+		if( lookingGlassContainer != null ) {
+			lookingGlassContainer.removeAllComponents();
+		}
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		restartProgramContext();
 	}
