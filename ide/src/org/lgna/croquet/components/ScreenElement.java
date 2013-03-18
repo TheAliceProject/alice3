@@ -81,6 +81,14 @@ public abstract class ScreenElement implements TrackableShape, org.lgna.croquet.
 		return this.getAwtComponent().getBounds();
 	}
 
+	public java.awt.Point getLocation() {
+		return this.getAwtComponent().getLocation();
+	}
+
+	public java.awt.Dimension getSize() {
+		return this.getAwtComponent().getSize();
+	}
+
 	@Deprecated
 	public abstract AbstractWindow<?> getRoot();
 }

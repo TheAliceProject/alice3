@@ -109,7 +109,7 @@ public final class PresentationComposite extends org.lgna.croquet.SimpleComposit
 				frame.setSize( 1280, 800 );
 				org.lgna.cheshire.task.TaskComboBoxModel taskComboBoxModel = new org.lgna.cheshire.task.TaskComboBoxModel();
 				PresentationComposite composite = new PresentationComposite( frame, taskComboBoxModel );
-				frame.getLayer( javax.swing.JLayeredPane.POPUP_LAYER - 1 ).setComponent( composite.getView() );
+				frame.getRootPane().getLayeredPane().getLayer( javax.swing.JLayeredPane.POPUP_LAYER - 1 ).setComponent( composite.getView() );
 
 				//frame.setMainComposite( composite );
 				frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );

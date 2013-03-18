@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,45 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package test;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ComboBoxMenuTest {
-	public static void main( String[] args ) {
-		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		org.lgna.croquet.components.Frame frame = app.getFrame();
-		javax.swing.DefaultComboBoxModel model = new javax.swing.DefaultComboBoxModel();
-		model.addElement( "manny" );
-		model.addElement( "mo" );
-		model.addElement( "jack" );
-		model.addElement( "berkeley" );
-		javax.swing.JComboBox jComboBox = new javax.swing.JComboBox( model );
+public final class LayeredPaneBareBones extends JComponent<javax.swing.JLayeredPane> {
+	private final java.util.Map<Integer, Layer> mapIdToLayer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
-		javax.swing.Action action = new javax.swing.AbstractAction() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				System.out.println( e );
+	private final RootPane rootPane;
+
+	/* package-private */LayeredPaneBareBones( RootPane rootPane ) {
+		this.rootPane = rootPane;
+	}
+
+	@Override
+	protected javax.swing.JLayeredPane createAwtComponent() {
+		return this.rootPane.getAwtComponent().getLayeredPane();
+	}
+
+	public Layer getLayer( Integer id ) {
+		synchronized( this.mapIdToLayer ) {
+			Layer rv = this.mapIdToLayer.get( id );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new Layer( this, id );
+				this.mapIdToLayer.put( id, rv );
 			}
-		};
-		action.putValue( javax.swing.Action.NAME, "does not work" );
-		final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label();
-		final org.lgna.croquet.components.BorderPanel borderPanel = new org.lgna.croquet.components.BorderPanel.Builder()
-				.lineStart( label )
-				.center( new org.lgna.croquet.components.SwingAdapter( new javax.swing.JButton( action ) ) )
-				.build();
-		class ListCellRenderer implements javax.swing.ListCellRenderer {
-			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-				label.setText( (String)value );
-				return borderPanel.getAwtComponent();
-			}
+			return rv;
 		}
-		;
-
-		jComboBox.setRenderer( new ListCellRenderer() );
-		frame.getContentPane().getAwtComponent().add( jComboBox, java.awt.BorderLayout.PAGE_START );
-		frame.pack();
-		frame.setVisible( true );
 	}
 }
