@@ -71,9 +71,8 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 		}
 
 		@Override
-		protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-			rv.append( "Press the <strong>Close</strong> button when you are ready." );
-			return rv;
+		protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+			text.append( "Press the <strong>Close</strong> button when you are ready." );
 		}
 
 		public PlainDialogOperationComposite getPlainDialogOperationComposite() {
@@ -122,7 +121,8 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 		return this.getOperation().getName();
 	}
 
-	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
+	public String modifyNameIfNecessary( String text ) {
+		return text;
 	}
 
 	@Override
@@ -168,5 +168,9 @@ public abstract class PlainDialogOperationComposite<V extends org.lgna.croquet.c
 	}
 
 	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) {
+	}
+
+	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		text.append( this.getName() );
 	}
 }

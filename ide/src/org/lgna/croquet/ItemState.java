@@ -260,7 +260,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		return this.getItemSelectionOperation( itemCallable, false );
 	}
 
-	public ActionOperation getItemSelectionOperation( final T item ) {
+	public final ActionOperation getItemSelectionOperation( final T item ) {
 		return this.getItemSelectionOperation( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
 	}
 
@@ -268,7 +268,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		return this.getItemSelectionOperation( itemCallable, true );
 	}
 
-	public ActionOperation getAlternateLocalizationItemSelectionOperation( final T item ) {
+	public final ActionOperation getAlternateLocalizationItemSelectionOperation( final T item ) {
 		return this.getAlternateLocalizationItemSelectionOperation( new edu.cmu.cs.dennisc.java.lang.callable.ValueCallable<T>( item ) );
 	}
 

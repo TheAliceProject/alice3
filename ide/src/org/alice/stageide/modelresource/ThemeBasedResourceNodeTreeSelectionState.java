@@ -57,4 +57,9 @@ public final class ThemeBasedResourceNodeTreeSelectionState extends ResourceNode
 	private ThemeBasedResourceNodeTreeSelectionState() {
 		super( java.util.UUID.fromString( "a17403a2-da1f-46e8-8d3d-c7dd819c98c8" ), TreeUtilities.getTreeBasedOnTheme() );
 	}
+
+	@Override
+	protected boolean isBreadcrumbButtonIconDesired() {
+		return false;
+	}
 }

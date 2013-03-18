@@ -123,9 +123,15 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 	};
 
 	private final java.util.List<javax.swing.JComponent> jTitlesInNeedOfRepaintWhenInstanceFactoryChanges = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private final AddMethodMenuModel addMethodMenuModel;
 
-	public MemberTabComposite( java.util.UUID migrationId ) {
+	public MemberTabComposite( java.util.UUID migrationId, AddMethodMenuModel addMethodMenuModel ) {
 		super( migrationId );
+		this.addMethodMenuModel = addMethodMenuModel;
+	}
+
+	public AddMethodMenuModel getAddMethodMenuModel() {
+		return this.addMethodMenuModel;
 	}
 
 	@Override
@@ -182,7 +188,10 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			while( type != null ) {
 				if( type instanceof org.lgna.project.ast.NamedUserType ) {
 					org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
-					rv.add( this.getUserMethodsSubComposite( namedUserType ) );
+					UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite( namedUserType );
+					if( userMethodsSubComposite.isRelevant() ) {
+						rv.add( userMethodsSubComposite );
+					}
 				} else if( type instanceof org.lgna.project.ast.JavaType ) {
 					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
 					for( org.lgna.project.ast.JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
@@ -280,7 +289,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		super.customizeTitleComponentAppearance( button );
 		final boolean IS_ICON_DESIRED = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue() == false;
 		if( IS_ICON_DESIRED ) {
-			button.getAwtComponent().setIcon( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
+			button.getModel().setIconForBothTrueAndFalse( org.alice.ide.instancefactory.croquet.views.icons.IndirectCurrentAccessibleTypeIcon.SINGLTON );
 			button.setHorizontalTextPosition( org.lgna.croquet.components.HorizontalTextPosition.TRAILING );
 			this.jTitlesInNeedOfRepaintWhenInstanceFactoryChanges.add( button.getAwtComponent() );
 		}

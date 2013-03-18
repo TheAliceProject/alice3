@@ -45,7 +45,7 @@ package org.lgna.croquet.icon;
 /**
  * @author Dennis Cosgrove
  */
-public class TrimmedImageIconFactory extends AbstractImageIconFactory {
+public class TrimmedImageIconFactory extends AbstractSingleSourceImageIconFactory {
 	private final java.awt.Dimension defaultSize;
 
 	public TrimmedImageIconFactory( javax.swing.ImageIcon imageIcon, int width, int height ) {

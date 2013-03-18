@@ -46,6 +46,18 @@ package org.alice.ide.declarationseditor;
  * @author Dennis Cosgrove
  */
 public class TypeMenu extends org.lgna.croquet.MenuModel {
+	private static final java.awt.Font TYPE_FONT;
+	private static final java.awt.Font BONUS_FONT;
+	static {
+		java.awt.Font defaultFont = javax.swing.UIManager.getFont( "defaultFont" );
+		if( defaultFont != null ) {
+			//pass
+		} else {
+			defaultFont = new java.awt.Font( "SansSerif", java.awt.Font.PLAIN, 12 );
+		}
+		TYPE_FONT = defaultFont.deriveFont( 18.0f );
+		BONUS_FONT = defaultFont.deriveFont( java.awt.Font.ITALIC );
+	}
 	private static java.util.Map<org.lgna.project.ast.NamedUserType, TypeMenu> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public static synchronized TypeMenu getInstance( org.lgna.project.ast.NamedUserType type ) {
@@ -59,8 +71,6 @@ public class TypeMenu extends org.lgna.croquet.MenuModel {
 		return rv;
 	}
 
-	private static final java.awt.Font TYPE_FONT = javax.swing.UIManager.getFont( "defaultFont" ).deriveFont( 18.0f );
-	private static final java.awt.Font BONUS_FONT = javax.swing.UIManager.getFont( "defaultFont" ).deriveFont( java.awt.Font.ITALIC );
 	private final org.lgna.project.ast.NamedUserType type;
 
 	private TypeMenu( org.lgna.project.ast.NamedUserType type ) {

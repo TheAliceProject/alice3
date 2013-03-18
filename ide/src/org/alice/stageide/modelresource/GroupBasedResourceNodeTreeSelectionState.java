@@ -57,4 +57,9 @@ public class GroupBasedResourceNodeTreeSelectionState extends ResourceNodeTreeSe
 	private GroupBasedResourceNodeTreeSelectionState() {
 		super( java.util.UUID.fromString( "92417991-1b96-429c-aa2a-a4dd706732bc" ), TreeUtilities.getTreeBasedOnGroup() );
 	}
+
+	@Override
+	protected boolean isBreadcrumbButtonIconDesired() {
+		return false;
+	}
 }
