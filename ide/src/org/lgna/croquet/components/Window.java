@@ -77,7 +77,12 @@ public final class Window extends AbstractWindow<javax.swing.JWindow> {
 	}
 
 	@Override
-	protected javax.swing.JRootPane getRootPane() {
+	/* package-private */java.awt.Container getAwtContentPane() {
+		return this.getAwtComponent().getContentPane();
+	}
+
+	@Override
+	/* package-private */javax.swing.JRootPane getJRootPane() {
 		return this.getAwtComponent().getRootPane();
 	}
 

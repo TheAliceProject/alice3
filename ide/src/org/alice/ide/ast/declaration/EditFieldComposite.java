@@ -60,12 +60,6 @@ public abstract class EditFieldComposite extends FieldComposite {
 	}
 
 	@Override
-	public void clobberLocalizationIfDesired( org.lgna.croquet.OwnedByCompositeOperation operation ) {
-		super.clobberLocalizationIfDesired( operation );
-		operation.setName( "Edit " + this.field.getName() + "..." );
-	}
-
-	@Override
 	protected org.alice.ide.ast.declaration.views.DeclarationLikeSubstanceView createView() {
 		return new org.alice.ide.ast.declaration.views.EditFieldView( this );
 	}

@@ -48,8 +48,20 @@ package org.alice.ide.member.views;
 public abstract class MemberTabView extends org.lgna.croquet.components.MigPanel {
 	private final java.util.Map<org.lgna.project.ast.Member, org.lgna.croquet.components.JComponent<?>> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
+	private final org.lgna.croquet.components.PopupButton popupButton;
+	private final org.lgna.croquet.components.ComboBox<String> comboBox;
+
 	public MemberTabView( org.alice.ide.member.MemberTabComposite<?> composite ) {
 		super( composite, "insets 0, fill", "[]", "[grow 0][]" );
+		org.alice.ide.member.AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
+		if( addMethodMenuModel != null ) {
+			this.popupButton = addMethodMenuModel.getPopupPrepModel().createPopupButton();
+			this.popupButton.setClobberIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
+			this.popupButton.tightenUpMargin( new java.awt.Insets( -2, -10, -2, -8 ) );
+		} else {
+			this.popupButton = null;
+		}
+		this.comboBox = composite.getSortState().getPrepModel().createComboBox();
 	}
 
 	private static org.lgna.croquet.components.JComponent<?> createDragView( org.lgna.project.ast.Member member ) {
@@ -75,8 +87,23 @@ public abstract class MemberTabView extends org.lgna.croquet.components.MigPanel
 		org.alice.ide.member.MemberTabComposite<?> composite = (org.alice.ide.member.MemberTabComposite<?>)this.getComposite();
 		this.removeAllComponents();
 
-		org.lgna.croquet.components.ComboBox<String> comboBox = composite.getSortState().getPrepModel().createComboBox();
-		this.addComponent( comboBox, "align right, wrap" );
+		org.alice.ide.member.AddMethodMenuModel addMethodMenuModel = composite.getAddMethodMenuModel();
+		org.lgna.croquet.components.JComponent<?> leftTopComponent;
+		if( addMethodMenuModel != null ) {
+			if( addMethodMenuModel.isRelevant() ) {
+				leftTopComponent = this.popupButton;
+			} else {
+				leftTopComponent = null;
+			}
+		} else {
+			leftTopComponent = null;
+		}
+		String scrollPaneConstraints = "grow";
+		if( leftTopComponent != null ) {
+			this.addComponent( leftTopComponent, "align left" );
+			scrollPaneConstraints += ", span 2";
+		}
+		this.addComponent( this.comboBox, "align right, wrap" );
 
 		org.lgna.croquet.components.MigPanel scrollPaneView = new org.lgna.croquet.components.MigPanel( null, "insets 0", "[]", "[]0[]" );
 		for( org.alice.ide.member.MethodsSubComposite subComposite : composite.getSubComposites() ) {
@@ -101,6 +128,6 @@ public abstract class MemberTabView extends org.lgna.croquet.components.MigPanel
 		}
 		scrollPaneView.setBackgroundColor( this.getBackgroundColor() );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( scrollPaneView );
-		this.addComponent( scrollPane, "grow" );
+		this.addComponent( scrollPane, scrollPaneConstraints );
 	}
 }

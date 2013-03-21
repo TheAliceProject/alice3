@@ -46,6 +46,8 @@ package org.alice.ide.croquet.models.ui.preferences;
  * @author Dennis Cosgrove
  */
 public class IsEmphasizingClassesState {
+	private static boolean value = edu.cmu.cs.dennisc.java.lang.SystemUtilities.getBooleanProperty( "org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.value", true );
+
 	private static class SingletonHolder {
 		private static IsEmphasizingClassesState instance = new IsEmphasizingClassesState();
 	}
@@ -58,6 +60,6 @@ public class IsEmphasizingClassesState {
 	}
 
 	public boolean getValue() {
-		return true;
+		return value;
 	}
 }

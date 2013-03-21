@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.alice.ide.member;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface OperationOwningComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
-	public OwnedByCompositeOperation getOperation();
+public final class AddProcedureMenuModel extends AddMethodMenuModel {
+	public AddProcedureMenuModel() {
+		super( java.util.UUID.fromString( "29e26e37-387d-4e07-a6fb-13fcdbd1fb28" ) );
+	}
 
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
-
-	public boolean isToolBarTextClobbered( boolean defaultValue );
-
-	public boolean isSubTransactionHistoryRequired();
-
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
-
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException;
-
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException;
-
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
-
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
-
-	public String modifyNameIfNecessary( String text );
+	@Override
+	protected org.alice.ide.ast.declaration.AddMethodComposite getAddMethodComposite( org.lgna.project.ast.NamedUserType declaringType ) {
+		return org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType );
+	}
 }

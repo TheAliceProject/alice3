@@ -83,10 +83,15 @@ public abstract class Operation extends AbstractCompletionModel {
 		return this.swingModel;
 	}
 
+	protected String modifyNameIfNecessary( String text ) {
+		return text;
+	}
+
 	@Override
 	protected void localize() {
 		String name = this.findDefaultLocalizedText();
 		if( name != null ) {
+			name = modifyNameIfNecessary( name );
 			int mnemonicKey = this.getLocalizedMnemonicKey();
 			safeSetNameAndMnemonic( this.swingModel.action, name, mnemonicKey );
 			this.setAcceleratorKey( this.getLocalizedAcceleratorKeyStroke() );

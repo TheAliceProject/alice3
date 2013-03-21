@@ -122,6 +122,21 @@ public abstract class AddFieldComposite extends FieldComposite {
 	}
 
 	@Override
+	public String modifyNameIfNecessary( String text ) {
+		text = super.modifyNameIfNecessary( text );
+		if( text != null ) {
+			String declaringTypeName;
+			if( this.getDeclaringType() != null ) {
+				declaringTypeName = this.getDeclaringType().getName();
+			} else {
+				declaringTypeName = "";
+			}
+			text = text.replace( "</declaringType/>", declaringTypeName );
+		}
+		return text;
+	}
+
+	@Override
 	public org.lgna.project.ast.UserField getPreviewValue() {
 		return this.createField();
 	}

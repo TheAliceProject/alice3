@@ -63,6 +63,10 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 		return rv;
 	}
 
+	private org.lgna.project.ast.Statement[] doStatements;
+	private org.lgna.project.ast.Statement[] undoStatements;
+	private transient int index;
+
 	private DeleteFieldOperation( org.lgna.project.ast.UserField field, org.lgna.project.ast.UserType<?> declaringType ) {
 		super( java.util.UUID.fromString( "29e5416c-c0c4-4b6d-9146-5461d5c73c42" ), field, declaringType );
 		this.setEnabled( field.isDeletionAllowed.getValue() );
@@ -88,10 +92,10 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 			sb.append( field.name.getValue() );
 			sb.append( "\" because it has " );
 			if( N == 1 ) {
-				sb.append( "an access refrence" );
+				sb.append( "an access reference" );
 			} else {
 				sb.append( N );
-				sb.append( " access refrences" );
+				sb.append( " access references" );
 			}
 			sb.append( " to it.\nYou must remove " );
 			if( N == 1 ) {
@@ -114,10 +118,15 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 	public void doOrRedoInternal( boolean isDo ) {
 		org.lgna.project.ast.UserField field = this.getMember();
 		if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
+			//Save the index position of the field so we can insert it correctly on undo
+			this.index = this.getDeclaringType().fields.indexOf( field );
+			//Save the state of field by precomputing the undo and redo statements
+			this.doStatements = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getDoStatementsForRemoveField( field );
+			this.undoStatements = org.alice.ide.IDE.getActiveInstance().getSceneEditor().getUndoStatementsForRemoveField( field );
 			org.alice.ide.IDE.getActiveInstance().getSceneEditor().removeField(
 					this.getDeclaringType(),
 					field,
-					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, false )
+					this.doStatements
 					);
 		} else {
 			super.doOrRedoInternal( isDo );
@@ -131,7 +140,8 @@ public class DeleteFieldOperation extends DeleteMemberOperation<org.lgna.project
 			org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField(
 					this.getDeclaringType(),
 					field,
-					org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, null, true )
+					this.index,
+					this.undoStatements
 					);
 		} else {
 			super.undoInternal();

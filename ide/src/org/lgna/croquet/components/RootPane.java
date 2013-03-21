@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,35 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface OperationOwningComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
-	public OwnedByCompositeOperation getOperation();
+public class RootPane extends JComponent<javax.swing.JRootPane> {
+	private final AbstractWindow<?> window;
 
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	private final LayeredPaneBareBones layeredPane;
 
-	public boolean isToolBarTextClobbered( boolean defaultValue );
+	/* package-private */RootPane( AbstractWindow<?> window ) {
+		this.window = window;
+		this.layeredPane = new LayeredPaneBareBones( this );
+	}
 
-	public boolean isSubTransactionHistoryRequired();
+	public LayeredPaneBareBones getLayeredPane() {
+		return this.layeredPane;
+	}
 
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
+	@Override
+	protected javax.swing.JRootPane createAwtComponent() {
+		return this.window.getJRootPane();
+	}
 
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException;
+	public Component<?> getGlassPane() {
+		return Component.lookup( this.getAwtComponent().getGlassPane() );
+	}
 
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException;
-
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
-
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
-
-	public String modifyNameIfNecessary( String text );
+	public void setGlassPane( Component<?> component ) {
+		this.getAwtComponent().setGlassPane( component != null ? component.getAwtComponent() : null );
+	}
 }

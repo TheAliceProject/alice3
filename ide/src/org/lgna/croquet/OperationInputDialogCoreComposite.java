@@ -67,7 +67,8 @@ public abstract class OperationInputDialogCoreComposite<V extends org.lgna.croqu
 		return defaultValue;
 	}
 
-	public void clobberLocalizationIfDesired( OwnedByCompositeOperation operation ) {
+	public String modifyNameIfNecessary( String text ) {
+		return text;
 	}
 
 	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {

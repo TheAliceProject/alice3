@@ -67,12 +67,12 @@ public class PotentialDropReceptorsFeedbackView extends CustomView {
 		if( dropReceptors.size() > 0 ) {
 			this.holes = dropReceptors;
 			this.potentialDragSource = potentialDragSource;
-			this.window.getLayer( LAYER_ID ).setComponent( this );
+			this.window.getRootPane().getLayeredPane().getLayer( LAYER_ID ).setComponent( this );
 		}
 	}
 
 	public void hideStencil() {
-		this.window.getLayer( LAYER_ID ).setComponent( null );
+		this.window.getRootPane().getLayeredPane().getLayer( LAYER_ID ).setComponent( null );
 		this.holes = null;
 		this.potentialDragSource = null;
 	}

@@ -49,6 +49,7 @@ package org.alice.ide.croquet.edits.ast;
 public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
 	private final org.lgna.project.ast.Statement[] doStatements;
 	private final org.lgna.project.ast.Statement[] undoStatements;
+	private transient int index;
 
 	public DeclareGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement[] doStatements, org.lgna.project.ast.Statement[] undoStatements ) {
 		super( step, declaringType, field );
@@ -71,7 +72,8 @@ public class DeclareGalleryFieldEdit extends DeclareFieldEdit {
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.getDeclaringType(), this.getField(), this.doStatements );
+		this.index = this.getDeclaringType().fields.size();
+		org.alice.ide.IDE.getActiveInstance().getSceneEditor().addField( this.getDeclaringType(), this.getField(), this.index, this.doStatements );
 	}
 
 	@Override

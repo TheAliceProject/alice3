@@ -826,8 +826,8 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	}
 
 	@Override
-	public void addField( UserType<?> declaringType, UserField field, Statement... statements ) {
-		super.addField( declaringType, field, statements );
+	public void addField( UserType<?> declaringType, UserField field, int index, Statement... statements ) {
+		super.addField( declaringType, field, index, statements );
 		if( field.getValueType().isAssignableTo( org.lgna.story.SMarker.class ) ) {
 			org.lgna.story.SMarker marker = this.getInstanceInJavaVMForField( field, org.lgna.story.SMarker.class );
 			MarkerImp markerImp = ImplementationAccessor.getImplementation( marker );
@@ -1116,7 +1116,19 @@ public class StorytellingSceneEditor extends AbstractSceneEditor implements edu.
 	@Override
 	public org.lgna.project.ast.Statement[] getUndoStatementsForRemoveField( org.lgna.project.ast.UserField field ) {
 		Object instance = this.getInstanceInJavaVMForField( field );
-		return org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance( false, instance, this.getActiveSceneInstance(), false );
+		org.lgna.project.ast.AbstractField vehicleField = null;
+		if( instance instanceof org.lgna.story.Rider )
+		{
+			SThing vehicleInstance = ( (org.lgna.story.Rider)instance ).getVehicle();
+			vehicleField = this.getFieldForInstanceInJavaVM( vehicleInstance );
+		}
+		org.lgna.project.ast.Statement[] setupStatements = org.alice.stageide.sceneeditor.SetUpMethodGenerator.getSetupStatementsForInstance( false, instance, this.getActiveSceneInstance(), false );
+		org.lgna.project.ast.Statement vehicleStatement = org.alice.stageide.sceneeditor.SetUpMethodGenerator.createSetVehicleStatement( field, vehicleField, false );
+		org.lgna.project.ast.Statement[] statements = new org.lgna.project.ast.Statement[ setupStatements.length + 1 ];
+		statements[ 0 ] = vehicleStatement;
+		System.arraycopy( setupStatements, 0, statements, 1, setupStatements.length );
+		return statements;
+
 	}
 
 	@Override

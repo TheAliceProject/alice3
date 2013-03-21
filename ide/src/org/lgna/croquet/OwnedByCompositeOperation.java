@@ -75,12 +75,6 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		this.composite.clobberLocalizationIfDesired( this );
-	}
-
-	@Override
 	public boolean isToolBarTextClobbered() {
 		return this.composite.isToolBarTextClobbered( super.isToolBarTextClobbered() );
 	}
@@ -93,6 +87,11 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 		//todo
 		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
+	}
+
+	@Override
+	protected String modifyNameIfNecessary( String text ) {
+		return this.composite.modifyNameIfNecessary( super.modifyNameIfNecessary( text ) );
 	}
 
 	@Override

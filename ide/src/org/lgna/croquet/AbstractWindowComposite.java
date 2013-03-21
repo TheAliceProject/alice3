@@ -125,7 +125,7 @@ public abstract class AbstractWindowComposite<V extends org.lgna.croquet.compone
 
 	protected final void updateWindowSize( org.lgna.croquet.components.AbstractWindow<?> window ) {
 		window.setSize( this.calculateWindowSize( window ) );
-		window.getContentPanel().revalidateAndRepaint();
+		window.getContentPane().revalidateAndRepaint();
 	}
 
 	protected java.awt.Point getDesiredWindowLocation() {
