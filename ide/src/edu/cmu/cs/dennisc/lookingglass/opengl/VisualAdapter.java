@@ -47,6 +47,7 @@ import static javax.media.opengl.GL.GL_BACK;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_FRONT;
 import static javax.media.opengl.GL.GL_FRONT_AND_BACK;
+import edu.cmu.cs.dennisc.scenegraph.Appearance;
 
 /**
  * @author Dennis Cosgrove
@@ -137,6 +138,30 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 	private void updateScale( edu.cmu.cs.dennisc.math.Matrix3x3 m ) {
 		m_isScaleIdentity = m.isIdentity();
 		m.getAsColumnMajorArray16( m_scale );
+	}
+
+	@Override
+	public void handleReleased()
+	{
+		synchronized( m_geometryAdapters ) {
+			for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : m_geometryAdapters ) {
+				if( geometryAdapter.m_element != null )
+				{
+					geometryAdapter.handleReleased();
+				}
+			}
+			m_geometryAdapters = null;
+		}
+		if( ( m_frontFacingAppearanceAdapter != null ) && ( m_frontFacingAppearanceAdapter.m_element != null ) )
+		{
+			m_frontFacingAppearanceAdapter.handleReleased();
+		}
+		m_frontFacingAppearanceAdapter = null;
+		if( ( m_backFacingAppearanceAdapter != null ) && ( m_backFacingAppearanceAdapter.m_element != null ) )
+		{
+			m_backFacingAppearanceAdapter.handleReleased();
+		}
+		m_backFacingAppearanceAdapter = null;
 	}
 
 	@Override
@@ -277,7 +302,27 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 	}
 
 	protected void updateGeometryAdapters() {
-		m_geometryAdapters = AdapterFactory.getAdaptersFor( m_element.geometries.getValue(), GeometryAdapter.class );
+		GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry>[] newAdapters = AdapterFactory.getAdaptersFor( m_element.geometries.getValue(), GeometryAdapter.class );
+		if( m_geometryAdapters != null )
+		{
+			for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> oldAdapter : m_geometryAdapters )
+			{
+				boolean found = false;
+				for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> newAdapter : newAdapters )
+				{
+					if( newAdapter == oldAdapter )
+					{
+						found = true;
+						break;
+					}
+				}
+				if( !found )
+				{
+					oldAdapter.handleReleased();
+				}
+			}
+		}
+		m_geometryAdapters = newAdapters;
 	}
 
 	@Override
@@ -286,9 +331,27 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			//todo: update scene observer skin vector
 			updateGeometryAdapters();
 		} else if( property == m_element.frontFacingAppearance ) {
-			m_frontFacingAppearanceAdapter = AdapterFactory.getAdapterFor( m_element.frontFacingAppearance.getValue() );
+			AppearanceAdapter<? extends Appearance> newAdapter = AdapterFactory.getAdapterFor( m_element.frontFacingAppearance.getValue() );
+			if( m_frontFacingAppearanceAdapter != newAdapter )
+			{
+				if( m_frontFacingAppearanceAdapter != null )
+				{
+					m_frontFacingAppearanceAdapter.handleReleased();
+				}
+				m_frontFacingAppearanceAdapter = newAdapter;
+			}
+
 		} else if( property == m_element.backFacingAppearance ) {
-			m_backFacingAppearanceAdapter = AdapterFactory.getAdapterFor( m_element.backFacingAppearance.getValue() );
+			AppearanceAdapter<? extends Appearance> newAdapter = AdapterFactory.getAdapterFor( m_element.backFacingAppearance.getValue() );
+			if( m_backFacingAppearanceAdapter != newAdapter )
+			{
+				if( m_backFacingAppearanceAdapter != null )
+				{
+					m_backFacingAppearanceAdapter.handleReleased();
+				}
+				m_backFacingAppearanceAdapter = newAdapter;
+			}
+
 		} else if( property == m_element.scale ) {
 			//todo: accessScale?
 			updateScale( m_element.scale.getValue() );
