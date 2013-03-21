@@ -77,7 +77,7 @@ public class ComboBoxMenuTest {
 		;
 
 		jComboBox.setRenderer( new ListCellRenderer() );
-		frame.getContentPanel().getAwtComponent().add( jComboBox, java.awt.BorderLayout.PAGE_START );
+		frame.getContentPane().getAwtComponent().add( jComboBox, java.awt.BorderLayout.PAGE_START );
 		frame.pack();
 		frame.setVisible( true );
 	}

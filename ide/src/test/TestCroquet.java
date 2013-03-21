@@ -144,7 +144,7 @@ public class TestCroquet extends org.lgna.croquet.simple.SimpleApplication {
 				.pageEnd( gridPanel )
 				.build();
 
-		testCroquet.getFrame().getContentPanel().addCenterComponent( borderPanel );
+		testCroquet.getFrame().getContentPane().addCenterComponent( borderPanel );
 		testCroquet.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		testCroquet.getFrame().pack();
 		testCroquet.getFrame().setVisible( true );

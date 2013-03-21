@@ -49,37 +49,80 @@ public class ImageCaptureUtilities {
 	private ImageCaptureUtilities() {
 	}
 
-	public static java.awt.Image captureImage( java.awt.Component awtComponent, java.awt.Rectangle bounds, Integer dpiImage ) {
-		java.awt.Toolkit toolkit = awtComponent.getToolkit();
-
-		if( awtComponent.isLightweight() ) { //todo: check descendants?
-			int dpiScreen = toolkit.getScreenResolution();
-			int dpiImageActual;
-			if( dpiImage != null ) {
-				dpiImageActual = dpiImage;
-			} else {
-				dpiImageActual = dpiScreen;
-			}
-			java.awt.Dimension sizeScreen;
+	private static java.awt.Image captureHeavyweight( java.awt.Component awtComponent, java.awt.Rectangle bounds ) {
+		try {
+			java.awt.GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
+			java.awt.Robot robot = new java.awt.Robot( graphicsConfiguration.getDevice() );
+			java.awt.Point locationOnScreen = awtComponent.getLocationOnScreen();
+			java.awt.Rectangle rect;
 			if( bounds != null ) {
-				sizeScreen = bounds.getSize();
+				rect = new java.awt.Rectangle( locationOnScreen.x + bounds.x, locationOnScreen.y + bounds.y, bounds.width, bounds.height );
 			} else {
-				sizeScreen = awtComponent.getSize();
+				rect = new java.awt.Rectangle( locationOnScreen, awtComponent.getSize() );
 			}
-			int imageWidth;
-			int imageHeight;
-			double scale;
-			if( dpiImageActual == dpiScreen ) {
-				scale = Double.NaN;
-				imageWidth = sizeScreen.width;
-				imageHeight = sizeScreen.height;
-			} else {
-				scale = dpiImageActual / (double)dpiScreen;
-				imageWidth = (int)Math.floor( sizeScreen.width * scale );
-				imageHeight = (int)Math.floor( sizeScreen.height * scale );
-			}
+			return robot.createScreenCapture( rect );
+		} catch( java.awt.AWTException awte ) {
+			throw new RuntimeException( awte );
+		}
+	}
 
-			java.awt.Image rv = awtComponent.createImage( imageWidth, imageHeight );
+	private static class ImageScalePair {
+		private final java.awt.Image image;
+		private final double scale;
+
+		public ImageScalePair( java.awt.Image image, double scale ) {
+			this.image = image;
+			this.scale = scale;
+		}
+
+		public java.awt.Image getImage() {
+			return this.image;
+		}
+
+		public double getScale() {
+			return this.scale;
+		}
+	}
+
+	private static ImageScalePair createImage( java.awt.Component awtComponent, java.awt.Rectangle bounds, Integer dpiImage ) {
+		java.awt.Toolkit toolkit = awtComponent.getToolkit();
+		int dpiScreen = toolkit.getScreenResolution();
+		int dpiImageActual;
+		if( dpiImage != null ) {
+			dpiImageActual = dpiImage;
+		} else {
+			dpiImageActual = dpiScreen;
+		}
+		java.awt.Dimension sizeScreen;
+		if( bounds != null ) {
+			sizeScreen = bounds.getSize();
+		} else {
+			sizeScreen = awtComponent.getSize();
+		}
+		int imageWidth;
+		int imageHeight;
+		double scale;
+		if( dpiImageActual == dpiScreen ) {
+			scale = Double.NaN;
+			imageWidth = sizeScreen.width;
+			imageHeight = sizeScreen.height;
+		} else {
+			double imageToScreenRatio = dpiImageActual / (double)dpiScreen;
+			imageWidth = (int)Math.floor( sizeScreen.width * imageToScreenRatio );
+			imageHeight = (int)Math.floor( sizeScreen.height * imageToScreenRatio );
+			scale = imageWidth / (double)sizeScreen.width;
+		}
+
+		java.awt.Image image = awtComponent.createImage( imageWidth, imageHeight );
+		return new ImageScalePair( image, scale );
+	}
+
+	public static java.awt.Image captureRectangle( java.awt.Component awtComponent, java.awt.Rectangle bounds, Integer dpiImage ) {
+		if( awtComponent.isLightweight() ) { //todo: check descendants?
+			ImageScalePair imageScalePair = createImage( awtComponent, bounds, dpiImage );
+
+			java.awt.Image rv = imageScalePair.getImage();
+			double scale = imageScalePair.getScale();
 
 			java.awt.Graphics g = rv.getGraphics();
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -103,24 +146,61 @@ public class ImageCaptureUtilities {
 
 			return rv;
 		} else {
-			if( dpiImage != null ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( awtComponent, "is heavyweight." );
-			}
-			try {
-				java.awt.GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
-				java.awt.Robot robot = new java.awt.Robot( graphicsConfiguration.getDevice() );
-				java.awt.Point locationOnScreen = awtComponent.getLocationOnScreen();
-				java.awt.Rectangle rect;
-				if( bounds != null ) {
-					rect = new java.awt.Rectangle( locationOnScreen.x + bounds.x, locationOnScreen.y + bounds.y, bounds.width, bounds.height );
-				} else {
-					rect = new java.awt.Rectangle( locationOnScreen, awtComponent.getSize() );
-				}
-				return robot.createScreenCapture( rect );
-			} catch( java.awt.AWTException awte ) {
-				throw new RuntimeException( awte );
+			throw new IllegalArgumentException( awtComponent + " is heavyweight." );
+		}
+	}
+
+	public static java.awt.Image captureComplete( java.awt.Component awtComponent, Integer dpiImage ) {
+		ImageScalePair imageScalePair = createImage( awtComponent, null, dpiImage );
+
+		java.awt.Image rv = imageScalePair.getImage();
+		double scale = imageScalePair.getScale();
+
+		java.awt.Graphics g = rv.getGraphics();
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		java.awt.geom.AffineTransform prevTrans = g2.getTransform();
+		if( Double.isNaN( scale ) ) {
+			//pass
+		} else {
+			g2.scale( scale, scale );
+		}
+
+		java.awt.Component lightweightComponent;
+		if( awtComponent.isLightweight() ) {
+			lightweightComponent = awtComponent;
+		} else {
+			java.awt.Image heavyweight = captureHeavyweight( awtComponent, null );
+			g.drawImage( heavyweight, 0, 0, awtComponent );
+
+			if( awtComponent instanceof javax.swing.JFrame ) {
+				javax.swing.JFrame jFrame = (javax.swing.JFrame)awtComponent;
+				lightweightComponent = jFrame.getRootPane();
+			} else if( awtComponent instanceof javax.swing.JDialog ) {
+				javax.swing.JDialog jDialog = (javax.swing.JDialog)awtComponent;
+				lightweightComponent = jDialog.getRootPane();
+			} else if( awtComponent instanceof javax.swing.JWindow ) {
+				javax.swing.JWindow jWindow = (javax.swing.JWindow)awtComponent;
+				lightweightComponent = jWindow.getRootPane();
+			} else {
+				lightweightComponent = null;
 			}
 		}
+
+		if( lightweightComponent != null ) {
+			if( lightweightComponent != awtComponent ) {
+				java.awt.Point p = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.convertPoint( lightweightComponent, 0, 0, awtComponent );
+				g.translate( p.x, p.y );
+			}
+			lightweightComponent.print( g );
+		}
+
+		g2.setTransform( prevTrans );
+		g.dispose();
+
+		return rv;
 	}
 
 	public static void main( String[] args ) {
@@ -128,14 +208,16 @@ public class ImageCaptureUtilities {
 			public void run() {
 				final javax.swing.JFrame frame = new javax.swing.JFrame();
 				frame.setTitle( "test image capture" );
-				frame.getContentPane().setBackground( java.awt.Color.RED );
+				frame.getContentPane().setBackground( new java.awt.Color( 191, 191, 255 ) );
+				frame.getContentPane().add( new javax.swing.JLabel( "four score and seven years ago" ) );
 				frame.setSize( 320, 240 );
+				frame.setLocation( 0, 0 );
 				frame.setVisible( true );
 				new Thread() {
 					@Override
 					public void run() {
 						edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 1000 );
-						java.awt.Image image = captureImage( frame, null, 300 );
+						java.awt.Image image = captureComplete( frame, 300 );
 						edu.cmu.cs.dennisc.java.util.logging.Logger.outln( image );
 						edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 					}

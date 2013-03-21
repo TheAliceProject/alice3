@@ -52,7 +52,7 @@ public abstract class LayerStencil extends Panel {
 
 	public LayerStencil( AbstractWindow<?> window, Integer layerId ) {
 		this.window = window;
-		this.layer = this.window.getLayer( layerId );
+		this.layer = this.window.getRootPane().getLayeredPane().getLayer( layerId );
 	}
 
 	public AbstractWindow<?> getWindow() {

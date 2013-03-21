@@ -66,6 +66,21 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 		this.getOperation().setSmallIcon( org.alice.stageide.icons.PlusIconFactory.getInstance().getIcon( new java.awt.Dimension( 16, 16 ) ) );
 	}
 
+	@Override
+	public String modifyNameIfNecessary( String text ) {
+		text = super.modifyNameIfNecessary( text );
+		if( text != null ) {
+			String declaringTypeName;
+			if( this.declaringType != null ) {
+				declaringTypeName = this.declaringType.getName();
+			} else {
+				declaringTypeName = "";
+			}
+			text = text.replace( "</declaringType/>", declaringTypeName );
+		}
+		return text;
+	}
+
 	private org.lgna.project.ast.UserMethod createMethod() {
 		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}

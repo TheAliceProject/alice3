@@ -47,7 +47,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public final class Layer {
-	private final AbstractWindow<?> window;
+	private final LayeredPaneBareBones layeredPane;
 	private final Integer id;
 	private JComponent<?> component;
 	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
@@ -65,14 +65,14 @@ public final class Layer {
 		}
 	};
 
-	/* package-private */Layer( AbstractWindow<?> window, Integer id ) {
-		this.window = window;
+	/* package-private */Layer( LayeredPaneBareBones layeredPane, Integer id ) {
+		this.layeredPane = layeredPane;
 		this.id = id;
 	}
 
 	private void updateComponentSize() {
 		if( this.component != null ) {
-			this.component.getAwtComponent().setSize( this.window.getRootPane().getLayeredPane().getSize() );
+			this.component.getAwtComponent().setSize( this.layeredPane.getSize() );
 		}
 	}
 
@@ -82,7 +82,7 @@ public final class Layer {
 
 	public void setComponent( JComponent<?> component ) {
 		if( this.component != component ) {
-			javax.swing.JLayeredPane jLayeredPane = this.window.getRootPane().getLayeredPane();
+			javax.swing.JLayeredPane jLayeredPane = this.layeredPane.getAwtComponent();
 			if( this.component != null ) {
 				jLayeredPane.removeComponentListener( this.componentListener );
 				jLayeredPane.remove( this.component.getAwtComponent() );

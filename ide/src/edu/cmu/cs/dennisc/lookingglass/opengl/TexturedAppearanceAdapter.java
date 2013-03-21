@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
+import edu.cmu.cs.dennisc.texture.Texture;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -70,15 +72,45 @@ public class TexturedAppearanceAdapter extends SimpleAppearanceAdapter<edu.cmu.c
 	}
 
 	@Override
+	public void handleReleased()
+	{
+		super.handleReleased();
+		if( ( m_diffuseColorTextureAdapter != null ) && ( m_diffuseColorTextureAdapter.m_element != null ) )
+		{
+			m_diffuseColorTextureAdapter.handleReleased();
+		}
+		if( ( m_bumpTextureAdapter != null ) && ( m_bumpTextureAdapter.m_element != null ) )
+		{
+			m_bumpTextureAdapter.handleReleased();
+		}
+	}
+
+	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.diffuseColorTexture ) {
-			m_diffuseColorTextureAdapter = AdapterFactory.getAdapterFor( m_element.diffuseColorTexture.getValue() );
+			TextureAdapter<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( m_element.diffuseColorTexture.getValue() );
+			if( m_diffuseColorTextureAdapter != newAdapter )
+			{
+				if( m_diffuseColorTextureAdapter != null )
+				{
+					m_diffuseColorTextureAdapter.handleReleased();
+				}
+				m_diffuseColorTextureAdapter = newAdapter;
+			}
 		} else if( property == m_element.isDiffuseColorTextureAlphaBlended ) {
 			m_isDiffuseColorTextureAlphaBlended = m_element.isDiffuseColorTextureAlphaBlended.getValue();
 		} else if( property == m_element.isDiffuseColorTextureClamped ) {
 			m_isDiffuseColorTextureClamped = m_element.isDiffuseColorTextureClamped.getValue();
 		} else if( property == m_element.bumpTexture ) {
-			m_bumpTextureAdapter = AdapterFactory.getAdapterFor( m_element.bumpTexture.getValue() );
+			TextureAdapter<? extends Texture> newAdapter = AdapterFactory.getAdapterFor( m_element.bumpTexture.getValue() );
+			if( m_bumpTextureAdapter != newAdapter )
+			{
+				if( m_bumpTextureAdapter != null )
+				{
+					m_bumpTextureAdapter.handleReleased();
+				}
+				m_bumpTextureAdapter = newAdapter;
+			}
 		} else if( property == m_element.textureId ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "handle textureId?", property.getValue(), this.m_element.hashCode(), this.m_element );
 		} else {
