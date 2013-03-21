@@ -453,6 +453,8 @@ public class ImageUtilities {
 			outputStream.flush();
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
+		} catch( java.lang.IndexOutOfBoundsException ioobe ) {
+			throw new RuntimeException( ioobe );
 		}
 
 		// if( imageEncodeParam == null ) {
