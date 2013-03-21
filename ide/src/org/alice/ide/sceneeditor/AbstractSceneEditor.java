@@ -229,7 +229,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		}
 	}
 
-	public void addField( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, org.lgna.project.ast.Statement... statements ) {
+	public void addField( org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field, int index, org.lgna.project.ast.Statement... statements ) {
 		assert declaringType == this.getActiveSceneType() : declaringType;
 		this.getVM().ACCEPTABLE_HACK_FOR_SCENE_EDITOR_initializeField( this.getActiveSceneInstance(), field );
 		org.lgna.story.SProgram program = this.getProgramInstanceInJava();
@@ -240,7 +240,7 @@ public abstract class AbstractSceneEditor extends org.lgna.croquet.components.Bo
 		} finally {
 			program.setSimulationSpeedFactor( prevSimulationSpeedFactor );
 		}
-		this.getActiveSceneType().fields.add( field );
+		this.getActiveSceneType().fields.add( index, field );
 		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
 		this.setSelectedField( declaringType, field );
 
