@@ -78,6 +78,10 @@ public class AbstractFieldBasedManipulationActionOperation extends ActionOperati
 
 	protected org.lgna.story.implementation.EntityImp getEntityImp() {
 		org.lgna.story.implementation.EntityImp entityImp = org.alice.stageide.sceneeditor.StorytellingSceneEditor.getInstance().getImplementation( this.field );
+		if( ( this.field == null ) || ( entityImp == null ) )
+		{
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NULL EnityImp" );
+		}
 		return entityImp;
 	}
 

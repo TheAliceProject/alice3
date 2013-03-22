@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
@@ -40,87 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.handle;
-
-import org.alice.interact.MovementDirection;
-
-import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+package org.lgna.croquet.meta;
 
 /**
- * @author dculyba
- * 
+ * @author Dennis Cosgrove
  */
-public class JointRotationRingHandle extends RotationRingHandle {
-
-	protected static final double JOINT_MIN_RADIUS = .2d;
-
-	public JointRotationRingHandle()
-	{
-		super();
-	}
-
-	public JointRotationRingHandle( MovementDirection rotationAxisDirection )
-	{
-		super( rotationAxisDirection );
-	}
-
-	public JointRotationRingHandle( MovementDirection rotationAxisDirection, Color4f color )
-	{
-		super( rotationAxisDirection, color );
-	}
-
-	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
-	{
-		super( rotationAxisDirection, handlePosition );
-	}
-
-	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f color )
-	{
-		super( rotationAxisDirection, handlePosition, color );
-	}
-
-	public JointRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition, Color4f baseColor, Color4f activeColor, Color4f rolloverColor, Color4f mutedColor )
-	{
-		super( rotationAxisDirection, handlePosition, baseColor, activeColor, rolloverColor, mutedColor );
-	}
-
-	public JointRotationRingHandle( JointRotationRingHandle handle )
-	{
-		super( handle.rotationAxisDirection, handle.handlePosition, handle.baseColor, handle.activeColor, handle.rolloverColor, handle.mutedColor );
-	}
-
-	@Override
-	public JointRotationRingHandle clone()
-	{
-		JointRotationRingHandle newHandle = new JointRotationRingHandle( this );
-		return newHandle;
-	}
-
-	@Override
-	protected double getMinTorusRadius() {
-		return super.getMinTorusRadius() * .8;
-	}
-
-	@Override
-	protected double getMaxTorusRadius() {
-		return super.getMaxTorusRadius() * .8;
-	}
-
-	@Override
-	protected double getMajorAxisRadius()
-	{
-		if( this.getParentTransformable() != null )
-		{
-			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
-			double radius = boundingBox.getDiagonal() * .5;
-			if( Double.isNaN( radius ) || ( radius < JOINT_MIN_RADIUS ) )
-			{
-				radius = JOINT_MIN_RADIUS;
-			}
-			return radius;
+public final class LastOneInWinsMetaState<T> extends MetaState<T> {
+	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
+		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
 		}
-		return JOINT_MIN_RADIUS;
+
+		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+			handleStateChanged( state, nextValue );
+		}
+	};
+
+	private final java.util.List<org.lgna.croquet.State<T>> states;
+
+	public LastOneInWinsMetaState( org.lgna.croquet.State<T>... states ) {
+		this.states = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( states ) );
+		for( org.lgna.croquet.State<T> state : this.states ) {
+			state.addValueListener( valueListener );
+		}
+		this.setPrevValue( this.states.get( this.states.size() - 1 ).getValue() );
 	}
 
+	private boolean isInTheMidstOfChanged = false;
+
+	private void handleStateChanged( org.lgna.croquet.State<T> lastOneInState, T nextValue ) {
+		if( nextValue != null ) {
+			if( isInTheMidstOfChanged ) {
+				//pass
+			} else {
+				this.isInTheMidstOfChanged = true;
+				try {
+					for( org.lgna.croquet.State<T> state : this.states ) {
+						if( lastOneInState == state ) {
+							//pass
+						} else {
+							state.setValueTransactionlessly( null );
+						}
+					}
+				} finally {
+					this.isInTheMidstOfChanged = false;
+				}
+			}
+		}
+	}
+
+	@Override
+	public T getValue() {
+		for( org.lgna.croquet.State<T> state : this.states ) {
+			T value = state.getValue();
+			if( value != null ) {
+				return value;
+			}
+		}
+		return null;
+	}
 }
