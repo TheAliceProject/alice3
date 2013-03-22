@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,55 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.edits.ast;
+package org.lgna.croquet.meta;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit {
-	private transient int index = -1;
+public final class LastOneInWinsMetaState<T> extends MetaState<T> {
+	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
+		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		}
 
-	private final org.lgna.project.ast.UserField field;
+		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+			handleStateChanged( state, nextValue );
+		}
+	};
 
-	public DeclareNonGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
-		super( step, declaringType, field );
-		this.field = field;
+	private final java.util.List<org.lgna.croquet.State<T>> states;
+
+	public LastOneInWinsMetaState( org.lgna.croquet.State<T>... states ) {
+		this.states = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( states ) );
+		for( org.lgna.croquet.State<T> state : this.states ) {
+			state.addValueListener( valueListener );
+		}
+		this.setPrevValue( this.states.get( this.states.size() - 1 ).getValue() );
 	}
 
-	public DeclareNonGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
-		super( binaryDecoder, step );
-		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
+	private boolean isInTheMidstOfChanged = false;
+
+	private void handleStateChanged( org.lgna.croquet.State<T> lastOneInState, T nextValue ) {
+		if( nextValue != null ) {
+			if( isInTheMidstOfChanged ) {
+				//pass
+			} else {
+				this.isInTheMidstOfChanged = true;
+				try {
+					for( org.lgna.croquet.State<T> state : this.states ) {
+						if( lastOneInState == state ) {
+							//pass
+						} else {
+							state.setValueTransactionlessly( null );
+						}
+					}
+				} finally {
+					this.isInTheMidstOfChanged = false;
+				}
+			}
+		}
 	}
 
 	@Override
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).encodeValue( binaryEncoder, this.field );
-	}
-
-	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		if( isDo ) {
-			this.index = -1;
+	public T getValue() {
+		for( org.lgna.croquet.State<T> state : this.states ) {
+			T value = state.getValue();
+			if( value != null ) {
+				return value;
+			}
 		}
-		int insertionIndex = this.index;
-		final int N = this.getDeclaringType().fields.size();
-		if( ( insertionIndex >= 0 ) && ( insertionIndex <= N ) ) {
-			//pass
-		} else {
-			insertionIndex = N;
-		}
-		this.getDeclaringType().fields.add( insertionIndex, this.getField() );
-		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
-	}
-
-	@Override
-	protected final void undoInternal() {
-		this.index = this.getDeclaringType().fields.indexOf( this.field );
-		if( this.index != -1 ) {
-			this.getDeclaringType().fields.remove( this.index );
-		} else {
-			throw new javax.swing.undo.CannotUndoException();
-		}
+		return null;
 	}
 }
