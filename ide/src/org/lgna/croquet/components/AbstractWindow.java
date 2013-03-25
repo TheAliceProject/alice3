@@ -62,17 +62,12 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 
 	private final ContentPane contentPane;
 	private final RootPane rootPane;
-	//<kjh/>
-	private final LayeredPane layeredPane;
 
 	public AbstractWindow( W window ) {
 		this.window = window;
 		AbstractWindow.map.put( window, this );
 		this.contentPane = new ContentPane( this );
 		this.rootPane = new RootPane( this );
-
-		//<kjh/>
-		this.layeredPane = new LayeredPane( this.rootPane.getLayeredPane().getAwtComponent() );
 	}
 
 	@Override
@@ -88,11 +83,6 @@ public abstract class AbstractWindow<W extends java.awt.Window> extends ScreenEl
 	/* package-private */abstract java.awt.Container getAwtContentPane();
 
 	/* package-private */abstract javax.swing.JRootPane getJRootPane();
-
-	//<kjh/>
-	public LayeredPane getLayeredPane() {
-		return this.layeredPane;
-	}
 
 	public ContentPane getContentPane() {
 		return this.contentPane;
