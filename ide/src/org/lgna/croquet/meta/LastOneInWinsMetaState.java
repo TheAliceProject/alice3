@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,62 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire;
+package org.lgna.croquet.meta;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Recoverer {
-	public org.lgna.croquet.history.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction );
+public final class LastOneInWinsMetaState<T> extends MetaState<T> {
+	private final org.lgna.croquet.State.ValueListener<T> valueListener = new org.lgna.croquet.State.ValueListener<T>() {
+		public void changing( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<T> state, T prevValue, T nextValue, boolean isAdjusting ) {
+			handleStateChanged( state, nextValue );
+		}
+	};
+
+	private final java.util.List<org.lgna.croquet.State<T>> states;
+
+	public LastOneInWinsMetaState( org.lgna.croquet.State<T>... states ) {
+		this.states = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( states ) );
+		for( org.lgna.croquet.State<T> state : this.states ) {
+			state.addValueListener( valueListener );
+		}
+		this.setPrevValue( this.states.get( this.states.size() - 1 ).getValue() );
+	}
+
+	private boolean isInTheMidstOfChanged = false;
+
+	private void handleStateChanged( org.lgna.croquet.State<T> lastOneInState, T nextValue ) {
+		if( nextValue != null ) {
+			if( isInTheMidstOfChanged ) {
+				//pass
+			} else {
+				this.isInTheMidstOfChanged = true;
+				try {
+					for( org.lgna.croquet.State<T> state : this.states ) {
+						if( lastOneInState == state ) {
+							//pass
+						} else {
+							state.setValueTransactionlessly( null );
+						}
+					}
+				} finally {
+					this.isInTheMidstOfChanged = false;
+				}
+			}
+		}
+	}
+
+	@Override
+	public T getValue() {
+		for( org.lgna.croquet.State<T> state : this.states ) {
+			T value = state.getValue();
+			if( value != null ) {
+				return value;
+			}
+		}
+		return null;
+	}
 }

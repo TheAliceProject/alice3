@@ -47,7 +47,7 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public final class Layer {
-	private final LayeredPaneBareBones layeredPane;
+	private final LayeredPane layeredPane;
 	private final Integer id;
 	private JComponent<?> component;
 	private final java.awt.event.ComponentListener componentListener = new java.awt.event.ComponentListener() {
@@ -65,7 +65,7 @@ public final class Layer {
 		}
 	};
 
-	/* package-private */Layer( LayeredPaneBareBones layeredPane, Integer id ) {
+	/* package-private */Layer( LayeredPane layeredPane, Integer id ) {
 		this.layeredPane = layeredPane;
 		this.id = id;
 	}

@@ -120,7 +120,6 @@ public class JointRotationRingHandle extends RotationRingHandle {
 			}
 			return radius;
 		}
-		this.getParentTransformable();
 		return JOINT_MIN_RADIUS;
 	}
 
