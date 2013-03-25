@@ -46,7 +46,7 @@ package org.alice.ide.stencil;
  * @author Dennis Cosgrove
  * 
  */
-public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.Stencil {
+public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.LayerStencil {
 
 	private static final java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
 	private static final java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );
@@ -56,7 +56,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.S
 	private org.lgna.croquet.components.Component<?> currentDropReceptorComponent;
 
 	public PotentialDropReceptorsStencil( org.lgna.croquet.components.AbstractWindow<?> window ) {
-		super( window );
+		super( window, javax.swing.JLayeredPane.POPUP_LAYER + 1 );
 	}
 
 	public void handleDragStarted( org.lgna.croquet.history.DragStep dragAndDropContext ) {
@@ -181,11 +181,7 @@ public class PotentialDropReceptorsStencil extends org.lgna.croquet.components.S
 	}
 
 	@Override
-	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
-	}
-
-	@Override
-	protected LayerId getStencilsLayer() {
-		return LayerId.ABOVE_POPUP_LAYER;
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return null;
 	}
 }
