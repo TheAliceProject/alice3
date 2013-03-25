@@ -74,7 +74,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
-	private org.lgna.cheshire.simple.stencil.SimplePresentation simplePresentation = null;
 	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil = null;
 
 	public IDE() {
@@ -593,13 +592,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			return null;
 		}
-	}
-
-	public org.lgna.cheshire.simple.stencil.SimplePresentation getSimplePresentation() {
-		if( this.simplePresentation == null ) {
-			this.simplePresentation = new org.lgna.cheshire.simple.stencil.SimplePresentation( this );
-		}
-		return simplePresentation;
 	}
 
 	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;
