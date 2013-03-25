@@ -45,12 +45,12 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public final class LayeredPaneBareBones extends JComponent<javax.swing.JLayeredPane> {
+public final class LayeredPane extends JComponent<javax.swing.JLayeredPane> {
 	private final java.util.Map<Integer, Layer> mapIdToLayer = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	private final RootPane rootPane;
 
-	/* package-private */LayeredPaneBareBones( RootPane rootPane ) {
+	/* package-private */LayeredPane( RootPane rootPane ) {
 		this.rootPane = rootPane;
 	}
 
