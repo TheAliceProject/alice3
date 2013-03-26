@@ -40,42 +40,64 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package jdkbugs;
+package edu.cmu.cs.dennisc.java.awt;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PressAndDragMouseButtonThenScrollMouseWheel {
-	public static void main( String[] args ) {
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		final boolean IS_ATTEMPTING_TO_FIX = true;
-		if( IS_ATTEMPTING_TO_FIX ) {
-			edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
+public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
+	private static class SingletonHolder {
+		private static ConsistentMouseDragEventQueue instance = new ConsistentMouseDragEventQueue();
+	}
+
+	public static void pushIfAppropriate() {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+			//pass
+		} else {
+			java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().push( SingletonHolder.instance );
 		}
-		java.awt.Container contentPane = frame.getContentPane();
+	}
 
-		javax.swing.JPanel panel = new javax.swing.JPanel();
-		panel.setLayout( new javax.swing.BoxLayout( panel, javax.swing.BoxLayout.PAGE_AXIS ) );
+	private ConsistentMouseDragEventQueue() {
+	}
 
-		javax.swing.JLabel pressAndDragLabel = new javax.swing.JLabel( "press and drag then use mouse wheel" );
-		pressAndDragLabel.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
-			public void mouseDragged( java.awt.event.MouseEvent e ) {
-				System.out.println( "drag: when=" + e.getWhen() );
+	private transient int lastPressOrDragModifiers;
+
+	@Override
+	protected void dispatchEvent( java.awt.AWTEvent e ) {
+		if( e instanceof java.awt.event.MouseWheelEvent ) {
+			java.awt.event.MouseWheelEvent mouseWheelEvent = (java.awt.event.MouseWheelEvent)e;
+
+			java.awt.Component source = mouseWheelEvent.getComponent();
+			int id = mouseWheelEvent.getID();
+			long when = mouseWheelEvent.getWhen();
+			int modifiers = mouseWheelEvent.getModifiers();
+			int x = mouseWheelEvent.getX();
+			int y = mouseWheelEvent.getY();
+			int xAbs = mouseWheelEvent.getXOnScreen();
+			int yAbs = mouseWheelEvent.getYOnScreen();
+			int clickCount = mouseWheelEvent.getClickCount();
+			boolean popupTrigger = mouseWheelEvent.isPopupTrigger();
+			int scrollType = mouseWheelEvent.getScrollType();
+			int scrollAmount = mouseWheelEvent.getScrollAmount();
+			int wheelRotation = mouseWheelEvent.getWheelRotation();
+			double preciseWheelRotation = mouseWheelEvent.getPreciseWheelRotation();
+
+			//note:
+			modifiers = this.lastPressOrDragModifiers;
+
+			java.awt.event.MouseWheelEvent consistentMouseWheelEvent = new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, preciseWheelRotation );
+			e = consistentMouseWheelEvent;
+		} else if( e instanceof java.awt.event.MouseEvent ) {
+			java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
+			int id = mouseEvent.getID();
+			switch( id ) {
+			case java.awt.event.MouseEvent.MOUSE_PRESSED:
+			case java.awt.event.MouseEvent.MOUSE_DRAGGED:
+				this.lastPressOrDragModifiers = mouseEvent.getModifiers();
+				break;
 			}
-
-			public void mouseMoved( java.awt.event.MouseEvent e ) {
-			}
-		} );
-		panel.add( pressAndDragLabel );
-
-		for( int i = 0; i < 24; i++ ) {
-			panel.add( new javax.swing.JLabel( "filler to force scroll pane: " + i ) );
 		}
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( panel );
-		contentPane.add( scrollPane, java.awt.BorderLayout.CENTER );
-		frame.setSize( 400, 300 );
-		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-		frame.setVisible( true );
-
+		super.dispatchEvent( e );
 	}
 }
