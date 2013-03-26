@@ -74,20 +74,26 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 			int modifiers = mouseWheelEvent.getModifiers();
 			int x = mouseWheelEvent.getX();
 			int y = mouseWheelEvent.getY();
-			int xAbs = mouseWheelEvent.getXOnScreen();
-			int yAbs = mouseWheelEvent.getYOnScreen();
+			//1.7
+			//int xAbs = mouseWheelEvent.getXOnScreen();
+			//int yAbs = mouseWheelEvent.getYOnScreen();
 			int clickCount = mouseWheelEvent.getClickCount();
 			boolean popupTrigger = mouseWheelEvent.isPopupTrigger();
 			int scrollType = mouseWheelEvent.getScrollType();
 			int scrollAmount = mouseWheelEvent.getScrollAmount();
 			int wheelRotation = mouseWheelEvent.getWheelRotation();
-			double preciseWheelRotation = mouseWheelEvent.getPreciseWheelRotation();
+			//1.7
+			//double preciseWheelRotation = mouseWheelEvent.getPreciseWheelRotation();
 
 			//note:
 			modifiers = this.lastPressOrDragModifiers;
 
-			java.awt.event.MouseWheelEvent consistentMouseWheelEvent = new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, preciseWheelRotation );
-			e = consistentMouseWheelEvent;
+			// 1.7 
+			//= new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, xAbs, yAbs, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation, preciseWheelRotation );
+
+			// 1.5
+			e = new java.awt.event.MouseWheelEvent( source, id, when, modifiers, x, y, clickCount, popupTrigger, scrollType, scrollAmount, wheelRotation );
+
 		} else if( e instanceof java.awt.event.MouseEvent ) {
 			java.awt.event.MouseEvent mouseEvent = (java.awt.event.MouseEvent)e;
 			int id = mouseEvent.getID();
