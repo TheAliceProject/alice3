@@ -246,7 +246,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc )
+	protected void renderGeometry( RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter.RenderType renderType )
 	{
 		initializeDataIfNecessary();
 		if( this.skeletonIsDirty )
@@ -307,7 +307,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 					{
 						rc.gl.glDisable( GL_ALPHA_TEST );
 					}
-					ma.render( rc );
+					ma.render( rc, renderType );
 					rc.gl.glEnable( GL_CULL_FACE );
 					rc.gl.glDisable( GL_ALPHA_TEST );
 				}

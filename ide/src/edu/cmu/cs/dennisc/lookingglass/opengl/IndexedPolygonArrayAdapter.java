@@ -66,7 +66,7 @@ public abstract class IndexedPolygonArrayAdapter<E extends edu.cmu.cs.dennisc.sc
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		float uRatio = rc.getURatio();
 		float vRatio = rc.getVRatio();
 		int[] polygonData = m_element.polygonData.getValueAsArray();

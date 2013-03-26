@@ -53,7 +53,7 @@ public class SpriteAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegraph
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		throw new RuntimeException( "todo" );
 	}
 

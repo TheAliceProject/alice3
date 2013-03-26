@@ -116,7 +116,7 @@ public class CylinderAdapter extends ShapeAdapter<edu.cmu.cs.dennisc.scenegraph.
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		glCylinder( rc );
 	}
 
