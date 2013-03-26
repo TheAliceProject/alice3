@@ -40,12 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package test.mouse;
+package jdkbugs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TestMouseDragAndWheel {
+public class PressAndDragMouseButtonThenScrollMouseWheel {
 	public static void main( String[] args ) {
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		java.awt.Container contentPane = frame.getContentPane();
