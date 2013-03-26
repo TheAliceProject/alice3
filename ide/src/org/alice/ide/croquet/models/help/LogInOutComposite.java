@@ -53,8 +53,8 @@ import org.lgna.croquet.State.ValueListener;
  */
 public class LogInOutComposite extends CardOwnerComposite {
 
-	private final LogInCard loginCard;
-	private final LogOutCard logoutCard;
+	private final LogInCard logInCard;
+	private final LogOutCard logOutCard;
 	private AbstractLoginComposite composite;
 	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
 
@@ -68,23 +68,23 @@ public class LogInOutComposite extends CardOwnerComposite {
 	};
 
 	public LogInOutComposite( UUID id, AbstractLoginComposite loginComposite ) {
-		super( id, new LogInCard( loginComposite ), new LogOutCard( loginComposite.getLogOutOperation() ) );
+		super( id );
 		this.composite = loginComposite;
-		this.loginCard = new LogInCard( loginComposite );
-		this.logoutCard = new LogOutCard( loginComposite.getLogOutOperation() );
+		this.logInCard = new LogInCard( loginComposite );
+		this.logOutCard = new LogOutCard( loginComposite.getLogOutOperation() );
 
-		this.addCard( this.loginCard );
-		this.addCard( this.logoutCard );
+		this.addCard( this.logInCard );
+		this.addCard( this.logOutCard );
 
 		composite.getIsLoggedIn().addValueListener( isLoggedInAdapter );
 	}
 
 	private void updateLogInOutComposite() {
 		if( composite.getIsLoggedIn().getValue() ) {
-			logoutCard.updateWelcomeString( composite.updateUserNameForWelcomeString() );
-			this.showCard( logoutCard );
+			logOutCard.updateWelcomeString( composite.updateUserNameForWelcomeString() );
+			this.showCard( logOutCard );
 		} else {
-			this.showCard( loginCard );
+			this.showCard( logInCard );
 		}
 		this.getView().getAwtComponent().repaint();
 	}

@@ -49,6 +49,7 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.alice.ide.croquet.models.help.LogInOutComposite;
 import org.alice.media.components.UploadView;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
@@ -68,8 +69,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final YouTubeUploader uploader = new YouTubeUploader();
 	private final ExportToYouTubeWizardDialogComposite owner;
 
-	private final org.lgna.croquet.StringState idState = this.createStringState( this.createKey( "idState" ) );
-	private final org.lgna.croquet.StringState passwordState = this.createStringState( this.createKey( "passwordState" ), "" );
+	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "294cb10a-ad2f-42cf-8159-ac859c7fe792" ), new YouTubeLoginComposite( this ) );
 
 	private final StringState titleState = this.createStringState( this.createKey( "titleState" ), "Alice Video" );
 	private final BooleanState isPrivateState = this.createBooleanState( this.createKey( "isPrivateState" ), false );

@@ -65,6 +65,14 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	protected final BooleanState isLoggedIn = createBooleanState( createKey( "isLoggedIn" ), false );
 	private Status status;
 	protected Status loginFailedStatus = createWarningStatus( createKey( "warningLoginFailed" ) );
+	private final ActionOperation logOutOperation = createActionOperation( createKey( "logOutOperation" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			logout();
+			isLoggedIn.setValueTransactionlessly( false );
+			return null;
+		}
+	} );
 
 	public StringState getUserNameState() {
 		return this.userNameState;
@@ -124,14 +132,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 	public abstract void logout();
 
 	public final ActionOperation getLogOutOperation() {
-		return createActionOperation( createKey( "logOut" ), new Action() {
-
-			public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-				logout();
-				isLoggedIn.setValueTransactionlessly( false );
-				return null;
-			}
-		} );
+		return logOutOperation;
 	}
 
 	public String updateUserNameForWelcomeString() {
