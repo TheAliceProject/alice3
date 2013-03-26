@@ -46,26 +46,46 @@ package org.alice.ide.croquet.edits.ast;
  * @author Dennis Cosgrove
  */
 public class DeclareNonGalleryFieldEdit extends DeclareFieldEdit {
-	private transient int index;
+	private transient int index = -1;
+
+	private final org.lgna.project.ast.UserField field;
 
 	public DeclareNonGalleryFieldEdit( org.lgna.croquet.history.CompletionStep step, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserField field ) {
 		super( step, declaringType, field );
+		this.field = field;
 	}
 
 	public DeclareNonGalleryFieldEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
+		this.field = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).decodeValue( binaryDecoder );
+	}
+
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserField.class ).encodeValue( binaryEncoder, this.field );
 	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
-		this.index = this.getDeclaringType().fields.size();
-		this.getDeclaringType().fields.add( this.index, this.getField() );
+		if( isDo ) {
+			this.index = -1;
+		}
+		int insertionIndex = this.index;
+		final int N = this.getDeclaringType().fields.size();
+		if( ( insertionIndex >= 0 ) && ( insertionIndex <= N ) ) {
+			//pass
+		} else {
+			insertionIndex = N;
+		}
+		this.getDeclaringType().fields.add( insertionIndex, this.getField() );
 		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
 	}
 
 	@Override
 	protected final void undoInternal() {
-		if( this.getDeclaringType().fields.get( this.index ) == this.getField() ) {
+		this.index = this.getDeclaringType().fields.indexOf( this.field );
+		if( this.index != -1 ) {
 			this.getDeclaringType().fields.remove( this.index );
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
