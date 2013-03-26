@@ -115,6 +115,11 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 		super( dragModel );
 	}
 
+	@Override
+	protected boolean isClickAndClackAppropriate() {
+		return true;
+	}
+
 	public org.lgna.croquet.DropReceptor getDropReceptor() {
 		return this.dropReceptor;
 	}

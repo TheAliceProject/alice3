@@ -46,22 +46,67 @@ package edu.cmu.cs.dennisc.java.awt;
  * @author Dennis Cosgrove
  */
 public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
+	private static final boolean IS_CLICK_AND_CLACK_DESIRED_DEFAULT = false;
+	private static final boolean IS_CLICK_AND_CLACK_DESIRED = IS_CLICK_AND_CLACK_DESIRED_DEFAULT || edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.isClickAndClackDesired" );
+
 	private static class SingletonHolder {
 		private static ConsistentMouseDragEventQueue instance = new ConsistentMouseDragEventQueue();
 	}
 
+	public static ConsistentMouseDragEventQueue getInstance() {
+		return SingletonHolder.instance;
+	}
+
 	public static void pushIfAppropriate() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+		if( ( IS_CLICK_AND_CLACK_DESIRED == false ) && edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			//pass
 		} else {
 			java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().push( SingletonHolder.instance );
 		}
 	}
 
+	private final java.util.Stack<java.awt.Component> stack;
+	private int lastPressOrDragModifiers;
+
 	private ConsistentMouseDragEventQueue() {
+		if( IS_CLICK_AND_CLACK_DESIRED ) {
+			this.stack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
+		} else {
+			this.stack = null;
+		}
 	}
 
-	private transient int lastPressOrDragModifiers;
+	public boolean isClickAndClackSupported() {
+		return this.stack != null;
+	}
+
+	public java.awt.Component peekClickAndClackComponent() {
+		if( this.stack != null ) {
+			if( this.stack.size() > 0 ) {
+				return this.stack.peek();
+			} else {
+				return null;
+			}
+		} else {
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	public void pushClickAndClackComponent( java.awt.Component awtComponent ) {
+		if( this.stack != null ) {
+			this.stack.push( awtComponent );
+		} else {
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	public java.awt.Component popClickAndClackComponent() {
+		if( this.stack != null ) {
+			return this.stack.pop();
+		} else {
+			throw new UnsupportedOperationException();
+		}
+	}
 
 	@Override
 	protected void dispatchEvent( java.awt.AWTEvent e ) {
@@ -102,6 +147,13 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 			case java.awt.event.MouseEvent.MOUSE_DRAGGED:
 				this.lastPressOrDragModifiers = mouseEvent.getModifiers();
 				break;
+			}
+
+			if( this.stack != null ) {
+				if( this.stack.size() > 0 ) {
+					java.awt.Component component = this.stack.peek();
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: send modified", e.paramString(), "to", component.getClass().getSimpleName() );
+				}
 			}
 		}
 		super.dispatchEvent( e );

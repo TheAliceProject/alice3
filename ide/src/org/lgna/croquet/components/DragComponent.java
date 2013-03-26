@@ -130,6 +130,10 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		super( model );
 	}
 
+	protected boolean isClickAndClackAppropriate() {
+		return false;
+	}
+
 	public DragProxy getDragProxy() {
 		return this.dragProxy;
 	}
@@ -308,6 +312,19 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 	}
 
 	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
+		if( this.isClickAndClackAppropriate() ) {
+			edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue eventQueue = edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.getInstance();
+			if( eventQueue.isClickAndClackSupported() ) {
+				java.awt.Component peekComponent = eventQueue.peekClickAndClackComponent();
+				java.awt.Component awtComponent = this.getAwtComponent();
+
+				if( awtComponent == peekComponent ) {
+					eventQueue.popClickAndClackComponent();
+				} else {
+					eventQueue.pushClickAndClackComponent( this.getAwtComponent() );
+				}
+			}
+		}
 	}
 
 	private void setActive( boolean isActive ) {

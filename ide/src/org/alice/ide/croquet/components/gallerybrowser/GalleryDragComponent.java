@@ -147,6 +147,11 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	@Override
+	protected boolean isClickAndClackAppropriate() {
+		return true;
+	}
+
+	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
 		return new java.awt.LayoutManager() {
 			public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
