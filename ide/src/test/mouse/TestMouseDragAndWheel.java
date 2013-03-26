@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,12 +40,39 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.cheshire;
+package test.mouse;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Recoverer {
-	public org.lgna.croquet.history.Transaction createTransactionToGetCloserToTheRightStateWhenNoViewControllerCanBeFound( org.lgna.croquet.history.Transaction transaction );
+public class TestMouseDragAndWheel {
+	private static class Widget extends javax.swing.JLabel {
+		public Widget( int i ) {
+			this.setText( "widget: " + i );
+			this.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
+				public void mouseDragged( java.awt.event.MouseEvent e ) {
+					System.out.println( e.getSource().hashCode() );
+				}
+
+				public void mouseMoved( java.awt.event.MouseEvent e ) {
+
+				}
+			} );
+		}
+	}
+
+	public static void main( String[] args ) {
+		javax.swing.JFrame frame = new javax.swing.JFrame();
+		java.awt.Container contentPane = frame.getContentPane();
+
+		javax.swing.JPanel panel = new javax.swing.JPanel();
+		panel.setLayout( new javax.swing.BoxLayout( panel, javax.swing.BoxLayout.PAGE_AXIS ) );
+		for( int i = 0; i < 24; i++ ) {
+			panel.add( new Widget( i ) );
+		}
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( panel );
+		contentPane.add( scrollPane, java.awt.BorderLayout.CENTER );
+		frame.setSize( 320, 240 );
+		frame.setVisible( true );
+	}
 }
