@@ -148,7 +148,8 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 
 	@Override
 	protected boolean isClickAndClackAppropriate() {
-		return true;
+		org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model = this.getModel();
+		return model.isClickAndClackAppropriate();
 	}
 
 	@Override
