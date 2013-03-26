@@ -217,7 +217,14 @@ public abstract class AbstractThumbnailMaker {
 			int newHeight = rv.getHeight() - topBorder - bottomBorder;
 			int newWidth = rv.getWidth() - leftBorder - rightBorder;
 
-			rv = rv.getSubimage( leftBorder, topBorder, newWidth, newHeight );
+			if( ( leftBorder < 0 ) || ( topBorder < 0 ) || ( newWidth < 0 ) || ( newHeight < 0 ) )
+			{
+				//pass
+			}
+			else
+			{
+				rv = rv.getSubimage( leftBorder, topBorder, newWidth, newHeight );
+			}
 		}
 		Image returnImage;
 		if( this.antAliasFactor != 0 ) {
