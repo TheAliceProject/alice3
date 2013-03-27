@@ -196,11 +196,12 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		if( isActuallyPotentiallyDraggable() ) {
 			if( this.isClickAndClackAppropriate() ) {
 				edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue eventQueue = edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.getInstance();
-				java.awt.Component peekComponent = eventQueue.peekClickAndClackComponent();
-				java.awt.Component awtComponent = this.getAwtComponent();
-
-				if( awtComponent == peekComponent ) {
-					return true;
+				if( eventQueue.isClickAndClackSupported() ) {
+					java.awt.Component peekComponent = eventQueue.peekClickAndClackComponent();
+					java.awt.Component awtComponent = this.getAwtComponent();
+					if( awtComponent == peekComponent ) {
+						return true;
+					}
 				}
 			}
 		}
