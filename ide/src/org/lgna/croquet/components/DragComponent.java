@@ -47,8 +47,8 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 	private final java.awt.event.MouseMotionListener mouseMotionListener;
 	private final java.awt.event.ComponentListener componentListener;
 
-	private final DragProxy dragProxy;
-	private final DropProxy dropProxy;
+	private final org.lgna.croquet.components.imp.JDragProxy dragProxy;
+	private final org.lgna.croquet.components.imp.JDropProxy dropProxy;
 
 	public DragComponent( M model, boolean isAlphaDesiredWhenOverDropReceptor ) {
 		super( model );
@@ -97,8 +97,8 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 				public void componentShown( java.awt.event.ComponentEvent e ) {
 				}
 			};
-			this.dragProxy = new DragProxy( this, isAlphaDesiredWhenOverDropReceptor );
-			this.dropProxy = new DropProxy( this );
+			this.dragProxy = new org.lgna.croquet.components.imp.JDragProxy( this, isAlphaDesiredWhenOverDropReceptor );
+			this.dropProxy = new org.lgna.croquet.components.imp.JDropProxy( this );
 		} else {
 			this.mouseListener = null;
 			this.mouseMotionListener = null;
@@ -119,10 +119,6 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 	}
 
 	private boolean isWithinClickThreshold = false;
-
-	protected boolean isWithinClickThreshold() {
-		return this.isWithinClickThreshold;
-	}
 
 	private java.awt.event.MouseEvent mousePressedEvent = null;
 	private java.awt.event.MouseEvent leftButtonPressedEvent = null;
@@ -148,11 +144,11 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		return false;
 	}
 
-	public DragProxy getDragProxy() {
+	public org.lgna.croquet.components.imp.JDragProxy getDragProxy() {
 		return this.dragProxy;
 	}
 
-	public DropProxy getDropProxy() {
+	public org.lgna.croquet.components.imp.JDropProxy getDropProxy() {
 		return this.dropProxy;
 	}
 
@@ -293,7 +289,7 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		if( isActuallyPotentiallyDraggable() ) {
 			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
-				if( this.isWithinClickThreshold() ) {
+				if( this.isWithinClickThreshold ) {
 					//pass
 				} else {
 					this.handleLeftMouseDragged( e );
@@ -367,7 +363,7 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
 			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-				if( this.isWithinClickThreshold() ) {
+				if( this.isWithinClickThreshold ) {
 					//pass
 				} else {
 					org.lgna.croquet.Application.getActiveInstance().setDragInProgress( false );
