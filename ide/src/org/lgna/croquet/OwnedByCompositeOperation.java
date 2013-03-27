@@ -75,12 +75,6 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void localize() {
-		super.localize();
-		this.composite.clobberLocalizationIfDesired( this );
-	}
-
-	@Override
 	public boolean isToolBarTextClobbered() {
 		return this.composite.isToolBarTextClobbered( super.isToolBarTextClobbered() );
 	}
@@ -93,6 +87,11 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	protected Class<? extends AbstractElement> getClassUsedForLocalization() {
 		//todo
 		return ( (AbstractComposite<?>)this.composite ).getClassUsedForLocalization();
+	}
+
+	@Override
+	protected String modifyNameIfNecessary( String text ) {
+		return this.composite.modifyNameIfNecessary( super.modifyNameIfNecessary( text ) );
 	}
 
 	@Override
@@ -128,6 +127,11 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException {
 		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
 		this.composite.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+	}
+
+	@Override
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		this.composite.appendTutorialStepText( text, step, edit );
 	}
 
 	@Override

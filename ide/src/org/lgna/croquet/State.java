@@ -191,16 +191,15 @@ public abstract class State<T> extends AbstractCompletionModel implements org.lg
 	}
 
 	@Override
-	protected final StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected final void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		if( edit instanceof org.lgna.croquet.edits.StateEdit ) {
 			org.lgna.croquet.edits.StateEdit<T> stateEdit = (org.lgna.croquet.edits.StateEdit<T>)edit;
-			rv.append( " <strong>" );
-			this.appendRepresentation( rv, stateEdit.getNextValue() );
-			rv.append( "</strong>." );
+			text.append( " <strong>" );
+			this.appendRepresentation( text, stateEdit.getNextValue() );
+			text.append( "</strong>." );
 		} else {
-			rv.append( "UNKNOWN EDIT: " + edit );
+			text.append( "UNKNOWN EDIT: " + edit );
 		}
-		return rv;
 	}
 
 	protected org.lgna.croquet.edits.StateEdit<T> createEdit( org.lgna.croquet.history.CompletionStep<State<T>> completionStep, T nextValue ) {

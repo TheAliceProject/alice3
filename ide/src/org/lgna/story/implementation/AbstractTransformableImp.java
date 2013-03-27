@@ -899,7 +899,13 @@ public abstract class AbstractTransformableImp extends EntityImp {
 				}
 			} else {
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
-				m.translation.set( t0.translation.x, -bbSubject.getMinimum().y, t0.translation.z );
+				double y;
+				if( bbSubject.isNaN() ) {
+					y = 0;
+				} else {
+					y = -bbSubject.getMinimum().y;
+				}
+				m.translation.set( t0.translation.x, y, t0.translation.z );
 				return m;
 			}
 		}
@@ -1004,7 +1010,11 @@ public abstract class AbstractTransformableImp extends EntityImp {
 		PlaceData placeData = new PlaceData( this, spatialRelation, target, alongAxisOffset, asSeenBy );
 		duration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
-			placeData.setTranslation( placeData.calculateTranslation1( placeData.calculateTranslation0() ) );
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = placeData.calculateTranslation0();
+			assert m0.isNaN() == false : this;
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m1 = placeData.calculateTranslation1( m0 );
+			assert m1.isNaN() == false : this;
+			placeData.setTranslation( m1 );
 		} else {
 			this.perform( new PlaceAnimation( placeData, duration, style ) );
 		}

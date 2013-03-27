@@ -53,11 +53,23 @@ public abstract class MethodsSubComposite extends org.lgna.croquet.ToolPaletteCo
 
 	public abstract java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods();
 
+	protected boolean isMethodCountDesired( boolean isExpanded, int methodCount ) {
+		return isExpanded == false;
+	}
+
+	@Override
+	protected String modifyTextIfNecessary( String text, boolean isExpanded ) {
+		text = super.modifyTextIfNecessary( text, isExpanded );
+		java.util.List<? extends org.lgna.project.ast.AbstractMethod> methods = this.getMethods();
+		if( this.isMethodCountDesired( isExpanded, methods.size() ) ) {
+			text += " (" + methods.size() + ")";
+		}
+		return text;
+	}
+
 	public void updateTabTitle() {
 		org.lgna.croquet.BooleanState isExpandedState = this.getOuterComposite().getIsExpandedState();
-		String trueText = isExpandedState.getTrueText();
-		java.util.List<? extends org.lgna.project.ast.AbstractMethod> methods = this.getMethods();
-		this.getOuterComposite().getIsExpandedState().setTextForTrueAndTextForFalse( trueText, trueText + " (" + methods.size() + ")" );
+		isExpandedState.updateNameAndIcon();
 	}
 
 	public boolean isShowingDesired() {

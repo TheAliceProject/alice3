@@ -57,33 +57,45 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		return SingletonHolder.instance;
 	}
 
-	private static final int LAYER_ID = javax.swing.JLayeredPane.POPUP_LAYER - 3;
+	private static final int LAYER_ID = javax.swing.JLayeredPane.POPUP_LAYER + 1;
 
 	private final org.lgna.croquet.Operation captureEntireWindowOperation = this.createActionOperation( this.createKey( "captureEntireWindow" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
-			org.lgna.croquet.components.Frame frame = app.getFrame();
-			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureImage( frame.getAwtComponent(), null );
+			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
+			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getAwtComponent(), getDpi() );
 			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
 			return null;
 		}
 	} );
 
-	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.croquet.components.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView> mapWindowToStencilView = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+	private final org.lgna.croquet.Operation captureEntireContentPaneOperation = this.createActionOperation( this.createKey( "captureEntireContentPane" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
+			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
+			java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureComplete( window.getRootPane().getAwtComponent(), getDpi() );
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
+			return null;
+		}
+	} );
 
 	private final org.lgna.croquet.Operation captureRectangleOperation = this.createActionOperation( this.createKey( "captureRectangle" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 			org.lgna.croquet.Application app = org.lgna.croquet.Application.getActiveInstance();
-			org.lgna.croquet.components.Frame frame = app.getFrame();
-			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = mapWindowToStencilView.getInitializingIfAbsent( frame, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentHashMap.Initializer<org.lgna.croquet.components.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView>() {
+			org.lgna.croquet.components.AbstractWindow<?> window = app.peekWindow();
+			org.alice.ide.capture.views.ImageCaptureRectangleStencilView stencilView = mapWindowToStencilView.getInitializingIfAbsent( window, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentHashMap.Initializer<org.lgna.croquet.components.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView>() {
 				public org.alice.ide.capture.views.ImageCaptureRectangleStencilView initialize( org.lgna.croquet.components.AbstractWindow<?> key ) {
 					return new org.alice.ide.capture.views.ImageCaptureRectangleStencilView( key, LAYER_ID );
 				}
 			} );
-			stencilView.setStencilShowing( true );
+			stencilView.setStencilShowing( stencilView.isStencilShowing() == false );
 			return null;
 		}
 	} );
+
+	private final org.lgna.croquet.BoundedIntegerState dpiState = this.createBoundedIntegerState( this.createKey( "dpiState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 3000 ).initialValue( 300 ) );
+
+	private final edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.croquet.components.AbstractWindow<?>, org.alice.ide.capture.views.ImageCaptureRectangleStencilView> mapWindowToStencilView = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
 
 	private ImageCaptureComposite() {
 		super( java.util.UUID.fromString( "84f73ef2-a5d1-4784-a902-45343434b0f0" ), IMAGE_CAPTURE_GROUP );
@@ -93,12 +105,34 @@ public class ImageCaptureComposite extends org.lgna.croquet.FrameComposite<org.a
 		return this.captureEntireWindowOperation;
 	}
 
+	public org.lgna.croquet.Operation getCaptureEntireContentPaneOperation() {
+		return this.captureEntireContentPaneOperation;
+	}
+
 	public org.lgna.croquet.Operation getCaptureRectangleOperation() {
 		return this.captureRectangleOperation;
+	}
+
+	public org.lgna.croquet.BoundedIntegerState getDpiState() {
+		return this.dpiState;
+	}
+
+	private int getDpi() {
+		return this.dpiState.getValue();
 	}
 
 	@Override
 	protected org.alice.ide.capture.views.ImageCaptureView createView() {
 		return new org.alice.ide.capture.views.ImageCaptureView( this );
 	}
+
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+		ImageCaptureComposite.getInstance().getBooleanState().getSwingModel().getButtonModel().setSelected( true );
+	}
+
 }

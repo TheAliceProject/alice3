@@ -277,12 +277,13 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 			{
 				this.setParent( this.manipulatedObject );
 				//				this.setHandleShowing(true);
+				this.setScale( this.getObjectScale() );
 			}
 			else
 			{
 				//				this.setHandleShowing(false);
 			}
-			this.setScale( this.getObjectScale() );
+
 		}
 		if( this.manipulatedObject != null )
 		{
@@ -724,7 +725,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	protected double getObjectScale()
 	{
-		if( this.getParentTransformable() == null )
+		if( this.getManipulatedObject() == null )
 		{
 			return 1.0d;
 		}
@@ -768,13 +769,14 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		if( parent != null ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "Unknown parent type for handle: " + parent );
 		}
+		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NULL parent for handle." );
 		return null;
 	}
 
 	protected AxisAlignedBox getManipulatedObjectBox()
 	{
-		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable parent = this.getParentTransformable();
-		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox( parent );
+		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable manipulatedObject = this.getManipulatedObject();
+		AxisAlignedBox boundingBox = BoundingBoxUtilities.getSGTransformableScaledBBox( manipulatedObject );
 		if( boundingBox == null )
 		{
 			boundingBox = new AxisAlignedBox( new Point3( -1, 0, -1 ), new Point3( 1, 1, 1 ) );

@@ -338,12 +338,12 @@ public class StoryApiConfigurationManager extends org.alice.ide.ApiConfiguration
 	@Override
 	public boolean isSignatureLocked( org.lgna.project.ast.AbstractCode code ) {
 		//todo: check to see if only referenced from Program and Program type is hidden
-		return super.isSignatureLocked( code ) || "myFirstMethod".equalsIgnoreCase( code.getName() );
+		return super.isSignatureLocked( code ) || org.alice.stageide.ast.BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase( code.getName() );
 	}
 
 	@Override
 	public boolean isTabClosable( org.lgna.project.ast.AbstractCode code ) {
-		return "myFirstMethod".equalsIgnoreCase( code.getName() ) == false;
+		return org.alice.stageide.ast.BootstrapUtilties.MY_FIRST_PROCEDURE_NAME.equalsIgnoreCase( code.getName() ) == false;
 	}
 
 	@Override

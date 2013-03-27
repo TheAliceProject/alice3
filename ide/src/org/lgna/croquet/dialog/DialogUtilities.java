@@ -63,7 +63,7 @@ public class DialogUtilities {
 			if( viewController != null ) {
 				owner = viewController;
 			} else {
-				owner = application.getFrame().getContentPanel();
+				owner = application.getFrame().getContentPane();
 			}
 		}
 		boolean isModal = dialogOwner.isModal();
@@ -117,7 +117,7 @@ public class DialogUtilities {
 			}
 			dialog.setTitle( dialogOwner.getDialogTitle( step ) );
 			dialogOwner.handlePreShowDialog( step );
-			application.pushWindow( dialog );
+			//application.pushWindow( dialog );
 			dialog.setVisible( true );
 
 			if( isModal ) {
@@ -130,7 +130,7 @@ public class DialogUtilities {
 			}
 		} finally {
 			if( isModal ) {
-				application.popWindow();
+				//application.popWindow();
 				dialogOwner.handleFinally( step, dialog );
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle non-modal dialogs" );

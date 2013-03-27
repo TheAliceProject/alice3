@@ -132,15 +132,6 @@ class DeclarationMenuIcon extends edu.cmu.cs.dennisc.javax.swing.icons.DropDownA
  * @author Dennis Cosgrove
  */
 public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
-	private final org.lgna.croquet.State.ValueListener<Boolean> isEmphasizingClassesListener = new org.lgna.croquet.State.ValueListener<Boolean>() {
-		public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			TypeEditor.this.handleIsEmphasizingClassesChanged();
-		}
-	};
-
 	private final org.lgna.croquet.components.FolderTabbedPane<org.alice.ide.declarationseditor.DeclarationComposite> tabbedPane;
 	private final org.lgna.croquet.components.AbstractPopupButton<?> startButton;
 
@@ -188,6 +179,13 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 
 		this.startButton.setClobberIcon( new DeclarationMenuIcon() );
 		this.addCenterComponent( tabbedPane );
+		org.lgna.croquet.components.JComponent<?> component;
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			component = this.startButton;
+		} else {
+			component = null;
+		}
+		this.tabbedPane.setHeaderLeadingComponent( component );
 	}
 
 	public org.alice.ide.codedrop.CodePanelWithDropReceptor getCodeDropReceptorInFocus() {
@@ -200,27 +198,5 @@ public class TypeEditor extends org.lgna.croquet.components.BorderPanel {
 			}
 		}
 		return null;
-	}
-
-	private void handleIsEmphasizingClassesChanged() {
-		org.lgna.croquet.components.JComponent<?> component;
-		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
-			component = this.startButton;
-		} else {
-			component = null;
-		}
-		this.tabbedPane.setHeaderLeadingComponent( component );
-	}
-
-	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().addAndInvokeValueListener( this.isEmphasizingClassesListener );
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().removeValueListener( this.isEmphasizingClassesListener );
-		super.handleUndisplayable();
 	}
 }

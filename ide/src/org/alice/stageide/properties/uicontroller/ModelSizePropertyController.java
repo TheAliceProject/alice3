@@ -449,7 +449,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		return new Dimension3( size.x / scale.x, size.y / scale.y, size.z / scale.z );
 	}
 
-	private Dimension3 getSize()
+	private Dimension3 getModelSize()
 	{
 		ModelImp baseModel = (ModelImp)this.propertyAdapter.getInstance();
 		return baseModel.getSize();
@@ -487,7 +487,7 @@ public class ModelSizePropertyController extends AbstractAdapterController<Dimen
 		double depth = desiredDepth;
 		if( source != null )
 		{
-			Dimension3 size = this.getSize();
+			Dimension3 size = this.getModelSize();
 			if( source == widthField )
 			{
 				double relativeXScale = width / size.x;

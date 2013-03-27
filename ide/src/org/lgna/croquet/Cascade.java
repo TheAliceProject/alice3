@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.components.DropProxy.Hider {
+public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.components.imp.JDropProxy.Hider {
 	public static class InternalRootResolver<T> extends IndirectResolver<InternalRoot<T>, Cascade<T>> {
 		private InternalRootResolver( Cascade<T> indirect ) {
 			super( indirect );
@@ -329,15 +329,14 @@ public abstract class Cascade<T> extends AbstractCompletionModel implements org.
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+	protected void appendTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		//todo:
 		org.lgna.croquet.history.Transaction ownerTransaction = step.getOwner();
 		final int N = ownerTransaction.getPrepStepCount();
 		if( N > 0 ) {
 			org.lgna.croquet.history.PrepStep prepStep = ownerTransaction.getPrepStepAt( N - 1 );
-			( (AbstractModel)prepStep.getModel() ).updateTutorialStepText( rv, prepStep, edit );
+			( (AbstractModel)prepStep.getModel() ).appendTutorialStepText( rv, prepStep, edit );
 		}
-		return rv;
 	}
 
 	@Override

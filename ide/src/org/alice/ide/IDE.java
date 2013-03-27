@@ -74,7 +74,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
-	private org.lgna.cheshire.simple.stencil.SimplePresentation simplePresentation = null;
 	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil = null;
 
 	public IDE() {
@@ -94,6 +93,36 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public abstract ApiConfigurationManager getApiConfigurationManager();
+
+	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_WINDOW_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.SHIFT_MASK );
+	private static final javax.swing.KeyStroke CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK );
+	private static final javax.swing.KeyStroke CAPTURE_RECTANGLE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F4, 0 );
+
+	private void registerScreenCaptureKeyStrokes( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		org.alice.ide.capture.ImageCaptureComposite imageCaptureComposite = org.alice.ide.capture.ImageCaptureComposite.getInstance();
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureEntireContentPaneOperation().getSwingModel().getAction(), CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+		window.getContentPane().registerKeyboardAction( imageCaptureComposite.getCaptureRectangleOperation().getSwingModel().getAction(), CAPTURE_RECTANGLE_KEY_STROKE, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
+	}
+
+	private void unregisterScreenCaptureKeyStrokes( org.lgna.croquet.components.AbstractWindow<?> window ) {
+		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_WINDOW_KEY_STROKE );
+		window.getContentPane().unregisterKeyboardAction( CAPTURE_ENTIRE_CONTENT_PANE_KEY_STROKE );
+		window.getContentPane().unregisterKeyboardAction( CAPTURE_RECTANGLE_KEY_STROKE );
+	}
+
+	@Override
+	public void pushWindow( final org.lgna.croquet.components.AbstractWindow<?> window ) {
+		this.registerScreenCaptureKeyStrokes( window );
+		super.pushWindow( window );
+	}
+
+	@Override
+	public org.lgna.croquet.components.AbstractWindow<?> popWindow() {
+		org.lgna.croquet.components.AbstractWindow<?> window = super.popWindow();
+		this.unregisterScreenCaptureKeyStrokes( window );
+		return window;
+	}
 
 	@Override
 	public void initialize( String[] args ) {
@@ -341,36 +370,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		return accessible.getValueType().isArray() == false;
 	}
 
-	private void setRootField( org.lgna.project.ast.UserField rootField ) {
-		org.lgna.project.ast.NamedUserType type;
-		if( rootField != null ) {
-			type = (org.lgna.project.ast.NamedUserType)rootField.getValueType();
-		} else {
-			type = null;
-		}
-		//org.alice.ide.declarationseditor.TypeState.getInstance().setValueTransactionlessly( type );
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				org.lgna.project.ast.NamedUserType sceneType = IDE.this.getSceneType();
-				if( sceneType != null ) {
-					final int N = sceneType.fields.size();
-					int i = N;
-					while( i > 0 ) {
-						i--;
-						org.lgna.project.ast.UserField field = sceneType.fields.get( i );
-						if( field.managementLevel.getValue() == org.lgna.project.ast.ManagementLevel.MANAGED ) {
-							if( getApiConfigurationManager().isInstanceFactoryDesiredForType( field.getValueType() ) ) {
-								org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().setValueTransactionlessly( org.alice.ide.instancefactory.ThisFieldAccessFactory.getInstance( field ) );
-								break;
-							}
-						}
-					}
-				}
-			}
-		} );
-		org.alice.ide.ast.AstEventManager.fireTypeHierarchyListeners();
-	}
-
 	@Override
 	public void setProject( org.lgna.project.Project project ) {
 		org.alice.stageide.perspectives.PerspectiveState.getInstance().setValueTransactionlessly( org.alice.stageide.perspectives.CodePerspective.getInstance() );
@@ -378,13 +377,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		org.lgna.croquet.Perspective perspective = this.getPerspective();
 		if( ( perspective == null ) || ( perspective == org.alice.ide.perspectives.noproject.NoProjectPerspective.getInstance() ) ) {
 			this.setPerspective( org.alice.stageide.perspectives.PerspectiveState.getInstance().getValue() );
-		}
-
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushIgnoreAstChanges();
-		try {
-			this.setRootField( this.getSceneField() );
-		} finally {
-			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().popIgnoreAstChanges();
 		}
 	}
 
@@ -538,39 +530,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	}
 
-	@Deprecated
-	protected static org.lgna.project.ast.UserField getSceneFieldFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
-		if( programType != null ) {
-			if( programType.fields.size() > 0 ) {
-				return programType.fields.get( 0 );
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	@Deprecated
-	protected static org.lgna.project.ast.NamedUserType getSceneTypeFromProgramType( org.lgna.project.ast.NamedUserType programType ) {
-		org.lgna.project.ast.UserField sceneField = getSceneFieldFromProgramType( programType );
-		if( sceneField != null ) {
-			return (org.lgna.project.ast.NamedUserType)sceneField.getValueType();
-		} else {
-			return null;
-		}
-	}
-
-	@Deprecated
-	public org.lgna.project.ast.UserField getSceneField() {
-		return getSceneFieldFromProgramType( this.getProgramType() );
-	}
-
-	@Deprecated
-	public org.lgna.project.ast.NamedUserType getSceneType() {
-		return getSceneTypeFromProgramType( this.getProgramType() );
-	}
-
 	public String getInstanceTextForAccessible( org.lgna.project.ast.Accessible accessible ) {
 		String text;
 		if( accessible != null ) {
@@ -633,13 +592,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			return null;
 		}
-	}
-
-	public org.lgna.cheshire.simple.stencil.SimplePresentation getSimplePresentation() {
-		if( this.simplePresentation == null ) {
-			this.simplePresentation = new org.lgna.cheshire.simple.stencil.SimplePresentation( this );
-		}
-		return simplePresentation;
 	}
 
 	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;

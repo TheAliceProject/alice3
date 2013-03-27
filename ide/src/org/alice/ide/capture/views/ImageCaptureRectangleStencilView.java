@@ -67,16 +67,25 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 	private static final java.awt.Paint STENCIL_PAINT = createStencilPaint();
 
 	private final class MouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
+		private int xPressed = -1;
+		private int yPressed = -1;
+
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
-				hole.setBounds( e.getX(), e.getY(), 0, 0 );
+				this.xPressed = e.getX();
+				this.yPressed = e.getY();
+				hole.setBounds( this.xPressed, this.yPressed, 0, 0 );
 				repaint();
 			}
 		}
 
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
-				hole.setBounds( 0, 0, 0, 0 );
+				if( isHoleValid() ) {
+					captureImageAndCopyToClipboard();
+					setStencilShowing( false );
+				}
+				invalidateHole();
 				repaint();
 			}
 		}
@@ -95,23 +104,52 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 			synchronized( hole ) {
-				hole.width = e.getX() - hole.x;
-				hole.height = e.getY() - hole.y;
+				if( isHoleValid() ) {
+					edu.cmu.cs.dennisc.java.awt.RectangleUtilities.setBounds( hole, this.xPressed, this.yPressed, e.getX(), e.getY() );
+				}
 				repaint();
 			}
 		}
 	}
 
+	private void captureImageAndCopyToClipboard() {
+		synchronized( this.hole ) {
+			if( this.isHoleValid() ) {
+				if( ( this.hole.width > 0 ) && ( this.hole.height > 0 ) ) {
+					java.awt.Image image = edu.cmu.cs.dennisc.capture.ImageCaptureUtilities.captureRectangle( this.getWindow().getRootPane().getAwtComponent(), this.hole, 300 );
+					edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( image );
+					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "copy to clipboard:", image );
+				}
+			}
+		}
+	}
+
+	private void invalidateHole() {
+		this.hole.setBounds( -1, -1, -1, -1 );
+	}
+
+	private boolean isHoleValid() {
+		return this.hole.width > -1;
+	}
+
 	private final MouseAdapter mouseAdapter = new MouseAdapter();
+
+	private static final javax.swing.KeyStroke ESCAPE_KEY_STROKE = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ESCAPE, 0 );
+	private final java.awt.event.ActionListener escapeKeyListener = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			if( isHoleValid() ) {
+				invalidateHole();
+				repaint();
+			} else {
+				setStencilShowing( false );
+			}
+		}
+	};
 
 	private final java.awt.Rectangle hole = new java.awt.Rectangle();
 
 	public ImageCaptureRectangleStencilView( org.lgna.croquet.components.AbstractWindow<?> window, Integer layerId ) {
 		super( window, layerId );
-
-		// todo
-		this.addMouseListener( this.mouseAdapter );
-		this.addMouseMotionListener( this.mouseAdapter );
 	}
 
 	@Override
@@ -121,13 +159,39 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		//return new java.awt.FlowLayout();
 		return null;
+	}
+
+	@Override
+	public void setStencilShowing( boolean isShowing ) {
+		boolean prevIsStencilShowing = this.isStencilShowing();
+		if( prevIsStencilShowing != isShowing ) {
+			if( prevIsStencilShowing ) {
+				this.unregisterKeyboardAction( ESCAPE_KEY_STROKE );
+				this.removeMouseMotionListener( this.mouseAdapter );
+				this.removeMouseListener( this.mouseAdapter );
+			}
+			super.setStencilShowing( isShowing );
+			if( isShowing ) {
+				this.addMouseListener( this.mouseAdapter );
+				this.addMouseMotionListener( this.mouseAdapter );
+				this.registerKeyboardAction( this.escapeKeyListener, ESCAPE_KEY_STROKE, Condition.WHEN_IN_FOCUSED_WINDOW );
+				this.requestFocusLater();
+			}
+		}
 	}
 
 	//
 	@Override
 	protected void paintComponentPrologue( java.awt.Graphics2D g2 ) {
+	}
+
+	@Override
+	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
+	}
+
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
 		java.awt.Shape prevClip = g2.getClip();
 		java.awt.Paint prevPaint = g2.getPaint();
 		java.awt.Stroke prevStroke = g2.getStroke();
@@ -151,13 +215,5 @@ public class ImageCaptureRectangleStencilView extends org.lgna.croquet.component
 
 		g2.setStroke( prevStroke );
 		g2.setPaint( prevPaint );
-	}
-
-	@Override
-	protected void paintComponentEpilogue( java.awt.Graphics2D g2 ) {
-	}
-
-	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2 ) {
 	}
 }

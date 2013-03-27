@@ -55,9 +55,8 @@ public abstract class DragModel extends AbstractPrepModel {
 	}
 
 	@Override
-	protected StringBuilder updateTutorialStepText( StringBuilder rv, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
-		rv.append( "..." );
-		return rv;
+	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
+		text.append( "..." );
 	}
 
 	@Override

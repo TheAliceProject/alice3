@@ -77,6 +77,11 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 	protected abstract boolean isAcceptable( org.lgna.project.ast.AbstractMethod method );
 
 	@Override
+	protected boolean isMethodCountDesired( boolean isExpanded, int methodCount ) {
+		return true;
+	}
+
+	@Override
 	public java.util.List<? extends org.lgna.project.ast.AbstractMethod> getMethods() {
 		java.util.List<org.lgna.project.ast.UserMethod> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( org.lgna.project.ast.UserMethod method : this.type.getDeclaredMethods() ) {
@@ -92,6 +97,14 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 	@Override
 	protected org.alice.ide.member.views.UserMethodsSubView createView() {
 		return new org.alice.ide.member.views.UserMethodsSubView( this );
+	}
+
+	public boolean isRelevant() {
+		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
+			return true;
+		} else {
+			return this.getMethods().size() > 0;
+		}
 	}
 
 	//	@Override
