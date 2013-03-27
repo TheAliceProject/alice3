@@ -67,6 +67,7 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 
 	private final java.util.Stack<java.awt.Component> stack;
 	private int lastPressOrDragModifiers;
+	private java.awt.Component componentForPotentialFollowUpClickEvent;
 
 	private ConsistentMouseDragEventQueue() {
 		if( IS_CLICK_AND_CLACK_DESIRED ) {
@@ -92,7 +93,7 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 		}
 	}
 
-	public void pushClickAndClackComponent( java.awt.Component awtComponent ) {
+	public void pushClickAndClackMouseFocusComponent( java.awt.Component awtComponent ) {
 		if( this.stack != null ) {
 			this.stack.push( awtComponent );
 		} else {
@@ -100,12 +101,50 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 		}
 	}
 
-	public java.awt.Component popClickAndClackComponent() {
+	public java.awt.Component popClickAndClackMouseFocusComponent() {
 		if( this.stack != null ) {
 			return this.stack.pop();
 		} else {
 			throw new UnsupportedOperationException();
 		}
+	}
+
+	public java.awt.Component popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent() {
+		java.awt.Component rv = this.popClickAndClackMouseFocusComponent();
+		this.componentForPotentialFollowUpClickEvent = rv;
+		return rv;
+	}
+
+	protected java.awt.event.MouseEvent convertClickAndClackIfNecessary( java.awt.event.MouseEvent e ) {
+		java.awt.Component component;
+		if( this.componentForPotentialFollowUpClickEvent != null ) {
+			if( e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED ) {
+				component = this.componentForPotentialFollowUpClickEvent;
+			} else {
+				component = null;
+			}
+			this.componentForPotentialFollowUpClickEvent = null;
+		} else {
+			component = null;
+		}
+		if( component != null ) {
+			//pass
+		} else {
+			if( this.stack.size() > 0 ) {
+				component = this.stack.peek();
+			} else {
+				component = null;
+			}
+		}
+		if( component != null ) {
+			java.awt.Component curr = e.getComponent();
+			if( curr == component ) {
+				//pass
+			} else {
+				e = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( curr, e, component );
+			}
+		}
+		return e;
 	}
 
 	@Override
@@ -150,10 +189,7 @@ public class ConsistentMouseDragEventQueue extends java.awt.EventQueue {
 			}
 
 			if( this.stack != null ) {
-				if( this.stack.size() > 0 ) {
-					java.awt.Component component = this.stack.peek();
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: send modified", e.paramString(), "to", component.getClass().getSimpleName() );
-				}
+				e = this.convertClickAndClackIfNecessary( mouseEvent );
 			}
 		}
 		super.dispatchEvent( e );

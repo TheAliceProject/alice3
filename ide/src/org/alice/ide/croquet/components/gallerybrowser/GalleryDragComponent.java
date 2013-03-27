@@ -188,27 +188,28 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	@Override
-	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
-		super.handleMouseClicked( e );
-		int button = e.getButton();
-		switch( button ) {
-		case java.awt.event.MouseEvent.BUTTON1:
-			switch( e.getClickCount() ) {
-			case 1:
-				org.lgna.croquet.Model leftButtonClickModel = this.getModel().getLeftButtonClickModel();
-				if( leftButtonClickModel != null ) {
-					leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
-				}
-				break;
+	protected void handleLeftMouseButtonQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+		super.handleLeftMouseButtonQuoteClickedUnquote( e );
+		switch( e.getClickCount() ) {
+		case 1:
+			org.lgna.croquet.Model leftButtonClickModel = this.getModel().getLeftButtonClickModel();
+			if( leftButtonClickModel != null ) {
+				leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
 			break;
-		case 4:
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: back" );
-			break;
-		case 5:
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: forward" );
-			break;
 		}
+	}
+
+	@Override
+	protected void handleBackButtonClicked( java.awt.event.MouseEvent e ) {
+		super.handleBackButtonClicked( e );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: back" );
+	}
+
+	@Override
+	protected void handleForwardButtonClicked( java.awt.event.MouseEvent e ) {
+		super.handleForwardButtonClicked( e );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: forward" );
 	}
 
 	@Override
