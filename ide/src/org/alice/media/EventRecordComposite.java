@@ -47,6 +47,7 @@ import org.alice.ide.declarationseditor.events.MouseEventListenerMenu;
 import org.alice.media.components.EventRecordView;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.program.RunProgramContext;
+import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ItemCodec;
@@ -54,9 +55,11 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Statement;
@@ -67,6 +70,7 @@ import org.lgna.story.implementation.SceneImp;
 import edu.cmu.cs.dennisc.animation.FrameObserver;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.matt.EventScript;
 import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 import edu.cmu.cs.dennisc.matt.EventScriptListener;
@@ -76,11 +80,13 @@ import edu.cmu.cs.dennisc.matt.EventScriptListener;
  */
 public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	private static final java.util.List<org.lgna.project.ast.JavaMethod> interactiveMethods;
+	private static final java.util.List<org.lgna.project.ast.JavaMethod> randomNumberFunctionList;
 	static {
 		java.util.List<org.lgna.project.ast.JavaMethod> list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		list.addAll( MouseEventListenerMenu.ALL_MOUSE_CLICK_EVENT_METHODS );
 		list.addAll( KeyboardEventListenerMenu.ALL_KEYBOARD_EVENT_METHODS );
 		interactiveMethods = java.util.Collections.unmodifiableList( list );
+		randomNumberFunctionList = Collections.newLinkedList();
 	};
 
 	private final ExportToYouTubeWizardDialogComposite owner;
@@ -151,14 +157,18 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
 
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
-			if( isRecordingState.getValue() ) {
-				//				re
-			}
 			resetData();
 			return null;
 		}
 
 	} );
+
+	@Override
+	public void handlePostDeactivation() {
+		if( isRecordingState.getValue() ) {
+			getView().getPlayPauseButton().doClick();
+		}
+	}
 
 	@Override
 	public void handlePreActivation() {
@@ -221,12 +231,44 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	@Override
 	protected boolean isClearedForAutoAdvance( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return ( this.containsInputEvents() || this.containsRandom() ) == false;
+		return ( this.containsInputEvents() && this.containsRandom() ) == false;
 	}
 
 	private boolean containsRandom() {
-		//todo: search for use of random in project
-		return false;
+		StageIDE ide = StageIDE.getActiveInstance();
+		RandomNumberFinder crawler = new RandomNumberFinder();
+		ide.crawlFilteredProgramType( crawler );
+		if( crawler.getContainsRandom() ) {
+			stashSeed( System.currentTimeMillis() );
+		}
+		return crawler.getContainsRandom();
+	}
+
+	private void stashSeed( long currentTimeMillis ) {
+		this.owner.setRandomSeed( currentTimeMillis );
+	}
+
+	class RandomNumberFinder implements edu.cmu.cs.dennisc.pattern.Crawler {
+
+		private boolean containsRandom = false;
+
+		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+			if( crawlable instanceof MethodInvocation ) {
+				AbstractMethod method = ( (MethodInvocation)crawlable ).method.getValue();
+				if( method.isFunction() ) {
+					if( method.getDeclaringType() instanceof JavaType ) {
+						JavaType jType = (JavaType)method.getDeclaringType();
+						if( jType.getClassReflectionProxy().getReification().equals( RandomUtilities.class ) ) {
+							containsRandom = true;
+						}
+					}
+				}
+			}
+		}
+
+		public boolean getContainsRandom() {
+			return containsRandom;
+		}
 	}
 
 	private boolean containsInputEvents() {
@@ -264,5 +306,11 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		}
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		restartProgramContext();
+	}
+
+	@Override
+	public void handlePostHideDialog( CompletionStep<?> step ) {
+		programContext.cleanUpProgram();
+		super.handlePostHideDialog( step );
 	}
 }

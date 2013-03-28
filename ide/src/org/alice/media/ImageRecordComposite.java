@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.alice.media.components.ImageRecordView;
+import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.BoundedIntegerState;
@@ -115,6 +116,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	private ActionOperation restartOperation = createActionOperation( this.createKey( "restartImageRecorder" ), new Action() {
 
 		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			if( isRecordingState.getValue() ) {
+				getView().getPlayPauseButton().doClick();
+			}
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
 			encoder.stop();
@@ -163,7 +167,11 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 					boolean[] atIsUpsideDown = { false };
 					synchronized( image ) {
 						image = lookingGlass.getColorBufferNotBotheringToFlipVertically( image, atIsUpsideDown );
-						handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
+						if( atIsUpsideDown[ 0 ] ) {
+							handleImage( image, imageCount, atIsUpsideDown[ 0 ] );
+						} else {
+							System.out.println( "SEVERE: IMAGE IS NOT UPSIDE DOWN" );
+						}
 					}
 					imageCount++;
 				} else {
@@ -207,9 +215,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	@Override
 	public void handlePostDeactivation() {
+		if( isRecordingState.getValue() ) {
+			getView().getPlayPauseButton().doClick();
+		}
 		if( ( encoder != null ) ) {
 			owner.setFile( tempFile );
 		}
+		programContext.cleanUpProgram();
 		super.handlePostDeactivation();
 	}
 
@@ -218,9 +230,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		super.handlePreActivation();
 		eventList.clear();
 		EventScript script = owner.getScript();
-		for( EventWithTime event : script.getEventList() ) {
-			eventList.addItem( event );
-			System.out.println( "addEvent: " + event );
+		if( script != null ) {
+			for( EventWithTime event : script.getEventList() ) {
+				eventList.addItem( event );
+			}
 		}
 	}
 
@@ -254,6 +267,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	private void restartProgramContext() {
 		hasStartedRecording = false;
+		RandomUtilities.setSeed( owner.getRandomSeed() );
 		org.lgna.project.ast.NamedUserType programType = this.owner.getProject().getProgramType();
 		image = null;
 		imageCount = 0;
@@ -289,5 +303,11 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	@Override
 	public void resetData() {
 		restartProgramContext();
+	}
+
+	@Override
+	public void handlePostHideDialog( CompletionStep<?> step ) {
+		super.handlePostHideDialog( step );
+		programContext.cleanUpProgram();
 	}
 }

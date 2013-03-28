@@ -47,6 +47,7 @@ import java.awt.Dimension;
 import org.alice.media.ImageRecordComposite;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.List;
+import org.lgna.croquet.components.ToggleButton;
 
 import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 
@@ -56,12 +57,14 @@ import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
 	private final Label timerLabel;
+	private ToggleButton playPauseButton;
 
 	public ImageRecordView( org.alice.media.ImageRecordComposite recordComposite ) {
 		super( recordComposite, "", "[grow 1][grow 1][grow 1][grow 1]" );
 		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( this.lookingGlassContainer );
 		this.addComponent( panel, "wrap, span 4" );
-		this.addComponent( recordComposite.getIsRecordingState().createToggleButton() );
+		playPauseButton = recordComposite.getIsRecordingState().createToggleButton();
+		this.addComponent( playPauseButton );
 		timerLabel = new Label( String.valueOf( recordComposite.getTimerInSeconds() ) );
 		this.addComponent( new org.lgna.croquet.components.LineAxisPanel( recordComposite.getFrameRateState().getSidekickLabel().createImmutableTextField(), recordComposite.getFrameRateState().createSpinner() ), "align right" );
 		this.addComponent( timerLabel, "align left" );
@@ -79,5 +82,9 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 
 	public void updateTime() {
 		this.timerLabel.setText( String.valueOf( ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() ) );
+	}
+
+	public ToggleButton getPlayPauseButton() {
+		return this.playPauseButton;
 	}
 }

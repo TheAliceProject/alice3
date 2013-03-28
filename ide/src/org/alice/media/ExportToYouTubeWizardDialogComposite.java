@@ -67,6 +67,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	private org.lgna.project.Project project;
 	private EventScript script;
 	private File file;
+	private long randomSeed;
 
 	private ExportToYouTubeWizardDialogComposite() {
 		super( java.util.UUID.fromString( "c3542871-3346-4228-a872-1c5641c14e9d" ), org.alice.ide.IDE.EXPORT_GROUP );
@@ -120,5 +121,13 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
 		return null;
+	}
+
+	public void setRandomSeed( long currentTimeMillis ) {
+		this.randomSeed = currentTimeMillis;
+	}
+
+	public long getRandomSeed() {
+		return this.randomSeed;
 	}
 }

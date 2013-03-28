@@ -47,6 +47,7 @@ import java.awt.Dimension;
 import org.alice.media.EventRecordComposite;
 import org.lgna.croquet.components.Label;
 import org.lgna.croquet.components.List;
+import org.lgna.croquet.components.ToggleButton;
 
 import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 
@@ -57,12 +58,14 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 
 	private final org.lgna.croquet.components.BorderPanel lookingGlassContainer = new org.lgna.croquet.components.BorderPanel();
 	private final Label timerLabel;
+	private ToggleButton playPauseButton;
 
 	public EventRecordView( EventRecordComposite eventRecordComposite ) {
 		super( eventRecordComposite, "", "[grow 1][grow 1][grow 1]" );
 		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( lookingGlassContainer );
 		this.addComponent( panel, "wrap, span 3" );
-		this.addComponent( eventRecordComposite.getPlayRecordedOperation().createToggleButton() );
+		playPauseButton = eventRecordComposite.getPlayRecordedOperation().createToggleButton();
+		this.addComponent( playPauseButton );
 		timerLabel = new Label( String.valueOf( eventRecordComposite.getTimeInSeconds() ) );
 		this.addComponent( timerLabel, "align center" );
 		this.addComponent( eventRecordComposite.getRestartRecording().createButton(), "align right" );
@@ -74,6 +77,10 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
 		return this.lookingGlassContainer;
+	}
+
+	public ToggleButton getPlayPauseButton() {
+		return this.playPauseButton;
 	}
 
 	public void updateTime() {
