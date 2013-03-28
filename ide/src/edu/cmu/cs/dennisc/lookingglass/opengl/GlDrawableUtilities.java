@@ -48,36 +48,102 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 public class GlDrawableUtilities {
 	private static final java.util.Map<javax.media.opengl.GLPbuffer, java.awt.Dimension> mapPixelBufferToDimension;
 
-	private static class GlMultisampledCapabilitiesChooser extends javax.media.opengl.DefaultGLCapabilitiesChooser {
-		private final int desiredMultisampleCount;
+	private static boolean areEquivalentIgnoringMultisample( javax.media.opengl.GLCapabilitiesImmutable a, javax.media.opengl.GLCapabilitiesImmutable b ) {
+		if( a.getAccumAlphaBits() != b.getAccumAlphaBits() ) {
+			return false;
+		}
+		if( a.getAccumBlueBits() != b.getAccumBlueBits() ) {
+			return false;
+		}
+		if( a.getAccumGreenBits() != b.getAccumGreenBits() ) {
+			return false;
+		}
+		if( a.getAccumRedBits() != b.getAccumRedBits() ) {
+			return false;
+		}
+		if( a.getDepthBits() != b.getDepthBits() ) {
+			return false;
+		}
+		if( a.getDoubleBuffered() != b.getDoubleBuffered() ) {
+			return false;
+		}
+		if( a.getHardwareAccelerated() != b.getHardwareAccelerated() ) {
+			return false;
+		}
+		if( a.getPbufferFloatingPointBuffers() != b.getPbufferFloatingPointBuffers() ) {
+			return false;
+		}
+		if( a.getPbufferRenderToTexture() != b.getPbufferRenderToTexture() ) {
+			return false;
+		}
+		if( a.getPbufferRenderToTextureRectangle() != b.getPbufferRenderToTextureRectangle() ) {
+			return false;
+		}
+		if( a.getStencilBits() != b.getStencilBits() ) {
+			return false;
+		}
+		if( a.getStereo() != b.getStereo() ) {
+			return false;
+		}
+		if( a.isPBuffer() != b.isPBuffer() ) {
+			return false;
+		}
+		if( a.isFBO() != b.isFBO() ) {
+			return false;
+		}
+		return true;
+	}
 
-		public GlMultisampledCapabilitiesChooser( int desiredMultisampleCount ) {
-			this.desiredMultisampleCount = desiredMultisampleCount;
+	private static class GlMultisampledCapabilitiesChooser extends javax.media.opengl.DefaultGLCapabilitiesChooser {
+		private final int maximumMultisampleCount;
+
+		public GlMultisampledCapabilitiesChooser( int maximumMultisampleCount ) {
+			this.maximumMultisampleCount = maximumMultisampleCount;
 		}
 
 		@Override
 		public int chooseCapabilities( javax.media.nativewindow.CapabilitiesImmutable desired, java.util.List<? extends javax.media.nativewindow.CapabilitiesImmutable> available, int windowSystemRecommendedChoice ) {
-			int rv = super.chooseCapabilities( desired, available, windowSystemRecommendedChoice );
-
-			if( desired instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
-				javax.media.opengl.GLCapabilitiesImmutable glDesired = (javax.media.opengl.GLCapabilitiesImmutable)desired;
-				int i = 0;
-				for( javax.media.nativewindow.CapabilitiesImmutable c : available ) {
-					if( c instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
-						javax.media.opengl.GLCapabilitiesImmutable glCandidate = (javax.media.opengl.GLCapabilitiesImmutable)c;
-						if( glCandidate.getSampleBuffers() ) {
-							if( glCandidate.getNumSamples() == this.desiredMultisampleCount ) {
-								//todo: check if identical otherwise
-								//rv = i;
-								//break;
+			int original = super.chooseCapabilities( desired, available, windowSystemRecommendedChoice );
+			int rv = original;
+			if( ( 0 <= rv ) && ( rv < available.size() ) ) {
+				javax.media.nativewindow.CapabilitiesImmutable selected = available.get( rv );
+				if( selected instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
+					javax.media.opengl.GLCapabilitiesImmutable glSelected = (javax.media.opengl.GLCapabilitiesImmutable)selected;
+					int i = 0;
+					int indexOfMax = -1;
+					int max = -1;
+					for( javax.media.nativewindow.CapabilitiesImmutable c : available ) {
+						if( c instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
+							javax.media.opengl.GLCapabilitiesImmutable glCandidate = (javax.media.opengl.GLCapabilitiesImmutable)c;
+							//edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "consider", i, glCandidate );
+							if( glCandidate.getSampleBuffers() ) {
+								if( areEquivalentIgnoringMultisample( glSelected, glCandidate ) ) {
+									int numSamples = glCandidate.getNumSamples();
+									if( numSamples <= this.maximumMultisampleCount ) {
+										if( numSamples == this.maximumMultisampleCount ) {
+											indexOfMax = i;
+											break;
+										} else {
+											if( numSamples > max ) {
+												indexOfMax = i;
+												max = numSamples;
+											}
+										}
+									}
+								}
 							}
 						}
+						i++;
 					}
-					i++;
+					if( indexOfMax != -1 ) {
+						rv = indexOfMax;
+					}
 				}
+				//				if( rv != original ) {
+				//					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "original", original, available.get( original ) );
+				//					edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "replacement", rv, available.get( rv ) );
+				//				}
 			}
-
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "GlMultisampledCapabilitiesChooser", windowSystemRecommendedChoice, rv );
 			return rv;
 		}
 	}
@@ -92,9 +158,9 @@ public class GlDrawableUtilities {
 			mapPixelBufferToDimension = null;
 		}
 
-		final boolean IS_MULTISAMPLED_DESIRED = false;
-		if( IS_MULTISAMPLED_DESIRED ) {
-			glMultisampleCapabilitiesChooser = new GlMultisampledCapabilitiesChooser( 8 );
+		final int MAXIMUM_MULTISAMPLE_COUNT = 0;//4;
+		if( MAXIMUM_MULTISAMPLE_COUNT > 1 ) {
+			glMultisampleCapabilitiesChooser = new GlMultisampledCapabilitiesChooser( MAXIMUM_MULTISAMPLE_COUNT );
 		} else {
 			glMultisampleCapabilitiesChooser = null;
 		}
