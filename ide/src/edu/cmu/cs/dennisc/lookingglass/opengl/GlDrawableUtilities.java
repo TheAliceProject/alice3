@@ -47,11 +47,56 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  */
 public class GlDrawableUtilities {
 	private static final java.util.Map<javax.media.opengl.GLPbuffer, java.awt.Dimension> mapPixelBufferToDimension;
+
+	private static class GlMultisampledCapabilitiesChooser extends javax.media.opengl.DefaultGLCapabilitiesChooser {
+		private final int desiredMultisampleCount;
+
+		public GlMultisampledCapabilitiesChooser( int desiredMultisampleCount ) {
+			this.desiredMultisampleCount = desiredMultisampleCount;
+		}
+
+		@Override
+		public int chooseCapabilities( javax.media.nativewindow.CapabilitiesImmutable desired, java.util.List<? extends javax.media.nativewindow.CapabilitiesImmutable> available, int windowSystemRecommendedChoice ) {
+			int rv = super.chooseCapabilities( desired, available, windowSystemRecommendedChoice );
+
+			if( desired instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
+				javax.media.opengl.GLCapabilitiesImmutable glDesired = (javax.media.opengl.GLCapabilitiesImmutable)desired;
+				int i = 0;
+				for( javax.media.nativewindow.CapabilitiesImmutable c : available ) {
+					if( c instanceof javax.media.opengl.GLCapabilitiesImmutable ) {
+						javax.media.opengl.GLCapabilitiesImmutable glCandidate = (javax.media.opengl.GLCapabilitiesImmutable)c;
+						if( glCandidate.getSampleBuffers() ) {
+							if( glCandidate.getNumSamples() == this.desiredMultisampleCount ) {
+								//todo: check if identical otherwise
+								//rv = i;
+								//break;
+							}
+						}
+					}
+					i++;
+				}
+			}
+
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "GlMultisampledCapabilitiesChooser", windowSystemRecommendedChoice, rv );
+			return rv;
+		}
+	}
+
+	private static final javax.media.opengl.GLCapabilitiesChooser glDefaultCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
+	private static final javax.media.opengl.GLCapabilitiesChooser glMultisampleCapabilitiesChooser;
+
 	static {
 		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
 			mapPixelBufferToDimension = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		} else {
 			mapPixelBufferToDimension = null;
+		}
+
+		final boolean IS_MULTISAMPLED_DESIRED = false;
+		if( IS_MULTISAMPLED_DESIRED ) {
+			glMultisampleCapabilitiesChooser = new GlMultisampledCapabilitiesChooser( 8 );
+		} else {
+			glMultisampleCapabilitiesChooser = null;
 		}
 	}
 
@@ -60,7 +105,7 @@ public class GlDrawableUtilities {
 	}
 
 	//private GLCapabilities glCapabilities;
-	/* package-private */static javax.media.opengl.GLCapabilities createGLCapabilities( int desiredSampleCount ) {
+	/* package-private */static javax.media.opengl.GLCapabilities createGlCapabilities() {
 		//jogl1
 		//		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
 		//		boolean isMultisamplingDesired = desiredSampleCount >= 2;
@@ -69,8 +114,12 @@ public class GlDrawableUtilities {
 		//			rv.setNumSamples( desiredSampleCount );
 		//		}
 		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+
 		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities( profile );
-		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
+		//rv.setSampleBuffers( true );
+		//rv.setNumSamples( 8 );
+
+		//		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
 		//		if( chooser instanceof edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
 		//			rv.setHardwareAccelerated( false );
 		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
@@ -79,40 +128,27 @@ public class GlDrawableUtilities {
 		return rv;
 	}
 
-	/* package-private */static javax.media.opengl.GLCapabilities createPerhapsMultisampledGlCapabilities() {
-		return createGLCapabilities( getDesiredOnscreenSampleCount() );
-	}
-
-	/* package-private */static javax.media.opengl.GLCapabilities createDisabledMultisamplingGlCapabilities() {
-		return createGLCapabilities( 1 );
-	}
-
-	private static javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
-
-	/* package-private */static javax.media.opengl.GLCapabilitiesChooser getGLCapabilitiesChooser() {
-		if( glCapabilitiesChooser != null ) {
-			//pass
+	/* package-private */static javax.media.opengl.GLCapabilitiesChooser getPerhapsMultisampledGlCapabilitiesChooser() {
+		if( glMultisampleCapabilitiesChooser != null ) {
+			return glMultisampleCapabilitiesChooser;
 		} else {
-			//todo?
-			glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
+			return glDefaultCapabilitiesChooser;
 		}
-		return glCapabilitiesChooser;
 	}
 
-	/* package-private */static int getDesiredOnscreenSampleCount() {
-		return 1;
+	/* package-private */static javax.media.opengl.GLCapabilitiesChooser getNotMultisampledGlCapabilitiesChooser() {
+		return glDefaultCapabilitiesChooser;
 	}
 
 	/* package-private */static javax.media.opengl.awt.GLCanvas createGLCanvas() {
-		return new javax.media.opengl.awt.GLCanvas( createPerhapsMultisampledGlCapabilities(), getGLCapabilitiesChooser(), null, null );
+		return new javax.media.opengl.awt.GLCanvas( createGlCapabilities(), getPerhapsMultisampledGlCapabilitiesChooser(), null, null );
 	}
 
 	/* package-private */static javax.media.opengl.awt.GLJPanel createGLJPanel() {
-		return new javax.media.opengl.awt.GLJPanel( createPerhapsMultisampledGlCapabilities(), getGLCapabilitiesChooser(), null );
+		return new javax.media.opengl.awt.GLJPanel( createGlCapabilities(), getPerhapsMultisampledGlCapabilitiesChooser(), null );
 	}
 
 	/* package-private */static boolean canCreateExternalGLDrawable() {
-
 		javax.media.opengl.GLProfile profile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( profile );
 		return glDrawableFactory.canCreateExternalGLDrawable( javax.media.opengl.GLProfile.getDefaultDevice() );
@@ -148,7 +184,7 @@ public class GlDrawableUtilities {
 		javax.media.opengl.GLProfile glProfile = javax.media.opengl.GLProfile.getDefault();
 		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory( glProfile );
 		if( glDrawableFactory.canCreateGLPbuffer( glDrawableFactory.getDefaultDevice() ) ) {
-			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glCapabilities, getGLCapabilitiesChooser(), width, height, share );
+			javax.media.opengl.GLPbuffer buffer = glDrawableFactory.createGLPbuffer( glDrawableFactory.getDefaultDevice(), glCapabilities, glCapabilitiesChooser, width, height, share );
 
 			// This is a work around for Linux users.
 			// Because of a bug in mesa (https://bugs.freedesktop.org/show_bug.cgi?id=24320) sometimes on Linux the method glXQueryDrawable() will
