@@ -51,6 +51,11 @@ public abstract class GalleryDragModel extends org.lgna.croquet.DragModel {
 		super( migrationId );
 	}
 
+	public final boolean isClickAndClackAppropriate() {
+		//todo
+		return false;
+	}
+
 	public abstract String getText();
 
 	public abstract org.lgna.croquet.icon.IconFactory getIconFactory();

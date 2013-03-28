@@ -40,35 +40,88 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.common;
+package org.lgna.croquet.components.imp;
+
+import org.lgna.croquet.components.DragComponent;
+import org.lgna.croquet.components.PaintUtilities;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-	public ExpressionCreatorPane( org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel model ) {
-		super( model );
+public class JDragProxy extends JProxy {
+	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+		public void keyPressed( java.awt.event.KeyEvent e ) {
+		}
+
+		public void keyReleased( java.awt.event.KeyEvent e ) {
+			if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
+				JDragProxy.this.getDragComponent().handleCancel( e );
+			}
+		}
+
+		public void keyTyped( java.awt.event.KeyEvent e ) {
+		}
+	};
+	private boolean isAlphaDesiredWhenOverDropReceptor;
+
+	public JDragProxy( DragComponent dragComponent, boolean isAlphaDesiredWhenOverDropReceptor ) {
+		super( dragComponent );
+		this.isAlphaDesiredWhenOverDropReceptor = isAlphaDesiredWhenOverDropReceptor;
+	}
+
+	private final int DROP_SHADOW_SIZE = 6;
+
+	@Override
+	public java.awt.Dimension getProxySize() {
+		java.awt.Dimension rv = super.getProxySize();
+		rv.width += DROP_SHADOW_SIZE;
+		rv.height += DROP_SHADOW_SIZE;
+		return rv;
 	}
 
 	@Override
-	protected boolean isClickAndClackAppropriate() {
-		return true;
+	protected float getAlpha() {
+		if( this.isAlphaDesiredWhenOverDropReceptor && this.isOverDropAcceptor() ) {
+			return 0.6f;
+		} else {
+			return 1.0f;
+		}
 	}
 
 	@Override
-	public final org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
-		return ( (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel() ).getType();
+	public void addNotify() {
+		super.addNotify();
+		this.addKeyListener( this.keyAdapter );
+		this.requestFocus();
 	}
 
 	@Override
-	protected void handleMouseQuoteEnteredUnquote() {
-		super.handleMouseQuoteEnteredUnquote();
-		org.alice.ide.IDE.getActiveInstance().showDropReceptorsStencilOver( this, getExpressionType() );
+	public void removeNotify() {
+		this.transferFocus();
+		this.removeKeyListener( this.keyAdapter );
+		super.removeNotify();
 	}
 
 	@Override
-	protected void handleMouseQuoteExitedUnquote() {
-		org.alice.ide.IDE.getActiveInstance().hideDropReceptorsStencil();
-		super.handleMouseQuoteExitedUnquote();
+	protected void paintProxy( java.awt.Graphics2D g2 ) {
+		java.awt.Paint prevPaint = g2.getPaint();
+		g2.setPaint( new java.awt.Color( 0, 0, 0, 64 ) );
+		//todo?
+		g2.translate( DROP_SHADOW_SIZE, DROP_SHADOW_SIZE );
+		fillBounds( g2 );
+		g2.translate( -DROP_SHADOW_SIZE, -DROP_SHADOW_SIZE );
+		g2.setPaint( prevPaint );
+		this.getSubject().getAwtComponent().print( g2 );
+
+		//		if( isOverDragAccepter ) {
+		//			//pass
+		//		} else {
+		//			g2.setPaint( new java.awt.Color( 127, 127, 127, 127 ) );
+		//			this.createBoundsShape().fill( g2 );
+		//		}
+		if( this.isCopyDesired() ) {
+			g2.setPaint( PaintUtilities.getCopyTexturePaint() );
+			fillBounds( g2 );
+		}
 	}
 }

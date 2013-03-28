@@ -40,85 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.lgna.croquet.components.imp;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DragProxy extends Proxy {
-	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
-		public void keyPressed( java.awt.event.KeyEvent e ) {
-		}
-
-		public void keyReleased( java.awt.event.KeyEvent e ) {
-			if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
-				DragProxy.this.getDragComponent().handleCancel( e );
-			}
-		}
-
-		public void keyTyped( java.awt.event.KeyEvent e ) {
-		}
-	};
-	private boolean isAlphaDesiredWhenOverDropReceptor;
-
-	public DragProxy( DragComponent dragComponent, boolean isAlphaDesiredWhenOverDropReceptor ) {
-		super( dragComponent );
-		this.isAlphaDesiredWhenOverDropReceptor = isAlphaDesiredWhenOverDropReceptor;
+public class JDropProxy extends JProxy {
+	public static interface Hider {
+		public void setDragSource( org.lgna.croquet.components.DragComponent<?> dragSource );
 	}
 
-	private final int DROP_SHADOW_SIZE = 6;
-
-	@Override
-	public java.awt.Dimension getProxySize() {
-		java.awt.Dimension rv = super.getProxySize();
-		rv.width += DROP_SHADOW_SIZE;
-		rv.height += DROP_SHADOW_SIZE;
-		return rv;
+	public JDropProxy( org.lgna.croquet.components.DragComponent<?> dragComponent ) {
+		super( dragComponent );
 	}
 
 	@Override
 	protected float getAlpha() {
-		if( this.isAlphaDesiredWhenOverDropReceptor && this.isOverDropAcceptor() ) {
-			return 0.6f;
-		} else {
-			return 1.0f;
-		}
-	}
-
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.addKeyListener( this.keyAdapter );
-		this.requestFocus();
-	}
-
-	@Override
-	public void removeNotify() {
-		this.transferFocus();
-		this.removeKeyListener( this.keyAdapter );
-		super.removeNotify();
+		return 0.6f;
 	}
 
 	@Override
 	protected void paintProxy( java.awt.Graphics2D g2 ) {
-		java.awt.Paint prevPaint = g2.getPaint();
-		g2.setPaint( new java.awt.Color( 0, 0, 0, 64 ) );
-		//todo?
-		g2.translate( DROP_SHADOW_SIZE, DROP_SHADOW_SIZE );
-		fillBounds( g2 );
-		g2.translate( -DROP_SHADOW_SIZE, -DROP_SHADOW_SIZE );
-		g2.setPaint( prevPaint );
 		this.getSubject().getAwtComponent().print( g2 );
-
-		//		if( isOverDragAccepter ) {
-		//			//pass
-		//		} else {
-		//			g2.setPaint( new java.awt.Color( 127, 127, 127, 127 ) );
-		//			this.createBoundsShape().fill( g2 );
+		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
+		//		java.awt.geom.AffineTransform m = g2.getTransform();
+		//		try {
+		//			int height = this.getHeight();
+		//			if( this.availableHeight != -1 && this.availableHeight < height ) {
+		//				double yScale = this.availableHeight / (double)height;
+		//				g2.scale( 1.0, yScale );
+		//			}
+		fillBounds( g2 );
+		//		} finally {
+		//			g2.setTransform( m );
 		//		}
-		if( this.isCopyDesired() ) {
-			g2.setPaint( PaintUtilities.getCopyTexturePaint() );
-			fillBounds( g2 );
+	}
+
+	private int availableHeight = -1;
+
+	@Override
+	public int getAvailableHeight() {
+		if( this.availableHeight != -1 ) {
+			return this.availableHeight;
+		} else {
+			return super.getAvailableHeight();
+		}
+	}
+
+	public void setAvailableHeight( int availableHeight ) {
+		if( this.availableHeight != availableHeight ) {
+			this.availableHeight = availableHeight;
+			this.repaint();
 		}
 	}
 }

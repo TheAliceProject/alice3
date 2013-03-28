@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,57 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package jdkbugs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropProxy extends Proxy {
-	public static interface Hider {
-		public void setDragSource( org.lgna.croquet.components.DragComponent dragSource );
-	}
-
-	public DropProxy( DragComponent dragComponent ) {
-		super( dragComponent );
-	}
-
-	@Override
-	protected float getAlpha() {
-		return 0.6f;
-	}
-
-	@Override
-	protected void paintProxy( java.awt.Graphics2D g2 ) {
-		this.getSubject().getAwtComponent().print( g2 );
-		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
-		//		java.awt.geom.AffineTransform m = g2.getTransform();
-		//		try {
-		//			int height = this.getHeight();
-		//			if( this.availableHeight != -1 && this.availableHeight < height ) {
-		//				double yScale = this.availableHeight / (double)height;
-		//				g2.scale( 1.0, yScale );
-		//			}
-		fillBounds( g2 );
-		//		} finally {
-		//			g2.setTransform( m );
-		//		}
-	}
-
-	private int availableHeight = -1;
-
-	@Override
-	public int getAvailableHeight() {
-		if( this.availableHeight != -1 ) {
-			return this.availableHeight;
-		} else {
-			return super.getAvailableHeight();
+public class PressAndDragMouseButtonThenScrollMouseWheel {
+	public static void main( String[] args ) {
+		javax.swing.JFrame frame = new javax.swing.JFrame();
+		final boolean IS_ATTEMPTING_TO_FIX = true;
+		if( IS_ATTEMPTING_TO_FIX ) {
+			edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
 		}
-	}
+		java.awt.Container contentPane = frame.getContentPane();
 
-	public void setAvailableHeight( int availableHeight ) {
-		if( this.availableHeight != availableHeight ) {
-			this.availableHeight = availableHeight;
-			this.repaint();
+		javax.swing.JPanel panel = new javax.swing.JPanel();
+		panel.setLayout( new javax.swing.BoxLayout( panel, javax.swing.BoxLayout.PAGE_AXIS ) );
+
+		javax.swing.JLabel pressAndDragLabel = new javax.swing.JLabel( "press and drag then use mouse wheel" );
+		pressAndDragLabel.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
+			public void mouseDragged( java.awt.event.MouseEvent e ) {
+				System.out.println( "drag: when=" + e.getWhen() );
+			}
+
+			public void mouseMoved( java.awt.event.MouseEvent e ) {
+			}
+		} );
+		panel.add( pressAndDragLabel );
+
+		for( int i = 0; i < 24; i++ ) {
+			panel.add( new javax.swing.JLabel( "filler to force scroll pane: " + i ) );
 		}
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( panel );
+		contentPane.add( scrollPane, java.awt.BorderLayout.CENTER );
+		frame.setSize( 400, 300 );
+		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
+		frame.setVisible( true );
+
 	}
 }
