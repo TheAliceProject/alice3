@@ -103,6 +103,8 @@ public final class JCloseButton extends javax.swing.JButton {
 				g2.setPaint( java.awt.Color.WHITE );
 			}
 
+			g2.fill( area0 );
+
 			boolean isParentSelected;
 			java.awt.Container parent = button.getParent();
 			if( parent instanceof javax.swing.AbstractButton ) {
@@ -113,7 +115,6 @@ public final class JCloseButton extends javax.swing.JButton {
 			}
 
 			if( isParentSelected ) {
-				g2.fill( area0 );
 				g2.setPaint( java.awt.Color.BLACK );
 			} else {
 				g2.setPaint( java.awt.Color.GRAY );
