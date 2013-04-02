@@ -111,11 +111,39 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 	private static final ArrowIcon ARROW_ICON = new ArrowIcon( 12 );
 
+	private static java.awt.Insets SUPPRESSED_INSETS = new java.awt.Insets( 0, 0, 0, 0 );
+	private static java.awt.Insets INERT_INSETS = new java.awt.Insets( 2, 2, 2, 2 );
+	private static java.awt.Insets ACTIVE_INSETS = new java.awt.Insets( 2, 10 + ARROW_ICON.getIconWidth(), 2, 2 );
+
+	private static enum ToolPaletteTitleBorder implements javax.swing.border.Border {
+		SINGLETON;
+		public java.awt.Insets getBorderInsets( java.awt.Component c ) {
+			JToolPaletteTitle b = (JToolPaletteTitle)c;
+			if( b.isSuppressed ) {
+				return SUPPRESSED_INSETS;
+			} else {
+				if( b.isInert ) {
+					return INERT_INSETS;
+				} else {
+					return ACTIVE_INSETS;
+				}
+			}
+		}
+
+		public boolean isBorderOpaque() {
+			return false;
+		}
+
+		public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
+		}
+	}
+
 	private static class JToolPaletteTitle extends javax.swing.JToggleButton {
 		private boolean isRoundedOnTop = false;
 		private boolean isPartOfAccordion = false;
 		private RenderingStyle renderingStyle = RenderingStyle.SHADE_AGGRESSIVELY;
 		private boolean isInert = false;
+		private boolean isSuppressed = false;
 
 		@Override
 		public boolean contains( int x, int y ) {
@@ -125,6 +153,33 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 				return super.contains( x, y );
 			}
 		}
+
+		//		@Override
+		//		public java.awt.Dimension getMinimumSize() {
+		//			if( this.isSuppressed ) {
+		//				return new java.awt.Dimension( 0, 0 );
+		//			} else {
+		//				return super.getMinimumSize();
+		//			}
+		//		}
+		//
+		//		@Override
+		//		public java.awt.Dimension getPreferredSize() {
+		//			if( this.isSuppressed ) {
+		//				return new java.awt.Dimension( 0, 0 );
+		//			} else {
+		//				return super.getPreferredSize();
+		//			}
+		//		}
+		//
+		//		@Override
+		//		public java.awt.Dimension getMaximumSize() {
+		//			if( this.isSuppressed ) {
+		//				return new java.awt.Dimension( 0, 0 );
+		//			} else {
+		//				return super.getMaximumSize();
+		//			}
+		//		}
 
 		public boolean isRoundedOnTop() {
 			return this.isRoundedOnTop;
@@ -170,6 +225,18 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 			}
 		}
 
+		public boolean isSuppressed() {
+			return this.isSuppressed;
+		}
+
+		public void setSuppressed( boolean isSuppressed ) {
+			if( this.isSuppressed != isSuppressed ) {
+				this.isSuppressed = isSuppressed;
+				this.revalidate();
+				this.repaint();
+			}
+		}
+
 		@Override
 		public boolean isOpaque() {
 			return this.isRoundedOnTop == false;
@@ -179,14 +246,18 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		protected void paintComponent( java.awt.Graphics g ) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			super.paintComponent( g );
-			if( this.isInert ) {
+			if( this.isSuppressed ) {
 				//pass
 			} else {
-				int x = this.isRoundedOnTop ? 8 : 4;
-				int height = this.getHeight();
-				int iconHeight = ARROW_ICON.getIconHeight();
-				int y = ( height - iconHeight ) / 2;
-				ARROW_ICON.paintIcon( this, g2, x, y );
+				if( this.isInert ) {
+					//pass
+				} else {
+					int x = this.isRoundedOnTop ? 8 : 4;
+					int height = this.getHeight();
+					int iconHeight = ARROW_ICON.getIconHeight();
+					int y = ( height - iconHeight ) / 2;
+					ARROW_ICON.paintIcon( this, g2, x, y );
+				}
 			}
 		}
 
@@ -210,40 +281,74 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 
 	private static class ToolPaletteTitleButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
 		@Override
+		public java.awt.Dimension getMinimumSize( javax.swing.JComponent c ) {
+			JToolPaletteTitle b = (JToolPaletteTitle)c;
+			if( b.isSuppressed ) {
+				return new java.awt.Dimension( 0, 0 );
+			} else {
+				return super.getMinimumSize( c );
+			}
+		}
+
+		@Override
+		public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
+			JToolPaletteTitle b = (JToolPaletteTitle)c;
+			if( b.isSuppressed ) {
+				return new java.awt.Dimension( 0, 0 );
+			} else {
+				return super.getPreferredSize( c );
+			}
+		}
+
+		@Override
+		public java.awt.Dimension getMaximumSize( javax.swing.JComponent c ) {
+			JToolPaletteTitle b = (JToolPaletteTitle)c;
+			if( b.isSuppressed ) {
+				return new java.awt.Dimension( 0, 0 );
+			} else {
+				return super.getMaximumSize( c );
+			}
+		}
+
+		@Override
 		public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			java.awt.Shape prevClip = g2.getClip();
 			try {
 				JToolPaletteTitle b = (JToolPaletteTitle)c;
-				if( b.isInert() ) {
+				if( b.isSuppressed() ) {
 					//pass
 				} else {
-					javax.swing.ButtonModel buttonModel = b.getModel();
-					if( b.isRoundedOnTop() ) {
-						g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, createRoundedOnTopShape( b.getWidth(), b.getHeight(), ARROW_ICON.getIconWidth() ) ) );
-					}
-
-					java.awt.Rectangle r = javax.swing.SwingUtilities.getLocalBounds( c );
-					java.awt.Color background = c.getBackground();
-					RenderingStyle renderingStyle = b.getRenderingStyle();
-					if( renderingStyle.isShaded( buttonModel ) ) {
-						if( buttonModel.isPressed() ) {
-							g2.setPaint( background.darker() );
-							g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
-						} else {
-							double brightnessScale;
-							if( buttonModel.isRollover() ) {
-								brightnessScale = 1.2;
-							} else {
-								brightnessScale = 1.1;
-							}
-							java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, brightnessScale );
-							java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, 0.8 );
-							edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillGradientRectangle( g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f );
-						}
+					if( b.isInert() ) {
+						//pass
 					} else {
-						g2.setPaint( background );
-						g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
+						javax.swing.ButtonModel buttonModel = b.getModel();
+						if( b.isRoundedOnTop() ) {
+							g2.setClip( edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, createRoundedOnTopShape( b.getWidth(), b.getHeight(), ARROW_ICON.getIconWidth() ) ) );
+						}
+
+						java.awt.Rectangle r = javax.swing.SwingUtilities.getLocalBounds( c );
+						java.awt.Color background = c.getBackground();
+						RenderingStyle renderingStyle = b.getRenderingStyle();
+						if( renderingStyle.isShaded( buttonModel ) ) {
+							if( buttonModel.isPressed() ) {
+								g2.setPaint( background.darker() );
+								g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
+							} else {
+								double brightnessScale;
+								if( buttonModel.isRollover() ) {
+									brightnessScale = 1.2;
+								} else {
+									brightnessScale = 1.1;
+								}
+								java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, brightnessScale );
+								java.awt.Color SHADOW_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( background, 1.0, 1.0, 0.8 );
+								edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillGradientRectangle( g2, r, SHADOW_COLOR, HIGHLIGHT_COLOR, background, 0.4f );
+							}
+						} else {
+							g2.setPaint( background );
+							g2.fillRect( 0, 0, b.getWidth(), b.getHeight() );
+						}
 					}
 				}
 				super.paint( g, c );
@@ -285,18 +390,16 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		return this.getJPaletteTitle().isInert();
 	}
 
-	private javax.swing.border.Border createBorder( boolean isInert ) {
-		if( isInert ) {
-			return javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
-		} else {
-			final int INDENT = 10;
-			return javax.swing.BorderFactory.createEmptyBorder( 2, INDENT + ARROW_ICON.getIconWidth(), 2, 2 );
-		}
-	}
-
 	public void setInert( boolean isInert ) {
 		this.getJPaletteTitle().setInert( isInert );
-		this.setBorder( this.createBorder( isInert ) );
+	}
+
+	public boolean isSuppressed() {
+		return this.getJPaletteTitle().isSuppressed();
+	}
+
+	public void setSuppressed( boolean isSuppressed ) {
+		this.getJPaletteTitle().setSuppressed( isSuppressed );
 	}
 
 	private JToolPaletteTitle getJPaletteTitle() {
@@ -308,7 +411,7 @@ public class ToolPaletteTitle extends BooleanStateButton<javax.swing.AbstractBut
 		javax.swing.AbstractButton rv = new JToolPaletteTitle();
 		rv.setRolloverEnabled( true );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		rv.setBorder( this.createBorder( false ) );
+		rv.setBorder( ToolPaletteTitleBorder.SINGLETON );
 		rv.setOpaque( false );
 		return rv;
 	}

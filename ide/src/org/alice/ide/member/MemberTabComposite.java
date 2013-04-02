@@ -189,9 +189,7 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 				if( type instanceof org.lgna.project.ast.NamedUserType ) {
 					org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)type;
 					UserMethodsSubComposite userMethodsSubComposite = this.getUserMethodsSubComposite( namedUserType );
-					if( userMethodsSubComposite.isRelevant() ) {
-						rv.add( userMethodsSubComposite );
-					}
+					rv.add( userMethodsSubComposite );
 				} else if( type instanceof org.lgna.project.ast.JavaType ) {
 					org.lgna.project.ast.JavaType javaType = (org.lgna.project.ast.JavaType)type;
 					for( org.lgna.project.ast.JavaMethod javaMethod : javaType.getDeclaredMethods() ) {
