@@ -52,7 +52,7 @@ public class UploadView extends org.lgna.croquet.components.BorderPanel {
 		super( composite, 24, 0 );
 
 		org.lgna.croquet.components.MigPanel loginPanel = new org.lgna.croquet.components.MigPanel( null, "fill, inset 0", "", "[]0[]4[]0[]4[]" );
-		loginPanel.addComponent( composite.getLoginComposite().getOperation().createButton(), "wrap" );
+		loginPanel.addComponent( composite.getLoginComposite().getView(), "wrap" );
 
 		org.lgna.croquet.components.JComponent<?> titleSidekickLabel = composite.getTitleState().getSidekickLabel().createImmutableTextField();
 		org.lgna.croquet.components.TextField titleTextField = composite.getTitleState().createTextField();

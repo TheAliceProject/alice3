@@ -77,7 +77,6 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private final StringState descriptionState = this.createStringState( this.createKey( "descriptionState" ), "" );
 	private final StringState tagsState = this.createStringState( this.createKey( "tagsState" ), "Alice3" );
 
-	private final YouTubeLoginComposite loginComposite = new YouTubeLoginComposite( this );
 	private final ActionOperation exportToFileOperation = this.createActionOperation( this.createKey( "exportToFileOperation" ), new Action() {
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
 
@@ -160,8 +159,8 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		return this.owner;
 	}
 
-	public YouTubeLoginComposite getLoginComposite() {
-		return this.loginComposite;
+	public LogInOutComposite getLoginComposite() {
+		return this.logInOutComposite;
 	}
 
 	public org.lgna.croquet.Operation getExportToFileOperation() {
@@ -242,7 +241,7 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	}
 
 	private void setEnabled( boolean isEnabled ) {
-		final boolean IS_VIEW_BASED = true;
+		final boolean IS_VIEW_BASED = false; //what is this? (mmay)
 		if( IS_VIEW_BASED ) {
 			for( java.awt.Component awtComponent : this.getView().getYoutubeDetailsPanel().getAwtComponent().getComponents() ) {
 				awtComponent.setEnabled( false );

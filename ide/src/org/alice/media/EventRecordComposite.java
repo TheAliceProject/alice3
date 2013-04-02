@@ -130,6 +130,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			if( isRecordingState.getValue() ) {
 				programContext.getProgramImp().startAnimator();
+				restartRecording.setEnabled( true );
 			} else {
 				programContext.getProgramImp().stopAnimator();
 			}
@@ -157,6 +158,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	private final ActionOperation restartRecording = this.createActionOperation( this.createKey( "restart" ), new Action() {
 
 		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			if( isRecordingState.getValue() ) {
+				getView().getPlayPauseButton().doClick();
+			}
 			resetData();
 			return null;
 		}
@@ -180,6 +184,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	}
 
 	private void restartProgramContext() {
+		restartRecording.setEnabled( false );
 		if( ( programContext != null ) ) {
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 		}

@@ -56,6 +56,7 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.ast.UserField;
@@ -186,6 +187,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		}
 	};
 	private boolean hasStartedRecording = false;
+	private BorderPanel lookingGlassContainer;
 
 	public boolean isRecording() {
 		return this.isRecordingState.getValue();
@@ -230,6 +232,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		super.handlePreActivation();
 		eventList.clear();
 		EventScript script = owner.getScript();
+		lookingGlassContainer = getView().getLookingGlassContainer();
 		if( script != null ) {
 			for( EventWithTime event : script.getEventList() ) {
 				eventList.addItem( event );
@@ -266,9 +269,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	private void restartProgramContext() {
+		restartOperation.setEnabled( false );
 		hasStartedRecording = false;
 		RandomUtilities.setSeed( owner.getRandomSeed() );
-		org.lgna.project.ast.NamedUserType programType = this.owner.getProject().getProgramType();
+		org.lgna.project.ast.NamedUserType programType = owner.getProject().getProgramType();
 		image = null;
 		imageCount = 0;
 
@@ -302,6 +306,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	@Override
 	public void resetData() {
+		if( lookingGlassContainer != null ) {
+			lookingGlassContainer.removeAllComponents();
+		}
+		lookingGlassContainer = getView().getLookingGlassContainer();
 		restartProgramContext();
 	}
 
