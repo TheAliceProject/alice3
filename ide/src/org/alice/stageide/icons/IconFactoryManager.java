@@ -369,7 +369,7 @@ public class IconFactoryManager {
 			ResourceDeclaration resourceDeclaration = null;
 			org.lgna.project.ast.AbstractConstructor constructor0 = org.alice.ide.typemanager.ConstructorArgumentUtilities.getContructor0( type );
 			if( constructor0 != null ) {
-				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor0.getRequiredParameters();
+				java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor0.getRequiredParameters();
 				switch( parameters.size() ) {
 				case 0:
 					if( constructor0 instanceof org.lgna.project.ast.UserConstructor ) {

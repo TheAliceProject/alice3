@@ -98,7 +98,7 @@ public abstract class VirtualMachine {
 
 	private org.lgna.project.ast.NamedUserConstructor getConstructor( org.lgna.project.ast.NamedUserType entryPointType, Object[] arguments ) {
 		for( org.lgna.project.ast.NamedUserConstructor constructor : entryPointType.constructors ) {
-			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
+			java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
 			if( parameters.size() == arguments.length ) {
 				//todo: check types
 				return constructor;
@@ -307,7 +307,7 @@ public abstract class VirtualMachine {
 	protected Object[] evaluateArguments( org.lgna.project.ast.AbstractCode code, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> arguments,
 			org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> variableArguments, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.JavaKeyedArgument> keyedArguments ) {
 		//todo: when variable length and keyed parameters are offered in the IDE (User) this code will need to be updated 
-		java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = code.getRequiredParameters();
+		java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = code.getRequiredParameters();
 		org.lgna.project.ast.AbstractParameter variableParameter = code.getVariableLengthParameter();
 		org.lgna.project.ast.AbstractParameter keyedParameter = code.getKeyedParameter();
 
