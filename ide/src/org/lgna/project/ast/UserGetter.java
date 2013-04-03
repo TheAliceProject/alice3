@@ -56,6 +56,11 @@ public class UserGetter extends AbstractMethod {
 		return this.field;
 	}
 
+	@Override
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringType() {
+		return this.field.getDeclaringType();
+	}
+
 	public AbstractType<?, ?, ?> getReturnType() {
 		return this.field.getValueType();
 	}
@@ -84,7 +89,15 @@ public class UserGetter extends AbstractMethod {
 
 	@Override
 	public String getName() {
-		return "TODO_get_" + this.field.getName();
+		//todo: handle boolean and is
+		String fieldName = this.field.getName();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "get" );
+		if( fieldName.length() > 0 ) {
+			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
+			sb.append( fieldName.substring( 1 ) );
+		}
+		return sb.toString();
 	}
 
 	@Override

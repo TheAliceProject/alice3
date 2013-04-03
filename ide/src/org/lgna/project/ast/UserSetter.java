@@ -57,8 +57,13 @@ public class UserSetter extends AbstractMethod {
 		return this.field;
 	}
 
+	@Override
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringType() {
+		return this.field.getDeclaringType();
+	}
+
 	public AbstractType<?, ?, ?> getReturnType() {
-		return this.field.getValueType();
+		return JavaType.VOID_TYPE;
 	}
 
 	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
@@ -85,7 +90,15 @@ public class UserSetter extends AbstractMethod {
 
 	@Override
 	public String getName() {
-		return "TODO_set_" + this.field.getName();
+		//todo: handle boolean and is
+		String fieldName = this.field.getName();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "set" );
+		if( fieldName.length() > 0 ) {
+			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
+			sb.append( fieldName.substring( 1 ) );
+		}
+		return sb.toString();
 	}
 
 	@Override

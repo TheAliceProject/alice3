@@ -59,7 +59,7 @@ public class UserSetterParameter extends AbstractParameter {
 
 	@Override
 	public AbstractType<?, ?, ?> getValueType() {
-		return this.setter.getReturnType();
+		return this.setter.getField().getValueType();
 	}
 
 	@Override
