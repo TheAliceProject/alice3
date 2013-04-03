@@ -42,6 +42,8 @@
  */
 package org.alice.ide.croquet.models.help;
 
+import java.awt.Color;
+
 import org.alice.ide.croquet.models.help.views.LoginView;
 import org.alice.ide.issue.swing.views.LogInStatusPane;
 
@@ -52,16 +54,8 @@ import com.atlassian.jira.rpc.soap.client.RemoteUser;
  */
 public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 
-	private BugLoginComposite() {
+	public BugLoginComposite() {
 		super( java.util.UUID.fromString( "e73910c0-ee70-4e48-899d-52ca96d21c9f" ), ReportIssueComposite.ISSUE_GROUP );
-	}
-
-	private static class SingletonHolder {
-		public static BugLoginComposite instance = new BugLoginComposite();
-	}
-
-	public static BugLoginComposite getInstance() {
-		return SingletonHolder.instance;
 	}
 
 	protected RemoteUser remoteUser;
@@ -105,8 +99,9 @@ public class BugLoginComposite extends AbstractLoginComposite<LoginView> {
 
 	@Override
 	public String updateUserNameForWelcomeString() {
-		if( BugLoginComposite.getInstance().getRemoteUser() != null ) {
-			return BugLoginComposite.getInstance().getRemoteUser().getFullname();
+		this.getParent().getLogOutCard().getUsernameLabel().getAwtComponent().setForeground( Color.WHITE );
+		if( getRemoteUser() != null ) {
+			return getRemoteUser().getFullname();
 		} else {
 			return "";
 		}

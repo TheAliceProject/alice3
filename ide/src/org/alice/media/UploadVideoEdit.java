@@ -40,63 +40,45 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.help;
+package org.alice.media;
 
-import java.util.UUID;
-
-import org.lgna.croquet.CardOwnerComposite;
-import org.lgna.croquet.State;
-import org.lgna.croquet.State.ValueListener;
+import org.lgna.croquet.DialogOperation;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
 
 /**
  * @author Matt May
  */
-public class LogInOutComposite extends CardOwnerComposite {
+public class UploadVideoEdit extends Edit<DialogOperation> {
 
-	private final LogInCard logInCard;
-	private final LogOutCard logOutCard;
-	private AbstractLoginComposite composite;
-	private final ValueListener<Boolean> isLoggedInAdapter = new ValueListener<Boolean>() {
-
-		public void changing( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-		}
-
-		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			updateLogInOutComposite();
-		}
-
-	};
-
-	public LogInOutComposite( UUID id, AbstractLoginComposite loginComposite ) {
-		super( id );
-		this.composite = loginComposite;
-		this.logInCard = new LogInCard( loginComposite );
-		this.logOutCard = new LogOutCard( loginComposite.getLogOutOperation() );
-
-		composite.setParent( this );
-		logOutCard.setParent( this );
-
-		this.addCard( this.logInCard );
-		this.addCard( this.logOutCard );
-
-		composite.getIsLoggedIn().addValueListener( isLoggedInAdapter );
+	public UploadVideoEdit( UploadComposite uploadComposite, CompletionStep completionStep ) {
+		super( completionStep );
+		System.out.println( "completionStep: " + completionStep.getClass() );
 	}
 
-	private void updateLogInOutComposite() {
-		if( composite.getIsLoggedIn().getValue() ) {
-			logOutCard.updateWelcomeString( composite.updateUserNameForWelcomeString() );
-			this.showCard( logOutCard );
-		} else {
-			this.showCard( logInCard );
-		}
-		this.getView().getAwtComponent().repaint();
+	@Override
+	protected void doOrRedoInternal( boolean isDo ) {
+		System.out.println( "doOrRedo?" );
+		getCompletionStep().cancel();
 	}
 
-	public AbstractLoginComposite getComposite() {
-		return this.composite;
+	@Override
+	protected void undoInternal() {
+		//I do not believe Upload should be Undoable
 	}
 
-	public LogOutCard getLogOutCard() {
-		return this.logOutCard;
+	@Override
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
 	}
+
+	@Override
+	public boolean canUndo() {
+		return false;
+	}
+
+	@Override
+	public boolean canRedo() {
+		return false;
+	}
+
 }

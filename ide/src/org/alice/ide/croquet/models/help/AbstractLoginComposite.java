@@ -73,6 +73,7 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 			return null;
 		}
 	} );
+	protected LogInOutComposite parent;
 
 	public StringState getUserNameState() {
 		return this.userNameState;
@@ -139,4 +140,12 @@ public abstract class AbstractLoginComposite<V extends LoginView> extends Operat
 		return "";
 	}
 
+	public void setParent( LogInOutComposite logInOutComposite ) {
+		assert parent == null : "why are we changing this parent?";
+		this.parent = logInOutComposite;
+	}
+
+	public LogInOutComposite getParent() {
+		return this.parent;
+	}
 }

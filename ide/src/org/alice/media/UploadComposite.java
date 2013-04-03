@@ -56,6 +56,8 @@ import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.WizardPageComposite;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.project.Project;
 
 import edu.cmu.cs.dennisc.java.awt.FileDialogUtilities;
@@ -218,6 +220,9 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 
 	@Override
 	public Status getPageStatus( org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( true ) {
+			return IS_GOOD_TO_GO_STATUS;
+		}
 		//		uploadOperation.setEnabled( false );
 		uploadProgressDialogComposite.setEnabled( true );
 		Status rv = IS_GOOD_TO_GO_STATUS;
@@ -267,10 +272,10 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	private static final String TERM_STRING = "term='";
 	private static final String DEPRECATED_STRING = "deprecated";
 	private static final String LABEL_STRING = "label='";
-	private static final String TERM_PATTERN = "term='[^']*'";
-	private static final String LABEL_PATTERN = "label='[^']*'";
-	private static final String[] DEFAULT_TAGS = { "alice", "alice3" };
-	private static final String DEFAULT_CATEGORY = "tech";
+	//	private static final String TERM_PATTERN = "term='[^']*'";
+	//	private static final String LABEL_PATTERN = "label='[^']*'";
+	//	private static final String[] DEFAULT_TAGS = { "alice", "alice3" };
+	//	private static final String DEFAULT_CATEGORY = "tech";
 	private static List<String> categoryStrings;
 	private static List<String> termStrings;
 
@@ -339,5 +344,9 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 		titleState.setValueTransactionlessly( "" );
 		descriptionState.setValueTransactionlessly( "" );
 		tagsState.setValueTransactionlessly( "Alice3" );
+	}
+
+	public Edit getEdit( CompletionStep<?> completionStep ) {
+		return new UploadVideoEdit( this, completionStep );
 	}
 }

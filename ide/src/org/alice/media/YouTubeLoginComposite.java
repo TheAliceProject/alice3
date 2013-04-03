@@ -73,7 +73,6 @@ public class YouTubeLoginComposite extends AbstractLoginComposite<LoginView> {
 
 	@Override
 	public void logout() {
-		//		this.uploadComposite.getUploader().
 	}
 
 }

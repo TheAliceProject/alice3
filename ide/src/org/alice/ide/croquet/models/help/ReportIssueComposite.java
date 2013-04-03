@@ -65,9 +65,9 @@ public abstract class ReportIssueComposite extends AbstractIssueComposite<Report
 
 	//	private final LogInCard logInCard = new LogInCard( BugLoginComposite.getInstance() );
 	//	private final LogOutCard logOutCard = new LogOutCard();
-	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), BugLoginComposite.getInstance() );
+	private final LogInOutComposite logInOutComposite = new LogInOutComposite( java.util.UUID.fromString( "079f108d-c3bb-4581-b107-f21b8d7286ca" ), new BugLoginComposite() );
 
-	//	private final org.lgna.croquet.CardOwnerComposite logInOutComposite = this.createAndRegisterCardOwnerComposite( this.logInCard, this.logOutCard );
+	//	private final org.lgna.croquet.CardOwnerComposite logInOutComposite = this.createAndRegisterCardOwnerComposite( new BugLoginComposite() );
 
 	private final ValueListener<String> adapter = new ValueListener<String>() {
 
