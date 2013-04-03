@@ -63,8 +63,8 @@ public final class UserField extends AbstractField implements UserMember {
 		}
 	};
 	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME;
-	private final UserGetter getter = new UserGetter( this );
-	private final UserSetter setter = new UserSetter( this );
+	private final Getter getter = new Getter( this );
+	private final Setter setter = new Setter( this );
 
 	public UserField() {
 	}
@@ -79,11 +79,11 @@ public final class UserField extends AbstractField implements UserMember {
 		this( name, JavaType.getInstance( valueCls ), initializer );
 	}
 
-	public UserGetter getGetter() {
+	public Getter getGetter() {
 		return this.getter;
 	}
 
-	public UserSetter getSetter() {
+	public Setter getSetter() {
 		return this.setter;
 	}
 

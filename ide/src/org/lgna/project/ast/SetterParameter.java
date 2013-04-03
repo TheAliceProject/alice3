@@ -45,15 +45,15 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class UserSetterParameter extends AbstractParameter {
-	private final UserSetter setter;
+public class SetterParameter extends AbstractParameter {
+	private final Setter setter;
 
-	/* package-private */UserSetterParameter( UserSetter setter ) {
+	/* package-private */SetterParameter( Setter setter ) {
 		this.setter = setter;
 	}
 
 	@Override
-	public UserSetter getCode() {
+	public Setter getCode() {
 		return this.setter;
 	}
 

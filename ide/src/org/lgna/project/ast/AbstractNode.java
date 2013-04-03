@@ -448,6 +448,10 @@ public abstract class AbstractNode extends Element implements Node {
 		} else if( this instanceof JavaMethod ) {
 			JavaMethod methodDeclaredInJava = (JavaMethod)this;
 			rv.appendChild( encodeMethod( xmlDocument, "method", methodDeclaredInJava.getMethodReflectionProxy() ) );
+		} else if( this instanceof AbstractMethodContainedByUserField ) {
+			AbstractMethodContainedByUserField getterOrSetter = (AbstractMethodContainedByUserField)this;
+			UserField field = getterOrSetter.getField();
+			rv.appendChild( encodeValue( field, xmlDocument, set ) );
 		} else if( this instanceof JavaField ) {
 			JavaField fieldDeclaredInJavaWithField = (JavaField)this;
 			rv.appendChild( encodeField( xmlDocument, "field", fieldDeclaredInJavaWithField.getFieldReflectionProxy() ) );
@@ -472,6 +476,10 @@ public abstract class AbstractNode extends Element implements Node {
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
 			xmlIndex.appendChild( xmlDocument.createTextNode( Integer.toString( parameterDeclaredInJavaMethod.getIndex() ) ) );
 			rv.appendChild( xmlIndex );
+		} else if( this instanceof SetterParameter ) {
+			SetterParameter setterParameter = (SetterParameter)this;
+			Setter setter = setterParameter.getCode();
+			rv.appendChild( encodeValue( setter, xmlDocument, set ) );
 		}
 		for( edu.cmu.cs.dennisc.property.Property property : getProperties() ) {
 			rv.appendChild( encodeProperty( xmlDocument, property, set ) );

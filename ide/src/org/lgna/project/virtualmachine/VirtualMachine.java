@@ -547,11 +547,11 @@ public abstract class VirtualMachine {
 			return this.invokeUserMethod( instance, (org.lgna.project.ast.UserMethod)method, arguments );
 		} else if( method instanceof org.lgna.project.ast.JavaMethod ) {
 			return this.invokeMethodDeclaredInJava( instance, (org.lgna.project.ast.JavaMethod)method, arguments );
-		} else if( method instanceof org.lgna.project.ast.UserGetter ) {
-			org.lgna.project.ast.UserGetter getter = (org.lgna.project.ast.UserGetter)method;
+		} else if( method instanceof org.lgna.project.ast.Getter ) {
+			org.lgna.project.ast.Getter getter = (org.lgna.project.ast.Getter)method;
 			return this.get( getter.getField(), instance );
-		} else if( method instanceof org.lgna.project.ast.UserSetter ) {
-			org.lgna.project.ast.UserSetter setter = (org.lgna.project.ast.UserSetter)method;
+		} else if( method instanceof org.lgna.project.ast.Setter ) {
+			org.lgna.project.ast.Setter setter = (org.lgna.project.ast.Setter)method;
 			this.set( setter.getField(), instance, arguments[ 0 ] );
 			return null;
 		} else {

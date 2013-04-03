@@ -45,108 +45,31 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class UserGetter extends AbstractMethod {
-	private final UserField field;
+public class Setter extends AbstractMethodContainedByUserField {
+	private final java.util.List<SetterParameter> requiredParameters = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new SetterParameter( this ) ) );
 
-	/* package-private */UserGetter( UserField field ) {
-		this.field = field;
-	}
-
-	public UserField getField() {
-		return this.field;
-	}
-
-	@Override
-	public org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringType() {
-		return this.field.getDeclaringType();
+	/* package-private */Setter( UserField field ) {
+		super( field );
 	}
 
 	public AbstractType<?, ?, ?> getReturnType() {
-		return this.field.getValueType();
+		return JavaType.VOID_TYPE;
 	}
 
 	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
-		return java.util.Collections.emptyList();
-	}
-
-	public AbstractParameter getVariableLengthParameter() {
-		return null;
-	}
-
-	public AbstractParameter getKeyedParameter() {
-		return null;
-	}
-
-	@Override
-	public org.lgna.project.annotations.Visibility getVisibility() {
-		return org.lgna.project.annotations.Visibility.PRIME_TIME;
-	}
-
-	@Override
-	public AccessLevel getAccessLevel() {
-		return AccessLevel.PUBLIC;
+		return this.requiredParameters;
 	}
 
 	@Override
 	public String getName() {
 		//todo: handle boolean and is
-		String fieldName = this.field.getName();
+		String fieldName = this.getField().getName();
 		StringBuilder sb = new StringBuilder();
-		sb.append( "get" );
+		sb.append( "set" );
 		if( fieldName.length() > 0 ) {
 			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
 			sb.append( fieldName.substring( 1 ) );
 		}
 		return sb.toString();
-	}
-
-	@Override
-	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
-		return null;
-	}
-
-	@Override
-	public boolean isSignatureLocked() {
-		return true;
-	}
-
-	@Override
-	public boolean isStatic() {
-		return false;
-	}
-
-	@Override
-	public boolean isAbstract() {
-		return false;
-	}
-
-	@Override
-	public boolean isFinal() {
-		return false;
-	}
-
-	@Override
-	public boolean isNative() {
-		return false;
-	}
-
-	@Override
-	public boolean isSynchronized() {
-		return false;
-	}
-
-	@Override
-	public boolean isStrictFloatingPoint() {
-		return false;
-	}
-
-	@Override
-	public AbstractCode getNextLongerInChain() {
-		return null;
-	}
-
-	@Override
-	public AbstractCode getNextShorterInChain() {
-		return null;
 	}
 }
