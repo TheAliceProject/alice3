@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class UserField extends AbstractField implements UserMember {
+public final class UserField extends AbstractField implements UserMember {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 	public DeclarationProperty<AbstractType<?, ?, ?>> valueType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel> accessLevel = new edu.cmu.cs.dennisc.property.EnumProperty<AccessLevel>( this, AccessLevel.PUBLIC );
@@ -63,6 +63,8 @@ public class UserField extends AbstractField implements UserMember {
 		}
 	};
 	private org.lgna.project.annotations.Visibility m_visibility = org.lgna.project.annotations.Visibility.PRIME_TIME;
+	private final UserGetter getter = new UserGetter( this );
+	private final UserSetter setter = new UserSetter( this );
 
 	public UserField() {
 	}
@@ -75,6 +77,14 @@ public class UserField extends AbstractField implements UserMember {
 
 	public UserField( String name, Class<?> valueCls, Expression initializer ) {
 		this( name, JavaType.getInstance( valueCls ), initializer );
+	}
+
+	public UserGetter getGetter() {
+		return this.getter;
+	}
+
+	public UserSetter getSetter() {
+		return this.setter;
 	}
 
 	@Override
