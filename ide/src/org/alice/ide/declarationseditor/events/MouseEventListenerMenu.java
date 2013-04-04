@@ -16,6 +16,7 @@ public class MouseEventListenerMenu extends EventListenerMenuModel {
 
 	public static final JavaMethod ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addMouseClickOnScreenListener", MouseClickOnScreenListener.class, AddMouseClickOnScreenListener.Detail[].class );
 	public static final JavaMethod ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD = JavaMethod.getInstance( SScene.class, "addMouseClickOnObjectListener", MouseClickOnObjectListener.class, AddMouseClickOnObjectListener.Detail[].class );
+	public static final JavaMethod ADD_DEFAULT_MODEL_MANIPULATOR = JavaMethod.getInstance( SScene.class, "addDefaultModelManipulation" );
 
 	private static class SingletonHolder {
 		private static MouseEventListenerMenu instance = new MouseEventListenerMenu();
@@ -33,6 +34,7 @@ public class MouseEventListenerMenu extends EventListenerMenuModel {
 	protected List<CascadeBlankChild> updateBlankChildren( List<CascadeBlankChild> rv, BlankNode<MethodInvocation> blankNode ) {
 		rv.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD ) );
 		rv.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD ) );
+		rv.add( AddEventListenerMethodInvocationFillIn.getInstance( ADD_DEFAULT_MODEL_MANIPULATOR ) );
 		return rv;
 	}
 
