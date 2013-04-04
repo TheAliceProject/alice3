@@ -120,7 +120,7 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return uploadComposite.getEdit( completionStep );
+		return null;
 	}
 
 	public void setRandomSeed( long currentTimeMillis ) {
@@ -129,5 +129,10 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 
 	public long getRandomSeed() {
 		return this.randomSeed;
+	}
+
+	@Override
+	protected boolean isClearedForCommit() {
+		return super.isClearedForCommit() && uploadComposite.tryToUpload();
 	}
 }
