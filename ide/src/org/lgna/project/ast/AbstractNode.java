@@ -46,8 +46,8 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNode extends Element implements Node {
-	private static final double CURRENT_VERSION = 3.1;
-	private static final double MINIMUM_ACCEPTABLE_VERSION = CURRENT_VERSION;
+	private static final double CURRENT_VERSION = 3.10062;
+	private static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 
 	private java.util.UUID id = java.util.UUID.randomUUID();
 	private AbstractNode parent;
