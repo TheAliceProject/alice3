@@ -92,10 +92,6 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 			this.isActive = isActive;
 		}
 
-		private void repaintTitlesIfNecessary() {
-
-		}
-
 		public void changing( org.lgna.croquet.State<org.alice.ide.instancefactory.InstanceFactory> state, org.alice.ide.instancefactory.InstanceFactory prevValue, org.alice.ide.instancefactory.InstanceFactory nextValue, boolean isAdjusting ) {
 		}
 
@@ -119,6 +115,15 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 
 		public void changed( org.lgna.croquet.State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
 			MemberTabComposite.this.getView().refreshLater();
+		}
+	};
+
+	private final org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite> declarationCompositeListener = new org.lgna.croquet.State.ValueListener<org.alice.ide.declarationseditor.DeclarationComposite>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.declarationseditor.DeclarationComposite> state, org.alice.ide.declarationseditor.DeclarationComposite prevValue, org.alice.ide.declarationseditor.DeclarationComposite nextValue, boolean isAdjusting ) {
+			MemberTabComposite.this.refreshContentsLater();
 		}
 	};
 
@@ -271,12 +276,14 @@ public abstract class MemberTabComposite<V extends org.alice.ide.member.views.Me
 		super.handlePreActivation();
 		this.instanceFactoryListener.setActive( true );
 		this.getSortState().addValueListener( this.sortListener );
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().addValueListener( this.declarationCompositeListener );
 		this.refreshContentsLater();
 		this.repaintTitles();
 	}
 
 	@Override
 	public void handlePostDeactivation() {
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().removeValueListener( this.declarationCompositeListener );
 		this.getSortState().removeValueListener( this.sortListener );
 		this.instanceFactoryListener.setActive( false );
 		super.handlePostDeactivation();
