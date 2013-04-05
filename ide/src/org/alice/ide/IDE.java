@@ -163,11 +163,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
-		if( ( declaringType != null ) && declaringType.isUserAuthored() ) {
-			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+		if( field != null ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
+			if( ( declaringType != null ) && declaringType.isUserAuthored() ) {
+				return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+			} else {
+				//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+				return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+			}
 		} else {
-			//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
 		}
 	}
