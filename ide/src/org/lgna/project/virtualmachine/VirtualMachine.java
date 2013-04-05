@@ -606,7 +606,21 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateFieldAccess( org.lgna.project.ast.FieldAccess fieldAccess ) {
-		return this.get( fieldAccess.field.getValue(), this.evaluate( fieldAccess.expression.getValue() ) );
+		Object o = fieldAccess.field.getValue();
+		if( o instanceof org.lgna.project.ast.AbstractField ) {
+			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+			org.lgna.project.ast.Expression expression = fieldAccess.expression.getValue();
+			Object value = this.evaluate( expression );
+			return this.get( field, value );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "field access field is not a field", o );
+			org.lgna.project.ast.Node node = fieldAccess;
+			while( node != null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "   ", node );
+				node = node.getParent();
+			}
+			return null;
+		}
 	}
 
 	protected Object evaluateLocalAccess( org.lgna.project.ast.LocalAccess localAccess ) {

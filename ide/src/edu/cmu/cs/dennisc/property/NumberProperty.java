@@ -59,12 +59,12 @@ public class NumberProperty extends InstanceProperty<Number> {
 
 	@Override
 	public void setValue( PropertyOwner owner, Number value ) {
-		assert value != null;
+		assert value != null : this;
 		if( value instanceof Float ) {
-			assert ( Float.isNaN( (Float)value ) == false ) || m_isNaNAcceptable;
+			assert ( Float.isNaN( (Float)value ) == false ) || m_isNaNAcceptable : this;
 		}
 		if( value instanceof Double ) {
-			assert ( Double.isNaN( (Double)value ) == false ) || m_isNaNAcceptable;
+			assert ( Double.isNaN( (Double)value ) == false ) || m_isNaNAcceptable : this;
 		}
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
 			super.setValue( owner, value );

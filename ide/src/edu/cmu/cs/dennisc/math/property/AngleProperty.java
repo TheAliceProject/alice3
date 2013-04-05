@@ -59,8 +59,8 @@ public class AngleProperty extends edu.cmu.cs.dennisc.property.InstanceProperty<
 
 	@Override
 	public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.Angle value ) {
-		assert value != null;
-		assert ( value.isNaN() == false ) || m_isNaNAcceptable;
+		assert value != null : this;
+		assert ( value.isNaN() == false ) || m_isNaNAcceptable : this;
 		super.setValue( owner, value );
 	}
 }
