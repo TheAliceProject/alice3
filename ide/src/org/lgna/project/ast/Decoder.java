@@ -276,6 +276,10 @@ public class Decoder {
 		return new MethodReflectionProxy( declaringCls, name, parameterClses, isVarArgs );
 	}
 
+	private static int getNotGuaranteedToBeUniqueKey( org.w3c.dom.Element xmlElement ) {
+		return Integer.parseInt( xmlElement.getAttribute( CodecConstants.NOT_GUARANTEED_TO_BE_UNIQUE_KEY_ATTRIBUTE ), 16 );
+	}
+
 	public AbstractNode decode( org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
 		AbstractNode rv;
 		if( xmlElement.hasAttribute( CodecConstants.TYPE_ATTRIBUTE ) ) {
@@ -358,8 +362,7 @@ public class Decoder {
 				assert rv != null;
 			}
 			if( rv instanceof AbstractDeclaration ) {
-				int key = Integer.parseInt( xmlElement.getAttribute( CodecConstants.KEY_ATTRIBUTE ), 16 );
-				map.put( key, (AbstractDeclaration)rv );
+				map.put( getNotGuaranteedToBeUniqueKey( xmlElement ), (AbstractDeclaration)rv );
 			}
 			rv.decodeNode( this, xmlElement, map );
 			if( xmlElement.hasAttribute( CodecConstants.ID_ATTRIBUTE ) ) {
@@ -368,9 +371,9 @@ public class Decoder {
 				}
 			}
 		} else {
-			int key = Integer.parseInt( xmlElement.getAttribute( CodecConstants.KEY_ATTRIBUTE ), 16 );
+			int key = getNotGuaranteedToBeUniqueKey( xmlElement );
 			rv = map.get( key );
-			assert rv != null;
+			assert rv != null : key;
 		}
 		return rv;
 	}

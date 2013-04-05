@@ -108,8 +108,12 @@ public class ProximityEventHandler extends TransformationChangedHandler<Object, 
 				for( Object proxList : eventMap.get( changedEntity ).get( m ) ) {
 					if( check( proxList, m, changedEntity, distMap.get( proxList ) ) ) {
 						CopyOnWriteArrayList<SThing> models = new CopyOnWriteArrayList<SThing>();
-						models.add( changedEntity );
-						models.add( m );
+						if( changedEntity instanceof SMovableTurnable ) {
+							models.add( changedEntity );
+						}
+						if( m instanceof SMovableTurnable ) {
+							models.add( m );
+						}
 						if( proxList instanceof ProximityEnterListener ) {
 							fireEvent( proxList, new EnterProximityEvent( models.toArray( new SMovableTurnable[ 0 ] ) ) );
 						} else if( proxList instanceof ProximityExitListener ) {

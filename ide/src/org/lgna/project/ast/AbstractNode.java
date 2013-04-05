@@ -413,12 +413,17 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
+	private static int getNotGuaranteedToBeUniqueKey( AbstractDeclaration declaration ) {
+		return System.identityHashCode( declaration );
+	}
+
 	//todo: reduce visibility?
 	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
 		if( this instanceof AbstractDeclaration ) {
 			AbstractDeclaration abstractDeclaration = (AbstractDeclaration)this;
-			rv.setAttribute( CodecConstants.KEY_ATTRIBUTE, Integer.toHexString( abstractDeclaration.hashCode() ) );
+			int key = getNotGuaranteedToBeUniqueKey( abstractDeclaration );
+			rv.setAttribute( CodecConstants.NOT_GUARANTEED_TO_BE_UNIQUE_KEY_ATTRIBUTE, Integer.toHexString( key ) );
 			if( set.contains( this ) ) {
 				return rv;
 			} else {
@@ -570,7 +575,7 @@ public abstract class AbstractNode extends Element implements Node {
 	public static java.util.Map<Integer, AbstractDeclaration> createMapOfDeclarationsThatShouldNotBeCopied( java.util.Set<AbstractDeclaration> set ) {
 		java.util.Map<Integer, AbstractDeclaration> rv = new java.util.HashMap<Integer, AbstractDeclaration>();
 		for( AbstractDeclaration abstractDeclaration : set ) {
-			rv.put( abstractDeclaration.hashCode(), abstractDeclaration );
+			rv.put( getNotGuaranteedToBeUniqueKey( abstractDeclaration ), abstractDeclaration );
 		}
 		return rv;
 	}

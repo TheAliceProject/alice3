@@ -52,7 +52,7 @@ public class ClippedZPlaneProperty extends edu.cmu.cs.dennisc.property.InstanceP
 
 	@Override
 	public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.math.ClippedZPlane value ) {
-		assert value != null;
+		assert value != null : this;
 		super.setValue( owner, value );
 	}
 

@@ -17,14 +17,14 @@ public class SimpleAppearance extends Appearance {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<FillingStyle> fillingStyle = new edu.cmu.cs.dennisc.property.InstanceProperty<FillingStyle>( this, FillingStyle.SOLID ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, FillingStyle value ) {
-			assert value != null;
+			assert value != null : this;
 			super.setValue( owner, value );
 		}
 	};
 	public final edu.cmu.cs.dennisc.property.InstanceProperty<ShadingStyle> shadingStyle = new edu.cmu.cs.dennisc.property.InstanceProperty<ShadingStyle>( this, ShadingStyle.SMOOTH ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, ShadingStyle value ) {
-			assert value != null;
+			assert value != null : this;
 			super.setValue( owner, value );
 		}
 	};

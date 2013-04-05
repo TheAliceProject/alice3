@@ -51,8 +51,8 @@ public class AffineMatrix4x4Property extends edu.cmu.cs.dennisc.property.Instanc
 	}
 
 	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
-		assert value != null;
-		assert value.isNaN() == false;
+		assert value != null : this;
+		assert value.isNaN() == false : this;
 		super.setValue( owner, value );
 	}
 
