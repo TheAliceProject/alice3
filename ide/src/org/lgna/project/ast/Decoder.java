@@ -277,7 +277,7 @@ public class Decoder {
 	}
 
 	private static int getNotGuaranteedToBeUniqueKey( org.w3c.dom.Element xmlElement ) {
-		return Integer.parseInt( xmlElement.getAttribute( CodecConstants.NOT_GUARANTEED_TO_BE_UNIQUE_KEY_ATTRIBUTE ), 16 );
+		return Integer.parseInt( xmlElement.getAttribute( CodecConstants.UNIQUE_KEY_ATTRIBUTE ), 16 );
 	}
 
 	public AbstractNode decode( org.w3c.dom.Element xmlElement, java.util.Map<Integer, AbstractDeclaration> map ) {
