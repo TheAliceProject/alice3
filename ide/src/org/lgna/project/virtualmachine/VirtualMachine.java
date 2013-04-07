@@ -543,6 +543,18 @@ public abstract class VirtualMachine {
 
 	protected Object invoke( Object instance, org.lgna.project.ast.AbstractMethod method, Object... arguments ) {
 		assert method != null;
+
+		if( method.isStatic() ) {
+			//pass
+		} else {
+			if( instance != null ) {
+				//pass
+			} else {
+				StringBuilder sb = new StringBuilder();
+				sb.append( "instance is null" );
+				throw new LgnaVmNullPointerException( sb.toString(), this );
+			}
+		}
 		if( method instanceof org.lgna.project.ast.UserMethod ) {
 			return this.invokeUserMethod( instance, (org.lgna.project.ast.UserMethod)method, arguments );
 		} else if( method instanceof org.lgna.project.ast.JavaMethod ) {
