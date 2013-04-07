@@ -54,6 +54,8 @@ public abstract class SingleVisualModelImp extends VisualScaleModelImp {
 		this.sgVisuals = new edu.cmu.cs.dennisc.scenegraph.Visual[] { sgVisual };
 		this.sgVisuals[ 0 ].frontFacingAppearance.setValue( this.sgAppearances[ 0 ] );
 		this.sgVisuals[ 0 ].setParent( this.getSgComposite() );
+		this.putInstance( this.sgVisuals[ 0 ] );
+		this.putInstance( this.sgAppearances[ 0 ] );
 	}
 
 	@Override
