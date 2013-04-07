@@ -106,7 +106,9 @@ public abstract class UserMethodsSubComposite extends MethodsSubComposite {
 		}
 		for( org.lgna.project.ast.UserField field : this.type.getDeclaredFields() ) {
 			org.lgna.project.ast.AbstractMethod method = this.getGetterOrSetter( field );
-			rv.add( method );
+			if( method != null ) {
+				rv.add( method );
+			}
 		}
 		return rv;
 	}

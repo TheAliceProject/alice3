@@ -84,7 +84,11 @@ public final class UserField extends AbstractField implements UserMember {
 	}
 
 	public Setter getSetter() {
-		return this.setter;
+		if( this.isFinal() ) {
+			return null;
+		} else {
+			return this.setter;
+		}
 	}
 
 	@Override
