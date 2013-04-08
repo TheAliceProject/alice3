@@ -182,7 +182,11 @@ public class ColorState extends org.lgna.croquet.SimpleValueState<java.awt.Color
 			}
 
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				g.setColor( colorState.getSwingModel().getValue() );
+				java.awt.Color color = colorState.getSwingModel().getValue();
+				//				float[] hsbs = new float[ 3 ];
+				//				java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsbs );
+				//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( hsbs[ 0 ] );
+				g.setColor( color );
 				g.fillRect( x, y, SIZE, SIZE );
 			}
 		}
@@ -197,8 +201,10 @@ public class ColorState extends org.lgna.croquet.SimpleValueState<java.awt.Color
 			@Override
 			protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
 				//javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
-				java.awt.Color nextValue = javax.swing.JColorChooser.showDialog( app.getFrame().getAwtComponent(), "Custom Skin Tone", colorState.getValue() );
-				colorState.getSwingModel().setValue( nextValue, null );
+				java.awt.Color nextValue = javax.swing.JColorChooser.showDialog( app.getFrame().getAwtComponent(), "Custom Skin Tone", colorState.getSwingModel().getValue() );
+				if( nextValue != null ) {
+					colorState.getSwingModel().setValue( nextValue, null );
+				}
 			}
 		};
 		org.alice.stageide.personresource.views.ColorView colorView = new org.alice.stageide.personresource.views.ColorView( colorState );
