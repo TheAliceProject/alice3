@@ -171,6 +171,22 @@ public class ColorState extends org.lgna.croquet.SimpleValueState<java.awt.Color
 		final org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		final ColorState colorState = new ColorState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2ba9a7c4-efff-4f4c-b1b1-bd46318e6729" ), java.awt.Color.RED );
 
+		final int SIZE = 16;
+		class ColorIcon implements javax.swing.Icon {
+			public int getIconWidth() {
+				return SIZE;
+			}
+
+			public int getIconHeight() {
+				return SIZE;
+			}
+
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				g.setColor( colorState.getSwingModel().getValue() );
+				g.fillRect( x, y, SIZE, SIZE );
+			}
+		}
+
 		org.lgna.croquet.Operation op = new org.lgna.croquet.ActionOperation( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "b41b5c7d-2ad7-4ce9-8a92-626489da06d7" ) ) {
 			@Override
 			protected void localize() {
@@ -186,11 +202,22 @@ public class ColorState extends org.lgna.croquet.SimpleValueState<java.awt.Color
 			}
 		};
 		org.alice.stageide.personresource.views.ColorView colorView = new org.alice.stageide.personresource.views.ColorView( colorState );
-		org.lgna.croquet.components.Button button = op.createButton();
+		final org.lgna.croquet.components.Button button = op.createButton();
+
+		button.setClobberIcon( new ColorIcon() );
+
+		javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				button.repaint();
+			}
+		};
+
+		colorState.getSwingModel().addChangeListener( changeListener );
+
 		app.getFrame().getContentPane().addCenterComponent( colorView );
 		app.getFrame().getContentPane().addLineEndComponent( button );
 
-		app.getFrame().setSize( 200, 64 );
+		app.getFrame().setSize( 400, 64 );
 		app.getFrame().setVisible( true );
 	}
 }

@@ -106,7 +106,6 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 				color1 = D_COLOR;
 			}
 			java.awt.Color nextColor = edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( color0, color1, portion );
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextColor );
 			ColorView.this.getModel().getSwingModel().setValue( nextColor, e );
 		}
 
@@ -127,7 +126,7 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			java.awt.Dimension rv = super.getPreferredSize();
-			rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, 100 );
+			rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, ARROW_HEIGHT + ARROW_HEIGHT + 32 );
 			return rv;
 		}
 
