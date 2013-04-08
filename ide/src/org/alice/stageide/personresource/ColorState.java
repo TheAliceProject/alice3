@@ -83,7 +83,8 @@ public abstract class ColorState extends org.lgna.croquet.SimpleValueState<java.
 				}
 				changeValueFromSwing( this.value, isAdjusting, trigger );
 				if( this.changeListeners.size() > 0 ) {
-					javax.swing.event.ChangeEvent changeEvent = new javax.swing.event.ChangeEvent( e.getSource() );
+					Object source = e != null ? e.getSource() : this;
+					javax.swing.event.ChangeEvent changeEvent = new javax.swing.event.ChangeEvent( source );
 					for( javax.swing.event.ChangeListener changeListener : this.changeListeners ) {
 						changeListener.stateChanged( changeEvent );
 					}

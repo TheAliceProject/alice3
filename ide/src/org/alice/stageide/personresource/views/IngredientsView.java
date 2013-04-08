@@ -56,7 +56,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 	private static final javax.swing.Icon LOCKED_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.personresource.IngredientsComposite.class.getResource( "images/locked.png" ) );
 
-	public IngredientsView( org.alice.stageide.personresource.IngredientsComposite composite ) {
+	public IngredientsView( final org.alice.stageide.personresource.IngredientsComposite composite ) {
 		super( composite, "insets 0, fill", "[][align right][grow 0][][]" );
 
 		this.addComponent( this.isLifeStageLockedLabel );
@@ -72,8 +72,39 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( composite.getBaseSkinToneState().getSidekickLabel().createLabel(), "skip" );
 		this.addComponent( new HorizontalWrapList( composite.getBaseSkinToneState(), 1 ), "span 2, wrap" );
 
-		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "align right, skip 2" );
-		this.addComponent( new ColorView( composite.getSkinColorState() ), "push, wrap" );
+		final org.alice.stageide.personresource.SkinColorState skinColorState = composite.getSkinColorState();
+		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "align right, skip 1" );
+		this.addComponent( new ColorView( composite.getSkinColorState() ) );
+
+		final int SIZE = 16;
+		class SkinColorIcon implements javax.swing.Icon {
+			public int getIconWidth() {
+				return SIZE;
+			}
+
+			public int getIconHeight() {
+				return SIZE;
+			}
+
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+				java.awt.Color color = skinColorState.getSwingModel().getValue();
+				g.setColor( color );
+				g.fillRect( x, y, SIZE, SIZE );
+			}
+		}
+
+		final org.lgna.croquet.components.Button button = composite.getCustomSkinColorOperation().createButton();
+		button.setClobberIcon( new SkinColorIcon() );
+
+		javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				button.repaint();
+			}
+		};
+
+		skinColorState.getSwingModel().addChangeListener( changeListener );
+
+		this.addComponent( button, "push, wrap" );
 
 		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );

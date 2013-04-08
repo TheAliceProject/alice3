@@ -58,7 +58,16 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneState = this.createListSelectionStateForEnum( this.createKey( "baseSkinToneState" ), org.lgna.story.resources.sims2.BaseSkinTone.class, org.lgna.story.resources.sims2.BaseSkinTone.getRandom() );
-	private final ColorState skinColorState = new SkinColorState();
+	private final SkinColorState skinColorState = new SkinColorState();
+	private final org.lgna.croquet.Operation customSkinColorOperation = this.createActionOperation( this.createKey( "customSkinColorOperation" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			java.awt.Color nextValue = javax.swing.JColorChooser.showDialog( getView().getAwtComponent(), "Custom Skin Tone", skinColorState.getSwingModel().getValue() );
+			if( nextValue != null ) {
+				skinColorState.getSwingModel().setValue( nextValue, null );
+			}
+			return null;
+		}
+	} );
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, this.bodyTab, this.headTab );
 
 	private final edu.cmu.cs.dennisc.map.MapToMap<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.resources.sims2.Gender, org.lgna.story.resources.sims2.PersonResource> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
@@ -199,8 +208,12 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.baseSkinToneState;
 	}
 
-	public ColorState getSkinColorState() {
+	public SkinColorState getSkinColorState() {
 		return this.skinColorState;
+	}
+
+	public org.lgna.croquet.Operation getCustomSkinColorOperation() {
+		return this.customSkinColorOperation;
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
