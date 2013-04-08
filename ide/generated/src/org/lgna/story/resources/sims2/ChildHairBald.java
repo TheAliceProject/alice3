@@ -21,9 +21,8 @@
  * 
  */
 
-package org.lgna.story.resources.sims2;
-
-public enum ChildHairBald implements ChildHair {
-	BARE;
-
-}
+package org.lgna.story.resources.sims2;
+public enum ChildHairBald implements ChildHair {
+	BARE;
+}
+
