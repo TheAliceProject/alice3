@@ -72,12 +72,8 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( composite.getBaseSkinToneState().getSidekickLabel().createLabel(), "skip" );
 		this.addComponent( new HorizontalWrapList( composite.getBaseSkinToneState(), 1 ), "span 2, wrap" );
 
-		this.addComponent( composite.getHueShiftSkinToneState().getSidekickLabel().createLabel(), "align right, skip 2" );
-		this.addComponent( composite.getHueShiftSkinToneState().createSlider(), "push, wrap" );
-		this.addComponent( composite.getSaturationShiftSkinToneState().getSidekickLabel().createLabel(), "align right, skip 2" );
-		this.addComponent( composite.getSaturationShiftSkinToneState().createSlider(), "push, wrap" );
-		this.addComponent( composite.getBrightnessShiftSkinToneState().getSidekickLabel().createLabel(), "align right, skip 2" );
-		this.addComponent( composite.getBrightnessShiftSkinToneState().createSlider(), "push, wrap" );
+		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "align right, skip 2" );
+		this.addComponent( new ColorView( composite.getSkinColorState() ), "push, wrap" );
 
 		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );

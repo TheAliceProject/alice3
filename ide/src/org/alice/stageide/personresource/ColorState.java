@@ -45,7 +45,7 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public class ColorState extends org.lgna.croquet.SimpleValueState<java.awt.Color> {
+public abstract class ColorState extends org.lgna.croquet.SimpleValueState<java.awt.Color> {
 
 	public class SwingModel {
 		private java.awt.Color value;
@@ -71,6 +71,10 @@ public class ColorState extends org.lgna.croquet.SimpleValueState<java.awt.Color
 				} else {
 					isAdjusting = IsAdjusting.FALSE;
 				}
+
+				//todo
+				isAdjusting = IsAdjusting.FALSE;
+
 				org.lgna.croquet.triggers.Trigger trigger;
 				if( e != null ) {
 					trigger = org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e );
@@ -160,70 +164,5 @@ public class ColorState extends org.lgna.croquet.SimpleValueState<java.awt.Color
 	@Override
 	public void appendRepresentation( StringBuilder sb, java.awt.Color value ) {
 		sb.append( value );
-	}
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
-
-		final org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-		final ColorState colorState = new ColorState( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "2ba9a7c4-efff-4f4c-b1b1-bd46318e6729" ), java.awt.Color.RED );
-
-		final int SIZE = 16;
-		class ColorIcon implements javax.swing.Icon {
-			public int getIconWidth() {
-				return SIZE;
-			}
-
-			public int getIconHeight() {
-				return SIZE;
-			}
-
-			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				java.awt.Color color = colorState.getSwingModel().getValue();
-				//				float[] hsbs = new float[ 3 ];
-				//				java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsbs );
-				//				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( hsbs[ 0 ] );
-				g.setColor( color );
-				g.fillRect( x, y, SIZE, SIZE );
-			}
-		}
-
-		org.lgna.croquet.Operation op = new org.lgna.croquet.ActionOperation( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "b41b5c7d-2ad7-4ce9-8a92-626489da06d7" ) ) {
-			@Override
-			protected void localize() {
-				super.localize();
-				this.setName( "Custom..." );
-			}
-
-			@Override
-			protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-				//javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
-				java.awt.Color nextValue = javax.swing.JColorChooser.showDialog( app.getFrame().getAwtComponent(), "Custom Skin Tone", colorState.getSwingModel().getValue() );
-				if( nextValue != null ) {
-					colorState.getSwingModel().setValue( nextValue, null );
-				}
-			}
-		};
-		org.alice.stageide.personresource.views.ColorView colorView = new org.alice.stageide.personresource.views.ColorView( colorState );
-		final org.lgna.croquet.components.Button button = op.createButton();
-
-		button.setClobberIcon( new ColorIcon() );
-
-		javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				button.repaint();
-			}
-		};
-
-		colorState.getSwingModel().addChangeListener( changeListener );
-
-		app.getFrame().getContentPane().addCenterComponent( colorView );
-		app.getFrame().getContentPane().addLineEndComponent( button );
-
-		app.getFrame().setSize( 400, 64 );
-		app.getFrame().setVisible( true );
 	}
 }

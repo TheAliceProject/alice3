@@ -51,6 +51,7 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 	private org.lgna.story.resources.sims2.Gender gender;
 	private org.lgna.story.resources.sims2.Outfit outfit;
 	private org.lgna.story.resources.sims2.SkinTone skinTone;
+	private org.lgna.story.Color skinColor;
 	private double obesityLevel;
 	private org.lgna.story.resources.sims2.Hair hair;
 	private org.lgna.story.resources.sims2.EyeColor eyeColor;
@@ -64,6 +65,7 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 			rv.setGender( personResource.getGender() );
 			rv.setOutfit( personResource.getOutfit() );
 			rv.setSkinTone( personResource.getSkinTone() );
+			rv.setSkinColor( personResource.getSkinColor() );
 			rv.setObesityLevel( personResource.getObesityLevel() );
 			rv.setHair( personResource.getHair() );
 			rv.setEyeColor( personResource.getEyeColor() );
@@ -92,7 +94,7 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 	public void popAtomic() {
 		this.atomicCount--;
 		if( this.atomicCount == 0 ) {
-			this.getNebModel().setAll( this.gender, this.outfit, this.skinTone, this.obesityLevel, this.eyeColor, this.hair );
+			this.getNebModel().setAll( this.gender, this.outfit, this.getValueForSkinTone(), this.obesityLevel, this.eyeColor, this.hair );
 		}
 	}
 
@@ -115,6 +117,27 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 		this.outfit = outfit;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().setOutfit( this.outfit );
+		}
+	}
+
+	private Object getValueForSkinTone() {
+		final boolean IS_COLOR_READY_FOR_PRIME_TIME = false;
+		if( IS_COLOR_READY_FOR_PRIME_TIME ) {
+			java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( this.skinColor ).getAsAWTColor();
+			return awtColor.getRGB();
+		} else {
+			return this.skinTone;
+		}
+	}
+
+	public org.lgna.story.Color getSkinColor() {
+		return this.skinColor;
+	}
+
+	public void setSkinColor( org.lgna.story.Color skinColor ) {
+		this.skinColor = skinColor;
+		if( this.atomicCount == 0 ) {
+			this.getNebModel().setSkinTone( this.getValueForSkinTone() );
 		}
 	}
 

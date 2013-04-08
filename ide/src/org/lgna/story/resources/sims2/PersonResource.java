@@ -49,18 +49,28 @@ package org.lgna.story.resources.sims2;
 public abstract class PersonResource implements org.lgna.story.resources.BipedResource {
 	private final Gender gender;
 	private final SkinTone skinTone;
+	private final org.lgna.story.Color skinColor;
 	private final EyeColor eyeColor;
 	private final Hair hair;
 	private final double obesityLevel;
 	private final Outfit outfit;
 
-	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit ) {
+	private PersonResource( Gender gender, SkinTone skinTone, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit ) {
 		this.gender = gender;
 		this.skinTone = skinTone;
+		this.skinColor = skinColor;
 		this.eyeColor = eyeColor;
 		this.hair = hair;
 		this.obesityLevel = obesityLevel.doubleValue();
 		this.outfit = outfit;
+	}
+
+	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit ) {
+		this( gender, skinTone, org.lgna.story.Color.RED, eyeColor, hair, obesityLevel, outfit );
+	}
+
+	public PersonResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit ) {
+		this( gender, BaseSkinTone.DARK, skinColor, eyeColor, hair, obesityLevel, outfit );
 	}
 
 	public abstract LifeStage getLifeStage();
@@ -69,8 +79,13 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		return this.gender;
 	}
 
+	@Deprecated
 	public SkinTone getSkinTone() {
 		return this.skinTone;
+	}
+
+	public org.lgna.story.Color getSkinColor() {
+		return this.skinColor;
 	}
 
 	public EyeColor getEyeColor() {

@@ -46,8 +46,8 @@ package org.alice.stageide.personresource.views;
  * @author Dennis Cosgrove
  */
 public class ColorView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.alice.stageide.personresource.ColorState> {
-	private static int HALF_ARROW_WIDTH = 4;
-	private static int ARROW_HEIGHT = 6;
+	private static int HALF_ARROW_WIDTH = 2;
+	private static int ARROW_HEIGHT = 3;
 	private static java.awt.Color B_COLOR = new java.awt.Color( 102, 54, 13 );
 	private static java.awt.Color C_COLOR = new java.awt.Color( 158, 102, 58 );
 	private static java.awt.Color D_COLOR = new java.awt.Color( 189, 129, 90 );
@@ -156,6 +156,7 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 		public java.awt.Dimension getPreferredSize() {
 			java.awt.Dimension rv = super.getPreferredSize();
 			rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, ARROW_HEIGHT + ARROW_HEIGHT + 32 );
+			rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( rv, HALF_ARROW_WIDTH + HALF_ARROW_WIDTH + 200 );
 			return rv;
 		}
 
