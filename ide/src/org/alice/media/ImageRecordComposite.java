@@ -223,7 +223,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		if( ( encoder != null ) ) {
 			owner.setFile( tempFile );
 		}
-		programContext.cleanUpProgram();
 		super.handlePostDeactivation();
 	}
 

@@ -43,6 +43,8 @@
 package org.alice.media.components;
 
 import java.awt.Dimension;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.alice.media.ImageRecordComposite;
 import org.lgna.croquet.components.Label;
@@ -81,7 +83,10 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	}
 
 	public void updateTime() {
-		this.timerLabel.setText( String.valueOf( ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() ) );
+		double timeInSeconds = ( (ImageRecordComposite)this.getComposite() ).getTimerInSeconds() * 1000;
+		Date date = new Date( (long)timeInSeconds );
+		String formattedDate = new SimpleDateFormat( "mm:ss.SS" ).format( date );
+		timerLabel.setText( formattedDate );
 	}
 
 	public ToggleButton getPlayPauseButton() {

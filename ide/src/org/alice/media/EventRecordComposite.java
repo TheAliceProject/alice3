@@ -172,6 +172,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		if( isRecordingState.getValue() ) {
 			getView().getPlayPauseButton().doClick();
 		}
+		super.handlePostDeactivation();
 	}
 
 	@Override

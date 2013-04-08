@@ -43,6 +43,8 @@
 package org.alice.media.components;
 
 import java.awt.Dimension;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.alice.media.EventRecordComposite;
 import org.lgna.croquet.components.Label;
@@ -72,7 +74,7 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 		List<EventWithTime> list = eventRecordComposite.getEventList().createList();
 		list.setOpaque( false );
 		list.getAwtComponent().setMinimumSize( new Dimension( 400, lookingGlassContainer.getHeight() ) );
-		//		this.addComponent( list, "east" );
+		this.addComponent( list, "east" );
 	}
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {
@@ -84,6 +86,9 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 	}
 
 	public void updateTime() {
-		timerLabel.setText( String.valueOf( ( (EventRecordComposite)this.getComposite() ).getTimeInSeconds() ) );
+		double timeInSeconds = ( (EventRecordComposite)this.getComposite() ).getTimeInSeconds() * 1000;
+		Date date = new Date( (long)timeInSeconds );
+		String formattedDate = new SimpleDateFormat( "mm:ss.SS" ).format( date );
+		timerLabel.setText( formattedDate );
 	}
 }

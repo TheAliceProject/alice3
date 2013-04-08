@@ -42,19 +42,32 @@
  */
 package edu.cmu.cs.dennisc.matt;
 
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import org.lgna.croquet.SimpleComposite;
+import org.lgna.croquet.StringValue;
+import org.lgna.croquet.components.BorderPanel;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class EventScript {
+public class EventScript extends SimpleComposite<BorderPanel> {
+
+	public EventScript() {
+		super( java.util.UUID.fromString( "8c5c4cef-9ca6-42f6-8879-7bb5830f1032" ) );
+	}
 
 	List<EventWithTime> eventList = Collections.newLinkedList();
 	List<EventWithTime> list = Collections.newLinkedList();
 	private boolean isVirgin = true;
 	private List<EventScriptListener> listeners = Collections.newLinkedList();
+	private StringValue mouseEventName = createStringValue( createKey( "mouseEvent" ) );
+	private StringValue keyBoardEventName = createStringValue( createKey( "keyboardEvent" ) );
 
 	public void record( double currentTime, Object e ) {
 		EventWithTime event = new EventWithTime( currentTime, e );
@@ -103,7 +116,18 @@ public class EventScript {
 
 		@Override
 		public String toString() {
-			return event.getClass().getSimpleName() + ": " + ( (int)( time * 100 ) / 100.0 );
+			String eventType = "";
+			String timeString = "";
+			if( event instanceof MouseEventWrapper ) {
+				eventType = mouseEventName.getText();
+			} else if( event instanceof KeyEvent ) {
+				eventType = keyBoardEventName.getText();
+			} else {
+				eventType = "UNKNOWN EVENT TYPE: " + event.getClass().getSimpleName();
+			}
+			Date date = new Date( (long)( time * 1000 ) );
+			timeString = new SimpleDateFormat( "mm:ss.SS" ).format( date );
+			return eventType + ": " + timeString;
 		}
 	}
 
@@ -119,4 +143,9 @@ public class EventScript {
 		return eventList;
 	}
 
+	@Override
+	@Deprecated
+	protected BorderPanel createView() {
+		return null;
+	}
 }
