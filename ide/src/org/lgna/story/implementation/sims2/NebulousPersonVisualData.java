@@ -75,7 +75,7 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 		return rv;
 	}
 
-	private NebulousPersonVisualData( org.lgna.story.resources.sims2.LifeStage lifeStage ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+	public NebulousPersonVisualData( org.lgna.story.resources.sims2.LifeStage lifeStage ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		super( new edu.cmu.cs.dennisc.nebulous.Person( lifeStage ) );
 		this.lifeStage = lifeStage;
 	}

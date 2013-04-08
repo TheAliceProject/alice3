@@ -1,5 +1,5 @@
 /*
- * Alice 3 End User License Agreement
+* Alice 3 End User License Agreement
  * 
  * Copyright (c) 2006-2013, Carnegie Mellon University. All rights reserved.
  * 
@@ -21,11 +21,10 @@
  * 
  */
 
-package org.lgna.story.resources.sims2;
-public enum ChildHairDreadlockShort implements ChildHair {
-	BLACK,
-	BROWN,
-	BLOND,
-	RED;
-}
-
+package org.lgna.story.resources.sims2;
+public enum ChildHairDreadlockShort implements ChildHair {
+	BLACK,
+	BROWN,
+	BLOND,
+	RED;
+}

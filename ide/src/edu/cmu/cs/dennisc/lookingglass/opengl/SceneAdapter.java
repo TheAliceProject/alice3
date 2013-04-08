@@ -138,7 +138,7 @@ public class SceneAdapter extends CompositeAdapter<edu.cmu.cs.dennisc.scenegraph
 				if( visualAdapter.isAlphaBlended() ) {
 					//todo: adapters should be removed 
 					if( ( visualAdapter.m_element != null ) && ( visualAdapter.m_element.getRoot() instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) ) {
-						if (visualAdapter.isAllAlpha()) {
+						if( visualAdapter.isAllAlpha() ) {
 							visualAdapter.renderAllAlphaBlended( rc );
 						}
 						else {

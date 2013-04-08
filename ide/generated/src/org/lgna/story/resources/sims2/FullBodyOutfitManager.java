@@ -226,12 +226,12 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 	}
 
 	@Override
-	protected Class<? extends FullBodyOutfit> getUnisexIntefaceClass( LifeStage lifeStage ) {
+	protected Class<? extends FullBodyOutfit> getUnisexInterfaceClass( LifeStage lifeStage ) {
 		return lifeStage.getUnisexFullBodyOutfitInterfaceClass();
 	};
 
 	@Override
-	protected Class<? extends FullBodyOutfit> getGenderedIntefaceClass( LifeStage lifeStage, Gender gender ) {
+	protected Class<? extends FullBodyOutfit> getGenderedInterfaceClass( LifeStage lifeStage, Gender gender ) {
 		return lifeStage.getGenderedFullBodyOutfitInterfaceClass( gender );
 	}
 }
