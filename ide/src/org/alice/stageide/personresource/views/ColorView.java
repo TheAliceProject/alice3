@@ -56,7 +56,7 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 	private static java.awt.Color A_COLOR = B_COLOR.darker();
 	private static java.awt.Color F_COLOR = E_COLOR.brighter();
 
-	private static final float[][] hsb = new float[ 6 ][ 3 ];
+	private static final float[][] hsbBuffers = new float[ 6 ][ 3 ];
 	private static final float minHue;
 	private static final float maxHue;
 	static {
@@ -64,9 +64,9 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 		float min = Float.MAX_VALUE;
 		float max = -Float.MAX_VALUE;
 		for( java.awt.Color color : new java.awt.Color[] { A_COLOR, B_COLOR, C_COLOR, D_COLOR, E_COLOR, F_COLOR } ) {
-			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsb[ i ] );
-			min = Math.min( min, hsb[ i ][ 0 ] );
-			max = Math.max( max, hsb[ i ][ 0 ] );
+			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsbBuffers[ i ] );
+			min = Math.min( min, hsbBuffers[ i ][ 0 ] );
+			max = Math.max( max, hsbBuffers[ i ][ 0 ] );
 			i++;
 		}
 		minHue = min;
