@@ -47,7 +47,7 @@ package org.alice.stageide.personresource;
  */
 public class SkinColorState extends ColorState {
 	public SkinColorState() {
-		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "646ae40a-547a-4f52-962f-57a7dc4d970f" ), java.awt.Color.RED );
+		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "646ae40a-547a-4f52-962f-57a7dc4d970f" ), org.lgna.story.resources.sims2.BaseSkinTone.getRandom().getColor() );
 	}
 
 	public static void main( String[] args ) throws Exception {

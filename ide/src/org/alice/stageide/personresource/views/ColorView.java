@@ -48,10 +48,10 @@ package org.alice.stageide.personresource.views;
 public class ColorView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.alice.stageide.personresource.ColorState> {
 	private static int HALF_ARROW_WIDTH = 4;
 	private static int ARROW_HEIGHT = 6;
-	private static java.awt.Color B_COLOR = new java.awt.Color( 102, 54, 13 );
-	private static java.awt.Color C_COLOR = new java.awt.Color( 158, 102, 58 );
-	private static java.awt.Color D_COLOR = new java.awt.Color( 189, 129, 90 );
-	private static java.awt.Color E_COLOR = new java.awt.Color( 206, 148, 115 );
+	private static java.awt.Color B_COLOR = org.lgna.story.resources.sims2.BaseSkinTone.DARKER.getColor();
+	private static java.awt.Color C_COLOR = org.lgna.story.resources.sims2.BaseSkinTone.DARK.getColor();
+	private static java.awt.Color D_COLOR = org.lgna.story.resources.sims2.BaseSkinTone.LIGHT.getColor();
+	private static java.awt.Color E_COLOR = org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER.getColor();
 
 	private static java.awt.Color A_COLOR = B_COLOR.darker();
 	private static java.awt.Color F_COLOR = E_COLOR.brighter();
