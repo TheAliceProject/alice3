@@ -66,12 +66,12 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 	}
 
 	@Override
-	public T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	public final T decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		return this.itemCodec.decodeValue( binaryDecoder );
 	}
 
 	@Override
-	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
+	public final void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value ) {
 		this.itemCodec.encodeValue( binaryEncoder, value );
 	}
 

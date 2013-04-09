@@ -40,88 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package org.lgna.croquet.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ColorState extends org.lgna.croquet.SimpleValueState<java.awt.Color> {
-
-	public class SwingModel {
-		private java.awt.Color value;
-
-		private final java.util.List<javax.swing.event.ChangeListener> changeListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-
-		public SwingModel( java.awt.Color initialValue ) {
-			this.value = initialValue;
-		}
-
-		public java.awt.Color getValue() {
-			return this.value;
-		}
-
-		public void setValue( java.awt.Color nextValue, java.awt.event.MouseEvent e ) {
-			if( this.value.equals( nextValue ) ) {
-				//pass
-			} else {
-				this.value = nextValue;
-				IsAdjusting isAdjusting;
-				if( e != null ) {
-					isAdjusting = e.getID() != java.awt.event.MouseEvent.MOUSE_RELEASED ? IsAdjusting.TRUE : IsAdjusting.FALSE;
-				} else {
-					isAdjusting = IsAdjusting.FALSE;
-				}
-
-				//todo
-				isAdjusting = IsAdjusting.FALSE;
-
-				org.lgna.croquet.triggers.Trigger trigger;
-				if( e != null ) {
-					trigger = org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( e );
-				} else {
-					trigger = org.lgna.croquet.triggers.NullTrigger.createUserInstance();
-				}
-				changeValueFromSwing( this.value, isAdjusting, trigger );
-				if( this.changeListeners.size() > 0 ) {
-					Object source = e != null ? e.getSource() : this;
-					javax.swing.event.ChangeEvent changeEvent = new javax.swing.event.ChangeEvent( source );
-					for( javax.swing.event.ChangeListener changeListener : this.changeListeners ) {
-						changeListener.stateChanged( changeEvent );
-					}
-				}
-			}
-		}
-
-		public void addChangeListener( javax.swing.event.ChangeListener changeListener ) {
-			this.changeListeners.add( changeListener );
-		}
-
-		public void removeChangeListener( javax.swing.event.ChangeListener changeListener ) {
-			this.changeListeners.remove( changeListener );
-		}
-	}
-
-	private final SwingModel swingModel;
-
-	public ColorState( org.lgna.croquet.Group group, java.util.UUID id, java.awt.Color initialValue ) {
-		super( group, id, initialValue );
-		this.swingModel = new SwingModel( initialValue );
-	}
-
-	public SwingModel getSwingModel() {
-		return this.swingModel;
-	}
-
-	@Override
-	protected void localize() {
-	}
-
-	@Override
-	public Class<java.awt.Color> getItemClass() {
+public enum ColorCodec implements org.lgna.croquet.ItemCodec<java.awt.Color> {
+	SINGLETON;
+	public Class<java.awt.Color> getValueClass() {
 		return java.awt.Color.class;
 	}
 
-	@Override
 	public java.awt.Color decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		boolean isNotNull = binaryDecoder.decodeBoolean();
 		if( isNotNull ) {
@@ -135,7 +64,6 @@ public abstract class ColorState extends org.lgna.croquet.SimpleValueState<java.
 		}
 	}
 
-	@Override
 	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, java.awt.Color value ) {
 		boolean isNotNull = value != null;
 		binaryEncoder.encode( isNotNull );
@@ -147,22 +75,6 @@ public abstract class ColorState extends org.lgna.croquet.SimpleValueState<java.
 		}
 	}
 
-	@Override
-	protected java.awt.Color getSwingValue() {
-		return this.swingModel.value;
-	}
-
-	@Override
-	protected void setSwingValue( java.awt.Color nextValue ) {
-		this.swingModel.value = nextValue;
-	}
-
-	@Override
-	public Iterable<? extends org.lgna.croquet.PrepModel> getPotentialRootPrepModels() {
-		return java.util.Collections.emptyList();
-	}
-
-	@Override
 	public void appendRepresentation( StringBuilder sb, java.awt.Color value ) {
 		sb.append( value );
 	}

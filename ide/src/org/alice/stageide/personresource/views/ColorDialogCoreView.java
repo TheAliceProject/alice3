@@ -57,4 +57,8 @@ public class ColorDialogCoreView extends org.lgna.croquet.components.BorderPanel
 	public java.awt.Color getSelectedColor() {
 		return this.jColorChooser.getColor();
 	}
+
+	public void setSelectedColor( java.awt.Color selectedColor ) {
+		this.jColorChooser.setColor( selectedColor );
+	}
 }

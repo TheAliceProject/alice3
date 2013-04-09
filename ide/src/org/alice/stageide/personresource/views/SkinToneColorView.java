@@ -45,7 +45,7 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SkinToneColorView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.alice.stageide.personresource.ColorState> {
+public class SkinToneColorView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.lgna.croquet.ColorState> {
 	private static int HALF_ARROW_WIDTH = 4;
 	private static int ARROW_HEIGHT = 6;
 	private static java.awt.Color B_COLOR = org.lgna.story.resources.sims2.BaseSkinTone.DARKER.getColor();
@@ -218,7 +218,7 @@ public class SkinToneColorView extends org.lgna.croquet.components.ViewControlle
 		}
 	};
 
-	public SkinToneColorView( org.alice.stageide.personresource.ColorState model ) {
+	public SkinToneColorView( org.lgna.croquet.ColorState model ) {
 		super( model );
 	}
 

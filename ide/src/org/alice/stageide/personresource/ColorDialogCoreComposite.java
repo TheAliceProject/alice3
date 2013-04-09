@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.personresource;
 
+import org.lgna.croquet.ColorState;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,6 +63,12 @@ public class ColorDialogCoreComposite extends org.lgna.croquet.OperationInputDia
 	@Override
 	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
 		return IS_GOOD_TO_GO_STATUS;
+	}
+
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		this.getView().setSelectedColor( this.colorState.getValue() );
+		super.handlePreShowDialog( completionStep );
 	}
 
 	@Override

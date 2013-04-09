@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.personresource;
 
+import org.lgna.croquet.ColorState;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -59,6 +61,9 @@ public class SkinColorState extends ColorState {
 		final org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		final ColorState colorState = new SkinColorState();
 		ColorDialogCoreComposite dialogCoreComposite = new ColorDialogCoreComposite( colorState );
+
+		org.alice.stageide.personresource.views.SkinToneColorView colorView = new org.alice.stageide.personresource.views.SkinToneColorView( colorState );
+		org.lgna.croquet.components.Button button = dialogCoreComposite.getOperation().createButton();
 
 		final int SIZE = 16;
 		class ColorIcon implements javax.swing.Icon {
@@ -79,24 +84,29 @@ public class SkinColorState extends ColorState {
 				g.fillRect( x, y, SIZE, SIZE );
 			}
 		}
-
-		org.alice.stageide.personresource.views.SkinToneColorView colorView = new org.alice.stageide.personresource.views.SkinToneColorView( colorState );
-		final org.lgna.croquet.components.Button button = dialogCoreComposite.getOperation().createButton();
-
-		button.setClobberIcon( new ColorIcon() );
+		final org.lgna.croquet.components.Label label = new org.lgna.croquet.components.Label( new ColorIcon() );
 
 		javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				button.repaint();
+				label.repaint();
 			}
 		};
 
 		colorState.getSwingModel().addChangeListener( changeListener );
 
-		app.getFrame().getContentPane().addCenterComponent( colorView );
-		app.getFrame().getContentPane().addLineEndComponent( button );
+		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel();
 
-		app.getFrame().setSize( 400, 64 );
+		lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( org.lgna.story.resources.sims2.BaseSkinTone.DARKER.getColor() ) );
+		lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( org.lgna.story.resources.sims2.BaseSkinTone.DARK.getColor() ) );
+		lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( org.lgna.story.resources.sims2.BaseSkinTone.LIGHT.getColor() ) );
+		lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER.getColor() ) );
+		lineAxisPanel.addComponent( dialogCoreComposite.getOperation().createButton() );
+
+		app.getFrame().getContentPane().addLineStartComponent( label );
+		app.getFrame().getContentPane().addCenterComponent( colorView );
+		app.getFrame().getContentPane().addLineEndComponent( lineAxisPanel );
+
+		app.getFrame().setSize( 600, 64 );
 		app.getFrame().setVisible( true );
 	}
 }
