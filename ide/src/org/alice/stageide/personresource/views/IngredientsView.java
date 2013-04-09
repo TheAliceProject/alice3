@@ -69,9 +69,6 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( composite.getGenderState().getSidekickLabel().createLabel(), "skip" );
 		this.addComponent( new HorizontalWrapList( composite.getGenderState(), 1 ), "span 2, wrap" );
 
-		this.addComponent( composite.getBaseSkinToneState().getSidekickLabel().createLabel(), "skip" );
-		this.addComponent( new HorizontalWrapList( composite.getBaseSkinToneState(), 1 ), "span 2, wrap" );
-
 		final org.alice.stageide.personresource.SkinColorState skinColorState = composite.getSkinColorState();
 		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "align right, skip 1" );
 		this.addComponent( new ColorView( composite.getSkinColorState() ) );

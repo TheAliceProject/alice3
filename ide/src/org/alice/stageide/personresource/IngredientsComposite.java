@@ -57,7 +57,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private final HeadTabComposite headTab = new HeadTabComposite();
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneState = this.createListSelectionStateForEnum( this.createKey( "baseSkinToneState" ), org.lgna.story.resources.sims2.BaseSkinTone.class, org.lgna.story.resources.sims2.BaseSkinTone.getRandom() );
 	private final SkinColorState skinColorState = new SkinColorState();
 	private final ColorDialogCoreComposite colorDialogCoreComposite = new ColorDialogCoreComposite( this.skinColorState );
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadTabState = this.createTabSelectionState( this.createKey( "bodyHeadTabState" ), 0, this.bodyTab, this.headTab );
@@ -82,12 +81,12 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			popAtomic();
 		}
 	};
-	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone> baseSkinToneListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.BaseSkinTone>() {
-		public void changing( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseSkinTone> state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
+	private final org.lgna.croquet.State.ValueListener<java.awt.Color> skinColorListener = new org.lgna.croquet.State.ValueListener<java.awt.Color>() {
+		public void changing( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
 			pushAtomic();
 		}
 
-		public void changed( org.lgna.croquet.State<org.lgna.story.resources.sims2.BaseSkinTone> state, org.lgna.story.resources.sims2.BaseSkinTone prevValue, org.lgna.story.resources.sims2.BaseSkinTone nextValue, boolean isAdjusting ) {
+		public void changed( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
 			popAtomic();
 		}
 	};
@@ -196,10 +195,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.genderState;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseSkinTone> getBaseSkinToneState() {
-		return this.baseSkinToneState;
-	}
-
 	public SkinColorState getSkinColorState() {
 		return this.skinColorState;
 	}
@@ -246,7 +241,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private void addListeners() {
 		this.getLifeStageState().addValueListener( this.lifeStageListener );
 		this.getGenderState().addValueListener( this.genderListener );
-		this.getBaseSkinToneState().addValueListener( this.baseSkinToneListener );
+		this.getSkinColorState().addValueListener( this.skinColorListener );
 		this.getBaseEyeColorState().addValueListener( this.baseEyeColorListener );
 		this.getHairColorNameState().addValueListener( this.hairColorNameListener );
 		this.getHairState().addValueListener( this.hairListener );
@@ -257,7 +252,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private void removeListeners() {
 		this.getLifeStageState().removeValueListener( this.lifeStageListener );
 		this.getGenderState().removeValueListener( this.genderListener );
-		this.getBaseSkinToneState().removeValueListener( this.baseSkinToneListener );
+		this.getSkinColorState().removeValueListener( this.skinColorListener );
 		this.getBaseEyeColorState().removeValueListener( this.baseEyeColorListener );
 		this.getHairColorNameState().removeValueListener( this.hairColorNameListener );
 		this.getHairState().removeValueListener( this.hairListener );
@@ -477,9 +472,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		org.lgna.story.resources.sims2.LifeStage lifeStage = this.getLifeStageState().getValue();
 		org.lgna.story.resources.sims2.Gender gender = this.getGenderState().getValue();
 
-		org.lgna.story.resources.sims2.BaseSkinTone baseSkinTone = this.getBaseSkinToneState().getValue();
 		java.awt.Color awtSkinColor = this.getSkinColorState().getValue();
-
 		org.lgna.story.Color skinColor = org.lgna.story.ImplementationAccessor.createColor( new edu.cmu.cs.dennisc.color.Color4f( awtSkinColor ) );
 
 		org.lgna.story.resources.sims2.EyeColor eyeColor = this.getBaseEyeColorState().getValue();
@@ -499,7 +492,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			this.getLifeStageState().setValueTransactionlessly( personResource.getLifeStage() );
 			this.getGenderState().setValueTransactionlessly( personResource.getGender() );
 			this.getBaseEyeColorState().setValueTransactionlessly( (org.lgna.story.resources.sims2.BaseEyeColor)personResource.getEyeColor() );
-			this.getBaseSkinToneState().setValueTransactionlessly( (org.lgna.story.resources.sims2.BaseSkinTone)personResource.getSkinTone() );
+			this.getSkinColorState().setValueTransactionlessly( org.lgna.story.ImplementationAccessor.getColor4f( personResource.getSkinColor() ).getAsAWTColor() );
 
 			org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
 			this.updateOutfit( personResource.getLifeStage(), personResource.getGender(), (org.lgna.story.resources.sims2.FullBodyOutfit)personResource.getOutfit() );

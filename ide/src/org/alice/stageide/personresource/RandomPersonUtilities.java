@@ -60,11 +60,11 @@ public class RandomPersonUtilities {
 		}
 		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
 		org.lgna.story.resources.sims2.BaseSkinTone skinTone = org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
+		org.lgna.story.Color skinColor = org.lgna.story.ImplementationAccessor.createColor( new edu.cmu.cs.dennisc.color.Color4f( skinTone.getColor() ) );
 		org.lgna.story.resources.sims2.EyeColor eyeColor = org.lgna.story.resources.sims2.BaseEyeColor.getRandom();
 		org.lgna.story.resources.sims2.Outfit outfit = org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 		org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 		double obesityLevel = org.lgna.common.RandomUtilities.nextDouble();
-		org.lgna.story.Color skinColor = org.lgna.story.ImplementationAccessor.createColor( new edu.cmu.cs.dennisc.color.Color4f( skinTone.getColor() ) );
 		return lifeStage.createResource( gender, skinColor, eyeColor, hair, obesityLevel, outfit );
 	}
 }
