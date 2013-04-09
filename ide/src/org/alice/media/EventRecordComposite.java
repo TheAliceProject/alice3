@@ -42,6 +42,8 @@
  */
 package org.alice.media;
 
+import java.awt.event.KeyEvent;
+
 import org.alice.ide.declarationseditor.events.KeyboardEventListenerMenu;
 import org.alice.ide.declarationseditor.events.MouseEventListenerMenu;
 import org.alice.media.components.EventRecordView;
@@ -74,6 +76,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 import edu.cmu.cs.dennisc.matt.EventScript;
 import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 import edu.cmu.cs.dennisc.matt.EventScriptListener;
+import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
 
 /**
  * @author Matt May
@@ -110,7 +113,15 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		}
 
 		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
-			sb.append( value );
+			String eventType = "";
+			if( value.getEvent() instanceof MouseEventWrapper ) {
+				eventType = owner.getMouseEventName().getText();
+			} else if( value.getEvent() instanceof KeyEvent ) {
+				eventType = owner.getKeyBoardEventName().getText();
+			} else {
+				eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();
+			}
+			sb.append( value.getReportForEventType( eventType ) );
 		}
 	}, -1 );
 

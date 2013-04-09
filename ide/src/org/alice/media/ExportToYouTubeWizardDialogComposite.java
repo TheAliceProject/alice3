@@ -45,6 +45,7 @@ package org.alice.media;
 import java.io.File;
 
 import org.alice.ide.IDE;
+import org.lgna.croquet.StringValue;
 
 import edu.cmu.cs.dennisc.matt.EventScript;
 
@@ -63,6 +64,8 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 	private EventRecordComposite eventRecordComposite = new EventRecordComposite( this );
 	private ImageRecordComposite imageRecordComposite = new ImageRecordComposite( this );
 	private UploadComposite uploadComposite = new UploadComposite( this );
+	private StringValue mouseEventName = createStringValue( createKey( "mouseEvent" ) );
+	private StringValue keyBoardEventName = createStringValue( createKey( "keyboardEvent" ) );
 
 	private org.lgna.project.Project project;
 	private EventScript script;
@@ -129,6 +132,14 @@ public class ExportToYouTubeWizardDialogComposite extends org.lgna.croquet.Opera
 
 	public long getRandomSeed() {
 		return this.randomSeed;
+	}
+
+	public StringValue getMouseEventName() {
+		return this.mouseEventName;
+	}
+
+	public StringValue getKeyBoardEventName() {
+		return this.keyBoardEventName;
 	}
 
 	@Override

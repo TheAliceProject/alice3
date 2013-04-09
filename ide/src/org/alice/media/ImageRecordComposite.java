@@ -42,6 +42,7 @@
  */
 package org.alice.media;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -71,6 +72,7 @@ import edu.cmu.cs.dennisc.matt.EventManager;
 import edu.cmu.cs.dennisc.matt.EventScript;
 import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
+import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 
 /**
@@ -110,7 +112,15 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		}
 
 		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
-			sb.append( value );
+			String eventType = "";
+			if( value.getEvent() instanceof MouseEventWrapper ) {
+				eventType = owner.getMouseEventName().getText();
+			} else if( value.getEvent() instanceof KeyEvent ) {
+				eventType = owner.getKeyBoardEventName().getText();
+			} else {
+				eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();
+			}
+			sb.append( value.getReportForEventType( eventType ) );
 		}
 	}, -1 );
 
