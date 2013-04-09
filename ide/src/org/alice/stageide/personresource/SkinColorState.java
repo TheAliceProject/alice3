@@ -80,7 +80,7 @@ public class SkinColorState extends ColorState {
 			}
 		}
 
-		org.alice.stageide.personresource.views.ColorView colorView = new org.alice.stageide.personresource.views.ColorView( colorState );
+		org.alice.stageide.personresource.views.SkinToneColorView colorView = new org.alice.stageide.personresource.views.SkinToneColorView( colorState );
 		final org.lgna.croquet.components.Button button = dialogCoreComposite.getOperation().createButton();
 
 		button.setClobberIcon( new ColorIcon() );

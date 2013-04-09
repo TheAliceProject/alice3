@@ -71,7 +71,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 		final org.alice.stageide.personresource.SkinColorState skinColorState = composite.getSkinColorState();
 		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "align right, skip 1" );
-		this.addComponent( new ColorView( composite.getSkinColorState() ) );
+		this.addComponent( new SkinToneColorView( composite.getSkinColorState() ) );
 
 		final int SIZE = 16;
 		class SkinColorIcon implements javax.swing.Icon {

@@ -45,7 +45,7 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ColorView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.alice.stageide.personresource.ColorState> {
+public class SkinToneColorView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.alice.stageide.personresource.ColorState> {
 	private static int HALF_ARROW_WIDTH = 4;
 	private static int ARROW_HEIGHT = 6;
 	private static java.awt.Color B_COLOR = org.lgna.story.resources.sims2.BaseSkinTone.DARKER.getColor();
@@ -53,8 +53,8 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 	private static java.awt.Color D_COLOR = org.lgna.story.resources.sims2.BaseSkinTone.LIGHT.getColor();
 	private static java.awt.Color E_COLOR = org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER.getColor();
 
-	private static java.awt.Color A_COLOR = B_COLOR.darker();
-	private static java.awt.Color F_COLOR = E_COLOR.brighter();
+	private static java.awt.Color A_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( B_COLOR, 1.0, 1.0, 0.9 );
+	private static java.awt.Color F_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( E_COLOR, 1.0, 1.0, 1.1 );
 
 	private static final float[][] hsbBuffers = new float[ 6 ][ 3 ];
 	private static final float minHue;
@@ -114,50 +114,26 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 			this.portion = Math.max( this.portion, 0.0f );
 			this.repaint();
 
-			java.awt.Color color0;
-			java.awt.Color color1;
-			float interp = this.portion;
-			if( this.portion < 0.2f ) {
-				color0 = A_COLOR;
-				color1 = B_COLOR;
-			} else if( this.portion < 0.4f ) {
-				color0 = B_COLOR;
-				color1 = C_COLOR;
-				interp -= 0.2;
-			} else if( this.portion < 0.6f ) {
-				color0 = C_COLOR;
-				color1 = D_COLOR;
-				interp -= 0.4;
-			} else if( this.portion < 0.8f ) {
-				color0 = D_COLOR;
-				color1 = E_COLOR;
-				interp -= 0.6;
+			int index = (int)( this.portion / 0.2 );
+			java.awt.Color nextColor;
+			if( index < 0 ) {
+				nextColor = A_COLOR;
+			} else if( index >= 5 ) {
+				nextColor = F_COLOR;
 			} else {
-				color0 = E_COLOR;
-				color1 = F_COLOR;
-				interp -= 0.8;
-			}
-			interp *= 5.0;
+				float interp = this.portion % 0.2f;
+				interp *= 5.0;
 
-			float[] hsbBuffer0 = new float[ 3 ];
-			float[] hsbBuffer1 = new float[ 3 ];
-			java.awt.Color.RGBtoHSB( color0.getRed(), color0.getGreen(), color0.getBlue(), hsbBuffer0 );
-			java.awt.Color.RGBtoHSB( color1.getRed(), color1.getGreen(), color1.getBlue(), hsbBuffer1 );
-
-			float[] hsb = new float[ 3 ];
-			for( int i = 0; i < 3; i++ ) {
-				hsb[ i ] = ( hsbBuffer0[ i ] * ( 1 - interp ) ) + ( hsbBuffer1[ i ] * interp );
+				float[] hsbBuffer0 = hsbBuffers[ index ];
+				float[] hsbBuffer1 = hsbBuffers[ index + 1 ];
+				float[] hsbBuffer = new float[ 3 ];
+				for( int i = 0; i < 3; i++ ) {
+					hsbBuffer[ i ] = ( hsbBuffer0[ i ] * ( 1 - interp ) ) + ( hsbBuffer1[ i ] * interp );
+				}
+				nextColor = java.awt.Color.getHSBColor( hsbBuffer[ 0 ], hsbBuffer[ 1 ], hsbBuffer[ 2 ] );
 			}
 
-			java.awt.Color nextColor = java.awt.Color.getHSBColor( hsb[ 0 ], hsb[ 1 ], hsb[ 2 ] );
-			//java.awt.Color nextColor2 = edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( color0, color1, interp );
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextColor.getRed() - nextColor2.getRed(), nextColor.getGreen() - nextColor2.getGreen(), nextColor.getBlue() - nextColor2.getBlue() );
-
-			ColorView.this.getModel().getSwingModel().setValue( nextColor, e );
-		}
-
-		private void setPortionBasedOnSelectedColor( java.awt.Color selectedColor ) {
-
+			SkinToneColorView.this.getModel().getSwingModel().setValue( nextColor, e );
 		}
 
 		@Override
@@ -233,7 +209,7 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 		}
 	};
 
-	public ColorView( org.alice.stageide.personresource.ColorState model ) {
+	public SkinToneColorView( org.alice.stageide.personresource.ColorState model ) {
 		super( model );
 	}
 
