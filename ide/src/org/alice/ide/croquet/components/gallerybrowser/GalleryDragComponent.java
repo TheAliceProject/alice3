@@ -90,7 +90,7 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	private static final java.awt.Dimension SUPER_CLASS_ICON_SIZE = new java.awt.Dimension( 32, 24 );
 
 	public GalleryDragComponent( org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model ) {
-		super( model );
+		super( model, false );
 
 		if( model.isInstanceCreator() ) {
 			this.baseColor = org.alice.ide.DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR;
@@ -147,6 +147,12 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	@Override
+	protected boolean isClickAndClackAppropriate() {
+		org.alice.ide.croquet.models.gallerybrowser.GalleryDragModel model = this.getModel();
+		return model.isClickAndClackAppropriate();
+	}
+
+	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jComponent ) {
 		return new java.awt.LayoutManager() {
 			public void addLayoutComponent( java.lang.String name, java.awt.Component comp ) {
@@ -182,32 +188,28 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	}
 
 	@Override
-	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
-		super.handleMouseClicked( e );
-		int button = e.getButton();
-		switch( button ) {
-		case java.awt.event.MouseEvent.BUTTON1:
-			switch( e.getClickCount() ) {
-			case 1:
-				org.lgna.croquet.Model leftButtonClickModel = this.getModel().getLeftButtonClickModel();
-				if( leftButtonClickModel != null ) {
-					leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
-				}
-				break;
+	protected void handleLeftMouseButtonQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+		super.handleLeftMouseButtonQuoteClickedUnquote( e );
+		switch( e.getClickCount() ) {
+		case 1:
+			org.lgna.croquet.Model leftButtonClickModel = this.getModel().getLeftButtonClickModel();
+			if( leftButtonClickModel != null ) {
+				leftButtonClickModel.fire( org.lgna.croquet.triggers.MouseEventTrigger.createUserInstance( this, e ) );
 			}
-			break;
-		case 4:
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: back" );
-			break;
-		case 5:
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: forward" );
 			break;
 		}
 	}
 
 	@Override
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return false;
+	protected void handleBackButtonClicked( java.awt.event.MouseEvent e ) {
+		super.handleBackButtonClicked( e );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: back" );
+	}
+
+	@Override
+	protected void handleForwardButtonClicked( java.awt.event.MouseEvent e ) {
+		super.handleForwardButtonClicked( e );
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: forward" );
 	}
 
 	@Override
@@ -248,38 +250,33 @@ public class GalleryDragComponent extends org.alice.ide.croquet.components.Knurl
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		java.awt.geom.RoundRectangle2D.Float shape = this.createShape( x, y, width, height );
-		if( this.isPressed() ) {
-			g2.setPaint( this.baseColor );
+		int y1 = y + height;
+		int yCenter = y + ( height / 2 );
+		int yA = y + ( height / 3 );
+		int yB = y1 - ( height / 3 );
+
+		java.awt.Color highlightColor = this.isActive() ? this.activeHighlightColor : this.highlightColor;
+		java.awt.Color shadowColor = this.isActive() ? this.activeShadowColor : this.shadowColor;
+
+		java.awt.GradientPaint paintTop = new java.awt.GradientPaint( x, y, highlightColor, x, yA, shadowColor );
+		java.awt.GradientPaint paintBottom = new java.awt.GradientPaint( x, yB, shadowColor, x, y1, highlightColor );
+
+		java.awt.Paint prevPaint = g2.getPaint();
+		java.awt.Shape prevClip = g2.getClip();
+
+		try {
+			java.awt.geom.Area topArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, y, width, yCenter - y ) );
+			g2.setClip( topArea );
+			g2.setPaint( paintTop );
 			g2.fill( shape );
-		} else {
-			int y1 = y + height;
-			int yCenter = y + ( height / 2 );
-			int yA = y + ( height / 3 );
-			int yB = y1 - ( height / 3 );
 
-			java.awt.Color highlightColor = this.isActive() ? this.activeHighlightColor : this.highlightColor;
-			java.awt.Color shadowColor = this.isActive() ? this.activeShadowColor : this.shadowColor;
-
-			java.awt.GradientPaint paintTop = new java.awt.GradientPaint( x, y, highlightColor, x, yA, shadowColor );
-			java.awt.GradientPaint paintBottom = new java.awt.GradientPaint( x, yB, shadowColor, x, y1, highlightColor );
-
-			java.awt.Paint prevPaint = g2.getPaint();
-			java.awt.Shape prevClip = g2.getClip();
-
-			try {
-				java.awt.geom.Area topArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, y, width, yCenter - y ) );
-				g2.setClip( topArea );
-				g2.setPaint( paintTop );
-				g2.fill( shape );
-
-				java.awt.geom.Area bottomArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, yCenter, width, y1 - yCenter ) );
-				g2.setClip( bottomArea );
-				g2.setPaint( paintBottom );
-				g2.fill( shape );
-			} finally {
-				g2.setClip( prevClip );
-				g2.setPaint( prevPaint );
-			}
+			java.awt.geom.Area bottomArea = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, new java.awt.Rectangle( x, yCenter, width, y1 - yCenter ) );
+			g2.setClip( bottomArea );
+			g2.setPaint( paintBottom );
+			g2.fill( shape );
+		} finally {
+			g2.setClip( prevClip );
+			g2.setPaint( prevPaint );
 		}
 	}
 

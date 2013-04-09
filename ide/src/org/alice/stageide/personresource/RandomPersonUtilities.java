@@ -65,6 +65,6 @@ public class RandomPersonUtilities {
 		org.lgna.story.resources.sims2.Hair hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
 		org.lgna.story.resources.sims2.Face face = org.lgna.story.resources.sims2.BaseFace.getRandom();
 		double obesityLevel = org.lgna.common.RandomUtilities.nextDouble();
-		return lifeStage.createResource( gender, skinTone, eyeColor, hair, obesityLevel, outfit, face );
+		return lifeStage.createResource( gender, org.lgna.story.Color.RED, eyeColor, hair, obesityLevel, outfit, face );
 	}
 }

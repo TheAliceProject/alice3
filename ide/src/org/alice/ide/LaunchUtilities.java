@@ -137,6 +137,8 @@ public class LaunchUtilities {
 			}
 		}
 
+		edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
+
 		org.alice.stageide.apis.org.lgna.story.ClassInfoUtilities.loadClassInfos();
 	}
 

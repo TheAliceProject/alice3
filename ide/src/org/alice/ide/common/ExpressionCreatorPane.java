@@ -51,6 +51,11 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	}
 
 	@Override
+	protected boolean isClickAndClackAppropriate() {
+		return true;
+	}
+
+	@Override
 	public final org.lgna.project.ast.AbstractType<?, ?, ?> getExpressionType() {
 		return ( (org.alice.ide.ast.draganddrop.expression.AbstractExpressionDragModel)this.getModel() ).getType();
 	}

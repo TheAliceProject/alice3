@@ -40,17 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.lgna.croquet.components.imp;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropProxy extends Proxy {
+public class JDropProxy extends JProxy {
 	public static interface Hider {
-		public void setDragSource( org.lgna.croquet.components.DragComponent dragSource );
+		public void setDragSource( org.lgna.croquet.components.DragComponent<?> dragSource );
 	}
 
-	public DropProxy( DragComponent dragComponent ) {
+	public JDropProxy( org.lgna.croquet.components.DragComponent<?> dragComponent ) {
 		super( dragComponent );
 	}
 

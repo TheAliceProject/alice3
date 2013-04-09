@@ -47,7 +47,7 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public interface CodecConstants {
-	public static final String KEY_ATTRIBUTE = "key";
+	public static final String NOT_GUARANTEED_TO_BE_UNIQUE_KEY_ATTRIBUTE = "key";
 	public static final String TYPE_ATTRIBUTE = "type";
 	public static final String ID_ATTRIBUTE = "uuid";
 }

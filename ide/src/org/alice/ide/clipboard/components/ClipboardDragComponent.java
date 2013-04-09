@@ -112,16 +112,16 @@ public class ClipboardDragComponent extends org.lgna.croquet.components.DragComp
 	private final org.lgna.croquet.components.FlowPanel subject = new org.lgna.croquet.components.FlowPanel();
 
 	public ClipboardDragComponent( org.lgna.croquet.DragModel dragModel ) {
-		super( dragModel );
+		super( dragModel, true );
+	}
+
+	@Override
+	protected boolean isClickAndClackAppropriate() {
+		return true;
 	}
 
 	public org.lgna.croquet.DropReceptor getDropReceptor() {
 		return this.dropReceptor;
-	}
-
-	@Override
-	protected boolean isMouseListeningDesired() {
-		return true;
 	}
 
 	@Override

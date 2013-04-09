@@ -46,7 +46,7 @@ package org.lgna.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.components.DropProxy.Hider {
+public abstract class Cascade<T> extends AbstractCompletionModel implements org.lgna.croquet.components.imp.JDropProxy.Hider {
 	public static class InternalRootResolver<T> extends IndirectResolver<InternalRoot<T>, Cascade<T>> {
 		private InternalRootResolver( Cascade<T> indirect ) {
 			super( indirect );

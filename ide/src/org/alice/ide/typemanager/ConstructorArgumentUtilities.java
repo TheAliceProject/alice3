@@ -65,7 +65,7 @@ public class ConstructorArgumentUtilities {
 
 	public static org.lgna.project.ast.AbstractType<?, ?, ?> getParameter0Type( org.lgna.project.ast.AbstractConstructor constructor ) {
 		if( constructor != null ) {
-			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
+			java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor.getRequiredParameters();
 			if( requiredParameters.size() > 0 ) {
 				org.lgna.project.ast.AbstractParameter parameter0 = requiredParameters.get( 0 );
 				return parameter0.getValueType();

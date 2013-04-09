@@ -51,8 +51,8 @@ public class Matrix4x4Property extends edu.cmu.cs.dennisc.property.InstancePrope
 	}
 
 	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.Matrix4x4 value ) {
-		assert value != null;
-		assert value.isNaN() == false;
+		assert value != null : this;
+		assert value.isNaN() == false : this;
 		super.setValue( owner, value );
 	}
 

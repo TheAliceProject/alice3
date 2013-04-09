@@ -59,7 +59,7 @@ public class TypeManager {
 		rv.superType.setValue( superType );
 
 		for( org.lgna.project.ast.AbstractConstructor superConstructor : superType.getDeclaredConstructors() ) {
-			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> javaParameters = superConstructor.getRequiredParameters();
+			java.util.List<? extends org.lgna.project.ast.AbstractParameter> javaParameters = superConstructor.getRequiredParameters();
 
 			org.lgna.project.ast.NamedUserConstructor userConstructor = new org.lgna.project.ast.NamedUserConstructor();
 			org.lgna.project.ast.ConstructorBlockStatement body = new org.lgna.project.ast.ConstructorBlockStatement();

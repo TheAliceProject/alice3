@@ -43,165 +43,300 @@
 package org.lgna.croquet.components;
 
 public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extends ViewController<javax.swing.JPanel, M> {
-	private DragProxy dragProxy = null;
-	private DropProxy dropProxy = null;
+	private static final float DEFAULT_CLICK_THRESHOLD = 5.0f;
 
-	private class ControlAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
-		public void mousePressed( java.awt.event.MouseEvent e ) {
-			DragComponent.this.handleMousePressed( e );
-		}
+	private final java.awt.event.MouseListener mouseListener;
+	private final java.awt.event.MouseMotionListener mouseMotionListener;
+	private final java.awt.event.ComponentListener componentListener;
 
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
-			DragComponent.this.handleMouseReleased( e );
-		}
+	private final org.lgna.croquet.components.imp.JDragProxy dragProxy;
+	private final org.lgna.croquet.components.imp.JDropProxy dropProxy;
 
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
-			DragComponent.this.handleMouseClicked( e );
-		}
-
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
-			DragComponent.this.handleMouseEntered( e );
-		}
-
-		public void mouseExited( java.awt.event.MouseEvent e ) {
-			DragComponent.this.handleMouseExited( e );
-		}
-
-		public void mouseMoved( java.awt.event.MouseEvent e ) {
-			DragComponent.this.handleMouseMoved( e );
-		}
-
-		public void mouseDragged( java.awt.event.MouseEvent e ) {
-			DragComponent.this.handleMouseDragged( e );
-		}
-	}
-
-	private ControlAdapter controlAdapter = null;
-
-	private float clickThreshold = 5.0f;
-
-	public float getClickThreshold() {
-		return this.clickThreshold;
-	}
-
-	public void setClickThreshold( float clickThreshold ) {
-		this.clickThreshold = clickThreshold;
-	}
-
+	private float clickThreshold = DEFAULT_CLICK_THRESHOLD;
 	private boolean isWithinClickThreshold = false;
-
-	protected boolean isWithinClickThreshold() {
-		return this.isWithinClickThreshold;
-	}
 
 	private java.awt.event.MouseEvent mousePressedEvent = null;
 	private java.awt.event.MouseEvent leftButtonPressedEvent = null;
 
-	private boolean isActive;
+	private org.lgna.croquet.history.DragStep dragStep;
 
-	public boolean isPressed() {
+	private boolean isDueQuoteExitedUnquote;
+
+	public DragComponent( M model, boolean isAlphaDesiredWhenOverDropReceptor ) {
+		super( model );
+		if( model != null ) {
+			this.mouseListener = new java.awt.event.MouseListener() {
+				public void mousePressed( java.awt.event.MouseEvent e ) {
+					DragComponent.this.handleMousePressed( e );
+				}
+
+				public void mouseReleased( java.awt.event.MouseEvent e ) {
+					DragComponent.this.handleMouseReleased( e );
+				}
+
+				public void mouseClicked( java.awt.event.MouseEvent e ) {
+					DragComponent.this.handleMouseClicked( e );
+				}
+
+				public void mouseEntered( java.awt.event.MouseEvent e ) {
+					DragComponent.this.handleMouseEntered( e );
+				}
+
+				public void mouseExited( java.awt.event.MouseEvent e ) {
+					DragComponent.this.handleMouseExited( e );
+				}
+			};
+			this.mouseMotionListener = new java.awt.event.MouseMotionListener() {
+				public void mouseMoved( java.awt.event.MouseEvent e ) {
+					DragComponent.this.handleMouseMoved( e );
+				}
+
+				public void mouseDragged( java.awt.event.MouseEvent e ) {
+					DragComponent.this.handleMouseDragged( e );
+				}
+			};
+			this.componentListener = new java.awt.event.ComponentListener() {
+				public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
+				}
+
+				public void componentMoved( java.awt.event.ComponentEvent e ) {
+				}
+
+				public void componentResized( java.awt.event.ComponentEvent e ) {
+					DragComponent.this.updateProxySizes();
+				}
+
+				public void componentShown( java.awt.event.ComponentEvent e ) {
+				}
+			};
+			this.dragProxy = new org.lgna.croquet.components.imp.JDragProxy( this, isAlphaDesiredWhenOverDropReceptor );
+			this.dropProxy = new org.lgna.croquet.components.imp.JDropProxy( this );
+		} else {
+			this.mouseListener = null;
+			this.mouseMotionListener = null;
+			this.componentListener = null;
+			this.dragProxy = null;
+			this.dropProxy = null;
+		}
+	}
+
+	protected boolean isClickAndClackAppropriate() {
 		return false;
 	}
 
-	public boolean isActive() {
-		return this.isActive;
-	}
-
-	public java.awt.event.MouseEvent getLeftButtonPressedEvent() {
-		return this.leftButtonPressedEvent;
-	}
-
-	private final java.awt.event.ComponentListener componentAdapter = new java.awt.event.ComponentListener() {
-		public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
-		}
-
-		public void componentMoved( java.awt.event.ComponentEvent e ) {
-		}
-
-		public void componentResized( java.awt.event.ComponentEvent e ) {
-			DragComponent.this.updateProxySizes();
-		}
-
-		public void componentShown( java.awt.event.ComponentEvent e ) {
-		}
-	};
-
-	public DragComponent( M model ) {
-		super( model );
-	}
-
-	public DragProxy getDragProxy() {
-		return this.dragProxy;
-	}
-
-	public DropProxy getDropProxy() {
-		return this.dropProxy;
-	}
-
-	public java.awt.Dimension getDropProxySize() {
-		return this.dropProxy.getSize();
-	}
-
-	@Override
-	protected void handleAddedTo( org.lgna.croquet.components.Component<?> parent ) {
-		super.handleAddedTo( parent );
-		if( isMouseListeningDesired() ) {
-			if( this.controlAdapter != null ) {
-				//pass
-			} else {
-				this.controlAdapter = new ControlAdapter();
-				this.addMouseListener( this.controlAdapter );
-				this.addMouseMotionListener( this.controlAdapter );
-			}
-		}
-		this.addComponentListener( this.componentAdapter );
-	}
-
-	@Override
-	protected void handleRemovedFrom( org.lgna.croquet.components.Component<?> parent ) {
-		if( this.controlAdapter != null ) {
-			this.removeMouseListener( this.controlAdapter );
-			this.removeMouseMotionListener( this.controlAdapter );
-			this.controlAdapter = null;
-			//			
-			//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "REMOVE NOTIFY: ", this.getClass() );
-		}
-		this.removeComponentListener( this.componentAdapter );
-		super.handleRemovedFrom( parent );
-	}
-
-	protected boolean isMouseListeningDesired() {
-		org.lgna.croquet.DragModel dragModel = this.getModel();
-		return dragModel != null;
-	}
-
-	public JComponent<?> getSubject() {
-		return this;
-	}
-
-	protected boolean isAlphaDesiredWhenOverDropReceptor() {
-		return true;
-	}
-
 	private boolean isActuallyPotentiallyDraggable() {
-		org.lgna.croquet.DragModel dragModel = this.getModel();
-		boolean rv = dragModel != null;
-		if( rv ) {
-			if( this.dragProxy != null ) {
-				//pass
-			} else {
-				this.dragProxy = new DragProxy( this, this.isAlphaDesiredWhenOverDropReceptor() );
-			}
-			if( this.dropProxy != null ) {
-				//pass
-			} else {
-				this.dropProxy = new DropProxy( this );
-			}
-		}
-		return rv;
+		return this.dragProxy != null;
 	}
 
-	protected javax.swing.JLayeredPane getLayeredPane() {
+	protected void handleMouseQuoteEnteredUnquote() {
+		this.setActive( true );
+	}
+
+	protected void handleMouseQuoteExitedUnquote() {
+		this.setActive( false );
+		this.isDueQuoteExitedUnquote = false;
+	}
+
+	protected void handleLeftMouseButtonQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+	}
+
+	protected void handleBackButtonClicked( java.awt.event.MouseEvent e ) {
+	}
+
+	protected void handleForwardButtonClicked( java.awt.event.MouseEvent e ) {
+	}
+
+	private final void handleMouseEntered( java.awt.event.MouseEvent e ) {
+		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
+			//pass
+		} else {
+			this.handleMouseQuoteEnteredUnquote();
+		}
+	}
+
+	private final void handleMouseExited( java.awt.event.MouseEvent e ) {
+		this.isDueQuoteExitedUnquote = org.lgna.croquet.Application.getActiveInstance().isDragInProgress();
+		if( this.isDueQuoteExitedUnquote ) {
+			//pass
+		} else {
+			this.handleMouseQuoteExitedUnquote();
+		}
+	}
+
+	private void handleLeftMouseButtonDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
+		org.lgna.croquet.DragModel dragModel = this.getModel();
+		if( dragModel != null ) {
+			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
+			application.setDragInProgress( true );
+			this.updateProxySizes();
+			this.updateProxyPosition( e );
+
+			javax.swing.JLayeredPane layeredPane = getLayeredPane();
+			layeredPane.add( this.dragProxy, new Integer( 1 ) );
+			layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
+
+			this.dragStep = org.lgna.croquet.history.TransactionManager.addDragStep( dragModel, org.lgna.croquet.triggers.DragTrigger.createUserInstance( this, this.leftButtonPressedEvent ) );
+			this.dragStep.setLatestMouseEvent( e );
+			this.dragStep.fireDragStarted();
+			dragModel.handleDragStarted( this.dragStep );
+			this.showDragProxy();
+		}
+	}
+
+	private void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e, boolean isClickAndClack ) {
+		this.isWithinClickThreshold = false;
+		if( isActuallyPotentiallyDraggable() ) {
+			if( isClickAndClack || edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
+				this.handleLeftMouseButtonDraggedOutsideOfClickThreshold( e );
+			}
+		}
+	}
+
+	private boolean isInTheMidstOfClickAndClack() {
+		if( isActuallyPotentiallyDraggable() ) {
+			if( this.isClickAndClackAppropriate() ) {
+				edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue eventQueue = edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.getInstance();
+				if( eventQueue.isClickAndClackSupported() ) {
+					java.awt.Component peekComponent = eventQueue.peekClickAndClackComponent();
+					java.awt.Component awtComponent = this.getAwtComponent();
+					if( awtComponent == peekComponent ) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private void handleQuoteMouseDraggedUnquote( java.awt.event.MouseEvent e, boolean isClickAndClack ) {
+		if( this.isWithinClickThreshold ) {
+			int dx = e.getX() - this.mousePressedEvent.getX();
+			int dy = e.getY() - this.mousePressedEvent.getY();
+			if( ( ( dx * dx ) + ( dy * dy ) ) > ( this.clickThreshold * this.clickThreshold ) ) {
+				this.handleMouseDraggedOutsideOfClickThreshold( e, isClickAndClack );
+			}
+		}
+		if( isActuallyPotentiallyDraggable() ) {
+			if( isClickAndClack || edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
+				if( this.isWithinClickThreshold ) {
+					//pass
+				} else {
+					this.updateProxyPosition( e );
+					if( this.dragStep != null ) {
+						this.dragStep.handleMouseDragged( e );
+					}
+				}
+			}
+		}
+	}
+
+	private void handleMouseDragged( java.awt.event.MouseEvent e ) {
+		this.handleQuoteMouseDraggedUnquote( e, false );
+	}
+
+	private void handleMouseMoved( java.awt.event.MouseEvent e ) {
+		if( this.isInTheMidstOfClickAndClack() ) {
+			this.handleQuoteMouseDraggedUnquote( e, true );
+		}
+	}
+
+	private void handleMousePressed( java.awt.event.MouseEvent e ) {
+		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+			if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
+				this.handleCancel( e );
+			}
+		} else {
+			if( this.isInTheMidstOfClickAndClack() ) {
+				//pass
+			} else {
+				this.isWithinClickThreshold = true;
+				this.mousePressedEvent = e;
+				if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
+					this.leftButtonPressedEvent = e;
+				} else {
+					this.leftButtonPressedEvent = null;
+				}
+			}
+		}
+	}
+
+	private void handleMouseReleased( java.awt.event.MouseEvent e ) {
+		boolean isClack = this.isInTheMidstOfClickAndClack();
+		if( isClack ) {
+			edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue eventQueue = edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.getInstance();
+			eventQueue.popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent();
+		}
+		if( isActuallyPotentiallyDraggable() ) {
+			if( isClack || edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
+				if( this.isWithinClickThreshold ) {
+					if( this.isClickAndClackAppropriate() ) {
+						edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue eventQueue = edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.getInstance();
+						if( eventQueue.isClickAndClackSupported() ) {
+							java.awt.Component peekComponent = eventQueue.peekClickAndClackComponent();
+							java.awt.Component awtComponent = this.getAwtComponent();
+							if( awtComponent == peekComponent ) {
+								//pass
+							} else {
+								eventQueue.pushClickAndClackMouseFocusComponent( awtComponent );
+							}
+						}
+					} else {
+						this.handleLeftMouseButtonQuoteClickedUnquote( e );
+					}
+				} else {
+					org.lgna.croquet.Application.getActiveInstance().setDragInProgress( false );
+					if( this.isDueQuoteExitedUnquote ) {
+						this.handleMouseQuoteExitedUnquote();
+					}
+					//					this.setActive( this.getAwtComponent().contains( e.getPoint() ) );
+					javax.swing.JLayeredPane layeredPane = getLayeredPane();
+					java.awt.Rectangle bounds = this.dragProxy.getBounds();
+					layeredPane.remove( this.dragProxy );
+					layeredPane.repaint( bounds );
+					if( this.dragStep != null ) {
+						this.dragStep.handleMouseReleased( e );
+						this.dragStep = null;
+					}
+				}
+			}
+		}
+	}
+
+	private void handleMouseClicked( java.awt.event.MouseEvent e ) {
+		int button = e.getButton();
+		switch( button ) {
+		case 4:
+			this.handleBackButtonClicked( e );
+			break;
+		case 5:
+			this.handleForwardButtonClicked( e );
+			break;
+		}
+	}
+
+	public void handleCancel( java.util.EventObject e ) {
+		org.lgna.croquet.Application.getActiveInstance().setDragInProgress( false );
+		if( this.isDueQuoteExitedUnquote ) {
+			this.handleMouseQuoteExitedUnquote();
+		}
+		if( this.isInTheMidstOfClickAndClack() ) {
+			edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue eventQueue = edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.getInstance();
+			eventQueue.popClickAndClackMouseFocusComponentButAllowForPotentialFollowUpClickEvent();
+		}
+		javax.swing.JLayeredPane layeredPane = this.getLayeredPane();
+		if( layeredPane != null ) {
+			java.awt.Rectangle bounds = this.dragProxy.getBounds();
+			layeredPane.remove( this.dragProxy );
+			layeredPane.repaint( bounds );
+		}
+		if( this.dragStep != null ) {
+			this.dragStep.handleCancel( e );
+			this.dragStep = null;
+		}
+	}
+
+	private javax.swing.JLayeredPane getLayeredPane() {
 		AbstractWindow<?> root = this.getRoot();
 		if( root != null ) {
 			javax.swing.JRootPane rootPane = root.getJRootPane();
@@ -216,17 +351,40 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 		}
 	}
 
+	public JComponent<?> getSubject() {
+		return this;
+	}
+
+	public org.lgna.croquet.components.imp.JDragProxy getDragProxy() {
+		return this.dragProxy;
+	}
+
+	public org.lgna.croquet.components.imp.JDropProxy getDropProxy() {
+		return this.dropProxy;
+	}
+
+	public void showDragProxy() {
+		this.dragProxy.setVisible( true );
+	}
+
+	public void hideDragProxy() {
+		this.dragProxy.setVisible( false );
+	}
+
+	public java.awt.Dimension getDropProxySize() {
+		return this.dropProxy.getSize();
+	}
+
 	private void updateProxySizes() {
-		if( isActuallyPotentiallyDraggable() ) {
-			dragProxy.setSize( dragProxy.getProxySize() );
-			dropProxy.setSize( dropProxy.getProxySize() );
+		if( this.isActuallyPotentiallyDraggable() ) {
+			this.dragProxy.setSize( this.dragProxy.getProxySize() );
+			this.dropProxy.setSize( this.dropProxy.getProxySize() );
 		}
 	}
 
 	private synchronized void updateProxyPosition( java.awt.event.MouseEvent e ) {
-		if( isActuallyPotentiallyDraggable() ) {
-			java.awt.event.MouseEvent mousePressedEvent = this.getLeftButtonPressedEvent();
-			if( mousePressedEvent != null ) {
+		if( this.isActuallyPotentiallyDraggable() ) {
+			if( this.leftButtonPressedEvent != null ) {
 				javax.swing.JLayeredPane layeredPane = getLayeredPane();
 				java.awt.Point locationOnScreenLayeredPane = layeredPane.getLocationOnScreen();
 				java.awt.Point locationOnScreen = this.getLocationOnScreen();
@@ -239,160 +397,12 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 				boolean isCopyDesired = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e );
 				int x = e.getX() + dx;
 				int y = e.getY() + dy;
-				dragProxy.setCopyDesired( isCopyDesired );
-				dragProxy.setLocation( x, y );
+				this.dragProxy.setCopyDesired( isCopyDesired );
+				this.dragProxy.setLocation( x, y );
 				//layeredPane.setPosition( dragProxy, dy );
-				dropProxy.setCopyDesired( isCopyDesired );
+				this.dropProxy.setCopyDesired( isCopyDesired );
 			}
 		}
-	}
-
-	private org.lgna.croquet.history.DragStep step;
-
-	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
-		org.lgna.croquet.DragModel dragModel = this.getModel();
-		if( dragModel != null ) {
-			org.lgna.croquet.Application application = org.lgna.croquet.Application.getActiveInstance();
-			application.setDragInProgress( true );
-			this.updateProxySizes();
-			this.updateProxyPosition( e );
-
-			javax.swing.JLayeredPane layeredPane = getLayeredPane();
-			layeredPane.add( this.dragProxy, new Integer( 1 ) );
-			layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
-
-			this.step = org.lgna.croquet.history.TransactionManager.addDragStep( dragModel, org.lgna.croquet.triggers.DragTrigger.createUserInstance( this, this.getLeftButtonPressedEvent() ) );
-			this.step.setLatestMouseEvent( e );
-			this.step.fireDragStarted();
-			dragModel.handleDragStarted( this.step );
-			this.showDragProxy();
-		}
-	}
-
-	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
-		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
-			this.updateProxyPosition( e );
-			if( this.step != null ) {
-				this.step.handleMouseDragged( e );
-			}
-		}
-	}
-
-	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
-		this.isWithinClickThreshold = false;
-		if( isActuallyPotentiallyDraggable() ) {
-			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-				this.handleLeftMouseDraggedOutsideOfClickThreshold( e );
-			}
-		}
-	}
-
-	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
-		if( this.isWithinClickThreshold ) {
-			int dx = e.getX() - this.mousePressedEvent.getX();
-			int dy = e.getY() - this.mousePressedEvent.getY();
-			if( ( ( dx * dx ) + ( dy * dy ) ) > ( this.clickThreshold * this.clickThreshold ) ) {
-				handleMouseDraggedOutsideOfClickThreshold( e );
-			}
-		}
-		if( isActuallyPotentiallyDraggable() ) {
-			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
-				if( this.isWithinClickThreshold() ) {
-					//pass
-				} else {
-					this.handleLeftMouseDragged( e );
-				}
-			}
-		}
-	}
-
-	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
-	}
-
-	private void setActive( boolean isActive ) {
-		if( this.isActive != isActive ) {
-			this.isActive = isActive;
-			this.repaint();
-		}
-	}
-
-	protected void handleMouseQuoteEnteredUnquote() {
-		this.setActive( true );
-	}
-
-	protected void handleMouseQuoteExitedUnquote() {
-		this.setActive( false );
-	}
-
-	private boolean wasQuoteExitedUnquoteSkipped;
-
-	protected final void handleMouseEntered( java.awt.event.MouseEvent e ) {
-		if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
-			//pass
-		} else {
-			this.handleMouseQuoteEnteredUnquote();
-			this.wasQuoteExitedUnquoteSkipped = false;
-		}
-	}
-
-	protected final void handleMouseExited( java.awt.event.MouseEvent e ) {
-		this.wasQuoteExitedUnquoteSkipped = org.lgna.croquet.Application.getActiveInstance().isDragInProgress();
-		if( this.wasQuoteExitedUnquoteSkipped ) {
-			//pass
-		} else {
-			this.handleMouseQuoteExitedUnquote();
-		}
-	}
-
-	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
-	}
-
-	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
-		//		java.awt.event.MouseEvent prevMousePressedEvent = this.mousePressedEvent;
-		this.isWithinClickThreshold = true;
-		this.mousePressedEvent = e;
-		this.leftButtonPressedEvent = null;
-		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-			this.leftButtonPressedEvent = e;
-		}
-		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-			if( org.lgna.croquet.Application.getActiveInstance().isDragInProgress() ) {
-				this.handleCancel( e );
-			}
-		}
-	}
-
-	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
-		if( isActuallyPotentiallyDraggable() ) {
-			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-				if( this.isWithinClickThreshold() ) {
-					//pass
-				} else {
-					org.lgna.croquet.Application.getActiveInstance().setDragInProgress( false );
-					if( this.wasQuoteExitedUnquoteSkipped ) {
-						this.handleMouseQuoteExitedUnquote();
-						this.wasQuoteExitedUnquoteSkipped = false;
-					}
-					//					this.setActive( this.getAwtComponent().contains( e.getPoint() ) );
-					javax.swing.JLayeredPane layeredPane = getLayeredPane();
-					java.awt.Rectangle bounds = this.dragProxy.getBounds();
-					layeredPane.remove( this.dragProxy );
-					layeredPane.repaint( bounds );
-					if( this.step != null ) {
-						this.step.handleMouseReleased( e );
-					}
-				}
-			}
-		}
-	}
-
-	public void showDragProxy() {
-		this.dragProxy.setVisible( true );
-	}
-
-	public void hideDragProxy() {
-		this.dragProxy.setVisible( false );
 	}
 
 	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, Component<?> asSeenBy, Integer heightToAlignLeftCenterOn, int availableHeight ) {
@@ -401,15 +411,8 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 
 		this.dropProxy.setAvailableHeight( availableHeight );
 		if( heightToAlignLeftCenterOn != null ) {
-			//			java.awt.Rectangle dropBounds = this.dropProxy.getBounds();
-			//			p.y += (heightToAlignLeftCenterOn - dropBounds.height) / 2;
 			p.y += ( heightToAlignLeftCenterOn - this.dropProxy.getAvailableHeight() ) / 2;
-			//p.x += 8;
 		}
-
-		//java.awt.event.MouseEvent mousePressedEvent = this.getMousePressedEvent();
-		//p.x -= mousePressedEvent.getX();
-		//p.y -= mousePressedEvent.getY();
 
 		this.dropProxy.setLocation( p );
 		if( this.dropProxy.getParent() != null ) {
@@ -426,29 +429,19 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 			java.awt.Rectangle bounds = this.dropProxy.getBounds();
 			parent.remove( this.dropProxy );
 			parent.repaint( bounds.x, bounds.y, bounds.width, bounds.height );
-			//			javax.swing.JLayeredPane layeredPane = getLayeredPane();
-			//			if( layeredPane != null ) {
-			//				layeredPane.repaint( bounds );
-			//			} else {
-			//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: hideDropProxyIfNecessary, layeredPane is null" );
-			//			}
 		}
 	}
 
-	public void handleCancel( java.util.EventObject e ) {
-		org.lgna.croquet.Application.getActiveInstance().setDragInProgress( false );
-		if( this.wasQuoteExitedUnquoteSkipped ) {
-			this.handleMouseQuoteExitedUnquote();
-			this.wasQuoteExitedUnquoteSkipped = false;
-		}
-		javax.swing.JLayeredPane layeredPane = getLayeredPane();
-		if( layeredPane != null ) {
-			java.awt.Rectangle bounds = this.dragProxy.getBounds();
-			layeredPane.remove( this.dragProxy );
-			layeredPane.repaint( bounds );
-		}
-		if( this.step != null ) {
-			this.step.handleCancel( e );
+	private boolean isActive;
+
+	public boolean isActive() {
+		return this.isActive;
+	}
+
+	private void setActive( boolean isActive ) {
+		if( this.isActive != isActive ) {
+			this.isActive = isActive;
+			this.repaint();
 		}
 	}
 
@@ -457,4 +450,40 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+
+	public float getClickThreshold() {
+		return this.clickThreshold;
+	}
+
+	public void setClickThreshold( float clickThreshold ) {
+		this.clickThreshold = clickThreshold;
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		if( this.mouseListener != null ) {
+			this.addMouseListener( this.mouseListener );
+		}
+		if( this.mouseMotionListener != null ) {
+			this.addMouseMotionListener( this.mouseMotionListener );
+		}
+		if( this.componentListener != null ) {
+			this.addComponentListener( this.componentListener );
+		}
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		if( this.componentListener != null ) {
+			this.removeComponentListener( this.componentListener );
+		}
+		if( this.mouseMotionListener != null ) {
+			this.removeMouseMotionListener( this.mouseMotionListener );
+		}
+		if( this.mouseListener != null ) {
+			this.removeMouseListener( this.mouseListener );
+		}
+		super.handleUndisplayable();
+	}
 }

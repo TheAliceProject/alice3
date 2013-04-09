@@ -40,19 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.lgna.croquet.components.imp;
+
+import org.lgna.croquet.components.DragComponent;
+import org.lgna.croquet.components.PaintUtilities;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DragProxy extends Proxy {
+public class JDragProxy extends JProxy {
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed( java.awt.event.KeyEvent e ) {
 		}
 
 		public void keyReleased( java.awt.event.KeyEvent e ) {
 			if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
-				DragProxy.this.getDragComponent().handleCancel( e );
+				JDragProxy.this.getDragComponent().handleCancel( e );
 			}
 		}
 
@@ -61,7 +64,7 @@ public class DragProxy extends Proxy {
 	};
 	private boolean isAlphaDesiredWhenOverDropReceptor;
 
-	public DragProxy( DragComponent dragComponent, boolean isAlphaDesiredWhenOverDropReceptor ) {
+	public JDragProxy( DragComponent dragComponent, boolean isAlphaDesiredWhenOverDropReceptor ) {
 		super( dragComponent );
 		this.isAlphaDesiredWhenOverDropReceptor = isAlphaDesiredWhenOverDropReceptor;
 	}

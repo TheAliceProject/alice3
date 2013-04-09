@@ -40,39 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package test.mouse;
+package jdkbugs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TestMouseDragAndWheel {
-	private static class Widget extends javax.swing.JLabel {
-		public Widget( int i ) {
-			this.setText( "widget: " + i );
-			this.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
-				public void mouseDragged( java.awt.event.MouseEvent e ) {
-					System.out.println( e.getSource().hashCode() );
-				}
-
-				public void mouseMoved( java.awt.event.MouseEvent e ) {
-
-				}
-			} );
-		}
-	}
-
+public class PressAndDragMouseButtonThenScrollMouseWheel {
 	public static void main( String[] args ) {
 		javax.swing.JFrame frame = new javax.swing.JFrame();
+		final boolean IS_ATTEMPTING_TO_FIX = true;
+		if( IS_ATTEMPTING_TO_FIX ) {
+			edu.cmu.cs.dennisc.java.awt.ConsistentMouseDragEventQueue.pushIfAppropriate();
+		}
 		java.awt.Container contentPane = frame.getContentPane();
 
 		javax.swing.JPanel panel = new javax.swing.JPanel();
 		panel.setLayout( new javax.swing.BoxLayout( panel, javax.swing.BoxLayout.PAGE_AXIS ) );
+
+		javax.swing.JLabel pressAndDragLabel = new javax.swing.JLabel( "press and drag then use mouse wheel" );
+		pressAndDragLabel.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
+			public void mouseDragged( java.awt.event.MouseEvent e ) {
+				System.out.println( "drag: when=" + e.getWhen() );
+			}
+
+			public void mouseMoved( java.awt.event.MouseEvent e ) {
+			}
+		} );
+		panel.add( pressAndDragLabel );
+
 		for( int i = 0; i < 24; i++ ) {
-			panel.add( new Widget( i ) );
+			panel.add( new javax.swing.JLabel( "filler to force scroll pane: " + i ) );
 		}
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( panel );
 		contentPane.add( scrollPane, java.awt.BorderLayout.CENTER );
-		frame.setSize( 320, 240 );
+		frame.setSize( 400, 300 );
+		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
 		frame.setVisible( true );
+
 	}
 }

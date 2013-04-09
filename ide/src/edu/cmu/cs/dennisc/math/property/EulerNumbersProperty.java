@@ -51,8 +51,8 @@ public class EulerNumbersProperty extends edu.cmu.cs.dennisc.property.InstancePr
 	}
 
 	public void setValue( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, edu.cmu.cs.dennisc.math.EulerNumbers value ) {
-		assert value != null;
-		assert value.isNaN() == false;
+		assert value != null : this;
+		assert value.isNaN() == false : this;
 		super.setValue( owner, value );
 	}
 

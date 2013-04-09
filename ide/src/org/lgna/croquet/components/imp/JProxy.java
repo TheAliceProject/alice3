@@ -40,12 +40,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet.components;
+package org.lgna.croquet.components.imp;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */abstract class Proxy extends javax.swing.JPanel {
+public abstract class JProxy extends javax.swing.JPanel {
 	private static java.awt.image.BufferedImage image;
 
 	private static java.awt.image.BufferedImage getOffscreenImage( int width, int height ) {
@@ -56,20 +56,20 @@ package org.lgna.croquet.components;
 		return image;
 	}
 
-	private DragComponent dragComponent;
+	private org.lgna.croquet.components.DragComponent<?> dragComponent;
 	private boolean isOverDropAcceptor = false;
 	private boolean isCopyDesired = false;
 
-	public Proxy( DragComponent dragComponent ) {
+	public JProxy( org.lgna.croquet.components.DragComponent<?> dragComponent ) {
 		this.dragComponent = dragComponent;
 		this.setOpaque( false );
 	}
 
-	protected DragComponent getDragComponent() {
+	protected org.lgna.croquet.components.DragComponent<?> getDragComponent() {
 		return this.dragComponent;
 	}
 
-	protected JComponent<?> getSubject() {
+	protected org.lgna.croquet.components.JComponent<?> getSubject() {
 		return this.dragComponent.getSubject();
 	}
 
@@ -92,7 +92,7 @@ package org.lgna.croquet.components;
 	//	}
 
 	protected void fillBounds( java.awt.Graphics2D g2 ) {
-		Component<?> subject = this.getSubject();
+		org.lgna.croquet.components.JComponent<?> subject = this.getSubject();
 		int x = 0;
 		int y = 0;
 		int width = subject.getWidth();
@@ -109,7 +109,7 @@ package org.lgna.croquet.components;
 		super.paintComponent( g );
 		java.awt.Dimension size = this.getProxySize();
 		if( ( size.width > 0 ) && ( size.height > 0 ) ) {
-			java.awt.image.BufferedImage image = Proxy.getOffscreenImage( size.width, size.height );
+			java.awt.image.BufferedImage image = JProxy.getOffscreenImage( size.width, size.height );
 			//todo: synchronize
 			//if( LayeredPaneProxy.image == null || LayeredPaneProxy.image.getWidth() < width || LayeredPaneProxy.image.getHeight() < height ) {
 			java.awt.Graphics2D g2Image = (java.awt.Graphics2D)image.getGraphics();

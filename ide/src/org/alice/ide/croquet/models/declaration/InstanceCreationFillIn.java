@@ -54,7 +54,7 @@ public class InstanceCreationFillIn extends org.alice.ide.croquet.models.cascade
 		if( rv != null ) {
 			//pass
 		} else {
-			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
+			java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
 			GalleryResourceBlank[] blanks = new GalleryResourceBlank[ parameters.size() ];
 			int i = 0;
 			for( org.lgna.project.ast.AbstractParameter parameter : constructor.getRequiredParameters() ) {
