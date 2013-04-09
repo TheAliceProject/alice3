@@ -56,6 +56,24 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 	private static java.awt.Color A_COLOR = B_COLOR.darker();
 	private static java.awt.Color F_COLOR = E_COLOR.brighter();
 
+	private static final float[][] hsb = new float[ 6 ][ 3 ];
+	private static final float minHue;
+	private static final float maxHue;
+	static {
+		int i = 0;
+		float min = Float.MAX_VALUE;
+		float max = -Float.MAX_VALUE;
+		for( java.awt.Color color : new java.awt.Color[] { A_COLOR, B_COLOR, C_COLOR, D_COLOR, E_COLOR, F_COLOR } ) {
+			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsb[ i ] );
+			min = Math.min( min, hsb[ i ][ 0 ] );
+			max = Math.max( max, hsb[ i ][ 0 ] );
+			i++;
+		}
+		minHue = min;
+		maxHue = max;
+		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( minHue, maxHue );
+	}
+
 	private class JColorView extends javax.swing.JComponent {
 		private float portion = 0.5f;
 
@@ -131,11 +149,15 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 				hsb[ i ] = ( hsbBuffer0[ i ] * ( 1 - interp ) ) + ( hsbBuffer1[ i ] * interp );
 			}
 
-			java.awt.Color nextColor = new java.awt.Color( java.awt.Color.HSBtoRGB( hsb[ 0 ], hsb[ 1 ], hsb[ 2 ] ) );
+			java.awt.Color nextColor = java.awt.Color.getHSBColor( hsb[ 0 ], hsb[ 1 ], hsb[ 2 ] );
 			//java.awt.Color nextColor2 = edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( color0, color1, interp );
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( nextColor.getRed() - nextColor2.getRed(), nextColor.getGreen() - nextColor2.getGreen(), nextColor.getBlue() - nextColor2.getBlue() );
 
 			ColorView.this.getModel().getSwingModel().setValue( nextColor, e );
+		}
+
+		private void setPortionBasedOnSelectedColor( java.awt.Color selectedColor ) {
+
 		}
 
 		@Override
@@ -206,8 +228,25 @@ public class ColorView extends org.lgna.croquet.components.ViewController<javax.
 		}
 	}
 
+	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+		}
+	};
+
 	public ColorView( org.alice.stageide.personresource.ColorState model ) {
 		super( model );
+	}
+
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.getModel().getSwingModel().addChangeListener( this.changeListener );
+	}
+
+	@Override
+	protected void handleUndisplayable() {
+		this.getModel().getSwingModel().removeChangeListener( this.changeListener );
+		super.handleUndisplayable();
 	}
 
 	@Override
