@@ -45,26 +45,27 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ColorDialogCoreView extends org.lgna.croquet.components.BorderPanel {
-	private final javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
-
-	public ColorDialogCoreView( org.alice.stageide.personresource.ColorDialogCoreComposite composite ) {
-		super( composite );
-		//this.jColorChooser.setPreviewPanel( new javax.swing.JPanel() );
-		this.getAwtComponent().add( this.jColorChooser, java.awt.BorderLayout.CENTER );
-		javax.swing.colorchooser.AbstractColorChooserPanel[] colorChooserPanels = this.jColorChooser.getChooserPanels();
-		for( javax.swing.colorchooser.AbstractColorChooserPanel colorChooserPanel : colorChooserPanels ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( colorChooserPanel.getDisplayName() );
-		}
-
-		//this.jColorChooser.setSelectionModel( c )
+public class CustomColorChooserPanel extends javax.swing.colorchooser.AbstractColorChooserPanel {
+	@Override
+	public String getDisplayName() {
+		return "Human Skin Tone";
 	}
 
-	public java.awt.Color getSelectedColor() {
-		return this.jColorChooser.getColor();
+	@Override
+	protected void buildChooser() {
 	}
 
-	public void setSelectedColor( java.awt.Color selectedColor ) {
-		this.jColorChooser.setColor( selectedColor );
+	@Override
+	public void updateChooser() {
+	}
+
+	@Override
+	public javax.swing.Icon getSmallDisplayIcon() {
+		return null;
+	}
+
+	@Override
+	public javax.swing.Icon getLargeDisplayIcon() {
+		return null;
 	}
 }
