@@ -46,10 +46,20 @@ package org.lgna.story.resources.sims2;
  * @author Dennis Cosgrove
  */
 public enum BaseSkinTone implements SkinTone {
-	LIGHTER,
-	LIGHT,
-	DARK,
-	DARKER;
+	LIGHTER( new java.awt.Color( 206, 148, 115 ) ),
+	LIGHT( new java.awt.Color( 189, 129, 90 ) ),
+	DARK( new java.awt.Color( 158, 102, 58 ) ),
+	DARKER( new java.awt.Color( 102, 54, 13 ) );
+	private final java.awt.Color color;
+
+	private BaseSkinTone( java.awt.Color color ) {
+		this.color = color;
+	}
+
+	public java.awt.Color getColor() {
+		return this.color;
+	}
+
 	//	GREEN;
 	public static BaseSkinTone getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BaseSkinTone.class );

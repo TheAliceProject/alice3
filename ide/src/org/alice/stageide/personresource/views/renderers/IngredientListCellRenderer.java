@@ -67,7 +67,9 @@ abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.sw
 	}
 
 	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
-		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getBaseSkinToneState().getValue();
+		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "TODO: getClosestBaseSkinTone(Color)" );
+		return org.lgna.story.resources.sims2.BaseSkinTone.getRandom();
+		//return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getBaseSkinToneState().getValue();
 	}
 
 	@Override
