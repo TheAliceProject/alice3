@@ -56,6 +56,15 @@ public class SkinToneColorView extends org.lgna.croquet.components.ViewControlle
 	private static java.awt.Color A_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( B_COLOR, 1.0, 1.0, 0.9 );
 	private static java.awt.Color F_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( E_COLOR, 1.0, 1.0, 1.1 );
 
+	private static java.awt.Color[] colors = {
+			A_COLOR,
+			B_COLOR,
+			C_COLOR,
+			D_COLOR,
+			E_COLOR,
+			F_COLOR
+	};
+
 	private static final float[][] hsbBuffers = new float[ 6 ][ 3 ];
 	private static final float minHue;
 	private static final float maxHue;
@@ -63,7 +72,7 @@ public class SkinToneColorView extends org.lgna.croquet.components.ViewControlle
 		int i = 0;
 		float min = Float.MAX_VALUE;
 		float max = -Float.MAX_VALUE;
-		for( java.awt.Color color : new java.awt.Color[] { A_COLOR, B_COLOR, C_COLOR, D_COLOR, E_COLOR, F_COLOR } ) {
+		for( java.awt.Color color : colors ) {
 			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsbBuffers[ i ] );
 			min = Math.min( min, hsbBuffers[ i ][ 0 ] );
 			max = Math.max( max, hsbBuffers[ i ][ 0 ] );
@@ -117,9 +126,9 @@ public class SkinToneColorView extends org.lgna.croquet.components.ViewControlle
 			int index = (int)( this.portion / 0.2 );
 			java.awt.Color nextColor;
 			if( index < 0 ) {
-				nextColor = A_COLOR;
-			} else if( index >= 5 ) {
-				nextColor = F_COLOR;
+				nextColor = colors[ 0 ];
+			} else if( index >= ( colors.length - 1 ) ) {
+				nextColor = colors[ colors.length - 1 ];
 			} else {
 				float interp = this.portion % 0.2f;
 				interp *= 5.0;
@@ -177,11 +186,11 @@ public class SkinToneColorView extends org.lgna.croquet.components.ViewControlle
 
 			int h = y1 - y0;
 
-			java.awt.GradientPaint abPaint = new java.awt.GradientPaint( xA, y0, A_COLOR, xB, y0, B_COLOR );
-			java.awt.GradientPaint bcPaint = new java.awt.GradientPaint( xB, y0, B_COLOR, xC, y0, C_COLOR );
-			java.awt.GradientPaint cdPaint = new java.awt.GradientPaint( xC, y0, C_COLOR, xD, y0, D_COLOR );
-			java.awt.GradientPaint dePaint = new java.awt.GradientPaint( xD, y0, D_COLOR, xE, y0, E_COLOR );
-			java.awt.GradientPaint efPaint = new java.awt.GradientPaint( xE, y0, E_COLOR, xF, y0, F_COLOR );
+			java.awt.GradientPaint abPaint = new java.awt.GradientPaint( xA, y0, colors[ 0 ], xB, y0, colors[ 1 ] );
+			java.awt.GradientPaint bcPaint = new java.awt.GradientPaint( xB, y0, colors[ 1 ], xC, y0, colors[ 2 ] );
+			java.awt.GradientPaint cdPaint = new java.awt.GradientPaint( xC, y0, colors[ 2 ], xD, y0, colors[ 3 ] );
+			java.awt.GradientPaint dePaint = new java.awt.GradientPaint( xD, y0, colors[ 3 ], xE, y0, colors[ 4 ] );
+			java.awt.GradientPaint efPaint = new java.awt.GradientPaint( xE, y0, colors[ 4 ], xF, y0, colors[ 5 ] );
 
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 
