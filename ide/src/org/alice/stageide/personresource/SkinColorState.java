@@ -58,6 +58,7 @@ public class SkinColorState extends ColorState {
 
 		final org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		final ColorState colorState = new SkinColorState();
+		ColorDialogCoreComposite dialogCoreComposite = new ColorDialogCoreComposite( colorState );
 
 		final int SIZE = 16;
 		class ColorIcon implements javax.swing.Icon {
@@ -79,24 +80,8 @@ public class SkinColorState extends ColorState {
 			}
 		}
 
-		org.lgna.croquet.Operation op = new org.lgna.croquet.ActionOperation( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "b41b5c7d-2ad7-4ce9-8a92-626489da06d7" ) ) {
-			@Override
-			protected void localize() {
-				super.localize();
-				this.setName( "Custom..." );
-			}
-
-			@Override
-			protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-				//javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
-				java.awt.Color nextValue = javax.swing.JColorChooser.showDialog( app.getFrame().getAwtComponent(), "Custom Skin Tone", colorState.getSwingModel().getValue() );
-				if( nextValue != null ) {
-					colorState.getSwingModel().setValue( nextValue, null );
-				}
-			}
-		};
-		org.alice.stageide.personresource.views.ColorView colorView = new org.alice.stageide.personresource.views.ColorView( colorState );
-		final org.lgna.croquet.components.Button button = op.createButton();
+		org.alice.stageide.personresource.views.SkinToneColorView colorView = new org.alice.stageide.personresource.views.SkinToneColorView( colorState );
+		final org.lgna.croquet.components.Button button = dialogCoreComposite.getOperation().createButton();
 
 		button.setClobberIcon( new ColorIcon() );
 

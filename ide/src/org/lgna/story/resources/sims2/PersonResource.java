@@ -67,12 +67,22 @@ public abstract class PersonResource implements org.lgna.story.resources.BipedRe
 		this.face = face;
 	}
 
+	private static org.lgna.story.Color getClosestColor( SkinTone skinTone ) {
+		BaseSkinTone baseSkinTone;
+		if( skinTone instanceof BaseSkinTone ) {
+			baseSkinTone = (BaseSkinTone)skinTone;
+		} else {
+			baseSkinTone = BaseSkinTone.getRandom();
+		}
+		return org.lgna.story.EmployeesOnly.createColor( baseSkinTone.getColor() );
+	}
+
 	public PersonResource( Gender gender, SkinTone skinTone, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
-		this( gender, skinTone, org.lgna.story.Color.RED, eyeColor, hair, obesityLevel, outfit, face );
+		this( gender, skinTone, getClosestColor( skinTone ), eyeColor, hair, obesityLevel, outfit, face );
 	}
 
 	public PersonResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obesityLevel, Outfit outfit, Face face ) {
-		this( gender, BaseSkinTone.DARK, skinColor, eyeColor, hair, obesityLevel, outfit, face );
+		this( gender, BaseSkinTone.getClosestToColor( org.lgna.story.EmployeesOnly.getAwtColor( skinColor ) ), skinColor, eyeColor, hair, obesityLevel, outfit, face );
 	}
 
 	public abstract LifeStage getLifeStage();
