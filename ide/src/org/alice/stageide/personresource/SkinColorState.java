@@ -42,14 +42,38 @@
  */
 package org.alice.stageide.personresource;
 
-import org.lgna.croquet.ColorState;
+import static org.lgna.story.resources.sims2.BaseSkinTone.DARK;
+import static org.lgna.story.resources.sims2.BaseSkinTone.DARKER;
+import static org.lgna.story.resources.sims2.BaseSkinTone.LIGHT;
+import static org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER;
+
+import org.lgna.croquet.color.ColorState;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SkinColorState extends ColorState {
+public class SkinColorState extends org.lgna.croquet.color.ColorState {
+	private final MelaninChooserTabComposite skinToneChooserTabComposite = new MelaninChooserTabComposite();
+
+	private static final java.awt.Color[] MELANIN_SHADES = {
+			edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( DARKER.getColor(), 1.0, 1.0, 0.9 ),
+			DARKER.getColor(),
+			edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( DARKER.getColor(), DARK.getColor(), 0.5f ),
+			DARK.getColor(),
+			edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( DARK.getColor(), LIGHT.getColor(), 0.5f ),
+			LIGHT.getColor(),
+			edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( LIGHT.getColor(), LIGHTER.getColor(), 0.5f ),
+			LIGHTER.getColor(),
+			edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( LIGHTER.getColor(), 1.0, 1.0, 1.1 )
+	};
+
 	public SkinColorState() {
 		super( org.lgna.croquet.Application.INHERIT_GROUP, java.util.UUID.fromString( "646ae40a-547a-4f52-962f-57a7dc4d970f" ), org.lgna.story.resources.sims2.BaseSkinTone.getRandom().getColor() );
+		this.getChooserDialogCoreComposite().addSubComposite( this.skinToneChooserTabComposite );
+	}
+
+	public java.awt.Color[] getMelaninShades() {
+		return MELANIN_SHADES;
 	}
 
 	public static void main( String[] args ) throws Exception {
@@ -60,10 +84,9 @@ public class SkinColorState extends ColorState {
 
 		final org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 		final ColorState colorState = new SkinColorState();
-		ColorDialogCoreComposite dialogCoreComposite = new ColorDialogCoreComposite( colorState );
 
-		org.alice.stageide.personresource.views.SkinToneColorView colorView = new org.alice.stageide.personresource.views.SkinToneColorView( colorState );
-		org.lgna.croquet.components.Button button = dialogCoreComposite.getOperation().createButton();
+		//org.alice.stageide.personresource.views.MelaninSlider colorView = new org.alice.stageide.personresource.views.MelaninSlider( colorState );
+		org.lgna.croquet.components.Button button = colorState.getChooserDialogCoreComposite().getOperation().createButton();
 
 		final int SIZE = 16;
 		class ColorIcon implements javax.swing.Icon {
@@ -96,15 +119,13 @@ public class SkinColorState extends ColorState {
 
 		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel();
 
-		lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( org.lgna.story.resources.sims2.BaseSkinTone.DARKER.getColor() ) );
-		lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( org.lgna.story.resources.sims2.BaseSkinTone.DARK.getColor() ) );
-		lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( org.lgna.story.resources.sims2.BaseSkinTone.LIGHT.getColor() ) );
-		lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER.getColor() ) );
-		lineAxisPanel.addComponent( dialogCoreComposite.getOperation().createButton() );
+		for( java.awt.Color melaninShade : MELANIN_SHADES ) {
+			lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( melaninShade ) );
+		}
+		lineAxisPanel.addComponent( button );
 
 		app.getFrame().getContentPane().addLineStartComponent( label );
-		app.getFrame().getContentPane().addCenterComponent( colorView );
-		app.getFrame().getContentPane().addLineEndComponent( lineAxisPanel );
+		app.getFrame().getContentPane().addCenterComponent( lineAxisPanel );
 
 		app.getFrame().setSize( 600, 64 );
 		app.getFrame().setVisible( true );

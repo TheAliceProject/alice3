@@ -40,15 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.views;
+package org.lgna.croquet.color.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorDialogCoreView extends org.lgna.croquet.components.BorderPanel {
+public class ColorChooserDialogCoreView extends org.lgna.croquet.components.BorderPanel {
 	private final javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
 
-	public ColorDialogCoreView( org.alice.stageide.personresource.ColorDialogCoreComposite composite ) {
+	public ColorChooserDialogCoreView( org.lgna.croquet.color.ColorChooserDialogCoreComposite composite ) {
 		super( composite );
 		//this.jColorChooser.setPreviewPanel( new javax.swing.JPanel() );
 		this.getAwtComponent().add( this.jColorChooser, java.awt.BorderLayout.CENTER );
@@ -66,5 +66,18 @@ public class ColorDialogCoreView extends org.lgna.croquet.components.BorderPanel
 
 	public void setSelectedColor( java.awt.Color selectedColor ) {
 		this.jColorChooser.setColor( selectedColor );
+	}
+
+	public void addColorChooserTabView( ColorChooserTabView view ) {
+		final boolean IS_PREPEND_DESIRED = true; //todo
+		if( IS_PREPEND_DESIRED ) {
+			this.jColorChooser.setChooserPanels( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( javax.swing.colorchooser.AbstractColorChooserPanel.class, view.getAwtComponent(), this.jColorChooser.getChooserPanels() ) );
+		} else {
+			this.jColorChooser.addChooserPanel( view.getAwtComponent() );
+		}
+	}
+
+	public void removeColorChooserTabView( ColorChooserTabView view ) {
+		this.jColorChooser.removeChooserPanel( view.getAwtComponent() );
 	}
 }

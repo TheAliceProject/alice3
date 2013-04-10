@@ -40,7 +40,7 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.color;
 
 /**
  * @author Dennis Cosgrove
@@ -103,9 +103,12 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 
 	private final SwingModel swingModel;
 
+	private final ColorChooserDialogCoreComposite chooserDialogCoreComposite;
+
 	public ColorState( org.lgna.croquet.Group group, java.util.UUID id, java.awt.Color initialValue ) {
 		super( group, id, initialValue, org.lgna.croquet.codecs.ColorCodec.SINGLETON );
 		this.swingModel = new SwingModel( initialValue );
+		this.chooserDialogCoreComposite = new ColorChooserDialogCoreComposite( this );
 	}
 
 	public SwingModel getSwingModel() {
@@ -138,6 +141,10 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 		return java.util.Collections.emptyList();
 	}
 
+	public ColorChooserDialogCoreComposite getChooserDialogCoreComposite() {
+		return this.chooserDialogCoreComposite;
+	}
+
 	public org.lgna.croquet.components.Button createColorSelectionOperationButton( java.awt.Color color ) {
 		org.lgna.croquet.components.Button rv = this.getItemSelectionOperation( color ).createButton();
 		rv.setClobberText( "" );
@@ -146,7 +153,7 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 	}
 
 	public org.lgna.croquet.components.ToggleButton createColorSelectionStateToggleButton( java.awt.Color color ) {
-		BooleanState itemSelectedState = this.getItemSelectedState( color );
+		org.lgna.croquet.BooleanState itemSelectedState = this.getItemSelectedState( color );
 		itemSelectedState.initializeIfNecessary();
 		itemSelectedState.setTextForBothTrueAndFalse( "" );
 		itemSelectedState.setIconForBothTrueAndFalse( new org.alice.ide.swing.icons.ColorIcon( color ) );

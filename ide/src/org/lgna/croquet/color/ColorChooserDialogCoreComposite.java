@@ -40,32 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.views;
+package org.lgna.croquet.color;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomColorChooserPanel extends javax.swing.colorchooser.AbstractColorChooserPanel {
-	@Override
-	public String getDisplayName() {
-		return "Human Skin Tone";
+public final class ColorChooserDialogCoreComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.lgna.croquet.color.views.ColorChooserDialogCoreView> {
+	private final ColorState colorState;
+
+	/* package-private */ColorChooserDialogCoreComposite( ColorState colorState ) {
+		super( java.util.UUID.fromString( "0a29c940-b819-41a2-8ed9-683f80b0ba69" ), org.lgna.croquet.Application.INHERIT_GROUP );
+		this.colorState = colorState;
 	}
 
 	@Override
-	protected void buildChooser() {
+	protected org.lgna.croquet.color.views.ColorChooserDialogCoreView createView() {
+		return new org.lgna.croquet.color.views.ColorChooserDialogCoreView( this );
 	}
 
 	@Override
-	public void updateChooser() {
+	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
+		return IS_GOOD_TO_GO_STATUS;
 	}
 
 	@Override
-	public javax.swing.Icon getSmallDisplayIcon() {
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		this.getView().setSelectedColor( this.colorState.getValue() );
+		super.handlePreShowDialog( completionStep );
+	}
+
+	@Override
+	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		java.awt.Color color = this.getView().getSelectedColor();
+		if( color != null ) {
+			this.colorState.setValueTransactionlessly( color );
+		}
 		return null;
 	}
 
-	@Override
-	public javax.swing.Icon getLargeDisplayIcon() {
-		return null;
+	public void addSubComposite( ColorChooserTabComposite<?> composite ) {
+		composite.initializeIfNecessary();
+		this.getView().addColorChooserTabView( composite.getView() );
+	}
+
+	public void removeSubComposite( ColorChooserTabComposite<?> composite ) {
+		this.getView().removeColorChooserTabView( composite.getView() );
 	}
 }

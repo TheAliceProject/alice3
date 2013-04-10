@@ -40,43 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
-
-import org.lgna.croquet.ColorState;
+package org.lgna.croquet.color;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ColorDialogCoreComposite extends org.lgna.croquet.OperationInputDialogCoreComposite<org.alice.stageide.personresource.views.ColorDialogCoreView> {
-	private final ColorState colorState;
+public abstract class ColorChooserTabComposite<V extends org.lgna.croquet.color.views.ColorChooserTabView> extends org.lgna.croquet.AbstractComposite<V> {
+	private String name;
+	private javax.swing.Icon largeDisplayIcon;
+	private javax.swing.Icon smallDisplayIcon;
 
-	public ColorDialogCoreComposite( ColorState colorState ) {
-		super( java.util.UUID.fromString( "0a29c940-b819-41a2-8ed9-683f80b0ba69" ), org.lgna.croquet.Application.INHERIT_GROUP );
-		this.colorState = colorState;
+	public ColorChooserTabComposite( java.util.UUID migrationId ) {
+		super( migrationId );
 	}
 
 	@Override
-	protected org.alice.stageide.personresource.views.ColorDialogCoreView createView() {
-		return new org.alice.stageide.personresource.views.ColorDialogCoreView( this );
+	protected void localize() {
+		super.localize();
+		this.name = this.findDefaultLocalizedText();
 	}
 
-	@Override
-	protected org.lgna.croquet.AbstractSeverityStatusComposite.Status getStatusPreRejectorCheck( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return IS_GOOD_TO_GO_STATUS;
+	public String getName() {
+		return this.name;
 	}
 
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		this.getView().setSelectedColor( this.colorState.getValue() );
-		super.handlePreShowDialog( completionStep );
+	public javax.swing.Icon getSmallDisplayIcon() {
+		return this.smallDisplayIcon;
 	}
 
-	@Override
-	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		java.awt.Color color = this.getView().getSelectedColor();
-		if( color != null ) {
-			this.colorState.setValueTransactionlessly( color );
-		}
-		return null;
+	public void setSmallDisplayIcon( javax.swing.Icon smallDisplayIcon ) {
+		this.smallDisplayIcon = smallDisplayIcon;
+	}
+
+	public javax.swing.Icon getLargeDisplayIcon() {
+		return this.largeDisplayIcon;
+	}
+
+	public void setLargeDisplayIcon( javax.swing.Icon largeDisplayIcon ) {
+		this.largeDisplayIcon = largeDisplayIcon;
 	}
 }

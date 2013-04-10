@@ -71,7 +71,12 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 		final org.alice.stageide.personresource.SkinColorState skinColorState = composite.getSkinColorState();
 		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "align right, skip 1" );
-		this.addComponent( new SkinToneColorView( composite.getSkinColorState() ) );
+
+		for( java.awt.Color melaninShade : skinColorState.getMelaninShades() ) {
+			this.addComponent( skinColorState.createColorSelectionStateToggleButton( melaninShade ) );
+		}
+
+		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
 
 		final int SIZE = 16;
 		class SkinColorIcon implements javax.swing.Icon {
@@ -90,7 +95,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 			}
 		}
 
-		final org.lgna.croquet.components.Button button = composite.getCustomSkinColorOperation().createButton();
+		final org.lgna.croquet.components.Button button = composite.getSkinColorState().getChooserDialogCoreComposite().getOperation().createButton();
 		button.setClobberIcon( new SkinColorIcon() );
 
 		javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {

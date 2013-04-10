@@ -45,7 +45,7 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class SkinToneColorView extends org.lgna.croquet.components.ViewController<javax.swing.JComponent, org.lgna.croquet.ColorState> {
+public class MelaninChooserTabView extends org.lgna.croquet.color.views.ColorChooserTabView {
 	private static int HALF_ARROW_WIDTH = 4;
 	private static int ARROW_HEIGHT = 6;
 	private static java.awt.Color B_COLOR = org.lgna.story.resources.sims2.BaseSkinTone.DARKER.getColor();
@@ -141,8 +141,7 @@ public class SkinToneColorView extends org.lgna.croquet.components.ViewControlle
 				}
 				nextColor = java.awt.Color.getHSBColor( hsbBuffer[ 0 ], hsbBuffer[ 1 ], hsbBuffer[ 2 ] );
 			}
-
-			SkinToneColorView.this.getModel().getSwingModel().setValue( nextColor, e );
+			getAwtComponent().getColorSelectionModel().setSelectedColor( nextColor );
 		}
 
 		@Override
@@ -162,8 +161,8 @@ public class SkinToneColorView extends org.lgna.croquet.components.ViewControlle
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			java.awt.Dimension rv = super.getPreferredSize();
-			rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, ARROW_HEIGHT + ARROW_HEIGHT + 32 );
-			rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( rv, HALF_ARROW_WIDTH + HALF_ARROW_WIDTH + 200 );
+			rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, ARROW_HEIGHT + ARROW_HEIGHT + 24 );
+			rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( rv, HALF_ARROW_WIDTH + HALF_ARROW_WIDTH + 320 );
 			return rv;
 		}
 
@@ -213,29 +212,26 @@ public class SkinToneColorView extends org.lgna.croquet.components.ViewControlle
 		}
 	}
 
-	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+	public MelaninChooserTabView( org.alice.stageide.personresource.MelaninChooserTabComposite composite ) {
+		super( composite );
+	}
+
+	private class JMelaninChooserPanel extends JColorChooserPanel {
+		@Override
+		protected void buildChooser() {
+			JColorView jMelaninSlider = new JColorView();
+			this.setLayout( new java.awt.BorderLayout() );
+			this.add( jMelaninSlider, java.awt.BorderLayout.PAGE_START );
 		}
-	};
 
-	public SkinToneColorView( org.lgna.croquet.ColorState model ) {
-		super( model );
+		@Override
+		public void updateChooser() {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.getColorSelectionModel().getSelectedColor() );
+		}
 	}
 
 	@Override
-	protected void handleDisplayable() {
-		super.handleDisplayable();
-		this.getModel().getSwingModel().addChangeListener( this.changeListener );
-	}
-
-	@Override
-	protected void handleUndisplayable() {
-		this.getModel().getSwingModel().removeChangeListener( this.changeListener );
-		super.handleUndisplayable();
-	}
-
-	@Override
-	protected javax.swing.JComponent createAwtComponent() {
-		return new JColorView();
+	protected javax.swing.colorchooser.AbstractColorChooserPanel createAwtComponent() {
+		return new JMelaninChooserPanel();
 	}
 }
