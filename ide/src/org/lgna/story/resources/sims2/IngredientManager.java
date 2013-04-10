@@ -51,13 +51,13 @@ public abstract class IngredientManager<E extends Ingredient> {
 
 	protected abstract Class<Class<? extends E>> getImplementingClassesComponentType();
 
-	protected abstract Class<? extends E> getUnisexIntefaceClass( LifeStage lifeStage );
+	protected abstract Class<? extends E> getUnisexInterfaceClass( LifeStage lifeStage );
 
-	protected abstract Class<? extends E> getGenderedIntefaceClass( LifeStage lifeStage, Gender gender );
+	protected abstract Class<? extends E> getGenderedInterfaceClass( LifeStage lifeStage, Gender gender );
 
 	public Class<? extends E>[] getImplementingClasses( LifeStage lifeStage, Gender gender ) {
-		Class<? extends E> interfaceClsUnisex = this.getUnisexIntefaceClass( lifeStage );
-		Class<? extends E> interfaceClsGendered = this.getGenderedIntefaceClass( lifeStage, gender );
+		Class<? extends E> interfaceClsUnisex = this.getUnisexInterfaceClass( lifeStage );
+		Class<? extends E> interfaceClsGendered = this.getGenderedInterfaceClass( lifeStage, gender );
 
 		Class<? extends E>[] enumClsesUnisex = this.mapInterfaceClsToImplementingClses.get( interfaceClsUnisex );
 		Class<? extends E>[] enumClsesGendered = this.mapInterfaceClsToImplementingClses.get( interfaceClsGendered );
@@ -90,8 +90,8 @@ public abstract class IngredientManager<E extends Ingredient> {
 		assert lifeStage != null;
 		assert gender != null;
 		Class<?> eCls = e.getClass();
-		Class<? extends E> interfaceClsGendered = this.getGenderedIntefaceClass( lifeStage, gender );
-		Class<? extends E> interfaceClsUnisex = this.getUnisexIntefaceClass( lifeStage );
+		Class<? extends E> interfaceClsGendered = this.getGenderedInterfaceClass( lifeStage, gender );
+		Class<? extends E> interfaceClsUnisex = this.getUnisexInterfaceClass( lifeStage );
 		boolean rv = interfaceClsUnisex.isAssignableFrom( eCls ) || interfaceClsGendered.isAssignableFrom( eCls );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( rv, lifeStage, gender, eCls, interfaceClsGendered, interfaceClsUnisex );
 		return rv;

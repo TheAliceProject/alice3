@@ -120,6 +120,10 @@ public abstract class MemberTabView extends org.lgna.croquet.components.MigPanel
 						view.getTitle().setRenderingStyle( org.lgna.croquet.components.ToolPaletteTitle.RenderingStyle.LIGHT_UP_ICON_ONLY );
 					}
 					view.setBackgroundColor( this.getBackgroundColor() );
+					if( subComposite instanceof org.alice.ide.member.UserMethodsSubComposite ) {
+						org.alice.ide.member.UserMethodsSubComposite userMethodsSubComposite = (org.alice.ide.member.UserMethodsSubComposite)subComposite;
+						view.getTitle().setSuppressed( userMethodsSubComposite.isRelevant() == false );
+					}
 					scrollPaneView.addComponent( view, "wrap" );
 				}
 			} else {

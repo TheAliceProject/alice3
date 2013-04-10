@@ -47,32 +47,34 @@ import edu.cmu.cs.dennisc.scenegraph.WeightedMesh;
 
 public class WeightedMeshAdapter<E extends WeightedMesh> extends MeshAdapter<E>
 {
-
-	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		if( ( property == m_element.vertexBuffer ) ||
-				( property == m_element.normalBuffer ) ||
-				( property == m_element.textCoordBuffer ) ||
-				( property == m_element.indexBuffer ) ||
-				( property == m_element.weightInfo ) ||
-				( property == m_element.skeleton ) )
-		{
-		}
-		else {
-			super.propertyChanged( property );
-		}
-	}
-
-	@Override
-	protected void renderGeometry( RenderContext rc )
-	{
-		throw new UnsupportedOperationException( "WeightedMeshAdapters cannot be used to render WeightedMeshes. See SkeletonVisualAdapter." );
-	}
-
-	@Override
-	protected void pickGeometry( PickContext pc, boolean isSubElementRequired )
-	{
-		throw new UnsupportedOperationException( "WeightedMeshAdapters cannot be used to pisk WeightedMeshes. See SkeletonVisualAdapter." );
-	}
-
+    
+    @Override
+    protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
+        if( property == m_element.vertexBuffer ||
+            property == m_element.normalBuffer ||
+            property == m_element.textCoordBuffer ||
+            property == m_element.indexBuffer ||
+            property == m_element.weightInfo ||
+            property == m_element.skeleton )
+        {
+        } 
+        else {
+            super.propertyChanged( property );
+        }
+    }
+    
+    @Override
+    protected void renderGeometry(RenderContext rc, VisualAdapter.RenderType renderType)
+    {
+        throw new UnsupportedOperationException("WeightedMeshAdapters cannot be used to render WeightedMeshes. See SkeletonVisualAdapter.");
+    }
+    
+    @Override
+    protected void pickGeometry(PickContext pc, boolean isSubElementRequired)
+    {
+        throw new UnsupportedOperationException("WeightedMeshAdapters cannot be used to pisk WeightedMeshes. See SkeletonVisualAdapter.");
+    }
+    
+    
+    
 }

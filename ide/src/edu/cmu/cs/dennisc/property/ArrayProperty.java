@@ -63,7 +63,7 @@ public class ArrayProperty<E> extends InstanceProperty<E[]> {
 
 	@Override
 	public void setValue( PropertyOwner owner, E[] value ) {
-		assert value != null;
+		assert value != null : this;
 		super.setValue( owner, value );
 	}
 }

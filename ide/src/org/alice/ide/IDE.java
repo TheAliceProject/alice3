@@ -74,7 +74,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		}
 	};
 
-	private org.lgna.cheshire.simple.stencil.SimplePresentation simplePresentation = null;
 	private org.alice.ide.stencil.PotentialDropReceptorsFeedbackView potentialDropReceptorsStencil = null;
 
 	public IDE() {
@@ -164,11 +163,15 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 	}
 
 	public AccessorAndMutatorDisplayStyle getAccessorAndMutatorDisplayStyle( org.lgna.project.ast.AbstractField field ) {
-		org.lgna.project.ast.AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
-		if( ( declaringType != null ) && declaringType.isUserAuthored() ) {
-			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+		if( field != null ) {
+			org.lgna.project.ast.AbstractType<?, ?, ?> declaringType = field.getDeclaringType();
+			if( ( declaringType != null ) && declaringType.isUserAuthored() ) {
+				return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+			} else {
+				//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
+				return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
+			}
 		} else {
-			//return AccessorAndMutatorDisplayStyle.GETTER_AND_SETTER;
 			return AccessorAndMutatorDisplayStyle.ACCESS_AND_ASSIGNMENT;
 		}
 	}
@@ -593,13 +596,6 @@ public abstract class IDE extends org.alice.ide.ProjectApplication {
 		} else {
 			return null;
 		}
-	}
-
-	public org.lgna.cheshire.simple.stencil.SimplePresentation getSimplePresentation() {
-		if( this.simplePresentation == null ) {
-			this.simplePresentation = new org.lgna.cheshire.simple.stencil.SimplePresentation( this );
-		}
-		return simplePresentation;
 	}
 
 	private static final Integer HIGHLIGHT_STENCIL_LAYER = javax.swing.JLayeredPane.POPUP_LAYER - 2;

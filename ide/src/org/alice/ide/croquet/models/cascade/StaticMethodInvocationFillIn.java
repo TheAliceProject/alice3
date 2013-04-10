@@ -55,7 +55,7 @@ public class StaticMethodInvocationFillIn extends ExpressionFillInWithExpression
 			if( rv != null ) {
 				//pass
 			} else {
-				java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = method.getRequiredParameters();
+				java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = method.getRequiredParameters();
 				//note: assuming static methods are in java, which therefore do not change their signatures
 				rv = new StaticMethodInvocationFillIn( method, org.alice.ide.croquet.models.ast.cascade.MethodUtilities.createParameterBlanks( method ) );
 				map.put( method, rv );

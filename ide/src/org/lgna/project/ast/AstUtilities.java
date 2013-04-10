@@ -305,7 +305,7 @@ public class AstUtilities {
 		MethodInvocation rv = new MethodInvocation();
 		rv.expression.setValue( prevMethodInvocation.expression.getValue() );
 		rv.method.setValue( nextMethod );
-		java.util.ArrayList<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
+		java.util.List<? extends AbstractParameter> parameters = nextMethod.getRequiredParameters();
 		final int N = parameters.size();
 		for( int i = 0; i < ( N - 1 ); i++ ) {
 			AbstractArgument argument = prevMethodInvocation.requiredArguments.get( i );
@@ -334,7 +334,7 @@ public class AstUtilities {
 	}
 
 	public static MethodInvocation createMethodInvocation( Expression instanceExpression, AbstractMethod method, Expression... argumentExpressions ) {
-		java.util.ArrayList<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+		java.util.List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
 		assert requiredParameters.size() == argumentExpressions.length : method;
 
 		MethodInvocation rv = new MethodInvocation();
@@ -484,7 +484,7 @@ public class AstUtilities {
 	}
 
 	public static AbstractType<?, ?, ?>[] getParameterValueTypes( AbstractMethod method ) {
-		java.util.ArrayList<? extends AbstractParameter> parameters = method.getRequiredParameters();
+		java.util.List<? extends AbstractParameter> parameters = method.getRequiredParameters();
 		AbstractType<?, ?, ?>[] rv = new AbstractType[ parameters.size() ];
 		int i = 0;
 		for( AbstractParameter parameter : parameters ) {
@@ -504,7 +504,7 @@ public class AstUtilities {
 
 	public static UserLambda createUserLambda( AbstractType<?, ?, ?> type ) {
 		AbstractMethod singleAbstractMethod = getSingleAbstractMethod( type );
-		java.util.ArrayList<? extends AbstractParameter> srcRequiredParameters = singleAbstractMethod.getRequiredParameters();
+		java.util.List<? extends AbstractParameter> srcRequiredParameters = singleAbstractMethod.getRequiredParameters();
 		UserParameter[] dstRequiredParameters = new UserParameter[ srcRequiredParameters.size() ];
 		for( int i = 0; i < dstRequiredParameters.length; i++ ) {
 			AbstractParameter srcRequiredParameter = srcRequiredParameters.get( i );

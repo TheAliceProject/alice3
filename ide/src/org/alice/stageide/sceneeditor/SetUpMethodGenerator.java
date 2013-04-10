@@ -87,7 +87,7 @@ public class SetUpMethodGenerator {
 	public static org.lgna.project.ast.InstanceCreation createSims2PersonRecourseInstanceCreation( org.lgna.story.resources.sims2.PersonResource personResource ) throws org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException {
 		Class<?>[] parameterClses = {
 				org.lgna.story.resources.sims2.Gender.class,
-				org.lgna.story.resources.sims2.SkinTone.class,
+				org.lgna.story.Color.class,
 				org.lgna.story.resources.sims2.EyeColor.class,
 				org.lgna.story.resources.sims2.Hair.class,
 				Number.class,
@@ -96,7 +96,7 @@ public class SetUpMethodGenerator {
 		};
 		org.lgna.project.ast.Expression[] arguments = {
 				getExpressionCreator().createExpression( personResource.getGender() ),
-				getExpressionCreator().createExpression( personResource.getSkinTone() ),
+				getExpressionCreator().createExpression( personResource.getSkinColor() ),
 				getExpressionCreator().createExpression( personResource.getEyeColor() ),
 				getExpressionCreator().createExpression( personResource.getHair() ),
 				getExpressionCreator().createExpression( personResource.getObesityLevel() ),

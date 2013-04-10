@@ -49,8 +49,8 @@ package org.alice.ide.croquet.components;
 public abstract class KnurlDragComponent<M extends org.lgna.croquet.DragModel> extends org.lgna.croquet.components.DragComponent<M> {
 	protected static final int KNURL_WIDTH = 8;
 
-	public KnurlDragComponent( M model ) {
-		super( model );
+	public KnurlDragComponent( M model, boolean isAlphaDesiredWhenOverDropReceptor ) {
+		super( model, isAlphaDesiredWhenOverDropReceptor );
 	}
 
 	protected java.awt.Paint getForegroundPaint( int x, int y, int width, int height ) {

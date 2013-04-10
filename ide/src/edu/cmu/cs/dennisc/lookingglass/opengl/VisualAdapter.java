@@ -54,6 +54,12 @@ import edu.cmu.cs.dennisc.scenegraph.Appearance;
  */
 public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> extends LeafAdapter<E> {
 
+	public enum RenderType {
+		OPAQUE,
+		ALPHA_BLENDED,
+		GHOST, 
+		ALL
+	}
 	//todo: make private?
 	protected AppearanceAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> m_frontFacingAppearanceAdapter = null;
 	protected AppearanceAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Appearance> m_backFacingAppearanceAdapter = null;
@@ -112,6 +118,45 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		return false;
 	}
 
+	protected boolean hasOpaque() {
+		if( m_geometryAdapters != null && m_geometryAdapters.length > 0 ) {
+			if( m_frontFacingAppearanceAdapter != null ) {
+				if( m_frontFacingAppearanceAdapter.isAlphaBlended() ) {
+					return false;
+				}
+			}
+			if( m_backFacingAppearanceAdapter != null ) {
+				if( m_backFacingAppearanceAdapter.isAlphaBlended() ) {
+					return false;
+				}
+			}
+			
+			synchronized( m_geometryAdapters ) {
+				for( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter : m_geometryAdapters ) {
+					if( geometryAdapter.hasOpaque() ) {
+						return true;
+					}
+				}
+			}
+			
+		}
+		return false;
+	}
+	
+	protected boolean isAllAlpha() {
+		if( m_frontFacingAppearanceAdapter != null ) {
+			if( m_frontFacingAppearanceAdapter.isAllAlphaBlended() ) {
+				return true;
+			}
+		}
+		if( m_backFacingAppearanceAdapter != null ) {
+			if( m_backFacingAppearanceAdapter.isAllAlphaBlended() ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	protected boolean isAlphaBlended() {
 		if( ( m_geometryAdapters != null ) && ( m_geometryAdapters.length > 0 ) ) {
 			synchronized( m_geometryAdapters ) {
@@ -169,15 +214,15 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		//pass
 	}
 
-	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
-		synchronized( m_geometryAdapters ) {
-			for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : m_geometryAdapters ) {
-				geometryAdapter.render( rc );
-			}
-		}
-	}
-
-	protected void actuallyRender( RenderContext rc ) {
+	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc, RenderType renderType ) {
+        synchronized( m_geometryAdapters ) {
+            for( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter : m_geometryAdapters ) {
+                geometryAdapter.render( rc, renderType );
+            }
+        }
+    }
+	
+	protected void actuallyRender( RenderContext rc, RenderType renderType ) {
 		assert ( m_frontFacingAppearanceAdapter != null ) || ( m_backFacingAppearanceAdapter != null );
 
 		if( m_isScaleIdentity ) {
@@ -187,27 +232,27 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 			rc.gl.glMultMatrixd( m_scaleBuffer );
 			rc.incrementScaledCount();
 		}
-		if( m_frontFacingAppearanceAdapter == m_backFacingAppearanceAdapter ) {
-			if( m_frontFacingAppearanceAdapter != null ) {
-				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT_AND_BACK );
-				rc.gl.glDisable( GL_CULL_FACE );
-				this.renderGeometry( rc );
-				rc.gl.glEnable( GL_CULL_FACE );
-			} else {
-				//should never reach here
-			}
-		} else {
-			if( m_frontFacingAppearanceAdapter != null ) {
-				rc.gl.glCullFace( GL_BACK );
-				m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT );
-				this.renderGeometry( rc );
-			}
-			if( m_backFacingAppearanceAdapter != null ) {
-				rc.gl.glCullFace( GL_FRONT );
-				m_backFacingAppearanceAdapter.setPipelineState( rc, GL_BACK );
-				this.renderGeometry( rc );
-			}
-		}
+        if( m_frontFacingAppearanceAdapter == m_backFacingAppearanceAdapter ) {
+            if( m_frontFacingAppearanceAdapter != null ) {
+                m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT_AND_BACK );
+                rc.gl.glDisable( GL_CULL_FACE );
+                this.renderGeometry( rc, renderType );
+                rc.gl.glEnable( GL_CULL_FACE );
+            } else {
+                //should never reach here
+            }
+        } else {
+            if( m_frontFacingAppearanceAdapter != null ) {
+                rc.gl.glCullFace( GL_BACK );
+                m_frontFacingAppearanceAdapter.setPipelineState( rc, GL_FRONT );
+                this.renderGeometry( rc, renderType );
+            }
+            if( m_backFacingAppearanceAdapter != null ) {
+                rc.gl.glCullFace( GL_FRONT );
+                m_backFacingAppearanceAdapter.setPipelineState( rc, GL_BACK );
+                this.renderGeometry( rc, renderType );
+            }
+        }
 
 		if( m_isScaleIdentity ) {
 			//pass
@@ -222,25 +267,32 @@ public class VisualAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Visual> exten
 		if( isActuallyShowing() ) {
 			rc.gl.glPushMatrix();
 			rc.gl.glMultMatrixd( accessAbsoluteTransformationAsBuffer() );
-			actuallyRender( rc );
+			actuallyRender( rc, RenderType.ALPHA_BLENDED );
 			rc.gl.glPopMatrix();
 		}
 	}
-
+	public void renderAllAlphaBlended( RenderContext rc ) {
+		//System.out.println( "renderAlphaBlended: " + this );
+		if( isActuallyShowing() ) {
+			rc.gl.glPushMatrix();
+			rc.gl.glMultMatrixd( accessAbsoluteTransformationAsBuffer() );
+			actuallyRender( rc, RenderType.ALL );
+			rc.gl.glPopMatrix();
+		}
+	}
+	
 	@Override
 	public void renderOpaque( RenderContext rc ) {
 		if( isActuallyShowing() ) {
-			if( isAlphaBlended() ) {
-				//pass
-			} else {
-				actuallyRender( rc );
+			if( hasOpaque() ) {
+				actuallyRender( rc, RenderType.OPAQUE  );
 			}
 		}
 	}
 
 	@Override
 	public void renderGhost( RenderContext rc, GhostAdapter root ) {
-		actuallyRender( rc );
+		actuallyRender( rc, RenderType.GHOST );
 	}
 
 	protected void pickGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, boolean isSubElementActuallyRequired ) {

@@ -184,7 +184,7 @@ public class OldMeshAdapter extends GeometryAdapter<edu.cmu.cs.dennisc.scenegrap
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		//		if( xyzs != null && xyzs.length > Short.MAX_VALUE / 3 ) {
 		//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning" );
 		//		}

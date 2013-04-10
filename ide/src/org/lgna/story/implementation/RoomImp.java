@@ -217,8 +217,8 @@ public class RoomImp extends VisualScaleModelImp {
 	private final edu.cmu.cs.dennisc.scenegraph.HorizontalSurface ceiling = new edu.cmu.cs.dennisc.scenegraph.HorizontalSurface( false );
 
 	private final edu.cmu.cs.dennisc.scenegraph.Visual[] sgVisuals = { this.walls, this.floor, this.ceiling };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgPaintAppearances = { this.walls.getAppearance(), this.floor.getAppearance(), this.ceiling.getAppearance() };
-	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgOpacityAppearances = { this.walls.getAppearance(), this.floor.getAppearance(), this.ceiling.getAppearance() };
+
+	private final edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] sgAppearances = { this.walls.getAppearance(), this.floor.getAppearance(), this.ceiling.getAppearance() };
 
 	public RoomImp( org.lgna.story.SRoom abstraction ) {
 		this( abstraction, 10, 3, 10 );
@@ -233,6 +233,10 @@ public class RoomImp extends VisualScaleModelImp {
 		this.floor.setTiling( width, depth );
 		this.ceiling.setParent( this.getSgComposite() );
 		this.ceiling.setTiling( width, depth );
+
+		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.sgAppearances ) {
+			putInstance( sgAppearance );
+		}
 	}
 
 	private void internalSetSize( float width, float height, float depth ) {
@@ -258,12 +262,12 @@ public class RoomImp extends VisualScaleModelImp {
 
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.TexturedAppearance[] getSgPaintAppearances() {
-		return this.sgPaintAppearances;
+		return this.sgAppearances;
 	}
 
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.SimpleAppearance[] getSgOpacityAppearances() {
-		return this.sgOpacityAppearances;
+		return this.sgAppearances;
 	}
 
 }

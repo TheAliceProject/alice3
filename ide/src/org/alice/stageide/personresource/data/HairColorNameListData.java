@@ -42,11 +42,17 @@
  */
 package org.alice.stageide.personresource.data;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
+import org.lgna.story.resources.sims2.Hair;
+
 /**
  * @author Dennis Cosgrove
  */
 public class HairColorNameListData extends org.lgna.croquet.data.RefreshableListData<String> {
 	private org.lgna.story.resources.sims2.LifeStage lifeStage;
+	private org.lgna.story.resources.sims2.Hair hair;
 
 	public HairColorNameListData() {
 		super( org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
@@ -65,10 +71,72 @@ public class HairColorNameListData extends org.lgna.croquet.data.RefreshableList
 		}
 	}
 
+	public org.lgna.story.resources.sims2.Hair getHair() {
+		return this.hair;
+	}
+
+	public void setHair( org.lgna.story.resources.sims2.Hair hair ) {
+		if( this.hair == hair ) {
+			//pass
+		} else {
+			this.hair = hair;
+			this.refresh();
+		}
+	}
+
+	public static final String[] getHairColors( Class<? extends org.lgna.story.resources.sims2.Hair> hairCls ) {
+		if( hairCls == null )
+		{
+			return null;
+		}
+		org.lgna.story.resources.sims2.Hair[] hairEnums = hairCls.getEnumConstants();
+		String[] hairNames = new String[ hairEnums.length ];
+		for( int i = 0; i < hairEnums.length; i++ ) {
+			hairNames[ i ] = hairEnums[ i ].toString();
+		}
+		Arrays.sort( hairNames );
+		return hairNames;
+	}
+
+	public static final String[] getHairColors( org.lgna.story.resources.sims2.Hair hair ) {
+		if( hair == null )
+		{
+			return null;
+		}
+		return getHairColors( hair.getClass() );
+	}
+
+	public static final org.lgna.story.resources.sims2.Hair[] getHairColorEnums( Class<? extends org.lgna.story.resources.sims2.Hair> hairCls ) {
+		if( hairCls == null )
+		{
+			return null;
+		}
+		org.lgna.story.resources.sims2.Hair[] hairEnums = hairCls.getEnumConstants();
+		Arrays.sort( hairEnums, new Comparator<org.lgna.story.resources.sims2.Hair>() {
+			public int compare( Hair o1, Hair o2 ) {
+				return o1.toString().compareTo( o2.toString() );
+			}
+		} );
+		return hairEnums;
+	}
+
+	public static final org.lgna.story.resources.sims2.Hair[] getHairColorEnums( org.lgna.story.resources.sims2.Hair hair ) {
+		if( hair == null )
+		{
+			return null;
+		}
+		return getHairColorEnums( hair.getClass() );
+	}
+
 	@Override
 	protected java.util.List<String> createValues() {
-		if( this.lifeStage != null ) {
-			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.lifeStage.getHairColors() );
+		//		if( this.lifeStage != null ) {
+		//			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( this.lifeStage.getHairColors() );
+		//		} else {
+		//			return java.util.Collections.emptyList();
+		//		}
+		if( this.hair != null ) {
+			return edu.cmu.cs.dennisc.java.util.Collections.newArrayList( getHairColors( this.hair ) );
 		} else {
 			return java.util.Collections.emptyList();
 		}

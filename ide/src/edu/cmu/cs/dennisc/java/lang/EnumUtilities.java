@@ -66,7 +66,8 @@ public class EnumUtilities {
 	public static <E> java.util.List<E> getEnumConstants( Class<? extends E>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<E> criterion ) {
 		java.util.List<E> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( Class<?> cls : clses ) {
-			for( E e : (E[])cls.getEnumConstants() ) {
+			E[] enumConstansts = (E[])cls.getEnumConstants();
+			for( E e : enumConstansts ) {
 				if( ( criterion == null ) || criterion.accept( e ) ) {
 					rv.add( e );
 				}

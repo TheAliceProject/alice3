@@ -59,8 +59,8 @@ public class DoubleProperty extends InstanceProperty<Double> {
 
 	@Override
 	public void setValue( PropertyOwner owner, Double value ) {
-		assert value != null;
-		assert ( Double.isNaN( value ) == false ) || m_isNaNAcceptable;
+		assert value != null : this;
+		assert ( Double.isNaN( value ) == false ) || m_isNaNAcceptable : this;
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
 			super.setValue( owner, value );
 		}

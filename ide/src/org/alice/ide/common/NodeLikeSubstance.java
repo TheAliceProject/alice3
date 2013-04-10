@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 public abstract class NodeLikeSubstance extends org.alice.ide.croquet.components.KnurlDragComponent<org.lgna.croquet.DragModel> {
 	public NodeLikeSubstance( org.lgna.croquet.DragModel model ) {
-		super( model );
+		super( model, true );
 		this.setMaximumSizeClampedToPreferredSize( true );
 	}
 
