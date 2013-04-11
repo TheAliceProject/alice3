@@ -57,7 +57,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 	private static final javax.swing.Icon LOCKED_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.personresource.IngredientsComposite.class.getResource( "images/locked.png" ) );
 
 	public IngredientsView( final org.alice.stageide.personresource.IngredientsComposite composite ) {
-		super( composite, "insets 0, fill", "[][align right][]" );
+		super( composite, "insets 0, fill", "[][align right][]", "[shrink]" );
 
 		this.addComponent( this.isLifeStageLockedLabel );
 		this.addComponent( composite.getLifeStageState().getSidekickLabel().createLabel(), "" );
@@ -74,7 +74,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 		java.awt.Insets margin = new java.awt.Insets( 0, -8, 0, -8 );
 		final java.awt.Color[] melaninColors = skinColorState.getMelaninShades();
-		String constraints = "gap 0, split " + ( melaninColors.length + 2 );
+		String constraints = "gap 0, span 2, split " + ( melaninColors.length + 2 );
 		for( java.awt.Color melaninShade : skinColorState.getMelaninShades() ) {
 			org.lgna.croquet.BooleanState itemSelectedState = skinColorState.getItemSelectedState( melaninShade );
 			itemSelectedState.initializeIfNecessary();

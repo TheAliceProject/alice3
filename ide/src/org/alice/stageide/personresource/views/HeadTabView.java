@@ -46,25 +46,39 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabView extends org.lgna.croquet.components.FormPanel {
+public class HeadTabView extends org.lgna.croquet.components.MigPanel {
 	public HeadTabView( org.alice.stageide.personresource.HeadTabComposite composite ) {
-		super( composite );
+		super( composite, "insets 2, fill", "[right][left, grow, shrink]", "" );
 		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
 		this.setBackgroundColor( backgroundColor );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-	}
 
-	@Override
-	protected void appendRows( java.util.List<org.lgna.croquet.components.LabeledFormRow> rows ) {
-		org.alice.stageide.personresource.HeadTabComposite composite = (org.alice.stageide.personresource.HeadTabComposite)this.getComposite();
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.Hair> list = new HorizontalWrapList<org.lgna.story.resources.sims2.Hair>( composite.getHairState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
-		list.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
-		scrollPane.setBothScrollBarIncrements( 66, 66 );
+		this.addComponent( composite.getHairColorNameState().getSidekickLabel().createLabel(), "top" );
+		this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1 ), "wrap, grow, shrink" );
 
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getHairColorNameState().getSidekickLabel(), new HorizontalWrapList( composite.getHairColorNameState(), 1 ) ) );
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( null, scrollPane ) );
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getBaseEyeColorState().getSidekickLabel(), new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ) ) );
-		rows.add( new org.lgna.croquet.components.LabeledFormRow( composite.getBaseFaceState().getSidekickLabel(), new HorizontalWrapList( composite.getBaseFaceState(), composite.getBaseFaceState().getItemCount() / 8 ) ) );
+		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.Hair> hairList = new HorizontalWrapList<org.lgna.story.resources.sims2.Hair>( composite.getHairState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
+		hairList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
+		org.lgna.croquet.components.ScrollPane hairScrollPane = new org.lgna.croquet.components.ScrollPane( hairList );
+		hairScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		hairScrollPane.setBothScrollBarIncrements( 66, 66 );
+
+		this.addComponent( hairScrollPane, "skip, wrap, grow, shrink" );
+
+		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseFace> faceList = new HorizontalWrapList<org.lgna.story.resources.sims2.BaseFace>( composite.getBaseFaceState(), -1 );
+		faceList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
+
+		this.addComponent( composite.getBaseFaceState().getSidekickLabel().createLabel(), "top" );
+		boolean IS_FACE_SCROLL_PANE_DESIRED = false;
+		if( IS_FACE_SCROLL_PANE_DESIRED ) {
+			org.lgna.croquet.components.ScrollPane faceScrollPane = new org.lgna.croquet.components.ScrollPane( faceList );
+			faceScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+			faceScrollPane.setBothScrollBarIncrements( 16, 16 );
+			this.addComponent( faceScrollPane, "wrap, grow, shrink" );
+		} else {
+			this.addComponent( faceList, "wrap, grow, shrink" );
+		}
+
+		this.addComponent( composite.getBaseEyeColorState().getSidekickLabel().createLabel() );
+		this.addComponent( new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ), "wrap, shrink" );
 	}
 }

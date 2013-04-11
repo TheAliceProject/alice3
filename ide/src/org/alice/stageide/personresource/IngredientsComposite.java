@@ -239,6 +239,14 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		return this.bodyHeadTabState;
 	}
 
+	public BodyTabComposite getBodyTab() {
+		return this.bodyTab;
+	}
+
+	public HeadTabComposite getHeadTab() {
+		return this.headTab;
+	}
+
 	private org.lgna.croquet.edits.Edit createRandomEdit( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.story.resources.sims2.LifeStage lifeStage;
 		if( this.lifeStageState.isEnabled() ) {
