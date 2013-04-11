@@ -73,6 +73,25 @@ public class AddListenerProceduresComposite extends org.alice.ide.member.Filtere
 
 	@Override
 	public boolean isShowingDesired() {
+		org.alice.ide.declarationseditor.DeclarationsEditorComposite composite = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance();
+		if( composite != null ) {
+			org.alice.ide.declarationseditor.DeclarationTabState tabState = composite.getTabState();
+			if( tabState != null ) {
+				org.alice.ide.declarationseditor.DeclarationComposite<?, ?> declarationComposite = tabState.getValue();
+				if( declarationComposite instanceof org.alice.ide.declarationseditor.CodeComposite ) {
+					org.alice.ide.declarationseditor.CodeComposite codeComposite = (org.alice.ide.declarationseditor.CodeComposite)declarationComposite;
+					org.lgna.project.ast.AbstractCode code = codeComposite.getDeclaration();
+					if( code != null ) {
+						String name = code.getName();
+						if( name != null ) {
+							if( org.alice.stageide.StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME.equals( name ) ) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
 		return false;
 	}
 

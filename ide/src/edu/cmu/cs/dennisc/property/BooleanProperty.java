@@ -59,7 +59,7 @@ public class BooleanProperty extends InstanceProperty<Boolean> {
 	}
 
 	public void setValueAsInteger( Integer value ) {
-		assert value != null;
+		assert value != null : this;
 		this.setValue( value != 0 );
 	}
 }

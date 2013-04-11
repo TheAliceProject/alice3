@@ -120,7 +120,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 	public C getDeclaredConstructor( AbstractType<?, ?, ?>... parameterTypes ) {
 		C rv = null;
 		for( C constructor : getDeclaredConstructors() ) {
-			java.util.ArrayList<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
+			java.util.List<? extends AbstractParameter> parameters = constructor.getRequiredParameters();
 			if( parameters.size() == parameterTypes.length ) {
 				rv = constructor;
 				for( int i = 0; i < parameterTypes.length; i++ ) {
@@ -153,7 +153,7 @@ public abstract class AbstractType<C extends AbstractConstructor, M extends Abst
 		M rv = null;
 		for( M method : getDeclaredMethods() ) {
 			if( method.getName().equals( name ) ) {
-				java.util.ArrayList<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
+				java.util.List<? extends AbstractParameter> requiredParameters = method.getRequiredParameters();
 				AbstractParameter variableLengthParameter = method.getVariableLengthParameter();
 				AbstractParameter keyedParameter = method.getKeyedParameter();
 				//todo: check variableLengthParameter and keyedParameter

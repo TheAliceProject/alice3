@@ -98,7 +98,7 @@ public abstract class VirtualMachine {
 
 	private org.lgna.project.ast.NamedUserConstructor getConstructor( org.lgna.project.ast.NamedUserType entryPointType, Object[] arguments ) {
 		for( org.lgna.project.ast.NamedUserConstructor constructor : entryPointType.constructors ) {
-			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
+			java.util.List<? extends org.lgna.project.ast.AbstractParameter> parameters = constructor.getRequiredParameters();
 			if( parameters.size() == arguments.length ) {
 				//todo: check types
 				return constructor;
@@ -307,7 +307,7 @@ public abstract class VirtualMachine {
 	protected Object[] evaluateArguments( org.lgna.project.ast.AbstractCode code, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> arguments,
 			org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.SimpleArgument> variableArguments, org.lgna.project.ast.NodeListProperty<org.lgna.project.ast.JavaKeyedArgument> keyedArguments ) {
 		//todo: when variable length and keyed parameters are offered in the IDE (User) this code will need to be updated 
-		java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = code.getRequiredParameters();
+		java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = code.getRequiredParameters();
 		org.lgna.project.ast.AbstractParameter variableParameter = code.getVariableLengthParameter();
 		org.lgna.project.ast.AbstractParameter keyedParameter = code.getKeyedParameter();
 
@@ -543,6 +543,18 @@ public abstract class VirtualMachine {
 
 	protected Object invoke( Object instance, org.lgna.project.ast.AbstractMethod method, Object... arguments ) {
 		assert method != null;
+
+		if( method.isStatic() ) {
+			//pass
+		} else {
+			if( instance != null ) {
+				//pass
+			} else {
+				StringBuilder sb = new StringBuilder();
+				sb.append( "instance is null" );
+				throw new LgnaVmNullPointerException( sb.toString(), this );
+			}
+		}
 		if( method instanceof org.lgna.project.ast.UserMethod ) {
 			return this.invokeUserMethod( instance, (org.lgna.project.ast.UserMethod)method, arguments );
 		} else if( method instanceof org.lgna.project.ast.JavaMethod ) {
@@ -606,7 +618,21 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateFieldAccess( org.lgna.project.ast.FieldAccess fieldAccess ) {
-		return this.get( fieldAccess.field.getValue(), this.evaluate( fieldAccess.expression.getValue() ) );
+		Object o = fieldAccess.field.getValue();
+		if( o instanceof org.lgna.project.ast.AbstractField ) {
+			org.lgna.project.ast.AbstractField field = fieldAccess.field.getValue();
+			org.lgna.project.ast.Expression expression = fieldAccess.expression.getValue();
+			Object value = this.evaluate( expression );
+			return this.get( field, value );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "field access field is not a field", o );
+			org.lgna.project.ast.Node node = fieldAccess;
+			while( node != null ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "   ", node );
+				node = node.getParent();
+			}
+			return null;
+		}
 	}
 
 	protected Object evaluateLocalAccess( org.lgna.project.ast.LocalAccess localAccess ) {

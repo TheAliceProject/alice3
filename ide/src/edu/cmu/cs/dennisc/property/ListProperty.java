@@ -65,7 +65,7 @@ public class ListProperty<E> extends InstanceProperty<java.util.ArrayList<E>> im
 	}
 
 	public void removeListPropertyListener( edu.cmu.cs.dennisc.property.event.ListPropertyListener<E> l ) {
-		assert m_listPropertyListeners != null;
+		assert m_listPropertyListeners != null : this;
 		synchronized( m_listPropertyListeners ) {
 			m_listPropertyListeners.remove( l );
 		}
