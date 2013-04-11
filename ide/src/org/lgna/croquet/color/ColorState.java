@@ -116,6 +116,12 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 	}
 
 	@Override
+	protected void initialize() {
+		super.initialize();
+		this.chooserDialogCoreComposite.initializeIfNecessary();
+	}
+
+	@Override
 	protected void localize() {
 	}
 

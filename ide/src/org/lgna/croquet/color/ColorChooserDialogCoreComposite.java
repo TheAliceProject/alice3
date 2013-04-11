@@ -54,6 +54,16 @@ public final class ColorChooserDialogCoreComposite extends org.lgna.croquet.Oper
 	}
 
 	@Override
+	protected Class<? extends org.lgna.croquet.AbstractElement> getClassUsedForLocalization() {
+		return this.colorState.getClass();
+	}
+
+	@Override
+	protected String getSubKeyForLocalization() {
+		return "chooserDialogCoreComposite";
+	}
+
+	@Override
 	protected org.lgna.croquet.color.views.ColorChooserDialogCoreView createView() {
 		return new org.lgna.croquet.color.views.ColorChooserDialogCoreView( this );
 	}

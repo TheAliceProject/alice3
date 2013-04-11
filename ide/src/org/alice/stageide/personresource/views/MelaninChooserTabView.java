@@ -80,7 +80,6 @@ public class MelaninChooserTabView extends org.lgna.croquet.color.views.ColorCho
 		}
 		minHue = min;
 		maxHue = max;
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( minHue, maxHue );
 	}
 
 	private class JColorView extends javax.swing.JComponent {
@@ -226,7 +225,7 @@ public class MelaninChooserTabView extends org.lgna.croquet.color.views.ColorCho
 
 		@Override
 		public void updateChooser() {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( this.getColorSelectionModel().getSelectedColor() );
+			//todo
 		}
 	}
 

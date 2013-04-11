@@ -63,17 +63,22 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( composite.getLifeStageState().getSidekickLabel().createLabel(), "" );
 
 		this.lifeStageList = new HorizontalWrapList( composite.getLifeStageState(), 1 );
-		this.addComponent( this.lifeStageList, "push, span 2" );
+		this.addComponent( this.lifeStageList, "push" );
 		this.addComponent( composite.getRandomize().createButton(), "wrap" );
 
 		this.addComponent( composite.getGenderState().getSidekickLabel().createLabel(), "skip" );
-		this.addComponent( new HorizontalWrapList( composite.getGenderState(), 1 ), "span 2, wrap" );
+		this.addComponent( new HorizontalWrapList( composite.getGenderState(), 1 ), "wrap" );
 
 		final org.alice.stageide.personresource.SkinColorState skinColorState = composite.getSkinColorState();
-		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "align right, skip 1" );
+		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "skip" );
 
+		final java.awt.Color[] melaninColors = skinColorState.getMelaninShades();
+		String constraints = "gap 0, split " + ( melaninColors.length + 1 );
 		for( java.awt.Color melaninShade : skinColorState.getMelaninShades() ) {
-			this.addComponent( skinColorState.createColorSelectionStateToggleButton( melaninShade ) );
+			org.lgna.croquet.components.ToggleButton button = skinColorState.createColorSelectionStateToggleButton( melaninShade );
+			button.tightenUpMargin( new java.awt.Insets( 0, -8, 0, -8 ) );
+			this.addComponent( button, constraints );
+			constraints = "gap 0";
 		}
 
 		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
@@ -90,13 +95,25 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 				java.awt.Color color = skinColorState.getSwingModel().getValue();
-				g.setColor( color );
-				g.fillRect( x, y, SIZE, SIZE );
+				boolean isChipColor = false;
+				for( java.awt.Color melaninShade : melaninColors ) {
+					if( melaninShade.equals( color ) ) {
+						isChipColor = true;
+						break;
+					}
+				}
+				if( isChipColor ) {
+					//pass
+				} else {
+					g.setColor( color );
+					g.fillRect( x, y, SIZE, SIZE );
+				}
 			}
 		}
 
 		final org.lgna.croquet.components.Button button = composite.getSkinColorState().getChooserDialogCoreComposite().getOperation().createButton();
 		button.setClobberIcon( new SkinColorIcon() );
+		button.setClobberText( "Custom Color..." );
 
 		javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
@@ -106,11 +123,11 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 		skinColorState.getSwingModel().addChangeListener( changeListener );
 
-		this.addComponent( button, "push, wrap" );
+		this.addComponent( button, "push, wrap, gapx 12" );
 
 		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
-		this.addComponent( tabbedPane, "span 5, grow" );
+		this.addComponent( tabbedPane, "span 4, grow" );
 		this.setBackgroundColor( BACKGROUND_COLOR );
 	}
 
