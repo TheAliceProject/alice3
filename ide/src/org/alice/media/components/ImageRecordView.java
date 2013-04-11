@@ -42,7 +42,6 @@
  */
 package org.alice.media.components;
 
-import java.awt.Dimension;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -73,8 +72,8 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( recordComposite.getRestartOperation().createButton(), "wrap, align right" );
 
 		List<EventWithTime> list = recordComposite.getEventList().createList();
+		list.setMinimumPreferredWidth( 400 );
 		list.setOpaque( false );
-		list.getAwtComponent().setMinimumSize( new Dimension( 400, lookingGlassContainer.getHeight() ) );
 		this.addComponent( list, "east" );
 	}
 
