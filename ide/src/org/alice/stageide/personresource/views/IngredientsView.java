@@ -57,24 +57,57 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 	private static final javax.swing.Icon LOCKED_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.personresource.IngredientsComposite.class.getResource( "images/locked.png" ) );
 
 	public IngredientsView( final org.alice.stageide.personresource.IngredientsComposite composite ) {
-		super( composite, "insets 0, fill", "[][align right][grow 0][][]" );
+		super( composite, "insets 0, fill", "[][align right][]", "[shrink]" );
 
 		this.addComponent( this.isLifeStageLockedLabel );
 		this.addComponent( composite.getLifeStageState().getSidekickLabel().createLabel(), "" );
 
 		this.lifeStageList = new HorizontalWrapList( composite.getLifeStageState(), 1 );
-		this.addComponent( this.lifeStageList, "push, span 2" );
+		this.addComponent( this.lifeStageList, "push" );
 		this.addComponent( composite.getRandomize().createButton(), "wrap" );
 
 		this.addComponent( composite.getGenderState().getSidekickLabel().createLabel(), "skip" );
-		this.addComponent( new HorizontalWrapList( composite.getGenderState(), 1 ), "span 2, wrap" );
+		this.addComponent( new HorizontalWrapList( composite.getGenderState(), 1 ), "wrap" );
 
 		final org.alice.stageide.personresource.SkinColorState skinColorState = composite.getSkinColorState();
-		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "align right, skip 1" );
-		this.addComponent( new SkinToneColorView( composite.getSkinColorState() ) );
+		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "skip" );
 
-		final int SIZE = 16;
-		class SkinColorIcon implements javax.swing.Icon {
+		java.awt.Insets margin = new java.awt.Insets( 0, -8, 0, -8 );
+		final java.awt.Color[] melaninColors = skinColorState.getMelaninShades();
+		String constraints = "gap 0, span 2, split " + ( melaninColors.length + 2 );
+		for( java.awt.Color melaninShade : skinColorState.getMelaninShades() ) {
+			org.lgna.croquet.BooleanState itemSelectedState = skinColorState.getItemSelectedState( melaninShade );
+			itemSelectedState.initializeIfNecessary();
+			itemSelectedState.setTextForBothTrueAndFalse( "" );
+			itemSelectedState.setIconForBothTrueAndFalse( new org.alice.ide.swing.icons.ColorIcon( melaninShade ) );
+			org.lgna.croquet.components.ToggleButton button = itemSelectedState.createToggleButton();
+			button.tightenUpMargin( margin );
+			this.addComponent( button, constraints );
+			constraints = "gap 0";
+		}
+
+		class OtherColorCallable implements java.util.concurrent.Callable<java.awt.Color> {
+			private java.awt.Color value = null;
+
+			public java.awt.Color getValue() {
+				return this.value;
+			}
+
+			public void setValue( java.awt.Color value ) {
+				this.value = value;
+			}
+
+			public java.awt.Color call() throws java.lang.Exception {
+				return this.value;
+			}
+		}
+
+		final OtherColorCallable otherColorCallable = new OtherColorCallable();
+
+		final org.lgna.croquet.BooleanState otherColorState = skinColorState.getItemSelectedState( otherColorCallable );
+		final org.lgna.croquet.components.ToggleButton otherColorButton = otherColorState.createToggleButton();
+		final int SIZE = org.alice.ide.swing.icons.ColorIcon.DEFAULT_SIZE;
+		class OtherColorIcon implements javax.swing.Icon {
 			public int getIconWidth() {
 				return SIZE;
 			}
@@ -84,28 +117,50 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 			}
 
 			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-				java.awt.Color color = skinColorState.getSwingModel().getValue();
-				g.setColor( color );
-				g.fillRect( x, y, SIZE, SIZE );
+				java.awt.Color color = otherColorCallable.getValue();
+				if( color != null ) {
+					g.setColor( color );
+					g.fillRect( x, y, SIZE, SIZE );
+				}
 			}
 		}
 
-		final org.lgna.croquet.components.Button button = composite.getCustomSkinColorOperation().createButton();
-		button.setClobberIcon( new SkinColorIcon() );
+		otherColorButton.getAwtComponent().setText( "" );
+		otherColorButton.getAwtComponent().setIcon( new OtherColorIcon() );
+		otherColorButton.tightenUpMargin( margin );
+		this.addComponent( otherColorButton, "gap 8" );
 
-		javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				button.repaint();
+		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
+		final org.lgna.croquet.components.Button button = composite.getSkinColorState().getChooserDialogCoreComposite().getOperation().createButton();
+		button.setClobberText( "Custom Color..." );
+
+		org.lgna.croquet.State.ValueListener<java.awt.Color> colorListener = new org.lgna.croquet.State.ValueListener<java.awt.Color>() {
+			public void changing( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
+				boolean isColorMelaninShade = false;
+				for( java.awt.Color melaninShade : skinColorState.getMelaninShades() ) {
+					if( melaninShade.equals( nextValue ) ) {
+						isColorMelaninShade = true;
+						break;
+					}
+				}
+				if( isColorMelaninShade ) {
+					//pass
+				} else {
+					otherColorCallable.setValue( nextValue );
+				}
+				otherColorState.setEnabled( otherColorCallable.getValue() != null );
 			}
 		};
+		skinColorState.addAndInvokeValueListener( colorListener );
 
-		skinColorState.getSwingModel().addChangeListener( changeListener );
+		this.addComponent( button, "gapx 0, push, wrap" );
 
-		this.addComponent( button, "push, wrap" );
-
-		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadTabState().createFolderTabbedPane();
+		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
-		this.addComponent( tabbedPane, "span 5, grow" );
+		this.addComponent( tabbedPane, "span 4, grow" );
 		this.setBackgroundColor( BACKGROUND_COLOR );
 	}
 

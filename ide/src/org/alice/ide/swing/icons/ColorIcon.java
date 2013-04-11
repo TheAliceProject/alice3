@@ -43,12 +43,9 @@
 
 package org.alice.ide.swing.icons;
 
-import javax.swing.Icon;
 
-public class ColorIcon implements Icon
-{
-
-	private static final int DEFAULT_SIZE = 15;
+public class ColorIcon implements javax.swing.Icon {
+	public static final int DEFAULT_SIZE = 15;
 	private java.awt.Color fillColor;
 	private java.awt.Color outlineColor;
 	private int width;

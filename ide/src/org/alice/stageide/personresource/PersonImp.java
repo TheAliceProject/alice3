@@ -97,16 +97,16 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 			}
 		}
 		org.lgna.story.resources.sims2.Gender gender = composite.getGenderState().getValue();
-		java.awt.Color skinColor = composite.getSkinColorState().getValue();
+		java.awt.Color awtSkinColor = composite.getSkinColorState().getValue();
 		org.lgna.story.resources.sims2.EyeColor eyeColor = composite.getBaseEyeColorState().getValue();
 		double obesityLevel = composite.getObesityLevelState().getValue();
 		org.lgna.story.resources.sims2.Hair hair = composite.getHairState().getValue();
 		org.lgna.story.resources.sims2.Outfit outfit = composite.getFullBodyOutfitState().getValue();
 		org.lgna.story.resources.sims2.Face face = composite.getBaseFaceState().getValue();
-		if( ( gender == null ) || ( outfit == null ) || ( skinColor == null ) || ( eyeColor == null ) || ( hair == null ) || ( face == null ) ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + skinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face );
+		if( ( gender == null ) || ( outfit == null ) || ( awtSkinColor == null ) || ( eyeColor == null ) || ( hair == null ) || ( face == null ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face );
 		} else {
-			nebPerson.setAll( gender, outfit, skinColor.getRGB(), obesityLevel, eyeColor, hair, face );
+			nebPerson.setAll( gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face );
 		}
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
 		if( nebPerson != sgGeometry ) {

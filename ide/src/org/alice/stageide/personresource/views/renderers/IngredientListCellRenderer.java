@@ -79,8 +79,13 @@ abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.sw
 			String enumConstantName = value.toString();
 
 			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getSkinTone();
+			java.net.URL urlForIcon;
+			if( baseSkinTone != null ) {
+				urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
+			} else {
+				urlForIcon = null;
+			}
 
-			java.net.URL urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
 			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 

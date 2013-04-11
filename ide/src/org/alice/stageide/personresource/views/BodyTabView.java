@@ -46,15 +46,15 @@ package org.alice.stageide.personresource.views;
 /**
  * @author Dennis Cosgrove
  */
-public class BodyTabView extends org.lgna.croquet.components.BorderPanel {
+public class BodyTabView extends org.lgna.croquet.components.MigPanel {
 	public BodyTabView( org.alice.stageide.personresource.BodyTabComposite composite ) {
-		super( composite, 8, 8 );
+		super( composite, "insets 2, fill" );
 		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
 		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.FullBodyOutfit> list = new HorizontalWrapList<org.lgna.story.resources.sims2.FullBodyOutfit>( composite.getFullBodyOutfitState(), -1, org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance() );
 		list.setBackgroundColor( backgroundColor );
 		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
 		scrollPane.setBothScrollBarIncrements( 66, 66 );
-
+		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 		org.lgna.croquet.components.Slider slider = composite.getObesityLevelState().createSlider();
 		slider.setBackgroundColor( backgroundColor );
 
@@ -64,9 +64,8 @@ public class BodyTabView extends org.lgna.croquet.components.BorderPanel {
 				.lineEnd( composite.getSetToOutOfShape().createButton() )
 				.build();
 
-		this.addCenterComponent( scrollPane );
-		this.addPageEndComponent( obesityLevelPane );
+		this.addComponent( scrollPane, "grow, wrap" );
+		this.addComponent( obesityLevelPane, "growx" );
 		this.setBackgroundColor( backgroundColor );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 	}
 }
