@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Laura Paoletti" name="JungleTree">
+    <BoundingBox>
+        <Min x="-2.614828109741211" y="-0.1720690131187439" z="-2.386108875274658"/>
+        <Max x="3.1104633808135986" y="4.718430042266846" z="3.537144899368286"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>amazon</Tag>
+        <Tag>brazil</Tag>
+        <Tag>rainforest</Tag>
+        <Tag>jungle</Tag>
+        <Tag>plant</Tag>
+        <Tag>tree</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>plants</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>amazon</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Tree1" resourceName="TREE1" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.4476031064987183" y="-0.0715726763010025" z="-2.099231719970703"/>
+            <Max x="1.930440902709961" y="4.0055975914001465" z="0.9520033001899719"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tree2" resourceName="TREE2" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.6849782466888428" y="-0.04080590233206749" z="-2.386108875274658"/>
+            <Max x="1.1574681997299194" y="3.7935798168182373" z="0.9190213680267334"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tree3" resourceName="TREE3" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-1.425587773323059" y="-0.1720690131187439" z="-1.507568597793579"/>
+            <Max x="1.017175316810608" y="3.757997989654541" z="1.3130183219909668"/>
+        </BoundingBox>
+    </Resource>
+    <Resource modelName="Tree4" resourceName="TREE4" textureName="DEFAULT">
+        <BoundingBox>
+            <Min x="-2.614828109741211" y="-0.12142215669155121" z="-2.3762829303741455"/>
+            <Max x="3.1104633808135986" y="4.718430042266846" z="3.537144899368286"/>
+        </BoundingBox>
+    </Resource>
+</AliceModel>

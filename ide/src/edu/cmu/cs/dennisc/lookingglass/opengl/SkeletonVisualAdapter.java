@@ -48,6 +48,7 @@ import static javax.media.opengl.GL.GL_BACK;
 import static javax.media.opengl.GL.GL_CULL_FACE;
 import static javax.media.opengl.GL.GL_GREATER;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +60,7 @@ import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Element;
 import edu.cmu.cs.dennisc.scenegraph.Joint;
 import edu.cmu.cs.dennisc.scenegraph.Mesh;
 import edu.cmu.cs.dennisc.scenegraph.SkeletonVisual;
@@ -119,6 +121,52 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 			updateAppearanceToMeshControllersMap();
 		}
 		this.isDataDirty = false;
+	}
+
+	private void releaseMappedAdapter( ElementAdapter<? extends Element> adapter )
+	{
+		if( ( adapter != this.m_backFacingAppearanceAdapter ) && ( adapter != this.m_frontFacingAppearanceAdapter ) )
+		{
+			boolean matchesGeometry = false;
+			if( m_geometryAdapters != null )
+			{
+				for( GeometryAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Geometry> geometryAdapter : this.m_geometryAdapters )
+				{
+					if( adapter == geometryAdapter )
+					{
+						matchesGeometry = true;
+						break;
+					}
+				}
+			}
+			if( !matchesGeometry )
+			{
+				if( adapter.m_element != null )
+				{
+					adapter.handleReleased();
+				}
+			}
+		}
+	}
+
+	@Override
+	public void handleReleased()
+	{
+		super.handleReleased();
+		for( Entry<Integer, TexturedAppearanceAdapter> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
+		{
+			releaseMappedAdapter( appearanceEntry.getValue() );
+		}
+		for( Entry<Integer, MeshAdapter<Mesh>[]> meshEntry : this.appearanceIdToGeometryAdapaters.entrySet() )
+		{
+			for( int i = 0; i < meshEntry.getValue().length; i++ )
+			{
+				releaseMappedAdapter( meshEntry.getValue()[ i ] );
+			}
+		}
+		this.appearanceIdToAdapterMap.clear();
+		this.appearanceIdToGeometryAdapaters.clear();
+		this.appearanceIdToMeshControllersMap.clear();
 	}
 
 	@Override
@@ -198,7 +246,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	}
 
 	@Override
-	protected void renderGeometry( RenderContext rc )
+	protected void renderGeometry( RenderContext rc, edu.cmu.cs.dennisc.lookingglass.opengl.VisualAdapter.RenderType renderType )
 	{
 		initializeDataIfNecessary();
 		if( this.skeletonIsDirty )
@@ -259,7 +307,7 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 					{
 						rc.gl.glDisable( GL_ALPHA_TEST );
 					}
-					ma.render( rc );
+					ma.render( rc, renderType );
 					rc.gl.glEnable( GL_CULL_FACE );
 					rc.gl.glDisable( GL_ALPHA_TEST );
 				}
@@ -440,10 +488,31 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 
 	protected void updateAppearanceIdToAdapterMap() {
 		synchronized( appearanceIdToAdapterMap ) {
+			List<ElementAdapter<? extends Element>> oldAdapters = new ArrayList<ElementAdapter<? extends Element>>();
+			for( Entry<Integer, TexturedAppearanceAdapter> appearanceEntry : this.appearanceIdToAdapterMap.entrySet() )
+			{
+				if( !oldAdapters.contains( appearanceEntry.getValue() ) )
+				{
+					oldAdapters.add( appearanceEntry.getValue() );
+				}
+			}
 			appearanceIdToAdapterMap.clear();
+			List<ElementAdapter<? extends Element>> newAdapters = new ArrayList<ElementAdapter<? extends Element>>();
 			for( TexturedAppearance ta : this.m_element.textures.getValue() )
 			{
-				appearanceIdToAdapterMap.put( ta.textureId.getValue(), AdapterFactory.getAdapterFor( ta ) );
+				TexturedAppearanceAdapter newAdapter = AdapterFactory.getAdapterFor( ta );
+				appearanceIdToAdapterMap.put( ta.textureId.getValue(), newAdapter );
+				if( !newAdapters.contains( newAdapter ) )
+				{
+					newAdapters.add( newAdapter );
+				}
+			}
+			for( ElementAdapter<? extends Element> oldAdapter : oldAdapters )
+			{
+				if( !newAdapters.contains( oldAdapter ) )
+				{
+					releaseMappedAdapter( oldAdapter );
+				}
 			}
 		}
 	}

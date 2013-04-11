@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="Seagull">
     <BoundingBox>
-        <Min x="-0.15409497171640396" y="0.0" z="-0.33381812274456024"/>
-        <Max x="0.15409497171640396" y="0.6970643533859402" z="0.33381812274456024"/>
+        <Min x="-0.14850632846355438" y="-0.0020322336349636316" z="-0.31306514143943787"/>
+        <Max x="0.15968361496925354" y="0.6950321197509766" z="0.3545711040496826"/>
     </BoundingBox>
     <Tags>
         <Tag>bird</Tag>

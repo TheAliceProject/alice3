@@ -50,7 +50,7 @@ import static javax.media.opengl.GL.GL_TRIANGLE_FAN;
  */
 public class TriangleFanAdapter extends VertexGeometryAdapter<edu.cmu.cs.dennisc.scenegraph.TriangleFan> {
 	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	protected void renderGeometry( RenderContext rc, VisualAdapter.RenderType renderType ) {
 		renderPrimative( rc, GL_TRIANGLE_FAN );
 	}
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Megan Johns" name="SoccerBall">
     <BoundingBox>
-        <Min x="-0.14248216152191162" y="-0.13167424499988556" z="-0.14887378364801407"/>
-        <Max x="0.14248216152191162" y="0.14978021383285522" z="0.14887378364801407"/>
+        <Min x="-0.1425391286611557" y="-0.13167424499988556" z="-0.14902715384960175"/>
+        <Max x="0.14242519438266754" y="0.14978021383285522" z="0.1487204134464264"/>
     </BoundingBox>
     <Tags>
         <Tag>soccer</Tag>

@@ -55,6 +55,7 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 	private double obesityLevel;
 	private org.lgna.story.resources.sims2.Hair hair;
 	private org.lgna.story.resources.sims2.EyeColor eyeColor;
+	private org.lgna.story.resources.sims2.Face face;
 
 	private int atomicCount = 0;
 
@@ -69,13 +70,14 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 			rv.setObesityLevel( personResource.getObesityLevel() );
 			rv.setHair( personResource.getHair() );
 			rv.setEyeColor( personResource.getEyeColor() );
+			rv.setFace( personResource.getFace() );
 		} finally {
 			rv.popAtomic();
 		}
 		return rv;
 	}
 
-	private NebulousPersonVisualData( org.lgna.story.resources.sims2.LifeStage lifeStage ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+	public NebulousPersonVisualData( org.lgna.story.resources.sims2.LifeStage lifeStage ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		super( new edu.cmu.cs.dennisc.nebulous.Person( lifeStage ) );
 		this.lifeStage = lifeStage;
 	}
@@ -94,7 +96,7 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 	public void popAtomic() {
 		this.atomicCount--;
 		if( this.atomicCount == 0 ) {
-			this.getNebModel().setAll( this.gender, this.outfit, this.getValueForSkinTone(), this.obesityLevel, this.eyeColor, this.hair );
+			this.getNebModel().setAll( this.gender, this.outfit, this.getValueForSkinTone(), this.obesityLevel, this.eyeColor, this.hair, this.face );
 		}
 	}
 
@@ -121,13 +123,8 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 	}
 
 	private Object getValueForSkinTone() {
-		final boolean IS_COLOR_READY_FOR_PRIME_TIME = false;
-		if( IS_COLOR_READY_FOR_PRIME_TIME ) {
-			java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( this.skinColor ).getAsAWTColor();
-			return awtColor.getRGB();
-		} else {
-			return this.skinTone;
-		}
+		java.awt.Color awtColor = org.lgna.story.ImplementationAccessor.getColor4f( this.skinColor ).getAsAWTColor();
+		return awtColor.getRGB();
 	}
 
 	public org.lgna.story.Color getSkinColor() {
@@ -182,6 +179,13 @@ public class NebulousPersonVisualData extends NebulousVisualData<edu.cmu.cs.denn
 		this.eyeColor = eyeColor;
 		if( this.atomicCount == 0 ) {
 			this.getNebModel().setEyeColor( this.eyeColor );
+		}
+	}
+
+	public void setFace( org.lgna.story.resources.sims2.Face face ) {
+		this.face = face;
+		if( this.atomicCount == 0 ) {
+			this.getNebModel().setFace( this.face );
 		}
 	}
 

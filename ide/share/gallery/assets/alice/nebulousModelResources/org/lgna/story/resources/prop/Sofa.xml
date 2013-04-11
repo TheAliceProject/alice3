@@ -220,7 +220,7 @@
             <Max x="1.2707796096801758" y="0.8310412168502808" z="0.3421614170074463"/>
         </BoundingBox>
     </Resource>
-    <Resource modelName="Quaint" resourceName="QUAINT_WHITE" textureName="WHITE">
+    <Resource modelName="Quaint" resourceName="QUAINT_SOFA_QUAINT_FABRIC_WHITE_FLOWERS" textureName="SOFA_QUAINT_FABRIC_WHITE_FLOWERS">
         <BoundingBox>
             <Min x="-1.2707796096801758" y="0.0" z="-0.3421614170074463"/>
             <Max x="1.2707796096801758" y="0.8310412168502808" z="0.3421614170074463"/>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="Bison">
+    <BoundingBox>
+        <Min x="-0.5472020506858826" y="0.0013227843446657062" z="-1.636842131614685"/>
+        <Max x="0.5472020506858826" y="1.9871615171432495" z="1.5148110389709473"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>southwest</Tag>
+        <Tag>plains</Tag>
+        <Tag>buffalo</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>southwest</ThemeTag>
+    </ThemeTags>
+    <Resource modelName="Bison" resourceName="DEFAULT" textureName="DEFAULT"/>
+</AliceModel>

@@ -50,6 +50,9 @@ public class HairListData extends org.lgna.croquet.data.RefreshableListData<org.
 	private org.lgna.story.resources.sims2.Gender gender;
 	private String colorName;
 
+	//Remember the last "standard" color name so when an unusual color is selected we can preserve the color state of the other hair items
+	private String previousStandardColorName;
+
 	public HairListData() {
 		super( org.alice.stageide.personresource.codecs.HairCodec.SINGLETON );
 	}
@@ -84,10 +87,27 @@ public class HairListData extends org.lgna.croquet.data.RefreshableListData<org.
 		return this.colorName;
 	}
 
+	//"Standard" color is defined by the hair color array on the lifestage
+	// ELDER: "BLACK", "BROWN", "RED", "BLOND", "GREY"
+	// OTHERS: "BLACK", "BROWN", "RED", "BLOND"
+	private static boolean isStandardColorName( org.lgna.story.resources.sims2.LifeStage lifeStage, String colorName )
+	{
+		for( String hairColor : lifeStage.getHairColors() )
+		{
+			if( hairColor.equals( colorName ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void setColorName( String colorName ) {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.colorName, colorName ) ) {
 			//pass
 		} else {
+			if( isStandardColorName( this.lifeStage, this.colorName ) ) {
+				this.previousStandardColorName = this.colorName;
+			}
 			this.colorName = colorName;
 			this.refresh();
 		}
@@ -99,6 +119,9 @@ public class HairListData extends org.lgna.croquet.data.RefreshableListData<org.
 		} else {
 			this.lifeStage = lifeStage;
 			this.gender = gender;
+			if( isStandardColorName( this.lifeStage, this.colorName ) ) {
+				this.previousStandardColorName = this.colorName;
+			}
 			this.colorName = colorName;
 			this.refresh();
 		}
@@ -107,15 +130,36 @@ public class HairListData extends org.lgna.croquet.data.RefreshableListData<org.
 	@Override
 	protected java.util.List<org.lgna.story.resources.sims2.Hair> createValues() {
 		if( ( this.lifeStage != null ) && ( this.gender != null ) && ( this.colorName != null ) ) {
-			java.util.List<org.lgna.story.resources.sims2.Hair> list = edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
-					org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( this.lifeStage, this.gender ),
-					new edu.cmu.cs.dennisc.pattern.Criterion<org.lgna.story.resources.sims2.Hair>() {
-						public boolean accept( org.lgna.story.resources.sims2.Hair hair ) {
-							return hair.toString().equals( colorName );
+			java.util.List<org.lgna.story.resources.sims2.Hair> rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			Class<? extends org.lgna.story.resources.sims2.Hair>[] clses = org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( this.lifeStage, this.gender );
+			for( Class<? extends org.lgna.story.resources.sims2.Hair> cls : clses ) {
+				boolean anyMatched = false;
+				org.lgna.story.resources.sims2.Hair[] enums = org.alice.stageide.personresource.data.HairColorNameListData.getHairColorEnums( cls );
+				//Try to find a hair enum that matches the current color
+				for( org.lgna.story.resources.sims2.Hair e : enums ) {
+					if( e.toString().equals( this.colorName ) ) {
+						anyMatched = true;
+						rv.add( e );
+						break;
+					}
+				}
+				//If no hair matched the current color, try to find one that matches the previous color
+				if( !anyMatched ) {
+					for( org.lgna.story.resources.sims2.Hair e : enums ) {
+						if( e.toString().equals( this.previousStandardColorName ) ) {
+							anyMatched = true;
+							rv.add( e );
+							break;
 						}
 					}
-					);
-			return list;
+				}
+				//If no matches were found, add the first item in the enum list
+				if( !anyMatched && ( enums.length > 0 ) )
+				{
+					rv.add( enums[ 0 ] );
+				}
+			}
+			return rv;
 		} else {
 			return java.util.Collections.emptyList();
 		}

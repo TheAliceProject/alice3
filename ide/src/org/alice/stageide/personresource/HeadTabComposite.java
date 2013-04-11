@@ -54,6 +54,8 @@ public class HeadTabComposite extends org.lgna.croquet.SimpleTabComposite<org.al
 	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
 	private final org.lgna.croquet.ListSelectionState<String> hairColorNameState = this.createListSelectionState( this.createKey( "hairColorNameState" ), this.hairColorNameData, -1 );
 
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> baseFaceState = this.createListSelectionStateForEnum( this.createKey( "baseFaceState" ), org.lgna.story.resources.sims2.BaseFace.class, org.lgna.story.resources.sims2.BaseFace.getRandom() );
+
 	public HeadTabComposite() {
 		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
 	}
@@ -86,5 +88,9 @@ public class HeadTabComposite extends org.lgna.croquet.SimpleTabComposite<org.al
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
 		return this.baseEyeColorState;
+	}
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
+		return this.baseFaceState;
 	}
 };

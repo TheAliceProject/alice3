@@ -42,6 +42,8 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import org.lgna.story.implementation.alice.AliceResourceUtilties;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -89,7 +91,8 @@ public class SetUpMethodGenerator {
 				org.lgna.story.resources.sims2.EyeColor.class,
 				org.lgna.story.resources.sims2.Hair.class,
 				Number.class,
-				org.lgna.story.resources.sims2.Outfit.class
+				org.lgna.story.resources.sims2.Outfit.class,
+				org.lgna.story.resources.sims2.Face.class,
 		};
 		org.lgna.project.ast.Expression[] arguments = {
 				getExpressionCreator().createExpression( personResource.getGender() ),
@@ -97,7 +100,8 @@ public class SetUpMethodGenerator {
 				getExpressionCreator().createExpression( personResource.getEyeColor() ),
 				getExpressionCreator().createExpression( personResource.getHair() ),
 				getExpressionCreator().createExpression( personResource.getObesityLevel() ),
-				getExpressionCreator().createExpression( personResource.getOutfit() )
+				getExpressionCreator().createExpression( personResource.getOutfit() ),
+				getExpressionCreator().createExpression( personResource.getFace() ),
 		};
 		return org.lgna.project.ast.AstUtilities.createInstanceCreation( personResource.getClass(), parameterClses, arguments );
 	}
@@ -233,7 +237,7 @@ public class SetUpMethodGenerator {
 					statements.add( createPositionStatement( isThis, field, org.lgna.story.ImplementationAccessor.createPosition( initialTransform.translation ), 0 ) );
 
 					//todo
-					if( initialTransform.translation.y == 0.0 ) {
+					if( ( initialTransform.translation.y == 0.0 ) && AliceResourceUtilties.shouldPlaceModelAboveGround( abstractType ) ) {
 						//place above ground
 						org.lgna.project.ast.Expression targetExpression = new org.lgna.project.ast.NullLiteral();
 						org.lgna.project.ast.ExpressionStatement placeStatement = createStatement(

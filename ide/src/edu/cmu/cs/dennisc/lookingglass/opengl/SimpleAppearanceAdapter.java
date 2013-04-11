@@ -38,6 +38,11 @@ public class SimpleAppearanceAdapter<E extends edu.cmu.cs.dennisc.scenegraph.Sim
 	}
 
 	@Override
+	public boolean isAllAlphaBlended() {
+		return m_isMaterialAlphaBlended;
+	}
+	
+	@Override
 	public boolean isEthereal() {
 		return m_isEthereal;
 	}

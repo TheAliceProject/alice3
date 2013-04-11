@@ -46,13 +46,11 @@ package org.lgna.story.resourceutilities;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -72,7 +70,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.lgna.project.License;
 import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilties;
 import org.lgna.story.resources.BipedResource;
@@ -90,7 +87,6 @@ public class ModelResourceExporter {
 
 	private static boolean REMOVE_ROOT_JOINTS = false;
 
-	private static String COPYRIGHT_COMMENT = null;
 	private static final String ROOT_IDS_FIELD_NAME = "JOINT_ID_ROOTS";
 
 	public static final String RESOURCE_SUB_DIR = "";
@@ -105,16 +101,6 @@ public class ModelResourceExporter {
 		else {
 			return RESOURCE_SUB_DIR + "/" + classDir;
 		}
-	}
-
-	private static String getCopyrightComment()
-	{
-		if( COPYRIGHT_COMMENT == null )
-		{
-			String copyright = License.TEXT.replace( "\n", "\n * " );
-			COPYRIGHT_COMMENT = "/*\n * " + copyright + "\n */\n";
-		}
-		return COPYRIGHT_COMMENT;
 	}
 
 	private class NamedFile
@@ -751,18 +737,6 @@ public class ModelResourceExporter {
 		return bestFit;
 	}
 
-	public static String getDirectoryStringForPackage( String packageString )
-	{
-		StringBuilder sb = new StringBuilder();
-		String[] splitString = packageString.split( "\\." );
-		for( String s : splitString )
-		{
-			sb.append( s );
-			sb.append( File.separator );
-		}
-		return sb.toString();
-	}
-
 	private static List<Tuple2<String, String>> getExistingJointIdPairs( Class<?> resourceClass )
 	{
 		List<Tuple2<String, String>> ids = new LinkedList<Tuple2<String, String>>();
@@ -911,12 +885,12 @@ public class ModelResourceExporter {
 	{
 		StringBuilder sb = new StringBuilder();
 
-		sb.append( getCopyrightComment() );
-		sb.append( "\n" );
-		sb.append( "package " + this.classData.packageString + ";\n\n" );
-		sb.append( "import org.lgna.project.annotations.*;\n" );
-		sb.append( "import org.lgna.story.resources.ImplementationAndVisualType;\n\n" );
-		sb.append( "public enum " + this.getJavaClassName() + " implements " + this.classData.superClass.getCanonicalName() + " {\n" );
+		sb.append( JavaCodeUtilities.getCopyrightComment() );
+		sb.append( JavaCodeUtilities.LINE_RETURN );
+		sb.append( "package " + this.classData.packageString + ";" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "import org.lgna.project.annotations.*;" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "import org.lgna.story.resources.ImplementationAndVisualType;" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "public enum " + this.getJavaClassName() + " implements " + this.classData.superClass.getCanonicalName() + " {" + JavaCodeUtilities.LINE_RETURN );
 		int numSubResources = this.subResources.size();
 		assert this.subResources.size() > 0;
 		for( int i = 0; i < this.subResources.size(); i++ )
@@ -930,11 +904,11 @@ public class ModelResourceExporter {
 			sb.append( "\t" + resourceEnumName + typeString );
 			if( i < ( this.subResources.size() - 1 ) )
 			{
-				sb.append( ",\n" );
+				sb.append( "," + JavaCodeUtilities.LINE_RETURN );
 			}
 			else
 			{
-				sb.append( ";\n" );
+				sb.append( ";" + JavaCodeUtilities.LINE_RETURN );
 			}
 		}
 		List<String> existingIds = getExistingJointIds( this.classData.superClass );
@@ -943,7 +917,7 @@ public class ModelResourceExporter {
 		if( trimmedSkeleton != null )
 		{
 			List<String> rootJoints = new LinkedList<String>();
-			sb.append( "\n" );
+			sb.append( JavaCodeUtilities.LINE_RETURN );
 			for( Tuple2<String, String> entry : trimmedSkeleton )
 			{
 				String jointString = entry.getA();
@@ -959,12 +933,12 @@ public class ModelResourceExporter {
 					addedRoots = true;
 				}
 				if( shouldSuppressJoint( jointString ) ) {
-					sb.append( "@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)\n" );
+					sb.append( "@FieldTemplate(visibility=Visibility.COMPLETELY_HIDDEN)" + JavaCodeUtilities.LINE_RETURN );
 				}
 				else {
-					sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)\n" );
+					sb.append( "@FieldTemplate(visibility=Visibility.PRIME_TIME)" + JavaCodeUtilities.LINE_RETURN );
 				}
-				sb.append( "\tpublic static final org.lgna.story.resources.JointId " + jointString + " = new org.lgna.story.resources.JointId( " + parentString + ", " + this.getJavaClassName() + ".class );\n" );
+				sb.append( "\tpublic static final org.lgna.story.resources.JointId " + jointString + " = new org.lgna.story.resources.JointId( " + parentString + ", " + this.getJavaClassName() + ".class );" + JavaCodeUtilities.LINE_RETURN );
 			}
 
 			if( addedRoots )
@@ -976,45 +950,45 @@ public class ModelResourceExporter {
 						sb.append( ", " );
 					}
 				}
-				sb.append( " };\n" );
+				sb.append( " };" + JavaCodeUtilities.LINE_RETURN );
 			}
 		}
-		sb.append( "\n" );
-		sb.append( "\tprivate final ImplementationAndVisualType resourceType;\n" );
-		sb.append( "\tprivate " + this.getJavaClassName() + "() {\n" );
-		sb.append( "\t\tthis( ImplementationAndVisualType.ALICE );\n" );
-		sb.append( "\t}\n\n" );
-		sb.append( "\tprivate " + this.getJavaClassName() + "( ImplementationAndVisualType resourceType ) {\n" );
-		sb.append( "\t\tthis.resourceType = resourceType;\n" );
-		sb.append( "\t}\n\n" );
+		sb.append( JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\tprivate final ImplementationAndVisualType resourceType;" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\tprivate " + this.getJavaClassName() + "() {" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\t\tthis( ImplementationAndVisualType.ALICE );" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\tprivate " + this.getJavaClassName() + "( ImplementationAndVisualType resourceType ) {" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\t\tthis.resourceType = resourceType;" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN + JavaCodeUtilities.LINE_RETURN );
 		if( needsToDefineRootsMethod( this.classData.superClass ) )
 		{
-			sb.append( "\tpublic org.lgna.story.resources.JointId[] getRootJointIds(){\n" );
+			sb.append( "\tpublic org.lgna.story.resources.JointId[] getRootJointIds(){" + JavaCodeUtilities.LINE_RETURN );
 			if( addedRoots )
 			{
-				sb.append( "\t\treturn " + this.getJavaClassName() + "." + ROOT_IDS_FIELD_NAME + ";\n" );
+				sb.append( "\t\treturn " + this.getJavaClassName() + "." + ROOT_IDS_FIELD_NAME + ";" + JavaCodeUtilities.LINE_RETURN );
 			}
 			else
 			{
 				java.lang.reflect.Field rootsField = getJointRootsField( this.classData.superClass );
 				if( rootsField != null )
 				{
-					sb.append( "\t\treturn " + rootsField.getDeclaringClass().getCanonicalName() + "." + rootsField.getName() + ";\n" );
+					sb.append( "\t\treturn " + rootsField.getDeclaringClass().getCanonicalName() + "." + rootsField.getName() + ";" + JavaCodeUtilities.LINE_RETURN );
 				}
 				else
 				{
-					sb.append( "\t\treturn new org.lgna.story.resources.JointId[0];\n" );
+					sb.append( "\t\treturn new org.lgna.story.resources.JointId[0];" + JavaCodeUtilities.LINE_RETURN );
 				}
 			}
-			sb.append( "\t}\n" );
+			sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN );
 		}
-		sb.append( "\n\tpublic org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {\n" );
-		sb.append( "\t\treturn this.resourceType.getFactory( this );\n" );
-		sb.append( "\t}\n" );
-		sb.append( "\tpublic " + this.classData.implementationClass.getCanonicalName() + " createImplementation( " + this.classData.abstractionClass.getCanonicalName() + " abstraction ) {\n" );
-		sb.append( "\t\treturn new " + this.classData.implementationClass.getCanonicalName() + "( abstraction, this.resourceType.getFactory( this ) );\n" );
-		sb.append( "\t}\n" );
-		sb.append( "}\n" );
+		sb.append( "\n\tpublic org.lgna.story.implementation.JointedModelImp.JointImplementationAndVisualDataFactory<org.lgna.story.resources.JointedModelResource> getImplementationAndVisualFactory() {" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\t\treturn this.resourceType.getFactory( this );" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\tpublic " + this.classData.implementationClass.getCanonicalName() + " createImplementation( " + this.classData.abstractionClass.getCanonicalName() + " abstraction ) {" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\t\treturn new " + this.classData.implementationClass.getCanonicalName() + "( abstraction, this.resourceType.getFactory( this ) );" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "\t}" + JavaCodeUtilities.LINE_RETURN );
+		sb.append( "}" + JavaCodeUtilities.LINE_RETURN );
 
 		return sb.toString();
 	}
@@ -1101,25 +1075,25 @@ public class ModelResourceExporter {
 
 	private File getJavaCodeDir( String root )
 	{
-		String packageDirectory = getDirectoryStringForPackage( this.classData.packageString );
+		String packageDirectory = JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString );
 		return new File( root + packageDirectory );
 	}
 
 	private File getJavaClassFile( String root )
 	{
-		String filename = getDirectoryStringForPackage( this.classData.packageString ) + this.getJavaClassName() + ".class";
+		String filename = JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + this.getJavaClassName() + ".class";
 		return new File( root + filename );
 	}
 
 	private File getJavaFile( String root )
 	{
-		String filename = getDirectoryStringForPackage( this.classData.packageString ) + this.getJavaClassName() + ".java";
+		String filename = JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + this.getJavaClassName() + ".java";
 		return new File( root + filename );
 	}
 
 	private File createJavaCode( String root )
 	{
-		String packageDirectory = getDirectoryStringForPackage( this.classData.packageString );
+		String packageDirectory = JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString );
 		System.out.println( packageDirectory );
 		String javaCode = createJavaCode();
 		System.out.println( javaCode );
@@ -1162,7 +1136,7 @@ public class ModelResourceExporter {
 		if( !root.endsWith( "/" ) && !root.endsWith( "\\" ) ) {
 			root += "/";
 		}
-		String resourceDirectory = root + getDirectoryStringForPackage( this.classData.packageString ) + ModelResourceExporter.getResourceSubDirWithSeparator( "" );
+		String resourceDirectory = root + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + ModelResourceExporter.getResourceSubDirWithSeparator( "" );
 		File xmlFile = new File( resourceDirectory, this.className + ".xml" );
 		return xmlFile;
 	}
@@ -1238,7 +1212,7 @@ public class ModelResourceExporter {
 		if( !rootPath.endsWith( "/" ) && !rootPath.endsWith( "\\" ) ) {
 			rootPath += "/";
 		}
-		String resourceDirectory = rootPath + getDirectoryStringForPackage( this.classData.packageString ) + ModelResourceExporter.getResourceSubDirWithSeparator( this.className );
+		String resourceDirectory = rootPath + JavaCodeUtilities.getDirectoryStringForPackage( this.classData.packageString ) + ModelResourceExporter.getResourceSubDirWithSeparator( this.className );
 		return resourceDirectory + thumbnailName;
 	}
 
@@ -1332,20 +1306,13 @@ public class ModelResourceExporter {
 					throw new IOException( "FAILED TO MAKE JAVA FILE FOR " + this.getClassName() + "--NOT ADDING IT TO JARS.\n" + e.toString() );
 				}
 			}
-
-			String[] args = new String[] { javaFile.getAbsolutePath(), "-target", "1.5", "-classpath", System.getProperty( "java.class.path" ) };
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			PrintWriter pw = new PrintWriter( baos );
-			int status = com.sun.tools.javac.Main.compile( args, pw );
-
-			String compileOutput = baos.toString( "UTF-8" );
-			if( status != 0 )
+			try
 			{
-				System.err.println( compileOutput );
-				throw new IOException( "Java code for " + this.getClassName() + " failed to compile: " + compileOutput );
-			}
-			else {
+				JavaCodeUtilities.compileJavaFile( javaFile );
 				addClassData = true;
+			} catch( IOException ioe )
+			{
+				throw ioe;
 			}
 
 		}

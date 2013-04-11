@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Matt Kline" name="SpellBook">
     <BoundingBox>
-        <Min x="-0.165256896201754" y="0.0" z="-0.1897449642419815"/>
-        <Max x="0.165256896201754" y="0.10677381604909897" z="0.1897449642419815"/>
+        <Min x="-5.138090928085148E-4" y="-0.031714797019958496" z="-0.19065389037132263"/>
+        <Max x="0.32999998331069946" y="0.07505901902914047" z="0.18883603811264038"/>
     </BoundingBox>
     <Tags>
         <Tag>magic</Tag>

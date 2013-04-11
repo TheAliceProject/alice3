@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2012" creator="Laura Paoletti" name="ColaBottle">
     <BoundingBox>
-        <Min x="-0.03531002439558506" y="0.0" z="-0.037127161398530006"/>
-        <Max x="0.03531002439558506" y="0.24031283974909456" z="0.037127161398530006"/>
+        <Min x="-0.035310037434101105" y="7.951736188260838E-5" z="-0.03712714836001396"/>
+        <Max x="0.035310011357069016" y="0.24039235711097717" z="0.03712717443704605"/>
     </BoundingBox>
     <Tags>
         <Tag>snow</Tag>

@@ -60,6 +60,7 @@ public enum BaseSkinTone implements SkinTone {
 		return this.color;
 	}
 
+	//	GREEN;
 	public static BaseSkinTone getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BaseSkinTone.class );
 	}

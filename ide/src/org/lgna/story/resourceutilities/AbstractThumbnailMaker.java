@@ -73,6 +73,11 @@ public abstract class AbstractThumbnailMaker {
 	private final SymmetricPerspectiveCamera sgCamera;
 	private final edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
 
+	protected AbstractThumbnailMaker( int width, int height )
+	{
+		this( width, height, DEFAULT_ANTI_ALIAS_FACTOR );
+	}
+
 	protected AbstractThumbnailMaker( int width, int height, int antiAliasFactor )
 	{
 		this.width = width;
@@ -119,6 +124,10 @@ public abstract class AbstractThumbnailMaker {
 				}
 			}
 		}
+		if( width >= image.getWidth() )
+		{
+			width = 0;
+		}
 		return width;
 	}
 
@@ -134,6 +143,10 @@ public abstract class AbstractThumbnailMaker {
 					return width - x;
 				}
 			}
+		}
+		if( width >= image.getWidth() )
+		{
+			width = 0;
 		}
 		return width;
 	}
@@ -151,6 +164,10 @@ public abstract class AbstractThumbnailMaker {
 				}
 			}
 		}
+		if( height >= image.getHeight() )
+		{
+			height = 0;
+		}
 		return height;
 	}
 
@@ -166,6 +183,10 @@ public abstract class AbstractThumbnailMaker {
 					return height - y;
 				}
 			}
+		}
+		if( height >= image.getHeight() )
+		{
+			height = 0;
 		}
 		return height;
 	}
@@ -204,7 +225,7 @@ public abstract class AbstractThumbnailMaker {
 		return true;
 	}
 
-	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace ) throws Exception {
+	protected synchronized java.awt.image.BufferedImage takePicture( AffineMatrix4x4 cameraTransform, boolean trimWhitespace ) {
 		getSGCameraVehicle().setLocalTransformation( cameraTransform );
 		//offscreenLookingGlass.clearAndRenderOffscreen();
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBufferWithTransparencyBasedOnDepthBuffer();
@@ -217,7 +238,14 @@ public abstract class AbstractThumbnailMaker {
 			int newHeight = rv.getHeight() - topBorder - bottomBorder;
 			int newWidth = rv.getWidth() - leftBorder - rightBorder;
 
-			rv = rv.getSubimage( leftBorder, topBorder, newWidth, newHeight );
+			if( ( leftBorder < 0 ) || ( topBorder < 0 ) || ( newWidth < 0 ) || ( newHeight < 0 ) )
+			{
+				//pass
+			}
+			else
+			{
+				rv = rv.getSubimage( leftBorder, topBorder, newWidth, newHeight );
+			}
 		}
 		Image returnImage;
 		if( this.antAliasFactor != 0 ) {
@@ -280,11 +308,21 @@ public abstract class AbstractThumbnailMaker {
 		return this.height;
 	}
 
-	protected AffineMatrix4x4 getThumbnailCameraOrientation( AxisAlignedBox bbox )
+	protected AffineMatrix4x4 getThumbnailCameraOrientation( Point3 centerPoint, Vector3 cameraDir, double zoom )
 	{
-		Vector3 cameraDir = new Vector3( -1.0, -2.0, 3.0 );
 		cameraDir.normalize();
+		Vector3 negCameraDir = new Vector3( cameraDir );
+		negCameraDir.multiply( -1 );
+		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray( centerPoint, negCameraDir );
+		Point3 cameraLocation = cameraRay.getPointAlong( zoom );
+		OrthogonalMatrix3x3 pointAtOrientation = OrthogonalMatrix3x3.createFromForwardAndUpGuide( cameraDir, Vector3.accessPositiveYAxis() );
+		AffineMatrix4x4 rv = new AffineMatrix4x4( pointAtOrientation, cameraLocation );
+		return rv;
+	}
 
+	protected AffineMatrix4x4 getThumbnailCameraOrientation( AxisAlignedBox bbox, Vector3 cameraDir )
+	{
+		cameraDir.normalize();
 		edu.cmu.cs.dennisc.math.Ray cameraRay = new edu.cmu.cs.dennisc.math.Ray( bbox.getCenter(), cameraDir );
 		double horizontalAngle = getSGCamera().horizontalViewingAngle.getValue().getAsRadians();
 		double verticalAngle = getSGCamera().verticalViewingAngle.getValue().getAsRadians();
@@ -313,9 +351,15 @@ public abstract class AbstractThumbnailMaker {
 		return rv;
 	}
 
+	protected AffineMatrix4x4 getThumbnailCameraOrientation( AxisAlignedBox bbox )
+	{
+		Vector3 cameraDir = new Vector3( -1.0, -2.0, 3.0 );
+		return getThumbnailCameraOrientation( bbox, cameraDir );
+	}
+
 	protected abstract AffineMatrix4x4 getThumbnailTransform( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox );
 
-	public synchronized java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, boolean trimWhitespace ) throws Exception {
+	public synchronized java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox, boolean trimWhitespace ) {
 		v.setParent( this.sgModelTransformable );
 		AffineMatrix4x4 finalCameraTransform = getThumbnailTransform( v, bbox );
 		java.awt.image.BufferedImage returnImage = takePicture( finalCameraTransform, trimWhitespace );
@@ -323,15 +367,15 @@ public abstract class AbstractThumbnailMaker {
 		return returnImage;
 	}
 
-	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox ) throws Exception {
+	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, AxisAlignedBox bbox ) {
 		return createThumbnail( v, bbox, true );
 	}
 
-	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v ) throws Exception {
+	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v ) {
 		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), true );
 	}
 
-	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, boolean trimWhitespace ) throws Exception {
+	public java.awt.image.BufferedImage createThumbnail( edu.cmu.cs.dennisc.scenegraph.Visual v, boolean trimWhitespace ) {
 		return createThumbnail( v, v.getAxisAlignedMinimumBoundingBox(), trimWhitespace );
 	}
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="WonderlandTree">
     <BoundingBox>
-        <Min x="-0.9896050691604614" y="0.0" z="-0.8448549807071686"/>
-        <Max x="0.9896050691604614" y="2.9494192075729373" z="0.8448549807071686"/>
+        <Min x="-0.9896050691604614" y="5.2452087118126656E-8" z="-0.8039174675941467"/>
+        <Max x="0.9896050691604614" y="2.9494192600250244" z="0.8857924938201904"/>
     </BoundingBox>
     <Tags>
         <Tag>alice</Tag>

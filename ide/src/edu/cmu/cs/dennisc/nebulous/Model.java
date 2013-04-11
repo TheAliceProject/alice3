@@ -18,24 +18,19 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 
 	protected edu.cmu.cs.dennisc.scenegraph.Composite sgParent;
 	protected edu.cmu.cs.dennisc.scenegraph.Visual associatedVisual;
-
-	public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
-		Manager.initializeIfNecessary();
-	}
-
-	public native void render( javax.media.opengl.GL gl, float globalBrightness );
-
-	public native void pick();
-
-	//    public native boolean isAlphaBlended();
-	private native void getAxisAlignedBoundingBoxForJoint( org.lgna.story.resources.JointId name, double[] bboxData );
-
-	private native void updateAxisAlignedBoundingBox( double[] bboxData );
-
-	public native void getOriginalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
-
-	public native void getLocalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
-
+	
+    public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
+        Manager.initializeIfNecessary();
+    }
+    
+    public native void render(javax.media.opengl.GL gl, float globalBrightness, boolean renderAlpha, boolean renderOpaque);
+    public native void pick();
+    public native boolean isAlphaBlended();
+    public native boolean hasOpaque();
+    private native void getAxisAlignedBoundingBoxForJoint(org.lgna.story.resources.JointId name, double[] bboxData);
+    private native void updateAxisAlignedBoundingBox(double[] bboxData);
+    public native void getOriginalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
+    public native void getLocalTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
 	public native void setLocalTransformationForPartNamed( org.lgna.story.resources.JointId name, double[] transformIn );
 
 	public native void getAbsoluteTransformationForPartNamed( double[] transformOut, org.lgna.story.resources.JointId name );
