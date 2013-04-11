@@ -158,7 +158,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 		this.addComponent( button, "gapx 0, push, wrap" );
 
-		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadTabState().createFolderTabbedPane();
+		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
 		this.addComponent( tabbedPane, "span 4, grow" );
 		this.setBackgroundColor( BACKGROUND_COLOR );

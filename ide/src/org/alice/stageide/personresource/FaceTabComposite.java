@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,24 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.personresource;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.HeadTabView> {
+public final class FaceTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.FaceTabView> {
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
-
-	private final org.alice.stageide.personresource.data.HairListData hairData = new org.alice.stageide.personresource.data.HairListData();
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> hairState = this.createListSelectionState( this.createKey( "hairState" ), this.hairData, -1 );
-	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
-	private final org.lgna.croquet.ListSelectionState<String> hairColorNameState = this.createListSelectionState( this.createKey( "hairColorNameState" ), this.hairColorNameData, -1 );
-
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> baseFaceState = this.createListSelectionStateForEnum( this.createKey( "baseFaceState" ), org.lgna.story.resources.sims2.BaseFace.class, org.lgna.story.resources.sims2.BaseFace.getRandom() );
 
-	public HeadTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
+	public FaceTabComposite() {
+		super( java.util.UUID.fromString( "44c44e61-7bcb-4891-a631-2142a49ac73c" ), IsCloseable.FALSE );
 	}
 
 	@Override
@@ -66,24 +59,8 @@ public class HeadTabComposite extends org.lgna.croquet.SimpleTabComposite<org.al
 	}
 
 	@Override
-	protected org.alice.stageide.personresource.views.HeadTabView createView() {
-		return new org.alice.stageide.personresource.views.HeadTabView( this );
-	}
-
-	public org.alice.stageide.personresource.data.HairColorNameListData getHairColorNameData() {
-		return this.hairColorNameData;
-	}
-
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return this.hairColorNameState;
-	}
-
-	public org.alice.stageide.personresource.data.HairListData getHairData() {
-		return this.hairData;
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return this.hairState;
+	protected org.alice.stageide.personresource.views.FaceTabView createView() {
+		return new org.alice.stageide.personresource.views.FaceTabView( this );
 	}
 
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {

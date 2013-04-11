@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,35 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.personresource.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HeadTabView extends org.lgna.croquet.components.MigPanel {
-	public HeadTabView( org.alice.stageide.personresource.HeadTabComposite composite ) {
-		super( composite, "insets 2, fill", "[right][left, grow, shrink]", "" );
+public class FaceTabView extends org.lgna.croquet.components.MigPanel {
+	public FaceTabView( org.alice.stageide.personresource.FaceTabComposite composite ) {
+		super( composite, "insets 2, fillx", "[right][left, grow, shrink]", "" );
 		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
 		this.setBackgroundColor( backgroundColor );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-
-		this.addComponent( composite.getHairColorNameState().getSidekickLabel().createLabel(), "top" );
-		this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1 ), "wrap, grow, shrink" );
-
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.Hair> hairList = new HorizontalWrapList<org.lgna.story.resources.sims2.Hair>( composite.getHairState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
-		hairList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
-		org.lgna.croquet.components.ScrollPane hairScrollPane = new org.lgna.croquet.components.ScrollPane( hairList );
-		hairScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		hairScrollPane.setBothScrollBarIncrements( 66, 66 );
-
-		this.addComponent( hairScrollPane, "skip, wrap, grow, shrink" );
 
 		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseFace> faceList = new HorizontalWrapList<org.lgna.story.resources.sims2.BaseFace>( composite.getBaseFaceState(), -1 );
 		faceList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
 
 		this.addComponent( composite.getBaseFaceState().getSidekickLabel().createLabel(), "top" );
-		boolean IS_FACE_SCROLL_PANE_DESIRED = false;
+		boolean IS_FACE_SCROLL_PANE_DESIRED = true;
 		if( IS_FACE_SCROLL_PANE_DESIRED ) {
 			org.lgna.croquet.components.ScrollPane faceScrollPane = new org.lgna.croquet.components.ScrollPane( faceList );
 			faceScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
