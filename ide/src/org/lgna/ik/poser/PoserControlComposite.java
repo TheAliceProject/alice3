@@ -42,6 +42,10 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.croquet.ActionOperation;
+import org.lgna.croquet.CancelException;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.view.PoserControlView;
 
 /**
@@ -49,9 +53,22 @@ import org.lgna.ik.poser.view.PoserControlView;
  */
 public class PoserControlComposite extends AbstractPoserControlComposite<PoserControlView> {
 
+	ActionOperation saveAndExportPose = createActionOperation( createKey( "saveAndExportPose" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			PoserControlComposite.this.ikPoser.getPose();
+
+			return null;
+		}
+	} );
+
 	public PoserControlComposite( IkPoser ikPoser ) {
 		super( ikPoser,
 				java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
+	}
+
+	public ActionOperation getSaveAndExportPose() {
+		return this.saveAndExportPose;
 	}
 
 	@Override

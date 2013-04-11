@@ -42,6 +42,7 @@
  */
 package org.lgna.ik.poser.view;
 
+import org.lgna.croquet.components.AbstractLabel;
 import org.lgna.croquet.components.ItemDropDown;
 import org.lgna.croquet.components.MigPanel;
 import org.lgna.ik.poser.AbstractPoserControlComposite;
@@ -55,8 +56,14 @@ public class AbstractPoserControlView extends MigPanel {
 
 	public AbstractPoserControlView( AbstractPoserControlComposite poserControlComposite ) {
 		//											[			BaseJointHandles		][][ikbool][delete] [radioB] [savePose andRun]
-		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0][grow 0][grow 0]10[grow 0]0[]10[grow 0]10[grow 0]0" );
-		this.addComponent( poserControlComposite.getRightArmLabel().createLabel() );
+		super( poserControlComposite, "fill", "", "0[grow 0]0[grow 0]10[grow 0]0[grow 0]" +
+				"[grow 0]" + //delete row
+				"[]10" + //list section
+				"[grow 0]0[grow 0]" + //save and export rows
+				"10[grow 0]" ); //slider component
+		AbstractLabel label = poserControlComposite.getRightArmLabel().createLabel();
+		System.out.println( "TEXT?: " + label.getText() );
+		this.addComponent( label );
 		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
 
 		JointSelectionSphereState rightArmAnchor = poserControlComposite.getRightArmAnchor();

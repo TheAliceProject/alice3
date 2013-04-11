@@ -77,6 +77,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	public AbstractPoserControlComposite( IkPoser ikPoser, UUID uid ) {
 		super( java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
 		this.ikPoser = ikPoser;
+		System.out.println( "HELLO? " + rightArmLabel.getText() );
 		ikPoser.getJointSelectionSheres();
 		PoserScene scene = ikPoser.scene;
 		rightArmAnchor = new JointSelectionSphereState( scene.getDefaultAnchorJoint( IKMagicWand.Limb.RIGHT_ARM ), scene.getJointsForLimb( IKMagicWand.Limb.RIGHT_ARM ) );

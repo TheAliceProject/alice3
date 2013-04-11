@@ -42,6 +42,8 @@
  */
 package org.lgna.ik.poser.view;
 
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.Label;
 import org.lgna.ik.poser.PoserControlComposite;
 
 /**
@@ -51,6 +53,10 @@ public class PoserControlView extends AbstractPoserControlView {
 
 	public PoserControlView( PoserControlComposite controlComposite ) {
 		super( controlComposite );
+		GridPanel panel = GridPanel.createGridPane( 1, 2 );
+		panel.addComponent( controlComposite.getSaveAndExportPose().createButton() );
+		panel.addComponent( new Label() );
+		this.addComponent( panel, "dock south" );
 	}
 
 }
