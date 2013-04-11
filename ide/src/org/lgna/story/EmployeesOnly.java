@@ -75,18 +75,18 @@ public class EmployeesOnly {
 	}
 
 	public static Color createColor( edu.cmu.cs.dennisc.color.Color4f color ) {
-		return Color.createInstance( color );
+		return color != null ? Color.createInstance( color ) : null;
 	}
 
 	public static Color createColor( java.awt.Color awtColor ) {
-		return createColor( new edu.cmu.cs.dennisc.color.Color4f( awtColor ) );
+		return createColor( awtColor != null ? new edu.cmu.cs.dennisc.color.Color4f( awtColor ) : null );
 	}
 
 	public static edu.cmu.cs.dennisc.color.Color4f getColor4f( Color color ) {
-		return color.getInternal();
+		return color != null ? color.getInternal() : null;
 	}
 
 	public static java.awt.Color getAwtColor( Color color ) {
-		return getColor4f( color ).getAsAWTColor();
+		return color != null ? getColor4f( color ).getAsAWTColor() : null;
 	}
 }

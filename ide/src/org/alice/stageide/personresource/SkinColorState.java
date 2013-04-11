@@ -52,7 +52,7 @@ import org.lgna.croquet.color.ColorState;
 /**
  * @author Dennis Cosgrove
  */
-public class SkinColorState extends org.lgna.croquet.color.ColorState {
+public final class SkinColorState extends org.lgna.croquet.color.ColorState {
 	private final MelaninChooserTabComposite skinToneChooserTabComposite = new MelaninChooserTabComposite();
 
 	private static final java.awt.Color[] MELANIN_SHADES = {
@@ -120,7 +120,12 @@ public class SkinColorState extends org.lgna.croquet.color.ColorState {
 		org.lgna.croquet.components.LineAxisPanel lineAxisPanel = new org.lgna.croquet.components.LineAxisPanel();
 
 		for( java.awt.Color melaninShade : MELANIN_SHADES ) {
-			lineAxisPanel.addComponent( colorState.createColorSelectionStateToggleButton( melaninShade ) );
+			org.lgna.croquet.BooleanState itemSelectedState = colorState.getItemSelectedState( melaninShade );
+			itemSelectedState.initializeIfNecessary();
+			itemSelectedState.setTextForBothTrueAndFalse( "" );
+			itemSelectedState.setIconForBothTrueAndFalse( new org.alice.ide.swing.icons.ColorIcon( melaninShade ) );
+			org.lgna.croquet.components.ToggleButton toggleButton = itemSelectedState.createToggleButton();
+			lineAxisPanel.addComponent( toggleButton );
 		}
 		lineAxisPanel.addComponent( button );
 

@@ -97,9 +97,8 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		}
 	}
 
-	private static class InternalItemSelectedState<T> extends BooleanState {
+	private static abstract class AbstractInternalItemSelectedState<T> extends BooleanState {
 		private final ItemState<T> state;
-		private final java.util.concurrent.Callable<T> itemCallable;
 
 		private static class RadioButtonesqueModel extends javax.swing.JToggleButton.ToggleButtonModel {
 			private boolean isIgnoringSetSelectedFalse;
@@ -123,10 +122,28 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 			}
 		}
 
-		private InternalItemSelectedState( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable ) {
-			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ), new RadioButtonesqueModel() );
+		private AbstractInternalItemSelectedState( ItemState<T> state, java.util.UUID migrationId, boolean initialValue ) {
+			super( state.getGroup(), java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), initialValue, new RadioButtonesqueModel() );
 			assert state != null;
 			this.state = state;
+		}
+
+		public ItemState<T> getState() {
+			return this.state;
+		}
+
+		@Override
+		protected org.lgna.croquet.edits.StateEdit<Boolean> createEdit( org.lgna.croquet.history.CompletionStep<State<Boolean>> completionStep, Boolean nextValue ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( this, nextValue );
+			return null;
+		}
+	}
+
+	private static class InternalItemSelectedState<T> extends AbstractInternalItemSelectedState<T> {
+		private final java.util.concurrent.Callable<T> itemCallable;
+
+		private InternalItemSelectedState( ItemState<T> state, java.util.concurrent.Callable<T> itemCallable ) {
+			super( state, java.util.UUID.fromString( "18f0b3e3-392f-49e0-adab-a6fca7816d63" ), state.getValue() == getItem( itemCallable ) );
 			this.itemCallable = itemCallable;
 		}
 
@@ -134,7 +151,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		protected void localize() {
 			super.localize();
 			StringBuilder sb = new StringBuilder();
-			this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+			this.getState().getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 			this.setTextForBothTrueAndFalse( sb.toString() );
 		}
 
@@ -149,7 +166,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 			//note: do not invoke super
 			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 				T item = getItem( this.itemCallable );
-				this.state.changeValueFromIndirectModel( item, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
+				this.getState().changeValueFromIndirectModel( item, IsAdjusting.FALSE, org.lgna.croquet.triggers.ItemEventTrigger.createUserInstance( e ) );
 			}
 		}
 
@@ -157,7 +174,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		protected void appendRepr( StringBuilder sb ) {
 			super.appendRepr( sb );
 			sb.append( ";item=" );
-			this.state.getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
+			this.getState().getItemCodec().appendRepresentation( sb, getItem( this.itemCallable ) );
 		}
 	}
 
@@ -279,7 +296,7 @@ public abstract class ItemState<T> extends SimpleValueState<T> { //todo: extend 
 		if( this.mapItemCallableToItemSelectedState != null ) {
 			for( InternalItemSelectedState<T> itemSelectedState : this.mapItemCallableToItemSelectedState.values() ) {
 				T item = getItem( itemSelectedState.itemCallable );
-				boolean isSelected = item == nextValue;
+				boolean isSelected = edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( item, nextValue );
 				itemSelectedState.getSwingModel().getButtonModel().setSelected( isSelected );
 			}
 		}

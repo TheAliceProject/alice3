@@ -150,19 +150,4 @@ public abstract class ColorState extends org.lgna.croquet.ItemState<java.awt.Col
 	public ColorChooserDialogCoreComposite getChooserDialogCoreComposite() {
 		return this.chooserDialogCoreComposite;
 	}
-
-	public org.lgna.croquet.components.Button createColorSelectionOperationButton( java.awt.Color color ) {
-		org.lgna.croquet.components.Button rv = this.getItemSelectionOperation( color ).createButton();
-		rv.setClobberText( "" );
-		rv.setClobberIcon( new org.alice.ide.swing.icons.ColorIcon( color ) );
-		return rv;
-	}
-
-	public org.lgna.croquet.components.ToggleButton createColorSelectionStateToggleButton( java.awt.Color color ) {
-		org.lgna.croquet.BooleanState itemSelectedState = this.getItemSelectedState( color );
-		itemSelectedState.initializeIfNecessary();
-		itemSelectedState.setTextForBothTrueAndFalse( "" );
-		itemSelectedState.setIconForBothTrueAndFalse( new org.alice.ide.swing.icons.ColorIcon( color ) );
-		return itemSelectedState.createToggleButton();
-	}
 }

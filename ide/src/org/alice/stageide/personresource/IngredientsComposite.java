@@ -85,15 +85,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private final org.lgna.croquet.State.ValueListener<java.awt.Color> skinColorListener = new org.lgna.croquet.State.ValueListener<java.awt.Color>() {
 		public void changing( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
 
-
-
-
-
-
-
-
-
-
 			pushAtomic();
 		}
 
@@ -219,6 +210,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
 		return this.headTab.getBaseFaceState();
 	}
+
 	public SkinColorState getSkinColorState() {
 		return this.skinColorState;
 	}
@@ -262,7 +254,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		this.getLifeStageState().addValueListener( this.lifeStageListener );
 		this.getGenderState().addValueListener( this.genderListener );
 		this.getSkinColorState().addValueListener( this.skinColorListener );
-		this.getBaseFaceState().addValueListener( this.faceListener );		this.getBaseEyeColorState().addValueListener( this.baseEyeColorListener );
+		this.getBaseFaceState().addValueListener( this.faceListener );
+		this.getBaseEyeColorState().addValueListener( this.baseEyeColorListener );
 		this.getHairColorNameState().addValueListener( this.hairColorNameListener );
 		this.getHairState().addValueListener( this.hairListener );
 		this.getFullBodyOutfitState().addValueListener( this.fullBodyOutfitListener );
@@ -517,7 +510,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		org.lgna.story.resources.sims2.Gender gender = this.getGenderState().getValue();
 
 		java.awt.Color awtSkinColor = this.getSkinColorState().getValue();
-		org.lgna.story.Color skinColor = org.lgna.story.ImplementationAccessor.createColor( new edu.cmu.cs.dennisc.color.Color4f( awtSkinColor ) );
+		org.lgna.story.Color skinColor = org.lgna.story.EmployeesOnly.createColor( awtSkinColor );
 
 		org.lgna.story.resources.sims2.EyeColor eyeColor = this.getBaseEyeColorState().getValue();
 		org.lgna.story.resources.sims2.Outfit outfit = this.getFullBodyOutfitState().getValue();

@@ -66,26 +66,30 @@ public enum BaseSkinTone implements SkinTone {
 	}
 
 	public static BaseSkinTone getClosestToColor( java.awt.Color other ) {
-		float[] hsbOther = new float[ 3 ];
-		float[] hsb = new float[ 3 ];
+		if( other != null ) {
+			float[] hsbOther = new float[ 3 ];
+			float[] hsb = new float[ 3 ];
 
-		java.awt.Color.RGBtoHSB( other.getRed(), other.getGreen(), other.getBlue(), hsbOther );
+			java.awt.Color.RGBtoHSB( other.getRed(), other.getGreen(), other.getBlue(), hsbOther );
 
-		BaseSkinTone minBaseSkinTone = null;
-		float minDistanceSquared = Float.MAX_VALUE;
-		for( BaseSkinTone baseSkinTone : values() ) {
-			java.awt.Color color = baseSkinTone.getColor();
-			java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsb );
+			BaseSkinTone minBaseSkinTone = null;
+			float minDistanceSquared = Float.MAX_VALUE;
+			for( BaseSkinTone baseSkinTone : values() ) {
+				java.awt.Color color = baseSkinTone.getColor();
+				java.awt.Color.RGBtoHSB( color.getRed(), color.getGreen(), color.getBlue(), hsb );
 
-			//note: ignore hue for now
-			float sDelta = hsbOther[ 1 ] - hsb[ 1 ];
-			float bDelta = hsbOther[ 2 ] - hsb[ 2 ];
-			float distanceSquared = ( sDelta * sDelta ) + ( bDelta * bDelta );
-			if( distanceSquared < minDistanceSquared ) {
-				minBaseSkinTone = baseSkinTone;
-				minDistanceSquared = distanceSquared;
+				//note: ignore hue for now
+				float sDelta = hsbOther[ 1 ] - hsb[ 1 ];
+				float bDelta = hsbOther[ 2 ] - hsb[ 2 ];
+				float distanceSquared = ( sDelta * sDelta ) + ( bDelta * bDelta );
+				if( distanceSquared < minDistanceSquared ) {
+					minBaseSkinTone = baseSkinTone;
+					minDistanceSquared = distanceSquared;
+				}
 			}
+			return minBaseSkinTone;
+		} else {
+			return null;
 		}
-		return minBaseSkinTone;
 	}
 }
