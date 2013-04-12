@@ -56,15 +56,16 @@ public enum BaseSkinTone implements SkinTone {
 		this.color = color;
 	}
 
-	public java.awt.Color getColor() {
-		return this.color;
-	}
-
-	//	GREEN;
 	public static BaseSkinTone getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BaseSkinTone.class );
 	}
 
+	//todo: package-private
+	public java.awt.Color getColor() {
+		return this.color;
+	}
+
+	//todo: package-private
 	public static BaseSkinTone getClosestToColor( java.awt.Color other ) {
 		if( other != null ) {
 			float[] hsbOther = new float[ 3 ];
