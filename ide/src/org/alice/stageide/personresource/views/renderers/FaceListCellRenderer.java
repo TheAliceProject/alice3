@@ -40,28 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.views;
+package org.alice.stageide.personresource.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FaceTabView extends org.lgna.croquet.components.MigPanel {
-	public FaceTabView( org.alice.stageide.personresource.FaceTabComposite composite ) {
-		super( composite, "insets 2, fillx", "[right][left, grow, shrink]", "" );
-		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
-		this.setBackgroundColor( backgroundColor );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+public class FaceListCellRenderer extends IngredientListCellRenderer<org.lgna.story.resources.sims2.Face> {
+	private static class SingletonHolder {
+		private static FaceListCellRenderer instance = new FaceListCellRenderer();
+	}
 
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseFace> faceList = new HorizontalWrapList<org.lgna.story.resources.sims2.BaseFace>( composite.getBaseFaceState(), -1, org.alice.stageide.personresource.views.renderers.FaceListCellRenderer.getInstance() );
-		faceList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
+	public static FaceListCellRenderer getInstance() {
+		return SingletonHolder.instance;
+	}
 
-		this.addComponent( composite.getBaseFaceState().getSidekickLabel().createLabel(), "top" );
-		org.lgna.croquet.components.ScrollPane faceScrollPane = new org.lgna.croquet.components.ScrollPane( faceList );
-		faceScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		faceScrollPane.setBothScrollBarIncrements( 66, 66 );
-		this.addComponent( faceScrollPane, "wrap, grow, shrink" );
+	private FaceListCellRenderer() {
+	}
 
-		this.addComponent( composite.getBaseEyeColorState().getSidekickLabel().createLabel() );
-		this.addComponent( new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ), "wrap, shrink" );
+	@Override
+	protected String modifyClsNameIfNecessary( String clsName, org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+		StringBuilder sb = new StringBuilder();
+		if( gender != null ) {
+			String genderName = gender.name();
+			sb.append( genderName.charAt( 0 ) );
+			sb.append( genderName.substring( 1 ).toLowerCase() );
+		}
+		if( lifeStage != null ) {
+			String lifeStageName = lifeStage.name();
+			sb.append( lifeStageName.charAt( 0 ) );
+			sb.append( lifeStageName.substring( 1 ).toLowerCase() );
+		}
+		sb.append( clsName );
+		return sb.toString();
+	}
+
+	@Override
+	protected String getSubPath() {
+		return "face_pictures";
 	}
 }
