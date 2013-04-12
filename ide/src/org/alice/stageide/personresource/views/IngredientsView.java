@@ -73,9 +73,9 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "skip" );
 
 		java.awt.Insets margin = new java.awt.Insets( 0, -8, 0, -8 ); //todo
-		final java.awt.Color[] melaninColors = skinColorState.getMelaninShades();
+		final java.awt.Color[] melaninColors = skinColorState.getMelaninChooserTabComposite().getMelaninChipShades();
 		String constraints = "gap 0, span 2, split " + ( melaninColors.length + 2 );
-		for( java.awt.Color melaninShade : skinColorState.getMelaninShades() ) {
+		for( java.awt.Color melaninShade : melaninColors ) {
 			org.lgna.croquet.BooleanState itemSelectedState = skinColorState.getItemSelectedState( melaninShade );
 			itemSelectedState.initializeIfNecessary();
 			itemSelectedState.setTextForBothTrueAndFalse( "" );
@@ -140,7 +140,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 			public void changed( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
 				boolean isColorMelaninShade = false;
-				for( java.awt.Color melaninShade : skinColorState.getMelaninShades() ) {
+				for( java.awt.Color melaninShade : skinColorState.getMelaninChooserTabComposite().getMelaninChipShades() ) {
 					if( melaninShade.equals( nextValue ) ) {
 						isColorMelaninShade = true;
 						break;
