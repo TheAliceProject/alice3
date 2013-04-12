@@ -46,6 +46,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.ListCellRenderer;
+
 import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
@@ -82,7 +84,7 @@ public class EventScript {
 		return rv;
 	}
 
-	private void refresh() {
+	public void refresh() {
 		list = Collections.newLinkedList( eventList );
 	}
 
@@ -120,5 +122,9 @@ public class EventScript {
 
 	public List<EventWithTime> getEventList() {
 		return eventList;
+	}
+
+	public static ListCellRenderer getListCellRenderer() {
+		return null;
 	}
 }

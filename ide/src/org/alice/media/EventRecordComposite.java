@@ -73,6 +73,7 @@ import edu.cmu.cs.dennisc.animation.FrameObserver;
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import edu.cmu.cs.dennisc.matt.EventScript;
 import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 import edu.cmu.cs.dennisc.matt.EventScriptListener;
@@ -141,9 +142,10 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		public void changed( State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
 			if( isRecordingState.getValue() ) {
 				programContext.getProgramImp().startAnimator();
+				programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );
 				restartRecording.setEnabled( true );
 			} else {
-				programContext.getProgramImp().stopAnimator();
+				programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
 			}
 		}
 	};
@@ -200,6 +202,10 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		if( ( programContext != null ) ) {
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 		}
+		if( containsRandom() ) {
+			stashSeed( System.currentTimeMillis() );
+			RandomUtilities.setSeed( owner.getRandomSeed() );
+		}
 		programContext = new RunProgramContext( owner.getProject().getProgramType() );
 		programContext.getProgramImp().setControlPanelDesired( false );
 		programContext.initializeInContainer( lookingGlassContainer.getAwtComponent(), 640, 360 );
@@ -255,9 +261,6 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 		StageIDE ide = StageIDE.getActiveInstance();
 		RandomNumberFinder crawler = new RandomNumberFinder();
 		ide.crawlFilteredProgramType( crawler );
-		if( crawler.getContainsRandom() ) {
-			stashSeed( System.currentTimeMillis() );
-		}
 		return crawler.getContainsRandom();
 	}
 
@@ -271,6 +274,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 		public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 			if( crawlable instanceof MethodInvocation ) {
+				if( ( (Statement)( (MethodInvocation)crawlable ).getFirstAncestorAssignableTo( Statement.class ) ).isEnabled.getValue() ) {
+					return;
+				}
 				AbstractMethod method = ( (MethodInvocation)crawlable ).method.getValue();
 				if( method.isFunction() ) {
 					if( method.getDeclaringType() instanceof JavaType ) {
@@ -319,7 +325,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	@Override
 	public void resetData() {
 		if( lookingGlassContainer != null ) {
-			lookingGlassContainer.removeAllComponents();
+			synchronized( lookingGlassContainer.getTreeLock() ) {
+				lookingGlassContainer.removeAllComponents();
+			}
 		}
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		restartProgramContext();
@@ -329,5 +337,9 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 	public void handlePostHideDialog( CompletionStep<?> step ) {
 		programContext.cleanUpProgram();
 		super.handlePostHideDialog( step );
+	}
+
+	public ListCellRenderer<EventWithTime> getCellRenderer() {
+		return owner.getCellRenderer();
 	}
 }

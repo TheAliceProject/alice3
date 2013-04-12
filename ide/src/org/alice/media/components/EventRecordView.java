@@ -74,6 +74,7 @@ public class EventRecordView extends org.lgna.croquet.components.MigPanel {
 		List<EventWithTime> list = eventRecordComposite.getEventList().createList();
 		list.setOpaque( false );
 		list.getAwtComponent().setMinimumSize( new Dimension( 400, lookingGlassContainer.getHeight() ) );
+		list.setCellRenderer( eventRecordComposite.getCellRenderer() );
 		this.addComponent( list, "east" );
 	}
 

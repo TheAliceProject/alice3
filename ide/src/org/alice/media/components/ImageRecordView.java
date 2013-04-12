@@ -61,24 +61,25 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	private ToggleButton playPauseButton;
 
 	public ImageRecordView( org.alice.media.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "insets 0", "" );
+		super( recordComposite, "insets 0" );
 		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( this.lookingGlassContainer );
 
 		List<EventWithTime> list = recordComposite.getEventList().createList();
 		list.setMinimumPreferredWidth( 400 );
 		list.setOpaque( false );
-		list.makeStandOut();
 
 		playPauseButton = recordComposite.getIsRecordingState().createToggleButton();
 		timerLabel = new Label( String.valueOf( recordComposite.getTimerInSeconds() ) );
 
-		this.addComponent( panel );
+		this.addComponent( panel, "span 5" );
+		list.setCellRenderer( recordComposite.getCellRenderer() );
 		this.addComponent( list, "wrap, grow, spany 2" );
 
-		this.addComponent( playPauseButton, "split 4" );
-		this.addComponent( new org.lgna.croquet.components.LineAxisPanel( recordComposite.getFrameRateState().getSidekickLabel().createImmutableTextField(), recordComposite.getFrameRateState().createSpinner() ), "align right" );
-		this.addComponent( timerLabel, "align left" );
-		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right" );
+		this.addComponent( playPauseButton, "push" );
+		this.addComponent( recordComposite.getFrameRateState().getSidekickLabel().createImmutableTextField() );
+		this.addComponent( recordComposite.getFrameRateState().createSpinner() );
+		this.addComponent( timerLabel, "push" );
+		this.addComponent( recordComposite.getRestartOperation().createButton(), "align right, wrap" );
 	}
 
 	public org.lgna.croquet.components.BorderPanel getLookingGlassContainer() {

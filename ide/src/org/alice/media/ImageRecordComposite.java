@@ -42,7 +42,6 @@
  */
 package org.alice.media;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -68,11 +67,11 @@ import org.lgna.story.implementation.SceneImp;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import edu.cmu.cs.dennisc.matt.EventManager;
 import edu.cmu.cs.dennisc.matt.EventScript;
 import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
-import edu.cmu.cs.dennisc.matt.MouseEventWrapper;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
 
 /**
@@ -112,15 +111,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		}
 
 		public void appendRepresentation( StringBuilder sb, EventWithTime value ) {
-			String eventType = "";
-			if( value.getEvent() instanceof MouseEventWrapper ) {
-				eventType = owner.getMouseEventName().getText();
-			} else if( value.getEvent() instanceof KeyEvent ) {
-				eventType = owner.getKeyBoardEventName().getText();
-			} else {
-				eventType = "UNKNOWN EVENT TYPE: " + value.getEvent().getClass().getSimpleName();
-			}
-			sb.append( value.getReportForEventType( eventType ) );
+			sb.append( value );
 		}
 	}, -1 );
 
@@ -206,9 +197,10 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	public void setRecording( boolean isRecording ) {
 		if( this.isRecordingState.getValue() != isRecording ) {
 			if( !this.isRecordingState.getValue() ) {
-				programContext.getProgramImp().stopAnimator();
+				programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
 			} else {
 				programContext.getProgramImp().startAnimator();
+				programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );
 				restartOperation.setEnabled( true );
 				hasStartedRecording = true;
 			}
@@ -247,6 +239,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				eventList.addItem( event );
 			}
 		}
+		RandomUtilities.setSeed( owner.getRandomSeed() );
 	}
 
 	private void handleImage( java.awt.image.BufferedImage image, int imageCount, boolean isUpsideDown ) {
@@ -290,6 +283,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 		getView().revalidateAndRepaint();
 
+		owner.getScript().refresh();
 		EventScript script = owner.getScript();
 
 		UserInstance programInstance = programContext.getProgramInstance();
@@ -316,7 +310,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	@Override
 	public void resetData() {
 		if( lookingGlassContainer != null ) {
-			lookingGlassContainer.removeAllComponents();
+			synchronized( lookingGlassContainer.getTreeLock() ) {
+				lookingGlassContainer.removeAllComponents();
+			}
 		}
 		lookingGlassContainer = getView().getLookingGlassContainer();
 		restartProgramContext();
@@ -326,5 +322,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	public void handlePostHideDialog( CompletionStep<?> step ) {
 		super.handlePostHideDialog( step );
 		programContext.cleanUpProgram();
+	}
+
+	public ListCellRenderer<EventWithTime> getCellRenderer() {
+		return owner.getCellRenderer();
 	}
 }
