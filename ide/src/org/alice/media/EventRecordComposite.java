@@ -248,7 +248,7 @@ public class EventRecordComposite extends WizardPageComposite<EventRecordView> {
 
 	@Override
 	protected boolean isClearedForAutoAdvance( org.lgna.croquet.history.CompletionStep<?> step ) {
-		return ( this.containsInputEvents() && this.containsRandom() ) == false;
+		return ( !this.containsInputEvents() && !this.containsRandom() );
 	}
 
 	private boolean containsRandom() {
