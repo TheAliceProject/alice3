@@ -46,8 +46,8 @@ package org.alice.stageide.personresource.views;
  * @author Dennis Cosgrove
  */
 public abstract class JColorSlider extends javax.swing.JComponent {
-	private static int HALF_ARROW_WIDTH = 4;
-	private static int ARROW_HEIGHT = 6;
+	private static int HALF_ARROW_WIDTH = 3;
+	private static int ARROW_HEIGHT = 4;
 
 	private final java.awt.Color[] colors;
 	private float portion = 0.5f;
@@ -146,11 +146,8 @@ public abstract class JColorSlider extends javax.swing.JComponent {
 	}
 
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		java.awt.Dimension rv = super.getPreferredSize();
-		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( rv, ARROW_HEIGHT + ARROW_HEIGHT + 24 );
-		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( rv, HALF_ARROW_WIDTH + HALF_ARROW_WIDTH + 320 );
-		return rv;
+	public java.awt.Dimension getMinimumSize() {
+		return new java.awt.Dimension( HALF_ARROW_WIDTH + HALF_ARROW_WIDTH + 32, ARROW_HEIGHT + ARROW_HEIGHT + 16 );
 	}
 
 	@Override

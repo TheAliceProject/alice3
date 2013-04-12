@@ -52,7 +52,7 @@ import static org.lgna.story.resources.sims2.BaseSkinTone.LIGHTER;
  */
 public final class MelaninChooserTabComposite extends org.lgna.croquet.color.ColorChooserTabComposite<org.alice.stageide.personresource.views.MelaninChooserTabView> {
 	private static final java.awt.Color[] MELANIN_CHIP_SHADES = {
-			edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( DARKER.getColor(), 1.0, 1.0, 0.9 ),
+			edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( DARKER.getColor(), 1.0, 1.0, 0.7 ),
 			DARKER.getColor(),
 			edu.cmu.cs.dennisc.java.awt.ColorUtilities.interpolate( DARKER.getColor(), DARK.getColor(), 0.5f ),
 			DARK.getColor(),

@@ -57,14 +57,14 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 	private static final javax.swing.Icon LOCKED_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( org.alice.stageide.personresource.IngredientsComposite.class.getResource( "images/locked.png" ) );
 
 	public IngredientsView( final org.alice.stageide.personresource.IngredientsComposite composite ) {
-		super( composite, "insets 0, fill", "[][align right][]", "[shrink]" );
+		super( composite, "insets 0, fill", "[][align right][][grow]", "[][][][][shrink]" );
 
 		this.addComponent( this.isLifeStageLockedLabel );
 		this.addComponent( composite.getLifeStageState().getSidekickLabel().createLabel(), "" );
 
 		this.lifeStageList = new HorizontalWrapList( composite.getLifeStageState(), 1 );
 		this.addComponent( this.lifeStageList, "push" );
-		this.addComponent( composite.getRandomize().createButton(), "wrap" );
+		this.addComponent( composite.getRandomize().createButton(), "push, align right, wrap" );
 
 		this.addComponent( composite.getGenderState().getSidekickLabel().createLabel(), "skip" );
 		this.addComponent( new HorizontalWrapList( composite.getGenderState(), 1 ), "wrap" );
@@ -73,9 +73,9 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "skip" );
 
 		java.awt.Insets margin = new java.awt.Insets( 0, -8, 0, -8 ); //todo
-		final java.awt.Color[] melaninColors = skinColorState.getMelaninChooserTabComposite().getMelaninChipShades();
-		String constraints = "gap 0, span 2, split " + ( melaninColors.length + 2 );
-		for( java.awt.Color melaninShade : melaninColors ) {
+		final java.awt.Color[] melaninChipColors = skinColorState.getMelaninChooserTabComposite().getMelaninChipShades();
+		String constraints = "gap 0, split " + melaninChipColors.length;
+		for( java.awt.Color melaninShade : melaninChipColors ) {
 			org.lgna.croquet.BooleanState itemSelectedState = skinColorState.getItemSelectedState( melaninShade );
 			itemSelectedState.initializeIfNecessary();
 			itemSelectedState.setTextForBothTrueAndFalse( "" );
@@ -128,11 +128,11 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		otherColorButton.getAwtComponent().setText( "" );
 		otherColorButton.getAwtComponent().setIcon( new OtherColorIcon() );
 		otherColorButton.tightenUpMargin( margin );
-		this.addComponent( otherColorButton, "gap 8" );
+		this.addComponent( otherColorButton, "gap 8, split 2" );
 
 		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );
-		final org.lgna.croquet.components.Button button = composite.getSkinColorState().getChooserDialogCoreComposite().getOperation().createButton();
-		button.setClobberText( "Custom Color..." );
+		final org.lgna.croquet.components.Button customColorDialogButton = composite.getSkinColorState().getChooserDialogCoreComposite().getOperation().createButton();
+		customColorDialogButton.setClobberText( "Custom Color..." );
 
 		org.lgna.croquet.State.ValueListener<java.awt.Color> colorListener = new org.lgna.croquet.State.ValueListener<java.awt.Color>() {
 			public void changing( org.lgna.croquet.State<java.awt.Color> state, java.awt.Color prevValue, java.awt.Color nextValue, boolean isAdjusting ) {
@@ -156,7 +156,16 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		};
 		skinColorState.addAndInvokeValueListener( colorListener );
 
-		this.addComponent( button, "gapx 0, push, wrap" );
+		this.addComponent( customColorDialogButton, "gapx 0, wrap" );
+
+		final java.awt.Color[] melaninSliderColors = skinColorState.getMelaninChooserTabComposite().getMelaninSliderShades();
+		this.getAwtComponent().add( new JColorSlider( melaninSliderColors ) {
+			@Override
+			protected void handleNextColor( java.awt.Color nextColor ) {
+				//todo
+				skinColorState.setValueTransactionlessly( nextColor );
+			}
+		}, "skip 2, grow, gaptop 0, wrap" );
 
 		org.lgna.croquet.components.FolderTabbedPane tabbedPane = composite.getBodyHeadHairTabState().createFolderTabbedPane();
 		tabbedPane.setBackgroundColor( BACKGROUND_COLOR );
