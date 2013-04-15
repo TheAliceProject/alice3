@@ -61,7 +61,7 @@ public class ImageRecordView extends org.lgna.croquet.components.MigPanel {
 	private ToggleButton playPauseButton;
 
 	public ImageRecordView( org.alice.media.ImageRecordComposite recordComposite ) {
-		super( recordComposite, "insets 0" );
+		super( recordComposite, "insets 0", "" );
 		org.lgna.croquet.components.Panel panel = new org.lgna.croquet.components.FixedCenterPanel( this.lookingGlassContainer );
 
 		List<EventWithTime> list = recordComposite.getEventList().createList();
