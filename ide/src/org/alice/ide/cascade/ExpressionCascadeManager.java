@@ -212,6 +212,12 @@ public abstract class ExpressionCascadeManager {
 				} else {
 					expressionFillIn = null;
 				}
+			} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
+				org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
+				expressionFillIn = org.alice.ide.croquet.models.cascade.ParameterAccessFillIn.getInstance( parameterAccess.parameter.getValue() );
+			} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
+				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)expression;
+				expressionFillIn = org.alice.ide.croquet.models.cascade.LocalAccessFillIn.getInstance( localAccess.local.getValue() );
 			} else {
 				expressionFillIn = null;
 			}
