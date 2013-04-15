@@ -102,9 +102,19 @@ public final class JCloseButton extends javax.swing.JButton {
 			} else {
 				g2.setPaint( java.awt.Color.WHITE );
 			}
-			javax.swing.AbstractButton parent = (javax.swing.AbstractButton)button.getParent();
-			if( parent.isSelected() ) {
-				g2.fill( area0 );
+
+			g2.fill( area0 );
+
+			boolean isParentSelected;
+			java.awt.Container parent = button.getParent();
+			if( parent instanceof javax.swing.AbstractButton ) {
+				javax.swing.AbstractButton parentButton = (javax.swing.AbstractButton)parent;
+				isParentSelected = parentButton.isSelected();
+			} else {
+				isParentSelected = false;
+			}
+
+			if( isParentSelected ) {
 				g2.setPaint( java.awt.Color.BLACK );
 			} else {
 				g2.setPaint( java.awt.Color.GRAY );

@@ -46,6 +46,26 @@ package org.lgna.croquet.components;
  * @author Dennis Cosgrove
  */
 public class DocumentLabel extends AbstractLabel {
+	private class JDocumentLabel extends javax.swing.JLabel {
+		public JDocumentLabel( String text ) {
+			super( text );
+		}
+
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+		}
+
+		@Override
+		public java.awt.Dimension getMaximumSize() {
+			java.awt.Dimension rv = super.getMaximumSize();
+			if( isMaximumSizeClampedToPreferredSize() ) {
+				rv.setSize( this.getPreferredSize() );
+			}
+			return rv;
+		}
+	}
+
 	private final javax.swing.text.Document document;
 
 	private static String getText( javax.swing.text.Document document ) {
@@ -78,7 +98,7 @@ public class DocumentLabel extends AbstractLabel {
 
 	@Override
 	protected javax.swing.JLabel createAwtComponent() {
-		return new javax.swing.JLabel( DocumentLabel.getText( this.document ) );
+		return new JDocumentLabel( DocumentLabel.getText( this.document ) );
 	}
 
 	private void handleDocumentChanged() {

@@ -62,7 +62,7 @@ public class TypeCache {
 		switch( CONSTRUCTOR_COUNT ) {
 		case 1:
 			org.lgna.project.ast.NamedUserConstructor constructor0 = constructors.get( 0 );
-			java.util.ArrayList<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
+			java.util.List<? extends org.lgna.project.ast.AbstractParameter> requiredParameters = constructor0.getRequiredParameters();
 			final int REQUIRED_PARAMETER_COUNT = requiredParameters.size();
 			switch( REQUIRED_PARAMETER_COUNT ) {
 			case 0:

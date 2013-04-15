@@ -112,8 +112,12 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 				for( Object colList : listenerList ) {
 					if( check( colList, m, changedEntity ) ) {
 						CopyOnWriteArrayList<SThing> models = new CopyOnWriteArrayList<SThing>();
-						models.add( changedEntity );
-						models.add( m );
+						if( changedEntity instanceof SMovableTurnable ) {
+							models.add( changedEntity );
+						}
+						if( m instanceof SMovableTurnable ) {
+							models.add( m );
+						}
 						if( colList instanceof CollisionStartListener ) {
 							fireEvent( colList, new StartCollisionEvent( models.toArray( new SMovableTurnable[ 0 ] ) ) );
 						} else if( colList instanceof CollisionEndListener ) {

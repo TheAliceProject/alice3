@@ -122,7 +122,7 @@ public class JavaMethod extends AbstractMethod {
 		}
 	}
 
-	public java.util.ArrayList<? extends AbstractParameter> getRequiredParameters() {
+	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 

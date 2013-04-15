@@ -281,6 +281,8 @@ public abstract class DragComponent<M extends org.lgna.croquet.DragModel> extend
 								eventQueue.pushClickAndClackMouseFocusComponent( awtComponent );
 							}
 						}
+					} else {
+						this.handleLeftMouseButtonQuoteClickedUnquote( e );
 					}
 				} else {
 					org.lgna.croquet.Application.getActiveInstance().setDragInProgress( false );
