@@ -1,3 +1,5 @@
+import java.util.Calendar;
+
 /*
  * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
@@ -49,18 +51,16 @@ public class JiraAddVersion {
 		org.alice.ide.issue.ReportSubmissionConfiguration reportSubmissionConfiguration = new org.alice.ide.issue.ReportSubmissionConfiguration();
 		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 		com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( reportSubmissionConfiguration.getJIRAViaSOAPServer() );
-		String token = service.login( args[ 0 ], args[ 1 ] );
-		final int startIndex = 41;
-		final int count = 1;
-		for( int i=startIndex; i<startIndex+count; i++ ) {
-			com.atlassian.jira.rpc.soap.client.RemoteVersion remoteVersion = new com.atlassian.jira.rpc.soap.client.RemoteVersion();
-			remoteVersion.setSequence( -1L ); //todo: investigate
-			remoteVersion.setName( "3.1." + i + ".0.0" );
-			String[] projectKeys = { "AIIIP", "AIII" };
-			for( String projectKey : projectKeys ) {
-				com.atlassian.jira.rpc.soap.client.RemoteVersion result = service.addVersion( token, projectKey, remoteVersion );
-				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( result.getSequence() );
-			}
+		String token = service.login( "dculyba", "bkmdlmc" );
+		com.atlassian.jira.rpc.soap.client.RemoteVersion remoteVersion = new com.atlassian.jira.rpc.soap.client.RemoteVersion();
+		remoteVersion.setSequence( -1L ); //todo: investigate
+		remoteVersion.setName( "3.1.100.0.0" );
+		remoteVersion.setId("TEST");
+		remoteVersion.setReleaseDate(Calendar.getInstance());
+		String[] projectKeys = { "AIIIP", "AIII" };
+		for( String projectKey : projectKeys ) {
+			com.atlassian.jira.rpc.soap.client.RemoteVersion result = service.addVersion( token, projectKey, remoteVersion );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( result.getSequence() );
 		}
 	}
 }
