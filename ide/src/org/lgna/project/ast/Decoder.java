@@ -276,7 +276,7 @@ public class Decoder {
 		return new MethodReflectionProxy( declaringCls, name, parameterClses, isVarArgs );
 	}
 
-	private static int getNotGuaranteedToBeUniqueKey( org.w3c.dom.Element xmlElement ) {
+	private static int getUniqueKey( org.w3c.dom.Element xmlElement ) {
 		return Integer.parseInt( xmlElement.getAttribute( CodecConstants.UNIQUE_KEY_ATTRIBUTE ), 16 );
 	}
 
@@ -346,7 +346,7 @@ public class Decoder {
 				assert rv != null;
 			}
 			if( rv instanceof AbstractDeclaration ) {
-				map.put( getNotGuaranteedToBeUniqueKey( xmlElement ), (AbstractDeclaration)rv );
+				map.put( getUniqueKey( xmlElement ), (AbstractDeclaration)rv );
 			}
 			rv.decodeNode( this, xmlElement, map );
 			if( xmlElement.hasAttribute( CodecConstants.ID_ATTRIBUTE ) ) {
@@ -355,7 +355,7 @@ public class Decoder {
 				}
 			}
 		} else {
-			int key = getNotGuaranteedToBeUniqueKey( xmlElement );
+			int key = getUniqueKey( xmlElement );
 			rv = map.get( key );
 			assert rv != null : key;
 		}
