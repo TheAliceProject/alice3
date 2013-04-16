@@ -104,6 +104,7 @@ public class ControlFlowComposite extends org.lgna.croquet.SimpleComposite<org.a
 				org.alice.ide.ast.draganddrop.statement.EachInArrayTogetherTemplateDragModel.getInstance(),
 				null,
 				org.alice.ide.ast.draganddrop.statement.DeclareLocalDragModel.getInstance(),
+				org.alice.ide.ast.draganddrop.statement.AssignmentTemplateDragModel.getInstance(),
 				null,
 				org.alice.ide.ast.draganddrop.statement.CommentTemplateDragModel.getInstance()
 				);

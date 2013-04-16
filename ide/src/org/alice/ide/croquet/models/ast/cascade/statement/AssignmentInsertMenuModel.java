@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.draganddrop.statement;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LocalAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.UserLocal, LocalAssignmentTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
-	public static synchronized LocalAssignmentTemplateDragModel getInstance( org.lgna.project.ast.UserLocal local ) {
-		LocalAssignmentTemplateDragModel rv = map.get( local );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new LocalAssignmentTemplateDragModel( local );
-			map.put( local, rv );
+public class AssignmentInsertMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
+	public static AssignmentInsertMenuModel createInstance( org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
+		java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		org.lgna.project.ast.AbstractType<?, ?, ?> selectedType = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getMetaState().getValue();
+		if( selectedType != null ) {
+			java.util.List<org.lgna.project.ast.UserField> nonFinalUserFields = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			for( org.lgna.project.ast.AbstractField field : selectedType.getDeclaredFields() ) {
+				if( field instanceof org.lgna.project.ast.UserField ) {
+					org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)field;
+					if( userField.isFinal() ) {
+						//pass
+					} else {
+						nonFinalUserFields.add( userField );
+					}
+				}
+			}
+			if( nonFinalUserFields.size() > 0 ) {
+				models.add( FieldsSeparatorModel.getInstance() );
+				for( org.lgna.project.ast.UserField field : nonFinalUserFields ) {
+					models.add( FieldAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
+					if( field.getValueType().isArray() ) {
+						models.add( FieldArrayAtIndexAssignmentInsertCascade.getInstance( blockStatementIndexPair, field ).getMenuModel() );
+					}
+				}
+			}
 		}
-		return rv;
+		if( models.size() == 0 ) {
+			models.add( NoVariablesOrFieldsAccessibleSeparatorModel.getInstance() );
+		}
+		return new AssignmentInsertMenuModel( models );
 	}
 
-	private org.lgna.project.ast.UserLocal local;
-
-	private LocalAssignmentTemplateDragModel( org.lgna.project.ast.UserLocal local ) {
-		super( java.util.UUID.fromString( "8fc94780-2193-4cb9-8db4-ef39e9ece075" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteLocalAssignmentStatement( local ) );
-		this.local = local;
-	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAssignmentTemplateDragModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<LocalAssignmentTemplateDragModel>( this, org.lgna.project.ast.UserLocal.class, this.local );
-	}
-
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return new org.alice.ide.croquet.models.ast.cascade.statement.LocalAssignmentInsertCascade( blockStatementIndexPair, this.local );
+	private AssignmentInsertMenuModel( java.util.List<org.lgna.croquet.StandardMenuItemPrepModel> models ) {
+		super( java.util.UUID.fromString( "3a849c6b-13c4-42cf-a79c-3dec56d36d6c" ), models );
 	}
 }

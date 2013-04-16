@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,33 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.members.components.templates;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class SetFieldArrayAtIndexTemplate extends ExpressionStatementTemplate {
-	private org.lgna.project.ast.AbstractField field;
-
-	public SetFieldArrayAtIndexTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.ast.draganddrop.statement.FieldArrayAtIndexAssignmentTemplateDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
-		}
+public final class NoVariablesOrFieldsAccessibleSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static class SingletonHolder {
+		private static NoVariablesOrFieldsAccessibleSeparatorModel instance = new NoVariablesOrFieldsAccessibleSeparatorModel();
 	}
 
-	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return new org.lgna.project.ast.AssignmentExpression(
-				this.field.getValueType().getComponentType(),
-				new org.lgna.project.ast.ArrayAccess(
-						field.getValueType(),
-						org.alice.ide.ast.IncompleteAstUtilities.createIncompleteFieldAccess( this.field ),
-						new org.alice.ide.ast.EmptyExpression( org.lgna.project.ast.JavaType.INTEGER_OBJECT_TYPE )
-				),
-				org.lgna.project.ast.AssignmentExpression.Operator.ASSIGN,
-				new org.alice.ide.ast.EmptyExpression( this.field.getValueType().getComponentType() ) );
+	public static NoVariablesOrFieldsAccessibleSeparatorModel getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private NoVariablesOrFieldsAccessibleSeparatorModel() {
+		super( java.util.UUID.fromString( "570e6d50-d6d0-4936-a80a-00748967d084" ) );
 	}
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,25 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.members.components.templates;
+package org.alice.ide.croquet.models.ast.cascade.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-/* package-private */class SetFieldTemplate extends ExpressionStatementTemplate {
-	private org.lgna.project.ast.AbstractField field;
-
-	public SetFieldTemplate( org.lgna.project.ast.AbstractField field ) {
-		super( org.alice.ide.ast.draganddrop.statement.FieldAssignmentTemplateDragModel.getInstance( field ) );
-		this.field = field;
-		if( this.field instanceof org.lgna.project.ast.UserField ) {
-			org.lgna.project.ast.UserField userField = (org.lgna.project.ast.UserField)this.field;
-			this.setPopupPrepModel( new FieldMenu( userField ).getPopupPrepModel() );
-		}
+public final class FieldsSeparatorModel extends org.lgna.croquet.LabelMenuSeparatorModel {
+	private static class SingletonHolder {
+		private static FieldsSeparatorModel instance = new FieldsSeparatorModel();
 	}
 
-	@Override
-	protected org.lgna.project.ast.Expression createIncompleteExpression() {
-		return org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpression( this.field );
+	public static FieldsSeparatorModel getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private FieldsSeparatorModel() {
+		super( java.util.UUID.fromString( "6189318a-e871-430c-8f70-31845ac03f4e" ) );
 	}
 }

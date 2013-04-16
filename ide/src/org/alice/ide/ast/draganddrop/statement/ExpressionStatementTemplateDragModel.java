@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.ide.ast.draganddrop.statement;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAssignmentTemplateDragModel extends StatementTemplateDragModel {
-	private static java.util.Map<org.lgna.project.ast.AbstractField, FieldAssignmentTemplateDragModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public abstract class ExpressionStatementTemplateDragModel extends StatementTemplateDragModel {
+	private final Class<? extends org.lgna.project.ast.Expression> expressionCls;
 
-	public static synchronized FieldAssignmentTemplateDragModel getInstance( org.lgna.project.ast.AbstractField field ) {
-		FieldAssignmentTemplateDragModel rv = map.get( field );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new FieldAssignmentTemplateDragModel( field );
-			map.put( field, rv );
-		}
-		return rv;
+	public ExpressionStatementTemplateDragModel( java.util.UUID migrationId, Class<? extends org.lgna.project.ast.Statement> statementCls, org.lgna.project.ast.Statement possiblyIncompleteStatement, Class<? extends org.lgna.project.ast.Expression> expressionCls ) {
+		super( migrationId, statementCls, possiblyIncompleteStatement );
+		this.expressionCls = expressionCls;
 	}
 
-	private org.lgna.project.ast.AbstractField field;
-
-	private FieldAssignmentTemplateDragModel( org.lgna.project.ast.AbstractField field ) {
-		super( java.util.UUID.fromString( "c2116770-a3e7-44cc-ad48-e52d22404d35" ), org.lgna.project.ast.ExpressionStatement.class, org.alice.ide.ast.IncompleteAstUtilities.createIncompleteAssignmentExpressionStatement( field ) );
-		this.field = field;
-	}
-
-	@Override
-	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<FieldAssignmentTemplateDragModel> createResolver() {
-		return new org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<FieldAssignmentTemplateDragModel>( this, org.lgna.project.ast.AbstractField.class, this.field );
-	}
-
-	@Override
-	public org.lgna.croquet.Model getDropModel( org.lgna.croquet.history.DragStep step, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair ) {
-		return org.alice.ide.croquet.models.ast.cascade.statement.FieldAssignmentInsertCascade.getInstance( blockStatementIndexPair, this.field );
+	public Class<? extends org.lgna.project.ast.Expression> getExpressionCls() {
+		return this.expressionCls;
 	}
 }

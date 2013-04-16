@@ -63,7 +63,14 @@ public class MiniControlFlowStatementTemplate extends org.alice.ide.templates.St
 		if( this.labelText != null ) {
 			//pass
 		} else {
-			Class<?> cls = this.incompleteStatement.getClass();
+			Class<?> cls;
+			org.lgna.croquet.DragModel model = this.getModel();
+			if( model instanceof org.alice.ide.ast.draganddrop.statement.ExpressionStatementTemplateDragModel ) {
+				org.alice.ide.ast.draganddrop.statement.ExpressionStatementTemplateDragModel expressionStatementTemplateDragModel = (org.alice.ide.ast.draganddrop.statement.ExpressionStatementTemplateDragModel)model;
+				cls = expressionStatementTemplateDragModel.getExpressionCls();
+			} else {
+				cls = this.getStatementCls();
+			}
 			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.controlflow.Templates", org.alice.ide.croquet.models.ui.formatter.FormatterSelectionState.getInstance().getValue().getLocale() );
 		}
 		return this.labelText;
