@@ -48,12 +48,12 @@ package edu.cmu.cs.dennisc.video;
 public interface VideoPlayer {
 	public java.awt.Canvas getVideoSurface();
 
-	public void prepareMedia( java.io.File file );
-	
+	public void prepareMedia( java.net.URI uri );
+
 	public boolean isPlayable();
 
 	public boolean isPlaying();
-	
+
 	public void playResume();
 
 	public void pause();

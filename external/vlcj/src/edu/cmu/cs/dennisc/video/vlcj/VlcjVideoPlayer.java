@@ -50,151 +50,179 @@ import uk.co.caprica.vlcj.player.MediaPlayer;
  */
 public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private final uk.co.caprica.vlcj.player.MediaPlayerEventListener mediaPlayerEventListener = new uk.co.caprica.vlcj.player.MediaPlayerEventListener() {
-		public void mediaChanged(MediaPlayer mediaPlayer, libvlc_media_t media, String mrl) {
+		public void mediaChanged( MediaPlayer mediaPlayer, libvlc_media_t media, String mrl ) {
 		}
 
-		public void opening(MediaPlayer mediaPlayer) {
+		public void opening( MediaPlayer mediaPlayer ) {
 		}
 
-		public void buffering(MediaPlayer mediaPlayer, float newCache) {
+		public void buffering( MediaPlayer mediaPlayer, float newCache ) {
 		}
 
-		public void playing(MediaPlayer mediaPlayer) {
+		public void playing( MediaPlayer mediaPlayer ) {
 		}
 
-		public void paused(MediaPlayer mediaPlayer) {
+		public void paused( MediaPlayer mediaPlayer ) {
 		}
 
-		public void stopped(MediaPlayer mediaPlayer) {
+		public void stopped( MediaPlayer mediaPlayer ) {
 		}
 
-		public void forward(MediaPlayer mediaPlayer) {
+		public void forward( MediaPlayer mediaPlayer ) {
 		}
 
-		public void backward(MediaPlayer mediaPlayer) {
+		public void backward( MediaPlayer mediaPlayer ) {
 		}
 
-		public void finished(MediaPlayer mediaPlayer) {
+		public void finished( MediaPlayer mediaPlayer ) {
 			fireFinished();
 		}
 
-		public void timeChanged(MediaPlayer mediaPlayer, long newTime) {
+		public void timeChanged( MediaPlayer mediaPlayer, long newTime ) {
 		}
 
-		public void positionChanged(MediaPlayer mediaPlayer, float newPosition) {
+		public void positionChanged( MediaPlayer mediaPlayer, float newPosition ) {
 			firePositionChanged( newPosition );
 		}
 
-		public void seekableChanged(MediaPlayer mediaPlayer, int newSeekable) {
+		public void seekableChanged( MediaPlayer mediaPlayer, int newSeekable ) {
 		}
 
-		public void pausableChanged(MediaPlayer mediaPlayer, int newSeekable) {
+		public void pausableChanged( MediaPlayer mediaPlayer, int newSeekable ) {
 		}
 
-		public void titleChanged(MediaPlayer mediaPlayer, int newTitle) {
+		public void titleChanged( MediaPlayer mediaPlayer, int newTitle ) {
 		}
 
-		public void snapshotTaken(MediaPlayer mediaPlayer, String filename) {
+		public void snapshotTaken( MediaPlayer mediaPlayer, String filename ) {
 		}
 
-		public void lengthChanged(MediaPlayer mediaPlayer, long newLength) {
+		public void lengthChanged( MediaPlayer mediaPlayer, long newLength ) {
 		}
 
-		public void videoOutput(MediaPlayer mediaPlayer, int newCount) {
+		public void videoOutput( MediaPlayer mediaPlayer, int newCount ) {
 		}
 
-		public void error(MediaPlayer mediaPlayer) {
+		public void error( MediaPlayer mediaPlayer ) {
 		}
 
-		public void mediaMetaChanged(MediaPlayer mediaPlayer, int metaType) {
+		public void mediaMetaChanged( MediaPlayer mediaPlayer, int metaType ) {
 		}
 
-		public void mediaSubItemAdded(MediaPlayer mediaPlayer, libvlc_media_t subItem) {
+		public void mediaSubItemAdded( MediaPlayer mediaPlayer, libvlc_media_t subItem ) {
 		}
 
-		public void mediaDurationChanged(MediaPlayer mediaPlayer, long newDuration) {
+		public void mediaDurationChanged( MediaPlayer mediaPlayer, long newDuration ) {
 		}
 
-		public void mediaParsedChanged(MediaPlayer mediaPlayer, int newStatus) {
+		public void mediaParsedChanged( MediaPlayer mediaPlayer, int newStatus ) {
 		}
 
-		public void mediaFreed(MediaPlayer mediaPlayer) {
+		public void mediaFreed( MediaPlayer mediaPlayer ) {
 		}
 
-		public void mediaStateChanged(MediaPlayer mediaPlayer, int newState) {
+		public void mediaStateChanged( MediaPlayer mediaPlayer, int newState ) {
 		}
 
-		public void newMedia(MediaPlayer mediaPlayer) {
+		public void newMedia( MediaPlayer mediaPlayer ) {
 		}
 
-		public void subItemPlayed(MediaPlayer mediaPlayer, int subItemIndex) {
+		public void subItemPlayed( MediaPlayer mediaPlayer, int subItemIndex ) {
 		}
 
-		public void subItemFinished(MediaPlayer mediaPlayer, int subItemIndex) {
+		public void subItemFinished( MediaPlayer mediaPlayer, int subItemIndex ) {
 		}
 
-		public void endOfSubItems(MediaPlayer mediaPlayer) {
+		public void endOfSubItems( MediaPlayer mediaPlayer ) {
 		}
-		
+
 	};
 	private final java.util.List<edu.cmu.cs.dennisc.video.event.MediaListener> mediaListeners = new java.util.concurrent.CopyOnWriteArrayList<edu.cmu.cs.dennisc.video.event.MediaListener>();
 	private final uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent embeddedMediaPlayerComponent;
+
 	public VlcjVideoPlayer() {
-		this.embeddedMediaPlayerComponent = new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent();
-		this.embeddedMediaPlayerComponent.getMediaPlayer().addMediaPlayerEventListener( this.mediaPlayerEventListener );
+		this.embeddedMediaPlayerComponent = new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
+			@Override
+			protected java.awt.Canvas onGetCanvas() {
+				if( uk.co.caprica.vlcj.runtime.RuntimeUtil.isWindows() ) {
+					return new uk.co.caprica.vlcj.runtime.windows.WindowsCanvas();
+				} else {
+					return super.onGetCanvas();
+				}
+			}
+		};
+		uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		mediaPlayer.setEnableMouseInputHandling( false );
+		mediaPlayer.setEnableKeyInputHandling( false );
+		mediaPlayer.addMediaPlayerEventListener( this.mediaPlayerEventListener );
 	}
-	
+
 	private void firePositionChanged( float position ) {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.positionChanged( position );
 		}
 	}
+
 	private void fireFinished() {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.finished();
 		}
 	}
-	
-	public void addMediaListener(edu.cmu.cs.dennisc.video.event.MediaListener listener) {
+
+	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
 		this.mediaListeners.add( listener );
 	}
-	
-	public void removeMediaListener(edu.cmu.cs.dennisc.video.event.MediaListener listener) {
+
+	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener ) {
 		this.mediaListeners.add( listener );
 	}
-	
+
 	public java.awt.Canvas getVideoSurface() {
 		return this.embeddedMediaPlayerComponent.getVideoSurface();
 	}
-	
-	public void prepareMedia( java.io.File file ) {
-		this.embeddedMediaPlayerComponent.getMediaPlayer().prepareMedia(file.getAbsolutePath());
+
+	public void prepareMedia( java.net.URI uri ) {
+		if( uri != null ) {
+			String path;
+			String scheme = uri.getScheme();
+			if( scheme.equalsIgnoreCase( "file" ) ) {
+				java.io.File file = new java.io.File( uri );
+				path = file.getAbsolutePath();
+			} else {
+				path = uri.toString();
+			}
+			uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+			mediaPlayer.prepareMedia( path );
+		} else {
+			System.err.println( "uri is null" );
+		}
 	}
 
 	public boolean isPlayable() {
 		return this.embeddedMediaPlayerComponent.getMediaPlayer().isPlayable();
 	}
-	
+
 	public boolean isPlaying() {
 		return this.embeddedMediaPlayerComponent.getMediaPlayer().isPlaying();
 	}
-	
+
 	public void playResume() {
-		this.embeddedMediaPlayerComponent.getMediaPlayer().start();
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		mediaPlayer.play();
 	}
-		
+
 	public void pause() {
 		this.embeddedMediaPlayerComponent.getMediaPlayer().pause();
 	}
-	
-	public void setPosition(float position) {
-		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		if( mediaPlayer.isSeekable() ) {
-			//pass
-		} else {
-			mediaPlayer.start();
-			mediaPlayer.pause();
-		}
-		mediaPlayer.setPosition( position );
+
+	public void setPosition( float position ) {
+		//		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		//		if( mediaPlayer.isSeekable() ) {
+		//			//pass
+		//		} else {
+		//			mediaPlayer.start();
+		//			mediaPlayer.pause();
+		//		}
+		//		mediaPlayer.setPosition( position );
 	}
 }

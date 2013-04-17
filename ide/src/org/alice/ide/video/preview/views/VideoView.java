@@ -351,7 +351,7 @@ public class VideoView extends PlayView {
 			if( videoPlayer.isPlayable() ) {
 				//pass
 			} else {
-				videoPlayer.prepareMedia( file );
+				videoPlayer.prepareMedia( file.toURI() );
 			}
 			//videoPlayer.playResume();
 			revalidateAndRepaint();
@@ -392,7 +392,7 @@ public class VideoView extends PlayView {
 		} else {
 			this.videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilties.createVideoPlayer();
 			if( this.file != null ) {
-				this.videoPlayer.prepareMedia( this.file );
+				this.videoPlayer.prepareMedia( this.file.toURI() );
 			}
 
 			java.awt.Canvas videoSurface = this.videoPlayer.getVideoSurface();
