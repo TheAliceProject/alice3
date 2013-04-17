@@ -96,7 +96,6 @@ public class WebmAdapter implements MediaPlayerObserver {
 
 	public void stop() {
 		encoder.stop();
-		encoder.getLength();
 		encoder.mergeAudio();
 	}
 

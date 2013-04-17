@@ -59,12 +59,10 @@ import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
  */
 public class FFmpegAudioConverter {
 
-	private static float RATE_22 = 22050f;
 	private static float RATE_44 = 44100f;
 	private static AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 	public static AudioFormat desiredFormat = QUICKTIME_AUDIO_FORMAT_PCM;
 	private static String ffmpegCommand;
-	private static AudioTrackMixer mixer = new AudioTrackMixer( QUICKTIME_AUDIO_FORMAT_PCM, 0 );
 
 	static {
 		// Find the ffmpeg process
