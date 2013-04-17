@@ -62,7 +62,6 @@ public class AbstractPoserControlView extends MigPanel {
 				"[grow 0]0[grow 0]" + //save and export rows
 				"10[grow 0]" ); //slider component
 		AbstractLabel label = poserControlComposite.getRightArmLabel().createLabel();
-		System.out.println( "TEXT?: " + label.getText() );
 		this.addComponent( label );
 		this.addComponent( poserControlComposite.getLeftArmLabel().createLabel(), "wrap" );
 

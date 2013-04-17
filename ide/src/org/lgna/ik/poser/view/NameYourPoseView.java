@@ -42,16 +42,25 @@
  */
 package org.lgna.ik.poser.view;
 
-import org.lgna.ik.poser.PoserControlComposite;
+import org.lgna.croquet.components.ImmutableTextArea;
+import org.lgna.croquet.components.MigPanel;
+import org.lgna.croquet.components.TextField;
+import org.lgna.ik.poser.NameYourPoseComposite;
 
 /**
  * @author Matt May
  */
-public class PoserControlView extends AbstractPoserControlView {
+public class NameYourPoseView extends MigPanel {
 
-	public PoserControlView( PoserControlComposite controlComposite ) {
-		super( controlComposite );
-		this.addComponent( controlComposite.getSaveAndExportPose().getOperation().createButton(), "dock south" );
+	public NameYourPoseView( NameYourPoseComposite composite ) {
+		super( composite, "fill", "[100]0[150]" );
+		TextField textField = composite.getPoseName().createTextField();
+		textField.setToolTipText( composite.getPoseName().getTextForBlankCondition() );
+		ImmutableTextArea sidekickLabel = composite.getPoseName().getSidekickLabel().createImmutableTextArea();
+		sidekickLabel.setAlignmentX( javax.swing.JComponent.RIGHT_ALIGNMENT );
+		sidekickLabel.setAlignmentY( javax.swing.JComponent.CENTER_ALIGNMENT );
+		this.addComponent( sidekickLabel, "align right" );
+		this.addComponent( textField, "growx" );
 	}
 
 }

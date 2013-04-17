@@ -45,10 +45,10 @@ package org.lgna.ik.poser;
 
 import java.util.ArrayList;
 
+import org.lgna.croquet.BooleanState.InternalMenuItemPrepModel;
 import org.lgna.ik.walkandtouch.PoserScene;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserType;
-import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.SBiped;
 import org.lgna.story.SCamera;
@@ -60,14 +60,14 @@ import test.ik.IkTestApplication;
 /**
  * @author Matt May
  */
-class IkPoser extends SProgram {
-	private static final boolean SHOULD_I_ANIMATE = true;
+public class IkPoser extends SProgram {
+	private static final boolean SHOULD_I_ANIMATE = false;
 	private final SCamera camera = new SCamera();
 	private final SBiped biped;
 	public final PoserScene scene;
 
 	private PoserSplitComposite composite;
-	private UserType userType;
+	private UserType<?> userType;
 
 	public IkPoser( NamedUserType userType, boolean isAnimationDesired ) {
 		//		this.biped = userType.getDeclaredConstructor().;
@@ -77,6 +77,10 @@ class IkPoser extends SProgram {
 		scene = new PoserScene( camera, biped );
 		this.userType = userType;
 		composite = new PoserSplitComposite( this, isAnimationDesired );
+	}
+
+	public InternalMenuItemPrepModel getMenuItemPrepModel() {
+		return composite.getBooleanState().getMenuItemPrepModel();
 	}
 
 	private SBiped deriveBipedFromUserType( NamedUserType type ) {
@@ -98,17 +102,10 @@ class IkPoser extends SProgram {
 		case 2:
 			assert false : N;
 		}
+		System.out.println( "type? " + type );
+		System.out.println( "arguments? " + arguments );
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		return userInstance.getJavaInstance( SBiped.class );
-	}
-
-	private org.lgna.story.implementation.JointedModelImp<?, ?> getSubjectImp() {
-		return ImplementationAccessor.getImplementation( this.biped );
-	}
-
-	private org.lgna.story.implementation.JointImp getEndImp() {
-		org.lgna.story.resources.JointId endId = test.ik.croquet.EndJointIdState.getInstance().getValue();
-		return this.getSubjectImp().getJointImplementation( endId );
 	}
 
 	public SBiped getBiped() {

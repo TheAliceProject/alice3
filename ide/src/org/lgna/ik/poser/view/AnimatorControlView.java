@@ -47,7 +47,6 @@ import javax.swing.border.BevelBorder;
 
 import org.lgna.croquet.components.Button;
 import org.lgna.ik.poser.AnimatorControlComposite;
-import org.lgna.ik.poser.OuterTimeLineView;
 
 /**
  * @author Matt May

@@ -42,10 +42,6 @@
  */
 package org.lgna.ik.poser;
 
-import org.alice.ide.croquet.edits.ast.DeclareFieldEdit;
-import org.lgna.croquet.ActionOperation;
-import org.lgna.croquet.CancelException;
-import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.view.PoserControlView;
 
 /**
@@ -53,25 +49,13 @@ import org.lgna.ik.poser.view.PoserControlView;
  */
 public class PoserControlComposite extends AbstractPoserControlComposite<PoserControlView> {
 
-	ActionOperation saveAndExportPose = createActionOperation( createKey( "saveAndExportPose" ), new Action() {
-
-		public DeclareFieldEdit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
-			PoserControlComposite.this.ikPoser.getPose();
-			//			UserField field = //createField();
-			//			new UserField( "pose", JavaType.getInstance( Pose.class ), initializer );
-			//			DeclareFieldEdit rv = new DeclareNonGalleryFieldEdit( step, IDE.getActiveInstance().getSceneField().getDeclaringType(), field );
-			//			return rv;
-			return null;
-		}
-	} );
-
 	public PoserControlComposite( IkPoser ikPoser ) {
 		super( ikPoser,
 				java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
 	}
 
-	public ActionOperation getSaveAndExportPose() {
-		return this.saveAndExportPose;
+	public NameYourPoseComposite getSaveAndExportPose() {
+		return new NameYourPoseComposite( this );
 	}
 
 	@Override

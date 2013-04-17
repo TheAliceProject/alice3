@@ -42,37 +42,41 @@
  */
 package org.lgna.ik.poser;
 
-import org.alice.ide.croquet.edits.ast.DeclareMethodEdit;
-import org.alice.ide.name.validators.MethodNameValidator;
+import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
+import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
+import org.alice.ide.name.validators.FieldNameValidator;
+import org.alice.stageide.ast.ExpressionCreator;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
-import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.CompletionStep;
-import org.lgna.ik.poser.view.AnimationNamingView;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.ik.poser.view.NameYourPoseView;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.JavaType;
+import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
 
 /**
  * @author Matt May
  */
-public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationInputDialogCoreComposite<AnimationNamingView> {
+public class NameYourPoseComposite extends OperationInputDialogCoreComposite<NameYourPoseView> {
 
-	StringState animationName = createStringState( createKey( "animationName" ) );
-	private final AnimatorControlComposite parent;
-	private MethodNameValidator validator;
+	private FieldNameValidator validator;
+	private PoserControlComposite parent;
+	private StringState poseName = createStringState( createKey( "poseName" ) );
 
-	public NameAndExportAnimationCompositeInHonorOfJenLapp( AnimatorControlComposite poserControlComposite ) {
-		super( java.util.UUID.fromString( "c1a0cf60-a454-4b31-a4f1-718279d8e8e2" ), null );
-		this.parent = poserControlComposite;
+	public NameYourPoseComposite( PoserControlComposite parent ) {
+		super( java.util.UUID.fromString( "4c5873b3-7c3b-440f-8511-0203fd145c7f" ), null );
+		this.parent = parent;
 	}
 
 	@Override
-	protected AnimationNamingView createView() {
-		return new AnimationNamingView( this );
+	protected NameYourPoseView createView() {
+		return new NameYourPoseView( this );
 	}
 
-	public StringState getAnimationName() {
-		return this.animationName;
+	public StringState getPoseName() {
+		return this.poseName;
 	}
 
 	@Override
@@ -80,10 +84,10 @@ public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationIn
 		if( validator != null ) {
 			//pass
 		} else {
-			this.validator = new MethodNameValidator( parent.getIkPoser().getDeclaringType() );
+			this.validator = new FieldNameValidator( parent.getIkPoser().getDeclaringType() );
 		}
 		ErrorStatus errorStatus = this.createErrorStatus( this.createKey( "errorStatus" ) );
-		String candidate = animationName.getValue();
+		String candidate = poseName.getValue();
 		String explanation = validator.getExplanationIfOkButtonShouldBeDisabled( candidate );
 		if( explanation != null ) {
 			errorStatus.setText( explanation );
@@ -94,20 +98,38 @@ public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationIn
 	}
 
 	@Override
-	protected Edit createEdit( CompletionStep<?> completionStep ) {
-		UserMethod method = parent.createUserMethod( animationName.getValue() );
+	protected String getName() {
+		return null;
+	}
+
+	@Override
+	protected DeclareNonGalleryFieldEdit createEdit( CompletionStep<?> completionStep ) {
+		UserField field = createPoseField( poseName.getValue() );
 		boolean IS_READY_FOR_PRIME_TIME = false;
 		if( IS_READY_FOR_PRIME_TIME ) {
 			UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
-			return new DeclareMethodEdit( completionStep, declaringType, method );
+			return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
+
 		} else {
 			org.lgna.project.ast.NamedUserType bogusType = new org.lgna.project.ast.NamedUserType();
 			bogusType.name.setValue( "Bogus" );
 			bogusType.superType.setValue( org.lgna.project.ast.JavaType.getInstance( org.lgna.story.SBiped.class ) );
-			bogusType.methods.add( method );
+			bogusType.fields.add( field );
 			String javaCode = bogusType.generateJavaCode( true );
 			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( javaCode );
 			return null;
 		}
 	}
+
+	private UserField createPoseField( String value ) {
+		try {
+			Pose pose = parent.ikPoser.getPose();
+			Expression rhSide = new ExpressionCreator().createExpression( pose );
+			UserField rv = new UserField( "name", JavaType.getInstance( Pose.class ), rhSide );
+			return rv;
+		} catch( CannotCreateExpressionException e ) {
+			throw new CancelException();
+		}
+	}
+
 }

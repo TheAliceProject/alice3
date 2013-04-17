@@ -42,6 +42,10 @@
  */
 package org.alice.stageide.oneshot;
 
+import org.lgna.ik.poser.IkPoser;
+import org.lgna.project.ast.NamedUserType;
+import org.lgna.story.SBiped;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -62,6 +66,9 @@ public class OneShotUtilities {
 				//pass
 			} else {
 				models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
+			}
+			if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
+				models.add( new IkPoser( (NamedUserType)field.getDeclaringType(), false ).getMenuItemPrepModel() );
 			}
 			models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 		}

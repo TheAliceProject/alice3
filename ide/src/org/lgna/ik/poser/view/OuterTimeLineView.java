@@ -40,10 +40,10 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.ik.poser;
+package org.lgna.ik.poser.view;
 
 import org.lgna.croquet.components.BorderPanel;
-import org.lgna.ik.poser.view.TimeLineView;
+import org.lgna.ik.poser.TimeLineComposite;
 
 /**
  * @author Matt May

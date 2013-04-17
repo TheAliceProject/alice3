@@ -49,6 +49,7 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.MutableDataListSelectionState;
 import org.lgna.croquet.SimpleComposite;
 import org.lgna.ik.poser.events.TimeLineListener;
+import org.lgna.ik.poser.view.OuterTimeLineView;
 import org.lgna.ik.poser.view.TimeLineView;
 import org.lgna.story.AnimationStyle;
 import org.lgna.story.Duration;

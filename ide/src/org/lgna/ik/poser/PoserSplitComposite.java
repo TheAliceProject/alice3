@@ -42,6 +42,8 @@
  */
 package org.lgna.ik.poser;
 
+import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.croquet.components.SplitPane;
 
@@ -50,15 +52,24 @@ import test.ik.croquet.SceneComposite;
 /**
  * @author Matt May
  */
-public class PoserSplitComposite extends org.lgna.croquet.SplitComposite {
+public class PoserSplitComposite extends FrameComposite<SplitPane> {
+
+	private SplitComposite splitComposite;
 
 	public PoserSplitComposite( IkPoser ikPoser, boolean isAnimationDesired ) {
-		super( java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ), isAnimationDesired ? new AnimatorControlComposite( ikPoser ) : new PoserControlComposite( ikPoser ), SceneComposite.getInstance() );
+		super( java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ), null );
+		this.splitComposite = new SplitComposite( null, isAnimationDesired ? new AnimatorControlComposite( ikPoser ) : new PoserControlComposite( ikPoser ), SceneComposite.getInstance() ) {
+
+			@Override
+			protected SplitPane createView() {
+				return new HorizontalSplitPane( splitComposite );
+			}
+		};
 	}
 
 	@Override
 	protected SplitPane createView() {
-		return new HorizontalSplitPane( this );
+		return new HorizontalSplitPane( splitComposite );
 	}
 
 }
