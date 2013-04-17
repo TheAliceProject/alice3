@@ -36,10 +36,6 @@ public abstract class ImagesToFFmpegEncoder {
 
 	protected abstract String getVideoExtension();
 
-	protected String getVideoBitrate() {
-		return "10000k";
-	}
-
 	public void setVideoPath( String path ) {
 		assert path.endsWith( "." + this.getVideoExtension() );
 		this.videoPath = path;
@@ -95,6 +91,7 @@ public abstract class ImagesToFFmpegEncoder {
 		//</alice>
 		if( nativePath == null ) {
 			// Hope it's on the system path
+			// TODO: give a warning to these users that they need to have ffmpeg installed.
 			this.ffmpegCommand = "ffmpeg";
 		} else {
 			String ext = "";
@@ -125,7 +122,8 @@ public abstract class ImagesToFFmpegEncoder {
 			javax.imageio.ImageIO.setUseCache( false );
 
 			// Start ffmpeg
-			ProcessBuilder ffmpegProcessBuilder = new ProcessBuilder( this.ffmpegCommand, "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", this.getVideoCodec(), "-b", this.getVideoBitrate(), "-pix_fmt", "yuv420p", this.videoPath );
+			ProcessBuilder ffmpegProcessBuilder = new ProcessBuilder( this.ffmpegCommand, "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", this.getVideoCodec(), "-quality", "good", "-cpu-used", "0", "-b:v", "500k", "-qmin", "10", "-qmax", "42", "-maxrate", "500k", "-bufsize", "1000k", "-pix_fmt", "yuv420p", this.videoPath );
+			System.out.println( ffmpegProcessBuilder.command() );
 			this.ffmpegProcess = ffmpegProcessBuilder.start();
 
 			this.ffmpegStdOut = new java.io.BufferedOutputStream( this.ffmpegProcess.getOutputStream() );
