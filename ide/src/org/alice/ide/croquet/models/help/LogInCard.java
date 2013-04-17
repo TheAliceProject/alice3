@@ -46,10 +46,12 @@ package org.alice.ide.croquet.models.help;
  * @author Dennis Cosgrove
  */
 public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.croquet.components.Panel> {
-	private final BugLoginComposite loginDialogComposite = BugLoginComposite.getInstance();
+	private AbstractLoginComposite loginComposite;
+	private LogInOutComposite parent;
 
-	public LogInCard() {
+	public LogInCard( AbstractLoginComposite composite ) {
 		super( java.util.UUID.fromString( "7229bd12-7078-46b6-9bd3-509edd2dc203" ) );
+		this.loginComposite = composite;
 	}
 
 	@Override
@@ -57,10 +59,11 @@ public final class LogInCard extends org.lgna.croquet.SimpleComposite<org.lgna.c
 		return new org.lgna.croquet.components.FlowPanel(
 				this,
 				org.lgna.croquet.components.FlowPanel.Alignment.TRAILING,
-				loginDialogComposite.getOperation().createButton() );
+				loginComposite.getOperation().createButton() );
 	}
 
-	public BugLoginComposite getLoginDialogComposite() {
-		return this.loginDialogComposite;
+	public void setParent( LogInOutComposite logInOutComposite ) {
+		assert parent == null : "why are we changing a parent? (mmay)";
+		this.parent = logInOutComposite;
 	}
 }

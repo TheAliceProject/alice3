@@ -284,14 +284,18 @@ public class YouTubeUploader {
 				}
 				catch( ServiceException se )
 				{
+					System.out.println( "ServiceException" );
+					System.out.println( se.getMessage() );
 					message = se.getResponseBody();
 				}
 				catch( MalformedURLException e )
 				{
+					System.out.println( "malformed" );
 					message = e.getMessage();
 				}
 				catch( IOException e )
 				{
+					System.out.println( "ioException" );
 					message = e.getMessage();
 				}
 				for( YouTubeListener l : YouTubeUploader.this.listeners )

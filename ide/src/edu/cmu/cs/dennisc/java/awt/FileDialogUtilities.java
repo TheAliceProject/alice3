@@ -255,6 +255,10 @@ public class FileDialogUtilities {
 	}
 
 	private static java.io.File showFileDialog( int mode, java.util.UUID sharingId, java.awt.Component component, String title, java.io.File directory, String filename, String extensionToAddIfMissing ) {
+		if( ( extensionToAddIfMissing != null ) && ( extensionToAddIfMissing.charAt( 0 ) == '.' ) ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "removing leading . from", extensionToAddIfMissing );
+			extensionToAddIfMissing = extensionToAddIfMissing.substring( 1 );
+		}
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( component );
 		FileDialog fileDialog = createFileDialog( root, title, mode );
 		fileDialog.show();

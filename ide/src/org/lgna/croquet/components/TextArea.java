@@ -61,23 +61,23 @@ public class TextArea extends TextComponent<edu.cmu.cs.dennisc.javax.swing.compo
 	@Override
 	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea createAwtComponent() {
 		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea() {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
-
 			//			@Override
-			//			public java.awt.Dimension getPreferredScrollableViewportSize() {
-			//				return this.getPreferredSize();
+			//			public java.awt.Dimension getPreferredSize() {
+			//				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
 			//			}
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				java.awt.Dimension rv = super.getMaximumSize();
-				if( TextArea.this.isMaximumSizeClampedToPreferredSize() ) {
-					rv.setSize( this.getPreferredSize() );
-				}
-				return rv;
-			}
+			//
+			//			//			@Override
+			//			//			public java.awt.Dimension getPreferredScrollableViewportSize() {
+			//			//				return this.getPreferredSize();
+			//			//			}
+			//			@Override
+			//			public java.awt.Dimension getMaximumSize() {
+			//				java.awt.Dimension rv = super.getMaximumSize();
+			//				if( TextArea.this.isMaximumSizeClampedToPreferredSize() ) {
+			//					rv.setSize( this.getPreferredSize() );
+			//				}
+			//				return rv;
+			//			}
 		};
 		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
 		return rv;

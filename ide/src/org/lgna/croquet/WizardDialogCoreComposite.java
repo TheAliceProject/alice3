@@ -42,6 +42,8 @@
  */
 package org.lgna.croquet;
 
+import java.util.Iterator;
+
 /*package-private*/final class WizardDialogContentPanel extends GatedCommitDialogContentPanel<WizardDialogContentComposite> {
 	public WizardDialogContentPanel( WizardDialogContentComposite composite ) {
 		super( composite );
@@ -161,6 +163,7 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 			text = null;
 		}
 		this.stepLabel.setText( text );
+		this.refreshStatus();
 		this.updateEnabled();
 	}
 
@@ -377,6 +380,11 @@ public abstract class WizardDialogCoreComposite extends GatedCommitDialogCoreCom
 		this.index = -1;
 		this.next( true );
 		this.cardComposite.handlePreActivation();
+		Iterator<WizardPageComposite<?>> itr = getWizardPageIterator();
+		while( itr.hasNext() ) {
+			WizardPageComposite<?> next = itr.next();
+			next.resetData();
+		}
 	}
 
 	@Override
