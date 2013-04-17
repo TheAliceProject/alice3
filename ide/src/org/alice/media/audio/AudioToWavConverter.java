@@ -72,7 +72,7 @@ public class AudioToWavConverter {
 			outputFile = File.createTempFile( "project-sample", ".wav" );
 			String path = outputFile.getAbsolutePath();
 			outputFile.delete();
-			RuntimeUtilities.execSilent( edu.wustl.cse.lookingglass.media.FFmpegUtilities.getFFmpegCommand(), "-i", file.getAbsolutePath(), "-acodec", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), "-ac", "1", path );
+			RuntimeUtilities.execSilent( edu.wustl.cse.lookingglass.media.FFmpegProcess.getFFmpegCommand(), "-i", file.getAbsolutePath(), "-acodec", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), "-ac", "1", path );
 			File convertedFile = new File( path );
 			return new AudioResource( convertedFile );
 		} catch( IOException e ) {

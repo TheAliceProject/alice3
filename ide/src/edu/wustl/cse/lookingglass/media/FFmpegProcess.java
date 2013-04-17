@@ -46,9 +46,26 @@ package edu.wustl.cse.lookingglass.media;
 /**
  * @author Kyle J. Harms
  */
-public class FFmpegUtilities {
+public class FFmpegProcess {
 
 	private static final String FFMPEG_COMMAND = "ffmpeg";
+
+	private ProcessBuilder processBuilder;
+	private Process process;
+	private java.io.OutputStream outputStream;
+	private java.io.BufferedReader errorStream;
+	private java.io.BufferedReader inputStream;
+	private StringBuilder processInput;
+	private StringBuilder processError;
+
+	public FFmpegProcess( String... args ) {
+		String[] commandArgs = new String[ args.length + 1 ];
+		commandArgs[ 0 ] = getFFmpegCommand();
+		for( int i = 1; i < commandArgs.length; i++ ) {
+			commandArgs[ i ] = args[ i - 1 ];
+		}
+		this.processBuilder = new ProcessBuilder( commandArgs );
+	}
 
 	// <alice/>
 	private static String getFFmpegPath() {
@@ -92,6 +109,84 @@ public class FFmpegUtilities {
 			} else {
 				return nativePath;
 			}
+		}
+	}
+
+	public synchronized Process start() throws FFmpegProcessException {
+		try {
+			this.process = this.processBuilder.start();
+
+			this.outputStream = new java.io.BufferedOutputStream( this.process.getOutputStream() );
+			this.outputStream.flush();
+			this.errorStream = new java.io.BufferedReader( new java.io.InputStreamReader( this.process.getErrorStream() ) );
+			this.inputStream = new java.io.BufferedReader( new java.io.InputStreamReader( this.process.getInputStream() ) );
+
+			this.processInput = new StringBuilder();
+			this.processError = new StringBuilder();
+
+			// Windows requires that we close all other streams, otherwise the output stream for ffmpeg will lock.
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				this.process.getInputStream().close();
+				this.process.getErrorStream().close();
+
+				this.errorStream = null;
+				this.inputStream = null;
+			}
+		} catch( Exception e ) {
+			this.process = null;
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "failed to create ffmpeg process for encoding", FFmpegProcess.getFFmpegCommand() );
+			handleProcessError( e );
+		}
+		return this.process;
+	}
+
+	public synchronized int stop() throws FFmpegProcessException {
+		try {
+			synchronized( this.outputStream ) {
+				this.outputStream.close();
+			}
+		} catch( Exception e ) {
+			handleProcessError( e );
+		}
+
+		int status = -1;
+		try {
+			status = this.process.waitFor();
+		} catch( InterruptedException e ) {
+			handleProcessError( e );
+		}
+		return status;
+	}
+
+	public java.io.OutputStream getProcessOutputStream() {
+		return this.outputStream;
+	}
+
+	public String getProcessInput() {
+		return this.processInput.toString();
+	}
+
+	public String getProcessError() {
+		return this.processError.toString();
+	}
+
+	private void handleProcessError( Exception e ) {
+		readStream( this.inputStream, this.processInput );
+		readStream( this.errorStream, this.processError );
+		throw new FFmpegProcessException( e, ( this.processInput == null ) ? null : this.processInput.toString(), ( this.processError == null ) ? null : this.processError.toString() );
+	}
+
+	private void readStream( java.io.BufferedReader reader, StringBuilder string ) {
+		if( ( reader == null ) || ( string == null ) ) {
+			return;
+		}
+		try {
+			while( reader.ready() ) {
+				string.append( reader.readLine() );
+				string.append( "\n" );
+			}
+		} catch( java.io.IOException e ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to read ffmpeg error", e );
 		}
 	}
 }

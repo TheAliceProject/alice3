@@ -57,16 +57,10 @@ public class ImagesToWebmEncoder {
 	private boolean isRunning = false;
 	private boolean success = true;
 
-	private Process ffmpegProcess;
-	private java.io.OutputStream ffmpegStdOut;
-	private java.io.BufferedReader ffmpegStdErr;
-	private java.io.BufferedReader ffmpegStdIn;
-	private StringBuilder ffmpegInput;
-	private StringBuilder ffmpegError;
+	private FFmpegProcess ffmpegProcess;
+	private org.alice.media.audio.AudioCompiler audioCompiler;
 
 	private java.io.File encodedVideo = null;
-
-	private org.alice.media.audio.AudioCompiler audioCompiler;
 
 	private java.util.List<MediaEncoderListener> listeners = new java.util.LinkedList<MediaEncoderListener>();
 
@@ -76,8 +70,8 @@ public class ImagesToWebmEncoder {
 		this.frameCount = -1;
 
 		// ffmpeg requires that the dimensions must be divisible by two.
-		assert ( ( frameDimension.getWidth() % 2 ) == 0 );
-		assert ( ( frameDimension.getHeight() % 2 ) == 0 );
+		assert ( ( frameDimension.getWidth() % 2 ) == 0 ) : "ffmpeg requires dimensions that are divisble by two";
+		assert ( ( frameDimension.getHeight() % 2 ) == 0 ) : "ffmpeg requires dimensions that are divisble by two";
 
 		this.audioCompiler = new org.alice.media.audio.AudioCompiler();
 	}
@@ -112,29 +106,11 @@ public class ImagesToWebmEncoder {
 			javax.imageio.ImageIO.setUseCache( false );
 
 			this.encodedVideo = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
-
-			// Start ffmpeg
-			ProcessBuilder ffmpegProcessBuilder = new ProcessBuilder( FFmpegUtilities.getFFmpegCommand(), "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", "libvpx", "-quality", "good", "-cpu-used", "0", "-b:v", "500k", "-qmin", "10", "-qmax", "42", "-maxrate", "500k", "-bufsize", "1000k", "-pix_fmt", "yuv420p", this.encodedVideo.getAbsolutePath() );
-			this.ffmpegProcess = ffmpegProcessBuilder.start();
-
-			this.ffmpegStdOut = new java.io.BufferedOutputStream( this.ffmpegProcess.getOutputStream() );
-			this.ffmpegStdOut.flush();
-			this.ffmpegStdErr = new java.io.BufferedReader( new java.io.InputStreamReader( this.ffmpegProcess.getErrorStream() ) );
-			this.ffmpegStdIn = new java.io.BufferedReader( new java.io.InputStreamReader( this.ffmpegProcess.getInputStream() ) );
-
-			this.ffmpegInput = new StringBuilder();
-			this.ffmpegError = new StringBuilder();
-
-			// Windows requires that we close all other streams, otherwise the output stream for ffmpeg will lock.
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-				this.ffmpegProcess.getInputStream().close();
-				this.ffmpegProcess.getErrorStream().close();
-
-				this.ffmpegStdErr = null;
-				this.ffmpegStdIn = null;
-			}
-		} catch( Exception e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "failed to create ffmpeg process for encoding", FFmpegUtilities.getFFmpegCommand() );
+			this.ffmpegProcess = new FFmpegProcess( "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", "libvpx", "-quality", "good", "-cpu-used", "0", "-b:v", "500k", "-qmin", "10", "-qmax", "42", "-maxrate", "500k", "-bufsize", "1000k", "-pix_fmt", "yuv420p", this.encodedVideo.getAbsolutePath() );
+			this.ffmpegProcess.start();
+		} catch( java.io.IOException e ) {
+			handleEncodingError( new FFmpegProcessException( e ) );
+		} catch( FFmpegProcessException e ) {
 			handleEncodingError( e );
 		}
 
@@ -156,9 +132,10 @@ public class ImagesToWebmEncoder {
 
 		this.frameCount++;
 		try {
-			synchronized( this.ffmpegStdOut ) {
-				javax.imageio.ImageIO.write( frame, "ppm", this.ffmpegStdOut );
-				this.ffmpegStdOut.flush();
+			java.io.OutputStream ffmpegStdOut = this.ffmpegProcess.getProcessOutputStream();
+			synchronized( ffmpegStdOut ) {
+				javax.imageio.ImageIO.write( frame, "ppm", ffmpegStdOut );
+				ffmpegStdOut.flush();
 			}
 
 			for( MediaEncoderListener l : this.listeners )
@@ -167,7 +144,7 @@ public class ImagesToWebmEncoder {
 			}
 		} catch( java.io.IOException e ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "failed to write frame " + frame + " to ffmpeg" );
-			handleEncodingError( e );
+			handleEncodingError( new FFmpegProcessException( e ) );
 		}
 	}
 
@@ -180,26 +157,11 @@ public class ImagesToWebmEncoder {
 		// Reset image caching back to default
 		javax.imageio.ImageIO.setUseCache( true );
 
-		try {
-			synchronized( this.ffmpegStdOut ) {
-				this.ffmpegStdOut.close();
-			}
-		} catch( Exception e ) {
-			handleEncodingError( e );
-		}
-
-		int status = -1;
-		try {
-			status = this.ffmpegProcess.waitFor();
-		} catch( InterruptedException e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; interrupted exception", e );
-			handleEncodingError( e );
-		}
-
+		int status = this.ffmpegProcess.stop();
 		if( status != 0 ) {
 			this.success = false;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status, this.ffmpegInput, this.ffmpegError );
-			throw new EncodingException( this.ffmpegInput.toString(), this.ffmpegError.toString() );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status );
+			handleEncodingError( new FFmpegProcessException( this.ffmpegProcess.getProcessInput(), this.ffmpegProcess.getProcessError() ) );
 		}
 
 		return this.success;
@@ -227,25 +189,9 @@ public class ImagesToWebmEncoder {
 		}
 	}
 
-	private void handleEncodingError( Exception e ) {
+	private void handleEncodingError( FFmpegProcessException e ) {
 		this.isRunning = false;
 		this.success = false;
-		readStream( this.ffmpegStdIn, this.ffmpegInput );
-		readStream( this.ffmpegStdErr, this.ffmpegError );
-		throw new EncodingException( e, ( this.ffmpegInput == null ) ? null : this.ffmpegInput.toString(), ( this.ffmpegError == null ) ? null : this.ffmpegError.toString() );
-	}
-
-	private void readStream( java.io.BufferedReader reader, StringBuilder string ) {
-		if( ( reader == null ) || ( string == null ) ) {
-			return;
-		}
-		try {
-			while( reader.ready() ) {
-				string.append( reader.readLine() );
-				string.append( "\n" );
-			}
-		} catch( java.io.IOException e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "unable to read ffmpeg error", e );
-		}
+		throw e;
 	}
 }

@@ -46,19 +46,19 @@ package edu.wustl.cse.lookingglass.media;
 /**
  * @author Kyle J. Harms
  */
-public class EncodingException extends RuntimeException {
+public class FFmpegProcessException extends RuntimeException {
 
 	private static final long serialVersionUID = -1149452336821467247L;
 
-	public EncodingException( Exception e ) {
+	public FFmpegProcessException( Exception e ) {
 		super( e );
 	}
 
-	public EncodingException( String output, String error ) {
+	public FFmpegProcessException( String output, String error ) {
 		super( output + "\n\n" + error );
 	}
 
-	public EncodingException( Exception e, String output, String error ) {
+	public FFmpegProcessException( Exception e, String output, String error ) {
 		super( output + "\n\n" + error, e );
 	}
 }
