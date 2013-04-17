@@ -88,7 +88,7 @@ public class FFmpegProcess {
 		}
 	}
 
-	public static String getFFmpegCommand() {
+	private static String getFFmpegCommand() {
 		// Find the ffmpeg process
 		//<alice>
 		//String nativePath = edu.wustl.cse.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
@@ -163,17 +163,17 @@ public class FFmpegProcess {
 	}
 
 	public String getProcessInput() {
-		return this.processInput.toString();
+		readStream( this.inputStream, this.processInput );
+		return ( this.processInput == null ) ? null : this.processInput.toString();
 	}
 
 	public String getProcessError() {
-		return this.processError.toString();
+		readStream( this.errorStream, this.processError );
+		return ( this.processError == null ) ? null : this.processError.toString();
 	}
 
 	private void handleProcessError( Exception e ) {
-		readStream( this.inputStream, this.processInput );
-		readStream( this.errorStream, this.processError );
-		throw new FFmpegProcessException( e, ( this.processInput == null ) ? null : this.processInput.toString(), ( this.processError == null ) ? null : this.processError.toString() );
+		throw new FFmpegProcessException( e, getProcessInput(), getProcessError() );
 	}
 
 	private void readStream( java.io.BufferedReader reader, StringBuilder string ) {

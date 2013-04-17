@@ -106,6 +106,7 @@ public class ImagesToWebmEncoder {
 			javax.imageio.ImageIO.setUseCache( false );
 
 			this.encodedVideo = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
+			this.encodedVideo.deleteOnExit();
 			this.ffmpegProcess = new FFmpegProcess( "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", "libvpx", "-quality", "good", "-cpu-used", "0", "-b:v", "500k", "-qmin", "10", "-qmax", "42", "-maxrate", "500k", "-bufsize", "1000k", "-pix_fmt", "yuv420p", this.encodedVideo.getAbsolutePath() );
 			this.ffmpegProcess.start();
 		} catch( java.io.IOException e ) {

@@ -42,17 +42,9 @@
  */
 package org.alice.media.audio;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
 import javax.sound.sampled.AudioFormat;
 
-import org.lgna.common.resources.AudioResource;
-
-import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
+import edu.wustl.cse.lookingglass.media.FFmpegProcessException;
 
 /**
  * @author Matt May
@@ -62,38 +54,24 @@ public class AudioToWavConverter {
 	private static final float RATE_44 = 44100f;
 	public static final AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 
-	public static AudioResource convertAudioIfNecessary( AudioResource resource ) {
+	public static org.lgna.common.resources.AudioResource convertAudioIfNecessary( org.lgna.common.resources.AudioResource resource ) {
 		if( !AudioResourceConverter.needsConverting( resource, QUICKTIME_AUDIO_FORMAT_PCM ) ) {
 			return resource;
 		}
 		try {
-			File file = createAudioFileToConvert( resource );
-			File outputFile;
-			outputFile = File.createTempFile( "project-sample", ".wav" );
-			String path = outputFile.getAbsolutePath();
-			outputFile.delete();
-			RuntimeUtilities.execSilent( edu.wustl.cse.lookingglass.media.FFmpegProcess.getFFmpegCommand(), "-i", file.getAbsolutePath(), "-acodec", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), "-ac", "1", path );
-			File convertedFile = new File( path );
-			return new AudioResource( convertedFile );
-		} catch( IOException e ) {
-			// TODO: no swallow
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private static File createAudioFileToConvert( AudioResource resource ) {
-		resource.getData();
-		try {
-			File createTempFile = File.createTempFile( "project-sample", ".wav" );
-			@SuppressWarnings( "resource" )
-			OutputStream oStream = new FileOutputStream( createTempFile );
-			oStream.write( resource.getData() );
-			return createTempFile;
-		} catch( FileNotFoundException e ) {
-			// TODO: no swallow
-			e.printStackTrace();
-		} catch( IOException e ) {
+			java.io.File outputFile = java.io.File.createTempFile( "project-sample", ".wav" );
+			outputFile.deleteOnExit();
+			edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", "-", "-acodec", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), "-ac", "1", outputFile.getAbsolutePath() );
+			ffmpegProcess.start();
+			ffmpegProcess.getProcessOutputStream().write( resource.getData() );
+			ffmpegProcess.getProcessOutputStream().flush();
+			int status = ffmpegProcess.stop();
+			if( status != 0 ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status );
+				throw new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() );
+			}
+			return new org.lgna.common.resources.AudioResource( outputFile );
+		} catch( java.io.IOException e ) {
 			// TODO: no swallow
 			e.printStackTrace();
 		}
