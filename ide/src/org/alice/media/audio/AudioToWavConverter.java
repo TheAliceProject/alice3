@@ -57,73 +57,26 @@ import edu.cmu.cs.dennisc.java.lang.RuntimeUtilities;
 /**
  * @author Matt May
  */
-public class FFmpegAudioConverter {
+public class AudioToWavConverter {
 
-	private static float RATE_44 = 44100f;
-	private static AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
-	public static AudioFormat desiredFormat = QUICKTIME_AUDIO_FORMAT_PCM;
-	private static String ffmpegCommand;
-
-	static {
-		// Find the ffmpeg process
-		//<alice>
-		//String nativePath = edu.wustl.cse.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
-		String nativePath = getFfmpegPath();
-		//</alice>
-		if( nativePath == null ) {
-			// Hope it's on the system path
-			ffmpegCommand = "ffmpeg";
-		} else {
-			String ext = "";
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-				ext = ".exe";
-			}
-
-			nativePath = nativePath + "/bin/ffmpeg" + ext;
-			if( !( new java.io.File( nativePath ) ).exists() ) {
-				ffmpegCommand = "ffmpeg";
-			} else {
-				ffmpegCommand = nativePath;
-			}
-		}
-	}
-
-	//<alice>
-	private static String getFfmpegPath() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-			return null;
-		} else {
-			String installPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
-			java.io.File installDir = new java.io.File( installPath );
-			java.io.File ffmpegFile = new java.io.File( installDir.getParent(), "lib/ffmpeg" );
-			StringBuilder sb = new StringBuilder();
-			sb.append( ffmpegFile.getAbsolutePath() );
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-				sb.append( "/windows" );
-			} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-				sb.append( "/macosx" );
-			} else {
-				throw new RuntimeException();
-			}
-			return sb.toString();
-		}
-	}
+	private static final float RATE_44 = 44100f;
+	public static final AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 
 	public static AudioResource convertAudioIfNecessary( AudioResource resource ) {
-		if( !AudioResourceConverter.needsConverting( resource, desiredFormat ) ) {
+		if( !AudioResourceConverter.needsConverting( resource, QUICKTIME_AUDIO_FORMAT_PCM ) ) {
 			return resource;
 		}
 		try {
 			File file = createAudioFileToConvert( resource );
 			File outputFile;
-			outputFile = File.createTempFile( "outputFile", ".wav" );
+			outputFile = File.createTempFile( "project-sample", ".wav" );
 			String path = outputFile.getAbsolutePath();
 			outputFile.delete();
-			RuntimeUtilities.execSilent( ffmpegCommand, "-i", file.getAbsolutePath(), "-acodec", "pcm_s16le",
-					"-ar", String.valueOf( RATE_44 ), "-ac", "1", path );
+			RuntimeUtilities.execSilent( edu.wustl.cse.lookingglass.media.FFmpegUtilities.getFFmpegCommand(), "-i", file.getAbsolutePath(), "-acodec", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), "-ac", "1", path );
 			File convertedFile = new File( path );
 			return new AudioResource( convertedFile );
 		} catch( IOException e ) {
+			// TODO: no swallow
 			e.printStackTrace();
 		}
 		return null;
@@ -132,30 +85,18 @@ public class FFmpegAudioConverter {
 	private static File createAudioFileToConvert( AudioResource resource ) {
 		resource.getData();
 		try {
-			File createTempFile = File.createTempFile( "sound", ".wav" );
+			File createTempFile = File.createTempFile( "project-sample", ".wav" );
 			@SuppressWarnings( "resource" )
 			OutputStream oStream = new FileOutputStream( createTempFile );
 			oStream.write( resource.getData() );
 			return createTempFile;
 		} catch( FileNotFoundException e ) {
+			// TODO: no swallow
 			e.printStackTrace();
 		} catch( IOException e ) {
+			// TODO: no swallow
 			e.printStackTrace();
 		}
 		return null;
 	}
-
-	public static void main( String[] args ) {
-		try {
-			File outputFile = File.createTempFile( "outputFile", ".wav" );
-			String path = outputFile.getAbsolutePath();
-			outputFile.delete();
-			RuntimeUtilities.exec( ffmpegCommand, "-i", "C:/Users/Matt/Downloads/blorp.wav", "-acodec", "pcm_s16le",
-					"-ar", String.valueOf( RATE_44 ), "-ac", "1", path );
-
-		} catch( IOException e ) {
-			e.printStackTrace();
-		}
-	}
-
 }

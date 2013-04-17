@@ -74,8 +74,7 @@ import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
  * @author dculyba
  * 
  */
-public class AudioResourceConverter implements ControllerListener,
-		DataSinkListener {
+public class AudioResourceConverter implements ControllerListener, DataSinkListener {
 
 	private org.lgna.common.resources.AudioResource audioResource;
 	private Processor processor = null;

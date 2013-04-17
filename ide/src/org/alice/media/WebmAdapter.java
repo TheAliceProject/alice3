@@ -58,15 +58,11 @@ import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
  */
 public class WebmAdapter implements MediaPlayerObserver {
 
-	Integer frameRate;
-
+	private Integer frameRate;
 	private ImagesToWebmEncoder encoder;
 	private Dimension dimension;
 
-	private File file;
-
-	public WebmAdapter( File targetFile ) {
-		this.file = targetFile;
+	public WebmAdapter() {
 	}
 
 	public void playerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
@@ -90,7 +86,6 @@ public class WebmAdapter implements MediaPlayerObserver {
 		assert frameRate != null;
 		assert dimension != null;
 		encoder = new ImagesToWebmEncoder( frameRate, dimension );
-		encoder.setVideoPath( file.getPath() );
 		encoder.start();
 	}
 
@@ -107,4 +102,7 @@ public class WebmAdapter implements MediaPlayerObserver {
 		}
 	}
 
+	public File getEncodedVideo() {
+		return this.encoder.getEncodedVideo();
+	}
 }

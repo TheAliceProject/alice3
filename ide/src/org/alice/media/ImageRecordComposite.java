@@ -42,9 +42,6 @@
  */
 package org.alice.media;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.alice.media.components.ImageRecordView;
 import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
@@ -131,15 +128,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	} );
 
-	private File tempFile;
-
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
-		try {
-			tempFile = File.createTempFile( "temp", ".webm" );
-		} catch( IOException e ) {
-			e.printStackTrace();
-		}
 		this.owner = owner;
 		this.isRecordingState.setIconForBothTrueAndFalse( new IsRecordingIcon() );
 		this.isRecordingState.addValueListener( this.isRecordingListener );
@@ -223,7 +213,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			getView().getPlayPauseButton().doClick();
 		}
 		if( ( encoder != null ) ) {
-			owner.setFile( tempFile );
+			owner.setFile( this.encoder.getEncodedVideo() );
 		}
 		super.handlePostDeactivation();
 	}
@@ -297,7 +287,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 		this.timerInSeconds = 0;
 		getView().updateTime();
-		encoder = new WebmAdapter( tempFile );
+		encoder = new WebmAdapter();
 		encoder.setFrameRate( frameRateState.getValue() );
 		encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
 		encoder.start();

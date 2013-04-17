@@ -46,19 +46,52 @@ package edu.wustl.cse.lookingglass.media;
 /**
  * @author Kyle J. Harms
  */
-public class EncodingException extends RuntimeException {
+public class FFmpegUtilities {
 
-	private static final long serialVersionUID = -1149452336821467247L;
+	private static final String FFMPEG_COMMAND = "ffmpeg";
 
-	public EncodingException( Exception e ) {
-		super( e );
+	// <alice/>
+	private static String getFFmpegPath() {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
+			return null;
+		} else {
+			String installPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
+			java.io.File installDir = new java.io.File( installPath );
+			java.io.File ffmpegFile = new java.io.File( installDir.getParent(), "lib/ffmpeg" );
+			StringBuilder sb = new StringBuilder();
+			sb.append( ffmpegFile.getAbsolutePath() );
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				sb.append( "/windows" );
+			} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+				sb.append( "/macosx" );
+			} else {
+				throw new RuntimeException();
+			}
+			return sb.toString();
+		}
 	}
 
-	public EncodingException( String output, String error ) {
-		super( output + "\n\n" + error );
-	}
-
-	public EncodingException( Exception e, String output, String error ) {
-		super( output + "\n\n" + error, e );
+	public static String getFFmpegCommand() {
+		// Find the ffmpeg process
+		//<alice>
+		//String nativePath = edu.wustl.cse.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
+		String nativePath = getFFmpegPath();
+		//</alice>
+		if( nativePath == null ) {
+			// Hope it's on the system path
+			// TODO: give a warning to these users that they need to have ffmpeg installed.
+			return FFMPEG_COMMAND;
+		} else {
+			String ext = "";
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				ext = ".exe";
+			}
+			nativePath = nativePath + "/bin/ffmpeg" + ext;
+			if( !( new java.io.File( nativePath ) ).exists() ) {
+				return FFMPEG_COMMAND;
+			} else {
+				return nativePath;
+			}
+		}
 	}
 }

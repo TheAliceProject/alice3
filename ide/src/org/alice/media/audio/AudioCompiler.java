@@ -57,17 +57,15 @@ import edu.cmu.cs.dennisc.java.util.Collections;
  */
 public class AudioCompiler {
 
-	private File destinationFile;
 	private List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
 	private HashMap<AudioResource, AudioResource> alreadyConvertedMap = Collections.newHashMap();
 
-	public AudioCompiler( File destinationFile ) {
-		this.destinationFile = destinationFile;
+	public AudioCompiler() {
 	}
 
 	public void addAudio( ScheduledAudioStream audio ) {
 		if( !alreadyConverted( audio.getAudioResource() ) ) {
-			AudioResource newAudio = FFmpegAudioConverter.convertAudioIfNecessary( audio.getAudioResource() );
+			AudioResource newAudio = AudioToWavConverter.convertAudioIfNecessary( audio.getAudioResource() );
 			alreadyConvertedMap.put( audio.getAudioResource(), newAudio );
 			audio.setAudioResource( newAudio );
 		} else {
@@ -84,10 +82,6 @@ public class AudioCompiler {
 		return alreadyConvertedMap.containsKey( resource );
 	}
 
-	public File getDestinationFile() {
-		return this.destinationFile;
-	}
-
 	public List<ScheduledAudioStream> getScheduledStreams() {
 		return this.scheduledStreams;
 	}
@@ -95,8 +89,8 @@ public class AudioCompiler {
 	public File mix( double length ) {
 		if( scheduledStreams.size() > 0 ) {
 			try {
-				File rv = File.createTempFile( "temp", ".wav" );
-				AudioTrackMixer mixer = new AudioTrackMixer( FFmpegAudioConverter.desiredFormat, length );
+				File rv = File.createTempFile( "project", ".wav" );
+				AudioTrackMixer mixer = new AudioTrackMixer( AudioToWavConverter.QUICKTIME_AUDIO_FORMAT_PCM, length );
 				for( ScheduledAudioStream stream : scheduledStreams ) {
 					mixer.addScheduledStream( stream );
 				}

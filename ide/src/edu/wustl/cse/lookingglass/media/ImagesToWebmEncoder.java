@@ -1,24 +1,70 @@
+/**
+ * Copyright (c) 2008-2013, Washington University in St. Louis. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, 
+ *    this list of conditions and the following disclaimer.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice, 
+ *    this list of conditions and the following disclaimer in the documentation 
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. Products derived from the software may not be called "Looking Glass", nor 
+ *    may "Looking Glass" appear in their name, without prior written permission
+ *    of Washington University in St. Louis.
+ *
+ * 4. All advertising materials mentioning features or use of this software must
+ *    display the following acknowledgement: "This product includes software 
+ *    developed by Washington University in St. Louis"
+ *
+ * 5. The gallery of art assets and animations provided with this software is 
+ *    contributed by Electronic Arts Inc. and may be used for personal, 
+ *    non-commercial, and academic use only. Redistributions of any program 
+ *    source code that utilizes The Sims 2 Assets must also retain the copyright
+ *    notice, list of conditions and the disclaimer contained in 
+ *    The Alice 3.0 Art Gallery License.
+ *
+ * DISCLAIMER:
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.  ANY AND ALL 
+ * EXPRESS, STATUTORY OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY,  FITNESS FOR A PARTICULAR PURPOSE, 
+ * TITLE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHORS, 
+ * COPYRIGHT OWNERS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+ * INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES 
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND 
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING FROM OR OTHERWISE RELATING TO 
+ * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 package edu.wustl.cse.lookingglass.media;
 
+/**
+ * @author Kyle J. Harms
+ */
 public class ImagesToWebmEncoder {
 
 	private final double frameRate;
 	private int frameCount = 0;
 	private final java.awt.Dimension frameDimension;
-	private String videoPath;
 
 	public static final String WEBM_EXTENSION = "webm";
 
 	private boolean isRunning = false;
 	private boolean success = true;
 
-	private String ffmpegCommand;
 	private Process ffmpegProcess;
 	private java.io.OutputStream ffmpegStdOut;
 	private java.io.BufferedReader ffmpegStdErr;
 	private java.io.BufferedReader ffmpegStdIn;
 	private StringBuilder ffmpegInput;
 	private StringBuilder ffmpegError;
+
+	private java.io.File encodedVideo = null;
 
 	private org.alice.media.audio.AudioCompiler audioCompiler;
 
@@ -28,27 +74,16 @@ public class ImagesToWebmEncoder {
 		this.frameRate = frameRate;
 		this.frameDimension = dimension;
 		this.frameCount = -1;
-		this.setFFmpegCommand();
 
 		// ffmpeg requires that the dimensions must be divisible by two.
 		assert ( ( frameDimension.getWidth() % 2 ) == 0 );
 		assert ( ( frameDimension.getHeight() % 2 ) == 0 );
 
-		try {
-			this.audioCompiler = new org.alice.media.audio.AudioCompiler( java.io.File.createTempFile( "tempAudio", ".wav" ) );
-		} catch( java.io.IOException e ) {
-			// This should never be called.
-			new RuntimeException( "cannot create temp file for audio mixing", e );
-		}
+		this.audioCompiler = new org.alice.media.audio.AudioCompiler();
 	}
 
-	public void setVideoPath( String path ) {
-		assert path.endsWith( "." + WEBM_EXTENSION );
-		this.videoPath = path;
-	}
-
-	public String getVideoPath() {
-		return this.videoPath;
+	public java.io.File getEncodedVideo() {
+		return this.encodedVideo;
 	}
 
 	public boolean isRunning() {
@@ -65,57 +100,8 @@ public class ImagesToWebmEncoder {
 		this.listeners.remove( listener );
 	}
 
-	//<alice>
-	private static String getFfmpegPath() {
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-			return null;
-		} else {
-			String installPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
-			java.io.File installDir = new java.io.File( installPath );
-			java.io.File ffmpegFile = new java.io.File( installDir.getParent(), "lib/ffmpeg" );
-			StringBuilder sb = new StringBuilder();
-			sb.append( ffmpegFile.getAbsolutePath() );
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-				sb.append( "/windows" );
-			} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-				sb.append( "/macosx" );
-			} else {
-				throw new RuntimeException();
-			}
-			return sb.toString();
-		}
-	}
-
-	//</alice>
-
-	private void setFFmpegCommand() {
-		// Find the ffmpeg process
-		//<alice>
-		//String nativePath = edu.wustl.cse.lookingglass.utilities.NativeLibLoader.getOsPath( "ffmpeg" );
-		String nativePath = getFfmpegPath();
-		//</alice>
-		if( nativePath == null ) {
-			// Hope it's on the system path
-			// TODO: give a warning to these users that they need to have ffmpeg installed.
-			this.ffmpegCommand = "ffmpeg";
-		} else {
-			String ext = "";
-			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-				ext = ".exe";
-			}
-
-			nativePath = nativePath + "/bin/ffmpeg" + ext;
-			if( !( new java.io.File( nativePath ) ).exists() ) {
-				this.ffmpegCommand = "ffmpeg";
-			} else {
-				this.ffmpegCommand = nativePath;
-			}
-		}
-	}
-
 	public synchronized boolean start() {
 		assert this.isRunning == false;
-		assert this.videoPath != null;
 
 		this.frameCount = -1;
 		this.isRunning = true;
@@ -125,9 +111,10 @@ public class ImagesToWebmEncoder {
 			// Don't cache images during this process
 			javax.imageio.ImageIO.setUseCache( false );
 
+			this.encodedVideo = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
+
 			// Start ffmpeg
-			ProcessBuilder ffmpegProcessBuilder = new ProcessBuilder( this.ffmpegCommand, "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", "libvpx", "-quality", "good", "-cpu-used", "0", "-b:v", "500k", "-qmin", "10", "-qmax", "42", "-maxrate", "500k", "-bufsize", "1000k", "-pix_fmt", "yuv420p", this.videoPath );
-			System.out.println( ffmpegProcessBuilder.command() );
+			ProcessBuilder ffmpegProcessBuilder = new ProcessBuilder( FFmpegUtilities.getFFmpegCommand(), "-y", "-r", String.format( "%d", (int)this.frameRate ), "-f", "image2pipe", "-vcodec", "ppm", "-i", "-", "-vf", "vflip", "-vcodec", "libvpx", "-quality", "good", "-cpu-used", "0", "-b:v", "500k", "-qmin", "10", "-qmax", "42", "-maxrate", "500k", "-bufsize", "1000k", "-pix_fmt", "yuv420p", this.encodedVideo.getAbsolutePath() );
 			this.ffmpegProcess = ffmpegProcessBuilder.start();
 
 			this.ffmpegStdOut = new java.io.BufferedOutputStream( this.ffmpegProcess.getOutputStream() );
@@ -147,7 +134,7 @@ public class ImagesToWebmEncoder {
 				this.ffmpegStdIn = null;
 			}
 		} catch( Exception e ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "failed to create ffmpeg process for encoding", this.ffmpegCommand );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "failed to create ffmpeg process for encoding", FFmpegUtilities.getFFmpegCommand() );
 			handleEncodingError( e );
 		}
 
@@ -229,14 +216,14 @@ public class ImagesToWebmEncoder {
 	public synchronized void mergeAudio() {
 		java.io.File soundTrack = this.audioCompiler.mix( getLength() );
 		if( soundTrack != null ) {
-			String tempVideoPath = this.getVideoPath();
-			String newPath = tempVideoPath.substring( 0, tempVideoPath.length() - 5 );
-			newPath += "1.webm"; // TODO: use getVideoExtension
-			edu.cmu.cs.dennisc.java.lang.RuntimeUtilities.execSilent( this.ffmpegCommand, "-i", this.getVideoPath(), "-i", soundTrack.getAbsolutePath(), "-codec:a", "libvorbis", "-q:a", "7", "-ac", "2", newPath );
-			java.io.File oldFile = new java.io.File( this.getVideoPath() );
-			oldFile.delete();
-			java.io.File newFile = new java.io.File( newPath );
-			newFile.renameTo( new java.io.File( this.getVideoPath() ) );
+			//			String tempVideoPath = this.getVideoPath();
+			//			String newPath = tempVideoPath.substring( 0, tempVideoPath.length() - 5 );
+			//			newPath += "1.webm"; // TODO: use getVideoExtension
+			//			edu.cmu.cs.dennisc.java.lang.RuntimeUtilities.execSilent( FFmpegUtilities.getFFmpegCommand(), "-i", this.getVideoPath(), "-i", soundTrack.getAbsolutePath(), "-codec:a", "libvorbis", "-q:a", "7", "-ac", "2", newPath );
+			//			java.io.File oldFile = new java.io.File( this.getVideoPath() );
+			//			oldFile.delete();
+			//			java.io.File newFile = new java.io.File( newPath );
+			//			newFile.renameTo( new java.io.File( this.getVideoPath() ) );
 		}
 	}
 
