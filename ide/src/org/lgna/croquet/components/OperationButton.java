@@ -49,9 +49,13 @@ package org.lgna.croquet.components;
 public abstract class OperationButton<J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Operation> extends AbstractButton<J, M> {
 	private String clobberText;
 
-	public OperationButton( M model ) {
-		super( model );
+	public OperationButton( M model, String uiDefaultsName ) {
+		super( model, uiDefaultsName );
 		this.setAction( model.getSwingModel().getAction() );
+	}
+
+	public OperationButton( M model ) {
+		this( model, null );
 	}
 
 	public boolean isTextClobbered() {
