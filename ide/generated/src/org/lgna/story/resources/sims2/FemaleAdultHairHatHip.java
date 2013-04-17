@@ -23,9 +23,39 @@
 
 package org.lgna.story.resources.sims2;
 public enum FemaleAdultHairHatHip implements FemaleAdultHair {
-	RED,
-	BLACK,
-	BLOND,
-	BROWN,
-	GREY;
+	RED_PINK_HAT,
+	RED_BLACK_HAT,
+	RED_GREEN_HAT,
+	RED_BROWN_HAT,
+	RED_BLUE_HAT,
+	BLACK_PINK_HAT,
+	BLACK_BLACK_HAT,
+	BLACK_GREEN_HAT,
+	BLACK_BROWN_HAT,
+	BLACK_BLUE_HAT,
+	BLOND_PINK_HAT,
+	BLOND_BLACK_HAT,
+	BLOND_GREEN_HAT,
+	BLOND_BROWN_HAT,
+	BLOND_BLUE_HAT,
+	BROWN_PINK_HAT,
+	BROWN_BLACK_HAT,
+	BROWN_GREEN_HAT,
+	BROWN_BROWN_HAT,
+	BROWN_BLUE_HAT,
+	GREY_PINK_HAT,
+	GREY_BLACK_HAT,
+	GREY_GREEN_HAT,
+	GREY_BROWN_HAT,
+	GREY_BLUE_HAT;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return true;
+	}
 }

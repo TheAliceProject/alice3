@@ -23,9 +23,24 @@
 
 package org.lgna.story.resources.sims2;
 public enum FemaleAdultHairHatClassicStrawUp implements FemaleAdultHair {
-	BLOND,
-	BLACK,
-	BROWN,
-	GREY,
-	RED;
+	BLOND_PINK_RIBBON,
+	BLOND_BLACK_RIBBON,
+	BLACK_PINK_RIBBON,
+	BLACK_BLACK_RIBBON,
+	BROWN_PINK_RIBBON,
+	BROWN_BLACK_RIBBON,
+	GREY_PINK_RIBBON,
+	GREY_BLACK_RIBBON,
+	RED_PINK_RIBBON,
+	RED_BLACK_RIBBON;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return true;
+	}
 }

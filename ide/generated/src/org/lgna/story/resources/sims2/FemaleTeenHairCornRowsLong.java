@@ -27,4 +27,14 @@ public enum FemaleTeenHairCornRowsLong implements FemaleTeenHair {
 	BLOND,
 	RED,
 	BROWN;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

@@ -28,4 +28,14 @@ public enum MaleTeenHairBald implements MaleTeenHair {
 	STUBBLE_BROWN,
 	STUBBLE_RED,
 	BARE;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

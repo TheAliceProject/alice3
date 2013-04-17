@@ -28,4 +28,14 @@ public enum FemaleTeenHairAcornTuck implements FemaleTeenHair {
 	BROWN,
 	RED,
 	STRAWBERRY;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

@@ -28,4 +28,14 @@ public enum FemaleAdultHairDreadlockShort implements FemaleAdultHair {
 	BLOND,
 	RED,
 	GREY;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

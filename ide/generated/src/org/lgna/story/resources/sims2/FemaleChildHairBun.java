@@ -28,4 +28,14 @@ public enum FemaleChildHairBun implements FemaleChildHair {
 	BLOND,
 	GREY,
 	BROWN;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

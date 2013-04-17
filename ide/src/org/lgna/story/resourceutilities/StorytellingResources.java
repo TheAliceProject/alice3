@@ -367,7 +367,6 @@ public class StorytellingResources {
 		this.galleryTree = new ModelResourceTree( modelResourceClasses );
 	}
 
-
 	private void clearAliceResourceInfo()
 	{
 		ResourcePathManager.clearPaths( ResourcePathManager.MODEL_RESOURCE_KEY );

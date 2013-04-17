@@ -22,10 +22,16 @@
  */
 
 package org.lgna.story.resources.sims2;
-public enum MaleAdultHairHatFirefighterYellow implements MaleAdultHair {
-	BLOND,
-	RED,
-	BLACK,
-	BROWN,
-	GREY;
+public enum FemaleAdultHairHatBeanie implements FemaleAdultHair {
+	BLACK_HAT;
+
+	public Boolean hasHair()
+	{
+		return false;
+	}
+
+	public Boolean hasHat()
+	{
+		return true;
+	}
 }

@@ -30,4 +30,14 @@ public enum FemaleTeenHairShortCute implements FemaleTeenHair {
 	GREY,
 	FROSTY_BLOND,
 	FROSTY_PURPLE;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

@@ -25,4 +25,14 @@ package org.lgna.story.resources.sims2;
 public enum MaleAdultHairHatViking implements MaleAdultHair {
 	BLACK,
 	WHITE;
+
+	public Boolean hasHair()
+	{
+		return false;
+	}
+
+	public Boolean hasHat()
+	{
+		return true;
+	}
 }

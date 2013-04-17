@@ -24,4 +24,14 @@
 package org.lgna.story.resources.sims2;
 public enum FemaleTeenHairBald implements FemaleTeenHair {
 	BARE;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

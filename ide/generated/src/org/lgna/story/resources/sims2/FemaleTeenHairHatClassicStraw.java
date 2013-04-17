@@ -29,4 +29,14 @@ public enum FemaleTeenHairHatClassicStraw implements FemaleTeenHair {
 	RED,
 	BLACK_RIBBON,
 	RED_RIBBON;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

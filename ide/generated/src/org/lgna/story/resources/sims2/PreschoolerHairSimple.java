@@ -27,4 +27,14 @@ public enum PreschoolerHairSimple implements PreschoolerHair {
 	BLACK,
 	BROWN,
 	RED;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

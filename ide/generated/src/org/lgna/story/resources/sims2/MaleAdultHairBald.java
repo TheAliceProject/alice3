@@ -23,10 +23,20 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleAdultHairBald implements MaleAdultHair {
-	STUBBLE_BLACK,
-	STUBBLE_BLOND,
-	STUBBLE_BROWN,
-	STUBBLE_GREY,
-	STUBBLE_RED,
+	BLACK,
+	BLOND,
+	BROWN,
+	GREY,
+	RED,
 	BARE;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

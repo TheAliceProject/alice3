@@ -23,9 +23,39 @@
 
 package org.lgna.story.resources.sims2;
 public enum FemaleTeenHairHatBucket implements FemaleTeenHair {
-	BROWN,
-	RED,
-	BLACK,
-	BLOND,
-	GREY;
+	BROWN_BLACK_HAT,
+	BROWN_BLUE_HAT,
+	BROWN_CAMO_HAT,
+	BROWN_GREY_HAT,
+	BROWN_RED_HAT,
+	RED_BLACK_HAT,
+	RED_BLUE_HAT,
+	RED_CAMO_HAT,
+	RED_GREY_HAT,
+	RED_RED_HAT,
+	BLACK_BLACK_HAT,
+	BLACK_BLUE_HAT,
+	BLACK_CAMO_HAT,
+	BLACK_GREY_HAT,
+	BLACK_RED_HAT,
+	BLOND_BLACK_HAT,
+	BLOND_BLUE_HAT,
+	BLOND_CAMO_HAT,
+	BLOND_GREY_HAT,
+	BLOND_RED_HAT,
+	GREY_BLACK_HAT,
+	GREY_BLUE_HAT,
+	GREY_CAMO_HAT,
+	GREY_GREY_HAT,
+	GREY_RED_HAT;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return true;
+	}
 }

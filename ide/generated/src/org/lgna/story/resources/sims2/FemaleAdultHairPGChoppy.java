@@ -33,4 +33,14 @@ public enum FemaleAdultHairPGChoppy implements FemaleAdultHair {
 	RED_STREAK,
 	VIOLET,
 	GREEN;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }
