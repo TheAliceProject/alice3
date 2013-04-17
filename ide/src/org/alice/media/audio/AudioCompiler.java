@@ -42,8 +42,6 @@
  */
 package org.alice.media.audio;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -86,23 +84,19 @@ public class AudioCompiler {
 		return this.scheduledStreams;
 	}
 
-	public File mix( double length ) {
+	public void mix( java.io.OutputStream outputStream, double length ) {
 		if( scheduledStreams.size() > 0 ) {
 			try {
-				File rv = File.createTempFile( "project", ".wav" );
 				AudioTrackMixer mixer = new AudioTrackMixer( AudioToWavConverter.QUICKTIME_AUDIO_FORMAT_PCM, length );
 				for( ScheduledAudioStream stream : scheduledStreams ) {
 					mixer.addScheduledStream( stream );
 				}
-				FileOutputStream oStream = new FileOutputStream( rv );
-				mixer.write( oStream );
-				return rv;
+				mixer.write( outputStream );
 			} catch( IOException e ) {
+				// TODO" don't swallow.
 				e.printStackTrace();
-				return null;
 			}
 		}
-		return null;
 	}
 
 }

@@ -188,6 +188,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		if( this.isRecordingState.getValue() != isRecording ) {
 			if( !this.isRecordingState.getValue() ) {
 				programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
+				encoder.stop();
 			} else {
 				programContext.getProgramImp().startAnimator();
 				programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );

@@ -177,16 +177,22 @@ public class ImagesToWebmEncoder {
 	}
 
 	public synchronized void mergeAudio() {
-		java.io.File soundTrack = this.audioCompiler.mix( getLength() );
-		if( soundTrack != null ) {
-			//			String tempVideoPath = this.getVideoPath();
-			//			String newPath = tempVideoPath.substring( 0, tempVideoPath.length() - 5 );
-			//			newPath += "1.webm"; // TODO: use getVideoExtension
-			//			edu.cmu.cs.dennisc.java.lang.RuntimeUtilities.execSilent( FFmpegUtilities.getFFmpegCommand(), "-i", this.getVideoPath(), "-i", soundTrack.getAbsolutePath(), "-codec:a", "libvorbis", "-q:a", "7", "-ac", "2", newPath );
-			//			java.io.File oldFile = new java.io.File( this.getVideoPath() );
-			//			oldFile.delete();
-			//			java.io.File newFile = new java.io.File( newPath );
-			//			newFile.renameTo( new java.io.File( this.getVideoPath() ) );
+		try {
+			java.io.File videoFile = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
+			videoFile.deleteOnExit();
+			edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", this.encodedVideo.getAbsolutePath(), "-codec:a", "pcm_s16le", "-i", "-", "-codec:a", "libvorbis", "-q:a", "7", "-ac", "2", videoFile.getAbsolutePath() );
+			ffmpegProcess.start();
+			this.audioCompiler.mix( ffmpegProcess.getProcessOutputStream(), getLength() );
+			ffmpegProcess.getProcessOutputStream().flush();
+			int status = ffmpegProcess.stop();
+			if( status != 0 ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status );
+				handleEncodingError( new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() ) );
+			}
+			this.encodedVideo.delete();
+			this.encodedVideo = videoFile;
+		} catch( java.io.IOException e ) {
+			handleEncodingError( new FFmpegProcessException( e ) );
 		}
 	}
 
