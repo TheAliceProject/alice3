@@ -434,7 +434,7 @@ public abstract class AbstractNode extends Element implements Node {
 		return uniqueKey;
 	}
 
-	private org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Map<AbstractDeclaration, Integer> map ) {
+	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Map<AbstractDeclaration, Integer> map ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
 		if( this instanceof AbstractDeclaration ) {
 			AbstractDeclaration abstractDeclaration = (AbstractDeclaration)this;
@@ -504,12 +504,16 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	private org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
+	public static java.util.Map<AbstractDeclaration, Integer> createEncodeMapFromDeclarationSet( java.util.Set<AbstractDeclaration> set ) {
 		java.util.Map<AbstractDeclaration, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 		for( AbstractDeclaration declaration : set ) {
 			getUniqueKeyAndPutInEncodeMap( declaration, map );
 		}
-		return this.encode( xmlDocument, map );
+		return map;
+	}
+
+	private org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
+		return this.encode( xmlDocument, createEncodeMapFromDeclarationSet( set ) );
 	}
 
 	public final org.w3c.dom.Document encode( java.util.Set<AbstractDeclaration> set ) {
