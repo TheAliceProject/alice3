@@ -48,7 +48,7 @@ package org.lgna.croquet.components;
  */
 public class MenuItem extends OperationButton<javax.swing.JMenuItem, org.lgna.croquet.Operation> {
 	public MenuItem( org.lgna.croquet.Operation model ) {
-		super( model );
+		super( model, "MenuItem" );
 	}
 
 	@Override

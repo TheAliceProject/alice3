@@ -199,10 +199,34 @@ public abstract class ExpressionCascadeManager {
 
 	private void appendFillInAndPossiblyPartFillIns( java.util.List<org.lgna.croquet.CascadeBlankChild> blankChildren, org.lgna.project.ast.AbstractType<?, ?, ?> desiredType, org.lgna.project.ast.Expression expression, org.lgna.project.ast.AbstractType<?, ?, ?> expressionType ) {
 		org.lgna.croquet.CascadeBlankChild blankChild;
-		org.lgna.croquet.CascadeFillIn<org.lgna.project.ast.Expression, ?> expressionFillIn;
+		org.lgna.croquet.CascadeFillIn<? extends org.lgna.project.ast.Expression, ?> expressionFillIn;
 		if( this.isApplicableForFillIn( desiredType, expressionType ) ) {
-			boolean isLeadingIconDesired = true;
-			expressionFillIn = new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn<org.lgna.project.ast.Expression>( expression, isLeadingIconDesired );
+			if( expression instanceof org.lgna.project.ast.ThisExpression ) {
+				org.lgna.project.ast.ThisExpression thisExpression = (org.lgna.project.ast.ThisExpression)expression;
+				expressionFillIn = org.alice.ide.croquet.models.cascade.ThisExpressionFillIn.getInstance();
+			} else if( expression instanceof org.lgna.project.ast.FieldAccess ) {
+				org.lgna.project.ast.FieldAccess fieldAccess = (org.lgna.project.ast.FieldAccess)expression;
+				org.lgna.project.ast.Expression instanceExpression = fieldAccess.expression.getValue();
+				if( instanceExpression instanceof org.lgna.project.ast.ThisExpression ) {
+					expressionFillIn = org.alice.ide.croquet.models.cascade.ThisFieldAccessFillIn.getInstance( fieldAccess.field.getValue() );
+				} else {
+					expressionFillIn = null;
+				}
+			} else if( expression instanceof org.lgna.project.ast.ParameterAccess ) {
+				org.lgna.project.ast.ParameterAccess parameterAccess = (org.lgna.project.ast.ParameterAccess)expression;
+				expressionFillIn = org.alice.ide.croquet.models.cascade.ParameterAccessFillIn.getInstance( parameterAccess.parameter.getValue() );
+			} else if( expression instanceof org.lgna.project.ast.LocalAccess ) {
+				org.lgna.project.ast.LocalAccess localAccess = (org.lgna.project.ast.LocalAccess)expression;
+				expressionFillIn = org.alice.ide.croquet.models.cascade.LocalAccessFillIn.getInstance( localAccess.local.getValue() );
+			} else {
+				expressionFillIn = null;
+			}
+			if( expressionFillIn != null ) {
+				//pass
+			} else {
+				boolean isLeadingIconDesired = true;
+				expressionFillIn = new org.alice.ide.croquet.models.cascade.SimpleExpressionFillIn<org.lgna.project.ast.Expression>( expression, isLeadingIconDesired );
+			}
 		} else {
 			expressionFillIn = null;
 		}
