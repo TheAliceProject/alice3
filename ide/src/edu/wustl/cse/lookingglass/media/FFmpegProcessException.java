@@ -46,10 +46,19 @@ package edu.wustl.cse.lookingglass.media;
 /**
  * @author Kyle J. Harms
  */
-public interface MediaEncoderListener {
-	public void encodingStarted( boolean success );
+public class FFmpegProcessException extends RuntimeException {
 
-	public void encodingFinished( boolean success );
+	private static final long serialVersionUID = -1149452336821467247L;
 
-	public void frameUpdate( int frameCount, java.awt.image.BufferedImage frame );
+	public FFmpegProcessException( Exception e ) {
+		super( e );
+	}
+
+	public FFmpegProcessException( String output, String error ) {
+		super( output + "\n\n" + error );
+	}
+
+	public FFmpegProcessException( Exception e, String output, String error ) {
+		super( output + "\n\n" + error, e );
+	}
 }

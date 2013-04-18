@@ -40,72 +40,64 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.media;
+package org.alice.media.audio;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
-import org.alice.media.audio.ScheduledAudioStream;
+import org.lgna.common.resources.AudioResource;
 
-import edu.cmu.cs.dennisc.animation.MediaPlayerObserver;
-import edu.cmu.cs.dennisc.java.util.logging.Logger;
-import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
-import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
  */
-public class WebmAdapter implements MediaPlayerObserver {
+public class AudioMuxer {
 
-	Integer frameRate;
+	private List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
 
-	private ImagesToWebmEncoder encoder;
-	private Dimension dimension;
-
-	private File file;
-
-	public WebmAdapter( File targetFile ) {
-		this.file = targetFile;
+	public AudioMuxer() {
 	}
 
-	public void playerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
-		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
-		if( player instanceof edu.cmu.cs.dennisc.media.jmf.Player ) {
-			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
-			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
-			encoder.addAudio( audioStream );
+	public void addAudioStream( ScheduledAudioStream audio ) {
+		scheduledStreams.add( audio );
+	}
+
+	public List<ScheduledAudioStream> getScheduledStreams() {
+		return this.scheduledStreams;
+	}
+
+	public boolean hasAudioToMix() {
+		return ( scheduledStreams.size() > 0 );
+	}
+
+	private void convertAudioStreamsToWav() {
+		HashMap<AudioResource, AudioResource> wavResouces = Collections.newHashMap();
+		for( ScheduledAudioStream stream : this.scheduledStreams ) {
+			if( !wavResouces.containsKey( stream.getAudioResource() ) ) {
+				AudioResource wavAudio = AudioToWavConverter.convertAudioIfNecessary( stream.getAudioResource() );
+				wavResouces.put( stream.getAudioResource(), wavAudio );
+				stream.setAudioResource( wavAudio );
+			} else {
+				stream.setAudioResource( wavResouces.get( stream.getAudioResource() ) );
+			}
 		}
 	}
 
-	public void setFrameRate( Integer value ) {
-		frameRate = value;
-	}
-
-	public void setDimension( Dimension dimension ) {
-		this.dimension = dimension;
-	}
-
-	public void start() {
-		assert frameRate != null;
-		assert dimension != null;
-		encoder = new ImagesToWebmEncoder( frameRate, dimension );
-		encoder.setVideoPath( file.getPath() );
-		encoder.start();
-	}
-
-	public void stop() {
-		encoder.stop();
-		encoder.getLength();
-		encoder.mergeAudio();
-	}
-
-	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) {
-		if( encoder.isRunning() ) {
-			encoder.addBufferedImage( image, isUpsideDown );
-		} else {
-			Logger.severe( "GETTING BUFFERED IMAGE AFTER STOP" );
+	public void mixAudioStreams( java.io.OutputStream outputStream, double length ) {
+		if( this.hasAudioToMix() ) {
+			convertAudioStreamsToWav();
+			try {
+				AudioTrackMixer mixer = new AudioTrackMixer( AudioToWavConverter.QUICKTIME_AUDIO_FORMAT_PCM, length );
+				for( ScheduledAudioStream stream : scheduledStreams ) {
+					mixer.addScheduledStream( stream );
+				}
+				mixer.write( outputStream );
+			} catch( IOException e ) {
+				// TODO" don't swallow.
+				e.printStackTrace();
+			}
 		}
 	}
-
 }

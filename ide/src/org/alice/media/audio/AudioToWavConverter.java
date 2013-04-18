@@ -42,73 +42,39 @@
  */
 package org.alice.media.audio;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
+import javax.sound.sampled.AudioFormat;
 
-import org.lgna.common.resources.AudioResource;
-
-import edu.cmu.cs.dennisc.java.util.Collections;
+import edu.wustl.cse.lookingglass.media.FFmpegProcessException;
 
 /**
  * @author Matt May
  */
-public class AudioCompiler {
+public class AudioToWavConverter {
 
-	private File destinationFile;
-	private List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
-	private HashMap<AudioResource, AudioResource> alreadyConvertedMap = Collections.newHashMap();
+	private static final float RATE_44 = 44100f;
+	public static final AudioFormat QUICKTIME_AUDIO_FORMAT_PCM = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, RATE_44, 16, 1, 2, RATE_44, false );
 
-	public AudioCompiler( File destinationFile ) {
-		this.destinationFile = destinationFile;
-	}
-
-	public void addAudio( ScheduledAudioStream audio ) {
-		if( !alreadyConverted( audio.getAudioResource() ) ) {
-			AudioResource newAudio = FFmpegAudioConverter.convertAudioIfNecessary( audio.getAudioResource() );
-			alreadyConvertedMap.put( audio.getAudioResource(), newAudio );
-			audio.setAudioResource( newAudio );
-		} else {
-			audio.setAudioResource( getResource( audio.getAudioResource() ) );
+	public static org.lgna.common.resources.AudioResource convertAudioIfNecessary( org.lgna.common.resources.AudioResource resource ) {
+		if( !AudioResourceConverter.needsConverting( resource, QUICKTIME_AUDIO_FORMAT_PCM ) ) {
+			return resource;
 		}
-		scheduledStreams.add( audio );
-	}
-
-	private AudioResource getResource( AudioResource audioResource ) {
-		return alreadyConvertedMap.get( audioResource );
-	}
-
-	private boolean alreadyConverted( AudioResource resource ) {
-		return alreadyConvertedMap.containsKey( resource );
-	}
-
-	public File getDestinationFile() {
-		return this.destinationFile;
-	}
-
-	public List<ScheduledAudioStream> getScheduledStreams() {
-		return this.scheduledStreams;
-	}
-
-	public File mix( double length ) {
-		if( scheduledStreams.size() > 0 ) {
-			try {
-				File rv = File.createTempFile( "temp", ".wav" );
-				AudioTrackMixer mixer = new AudioTrackMixer( FFmpegAudioConverter.desiredFormat, length );
-				for( ScheduledAudioStream stream : scheduledStreams ) {
-					mixer.addScheduledStream( stream );
-				}
-				FileOutputStream oStream = new FileOutputStream( rv );
-				mixer.write( oStream );
-				return rv;
-			} catch( IOException e ) {
-				e.printStackTrace();
-				return null;
+		try {
+			java.io.File outputFile = java.io.File.createTempFile( "project-sample", ".wav" );
+			outputFile.deleteOnExit();
+			edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", "-", "-codec:a", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), outputFile.getAbsolutePath() );
+			ffmpegProcess.start();
+			ffmpegProcess.getProcessOutputStream().write( resource.getData() );
+			ffmpegProcess.getProcessOutputStream().flush();
+			int status = ffmpegProcess.stop();
+			if( status != 0 ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status );
+				throw new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() );
 			}
+			return new org.lgna.common.resources.AudioResource( outputFile );
+		} catch( java.io.IOException e ) {
+			// TODO: no swallow
+			e.printStackTrace();
 		}
 		return null;
 	}
-
 }

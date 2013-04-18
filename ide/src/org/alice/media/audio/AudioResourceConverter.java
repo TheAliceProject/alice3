@@ -74,8 +74,7 @@ import edu.cmu.cs.dennisc.media.jmf.MediaFactory;
  * @author dculyba
  * 
  */
-public class AudioResourceConverter implements ControllerListener,
-		DataSinkListener {
+public class AudioResourceConverter implements ControllerListener, DataSinkListener {
 
 	private org.lgna.common.resources.AudioResource audioResource;
 	private Processor processor = null;
@@ -108,6 +107,7 @@ public class AudioResourceConverter implements ControllerListener,
 		final File temp;
 
 		temp = File.createTempFile( Long.toString( System.nanoTime() ), ".wav" );
+		temp.deleteOnExit();
 
 		if( !( temp.delete() ) ) {
 			throw new IOException( "Could not delete temp file: "

@@ -42,9 +42,6 @@
  */
 package org.alice.media;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.alice.media.components.ImageRecordView;
 import org.lgna.common.RandomUtilities;
 import org.lgna.croquet.ActionOperation;
@@ -81,7 +78,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	private final ExportToYouTubeWizardDialogComposite owner;
 	private org.alice.stageide.program.VideoEncodingProgramContext programContext;
-	private WebmAdapter encoder;
+	private WebmRecordingAdapter encoder;
 	private final BooleanState isRecordingState = this.createBooleanState( this.createKey( "isRecordingState" ), false );
 	private final BoundedIntegerState frameRateState = this.createBoundedIntegerState( this.createKey( "frameRateState" ), new BoundedIntegerDetails().minimum( 0 ).maximum( 96 ).initialValue( 24 ) );
 	private final Status errorIsRecording = createErrorStatus( this.createKey( "errorIsRecording" ) );
@@ -123,7 +120,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			}
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
 			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
-			encoder.stop();
+			encoder.stopVideoEncoding();
 			resetData();
 			restartOperation.setEnabled( false );
 			return null;
@@ -131,15 +128,8 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 
 	} );
 
-	private File tempFile;
-
 	public ImageRecordComposite( ExportToYouTubeWizardDialogComposite owner ) {
 		super( java.util.UUID.fromString( "67306c85-667c-46e5-9898-2c19a2d6cd21" ) );
-		try {
-			tempFile = File.createTempFile( "temp", ".webm" );
-		} catch( IOException e ) {
-			e.printStackTrace();
-		}
 		this.owner = owner;
 		this.isRecordingState.setIconForBothTrueAndFalse( new IsRecordingIcon() );
 		this.isRecordingState.addValueListener( this.isRecordingListener );
@@ -198,6 +188,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		if( this.isRecordingState.getValue() != isRecording ) {
 			if( !this.isRecordingState.getValue() ) {
 				programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
+				encoder.stopVideoEncoding();
 			} else {
 				programContext.getProgramImp().startAnimator();
 				programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );
@@ -205,6 +196,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				hasStartedRecording = true;
 			}
 		} else {
+			// TODO: this should be an assert.
 			System.out.println( "SHOULD NOT HIT THIS (mmay)" );
 		}
 	}
@@ -223,7 +215,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 			getView().getPlayPauseButton().doClick();
 		}
 		if( ( encoder != null ) ) {
-			owner.setFile( tempFile );
+			owner.setFile( this.encoder.getEncodedVideo() );
 		}
 		super.handlePostDeactivation();
 	}
@@ -294,13 +286,16 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( script, manager ) );
 		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 		programContext.setActiveScene();
-		MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 		this.timerInSeconds = 0;
 		getView().updateTime();
-		encoder = new WebmAdapter( tempFile );
+		encoder = new WebmRecordingAdapter();
 		encoder.setFrameRate( frameRateState.getValue() );
 		encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
-		encoder.start();
+		MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
+		this.encoder.initializeAudioRecording();
+
+		// TODO: Call later when recording the video
+		this.encoder.startVideoEncoding();
 	}
 
 	public ActionOperation getRestartOperation() {
