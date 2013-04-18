@@ -61,7 +61,7 @@ public class AudioToWavConverter {
 		try {
 			java.io.File outputFile = java.io.File.createTempFile( "project-sample", ".wav" );
 			outputFile.deleteOnExit();
-			edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", "-", "-acodec", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), "-ac", "1", outputFile.getAbsolutePath() );
+			edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", "-", "-codec:a", "pcm_s16le", "-ar", String.valueOf( RATE_44 ), outputFile.getAbsolutePath() );
 			ffmpegProcess.start();
 			ffmpegProcess.getProcessOutputStream().write( resource.getData() );
 			ffmpegProcess.getProcessOutputStream().flush();

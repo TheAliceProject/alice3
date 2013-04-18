@@ -76,7 +76,7 @@ public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animat
 			//this.player.prefetch();
 			this.isStarted = true;
 			if( EPIC_HACK_mediaPlayerObserver != null ) {
-				EPIC_HACK_mediaPlayerObserver.playerStarted( this, tCurrent );
+				EPIC_HACK_mediaPlayerObserver.mediaPlayerStarted( this, tCurrent );
 				this.player.start();
 				this.startTime = tCurrent;
 			}

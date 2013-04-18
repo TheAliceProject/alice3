@@ -53,39 +53,41 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 /**
  * @author Matt May
  */
-public class AudioCompiler {
+public class AudioMuxer {
 
 	private List<ScheduledAudioStream> scheduledStreams = Collections.newLinkedList();
-	private HashMap<AudioResource, AudioResource> alreadyConvertedMap = Collections.newHashMap();
 
-	public AudioCompiler() {
+	public AudioMuxer() {
 	}
 
-	public void addAudio( ScheduledAudioStream audio ) {
-		if( !alreadyConverted( audio.getAudioResource() ) ) {
-			AudioResource newAudio = AudioToWavConverter.convertAudioIfNecessary( audio.getAudioResource() );
-			alreadyConvertedMap.put( audio.getAudioResource(), newAudio );
-			audio.setAudioResource( newAudio );
-		} else {
-			audio.setAudioResource( getResource( audio.getAudioResource() ) );
-		}
+	public void addAudioStream( ScheduledAudioStream audio ) {
 		scheduledStreams.add( audio );
-	}
-
-	private AudioResource getResource( AudioResource audioResource ) {
-		return alreadyConvertedMap.get( audioResource );
-	}
-
-	private boolean alreadyConverted( AudioResource resource ) {
-		return alreadyConvertedMap.containsKey( resource );
 	}
 
 	public List<ScheduledAudioStream> getScheduledStreams() {
 		return this.scheduledStreams;
 	}
 
-	public void mix( java.io.OutputStream outputStream, double length ) {
-		if( scheduledStreams.size() > 0 ) {
+	public boolean hasAudioToMix() {
+		return ( scheduledStreams.size() > 0 );
+	}
+
+	private void convertAudioStreamsToWav() {
+		HashMap<AudioResource, AudioResource> wavResouces = Collections.newHashMap();
+		for( ScheduledAudioStream stream : this.scheduledStreams ) {
+			if( !wavResouces.containsKey( stream.getAudioResource() ) ) {
+				AudioResource wavAudio = AudioToWavConverter.convertAudioIfNecessary( stream.getAudioResource() );
+				wavResouces.put( stream.getAudioResource(), wavAudio );
+				stream.setAudioResource( wavAudio );
+			} else {
+				stream.setAudioResource( wavResouces.get( stream.getAudioResource() ) );
+			}
+		}
+	}
+
+	public void mixAudioStreams( java.io.OutputStream outputStream, double length ) {
+		if( this.hasAudioToMix() ) {
+			convertAudioStreamsToWav();
 			try {
 				AudioTrackMixer mixer = new AudioTrackMixer( AudioToWavConverter.QUICKTIME_AUDIO_FORMAT_PCM, length );
 				for( ScheduledAudioStream stream : scheduledStreams ) {
@@ -98,5 +100,4 @@ public class AudioCompiler {
 			}
 		}
 	}
-
 }

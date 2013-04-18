@@ -107,6 +107,7 @@ public class AudioResourceConverter implements ControllerListener, DataSinkListe
 		final File temp;
 
 		temp = File.createTempFile( Long.toString( System.nanoTime() ), ".wav" );
+		temp.deleteOnExit();
 
 		if( !( temp.delete() ) ) {
 			throw new IOException( "Could not delete temp file: "

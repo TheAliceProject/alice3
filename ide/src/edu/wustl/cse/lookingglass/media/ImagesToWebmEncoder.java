@@ -58,7 +58,7 @@ public class ImagesToWebmEncoder {
 	private boolean success = true;
 
 	private FFmpegProcess ffmpegProcess;
-	private org.alice.media.audio.AudioCompiler audioCompiler;
+	private org.alice.media.audio.AudioMuxer audioMuxer;
 
 	private java.io.File encodedVideo = null;
 
@@ -72,8 +72,6 @@ public class ImagesToWebmEncoder {
 		// ffmpeg requires that the dimensions must be divisible by two.
 		assert ( ( frameDimension.getWidth() % 2 ) == 0 ) : "ffmpeg requires dimensions that are divisble by two";
 		assert ( ( frameDimension.getHeight() % 2 ) == 0 ) : "ffmpeg requires dimensions that are divisble by two";
-
-		this.audioCompiler = new org.alice.media.audio.AudioCompiler();
 	}
 
 	public java.io.File getEncodedVideo() {
@@ -94,9 +92,14 @@ public class ImagesToWebmEncoder {
 		this.listeners.remove( listener );
 	}
 
-	public synchronized boolean start() {
+	public boolean start() {
+		return start( null );
+	}
+
+	public synchronized boolean start( org.alice.media.audio.AudioMuxer audioCompiler ) {
 		assert this.isRunning == false;
 
+		this.audioMuxer = audioCompiler;
 		this.frameCount = -1;
 		this.isRunning = true;
 		this.success = true;
@@ -161,9 +164,11 @@ public class ImagesToWebmEncoder {
 		int status = this.ffmpegProcess.stop();
 		if( status != 0 ) {
 			this.success = false;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status );
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "video encoding failed; status != 0", status );
 			handleEncodingError( new FFmpegProcessException( this.ffmpegProcess.getProcessInput(), this.ffmpegProcess.getProcessError() ) );
 		}
+
+		this.mixAudioTrack();
 
 		return this.success;
 	}
@@ -172,27 +177,35 @@ public class ImagesToWebmEncoder {
 		return this.frameCount / this.frameRate;
 	}
 
-	public synchronized void addAudio( org.alice.media.audio.ScheduledAudioStream resource ) {
-		this.audioCompiler.addAudio( resource );
-	}
+	private synchronized void mixAudioTrack() {
+		if( this.audioMuxer == null ) {
+			return;
+		}
+		assert this.isRunning == false : "audio mixing is post process";
 
-	public synchronized void mergeAudio() {
-		try {
-			java.io.File videoFile = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
-			videoFile.deleteOnExit();
-			edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", this.encodedVideo.getAbsolutePath(), "-codec:a", "pcm_s16le", "-i", "-", "-codec:a", "libvorbis", "-q:a", "7", "-ac", "2", videoFile.getAbsolutePath() );
-			ffmpegProcess.start();
-			this.audioCompiler.mix( ffmpegProcess.getProcessOutputStream(), getLength() );
-			ffmpegProcess.getProcessOutputStream().flush();
-			int status = ffmpegProcess.stop();
-			if( status != 0 ) {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "encoding failed; status != 0", status );
-				handleEncodingError( new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() ) );
+		if( this.audioMuxer.hasAudioToMix() ) {
+			java.io.File muxVideoFile = null;
+			try {
+				muxVideoFile = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
+				muxVideoFile.deleteOnExit();
+				edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", this.encodedVideo.getAbsolutePath(), "-codec:a", "pcm_s16le", "-i", "-", "-codec:v", "copy", "-codec:a", "libvorbis", "-q:a", "7", muxVideoFile.getAbsolutePath() );
+				ffmpegProcess.start();
+				this.audioMuxer.mixAudioStreams( ffmpegProcess.getProcessOutputStream(), getLength() );
+				ffmpegProcess.getProcessOutputStream().flush();
+				int status = ffmpegProcess.stop();
+				if( status != 0 ) {
+					this.success = false;
+					muxVideoFile.delete();
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "audio muxing encoding failed; status != 0", status );
+					handleEncodingError( new FFmpegProcessException( ffmpegProcess.getProcessInput(), ffmpegProcess.getProcessError() ) );
+				}
+				this.encodedVideo.delete();
+				this.encodedVideo = muxVideoFile;
+			} catch( java.io.IOException e ) {
+				this.success = false;
+				muxVideoFile.delete();
+				handleEncodingError( new FFmpegProcessException( e ) );
 			}
-			this.encodedVideo.delete();
-			this.encodedVideo = videoFile;
-		} catch( java.io.IOException e ) {
-			handleEncodingError( new FFmpegProcessException( e ) );
 		}
 	}
 

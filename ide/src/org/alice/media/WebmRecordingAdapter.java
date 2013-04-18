@@ -56,22 +56,15 @@ import edu.wustl.cse.lookingglass.media.ImagesToWebmEncoder;
 /**
  * @author Matt May
  */
-public class WebmAdapter implements MediaPlayerObserver {
+public class WebmRecordingAdapter implements MediaPlayerObserver {
 
 	private Integer frameRate;
-	private ImagesToWebmEncoder encoder;
 	private Dimension dimension;
 
-	public WebmAdapter() {
-	}
+	private org.alice.media.audio.AudioMuxer audioMuxer;
+	private ImagesToWebmEncoder encoder;
 
-	public void playerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
-		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
-		if( player instanceof edu.cmu.cs.dennisc.media.jmf.Player ) {
-			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
-			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
-			encoder.addAudio( audioStream );
-		}
+	public WebmRecordingAdapter() {
 	}
 
 	public void setFrameRate( Integer value ) {
@@ -82,27 +75,55 @@ public class WebmAdapter implements MediaPlayerObserver {
 		this.dimension = dimension;
 	}
 
-	public void start() {
-		assert frameRate != null;
-		assert dimension != null;
-		encoder = new ImagesToWebmEncoder( frameRate, dimension );
-		encoder.start();
+	public File getEncodedVideo() {
+		return this.encoder.getEncodedVideo();
 	}
 
-	public void stop() {
-		encoder.stop();
-		encoder.mergeAudio();
-	}
-
-	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) {
-		if( encoder.isRunning() ) {
-			encoder.addBufferedImage( image, isUpsideDown );
+	public boolean isVideoEncoding() {
+		if( this.encoder == null ) {
+			return false;
 		} else {
-			Logger.severe( "GETTING BUFFERED IMAGE AFTER STOP" );
+			return this.encoder.isRunning();
 		}
 	}
 
-	public File getEncodedVideo() {
-		return this.encoder.getEncodedVideo();
+	public void initializeAudioRecording() {
+		this.audioMuxer = new org.alice.media.audio.AudioMuxer();
+	}
+
+	public void mediaPlayerStarted( MediaPlayerAnimation playerAnimation, double playTime ) {
+		assert this.audioMuxer != null;
+		edu.cmu.cs.dennisc.media.Player player = playerAnimation.getPlayer();
+		if( player instanceof edu.cmu.cs.dennisc.media.jmf.Player ) {
+			edu.cmu.cs.dennisc.media.jmf.Player jmfPlayer = (edu.cmu.cs.dennisc.media.jmf.Player)player;
+			ScheduledAudioStream audioStream = new ScheduledAudioStream( jmfPlayer.getAudioResource(), playTime, jmfPlayer.getStartTime(), jmfPlayer.getStopTime(), jmfPlayer.getVolumeLevel() );
+			this.audioMuxer.addAudioStream( audioStream );
+		}
+	}
+
+	public void startVideoEncoding() {
+		assert this.isVideoEncoding() == false;
+		assert frameRate != null;
+		assert dimension != null;
+
+		this.encoder = new ImagesToWebmEncoder( frameRate, dimension );
+		this.encoder.start( this.audioMuxer );
+	}
+
+	public void stopVideoEncoding() {
+		if( this.isVideoEncoding() ) {
+			this.encoder.stop();
+
+			// Reset the audio compiler, just in case. We want to make sure someone restarts it.
+			this.audioMuxer = null;
+		}
+	}
+
+	public void addBufferedImage( BufferedImage image, boolean isUpsideDown ) {
+		if( this.isVideoEncoding() ) {
+			this.encoder.addBufferedImage( image, isUpsideDown );
+		} else {
+			Logger.severe( "GETTING BUFFERED IMAGE AFTER STOP" );
+		}
 	}
 }
