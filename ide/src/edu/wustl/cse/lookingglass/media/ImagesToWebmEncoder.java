@@ -188,7 +188,7 @@ public class ImagesToWebmEncoder {
 			try {
 				muxVideoFile = java.io.File.createTempFile( "project", "." + WEBM_EXTENSION );
 				muxVideoFile.deleteOnExit();
-				edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", this.encodedVideo.getAbsolutePath(), "-codec:a", "pcm_s16le", "-i", "-", "-codec:v", "copy", "-codec:a", "libvorbis", "-q:a", "7", muxVideoFile.getAbsolutePath() );
+				edu.wustl.cse.lookingglass.media.FFmpegProcess ffmpegProcess = new edu.wustl.cse.lookingglass.media.FFmpegProcess( "-y", "-i", this.encodedVideo.getAbsolutePath(), "-codec:a", "pcm_s16le", "-i", "-", "-codec:v", "copy", "-codec:a", "libvorbis", muxVideoFile.getAbsolutePath() );
 				ffmpegProcess.start();
 				this.audioMuxer.mixAudioStreams( ffmpegProcess.getProcessOutputStream(), getLength() );
 				ffmpegProcess.getProcessOutputStream().flush();
