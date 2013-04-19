@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,47 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource;
-
-import org.alice.stageide.personresource.data.HairHatStyle;
+package org.alice.stageide.personresource.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.HairTabView> {
-	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
-	private final org.lgna.croquet.ListSelectionState<String> hairColorNameState = this.createListSelectionState( this.createKey( "hairColorNameState" ), this.hairColorNameData, -1 );
-	private final org.alice.stageide.personresource.data.HairHatStyleListData hairHatStyleListData = new org.alice.stageide.personresource.data.HairHatStyleListData();
-	private final org.lgna.croquet.ListSelectionState<HairHatStyle> hairHatStyleState = this.createListSelectionState( this.createKey( "hairHatStyleState" ), this.hairHatStyleListData, -1 );
-
-	public HairTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
+public enum HairHatStyleCodec implements org.lgna.croquet.ItemCodec<org.alice.stageide.personresource.data.HairHatStyle> {
+	SINGLETON;
+	public Class<org.alice.stageide.personresource.data.HairHatStyle> getValueClass() {
+		return org.alice.stageide.personresource.data.HairHatStyle.class;
 	}
 
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
+	public org.alice.stageide.personresource.data.HairHatStyle decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
 	}
 
-	@Override
-	protected org.alice.stageide.personresource.views.HairTabView createView() {
-		return new org.alice.stageide.personresource.views.HairTabView( this );
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.stageide.personresource.data.HairHatStyle value ) {
+		throw new RuntimeException( "todo" );
 	}
 
-	public org.alice.stageide.personresource.data.HairColorNameListData getHairColorNameData() {
-		return this.hairColorNameData;
+	public void appendRepresentation( StringBuilder sb, org.alice.stageide.personresource.data.HairHatStyle value ) {
+		sb.append( value );
 	}
-
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return this.hairColorNameState;
-	}
-
-	public org.alice.stageide.personresource.data.HairHatStyleListData getHairHatStyleListData() {
-		return this.hairHatStyleListData;
-	}
-
-	public org.lgna.croquet.ListSelectionState<HairHatStyle> getHairHatStyleState() {
-		return this.hairHatStyleState;
-	}
-};
+}

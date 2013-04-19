@@ -100,7 +100,15 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		java.awt.Color awtSkinColor = composite.getSkinColorState().getValue();
 		org.lgna.story.resources.sims2.EyeColor eyeColor = composite.getBaseEyeColorState().getValue();
 		double obesityLevel = composite.getObesityLevelState().getValue();
-		org.lgna.story.resources.sims2.Hair hair = composite.getHairState().getValue();
+		org.alice.stageide.personresource.data.HairHatStyle hairHatStyle = composite.getHairHatStyleState().getValue();
+		String hairColorName = composite.getHairColorNameState().getValue();
+		org.lgna.story.resources.sims2.Hair hair = hairHatStyle != null ? hairHatStyle.getHair( hairColorName ) : null;
+		if( hair != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( hairHatStyle, hairColorName );
+			//hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		}
 		org.lgna.story.resources.sims2.Outfit outfit = composite.getFullBodyOutfitState().getValue();
 		org.lgna.story.resources.sims2.Face face = composite.getBaseFaceState().getValue();
 		if( ( gender == null ) || ( outfit == null ) || ( awtSkinColor == null ) || ( eyeColor == null ) || ( hair == null ) || ( face == null ) ) {

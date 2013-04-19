@@ -45,7 +45,7 @@ package org.alice.stageide.personresource.views.renderers;
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer<org.lgna.story.resources.sims2.Hair> {
+public class HairListCellRenderer extends IngredientListCellRenderer<org.alice.stageide.personresource.data.HairHatStyle> {
 	private static class SingletonHolder {
 		private static HairListCellRenderer instance = new HairListCellRenderer();
 	}
@@ -54,7 +54,48 @@ public class HairListCellRenderer extends IngredientListCellRenderer<org.lgna.st
 		return SingletonHolder.instance;
 	}
 
+	private String lastCommonHairColorName;
+	private String hairColorName;
+
 	private HairListCellRenderer() {
+	}
+
+	public String getHairColorName() {
+		return this.hairColorName;
+	}
+
+	public void setHairColorName( String hairColorName ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hairColorName, hairColorName ) ) {
+			//pass
+		} else {
+			if( this.hairColorName != null ) {
+				if( org.alice.stageide.personresource.data.HairUtilities.isCommonHairColorName( this.hairColorName ) ) {
+					this.lastCommonHairColorName = this.hairColorName;
+				}
+			}
+			this.hairColorName = hairColorName;
+		}
+	}
+
+	@Override
+	protected Object getValue( org.alice.stageide.personresource.data.HairHatStyle value ) {
+		if( value != null ) {
+			if( this.hairColorName != null ) {
+				Object rv = value.getHair( this.hairColorName );
+				if( rv != null ) {
+					//pass
+				} else {
+					if( this.lastCommonHairColorName != null ) {
+						rv = value.getHair( this.lastCommonHairColorName );
+					}
+				}
+				return rv;
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 
 	@Override

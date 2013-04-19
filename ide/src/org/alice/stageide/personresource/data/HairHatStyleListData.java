@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,47 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource;
-
-import org.alice.stageide.personresource.data.HairHatStyle;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.HairTabView> {
-	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
-	private final org.lgna.croquet.ListSelectionState<String> hairColorNameState = this.createListSelectionState( this.createKey( "hairColorNameState" ), this.hairColorNameData, -1 );
-	private final org.alice.stageide.personresource.data.HairHatStyleListData hairHatStyleListData = new org.alice.stageide.personresource.data.HairHatStyleListData();
-	private final org.lgna.croquet.ListSelectionState<HairHatStyle> hairHatStyleState = this.createListSelectionState( this.createKey( "hairHatStyleState" ), this.hairHatStyleListData, -1 );
+public final class HairHatStyleListData extends org.lgna.croquet.data.RefreshableListData<HairHatStyle> {
+	private org.lgna.story.resources.sims2.LifeStage lifeStage;
+	private org.lgna.story.resources.sims2.Gender gender;
 
-	public HairTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
+	public HairHatStyleListData() {
+		super( org.alice.stageide.personresource.codecs.HairHatStyleCodec.SINGLETON );
+	}
+
+	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+		return this.lifeStage;
+	}
+
+	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( this.lifeStage == lifeStage ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.refresh();
+		}
+	}
+
+	public org.lgna.story.resources.sims2.Gender getGender() {
+		return this.gender;
+	}
+
+	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
+		if( this.gender == gender ) {
+			//pass
+		} else {
+			this.gender = gender;
+			this.refresh();
+		}
+	}
+
+	public void setLifeStageAndGender( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+		if( ( this.lifeStage == lifeStage ) && ( this.gender == gender ) ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.gender = gender;
+			this.refresh();
+		}
 	}
 
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
+	protected java.util.List<HairHatStyle> createValues() {
+		return HairUtilities.getHairHatStyles( lifeStage, gender );
 	}
-
-	@Override
-	protected org.alice.stageide.personresource.views.HairTabView createView() {
-		return new org.alice.stageide.personresource.views.HairTabView( this );
-	}
-
-	public org.alice.stageide.personresource.data.HairColorNameListData getHairColorNameData() {
-		return this.hairColorNameData;
-	}
-
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return this.hairColorNameState;
-	}
-
-	public org.alice.stageide.personresource.data.HairHatStyleListData getHairHatStyleListData() {
-		return this.hairHatStyleListData;
-	}
-
-	public org.lgna.croquet.ListSelectionState<HairHatStyle> getHairHatStyleState() {
-		return this.hairHatStyleState;
-	}
-};
+}

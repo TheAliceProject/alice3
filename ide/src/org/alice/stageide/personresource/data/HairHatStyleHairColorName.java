@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,47 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.stageide.personresource;
-
-import org.alice.stageide.personresource.data.HairHatStyle;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.HairTabView> {
-	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
-	private final org.lgna.croquet.ListSelectionState<String> hairColorNameState = this.createListSelectionState( this.createKey( "hairColorNameState" ), this.hairColorNameData, -1 );
-	private final org.alice.stageide.personresource.data.HairHatStyleListData hairHatStyleListData = new org.alice.stageide.personresource.data.HairHatStyleListData();
-	private final org.lgna.croquet.ListSelectionState<HairHatStyle> hairHatStyleState = this.createListSelectionState( this.createKey( "hairHatStyleState" ), this.hairHatStyleListData, -1 );
+public final class HairHatStyleHairColorName {
+	private final HairHatStyle hairHatStyle;
+	private final String hairColorName;
 
-	public HairTabComposite() {
-		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
+	public HairHatStyleHairColorName( HairHatStyle hairHatStyle, String hairColorName ) {
+		this.hairHatStyle = hairHatStyle;
+		this.hairColorName = hairColorName;
 	}
 
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
+	public HairHatStyle getHairHatStyle() {
+		return this.hairHatStyle;
 	}
 
-	@Override
-	protected org.alice.stageide.personresource.views.HairTabView createView() {
-		return new org.alice.stageide.personresource.views.HairTabView( this );
+	public String getHairColorName() {
+		return this.hairColorName;
 	}
-
-	public org.alice.stageide.personresource.data.HairColorNameListData getHairColorNameData() {
-		return this.hairColorNameData;
-	}
-
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
-		return this.hairColorNameState;
-	}
-
-	public org.alice.stageide.personresource.data.HairHatStyleListData getHairHatStyleListData() {
-		return this.hairHatStyleListData;
-	}
-
-	public org.lgna.croquet.ListSelectionState<HairHatStyle> getHairHatStyleState() {
-		return this.hairHatStyleState;
-	}
-};
+}
