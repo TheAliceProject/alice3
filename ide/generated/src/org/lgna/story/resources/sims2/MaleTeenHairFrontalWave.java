@@ -28,4 +28,14 @@ public enum MaleTeenHairFrontalWave implements MaleTeenHair {
 	BROWN,
 	RED,
 	GREY;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

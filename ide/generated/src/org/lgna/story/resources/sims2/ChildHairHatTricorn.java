@@ -23,8 +23,30 @@
 
 package org.lgna.story.resources.sims2;
 public enum ChildHairHatTricorn implements ChildHair {
-	RED,
-	BLOND,
-	BLACK,
-	BROWN;
+	RED_RED_RIBBON,
+	RED_BLUE_RIBBON,
+	RED_GREEN_RIBBON,
+	RED_BROWN_RIBBON,
+	BLOND_RED_RIBBON,
+	BLOND_BLUE_RIBBON,
+	BLOND_GREEN_RIBBON,
+	BLOND_BROWN_RIBBON,
+	BLACK_RED_RIBBON,
+	BLACK_BLUE_RIBBON,
+	BLACK_GREEN_RIBBON,
+	BLACK_BROWN_RIBBON,
+	BROWN_RED_RIBBON,
+	BROWN_BLUE_RIBBON,
+	BROWN_GREEN_RIBBON,
+	BROWN_BROWN_RIBBON;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return true;
+	}
 }

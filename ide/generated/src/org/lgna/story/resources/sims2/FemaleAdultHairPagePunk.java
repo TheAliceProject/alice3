@@ -31,4 +31,14 @@ public enum FemaleAdultHairPagePunk implements FemaleAdultHair {
 	BLOOD_RED,
 	PURPLE,
 	PINK;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

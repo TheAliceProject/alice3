@@ -27,4 +27,14 @@ public enum MaleTeenHairPompodore implements MaleTeenHair {
 	BROWN,
 	BLOND,
 	BLACK;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

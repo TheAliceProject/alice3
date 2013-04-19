@@ -28,4 +28,14 @@ public enum MaleTeenHairShort implements MaleTeenHair {
 	RED,
 	BLOND,
 	GREY;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

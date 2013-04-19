@@ -47,7 +47,7 @@ package org.lgna.croquet.components;
  */
 public class ToggleButton extends BooleanStateButton<javax.swing.JToggleButton> {
 	public ToggleButton( org.lgna.croquet.BooleanState model ) {
-		super( model );
+		super( model, "ToggleButton" );
 	}
 
 	@Override

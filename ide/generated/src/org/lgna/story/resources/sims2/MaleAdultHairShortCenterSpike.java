@@ -28,4 +28,14 @@ public enum MaleAdultHairShortCenterSpike implements MaleAdultHair {
 	GREY,
 	RED,
 	BLOND;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

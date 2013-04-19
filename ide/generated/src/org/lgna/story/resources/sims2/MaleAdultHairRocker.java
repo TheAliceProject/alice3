@@ -29,4 +29,14 @@ public enum MaleAdultHairRocker implements MaleAdultHair {
 	GREY,
 	RED,
 	BLEND;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

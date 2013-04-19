@@ -27,4 +27,14 @@ public enum MaleTeenHairGibs implements MaleTeenHair {
 	BLOND,
 	BROWN,
 	RED;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

@@ -28,4 +28,14 @@ public enum FemaleTeenHairMessy implements FemaleTeenHair {
 	GREY,
 	BLACK,
 	RED;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

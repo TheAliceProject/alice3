@@ -31,4 +31,14 @@ public enum PreschoolerHairPuff implements PreschoolerHair {
 	KINKY_BLOND,
 	KINKY_BROWN,
 	KINKY_RED;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

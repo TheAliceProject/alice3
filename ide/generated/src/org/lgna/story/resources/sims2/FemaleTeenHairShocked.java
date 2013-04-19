@@ -23,5 +23,15 @@
 
 package org.lgna.story.resources.sims2;
 public enum FemaleTeenHairShocked implements FemaleTeenHair {
-	FRIED;
+	BLACK;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

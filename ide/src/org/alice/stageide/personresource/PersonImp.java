@@ -70,7 +70,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 
 	public void unload() {
 		for( java.util.Map.Entry<org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person> entry : this.mapLifeStageToNebPerson.entrySet() ) {
-			entry.getValue().unload();
+			entry.getValue().synchronizedUnload();
 		}
 		this.mapLifeStageToNebPerson.clear();
 		this.setSgGeometry( null );
@@ -106,7 +106,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		if( ( gender == null ) || ( outfit == null ) || ( awtSkinColor == null ) || ( eyeColor == null ) || ( hair == null ) || ( face == null ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face );
 		} else {
-			nebPerson.setAll( gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face );
+			nebPerson.synchronizedSetAll( gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face );
 		}
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
 		if( nebPerson != sgGeometry ) {

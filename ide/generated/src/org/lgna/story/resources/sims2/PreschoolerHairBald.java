@@ -32,4 +32,14 @@ public enum PreschoolerHairBald implements PreschoolerHair {
 	STUBBLE_BLOND,
 	STUBBLE_BLACK,
 	BARE;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

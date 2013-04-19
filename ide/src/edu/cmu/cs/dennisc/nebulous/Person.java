@@ -13,31 +13,87 @@ public class Person extends Model {
 	}
 
 	public Person( Object o ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
-		initialize( o );
+		synchronized( renderLock ) {
+			initialize( o );
+		}
 	}
 
 	private native void initialize( Object o );
 
-	public native void unload();
+	private native void unload();
 
-	public native void setGender( Object o );
+	public void synchronizedUnload() {
+		synchronized( renderLock ) {
+			unload();
+		}
+	}
 
-	public native void setOutfit( Object o );
+	private native void setGender( Object o );
 
-	public native void setSkinTone( Object o );
+	public void synchronizedSetGender( Object o ) {
+		synchronized( renderLock ) {
+			setGender( o );
+		}
+	}
 
-	public native void setObesityLevel( Object o );
+	private native void setOutfit( Object o );
 
-	public native void setEyeColor( Object o );
+	public void synchronizedSetOutfit( Object o ) {
+		synchronized( renderLock ) {
+			setOutfit( o );
+		}
+	}
 
-	public native void setHair( Object o );
+	private native void setSkinTone( Object o );
 
-	public native void setFace( Object o );
+	public void synchronizedSetSkinTone( Object o ) {
+		synchronized( renderLock ) {
+			setSkinTone( o );
+		}
+	}
 
-	public native void setAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair, Object face );
+	private native void setObesityLevel( Object o );
 
-	public void setAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair )
+	public void synchronizedSetObesityLevel( Object o ) {
+		synchronized( renderLock ) {
+			setObesityLevel( o );
+		}
+	}
+
+	private native void setEyeColor( Object o );
+
+	public void synchronizedSetEyeColor( Object o ) {
+		synchronized( renderLock ) {
+			setEyeColor( o );
+		}
+	}
+
+	private native void setHair( Object o );
+
+	public void synchronizedSetHair( Object o ) {
+		synchronized( renderLock ) {
+			setHair( o );
+		}
+	}
+
+	private native void setFace( Object o );
+
+	public void synchronizedSetFace( Object o ) {
+		synchronized( renderLock ) {
+			setFace( o );
+		}
+	}
+
+	private native void setAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair, Object face );
+
+	public void synchronizedSetAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair, Object face ) {
+		synchronized( renderLock ) {
+			setAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair, face );
+		}
+	}
+
+	public void synchronizedSetAll( Object gender, Object outfit, Object skinTone, Object obesityLevel, Object eyeColor, Object hair )
 	{
-		setAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair, "" );
+		synchronizedSetAll( gender, outfit, skinTone, obesityLevel, eyeColor, hair, "" );
 	}
 }

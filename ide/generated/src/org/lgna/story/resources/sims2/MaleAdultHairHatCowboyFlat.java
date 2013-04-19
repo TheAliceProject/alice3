@@ -23,9 +23,29 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleAdultHairHatCowboyFlat implements MaleAdultHair {
-	BLACK,
-	BLOND,
-	BROWN,
-	GREY,
-	RED;
+	BLACK_GREY_HAT,
+	BLACK_BLACK_HAT,
+	BLACK_STRAW_HAT,
+	BLOND_GREY_HAT,
+	BLOND_BLACK_HAT,
+	BLOND_STRAW_HAT,
+	BROWN_GREY_HAT,
+	BROWN_BLACK_HAT,
+	BROWN_STRAW_HAT,
+	GREY_GREY_HAT,
+	GREY_BLACK_HAT,
+	GREY_STRAW_HAT,
+	RED_GREY_HAT,
+	RED_BLACK_HAT,
+	RED_STRAW_HAT;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return true;
+	}
 }

@@ -27,4 +27,14 @@ public enum FemaleTeenHairFrenchBraid implements FemaleTeenHair {
 	BLACK,
 	BLOND,
 	BROWN;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

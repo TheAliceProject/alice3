@@ -23,8 +23,39 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleTeenHairHatCapUp implements MaleTeenHair {
-	BROWN,
-	BLOND,
-	RED,
-	BLACK;
+	BROWN_BROWN_HAT,
+	BROWN_BLUE_BROWN_HAT,
+	BROWN_RED_HAT,
+	BROWN_BLACK_HAT,
+	BROWN_GREY_HAT,
+	BLOND_BROWN_HAT,
+	BLOND_BLUE_BROWN_HAT,
+	BLOND_RED_HAT,
+	BLOND_BLACK_HAT,
+	BLOND_GREY_HAT,
+	RED_BROWN_HAT,
+	RED_BLUE_BROWN_HAT,
+	RED_RED_HAT,
+	RED_BLACK_HAT,
+	RED_GREY_HAT,
+	BLACK_BROWN_HAT,
+	BLACK_BLUE_BROWN_HAT,
+	BLACK_RED_HAT,
+	BLACK_BLACK_HAT,
+	BLACK_GREY_HAT,
+	GREY_BROWN_HAT,
+	GREY_BLUE_BROWN_HAT,
+	GREY_RED_HAT,
+	GREY_BLACK_HAT,
+	GREY_GREY_HAT;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return true;
+	}
 }

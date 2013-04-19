@@ -33,4 +33,14 @@ public enum FemaleTeenHairMohawk implements FemaleTeenHair {
 	RAINBOW,
 	PURPLE,
 	PLATINUM;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }
