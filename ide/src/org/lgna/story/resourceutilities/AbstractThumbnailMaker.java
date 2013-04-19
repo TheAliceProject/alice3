@@ -246,6 +246,7 @@ public abstract class AbstractThumbnailMaker {
 			{
 				rv = rv.getSubimage( leftBorder, topBorder, newWidth, newHeight );
 			}
+
 		}
 		Image returnImage;
 		if( this.antAliasFactor != 0 ) {

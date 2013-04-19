@@ -47,19 +47,19 @@
     </Resource>
     <Resource modelName="ArtNouveau" resourceName="ART_NOUVEAU_DARK_WOOD" textureName="DARK_WOOD">
         <BoundingBox>
-            <Min x="-0.8466905951499939" y="0.0" z="-0.34594061970710754"/>
+            <Min x="-0.8466905355453491" y="0.0" z="-0.34594061970710754"/>
             <Max x="0.8466905951499939" y="0.8511987328529358" z="0.34594061970710754"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="ArtNouveau" resourceName="ART_NOUVEAU_MAHOGANY" textureName="MAHOGANY">
         <BoundingBox>
-            <Min x="-0.8466905951499939" y="0.0" z="-0.34594061970710754"/>
+            <Min x="-0.8466905355453491" y="0.0" z="-0.34594061970710754"/>
             <Max x="0.8466905951499939" y="0.8511987328529358" z="0.34594061970710754"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="ArtNouveau" resourceName="ART_NOUVEAU_OAK" textureName="OAK">
         <BoundingBox>
-            <Min x="-0.8466905951499939" y="0.0" z="-0.34594061970710754"/>
+            <Min x="-0.8466905355453491" y="0.0" z="-0.34594061970710754"/>
             <Max x="0.8466905951499939" y="0.8511987328529358" z="0.34594061970710754"/>
         </BoundingBox>
     </Resource>
@@ -257,31 +257,31 @@
     </Resource>
     <Resource modelName="Quaint" resourceName="QUAINT_BROWN" textureName="BROWN">
         <BoundingBox>
-            <Min x="-0.8217269778251648" y="0.0" z="-0.33754831552505493"/>
+            <Min x="-0.82172691822052" y="0.0" z="-0.33754831552505493"/>
             <Max x="0.8217269778251648" y="0.7987089157104492" z="0.33754831552505493"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Quaint" resourceName="QUAINT_BLUE" textureName="BLUE">
         <BoundingBox>
-            <Min x="-0.8217269778251648" y="0.0" z="-0.33754831552505493"/>
+            <Min x="-0.82172691822052" y="0.0" z="-0.33754831552505493"/>
             <Max x="0.8217269778251648" y="0.7987089157104492" z="0.33754831552505493"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Quaint" resourceName="QUAINT_GREEN" textureName="GREEN">
         <BoundingBox>
-            <Min x="-0.8217269778251648" y="0.0" z="-0.33754831552505493"/>
+            <Min x="-0.82172691822052" y="0.0" z="-0.33754831552505493"/>
             <Max x="0.8217269778251648" y="0.7987089157104492" z="0.33754831552505493"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Quaint" resourceName="QUAINT_PINK" textureName="PINK">
         <BoundingBox>
-            <Min x="-0.8217269778251648" y="0.0" z="-0.33754831552505493"/>
+            <Min x="-0.82172691822052" y="0.0" z="-0.33754831552505493"/>
             <Max x="0.8217269778251648" y="0.7987089157104492" z="0.33754831552505493"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Quaint" resourceName="QUAINT_WHITE" textureName="WHITE">
         <BoundingBox>
-            <Min x="-0.8217269778251648" y="0.0" z="-0.33754831552505493"/>
+            <Min x="-0.82172691822052" y="0.0" z="-0.33754831552505493"/>
             <Max x="0.8217269778251648" y="0.7987089157104492" z="0.33754831552505493"/>
         </BoundingBox>
     </Resource>

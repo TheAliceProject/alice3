@@ -340,6 +340,37 @@ public class SkeletonVisualAdapter extends edu.cmu.cs.dennisc.lookingglass.openg
 	}
 
 	@Override
+	protected boolean hasOpaque() {
+		initializeDataIfNecessary();
+		if( super.hasOpaque() )
+		{
+			return true;
+		}
+		if( ( appearanceIdToMeshControllersMap != null ) && ( appearanceIdToMeshControllersMap.size() > 0 ) )
+		{
+			if( m_frontFacingAppearanceAdapter != null ) {
+				if( !m_frontFacingAppearanceAdapter.isAlphaBlended() ) {
+					return true;
+				}
+			}
+			if( m_backFacingAppearanceAdapter != null ) {
+				if( !m_backFacingAppearanceAdapter.isAlphaBlended() ) {
+					return true;
+				}
+			}
+			for( Entry<Integer, WeightedMeshControl[]> controlEntry : this.appearanceIdToMeshControllersMap.entrySet() )
+			{
+				TexturedAppearanceAdapter ta = appearanceIdToAdapterMap.get( controlEntry.getKey() );
+				if( ( ta != null ) && ta.isActuallyShowing() && !ta.isAlphaBlended() )
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
 	protected boolean isAlphaBlended()
 	{
 		initializeDataIfNecessary();

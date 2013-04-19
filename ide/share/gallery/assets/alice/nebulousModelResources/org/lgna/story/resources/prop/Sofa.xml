@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creator="EA" name="Sofa">
     <BoundingBox>
-        <Min x="-1.2719825506210327" y="0.0" z="-0.3912557363510132"/>
+        <Min x="-1.2719824314117432" y="0.0" z="-0.3912557363510132"/>
         <Max x="1.2719825506210327" y="1.0551837682724" z="0.3912557363510132"/>
     </BoundingBox>
     <Tags>
@@ -144,31 +144,31 @@
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_BLACK_LEATHER" textureName="BLACK_LEATHER">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_RED" textureName="RED">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_ALLIGATOR" textureName="ALLIGATOR">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_BRWON_LEATHER" textureName="BRWON_LEATHER">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="SteelFrame" resourceName="STEEL_FRAME_WHITE" textureName="WHITE">
         <BoundingBox>
-            <Min x="-1.2719825506210327" y="0.0" z="-0.3411480486392975"/>
+            <Min x="-1.2719824314117432" y="0.0" z="-0.3411480486392975"/>
             <Max x="1.2719825506210327" y="0.7245553731918335" z="0.3411480486392975"/>
         </BoundingBox>
     </Resource>
