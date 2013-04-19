@@ -165,6 +165,7 @@ public class AdaptiveRecenteringThumbnailMaker extends AbstractThumbnailMaker {
 			getSGCameraVehicle().setTranslationOnly( testPosition, this.getScene().getSgReferenceFrame() );
 			testImageLG.clearAndRenderOffscreen();
 			testImage = testImageLG.getColorBufferWithTransparencyBasedOnDepthBuffer( testImage, depthBuffer );
+
 			framed = isFullyFramed( testImage );
 			if( framed )
 			{

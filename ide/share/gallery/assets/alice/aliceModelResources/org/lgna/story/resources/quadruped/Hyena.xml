@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="Hyena">
+    <BoundingBox>
+        <Min x="NaN" y="NaN" z="NaN"/>
+        <Max x="NaN" y="NaN" z="NaN"/>
+    </BoundingBox>
+    <Tags>
+        <Tag>africa</Tag>
+        <Tag>savanna</Tag>
+        <Tag>dog</Tag>
+        <Tag>canine</Tag>
+        <Tag>wolf</Tag>
+    </Tags>
+    <GroupTags>
+        <GroupTag>animals</GroupTag>
+    </GroupTags>
+    <ThemeTags>
+        <ThemeTag>africa</ThemeTag>
+    </ThemeTags>
+</AliceModel>

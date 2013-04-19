@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AliceModel creator="EA" name="CoffeeTable">
     <BoundingBox>
-        <Min x="-0.9093484878540039" y="0.0" z="-0.47684502601623535"/>
+        <Min x="-0.9093485474586487" y="0.0" z="-0.47684502601623535"/>
         <Max x="0.9093484878540039" y="0.4869565963745117" z="0.47684502601623535"/>
     </BoundingBox>
     <Tags>
@@ -215,25 +215,25 @@
     </Resource>
     <Resource modelName="Loft" resourceName="LOFT_CONCRETE" textureName="CONCRETE">
         <BoundingBox>
-            <Min x="-0.9093484878540039" y="0.0" z="-0.47684502601623535"/>
+            <Min x="-0.9093485474586487" y="0.0" z="-0.47684502601623535"/>
             <Max x="0.9093484878540039" y="0.4490882456302643" z="0.47684502601623535"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Loft" resourceName="LOFT_PATINA" textureName="PATINA">
         <BoundingBox>
-            <Min x="-0.9093484878540039" y="0.0" z="-0.47684502601623535"/>
+            <Min x="-0.9093485474586487" y="0.0" z="-0.47684502601623535"/>
             <Max x="0.9093484878540039" y="0.4490882456302643" z="0.47684502601623535"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Loft" resourceName="LOFT_RED" textureName="RED">
         <BoundingBox>
-            <Min x="-0.9093484878540039" y="0.0" z="-0.47684502601623535"/>
+            <Min x="-0.9093485474586487" y="0.0" z="-0.47684502601623535"/>
             <Max x="0.9093484878540039" y="0.4490882456302643" z="0.47684502601623535"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Loft" resourceName="LOFT_METAL" textureName="METAL">
         <BoundingBox>
-            <Min x="-0.9093484878540039" y="0.0" z="-0.47684502601623535"/>
+            <Min x="-0.9093485474586487" y="0.0" z="-0.47684502601623535"/>
             <Max x="0.9093484878540039" y="0.4490882456302643" z="0.47684502601623535"/>
         </BoundingBox>
     </Resource>
