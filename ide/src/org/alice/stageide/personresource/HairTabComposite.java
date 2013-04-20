@@ -50,7 +50,7 @@ import org.alice.stageide.personresource.data.HairHatStyle;
  */
 public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.HairTabView> {
 	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
-	private final org.lgna.croquet.ListSelectionState<String> hairColorNameState = this.createListSelectionState( this.createKey( "hairColorNameState" ), this.hairColorNameData, -1 );
+	private final org.lgna.croquet.ListSelectionState<org.alice.stageide.personresource.data.HairColorName> hairColorNameState = this.createListSelectionState( this.createKey( "hairColorNameState" ), this.hairColorNameData, -1 );
 	private final org.alice.stageide.personresource.data.HairHatStyleListData hairHatStyleListData = new org.alice.stageide.personresource.data.HairHatStyleListData();
 	private final org.lgna.croquet.ListSelectionState<HairHatStyle> hairHatStyleState = this.createListSelectionState( this.createKey( "hairHatStyleState" ), this.hairHatStyleListData, -1 );
 
@@ -72,7 +72,7 @@ public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<
 		return this.hairColorNameData;
 	}
 
-	public org.lgna.croquet.ListSelectionState<String> getHairColorNameState() {
+	public org.lgna.croquet.ListSelectionState<org.alice.stageide.personresource.data.HairColorName> getHairColorNameState() {
 		return this.hairColorNameState;
 	}
 

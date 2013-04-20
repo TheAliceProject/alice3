@@ -42,15 +42,14 @@
  */
 package org.alice.stageide.personresource.data;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public class HairColorNameListData extends org.lgna.croquet.data.RefreshableListData<String> {
+public class HairColorNameListData extends org.lgna.croquet.data.RefreshableListData<HairColorName> {
 	private HairHatStyle hairHatStyle;
 
 	public HairColorNameListData() {
-		super( org.alice.ide.croquet.codecs.StringCodec.SINGLETON );
+		super( edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( HairColorName.class ) );
 	}
 
 	public HairHatStyle getHairHatStyle() {
@@ -67,7 +66,7 @@ public class HairColorNameListData extends org.lgna.croquet.data.RefreshableList
 	}
 
 	@Override
-	protected java.util.List<String> createValues() {
+	protected java.util.List<HairColorName> createValues() {
 		if( this.hairHatStyle != null ) {
 			return this.hairHatStyle.getHairColorNames();
 		} else {

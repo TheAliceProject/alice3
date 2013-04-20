@@ -47,9 +47,9 @@ package org.alice.stageide.personresource.data;
  */
 public final class HairHatStyleHairColorName {
 	private final HairHatStyle hairHatStyle;
-	private final String hairColorName;
+	private final org.alice.stageide.personresource.data.HairColorName hairColorName;
 
-	public HairHatStyleHairColorName( HairHatStyle hairHatStyle, String hairColorName ) {
+	public HairHatStyleHairColorName( HairHatStyle hairHatStyle, org.alice.stageide.personresource.data.HairColorName hairColorName ) {
 		this.hairHatStyle = hairHatStyle;
 		this.hairColorName = hairColorName;
 	}
@@ -58,7 +58,7 @@ public final class HairHatStyleHairColorName {
 		return this.hairHatStyle;
 	}
 
-	public String getHairColorName() {
+	public org.alice.stageide.personresource.data.HairColorName getHairColorName() {
 		return this.hairColorName;
 	}
 }

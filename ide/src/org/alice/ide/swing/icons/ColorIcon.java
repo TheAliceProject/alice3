@@ -43,7 +43,6 @@
 
 package org.alice.ide.swing.icons;
 
-
 public class ColorIcon implements javax.swing.Icon {
 	public static final int DEFAULT_SIZE = 15;
 	private java.awt.Color fillColor;
@@ -87,6 +86,8 @@ public class ColorIcon implements javax.swing.Icon {
 
 	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
 		g.setColor( this.fillColor );
+
+		//todo: investigate
 		g.fillRect( x + 1 + 2, y + 1, this.width, this.height );
 		if( this.outlineColor != null ) {
 			g.setColor( this.outlineColor );

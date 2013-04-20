@@ -46,14 +46,10 @@ package org.alice.stageide.personresource.data;
  * @author Dennis Cosgrove
  */
 public class HairUtilities {
-	private static java.util.Set<String> COMMON_HAIR_COLOR_NAMES = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( "BLACK", "BROWN", "BLONDE", "RED", "GREY" );
+	private static java.util.Set<org.alice.stageide.personresource.data.HairColorName> COMMON_HAIR_COLOR_NAMES = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( HairColorName.BLACK, HairColorName.BROWN, HairColorName.BLOND, HairColorName.RED, HairColorName.GREY );
 
-	public static boolean isCommonHairColorName( String hairColorName ) {
+	public static boolean isCommonHairColorName( org.alice.stageide.personresource.data.HairColorName hairColorName ) {
 		return COMMON_HAIR_COLOR_NAMES.contains( hairColorName );
-	}
-
-	public static void sortHairColorNames( java.util.List<String> hairColorNames ) {
-		java.util.Collections.sort( hairColorNames );
 	}
 
 	private static final edu.cmu.cs.dennisc.map.MapToMap<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.resources.sims2.Gender, java.util.List<HairHatStyle>> mapToMap;
@@ -84,7 +80,7 @@ public class HairUtilities {
 	}
 
 	private static java.util.List<HairHatStyle> createHairInfos( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<HairClsHatNameCombo, String> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
+		edu.cmu.cs.dennisc.java.util.InitializingIfAbsentListHashMap<HairClsHatNameCombo, HairColorName> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentListHashMap();
 		Class<? extends org.lgna.story.resources.sims2.Hair>[] clses = org.lgna.story.resources.sims2.HairManager.getSingleton().getImplementingClasses( lifeStage, gender );
 		for( Class<? extends org.lgna.story.resources.sims2.Hair> cls : clses ) {
 			if( cls.isEnum() ) {
@@ -94,8 +90,8 @@ public class HairUtilities {
 					String hairColorName = hairColorNameAndHatName[ 0 ];
 					String hatName = hairColorNameAndHatName[ 1 ];
 					HairClsHatNameCombo hairClsHatNameCombo = new HairClsHatNameCombo( cls, hatName );
-					java.util.List<String> list = map.getInitializingIfAbsentToLinkedList( hairClsHatNameCombo );
-					list.add( hairColorName );
+					java.util.List<HairColorName> list = map.getInitializingIfAbsentToLinkedList( hairClsHatNameCombo );
+					list.add( hairColorName != null ? HairColorName.valueOf( hairColorName ) : HairColorName.NULL );
 				}
 			} else {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( cls.getName(), "is not enum" );
@@ -103,8 +99,8 @@ public class HairUtilities {
 		}
 		java.util.List<HairHatStyle> hairHatStyles = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		for( HairClsHatNameCombo hairClsHatNameCombo : map.keySet() ) {
-			java.util.List<String> list = map.get( hairClsHatNameCombo );
-			sortHairColorNames( list );
+			java.util.List<HairColorName> list = map.get( hairClsHatNameCombo );
+			java.util.Collections.sort( list );
 			hairHatStyles.add( new HairHatStyle( hairClsHatNameCombo, list ) );
 		}
 		java.util.Collections.sort( hairHatStyles );
@@ -126,9 +122,9 @@ public class HairUtilities {
 				if( hairHatStyle.getHairCls().equals( hair.getClass() ) ) {
 					String[] hairColorNameAndHatName = getHairColorNameAndHatName( hair );
 					assert hairColorNameAndHatName.length == 2 : hair;
-					String hairColorName = hairColorNameAndHatName[ 0 ];
 					String hatName = hairColorNameAndHatName[ 1 ];
 					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( hatName, hairHatStyle.getHatName() ) ) {
+						HairColorName hairColorName = HairColorName.valueOf( hairColorNameAndHatName[ 0 ] );
 						return new HairHatStyleHairColorName( hairHatStyle, hairColorName );
 					}
 				}
@@ -138,13 +134,13 @@ public class HairUtilities {
 	}
 
 	public static void main( String[] args ) {
-		java.util.Set<String> hairColorNameSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		java.util.Set<HairColorName> hairColorNameSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		for( org.lgna.story.resources.sims2.LifeStage lifeStage : org.lgna.story.resources.sims2.LifeStage.values() ) {
 			for( org.lgna.story.resources.sims2.Gender gender : org.lgna.story.resources.sims2.Gender.values() ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 				for( HairHatStyle hairHatStyle : getHairHatStyles( lifeStage, gender ) ) {
 					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( hairHatStyle );
-					for( String hairColorName : hairHatStyle.getHairColorNames() ) {
+					for( HairColorName hairColorName : hairHatStyle.getHairColorNames() ) {
 						hairColorNameSet.add( hairColorName );
 					}
 				}
@@ -152,7 +148,11 @@ public class HairUtilities {
 			}
 		}
 		hairColorNameSet.remove( null );
-		java.util.List<String> list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( hairColorNameSet );
+		java.util.List<HairColorName> list = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( hairColorNameSet );
+
+		for( HairColorName hairColorName : list ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( hairColorName );
+		}
 		java.util.Collections.sort( list );
 		list.add( 0, null );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( list );

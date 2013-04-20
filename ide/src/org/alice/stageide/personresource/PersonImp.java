@@ -101,7 +101,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		org.lgna.story.resources.sims2.EyeColor eyeColor = composite.getBaseEyeColorState().getValue();
 		double obesityLevel = composite.getObesityLevelState().getValue();
 		org.alice.stageide.personresource.data.HairHatStyle hairHatStyle = composite.getHairHatStyleState().getValue();
-		String hairColorName = composite.getHairColorNameState().getValue();
+		org.alice.stageide.personresource.data.HairColorName hairColorName = composite.getHairColorNameState().getValue();
 		org.lgna.story.resources.sims2.Hair hair = hairHatStyle != null ? hairHatStyle.getHair( hairColorName ) : null;
 		if( hair != null ) {
 			//pass

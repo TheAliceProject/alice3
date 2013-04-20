@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,66 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.views.renderers;
+package org.alice.ide.swing.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer<org.alice.stageide.personresource.data.HairHatStyle> {
-	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
+public class PaintIcon implements javax.swing.Icon {
+	private java.awt.Paint fillPaint;
+	private int width;
+	private int height;
+
+	public PaintIcon( java.awt.Paint fillPaint ) {
+		this( fillPaint, ColorIcon.DEFAULT_SIZE );
 	}
 
-	public static HairListCellRenderer getInstance() {
-		return SingletonHolder.instance;
+	public PaintIcon( java.awt.Paint fillPaint, int size ) {
+		this( fillPaint, size, size );
 	}
 
-	private org.alice.stageide.personresource.data.HairColorName lastCommonHairColorName;
-	private org.alice.stageide.personresource.data.HairColorName hairColorName;
-
-	private HairListCellRenderer() {
+	public PaintIcon( java.awt.Paint fillPaint, java.awt.Dimension size ) {
+		this( fillPaint, size.width, size.height );
 	}
 
-	public org.alice.stageide.personresource.data.HairColorName getHairColorName() {
-		return this.hairColorName;
+	public PaintIcon( java.awt.Paint fillPaint, int width, int height ) {
+		this.fillPaint = fillPaint;
+		this.width = width;
+		this.height = height;
 	}
 
-	public void setHairColorName( org.alice.stageide.personresource.data.HairColorName hairColorName ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hairColorName, hairColorName ) ) {
-			//pass
-		} else {
-			if( this.hairColorName != null ) {
-				if( org.alice.stageide.personresource.data.HairUtilities.isCommonHairColorName( this.hairColorName ) ) {
-					this.lastCommonHairColorName = this.hairColorName;
-				}
-			}
-			this.hairColorName = hairColorName;
-		}
+	public int getIconWidth() {
+		return this.width + 3 + 2;
 	}
 
-	@Override
-	protected Object getValue( org.alice.stageide.personresource.data.HairHatStyle value ) {
-		if( value != null ) {
-			if( this.hairColorName != null ) {
-				Object rv = value.getHair( this.hairColorName );
-				if( rv != null ) {
-					//pass
-				} else {
-					if( this.lastCommonHairColorName != null ) {
-						rv = value.getHair( this.lastCommonHairColorName );
-					}
-				}
-				return rv;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
+	public int getIconHeight() {
+		return this.height + 3;
 	}
 
-	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g2.setPaint( this.fillPaint );
+		g2.fillRect( x, y, this.width, this.height );
 	}
+
 }

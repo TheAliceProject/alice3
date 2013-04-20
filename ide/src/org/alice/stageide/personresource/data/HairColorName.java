@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,66 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.views.renderers;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer<org.alice.stageide.personresource.data.HairHatStyle> {
-	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
+public enum HairColorName {
+	BLACK( new java.awt.Color( 0, 0, 0 ) ),
+	BROWN( new java.awt.Color( 162, 42, 42 ) ),
+	BLOND( new java.awt.Color( 255, 255, 0 ) ),
+	RED( new java.awt.Color( 255, 0, 0 ) ),
+	GREY( new java.awt.Color( 127, 127, 127 ) ),
+
+	NULL( (javax.swing.Icon)null ),
+	BARE( new java.awt.Color( 0, 0, 0 ) ),
+
+	BELLA( new java.awt.Color( 0, 0, 0 ) ),
+	BLEND( new java.awt.Color( 0, 0, 0 ) ),
+	BLEND_BLOND( new java.awt.Color( 0, 0, 0 ) ),
+	BLOND_STREAK( new java.awt.Color( 0, 0, 0 ) ),
+	BLOOD_RED( new java.awt.Color( 0, 0, 0 ) ),
+	BLUE( new java.awt.Color( 0, 0, 0 ) ),
+	FLAME( new java.awt.Color( 0, 0, 0 ) ),
+	FREAKED( new java.awt.Color( 0, 0, 0 ) ),
+	FROSTY_BLOND( new java.awt.Color( 0, 0, 0 ) ),
+	FROSTY_PURPLE( new java.awt.Color( 0, 0, 0 ) ),
+	GREEN( new java.awt.Color( 0, 0, 0 ) ),
+	KINKY( new java.awt.Color( 0, 0, 0 ) ),
+	PINK( new java.awt.Color( 0, 0, 0 ) ),
+	PINK_ON_BLACK( new java.awt.Color( 0, 0, 0 ) ),
+	PLATINUM( new java.awt.Color( 0, 0, 0 ) ),
+	PURPLE( new java.awt.Color( 0, 0, 0 ) ),
+	RAINBOW( new java.awt.Color( 0, 0, 0 ) ),
+	RED_STREAK( new java.awt.Color( 0, 0, 0 ) ),
+	STRAWBERRY( new java.awt.Color( 0, 0, 0 ) ),
+	STREAKED( new java.awt.Color( 0, 0, 0 ) ),
+	VIOLET( new java.awt.Color( 0, 0, 0 ) );
+
+	private final javax.swing.Icon icon;
+
+	private HairColorName( javax.swing.Icon icon ) {
+		this.icon = icon;
 	}
 
-	public static HairListCellRenderer getInstance() {
-		return SingletonHolder.instance;
+	private HairColorName( java.awt.Paint paint ) {
+		this( new org.alice.ide.swing.icons.PaintIcon( paint ) );
 	}
 
-	private org.alice.stageide.personresource.data.HairColorName lastCommonHairColorName;
-	private org.alice.stageide.personresource.data.HairColorName hairColorName;
-
-	private HairListCellRenderer() {
-	}
-
-	public org.alice.stageide.personresource.data.HairColorName getHairColorName() {
-		return this.hairColorName;
-	}
-
-	public void setHairColorName( org.alice.stageide.personresource.data.HairColorName hairColorName ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hairColorName, hairColorName ) ) {
-			//pass
-		} else {
-			if( this.hairColorName != null ) {
-				if( org.alice.stageide.personresource.data.HairUtilities.isCommonHairColorName( this.hairColorName ) ) {
-					this.lastCommonHairColorName = this.hairColorName;
-				}
-			}
-			this.hairColorName = hairColorName;
-		}
-	}
-
-	@Override
-	protected Object getValue( org.alice.stageide.personresource.data.HairHatStyle value ) {
-		if( value != null ) {
-			if( this.hairColorName != null ) {
-				Object rv = value.getHair( this.hairColorName );
-				if( rv != null ) {
-					//pass
-				} else {
-					if( this.lastCommonHairColorName != null ) {
-						rv = value.getHair( this.lastCommonHairColorName );
-					}
-				}
-				return rv;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+	public javax.swing.Icon getIcon() {
+		return this.icon;
 	}
 }
