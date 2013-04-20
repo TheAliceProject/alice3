@@ -27,4 +27,14 @@ public enum FemaleTeenHairRound implements FemaleTeenHair {
 	BLACK,
 	BLOND,
 	RED;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

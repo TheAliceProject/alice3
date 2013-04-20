@@ -28,4 +28,14 @@ public enum MaleTeenHairPGSkater implements MaleTeenHair {
 	BROWN,
 	RED,
 	BLEND;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

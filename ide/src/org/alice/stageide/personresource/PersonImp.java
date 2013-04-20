@@ -70,7 +70,7 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 
 	public void unload() {
 		for( java.util.Map.Entry<org.lgna.story.resources.sims2.LifeStage, edu.cmu.cs.dennisc.nebulous.Person> entry : this.mapLifeStageToNebPerson.entrySet() ) {
-			entry.getValue().unload();
+			entry.getValue().synchronizedUnload();
 		}
 		this.mapLifeStageToNebPerson.clear();
 		this.setSgGeometry( null );
@@ -100,13 +100,21 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		java.awt.Color awtSkinColor = composite.getSkinColorState().getValue();
 		org.lgna.story.resources.sims2.EyeColor eyeColor = composite.getBaseEyeColorState().getValue();
 		double obesityLevel = composite.getObesityLevelState().getValue();
-		org.lgna.story.resources.sims2.Hair hair = composite.getHairState().getValue();
+		org.alice.stageide.personresource.data.HairHatStyle hairHatStyle = composite.getHairHatStyleState().getValue();
+		String hairColorName = composite.getHairColorNameState().getValue();
+		org.lgna.story.resources.sims2.Hair hair = hairHatStyle != null ? hairHatStyle.getHair( hairColorName ) : null;
+		if( hair != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( hairHatStyle, hairColorName );
+			//hair = org.lgna.story.resources.sims2.HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender );
+		}
 		org.lgna.story.resources.sims2.Outfit outfit = composite.getFullBodyOutfitState().getValue();
 		org.lgna.story.resources.sims2.Face face = composite.getBaseFaceState().getValue();
 		if( ( gender == null ) || ( outfit == null ) || ( awtSkinColor == null ) || ( eyeColor == null ) || ( hair == null ) || ( face == null ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face );
 		} else {
-			nebPerson.setAll( gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face );
+			nebPerson.synchronizedSetAll( gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face );
 		}
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
 		if( nebPerson != sgGeometry ) {

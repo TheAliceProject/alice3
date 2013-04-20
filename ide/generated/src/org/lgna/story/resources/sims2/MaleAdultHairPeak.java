@@ -28,4 +28,14 @@ public enum MaleAdultHairPeak implements MaleAdultHair {
 	BROWN,
 	RED,
 	GREY;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

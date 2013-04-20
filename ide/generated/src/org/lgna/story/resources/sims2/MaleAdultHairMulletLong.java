@@ -29,4 +29,14 @@ public enum MaleAdultHairMulletLong implements MaleAdultHair {
 	RED,
 	GREY,
 	BLEND_BLOND;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

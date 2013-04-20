@@ -1,5 +1,5 @@
 /*
- * Alice 3 End User License Agreement
+* Alice 3 End User License Agreement
  * 
  * Copyright (c) 2006-2013, Carnegie Mellon University. All rights reserved.
  * 
@@ -31,9 +31,9 @@ public class HairManager extends IngredientManager<Hair> {
 	}
 
 	private HairManager() {
-		this.add( MaleAdultHair.class,
+		this.add( MaleAdultHair.class, 
 				MaleAdultHairBald.class,
-				MaleAdultHairBeanie.class,
+				MaleAdultHairHatBeanie.class,
 				MaleAdultHairCloseCrop.class,
 				MaleAdultHairCombOver.class,
 				MaleAdultHairCornRows.class,
@@ -41,8 +41,7 @@ public class HairManager extends IngredientManager<Hair> {
 				MaleAdultHairDreadlockLong.class,
 				MaleAdultHairFrontalWave.class,
 				MaleAdultHairGibs.class,
-				MaleAdultHairHatBallcapNPC.class,
-				MaleAdultHairHatBallcapUp.class,
+				MaleAdultHairHatBallcap.class,
 				MaleAdultHairHatBeret.class,
 				MaleAdultHairHatBucket.class,
 				MaleAdultHairHatCap.class,
@@ -74,14 +73,13 @@ public class HairManager extends IngredientManager<Hair> {
 				MaleAdultHairSixty.class,
 				MaleAdultHairTopHat.class,
 				MaleAdultHairWill.class,
-				MaleAdultHairHatFirefighterRed.class,
-				MaleAdultHairHatFirefighterYellow.class
+				MaleAdultHairHatFirefighter.class
 				);
-		this.add( FemaleAdultHair.class,
+		this.add( FemaleAdultHair.class, 
 				FemaleAdultHairAcornTuck.class,
 				FemaleAdultHairBald.class,
 				FemaleAdultHairBarrette.class,
-				FemaleAdultHairBeanie.class,
+				FemaleAdultHairHatBeanie.class,
 				FemaleAdultHairBowlTwist.class,
 				FemaleAdultHairBraids.class,
 				FemaleAdultHairBraidsUp.class,
@@ -94,7 +92,7 @@ public class HairManager extends IngredientManager<Hair> {
 				FemaleAdultHairGetFabulous.class,
 				FemaleAdultHairHalo.class,
 				FemaleAdultHairHatAngora.class,
-				FemaleAdultHairHatBallcapUp.class,
+				FemaleAdultHairHatBallcap.class,
 				FemaleAdultHairHatBucket.class,
 				FemaleAdultHairHatCap.class,
 				FemaleAdultHairHatCapUp.class,
@@ -121,10 +119,9 @@ public class HairManager extends IngredientManager<Hair> {
 				FemaleAdultHairShortCute.class,
 				FemaleAdultHairShortSlick.class,
 				FemaleAdultHairShortTuckin.class,
-				FemaleAdultHairHatFirefighterRed.class,
-				FemaleAdultHairHatFirefighterYellow.class
+				FemaleAdultHairHatFirefighter.class
 				);
-		this.add( FemaleChildHair.class,
+		this.add( FemaleChildHair.class, 
 				FemaleChildHairAcornTuck.class,
 				FemaleChildHairBarrette.class,
 				FemaleChildHairBraids.class,
@@ -135,14 +132,14 @@ public class HairManager extends IngredientManager<Hair> {
 				FemaleChildHairPoofs.class,
 				FemaleChildHairRosettes.class
 				);
-		this.add( ChildHair.class,
+		this.add( ChildHair.class, 
 				ChildHairBald.class,
 				ChildHairDreadlockShort.class,
 				ChildHairHatTricorn.class,
 				ChildHairRocker.class,
 				ChildHairShocked.class
 				);
-		this.add( MaleChildHair.class,
+		this.add( MaleChildHair.class, 
 				MaleChildHairCloseCrop.class,
 				MaleChildHairGibs.class,
 				MaleChildHairPompodore.class,

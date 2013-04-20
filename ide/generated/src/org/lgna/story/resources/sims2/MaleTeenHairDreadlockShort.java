@@ -27,4 +27,14 @@ public enum MaleTeenHairDreadlockShort implements MaleTeenHair {
 	BLACK,
 	BLOND,
 	BROWN;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

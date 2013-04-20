@@ -27,4 +27,14 @@ public enum MaleTeenHairShortGel implements MaleTeenHair {
 	BLOND,
 	RED,
 	BLACK;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

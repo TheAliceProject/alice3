@@ -52,12 +52,12 @@ public class FaceTabView extends org.lgna.croquet.components.MigPanel {
 		this.setBackgroundColor( backgroundColor );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseFace> faceList = new HorizontalWrapList<org.lgna.story.resources.sims2.BaseFace>( composite.getBaseFaceState(), -1 );
+		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BaseFace> faceList = new HorizontalWrapList<org.lgna.story.resources.sims2.BaseFace>( composite.getBaseFaceState(), -1, org.alice.stageide.personresource.views.renderers.FaceListCellRenderer.getInstance() );
 		faceList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
 		this.addComponent( composite.getBaseFaceState().getSidekickLabel().createLabel(), "top" );
 		org.lgna.croquet.components.ScrollPane faceScrollPane = new org.lgna.croquet.components.ScrollPane( faceList );
 		faceScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		faceScrollPane.setBothScrollBarIncrements( 16, 16 );
+		faceScrollPane.setBothScrollBarIncrements( 66, 66 );
 		this.addComponent( faceScrollPane, "wrap, grow, shrink" );
 
 		this.addComponent( composite.getBaseEyeColorState().getSidekickLabel().createLabel() );

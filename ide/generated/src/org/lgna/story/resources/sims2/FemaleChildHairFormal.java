@@ -27,4 +27,14 @@ public enum FemaleChildHairFormal implements FemaleChildHair {
 	BLACK,
 	BROWN,
 	BLOND;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

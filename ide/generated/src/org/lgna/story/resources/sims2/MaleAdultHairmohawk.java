@@ -34,4 +34,14 @@ public enum MaleAdultHairmohawk implements MaleAdultHair {
 	GREEN,
 	PURPLE,
 	PLATINUM;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

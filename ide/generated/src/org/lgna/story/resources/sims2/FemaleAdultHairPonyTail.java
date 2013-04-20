@@ -28,4 +28,14 @@ public enum FemaleAdultHairPonyTail implements FemaleAdultHair {
 	RED,
 	BLOND,
 	GREY;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

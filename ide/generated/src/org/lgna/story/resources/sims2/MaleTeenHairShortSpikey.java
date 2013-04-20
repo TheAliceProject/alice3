@@ -27,4 +27,14 @@ public enum MaleTeenHairShortSpikey implements MaleTeenHair {
 	BLACK,
 	RED,
 	BLOND;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

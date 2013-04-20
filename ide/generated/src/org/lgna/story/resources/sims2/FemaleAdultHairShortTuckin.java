@@ -28,4 +28,14 @@ public enum FemaleAdultHairShortTuckin implements FemaleAdultHair {
 	BLACK,
 	BROWN,
 	RED;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

@@ -27,4 +27,14 @@ public enum MaleChildHairShortCombed implements MaleChildHair {
 	BROWN,
 	BLOND,
 	RED;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

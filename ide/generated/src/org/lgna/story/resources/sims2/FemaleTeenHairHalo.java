@@ -28,4 +28,14 @@ public enum FemaleTeenHairHalo implements FemaleTeenHair {
 	BLACK,
 	RED,
 	GREY;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

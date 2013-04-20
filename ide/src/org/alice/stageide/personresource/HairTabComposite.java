@@ -43,14 +43,16 @@
 
 package org.alice.stageide.personresource;
 
+import org.alice.stageide.personresource.data.HairHatStyle;
+
 /**
  * @author Dennis Cosgrove
  */
 public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.HairTabView> {
-	private final org.alice.stageide.personresource.data.HairListData hairData = new org.alice.stageide.personresource.data.HairListData();
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> hairState = this.createListSelectionState( this.createKey( "hairState" ), this.hairData, -1 );
 	private final org.alice.stageide.personresource.data.HairColorNameListData hairColorNameData = new org.alice.stageide.personresource.data.HairColorNameListData();
 	private final org.lgna.croquet.ListSelectionState<String> hairColorNameState = this.createListSelectionState( this.createKey( "hairColorNameState" ), this.hairColorNameData, -1 );
+	private final org.alice.stageide.personresource.data.HairHatStyleListData hairHatStyleListData = new org.alice.stageide.personresource.data.HairHatStyleListData();
+	private final org.lgna.croquet.ListSelectionState<HairHatStyle> hairHatStyleState = this.createListSelectionState( this.createKey( "hairHatStyleState" ), this.hairHatStyleListData, -1 );
 
 	public HairTabComposite() {
 		super( java.util.UUID.fromString( "1e1d604d-974f-4666-91e0-ccf5adec0e4d" ), IsCloseable.FALSE );
@@ -74,11 +76,11 @@ public final class HairTabComposite extends org.lgna.croquet.SimpleTabComposite<
 		return this.hairColorNameState;
 	}
 
-	public org.alice.stageide.personresource.data.HairListData getHairData() {
-		return this.hairData;
+	public org.alice.stageide.personresource.data.HairHatStyleListData getHairHatStyleListData() {
+		return this.hairHatStyleListData;
 	}
 
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Hair> getHairState() {
-		return this.hairState;
+	public org.lgna.croquet.ListSelectionState<HairHatStyle> getHairHatStyleState() {
+		return this.hairHatStyleState;
 	}
 };

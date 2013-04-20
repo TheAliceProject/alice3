@@ -23,14 +23,24 @@
 
 package org.lgna.story.resources.sims2;
 public enum MaleTeenHairHatFedora implements MaleTeenHair {
-	BLACK,
-	KINKY_BLACK,
-	KINKY_BLOND,
-	KINKY_BROWN,
-	KINKY_GREY,
-	KINKY_RED,
-	BLOND,
-	BROWN,
-	GREY,
-	RED;
+	BLACK_BLACK_HAT,
+	KINKY_BLACK_BLACK_HAT,
+	KINKY_BLOND_BLACK_HAT,
+	KINKY_BROWN_BLACK_HAT,
+	KINKY_GREY_BLACK_HAT,
+	KINKY_RED_BLACK_HAT,
+	BLOND_BLACK_HAT,
+	BROWN_BLACK_HAT,
+	GREY_BLACK_HAT,
+	RED_BLACK_HAT;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return true;
+	}
 }

@@ -27,4 +27,14 @@ public enum MaleTeenHairHatBallcapNPC implements MaleTeenHair {
 	BLOND,
 	BLACK,
 	BROWN;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

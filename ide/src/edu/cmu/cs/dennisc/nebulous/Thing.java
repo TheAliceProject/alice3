@@ -13,11 +13,26 @@ public class Thing extends Model {
 
 	private native void initialize( Object o, Object o2 );
 
-	public native void unload();
+	private native void unload();
 
-	public native void setTexture( Object o );
+	public void synchronizedUnload()
+	{
+		synchronized( renderLock ) {
+			unload();
+		}
+	}
+
+	private native void setTexture( Object o );
+
+	public void synchronizedSetTexture( Object o ) {
+		synchronized( renderLock ) {
+			setTexture( o );
+		}
+	}
 
 	public Thing( Object o, Object o2 ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
-		initialize( o, o2 );
+		synchronized( renderLock ) {
+			initialize( o, o2 );
+		}
 	}
 }

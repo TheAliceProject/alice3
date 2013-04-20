@@ -50,7 +50,12 @@ abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.sw
 
 	protected abstract String getSubPath();
 
-	private java.net.URL getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
+	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
+		java.awt.Color color = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getSkinColorState().getValue();
+		return org.lgna.story.resources.sims2.BaseSkinTone.getClosestToColor( color );
+	}
+
+	private String getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
 		StringBuilder sb = new StringBuilder();
 		sb.append( "images/" );
 		sb.append( this.getSubPath() );
@@ -61,27 +66,36 @@ abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.sw
 		sb.append( "." );
 		sb.append( enumConstantName );
 		sb.append( ".png" );
-		java.net.URL rv = org.alice.stageide.personeditor.IngredientImageUtilities.getResource( sb.toString() );
-		assert rv != null : sb;
-		return rv;
+		return sb.toString();
 	}
 
-	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
-		java.awt.Color color = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getSkinColorState().getValue();
-		return org.lgna.story.resources.sims2.BaseSkinTone.getClosestToColor( color );
+	protected String modifyClsNameIfNecessary( String clsName, org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+		return clsName;
+	}
+
+	protected Object getValue( E value ) {
+		return value;
 	}
 
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E val, int index, boolean isSelected, boolean cellHasFocus ) {
 		assert rv != null;
-		if( value != null ) {
-			String clsName = value.getClass().getSimpleName();
-			String enumConstantName = value.toString();
+		Object v = getValue( val );
+		if( v != null ) {
+			String clsName = v.getClass().getSimpleName();
+			clsName = this.modifyClsNameIfNecessary( clsName, org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue() );
+			String enumConstantName = v.toString();
 
 			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getSkinTone();
 			java.net.URL urlForIcon;
 			if( baseSkinTone != null ) {
-				urlForIcon = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
+				String path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
+				urlForIcon = org.alice.stageide.personeditor.IngredientImageUtilities.getResource( path );
+				if( urlForIcon != null ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
+				}
 			} else {
 				urlForIcon = null;
 			}
@@ -90,14 +104,14 @@ abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.sw
 			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 
 			rv.setOpaque( isSelected );
-			if( isSelected ) {
-				rv.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
-			}
 
 			javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
 			if( icon != null ) {
 				rv.setIcon( icon );
 				rv.setText( "" );
+				if( isSelected ) {
+					rv.setBackground( org.alice.stageide.personresource.views.IngredientsView.SELECTED_COLOR );
+				}
 			} else {
 				rv.setText( "image not found" );
 			}

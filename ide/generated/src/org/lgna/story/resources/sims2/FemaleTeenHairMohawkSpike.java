@@ -26,4 +26,14 @@ public enum FemaleTeenHairMohawkSpike implements FemaleTeenHair {
 	PINK,
 	BLUE,
 	GREEN;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

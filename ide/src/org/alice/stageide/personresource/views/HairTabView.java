@@ -56,7 +56,7 @@ public class HairTabView extends org.lgna.croquet.components.MigPanel {
 		this.addComponent( composite.getHairColorNameState().getSidekickLabel().createLabel(), "top" );
 		this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1 ), "wrap, grow, shrink" );
 
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.Hair> hairList = new HorizontalWrapList<org.lgna.story.resources.sims2.Hair>( composite.getHairState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
+		org.lgna.croquet.components.List<org.alice.stageide.personresource.data.HairHatStyle> hairList = new HorizontalWrapList<org.alice.stageide.personresource.data.HairHatStyle>( composite.getHairHatStyleState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
 		hairList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
 		org.lgna.croquet.components.ScrollPane hairScrollPane = new org.lgna.croquet.components.ScrollPane( hairList );
 		hairScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );

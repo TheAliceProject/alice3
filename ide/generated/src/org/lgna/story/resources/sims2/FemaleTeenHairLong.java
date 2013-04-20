@@ -31,4 +31,14 @@ public enum FemaleTeenHairLong implements FemaleTeenHair {
 	STREAKED,
 	BELLA,
 	FREAKED;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }

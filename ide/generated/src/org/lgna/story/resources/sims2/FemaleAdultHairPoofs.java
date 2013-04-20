@@ -28,4 +28,14 @@ public enum FemaleAdultHairPoofs implements FemaleAdultHair {
 	BLOND,
 	BROWN,
 	GREY;
+
+	public Boolean hasHair()
+	{
+		return true;
+	}
+
+	public Boolean hasHat()
+	{
+		return false;
+	}
 }
