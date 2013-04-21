@@ -139,9 +139,12 @@ public class HairUtilities {
 			for( org.lgna.story.resources.sims2.Gender gender : org.lgna.story.resources.sims2.Gender.values() ) {
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln();
 				for( HairHatStyle hairHatStyle : getHairHatStyles( lifeStage, gender ) ) {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.outln( hairHatStyle );
+					//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( hairHatStyle );
 					for( HairColorName hairColorName : hairHatStyle.getHairColorNames() ) {
 						hairColorNameSet.add( hairColorName );
+						if( hairColorName == HairColorName.GREEN ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.outln( hairHatStyle );
+						}
 					}
 				}
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln();

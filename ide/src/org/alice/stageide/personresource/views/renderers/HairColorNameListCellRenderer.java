@@ -40,49 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource;
+package org.alice.stageide.personresource.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public final class FaceTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.FaceTabView> {
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> baseEyeColorState = this.createListSelectionStateForEnum( this.createKey( "baseEyeColorState" ), org.lgna.story.resources.sims2.BaseEyeColor.class, org.lgna.story.resources.sims2.BaseEyeColor.getRandom() );
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> baseFaceState = this.createListSelectionStateForEnum( this.createKey( "baseFaceState" ), org.lgna.story.resources.sims2.BaseFace.class, org.lgna.story.resources.sims2.BaseFace.getRandom() );
-
-	public FaceTabComposite() {
-		super( java.util.UUID.fromString( "44c44e61-7bcb-4891-a631-2142a49ac73c" ), IsCloseable.FALSE );
-	}
-
+public class HairColorNameListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.stageide.personresource.data.HairColorName> {
 	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		return null;
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.stageide.personresource.data.HairColorName value, int index, boolean isSelected, boolean cellHasFocus ) {
+		javax.swing.Icon icon = value.getIcon();
+		rv.setIcon( icon );
+		String text = icon != null ? null : value.name();
+		rv.setText( text );
+		return rv;
 	}
-
-	@Override
-	protected org.alice.stageide.personresource.views.FaceTabView createView() {
-		return new org.alice.stageide.personresource.views.FaceTabView( this );
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> getBaseEyeColorState() {
-		return this.baseEyeColorState;
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
-		return this.baseFaceState;
-	}
-
-	public static void main( String[] args ) throws Exception {
-		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
-		if( lookAndFeelInfo != null ) {
-			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
-		}
-
-		final org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
-
-		FaceTabComposite faceTabComposite = new FaceTabComposite();
-		app.getFrame().getContentPane().addCenterComponent( faceTabComposite.getRootComponent() );
-
-		app.getFrame().setSize( 600, 400 );
-		app.getFrame().setVisible( true );
-	}
-};
+}

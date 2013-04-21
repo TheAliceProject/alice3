@@ -54,7 +54,7 @@ public class HairTabView extends org.lgna.croquet.components.MigPanel {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
 		this.addComponent( composite.getHairColorNameState().getSidekickLabel().createLabel(), "top" );
-		this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1 ), "wrap, grow, shrink" );
+		this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1, new org.alice.stageide.personresource.views.renderers.HairColorNameListCellRenderer() ), "wrap, grow, shrink" );
 
 		org.lgna.croquet.components.List<org.alice.stageide.personresource.data.HairHatStyle> hairList = new HorizontalWrapList<org.alice.stageide.personresource.data.HairHatStyle>( composite.getHairHatStyleState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
 		hairList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
