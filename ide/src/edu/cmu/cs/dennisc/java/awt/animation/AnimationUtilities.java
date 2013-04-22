@@ -52,39 +52,68 @@ public class AnimationUtilities {
 		throw new AssertionError();
 	}
 
+	private static abstract class AnimationActionListener implements java.awt.event.ActionListener {
+		private javax.swing.Timer timer;
+		private final double duration;
+		private final java.awt.Component component;
+
+		private Long t0 = null;
+
+		public AnimationActionListener( double duration, java.awt.Component component ) {
+			this.duration = duration;
+			this.component = component;
+		}
+
+		public double getDuration() {
+			return this.duration;
+		}
+
+		public java.awt.Component getComponent() {
+			return this.component;
+		}
+
+		protected abstract void update( double portion );
+
+		public final void actionPerformed( java.awt.event.ActionEvent e ) {
+			if( t0 != null ) {
+				//pass
+			} else {
+				t0 = e.getWhen();
+			}
+			long tDelta = e.getWhen() - t0;
+			double portion = ( tDelta * 0.001 ) / this.duration;
+			portion = Math.min( portion, 1.0 );
+			this.update( portion );
+			if( portion >= 1.0 ) {
+				timer.stop();
+			}
+		}
+
+		public void startTimer( double initialDelay ) {
+			this.timer = new javax.swing.Timer( DEFAULT_FRAME_DELAY, this );
+			timer.setInitialDelay( (int)( initialDelay * 1000 ) );
+			timer.start();
+		}
+	}
+
 	public static void animatePosition( java.awt.Component component, int x, int y, double duration, double initialDelay ) {
 
-		class AnimatePositionActionListener implements java.awt.event.ActionListener {
-			private javax.swing.Timer timer;
-			private final java.awt.Component component;
+		class PositionAnimationActionListener extends AnimationActionListener {
 			private final int x0;
 			private final int y0;
 			private final int x1;
 			private final int y1;
-			private final double duration;
 
-			private Long t0 = null;
-
-			public AnimatePositionActionListener( java.awt.Component component, int x, int y, double duration ) {
-				this.component = component;
-				this.x0 = this.component.getX();
-				this.y0 = this.component.getY();
+			public PositionAnimationActionListener( double duration, java.awt.Component component, int x, int y ) {
+				super( duration, component );
+				this.x0 = component.getX();
+				this.y0 = component.getY();
 				this.x1 = x;
 				this.y1 = y;
-				this.duration = duration;
 			}
 
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				if( t0 != null ) {
-					//pass
-				} else {
-					t0 = e.getWhen();
-				}
-				long tDelta = e.getWhen() - t0;
-				double portion = ( tDelta * 0.001 ) / this.duration;
-				portion = Math.min( portion, 1.0 );
-				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( portion );
-
+			@Override
+			protected void update( double portion ) {
 				int x;
 				int y;
 				if( portion == 0.0 ) {
@@ -97,17 +126,11 @@ public class AnimationUtilities {
 					x = (int)Math.round( ( x0 * ( 1 - portion ) ) + ( x1 * portion ) );
 					y = (int)Math.round( ( y0 * ( 1 - portion ) ) + ( y1 * portion ) );
 				}
-				component.setLocation( x, y );
-				if( portion >= 1.0 ) {
-					timer.stop();
-				}
+				this.getComponent().setLocation( x, y );
 			}
 		}
-		AnimatePositionActionListener animatePositionActionListener = new AnimatePositionActionListener( component, x, y, duration );
-		javax.swing.Timer timer = new javax.swing.Timer( DEFAULT_FRAME_DELAY, animatePositionActionListener );
-		timer.setInitialDelay( (int)( initialDelay * 1000 ) );
-		animatePositionActionListener.timer = timer;
-		timer.start();
+		PositionAnimationActionListener animatePositionActionListener = new PositionAnimationActionListener( duration, component, x, y );
+		animatePositionActionListener.startTimer( initialDelay );
 	}
 
 	public static void main( String[] args ) {
