@@ -152,7 +152,7 @@ public class AnimationUtilities {
 				} else if( portion == 1.0 ) {
 					scale = this.scale1;
 				} else {
-					scale = Math.round( ( scale0 * ( 1 - portion ) ) + ( scale1 * portion ) );
+					scale = ( scale0 * ( 1 - portion ) ) + ( scale1 * portion );
 				}
 				java.awt.Component awtComponent = this.getComponent();
 				java.awt.Dimension preferredSize = awtComponent.getPreferredSize();
