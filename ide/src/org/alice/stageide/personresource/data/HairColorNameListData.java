@@ -68,7 +68,12 @@ public class HairColorNameListData extends org.lgna.croquet.data.RefreshableList
 	@Override
 	protected java.util.List<HairColorName> createValues() {
 		if( this.hairHatStyle != null ) {
-			return this.hairHatStyle.getHairColorNames();
+			java.util.List<HairColorNameHairCombo> hairColorNameHairCombos = this.hairHatStyle.getHairColorNameHairCombos();
+			java.util.List<HairColorName> rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayListWithInitialCapacity( hairColorNameHairCombos.size() );
+			for( HairColorNameHairCombo hairColorNameHairCombo : hairColorNameHairCombos ) {
+				rv.add( hairColorNameHairCombo.getHairColorName() );
+			}
+			return rv;
 		} else {
 			return java.util.Collections.emptyList();
 		}

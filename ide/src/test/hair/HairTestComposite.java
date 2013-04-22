@@ -43,6 +43,7 @@
 package test.hair;
 
 import org.alice.stageide.personresource.data.HairColorName;
+import org.alice.stageide.personresource.data.HairColorNameHairCombo;
 import org.alice.stageide.personresource.data.HairHatStyle;
 import org.alice.stageide.personresource.data.HairUtilities;
 
@@ -61,9 +62,9 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 		for( org.lgna.story.resources.sims2.LifeStage lifeStage : org.lgna.story.resources.sims2.LifeStage.values() ) {
 			for( org.lgna.story.resources.sims2.Gender gender : org.lgna.story.resources.sims2.Gender.values() ) {
 				for( HairHatStyle hairHatStyle : HairUtilities.getHairHatStyles( lifeStage, gender ) ) {
-					for( HairColorName hairColorName : hairHatStyle.getHairColorNames() ) {
-						//						if( hairColorName.ordinal() > HairColorName.GREY.ordinal() ) {
-						org.lgna.story.resources.sims2.Hair hair = hairHatStyle.getHair( hairColorName );
+					for( HairColorNameHairCombo hairColorNameHairCombo : hairHatStyle.getHairColorNameHairCombos() ) {
+						HairColorName hairColorName = hairColorNameHairCombo.getHairColorName();
+						org.lgna.story.resources.sims2.Hair hair = hairColorNameHairCombo.getHair();
 						if( hair != null ) {
 							java.util.List<String> list = map.getInitializingIfAbsentToLinkedList( hairColorName );
 							StringBuilder sb = new StringBuilder();

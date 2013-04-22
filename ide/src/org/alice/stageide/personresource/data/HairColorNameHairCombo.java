@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,77 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.views.renderers;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairListCellRenderer extends IngredientListCellRenderer<org.alice.stageide.personresource.data.HairHatStyle> {
-	private static class SingletonHolder {
-		private static HairListCellRenderer instance = new HairListCellRenderer();
+public final class HairColorNameHairCombo implements Comparable<HairColorNameHairCombo> {
+	private final HairColorName hairColorName;
+	private final org.lgna.story.resources.sims2.Hair hair;
+
+	public HairColorNameHairCombo( HairColorName hairColorName, org.lgna.story.resources.sims2.Hair hair ) {
+		this.hairColorName = hairColorName;
+		this.hair = hair;
 	}
 
-	public static HairListCellRenderer getInstance() {
-		return SingletonHolder.instance;
-	}
-
-	private org.alice.stageide.personresource.data.HairColorName lastCommonHairColorName;
-	private org.alice.stageide.personresource.data.HairColorName hairColorName;
-
-	private HairListCellRenderer() {
-	}
-
-	public org.alice.stageide.personresource.data.HairColorName getHairColorName() {
+	public HairColorName getHairColorName() {
 		return this.hairColorName;
 	}
 
-	public void setHairColorName( org.alice.stageide.personresource.data.HairColorName hairColorName ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hairColorName, hairColorName ) ) {
-			//pass
-		} else {
-			if( this.hairColorName != null ) {
-				if( org.alice.stageide.personresource.data.HairUtilities.isCommonHairColorName( this.hairColorName ) ) {
-					this.lastCommonHairColorName = this.hairColorName;
-				}
-			}
-			this.hairColorName = hairColorName;
-		}
+	public org.lgna.story.resources.sims2.Hair getHair() {
+		return this.hair;
+	}
+
+	public int compareTo( HairColorNameHairCombo other ) {
+		return this.hairColorName.compareTo( other.hairColorName );
 	}
 
 	@Override
-	protected Object getValue( org.alice.stageide.personresource.data.HairHatStyle value ) {
-		if( value != null ) {
-			if( this.hairColorName != null ) {
-				Object rv = value.getHair( this.hairColorName );
-				if( rv != null ) {
-					//pass
-				} else {
-					if( this.lastCommonHairColorName != null ) {
-						rv = value.getHair( this.lastCommonHairColorName );
-					}
-					if( rv != null ) {
-						//pass
-					} else {
-						java.util.List<org.alice.stageide.personresource.data.HairColorNameHairCombo> hairColorNameHairCombos = value.getHairColorNameHairCombos();
-						if( hairColorNameHairCombos.size() > 0 ) {
-							org.alice.stageide.personresource.data.HairColorNameHairCombo hairColorNameHairCombo = hairColorNameHairCombos.get( 0 );
-							if( hairColorNameHairCombo != null ) {
-								rv = hairColorNameHairCombo.getHair();
-							}
-						}
-					}
-				}
-				return rv;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	protected String getSubPath() {
-		return "hair_pictures";
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		sb.append( this.hairColorName );
+		sb.append( ";" );
+		sb.append( this.hair.getClass() );
+		sb.append( "." );
+		sb.append( this.hair );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }

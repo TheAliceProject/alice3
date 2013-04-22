@@ -47,13 +47,13 @@ package org.alice.stageide.personresource.data;
  */
 public final class HairHatStyle implements Comparable<HairHatStyle> {
 	private final HairClsHatNameCombo hairClsHatNameCombo;
-	private final java.util.List<HairColorName> hairColorNames;
+	private final java.util.List<HairColorNameHairCombo> hairColorNameHairCombos;
 
-	public HairHatStyle( HairClsHatNameCombo hairClsHatNameCombo, java.util.List<HairColorName> hairColorNames ) {
+	public HairHatStyle( HairClsHatNameCombo hairClsHatNameCombo, java.util.List<HairColorNameHairCombo> hairColorNames ) {
 		assert hairClsHatNameCombo != null;
 		assert hairColorNames != null;
 		this.hairClsHatNameCombo = hairClsHatNameCombo;
-		this.hairColorNames = java.util.Collections.unmodifiableList( hairColorNames );
+		this.hairColorNameHairCombos = java.util.Collections.unmodifiableList( hairColorNames );
 	}
 
 	public Class<? extends org.lgna.story.resources.sims2.Hair> getHairCls() {
@@ -64,22 +64,27 @@ public final class HairHatStyle implements Comparable<HairHatStyle> {
 		return this.hairClsHatNameCombo.getHatName();
 	}
 
-	public java.util.List<HairColorName> getHairColorNames() {
-		return this.hairColorNames;
+	public java.util.List<HairColorNameHairCombo> getHairColorNameHairCombos() {
+		return this.hairColorNameHairCombos;
 	}
 
 	public org.lgna.story.resources.sims2.Hair getHair( org.alice.stageide.personresource.data.HairColorName hairColorName ) {
-		Class<? extends org.lgna.story.resources.sims2.Hair> hairCls = this.getHairCls();
-		String hatName = this.getHatName();
-		for( org.lgna.story.resources.sims2.Hair hair : hairCls.getEnumConstants() ) {
-			String[] hairColorNameAndHatName = HairUtilities.getHairColorNameAndHatName( hair );
-			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( hairColorName.name(), hairColorNameAndHatName[ 0 ] ) ) {
-				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( hatName, hairColorNameAndHatName[ 1 ] ) ) {
-					return hair;
-				}
+		for( HairColorNameHairCombo hairColorNameHairCombo : this.hairColorNameHairCombos ) {
+			if( hairColorNameHairCombo.getHairColorName() == hairColorName ) {
+				return hairColorNameHairCombo.getHair();
 			}
 		}
-		edu.cmu.cs.dennisc.java.util.logging.Logger.severe( hairColorName, this.hairColorNames );
+		//		Class<? extends org.lgna.story.resources.sims2.Hair> hairCls = this.getHairCls();
+		//		String hatName = this.getHatName();
+		//		for( org.lgna.story.resources.sims2.Hair hair : hairCls.getEnumConstants() ) {
+		//			String[] hairColorNameAndHatName = HairUtilities.getHairColorNameAndHatName( hair );
+		//			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( hairColorName.name(), hairColorNameAndHatName[ 0 ] ) ) {
+		//				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( hatName, hairColorNameAndHatName[ 1 ] ) ) {
+		//					return hair;
+		//				}
+		//			}
+		//		}
+		//edu.cmu.cs.dennisc.java.util.logging.Logger.severe( hairColorName, this.hairColorNameHairCombos );
 		return null;
 	}
 
@@ -146,7 +151,7 @@ public final class HairHatStyle implements Comparable<HairHatStyle> {
 		sb.append( ";" );
 		sb.append( this.getHatName() );
 		sb.append( ";" );
-		sb.append( this.hairColorNames );
+		sb.append( this.hairColorNameHairCombos );
 		sb.append( "]" );
 		return sb.toString();
 	}
