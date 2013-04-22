@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,29 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.alice.stageide.personresource.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class HairTabView extends org.lgna.croquet.components.MigPanel {
-	public HairTabView( org.alice.stageide.personresource.HairTabComposite composite ) {
-		super( composite, "insets 2, fill", "[right][left, grow, shrink]", "" );
-		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
-		this.setBackgroundColor( backgroundColor );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+public class HairColorNameRadioButtons extends org.lgna.croquet.components.CustomRadioButtons<org.alice.stageide.personresource.data.HairColorName> {
+	public HairColorNameRadioButtons( org.lgna.croquet.ListSelectionState<org.alice.stageide.personresource.data.HairColorName> model ) {
+		super( model );
+	}
 
-		this.addComponent( composite.getHairColorNameState().getSidekickLabel().createLabel() );
-		//this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1, new org.alice.stageide.personresource.views.renderers.HairColorNameListCellRenderer() ), "wrap, grow, shrink" );
-		this.addComponent( new HairColorNameRadioButtons( composite.getHairColorNameState() ), "align left, wrap, grow, shrink" );
+	@Override
+	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.BooleanState itemSelectedState ) {
+		javax.swing.Icon icon = item.getIcon();
+		itemSelectedState.initializeIfNecessary();
+		itemSelectedState.setIconForBothTrueAndFalse( icon );
+		itemSelectedState.setTextForBothTrueAndFalse( icon != null ? null : item.name() );
+		org.lgna.croquet.components.ToggleButton rv = itemSelectedState.createToggleButton();
+		final java.awt.Insets MARGIN = new java.awt.Insets( 0, -8, 0, -8 ); //todo
+		rv.tightenUpMargin( MARGIN );
+		rv.setToolTipText( item.name() );
+		return rv;
+	}
 
-		org.lgna.croquet.components.List<org.alice.stageide.personresource.data.HairHatStyle> hairList = new HorizontalWrapList<org.alice.stageide.personresource.data.HairHatStyle>( composite.getHairHatStyleState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
-		hairList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
-		org.lgna.croquet.components.ScrollPane hairScrollPane = new org.lgna.croquet.components.ScrollPane( hairList );
-		hairScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		hairScrollPane.setBothScrollBarIncrements( 66, 66 );
+	@Override
+	protected void addPrologue( int count ) {
+	}
 
-		this.addComponent( hairScrollPane, "span 2, wrap, grow, shrink" );
+	@Override
+	protected void addItem( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		this.internalAddComponent( button );
+	}
+
+	@Override
+	protected void addEpilogue() {
+	}
+
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new net.miginfocom.swing.MigLayout();
+	}
+
+	@Override
+	protected void removeAllDetails() {
+		this.internalRemoveAllComponents();
 	}
 }
