@@ -79,4 +79,13 @@ public class RobotUtilities {
 			robot.mouseMove( p.x, p.y );
 		}
 	}
+
+	public static java.awt.Color getPixelColor( int x, int y ) {
+		if( robot != null ) {
+			return robot.getPixelColor( x, y );
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
+			return null;
+		}
+	}
 }
