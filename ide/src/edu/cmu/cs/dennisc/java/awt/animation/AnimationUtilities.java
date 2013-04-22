@@ -119,7 +119,7 @@ public class AnimationUtilities {
 				if( portion == 0.0 ) {
 					x = this.x0;
 					y = this.y0;
-				} else if( portion == 0.0 ) {
+				} else if( portion == 1.0 ) {
 					x = this.x1;
 					y = this.y1;
 				} else {
@@ -129,17 +129,52 @@ public class AnimationUtilities {
 				this.getComponent().setLocation( x, y );
 			}
 		}
-		PositionAnimationActionListener animatePositionActionListener = new PositionAnimationActionListener( duration, component, x, y );
-		animatePositionActionListener.startTimer( initialDelay );
+		PositionAnimationActionListener animationActionListener = new PositionAnimationActionListener( duration, component, x, y );
+		animationActionListener.startTimer( initialDelay );
+	}
+
+	public static void animateScale( java.awt.Component component, double scale0, double scale1, double duration, double initialDelay ) {
+		class ScaleAnimationActionListener extends AnimationActionListener {
+			private final double scale0;
+			private final double scale1;
+
+			public ScaleAnimationActionListener( double duration, java.awt.Component component, double scale0, double scale1 ) {
+				super( duration, component );
+				this.scale0 = scale0;
+				this.scale1 = scale1;
+			}
+
+			@Override
+			protected void update( double portion ) {
+				double scale;
+				if( portion == 0.0 ) {
+					scale = this.scale0;
+				} else if( portion == 1.0 ) {
+					scale = this.scale1;
+				} else {
+					scale = Math.round( ( scale0 * ( 1 - portion ) ) + ( scale1 * portion ) );
+				}
+				java.awt.Component awtComponent = this.getComponent();
+				java.awt.Dimension preferredSize = awtComponent.getPreferredSize();
+				int width = (int)Math.round( preferredSize.width * scale );
+				int height = (int)Math.round( preferredSize.height * scale );
+				awtComponent.setSize( width, height );
+			}
+		}
+		ScaleAnimationActionListener animationActionListener = new ScaleAnimationActionListener( duration, component, scale0, scale1 );
+		animationActionListener.startTimer( initialDelay );
 	}
 
 	public static void main( String[] args ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				javax.swing.JFrame frame = new javax.swing.JFrame();
-				frame.setBounds( 0, 0, 400, 200 );
+				frame.setLocation( 0, 0 );
+				frame.setPreferredSize( new java.awt.Dimension( 400, 200 ) );
+				frame.pack();
 				frame.setVisible( true );
 				animatePosition( frame, 1000, 500, 1.0, 2.0 );
+				animateScale( frame, 1.0, 4.0, 1.0, 3.0 );
 			}
 		} );
 	}
