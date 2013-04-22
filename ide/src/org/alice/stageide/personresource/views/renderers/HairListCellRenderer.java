@@ -54,59 +54,13 @@ public class HairListCellRenderer extends IngredientListCellRenderer<org.alice.s
 		return SingletonHolder.instance;
 	}
 
-	private org.alice.stageide.personresource.data.HairColorName lastCommonHairColorName;
-	private org.alice.stageide.personresource.data.HairColorName hairColorName;
-
 	private HairListCellRenderer() {
-	}
-
-	public org.alice.stageide.personresource.data.HairColorName getHairColorName() {
-		return this.hairColorName;
-	}
-
-	public void setHairColorName( org.alice.stageide.personresource.data.HairColorName hairColorName ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.hairColorName, hairColorName ) ) {
-			//pass
-		} else {
-			if( this.hairColorName != null ) {
-				if( org.alice.stageide.personresource.data.HairUtilities.isCommonHairColorName( this.hairColorName ) ) {
-					this.lastCommonHairColorName = this.hairColorName;
-				}
-			}
-			this.hairColorName = hairColorName;
-		}
 	}
 
 	@Override
 	protected Object getValue( org.alice.stageide.personresource.data.HairHatStyle value ) {
-		if( value != null ) {
-			if( this.hairColorName != null ) {
-				Object rv = value.getHair( this.hairColorName );
-				if( rv != null ) {
-					//pass
-				} else {
-					if( this.lastCommonHairColorName != null ) {
-						rv = value.getHair( this.lastCommonHairColorName );
-					}
-					if( rv != null ) {
-						//pass
-					} else {
-						java.util.List<org.alice.stageide.personresource.data.HairColorNameHairCombo> hairColorNameHairCombos = value.getHairColorNameHairCombos();
-						if( hairColorNameHairCombos.size() > 0 ) {
-							org.alice.stageide.personresource.data.HairColorNameHairCombo hairColorNameHairCombo = hairColorNameHairCombos.get( 0 );
-							if( hairColorNameHairCombo != null ) {
-								rv = hairColorNameHairCombo.getHair();
-							}
-						}
-					}
-				}
-				return rv;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
+		org.alice.stageide.personresource.IngredientsComposite ingredientsComposite = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite();
+		return ingredientsComposite.getHairForHairHatStyle( value );
 	}
 
 	@Override

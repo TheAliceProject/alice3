@@ -114,6 +114,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 
 		public void changed( org.lgna.croquet.State<org.alice.stageide.personresource.data.HairColorName> state, org.alice.stageide.personresource.data.HairColorName prevValue, org.alice.stageide.personresource.data.HairColorName nextValue, boolean isAdjusting ) {
+			addHairColorNameToFront( nextValue );
 			popAtomic();
 		}
 	};
@@ -166,6 +167,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 	private static final javax.swing.Icon RANDOM_ICON = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( IngredientsComposite.class.getResource( "images/random.png" ) );
 
+	private final java.util.List<org.alice.stageide.personresource.data.HairColorName> hairColorNames = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+
 	public IngredientsComposite() {
 		super( java.util.UUID.fromString( "dd127381-09a8-4f78-bfd5-f3bffc1af98b" ) );
 		this.randomize.setButtonIcon( RANDOM_ICON );
@@ -185,6 +188,37 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		} else {
 			personViewer.setCameraToCloseUp( lifeStage );
 		}
+	}
+
+	private void addHairColorNameToFront( org.alice.stageide.personresource.data.HairColorName hairColorName ) {
+		synchronized( this.hairColorNames ) {
+			int index = this.hairColorNames.indexOf( hairColorName );
+			if( index != -1 ) {
+				this.hairColorNames.remove( index );
+			}
+			this.hairColorNames.add( 0, hairColorName );
+		}
+	}
+
+	public org.lgna.story.resources.sims2.Hair getHairForHairHatStyle( org.alice.stageide.personresource.data.HairHatStyle hairHatStyle ) {
+		if( hairHatStyle != null ) {
+			synchronized( this.hairColorNames ) {
+				for( org.alice.stageide.personresource.data.HairColorName hairColorName : this.hairColorNames ) {
+					org.lgna.story.resources.sims2.Hair rv = hairHatStyle.getHair( hairColorName );
+					if( rv != null ) {
+						return rv;
+					}
+				}
+			}
+			java.util.List<org.alice.stageide.personresource.data.HairColorNameHairCombo> hairColorNameHairCombos = hairHatStyle.getHairColorNameHairCombos();
+			if( hairColorNameHairCombos.size() > 0 ) {
+				org.alice.stageide.personresource.data.HairColorNameHairCombo hairColorNameHairCombo = hairColorNameHairCombos.get( 0 );
+				if( hairColorNameHairCombo != null ) {
+					return hairColorNameHairCombo.getHair();
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -446,8 +480,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 			org.alice.stageide.personresource.data.HairHatStyle hairHatStyle = hairHatStyleHairColorName.getHairHatStyle();
 			org.alice.stageide.personresource.data.HairColorName hairColorName = hairHatStyleHairColorName.getHairColorName();
 
-			org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance().setHairColorName( hairColorName );
-
 			this.getHairTab().getHairHatStyleListData().setLifeStageAndGender( lifeStage, gender );
 			this.getHairTab().getHairColorNameData().setHairHatStyle( hairHatStyle );
 
@@ -569,6 +601,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 			org.lgna.story.resources.sims2.Hair hair = personResource.getHair();
 			org.alice.stageide.personresource.data.HairHatStyleHairColorName hairHatStyleHairColorName = org.alice.stageide.personresource.data.HairUtilities.getHairHatStyleColorNameFromHair( personResource.getLifeStage(), personResource.getGender(), hair );
+
+			this.addHairColorNameToFront( hairHatStyleHairColorName.getHairColorName() );
 
 			this.updateOutfit( personResource.getLifeStage(), personResource.getGender(), (org.lgna.story.resources.sims2.FullBodyOutfit)personResource.getOutfit() );
 			//this.updateHairColorName( personResource.getLifeStage(), personResource.getGender(), hair, hair != null ? hair.toString() : null );
