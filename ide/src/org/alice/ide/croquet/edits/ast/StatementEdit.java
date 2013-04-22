@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,58 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.ast.delete.edits;
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteStatementEdit extends org.alice.ide.croquet.edits.ast.StatementEdit<org.alice.ide.ast.delete.DeleteStatementOperation> {
-	private final org.lgna.project.ast.BlockStatement blockStatement;
-	private final int index;
+public abstract class StatementEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit<M> {
+	private org.lgna.project.ast.Statement statement;
 
-	public DeleteStatementEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.Statement statement ) {
-		super( completionStep, statement );
-		this.blockStatement = (org.lgna.project.ast.BlockStatement)statement.getParent();
-		assert this.blockStatement != null : statement;
-		this.index = this.blockStatement.statements.indexOf( statement );
-		assert this.index != -1 : statement;
+	public StatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.lgna.project.ast.Statement statement ) {
+		super( completionStep );
+		this.statement = statement;
 	}
 
-	public DeleteStatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+	public StatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
-		this.blockStatement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).decodeValue( binaryDecoder );
-		this.index = binaryDecoder.decodeInt();
+		this.statement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).decodeValue( binaryDecoder );
 	}
 
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.BlockStatement.class ).encodeValue( binaryEncoder, this.blockStatement );
-		binaryEncoder.encode( this.index );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).encodeValue( binaryEncoder, this.statement );
+	}
+
+	public final org.lgna.project.ast.Statement getStatement() {
+		return this.statement;
 	}
 
 	@Override
-	protected final void doOrRedoInternal( boolean isDo ) {
-		org.lgna.project.ast.Statement statement = this.getStatement();
-		assert blockStatement.statements.indexOf( statement ) == this.index;
-		blockStatement.statements.remove( index );
-		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+		StatementEdit replacementEdit = (StatementEdit)edit;
+		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 	}
 
 	@Override
-	protected final void undoInternal() {
-		org.lgna.project.ast.Statement statement = this.getStatement();
-		blockStatement.statements.add( index, statement );
-		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
-	}
-
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		org.lgna.project.ast.Statement statement = this.getStatement();
-		rv.append( "delete:" );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, statement, org.lgna.croquet.Application.getLocale() );
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		this.statement = retargeter.retarget( this.statement );
 	}
 }
