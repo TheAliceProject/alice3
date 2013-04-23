@@ -60,9 +60,10 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 				int argb = color.getRGB();
 				int rgb = 0xFFFFFF & argb;
 				StringBuilder sb = new StringBuilder();
-				sb.append( "new java.awt.Color( 0x" );
+				//sb.append( "new java.awt.Color( " );
+				sb.append( "0x" );
 				sb.append( Integer.toHexString( rgb ) );
-				sb.append( ")" );
+				//sb.append( " )" );
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb.toString() );
 				edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( sb.toString() );
 				label.setBackgroundColor( color );

@@ -69,19 +69,18 @@ public class PaintIcon implements javax.swing.Icon {
 	}
 
 	public int getIconWidth() {
-		return this.width + 3 + 2;
+		return this.width;
 	}
 
 	public int getIconHeight() {
-		return this.height + 3;
+		return this.height;
 	}
 
 	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
-		//todo: investigate
-		x += 3;
-		y += 1;
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g2.setPaint( this.fillPaint );
-		g2.fillRect( x, y, this.width, this.height );
+		g2.translate( x, y );
+		g2.fillRect( 0, 0, this.width, this.height );
+		g2.translate( -x, -y );
 	}
 }

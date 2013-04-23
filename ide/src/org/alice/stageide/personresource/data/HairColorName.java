@@ -46,37 +46,37 @@ package org.alice.stageide.personresource.data;
  * @author Dennis Cosgrove
  */
 public enum HairColorName {
-	BLACK( new java.awt.Color( 0x282625 ) ),
-	BROWN( new java.awt.Color( 0x4f2c22 ) ),
-	BLOND( new java.awt.Color( 0xebd088 ) ),
-	RED( new java.awt.Color( 0xd36d41 ) ),
-	GREY( new java.awt.Color( 0xd5d5d5 ) ),
+	BLACK( 0x282625 ),
+	BROWN( 0x4f2c22 ),
+	BLOND( 0xebd088 ),
+	RED( 0xd36d41 ),
+	GREY( 0xd5d5d5 ),
 
-	NULL( (javax.swing.Icon)null ),
-	BARE( (javax.swing.Icon)null ),
+	NULL( null ),
+	BARE( null ),
 
-	BELLA( new java.awt.Color( 0xe3d395 ) ),
-	BLOOD_RED( new java.awt.Color( 0xb50034 ) ),
-	BLUE( new java.awt.Color( 0x117998 ) ),
-	GREEN( new java.awt.Color( 0x2b8122 ) ),
-	KINKY( (javax.swing.Icon)null ),
-	PINK( new java.awt.Color( 0xab008b ) ),
-	PLATINUM( new java.awt.Color( 0xc3b372 ) ),
-	PURPLE( new java.awt.Color( 0xac49a5 ) ),
-	STRAWBERRY( new java.awt.Color( 0xbe2376 ) ),
-	VIOLET( new java.awt.Color( 0x6f2fba ) ),
+	BELLA( 0xe3d395 ),
+	BLOOD_RED( 0xb50034 ),
+	BLUE( 0x117998 ),
+	GREEN( 0x2b8122 ),
+	KINKY( null ),
+	PINK( 0xab008b ),
+	PLATINUM( 0xe3d395 ),
+	PURPLE( 0xac49a5 ),
+	STRAWBERRY( 0xbe2376 ),
+	VIOLET( 0x6f2fba ),
 
-	BLEND( (javax.swing.Icon)null ),
-	BLEND_BLOND( (javax.swing.Icon)null ),
-	BLOND_STREAK( (javax.swing.Icon)null ),
-	FLAME( (javax.swing.Icon)null ),
-	FREAKED( (javax.swing.Icon)null ),
-	FROSTY_BLOND( (javax.swing.Icon)null ),
-	FROSTY_PURPLE( (javax.swing.Icon)null ),
-	PINK_ON_BLACK( (javax.swing.Icon)null ),
-	RAINBOW( (javax.swing.Icon)null ),
-	RED_STREAK( (javax.swing.Icon)null ),
-	STREAKED( (javax.swing.Icon)null );
+	BLEND( null ),
+	BLEND_BLOND( 0xd7af5b, 0x72292b ),
+	BLOND_STREAK( 0xebd088, 0x4f2c22 ),
+	FLAME( 0xeaad5c, 0x9d391d ),
+	FREAKED( 0x944e66, 0x9f7c38 ),
+	FROSTY_BLOND( 0xc19f52, 0x72512f ),
+	FROSTY_PURPLE( 0xa346a1, 0x32163c ),
+	PINK_ON_BLACK( 0xa62949, 0x000000 ),
+	RAINBOW( 0xcc6999, 0x265661 ),
+	RED_STREAK( 0xc13e49, 0x000000 ),
+	STREAKED( 0x603879, 0xc13e49 );
 
 	private final javax.swing.Icon icon;
 
@@ -84,8 +84,12 @@ public enum HairColorName {
 		this.icon = icon;
 	}
 
-	private HairColorName( java.awt.Paint paint ) {
-		this( new org.alice.ide.swing.icons.PaintIcon( paint ) );
+	private HairColorName( int rgb ) {
+		this( new org.alice.ide.swing.icons.PaintIcon( new java.awt.Color( rgb ) ) );
+	}
+
+	private HairColorName( int rgbTop, int rgbBottom ) {
+		this( new org.alice.ide.swing.icons.PaintIcon( new java.awt.GradientPaint( 0, 0, new java.awt.Color( rgbTop ), 0, org.alice.ide.swing.icons.ColorIcon.DEFAULT_SIZE, new java.awt.Color( rgbBottom ) ) ) );
 	}
 
 	public javax.swing.Icon getIcon() {
