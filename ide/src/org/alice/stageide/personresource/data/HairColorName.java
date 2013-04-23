@@ -70,7 +70,7 @@ public enum HairColorName {
 	BLEND_BLOND( 0xd7af5b, 0x72292b ),
 	BLOND_STREAK( 0xebd088, 0x4f2c22 ),
 	FLAME( 0xeaad5c, 0x9d391d ),
-	FREAKED( 0x944e66, 0x9f7c38 ),
+	FREAKED( 0xebd088, 0x944e66 ),
 	FROSTY_BLOND( 0xc19f52, 0x72512f ),
 	FROSTY_PURPLE( 0xa346a1, 0x32163c ),
 	PINK_ON_BLACK( 0xa62949, 0x000000 ),

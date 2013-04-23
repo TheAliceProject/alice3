@@ -57,8 +57,7 @@ public class HairColorNameRadioButtons extends org.lgna.croquet.components.Custo
 		itemSelectedState.setIconForBothTrueAndFalse( icon );
 		itemSelectedState.setTextForBothTrueAndFalse( icon != null ? null : item.name() );
 		org.lgna.croquet.components.ToggleButton rv = itemSelectedState.createToggleButton();
-		final java.awt.Insets MARGIN = new java.awt.Insets( 0, -8, 0, -8 ); //todo
-		rv.tightenUpMargin( MARGIN );
+		rv.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
 		rv.setToolTipText( item.name() );
 		return rv;
 	}

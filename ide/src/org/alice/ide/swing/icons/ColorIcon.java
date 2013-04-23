@@ -58,6 +58,10 @@ public class ColorIcon implements javax.swing.Icon {
 		this( color, size, size );
 	}
 
+	public ColorIcon( java.awt.Color color, java.awt.Dimension size ) {
+		this( color, size.width, size.height );
+	}
+
 	public ColorIcon( java.awt.Color color, int width, int height ) {
 		this.fillColor = color;
 		this.width = width;
@@ -72,26 +76,20 @@ public class ColorIcon implements javax.swing.Icon {
 		}
 	}
 
-	public ColorIcon( java.awt.Color color, java.awt.Dimension size ) {
-		this( color, size.width, size.height );
-	}
-
 	public int getIconWidth() {
-		return this.width + 3 + 2;
+		return this.width;
 	}
 
 	public int getIconHeight() {
-		return this.height + 3;
+		return this.height;
 	}
 
 	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
 		g.setColor( this.fillColor );
-
-		//todo: investigate
-		g.fillRect( x + 1 + 2, y + 1, this.width, this.height );
+		g.fillRect( x, y, this.width, this.height );
 		if( this.outlineColor != null ) {
 			g.setColor( this.outlineColor );
-			g.drawRect( x + 1 + 2, y + 1, this.width, this.height );
+			g.drawRect( x, y, this.width, this.height );
 		}
 	}
 

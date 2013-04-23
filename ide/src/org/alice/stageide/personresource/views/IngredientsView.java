@@ -47,6 +47,7 @@ package org.alice.stageide.personresource.views;
  * @author Dennis Cosgrove
  */
 public class IngredientsView extends org.lgna.croquet.components.MigPanel {
+	public static final java.awt.Insets COLOR_BUTTON_MARGIN = new java.awt.Insets( 1, -7, 1, -7 ); //todo
 	public static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 173, 167, 208 );
 	public static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
 	public static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
@@ -72,7 +73,6 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 		final org.alice.stageide.personresource.SkinColorState skinColorState = composite.getSkinColorState();
 		this.addComponent( composite.getSkinColorState().getSidekickLabel().createLabel(), "skip" );
 
-		java.awt.Insets margin = new java.awt.Insets( 0, -8, 0, -8 ); //todo
 		final java.awt.Color[] melaninChipColors = skinColorState.getMelaninChooserTabComposite().getMelaninChipShades();
 		String constraints = "gap 0, split " + melaninChipColors.length;
 		for( java.awt.Color melaninShade : melaninChipColors ) {
@@ -81,7 +81,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 			itemSelectedState.setTextForBothTrueAndFalse( "" );
 			itemSelectedState.setIconForBothTrueAndFalse( new org.alice.ide.swing.icons.ColorIcon( melaninShade ) );
 			org.lgna.croquet.components.ToggleButton button = itemSelectedState.createToggleButton();
-			button.tightenUpMargin( margin );
+			button.tightenUpMargin( COLOR_BUTTON_MARGIN );
 			this.addComponent( button, constraints );
 			constraints = "gap 0";
 		}
@@ -127,7 +127,7 @@ public class IngredientsView extends org.lgna.croquet.components.MigPanel {
 
 		otherColorButton.getAwtComponent().setText( "" );
 		otherColorButton.getAwtComponent().setIcon( new OtherColorIcon() );
-		otherColorButton.tightenUpMargin( margin );
+		otherColorButton.tightenUpMargin( COLOR_BUTTON_MARGIN );
 		this.addComponent( otherColorButton, "gap 8, split 2" );
 
 		//this.addComponent( new MelaninSlider( composite.getSkinColorState() ) );

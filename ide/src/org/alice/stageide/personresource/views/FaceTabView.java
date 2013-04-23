@@ -65,7 +65,6 @@ public class FaceTabView extends org.lgna.croquet.components.MigPanel {
 		if( IS_LIST_DESIRED ) {
 			this.addComponent( new HorizontalWrapList( composite.getBaseEyeColorState(), 1 ), "wrap, shrink" );
 		} else {
-			final java.awt.Insets MARGIN = new java.awt.Insets( 0, -8, 0, -8 ); //todo
 			org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseEyeColor> eyeColorState = composite.getBaseEyeColorState();
 			org.lgna.story.resources.sims2.BaseEyeColor[] baseEyeColors = org.lgna.story.resources.sims2.BaseEyeColor.values();
 			String constraint = "split " + baseEyeColors.length;
@@ -76,7 +75,7 @@ public class FaceTabView extends org.lgna.croquet.components.MigPanel {
 				itemSelectedState.setTextForBothTrueAndFalse( "" );
 				itemSelectedState.setIconForBothTrueAndFalse( new org.alice.ide.swing.icons.ColorIcon( awtColor ) );
 				org.lgna.croquet.components.ToggleButton toggleButton = itemSelectedState.createToggleButton();
-				toggleButton.tightenUpMargin( MARGIN );
+				toggleButton.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
 				this.addComponent( toggleButton, constraint );
 				constraint = "";
 			}
