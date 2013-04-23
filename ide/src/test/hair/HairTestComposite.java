@@ -57,9 +57,11 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 			java.awt.Point location = pointerInfo.getLocation();
 			java.awt.Color color = edu.cmu.cs.dennisc.java.awt.RobotUtilities.getPixelColor( location.x, location.y );
 			if( color != null ) {
+				int argb = color.getRGB();
+				int rgb = 0xFFFFFF & argb;
 				StringBuilder sb = new StringBuilder();
 				sb.append( "new java.awt.Color( 0x" );
-				sb.append( Integer.toHexString( color.getRGB() ) );
+				sb.append( Integer.toHexString( rgb ) );
 				sb.append( ")" );
 				edu.cmu.cs.dennisc.java.util.logging.Logger.outln( sb.toString() );
 				edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( sb.toString() );
@@ -104,12 +106,12 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 			}
 		}
 
+		org.lgna.croquet.components.BorderPanel outerPanel = new org.lgna.croquet.components.BorderPanel();
 		org.lgna.croquet.components.MigPanel panel = new org.lgna.croquet.components.MigPanel();
 
-		panel.addComponent( new org.lgna.croquet.components.Label( "eyedropper (F2)" ) );
 		label.setOpaque( true );
 		label.setBackgroundColor( java.awt.Color.RED );
-		panel.addComponent( label, "wrap, grow, shrink" );
+		outerPanel.addPageStartComponent( new org.lgna.croquet.components.BorderPanel.Builder().lineStart( new org.lgna.croquet.components.Label( "eyedropper (F2)" ) ).center( label ).build() );
 
 		class HairPathListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<String> {
 			@Override
@@ -134,17 +136,14 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 				panel.addComponent( listView, "wrap" );
 			}
 		}
+		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( panel );
+		scrollPane.setBothScrollBarIncrements( 66, 66 );
 
+		outerPanel.addCenterComponent( scrollPane );
 		javax.swing.KeyStroke keyStroke = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F2, 0 );
-		panel.registerKeyboardAction( this.eyeDropperListener, keyStroke, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
-		return panel;
-	}
+		outerPanel.registerKeyboardAction( this.eyeDropperListener, keyStroke, org.lgna.croquet.components.JComponent.Condition.WHEN_IN_FOCUSED_WINDOW );
 
-	@Override
-	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
-		org.lgna.croquet.components.ScrollPane rv = new org.lgna.croquet.components.ScrollPane();
-		rv.setBothScrollBarIncrements( 66, 66 );
-		return rv;
+		return outerPanel;
 	}
 
 	public static void main( String[] args ) {
@@ -152,6 +151,8 @@ public class HairTestComposite extends org.lgna.croquet.SimpleComposite<org.lgna
 		org.lgna.croquet.components.Frame frame = app.getFrame();
 		HairTestComposite hairTest = new HairTestComposite();
 		frame.getContentPane().addCenterComponent( hairTest.getRootComponent() );
+		frame.setLocation( -1920, 400 );
+		frame.setSize( 1000, 800 );
 		frame.maximize();
 		frame.setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
 		frame.setVisible( true );
