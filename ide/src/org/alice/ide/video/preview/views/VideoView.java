@@ -390,7 +390,7 @@ public class VideoView extends PlayView {
 		if( this.videoPlayer != null ) {
 			//pass
 		} else {
-			this.videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilties.createVideoPlayer();
+			this.videoPlayer = edu.cmu.cs.dennisc.video.vlcj.VlcjUtilities.createVideoPlayer();
 			if( this.file != null ) {
 				this.videoPlayer.prepareMedia( this.file.toURI() );
 			}
