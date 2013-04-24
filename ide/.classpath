@@ -27,8 +27,8 @@
 	<classpathentry kind="lib" path="lib/youtube/gdata-core-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/gdata-media-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/gdata-youtube-2.0.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/google-collect-1.0-rc1.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/guava-r07.jar"/>
+	<classpathentry kind="lib" path="lib/youtube/google-collect-1.0-rc1.jar"/>
 	<classpathentry kind="lib" path="lib/youtube/youtube.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="output" path="bin"/>
