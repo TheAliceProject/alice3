@@ -95,8 +95,7 @@ public class AudioMuxer {
 				}
 				mixer.write( outputStream );
 			} catch( IOException e ) {
-				// TODO" don't swallow.
-				e.printStackTrace();
+				throw new RuntimeException( "could not write to stream: " + outputStream, e );
 			}
 		}
 	}
