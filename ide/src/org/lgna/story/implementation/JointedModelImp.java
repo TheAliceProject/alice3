@@ -266,6 +266,9 @@ public abstract class JointedModelImp<A extends org.lgna.story.SJointedModel, R 
 
 		this.visualData.setSGParent( sgComposite );
 
+		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : this.visualData.getSgVisuals() ) {
+			putInstance( sgVisual );
+		}
 		for( edu.cmu.cs.dennisc.scenegraph.SimpleAppearance sgAppearance : this.visualData.getSgAppearances() ) {
 			putInstance( sgAppearance );
 		}
