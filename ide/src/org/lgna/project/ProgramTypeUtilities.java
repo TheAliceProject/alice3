@@ -186,4 +186,20 @@ public class ProgramTypeUtilities {
 		}
 		return root;
 	}
+
+	public static org.lgna.project.ast.UserMethod getMainMethod( org.lgna.project.ast.NamedUserType programType ) {
+		org.lgna.project.ast.UserMethod rv = programType.getDeclaredMethod( "main", String[].class );
+		if( rv != null ) {
+			if( rv.isStatic() ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "main method is not static", rv );
+			}
+		}
+		return rv;
+	}
+
+	public static org.lgna.project.ast.UserMethod getMainMethod( org.lgna.project.Project project ) {
+		return getMainMethod( project.getProgramType() );
+	}
 }
