@@ -700,10 +700,11 @@ public abstract class AbstractComposite<V extends org.lgna.croquet.components.Vi
 	}
 
 	public final org.lgna.croquet.components.JComponent<?> getRootComponent() {
+		V view = this.getView();
 		if( this.scrollPane != null ) {
 			return this.scrollPane;
 		} else {
-			return this.getView();
+			return view;
 		}
 	}
 

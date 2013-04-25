@@ -40,52 +40,57 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.awt;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RobotUtilities {
-	private static final java.awt.Robot robot;
-	static {
-		java.awt.Robot r;
-		try {
-			r = new java.awt.Robot();
-		} catch( java.awt.AWTException awte ) {
-			r = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( awte );
-		}
-		try {
-			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-			java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-			if( graphicsDevices.length > 1 ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-					r = null;
-				}
-			}
-		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-		}
-		robot = r;
+public final class HairHatStyleListData extends org.lgna.croquet.data.RefreshableListData<HairHatStyle> {
+	private org.lgna.story.resources.sims2.LifeStage lifeStage;
+	private org.lgna.story.resources.sims2.Gender gender;
+
+	public HairHatStyleListData() {
+		super( org.alice.stageide.personresource.codecs.HairHatStyleCodec.SINGLETON );
 	}
 
-	private RobotUtilities() {
-		throw new AssertionError();
+	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+		return this.lifeStage;
 	}
 
-	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
-		if( robot != null ) {
-			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
-			robot.mouseMove( p.x, p.y );
-		}
-	}
-
-	public static java.awt.Color getPixelColor( int x, int y ) {
-		if( robot != null ) {
-			return robot.getPixelColor( x, y );
+	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( this.lifeStage == lifeStage ) {
+			//pass
 		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
-			return null;
+			this.lifeStage = lifeStage;
+			this.refresh();
 		}
+	}
+
+	public org.lgna.story.resources.sims2.Gender getGender() {
+		return this.gender;
+	}
+
+	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
+		if( this.gender == gender ) {
+			//pass
+		} else {
+			this.gender = gender;
+			this.refresh();
+		}
+	}
+
+	public void setLifeStageAndGender( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+		if( ( this.lifeStage == lifeStage ) && ( this.gender == gender ) ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.gender = gender;
+			this.refresh();
+		}
+	}
+
+	@Override
+	protected java.util.List<HairHatStyle> createValues() {
+		return HairUtilities.getHairHatStyles( lifeStage, gender );
 	}
 }

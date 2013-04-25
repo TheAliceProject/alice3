@@ -40,52 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.awt;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RobotUtilities {
-	private static final java.awt.Robot robot;
-	static {
-		java.awt.Robot r;
-		try {
-			r = new java.awt.Robot();
-		} catch( java.awt.AWTException awte ) {
-			r = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( awte );
-		}
-		try {
-			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-			java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-			if( graphicsDevices.length > 1 ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-					r = null;
-				}
-			}
-		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-		}
-		robot = r;
+public final class HairHatStyleHairColorName {
+	private final HairHatStyle hairHatStyle;
+	private final org.alice.stageide.personresource.data.HairColorName hairColorName;
+
+	public HairHatStyleHairColorName( HairHatStyle hairHatStyle, org.alice.stageide.personresource.data.HairColorName hairColorName ) {
+		this.hairHatStyle = hairHatStyle;
+		this.hairColorName = hairColorName;
 	}
 
-	private RobotUtilities() {
-		throw new AssertionError();
+	public HairHatStyle getHairHatStyle() {
+		return this.hairHatStyle;
 	}
 
-	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
-		if( robot != null ) {
-			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
-			robot.mouseMove( p.x, p.y );
-		}
-	}
-
-	public static java.awt.Color getPixelColor( int x, int y ) {
-		if( robot != null ) {
-			return robot.getPixelColor( x, y );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
-			return null;
-		}
+	public org.alice.stageide.personresource.data.HairColorName getHairColorName() {
+		return this.hairColorName;
 	}
 }

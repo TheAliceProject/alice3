@@ -40,52 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.awt;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RobotUtilities {
-	private static final java.awt.Robot robot;
-	static {
-		java.awt.Robot r;
-		try {
-			r = new java.awt.Robot();
-		} catch( java.awt.AWTException awte ) {
-			r = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( awte );
-		}
-		try {
-			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-			java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-			if( graphicsDevices.length > 1 ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-					r = null;
-				}
-			}
-		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-		}
-		robot = r;
+public enum HairColorName {
+	BLACK( 0x282625 ),
+	BROWN( 0x4f2c22 ),
+	BLOND( 0xebd088 ),
+	RED( 0xd36d41 ),
+	GREY( 0xd5d5d5 ),
+
+	NULL( null ),
+	BARE( null ),
+
+	BELLA( 0xe3d395 ),
+	BLOOD_RED( 0xb50034 ),
+	BLUE( 0x117998 ),
+	GREEN( 0x2b8122 ),
+	KINKY( null ),
+	PINK( 0xab008b ),
+	PLATINUM( 0xe3d395 ),
+	PURPLE( 0xac49a5 ),
+	STRAWBERRY( 0xbe2376 ),
+	VIOLET( 0x6f2fba ),
+
+	BLEND( null ),
+	BLEND_BLOND( 0xd7af5b, 0x72292b ),
+	BLOND_STREAK( 0xebd088, 0x4f2c22 ),
+	FLAME( 0xeaad5c, 0x9d391d ),
+	FREAKED( 0xebd088, 0x944e66 ),
+	FROSTY_BLOND( 0xc19f52, 0x72512f ),
+	FROSTY_PURPLE( 0xa346a1, 0x32163c ),
+	PINK_ON_BLACK( 0xa62949, 0x000000 ),
+	RAINBOW( 0xcc6999, 0x265661 ),
+	RED_STREAK( 0xc13e49, 0x000000 ),
+	STREAKED( 0x603879, 0xc13e49 );
+
+	private final javax.swing.Icon icon;
+
+	private HairColorName( javax.swing.Icon icon ) {
+		this.icon = icon;
 	}
 
-	private RobotUtilities() {
-		throw new AssertionError();
+	private HairColorName( int rgb ) {
+		this( new org.alice.ide.swing.icons.PaintIcon( new java.awt.Color( rgb ) ) );
 	}
 
-	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
-		if( robot != null ) {
-			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
-			robot.mouseMove( p.x, p.y );
-		}
+	private HairColorName( int rgbTop, int rgbBottom ) {
+		this( new org.alice.ide.swing.icons.PaintIcon( new java.awt.GradientPaint( 0, 0, new java.awt.Color( rgbTop ), 0, org.alice.ide.swing.icons.ColorIcon.DEFAULT_SIZE, new java.awt.Color( rgbBottom ) ) ) );
 	}
 
-	public static java.awt.Color getPixelColor( int x, int y ) {
-		if( robot != null ) {
-			return robot.getPixelColor( x, y );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
-			return null;
-		}
+	public javax.swing.Icon getIcon() {
+		return this.icon;
 	}
 }

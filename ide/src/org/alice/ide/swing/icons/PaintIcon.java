@@ -40,52 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.awt;
+package org.alice.ide.swing.icons;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RobotUtilities {
-	private static final java.awt.Robot robot;
-	static {
-		java.awt.Robot r;
-		try {
-			r = new java.awt.Robot();
-		} catch( java.awt.AWTException awte ) {
-			r = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( awte );
-		}
-		try {
-			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-			java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-			if( graphicsDevices.length > 1 ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-					r = null;
-				}
-			}
-		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-		}
-		robot = r;
+public class PaintIcon implements javax.swing.Icon {
+	private java.awt.Paint fillPaint;
+	private int width;
+	private int height;
+
+	public PaintIcon( java.awt.Paint fillPaint ) {
+		this( fillPaint, ColorIcon.DEFAULT_SIZE );
 	}
 
-	private RobotUtilities() {
-		throw new AssertionError();
+	public PaintIcon( java.awt.Paint fillPaint, int size ) {
+		this( fillPaint, size, size );
 	}
 
-	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
-		if( robot != null ) {
-			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
-			robot.mouseMove( p.x, p.y );
-		}
+	public PaintIcon( java.awt.Paint fillPaint, java.awt.Dimension size ) {
+		this( fillPaint, size.width, size.height );
 	}
 
-	public static java.awt.Color getPixelColor( int x, int y ) {
-		if( robot != null ) {
-			return robot.getPixelColor( x, y );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
-			return null;
-		}
+	public PaintIcon( java.awt.Paint fillPaint, int width, int height ) {
+		this.fillPaint = fillPaint;
+		this.width = width;
+		this.height = height;
+	}
+
+	public int getIconWidth() {
+		return this.width;
+	}
+
+	public int getIconHeight() {
+		return this.height;
+	}
+
+	public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g2.setPaint( this.fillPaint );
+		g2.translate( x, y );
+		g2.fillRect( 0, 0, this.width, this.height );
+		g2.translate( -x, -y );
 	}
 }

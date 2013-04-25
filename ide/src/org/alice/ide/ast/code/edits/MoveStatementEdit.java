@@ -44,17 +44,15 @@
 package org.alice.ide.ast.code.edits;
 
 /**
- * @author dennisc
+ * @author Dennis Cosgrove
  */
-public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide.ast.code.MoveStatementOperation> {
+public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.StatementEdit<org.alice.ide.ast.code.MoveStatementOperation> {
 	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation;
-	private org.lgna.project.ast.Statement statement;
 	private org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation;
 
 	public MoveStatementEdit( org.lgna.croquet.history.CompletionStep<org.alice.ide.ast.code.MoveStatementOperation> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromLocation, org.lgna.project.ast.Statement statement, org.alice.ide.ast.draganddrop.BlockStatementIndexPair toLocation ) {
-		super( completionStep );
+		super( completionStep, statement );
 		this.fromLocation = fromLocation;
-		this.statement = statement;
 		this.toLocation = toLocation;
 	}
 
@@ -62,8 +60,6 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 		super( binaryDecoder, step );
 		this.fromLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
 		org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, statementId );
 		this.toLocation = binaryDecoder.decodeBinaryEncodableAndDecodable();
 	}
 
@@ -71,7 +67,6 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.fromLocation );
-		binaryEncoder.encode( this.statement.getId() );
 		binaryEncoder.encode( this.toLocation );
 	}
 
@@ -93,7 +88,7 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	public void doOrRedoInternal( boolean isDo ) {
 		int toDelta = this.getToDelta();
 		this.fromLocation.getBlockStatement().statements.remove( this.fromLocation.getIndex() );
-		this.toLocation.getBlockStatement().statements.add( this.toLocation.getIndex() + toDelta, this.statement );
+		this.toLocation.getBlockStatement().statements.add( this.toLocation.getIndex() + toDelta, this.getStatement() );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
 	}
 
@@ -101,29 +96,27 @@ public class MoveStatementEdit extends org.lgna.croquet.edits.Edit<org.alice.ide
 	public void undoInternal() {
 		int toDelta = this.getToDelta();
 		this.toLocation.getBlockStatement().statements.remove( this.toLocation.getIndex() + toDelta );
-		this.fromLocation.getBlockStatement().statements.add( this.fromLocation.getIndex(), this.statement );
+		this.fromLocation.getBlockStatement().statements.add( this.fromLocation.getIndex(), this.getStatement() );
 		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
+	}
+
+	@Override
+	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
+		rv.append( "move: " );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.getStatement(), org.lgna.croquet.Application.getLocale() );
 	}
 
 	@Override
 	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
 		MoveStatementEdit replacementEdit = (MoveStatementEdit)edit;
 		retargeter.addKeyValuePair( this.fromLocation, replacementEdit.fromLocation );
-		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 		retargeter.addKeyValuePair( this.toLocation, replacementEdit.toLocation );
 	}
 
 	@Override
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		this.fromLocation = retargeter.retarget( this.fromLocation );
-		this.statement = retargeter.retarget( this.statement );
 		this.toLocation = retargeter.retarget( this.toLocation );
-	}
-
-	@Override
-	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
-		rv.append( "move: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
 	}
 
 	@Override

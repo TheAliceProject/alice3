@@ -40,52 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.awt;
+package org.alice.ide.croquet.edits.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RobotUtilities {
-	private static final java.awt.Robot robot;
-	static {
-		java.awt.Robot r;
-		try {
-			r = new java.awt.Robot();
-		} catch( java.awt.AWTException awte ) {
-			r = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( awte );
-		}
-		try {
-			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-			java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-			if( graphicsDevices.length > 1 ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-					r = null;
-				}
-			}
-		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-		}
-		robot = r;
+public abstract class StatementEdit<M extends org.lgna.croquet.CompletionModel> extends org.lgna.croquet.edits.Edit<M> {
+	private org.lgna.project.ast.Statement statement;
+
+	public StatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.lgna.project.ast.Statement statement ) {
+		super( completionStep );
+		this.statement = statement;
 	}
 
-	private RobotUtilities() {
-		throw new AssertionError();
+	public StatementEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
+		super( binaryDecoder, step );
+		this.statement = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).decodeValue( binaryDecoder );
 	}
 
-	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
-		if( robot != null ) {
-			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
-			robot.mouseMove( p.x, p.y );
-		}
+	@Override
+	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		super.encode( binaryEncoder );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.Statement.class ).encodeValue( binaryEncoder, this.statement );
 	}
 
-	public static java.awt.Color getPixelColor( int x, int y ) {
-		if( robot != null ) {
-			return robot.getPixelColor( x, y );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
-			return null;
-		}
+	public final org.lgna.project.ast.Statement getStatement() {
+		return this.statement;
+	}
+
+	@Override
+	public void addKeyValuePairs( org.lgna.croquet.Retargeter retargeter, org.lgna.croquet.edits.Edit<?> edit ) {
+		StatementEdit replacementEdit = (StatementEdit)edit;
+		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
+	}
+
+	@Override
+	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
+		this.statement = retargeter.retarget( this.statement );
 	}
 }

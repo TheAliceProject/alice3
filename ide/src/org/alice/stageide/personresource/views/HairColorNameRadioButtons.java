@@ -40,52 +40,48 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.awt;
+package org.alice.stageide.personresource.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RobotUtilities {
-	private static final java.awt.Robot robot;
-	static {
-		java.awt.Robot r;
-		try {
-			r = new java.awt.Robot();
-		} catch( java.awt.AWTException awte ) {
-			r = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( awte );
-		}
-		try {
-			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-			java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-			if( graphicsDevices.length > 1 ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-					r = null;
-				}
-			}
-		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-		}
-		robot = r;
+public class HairColorNameRadioButtons extends org.lgna.croquet.components.CustomRadioButtons<org.alice.stageide.personresource.data.HairColorName> {
+	public HairColorNameRadioButtons( org.lgna.croquet.ListSelectionState<org.alice.stageide.personresource.data.HairColorName> model ) {
+		super( model );
 	}
 
-	private RobotUtilities() {
-		throw new AssertionError();
+	@Override
+	protected org.lgna.croquet.components.BooleanStateButton<?> createButtonForItemSelectedState( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.BooleanState itemSelectedState ) {
+		javax.swing.Icon icon = item.getIcon();
+		itemSelectedState.initializeIfNecessary();
+		itemSelectedState.setIconForBothTrueAndFalse( icon );
+		itemSelectedState.setTextForBothTrueAndFalse( icon != null ? null : item.name() );
+		org.lgna.croquet.components.ToggleButton rv = itemSelectedState.createToggleButton();
+		rv.tightenUpMargin( IngredientsView.COLOR_BUTTON_MARGIN );
+		rv.setToolTipText( item.name() );
+		return rv;
 	}
 
-	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
-		if( robot != null ) {
-			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
-			robot.mouseMove( p.x, p.y );
-		}
+	@Override
+	protected void addPrologue( int count ) {
 	}
 
-	public static java.awt.Color getPixelColor( int x, int y ) {
-		if( robot != null ) {
-			return robot.getPixelColor( x, y );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
-			return null;
-		}
+	@Override
+	protected void addItem( org.alice.stageide.personresource.data.HairColorName item, org.lgna.croquet.components.BooleanStateButton<?> button ) {
+		this.internalAddComponent( button );
+	}
+
+	@Override
+	protected void addEpilogue() {
+	}
+
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new net.miginfocom.swing.MigLayout();
+	}
+
+	@Override
+	protected void removeAllDetails() {
+		this.internalRemoveAllComponents();
 	}
 }

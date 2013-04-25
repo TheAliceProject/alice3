@@ -40,52 +40,72 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.awt;
+package org.alice.stageide.personresource.data;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RobotUtilities {
-	private static final java.awt.Robot robot;
-	static {
-		java.awt.Robot r;
-		try {
-			r = new java.awt.Robot();
-		} catch( java.awt.AWTException awte ) {
-			r = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( awte );
+public final class HairClsHatNameCombo {
+	private final Class<? extends org.lgna.story.resources.sims2.Hair> hairCls;
+	private final String hatName;
+
+	public HairClsHatNameCombo( Class<? extends org.lgna.story.resources.sims2.Hair> hairCls, String hatName ) {
+		assert hairCls != null;
+		this.hairCls = hairCls;
+		this.hatName = hatName;
+	}
+
+	public Class<? extends org.lgna.story.resources.sims2.Hair> getHairCls() {
+		return this.hairCls;
+	}
+
+	public String getHatName() {
+		return this.hatName;
+	}
+
+	@Override
+	public boolean equals( Object obj ) {
+		if( this == obj ) {
+			return true;
 		}
-		try {
-			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-			java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-			if( graphicsDevices.length > 1 ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-					r = null;
+		if( obj instanceof HairClsHatNameCombo ) {
+			HairClsHatNameCombo other = (HairClsHatNameCombo)obj;
+			if( this.hairCls.equals( other.hairCls ) ) {
+				if( this.hatName != null ) {
+					if( other.hatName != null ) {
+						return this.hatName.contentEquals( other.hatName );
+					} else {
+						return false;
+					}
+				} else {
+					if( other.hatName != null ) {
+						return false;
+					} else {
+						return true;
+					}
 				}
 			}
-		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
 		}
-		robot = r;
+		return false;
 	}
 
-	private RobotUtilities() {
-		throw new AssertionError();
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		rv = ( 37 * rv ) + this.hairCls.hashCode();
+		rv = ( 37 * rv ) + ( this.hatName != null ? this.hatName.hashCode() : 0 );
+		return rv;
 	}
 
-	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
-		if( robot != null ) {
-			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
-			robot.mouseMove( p.x, p.y );
-		}
-	}
-
-	public static java.awt.Color getPixelColor( int x, int y ) {
-		if( robot != null ) {
-			return robot.getPixelColor( x, y );
-		} else {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( robot );
-			return null;
-		}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append( this.getClass().getName() );
+		sb.append( "[" );
+		sb.append( this.hairCls.getName() );
+		sb.append( ";" );
+		sb.append( this.hatName );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }
