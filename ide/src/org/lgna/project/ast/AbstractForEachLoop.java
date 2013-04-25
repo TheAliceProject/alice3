@@ -70,6 +70,17 @@ public abstract class AbstractForEachLoop extends AbstractLoop implements EachIn
 	protected abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			AbstractForEachLoop other = (AbstractForEachLoop)o;
+			if( this.item.valueContentEquals( other.item ) ) {
+				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty() );
+			}
+		}
+		return false;
+	}
+
+	@Override
 	protected void appendJavaLoopPrefix( JavaCodeGenerator generator ) {
 		UserLocal itemValue = this.item.getValue();
 		generator.appendString( "for(" );

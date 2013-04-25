@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterAccess extends Expression {
+public final class ParameterAccess extends Expression {
 	public DeclarationProperty<UserParameter> parameter = new DeclarationProperty<UserParameter>( this );
 
 	public ParameterAccess() {
@@ -80,6 +80,15 @@ public class ParameterAccess extends Expression {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			ParameterAccess other = (ParameterAccess)o;
+			return this.parameter.valueContentEquals( other.parameter );
+		}
+		return false;
 	}
 
 	@Override

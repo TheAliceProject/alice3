@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class NumberLiteral extends AbstractValueLiteral {
+public final class NumberLiteral extends AbstractValueLiteral<Number> {
 	public edu.cmu.cs.dennisc.property.NumberProperty value = new edu.cmu.cs.dennisc.property.NumberProperty( this, null );
 
 	public NumberLiteral() {
@@ -67,7 +67,7 @@ public class NumberLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
+	public edu.cmu.cs.dennisc.property.InstanceProperty<Number> getValueProperty() {
 		return this.value;
 	}
 
