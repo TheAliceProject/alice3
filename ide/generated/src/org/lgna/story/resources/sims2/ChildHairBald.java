@@ -22,7 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
-public enum ChildHairBald implements ChildHair {
+public enum ChildHairBald implements MaleChildHair, FemaleChildHair {
 	BARE;
 
 	public Boolean hasHair()

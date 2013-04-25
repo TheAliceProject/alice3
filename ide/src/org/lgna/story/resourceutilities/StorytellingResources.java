@@ -19,6 +19,7 @@ import org.lgna.story.implementation.alice.AliceResourceClassUtilities;
 import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.java.lang.ArrayUtilities;
 import edu.cmu.cs.dennisc.javax.swing.models.TreeNode;
+import edu.cmu.cs.dennisc.nebulous.Manager;
 
 public class StorytellingResources {
 	private static class SingletonHolder {
@@ -466,6 +467,17 @@ public class StorytellingResources {
 	}
 
 	public void loadSimsBundles() {
+
+		//DEBUG
+
+		String DEBUG_rawPathValue = System.getProperty( "org.alice.ide.simsDebugResourcePath" );
+		if( DEBUG_rawPathValue != null ) {
+			java.io.File rawResourcePath = new File( DEBUG_rawPathValue );
+			if( rawResourcePath.exists() ) {
+				Manager.setRawResourcePath( rawResourcePath );
+			}
+		}
+
 		List<File> resourcePaths = ResourcePathManager.getPaths( ResourcePathManager.SIMS_RESOURCE_KEY );
 		if( resourcePaths.size() == 0 ) {
 			resourcePaths = findSimsBundles();

@@ -45,7 +45,7 @@ package org.alice.stageide.personresource.views.renderers;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<E> {
+public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<E> {
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
 
 	protected abstract String getSubPath();
@@ -73,13 +73,18 @@ abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.sw
 		return clsName;
 	}
 
+	protected Object getValue( E value ) {
+		return value;
+	}
+
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus ) {
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E val, int index, boolean isSelected, boolean cellHasFocus ) {
 		assert rv != null;
-		if( value != null ) {
-			String clsName = value.getClass().getSimpleName();
+		Object v = getValue( val );
+		if( v != null ) {
+			String clsName = v.getClass().getSimpleName();
 			clsName = this.modifyClsNameIfNecessary( clsName, org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue() );
-			String enumConstantName = value.toString();
+			String enumConstantName = v.toString();
 
 			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getSkinTone();
 			java.net.URL urlForIcon;

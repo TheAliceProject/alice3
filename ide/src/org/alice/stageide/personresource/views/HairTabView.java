@@ -53,15 +53,16 @@ public class HairTabView extends org.lgna.croquet.components.MigPanel {
 		this.setBackgroundColor( backgroundColor );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 
-		this.addComponent( composite.getHairColorNameState().getSidekickLabel().createLabel(), "top" );
-		this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1 ), "wrap, grow, shrink" );
+		this.addComponent( composite.getHairColorNameState().getSidekickLabel().createLabel() );
+		//this.addComponent( new HorizontalWrapList( composite.getHairColorNameState(), -1, new org.alice.stageide.personresource.views.renderers.HairColorNameListCellRenderer() ), "wrap, grow, shrink" );
+		this.addComponent( new HairColorNameRadioButtons( composite.getHairColorNameState() ), "align left, wrap, grow, shrink" );
 
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.Hair> hairList = new HorizontalWrapList<org.lgna.story.resources.sims2.Hair>( composite.getHairState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
+		org.lgna.croquet.components.List<org.alice.stageide.personresource.data.HairHatStyle> hairList = new HorizontalWrapList<org.alice.stageide.personresource.data.HairHatStyle>( composite.getHairHatStyleState(), -1, org.alice.stageide.personresource.views.renderers.HairListCellRenderer.getInstance() );
 		hairList.setBackgroundColor( org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR );
 		org.lgna.croquet.components.ScrollPane hairScrollPane = new org.lgna.croquet.components.ScrollPane( hairList );
 		hairScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
 		hairScrollPane.setBothScrollBarIncrements( 66, 66 );
 
-		this.addComponent( hairScrollPane, "skip, wrap, grow, shrink" );
+		this.addComponent( hairScrollPane, "span 2, wrap, grow, shrink" );
 	}
 }

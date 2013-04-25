@@ -70,4 +70,19 @@ public final class FaceTabComposite extends org.lgna.croquet.SimpleTabComposite<
 	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BaseFace> getBaseFaceState() {
 		return this.baseFaceState;
 	}
+
+	public static void main( String[] args ) throws Exception {
+		javax.swing.UIManager.LookAndFeelInfo lookAndFeelInfo = edu.cmu.cs.dennisc.javax.swing.plaf.PlafUtilities.getInstalledLookAndFeelInfoNamed( "Nimbus" );
+		if( lookAndFeelInfo != null ) {
+			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
+		}
+
+		final org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
+
+		FaceTabComposite faceTabComposite = new FaceTabComposite();
+		app.getFrame().getContentPane().addCenterComponent( faceTabComposite.getRootComponent() );
+
+		app.getFrame().setSize( 600, 400 );
+		app.getFrame().setVisible( true );
+	}
 };
