@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ThisExpression extends Expression {
+public final class ThisExpression extends Expression {
 	public static ThisExpression createInstanceThatCanExistWithoutAnAncestorType( AbstractType<?, ?, ?> typeForNoAncestorTypeCondition ) {
 		return new ThisExpression( typeForNoAncestorTypeCondition );
 	}
@@ -82,6 +82,16 @@ public class ThisExpression extends Expression {
 	public boolean isValid() {
 		//todo
 		return true;
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			ThisExpression other = (ThisExpression)o;
+			//todo: check type?
+			return true;
+		}
+		return false;
 	}
 
 	@Override

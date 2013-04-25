@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanExpressionBodyPair extends AbstractNode {
+public final class BooleanExpressionBodyPair extends AbstractNode {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
@@ -60,5 +60,16 @@ public class BooleanExpressionBodyPair extends AbstractNode {
 	public BooleanExpressionBodyPair( Expression expression, BlockStatement body ) {
 		this.expression.setValue( expression );
 		this.body.setValue( body );
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			BooleanExpressionBodyPair other = (BooleanExpressionBodyPair)o;
+			if( this.expression.valueContentEquals( other.expression ) ) {
+				return this.body.valueContentEquals( other.body );
+			}
+		}
+		return false;
 	}
 }

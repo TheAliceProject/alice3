@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class JavaKeyedArgument extends AbstractArgument {
+public final class JavaKeyedArgument extends AbstractArgument {
 	//	public DeclarationProperty< JavaMethod > keyMethod = new DeclarationProperty< JavaMethod >( this ) {
 	//		@Override
 	//		public boolean isReference() {

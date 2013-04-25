@@ -55,4 +55,6 @@ public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner,
 	public <N extends Node> N getFirstAncestorAssignableTo( Class<N> cls );
 
 	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, org.lgna.project.ast.CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter );
+
+	public boolean contentEquals( Node other );
 }
