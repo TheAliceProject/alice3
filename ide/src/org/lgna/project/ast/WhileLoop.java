@@ -63,10 +63,10 @@ public class WhileLoop extends AbstractLoop {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			WhileLoop other = (WhileLoop)o;
-			return this.conditional.valueContentEquals( other.conditional );
+			return this.conditional.valueContentEquals( other.conditional, strictness );
 		}
 		return false;
 	}

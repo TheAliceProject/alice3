@@ -71,11 +71,11 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 	protected abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			AbstractEachInTogether other = (AbstractEachInTogether)o;
-			if( this.item.valueContentEquals( other.item ) ) {
-				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty() );
+			if( this.item.valueContentEquals( other.item, strictness ) ) {
+				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty(), strictness );
 			}
 		}
 		return false;

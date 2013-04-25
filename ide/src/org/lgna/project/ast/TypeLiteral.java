@@ -77,6 +77,12 @@ public final class TypeLiteral extends AbstractValueLiteral<AbstractType<?, ?, ?
 	}
 
 	@Override
+	protected boolean valuePropertyContentEquals( AbstractValueLiteral<AbstractType<?, ?, ?>> other, ContentEqualsStrictness strictness ) {
+		TypeLiteral otherTypeLiteral = (TypeLiteral)other;
+		return this.value.valueContentEquals( otherTypeLiteral.value, strictness );
+	}
+
+	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendTypeName( this.value.getValue() );
 		generator.appendString( ".class" );

@@ -62,10 +62,10 @@ public final class ExpressionStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ExpressionStatement other = (ExpressionStatement)o;
-			return this.expression.valueContentEquals( other.expression );
+			return this.expression.valueContentEquals( other.expression, strictness );
 		}
 		return false;
 	}

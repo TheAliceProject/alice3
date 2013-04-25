@@ -64,11 +64,11 @@ public final class ReturnStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ReturnStatement other = (ReturnStatement)o;
-			if( this.expressionType.valueEquals( other.expressionType ) ) {
-				return this.expression.valueContentEquals( other.expression );
+			if( this.expressionType.valueContentEquals( other.expressionType, strictness ) ) {
+				return this.expression.valueContentEquals( other.expression, strictness );
 			}
 		}
 		return false;

@@ -69,11 +69,11 @@ public final class StringConcatenation extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			StringConcatenation other = (StringConcatenation)o;
-			if( this.leftOperand.valueContentEquals( other.leftOperand ) ) {
-				return this.rightOperand.valueContentEquals( other.rightOperand );
+			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness ) ) {
+				return this.rightOperand.valueContentEquals( other.rightOperand, strictness );
 			}
 		}
 		return false;

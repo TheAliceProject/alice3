@@ -93,13 +93,13 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ConstructorInvocationStatement other = (ConstructorInvocationStatement)o;
-			if( this.constructor.valueEquals( other.constructor ) ) {
-				if( this.requiredArguments.valueContentEquals( other.requiredArguments ) ) {
-					if( this.variableArguments.valueContentEquals( other.variableArguments ) ) {
-						return this.keyedArguments.valueContentEquals( other.keyedArguments );
+			if( this.constructor.valueContentEquals( other.constructor, strictness ) ) {
+				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness ) ) {
+					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness ) ) {
+						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness );
 					}
 				}
 			}

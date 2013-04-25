@@ -65,7 +65,7 @@ public abstract class AbstractNode extends Element implements Node {
 		this.id = id;
 	}
 
-	public boolean contentEquals( Node other ) {
+	public boolean contentEquals( Node other, ContentEqualsStrictness strictness ) {
 		if( other != null ) {
 			Class<?> thisCls = this.getClass();
 			Class<?> otherCls = other.getClass();
