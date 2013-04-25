@@ -50,7 +50,7 @@ public class NodeListProperty<E extends Node> extends edu.cmu.cs.dennisc.propert
 		super( owner );
 	}
 
-	public boolean valueContentEquals( NodeListProperty<E> other ) {
+	public boolean valueContentEquals( NodeListProperty<E> other, ContentEqualsStrictness strictness ) {
 		java.util.List<E> thisValue = this.getValue();
 		java.util.List<E> otherValue = other.getValue();
 		if( thisValue != null ) {
@@ -62,7 +62,7 @@ public class NodeListProperty<E extends Node> extends edu.cmu.cs.dennisc.propert
 						E otherValueI = otherValue.get( i );
 						if( thisValueI != null ) {
 							if( otherValueI != null ) {
-								if( thisValueI.contentEquals( otherValueI ) ) {
+								if( thisValueI.contentEquals( otherValueI, strictness ) ) {
 									//pass
 								} else {
 									return false;

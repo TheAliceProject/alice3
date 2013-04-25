@@ -57,8 +57,8 @@ public class Comment extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			Comment other = (Comment)o;
 			return this.text.valueEquals( other.text );
 		}

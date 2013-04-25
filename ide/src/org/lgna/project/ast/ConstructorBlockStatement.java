@@ -59,10 +59,10 @@ public final class ConstructorBlockStatement extends BlockStatement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ConstructorBlockStatement other = (ConstructorBlockStatement)o;
-			return this.constructorInvocationStatement.valueContentEquals( other.constructorInvocationStatement );
+			return this.constructorInvocationStatement.valueContentEquals( other.constructorInvocationStatement, strictness );
 		}
 		return false;
 	}

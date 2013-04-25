@@ -73,10 +73,10 @@ public final class LambdaExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			LambdaExpression other = (LambdaExpression)o;
-			return this.value.valueContentEquals( other.value );
+			return this.value.valueContentEquals( other.value, strictness );
 		}
 		return false;
 	}

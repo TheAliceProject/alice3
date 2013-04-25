@@ -66,7 +66,6 @@ import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer;
 import edu.cmu.cs.dennisc.matt.EventManager;
-import edu.cmu.cs.dennisc.matt.EventScript;
 import edu.cmu.cs.dennisc.matt.EventScript.EventWithTime;
 import edu.cmu.cs.dennisc.matt.FrameBasedAnimatorWithEventScript;
 import edu.cmu.cs.dennisc.media.animation.MediaPlayerAnimation;
@@ -119,7 +118,7 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 				getView().getPlayPauseButton().doClick();
 			}
 			programContext.getProgramImp().getAnimator().removeFrameObserver( frameListener );
-			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
+			programContext.getProgramImp().stopAnimator();
 			encoder.stopVideoEncoding();
 			resetData();
 			restartOperation.setEnabled( false );
@@ -185,19 +184,18 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	}
 
 	public void setRecording( boolean isRecording ) {
-		if( this.isRecordingState.getValue() != isRecording ) {
-			if( !this.isRecordingState.getValue() ) {
-				programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
-				encoder.stopVideoEncoding();
-			} else {
-				programContext.getProgramImp().startAnimator();
-				programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );
-				restartOperation.setEnabled( true );
-				hasStartedRecording = true;
-			}
+		assert this.isRecordingState.getValue() != isRecording;
+		if( !this.isRecordingState.getValue() ) {
+			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( null );
+			programContext.getProgramImp().getAnimator().setSpeedFactor( 0 );
+			encoder.stopVideoEncoding();
 		} else {
-			// TODO: this should be an assert.
-			System.out.println( "SHOULD NOT HIT THIS (mmay)" );
+			MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
+			programContext.getProgramImp().getAnimator().setFramesPerSecond( this.frameRateState.getValue() );
+			programContext.getProgramImp().startAnimator();
+			programContext.getProgramImp().getAnimator().setSpeedFactor( 1 );
+			restartOperation.setEnabled( true );
+			hasStartedRecording = true;
 		}
 	}
 
@@ -224,10 +222,9 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		eventList.clear();
-		EventScript script = owner.getScript();
 		lookingGlassContainer = getView().getLookingGlassContainer();
-		if( script != null ) {
-			for( EventWithTime event : script.getEventList() ) {
+		if( owner.getScript() != null ) {
+			for( EventWithTime event : owner.getScript().getEventList() ) {
 				eventList.addItem( event );
 			}
 		}
@@ -276,14 +273,13 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		getView().revalidateAndRepaint();
 
 		owner.getScript().refresh();
-		EventScript script = owner.getScript();
 
 		UserInstance programInstance = programContext.getProgramInstance();
 		UserField sceneField = programInstance.getType().fields.get( 0 );
 		SScene scene = programContext.getProgramInstance().getFieldValueInstanceInJava( sceneField, SScene.class );
 		SceneImp sceneImp = ImplementationAccessor.getImplementation( scene );
 		EventManager manager = sceneImp.getEventManager();
-		programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( script, manager ) );
+		programContext.getProgramImp().setAnimator( new FrameBasedAnimatorWithEventScript( owner.getScript(), manager ) );
 		programContext.getProgramImp().getAnimator().addFrameObserver( frameListener );
 		programContext.setActiveScene();
 		this.timerInSeconds = 0;
@@ -291,7 +287,6 @@ public class ImageRecordComposite extends WizardPageComposite<ImageRecordView> {
 		encoder = new WebmRecordingAdapter();
 		encoder.setFrameRate( frameRateState.getValue() );
 		encoder.setDimension( programContext.getOnscreenLookingGlass().getSize() );
-		MediaPlayerAnimation.EPIC_HACK_setAnimationObserver( this.encoder );
 		this.encoder.initializeAudioRecording();
 
 		// TODO: Call later when recording the video

@@ -72,9 +72,7 @@ public class AudioToWavConverter {
 			}
 			return new org.lgna.common.resources.AudioResource( outputFile );
 		} catch( java.io.IOException e ) {
-			// TODO: no swallow
-			e.printStackTrace();
+			throw new RuntimeException( "unable to create Temp File", e );
 		}
-		return null;
 	}
 }

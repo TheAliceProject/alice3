@@ -61,10 +61,10 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			AbstractStatementWithBody other = (AbstractStatementWithBody)o;
-			return this.body.valueContentEquals( other.body );
+			return this.body.valueContentEquals( other.body, strictness );
 		}
 		return false;
 	}

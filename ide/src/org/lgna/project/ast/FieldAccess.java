@@ -120,11 +120,11 @@ public final class FieldAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			FieldAccess other = (FieldAccess)o;
-			if( this.expression.valueContentEquals( other.expression ) ) {
-				return this.field.valueContentEquals( other.field );
+			if( this.expression.valueContentEquals( other.expression, strictness ) ) {
+				return this.field.valueContentEquals( other.field, strictness );
 			}
 		}
 		return false;

@@ -57,10 +57,10 @@ public class BlockStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			BlockStatement other = (BlockStatement)o;
-			return this.statements.valueContentEquals( other.statements );
+			return this.statements.valueContentEquals( other.statements, strictness );
 		}
 		return false;
 	}

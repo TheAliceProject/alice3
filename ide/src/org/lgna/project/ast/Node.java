@@ -56,5 +56,5 @@ public interface Node extends edu.cmu.cs.dennisc.property.InstancePropertyOwner,
 
 	public void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, org.lgna.project.ast.CrawlPolicy crawlPolicy, edu.cmu.cs.dennisc.pattern.Criterion<Declaration> declarationFilter );
 
-	public boolean contentEquals( Node other );
+	public boolean contentEquals( Node other, ContentEqualsStrictness strictness );
 }
