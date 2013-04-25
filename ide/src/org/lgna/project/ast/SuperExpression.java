@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class SuperExpression extends Expression {
+public final class SuperExpression extends Expression {
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		AbstractType<?, ?, ?> type = this.getFirstAncestorAssignableTo( AbstractType.class );
@@ -56,6 +56,16 @@ public class SuperExpression extends Expression {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.warning( "SuperExpression cannot find type" );
 			return null;
 		}
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			SuperExpression other = (SuperExpression)o;
+			//todo: check type?
+			return true;
+		}
+		return false;
 	}
 
 	@Override

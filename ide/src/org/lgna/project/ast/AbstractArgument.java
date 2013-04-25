@@ -65,5 +65,16 @@ public abstract class AbstractArgument extends AbstractNode {
 
 	protected abstract AbstractType<?, ?, ?> getExpressionTypeForParameterType( AbstractType<?, ?, ?> parameterType );
 
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			AbstractArgument other = (AbstractArgument)o;
+			if( this.parameter.valueEquals( other.parameter ) ) {
+				return this.expression.valueContentEquals( other.expression );
+			}
+		}
+		return false;
+	}
+
 	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 }

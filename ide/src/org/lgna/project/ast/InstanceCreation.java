@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class InstanceCreation extends Expression implements ArgumentOwner {
+public final class InstanceCreation extends Expression implements ArgumentOwner {
 	//todo: AbstractConstructor -> Expression<AbstractConstructor>
 	public DeclarationProperty<AbstractConstructor> constructor = new DeclarationProperty<AbstractConstructor>( this ) {
 		@Override
@@ -104,6 +104,21 @@ public class InstanceCreation extends Expression implements ArgumentOwner {
 	public boolean isValid() {
 		//todo
 		return true;
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			InstanceCreation other = (InstanceCreation)o;
+			if( this.constructor.valueEquals( other.constructor ) ) {
+				if( this.requiredArguments.valueContentEquals( other.requiredArguments ) ) {
+					if( this.variableArguments.valueContentEquals( other.variableArguments ) ) {
+						return this.keyedArguments.valueContentEquals( other.keyedArguments );
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceExpression extends Expression {
+public final class ResourceExpression extends Expression {
 	public DeclarationProperty<AbstractType<?, ?, ?>> type = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public org.lgna.project.ast.ResourceProperty resource = new org.lgna.project.ast.ResourceProperty( this );
 
@@ -64,6 +64,17 @@ public class ResourceExpression extends Expression {
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return type.getValue();
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			ResourceExpression other = (ResourceExpression)o;
+			if( this.type.valueEquals( other.type ) ) {
+				return this.resource.valueEquals( other.resource );
+			}
+		}
+		return false;
 	}
 
 	@Override

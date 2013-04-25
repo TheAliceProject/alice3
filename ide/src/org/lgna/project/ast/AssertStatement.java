@@ -69,6 +69,17 @@ public class AssertStatement extends Statement {
 	}
 
 	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			AssertStatement other = (AssertStatement)o;
+			if( this.expression.valueContentEquals( other.expression ) ) {
+				return this.message.valueContentEquals( other.message );
+			}
+		}
+		return false;
+	}
+
+	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		generator.appendString( "assert " );
 		generator.appendExpression( this.expression.getValue() );

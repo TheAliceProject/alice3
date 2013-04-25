@@ -61,6 +61,15 @@ public abstract class AbstractStatementWithBody extends Statement implements Sta
 	}
 
 	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			AbstractStatementWithBody other = (AbstractStatementWithBody)o;
+			return this.body.valueContentEquals( other.body );
+		}
+		return false;
+	}
+
+	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		return rv;
 	}
