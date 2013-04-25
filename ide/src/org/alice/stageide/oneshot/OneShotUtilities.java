@@ -68,7 +68,7 @@ public class OneShotUtilities {
 				models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 			}
 			if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
-				models.add( new IkPoser( (NamedUserType)field.getDeclaringType(), false ).getMenuItemPrepModel() );
+				models.add( new IkPoser( (NamedUserType)field.getValueType(), false ).getMenuItemPrepModel() );
 			}
 			models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 		}

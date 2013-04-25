@@ -102,8 +102,6 @@ public class IkPoser extends SProgram {
 		case 2:
 			assert false : N;
 		}
-		System.out.println( "type? " + type );
-		System.out.println( "arguments? " + arguments );
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		return userInstance.getJavaInstance( SBiped.class );
 	}
