@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayAccess extends Expression {
+public final class ArrayAccess extends Expression {
 	public DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
@@ -97,6 +97,19 @@ public class ArrayAccess extends Expression {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			ArrayAccess other = (ArrayAccess)o;
+			if( this.arrayType.valueEquals( other.arrayType ) ) {
+				if( this.array.valueContentEquals( other.array ) ) {
+					return this.index.valueContentEquals( other.index );
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

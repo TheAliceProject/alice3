@@ -144,6 +144,23 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			MethodInvocation other = (MethodInvocation)o;
+			if( this.expression.valueContentEquals( other.expression ) ) {
+				if( this.method.valueEquals( other.method ) ) {
+					if( this.requiredArguments.valueContentEquals( other.requiredArguments ) ) {
+						if( this.variableArguments.valueContentEquals( other.variableArguments ) ) {
+							return this.keyedArguments.valueContentEquals( other.keyedArguments );
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		//		NodeUtilities.safeAppendRepr( rv, this.expression.getValue(), locale );
 		//		rv.append( "." );

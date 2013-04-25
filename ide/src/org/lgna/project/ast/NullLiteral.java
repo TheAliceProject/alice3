@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class NullLiteral extends AbstractLiteral {
+public final class NullLiteral extends AbstractLiteral {
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		//todo

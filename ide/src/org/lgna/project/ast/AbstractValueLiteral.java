@@ -45,11 +45,20 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractValueLiteral extends AbstractLiteral {
-	public abstract edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty();
+public abstract class AbstractValueLiteral<T> extends AbstractLiteral {
+	public abstract edu.cmu.cs.dennisc.property.InstanceProperty<T> getValueProperty();
 
 	@Override
 	public boolean isValid() {
 		return this.getValueProperty().getValue() != null;
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			AbstractValueLiteral<T> other = (AbstractValueLiteral<T>)o;
+			return this.getValueProperty().valueEquals( other.getValueProperty() );
+		}
+		return false;
 	}
 }
