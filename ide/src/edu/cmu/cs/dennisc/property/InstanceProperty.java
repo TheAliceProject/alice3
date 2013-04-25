@@ -151,6 +151,24 @@ public class InstanceProperty<E> implements Property<E> {
 		readValue( ois );
 	}
 
+	public boolean valueEquals( InstanceProperty<E> other ) {
+		E thisValue = this.getValue();
+		E otherValue = other.getValue();
+		if( thisValue != null ) {
+			if( otherValue != null ) {
+				return thisValue.equals( otherValue );
+			} else {
+				return false;
+			}
+		} else {
+			if( otherValue != null ) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+
 	@Override
 	public String toString() {
 		return getClass().getName() + "[owner=" + getOwner() + ";name=" + getName() + "]";

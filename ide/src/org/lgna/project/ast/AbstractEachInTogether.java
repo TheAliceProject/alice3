@@ -71,6 +71,17 @@ public abstract class AbstractEachInTogether extends AbstractStatementWithBody i
 	protected abstract ExpressionProperty getArrayOrIterableProperty();
 
 	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			AbstractEachInTogether other = (AbstractEachInTogether)o;
+			if( this.item.valueContentEquals( other.item ) ) {
+				return this.getArrayOrIterableProperty().valueContentEquals( other.getArrayOrIterableProperty() );
+			}
+		}
+		return false;
+	}
+
+	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		UserLocal itemValue = this.item.getValue();
 		AbstractType<?, ?, ?> itemType = itemValue.getValueType();

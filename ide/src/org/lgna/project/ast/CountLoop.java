@@ -77,6 +77,19 @@ public class CountLoop extends AbstractLoop {
 	}
 
 	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			CountLoop other = (CountLoop)o;
+			if( this.variable.valueContentEquals( other.variable ) ) {
+				if( this.constant.valueContentEquals( other.constant ) ) {
+					return this.count.valueContentEquals( other.count );
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( "count " );
 		NodeUtilities.safeAppendRepr( rv, this.count.getValue(), locale );

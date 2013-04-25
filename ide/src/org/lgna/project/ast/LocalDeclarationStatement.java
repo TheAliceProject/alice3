@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalDeclarationStatement extends Statement {
+public final class LocalDeclarationStatement extends Statement {
 	public DeclarationProperty<UserLocal> local = new DeclarationProperty<UserLocal>( this ) {
 		@Override
 		public boolean isReference() {
@@ -66,6 +66,17 @@ public class LocalDeclarationStatement extends Statement {
 	public LocalDeclarationStatement( UserLocal local, Expression initializer ) {
 		this.local.setValue( local );
 		this.initializer.setValue( initializer );
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			LocalDeclarationStatement other = (LocalDeclarationStatement)o;
+			if( this.local.valueContentEquals( other.local ) ) {
+				return this.initializer.valueContentEquals( other.initializer );
+			}
+		}
+		return false;
 	}
 
 	@Override
