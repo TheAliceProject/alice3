@@ -84,10 +84,10 @@ public final class ArrayLength extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ArrayLength other = (ArrayLength)o;
-			return this.array.valueContentEquals( other.array );
+			return this.array.valueContentEquals( other.array, strictness );
 		}
 		return false;
 	}

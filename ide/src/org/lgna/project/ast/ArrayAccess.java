@@ -100,12 +100,12 @@ public final class ArrayAccess extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ArrayAccess other = (ArrayAccess)o;
-			if( this.arrayType.valueEquals( other.arrayType ) ) {
-				if( this.array.valueContentEquals( other.array ) ) {
-					return this.index.valueContentEquals( other.index );
+			if( this.arrayType.valueContentEquals( other.arrayType, strictness ) ) {
+				if( this.array.valueContentEquals( other.array, strictness ) ) {
+					return this.index.valueContentEquals( other.index, strictness );
 				}
 			}
 		}

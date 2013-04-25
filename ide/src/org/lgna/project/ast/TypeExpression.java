@@ -71,10 +71,10 @@ public final class TypeExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			TypeExpression other = (TypeExpression)o;
-			return this.value.valueEquals( other.value );
+			return this.value.valueContentEquals( other.value, strictness );
 		}
 		return false;
 	}

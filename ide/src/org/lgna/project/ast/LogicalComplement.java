@@ -78,10 +78,10 @@ public final class LogicalComplement extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			LogicalComplement other = (LogicalComplement)o;
-			return this.operand.valueContentEquals( other.operand );
+			return this.operand.valueContentEquals( other.operand, strictness );
 		}
 		return false;
 	}

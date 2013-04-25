@@ -54,8 +54,8 @@ public abstract class AbstractValueLiteral<T> extends AbstractLiteral {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			AbstractValueLiteral<T> other = (AbstractValueLiteral<T>)o;
 			return this.getValueProperty().valueEquals( other.getValueProperty() );
 		}

@@ -59,8 +59,8 @@ public final class SuperExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			SuperExpression other = (SuperExpression)o;
 			//todo: check type?
 			return true;

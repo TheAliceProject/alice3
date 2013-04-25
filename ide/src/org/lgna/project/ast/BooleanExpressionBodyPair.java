@@ -63,11 +63,11 @@ public final class BooleanExpressionBodyPair extends AbstractNode {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			BooleanExpressionBodyPair other = (BooleanExpressionBodyPair)o;
-			if( this.expression.valueContentEquals( other.expression ) ) {
-				return this.body.valueContentEquals( other.body );
+			if( this.expression.valueContentEquals( other.expression, strictness ) ) {
+				return this.body.valueContentEquals( other.body, strictness );
 			}
 		}
 		return false;

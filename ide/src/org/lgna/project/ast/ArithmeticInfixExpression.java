@@ -284,10 +284,10 @@ public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticI
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ArithmeticInfixExpression other = (ArithmeticInfixExpression)o;
-			return this.expressionType.valueEquals( other.expressionType );
+			return this.expressionType.valueContentEquals( other.expressionType, strictness );
 		}
 		return false;
 	}
