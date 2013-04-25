@@ -109,19 +109,9 @@ public enum LifeStage {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
 	}
 
-	private static java.util.Map<LifeStage, Class<? extends FullBodyOutfit>> s_mapLifeStageUnisexFullBodyOutfit;
-	private static java.util.Map<LifeStage, Class<? extends Hair>> s_mapLifeStageUnisexHair;
 	private static edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>> s_mapLifeStageGenderFullBodyOutfit;
 	private static edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends Hair>> s_mapLifeStageGenderHair;
 	static {
-		s_mapLifeStageUnisexFullBodyOutfit = new java.util.HashMap<LifeStage, Class<? extends FullBodyOutfit>>();
-		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.ADULT, UnisexAdultFullBodyOutfit.class );
-		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.CHILD, UnisexChildFullBodyOutfit.class );
-
-		s_mapLifeStageUnisexHair = new java.util.HashMap<LifeStage, Class<? extends Hair>>();
-		s_mapLifeStageUnisexHair.put( LifeStage.ADULT, AdultHair.class );
-		s_mapLifeStageUnisexHair.put( LifeStage.CHILD, ChildHair.class );
-
 		s_mapLifeStageGenderFullBodyOutfit = new edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>>();
 		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class );
 		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class );
@@ -141,14 +131,6 @@ public enum LifeStage {
 
 	public Class<? extends Hair> getGenderedHairInterfaceClass( Gender gender ) {
 		return s_mapLifeStageGenderHair.get( this, gender );
-	}
-
-	public Class<? extends FullBodyOutfit> getUnisexFullBodyOutfitInterfaceClass() {
-		return s_mapLifeStageUnisexFullBodyOutfit.get( this );
-	}
-
-	public Class<? extends Hair> getUnisexHairInterfaceClass() {
-		return s_mapLifeStageUnisexHair.get( this );
 	}
 
 	public abstract PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face );

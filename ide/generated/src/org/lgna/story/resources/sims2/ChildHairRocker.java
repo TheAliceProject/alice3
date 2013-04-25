@@ -22,7 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
-public enum ChildHairRocker implements ChildHair {
+public enum ChildHairRocker implements MaleChildHair, FemaleChildHair {
 	BLACK,
 	BLOND,
 	BROWN,

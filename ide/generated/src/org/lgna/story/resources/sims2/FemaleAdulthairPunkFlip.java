@@ -22,7 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
-public enum FemaleAdulthairPunkFlip implements FemaleAdultHair {
+public enum FemaleAdultHairPunkFlip implements FemaleAdultHair {
 	BLACK,
 	BLOND,
 	BROWN,

@@ -28,7 +28,7 @@ public enum FemaleAdultHairLong implements FemaleAdultHair {
 	BLOND,
 	GREY,
 	RED,
-	BELLA,
+	PLATINUM,
 	STREAKED,
 	FREAKED;
 
