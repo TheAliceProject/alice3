@@ -69,11 +69,11 @@ public final class LocalDeclarationStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			LocalDeclarationStatement other = (LocalDeclarationStatement)o;
-			if( this.local.valueContentEquals( other.local ) ) {
-				return this.initializer.valueContentEquals( other.initializer );
+			if( this.local.valueContentEquals( other.local, strictness ) ) {
+				return this.initializer.valueContentEquals( other.initializer, strictness );
 			}
 		}
 		return false;

@@ -77,12 +77,12 @@ public class CountLoop extends AbstractLoop {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			CountLoop other = (CountLoop)o;
-			if( this.variable.valueContentEquals( other.variable ) ) {
-				if( this.constant.valueContentEquals( other.constant ) ) {
-					return this.count.valueContentEquals( other.count );
+			if( this.variable.valueContentEquals( other.variable, strictness ) ) {
+				if( this.constant.valueContentEquals( other.constant, strictness ) ) {
+					return this.count.valueContentEquals( other.count, strictness );
 				}
 			}
 		}

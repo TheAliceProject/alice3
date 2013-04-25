@@ -59,11 +59,11 @@ public final class ConditionalStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ConditionalStatement other = (ConditionalStatement)o;
-			if( this.booleanExpressionBodyPairs.valueContentEquals( other.booleanExpressionBodyPairs ) ) {
-				return this.elseBody.valueContentEquals( other.elseBody );
+			if( this.booleanExpressionBodyPairs.valueContentEquals( other.booleanExpressionBodyPairs, strictness ) ) {
+				return this.elseBody.valueContentEquals( other.elseBody, strictness );
 			}
 		}
 		return false;

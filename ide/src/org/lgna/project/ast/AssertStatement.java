@@ -69,11 +69,11 @@ public class AssertStatement extends Statement {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			AssertStatement other = (AssertStatement)o;
-			if( this.expression.valueContentEquals( other.expression ) ) {
-				return this.message.valueContentEquals( other.message );
+			if( this.expression.valueContentEquals( other.expression, strictness ) ) {
+				return this.message.valueContentEquals( other.message, strictness );
 			}
 		}
 		return false;

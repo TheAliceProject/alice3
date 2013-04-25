@@ -100,12 +100,12 @@ public final class ArrayInstanceCreation extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ArrayInstanceCreation other = (ArrayInstanceCreation)o;
-			if( this.arrayType.valueEquals( other.arrayType ) ) {
+			if( this.arrayType.valueContentEquals( other.arrayType, strictness ) ) {
 				if( this.lengths.valueEquals( other.lengths ) ) {
-					return this.expressions.valueContentEquals( other.expressions );
+					return this.expressions.valueContentEquals( other.expressions, strictness );
 				}
 			}
 		}

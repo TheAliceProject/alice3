@@ -67,10 +67,11 @@ public final class ResourceExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ResourceExpression other = (ResourceExpression)o;
-			if( this.type.valueEquals( other.type ) ) {
+			if( this.type.valueContentEquals( other.type, strictness ) ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "resource equals strictness" );
 				return this.resource.valueEquals( other.resource );
 			}
 		}

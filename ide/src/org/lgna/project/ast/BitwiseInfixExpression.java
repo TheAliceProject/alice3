@@ -160,12 +160,12 @@ public final class BitwiseInfixExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			BitwiseInfixExpression other = (BitwiseInfixExpression)o;
-			if( this.leftOperand.valueContentEquals( other.leftOperand ) ) {
+			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness ) ) {
 				if( this.operator.valueEquals( other.operator ) ) {
-					return this.rightOperand.valueContentEquals( other.rightOperand );
+					return this.rightOperand.valueContentEquals( other.rightOperand, strictness );
 				}
 			}
 		}

@@ -85,8 +85,8 @@ public final class ThisExpression extends Expression {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			ThisExpression other = (ThisExpression)o;
 			//todo: check type?
 			return true;

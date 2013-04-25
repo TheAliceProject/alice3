@@ -52,8 +52,8 @@ public abstract class Statement extends AbstractNode {
 	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			Statement other = (Statement)o;
 			return this.isEnabled.valueEquals( other.isEnabled );
 		}

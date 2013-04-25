@@ -144,14 +144,14 @@ public class MethodInvocation extends Expression implements ArgumentOwner {
 	}
 
 	@Override
-	public boolean contentEquals( Node o ) {
-		if( super.contentEquals( o ) ) {
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
 			MethodInvocation other = (MethodInvocation)o;
-			if( this.expression.valueContentEquals( other.expression ) ) {
-				if( this.method.valueEquals( other.method ) ) {
-					if( this.requiredArguments.valueContentEquals( other.requiredArguments ) ) {
-						if( this.variableArguments.valueContentEquals( other.variableArguments ) ) {
-							return this.keyedArguments.valueContentEquals( other.keyedArguments );
+			if( this.expression.valueContentEquals( other.expression, strictness ) ) {
+				if( this.method.valueContentEquals( other.method, strictness ) ) {
+					if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness ) ) {
+						if( this.variableArguments.valueContentEquals( other.variableArguments, strictness ) ) {
+							return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness );
 						}
 					}
 				}
