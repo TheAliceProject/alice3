@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ShiftInfixExpression extends Expression {
+public final class ShiftInfixExpression extends Expression {
 	public enum Operator {
 		LEFT_SHIFT() {
 			@Override
@@ -158,6 +158,19 @@ public class ShiftInfixExpression extends Expression {
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return this.expressionType.getValue();
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			ShiftInfixExpression other = (ShiftInfixExpression)o;
+			if( this.leftOperand.valueContentEquals( other.leftOperand, strictness ) ) {
+				if( this.operator.valueEquals( other.operator ) ) {
+					return this.rightOperand.valueContentEquals( other.rightOperand, strictness );
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

@@ -91,4 +91,19 @@ public abstract class ConstructorInvocationStatement extends Statement implement
 	public org.lgna.project.ast.KeyedArgumentListProperty getKeyedArgumentsProperty() {
 		return this.keyedArguments;
 	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			ConstructorInvocationStatement other = (ConstructorInvocationStatement)o;
+			if( this.constructor.valueContentEquals( other.constructor, strictness ) ) {
+				if( this.requiredArguments.valueContentEquals( other.requiredArguments, strictness ) ) {
+					if( this.variableArguments.valueContentEquals( other.variableArguments, strictness ) ) {
+						return this.keyedArguments.valueContentEquals( other.keyedArguments, strictness );
+					}
+				}
+			}
+		}
+		return false;
+	}
 }

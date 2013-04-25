@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanLiteral extends AbstractValueLiteral {
+public final class BooleanLiteral extends AbstractValueLiteral<Boolean> {
 	public edu.cmu.cs.dennisc.property.BooleanProperty value = new edu.cmu.cs.dennisc.property.BooleanProperty( this, null );
 
 	@Override
@@ -67,7 +67,7 @@ public class BooleanLiteral extends AbstractValueLiteral {
 	}
 
 	@Override
-	public edu.cmu.cs.dennisc.property.InstanceProperty<?> getValueProperty() {
+	public edu.cmu.cs.dennisc.property.InstanceProperty<Boolean> getValueProperty() {
 		return this.value;
 	}
 

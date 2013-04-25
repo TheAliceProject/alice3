@@ -56,6 +56,15 @@ public class BlockStatement extends Statement {
 		this.statements.add( statements );
 	}
 
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			BlockStatement other = (BlockStatement)o;
+			return this.statements.valueContentEquals( other.statements, strictness );
+		}
+		return false;
+	}
+
 	/* package-private */void appendBody( JavaCodeGenerator generator ) {
 		for( Statement statement : this.statements ) {
 			statement.appendJava( generator );

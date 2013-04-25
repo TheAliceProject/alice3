@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixExpression.Operator> {
+public final class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixExpression.Operator> {
 	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 
 	public enum Operator {
@@ -281,6 +281,15 @@ public class ArithmeticInfixExpression extends InfixExpression<ArithmeticInfixEx
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return this.expressionType.getValue();
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			ArithmeticInfixExpression other = (ArithmeticInfixExpression)o;
+			return this.expressionType.valueContentEquals( other.expressionType, strictness );
+		}
+		return false;
 	}
 
 	@Override

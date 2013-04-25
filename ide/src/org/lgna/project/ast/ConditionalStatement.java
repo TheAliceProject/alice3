@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalStatement extends Statement {
+public final class ConditionalStatement extends Statement {
 	public NodeListProperty<BooleanExpressionBodyPair> booleanExpressionBodyPairs = new NodeListProperty<BooleanExpressionBodyPair>( this );
 	public NodeProperty<BlockStatement> elseBody = new NodeProperty<BlockStatement>( this );
 
@@ -56,6 +56,17 @@ public class ConditionalStatement extends Statement {
 	public ConditionalStatement( BooleanExpressionBodyPair[] booleanExpressionBodyPairs, BlockStatement elseBody ) {
 		this.booleanExpressionBodyPairs.add( booleanExpressionBodyPairs );
 		this.elseBody.setValue( elseBody );
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			ConditionalStatement other = (ConditionalStatement)o;
+			if( this.booleanExpressionBodyPairs.valueContentEquals( other.booleanExpressionBodyPairs, strictness ) ) {
+				return this.elseBody.valueContentEquals( other.elseBody, strictness );
+			}
+		}
+		return false;
 	}
 
 	@Override
