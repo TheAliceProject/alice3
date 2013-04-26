@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,34 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.lgna.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField> {
-	public TextField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
-		super( model, operation );
+public abstract class StringStateOperation extends ActionOperation {
+	private final StringState stringState;
+
+	public StringStateOperation( java.util.UUID migrationId, StringState stringState ) {
+		super( stringState.getGroup(), migrationId );
+		this.stringState = stringState;
 	}
 
-	public TextField( org.lgna.croquet.StringState model ) {
-		this( model, null );
-	}
-
-	@Override
-	public void updateTextForBlankCondition( String textForBlankCondition ) {
-		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
-	}
+	protected abstract org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, String value ) throws CancelException;
 
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+	protected final void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
+		org.lgna.croquet.history.CompletionStep<?> step = transaction.createAndSetCompletionStep( this, trigger );
+		try {
+			org.lgna.croquet.edits.Edit edit = this.perform( step, this.stringState.getValue() );
+			if( edit != null ) {
+				step.commitAndInvokeDo( edit );
+			} else {
+				step.finish();
 			}
-
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				if( TextField.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
-			}
-		};
-		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
-		return rv;
+		} catch( CancelException ce ) {
+			step.cancel();
+		}
 	}
+
 }
