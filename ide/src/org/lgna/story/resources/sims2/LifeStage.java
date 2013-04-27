@@ -51,21 +51,11 @@ public enum LifeStage {
 		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return null;
 		}
-
-		@Override
-		public String[] getHairColors() {
-			return EXCLUDE_GREY;
-		}
 	},
 	CHILD {
 		@Override
 		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return new ChildPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-		}
-
-		@Override
-		public String[] getHairColors() {
-			return EXCLUDE_GREY;
 		}
 	},
 	TEEN {
@@ -73,21 +63,11 @@ public enum LifeStage {
 		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return null;
 		}
-
-		@Override
-		public String[] getHairColors() {
-			return EXCLUDE_GREY;
-		}
 	},
 	ADULT {
 		@Override
 		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return new AdultPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
-		}
-
-		@Override
-		public String[] getHairColors() {
-			return INCLUDE_GREY;
 		}
 	},
 	ELDER {
@@ -95,15 +75,7 @@ public enum LifeStage {
 		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
 			return null;
 		}
-
-		@Override
-		public String[] getHairColors() {
-			return INCLUDE_GREY;
-		}
 	};
-
-	private static final String[] INCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND", "GREY" };
-	private static final String[] EXCLUDE_GREY = { "BLACK", "BROWN", "RED", "BLOND" };
 
 	public static LifeStage getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
@@ -134,6 +106,4 @@ public enum LifeStage {
 	}
 
 	public abstract PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face );
-
-	public abstract String[] getHairColors();
 }
