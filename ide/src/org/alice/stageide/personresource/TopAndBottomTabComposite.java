@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,7 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.story.resources.sims2;
+package org.alice.stageide.personresource;
 
-public interface Outfit {
+/**
+ * @author Dennis Cosgrove
+ */
+public class TopAndBottomTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.TopAndBottomTabView> {
+	public TopAndBottomTabComposite() {
+		super( java.util.UUID.fromString( "ef64b1eb-0731-43ae-ae17-143d8e05df02" ), IsCloseable.FALSE );
+	}
+
+	@Override
+	protected org.alice.stageide.personresource.views.TopAndBottomTabView createView() {
+		return new org.alice.stageide.personresource.views.TopAndBottomTabView( this );
+	}
 }

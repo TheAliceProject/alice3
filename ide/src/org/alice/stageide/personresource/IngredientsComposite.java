@@ -54,12 +54,13 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	} );
 
 	private final BodyTabComposite bodyTab = new BodyTabComposite();
+	private final TopAndBottomTabComposite topAndBottomTab = new TopAndBottomTabComposite();
 	private final HairTabComposite hairTab = new HairTabComposite();
 	private final FaceTabComposite faceTab = new FaceTabComposite();
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
 	private final SkinColorState skinColorState = new SkinColorState();
-	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadHairTabState = this.createTabSelectionState( this.createKey( "bodyHeadHairTabState" ), 0, this.bodyTab, this.hairTab, this.faceTab );
+	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadHairTabState = this.createTabSelectionState( this.createKey( "bodyHeadHairTabState" ), 0, this.bodyTab, this.topAndBottomTab, null, this.hairTab, null, this.faceTab );
 
 	private final edu.cmu.cs.dennisc.map.MapToMap<org.lgna.story.resources.sims2.LifeStage, org.lgna.story.resources.sims2.Gender, org.lgna.story.resources.sims2.PersonResource> mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private final org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage> lifeStageListener = new org.lgna.croquet.State.ValueListener<org.lgna.story.resources.sims2.LifeStage>() {
