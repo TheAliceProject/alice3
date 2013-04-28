@@ -552,9 +552,14 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				org.lgna.story.resources.sims2.Hair prevHair = getHair( this.prevPersonResource );
 				boolean isHairChanged = nextHair != prevHair;
 
-				if( isHairChanged ) {
-					org.alice.stageide.personresource.data.HairHatStyleHairColorName hairHatStyleHairColorName = org.alice.stageide.personresource.data.HairUtilities.getHairHatStyleColorNameFromHair( nextLifeStage, nextGender, nextHair );
-					this.updateHairHatStyleHairColorName( nextLifeStage, nextGender, hairHatStyleHairColorName );
+				if( isLifeStageChanged || isGenderChanged ) {
+					this.hairTab.getHairHatStyleListData().setLifeStageAndGender( nextLifeStage, nextGender );
+					this.hairTab.getHairHatStyleState().setRandomSelectedValue();
+				} else {
+					if( isHairChanged ) {
+						org.alice.stageide.personresource.data.HairHatStyleHairColorName hairHatStyleHairColorName = org.alice.stageide.personresource.data.HairUtilities.getHairHatStyleColorNameFromHair( nextLifeStage, nextGender, nextHair );
+						this.updateHairHatStyleHairColorName( nextLifeStage, nextGender, hairHatStyleHairColorName );
+					}
 				}
 				//				if( isLifeStageChanged || isHairChanged ) {
 				//					String[] nextColors = org.alice.stageide.personresource.data.HairColorNameListData.getHairColors( nextHair );
