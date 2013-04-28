@@ -147,15 +147,20 @@ public abstract class JColorSlider extends javax.swing.JComponent {
 
 	@Override
 	public java.awt.Dimension getMinimumSize() {
-		return new java.awt.Dimension( HALF_ARROW_WIDTH + HALF_ARROW_WIDTH + 32, ARROW_HEIGHT + ARROW_HEIGHT + 16 );
+		java.awt.Insets insets = this.getInsets();
+		return new java.awt.Dimension( insets.left + insets.right + HALF_ARROW_WIDTH + HALF_ARROW_WIDTH + 32, insets.top + insets.bottom + ARROW_HEIGHT + ARROW_HEIGHT + 16 );
 	}
 
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
 
+		java.awt.Insets insets = this.getInsets();
+		g.translate( insets.left, insets.top );
+		int width = this.getWidth() - insets.left - insets.right;
+
 		int xA = HALF_ARROW_WIDTH;
-		int xF = this.getWidth() - HALF_ARROW_WIDTH;
+		int xF = width - HALF_ARROW_WIDTH;
 
 		int w = xF - xA;
 
@@ -164,8 +169,9 @@ public abstract class JColorSlider extends javax.swing.JComponent {
 		int xD = (int)( xA + ( w * 0.6 ) );
 		int xE = (int)( xA + ( w * 0.8 ) );
 
+		int height = this.getHeight() - insets.top - insets.bottom;
 		int y0 = ARROW_HEIGHT;
-		int y1 = this.getHeight() - ARROW_HEIGHT;
+		int y1 = height - ARROW_HEIGHT;
 
 		int h = y1 - y0;
 
@@ -193,5 +199,7 @@ public abstract class JColorSlider extends javax.swing.JComponent {
 		double x = portion * w;
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.SOUTH, (int)x, 0, HALF_ARROW_WIDTH * 2, ARROW_HEIGHT );
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.drawTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.NORTH, (int)x, y1, HALF_ARROW_WIDTH * 2, ARROW_HEIGHT );
+
+		g.translate( -insets.left, -insets.top );
 	}
 }
