@@ -45,16 +45,59 @@ package org.alice.stageide.personresource.data;
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitData extends IngredientListData<org.lgna.story.resources.sims2.FullBodyOutfit> {
-	public FullBodyOutfitData() {
-		super( org.alice.stageide.personresource.codecs.FullBodyOutfitCodec.SINGLETON );
+public abstract class IngredientListData<T> extends org.lgna.croquet.data.RefreshableListData<T> {
+	private org.lgna.story.resources.sims2.LifeStage lifeStage;
+	private org.lgna.story.resources.sims2.Gender gender;
+
+	public IngredientListData( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+		super( itemCodec );
 	}
 
-	@Override
-	protected java.util.List<org.lgna.story.resources.sims2.FullBodyOutfit> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		return edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
-				org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ),
-				null
-				);
+	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
+		return this.lifeStage;
 	}
+
+	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
+		if( this.lifeStage == lifeStage ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.refresh();
+		}
+	}
+
+	public org.lgna.story.resources.sims2.Gender getGender() {
+		return this.gender;
+	}
+
+	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
+		if( this.gender == gender ) {
+			//pass
+		} else {
+			this.gender = gender;
+			this.refresh();
+		}
+	}
+
+	public void setLifeStageAndGender( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+		if( ( this.lifeStage == lifeStage ) && ( this.gender == gender ) ) {
+			//pass
+		} else {
+			this.lifeStage = lifeStage;
+			this.gender = gender;
+			this.refresh();
+		}
+	}
+
+	protected abstract java.util.List<T> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender );
+
+	@Override
+	protected final java.util.List<T> createValues() {
+		if( ( this.lifeStage != null ) && ( this.gender != null ) ) {
+			return this.createValues( this.lifeStage, this.gender );
+		} else {
+			return java.util.Collections.emptyList();
+		}
+	}
+
 }

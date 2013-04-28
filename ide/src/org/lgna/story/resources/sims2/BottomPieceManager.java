@@ -40,21 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.data;
+package org.lgna.story.resources.sims2;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitData extends IngredientListData<org.lgna.story.resources.sims2.FullBodyOutfit> {
-	public FullBodyOutfitData() {
-		super( org.alice.stageide.personresource.codecs.FullBodyOutfitCodec.SINGLETON );
+public class BottomPieceManager extends IngredientManager<BottomPiece> {
+	private static BottomPieceManager singleton = new BottomPieceManager();
+
+	public static BottomPieceManager getSingleton() {
+		return singleton;
+	}
+
+	private BottomPieceManager() {
+		this.add( MaleChildBottomPiece.class );
+		this.add( FemaleChildBottomPiece.class );
+		this.add( MaleAdultBottomPiece.class );
+		this.add( FemaleAdultBottomPiece.class );
 	}
 
 	@Override
-	protected java.util.List<org.lgna.story.resources.sims2.FullBodyOutfit> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		return edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
-				org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ),
-				null
-				);
+	protected Class<Class<? extends BottomPiece>> getImplementingClassesComponentType() {
+		return (Class<Class<? extends BottomPiece>>)BottomPiece.class.getClass();
+	}
+
+	@Override
+	protected Class<? extends BottomPiece> getGenderedInterfaceClass( LifeStage lifeStage, Gender gender ) {
+		return lifeStage.getGenderedBottomPieceInterfaceClass( gender );
 	}
 }

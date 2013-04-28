@@ -45,15 +45,15 @@ package org.alice.stageide.personresource.data;
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitData extends IngredientListData<org.lgna.story.resources.sims2.FullBodyOutfit> {
-	public FullBodyOutfitData() {
-		super( org.alice.stageide.personresource.codecs.FullBodyOutfitCodec.SINGLETON );
+public class TopPieceData extends IngredientListData<org.lgna.story.resources.sims2.TopPiece> {
+	public TopPieceData() {
+		super( org.alice.stageide.personresource.codecs.TopPieceCodec.SINGLETON );
 	}
 
 	@Override
-	protected java.util.List<org.lgna.story.resources.sims2.FullBodyOutfit> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
+	protected java.util.List<org.lgna.story.resources.sims2.TopPiece> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
 		return edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
-				org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ),
+				org.lgna.story.resources.sims2.TopPieceManager.getSingleton().getImplementingClasses( lifeStage, gender ),
 				null
 				);
 	}

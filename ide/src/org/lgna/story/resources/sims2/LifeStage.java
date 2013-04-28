@@ -81,28 +81,46 @@ public enum LifeStage {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
 	}
 
-	private static edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>> s_mapLifeStageGenderFullBodyOutfit;
-	private static edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends Hair>> s_mapLifeStageGenderHair;
+	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>> mapLifeStageAndGenderToFullBodyOutfit = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends TopPiece>> mapLifeStageAndGenderToTopPiece = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends BottomPiece>> mapLifeStageAndGenderToBottomPiece = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends Hair>> mapLifeStageAndGenderToHair = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	static {
-		s_mapLifeStageGenderFullBodyOutfit = new edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends FullBodyOutfit>>();
-		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class );
-		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class );
-		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.CHILD, Gender.MALE, MaleChildFullBodyOutfit.class );
-		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildFullBodyOutfit.class );
+		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class );
+		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class );
+		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.CHILD, Gender.MALE, MaleChildFullBodyOutfit.class );
+		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildFullBodyOutfit.class );
 
-		s_mapLifeStageGenderHair = new edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends Hair>>();
-		s_mapLifeStageGenderHair.put( LifeStage.ADULT, Gender.MALE, MaleAdultHair.class );
-		s_mapLifeStageGenderHair.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultHair.class );
-		s_mapLifeStageGenderHair.put( LifeStage.CHILD, Gender.MALE, MaleChildHair.class );
-		s_mapLifeStageGenderHair.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildHair.class );
+		mapLifeStageAndGenderToTopPiece.put( LifeStage.ADULT, Gender.MALE, MaleAdultTopPiece.class );
+		mapLifeStageAndGenderToTopPiece.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultTopPiece.class );
+		mapLifeStageAndGenderToTopPiece.put( LifeStage.CHILD, Gender.MALE, MaleChildTopPiece.class );
+		mapLifeStageAndGenderToTopPiece.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildTopPiece.class );
+
+		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ADULT, Gender.MALE, MaleAdultBottomPiece.class );
+		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultBottomPiece.class );
+		mapLifeStageAndGenderToBottomPiece.put( LifeStage.CHILD, Gender.MALE, MaleChildBottomPiece.class );
+		mapLifeStageAndGenderToBottomPiece.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildBottomPiece.class );
+
+		mapLifeStageAndGenderToHair.put( LifeStage.ADULT, Gender.MALE, MaleAdultHair.class );
+		mapLifeStageAndGenderToHair.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultHair.class );
+		mapLifeStageAndGenderToHair.put( LifeStage.CHILD, Gender.MALE, MaleChildHair.class );
+		mapLifeStageAndGenderToHair.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildHair.class );
 	}
 
 	public Class<? extends FullBodyOutfit> getGenderedFullBodyOutfitInterfaceClass( Gender gender ) {
-		return s_mapLifeStageGenderFullBodyOutfit.get( this, gender );
+		return mapLifeStageAndGenderToFullBodyOutfit.get( this, gender );
+	}
+
+	public Class<? extends TopPiece> getGenderedTopPieceInterfaceClass( Gender gender ) {
+		return mapLifeStageAndGenderToTopPiece.get( this, gender );
+	}
+
+	public Class<? extends BottomPiece> getGenderedBottomPieceInterfaceClass( Gender gender ) {
+		return mapLifeStageAndGenderToBottomPiece.get( this, gender );
 	}
 
 	public Class<? extends Hair> getGenderedHairInterfaceClass( Gender gender ) {
-		return s_mapLifeStageGenderHair.get( this, gender );
+		return mapLifeStageAndGenderToHair.get( this, gender );
 	}
 
 	public abstract PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face );

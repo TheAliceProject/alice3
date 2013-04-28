@@ -40,21 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.data;
+package org.alice.stageide.personresource.codecs;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FullBodyOutfitData extends IngredientListData<org.lgna.story.resources.sims2.FullBodyOutfit> {
-	public FullBodyOutfitData() {
-		super( org.alice.stageide.personresource.codecs.FullBodyOutfitCodec.SINGLETON );
+public enum BottomPieceCodec implements org.lgna.croquet.ItemCodec<org.lgna.story.resources.sims2.BottomPiece> {
+	SINGLETON;
+	public Class<org.lgna.story.resources.sims2.BottomPiece> getValueClass() {
+		return org.lgna.story.resources.sims2.BottomPiece.class;
 	}
 
-	@Override
-	protected java.util.List<org.lgna.story.resources.sims2.FullBodyOutfit> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		return edu.cmu.cs.dennisc.java.lang.EnumUtilities.getEnumConstants(
-				org.lgna.story.resources.sims2.FullBodyOutfitManager.getSingleton().getImplementingClasses( lifeStage, gender ),
-				null
-				);
+	public org.lgna.story.resources.sims2.BottomPiece decodeValue( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		throw new RuntimeException( "todo" );
+	}
+
+	public void encodeValue( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.lgna.story.resources.sims2.BottomPiece value ) {
+		throw new RuntimeException( "todo" );
+	}
+
+	public void appendRepresentation( StringBuilder sb, org.lgna.story.resources.sims2.BottomPiece value ) {
+		sb.append( value );
 	}
 }
