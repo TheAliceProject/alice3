@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,32 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.stageide.personresource;
 
-package org.alice.stageide.personresource.views;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BodyTabView extends org.lgna.croquet.components.MigPanel {
-	public BodyTabView( org.alice.stageide.personresource.BodyTabComposite composite ) {
-		super( composite, "insets 2, fill" );
-		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
-		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.FullBodyOutfit> list = new HorizontalWrapList<org.lgna.story.resources.sims2.FullBodyOutfit>( composite.getFullBodyOutfitState(), -1, org.alice.stageide.personresource.views.renderers.FullBodyOutfitListCellRenderer.getInstance() );
-		list.setBackgroundColor( backgroundColor );
-		org.lgna.croquet.components.ScrollPane scrollPane = new org.lgna.croquet.components.ScrollPane( list );
-		scrollPane.setBothScrollBarIncrements( 66, 66 );
-		scrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
-		org.lgna.croquet.components.Slider slider = composite.getObesityLevelState().createSlider();
-		slider.setBackgroundColor( backgroundColor );
+public class TopAndBottomOutfitTabComposite extends OutfitTabComposite<org.alice.stageide.personresource.views.TopAndBottomOutiftTabView> {
+	private final org.alice.stageide.personresource.data.TopPieceData topPieceData = new org.alice.stageide.personresource.data.TopPieceData();
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.TopPiece> topPieceState = this.createListSelectionState( this.createKey( "topPieceState" ), this.topPieceData, -1 );
+	private final org.alice.stageide.personresource.data.BottomPieceData bottomPieceData = new org.alice.stageide.personresource.data.BottomPieceData();
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BottomPiece> bottomPieceState = this.createListSelectionState( this.createKey( "bottomPieceState" ), this.bottomPieceData, -1 );
 
-		org.lgna.croquet.components.BorderPanel obesityLevelPane = new org.lgna.croquet.components.BorderPanel.Builder()
-				.lineStart( composite.getSetToInShape().createButton() )
-				.center( slider )
-				.lineEnd( composite.getSetToOutOfShape().createButton() )
-				.build();
+	public TopAndBottomOutfitTabComposite() {
+		super( java.util.UUID.fromString( "ef64b1eb-0731-43ae-ae17-143d8e05df02" ) );
+	}
 
-		this.addComponent( scrollPane, "grow, wrap" );
-		this.addComponent( obesityLevelPane, "growx" );
-		this.setBackgroundColor( backgroundColor );
+	public org.alice.stageide.personresource.data.TopPieceData getTopPieceData() {
+		return this.topPieceData;
+	}
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.TopPiece> getTopPieceState() {
+		return this.topPieceState;
+	}
+
+	public org.alice.stageide.personresource.data.BottomPieceData getBottomPieceData() {
+		return this.bottomPieceData;
+	}
+
+	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BottomPiece> getBottomPieceState() {
+		return this.bottomPieceState;
+	}
+
+	@Override
+	protected org.alice.stageide.personresource.views.TopAndBottomOutiftTabView createView() {
+		return new org.alice.stageide.personresource.views.TopAndBottomOutiftTabView( this );
 	}
 }

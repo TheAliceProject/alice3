@@ -53,8 +53,25 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	} );
 
-	private final BodyTabComposite bodyTab = new BodyTabComposite();
-	private final TopAndBottomTabComposite topAndBottomTab = new TopAndBottomTabComposite();
+	private class SetObesityLevelAction implements Action {
+		private final double value;
+
+		public SetObesityLevelAction( double value ) {
+			this.value = value;
+		}
+
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			obesityLevelState.setValueTransactionlessly( this.value );
+			return null;
+		}
+	}
+
+	private final org.lgna.croquet.BoundedDoubleState obesityLevelState = this.createBoundedDoubleState( this.createKey( "obesityLevelState" ), new BoundedDoubleDetails() );
+	private final org.lgna.croquet.Operation setToInShapeOperation = this.createActionOperation( this.createKey( "obesityLevelState(0.0)" ), new SetObesityLevelAction( 0.0 ) );
+	private final org.lgna.croquet.Operation setToOutOfShapeOperation = this.createActionOperation( this.createKey( "obesityLevelState(1.0)" ), new SetObesityLevelAction( 1.0 ) );
+
+	private final FullBodyOutfitTabComposite bodyTab = new FullBodyOutfitTabComposite();
+	private final TopAndBottomOutfitTabComposite topAndBottomTab = new TopAndBottomOutfitTabComposite();
 	private final HairTabComposite hairTab = new HairTabComposite();
 	private final FaceTabComposite faceTab = new FaceTabComposite();
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
@@ -264,14 +281,22 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	}
 
 	public org.lgna.croquet.BoundedDoubleState getObesityLevelState() {
-		return this.bodyTab.getObesityLevelState();
+		return this.obesityLevelState;
+	}
+
+	public org.lgna.croquet.Operation getSetToInShapeOperation() {
+		return this.setToInShapeOperation;
+	}
+
+	public org.lgna.croquet.Operation getSetToOutOfShapeOperation() {
+		return this.setToOutOfShapeOperation;
 	}
 
 	public org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> getBodyHeadHairTabState() {
 		return this.bodyHeadHairTabState;
 	}
 
-	public BodyTabComposite getBodyTab() {
+	public FullBodyOutfitTabComposite getBodyTab() {
 		return this.bodyTab;
 	}
 

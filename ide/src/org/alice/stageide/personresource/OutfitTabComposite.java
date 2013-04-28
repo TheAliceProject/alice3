@@ -45,34 +45,8 @@ package org.alice.stageide.personresource;
 /**
  * @author Dennis Cosgrove
  */
-public class TopAndBottomTabComposite extends org.lgna.croquet.SimpleTabComposite<org.alice.stageide.personresource.views.TopAndBottomTabView> {
-	private final org.alice.stageide.personresource.data.TopPieceData topPieceData = new org.alice.stageide.personresource.data.TopPieceData();
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.TopPiece> topPieceState = this.createListSelectionState( this.createKey( "topPieceState" ), this.topPieceData, -1 );
-	private final org.alice.stageide.personresource.data.BottomPieceData bottomPieceData = new org.alice.stageide.personresource.data.BottomPieceData();
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BottomPiece> bottomPieceState = this.createListSelectionState( this.createKey( "bottomPieceState" ), this.bottomPieceData, -1 );
-
-	public TopAndBottomTabComposite() {
-		super( java.util.UUID.fromString( "ef64b1eb-0731-43ae-ae17-143d8e05df02" ), IsCloseable.FALSE );
-	}
-
-	public org.alice.stageide.personresource.data.TopPieceData getTopPieceData() {
-		return this.topPieceData;
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.TopPiece> getTopPieceState() {
-		return this.topPieceState;
-	}
-
-	public org.alice.stageide.personresource.data.BottomPieceData getBottomPieceData() {
-		return this.bottomPieceData;
-	}
-
-	public org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.BottomPiece> getBottomPieceState() {
-		return this.bottomPieceState;
-	}
-
-	@Override
-	protected org.alice.stageide.personresource.views.TopAndBottomTabView createView() {
-		return new org.alice.stageide.personresource.views.TopAndBottomTabView( this );
+public abstract class OutfitTabComposite<V extends org.alice.stageide.personresource.views.OutfitTabView> extends org.lgna.croquet.SimpleTabComposite<V> {
+	public OutfitTabComposite( java.util.UUID migrationId ) {
+		super( migrationId, IsCloseable.FALSE );
 	}
 }

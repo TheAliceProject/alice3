@@ -40,13 +40,25 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.personresource.views;
+package org.alice.stageide.personresource.views.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TopAndBottomTabView extends org.lgna.croquet.components.MigPanel {
-	public TopAndBottomTabView( org.alice.stageide.personresource.TopAndBottomTabComposite composite ) {
-		super( composite );
+public class BottomPieceListCellRenderer extends IngredientListCellRenderer<org.lgna.story.resources.sims2.BottomPiece> {
+	private static class SingletonHolder {
+		private static BottomPieceListCellRenderer instance = new BottomPieceListCellRenderer();
+	}
+
+	public static BottomPieceListCellRenderer getInstance() {
+		return SingletonHolder.instance;
+	}
+
+	private BottomPieceListCellRenderer() {
+	}
+
+	@Override
+	protected String getSubPath() {
+		return "bottompiece_pictures";
 	}
 }
