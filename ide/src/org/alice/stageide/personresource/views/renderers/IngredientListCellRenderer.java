@@ -76,7 +76,7 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 	protected abstract String getSubPath();
 
 	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
-		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getBaseSkinTone();
+		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getClosestBaseSkinTone();
 	}
 
 	private String getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
