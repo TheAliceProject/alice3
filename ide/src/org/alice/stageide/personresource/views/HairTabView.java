@@ -48,7 +48,7 @@ package org.alice.stageide.personresource.views;
  */
 public class HairTabView extends org.lgna.croquet.components.MigPanel {
 	public HairTabView( org.alice.stageide.personresource.HairTabComposite composite ) {
-		super( composite, "insets 2, fill", "[right][left, grow, shrink]", "" );
+		super( composite, "insets 2, fill", "[right][left, grow, shrink]", "[grow 0][grow]" );
 		java.awt.Color backgroundColor = org.alice.stageide.personresource.views.IngredientsView.BACKGROUND_COLOR;
 		this.setBackgroundColor( backgroundColor );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
