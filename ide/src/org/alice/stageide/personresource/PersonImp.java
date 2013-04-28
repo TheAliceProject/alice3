@@ -114,7 +114,15 @@ public class PersonImp extends org.lgna.story.implementation.SingleVisualModelIm
 		if( ( gender == null ) || ( outfit == null ) || ( awtSkinColor == null ) || ( eyeColor == null ) || ( hair == null ) || ( face == null ) ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "NOT SETTNG ATTRIBUTES ON PERSON: gender=" + gender + ", outfit=" + outfit + ", skinColor" + awtSkinColor + ", eyeColor=" + eyeColor + ", obesityLevel=" + obesityLevel + ", hair=" + hair + ", face=" + face );
 		} else {
-			nebPerson.synchronizedSetAll( gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face );
+			if( lifeStage.getGenderedHairInterfaceClass( gender ).isAssignableFrom( hair.getClass() ) ) {
+				if( lifeStage.getGenderedFullBodyOutfitInterfaceClass( gender ).isAssignableFrom( outfit.getClass() ) ) {
+					nebPerson.synchronizedSetAll( gender, outfit, awtSkinColor.getRGB(), obesityLevel, eyeColor, hair, face );
+				} else {
+					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( outfit, lifeStage, gender );
+				}
+			} else {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( hair, lifeStage, gender );
+			}
 		}
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = this.getSgGeometry();
 		if( nebPerson != sgGeometry ) {
