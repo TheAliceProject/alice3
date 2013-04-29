@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.lgna.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField> {
-	public TextField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
-		super( model, operation );
-	}
+public abstract class AbstractTextField<V extends javax.swing.JTextField> extends TextComponent<V> {
+	private final org.lgna.croquet.Operation operation;
 
-	public TextField( org.lgna.croquet.StringState model ) {
-		this( model, null );
-	}
-
-	@Override
-	public void updateTextForBlankCondition( String textForBlankCondition ) {
-		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
+	public AbstractTextField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
+		super( model );
+		this.operation = operation;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		if( this.operation != null ) {
+			this.getAwtComponent().addActionListener( this.operation.getSwingModel().getAction() );
+		}
+	}
 
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				if( TextField.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
-			}
-		};
-		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
-		return rv;
+	@Override
+	protected void handleUndisplayable() {
+		if( this.operation != null ) {
+			this.getAwtComponent().removeActionListener( this.operation.getSwingModel().getAction() );
+		}
+		super.handleUndisplayable();
 	}
 }

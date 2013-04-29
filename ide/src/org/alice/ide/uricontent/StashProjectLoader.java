@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,44 +40,32 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet.components;
+package org.alice.ide.uricontent;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField> {
-	public TextField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
-		super( model, operation );
-	}
+public final class StashProjectLoader extends UriProjectLoader {
+	private final org.lgna.project.Project project;
+	private final java.net.URI uri;
 
-	public TextField( org.lgna.croquet.StringState model ) {
-		this( model, null );
-	}
-
-	@Override
-	public void updateTextForBlankCondition( String textForBlankCondition ) {
-		this.getAwtComponent().setTextForBlankCondition( textForBlankCondition );
+	public StashProjectLoader( org.lgna.project.Project project, java.net.URI uri ) {
+		this.project = project;
+		this.uri = uri;
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField createAwtComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField rv = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField() {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
-			}
+	protected org.lgna.project.Project load() {
+		return this.project;
+	}
 
-			@Override
-			public java.awt.Dimension getMaximumSize() {
-				if( TextField.this.isMaximumSizeClampedToPreferredSize() ) {
-					return this.getPreferredSize();
-				} else {
-					return super.getMaximumSize();
-				}
-			}
-		};
-		rv.setTextForBlankCondition( this.getModel().getTextForBlankCondition() );
-		return rv;
+	@Override
+	public java.net.URI getUri() {
+		return this.uri;
+	}
+
+	@Override
+	protected boolean isCacheAndCopyStyle() {
+		return false;
 	}
 }
