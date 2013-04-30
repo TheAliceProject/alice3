@@ -189,12 +189,12 @@ public class UploadComposite extends WizardPageComposite<UploadView> {
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
-		this.videoComposite.getView().setFile( owner.getFile() );
+		this.videoComposite.getView().setUri( owner.getFile().toURI() );
 	}
 
 	@Override
 	public void handlePostDeactivation() {
-		this.videoComposite.getView().setFile( null );
+		this.videoComposite.getView().setUri( null );
 		super.handlePostDeactivation();
 	}
 

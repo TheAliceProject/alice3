@@ -118,15 +118,21 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 		if( lookAndFeelInfo != null ) {
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
-		java.io.File directory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			directory = directory.getParentFile();
+		java.net.URI uri;
+		if( args.length > 0 ) {
+			uri = new java.net.URI( args[ 0 ] );
+		} else {
+			java.io.File directory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				directory = directory.getParentFile();
+			}
+			java.io.File file = new java.io.File( directory, "Videos/a.webm" );
+			uri = file.toURI();
 		}
-		java.io.File file = new java.io.File( directory, "Videos/a.webm" );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
 		VideoComposite videoComposite = new VideoComposite();
-		videoComposite.getView().setFile( file );
+		videoComposite.getView().setUri( uri );
 		app.getFrame().setMainComposite( videoComposite );
 		app.getFrame().pack();
 		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );

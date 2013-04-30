@@ -281,20 +281,16 @@ class JPositionSlider extends javax.swing.JSlider {
  * @author Dennis Cosgrove
  */
 public class VideoView extends PlayView {
-	private java.io.File file;
+	private java.net.URI uri;
 	private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
-	private final javax.swing.JSlider jSlider = new JPositionSlider( 0, 100, 0 );
-
-	private boolean isIgnoringSliderValueChanges;
+	private final JFauxSlider jSlider = new JFauxSlider();
 
 	private final edu.cmu.cs.dennisc.video.event.MediaListener mediaListener = new edu.cmu.cs.dennisc.video.event.MediaListener() {
 		public void newMedia() {
 		}
 
 		public void positionChanged( float f ) {
-			isIgnoringSliderValueChanges = true;
-			jSlider.setValue( (int)( f * 100 ) );
-			isIgnoringSliderValueChanges = false;
+			jSlider.setPortion( f );
 		}
 
 		public void playing() {
@@ -331,42 +327,47 @@ public class VideoView extends PlayView {
 		}
 	};
 
-	private final javax.swing.event.ChangeListener sliderValueChangeListener = new javax.swing.event.ChangeListener() {
-		public void stateChanged( javax.swing.event.ChangeEvent e ) {
-			if( isIgnoringSliderValueChanges ) {
-				//pass
-			} else {
-				handleSliderValueChanged( jSlider.getValue() * 0.01f );
-			}
+	//	private void handleSliderValueChanged( float position ) {
+	//		if( this.videoPlayer != null ) {
+	//			//pass
+	//		} else {
+	//			this.getVideoPlayer();
+	//			videoPlayer.getVideoSurface().setEnabled( true );
+	//			revalidateAndRepaint();
+	//			if( videoPlayer.isPlayable() ) {
+	//				//pass
+	//			} else {
+	//				videoPlayer.prepareMedia( file.toURI() );
+	//			}
+	//			//videoPlayer.playResume();
+	//			revalidateAndRepaint();
+	//		}
+	//		if( videoPlayer.isPlaying() ) {
+	//			videoPlayer.pause();
+	//		}
+	//		videoPlayer.setPosition( jSlider.getPortion() );
+	//	}
+
+	private final org.alice.ide.video.preview.views.events.ThumbListener thumbListener = new org.alice.ide.video.preview.views.events.ThumbListener() {
+		public void thumbPressed( float position ) {
+			pause();
+		}
+
+		public void thumbDragged( float position ) {
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( position );
+			videoPlayer.setPosition( position );
+		}
+
+		public void thumbReleased( float position ) {
+			play();
 		}
 	};
-
-	private void handleSliderValueChanged( float position ) {
-		if( this.videoPlayer != null ) {
-			//pass
-		} else {
-			this.getVideoPlayer();
-			videoPlayer.getVideoSurface().setEnabled( true );
-			revalidateAndRepaint();
-			if( videoPlayer.isPlayable() ) {
-				//pass
-			} else {
-				videoPlayer.prepareMedia( file.toURI() );
-			}
-			//videoPlayer.playResume();
-			revalidateAndRepaint();
-		}
-		if( videoPlayer.isPlaying() ) {
-			videoPlayer.pause();
-		}
-		videoPlayer.setPosition( jSlider.getValue() * 0.01f );
-	}
 
 	public VideoView( org.alice.ide.video.preview.VideoComposite composite ) {
 		super( composite );
 
-		this.jSlider.addChangeListener( this.sliderValueChangeListener );
-
+		//this.jSlider.addChangeListener( this.sliderValueChangeListener );
+		this.jSlider.addThumbListener( this.thumbListener );
 		org.lgna.croquet.components.ToggleButton playPauseButton = composite.getPlayPauseState().createToggleButton();
 		playPauseButton.tightenUpMargin();
 		org.lgna.croquet.components.BorderPanel pageEndPanel = new org.lgna.croquet.components.BorderPanel();
@@ -375,15 +376,8 @@ public class VideoView extends PlayView {
 		this.internalAddComponent( pageEndPanel, java.awt.BorderLayout.PAGE_END );
 	}
 
-	public void setFile( java.io.File file ) {
-		if( file != null ) {
-			if( file.exists() ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( file );
-			}
-		}
-		this.file = file;
+	public void setUri( java.net.URI uri ) {
+		this.uri = uri;
 	}
 
 	public edu.cmu.cs.dennisc.video.VideoPlayer getVideoPlayer() {
@@ -391,8 +385,8 @@ public class VideoView extends PlayView {
 			//pass
 		} else {
 			this.videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilties.createVideoPlayer();
-			if( this.file != null ) {
-				this.videoPlayer.prepareMedia( this.file.toURI() );
+			if( this.uri != null ) {
+				this.videoPlayer.prepareMedia( this.uri );
 			}
 
 			java.awt.Canvas videoSurface = this.videoPlayer.getVideoSurface();
@@ -413,7 +407,7 @@ public class VideoView extends PlayView {
 	}
 
 	private void play() {
-		if( this.file != null ) {
+		if( this.uri != null ) {
 			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = this.getVideoPlayer();
 			videoPlayer.playResume();
 			//this.revalidateAndRepaint();
