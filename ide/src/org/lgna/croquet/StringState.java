@@ -219,11 +219,19 @@ public abstract class StringState extends SimpleValueState<String> {
 	}
 
 	public org.lgna.croquet.components.TextField createTextField() {
-		return new org.lgna.croquet.components.TextField( this );
+		return this.createTextField( null );
 	}
 
 	public org.lgna.croquet.components.PasswordField createPasswordField() {
-		return new org.lgna.croquet.components.PasswordField( this );
+		return this.createPasswordField( null );
+	}
+
+	public org.lgna.croquet.components.TextField createTextField( Operation operation ) {
+		return new org.lgna.croquet.components.TextField( this, operation );
+	}
+
+	public org.lgna.croquet.components.PasswordField createPasswordField( Operation operation ) {
+		return new org.lgna.croquet.components.PasswordField( this, operation );
 	}
 
 	public org.lgna.croquet.components.TextArea createTextArea() {
