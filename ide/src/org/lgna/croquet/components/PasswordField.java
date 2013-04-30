@@ -45,9 +45,13 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class PasswordField extends TextComponent<edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField> {
+public class PasswordField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSuggestivePasswordField> {
+	public PasswordField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
+		super( model, operation );
+	}
+
 	public PasswordField( org.lgna.croquet.StringState model ) {
-		super( model );
+		this( model, null );
 	}
 
 	@Override
