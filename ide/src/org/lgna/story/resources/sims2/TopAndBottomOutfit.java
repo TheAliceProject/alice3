@@ -61,12 +61,4 @@ public abstract class TopAndBottomOutfit<T extends TopPiece, B extends BottomPie
 	public B getBottomPiece() {
 		return this.bottomPiece;
 	}
-
-	public String getTopPieceName() {
-		return this.topPiece.toString();
-	}
-
-	public String getBottomPieceName() {
-		return this.bottomPiece.toString();
-	}
 }
