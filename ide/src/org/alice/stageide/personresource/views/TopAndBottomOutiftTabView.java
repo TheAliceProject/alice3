@@ -55,6 +55,7 @@ public class TopAndBottomOutiftTabView extends OutfitTabView {
 		org.lgna.croquet.components.ScrollPane topScrollPane = new org.lgna.croquet.components.ScrollPane( topList );
 		topScrollPane.setBothScrollBarIncrements( 66, 66 );
 		topScrollPane.setHorizontalScrollbarPolicy( org.lgna.croquet.components.ScrollPane.HorizontalScrollbarPolicy.NEVER );
+		topScrollPane.setBorder( javax.swing.BorderFactory.createMatteBorder( 0, 0, 1, 0, java.awt.Color.WHITE ) );
 
 		org.lgna.croquet.components.List<org.lgna.story.resources.sims2.BottomPiece> bottomList = new HorizontalWrapList<org.lgna.story.resources.sims2.BottomPiece>( composite.getBottomPieceState(), -1, org.alice.stageide.personresource.views.renderers.BottomPieceListCellRenderer.getInstance() );
 		bottomList.setBackgroundColor( backgroundColor );

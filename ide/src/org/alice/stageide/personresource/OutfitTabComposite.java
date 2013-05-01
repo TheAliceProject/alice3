@@ -49,4 +49,9 @@ public abstract class OutfitTabComposite<V extends org.alice.stageide.personreso
 	public OutfitTabComposite( java.util.UUID migrationId ) {
 		super( migrationId, IsCloseable.FALSE );
 	}
+
+	@Override
+	protected org.lgna.croquet.components.ScrollPane createScrollPaneIfDesired() {
+		return null;
+	}
 }
