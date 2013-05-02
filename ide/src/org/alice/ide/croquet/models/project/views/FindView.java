@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,53 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.project.views;
+
+import java.awt.Dimension;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
 
 import org.alice.ide.croquet.models.project.FindComposite;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject;
+import org.lgna.croquet.components.BorderPanel;
+import org.lgna.croquet.components.GridPanel;
+import org.lgna.croquet.components.List;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.UserLambda;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ProjectMenuModel instance = new ProjectMenuModel();
-	}
+public class FindView extends BorderPanel {
 
-	public static ProjectMenuModel getInstance() {
-		return SingletonHolder.instance;
-	}
+	public FindView( FindComposite composite ) {
+		super( composite );
+		this.addPageStartComponent( composite.getSearchState().createTextArea() );
+		List<SearchObject> searchResultsList = composite.getSearchResults().createList();
+		List<Object> resultReferencesList = composite.getReferenceResults().createList();
+		searchResultsList.setPreferredSize( new Dimension( 100, 100 ) );
+		GridPanel panel = GridPanel.createGridPane( 1, 2 );
+		panel.addComponent( searchResultsList );
+		resultReferencesList.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<Object>() {
 
-	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
-				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.FindMethodsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				new FindComposite().getBooleanState().getMenuItemPrepModel() );
+			@Override
+			protected JLabel getListCellRendererComponent( JLabel rv, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+				assert value instanceof Expression;
+				Expression expression = (Expression)value;
+				UserMethod userMethod = expression.getFirstAncestorAssignableTo( UserMethod.class );
+				UserLambda userLambda = expression.getFirstAncestorAssignableTo( UserLambda.class );
+				if( userLambda != null ) {
+					rv.setText( userLambda.getFirstAncestorAssignableTo( MethodInvocation.class ).method.getValue().getName() );
+				} else {
+					rv.setText( userMethod.getName() );
+				}
+				return rv;
+			}
+		} );
+		panel.addComponent( resultReferencesList );
+		this.addCenterComponent( panel );
 	}
 }

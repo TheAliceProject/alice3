@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,59 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.menubar;
+package org.alice.ide.croquet.models.project.TreeNodesAndManagers;
 
-import org.alice.ide.croquet.models.project.FindComposite;
+import java.util.List;
+
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractField;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.UserLocal;
+import org.lgna.project.ast.UserParameter;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class ProjectMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static class SingletonHolder {
-		private static ProjectMenuModel instance = new ProjectMenuModel();
+public class SearchObject<T extends AbstractDeclaration> {
+
+	private Class<T> cls;
+	private T searchObject;
+	private List<Object> references = Collections.newArrayList();
+
+	@SuppressWarnings( "unchecked" )
+	public static final List<Class<? extends AbstractDeclaration>> clsList = Collections.newArrayList( AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class );
+
+	public SearchObject( Class<T> cls, T object ) {
+		assert clsList.contains( cls );
+		this.cls = cls;
+		this.searchObject = object;
 	}
 
-	public static ProjectMenuModel getInstance() {
-		return SingletonHolder.instance;
+	public T getSearchObject() {
+		return this.searchObject;
 	}
 
-	private ProjectMenuModel() {
-		super( java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ),
-				org.alice.ide.resource.manager.ResourceManagerComposite.getInstance().getOperation().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.FindMethodsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				org.alice.ide.croquet.models.project.StatisticsFrameComposite.getInstance().getBooleanState().getMenuItemPrepModel(),
-				new FindComposite().getBooleanState().getMenuItemPrepModel() );
+	public Class<T> getObjectType() {
+		return cls;
 	}
+
+	public String getName() {
+		return ( (AbstractDeclaration)searchObject ).getName();
+	}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
+
+	public void addReference( Object reference ) {
+		references.add( reference );
+	}
+
+	public List<Object> getReferences() {
+		return references;
+	}
+
 }
