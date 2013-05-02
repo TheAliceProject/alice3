@@ -640,8 +640,19 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				boolean isHairChanged = nextHair != prevHair;
 
 				if( isLifeStageChanged || isGenderChanged ) {
+					//Need a new hair style since we're on a new gender or lifestage
+					//Pick a random one (we don't track previous values across lifestage or gender changes)
 					this.hairTab.getHairHatStyleListData().setLifeStageAndGender( nextLifeStage, nextGender );
 					this.hairTab.getHairHatStyleState().setRandomSelectedValue();
+					//Given a new hair style, try to pick a color for it
+					nextHair = this.getHairForHairHatStyle( this.hairTab.getHairHatStyleState().getValue() );
+					org.alice.stageide.personresource.data.HairHatStyleHairColorName hairHatStyleHairColorName = org.alice.stageide.personresource.data.HairUtilities.getHairHatStyleColorNameFromHair( nextLifeStage, nextGender, nextHair );
+					if( hairHatStyleHairColorName != null ) {
+						this.updateHairHatStyleHairColorName( nextLifeStage, nextGender, hairHatStyleHairColorName );
+					}
+					else {
+						this.hairTab.getHairColorNameState().setRandomSelectedValue();
+					}
 				} else {
 					if( isHairChanged ) {
 						org.alice.stageide.personresource.data.HairHatStyleHairColorName hairHatStyleHairColorName = org.alice.stageide.personresource.data.HairUtilities.getHairHatStyleColorNameFromHair( nextLifeStage, nextGender, nextHair );
