@@ -67,6 +67,7 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				MaleAdultBottomPieceCargoPants.class,
 				MaleAdultBottomPieceCowboyJeans.class,
 				MaleAdultBottomPieceLongShorts.class,
+				MaleAdultBottomPieceNaked.class,
 				MaleAdultBottomPiecePants.class,
 				MaleAdultBottomPieceWillPants.class
 				);

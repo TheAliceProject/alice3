@@ -34,6 +34,7 @@ public class TopPieceManager extends IngredientManager<TopPiece> {
 		this.add( MaleChildTopPiece.class, 
 				MaleChildTopPieceCowboyShirt.class,
 				MaleChildTopPieceVNeckShortSleeve.class,
+				MaleChildTopPieceNaked.class,
 				ChildTopPieceNaked.class,
 				ChildTopPieceShortSleeve.class,
 				ChildTopPieceShortSleeveCollar.class
@@ -63,6 +64,7 @@ public class TopPieceManager extends IngredientManager<TopPiece> {
 		this.add( MaleAdultTopPiece.class, 
 				MaleAdultTopPieceCowboyShirt.class,
 				MaleAdultTopPieceJacketTshirtHang.class,
+				MaleAdultTopPieceNaked.class,
 				MaleAdultTopPieceShirtPolo.class,
 				MaleAdultTopPieceShortSleeveCollar.class,
 				MaleAdultTopPieceSweaterHang.class,
