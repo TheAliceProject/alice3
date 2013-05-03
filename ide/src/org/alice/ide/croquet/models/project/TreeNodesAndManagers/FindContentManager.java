@@ -44,6 +44,7 @@ package org.alice.ide.croquet.models.project.TreeNodesAndManagers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -210,11 +211,42 @@ public class FindContentManager {
 		} catch( PatternSyntaxException pse ) {
 			throw new RuntimeException( "Regex PatternSyntaxException" );
 		}
-		sortByRelevance( nextValue, rv );
+		rv = sortByRelevance( nextValue, rv );
 		return rv;
 	}
 
-	private void sortByRelevance( String nextValue, List<SearchObject<?>> rv ) {
+	private List<SearchObject<?>> sortByRelevance( String string, List<SearchObject<?>> searchResults ) {
+		List<SearchObject<?>> unsortedList = Collections.newArrayList( searchResults );
+		List<SearchObject<?>> rv = Collections.newArrayList();
+		Map<SearchObject, Double> scoreMap = Collections.newHashMap();
+		for( SearchObject obj : unsortedList ) {
+			scoreMap.put( obj, score( obj, string ) );
+		}
+		//n^2 sort O:-)
+		while( !unsortedList.isEmpty() ) {
+			double max = Double.NEGATIVE_INFINITY;
+			SearchObject<?> maxObj = null;
+			for( SearchObject o : unsortedList ) {
+				if( scoreMap.get( o ) > max ) {
+					max = scoreMap.get( o );
+					maxObj = o;
+				}
+			}
+			assert maxObj != null : unsortedList.size();
+			rv.add( unsortedList.remove( unsortedList.indexOf( maxObj ) ) );
+		}
+		return rv;
+	}
 
+	private Double score( SearchObject obj, String string ) {
+		double rv = 0;
+		if( obj.getName().equals( string ) ) {
+			rv += 2;
+		}
+		if( obj.getName().contains( string ) ) {
+			rv += 1;
+		}
+		rv += obj.getReferences().size() / 10.0;
+		return rv;
 	}
 }

@@ -44,9 +44,12 @@ package org.alice.ide.croquet.models.project.TreeNodesAndManagers;
 
 import java.util.List;
 
+import javax.swing.Icon;
+
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserParameter;
 
@@ -62,7 +65,8 @@ public class SearchObject<T extends AbstractDeclaration> {
 	private List<Object> references = Collections.newArrayList();
 
 	@SuppressWarnings( "unchecked" )
-	public static final List<Class<? extends AbstractDeclaration>> clsList = Collections.newArrayList( AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class );
+	public static final List<Class<? extends AbstractDeclaration>> clsList =
+			Collections.newArrayList( AbstractField.class, AbstractMethod.class, UserParameter.class, UserLocal.class );
 
 	public SearchObject( Class<T> cls, T object ) {
 		assert clsList.contains( cls );
@@ -84,7 +88,7 @@ public class SearchObject<T extends AbstractDeclaration> {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getName() + " (" + references.size() + ")";
 	}
 
 	public void addReference( Object reference ) {
@@ -95,4 +99,18 @@ public class SearchObject<T extends AbstractDeclaration> {
 		return references;
 	}
 
+	public Icon getIcon() {
+		//		if( searchObject instanceof AbstractField ) {
+		//			AbstractField uType = (AbstractField)searchObject;
+		//			return uType.get
+		//		}
+		return null;
+	}
+
+	public Expression getExpressionToHighlight( Expression reference ) {
+		if( searchObject instanceof AbstractMethod ) {
+
+		}
+		return reference;
+	}
 }
