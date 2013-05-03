@@ -48,7 +48,11 @@ package edu.cmu.cs.dennisc.video.event;
 public interface MediaListener {
 	public void newMedia();
 
+	public void videoOutput( int count );
+
 	public void playing();
+
+	public void paused();
 
 	public void positionChanged( float position );
 

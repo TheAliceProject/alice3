@@ -50,22 +50,28 @@ import uk.co.caprica.vlcj.player.MediaPlayer;
  */
 public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private final uk.co.caprica.vlcj.player.MediaPlayerEventListener mediaPlayerEventListener = new uk.co.caprica.vlcj.player.MediaPlayerEventListener() {
-		public void mediaChanged( MediaPlayer mediaPlayer, libvlc_media_t media, String mrl ) {
+		public void mediaChanged( MediaPlayer mediaPlayer, uk.co.caprica.vlcj.binding.internal.libvlc_media_t media, String mrl ) {
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mediaChanged", mediaPlayer, media, mrl );
+			uk.co.caprica.vlcj.player.MediaDetails mediaDetails = mediaPlayer.getMediaDetails();
 		}
 
 		public void opening( MediaPlayer mediaPlayer ) {
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "opening", mediaPlayer );
 		}
 
 		public void buffering( MediaPlayer mediaPlayer, float newCache ) {
 		}
 
 		public void playing( MediaPlayer mediaPlayer ) {
+			firePlaying();
 		}
 
 		public void paused( MediaPlayer mediaPlayer ) {
+			firePaused();
 		}
 
 		public void stopped( MediaPlayer mediaPlayer ) {
+			fireStopped();
 		}
 
 		public void forward( MediaPlayer mediaPlayer ) {
@@ -101,9 +107,11 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		}
 
 		public void videoOutput( MediaPlayer mediaPlayer, int newCount ) {
+			fireVideoOutput( newCount );
 		}
 
 		public void error( MediaPlayer mediaPlayer ) {
+			fireError();
 		}
 
 		public void mediaMetaChanged( MediaPlayer mediaPlayer, int metaType ) {
@@ -140,15 +148,36 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private final java.util.List<edu.cmu.cs.dennisc.video.event.MediaListener> mediaListeners = new java.util.concurrent.CopyOnWriteArrayList<edu.cmu.cs.dennisc.video.event.MediaListener>();
 	private final uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent embeddedMediaPlayerComponent;
 
+	private edu.cmu.cs.dennisc.java.awt.Painter painter;
+
 	public VlcjVideoPlayer() {
 		this.embeddedMediaPlayerComponent = new uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent() {
 			@Override
 			protected java.awt.Canvas onGetCanvas() {
+				java.awt.Canvas rv;
 				if( uk.co.caprica.vlcj.runtime.RuntimeUtil.isWindows() ) {
-					return new uk.co.caprica.vlcj.runtime.windows.WindowsCanvas();
+					rv = new uk.co.caprica.vlcj.runtime.windows.WindowsCanvas() {
+						@Override
+						public void paint( java.awt.Graphics g ) {
+							super.paint( g );
+							if( painter != null ) {
+								painter.paint( (java.awt.Graphics2D)g, this.getWidth(), this.getHeight() );
+							}
+						}
+					};
 				} else {
-					return super.onGetCanvas();
+					rv = new java.awt.Canvas() {
+						@Override
+						public void paint( java.awt.Graphics g ) {
+							super.paint( g );
+							if( painter != null ) {
+								painter.paint( (java.awt.Graphics2D)g, this.getWidth(), this.getHeight() );
+							}
+						}
+					};
 				}
+				rv.setBackground( java.awt.Color.BLACK );
+				return rv;
 			}
 		};
 		uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
@@ -157,15 +186,45 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.addMediaPlayerEventListener( this.mediaPlayerEventListener );
 	}
 
+	private void fireVideoOutput( int count ) {
+		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+			mediaListener.videoOutput( count );
+		}
+	}
+
 	private void firePositionChanged( float position ) {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.positionChanged( position );
 		}
 	}
 
+	private void firePlaying() {
+		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+			mediaListener.playing();
+		}
+	}
+
+	private void firePaused() {
+		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+			mediaListener.paused();
+		}
+	}
+
+	private void fireStopped() {
+		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+			mediaListener.stopped();
+		}
+	}
+
 	private void fireFinished() {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
 			mediaListener.finished();
+		}
+	}
+
+	private void fireError() {
+		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+			mediaListener.error();
 		}
 	}
 
@@ -179,6 +238,14 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	public java.awt.Canvas getVideoSurface() {
 		return this.embeddedMediaPlayerComponent.getVideoSurface();
+	}
+
+	public edu.cmu.cs.dennisc.java.awt.Painter getPainter() {
+		return this.painter;
+	}
+
+	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter ) {
+		this.painter = painter;
 	}
 
 	public void prepareMedia( java.net.URI uri ) {
@@ -199,30 +266,58 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	}
 
 	public boolean isPlayable() {
-		return this.embeddedMediaPlayerComponent.getMediaPlayer().isPlayable();
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		return mediaPlayer.isPlayable();
 	}
 
 	public boolean isPlaying() {
-		return this.embeddedMediaPlayerComponent.getMediaPlayer().isPlaying();
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		return mediaPlayer.isPlaying();
 	}
 
 	public void playResume() {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		mediaPlayer.play();
+		if( mediaPlayer.isPlayable() ) {
+			mediaPlayer.play();
+		} else {
+			//			if( mediaPlayer.isSeekable() ) {
+			//				mediaPlayer.setPosition( 0.0f );
+			//			}
+			mediaPlayer.start();
+		}
 	}
 
 	public void pause() {
-		this.embeddedMediaPlayerComponent.getMediaPlayer().pause();
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		if( mediaPlayer.canPause() ) {
+			mediaPlayer.pause();
+		} else {
+			System.err.println( "cannot pause " + mediaPlayer );
+		}
+	}
+
+	public void stop() {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		mediaPlayer.stop();
 	}
 
 	public void setPosition( float position ) {
-		//		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
-		//		if( mediaPlayer.isSeekable() ) {
-		//			//pass
-		//		} else {
-		//			mediaPlayer.start();
-		//			mediaPlayer.pause();
-		//		}
-		//		mediaPlayer.setPosition( position );
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		if( mediaPlayer.isSeekable() ) {
+			//pass
+		} else {
+			//System.err.println( "cannot setPosition " + position + " " + mediaPlayer + " starting." );
+			mediaPlayer.start();
+			//mediaPlayer.pause();
+		}
+		mediaPlayer.setPosition( position );
+	}
+
+	public void release() {
+		this.embeddedMediaPlayerComponent.release();
+	}
+
+	public java.awt.Dimension getVideoSize() {
+		return this.embeddedMediaPlayerComponent.getMediaPlayer().getVideoDimension();
 	}
 }

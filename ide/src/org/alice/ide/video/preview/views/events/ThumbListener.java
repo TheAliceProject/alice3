@@ -40,37 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.video;
+package org.alice.ide.video.preview.views.events;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface VideoPlayer {
-	public java.awt.Canvas getVideoSurface();
+public interface ThumbListener {
+	public void thumbPressed( float position );
 
-	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();
+	public void thumbDragged( float position );
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter );
-
-	public void prepareMedia( java.net.URI uri );
-
-	public boolean isPlayable();
-
-	public boolean isPlaying();
-
-	public void playResume();
-
-	public void pause();
-
-	public void stop();
-
-	public void setPosition( float position );
-
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
-	public void release();
-
-	public java.awt.Dimension getVideoSize();
+	public void thumbReleased( float position );
 }

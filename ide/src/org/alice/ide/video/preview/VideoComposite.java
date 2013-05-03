@@ -42,70 +42,28 @@
  */
 package org.alice.ide.video.preview;
 
-class PlayIcon implements javax.swing.Icon {
-	private final java.awt.Dimension size;
-
-	public PlayIcon( java.awt.Dimension size ) {
-		this.size = size;
-	}
-
-	public int getIconWidth() {
-		return this.size.width;
-	}
-
-	public int getIconHeight() {
-		return this.size.width;
-	}
-
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, size.width, size.height );
-	}
-}
-
-class PauseIcon implements javax.swing.Icon {
-	private final java.awt.Dimension size;
-
-	public PauseIcon( java.awt.Dimension size ) {
-		this.size = size;
-	}
-
-	public int getIconWidth() {
-		return this.size.width;
-	}
-
-	public int getIconHeight() {
-		return this.size.width;
-	}
-
-	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		g.fillRect( x, y, 6, this.getIconHeight() );
-		g.fillRect( ( x + this.getIconWidth() ) - 6, y, 6, this.getIconHeight() );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
 public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.alice.ide.video.preview.views.VideoView> {
-	private final org.lgna.croquet.BooleanState playPauseState = this.createBooleanState( this.createKey( "playPauseState" ), false );
-
-	//todo
-	//private java.io.File file;
-	//private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
+	private final org.lgna.croquet.Operation togglePlayPauseOperation = this.createActionOperation( this.createKey( "togglePlayPauseOperation" ), new Action() {
+		public org.lgna.croquet.edits.Edit perform( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws org.lgna.croquet.CancelException {
+			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getView().getVideoPlayer();
+			if( videoPlayer.isPlaying() ) {
+				videoPlayer.pause();
+			} else {
+				videoPlayer.playResume();
+			}
+			return null;
+		}
+	} );
 
 	public VideoComposite() {
 		super( java.util.UUID.fromString( "ffa047e2-9bce-4a46-8a16-70c19ced4d00" ) );
 	}
 
-	@Override
-	protected void localize() {
-		super.localize();
-		java.awt.Dimension SIZE = new java.awt.Dimension( 16, 16 );
-		this.playPauseState.setIconForTrueAndIconForFalse( new PauseIcon( SIZE ), new PlayIcon( SIZE ) );
-	}
-
-	public org.lgna.croquet.BooleanState getPlayPauseState() {
-		return this.playPauseState;
+	public org.lgna.croquet.Operation getTogglePlayPauseOperation() {
+		return this.togglePlayPauseOperation;
 	}
 
 	@Override
@@ -118,15 +76,21 @@ public final class VideoComposite extends org.lgna.croquet.SimpleComposite<org.a
 		if( lookAndFeelInfo != null ) {
 			javax.swing.UIManager.setLookAndFeel( lookAndFeelInfo.getClassName() );
 		}
-		java.io.File directory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
-			directory = directory.getParentFile();
+		java.net.URI uri;
+		if( args.length > 0 ) {
+			uri = new java.net.URI( args[ 0 ] );
+		} else {
+			java.io.File directory = edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory();
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
+				directory = directory.getParentFile();
+			}
+			java.io.File file = new java.io.File( directory, "Videos/a.webm" );
+			uri = file.toURI();
 		}
-		java.io.File file = new java.io.File( directory, "Videos/a.webm" );
 		org.lgna.croquet.simple.SimpleApplication app = new org.lgna.croquet.simple.SimpleApplication();
 
 		VideoComposite videoComposite = new VideoComposite();
-		videoComposite.getView().setFile( file );
+		videoComposite.getView().setUri( uri );
 		app.getFrame().setMainComposite( videoComposite );
 		app.getFrame().pack();
 		app.getFrame().setDefaultCloseOperation( org.lgna.croquet.components.Frame.DefaultCloseOperation.EXIT );
