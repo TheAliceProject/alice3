@@ -48,7 +48,7 @@ package org.lgna.croquet.components;
  */
 public class CheckBox extends BooleanStateButton<javax.swing.JCheckBox> {
 	public CheckBox( org.lgna.croquet.BooleanState model ) {
-		super( model );
+		super( model, "CheckBox" );
 	}
 
 	@Override

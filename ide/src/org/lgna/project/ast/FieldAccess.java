@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAccess extends Expression {
+public final class FieldAccess extends Expression {
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
@@ -117,6 +117,17 @@ public class FieldAccess extends Expression {
 			rv = false;
 		}
 		return rv;
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			FieldAccess other = (FieldAccess)o;
+			if( this.expression.valueContentEquals( other.expression, strictness ) ) {
+				return this.field.valueContentEquals( other.field, strictness );
+			}
+		}
+		return false;
 	}
 
 	@Override

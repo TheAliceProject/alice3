@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class SuperConstructorInvocationStatement extends ConstructorInvocationStatement {
+public final class SuperConstructorInvocationStatement extends ConstructorInvocationStatement {
 	public SuperConstructorInvocationStatement() {
 	}
 

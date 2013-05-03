@@ -89,9 +89,16 @@ public class List<T> extends ItemSelectable<javax.swing.JList, T, org.lgna.croqu
 		this.removeMouseListener( this.mouseAdapter );
 	}
 
+	protected class JDefaultList extends javax.swing.JList {
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return constrainPreferredSizeIfNecessary( super.getPreferredSize() );
+		}
+	}
+
 	@Override
 	protected javax.swing.JList createAwtComponent() {
-		return new javax.swing.JList();
+		return new JDefaultList();
 	}
 
 	@Override

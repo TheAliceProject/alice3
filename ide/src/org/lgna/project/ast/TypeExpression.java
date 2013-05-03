@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeExpression extends Expression {
+public final class TypeExpression extends Expression {
 	public DeclarationProperty<AbstractType<?, ?, ?>> value = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 
 	public TypeExpression() {
@@ -68,6 +68,15 @@ public class TypeExpression extends Expression {
 	@Override
 	public boolean isValid() {
 		return this.value.getValue() != null;
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			TypeExpression other = (TypeExpression)o;
+			return this.value.valueContentEquals( other.value, strictness );
+		}
+		return false;
 	}
 
 	@Override

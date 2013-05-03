@@ -50,4 +50,13 @@ public abstract class Statement extends AbstractNode {
 	public edu.cmu.cs.dennisc.property.BooleanProperty isEnabled = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.TRUE );
 
 	/* package-private */abstract void appendJava( JavaCodeGenerator generator );
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			Statement other = (Statement)o;
+			return this.isEnabled.valueEquals( other.isEnabled );
+		}
+		return false;
+	}
 }
