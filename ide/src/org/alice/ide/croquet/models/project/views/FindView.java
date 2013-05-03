@@ -66,6 +66,8 @@ public class FindView extends BorderPanel {
 		super( composite );
 		this.addPageStartComponent( composite.getSearchState().createTextArea() );
 		List<SearchObject> searchResultsList = composite.getSearchResults().createList();
+		searchResultsList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchResultListCellRenderer() );
+
 		List<Object> resultReferencesList = composite.getReferenceResults().createList();
 		searchResultsList.setPreferredSize( new Dimension( 100, 100 ) );
 		GridPanel panel = GridPanel.createGridPane( 1, 2 );

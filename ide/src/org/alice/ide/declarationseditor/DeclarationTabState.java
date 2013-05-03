@@ -131,7 +131,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 
 	private static final java.awt.Dimension ICON_SIZE = new java.awt.Dimension( 16, 16 );
 	private static final javax.swing.Icon TYPE_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_TYPE_COLOR );
-	public static final javax.swing.Icon FIELD_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_TYPE_COLOR ) {
+	private static final javax.swing.Icon FIELD_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_TYPE_COLOR ) {
 		@Override
 		protected void paintIcon( java.awt.Component c, java.awt.Graphics2D g2, int width, int height, java.awt.Paint fillPaint, java.awt.Paint drawPaint ) {
 			super.paintIcon( c, g2, width, height, fillPaint, drawPaint );
@@ -143,6 +143,22 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 	private static final javax.swing.Icon PROCEDURE_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_PROCEDURE_COLOR );
 	private static final javax.swing.Icon FUNCTION_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_FUNCTION_COLOR );
 	private static final javax.swing.Icon CONSTRUCTOR_ICON = new org.alice.ide.icons.TabIcon( ICON_SIZE, org.alice.ide.DefaultTheme.DEFAULT_CONSTRUCTOR_COLOR );
+
+	public static javax.swing.Icon getProcedureIcon() {
+		return PROCEDURE_ICON;
+	}
+
+	public static javax.swing.Icon getFunctionIcon() {
+		return FUNCTION_ICON;
+	}
+
+	public static javax.swing.Icon getFieldIcon() {
+		return FIELD_ICON;
+	}
+
+	public static javax.swing.Icon getConstructorIcon() {
+		return CONSTRUCTOR_ICON;
+	}
 
 	public org.lgna.croquet.Operation getItemSelectionOperationForType( org.lgna.project.ast.NamedUserType type ) {
 		org.lgna.croquet.Operation rv = this.getItemSelectionOperation( TypeComposite.getInstance( type ) );
