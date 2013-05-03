@@ -48,6 +48,10 @@ package edu.cmu.cs.dennisc.video;
 public interface VideoPlayer {
 	public java.awt.Canvas getVideoSurface();
 
+	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();
+
+	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter );
+
 	public void prepareMedia( java.net.URI uri );
 
 	public boolean isPlayable();
@@ -58,9 +62,15 @@ public interface VideoPlayer {
 
 	public void pause();
 
+	public void stop();
+
 	public void setPosition( float position );
 
 	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
 
 	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
+
+	public void release();
+
+	public java.awt.Dimension getVideoSize();
 }

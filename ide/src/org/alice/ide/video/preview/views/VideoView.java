@@ -42,7 +42,7 @@
  */
 package org.alice.ide.video.preview.views;
 
-class PlayIcon implements javax.swing.Icon {
+class PlayCanvasIcon implements javax.swing.Icon {
 	public static void paint( java.awt.Component c, java.awt.Graphics g, javax.swing.ButtonModel buttonModel, java.awt.Stroke stroke, int x, int y, int width, int height ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g.translate( x, y );
@@ -87,7 +87,7 @@ class PlayIcon implements javax.swing.Icon {
 	private final int width;
 	private final int height;
 
-	public PlayIcon( int width, int height ) {
+	public PlayCanvasIcon( int width, int height ) {
 		this.width = width;
 		this.height = height;
 		int size = Math.max( this.width, this.height );
@@ -111,273 +111,193 @@ class PlayIcon implements javax.swing.Icon {
 	}
 }
 
-class PlayButtonUI extends javax.swing.plaf.basic.BasicToggleButtonUI {
-	@Override
-	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
-		//super.paint( g, c );
+class PlayButtonIcon implements javax.swing.Icon {
+	private final java.awt.Dimension size;
+
+	public PlayButtonIcon( java.awt.Dimension size ) {
+		this.size = size;
+	}
+
+	public int getIconWidth() {
+		return this.size.width;
+	}
+
+	public int getIconHeight() {
+		return this.size.width;
+	}
+
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, size.width, size.height );
 	}
 }
 
-class PlayLayout extends java.awt.BorderLayout {
-	@Override
-	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
-		java.awt.Dimension rv = super.preferredLayoutSize( target );
-		java.awt.Component centerComponent = this.getLayoutComponent( target, CENTER );
-		if( centerComponent != null ) {
-			//pass
-		} else {
-			rv.width = Math.max( rv.width, 320 );
-			rv.height += 180;
-		}
-		return rv;
+class PauseButtonIcon implements javax.swing.Icon {
+	private final java.awt.Dimension size;
+
+	public PauseButtonIcon( java.awt.Dimension size ) {
+		this.size = size;
 	}
 
-	@Override
-	public void layoutContainer( java.awt.Container target ) {
-		super.layoutContainer( target );
-		if( target instanceof javax.swing.AbstractButton ) {
-			javax.swing.AbstractButton button = (javax.swing.AbstractButton)target;
-			javax.swing.ButtonModel buttonModel = button.getModel();
-			if( buttonModel.isSelected() ) {
-				//pass
-			} else {
-				java.awt.Component centerComponent = this.getLayoutComponent( target, CENTER );
-				if( centerComponent instanceof java.awt.Canvas ) {
-					java.awt.Canvas canvas = (java.awt.Canvas)centerComponent;
-					if( canvas.isEnabled() ) {
-						//pass
-					} else {
-						canvas.setBounds( 0, 0, 0, 0 );
-					}
-				}
-			}
-		}
-	}
-}
-
-class JPlayView extends javax.swing.JToggleButton {
-	private static final int SIZE = 64;
-
-	private final javax.swing.Icon icon = new PlayIcon( SIZE, SIZE );
-
-	public JPlayView() {
-		this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
-		this.setRolloverEnabled( true );
-		this.setLayout( new PlayLayout() );
+	public int getIconWidth() {
+		return this.size.width;
 	}
 
-	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
-		if( this.isSelected() ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.paintIconCentered( this.icon, this, g );
-		}
+	public int getIconHeight() {
+		return this.size.width;
 	}
 
-	@Override
-	public void updateUI() {
-		this.setUI( new PlayButtonUI() );
-	}
-}
-
-abstract class PlayView extends org.lgna.croquet.components.View<javax.swing.JToggleButton, org.alice.ide.video.preview.VideoComposite> {
-	private final java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged( java.awt.event.ItemEvent e ) {
-			PlayView.this.handleItemStateChanged( e );
-		}
-	};
-
-	public PlayView( org.alice.ide.video.preview.VideoComposite composite ) {
-		super( composite );
-		this.getAwtComponent().addItemListener( this.itemListener );
-	}
-
-	protected abstract void handleItemStateChanged( java.awt.event.ItemEvent e );
-
-	@Override
-	protected javax.swing.JToggleButton createAwtComponent() {
-		return new JPlayView();
-	}
-}
-
-class PositionSliderUI extends javax.swing.plaf.basic.BasicSliderUI {
-	private static final java.awt.Color TRACK_LEADING_COLOR = java.awt.Color.BLUE.darker();
-	private static final java.awt.Color TRACK_TRAILING_COLOR = java.awt.Color.LIGHT_GRAY;
-	private static final java.awt.Color THUMB_FILL_COLOR = new java.awt.Color( 191, 191, 255 );
-	private static final java.awt.Color THUMB_DRAW_COLOR = java.awt.Color.BLACK;
-
-	public PositionSliderUI( javax.swing.JSlider slider ) {
-		super( slider );
-	}
-
-	@Override
-	public void paintTrack( java.awt.Graphics g ) {
-		//super.paintTrack( g );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Shape prevClip = g2.getClip();
-		Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-
-		int h = this.trackRect.height / 2;
-		int offset = h / 2;
-
-		java.awt.Shape shape = new java.awt.geom.RoundRectangle2D.Float( this.trackRect.x, this.trackRect.y + offset, this.trackRect.width, h, h, h );
-		try {
-			int centerX = this.thumbRect.x + ( this.thumbRect.width / 2 );
-
-			g2.setColor( TRACK_TRAILING_COLOR );
-			g2.fill( shape );
-
-			java.awt.Shape leadingRect = new java.awt.Rectangle( this.trackRect.x, this.trackRect.y, centerX - this.trackRect.x, this.trackRect.height );
-			java.awt.geom.Area leadingClip = edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createIntersection( prevClip, leadingRect );
-			g2.setClip( leadingClip );
-
-			g2.setPaint( TRACK_LEADING_COLOR );
-			g2.fill( shape );
-		} finally {
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
-			g2.setClip( prevClip );
-		}
-	}
-
-	@Override
-	protected java.awt.Dimension getThumbSize() {
-		java.awt.Dimension size = super.getThumbSize();
-		int max = Math.max( size.width, size.height );
-		return new java.awt.Dimension( max, max );
-	}
-
-	@Override
-	public void paintThumb( java.awt.Graphics g ) {
-		//super.paintThumb( g );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		java.awt.Shape shape = new java.awt.geom.Ellipse2D.Float( this.thumbRect.x, this.thumbRect.y, this.thumbRect.width - 1, this.thumbRect.height - 1 );
-		try {
-			g2.setPaint( THUMB_FILL_COLOR );
-			g2.fill( shape );
-			g2.setPaint( THUMB_DRAW_COLOR );
-			g2.draw( shape );
-		} finally {
-			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
-		}
-
-	}
-}
-
-class JPositionSlider extends javax.swing.JSlider {
-	public JPositionSlider( int min, int max, int value ) {
-		super( min, max, value );
-	}
-
-	@Override
-	public void updateUI() {
-		this.setUI( new PositionSliderUI( this ) );
+	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+		g.fillRect( x, y, 6, this.getIconHeight() );
+		g.fillRect( ( x + this.getIconWidth() ) - 6, y, 6, this.getIconHeight() );
 	}
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class VideoView extends PlayView {
+public class VideoView extends org.lgna.croquet.components.BorderPanel {
 	private java.net.URI uri;
 	private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
 	private final JFauxSlider jSlider = new JFauxSlider();
+
+	private final javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
+	private static final int SIZE = 64;
+	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( SIZE / 25.0f );
+	private final edu.cmu.cs.dennisc.java.awt.Painter painter = new edu.cmu.cs.dennisc.java.awt.Painter() {
+		public void paint( java.awt.Graphics2D g2, int width, int height ) {
+			int x = ( width - SIZE ) / 2;
+			int y = ( height - SIZE ) / 2;
+			PlayCanvasIcon.paint( null, g2, buttonModel, STROKE, x, y, SIZE, SIZE );
+		}
+	};
 
 	private final edu.cmu.cs.dennisc.video.event.MediaListener mediaListener = new edu.cmu.cs.dennisc.video.event.MediaListener() {
 		public void newMedia() {
 		}
 
-		public void positionChanged( float f ) {
-			jSlider.setPortion( f );
+		public void videoOutput( int count ) {
+			if( count > 0 ) {
+				java.awt.Dimension dimension = videoPlayer.getVideoSize();
+				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle video size:", dimension );
+			}
+		}
+
+		public void positionChanged( final float f ) {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					jSlider.setPortion( f );
+				}
+			} );
 		}
 
 		public void playing() {
+			setIconToPause();
+		}
+
+		public void paused() {
+			setIconToPlay();
 		}
 
 		public void finished() {
-			videoPlayer.getVideoSurface().setEnabled( false );
-			getAwtComponent().setSelected( false );
+			setIconToPlay();
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					videoPlayer.stop();
+				}
+			} );
 		}
 
 		public void stopped() {
+			setIconToPlay();
 		}
 
 		public void error() {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	};
 
 	private final java.awt.event.MouseListener mouseListener = new java.awt.event.MouseListener() {
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
+			buttonModel.setRollover( true );
+			getVideoPlayer().getVideoSurface().repaint();
 		}
 
 		public void mouseExited( java.awt.event.MouseEvent e ) {
+			buttonModel.setRollover( false );
+			getVideoPlayer().getVideoSurface().repaint();
 		}
 
 		public void mousePressed( java.awt.event.MouseEvent e ) {
-			System.out.println( e );
-			getAwtComponent().setSelected( getAwtComponent().isSelected() == false );
+			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = getVideoPlayer();
+			if( videoPlayer.isPlaying() ) {
+				videoPlayer.pause();
+			} else {
+				videoPlayer.playResume();
+			}
+			buttonModel.setPressed( true );
+			getVideoPlayer().getVideoSurface().repaint();
 		}
 
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
+			buttonModel.setPressed( false );
+			getVideoPlayer().getVideoSurface().repaint();
 		}
 
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
 	};
 
-	//	private void handleSliderValueChanged( float position ) {
-	//		if( this.videoPlayer != null ) {
-	//			//pass
-	//		} else {
-	//			this.getVideoPlayer();
-	//			videoPlayer.getVideoSurface().setEnabled( true );
-	//			revalidateAndRepaint();
-	//			if( videoPlayer.isPlayable() ) {
-	//				//pass
-	//			} else {
-	//				videoPlayer.prepareMedia( file.toURI() );
-	//			}
-	//			//videoPlayer.playResume();
-	//			revalidateAndRepaint();
-	//		}
-	//		if( videoPlayer.isPlaying() ) {
-	//			videoPlayer.pause();
-	//		}
-	//		videoPlayer.setPosition( jSlider.getPortion() );
-	//	}
-
 	private final org.alice.ide.video.preview.views.events.ThumbListener thumbListener = new org.alice.ide.video.preview.views.events.ThumbListener() {
+		private boolean wasPlaying;
+
 		public void thumbPressed( float position ) {
+			this.wasPlaying = getVideoPlayer().isPlaying();
 			pause();
 		}
 
 		public void thumbDragged( float position ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( position );
-			videoPlayer.setPosition( position );
+			getVideoPlayer().setPosition( position );
 		}
 
 		public void thumbReleased( float position ) {
-			play();
+			if( this.wasPlaying ) {
+				play();
+			}
 		}
 	};
 
+	private final org.lgna.croquet.components.Button playPauseButton;
+	private final java.awt.Dimension PLAY_PAUSE_ICON_SIZE = new java.awt.Dimension( 16, 16 );
+	private final javax.swing.Icon PLAY_ICON = new PlayButtonIcon( PLAY_PAUSE_ICON_SIZE );
+	private final javax.swing.Icon PAUSE_ICON = new PauseButtonIcon( PLAY_PAUSE_ICON_SIZE );
+
 	public VideoView( org.alice.ide.video.preview.VideoComposite composite ) {
 		super( composite );
-
-		//this.jSlider.addChangeListener( this.sliderValueChangeListener );
 		this.jSlider.addThumbListener( this.thumbListener );
-		org.lgna.croquet.components.ToggleButton playPauseButton = composite.getPlayPauseState().createToggleButton();
-		playPauseButton.tightenUpMargin();
+		this.playPauseButton = composite.getTogglePlayPauseOperation().createButton();
+		//this.playPauseButton.tightenUpMargin();
+		this.playPauseButton.setClobberIcon( PLAY_ICON );
+		//jPlayView.addItemListener( this.itemListener );
+
 		org.lgna.croquet.components.BorderPanel pageEndPanel = new org.lgna.croquet.components.BorderPanel();
 		pageEndPanel.addLineStartComponent( playPauseButton );
 		pageEndPanel.getAwtComponent().add( this.jSlider, java.awt.BorderLayout.CENTER );
-		this.internalAddComponent( pageEndPanel, java.awt.BorderLayout.PAGE_END );
+		this.addPageEndComponent( pageEndPanel );
+	}
+
+	private void setIconToPlay() {
+		this.playPauseButton.setClobberIcon( PLAY_ICON );
+		this.playPauseButton.repaint();
+	}
+
+	private void setIconToPause() {
+		this.playPauseButton.setClobberIcon( PAUSE_ICON );
+		this.playPauseButton.repaint();
 	}
 
 	public void setUri( java.net.URI uri ) {
 		this.uri = uri;
+		getVideoPlayer();
 	}
 
 	public edu.cmu.cs.dennisc.video.VideoPlayer getVideoPlayer() {
@@ -385,10 +305,11 @@ public class VideoView extends PlayView {
 			//pass
 		} else {
 			this.videoPlayer = edu.cmu.cs.dennisc.video.VideoUtilties.createVideoPlayer();
+			this.videoPlayer.setPainter( this.painter );
+			this.videoPlayer.addMediaListener( this.mediaListener );
 			if( this.uri != null ) {
 				this.videoPlayer.prepareMedia( this.uri );
 			}
-
 			java.awt.Canvas videoSurface = this.videoPlayer.getVideoSurface();
 			java.awt.Component component;
 			if( videoSurface != null ) {
@@ -401,7 +322,6 @@ public class VideoView extends PlayView {
 			}
 			this.getAwtComponent().add( component, java.awt.BorderLayout.CENTER );
 			this.revalidateAndRepaint();
-			this.videoPlayer.addMediaListener( this.mediaListener );
 		}
 		return this.videoPlayer;
 	}
@@ -410,29 +330,28 @@ public class VideoView extends PlayView {
 		if( this.uri != null ) {
 			edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer = this.getVideoPlayer();
 			videoPlayer.playResume();
-			//this.revalidateAndRepaint();
+			this.revalidateAndRepaint();
 		}
 	}
 
 	private void pause() {
 		if( this.videoPlayer != null ) {
 			this.videoPlayer.pause();
-			//this.revalidateAndRepaint();
+			this.revalidateAndRepaint();
 		}
 	}
 
-	private void setPlaying( boolean isPlaying ) {
-		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( isPlaying );
-		if( isPlaying ) {
-			this.play();
-		} else {
-			this.pause();
-		}
-	}
-
-	@Override
-	protected void handleItemStateChanged( java.awt.event.ItemEvent e ) {
-		boolean isPlaying = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
-		this.setPlaying( isPlaying );
-	}
+	//	private void setPlaying( boolean isPlaying ) {
+	//		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( isPlaying );
+	//		if( isPlaying ) {
+	//			this.play();
+	//		} else {
+	//			this.pause();
+	//		}
+	//	}
+	//
+	//	private void handleItemStateChanged( java.awt.event.ItemEvent e ) {
+	//		boolean isPlaying = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+	//		this.setPlaying( isPlaying );
+	//	}
 }

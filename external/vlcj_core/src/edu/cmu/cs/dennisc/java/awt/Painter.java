@@ -1,5 +1,6 @@
-/**
- * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
+package edu.cmu.cs.dennisc.java.awt;
+/*
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,37 +41,12 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.video;
+
+
 
 /**
  * @author Dennis Cosgrove
  */
-public interface VideoPlayer {
-	public java.awt.Canvas getVideoSurface();
-
-	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();
-
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter );
-
-	public void prepareMedia( java.net.URI uri );
-
-	public boolean isPlayable();
-
-	public boolean isPlaying();
-
-	public void playResume();
-
-	public void pause();
-
-	public void stop();
-
-	public void setPosition( float position );
-
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
-	public void release();
-
-	public java.awt.Dimension getVideoSize();
+public interface Painter {
+	public void paint( java.awt.Graphics2D g2, int width, int height );
 }
