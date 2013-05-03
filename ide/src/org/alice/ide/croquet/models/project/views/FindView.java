@@ -42,20 +42,23 @@
  */
 package org.alice.ide.croquet.models.project.views;
 
-import java.awt.Dimension;
-
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.border.BevelBorder;
 
 import org.alice.ide.croquet.models.project.FindComposite;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.List;
+import org.lgna.croquet.components.ScrollPane;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserLambda;
 import org.lgna.project.ast.UserMethod;
+
+import edu.cmu.cs.dennisc.math.GoldenRatio;
 
 /**
  * @author Matt May
@@ -65,13 +68,14 @@ public class FindView extends BorderPanel {
 	public FindView( FindComposite composite ) {
 		super( composite );
 		this.addPageStartComponent( composite.getSearchState().createTextArea() );
-		List<SearchObject> searchResultsList = composite.getSearchResults().createList();
-		searchResultsList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchResultListCellRenderer() );
-
-		List<Object> resultReferencesList = composite.getReferenceResults().createList();
-		searchResultsList.setPreferredSize( new Dimension( 100, 100 ) );
 		GridPanel panel = GridPanel.createGridPane( 1, 2 );
-		panel.addComponent( searchResultsList );
+		panel.setPreferredSize( GoldenRatio.createWiderSizeFromHeight( 250 ) );
+		List<SearchObject> searchResultsList = composite.getSearchResults().createList();
+		List<Expression> resultReferencesList = composite.getReferenceResults().createList();
+		searchResultsList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
+		resultReferencesList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
+		panel.addComponent( new ScrollPane( searchResultsList ) );
+		searchResultsList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchResultListCellRenderer() );
 		resultReferencesList.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<Object>() {
 
 			@Override
@@ -88,7 +92,7 @@ public class FindView extends BorderPanel {
 				return rv;
 			}
 		} );
-		panel.addComponent( resultReferencesList );
+		panel.addComponent( new ScrollPane( resultReferencesList ) );
 		this.addCenterComponent( panel );
 	}
 }

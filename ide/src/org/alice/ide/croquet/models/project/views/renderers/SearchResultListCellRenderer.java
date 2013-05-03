@@ -56,23 +56,7 @@ public class SearchResultListCellRenderer<T extends AbstractDeclaration> extends
 		sb.append( value.getReferences().size() );
 		sb.append( ")" );
 		rv.setText( sb.toString() );
-		javax.swing.Icon icon;
-		T object = value.getSearchObject();
-		if( object instanceof org.lgna.project.ast.AbstractMethod ) {
-			org.lgna.project.ast.AbstractMethod method = (org.lgna.project.ast.AbstractMethod)object;
-			if( method.isProcedure() ) {
-				icon = org.alice.ide.declarationseditor.DeclarationTabState.getProcedureIcon();
-			} else {
-				icon = org.alice.ide.declarationseditor.DeclarationTabState.getFunctionIcon();
-			}
-		} else if( object instanceof org.lgna.project.ast.AbstractField ) {
-			icon = org.alice.ide.declarationseditor.DeclarationTabState.getFieldIcon();
-		} else if( object instanceof org.lgna.project.ast.AbstractConstructor ) {
-			icon = org.alice.ide.declarationseditor.DeclarationTabState.getConstructorIcon();
-		} else {
-			icon = null;
-		}
-		rv.setIcon( icon );
+		rv.setIcon( value.getIcon() );
 		return rv;
 	}
 }

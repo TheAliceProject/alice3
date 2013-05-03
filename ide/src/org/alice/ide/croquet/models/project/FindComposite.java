@@ -55,6 +55,9 @@ import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
@@ -68,6 +71,7 @@ public class FindComposite extends FrameComposite<FindView> {
 
 	private FindContentManager manager = new FindContentManager();
 	private StringState searchState = createStringState( createKey( "searchState" ) );
+	@SuppressWarnings( "rawtypes" )
 	ItemCodec<SearchObject> codec1 = new ItemCodec<SearchObject>() {
 
 		public Class<SearchObject> getValueClass() {
@@ -85,34 +89,36 @@ public class FindComposite extends FrameComposite<FindView> {
 			sb.append( value );
 		}
 	};
-	ItemCodec<Object> codec2 = new ItemCodec<Object>() {
+	ItemCodec<Expression> codec2 = new ItemCodec<Expression>() {
 
-		public Class<Object> getValueClass() {
-			return Object.class;
+		public Class<Expression> getValueClass() {
+			return Expression.class;
 		}
 
-		public Object decodeValue( BinaryDecoder binaryDecoder ) {
+		public Expression decodeValue( BinaryDecoder binaryDecoder ) {
 			return null;
 		}
 
-		public void encodeValue( BinaryEncoder binaryEncoder, Object value ) {
+		public void encodeValue( BinaryEncoder binaryEncoder, Expression value ) {
 		}
 
-		public void appendRepresentation( StringBuilder sb, Object value ) {
+		public void appendRepresentation( StringBuilder sb, Expression value ) {
 			sb.append( value );
 		}
 	};
+	@SuppressWarnings( "rawtypes" )
 	private RefreshableListData<SearchObject> data = new RefreshableListData<SearchObject>( codec1 ) {
 
+		@SuppressWarnings( "unchecked" )
 		@Override
 		protected List createValues() {
 			return manager.getResultsForString( searchState.getValue() );
 		}
 	};
-	private RefreshableListData<Object> referencesData = new RefreshableListData<Object>( codec2 ) {
+	private RefreshableListData<Expression> referencesData = new RefreshableListData<Expression>( codec2 ) {
 
 		@Override
-		protected List createValues() {
+		protected List<Expression> createValues() {
 			return searchResults.getValue() != null ? searchResults.getValue().getReferences() : Collections.newArrayList();
 		}
 	};
@@ -127,11 +133,13 @@ public class FindComposite extends FrameComposite<FindView> {
 			referencesData.refresh();
 		}
 	};
+	@SuppressWarnings( "rawtypes" )
 	private ListSelectionState<SearchObject> searchResults = createListSelectionState( createKey( "searchResultsList" ),
 			data, -1 );
-	private ListSelectionState<Object> referenceResults = createListSelectionState( createKey( "searchResultsList" ),
+	private ListSelectionState<Expression> referenceResults = createListSelectionState( createKey( "searchResultsList" ),
 			referencesData, -1 );
 
+	@SuppressWarnings( "rawtypes" )
 	public FindComposite() {
 		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ), null );
 		searchState.addValueListener( searchStateListener );
@@ -142,6 +150,17 @@ public class FindComposite extends FrameComposite<FindView> {
 
 			public void changed( State<SearchObject> state, SearchObject prevValue, SearchObject nextValue, boolean isAdjusting ) {
 				referencesData.refresh();
+			}
+		} );
+		referenceResults.addValueListener( new ValueListener<Expression>() {
+
+			public void changing( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
+				IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextValue.getFirstAncestorAssignableTo( UserMethod.class ) ) );
+				IDE.getActiveInstance().getHighlightStencil().showHighlightOverStatement( (Statement)nextValue.getParent(), "" );
+				//				showHighlightOverExpression( searchResults.getValue().getExpressionToHighlight( nextValue ), "" );
 			}
 		} );
 	}
@@ -161,11 +180,12 @@ public class FindComposite extends FrameComposite<FindView> {
 		return this.searchState;
 	}
 
+	@SuppressWarnings( "rawtypes" )
 	public ListSelectionState<SearchObject> getSearchResults() {
 		return this.searchResults;
 	}
 
-	public ListSelectionState<Object> getReferenceResults() {
+	public ListSelectionState<Expression> getReferenceResults() {
 		return this.referenceResults;
 	}
 }
