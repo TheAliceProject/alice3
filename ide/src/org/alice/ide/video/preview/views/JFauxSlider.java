@@ -46,15 +46,29 @@ package org.alice.ide.video.preview.views;
  * @author Dennis Cosgrove
  */
 /* package-private */class JFauxSlider extends javax.swing.JComponent {
-	private static final int THUMB_SIZE = 24;
-	private static final int TRACK_HEIGHT = 16;
-	private static final int INDENT = THUMB_SIZE / 2;
-	private static final java.awt.Color TRACK_LEADING_COLOR = java.awt.Color.BLUE.darker();
-	private static final java.awt.Color TRACK_TRAILING_COLOR = java.awt.Color.LIGHT_GRAY;
-	private static final java.awt.Color THUMB_FILL_COLOR = new java.awt.Color( 191, 191, 255 );
+	private static final int THUMB_HEIGHT = 12;
+	private static final int HALF_THUMB_WIDTH = 8;
+	private static final int THUMB_WIDTH = HALF_THUMB_WIDTH * 2;
+
+	private static final int TRACK_HEIGHT = 8;
+	private static final java.awt.Color TRACK_LEADING_COLOR = java.awt.Color.WHITE;
+	private static final java.awt.Color TRACK_TRAILING_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 221 );
+	private static final java.awt.Color THUMB_FILL_COLOR = java.awt.Color.LIGHT_GRAY;
 	private static final java.awt.Color THUMB_DRAW_COLOR = java.awt.Color.BLACK;
 
 	private float portion = 0.0f;
+
+	private static final java.awt.Shape THUMB_SHAPE = createThumbShape();
+
+	private static java.awt.Shape createThumbShape() {
+		java.awt.geom.RoundRectangle2D.Float roundRect = new java.awt.geom.RoundRectangle2D.Float( -HALF_THUMB_WIDTH, -THUMB_HEIGHT, THUMB_WIDTH, THUMB_HEIGHT, 4, 4 );
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( HALF_THUMB_WIDTH / 2, 0 );
+		path.lineTo( 0, TRACK_HEIGHT / 2 );
+		path.lineTo( -HALF_THUMB_WIDTH / 2, 0 );
+		path.closePath();
+		return edu.cmu.cs.dennisc.java.awt.geom.AreaUtilities.createUnion( roundRect, path );
+	}
 
 	private final java.util.List<org.alice.ide.video.preview.views.events.ThumbListener> thumbListeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
@@ -84,6 +98,10 @@ package org.alice.ide.video.preview.views;
 			fireThumbDragged( e );
 		}
 	};
+
+	public JFauxSlider() {
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 10, 0 ) );
+	}
 
 	public void addThumbListener( org.alice.ide.video.preview.views.events.ThumbListener listener ) {
 		this.thumbListeners.add( listener );
@@ -139,8 +157,8 @@ package org.alice.ide.video.preview.views;
 
 	private void updatePortion( java.awt.event.MouseEvent e ) {
 		int w = this.getWidth();
-		int trackWidth = w - ( INDENT * 2 );
-		int x0 = INDENT;
+		int trackWidth = w - ( HALF_THUMB_WIDTH * 2 );
+		int x0 = HALF_THUMB_WIDTH;
 		float p = ( e.getX() - x0 ) / (float)trackWidth;
 		p = Math.max( p, 0.0f );
 		p = Math.min( p, 1.0f );
@@ -149,7 +167,8 @@ package org.alice.ide.video.preview.views;
 
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), THUMB_SIZE );
+		java.awt.Insets insets = this.getInsets();
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumHeight( super.getPreferredSize(), THUMB_HEIGHT + TRACK_HEIGHT + insets.top + insets.bottom );
 	}
 
 	@Override
@@ -157,13 +176,17 @@ package org.alice.ide.video.preview.views;
 		super.paintComponent( g );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		java.awt.Insets insets = this.getInsets();
 		try {
 			int w = this.getWidth();
 			int h = this.getHeight();
 
-			int trackWidth = w - ( INDENT * 2 );
-			int x = INDENT;
-			int y = ( h - TRACK_HEIGHT ) / 2;
+			int trackWidth = w - ( HALF_THUMB_WIDTH * 2 );
+			int x = HALF_THUMB_WIDTH;
+			//int y = ( h - ( TRACK_HEIGHT + THUMB_HEIGHT ) ) / 2;
+			int y = insets.top;
+
+			y += THUMB_HEIGHT;
 
 			int centerX = x + (int)Math.round( this.portion * trackWidth );
 			java.awt.Shape trackShape = new java.awt.geom.RoundRectangle2D.Float( x, y, trackWidth, TRACK_HEIGHT, TRACK_HEIGHT, TRACK_HEIGHT );
@@ -180,11 +203,13 @@ package org.alice.ide.video.preview.views;
 			} finally {
 				g2.setClip( prevClip );
 			}
-			java.awt.Shape thumbShape = new java.awt.geom.Ellipse2D.Float( centerX - ( THUMB_SIZE / 2 ), 0, THUMB_SIZE, THUMB_SIZE );
+			//java.awt.Shape thumbShape = new java.awt.geom.Ellipse2D.Float( centerX - ( THUMB_SIZE / 2 ), 0, THUMB_SIZE, THUMB_SIZE );
+			g2.translate( centerX, y );
 			g2.setPaint( THUMB_FILL_COLOR );
-			g2.fill( thumbShape );
+			g2.fill( THUMB_SHAPE );
 			g2.setPaint( THUMB_DRAW_COLOR );
-			g2.draw( thumbShape );
+			g2.draw( THUMB_SHAPE );
+			g2.translate( -centerX, 10 );
 		} finally {
 			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g2, prevAntialiasing );
 		}

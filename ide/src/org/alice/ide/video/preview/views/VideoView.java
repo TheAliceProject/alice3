@@ -127,7 +127,19 @@ class PlayButtonIcon implements javax.swing.Icon {
 	}
 
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, size.width, size.height );
+		javax.swing.AbstractButton b = (javax.swing.AbstractButton)c;
+		javax.swing.ButtonModel model = b.getModel();
+		java.awt.Color color = b.getForeground();
+		if( model.isRollover() ) {
+			color = color.brighter();
+		}
+		g.setColor( color );
+		Object prevAntialiasing = edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		try {
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.Heading.EAST, x, y, size.width, size.height );
+		} finally {
+			edu.cmu.cs.dennisc.java.awt.GraphicsUtilities.setAntialiasing( g, prevAntialiasing );
+		}
 	}
 }
 
@@ -147,8 +159,15 @@ class PauseButtonIcon implements javax.swing.Icon {
 	}
 
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-		g.fillRect( x, y, 6, this.getIconHeight() );
-		g.fillRect( ( x + this.getIconWidth() ) - 6, y, 6, this.getIconHeight() );
+		javax.swing.AbstractButton b = (javax.swing.AbstractButton)c;
+		javax.swing.ButtonModel model = b.getModel();
+		java.awt.Color color = b.getForeground();
+		if( model.isRollover() ) {
+			color = color.brighter();
+		}
+		g.setColor( color );
+		g.fillRect( x, y, 4, this.getIconHeight() );
+		g.fillRect( ( x + this.getIconWidth() ) - 6, y, 4, this.getIconHeight() );
 	}
 }
 
@@ -266,7 +285,7 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 		}
 	};
 
-	private final org.lgna.croquet.components.Button playPauseButton;
+	private final UnadornedButton playPauseButton;
 	private final java.awt.Dimension PLAY_PAUSE_ICON_SIZE = new java.awt.Dimension( 16, 16 );
 	private final javax.swing.Icon PLAY_ICON = new PlayButtonIcon( PLAY_PAUSE_ICON_SIZE );
 	private final javax.swing.Icon PAUSE_ICON = new PauseButtonIcon( PLAY_PAUSE_ICON_SIZE );
@@ -274,15 +293,17 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 	public VideoView( org.alice.ide.video.preview.VideoComposite composite ) {
 		super( composite );
 		this.jSlider.addThumbListener( this.thumbListener );
-		this.playPauseButton = composite.getTogglePlayPauseOperation().createButton();
-		//this.playPauseButton.tightenUpMargin();
+		this.playPauseButton = new UnadornedButton( composite.getTogglePlayPauseOperation() );
+		this.playPauseButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 6, 0, 0 ) );
 		this.playPauseButton.setClobberIcon( PLAY_ICON );
+		this.playPauseButton.setForegroundColor( java.awt.Color.LIGHT_GRAY );
 		//jPlayView.addItemListener( this.itemListener );
 
 		org.lgna.croquet.components.BorderPanel pageEndPanel = new org.lgna.croquet.components.BorderPanel();
 		pageEndPanel.addLineStartComponent( playPauseButton );
 		pageEndPanel.getAwtComponent().add( this.jSlider, java.awt.BorderLayout.CENTER );
 		this.addPageEndComponent( pageEndPanel );
+		this.setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 80 ) );
 	}
 
 	private void setIconToPlay() {
