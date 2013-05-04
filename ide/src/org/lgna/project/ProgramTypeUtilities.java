@@ -202,4 +202,18 @@ public class ProgramTypeUtilities {
 	public static org.lgna.project.ast.UserMethod getMainMethod( org.lgna.project.Project project ) {
 		return getMainMethod( project.getProgramType() );
 	}
+
+	public static void sanityCheckAllTypes( org.lgna.project.Project project ) {
+		for( org.lgna.project.ast.NamedUserType type : project.getNamedUserTypes() ) {
+			for( org.lgna.project.ast.NamedUserConstructor constructor : type.constructors ) {
+				assert constructor.getDeclaringType() == type : type;
+			}
+			for( org.lgna.project.ast.UserMethod method : type.methods ) {
+				assert method.getDeclaringType() == type : type;
+			}
+			for( org.lgna.project.ast.UserField field : type.fields ) {
+				assert field.getDeclaringType() == type : type;
+			}
+		}
+	}
 }

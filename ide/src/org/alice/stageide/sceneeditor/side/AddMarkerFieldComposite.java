@@ -78,6 +78,11 @@ public abstract class AddMarkerFieldComposite extends org.alice.ide.ast.declarat
 	protected abstract AffineMatrix4x4 getInitialMarkerTransform();
 
 	@Override
+	protected boolean isUserTypeDesired() {
+		return false;
+	}
+
+	@Override
 	protected boolean isNameGenerationDesired() {
 		//todo?
 		return true;
