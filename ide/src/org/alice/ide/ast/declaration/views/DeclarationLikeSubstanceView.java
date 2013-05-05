@@ -106,7 +106,7 @@ public abstract class DeclarationLikeSubstanceView extends org.alice.ide.preview
 				if( initializerState.isEnabled() ) {
 					component = new org.alice.ide.croquet.components.ExpressionDropDown( initializerState, factory );
 				} else {
-					component = factory.createExpressionPane( initializerState.getValue() );
+					component = new org.alice.ide.croquet.components.ExpressionStateView( initializerState, factory );
 				}
 				rv.addComponent( initializerState.getSidekickLabel().createLabel() );
 				rv.addComponent( component, "wrap" );
