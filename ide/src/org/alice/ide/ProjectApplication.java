@@ -354,6 +354,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		if( sb.length() > 0 ) {
 			this.showMessageDialog( sb.toString(), "A Problem With Your Project Has Been Fixed", org.lgna.croquet.MessageType.WARNING );
 		}
+		org.lgna.project.ProgramTypeUtilities.sanityCheckAllTypes( project );
 		this.setDocument( new ProjectDocument( project ) );
 	}
 

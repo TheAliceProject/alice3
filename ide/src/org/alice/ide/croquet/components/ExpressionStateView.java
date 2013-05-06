@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,59 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.ast.declaration;
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AddPredeterminedValueTypeManagedFieldComposite extends AddManagedFieldComposite {
-	private final org.lgna.project.ast.JavaType javaValueType;
-	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
+public class ExpressionStateView extends org.lgna.croquet.components.BorderPanel {
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model;
+	private final org.alice.ide.x.AstI18nFactory factory;
 
-	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, org.lgna.project.ast.JavaType javaValueType ) {
-		super( migrationId, new FieldDetailsBuilder()
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
-				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.DISPLAYED, null )
-				.build() );
-		this.javaValueType = javaValueType;
-		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( this.javaValueType );
-		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
-			this.getOperation().setButtonIcon( iconFactory.getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
 		}
-	}
 
-	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, Class<?> valueCls ) {
-		this( migrationId, org.lgna.project.ast.JavaType.getInstance( valueCls ) );
-	}
-
-	protected boolean isUserTypeDesired() {
-		return true;
-	}
-
-	@Override
-	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
-		if( this.isUserTypeDesired() ) {
-			this.type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromSuperType( this.javaValueType );
-		} else {
-			this.type = this.javaValueType;
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+			ExpressionStateView.this.refreshLater();
 		}
-		super.handlePreShowDialog( step );
+	};
+
+	public ExpressionStateView( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model, org.alice.ide.x.AstI18nFactory factory ) {
+		this.model = model;
+		this.factory = factory;
 	}
 
 	@Override
-	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		super.handlePostHideDialog( completionStep );
-		this.type = null;
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.model.addAndInvokeValueListener( this.valueListener );
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
-		return this.type;
+	protected void handleUndisplayable() {
+		this.model.removeValueListener( this.valueListener );
+		super.handleUndisplayable();
 	}
 
 	@Override
-	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
-		return org.lgna.project.ast.AstUtilities.createInstanceCreation( this.type );
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.forgetAndRemoveAllComponents();
+		this.addCenterComponent( factory.createExpressionPane( this.model.getValue() ) );
+		this.revalidateAndRepaint();
 	}
 }
