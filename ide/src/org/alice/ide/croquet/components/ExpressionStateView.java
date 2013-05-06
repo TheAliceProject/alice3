@@ -40,51 +40,46 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.video;
+package org.alice.ide.croquet.components;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface VideoPlayer {
-	public java.awt.Canvas getVideoSurface();
+public class ExpressionStateView extends org.lgna.croquet.components.BorderPanel {
+	private final org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model;
+	private final org.alice.ide.x.AstI18nFactory factory;
 
-	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();
+	private final org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression> valueListener = new org.lgna.croquet.State.ValueListener<org.lgna.project.ast.Expression>() {
+		public void changing( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+		}
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter );
+		public void changed( org.lgna.croquet.State<org.lgna.project.ast.Expression> state, org.lgna.project.ast.Expression prevValue, org.lgna.project.ast.Expression nextValue, boolean isAdjusting ) {
+			ExpressionStateView.this.refreshLater();
+		}
+	};
 
-	public void prepareMedia( java.net.URI uri );
+	public ExpressionStateView( org.lgna.croquet.CustomItemState<org.lgna.project.ast.Expression> model, org.alice.ide.x.AstI18nFactory factory ) {
+		this.model = model;
+		this.factory = factory;
+	}
 
-	public boolean isPlayable();
+	@Override
+	protected void handleDisplayable() {
+		super.handleDisplayable();
+		this.model.addAndInvokeValueListener( this.valueListener );
+	}
 
-	public boolean isPlaying();
+	@Override
+	protected void handleUndisplayable() {
+		this.model.removeValueListener( this.valueListener );
+		super.handleUndisplayable();
+	}
 
-	public void playResume();
-
-	public void pause();
-
-	public void stop();
-
-	public float getPosition();
-
-	public void setPosition( float position );
-
-	public long getLengthInMilliseconds();
-
-	public boolean isMuted();
-
-	public void setMuted( boolean isMuted );
-
-	public float getVolume();
-
-	public void setVolume( float volume );
-
-	public java.awt.image.BufferedImage getSnapshot();
-
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
-	public void release();
-
-	public java.awt.Dimension getVideoSize();
+	@Override
+	protected void internalRefresh() {
+		super.internalRefresh();
+		this.forgetAndRemoveAllComponents();
+		this.addCenterComponent( factory.createExpressionPane( this.model.getValue() ) );
+		this.revalidateAndRepaint();
+	}
 }

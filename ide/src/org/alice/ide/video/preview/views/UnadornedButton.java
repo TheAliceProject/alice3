@@ -40,51 +40,64 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.video;
+package org.alice.ide.video.preview.views;
+
+class UnadornedButtonUI extends javax.swing.plaf.basic.BasicButtonUI {
+	private static class SingletonHolder {
+		private static UnadornedButtonUI instance = new UnadornedButtonUI();
+	}
+
+	private UnadornedButtonUI() {
+	}
+
+	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) {
+		return SingletonHolder.instance;
+	}
+}
 
 /**
  * @author Dennis Cosgrove
  */
-public interface VideoPlayer {
-	public java.awt.Canvas getVideoSurface();
+public class UnadornedButton extends org.lgna.croquet.components.OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
+	public UnadornedButton( org.lgna.croquet.Operation operation ) {
+		super( operation );
+	}
 
-	public edu.cmu.cs.dennisc.java.awt.Painter getPainter();
+	@Override
+	protected final javax.swing.JButton createAwtComponent() {
+		javax.swing.JButton rv = new javax.swing.JButton() {
+			@Override
+			public String getText() {
+				if( isTextClobbered() ) {
+					return getClobberText();
+				} else {
+					return super.getText();
+				}
+			}
 
-	public void setPainter( edu.cmu.cs.dennisc.java.awt.Painter painter );
+			@Override
+			public javax.swing.Icon getIcon() {
+				if( UnadornedButton.this.isIconClobbered() ) {
+					return UnadornedButton.this.getClobberIcon();
+				} else {
+					org.lgna.croquet.Operation model = UnadornedButton.this.getModel();
+					javax.swing.Icon buttonIcon = model.getButtonIcon();
+					if( buttonIcon != null ) {
+						return buttonIcon;
+					} else {
+						return super.getIcon();
+					}
+				}
+			}
 
-	public void prepareMedia( java.net.URI uri );
-
-	public boolean isPlayable();
-
-	public boolean isPlaying();
-
-	public void playResume();
-
-	public void pause();
-
-	public void stop();
-
-	public float getPosition();
-
-	public void setPosition( float position );
-
-	public long getLengthInMilliseconds();
-
-	public boolean isMuted();
-
-	public void setMuted( boolean isMuted );
-
-	public float getVolume();
-
-	public void setVolume( float volume );
-
-	public java.awt.image.BufferedImage getSnapshot();
-
-	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
-	public void removeMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
-
-	public void release();
-
-	public java.awt.Dimension getVideoSize();
+			@Override
+			public void updateUI() {
+				this.setUI( UnadornedButtonUI.createUI( this ) );
+			}
+		};
+		rv.setRolloverEnabled( true );
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setOpaque( false );
+		return rv;
+	}
 }
