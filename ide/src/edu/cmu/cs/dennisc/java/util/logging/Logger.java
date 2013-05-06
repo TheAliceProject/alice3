@@ -107,6 +107,10 @@ public class Logger {
 		return getInstance().getLevel();
 	}
 
+	public static void setLevel( java.util.logging.Level level ) {
+		getInstance().setLevel( level );
+	}
+
 	private static String buildMessage( Object object ) {
 		return object != null ? object.toString() : null;
 	}
