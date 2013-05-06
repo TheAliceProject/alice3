@@ -42,7 +42,6 @@
  */
 package edu.cmu.cs.dennisc.video.vlcj;
 
-import uk.co.caprica.vlcj.binding.internal.libvlc_media_t;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 
 /**
@@ -52,11 +51,12 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 	private final uk.co.caprica.vlcj.player.MediaPlayerEventListener mediaPlayerEventListener = new uk.co.caprica.vlcj.player.MediaPlayerEventListener() {
 		public void mediaChanged( MediaPlayer mediaPlayer, uk.co.caprica.vlcj.binding.internal.libvlc_media_t media, String mrl ) {
 			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mediaChanged", mediaPlayer, media, mrl );
-			uk.co.caprica.vlcj.player.MediaDetails mediaDetails = mediaPlayer.getMediaDetails();
+			//uk.co.caprica.vlcj.player.MediaDetails mediaDetails = mediaPlayer.getMediaDetails();
+			fireMediaChanged();
 		}
 
 		public void opening( MediaPlayer mediaPlayer ) {
-			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "opening", mediaPlayer );
+			fireOpening();
 		}
 
 		public void buffering( MediaPlayer mediaPlayer, float newCache ) {
@@ -117,7 +117,7 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		public void mediaMetaChanged( MediaPlayer mediaPlayer, int metaType ) {
 		}
 
-		public void mediaSubItemAdded( MediaPlayer mediaPlayer, libvlc_media_t subItem ) {
+		public void mediaSubItemAdded( MediaPlayer mediaPlayer, uk.co.caprica.vlcj.binding.internal.libvlc_media_t subItem ) {
 		}
 
 		public void mediaDurationChanged( MediaPlayer mediaPlayer, long newDuration ) {
@@ -188,43 +188,55 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 
 	private void fireVideoOutput( int count ) {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
-			mediaListener.videoOutput( count );
+			mediaListener.videoOutput( this, count );
 		}
 	}
 
 	private void firePositionChanged( float position ) {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
-			mediaListener.positionChanged( position );
+			mediaListener.positionChanged( this, position );
+		}
+	}
+
+	private void fireMediaChanged() {
+		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+			mediaListener.mediaChanged( this );
+		}
+	}
+
+	private void fireOpening() {
+		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
+			mediaListener.opening( this );
 		}
 	}
 
 	private void firePlaying() {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
-			mediaListener.playing();
+			mediaListener.playing( this );
 		}
 	}
 
 	private void firePaused() {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
-			mediaListener.paused();
+			mediaListener.paused( this );
 		}
 	}
 
 	private void fireStopped() {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
-			mediaListener.stopped();
+			mediaListener.stopped( this );
 		}
 	}
 
 	private void fireFinished() {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
-			mediaListener.finished();
+			mediaListener.finished( this );
 		}
 	}
 
 	private void fireError() {
 		for( edu.cmu.cs.dennisc.video.event.MediaListener mediaListener : mediaListeners ) {
-			mediaListener.error();
+			mediaListener.error( this );
 		}
 	}
 
@@ -301,6 +313,11 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 		mediaPlayer.stop();
 	}
 
+	public float getPosition() {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		return mediaPlayer.getPosition();
+	}
+
 	public void setPosition( float position ) {
 		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
 		if( mediaPlayer.isSeekable() ) {
@@ -311,6 +328,36 @@ public class VlcjVideoPlayer implements edu.cmu.cs.dennisc.video.VideoPlayer {
 			//mediaPlayer.pause();
 		}
 		mediaPlayer.setPosition( position );
+	}
+
+	public long getLengthInMilliseconds() {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		return mediaPlayer.getLength();
+	}
+
+	public float getVolume() {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		return mediaPlayer.getVolume() * 0.01f;
+	}
+
+	public void setVolume( float volume ) {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		mediaPlayer.setVolume( Math.round( volume * 100 ) ); // 200?
+	}
+
+	public boolean isMuted() {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		return mediaPlayer.isMute();
+	}
+
+	public void setMuted( boolean isMuted ) {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		mediaPlayer.mute( isMuted );
+	}
+
+	public java.awt.image.BufferedImage getSnapshot() {
+		MediaPlayer mediaPlayer = this.embeddedMediaPlayerComponent.getMediaPlayer();
+		return mediaPlayer.getSnapshot();
 	}
 
 	public void release() {

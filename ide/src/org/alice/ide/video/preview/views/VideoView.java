@@ -175,6 +175,8 @@ class PauseButtonIcon implements javax.swing.Icon {
  * @author Dennis Cosgrove
  */
 public class VideoView extends org.lgna.croquet.components.BorderPanel {
+	private static final java.text.SimpleDateFormat FORMAT = new java.text.SimpleDateFormat( "m:ss" );
+
 	private java.net.URI uri;
 	private edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer;
 	private final JFauxSlider jSlider = new JFauxSlider();
@@ -191,17 +193,27 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 	};
 
 	private final edu.cmu.cs.dennisc.video.event.MediaListener mediaListener = new edu.cmu.cs.dennisc.video.event.MediaListener() {
-		public void newMedia() {
+		public void mediaChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "mediaChanged", videoPlayer.getLengthInMilliseconds() );
 		}
 
-		public void videoOutput( int count ) {
+		public void newMedia( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "newMedia", videoPlayer.getLengthInMilliseconds() );
+		}
+
+		public void videoOutput( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, int count ) {
+			long msec = videoPlayer.getLengthInMilliseconds();
+			java.util.GregorianCalendar calendar = new java.util.GregorianCalendar();
+			calendar.setTimeInMillis( msec );
+			durationLabel.setText( FORMAT.format( calendar.getTime() ) );
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "videoOutput", videoPlayer.getLengthInMilliseconds() );
 			if( count > 0 ) {
 				java.awt.Dimension dimension = videoPlayer.getVideoSize();
 				//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: handle video size:", dimension );
 			}
 		}
 
-		public void positionChanged( final float f ) {
+		public void positionChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, final float f ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
 					jSlider.setPortion( f );
@@ -209,15 +221,19 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 			} );
 		}
 
-		public void playing() {
+		public void opening( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "opening", videoPlayer.getLengthInMilliseconds() );
+		}
+
+		public void playing( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			setIconToPause();
 		}
 
-		public void paused() {
+		public void paused( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			setIconToPlay();
 		}
 
-		public void finished() {
+		public void finished( final edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			setIconToPlay();
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
@@ -226,11 +242,11 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 			} );
 		}
 
-		public void stopped() {
+		public void stopped( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			setIconToPlay();
 		}
 
-		public void error() {
+		public void error( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer ) {
 			edu.cmu.cs.dennisc.java.util.logging.Logger.severe();
 		}
 	};
@@ -289,19 +305,25 @@ public class VideoView extends org.lgna.croquet.components.BorderPanel {
 	private final java.awt.Dimension PLAY_PAUSE_ICON_SIZE = new java.awt.Dimension( 16, 16 );
 	private final javax.swing.Icon PLAY_ICON = new PlayButtonIcon( PLAY_PAUSE_ICON_SIZE );
 	private final javax.swing.Icon PAUSE_ICON = new PauseButtonIcon( PLAY_PAUSE_ICON_SIZE );
+	private final org.lgna.croquet.components.Label durationLabel = new org.lgna.croquet.components.Label( "0:00" );
 
 	public VideoView( org.alice.ide.video.preview.VideoComposite composite ) {
 		super( composite );
 		this.jSlider.addThumbListener( this.thumbListener );
 		this.playPauseButton = new UnadornedButton( composite.getTogglePlayPauseOperation() );
-		this.playPauseButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 6, 0, 0 ) );
+		this.playPauseButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 6, 0, 0 ) );
 		this.playPauseButton.setClobberIcon( PLAY_ICON );
 		this.playPauseButton.setForegroundColor( java.awt.Color.LIGHT_GRAY );
 		//jPlayView.addItemListener( this.itemListener );
 
+		this.durationLabel.setForegroundColor( java.awt.Color.LIGHT_GRAY );
+
 		org.lgna.croquet.components.BorderPanel pageEndPanel = new org.lgna.croquet.components.BorderPanel();
 		pageEndPanel.addLineStartComponent( playPauseButton );
 		pageEndPanel.getAwtComponent().add( this.jSlider, java.awt.BorderLayout.CENTER );
+		pageEndPanel.addLineEndComponent( this.durationLabel );
+		pageEndPanel.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 2, 0, 4 ) );
+
 		this.addPageEndComponent( pageEndPanel );
 		this.setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 80 ) );
 	}

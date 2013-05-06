@@ -46,19 +46,23 @@ package edu.cmu.cs.dennisc.video.event;
  * @author Dennis Cosgrove
  */
 public interface MediaListener {
-	public void newMedia();
+	public void mediaChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );
 
-	public void videoOutput( int count );
+	public void newMedia( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );
 
-	public void playing();
+	public void videoOutput( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, int count );
 
-	public void paused();
+	public void opening( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );
 
-	public void positionChanged( float position );
+	public void playing( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );
 
-	public void finished();
+	public void paused( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );
 
-	public void stopped();
+	public void positionChanged( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer, float position );
 
-	public void error();
+	public void finished( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );
+
+	public void stopped( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );
+
+	public void error( edu.cmu.cs.dennisc.video.VideoPlayer videoPlayer );
 }

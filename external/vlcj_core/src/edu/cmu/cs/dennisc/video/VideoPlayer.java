@@ -64,7 +64,21 @@ public interface VideoPlayer {
 
 	public void stop();
 
+	public float getPosition();
+
 	public void setPosition( float position );
+
+	public long getLengthInMilliseconds();
+
+	public boolean isMuted();
+
+	public void setMuted( boolean isMuted );
+
+	public float getVolume();
+
+	public void setVolume( float volume );
+
+	public java.awt.image.BufferedImage getSnapshot();
 
 	public void addMediaListener( edu.cmu.cs.dennisc.video.event.MediaListener listener );
 
