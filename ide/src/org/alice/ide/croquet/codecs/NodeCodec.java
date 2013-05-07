@@ -58,6 +58,16 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 		return (NodeCodec<T>)rv;
 	}
 
+	private static java.util.Map<java.util.UUID, org.lgna.project.ast.Node> mapIdToNode = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+
+	public static void addNodeToGlobalMap( org.lgna.project.ast.Node node ) {
+		mapIdToNode.put( node.getId(), node );
+	}
+
+	public static void removeNodeToGlobalMap( org.lgna.project.ast.Node node ) {
+		mapIdToNode.remove( node.getId() );
+	}
+
 	private Class<T> valueCls;
 
 	private NodeCodec( Class<T> valueCls ) {
@@ -72,8 +82,12 @@ public class NodeCodec<T extends org.lgna.project.ast.Node> implements org.lgna.
 		boolean valueIsNotNull = binaryDecoder.decodeBoolean();
 		if( valueIsNotNull ) {
 			java.util.UUID id = binaryDecoder.decodeId();
-			org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
-			return org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
+			if( mapIdToNode.containsKey( id ) ) {
+				return (T)mapIdToNode.get( id );
+			} else {
+				org.lgna.project.Project project = org.alice.ide.ProjectStack.peekProject();
+				return org.lgna.project.ProgramTypeUtilities.lookupNode( project, id );
+			}
 		} else {
 			return null;
 		}
