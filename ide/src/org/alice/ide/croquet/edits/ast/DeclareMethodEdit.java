@@ -47,39 +47,56 @@ package org.alice.ide.croquet.edits.ast;
  */
 public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgna.croquet.CompletionModel> {
 	private org.lgna.project.ast.UserType<?> declaringType;
-	private org.lgna.project.ast.UserMethod method;
+	private final String methodName;
+	private org.lgna.project.ast.AbstractType<?, ?, ?> returnType;
 
+	private transient org.lgna.project.ast.UserMethod method;
 	private transient org.alice.ide.declarationseditor.DeclarationComposite prevDeclarationComposite;
 
-	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserType<?> declaringType, org.lgna.project.ast.UserMethod method ) {
+	public DeclareMethodEdit( org.lgna.croquet.history.CompletionStep completionStep, org.lgna.project.ast.UserType<?> declaringType, String methodName, org.lgna.project.ast.AbstractType<?, ?, ?> returnType ) {
 		super( completionStep );
 		this.declaringType = declaringType;
-		this.method = method;
+		this.methodName = methodName;
+		this.returnType = returnType;
 	}
 
 	public DeclareMethodEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder, Object step ) {
 		super( binaryDecoder, step );
 		this.declaringType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).decodeValue( binaryDecoder );
-		this.method = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMethod.class ).decodeValue( binaryDecoder );
+		this.methodName = binaryDecoder.decodeString();
+		this.returnType = org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ).decodeValue( binaryDecoder );
 	}
 
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
 		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserType.class ).encodeValue( binaryEncoder, this.declaringType );
-		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.UserMethod.class ).encodeValue( binaryEncoder, this.method );
+		binaryEncoder.encode( this.methodName );
+		org.alice.ide.croquet.codecs.NodeCodec.getInstance( org.lgna.project.ast.AbstractType.class ).encodeValue( binaryEncoder, this.returnType );
 	}
 
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
 	}
 
-	public org.lgna.project.ast.UserMethod getMethod() {
-		return this.method;
+	public String getMethodName() {
+		return this.methodName;
 	}
+
+	public org.lgna.project.ast.AbstractType<?, ?, ?> getReturnType() {
+		return this.returnType;
+	}
+
+	//	public org.lgna.project.ast.UserMethod getMethod() {
+	//		return this.method;
+	//	}
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
+		if( isDo ) {
+			//todo: create new every time?
+			this.method = org.lgna.project.ast.AstUtilities.createMethod( this.methodName, this.returnType );
+		}
 		org.alice.ide.declarationseditor.DeclarationTabState declarationTabState = org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState();
 		this.prevDeclarationComposite = declarationTabState.getValue();
 		this.declaringType.methods.add( this.method );
@@ -88,7 +105,7 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgn
 
 	@Override
 	protected final void undoInternal() {
-		int index = this.declaringType.methods.indexOf( method );
+		int index = this.declaringType.methods.indexOf( this.method );
 		if( index != -1 ) {
 			this.declaringType.methods.remove( index );
 			if( this.prevDeclarationComposite != null ) {

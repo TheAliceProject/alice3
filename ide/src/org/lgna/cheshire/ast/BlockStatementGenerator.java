@@ -95,13 +95,17 @@ public class BlockStatementGenerator {
 							org.lgna.project.ast.NamedUserType rootType = (org.lgna.project.ast.NamedUserType)userMethod.getDeclaringType();
 							edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "root type should be program type", rootType );
 
-							org.lgna.project.ast.UserMethod userMethodRetarget = org.lgna.project.ast.AstUtilities.createCopyWithoutBodyStatements( userMethod, rootType, false );
-							//note: when parameters rear their ugly heads, we will need to address them too
-							org.alice.ide.croquet.codecs.NodeCodec.addNodeToGlobalMap( userMethodRetarget );
+							//							org.lgna.project.ast.UserMethod userMethodRetarget = org.lgna.project.ast.AstUtilities.createCopyWithoutBodyStatements( userMethod, rootType, false );
+							//							//note: when parameters rear their ugly heads, we will need to address them too
+							//							org.alice.ide.croquet.codecs.NodeCodec.addNodeToGlobalMap( userMethodRetarget );
 
-							org.lgna.project.ast.UserType<?> declaringType = userMethodRetarget.getDeclaringType();
-							org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, userMethodRetarget );
+							org.lgna.project.ast.UserType<?> declaringType = userMethod.getDeclaringType();
+							org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, userMethod.getName(), userMethod.getReturnType() );
+
+							//todo: add observer for pre and post step generation (inside of push and pop context)
 							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit );
+
+							org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, userMethod.body.getValue() );
 						}
 
 						org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();
