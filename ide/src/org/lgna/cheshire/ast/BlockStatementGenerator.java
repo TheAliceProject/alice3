@@ -101,6 +101,7 @@ public class BlockStatementGenerator {
 
 							org.lgna.project.ast.UserType<?> declaringType = userMethod.getDeclaringType();
 							org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, userMethod.getName(), userMethod.getReturnType() );
+							declareMethodEdit.EPIC_HACK_FOR_TUTORIAL_GENERATION_setMethod( userMethod );
 
 							//todo: add observer for pre and post step generation (inside of push and pop context)
 							org.lgna.croquet.CompletionModel.AddGeneratedTransactionObserver observer = new org.lgna.croquet.CompletionModel.AddGeneratedTransactionObserver() {

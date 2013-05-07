@@ -91,6 +91,10 @@ public final class DeclareMethodEdit extends org.lgna.croquet.edits.Edit<org.lgn
 	//		return this.method;
 	//	}
 
+	public void EPIC_HACK_FOR_TUTORIAL_GENERATION_setMethod( org.lgna.project.ast.UserMethod method ) {
+		this.method = method;
+	}
+
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
 		if( isDo ) {
