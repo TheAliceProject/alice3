@@ -71,7 +71,7 @@ public class BlockStatementGenerator {
 		return new org.alice.ide.ast.draganddrop.BlockStatementIndexPair( nextBlockStatement, nextIndex );
 	}
 
-	public static void generateAndAddToTransactionHistory( org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) throws org.lgna.croquet.UnsupportedGenerationException {
+	public static void generateAndAddToTransactionHistory( final org.lgna.croquet.history.TransactionHistory history, org.lgna.project.ast.BlockStatement blockStatement ) throws org.lgna.croquet.UnsupportedGenerationException {
 		for( org.lgna.project.ast.Statement statement : blockStatement.statements ) {
 			if( statement.isEnabled.getValue() ) {
 				StatementGenerator statementGenerator;
@@ -89,7 +89,7 @@ public class BlockStatementGenerator {
 						org.lgna.project.ast.AbstractMethod method = methodInvocation.method.getValue();
 
 						if( method instanceof org.lgna.project.ast.UserMethod ) {
-							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+							final org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
 							//todo: check to see if generation actually required
 
 							org.lgna.project.ast.NamedUserType rootType = (org.lgna.project.ast.NamedUserType)userMethod.getDeclaringType();
@@ -103,9 +103,12 @@ public class BlockStatementGenerator {
 							org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, userMethod.getName(), userMethod.getReturnType() );
 
 							//todo: add observer for pre and post step generation (inside of push and pop context)
-							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit );
-
-							org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, userMethod.body.getValue() );
+							org.lgna.croquet.CompletionModel.AddGeneratedTransactionObserver observer = new org.lgna.croquet.CompletionModel.AddGeneratedTransactionObserver() {
+								public void prePopGeneratedContexts() throws org.lgna.croquet.UnsupportedGenerationException {
+									org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( history, userMethod.body.getValue() );
+								}
+							};
+							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit, observer );
 						}
 
 						org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();
