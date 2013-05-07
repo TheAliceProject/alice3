@@ -92,9 +92,16 @@ public class BlockStatementGenerator {
 							org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
 							//todo: check to see if generation actually required
 
-							org.lgna.project.ast.UserType<?> declaringType = userMethod.getDeclaringType();
-							org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, userMethod );
-							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( userMethod.getDeclaringType() ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit );
+							org.lgna.project.ast.NamedUserType rootType = (org.lgna.project.ast.NamedUserType)userMethod.getDeclaringType();
+							edu.cmu.cs.dennisc.java.util.logging.Logger.todo( "root type should be program type", rootType );
+
+							org.lgna.project.ast.UserMethod userMethodRetarget = org.lgna.project.ast.AstUtilities.createCopyWithoutBodyStatements( userMethod, rootType, false );
+							//note: when parameters rear their ugly heads, we will need to address them too
+							org.alice.ide.croquet.codecs.NodeCodec.addNodeToGlobalMap( userMethodRetarget );
+
+							org.lgna.project.ast.UserType<?> declaringType = userMethodRetarget.getDeclaringType();
+							org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( null, declaringType, userMethodRetarget );
+							org.alice.ide.ast.declaration.AddProcedureComposite.getInstance( declaringType ).getOperation().addGeneratedTransaction( history, org.lgna.croquet.triggers.ActionEventTrigger.createGeneratorInstance(), declareMethodEdit );
 						}
 
 						org.lgna.project.ast.Expression instanceExpression = methodInvocation.expression.getValue();
@@ -110,7 +117,7 @@ public class BlockStatementGenerator {
 						} else {
 							edu.cmu.cs.dennisc.java.util.logging.Logger.severe( instanceExpression );
 						}
-						statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( methodInvocation.method.getValue() );
+						statementGenerator = org.alice.ide.ast.draganddrop.statement.ProcedureInvocationTemplateDragModel.getInstance( method );
 
 						boolean isFieldTemplateCompositeValid = org.alice.ide.croquet.models.ui.preferences.IsAlwaysShowingBlocksState.getInstance().getValue();
 						//todo
