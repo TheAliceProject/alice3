@@ -89,7 +89,7 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit<org.alice.
 		owner.statements.add( index, statements );
 
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class DissolveStatementWithBodyEdit extends BlockStatementEdit<org.alice.
 		owner.statements.add( index, statementWithBody );
 
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
