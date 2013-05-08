@@ -78,8 +78,13 @@ public class DefaultExceptionHandler extends ExceptionHandler {
 
 	@Override
 	protected synchronized void handleThrowable( Thread thread, Throwable throwable ) {
+		try {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( throwable );
+		} catch( Throwable t ) {
+			t.printStackTrace();
+		}
 		if( isInTheMidstOfHandlingAThrowable ) {
-			throwable.printStackTrace();
+			//pass
 		} else {
 			this.isInTheMidstOfHandlingAThrowable = true;
 			try {

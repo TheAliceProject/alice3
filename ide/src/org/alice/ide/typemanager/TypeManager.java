@@ -119,7 +119,13 @@ public class TypeManager {
 		}
 	}
 
-	private static class ExtendsTypeWithConstructorParameterTypeCriterion extends ExtendsTypeCriterion {
+	private static final class DefaultConstructorExtendsTypeCriterion extends ExtendsTypeCriterion {
+		public DefaultConstructorExtendsTypeCriterion( org.lgna.project.ast.AbstractType<?, ?, ?> superType ) {
+			super( superType );
+		}
+	}
+
+	private static final class ExtendsTypeWithConstructorParameterTypeCriterion extends ExtendsTypeCriterion {
 		private final org.lgna.project.ast.AbstractType<?, ?, ?> parameterType;
 
 		public ExtendsTypeWithConstructorParameterTypeCriterion( org.lgna.project.ast.AbstractType<?, ?, ?> superType, org.lgna.project.ast.AbstractType<?, ?, ?> parameterType ) {
@@ -144,7 +150,7 @@ public class TypeManager {
 		}
 	}
 
-	private static class ExtendsTypeWithSuperArgumentFieldCriterion extends ExtendsTypeCriterion {
+	private static final class ExtendsTypeWithSuperArgumentFieldCriterion extends ExtendsTypeCriterion {
 		private final org.lgna.project.ast.AbstractField superArgumentField;
 
 		public ExtendsTypeWithSuperArgumentFieldCriterion( org.lgna.project.ast.AbstractType<?, ?, ?> superType, org.lgna.project.ast.AbstractField superArgumentField ) {
@@ -219,9 +225,15 @@ public class TypeManager {
 	}
 
 	public static String createClassNameFromSuperType( org.lgna.project.ast.AbstractType<?, ?, ?> superType ) {
-		StringBuilder sb = new StringBuilder();
-		appendTypeName( sb, superType.getName() );
-		return sb.toString();
+		String superTypeName = superType.getName();
+		if( superTypeName.length() > 1 ) {
+			if( superTypeName.charAt( 0 ) == 'S' ) {
+				if( Character.isUpperCase( superTypeName.charAt( 1 ) ) ) {
+					return superTypeName.substring( 1 );
+				}
+			}
+		}
+		return superTypeName;
 	}
 
 	private static final org.lgna.project.ast.JavaMethod SET_JOINTED_MODEL_RESOURCE_METHOD = org.lgna.project.ast.JavaMethod.getInstance( org.lgna.story.SJointedModel.class, "setJointedModelResource", org.lgna.story.resources.JointedModelResource.class );
@@ -347,7 +359,13 @@ public class TypeManager {
 	}
 
 	public static org.lgna.project.ast.NamedUserType getNamedUserTypeFromSuperType( org.lgna.project.ast.JavaType superType ) {
-		ExtendsTypeCriterion criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, ConstructorArgumentUtilities.getContructor0Parameter0Type( superType ) );
+		org.lgna.project.ast.AbstractType<?, ?, ?> parameter0Type = ConstructorArgumentUtilities.getContructor0Parameter0Type( superType );
+		ExtendsTypeCriterion criterion;
+		if( parameter0Type != null ) {
+			criterion = new ExtendsTypeWithConstructorParameterTypeCriterion( superType, ConstructorArgumentUtilities.getContructor0Parameter0Type( superType ) );
+		} else {
+			criterion = new DefaultConstructorExtendsTypeCriterion( superType );
+		}
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getActiveInstance();
 		if( ide != null ) {
 			org.lgna.project.Project project = ide.getProject();
