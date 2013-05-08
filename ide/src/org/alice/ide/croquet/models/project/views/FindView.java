@@ -44,22 +44,18 @@ package org.alice.ide.croquet.models.project.views;
 
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.KeyStroke;
 import javax.swing.border.BevelBorder;
 
 import org.alice.ide.croquet.models.project.FindComposite;
+import org.alice.ide.croquet.models.project.SearchObjectNode;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject;
 import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ScrollPane;
 import org.lgna.croquet.components.TextArea;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.MethodInvocation;
-import org.lgna.project.ast.UserLambda;
-import org.lgna.project.ast.UserMethod;
+import org.lgna.croquet.components.Tree;
 
 import edu.cmu.cs.dennisc.math.GoldenRatio;
 
@@ -83,32 +79,24 @@ public class FindView extends BorderPanel {
 		GridPanel panel = GridPanel.createGridPane( 1, 2 );
 		panel.setPreferredSize( GoldenRatio.createWiderSizeFromHeight( 250 ) );
 		List<SearchObject> searchResultsList = composite.getSearchResults().createList();
-		List<Expression> resultReferencesList = composite.getReferenceResults().createList();
+		Tree<SearchObjectNode> referencesTreeList = composite.getReferenceResults().createTree();
+		referencesTreeList.setRootVisible( false );
 		searchResultsList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		resultReferencesList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
+		referencesTreeList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
 		panel.addComponent( new ScrollPane( searchResultsList ) );
 		searchResultsList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchResultListCellRenderer() );
-		resultReferencesList.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<Object>() {
-
-			@Override
-			protected JLabel getListCellRendererComponent( JLabel rv, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-				assert value instanceof Expression;
-				Expression expression = (Expression)value;
-				UserMethod userMethod = expression.getFirstAncestorAssignableTo( UserMethod.class );
-				UserLambda userLambda = expression.getFirstAncestorAssignableTo( UserLambda.class );
-				if( userLambda != null ) {
-					rv.setText( userLambda.getFirstAncestorAssignableTo( MethodInvocation.class ).method.getValue().getName() );
-				} else {
-					rv.setText( userMethod.getName() );
-				}
-				return rv;
-			}
-		} );
-		panel.addComponent( new ScrollPane( resultReferencesList ) );
+		//		resultReferencesList.setCellRenderer( new ListCellRenderer<Expression>() {
+		//
+		//			public Component getListCellRendererComponent( JList<? extends Expression> list, Expression value, int index, boolean isSelected, boolean cellHasFocus ) {
+		//				return PreviewAstI18nFactory.getInstance().createComponent( value ).getAwtComponent();
+		//			}
+		//
+		//		} );
+		panel.addComponent( new ScrollPane( referencesTreeList ) );
 		this.addCenterComponent( panel );
-		searchBox.addKeyListener( composite.getKeyListener() );
+		//		searchBox.addKeyListener( composite.getKeyListener() );
 		searchResultsList.getAwtComponent().setFocusable( false );
-		resultReferencesList.getAwtComponent().setFocusable( false );
+		referencesTreeList.getAwtComponent().setFocusable( false );
 	}
 
 	public void enableLeftAndRight() {

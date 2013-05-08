@@ -40,23 +40,70 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.views.renderers;
+package org.alice.ide.croquet.models.project;
+
+import java.util.List;
 
 import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.Expression;
+
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SearchResultListCellRenderer<T extends AbstractDeclaration> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject<T>> {
-	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject<T> value, int index, boolean isSelected, boolean cellHasFocus ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( value.getName() );
-		sb.append( " (" );
-		sb.append( value.getReferenceCount() );
-		sb.append( ")" );
-		rv.setText( sb.toString() );
-		rv.setIcon( value.getIcon() );
-		return rv;
+public class SearchObjectNode {
+
+	private AbstractDeclaration decValue;
+	private Expression exValue;
+	private SearchObjectNode parent;
+	private List<SearchObjectNode> children = Collections.newArrayList();
+	private boolean isLeaf;
+
+	public SearchObjectNode( Object reference, SearchObjectNode parent ) {
+		this.parent = parent;
+		if( reference != null ) {
+			if( reference instanceof Expression ) {
+				exValue = (Expression)reference;
+				isLeaf = true;
+			} else {
+				assert reference instanceof AbstractDeclaration;
+				decValue = (AbstractDeclaration)reference;
+				isLeaf = false;
+			}
+		} else {
+			isLeaf = false;
+		}
+	}
+
+	public SearchObjectNode getParent() {
+		return parent;
+	}
+
+	public List<SearchObjectNode> getChildren() {
+		return children;
+	}
+
+	public Object getValue() {
+		Object value = isLeaf ? exValue : decValue;
+		assert value != null;
+		return value;
+	}
+
+	public boolean getIsLeaf() {
+		return isLeaf;
+	}
+
+	public boolean childrenContains( Object reference ) {
+		for( SearchObjectNode child : children ) {
+			if( child.getValue() == reference ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void addChild( SearchObjectNode newChildNode ) {
+		this.children.add( newChildNode );
 	}
 }

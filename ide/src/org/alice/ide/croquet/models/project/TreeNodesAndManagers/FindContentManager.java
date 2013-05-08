@@ -104,6 +104,9 @@ public class FindContentManager {
 	};
 
 	public void initialize( UserType scene ) {
+		objectList = Collections.newArrayList();
+		superTypeList = Collections.newArrayList();
+		System.out.println( "init" );
 		tunnelField( scene );
 		for( SearchObject<?> object : objectList ) {
 			if( object.getSearchObject() instanceof UserMethod ) {
@@ -249,7 +252,7 @@ public class FindContentManager {
 		if( obj.getName().toLowerCase().startsWith( string.toLowerCase() ) ) {
 			rv += 1;
 		}
-		rv += obj.getReferences().size() / 10.0;
+		rv += obj.getReferenceCount() / 10.0;
 		return rv;
 	}
 }

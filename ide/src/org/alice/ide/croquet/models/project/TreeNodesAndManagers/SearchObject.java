@@ -47,6 +47,8 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.alice.ide.IDE;
+import org.alice.ide.croquet.models.project.SearchObjectNode;
+import org.lgna.croquet.TreeSelectionState;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
@@ -69,6 +71,8 @@ public class SearchObject<T extends AbstractDeclaration> {
 	private Class<T> cls;
 	private T searchObject;
 	private List<Object> references = Collections.newArrayList();
+	private TreeSelectionState<SearchObjectNode> tree;
+	private SearchObjectNode root = new SearchObjectNode( null, null );
 
 	@SuppressWarnings( "unchecked" )
 	public static final List<Class<? extends AbstractDeclaration>> clsList =
@@ -78,6 +82,9 @@ public class SearchObject<T extends AbstractDeclaration> {
 		assert clsList.contains( cls );
 		this.cls = cls;
 		this.searchObject = object;
+	}
+
+	private SearchObject() {
 	}
 
 	public T getSearchObject() {
@@ -103,6 +110,10 @@ public class SearchObject<T extends AbstractDeclaration> {
 
 	public List<Object> getReferences() {
 		return references;
+	}
+
+	public TreeSelectionState<SearchObjectNode> getTree() {
+		return this.tree;
 	}
 
 	public Icon getIcon() {
@@ -142,5 +153,17 @@ public class SearchObject<T extends AbstractDeclaration> {
 		} else {
 			assert false : searchObject.getClass();
 		}
+	}
+
+	public static SearchObject<?> getEmptySearchObject() {
+		return new SearchObject();
+	}
+
+	public SearchObjectNode getRoot() {
+		return root;
+	}
+
+	public double getReferenceCount() {
+		return references.size();
 	}
 }
