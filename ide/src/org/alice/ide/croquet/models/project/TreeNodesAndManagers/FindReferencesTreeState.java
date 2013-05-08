@@ -40,23 +40,90 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.project.views.renderers;
+package org.alice.ide.croquet.models.project.TreeNodesAndManagers;
 
-import org.lgna.project.ast.AbstractDeclaration;
+import javax.swing.Icon;
+
+import org.alice.ide.croquet.models.project.SearchObjectNode;
+import org.lgna.croquet.CustomTreeSelectionState;
+import org.lgna.croquet.ItemCodec;
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SearchResultListCellRenderer<T extends AbstractDeclaration> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject<T>> {
+public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObjectNode> {
+
+	private SearchObjectNode root;
+
+	public FindReferencesTreeState( SearchObject<?> searchObject ) {
+		super( null, null, searchObject.getRoot(), codec );
+		this.root = searchObject.getRoot();
+		for( Object reference : searchObject.getReferences() ) {
+			if( !root.childrenContains( reference ) ) {
+				root.addChild( new SearchObjectNode( reference, root ) );
+			}
+		}
+	}
+
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject<T> value, int index, boolean isSelected, boolean cellHasFocus ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( value.getName() );
-		sb.append( " (" );
-		sb.append( value.getReferenceCount() );
-		sb.append( ")" );
-		rv.setText( sb.toString() );
-		rv.setIcon( value.getIcon() );
-		return rv;
+	protected String getTextForNode( SearchObjectNode node ) {
+		return "TODO: get text";
+	}
+
+	@Override
+	protected Icon getIconForNode( SearchObjectNode node ) {
+		return null;
+	}
+
+	@Override
+	public void refresh( SearchObjectNode node ) {
+	}
+
+	private static ItemCodec<SearchObjectNode> codec = new ItemCodec<SearchObjectNode>() {
+
+		public Class getValueClass() {
+			return SearchObjectNode.class;
+		}
+
+		public SearchObjectNode decodeValue( BinaryDecoder binaryDecoder ) {
+			throw new RuntimeException( "Not Intended Do it yourself" );
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, SearchObjectNode value ) {
+			throw new RuntimeException( "Not Intended Do it yourself" );
+		}
+
+		public void appendRepresentation( StringBuilder sb, SearchObjectNode value ) {
+			sb.append( value );
+		}
+
+	};
+
+	@Override
+	protected int getChildCount( SearchObjectNode parent ) {
+		return parent.getChildren().size();
+	}
+
+	@Override
+	protected SearchObjectNode getChild( SearchObjectNode parent, int index ) {
+		return parent.getChildren().get( index );
+	}
+
+	@Override
+	protected int getIndexOfChild( SearchObjectNode parent, SearchObjectNode child ) {
+		return parent.getChildren().indexOf( child );
+	}
+
+	@Override
+	protected SearchObjectNode getRoot() {
+		return root;
+	}
+
+	@Override
+	public boolean isLeaf( SearchObjectNode node ) {
+		return node.getIsLeaf();
 	}
 }

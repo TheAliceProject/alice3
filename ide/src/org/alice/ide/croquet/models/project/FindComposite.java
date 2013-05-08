@@ -42,14 +42,12 @@
  */
 package org.alice.ide.croquet.models.project;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FindContentManager;
+import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FindReferencesTreeState;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject;
 import org.alice.ide.croquet.models.project.views.FindView;
 import org.lgna.croquet.BooleanState;
@@ -60,15 +58,12 @@ import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
 import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
+import org.lgna.croquet.TreeSelectionState;
 import org.lgna.croquet.data.RefreshableListData;
-import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
-import org.lgna.story.ImplementationAccessor;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
-import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
@@ -96,23 +91,23 @@ public class FindComposite extends FrameComposite<FindView> {
 			sb.append( value );
 		}
 	};
-	ItemCodec<Expression> codec2 = new ItemCodec<Expression>() {
-
-		public Class<Expression> getValueClass() {
-			return Expression.class;
-		}
-
-		public Expression decodeValue( BinaryDecoder binaryDecoder ) {
-			return null;
-		}
-
-		public void encodeValue( BinaryEncoder binaryEncoder, Expression value ) {
-		}
-
-		public void appendRepresentation( StringBuilder sb, Expression value ) {
-			sb.append( value );
-		}
-	};
+	//	ItemCodec<Expression> codec2 = new ItemCodec<Expression>() {
+	//
+	//		public Class<Expression> getValueClass() {
+	//			return Expression.class;
+	//		}
+	//
+	//		public Expression decodeValue( BinaryDecoder binaryDecoder ) {
+	//			return null;
+	//		}
+	//
+	//		public void encodeValue( BinaryEncoder binaryEncoder, Expression value ) {
+	//		}
+	//
+	//		public void appendRepresentation( StringBuilder sb, Expression value ) {
+	//			sb.append( value );
+	//		}
+	//	};
 	@SuppressWarnings( "rawtypes" )
 	private RefreshableListData<SearchObject> data = new RefreshableListData<SearchObject>( codec1 ) {
 
@@ -122,13 +117,13 @@ public class FindComposite extends FrameComposite<FindView> {
 			return manager.getResultsForString( searchState.getValue() );
 		}
 	};
-	private RefreshableListData<Expression> referencesData = new RefreshableListData<Expression>( codec2 ) {
-
-		@Override
-		protected List<Expression> createValues() {
-			return searchResults.getValue() != null ? searchResults.getValue().getReferences() : Collections.newArrayList();
-		}
-	};
+	//	private RefreshableListData<Expression> referencesData = new RefreshableListData<Expression>( codec2 ) {
+	//
+	//		@Override
+	//		protected List<Expression> createValues() {
+	//			return searchResults.getValue() != null ? searchResults.getValue().getReferences() : Collections.newArrayList();
+	//		}
+	//	};
 
 	ValueListener<String> searchStateListener = new ValueListener<String>() {
 
@@ -136,9 +131,9 @@ public class FindComposite extends FrameComposite<FindView> {
 		}
 
 		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
-			System.out.println( "CHANGE" );
 			data.refresh();
-			referencesData.refresh();
+			//			referencesData.refresh();
+			referenceTree = searchResults.getValue() != null ? searchResults.getValue().getTree() : emptyTree;
 			if( data.getItemCount() == 1 ) {
 				searchResults.setSelectedIndex( 0 );
 			}
@@ -147,8 +142,10 @@ public class FindComposite extends FrameComposite<FindView> {
 	@SuppressWarnings( "rawtypes" )
 	private ListSelectionState<SearchObject> searchResults = createListSelectionState( createKey( "searchResultsList" ),
 			data, -1 );
-	private ListSelectionState<Expression> referenceResults = createListSelectionState( createKey( "searchResultsList" ),
-			referencesData, -1 );
+	//	private ListSelectionState<Expression> referenceResults = createListSelectionState( createKey( "searchResultsList" ),
+	//			referencesData, -1 );
+	private TreeSelectionState<SearchObjectNode> emptyTree = new FindReferencesTreeState( SearchObject.getEmptySearchObject() );
+	private TreeSelectionState referenceTree = emptyTree;
 
 	@SuppressWarnings( "rawtypes" )
 	public FindComposite() {
@@ -164,21 +161,21 @@ public class FindComposite extends FrameComposite<FindView> {
 			}
 
 			public void changed( State<SearchObject> state, SearchObject prevValue, SearchObject nextValue, boolean isAdjusting ) {
-				referencesData.refresh();
+				//				referencesData.refresh();
 			}
 		} );
-		referenceResults.addValueListener( new ValueListener<Expression>() {
-
-			public void changing( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
-				if( shouldINavigate.getValue() && ( nextValue != null ) ) {
-					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextValue.getFirstAncestorAssignableTo( UserMethod.class ) ) );
-					searchResults.getValue().stencilHighlightForReference( nextValue );
-				}
-			}
-		} );
+		//		referenceResults.addValueListener( new ValueListener<Expression>() {
+		//
+		//			public void changing( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
+		//			}
+		//
+		//			public void changed( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
+		//				if( shouldINavigate.getValue() && ( nextValue != null ) ) {
+		//					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextValue.getFirstAncestorAssignableTo( UserMethod.class ) ) );
+		//					searchResults.getValue().stencilHighlightForReference( nextValue );
+		//				}
+		//			}
+		//		} );
 	}
 
 	@Override
@@ -201,66 +198,66 @@ public class FindComposite extends FrameComposite<FindView> {
 		return this.searchResults;
 	}
 
-	public ListSelectionState<Expression> getReferenceResults() {
-		return this.referenceResults;
+	public TreeSelectionState<SearchObjectNode> getReferenceResults() {
+		return this.referenceTree;
 	}
 
-	private KeyListener keyListener = new KeyListener() {
-
-		ListSelectionState selected = searchResults;
-		Map<SearchObject<?>, Integer> map = Collections.newHashMap();
-
-		public void keyTyped( KeyEvent e ) {
-		}
-
-		public void keyReleased( KeyEvent e ) {
-		}
-
-		public void keyPressed( KeyEvent e ) {
-			if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.UP ) {
-				if( selected == searchResults ) {
-					if( searchResults.getValue() != null ) {
-						searchResults.setSelectedIndex( searchResults.getSelectedIndex() - 1 );
-						if( searchResults.getValue() == null ) {
-							getView().enableLeftAndRight();
-						}
-					}
-				} else if( selected == referenceResults ) {
-					if( referenceResults.getSelectedIndex() > 0 ) {
-						referenceResults.setSelectedIndex( referenceResults.getSelectedIndex() - 1 );
-					}
-				}
-			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.DOWN ) {
-				if( selected == searchResults ) {
-					if( searchResults.getItemCount() != ( searchResults.getSelectedIndex() + 1 ) ) {
-						getView().disableLeftAndRight();
-						searchResults.setSelectedIndex( searchResults.getSelectedIndex() + 1 );
-					}
-				} else if( selected == referenceResults ) {
-					if( referenceResults.getItemCount() != ( referenceResults.getSelectedIndex() + 1 ) ) {
-						referenceResults.setSelectedIndex( referenceResults.getSelectedIndex() + 1 );
-					}
-				}
-			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.LEFT ) {
-				selected = searchResults;
-				map.put( searchResults.getValue(), referenceResults.getSelectedIndex() == -1 ? 0 : referenceResults.getSelectedIndex() );
-				referenceResults.setSelectedIndex( -1 );
-			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.RIGHT ) {
-				if( referenceResults.getItemCount() > 0 ) {
-					selected = referenceResults;
-					if( ( referenceResults.getValue() == null ) && ( referenceResults.getItemCount() > 0 ) ) {
-						if( map.get( searchResults.getValue() ) != null ) {
-							referenceResults.setSelectedIndex( map.get( searchResults.getValue() ) );
-						} else {
-							referenceResults.setSelectedIndex( 0 );
-						}
-					}
-				}
-			}
-		}
-	};
-
-	public KeyListener getKeyListener() {
-		return this.keyListener;
-	}
+	//	private KeyListener keyListener = new KeyListener() {
+	//
+	//		ListSelectionState selected = searchResults;
+	//		Map<SearchObject<?>, Integer> map = Collections.newHashMap();
+	//
+	//		public void keyTyped( KeyEvent e ) {
+	//		}
+	//
+	//		public void keyReleased( KeyEvent e ) {
+	//		}
+	//
+	//		public void keyPressed( KeyEvent e ) {
+	//			if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.UP ) {
+	//				if( selected == searchResults ) {
+	//					if( searchResults.getValue() != null ) {
+	//						searchResults.setSelectedIndex( searchResults.getSelectedIndex() - 1 );
+	//						if( searchResults.getValue() == null ) {
+	//							getView().enableLeftAndRight();
+	//						}
+	//					}
+	//				} else if( selected == referenceResults ) {
+	//					if( referenceResults.getSelectedIndex() > 0 ) {
+	//						referenceResults.setSelectedIndex( referenceResults.getSelectedIndex() - 1 );
+	//					}
+	//				}
+	//			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.DOWN ) {
+	//				if( selected == searchResults ) {
+	//					if( searchResults.getItemCount() != ( searchResults.getSelectedIndex() + 1 ) ) {
+	//						getView().disableLeftAndRight();
+	//						searchResults.setSelectedIndex( searchResults.getSelectedIndex() + 1 );
+	//					}
+	//				} else if( selected == referenceResults ) {
+	//					if( referenceResults.getItemCount() != ( referenceResults.getSelectedIndex() + 1 ) ) {
+	//						referenceResults.setSelectedIndex( referenceResults.getSelectedIndex() + 1 );
+	//					}
+	//				}
+	//			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.LEFT ) {
+	//				selected = searchResults;
+	//				map.put( searchResults.getValue(), referenceResults.getSelectedIndex() == -1 ? 0 : referenceResults.getSelectedIndex() );
+	//				referenceResults.setSelectedIndex( -1 );
+	//			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.RIGHT ) {
+	//				if( referenceResults.getItemCount() > 0 ) {
+	//					selected = referenceResults;
+	//					if( ( referenceResults.getValue() == null ) && ( referenceResults.getItemCount() > 0 ) ) {
+	//						if( map.get( searchResults.getValue() ) != null ) {
+	//							referenceResults.setSelectedIndex( map.get( searchResults.getValue() ) );
+	//						} else {
+	//							referenceResults.setSelectedIndex( 0 );
+	//						}
+	//					}
+	//				}
+	//			}
+	//		}
+	//	};
+	//
+	//	public KeyListener getKeyListener() {
+	//		return this.keyListener;
+	//	}
 }
