@@ -202,7 +202,7 @@ public abstract class AbstractCompletionModel extends AbstractModel implements C
 			if( edit != null ) {
 				edit.setCompletionStep( completionStep );
 			}
-			completionStep.setEdit( edit );
+			completionStep.ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( edit );
 			if( observer != null ) {
 				observer.prePopGeneratedContexts();
 			}

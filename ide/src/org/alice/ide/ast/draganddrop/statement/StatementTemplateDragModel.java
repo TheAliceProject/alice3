@@ -111,7 +111,7 @@ public abstract class StatementTemplateDragModel extends AbstractStatementDragMo
 			}
 			org.lgna.croquet.history.CompletionStep<?> completionStep = transaction.getCompletionStep();
 			if( completionStep != null ) {
-				completionStep.setEdit( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, blockStatementIndexPair, statement, initialExpressions ) );
+				completionStep.ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( new org.alice.ide.croquet.edits.ast.InsertStatementEdit( completionStep, blockStatementIndexPair, statement, initialExpressions ) );
 			}
 		}
 	}

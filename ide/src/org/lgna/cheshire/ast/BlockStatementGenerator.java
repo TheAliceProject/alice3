@@ -198,7 +198,7 @@ public class BlockStatementGenerator {
 						}
 
 						org.lgna.croquet.history.CompletionStep completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, moreCascade, org.lgna.croquet.triggers.MouseEventTrigger.createGeneratorInstance(), bufferForCompletionStepSubTransactionHistory[ 0 ] );
-						completionStep.setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, argument ) );
+						completionStep.ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( new org.alice.ide.croquet.edits.ast.keyed.AddKeyedArgumentEdit( completionStep, argument ) );
 					}
 				}
 				if( isReorderingDesired ) {

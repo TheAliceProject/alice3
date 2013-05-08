@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,58 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.lgna.croquet;
+package org.lgna.croquet.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class StateContext<T> implements Context {
-
-	private final org.lgna.croquet.resolvers.Resolver<State<T>> stateResolver;
-	private T value;
-
-	public StateContext( State<T> state, T value ) {
-		this.stateResolver = state.getResolver();
-		this.value = value;
-	}
-
-	public StateContext( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.stateResolver = binaryDecoder.decodeBinaryEncodableAndDecodable();
-		State<T> state = this.stateResolver.getResolved();
-		this.value = state.decodeValue( binaryDecoder );
-	}
-
-	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( this.stateResolver );
-		State<T> state = this.stateResolver.getResolved();
-		state.encodeValue( binaryEncoder, this.value );
-	}
-
-	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
-		this.stateResolver.retarget( retargeter );
-		this.value = retargeter.retarget( this.value );
-	}
-
-	public boolean isGoodToGo() {
-		T currentValue = this.getState().getValue();
-		return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( currentValue, this.value );
-	}
-
-	public org.lgna.croquet.history.Transaction[] createRecoveryTransactions() {
-		State<T> state = this.getState();
-		org.lgna.croquet.history.TransactionHistory owner = null;
-		org.lgna.croquet.history.Transaction transaction = new org.lgna.croquet.history.Transaction( owner );
-		org.lgna.croquet.history.CompletionStep<State<T>> step = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, state, org.lgna.croquet.triggers.ChangeEventTrigger.createRecoveryInstance(), null );
-		step.ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( new org.lgna.croquet.edits.StateEdit<T>( step, state.getValue(), this.value ) );
-		return new org.lgna.croquet.history.Transaction[] { transaction };
-	}
-
-	public State<T> getState() {
-		return this.stateResolver.getResolved();
-	}
-
-	public T getValue() {
-		return this.value;
+public abstract class CompletionEvent extends Event<org.lgna.croquet.history.CompletionStep> {
+	public CompletionEvent( org.lgna.croquet.history.CompletionStep<?> step ) {
+		super( step );
 	}
 }
