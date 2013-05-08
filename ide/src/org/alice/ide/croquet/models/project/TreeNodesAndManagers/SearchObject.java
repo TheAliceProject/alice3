@@ -163,7 +163,7 @@ public class SearchObject<T extends AbstractDeclaration> {
 		return root;
 	}
 
-	public double getReferenceCount() {
+	public int getReferenceCount() {
 		return references.size();
 	}
 }
