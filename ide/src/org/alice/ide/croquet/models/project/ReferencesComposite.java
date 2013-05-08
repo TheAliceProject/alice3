@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,30 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.croquet.models.project;
 
-import org.alice.ide.croquet.models.project.ReferencesComposite;
+import org.lgna.project.ast.AbstractMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class MethodHeaderMenuModel extends org.lgna.croquet.PredeterminedMenuModel {
-	private static java.util.Map<org.lgna.project.ast.UserMethod, MethodHeaderMenuModel> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class ReferencesComposite extends FindComposite {
 
-	public static synchronized MethodHeaderMenuModel getInstance( org.lgna.project.ast.UserMethod method ) {
-		MethodHeaderMenuModel rv = map.get( method );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new MethodHeaderMenuModel( method );
-			map.put( method, rv );
-		}
-		return rv;
+	private AbstractMethod method;
+
+	public ReferencesComposite( AbstractMethod method ) {
+		super( java.util.UUID.fromString( "82597bb6-7c65-4517-a59c-8a87b52afe70" ), null );
+		assert method != null;
+		this.method = method;
 	}
 
-	private MethodHeaderMenuModel( org.lgna.project.ast.UserMethod method ) {
-		super( java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
-				org.alice.ide.ast.rename.RenameMethodComposite.getInstance( method ).getOperation().getMenuItemPrepModel(),
-				new ReferencesComposite( method ).getBooleanState().getMenuItemPrepModel() );
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		getSearchState().setValueTransactionlessly( method.getName() );
+		if( getSearchResults().getItemCount() > 0 ) {
+			for( int i = 0; i != ( getSearchResults().getItemCount() - 1 ); ++i ) {
+				if( getSearchResults().getItemAt( i ).getSearchObject().equals( method ) ) {
+					getSearchResults().setSelectedIndex( i );
+				}
+			}
+		}
 	}
 }

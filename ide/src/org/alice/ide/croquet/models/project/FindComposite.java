@@ -42,13 +42,19 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FindContentManager;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject;
 import org.alice.ide.croquet.models.project.views.FindView;
+import org.lgna.croquet.BooleanState;
 import org.lgna.croquet.FrameComposite;
+import org.lgna.croquet.Group;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.State;
@@ -56,9 +62,9 @@ import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.project.ast.Expression;
-import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
+import org.lgna.story.ImplementationAccessor;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -71,6 +77,7 @@ public class FindComposite extends FrameComposite<FindView> {
 
 	private FindContentManager manager = new FindContentManager();
 	private StringState searchState = createStringState( createKey( "searchState" ) );
+	private BooleanState shouldINavigate = createBooleanState( createKey( "shouldNav" ), true );
 	@SuppressWarnings( "rawtypes" )
 	ItemCodec<SearchObject> codec1 = new ItemCodec<SearchObject>() {
 
@@ -129,8 +136,12 @@ public class FindComposite extends FrameComposite<FindView> {
 		}
 
 		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
+			System.out.println( "CHANGE" );
 			data.refresh();
 			referencesData.refresh();
+			if( data.getItemCount() == 1 ) {
+				searchResults.setSelectedIndex( 0 );
+			}
 		}
 	};
 	@SuppressWarnings( "rawtypes" )
@@ -141,7 +152,11 @@ public class FindComposite extends FrameComposite<FindView> {
 
 	@SuppressWarnings( "rawtypes" )
 	public FindComposite() {
-		super( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ), null );
+		this( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ), null );
+	}
+
+	protected FindComposite( UUID fromString, Group group ) {
+		super( fromString, group );
 		searchState.addValueListener( searchStateListener );
 		searchResults.addValueListener( new ValueListener<SearchObject>() {
 
@@ -158,9 +173,10 @@ public class FindComposite extends FrameComposite<FindView> {
 			}
 
 			public void changed( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
-				IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextValue.getFirstAncestorAssignableTo( UserMethod.class ) ) );
-				IDE.getActiveInstance().getHighlightStencil().showHighlightOverStatement( (Statement)nextValue.getParent(), "" );
-				//				showHighlightOverExpression( searchResults.getValue().getExpressionToHighlight( nextValue ), "" );
+				if( shouldINavigate.getValue() && ( nextValue != null ) ) {
+					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextValue.getFirstAncestorAssignableTo( UserMethod.class ) ) );
+					searchResults.getValue().stencilHighlightForReference( nextValue );
+				}
 			}
 		} );
 	}
@@ -187,5 +203,64 @@ public class FindComposite extends FrameComposite<FindView> {
 
 	public ListSelectionState<Expression> getReferenceResults() {
 		return this.referenceResults;
+	}
+
+	private KeyListener keyListener = new KeyListener() {
+
+		ListSelectionState selected = searchResults;
+		Map<SearchObject<?>, Integer> map = Collections.newHashMap();
+
+		public void keyTyped( KeyEvent e ) {
+		}
+
+		public void keyReleased( KeyEvent e ) {
+		}
+
+		public void keyPressed( KeyEvent e ) {
+			if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.UP ) {
+				if( selected == searchResults ) {
+					if( searchResults.getValue() != null ) {
+						searchResults.setSelectedIndex( searchResults.getSelectedIndex() - 1 );
+						if( searchResults.getValue() == null ) {
+							getView().enableLeftAndRight();
+						}
+					}
+				} else if( selected == referenceResults ) {
+					if( referenceResults.getSelectedIndex() > 0 ) {
+						referenceResults.setSelectedIndex( referenceResults.getSelectedIndex() - 1 );
+					}
+				}
+			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.DOWN ) {
+				if( selected == searchResults ) {
+					if( searchResults.getItemCount() != ( searchResults.getSelectedIndex() + 1 ) ) {
+						getView().disableLeftAndRight();
+						searchResults.setSelectedIndex( searchResults.getSelectedIndex() + 1 );
+					}
+				} else if( selected == referenceResults ) {
+					if( referenceResults.getItemCount() != ( referenceResults.getSelectedIndex() + 1 ) ) {
+						referenceResults.setSelectedIndex( referenceResults.getSelectedIndex() + 1 );
+					}
+				}
+			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.LEFT ) {
+				selected = searchResults;
+				map.put( searchResults.getValue(), referenceResults.getSelectedIndex() == -1 ? 0 : referenceResults.getSelectedIndex() );
+				referenceResults.setSelectedIndex( -1 );
+			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.RIGHT ) {
+				if( referenceResults.getItemCount() > 0 ) {
+					selected = referenceResults;
+					if( ( referenceResults.getValue() == null ) && ( referenceResults.getItemCount() > 0 ) ) {
+						if( map.get( searchResults.getValue() ) != null ) {
+							referenceResults.setSelectedIndex( map.get( searchResults.getValue() ) );
+						} else {
+							referenceResults.setSelectedIndex( 0 );
+						}
+					}
+				}
+			}
+		}
+	};
+
+	public KeyListener getKeyListener() {
+		return this.keyListener;
 	}
 }

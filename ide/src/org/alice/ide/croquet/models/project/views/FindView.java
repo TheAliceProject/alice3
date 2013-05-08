@@ -43,8 +43,10 @@
 package org.alice.ide.croquet.models.project.views;
 
 import javax.swing.BorderFactory;
+import javax.swing.InputMap;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.KeyStroke;
 import javax.swing.border.BevelBorder;
 
 import org.alice.ide.croquet.models.project.FindComposite;
@@ -53,6 +55,7 @@ import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ScrollPane;
+import org.lgna.croquet.components.TextArea;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.UserLambda;
@@ -65,9 +68,18 @@ import edu.cmu.cs.dennisc.math.GoldenRatio;
  */
 public class FindView extends BorderPanel {
 
+	final TextArea searchBox;
+	private InputMap inputMap;
+	private final Object left;
+	private final Object right;
+
 	public FindView( FindComposite composite ) {
 		super( composite );
-		this.addPageStartComponent( composite.getSearchState().createTextArea() );
+		searchBox = composite.getSearchState().createTextArea();
+		inputMap = searchBox.getAwtComponent().getInputMap();
+		left = inputMap.get( KeyStroke.getKeyStroke( "LEFT" ) );
+		right = inputMap.get( KeyStroke.getKeyStroke( "RIGHT" ) );
+		this.addPageStartComponent( searchBox );
 		GridPanel panel = GridPanel.createGridPane( 1, 2 );
 		panel.setPreferredSize( GoldenRatio.createWiderSizeFromHeight( 250 ) );
 		List<SearchObject> searchResultsList = composite.getSearchResults().createList();
@@ -94,5 +106,19 @@ public class FindView extends BorderPanel {
 		} );
 		panel.addComponent( new ScrollPane( resultReferencesList ) );
 		this.addCenterComponent( panel );
+		searchBox.addKeyListener( composite.getKeyListener() );
+		searchResultsList.getAwtComponent().setFocusable( false );
+		resultReferencesList.getAwtComponent().setFocusable( false );
 	}
+
+	public void enableLeftAndRight() {
+		inputMap.put( KeyStroke.getKeyStroke( "LEFT" ), left );
+		inputMap.put( KeyStroke.getKeyStroke( "RIGHT" ), right );
+	}
+
+	public void disableLeftAndRight() {
+		inputMap.put( KeyStroke.getKeyStroke( "LEFT" ), "NONE" );
+		inputMap.put( KeyStroke.getKeyStroke( "RIGHT" ), "NONE" );
+	}
+
 }

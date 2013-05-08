@@ -46,10 +46,16 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.alice.ide.IDE;
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.AbstractField;
 import org.lgna.project.ast.AbstractMethod;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.FieldAccess;
+import org.lgna.project.ast.LocalAccess;
+import org.lgna.project.ast.MethodInvocation;
+import org.lgna.project.ast.ParameterAccess;
+import org.lgna.project.ast.Statement;
 import org.lgna.project.ast.UserLocal;
 import org.lgna.project.ast.UserParameter;
 
@@ -117,10 +123,24 @@ public class SearchObject<T extends AbstractDeclaration> {
 		}
 	}
 
-	public Expression getExpressionToHighlight( Expression reference ) {
-		if( searchObject instanceof AbstractMethod ) {
-
+	public void stencilHighlightForReference( Expression reference ) {
+		assert reference != null;
+		if( searchObject instanceof AbstractField ) {
+			assert reference instanceof FieldAccess;
+			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( reference, "" );
+		} else if( searchObject instanceof AbstractMethod ) {
+			assert reference instanceof MethodInvocation;
+			Statement statement = reference.getFirstAncestorAssignableTo( Statement.class );
+			assert statement != null;
+			IDE.getActiveInstance().getHighlightStencil().showHighlightOverStatement( statement, "" );
+		} else if( searchObject instanceof UserParameter ) {
+			assert reference instanceof ParameterAccess;
+			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( reference, "" );
+		} else if( searchObject instanceof UserLocal ) {
+			assert reference instanceof LocalAccess;
+			IDE.getActiveInstance().getHighlightStencil().showHighlightOverExpression( reference, "" );
+		} else {
+			assert false : searchObject.getClass();
 		}
-		return reference;
 	}
 }
