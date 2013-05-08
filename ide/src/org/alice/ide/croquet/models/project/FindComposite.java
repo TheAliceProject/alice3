@@ -150,9 +150,22 @@ public class FindComposite extends FrameComposite<FindView> {
 	private ListSelectionState<Expression> referenceResults = createListSelectionState( createKey( "searchResultsList" ),
 			referencesData, -1 );
 
+	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		public void projectChanged() {
+			refresh();
+		}
+	};
+
 	@SuppressWarnings( "rawtypes" )
 	public FindComposite() {
 		this( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ), null );
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+	}
+
+	private void refresh() {
+		if( this.isActive ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: refresh find composite" );
+		}
 	}
 
 	protected FindComposite( UUID fromString, Group group ) {
@@ -186,10 +199,19 @@ public class FindComposite extends FrameComposite<FindView> {
 		return new FindView( this );
 	}
 
+	private boolean isActive;
+
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
+		this.isActive = true;
 		manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType() );
+	}
+
+	@Override
+	public void handlePostDeactivation() {
+		this.isActive = false;
+		super.handlePostDeactivation();
 	}
 
 	public StringState getSearchState() {
