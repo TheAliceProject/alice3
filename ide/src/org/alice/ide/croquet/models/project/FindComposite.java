@@ -156,10 +156,20 @@ public class FindComposite extends FrameComposite<FindView> {
 		}
 	};
 
+	private final State.ValueListener<org.alice.ide.ProjectDocument> projectDocumentChangeListener = new State.ValueListener<org.alice.ide.ProjectDocument>() {
+		public void changing( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+		}
+
+		public void changed( org.lgna.croquet.State<org.alice.ide.ProjectDocument> state, org.alice.ide.ProjectDocument prevValue, org.alice.ide.ProjectDocument nextValue, boolean isAdjusting ) {
+			refresh();
+		}
+	};
+
 	@SuppressWarnings( "rawtypes" )
 	public FindComposite() {
 		this( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ), null );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
+		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectDocumentChangeListener );
 	}
 
 	private void refresh() {
