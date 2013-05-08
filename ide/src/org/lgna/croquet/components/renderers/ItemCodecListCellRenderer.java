@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,27 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.lgna.croquet;
+package org.lgna.croquet.components.renderers;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface OperationOwningComposite<V extends org.lgna.croquet.components.View<?, ?>> extends Composite<V> {
-	public OwnedByCompositeOperation getOperation();
+public class ItemCodecListCellRenderer<T> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<T> {
+	private final org.lgna.croquet.ItemCodec<T> itemCodec;
 
-	public void perform( org.lgna.croquet.history.CompletionStep<?> completionStep );
+	public ItemCodecListCellRenderer( org.lgna.croquet.ItemCodec<T> itemCodec ) {
+		this.itemCodec = itemCodec;
+	}
 
-	public boolean isToolBarTextClobbered( boolean defaultValue );
-
-	public boolean isSubTransactionHistoryRequired();
-
-	public void pushGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
-
-	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws UnsupportedGenerationException;
-
-	public void popGeneratedContexts( org.lgna.croquet.edits.Edit<?> ownerEdit );
-
-	public void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit );
-
-	public String modifyNameIfNecessary( String text );
+	@Override
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, T value, int index, boolean isSelected, boolean cellHasFocus ) {
+		StringBuilder sb = new StringBuilder();
+		this.itemCodec.appendRepresentation( sb, value );
+		rv.setText( sb.toString() );
+		return rv;
+	}
 }

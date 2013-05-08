@@ -47,31 +47,13 @@ package edu.cmu.cs.dennisc.java.util.logging;
  * @author Dennis Cosgrove
  */
 public class Logger {
-	//	private static final String NAME = GlobalLogger.class.getName();
-	//	private static class InstanceHolder {
-	//		private static java.util.logging.Logger instance = java.util.logging.Logger.getLogger( NAME );
-	//	}
-	//	public static java.util.logging.Logger getInstance() {
-	//		return InstanceHolder.instance;
-	//	}
-	public static java.util.logging.Logger getInstance() {
-		return java.util.logging.Logger.global;
-	}
+	private static final String LOGGER_NAME = "static";
 
-	private static final String LEVEL_KEY = Logger.class.getName() + ".Level";
-
-	private static final java.util.logging.Level THROWABLE = new java.util.logging.Level( "THROWABLE", java.util.logging.Level.SEVERE.intValue() + 1 ) {
-	};
-	//	private static final java.util.logging.Level TESTING = new java.util.logging.Level( "TESTING", java.util.logging.Level.SEVERE.intValue() - 1 ) {};
-	private static final java.util.logging.Level TODO = new java.util.logging.Level( "TODO", java.util.logging.Level.WARNING.intValue() - 1 ) {
-	};
-
-	static {
-		java.util.logging.LogManager.getLogManager().reset();
-		//java.util.logging.Logger.global.setUseParentHandlers( false );
+	private static java.util.logging.Logger initializeLogger() {
+		java.util.logging.Logger logger = java.util.logging.Logger.getLogger( LOGGER_NAME );
+		logger.setUseParentHandlers( false );
 
 		String levelText = System.getProperty( LEVEL_KEY, "SEVERE" );
-
 		java.util.logging.Level level = null;
 		for( java.util.logging.Level customLevel : new java.util.logging.Level[] {
 				THROWABLE,
@@ -93,12 +75,29 @@ public class Logger {
 				level = java.util.logging.Level.SEVERE;
 			}
 		}
-		setLevel( level );
+		logger.setLevel( level );
+
 		SegregatingConsoleHandler consoleHandler = new SegregatingConsoleHandler();
 		consoleHandler.setFormatter( new ConsoleFormatter() );
-		getInstance().addHandler( consoleHandler );
-
+		logger.addHandler( consoleHandler );
+		return logger;
 	}
+
+	private static class InstanceHolder {
+		private static java.util.logging.Logger instance = initializeLogger();
+	}
+
+	public static java.util.logging.Logger getInstance() {
+		return InstanceHolder.instance;
+	}
+
+	private static final String LEVEL_KEY = Logger.class.getName() + ".Level";
+
+	private static final java.util.logging.Level THROWABLE = new java.util.logging.Level( "THROWABLE", java.util.logging.Level.SEVERE.intValue() + 1 ) {
+	};
+	//	private static final java.util.logging.Level TESTING = new java.util.logging.Level( "TESTING", java.util.logging.Level.SEVERE.intValue() - 1 ) {};
+	private static final java.util.logging.Level TODO = new java.util.logging.Level( "TODO", java.util.logging.Level.WARNING.intValue() - 1 ) {
+	};
 
 	private Logger() {
 		throw new AssertionError();

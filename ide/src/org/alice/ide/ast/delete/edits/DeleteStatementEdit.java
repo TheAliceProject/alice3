@@ -77,7 +77,7 @@ public class DeleteStatementEdit extends org.alice.ide.croquet.edits.ast.Stateme
 		assert blockStatement.statements.indexOf( statement ) == this.index;
 		blockStatement.statements.remove( index );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class DeleteStatementEdit extends org.alice.ide.croquet.edits.ast.Stateme
 		org.lgna.project.ast.Statement statement = this.getStatement();
 		blockStatement.statements.add( index, statement );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
