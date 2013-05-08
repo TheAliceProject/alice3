@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -40,40 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.croquet.models.ast;
+package org.alice.ide.project;
 
 /**
  * @author Dennis Cosgrove
  */
-public class IsStatementEnabledState extends org.lgna.croquet.BooleanState {
-	private static java.util.Map<org.lgna.project.ast.Statement, IsStatementEnabledState> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public enum ProjectChangeOfInterestManager {
+	SINGLETON;
+	private final java.util.List<org.alice.ide.project.events.ProjectChangeOfInterestListener> listeners = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 
-	public static synchronized IsStatementEnabledState getInstance( org.lgna.project.ast.Statement statement ) {
-		IsStatementEnabledState rv = map.get( statement );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new IsStatementEnabledState( statement );
-			map.put( statement, rv );
+	public void addProjectChangeOfInterestListener( org.alice.ide.project.events.ProjectChangeOfInterestListener listener ) {
+		this.listeners.add( listener );
+	}
+
+	public void removeProjectChangeOfInterestListener( org.alice.ide.project.events.ProjectChangeOfInterestListener listener ) {
+		this.listeners.remove( listener );
+	}
+
+	public void fireProjectChangeOfInterestListeners() {
+		for( org.alice.ide.project.events.ProjectChangeOfInterestListener listener : this.listeners ) {
+			listener.projectChanged();
 		}
-		return rv;
 	}
-
-	private final org.lgna.project.ast.Statement statement;
-
-	private IsStatementEnabledState( org.lgna.project.ast.Statement statement ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue() );
-		this.statement = statement;
-		this.addValueListener( new ValueListener<Boolean>() {
-			public void changing( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-			}
-
-			public void changed( org.lgna.croquet.State<Boolean> state, Boolean prevValue, Boolean nextValue, boolean isAdjusting ) {
-				IsStatementEnabledState.this.statement.isEnabled.setValue( nextValue );
-				org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
-			}
-		} );
-	}
-
 }

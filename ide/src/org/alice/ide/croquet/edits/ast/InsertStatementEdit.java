@@ -118,7 +118,7 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		int actualIndex = this.getActualIndex();
 		this.blockStatement.statements.add( actualIndex, statement );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		if( this.blockStatement.statements.get( actualIndex ) == statement ) {
 			this.blockStatement.statements.remove( actualIndex );
 			//todo: remove
-			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+			org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}
