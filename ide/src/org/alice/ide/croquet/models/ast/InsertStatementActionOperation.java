@@ -68,13 +68,13 @@ public class InsertStatementActionOperation extends org.lgna.croquet.ActionOpera
 
 	public void doOrRedoInternal( boolean isDo ) {
 		this.blockStatement.statements.add( this.index, this.statement );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	public void undoInternal() {
 		if( this.blockStatement.statements.get( this.index ) == this.statement ) {
 			this.blockStatement.statements.remove( this.index );
-			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
+			org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}

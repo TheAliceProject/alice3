@@ -378,7 +378,7 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
 
-	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
+	public final void saveCopyOfProjectTo( java.io.File file ) throws java.io.IOException {
 		org.lgna.project.Project project = this.getUpToDateProject();
 		edu.cmu.cs.dennisc.java.util.zip.DataSource[] dataSources;
 		try {
@@ -405,6 +405,10 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 			dataSources = new edu.cmu.cs.dennisc.java.util.zip.DataSource[] {};
 		}
 		org.lgna.project.io.IoUtilities.writeProject( file, project, dataSources );
+	}
+
+	public final void saveProjectTo( java.io.File file ) throws java.io.IOException {
+		this.saveCopyOfProjectTo( file );
 		org.alice.ide.recentprojects.RecentProjectsListData.getInstance().handleSave( file );
 
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: better handling of file project loader", file );
@@ -413,9 +417,9 @@ public abstract class ProjectApplication extends org.lgna.croquet.PerspectiveApp
 		this.updateHistoryIndexFileSync();
 	}
 
-	public void saveProjectTo( String path ) throws java.io.IOException {
-		saveProjectTo( new java.io.File( path ) );
-	}
+	//	public final void saveProjectTo( String path ) throws java.io.IOException {
+	//		saveProjectTo( new java.io.File( path ) );
+	//	}
 
 	public java.io.File getMyProjectsDirectory() {
 		return org.alice.ide.croquet.models.ui.preferences.UserProjectsDirectoryState.getInstance().getDirectoryEnsuringExistance();
