@@ -83,7 +83,7 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		assert this.index == owner.indexOf( this.member ) : this.member;
 		owner.remove( this.index );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public abstract class DeleteMemberEdit<M extends org.lgna.project.ast.UserMember
 		org.lgna.project.ast.NodeListProperty<M> owner = this.getNodeListProperty( this.declaringType );
 		owner.add( this.index, member );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override

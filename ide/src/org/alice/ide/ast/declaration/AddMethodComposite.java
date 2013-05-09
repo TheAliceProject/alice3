@@ -81,10 +81,6 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 		return text;
 	}
 
-	private org.lgna.project.ast.UserMethod createMethod() {
-		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
-	}
-
 	@Override
 	public org.lgna.project.ast.UserType<?> getDeclaringType() {
 		return this.declaringType;
@@ -92,12 +88,12 @@ public abstract class AddMethodComposite extends DeclarationLikeSubstanceComposi
 
 	@Override
 	public org.lgna.project.ast.UserMethod getPreviewValue() {
-		return this.createMethod();
+		return org.lgna.project.ast.AstUtilities.createMethod( this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 
 	@Override
 	protected org.lgna.croquet.edits.Edit createEdit( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, this.getDeclaringType(), this.createMethod() );
+		return new org.alice.ide.croquet.edits.ast.DeclareMethodEdit( completionStep, this.getDeclaringType(), this.getDeclarationLikeSubstanceName(), this.getValueType() );
 	}
 
 	@Override

@@ -82,7 +82,7 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit<org.alice.i
 		replacement.body.setValue( body );
 		property.add( index, replacement );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class ConvertStatementWithBodyEdit extends BlockStatementEdit<org.alice.i
 		original.body.setValue( body );
 		property.add( index, original );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
