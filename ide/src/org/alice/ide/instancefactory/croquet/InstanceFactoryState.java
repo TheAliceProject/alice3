@@ -66,9 +66,16 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 	//private java.util.Map< org.lgna.project.ast.AbstractDeclaration, InstanceFactory > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private InstanceFactory value;
 
+	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		public void projectChanged() {
+			handleAstChangeThatCouldBeOfInterest();
+		}
+	};
+
 	private InstanceFactoryState() {
 		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "f4e26c9c-0c3d-4221-95b3-c25df0744a97" ), null, org.alice.ide.instancefactory.croquet.codecs.InstanceFactoryCodec.SINGLETON );
 		org.alice.ide.MetaDeclarationFauxState.getInstance().addValueListener( declarationListener );
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 	}
 
 	private void fallBackToDefaultFactory() {
@@ -114,7 +121,7 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		}
 	}
 
-	public void handleAstChangeThatCouldBeOfInterest() {
+	private void handleAstChangeThatCouldBeOfInterest() {
 		InstanceFactory instanceFactory = this.getValue();
 		if( instanceFactory != null ) {
 			if( instanceFactory.isValid() ) {
@@ -125,7 +132,6 @@ public class InstanceFactoryState extends org.lgna.croquet.CustomItemStateWithIn
 		} else {
 			this.fallBackToDefaultFactory();
 		}
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
 	}
 
 	private static org.lgna.croquet.CascadeBlankChild<InstanceFactory> createFillInMenuComboIfNecessary( org.lgna.croquet.CascadeFillIn<InstanceFactory, Void> item, org.lgna.croquet.CascadeMenuModel<InstanceFactory> subMenu ) {

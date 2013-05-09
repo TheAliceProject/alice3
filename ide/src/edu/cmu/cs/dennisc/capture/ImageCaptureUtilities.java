@@ -54,6 +54,9 @@ public class ImageCaptureUtilities {
 			java.awt.GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
 			java.awt.Robot robot = new java.awt.Robot( graphicsConfiguration.getDevice() );
 			java.awt.Point locationOnScreen = awtComponent.getLocationOnScreen();
+			java.awt.Rectangle graphicsConfigurationBounds = graphicsConfiguration.getBounds();
+			locationOnScreen.x -= graphicsConfigurationBounds.x;
+			locationOnScreen.y -= graphicsConfigurationBounds.y;
 			java.awt.Rectangle rect;
 			if( bounds != null ) {
 				rect = new java.awt.Rectangle( locationOnScreen.x + bounds.x, locationOnScreen.y + bounds.y, bounds.width, bounds.height );

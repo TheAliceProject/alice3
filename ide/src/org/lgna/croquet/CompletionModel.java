@@ -57,5 +57,9 @@ public interface CompletionModel extends Model {
 
 	public Iterable<? extends PrepModel> getPotentialRootPrepModels();
 
-	public org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException;
+	public static interface AddGeneratedTransactionObserver {
+		public void prePopGeneratedContexts() throws org.lgna.croquet.UnsupportedGenerationException;
+	}
+
+	public org.lgna.croquet.history.Transaction addGeneratedTransaction( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.triggers.Trigger trigger, org.lgna.croquet.edits.Edit<?> edit, AddGeneratedTransactionObserver observer ) throws UnsupportedGenerationException;
 }
