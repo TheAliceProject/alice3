@@ -57,6 +57,22 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				MaleTeenBottomPieceSwimShort.class,
 				MaleTeenBottomPieceTightPantsPointyToe.class
 				);
+		this.add( MaleChildBottomPiece.class, 
+				MaleChildBottomPieceBigShorts.class,
+				MaleChildBottomPieceCowboyJeans.class,
+				MaleChildBottomPieceShorts.class,
+				ChildBottomPieceBaggyPants.class,
+				ChildBottomPieceNaked.class,
+				ChildBottomPiecePuffyLeg.class
+				);
+		this.add( FemaleChildBottomPiece.class, 
+				FemaleChildBottomPieceMiniSkirt.class,
+				FemaleChildBottomPiecePleatSkirt.class,
+				FemaleChildBottomPieceShorts.class,
+				ChildBottomPieceBaggyPants.class,
+				ChildBottomPieceNaked.class,
+				ChildBottomPiecePuffyLeg.class
+				);
 		this.add( FemaleAdultBottomPiece.class, 
 				FemaleAdultBottomPieceBaggyPants.class,
 				FemaleAdultBottomPieceCapriSneaks.class,
@@ -80,22 +96,6 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				MaleAdultBottomPieceNaked.class,
 				MaleAdultBottomPiecePants.class,
 				MaleAdultBottomPieceWillPants.class
-				);
-		this.add( MaleChildBottomPiece.class, 
-				MaleChildBottomPieceBigShorts.class,
-				MaleChildBottomPieceCowboyJeans.class,
-				MaleChildBottomPieceShorts.class,
-				ChildBottomPieceBaggyPants.class,
-				ChildBottomPieceNaked.class,
-				ChildBottomPiecePuffyLeg.class
-				);
-		this.add( FemaleChildBottomPiece.class, 
-				FemaleChildBottomPieceMiniSkirt.class,
-				FemaleChildBottomPiecePleatSkirt.class,
-				FemaleChildBottomPieceShorts.class,
-				ChildBottomPieceBaggyPants.class,
-				ChildBottomPieceNaked.class,
-				ChildBottomPiecePuffyLeg.class
 				);
 	}
 

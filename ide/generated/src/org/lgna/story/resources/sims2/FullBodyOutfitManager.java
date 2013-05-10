@@ -111,6 +111,56 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				FemaleTeenFullBodyOutfitApron.class,
 				FemaleTeenFullBodyOutfitAmbulanceDriver.class
 				);
+		this.add( MaleChildFullBodyOutfit.class, 
+				MaleChildFullBodyOutfitBigShorts.class,
+				MaleChildFullBodyOutfitJacketShortsBoots.class,
+				MaleChildFullBodyOutfitLongSweaterPants.class,
+				MaleChildFullBodyOutfitOpenCoatLongPants.class,
+				MaleChildFullBodyOutfitOverShirtShorts.class,
+				MaleChildFullBodyOutfitPulloverShirtPants.class,
+				MaleChildFullBodyOutfitShirtOverPants.class,
+				MaleChildFullBodyOutfitSportif.class,
+				ChildFullBodyOutfitJumper.class,
+				ChildFullBodyOutfitNaked.class,
+				ChildFullBodyOutfitPirate.class,
+				ChildFullBodyOutfitPuffyPJ.class
+				);
+		this.add( FemaleChildFullBodyOutfit.class, 
+				FemaleChildFullBodyOutfitBlazerPleats.class,
+				FemaleChildFullBodyOutfitCowGirlSkirt.class,
+				FemaleChildFullBodyOutfitDressAboveKneeCollar.class,
+				FemaleChildFullBodyOutfitDressFormal.class,
+				FemaleChildFullBodyOutfitDressShortBell.class,
+				FemaleChildFullBodyOutfitFairy.class,
+				FemaleChildFullBodyOutfitJacketDressFlare.class,
+				FemaleChildFullBodyOutfitTShirtPants.class,
+				ChildFullBodyOutfitJumper.class,
+				ChildFullBodyOutfitNaked.class,
+				ChildFullBodyOutfitPirate.class,
+				ChildFullBodyOutfitPuffyPJ.class
+				);
+		this.add( FemaleToddlerFullBodyOutfit.class, 
+				FemaleToddlerFullBodyOutfitDress.class,
+				FemaleToddlerFullBodyOutfitDressClosedSleeves.class,
+				FemaleToddlerFullBodyOutfitOpenCoatDressShoes.class,
+				FemaleToddlerFullBodyOutfitShortSleevesLongPants.class,
+				FemaleToddlerFullBodyOutfitSundress.class,
+				FemaleToddlerFullBodyOutfitSundressSleeves.class,
+				ToddlerFullBodyOutfitDiaper.class,
+				ToddlerFullBodyOutfitJumpCollar.class,
+				ToddlerFullBodyOutfitNaked.class,
+				ToddlerFullBodyOutfitOnePieceShortsCollar.class,
+				ToddlerFullBodyOutfitSleeper.class
+				);
+		this.add( MaleToddlerFullBodyOutfit.class, 
+				MaleToddlerFullBodyOutfitJacketPants.class,
+				MaleToddlerFullBodyOutfitPantsCollar.class,
+				ToddlerFullBodyOutfitDiaper.class,
+				ToddlerFullBodyOutfitJumpCollar.class,
+				ToddlerFullBodyOutfitNaked.class,
+				ToddlerFullBodyOutfitOnePieceShortsCollar.class,
+				ToddlerFullBodyOutfitSleeper.class
+				);
 		this.add( MaleAdultFullBodyOutfit.class, 
 				MaleAdultFullBodyOutfitChef.class,
 				MaleAdultFullBodyOutfitClosedCoatLongPants.class,
@@ -257,56 +307,6 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 				FemaleAdultFullBodyOutfitBartender.class,
 				AdultFullBodyOutfitAstronaut.class,
 				FemaleAdultFullBodyOutfitAmbulanceDriver.class
-				);
-		this.add( FemaleToddlerFullBodyOutfit.class, 
-				FemaleToddlerFullBodyOutfitDress.class,
-				FemaleToddlerFullBodyOutfitDressClosedSleeves.class,
-				FemaleToddlerFullBodyOutfitOpenCoatDressShoes.class,
-				FemaleToddlerFullBodyOutfitShortSleevesLongPants.class,
-				FemaleToddlerFullBodyOutfitSundress.class,
-				FemaleToddlerFullBodyOutfitSundressSleeves.class,
-				ToddlerFullBodyOutfitDiaper.class,
-				ToddlerFullBodyOutfitJumpCollar.class,
-				ToddlerFullBodyOutfitNaked.class,
-				ToddlerFullBodyOutfitOnePieceShortsCollar.class,
-				ToddlerFullBodyOutfitSleeper.class
-				);
-		this.add( MaleToddlerFullBodyOutfit.class, 
-				MaleToddlerFullBodyOutfitJacketPants.class,
-				MaleToddlerFullBodyOutfitPantsCollar.class,
-				ToddlerFullBodyOutfitDiaper.class,
-				ToddlerFullBodyOutfitJumpCollar.class,
-				ToddlerFullBodyOutfitNaked.class,
-				ToddlerFullBodyOutfitOnePieceShortsCollar.class,
-				ToddlerFullBodyOutfitSleeper.class
-				);
-		this.add( MaleChildFullBodyOutfit.class, 
-				MaleChildFullBodyOutfitBigShorts.class,
-				MaleChildFullBodyOutfitJacketShortsBoots.class,
-				MaleChildFullBodyOutfitLongSweaterPants.class,
-				MaleChildFullBodyOutfitOpenCoatLongPants.class,
-				MaleChildFullBodyOutfitOverShirtShorts.class,
-				MaleChildFullBodyOutfitPulloverShirtPants.class,
-				MaleChildFullBodyOutfitShirtOverPants.class,
-				MaleChildFullBodyOutfitSportif.class,
-				ChildFullBodyOutfitJumper.class,
-				ChildFullBodyOutfitNaked.class,
-				ChildFullBodyOutfitPirate.class,
-				ChildFullBodyOutfitPuffyPJ.class
-				);
-		this.add( FemaleChildFullBodyOutfit.class, 
-				FemaleChildFullBodyOutfitBlazerPleats.class,
-				FemaleChildFullBodyOutfitCowGirlSkirt.class,
-				FemaleChildFullBodyOutfitDressAboveKneeCollar.class,
-				FemaleChildFullBodyOutfitDressFormal.class,
-				FemaleChildFullBodyOutfitDressShortBell.class,
-				FemaleChildFullBodyOutfitFairy.class,
-				FemaleChildFullBodyOutfitJacketDressFlare.class,
-				FemaleChildFullBodyOutfitTShirtPants.class,
-				ChildFullBodyOutfitJumper.class,
-				ChildFullBodyOutfitNaked.class,
-				ChildFullBodyOutfitPirate.class,
-				ChildFullBodyOutfitPuffyPJ.class
 				);
 	}
 

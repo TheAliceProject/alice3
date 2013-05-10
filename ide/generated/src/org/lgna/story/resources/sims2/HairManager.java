@@ -109,6 +109,50 @@ public class HairManager extends IngredientManager<Hair> {
 				MaleTeenHairSixty.class,
 				MaleTeenHairTopHat.class
 				);
+		this.add( MaleChildHair.class, 
+				MaleChildHairCloseCrop.class,
+				MaleChildHairGibs.class,
+				MaleChildHairPompodore.class,
+				MaleChildHairShort.class,
+				MaleChildHairShortCombed.class,
+				MaleChildHairShortGel.class,
+				MaleChildHairShortMop.class,
+				ChildHairBald.class,
+				ChildHairDreadlockShort.class,
+				ChildHairHatTricorn.class,
+				ChildHairRocker.class,
+				ChildHairShocked.class
+				);
+		this.add( FemaleChildHair.class, 
+				FemaleChildHairAcornTuck.class,
+				FemaleChildHairBarrette.class,
+				FemaleChildHairBraids.class,
+				FemaleChildHairBraidsUp.class,
+				FemaleChildHairBun.class,
+				FemaleChildHairFormal.class,
+				FemaleChildHairMediumCenterPart.class,
+				FemaleChildHairPoofs.class,
+				FemaleChildHairRosettes.class,
+				ChildHairBald.class,
+				ChildHairDreadlockShort.class,
+				ChildHairHatTricorn.class,
+				ChildHairRocker.class,
+				ChildHairShocked.class
+				);
+		this.add( MaleToddlerHair.class, 
+				ToddlerHairBald.class,
+				ToddlerHairSwirl.class,
+				ToddlerHairPuff.class,
+				ToddlerHairPuffCurls.class,
+				ToddlerHairSimple.class
+				);
+		this.add( FemaleToddlerHair.class, 
+				ToddlerHairBald.class,
+				ToddlerHairSwirl.class,
+				ToddlerHairPuff.class,
+				ToddlerHairPuffCurls.class,
+				ToddlerHairSimple.class
+				);
 		this.add( FemaleAdultHair.class, 
 				FemaleAdultHairAcornTuck.class,
 				FemaleAdultHairBald.class,
@@ -198,50 +242,6 @@ public class HairManager extends IngredientManager<Hair> {
 				MaleAdultHairTopHat.class,
 				MaleAdultHairWill.class,
 				MaleAdultHairHatFirefighter.class
-				);
-		this.add( MaleToddlerHair.class, 
-				ToddlerHairBald.class,
-				ToddlerHairSwirl.class,
-				ToddlerHairPuff.class,
-				ToddlerHairPuffCurls.class,
-				ToddlerHairSimple.class
-				);
-		this.add( FemaleToddlerHair.class, 
-				ToddlerHairBald.class,
-				ToddlerHairSwirl.class,
-				ToddlerHairPuff.class,
-				ToddlerHairPuffCurls.class,
-				ToddlerHairSimple.class
-				);
-		this.add( MaleChildHair.class, 
-				MaleChildHairCloseCrop.class,
-				MaleChildHairGibs.class,
-				MaleChildHairPompodore.class,
-				MaleChildHairShort.class,
-				MaleChildHairShortCombed.class,
-				MaleChildHairShortGel.class,
-				MaleChildHairShortMop.class,
-				ChildHairBald.class,
-				ChildHairDreadlockShort.class,
-				ChildHairHatTricorn.class,
-				ChildHairRocker.class,
-				ChildHairShocked.class
-				);
-		this.add( FemaleChildHair.class, 
-				FemaleChildHairAcornTuck.class,
-				FemaleChildHairBarrette.class,
-				FemaleChildHairBraids.class,
-				FemaleChildHairBraidsUp.class,
-				FemaleChildHairBun.class,
-				FemaleChildHairFormal.class,
-				FemaleChildHairMediumCenterPart.class,
-				FemaleChildHairPoofs.class,
-				FemaleChildHairRosettes.class,
-				ChildHairBald.class,
-				ChildHairDreadlockShort.class,
-				ChildHairHatTricorn.class,
-				ChildHairRocker.class,
-				ChildHairShocked.class
 				);
 	}
 
