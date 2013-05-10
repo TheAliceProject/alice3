@@ -61,6 +61,14 @@ public class StorytellingResources {
 		return null;
 	}
 
+	public static File getGalleryRootDirectory() {
+		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery", "share/gallery" } );
+		if( ( rootGallery != null ) && rootGallery.exists() ) {
+			return rootGallery;
+		}
+		return null;
+	}
+
 	private static java.io.File getPathFromProperties( String[] propertyKeys, String[] subPaths ) {
 		for( String propertyKey : propertyKeys ) {
 			for( String subPath : subPaths ) {
@@ -73,8 +81,8 @@ public class StorytellingResources {
 		return null;
 	}
 
-	private File findResourcePath( String relativePath ) {
-		File rootGallery = getPathFromProperties( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "gallery" } );
+	private static File findResourcePath( String relativePath ) {
+		File rootGallery = getGalleryRootDirectory();
 		if( ( rootGallery != null ) && rootGallery.exists() ) {
 			File path = new File( rootGallery, relativePath );
 			if( path.exists() ) {

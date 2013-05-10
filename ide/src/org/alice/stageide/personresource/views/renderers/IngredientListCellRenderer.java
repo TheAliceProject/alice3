@@ -46,8 +46,9 @@ package org.alice.stageide.personresource.views.renderers;
  * @author Dennis Cosgrove
  */
 public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<E> {
-	private static final java.io.File APPLICATION_ROOT = new java.io.File( System.getProperty( "org.alice.ide.IDE.install.dir" ) );
-	private static final java.io.File IMAGE_ROOT = new java.io.File( APPLICATION_ROOT, "gallery/ide/person" );
+
+	private static final java.io.File GALLERY_ROOT = org.lgna.story.resourceutilities.StorytellingResources.getGalleryRootDirectory();
+	private static final java.io.File IMAGE_ROOT = new java.io.File( GALLERY_ROOT, "ide/person" );
 
 	public static javax.swing.Icon getIconForPath( String path ) {
 		java.net.URL urlForIcon;
