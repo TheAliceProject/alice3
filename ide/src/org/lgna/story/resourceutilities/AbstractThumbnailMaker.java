@@ -46,6 +46,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.lookingglass.opengl.AbstractCameraAdapter;
+import edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Hexahedron;
@@ -99,8 +101,26 @@ public abstract class AbstractThumbnailMaker {
 		setUpCamera( this.offscreenLookingGlass );
 	}
 
+	protected void removeComponent( edu.cmu.cs.dennisc.scenegraph.Component sgComponent )
+	{
+		if( this.offscreenLookingGlass.getCameraCount() > 0 ) {
+			Iterable<edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameras = this.offscreenLookingGlass.accessCameras();
+			synchronized( cameras ) {
+				for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
+					AbstractCameraAdapter<? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera> cameraAdapterI = AdapterFactory.getAdapterFor( camera );
+					edu.cmu.cs.dennisc.lookingglass.opengl.SceneAdapter sceneAdapter = cameraAdapterI.getSceneAdapter();
+					edu.cmu.cs.dennisc.lookingglass.opengl.ComponentAdapter<?> componentAdapter = AdapterFactory.getAdapterFor( sgComponent );
+					if( componentAdapter != null ) {
+						sceneAdapter.removeDescendant( componentAdapter );
+					}
+				}
+			}
+		}
+	}
+
 	protected void clear()
 	{
+
 		this.offscreenLookingGlass.forgetAllCachedItems();
 		this.offscreenLookingGlass.clearUnusedTextures();
 	}

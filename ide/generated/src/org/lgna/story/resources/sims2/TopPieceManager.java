@@ -31,20 +31,30 @@ public class TopPieceManager extends IngredientManager<TopPiece> {
 	}
 
 	private TopPieceManager() {
-		this.add( MaleChildTopPiece.class, 
-				MaleChildTopPieceCowboyShirt.class,
-				MaleChildTopPieceVNeckShortSleeve.class,
-				ChildTopPieceNaked.class,
-				ChildTopPieceShortSleeve.class,
-				ChildTopPieceShortSleeveCollar.class
+		this.add( MaleTeenTopPiece.class, 
+				MaleTeenTopPieceCrewneckShirtOver.class,
+				MaleTeenTopPieceHipJacket.class,
+				MaleTeenTopPieceJacketTshirtHang.class,
+				MaleTeenTopPieceMockTurtle.class,
+				MaleTeenTopPieceNaked.class,
+				MaleTeenTopPieceShortSleeveCollar.class,
+				MaleTeenTopPieceShortSleevedTie.class,
+				MaleTeenTopPieceSweaterVestCollarShirt.class,
+				MaleTeenTopPieceVNeckShortSleeve.class
 				);
-		this.add( FemaleChildTopPiece.class, 
-				FemaleChildTopPieceCamisole.class,
-				FemaleChildTopPieceHalter.class,
-				FemaleChildTopPieceTShirt.class,
-				ChildTopPieceNaked.class,
-				ChildTopPieceShortSleeve.class,
-				ChildTopPieceShortSleeveCollar.class
+		this.add( FemaleTeenTopPiece.class, 
+				FemaleTeenTopPieceBlousedWaist.class,
+				FemaleTeenTopPieceCowgirlShirt.class,
+				FemaleTeenTopPieceCrewneckShirtOver.class,
+				FemaleTeenTopPieceFlaredMidriff.class,
+				FemaleTeenTopPieceHalter.class,
+				FemaleTeenTopPieceJeansJacket.class,
+				FemaleTeenTopPieceMidSleeveTshirt.class,
+				FemaleTeenTopPieceNaked.class,
+				FemaleTeenTopPiecePoloShirt.class,
+				FemaleTeenTopPieceTankTop.class,
+				FemaleTeenTopPieceTShirt.class,
+				FemaleTeenTopPieceVNeckLongSleeve.class
 				);
 		this.add( FemaleAdultTopPiece.class, 
 				FemaleAdultTopPieceBlousedWaist.class,
@@ -63,11 +73,28 @@ public class TopPieceManager extends IngredientManager<TopPiece> {
 		this.add( MaleAdultTopPiece.class, 
 				MaleAdultTopPieceCowboyShirt.class,
 				MaleAdultTopPieceJacketTshirtHang.class,
+				MaleAdultTopPieceNaked.class,
 				MaleAdultTopPieceShirtPolo.class,
 				MaleAdultTopPieceShortSleeveCollar.class,
 				MaleAdultTopPieceSweaterHang.class,
 				MaleAdultTopPieceTankTop.class,
 				MaleAdultTopPieceVNeckShortSleeve.class
+				);
+		this.add( MaleChildTopPiece.class, 
+				MaleChildTopPieceCowboyShirt.class,
+				MaleChildTopPieceVNeckShortSleeve.class,
+				MaleChildTopPieceNaked.class,
+				ChildTopPieceNaked.class,
+				ChildTopPieceShortSleeve.class,
+				ChildTopPieceShortSleeveCollar.class
+				);
+		this.add( FemaleChildTopPiece.class, 
+				FemaleChildTopPieceCamisole.class,
+				FemaleChildTopPieceHalter.class,
+				FemaleChildTopPieceTShirt.class,
+				ChildTopPieceNaked.class,
+				ChildTopPieceShortSleeve.class,
+				ChildTopPieceShortSleeveCollar.class
 				);
 	}
 

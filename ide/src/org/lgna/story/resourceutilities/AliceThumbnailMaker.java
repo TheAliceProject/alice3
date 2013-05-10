@@ -103,9 +103,14 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 
 	private AffineMatrix4x4 getHeadThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.58, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .8 );
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			return getThumbnailCameraOrientation( new Point3( 0, 1.48, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .8 );
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+			return getThumbnailCameraOrientation( new Point3( 0, .7, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .6 );
 		}
 		else {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.1, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .8 );
@@ -114,9 +119,14 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 
 	private AffineMatrix4x4 getBodyThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .72, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 3.3 );
+		}
+		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			return getThumbnailCameraOrientation( new Point3( 0, .68, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 3.25 );
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+			return getThumbnailCameraOrientation( new Point3( 0, .3, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 2 );
 		}
 		else {
 			return getThumbnailCameraOrientation( new Point3( 0, .5, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 2.3 );
@@ -125,9 +135,14 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 
 	private AffineMatrix4x4 getTopBodyThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.07, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 1.8 );
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			return getThumbnailCameraOrientation( new Point3( 0, 1.02, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 1.6 );
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+			return getThumbnailCameraOrientation( new Point3( 0, .5, 0 ), new Vector3( 1.0, 0.0, 3.0 ), .8 );
 		}
 		else {
 			return getThumbnailCameraOrientation( new Point3( 0, .75, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 1.2 );
@@ -136,9 +151,11 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 
 	private AffineMatrix4x4 getBottomBodyThumbnailCameraOrientationForLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
 			return getThumbnailCameraOrientation( new Point3( 0, .5, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 2.4 );
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			return getThumbnailCameraOrientation( new Point3( 0, .48, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 2.3 );
 		}
 		else {
 			return getThumbnailCameraOrientation( new Point3( 0, .33, 0 ), new Vector3( 1.0, 0.0, 3.0 ), 1.6 );
@@ -147,14 +164,24 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 
 	private AffineMatrix4x4 getFaceThumbnailCameraOrientationForLifeStageAndGender( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
 		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ||
-				( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) ) {
+				( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) ) {
 			if( gender == org.lgna.story.resources.sims2.Gender.FEMALE ) {
 				return getThumbnailCameraOrientation( new Point3( 0, 1.58, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .56 );
 			}
 			else {
 				return getThumbnailCameraOrientation( new Point3( 0, 1.569, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .569 );
 			}
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			if( gender == org.lgna.story.resources.sims2.Gender.FEMALE ) {
+				return getThumbnailCameraOrientation( new Point3( 0, 1.48, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .56 );
+			}
+			else {
+				return getThumbnailCameraOrientation( new Point3( 0, 1.469, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .569 );
+			}
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+			return getThumbnailCameraOrientation( new Point3( 0, .685, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .4 );
 		}
 		else {
 			return getThumbnailCameraOrientation( new Point3( 0, 1.09, 0 ), new Vector3( 1.0, 0.0, 4.0 ), .48 );
@@ -170,6 +197,7 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
+			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
@@ -192,6 +220,7 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
+			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
@@ -214,6 +243,7 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
+			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
@@ -236,6 +266,7 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
+			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
@@ -258,6 +289,7 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
+			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}
@@ -280,6 +312,7 @@ public class AliceThumbnailMaker extends AbstractThumbnailMaker {
 		visualData.setSGParent( null );
 		for( edu.cmu.cs.dennisc.scenegraph.Visual sgVisual : visualData.getSgVisuals() ) {
 			sgVisual.setParent( null );
+			this.removeComponent( sgVisual );
 		}
 		return returnImage;
 	}

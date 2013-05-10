@@ -74,7 +74,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private final TopAndBottomOutfitTabComposite topAndBottomTab = new TopAndBottomOutfitTabComposite();
 	private final HairTabComposite hairTab = new HairTabComposite();
 	private final FaceTabComposite faceTab = new FaceTabComposite();
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD );
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.TEEN, org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.TODDLER );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
 	private final SkinColorState skinColorState = new SkinColorState();
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadHairTabState = this.createTabSelectionState( this.createKey( "bodyHeadHairTabState" ), 0, this.bodyTab, this.topAndBottomTab, null, this.hairTab, null, this.faceTab );
@@ -570,6 +570,11 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		this.getBottomPieceState().setValueTransactionlessly( null );
 		this.topAndBottomTab.getBottomPieceData().setLifeStageAndGender( lifeStage, gender );
 
+		//If there are no top or bottom pieces, leave the data set to null
+		if( ( this.topAndBottomTab.getTopPieceData().getItemCount() == 0 ) || ( this.topAndBottomTab.getBottomPieceData().getItemCount() == 0 ) ) {
+			return;
+		}
+
 		org.lgna.story.resources.sims2.TopPiece topPiece = null;
 		org.lgna.story.resources.sims2.BottomPiece bottomPiece = null;
 		if( topAndBottomOutfit != null ) {
@@ -702,7 +707,8 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 
 		org.lgna.story.resources.sims2.EyeColor eyeColor = this.getBaseEyeColorState().getValue();
 		org.lgna.story.resources.sims2.Outfit outfit = null;
-		if( this.lastActiveOutfitTab == this.bodyTab ) {
+		boolean topsAndBottomsAvailable = ( this.topAndBottomTab.getBottomPieceData().getItemCount() > 0 ) && ( this.topAndBottomTab.getTopPieceData().getItemCount() > 0 );
+		if( !topsAndBottomsAvailable || ( this.lastActiveOutfitTab == this.bodyTab ) ) {
 			outfit = this.getFullBodyOutfitState().getValue();
 		}
 		else if( this.lastActiveOutfitTab == this.topAndBottomTab ) {
@@ -712,6 +718,14 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				}
 				else if( gender == org.lgna.story.resources.sims2.Gender.FEMALE ) {
 					outfit = new org.lgna.story.resources.sims2.FemaleChildTopAndBottomOutfit( (org.lgna.story.resources.sims2.FemaleChildTopPiece)this.getTopPieceState().getValue(), (org.lgna.story.resources.sims2.FemaleChildBottomPiece)this.getBottomPieceState().getValue() );
+				}
+			}
+			if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+				if( gender == org.lgna.story.resources.sims2.Gender.MALE ) {
+					outfit = new org.lgna.story.resources.sims2.MaleTeenTopAndBottomOutfit( (org.lgna.story.resources.sims2.MaleTeenTopPiece)this.getTopPieceState().getValue(), (org.lgna.story.resources.sims2.MaleTeenBottomPiece)this.getBottomPieceState().getValue() );
+				}
+				else if( gender == org.lgna.story.resources.sims2.Gender.FEMALE ) {
+					outfit = new org.lgna.story.resources.sims2.FemaleTeenTopAndBottomOutfit( (org.lgna.story.resources.sims2.FemaleTeenTopPiece)this.getTopPieceState().getValue(), (org.lgna.story.resources.sims2.FemaleTeenBottomPiece)this.getBottomPieceState().getValue() );
 				}
 			}
 			else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
