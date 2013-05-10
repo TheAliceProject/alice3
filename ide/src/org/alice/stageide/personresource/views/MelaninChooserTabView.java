@@ -61,18 +61,22 @@ public class MelaninChooserTabView extends org.lgna.croquet.color.views.ColorCho
 					MelaninChooserTabView.this.getAwtComponent().getColorSelectionModel().setSelectedColor( nextColor );
 				}
 			};
-			this.setLayout( new java.awt.BorderLayout() );
-			this.add( jMelaninSlider, java.awt.BorderLayout.CENTER );
+			this.setBorder( javax.swing.BorderFactory.createMatteBorder( 1, 1, 1, 1, java.awt.Color.LIGHT_GRAY ) );
+			jMelaninSlider.setBorder( javax.swing.BorderFactory.createEmptyBorder( 3, 3, 3, 3 ) );
+			this.setLayout( new net.miginfocom.swing.MigLayout( "fill, insets 0" ) );
+			this.add( jMelaninSlider, "growx" );
 		}
 
 		@Override
 		public void updateChooser() {
+			java.awt.Color color = this.getColorFromModel();
 			//todo
+			//edu.cmu.cs.dennisc.java.util.logging.Logger.outln( color );
 		}
 
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return new java.awt.Dimension( 256, 32 );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilities.constrainToMinimumWidth( super.getPreferredSize(), 256 );
 		}
 	}
 

@@ -45,52 +45,13 @@ package org.alice.stageide.personresource.data;
 /**
  * @author Dennis Cosgrove
  */
-public final class HairHatStyleListData extends org.lgna.croquet.data.RefreshableListData<HairHatStyle> {
-	private org.lgna.story.resources.sims2.LifeStage lifeStage;
-	private org.lgna.story.resources.sims2.Gender gender;
-
+public final class HairHatStyleListData extends IngredientListData<HairHatStyle> {
 	public HairHatStyleListData() {
 		super( org.alice.stageide.personresource.codecs.HairHatStyleCodec.SINGLETON );
 	}
 
-	public org.lgna.story.resources.sims2.LifeStage getLifeStage() {
-		return this.lifeStage;
-	}
-
-	public void setLifeStage( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		if( this.lifeStage == lifeStage ) {
-			//pass
-		} else {
-			this.lifeStage = lifeStage;
-			this.refresh();
-		}
-	}
-
-	public org.lgna.story.resources.sims2.Gender getGender() {
-		return this.gender;
-	}
-
-	public void setGender( org.lgna.story.resources.sims2.Gender gender ) {
-		if( this.gender == gender ) {
-			//pass
-		} else {
-			this.gender = gender;
-			this.refresh();
-		}
-	}
-
-	public void setLifeStageAndGender( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
-		if( ( this.lifeStage == lifeStage ) && ( this.gender == gender ) ) {
-			//pass
-		} else {
-			this.lifeStage = lifeStage;
-			this.gender = gender;
-			this.refresh();
-		}
-	}
-
 	@Override
-	protected java.util.List<HairHatStyle> createValues() {
+	protected java.util.List<HairHatStyle> createValues( org.lgna.story.resources.sims2.LifeStage lifeStage, org.lgna.story.resources.sims2.Gender gender ) {
 		return HairUtilities.getHairHatStyles( lifeStage, gender );
 	}
 }

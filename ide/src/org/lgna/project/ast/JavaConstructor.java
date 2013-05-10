@@ -128,7 +128,7 @@ public class JavaConstructor extends AbstractConstructor {
 		}
 	}
 
-	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
+	public java.util.List<JavaConstructorParameter> getRequiredParameters() {
 		return this.requiredParameters;
 	}
 

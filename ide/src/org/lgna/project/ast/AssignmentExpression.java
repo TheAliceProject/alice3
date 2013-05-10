@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class AssignmentExpression extends Expression {
+public final class AssignmentExpression extends Expression {
 	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public ExpressionProperty leftHandSide = new ExpressionProperty( this ) {
 		@Override
@@ -100,6 +100,21 @@ public class AssignmentExpression extends Expression {
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return JavaType.VOID_TYPE;
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			AssignmentExpression other = (AssignmentExpression)o;
+			if( this.expressionType.valueContentEquals( other.expressionType, strictness ) ) {
+				if( this.leftHandSide.valueContentEquals( other.leftHandSide, strictness ) ) {
+					if( this.operator.valueEquals( other.operator ) ) {
+						return this.rightHandSide.valueContentEquals( other.rightHandSide, strictness );
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

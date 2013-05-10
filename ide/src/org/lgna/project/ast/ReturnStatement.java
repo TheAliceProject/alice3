@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ReturnStatement extends Statement {
+public final class ReturnStatement extends Statement {
 	public DeclarationProperty<AbstractType<?, ?, ?>> expressionType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public ExpressionProperty expression = new ExpressionProperty( this ) {
 		@Override
@@ -61,6 +61,17 @@ public class ReturnStatement extends Statement {
 	public ReturnStatement( AbstractType<?, ?, ?> expressionType, Expression expression ) {
 		this.expressionType.setValue( expressionType );
 		this.expression.setValue( expression );
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			ReturnStatement other = (ReturnStatement)o;
+			if( this.expressionType.valueContentEquals( other.expressionType, strictness ) ) {
+				return this.expression.valueContentEquals( other.expression, strictness );
+			}
+		}
+		return false;
 	}
 
 	@Override

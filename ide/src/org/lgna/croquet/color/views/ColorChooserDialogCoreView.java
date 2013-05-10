@@ -45,39 +45,39 @@ package org.lgna.croquet.color.views;
 /**
  * @author Dennis Cosgrove
  */
-public class ColorChooserDialogCoreView extends org.lgna.croquet.components.BorderPanel {
-	private final javax.swing.JColorChooser jColorChooser = new javax.swing.JColorChooser();
-
+public class ColorChooserDialogCoreView extends org.lgna.croquet.components.View<javax.swing.JColorChooser, org.lgna.croquet.color.ColorChooserDialogCoreComposite> {
 	public ColorChooserDialogCoreView( org.lgna.croquet.color.ColorChooserDialogCoreComposite composite ) {
 		super( composite );
-		//this.jColorChooser.setPreviewPanel( new javax.swing.JPanel() );
-		this.getAwtComponent().add( this.jColorChooser, java.awt.BorderLayout.CENTER );
-		javax.swing.colorchooser.AbstractColorChooserPanel[] colorChooserPanels = this.jColorChooser.getChooserPanels();
-		for( javax.swing.colorchooser.AbstractColorChooserPanel colorChooserPanel : colorChooserPanels ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( colorChooserPanel.getDisplayName() );
-		}
-
+		//		javax.swing.colorchooser.AbstractColorChooserPanel[] colorChooserPanels = this.getAwtComponent().getChooserPanels();
+		//		for( javax.swing.colorchooser.AbstractColorChooserPanel colorChooserPanel : colorChooserPanels ) {
+		//			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( colorChooserPanel.getDisplayName() );
+		//		}
 		//this.jColorChooser.setSelectionModel( c )
 	}
 
+	@Override
+	protected javax.swing.JColorChooser createAwtComponent() {
+		return new javax.swing.JColorChooser();
+	}
+
 	public java.awt.Color getSelectedColor() {
-		return this.jColorChooser.getColor();
+		return this.getAwtComponent().getColor();
 	}
 
 	public void setSelectedColor( java.awt.Color selectedColor ) {
-		this.jColorChooser.setColor( selectedColor );
+		this.getAwtComponent().setColor( selectedColor );
 	}
 
 	public void addColorChooserTabView( ColorChooserTabView view ) {
 		final boolean IS_PREPEND_DESIRED = true; //todo
 		if( IS_PREPEND_DESIRED ) {
-			this.jColorChooser.setChooserPanels( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( javax.swing.colorchooser.AbstractColorChooserPanel.class, view.getAwtComponent(), this.jColorChooser.getChooserPanels() ) );
+			this.getAwtComponent().setChooserPanels( edu.cmu.cs.dennisc.java.lang.ArrayUtilities.concat( javax.swing.colorchooser.AbstractColorChooserPanel.class, view.getAwtComponent(), this.getAwtComponent().getChooserPanels() ) );
 		} else {
-			this.jColorChooser.addChooserPanel( view.getAwtComponent() );
+			this.getAwtComponent().addChooserPanel( view.getAwtComponent() );
 		}
 	}
 
 	public void removeColorChooserTabView( ColorChooserTabView view ) {
-		this.jColorChooser.removeChooserPanel( view.getAwtComponent() );
+		this.getAwtComponent().removeChooserPanel( view.getAwtComponent() );
 	}
 }

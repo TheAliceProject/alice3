@@ -57,6 +57,21 @@ public abstract class AbstractDeclaration extends AbstractNode implements Declar
 	}
 
 	@Override
+	public boolean contentEquals( org.lgna.project.ast.Node o, org.lgna.project.ast.ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			AbstractDeclaration other = (AbstractDeclaration)o;
+			if( strictness == ContentEqualsStrictness.DECLARATIONS_EQUAL ) {
+				return this == other;
+			} else if( strictness == ContentEqualsStrictness.DECLARATIONS_HAVE_SAME_NAME ) {
+				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.getName(), other.getName() );
+			} else {
+				throw new RuntimeException( strictness.name() );
+			}
+		}
+		return false;
+	}
+
+	@Override
 	protected java.util.Set<AbstractDeclaration> fillInDeclarationSet( java.util.Set<AbstractDeclaration> rv, java.util.Set<AbstractNode> nodes ) {
 		rv.add( this );
 		return super.fillInDeclarationSet( rv, nodes );

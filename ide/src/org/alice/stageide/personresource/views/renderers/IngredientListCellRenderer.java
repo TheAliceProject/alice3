@@ -46,18 +46,41 @@ package org.alice.stageide.personresource.views.renderers;
  * @author Dennis Cosgrove
  */
 public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<E> {
+	private static final java.io.File APPLICATION_ROOT = new java.io.File( System.getProperty( "org.alice.ide.IDE.install.dir" ) );
+	private static final java.io.File IMAGE_ROOT = new java.io.File( APPLICATION_ROOT, "gallery/ide/person" );
+
+	public static javax.swing.Icon getIconForPath( String path ) {
+		java.net.URL urlForIcon;
+		java.io.File file = new java.io.File( IMAGE_ROOT, path );
+		if( file.exists() ) {
+			try {
+				urlForIcon = file.toURL();
+			} catch( java.net.MalformedURLException murle ) {
+				edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( murle, file );
+				urlForIcon = null;
+			}
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.errln( file );
+			urlForIcon = null;
+		}
+		if( urlForIcon != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
+		}
+		return edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
+	}
+
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
 
 	protected abstract String getSubPath();
 
 	private org.lgna.story.resources.sims2.SkinTone getSkinTone() {
-		java.awt.Color color = org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getSkinColorState().getValue();
-		return org.lgna.story.resources.sims2.BaseSkinTone.getClosestToColor( color );
+		return org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getClosestBaseSkinTone();
 	}
 
 	private String getIngredientResourceName( org.lgna.story.resources.sims2.SkinTone skinTone, String clsName, String enumConstantName ) {
 		StringBuilder sb = new StringBuilder();
-		sb.append( "images/" );
 		sb.append( this.getSubPath() );
 		sb.append( "/" );
 		sb.append( skinTone );
@@ -86,26 +109,20 @@ public abstract class IngredientListCellRenderer<E> extends edu.cmu.cs.dennisc.j
 			clsName = this.modifyClsNameIfNecessary( clsName, org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getLifeStageState().getValue(), org.alice.stageide.personresource.PersonResourceComposite.getInstance().getIngredientsComposite().getGenderState().getValue() );
 			String enumConstantName = v.toString();
 
-			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getSkinTone();
-			java.net.URL urlForIcon;
-			if( baseSkinTone != null ) {
-				String path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
-				urlForIcon = org.alice.stageide.personeditor.IngredientImageUtilities.getResource( path );
-				if( urlForIcon != null ) {
-					//pass
-				} else {
-					edu.cmu.cs.dennisc.java.util.logging.Logger.severe( path );
-				}
-			} else {
-				urlForIcon = null;
-			}
-
 			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 
 			rv.setOpaque( isSelected );
 
-			javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.IconUtilities.createImageIcon( urlForIcon );
+			org.lgna.story.resources.sims2.SkinTone baseSkinTone = this.getSkinTone();
+			javax.swing.Icon icon;
+			if( baseSkinTone != null ) {
+				String path = this.getIngredientResourceName( baseSkinTone, clsName, enumConstantName );
+				icon = getIconForPath( path );
+			} else {
+				icon = null;
+			}
+
 			if( icon != null ) {
 				rv.setIcon( icon );
 				rv.setText( "" );

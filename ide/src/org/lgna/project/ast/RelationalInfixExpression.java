@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalInfixExpression extends InfixExpression<RelationalInfixExpression.Operator> {
+public final class RelationalInfixExpression extends InfixExpression<RelationalInfixExpression.Operator> {
 	private static boolean isNumberComparisonDesired( Object leftOperand, Object rightOperand ) {
 		return ( leftOperand instanceof Number ) && ( rightOperand instanceof Number );
 	}

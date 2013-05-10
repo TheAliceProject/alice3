@@ -73,10 +73,39 @@ public final class ColorChooserDialogCoreComposite extends org.lgna.croquet.Oper
 		return IS_GOOD_TO_GO_STATUS;
 	}
 
+	private java.awt.Color preColor;
+
+	private final javax.swing.event.ChangeListener changeListener = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			handleStateChanged();
+		}
+	};
+
+	private void handleStateChanged() {
+		javax.swing.JColorChooser jColorChooser = this.getView().getAwtComponent();
+		java.awt.Color awtColor = jColorChooser.getSelectionModel().getSelectedColor();
+		//todo
+		this.colorState.setValueTransactionlessly( awtColor );
+	}
+
 	@Override
 	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
-		this.getView().setSelectedColor( this.colorState.getValue() );
+		this.preColor = this.colorState.getValue();
+		this.getView().setSelectedColor( preColor );
+
+		javax.swing.JColorChooser jColorChooser = this.getView().getAwtComponent();
+		jColorChooser.getSelectionModel().addChangeListener( this.changeListener );
 		super.handlePreShowDialog( completionStep );
+	}
+
+	@Override
+	protected void handleFinally( org.lgna.croquet.history.CompletionStep<?> step, org.lgna.croquet.components.Dialog dialog ) {
+		javax.swing.JColorChooser jColorChooser = this.getView().getAwtComponent();
+		jColorChooser.getSelectionModel().removeChangeListener( this.changeListener );
+		if( step.isCanceled() ) {
+			this.colorState.setValueTransactionlessly( this.preColor );
+		}
+		super.handleFinally( step, dialog );
 	}
 
 	@Override

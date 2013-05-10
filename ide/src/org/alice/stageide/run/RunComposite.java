@@ -160,8 +160,9 @@ public class RunComposite extends org.lgna.croquet.PlainDialogOperationComposite
 	@Override
 	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
 		org.lgna.croquet.components.Dialog dialog = step.getEphemeralDataFor( org.lgna.croquet.dialog.DialogUtilities.DIALOG_KEY );
-		this.location = dialog.getLocation();
-		this.size = dialog.getSize();
+		java.awt.Rectangle bounds = this.programContext.getProgramImp().getNormalDialogBounds( dialog.getAwtComponent() );
+		this.location = bounds.getLocation();
+		this.size = bounds.getSize();
 		super.handlePostHideDialog( step );
 	}
 

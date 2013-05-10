@@ -57,6 +57,15 @@ public class Comment extends Statement {
 	}
 
 	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			Comment other = (Comment)o;
+			return this.text.valueEquals( other.text );
+		}
+		return false;
+	}
+
+	@Override
 	/* package-private */void appendJava( JavaCodeGenerator generator ) {
 		String[] lines = this.text.getValue().split( "\n" );
 		for( String line : lines ) {

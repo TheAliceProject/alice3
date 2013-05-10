@@ -93,17 +93,86 @@ public abstract class ProgramImp {
 	}
 
 	private double simulationSpeedFactor = 1.0;
+	private javax.swing.Action restartAction;
+
+	private class ToggleFullScreenAction extends javax.swing.AbstractAction {
+		private java.awt.Rectangle prevNormalBounds;
+
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			javax.swing.AbstractButton button = (javax.swing.AbstractButton)e.getSource();
+			javax.swing.ButtonModel buttonModel = button.getModel();
+			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getRootJDialog( button );
+			java.awt.Rectangle bounds;
+			if( buttonModel.isSelected() ) {
+				this.prevNormalBounds = dialog.getBounds();
+				bounds = dialog.getGraphicsConfiguration().getBounds();
+			} else {
+				bounds = this.prevNormalBounds;
+				this.prevNormalBounds = null;
+			}
+			if( bounds != null ) {
+				dialog.setBounds( bounds );
+			}
+		}
+	};
+
+	private final ToggleFullScreenAction toggleFullScreenAction = new ToggleFullScreenAction();
+
+	private static final class FullScreenIcon implements javax.swing.Icon {
+		public int getIconWidth() {
+			return 24;
+		}
+
+		public int getIconHeight() {
+			return 16;
+		}
+
+		private static void paintRect( java.awt.Graphics2D g2, java.awt.Paint fillPaint, java.awt.Paint drawPaint, int x, int y, int width, int height ) {
+			g2.setPaint( fillPaint );
+			g2.fillRect( x, y, width, height );
+			g2.setPaint( drawPaint );
+			g2.drawRect( x, y, width, height );
+		}
+
+		public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+			javax.swing.AbstractButton b = (javax.swing.AbstractButton)c;
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+
+			javax.swing.ButtonModel buttonModel = b.getModel();
+			java.awt.Paint fillPaint;
+			if( buttonModel.isRollover() ) {
+				fillPaint = java.awt.Color.WHITE;
+			} else {
+				fillPaint = java.awt.Color.LIGHT_GRAY;
+			}
+			java.awt.Paint drawPaint = java.awt.Color.DARK_GRAY;
+
+			int W = this.getIconWidth();
+			int H = this.getIconHeight();
+
+			int w = 8;
+			int h = 6;
+
+			g2.translate( x, y );
+			paintRect( g2, fillPaint, drawPaint, 0, 0, w, h );
+			paintRect( g2, fillPaint, drawPaint, 0, H - h, w, h );
+			paintRect( g2, fillPaint, drawPaint, W - w, H - h, w, h );
+			paintRect( g2, fillPaint, drawPaint, W - w, 0, w, h );
+
+			paintRect( g2, java.awt.Color.GRAY, drawPaint, 4, 3, W - 8, H - 6 );
+			g2.translate( -x, -y );
+		}
+	}
 
 	protected ProgramImp( org.lgna.story.SProgram abstraction, edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
 		this.abstraction = abstraction;
 		this.onscreenLookingGlass = onscreenLookingGlass;
+		this.toggleFullScreenAction.putValue( javax.swing.Action.SMALL_ICON, new FullScreenIcon() );
 	}
 
 	protected void handleSpeedChange( double speedFactor ) {
 		this.getAnimator().setSpeedFactor( speedFactor );
 	}
-
-	private javax.swing.Action restartAction;
 
 	public javax.swing.Action getRestartAction() {
 		return this.restartAction;
@@ -111,6 +180,18 @@ public abstract class ProgramImp {
 
 	public void setRestartAction( javax.swing.Action restartAction ) {
 		this.restartAction = restartAction;
+	}
+
+	public javax.swing.Action getToggleFullScreenAction() {
+		return this.toggleFullScreenAction;
+	}
+
+	public java.awt.Rectangle getNormalDialogBounds( javax.swing.JDialog dialog ) {
+		if( this.toggleFullScreenAction.prevNormalBounds != null ) {
+			return this.toggleFullScreenAction.prevNormalBounds;
+		} else {
+			return dialog.getBounds();
+		}
 	}
 
 	private boolean isControlPanelDesired = true;

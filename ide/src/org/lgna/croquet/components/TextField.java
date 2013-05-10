@@ -46,9 +46,13 @@ package org.lgna.croquet.components;
 /**
  * @author Dennis Cosgrove
  */
-public class TextField extends TextComponent<edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField> {
+public class TextField extends AbstractTextField<edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField> {
+	public TextField( org.lgna.croquet.StringState model, org.lgna.croquet.Operation operation ) {
+		super( model, operation );
+	}
+
 	public TextField( org.lgna.croquet.StringState model ) {
-		super( model );
+		this( model, null );
 	}
 
 	@Override
