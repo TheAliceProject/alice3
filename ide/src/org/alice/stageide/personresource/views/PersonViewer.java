@@ -90,18 +90,37 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	}
 
 	private final double ADULT_HEIGHT = 1.7;
+	private final double TEEN_HEIGHT = 1.6;
 	private final double CHILD_HEIGHT = 1.2;
+	private final double TODDLER_HEIGHT = .75;
 
 	public void setCameraToFullView( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
-		this.positionAndOrientCamera( ADULT_HEIGHT, 0, 0.5 );
+		//		this.positionAndOrientCamera( ADULT_HEIGHT, 0, 0.5 );
+		double height;
+		if( ( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) || ( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) ) {
+			height = ADULT_HEIGHT;
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TODDLER ) {
+			height = ADULT_HEIGHT;
+		}
+		else {
+			height = ADULT_HEIGHT;
+		}
+		this.positionAndOrientCamera( height, 0, 0.5 );
 	}
 
 	public void setCameraToCloseUp( org.lgna.story.resources.sims2.LifeStage lifeStage ) {
 		double height;
 		if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ADULT ) {
 			height = ADULT_HEIGHT;
-		} else {
+		} else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			height = TEEN_HEIGHT;
+		}
+		else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.CHILD ) {
 			height = CHILD_HEIGHT;
+		}
+		else {
+			height = TODDLER_HEIGHT;
 		}
 		this.positionAndOrientCamera( height, 1, 0.5 );
 	}
