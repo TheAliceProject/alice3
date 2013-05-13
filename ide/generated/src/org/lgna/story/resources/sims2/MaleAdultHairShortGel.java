@@ -22,7 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
-public enum MaleAdultHairShortGel implements MaleAdultHair {
+public enum MaleAdultHairShortGel implements MaleAdultHair, MaleElderHair {
 	BROWN,
 	BLACK,
 	GREY,

@@ -31,6 +31,44 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 	}
 
 	private BottomPieceManager() {
+		this.add( FemaleAdultBottomPiece.class, 
+				FemaleAdultBottomPieceBaggyPants.class,
+				FemaleAdultBottomPieceCapriSneaks.class,
+				FemaleAdultBottomPieceCargoPants.class,
+				FemaleAdultBottomPieceFlairedPantsSandals.class,
+				FemaleAdultBottomPieceMomTailored.class,
+				FemaleAdultBottomPieceNaked.class,
+				FemaleAdultBottomPiecePantsCowboyBoots.class,
+				FemaleAdultBottomPieceShorts.class,
+				FemaleAdultBottomPieceShortShorts.class,
+				FemaleAdultBottomPieceShortSkirtBoots.class,
+				FemaleAdultBottomPieceShortSkirtShoes.class,
+				FemaleAdultBottomPieceSkirtTight.class,
+				FemaleAdultBottomPieceSlacksHeels.class,
+				FemaleAdultBottomPieceSlinkySkirtBoots.class
+				);
+		this.add( MaleAdultBottomPiece.class, 
+				MaleAdultBottomPieceCargoPants.class,
+				MaleAdultBottomPieceCowboyJeans.class,
+				MaleAdultBottomPieceLongShorts.class,
+				MaleAdultBottomPieceNaked.class,
+				MaleAdultBottomPiecePants.class,
+				MaleAdultBottomPieceWillPants.class
+				);
+		this.add( FemaleElderBottomPiece.class, 
+				FemaleElderBottomPieceNaked.class,
+				FemaleElderBottomPiecePantsCowboyBoots.class,
+				FemaleElderBottomPieceSlacks.class,
+				FemaleElderBottomPieceSlacksHeels.class,
+				FemaleElderBottomPieceSlinkySkirtBoots.class
+				);
+		this.add( MaleElderBottomPiece.class, 
+				MaleElderBottomPieceCowboyJeans.class,
+				MaleElderBottomPieceLongShorts.class,
+				MaleElderBottomPieceNaked.class,
+				MaleElderBottomPiecePantsSocksShoes.class,
+				MaleElderBottomPieceShorts.class
+				);
 		this.add( FemaleTeenBottomPiece.class, 
 				FemaleTeenBottomPieceBaggyPants.class,
 				FemaleTeenBottomPieceCargoPants.class,
@@ -72,30 +110,6 @@ public class BottomPieceManager extends IngredientManager<BottomPiece> {
 				ChildBottomPieceBaggyPants.class,
 				ChildBottomPieceNaked.class,
 				ChildBottomPiecePuffyLeg.class
-				);
-		this.add( FemaleAdultBottomPiece.class, 
-				FemaleAdultBottomPieceBaggyPants.class,
-				FemaleAdultBottomPieceCapriSneaks.class,
-				FemaleAdultBottomPieceCargoPants.class,
-				FemaleAdultBottomPieceFlairedPantsSandals.class,
-				FemaleAdultBottomPieceMomTailored.class,
-				FemaleAdultBottomPieceNaked.class,
-				FemaleAdultBottomPiecePantsCowboyBoots.class,
-				FemaleAdultBottomPieceShorts.class,
-				FemaleAdultBottomPieceShortShorts.class,
-				FemaleAdultBottomPieceShortSkirtBoots.class,
-				FemaleAdultBottomPieceShortSkirtShoes.class,
-				FemaleAdultBottomPieceSkirtTight.class,
-				FemaleAdultBottomPieceSlacksHeels.class,
-				FemaleAdultBottomPieceSlinkySkirtBoots.class
-				);
-		this.add( MaleAdultBottomPiece.class, 
-				MaleAdultBottomPieceCargoPants.class,
-				MaleAdultBottomPieceCowboyJeans.class,
-				MaleAdultBottomPieceLongShorts.class,
-				MaleAdultBottomPieceNaked.class,
-				MaleAdultBottomPiecePants.class,
-				MaleAdultBottomPieceWillPants.class
 				);
 	}
 

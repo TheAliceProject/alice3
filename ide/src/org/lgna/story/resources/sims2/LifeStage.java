@@ -73,7 +73,7 @@ public enum LifeStage {
 	ELDER {
 		@Override
 		public PersonResource createResource( Gender gender, org.lgna.story.Color skinColor, EyeColor eyeColor, Hair hair, Number obseityLevel, Outfit outfit, Face face ) {
-			return null;
+			return new ElderPersonResource( gender, skinColor, eyeColor, hair, obseityLevel, outfit, face );
 		}
 	};
 
@@ -86,6 +86,8 @@ public enum LifeStage {
 	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends BottomPiece>> mapLifeStageAndGenderToBottomPiece = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	private static final edu.cmu.cs.dennisc.map.MapToMap<LifeStage, Gender, Class<? extends Hair>> mapLifeStageAndGenderToHair = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
 	static {
+		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ELDER, Gender.MALE, MaleElderFullBodyOutfit.class );
+		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ELDER, Gender.FEMALE, FemaleElderFullBodyOutfit.class );
 		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class );
 		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class );
 		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.TEEN, Gender.MALE, MaleTeenFullBodyOutfit.class );
@@ -95,6 +97,8 @@ public enum LifeStage {
 		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.TODDLER, Gender.MALE, MaleToddlerFullBodyOutfit.class );
 		mapLifeStageAndGenderToFullBodyOutfit.put( LifeStage.TODDLER, Gender.FEMALE, FemaleToddlerFullBodyOutfit.class );
 
+		mapLifeStageAndGenderToTopPiece.put( LifeStage.ELDER, Gender.MALE, MaleElderTopPiece.class );
+		mapLifeStageAndGenderToTopPiece.put( LifeStage.ELDER, Gender.FEMALE, FemaleElderTopPiece.class );
 		mapLifeStageAndGenderToTopPiece.put( LifeStage.ADULT, Gender.MALE, MaleAdultTopPiece.class );
 		mapLifeStageAndGenderToTopPiece.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultTopPiece.class );
 		mapLifeStageAndGenderToTopPiece.put( LifeStage.TEEN, Gender.MALE, MaleTeenTopPiece.class );
@@ -102,6 +106,8 @@ public enum LifeStage {
 		mapLifeStageAndGenderToTopPiece.put( LifeStage.CHILD, Gender.MALE, MaleChildTopPiece.class );
 		mapLifeStageAndGenderToTopPiece.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildTopPiece.class );
 
+		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ELDER, Gender.MALE, MaleElderBottomPiece.class );
+		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ELDER, Gender.FEMALE, FemaleElderBottomPiece.class );
 		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ADULT, Gender.MALE, MaleAdultBottomPiece.class );
 		mapLifeStageAndGenderToBottomPiece.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultBottomPiece.class );
 		mapLifeStageAndGenderToBottomPiece.put( LifeStage.TEEN, Gender.MALE, MaleTeenBottomPiece.class );
@@ -109,6 +115,8 @@ public enum LifeStage {
 		mapLifeStageAndGenderToBottomPiece.put( LifeStage.CHILD, Gender.MALE, MaleChildBottomPiece.class );
 		mapLifeStageAndGenderToBottomPiece.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildBottomPiece.class );
 
+		mapLifeStageAndGenderToHair.put( LifeStage.ELDER, Gender.MALE, MaleElderHair.class );
+		mapLifeStageAndGenderToHair.put( LifeStage.ELDER, Gender.FEMALE, FemaleElderHair.class );
 		mapLifeStageAndGenderToHair.put( LifeStage.ADULT, Gender.MALE, MaleAdultHair.class );
 		mapLifeStageAndGenderToHair.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultHair.class );
 		mapLifeStageAndGenderToHair.put( LifeStage.TEEN, Gender.MALE, MaleTeenHair.class );

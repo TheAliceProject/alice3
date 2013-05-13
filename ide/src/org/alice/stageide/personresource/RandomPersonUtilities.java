@@ -55,7 +55,7 @@ public class RandomPersonUtilities {
 		if( lifeStage != null ) {
 			//pass
 		} else {
-			org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.CHILD };
+			org.lgna.story.resources.sims2.LifeStage[] potentialLifeStages = { org.lgna.story.resources.sims2.LifeStage.ELDER, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.TEEN, org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.TODDLER };
 			lifeStage = org.lgna.common.RandomUtilities.getRandomValueFrom( potentialLifeStages );
 		}
 		org.lgna.story.resources.sims2.Gender gender = org.lgna.story.resources.sims2.Gender.getRandom();
