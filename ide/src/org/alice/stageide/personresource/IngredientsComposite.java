@@ -66,7 +66,6 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 		}
 	}
 
-	//Test comment
 	private final org.lgna.croquet.BoundedDoubleState obesityLevelState = this.createBoundedDoubleState( this.createKey( "obesityLevelState" ), new BoundedDoubleDetails() );
 	private final org.lgna.croquet.Operation setToInShapeOperation = this.createActionOperation( this.createKey( "obesityLevelState(0.0)" ), new SetObesityLevelAction( 0.0 ) );
 	private final org.lgna.croquet.Operation setToOutOfShapeOperation = this.createActionOperation( this.createKey( "obesityLevelState(1.0)" ), new SetObesityLevelAction( 1.0 ) );
