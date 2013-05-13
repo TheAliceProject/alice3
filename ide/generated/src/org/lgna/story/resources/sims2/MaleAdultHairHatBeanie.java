@@ -22,7 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
-public enum MaleAdultHairHatBeanie implements MaleAdultHair {
+public enum MaleAdultHairHatBeanie implements MaleAdultHair, MaleElderHair {
 	BLACK_HAT;
 
 	public Boolean hasHair()
