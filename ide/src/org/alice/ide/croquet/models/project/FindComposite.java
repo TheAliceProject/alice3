@@ -42,7 +42,10 @@
  */
 package org.alice.ide.croquet.models.project;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.alice.ide.IDE;
@@ -61,9 +64,11 @@ import org.lgna.croquet.StringState;
 import org.lgna.croquet.TreeSelectionState;
 import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.project.ast.UserType;
+import org.lgna.story.ImplementationAccessor;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
@@ -73,6 +78,7 @@ public class FindComposite extends FrameComposite<FindView> {
 	private FindContentManager manager = new FindContentManager();
 	private StringState searchState = createStringState( createKey( "searchState" ) );
 	private BooleanState shouldINavigate = createBooleanState( createKey( "shouldNav" ), true );
+	private boolean isActive;
 	@SuppressWarnings( "rawtypes" )
 	ItemCodec<SearchObject> codec1 = new ItemCodec<SearchObject>() {
 
@@ -91,23 +97,6 @@ public class FindComposite extends FrameComposite<FindView> {
 			sb.append( value );
 		}
 	};
-	//	ItemCodec<Expression> codec2 = new ItemCodec<Expression>() {
-	//
-	//		public Class<Expression> getValueClass() {
-	//			return Expression.class;
-	//		}
-	//
-	//		public Expression decodeValue( BinaryDecoder binaryDecoder ) {
-	//			return null;
-	//		}
-	//
-	//		public void encodeValue( BinaryEncoder binaryEncoder, Expression value ) {
-	//		}
-	//
-	//		public void appendRepresentation( StringBuilder sb, Expression value ) {
-	//			sb.append( value );
-	//		}
-	//	};
 	@SuppressWarnings( "rawtypes" )
 	private RefreshableListData<SearchObject> data = new RefreshableListData<SearchObject>( codec1 ) {
 
@@ -117,13 +106,6 @@ public class FindComposite extends FrameComposite<FindView> {
 			return manager.getResultsForString( searchState.getValue() );
 		}
 	};
-	//	private RefreshableListData<Expression> referencesData = new RefreshableListData<Expression>( codec2 ) {
-	//
-	//		@Override
-	//		protected List<Expression> createValues() {
-	//			return searchResults.getValue() != null ? searchResults.getValue().getReferences() : Collections.newArrayList();
-	//		}
-	//	};
 
 	ValueListener<String> searchStateListener = new ValueListener<String>() {
 
@@ -132,8 +114,7 @@ public class FindComposite extends FrameComposite<FindView> {
 
 		public void changed( State<String> state, String prevValue, String nextValue, boolean isAdjusting ) {
 			data.refresh();
-			//			referencesData.refresh();
-			referenceTree = searchResults.getValue() != null ? searchResults.getValue().getTree() : emptyTree;
+			referenceTree.refreshWith( searchResults.getValue() );
 			if( data.getItemCount() == 1 ) {
 				searchResults.setSelectedIndex( 0 );
 			}
@@ -142,10 +123,7 @@ public class FindComposite extends FrameComposite<FindView> {
 	@SuppressWarnings( "rawtypes" )
 	private ListSelectionState<SearchObject> searchResults = createListSelectionState( createKey( "searchResultsList" ),
 			data, -1 );
-	//	private ListSelectionState<Expression> referenceResults = createListSelectionState( createKey( "searchResultsList" ),
-	//			referencesData, -1 );
-	private TreeSelectionState<SearchObjectNode> emptyTree = new FindReferencesTreeState( SearchObject.getEmptySearchObject() );
-	private TreeSelectionState referenceTree = emptyTree;
+	private FindReferencesTreeState referenceTree = new FindReferencesTreeState( SearchObject.getEmptySearchObject() );
 
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
 		public void projectChanged() {
@@ -171,7 +149,8 @@ public class FindComposite extends FrameComposite<FindView> {
 
 	private void refresh() {
 		if( this.isActive ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.outln( "todo: refresh find composite" );
+			manager.refresh();
+			data.refresh();
 		}
 	}
 
@@ -184,21 +163,9 @@ public class FindComposite extends FrameComposite<FindView> {
 			}
 
 			public void changed( State<SearchObject> state, SearchObject prevValue, SearchObject nextValue, boolean isAdjusting ) {
-				//				referencesData.refresh();
+				referenceTree.refreshWith( searchResults.getValue() );
 			}
 		} );
-		//		referenceResults.addValueListener( new ValueListener<Expression>() {
-		//
-		//			public void changing( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
-		//			}
-		//
-		//			public void changed( State<Expression> state, Expression prevValue, Expression nextValue, boolean isAdjusting ) {
-		//				if( shouldINavigate.getValue() && ( nextValue != null ) ) {
-		//					IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( nextValue.getFirstAncestorAssignableTo( UserMethod.class ) ) );
-		//					searchResults.getValue().stencilHighlightForReference( nextValue );
-		//				}
-		//			}
-		//		} );
 	}
 
 	@Override
@@ -206,13 +173,15 @@ public class FindComposite extends FrameComposite<FindView> {
 		return new FindView( this );
 	}
 
-	private boolean isActive;
-
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
 		this.isActive = true;
-		manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType() );
+		if( !manager.isInitialized() ) {
+			manager.initialize( (UserType)IDE.getActiveInstance().getProgramType().fields.get( 0 ).getValueType() );
+		} else {
+			refresh();
+		}
 	}
 
 	@Override
@@ -234,62 +203,60 @@ public class FindComposite extends FrameComposite<FindView> {
 		return this.referenceTree;
 	}
 
-	//	private KeyListener keyListener = new KeyListener() {
-	//
-	//		ListSelectionState selected = searchResults;
-	//		Map<SearchObject<?>, Integer> map = Collections.newHashMap();
-	//
-	//		public void keyTyped( KeyEvent e ) {
-	//		}
-	//
-	//		public void keyReleased( KeyEvent e ) {
-	//		}
-	//
-	//		public void keyPressed( KeyEvent e ) {
-	//			if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.UP ) {
-	//				if( selected == searchResults ) {
-	//					if( searchResults.getValue() != null ) {
-	//						searchResults.setSelectedIndex( searchResults.getSelectedIndex() - 1 );
-	//						if( searchResults.getValue() == null ) {
-	//							getView().enableLeftAndRight();
-	//						}
-	//					}
-	//				} else if( selected == referenceResults ) {
-	//					if( referenceResults.getSelectedIndex() > 0 ) {
-	//						referenceResults.setSelectedIndex( referenceResults.getSelectedIndex() - 1 );
-	//					}
-	//				}
-	//			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.DOWN ) {
-	//				if( selected == searchResults ) {
-	//					if( searchResults.getItemCount() != ( searchResults.getSelectedIndex() + 1 ) ) {
-	//						getView().disableLeftAndRight();
-	//						searchResults.setSelectedIndex( searchResults.getSelectedIndex() + 1 );
-	//					}
-	//				} else if( selected == referenceResults ) {
-	//					if( referenceResults.getItemCount() != ( referenceResults.getSelectedIndex() + 1 ) ) {
-	//						referenceResults.setSelectedIndex( referenceResults.getSelectedIndex() + 1 );
-	//					}
-	//				}
-	//			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.LEFT ) {
-	//				selected = searchResults;
-	//				map.put( searchResults.getValue(), referenceResults.getSelectedIndex() == -1 ? 0 : referenceResults.getSelectedIndex() );
-	//				referenceResults.setSelectedIndex( -1 );
-	//			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.RIGHT ) {
-	//				if( referenceResults.getItemCount() > 0 ) {
-	//					selected = referenceResults;
-	//					if( ( referenceResults.getValue() == null ) && ( referenceResults.getItemCount() > 0 ) ) {
-	//						if( map.get( searchResults.getValue() ) != null ) {
-	//							referenceResults.setSelectedIndex( map.get( searchResults.getValue() ) );
-	//						} else {
-	//							referenceResults.setSelectedIndex( 0 );
-	//						}
-	//					}
-	//				}
-	//			}
-	//		}
-	//	};
-	//
-	//	public KeyListener getKeyListener() {
-	//		return this.keyListener;
-	//	}
+	private KeyListener keyListener = new KeyListener() {
+
+		State selected = searchResults;
+		Map<SearchObject<?>, SearchObjectNode> map = Collections.newHashMap();
+
+		public void keyTyped( KeyEvent e ) {
+		}
+
+		public void keyReleased( KeyEvent e ) {
+		}
+
+		public void keyPressed( KeyEvent e ) {
+			if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.UP ) {
+				if( selected == searchResults ) {
+					if( searchResults.getValue() != null ) {
+						searchResults.setSelectedIndex( searchResults.getSelectedIndex() - 1 );
+						if( searchResults.getValue() == null ) {
+							getView().enableLeftAndRight();
+						}
+					}
+				} else if( selected == referenceTree ) {
+					referenceTree.moveSelectedUpOne();
+				}
+			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.DOWN ) {
+				if( selected == searchResults ) {
+					if( searchResults.getItemCount() != ( searchResults.getSelectedIndex() + 1 ) ) {
+						getView().disableLeftAndRight();
+						searchResults.setSelectedIndex( searchResults.getSelectedIndex() + 1 );
+					}
+				} else if( selected == referenceTree ) {
+					referenceTree.moveSelectedDownOne();
+				}
+			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.LEFT ) {
+				if( selected != searchResults ) {
+					selected = searchResults;
+					map.put( searchResults.getValue(), referenceTree.getValue() );
+					referenceTree.setValueTransactionlessly( null );
+				}
+			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.RIGHT ) {
+				if( selected != referenceTree ) {
+					if( referenceTree.isEmpty() ) {
+						selected = referenceTree;
+						if( map.get( searchResults.getValue() ) != null ) {
+							referenceTree.setValueTransactionlessly( map.get( searchResults.getValue() ) );
+						} else {
+							referenceTree.setValueTransactionlessly( referenceTree.getTopValue() );
+						}
+					}
+				}
+			}
+		}
+	};
+
+	public KeyListener getKeyListener() {
+		return this.keyListener;
+	}
 }

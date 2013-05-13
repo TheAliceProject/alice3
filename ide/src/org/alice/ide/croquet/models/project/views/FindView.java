@@ -85,6 +85,7 @@ public class FindView extends BorderPanel {
 		referencesTreeList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
 		panel.addComponent( new ScrollPane( searchResultsList ) );
 		searchResultsList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchResultListCellRenderer() );
+		//		referencesTreeList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchReferencesTreeCellRenderer() );
 		//		resultReferencesList.setCellRenderer( new ListCellRenderer<Expression>() {
 		//
 		//			public Component getListCellRendererComponent( JList<? extends Expression> list, Expression value, int index, boolean isSelected, boolean cellHasFocus ) {
@@ -94,7 +95,7 @@ public class FindView extends BorderPanel {
 		//		} );
 		panel.addComponent( new ScrollPane( referencesTreeList ) );
 		this.addCenterComponent( panel );
-		//		searchBox.addKeyListener( composite.getKeyListener() );
+		searchBox.addKeyListener( composite.getKeyListener() );
 		searchResultsList.getAwtComponent().setFocusable( false );
 		referencesTreeList.getAwtComponent().setFocusable( false );
 	}
@@ -108,5 +109,4 @@ public class FindView extends BorderPanel {
 		inputMap.put( KeyStroke.getKeyStroke( "LEFT" ), "NONE" );
 		inputMap.put( KeyStroke.getKeyStroke( "RIGHT" ), "NONE" );
 	}
-
 }

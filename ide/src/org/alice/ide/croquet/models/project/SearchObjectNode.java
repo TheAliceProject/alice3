@@ -58,21 +58,15 @@ public class SearchObjectNode {
 	private Expression exValue;
 	private SearchObjectNode parent;
 	private List<SearchObjectNode> children = Collections.newArrayList();
-	private boolean isLeaf;
 
 	public SearchObjectNode( Object reference, SearchObjectNode parent ) {
 		this.parent = parent;
 		if( reference != null ) {
 			if( reference instanceof Expression ) {
 				exValue = (Expression)reference;
-				isLeaf = true;
-			} else {
-				assert reference instanceof AbstractDeclaration;
+			} else if( reference instanceof AbstractDeclaration ) {
 				decValue = (AbstractDeclaration)reference;
-				isLeaf = false;
 			}
-		} else {
-			isLeaf = false;
 		}
 	}
 
@@ -85,25 +79,52 @@ public class SearchObjectNode {
 	}
 
 	public Object getValue() {
-		Object value = isLeaf ? exValue : decValue;
-		assert value != null;
-		return value;
+		if( decValue != null ) {
+			return decValue;
+		} else if( exValue != null ) {
+			return exValue;
+		}
+		return null;
 	}
 
 	public boolean getIsLeaf() {
-		return isLeaf;
+		return this.children.size() == 0;
 	}
 
 	public boolean childrenContains( Object reference ) {
-		for( SearchObjectNode child : children ) {
-			if( child.getValue() == reference ) {
-				return true;
-			}
-		}
-		return false;
+		return getChildForReference( reference ) != null;
 	}
 
 	public void addChild( SearchObjectNode newChildNode ) {
 		this.children.add( newChildNode );
+	}
+
+	public void removeAllChildren() {
+		this.children.clear();
+	}
+
+	public SearchObjectNode getChildForReference( Object reference ) {
+		for( SearchObjectNode child : children ) {
+			if( child.getValue().equals( reference ) ) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	public int getLocationAmongstSiblings() {
+		return this.getParent().getChildren().indexOf( this );
+	}
+
+	public SearchObjectNode getYoungerSibling() {
+		int location = this.getLocationAmongstSiblings();
+		assert location < ( this.parent.children.size() - 1 );
+		return this.getParent().children.get( location + 1 );
+	}
+
+	public SearchObjectNode getOlderSibling() {
+		int location = this.getLocationAmongstSiblings();
+		assert location > 0;
+		return this.getParent().children.get( location - 1 );
 	}
 }

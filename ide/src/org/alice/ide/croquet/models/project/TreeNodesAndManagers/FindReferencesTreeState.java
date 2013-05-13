@@ -42,11 +42,15 @@
  */
 package org.alice.ide.croquet.models.project.TreeNodesAndManagers;
 
+import java.util.List;
+
 import javax.swing.Icon;
 
 import org.alice.ide.croquet.models.project.SearchObjectNode;
 import org.lgna.croquet.CustomTreeSelectionState;
 import org.lgna.croquet.ItemCodec;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -56,16 +60,10 @@ import edu.cmu.cs.dennisc.codec.BinaryEncoder;
  */
 public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObjectNode> {
 
-	private SearchObjectNode root;
+	private static SearchObjectNode root = new SearchObjectNode( null, null );
 
 	public FindReferencesTreeState( SearchObject<?> searchObject ) {
-		super( null, null, searchObject.getRoot(), codec );
-		this.root = searchObject.getRoot();
-		for( Object reference : searchObject.getReferences() ) {
-			if( !root.childrenContains( reference ) ) {
-				root.addChild( new SearchObjectNode( reference, root ) );
-			}
-		}
+		super( null, null, root, codec );
 	}
 
 	@Override
@@ -76,10 +74,6 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 	@Override
 	protected Icon getIconForNode( SearchObjectNode node ) {
 		return null;
-	}
-
-	@Override
-	public void refresh( SearchObjectNode node ) {
 	}
 
 	private static ItemCodec<SearchObjectNode> codec = new ItemCodec<SearchObjectNode>() {
@@ -125,5 +119,66 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 	@Override
 	public boolean isLeaf( SearchObjectNode node ) {
 		return node.getIsLeaf();
+	}
+
+	public void refreshWith( SearchObject<?> searchObject ) {
+		this.setValueTransactionlessly( null );
+		root.removeAllChildren();
+		if( searchObject != null ) {
+			List<Expression> references = searchObject.getReferences();
+			for( Expression reference : references ) {
+				SearchObjectNode userMethodNode = root.getChildForReference( reference.getFirstAncestorAssignableTo( UserMethod.class ) );
+				if( userMethodNode == null ) {
+					UserMethod userMethod = reference.getFirstAncestorAssignableTo( UserMethod.class );
+					SearchObjectNode newChildNode = new SearchObjectNode( userMethod, root );
+					root.addChild( newChildNode );
+					newChildNode.addChild( new SearchObjectNode( reference, newChildNode ) );
+				} else {
+					userMethodNode.addChild( new SearchObjectNode( reference, userMethodNode ) );
+				}
+			}
+		}
+		refreshAll();
+	}
+
+	public void moveSelectedUpOne() {
+		SearchObjectNode selected = this.getValue();
+		if( selected.getParent() == root ) {
+			if( selected.getLocationAmongstSiblings() > 0 ) {
+				SearchObjectNode olderSibling = selected.getOlderSibling();
+				olderSibling.getChildren().get( olderSibling.getChildren().size() );
+			} else {
+				this.setValueTransactionlessly( null );
+			}
+		} else {
+			if( selected.getLocationAmongstSiblings() > 0 ) {
+				this.setValueTransactionlessly( selected.getOlderSibling() );
+			} else {
+				this.setValueTransactionlessly( selected.getParent() );
+			}
+		}
+	}
+
+	public void moveSelectedDownOne() {
+		SearchObjectNode selected = this.getValue();
+		if( selected == root ) {
+			this.setValueTransactionlessly( root.getChildren().get( 0 ) );
+		} else if( selected.getParent() == root ) {
+			this.setValueTransactionlessly( selected.getChildren().get( 0 ) );
+		} else {
+			if( selected.getLocationAmongstSiblings() < ( selected.getParent().getChildren().size() - 1 ) ) {
+				this.setValueTransactionlessly( selected.getYoungerSibling() );
+			} else {
+				this.setValueTransactionlessly( selected.getParent().getYoungerSibling() );
+			}
+		}
+	}
+
+	public boolean isEmpty() {
+		return root.getChildren().size() > 0;
+	}
+
+	public SearchObjectNode getTopValue() {
+		return root.getChildren().get( 0 );
 	}
 }

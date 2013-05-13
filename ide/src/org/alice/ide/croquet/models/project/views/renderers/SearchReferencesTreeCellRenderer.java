@@ -42,21 +42,35 @@
  */
 package org.alice.ide.croquet.models.project.views.renderers;
 
-import org.lgna.project.ast.AbstractDeclaration;
+import javax.swing.JLabel;
+import javax.swing.JTree;
+
+import org.alice.ide.croquet.models.project.SearchObjectNode;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class SearchResultListCellRenderer<T extends AbstractDeclaration> extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer<org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject<T>> {
+public class SearchReferencesTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<SearchObjectNode> {
+
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject<T> value, int index, boolean isSelected, boolean cellHasFocus ) {
-		StringBuilder sb = new StringBuilder();
-		sb.append( value.getName() );
-		sb.append( " (" );
-		sb.append( value.getReferences().size() );
-		sb.append( ")" );
-		rv.setText( sb.toString() );
-		rv.setIcon( value.getIcon() );
+	protected JLabel updateListCellRendererComponent( JLabel rv, JTree tree, SearchObjectNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		if( value.getParent() != null ) {
+			if( value.getIsLeaf() ) {
+				Object astValue = value.getValue();
+				assert astValue != null;
+				assert astValue instanceof Expression : astValue.getClass();
+				rv.removeAll();
+				rv.add( PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent() );
+			} else {
+				Object astValue = value.getValue();
+				assert astValue instanceof UserMethod;
+				UserMethod uMethod = (UserMethod)astValue;
+				rv.setText( uMethod.name.getValue() );
+			}
+		}
 		return rv;
 	}
 }
