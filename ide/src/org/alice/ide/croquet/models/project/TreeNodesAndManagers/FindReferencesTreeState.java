@@ -81,7 +81,6 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 
 	@Override
 	public SearchObjectNode getParent( SearchObjectNode node ) {
-		super.getParent( node );
 		return node.getParent();
 	}
 

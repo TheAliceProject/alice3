@@ -68,7 +68,7 @@ public class SearchReferencesTreeCellRenderer extends edu.cmu.cs.dennisc.javax.s
 				Object astValue = value.getValue();
 				assert astValue instanceof UserMethod;
 				UserMethod uMethod = (UserMethod)astValue;
-				rv.setText( uMethod.name.getValue() );
+				rv.setText( uMethod.name.getValue() + " (" + value.getChildren().size() + ")" );
 			}
 		}
 		return rv;
