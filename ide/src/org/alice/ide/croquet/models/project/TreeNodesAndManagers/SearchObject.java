@@ -69,7 +69,6 @@ public class SearchObject<T extends AbstractDeclaration> {
 	private Class<T> cls;
 	private T searchObject;
 	private List<Expression> references = Collections.newArrayList();
-	private FindReferencesTreeState tree;
 
 	@SuppressWarnings( "unchecked" )
 	public static final List<Class<? extends AbstractDeclaration>> clsList =
@@ -107,11 +106,6 @@ public class SearchObject<T extends AbstractDeclaration> {
 
 	public List<Expression> getReferences() {
 		return references;
-	}
-
-	public FindReferencesTreeState getTree() {
-		this.tree = new FindReferencesTreeState( this );
-		return this.tree;
 	}
 
 	public Icon getIcon() {

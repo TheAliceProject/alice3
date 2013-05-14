@@ -46,11 +46,14 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.alice.ide.croquet.models.project.FindComposite;
 import org.alice.ide.croquet.models.project.SearchObjectNode;
 import org.lgna.croquet.CustomTreeSelectionState;
 import org.lgna.croquet.ItemCodec;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
+
+import com.sun.tools.javac.util.Pair;
 
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
@@ -62,8 +65,8 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 
 	private static SearchObjectNode root = new SearchObjectNode( null, null );
 
-	public FindReferencesTreeState( SearchObject<?> searchObject ) {
-		super( null, null, root, codec );
+	public FindReferencesTreeState() {
+		super( FindComposite.FIND_COMPOSITE_GROUP, null, root, codec );
 	}
 
 	@Override
@@ -74,6 +77,12 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 	@Override
 	protected Icon getIconForNode( SearchObjectNode node ) {
 		return null;
+	}
+
+	@Override
+	public SearchObjectNode getParent( SearchObjectNode node ) {
+		super.getParent( node );
+		return node.getParent();
 	}
 
 	private static ItemCodec<SearchObjectNode> codec = new ItemCodec<SearchObjectNode>() {
@@ -146,9 +155,7 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 		if( selected.getParent() == root ) {
 			if( selected.getLocationAmongstSiblings() > 0 ) {
 				SearchObjectNode olderSibling = selected.getOlderSibling();
-				olderSibling.getChildren().get( olderSibling.getChildren().size() );
-			} else {
-				this.setValueTransactionlessly( null );
+				setValueTransactionlessly( olderSibling.getChildren().get( olderSibling.getChildren().size() - 1 ) );
 			}
 		} else {
 			if( selected.getLocationAmongstSiblings() > 0 ) {
@@ -161,16 +168,22 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 
 	public void moveSelectedDownOne() {
 		SearchObjectNode selected = this.getValue();
-		if( selected == root ) {
-			this.setValueTransactionlessly( root.getChildren().get( 0 ) );
-		} else if( selected.getParent() == root ) {
+		if( selected.getParent() == root ) {
 			this.setValueTransactionlessly( selected.getChildren().get( 0 ) );
 		} else {
 			if( selected.getLocationAmongstSiblings() < ( selected.getParent().getChildren().size() - 1 ) ) {
 				this.setValueTransactionlessly( selected.getYoungerSibling() );
-			} else {
+			} else if( selected.getParent().getLocationAmongstSiblings() < ( selected.getParent().getParent().getChildren().size() - 1 ) ) {
 				this.setValueTransactionlessly( selected.getParent().getYoungerSibling() );
 			}
+		}
+	}
+
+	public void selectAtCoordinates( int a, int b ) {
+		if( b == -1 ) {
+			this.setValueTransactionlessly( root.getChildren().get( a ) );
+		} else {
+			this.setValueTransactionlessly( root.getChildren().get( a ).getChildren().get( b ) );
 		}
 	}
 
@@ -180,5 +193,19 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 
 	public SearchObjectNode getTopValue() {
 		return root.getChildren().get( 0 );
+	}
+
+	public Pair<Integer, Integer> getSelectedCoordinates() {
+		int a;
+		int b;
+		SearchObjectNode value = this.getValue();
+		if( value.getParent() == root ) {
+			b = -1;
+			a = value.getLocationAmongstSiblings();
+		} else {
+			b = value.getLocationAmongstSiblings();
+			a = value.getParent().getLocationAmongstSiblings();
+		}
+		return new Pair<Integer, Integer>( a, b );
 	}
 }

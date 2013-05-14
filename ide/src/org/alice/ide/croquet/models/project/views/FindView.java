@@ -68,6 +68,7 @@ public class FindView extends BorderPanel {
 	private InputMap inputMap;
 	private final Object left;
 	private final Object right;
+	private Tree<SearchObjectNode> referencesTreeList;
 
 	public FindView( FindComposite composite ) {
 		super( composite );
@@ -79,13 +80,13 @@ public class FindView extends BorderPanel {
 		GridPanel panel = GridPanel.createGridPane( 1, 2 );
 		panel.setPreferredSize( GoldenRatio.createWiderSizeFromHeight( 250 ) );
 		List<SearchObject> searchResultsList = composite.getSearchResults().createList();
-		Tree<SearchObjectNode> referencesTreeList = composite.getReferenceResults().createTree();
+		referencesTreeList = composite.getReferenceResults().createTree();
 		referencesTreeList.setRootVisible( false );
 		searchResultsList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
 		referencesTreeList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
 		panel.addComponent( new ScrollPane( searchResultsList ) );
 		searchResultsList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchResultListCellRenderer() );
-		//		referencesTreeList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchReferencesTreeCellRenderer() );
+		referencesTreeList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchReferencesTreeCellRenderer() );
 		//		resultReferencesList.setCellRenderer( new ListCellRenderer<Expression>() {
 		//
 		//			public Component getListCellRendererComponent( JList<? extends Expression> list, Expression value, int index, boolean isSelected, boolean cellHasFocus ) {
@@ -108,5 +109,9 @@ public class FindView extends BorderPanel {
 	public void disableLeftAndRight() {
 		inputMap.put( KeyStroke.getKeyStroke( "LEFT" ), "NONE" );
 		inputMap.put( KeyStroke.getKeyStroke( "RIGHT" ), "NONE" );
+	}
+
+	public Tree<SearchObjectNode> getTree() {
+		return referencesTreeList;
 	}
 }

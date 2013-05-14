@@ -66,6 +66,8 @@ import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.ImplementationAccessor;
 
+import com.sun.tools.javac.util.Pair;
+
 import edu.cmu.cs.dennisc.codec.BinaryDecoder;
 import edu.cmu.cs.dennisc.codec.BinaryEncoder;
 import edu.cmu.cs.dennisc.java.util.Collections;
@@ -76,6 +78,7 @@ import edu.cmu.cs.dennisc.java.util.Collections;
 public class FindComposite extends FrameComposite<FindView> {
 
 	private FindContentManager manager = new FindContentManager();
+	public static Group FIND_COMPOSITE_GROUP = Group.getInstance( java.util.UUID.fromString( "609c0bf5-73c3-4987-a2b5-8225c19f7886" ) );
 	private StringState searchState = createStringState( createKey( "searchState" ) );
 	private BooleanState shouldINavigate = createBooleanState( createKey( "shouldNav" ), true );
 	private boolean isActive;
@@ -123,7 +126,7 @@ public class FindComposite extends FrameComposite<FindView> {
 	@SuppressWarnings( "rawtypes" )
 	private ListSelectionState<SearchObject> searchResults = createListSelectionState( createKey( "searchResultsList" ),
 			data, -1 );
-	private FindReferencesTreeState referenceTree = new FindReferencesTreeState( SearchObject.getEmptySearchObject() );
+	private FindReferencesTreeState referenceTree = new FindReferencesTreeState();
 
 	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
 		public void projectChanged() {
@@ -206,7 +209,7 @@ public class FindComposite extends FrameComposite<FindView> {
 	private KeyListener keyListener = new KeyListener() {
 
 		State selected = searchResults;
-		Map<SearchObject<?>, SearchObjectNode> map = Collections.newHashMap();
+		Map<SearchObject<?>, Pair<Integer, Integer>> map = Collections.newHashMap();
 
 		public void keyTyped( KeyEvent e ) {
 		}
@@ -219,6 +222,7 @@ public class FindComposite extends FrameComposite<FindView> {
 				if( selected == searchResults ) {
 					if( searchResults.getValue() != null ) {
 						searchResults.setSelectedIndex( searchResults.getSelectedIndex() - 1 );
+						//						getView().getTree().expandAllRows();
 						if( searchResults.getValue() == null ) {
 							getView().enableLeftAndRight();
 						}
@@ -231,6 +235,7 @@ public class FindComposite extends FrameComposite<FindView> {
 					if( searchResults.getItemCount() != ( searchResults.getSelectedIndex() + 1 ) ) {
 						getView().disableLeftAndRight();
 						searchResults.setSelectedIndex( searchResults.getSelectedIndex() + 1 );
+						//						getView().getTree().expandAllRows();
 					}
 				} else if( selected == referenceTree ) {
 					referenceTree.moveSelectedDownOne();
@@ -238,15 +243,16 @@ public class FindComposite extends FrameComposite<FindView> {
 			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.LEFT ) {
 				if( selected != searchResults ) {
 					selected = searchResults;
-					map.put( searchResults.getValue(), referenceTree.getValue() );
+					map.put( searchResults.getValue(), referenceTree.getSelectedCoordinates() );
 					referenceTree.setValueTransactionlessly( null );
 				}
 			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.RIGHT ) {
 				if( selected != referenceTree ) {
 					if( referenceTree.isEmpty() ) {
 						selected = referenceTree;
+						Pair<Integer, Integer> pair = map.get( searchResults.getValue() );
 						if( map.get( searchResults.getValue() ) != null ) {
-							referenceTree.setValueTransactionlessly( map.get( searchResults.getValue() ) );
+							referenceTree.selectAtCoordinates( pair.fst, pair.snd );
 						} else {
 							referenceTree.setValueTransactionlessly( referenceTree.getTopValue() );
 						}

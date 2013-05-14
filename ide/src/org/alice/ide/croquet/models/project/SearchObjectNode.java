@@ -46,6 +46,7 @@ import java.util.List;
 
 import org.lgna.project.ast.AbstractDeclaration;
 import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.MethodInvocation;
 
 import edu.cmu.cs.dennisc.java.util.Collections;
 
@@ -126,5 +127,13 @@ public class SearchObjectNode {
 		int location = this.getLocationAmongstSiblings();
 		assert location > 0;
 		return this.getParent().children.get( location - 1 );
+	}
+
+	@Override
+	public String toString() {
+		if( getValue() instanceof MethodInvocation ) {
+			return ( (MethodInvocation)getValue() ).method.getValue().getName();
+		}
+		return getValue() != null ? getValue().toString() : "ROOT";
 	}
 }
