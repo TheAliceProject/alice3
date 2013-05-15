@@ -99,6 +99,7 @@ public class FindView extends BorderPanel {
 		searchBox.addKeyListener( composite.getKeyListener() );
 		searchResultsList.getAwtComponent().setFocusable( false );
 		referencesTreeList.getAwtComponent().setFocusable( false );
+		referencesTreeList.getAwtComponent().addTreeExpansionListener( composite.getTreeExpansionListener() );
 	}
 
 	public void enableLeftAndRight() {

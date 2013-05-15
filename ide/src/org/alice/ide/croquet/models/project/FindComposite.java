@@ -44,9 +44,14 @@ package org.alice.ide.croquet.models.project;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.tree.TreePath;
 
 import org.alice.ide.IDE;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FindContentManager;
@@ -209,7 +214,7 @@ public class FindComposite extends FrameComposite<FindView> {
 	private KeyListener keyListener = new KeyListener() {
 
 		State selected = searchResults;
-		Map<SearchObject<?>, Pair<Integer, Integer>> map = Collections.newHashMap();
+		Map<SearchObject<?>, Pair<Integer, Integer>> pairMap = Collections.newHashMap();
 
 		public void keyTyped( KeyEvent e ) {
 		}
@@ -222,7 +227,14 @@ public class FindComposite extends FrameComposite<FindView> {
 				if( selected == searchResults ) {
 					if( searchResults.getValue() != null ) {
 						searchResults.setSelectedIndex( searchResults.getSelectedIndex() - 1 );
-						//						getView().getTree().expandAllRows();
+						Map<Integer, Boolean> innerMap = expandMap.get( searchResults.getValue() );
+						if( innerMap != null ) {
+							for( Integer i : innerMap.keySet() ) {
+								if( innerMap.get( i ) ) {
+									getView().getTree().expandNode( referenceTree.selectAtCoordinates( i, -1 ) );
+								}
+							}
+						}
 						if( searchResults.getValue() == null ) {
 							getView().enableLeftAndRight();
 						}
@@ -235,7 +247,14 @@ public class FindComposite extends FrameComposite<FindView> {
 					if( searchResults.getItemCount() != ( searchResults.getSelectedIndex() + 1 ) ) {
 						getView().disableLeftAndRight();
 						searchResults.setSelectedIndex( searchResults.getSelectedIndex() + 1 );
-						//						getView().getTree().expandAllRows();
+						Map<Integer, Boolean> innerMap = expandMap.get( searchResults.getValue() );
+						if( innerMap != null ) {
+							for( Integer i : innerMap.keySet() ) {
+								if( innerMap.get( i ) ) {
+									getView().getTree().expandNode( referenceTree.selectAtCoordinates( i, -1 ) );
+								}
+							}
+						}
 					}
 				} else if( selected == referenceTree ) {
 					referenceTree.moveSelectedDownOne();
@@ -243,16 +262,16 @@ public class FindComposite extends FrameComposite<FindView> {
 			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.LEFT ) {
 				if( selected != searchResults ) {
 					selected = searchResults;
-					map.put( searchResults.getValue(), referenceTree.getSelectedCoordinates() );
+					pairMap.put( searchResults.getValue(), referenceTree.getSelectedCoordinates() );
 					referenceTree.setValueTransactionlessly( null );
 				}
 			} else if( ImplementationAccessor.getKeyFromKeyCode( e.getKeyCode() ) == org.lgna.story.Key.RIGHT ) {
 				if( selected != referenceTree ) {
 					if( referenceTree.isEmpty() ) {
 						selected = referenceTree;
-						Pair<Integer, Integer> pair = map.get( searchResults.getValue() );
-						if( map.get( searchResults.getValue() ) != null ) {
-							referenceTree.selectAtCoordinates( pair.fst, pair.snd );
+						Pair<Integer, Integer> pair = pairMap.get( searchResults.getValue() );
+						if( pairMap.get( searchResults.getValue() ) != null ) {
+							referenceTree.setValueTransactionlessly( referenceTree.selectAtCoordinates( pair.fst, pair.snd ) );
 						} else {
 							referenceTree.setValueTransactionlessly( referenceTree.getTopValue() );
 						}
@@ -261,8 +280,31 @@ public class FindComposite extends FrameComposite<FindView> {
 			}
 		}
 	};
+	Map<SearchObject<?>, Map<Integer, Boolean>> expandMap = Collections.newHashMap();
+	private TreeExpansionListener treeListener = new TreeExpansionListener() {
+
+		public void treeExpanded( TreeExpansionEvent event ) {
+			TreePath path = event.getPath();
+			if( expandMap.get( searchResults.getValue() ) == null ) {
+				expandMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
+			}
+			expandMap.get( searchResults.getValue() ).put( ( (SearchObjectNode)path.getLastPathComponent() ).getLocationAmongstSiblings(), true );
+		}
+
+		public void treeCollapsed( TreeExpansionEvent event ) {
+			TreePath path = event.getPath();
+			if( expandMap.get( searchResults.getValue() ) == null ) {
+				expandMap.put( searchResults.getValue(), new HashMap<Integer, Boolean>() );
+			}
+			expandMap.get( searchResults.getValue() ).put( ( (SearchObjectNode)path.getLastPathComponent() ).getLocationAmongstSiblings(), false );
+		}
+	};
 
 	public KeyListener getKeyListener() {
 		return this.keyListener;
+	}
+
+	public TreeExpansionListener getTreeExpansionListener() {
+		return treeListener;
 	}
 }

@@ -178,11 +178,11 @@ public class FindReferencesTreeState extends CustomTreeSelectionState<SearchObje
 		}
 	}
 
-	public void selectAtCoordinates( int a, int b ) {
+	public SearchObjectNode selectAtCoordinates( int a, int b ) {
 		if( b == -1 ) {
-			this.setValueTransactionlessly( root.getChildren().get( a ) );
+			return root.getChildren().get( a );
 		} else {
-			this.setValueTransactionlessly( root.getChildren().get( a ).getChildren().get( b ) );
+			return root.getChildren().get( a ).getChildren().get( b );
 		}
 	}
 
