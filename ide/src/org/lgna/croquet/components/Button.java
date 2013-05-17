@@ -48,12 +48,11 @@ package org.lgna.croquet.components;
  */
 public class Button extends OperationButton<javax.swing.JButton, org.lgna.croquet.Operation> {
 	public Button( org.lgna.croquet.Operation model ) {
-		super( model );
+		super( model, "Button" );
 	}
 
 	@Override
 	protected final javax.swing.JButton createAwtComponent() {
-
 		return new javax.swing.JButton() {
 			@Override
 			public javax.swing.Icon getIcon() {

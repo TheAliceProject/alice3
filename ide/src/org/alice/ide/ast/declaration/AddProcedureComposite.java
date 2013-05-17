@@ -76,8 +76,6 @@ public final class AddProcedureComposite extends AddMethodComposite {
 
 		org.lgna.project.ast.UserType<?> declaringType = declareMethodEdit.getDeclaringType();
 		org.lgna.project.ast.NamedUserType namedUserType = (org.lgna.project.ast.NamedUserType)declaringType;
-		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
-
 		if( org.alice.ide.croquet.models.ui.preferences.IsEmphasizingClassesState.getInstance().getValue() ) {
 			org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().pushGeneratedValue( org.alice.ide.declarationseditor.TypeComposite.getInstance( namedUserType ) );
 		} else {
@@ -93,7 +91,7 @@ public final class AddProcedureComposite extends AddMethodComposite {
 					}
 				}
 			}
-			assert instanceFactory != null : method;
+			assert instanceFactory != null : ownerEdit;
 			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().pushGeneratedValue( instanceFactory );
 
 			org.alice.ide.members.MembersComposite membersComposite = org.alice.ide.members.MembersComposite.getInstance();
@@ -116,21 +114,20 @@ public final class AddProcedureComposite extends AddMethodComposite {
 	public void addGeneratedSubTransactions( org.lgna.croquet.history.TransactionHistory subTransactionHistory, org.lgna.croquet.edits.Edit<?> ownerEdit ) throws org.lgna.croquet.UnsupportedGenerationException {
 		assert ownerEdit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : ownerEdit;
 		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)ownerEdit;
-		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
 
-		this.getNameState().addGeneratedStateChangeTransaction( subTransactionHistory, "", method.getName() );
+		this.getNameState().addGeneratedStateChangeTransaction( subTransactionHistory, "", declareMethodEdit.getMethodName() );
 
 		super.addGeneratedSubTransactions( subTransactionHistory, ownerEdit );
 	}
 
-	@Override
-	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws org.lgna.croquet.UnsupportedGenerationException {
-		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
-		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : edit;
-		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
-		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
-		org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( ownerTransactionHistory, method.body.getValue() );
-	}
+	//	@Override
+	//	public void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws org.lgna.croquet.UnsupportedGenerationException {
+	//		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
+	//		assert edit instanceof org.alice.ide.croquet.edits.ast.DeclareMethodEdit : edit;
+	//		org.alice.ide.croquet.edits.ast.DeclareMethodEdit declareMethodEdit = (org.alice.ide.croquet.edits.ast.DeclareMethodEdit)edit;
+	//		org.lgna.project.ast.UserMethod method = declareMethodEdit.getMethod();
+	//		org.lgna.cheshire.ast.BlockStatementGenerator.generateAndAddToTransactionHistory( ownerTransactionHistory, method.body.getValue() );
+	//	}
 
 	@Override
 	protected org.alice.ide.croquet.resolvers.NodeStaticGetInstanceKeyedResolver<AddProcedureComposite> createResolver() {

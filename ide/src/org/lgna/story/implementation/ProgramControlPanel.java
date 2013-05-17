@@ -120,18 +120,29 @@ public class ProgramControlPanel extends javax.swing.JPanel {
 			}
 		} );
 
-		javax.swing.JPanel leadingPanel = new javax.swing.JPanel();
-		leadingPanel.setLayout( new javax.swing.BoxLayout( leadingPanel, javax.swing.BoxLayout.LINE_AXIS ) );
-		leadingPanel.add( playPauseButton );
-		leadingPanel.add( javax.swing.Box.createHorizontalStrut( 12 ) );
-		leadingPanel.add( this.label );
+		final int LARGE_PAD = 8;
+		final int SMALL_PAD = 2;
+		this.setLayout( new java.awt.GridBagLayout() );
 
-		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
-		this.add( leadingPanel, java.awt.BorderLayout.LINE_START );
-		this.add( slider, java.awt.BorderLayout.CENTER );
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.weightx = 0.0;
+		this.add( playPauseButton, gbc );
+		gbc.insets.left = LARGE_PAD;
+		this.add( this.label, gbc );
+		gbc.weightx = 1.0;
+		gbc.insets.left = SMALL_PAD;
+		this.add( slider, gbc );
+		gbc.weightx = 0.0;
+		gbc.insets.left = LARGE_PAD;
 		javax.swing.Action restartAction = programImp.getRestartAction();
 		if( restartAction != null ) {
-			this.add( new javax.swing.JButton( restartAction ), java.awt.BorderLayout.LINE_END );
+			this.add( new javax.swing.JButton( restartAction ), gbc );
+		}
+		javax.swing.Action toggleFullScreenAction = programImp.getToggleFullScreenAction();
+		if( toggleFullScreenAction != null ) {
+			gbc.insets.left = 0;//SMALL_PAD;
+			this.add( new javax.swing.JToggleButton( toggleFullScreenAction ), gbc );
 		}
 	}
 

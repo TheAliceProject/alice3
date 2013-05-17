@@ -46,37 +46,22 @@ package edu.cmu.cs.dennisc.java.awt;
  * @author Dennis Cosgrove
  */
 public class RobotUtilities {
-	private static final java.awt.Robot robot;
-	static {
-		java.awt.Robot r;
-		try {
-			r = new java.awt.Robot();
-		} catch( java.awt.AWTException awte ) {
-			r = null;
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( awte );
-		}
-		try {
-			java.awt.GraphicsEnvironment graphicsEnvironment = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
-			java.awt.GraphicsDevice[] graphicsDevices = graphicsEnvironment.getScreenDevices();
-			if( graphicsDevices.length > 1 ) {
-				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isLinux() ) {
-					r = null;
-				}
-			}
-		} catch( Throwable t ) {
-			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
-		}
-		robot = r;
-	}
-
 	private RobotUtilities() {
 		throw new AssertionError();
 	}
 
 	public static void mouseMove( java.awt.Component awtComponent, java.awt.Point p ) {
-		if( robot != null ) {
+		try {
+			java.awt.GraphicsConfiguration graphicsConfiguration = awtComponent.getGraphicsConfiguration();
+			java.awt.Rectangle graphicsConfigurationBounds = graphicsConfiguration.getBounds();
+			java.awt.GraphicsDevice graphicsDevice = graphicsConfiguration.getDevice();
+			java.awt.Robot robot = new java.awt.Robot( graphicsDevice );
 			javax.swing.SwingUtilities.convertPointToScreen( p, awtComponent );
+			p.x -= graphicsConfigurationBounds.x;
+			p.y -= graphicsConfigurationBounds.y;
 			robot.mouseMove( p.x, p.y );
+		} catch( Throwable t ) {
+			edu.cmu.cs.dennisc.java.util.logging.Logger.throwable( t );
 		}
 	}
 }

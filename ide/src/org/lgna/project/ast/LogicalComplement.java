@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class LogicalComplement extends Expression {
+public final class LogicalComplement extends Expression {
 	public ExpressionProperty operand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
@@ -75,6 +75,15 @@ public class LogicalComplement extends Expression {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean contentEquals( Node o, ContentEqualsStrictness strictness ) {
+		if( super.contentEquals( o, strictness ) ) {
+			LogicalComplement other = (LogicalComplement)o;
+			return this.operand.valueContentEquals( other.operand, strictness );
+		}
+		return false;
 	}
 
 	@Override

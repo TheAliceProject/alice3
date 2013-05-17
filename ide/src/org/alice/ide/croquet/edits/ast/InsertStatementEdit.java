@@ -45,15 +45,14 @@ package org.alice.ide.croquet.edits.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.InsertStatementCompletionModel> extends org.lgna.croquet.edits.Edit<M> {
+public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.InsertStatementCompletionModel> extends StatementEdit<M> {
 	public static final int AT_END = Short.MAX_VALUE;
 	private org.lgna.project.ast.BlockStatement blockStatement;
-	private org.lgna.project.ast.Statement statement;
 	private int specifiedIndex;
 	private org.lgna.project.ast.Expression[] initialExpressions;
 
 	public InsertStatementEdit( org.lgna.croquet.history.CompletionStep<M> completionStep, org.alice.ide.ast.draganddrop.BlockStatementIndexPair blockStatementIndexPair, org.lgna.project.ast.Statement statement, org.lgna.project.ast.Expression[] initialExpressions ) {
-		super( completionStep );
+		super( completionStep, statement );
 		org.alice.ide.ast.draganddrop.BlockStatementIndexPair fromHistoryBlockStatementIndexPair = this.findFirstDropSite( org.alice.ide.ast.draganddrop.BlockStatementIndexPair.class );
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( blockStatementIndexPair, fromHistoryBlockStatementIndexPair ) ) {
 			//pass
@@ -62,7 +61,6 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		}
 		this.blockStatement = blockStatementIndexPair.getBlockStatement();
 		this.specifiedIndex = blockStatementIndexPair.getIndex();
-		this.statement = statement;
 		this.initialExpressions = initialExpressions;
 	}
 
@@ -77,8 +75,6 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		java.util.UUID blockStatementId = binaryDecoder.decodeId();
 		this.blockStatement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, blockStatementId );
 		this.specifiedIndex = binaryDecoder.decodeInt();
-		java.util.UUID statementId = binaryDecoder.decodeId();
-		this.statement = org.lgna.project.ProgramTypeUtilities.lookupNode( project, statementId );
 		java.util.UUID[] ids = binaryDecoder.decodeIdArray();
 		final int N = ids.length;
 		this.initialExpressions = new org.lgna.project.ast.Expression[ N ];
@@ -92,7 +88,6 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		super.encode( binaryEncoder );
 		binaryEncoder.encode( this.blockStatement.getId() );
 		binaryEncoder.encode( this.specifiedIndex );
-		binaryEncoder.encode( this.statement.getId() );
 		final int N = this.initialExpressions.length;
 		java.util.UUID[] ids = new java.util.UUID[ N ];
 		for( int i = 0; i < N; i++ ) {
@@ -119,26 +114,24 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 
 	@Override
 	protected final void doOrRedoInternal( boolean isDo ) {
+		org.lgna.project.ast.Statement statement = this.getStatement();
 		int actualIndex = this.getActualIndex();
-		this.blockStatement.statements.add( actualIndex, this.statement );
+		this.blockStatement.statements.add( actualIndex, statement );
 		//todo: remove
-		org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
 	protected final void undoInternal() {
+		org.lgna.project.ast.Statement statement = this.getStatement();
 		int actualIndex = this.getActualIndex();
-		if( this.blockStatement.statements.get( actualIndex ) == this.statement ) {
+		if( this.blockStatement.statements.get( actualIndex ) == statement ) {
 			this.blockStatement.statements.remove( actualIndex );
 			//todo: remove
-			org.alice.ide.instancefactory.croquet.InstanceFactoryState.getInstance().handleAstChangeThatCouldBeOfInterest();
+			org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 		} else {
 			throw new javax.swing.undo.CannotUndoException();
 		}
-	}
-
-	public org.lgna.project.ast.Statement getStatement() {
-		return this.statement;
 	}
 
 	//	@Override
@@ -150,8 +143,9 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 
 	@Override
 	protected void appendDescription( StringBuilder rv, DescriptionStyle descriptionStyle ) {
+		org.lgna.project.ast.Statement statement = this.getStatement();
 		rv.append( "insert: " );
-		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, this.statement, org.lgna.croquet.Application.getLocale() );
+		org.lgna.project.ast.NodeUtilities.safeAppendRepr( rv, statement, org.lgna.croquet.Application.getLocale() );
 	}
 
 	@Override
@@ -196,8 +190,9 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 
 	@Override
 	protected void appendTutorialTransactionTitle( StringBuilder sbTitle ) {
+		org.lgna.project.ast.Statement statement = this.getStatement();
 		sbTitle.append( "insert " );
-		sbTitle.append( this.statement.getRepr( org.lgna.croquet.Application.getLocale() ) );
+		sbTitle.append( statement.getRepr( org.lgna.croquet.Application.getLocale() ) );
 	}
 
 	//	public InsertStatementEdit createTutorialCompletionEdit( edu.cmu.cs.dennisc.croquet.Retargeter retargeter, org.lgna.project.ast.Statement replacementStatement ) {
@@ -213,8 +208,8 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 	public void retarget( org.lgna.croquet.Retargeter retargeter ) {
 		super.retarget( retargeter );
 		this.blockStatement = retargeter.retarget( this.blockStatement );
-		this.statement = retargeter.retarget( this.statement );
-		if( this.statement instanceof org.lgna.project.ast.ExpressionStatement ) {
+		org.lgna.project.ast.Statement statement = this.getStatement();
+		if( statement instanceof org.lgna.project.ast.ExpressionStatement ) {
 			org.lgna.project.ast.ExpressionStatement expressionStatement = (org.lgna.project.ast.ExpressionStatement)statement;
 			org.lgna.project.ast.Expression expression = expressionStatement.expression.getValue();
 			if( expression instanceof org.lgna.project.ast.MethodInvocation ) {
@@ -230,7 +225,6 @@ public class InsertStatementEdit<M extends org.alice.ide.croquet.models.ast.Inse
 		InsertStatementEdit replacementEdit = (InsertStatementEdit)edit;
 		edu.cmu.cs.dennisc.java.util.logging.Logger.errln( "todo: investigate blockStatement" );
 		//retargeter.addKeyValuePair( this.blockStatement, replacementEdit.blockStatement );
-		retargeter.addKeyValuePair( this.statement, replacementEdit.statement );
 		final int N = this.initialExpressions.length;
 		assert N == replacementEdit.initialExpressions.length;
 		for( int i = 0; i < N; i++ ) {

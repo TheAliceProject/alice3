@@ -49,11 +49,13 @@ package org.lgna.croquet.components;
 public abstract class AbstractButton<J extends javax.swing.AbstractButton, M extends org.lgna.croquet.Model> extends ViewController<J, M> {
 	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
 
+	private final String uiDefaultsName;
 	private boolean isIconClobbered;
 	private javax.swing.Icon clobberIcon;
 
-	public AbstractButton( M model ) {
+	public AbstractButton( M model, String uiDefaultsName ) {
 		super( model );
+		this.uiDefaultsName = uiDefaultsName;
 	}
 
 	public boolean isIconClobbered() {
@@ -86,17 +88,30 @@ public abstract class AbstractButton<J extends javax.swing.AbstractButton, M ext
 	public void tightenUpMargin( java.awt.Insets margin ) {
 		javax.swing.AbstractButton jButton = this.getAwtComponent();
 		if( "javax.swing.plaf.synth.SynthButtonUI".equals( jButton.getUI().getClass().getName() ) ) {
-			int right;
-			String text = jButton.getText();
-			final int PAD = 4;
-			if( ( text != null ) && ( text.length() > 0 ) ) {
-				right = PAD + 4;
+			if( this.uiDefaultsName != null ) {
+				int right;
+				String text = jButton.getText();
+				final int PAD = 4;
+				if( ( text != null ) && ( text.length() > 0 ) ) {
+					right = PAD + 4;
+				} else {
+					right = PAD;
+				}
+				javax.swing.UIDefaults uiDefaults = new javax.swing.UIDefaults();
+				uiDefaults.put( this.uiDefaultsName + ".contentMargins", new java.awt.Insets( PAD + margin.top, PAD + margin.left, PAD + margin.bottom, right + margin.right ) );
+				this.getAwtComponent().putClientProperty( "Nimbus.Overrides", uiDefaults );
 			} else {
-				right = PAD;
+				java.util.Enumeration<Object> enm = javax.swing.UIManager.getDefaults().keys();
+				while( enm.hasMoreElements() ) {
+					Object key = enm.nextElement();
+					if( key != null ) {
+						if( key.toString().endsWith( ".contentMargins" ) ) {
+							edu.cmu.cs.dennisc.java.util.logging.Logger.errln( key, javax.swing.UIManager.get( key ) );
+						}
+					}
+				}
+				edu.cmu.cs.dennisc.java.util.logging.Logger.severe( "uiDefaultsName is null:", this );
 			}
-			javax.swing.UIDefaults uiDefaults = new javax.swing.UIDefaults();
-			uiDefaults.put( "Button.contentMargins", new java.awt.Insets( PAD + margin.top, PAD + margin.left, PAD + margin.bottom, right + margin.right ) );
-			this.getAwtComponent().putClientProperty( "Nimbus.Overrides", uiDefaults );
 		} else {
 			this.setMargin( margin );
 		}
