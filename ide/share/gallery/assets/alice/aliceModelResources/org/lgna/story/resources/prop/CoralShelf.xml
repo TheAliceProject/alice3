@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <AliceModel creationYear="2011" creator="Laura Paoletti" name="CoralShelf">
     <BoundingBox>
         <Min x="-1.0894516706466675" y="-0.0033486285246908665" z="-0.7764391899108887"/>
@@ -40,8 +40,8 @@
     </Resource>
     <Resource modelName="WidePink" resourceName="WIDE_PINK" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.29539456963539124" y="0.0025534823071211576" z="-0.3872661888599396"/>
-            <Max x="0.22974318265914917" y="0.1724291741847992" z="-0.002626047469675541"/>
+            <Min x="-0.29539456963539124" y="0.002553482074290514" z="-0.3872661590576172"/>
+            <Max x="0.22974318265914917" y="0.172429159283638" z="-0.0026260472368448973"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="WideYellow" resourceName="WIDE_YELLOW" textureName="DEFAULT">

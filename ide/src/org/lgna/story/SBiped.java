@@ -112,6 +112,14 @@ public class SBiped extends SJointedModel implements Articulable {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_EYE );
 	}
 
+	public SJoint getLeftEyelid() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.LEFT_EYELID );
+	}
+
+	public SJoint getRightEyelid() {
+		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_EYELID );
+	}
+
 	public SJoint getRightHip() {
 		return org.lgna.story.SJoint.getJoint( this, org.lgna.story.resources.BipedResource.RIGHT_HIP );
 	}

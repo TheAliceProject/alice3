@@ -74,6 +74,8 @@ public interface BipedResource extends JointedModelResource {
 	public static final JointId MOUTH = new JointId( HEAD, BipedResource.class );
 	public static final JointId LEFT_EYE = new JointId( HEAD, BipedResource.class );
 	public static final JointId RIGHT_EYE = new JointId( HEAD, BipedResource.class );
+	public static final JointId LEFT_EYELID = new JointId( HEAD, BipedResource.class );
+	public static final JointId RIGHT_EYELID = new JointId( HEAD, BipedResource.class );
 
 	public static final JointId RIGHT_CLAVICLE = new JointId( SPINE_UPPER, BipedResource.class );
 	public static final JointId RIGHT_SHOULDER = new JointId( RIGHT_CLAVICLE, BipedResource.class );
