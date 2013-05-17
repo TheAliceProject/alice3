@@ -124,12 +124,6 @@ public final class OwnedByCompositeOperation extends ActionOperation {
 	}
 
 	@Override
-	protected void addGeneratedPostTransactions( org.lgna.croquet.history.TransactionHistory ownerTransactionHistory, org.lgna.croquet.edits.Edit<?> edit ) throws UnsupportedGenerationException {
-		super.addGeneratedPostTransactions( ownerTransactionHistory, edit );
-		this.composite.addGeneratedPostTransactions( ownerTransactionHistory, edit );
-	}
-
-	@Override
 	protected void appendTutorialStepText( StringBuilder text, org.lgna.croquet.history.Step<?> step, org.lgna.croquet.edits.Edit<?> edit ) {
 		this.composite.appendTutorialStepText( text, step, edit );
 	}
