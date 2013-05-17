@@ -486,7 +486,7 @@ public abstract class AbstractNode extends Element implements Node {
 		} else if( this instanceof AbstractMethodContainedByUserField ) {
 			AbstractMethodContainedByUserField getterOrSetter = (AbstractMethodContainedByUserField)this;
 			UserField field = getterOrSetter.getField();
-			rv.appendChild( encodeValue( field, xmlDocument, set ) );
+			rv.appendChild( encodeValue( field, xmlDocument, map ) );
 		} else if( this instanceof JavaField ) {
 			JavaField fieldDeclaredInJavaWithField = (JavaField)this;
 			rv.appendChild( encodeField( xmlDocument, "field", fieldDeclaredInJavaWithField.getFieldReflectionProxy() ) );
@@ -514,7 +514,7 @@ public abstract class AbstractNode extends Element implements Node {
 		} else if( this instanceof SetterParameter ) {
 			SetterParameter setterParameter = (SetterParameter)this;
 			Setter setter = setterParameter.getCode();
-			rv.appendChild( encodeValue( setter, xmlDocument, set ) );
+			rv.appendChild( encodeValue( setter, xmlDocument, map ) );
 		}
 		for( edu.cmu.cs.dennisc.property.Property property : getProperties() ) {
 			rv.appendChild( encodeProperty( xmlDocument, property, map ) );
