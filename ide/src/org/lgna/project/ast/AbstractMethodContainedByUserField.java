@@ -40,38 +40,92 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserFunctionsSubComposite extends UserMethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserFunctionsSubComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public abstract class AbstractMethodContainedByUserField extends AbstractMethod {
+	private final UserField field;
 
-	public static synchronized UserFunctionsSubComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
-		assert type != null;
-		UserFunctionsSubComposite rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new UserFunctionsSubComposite( type );
-			map.put( type, rv );
-		}
-		return rv;
+	/* package-private */AbstractMethodContainedByUserField( UserField field ) {
+		this.field = field;
 	}
 
-	private UserFunctionsSubComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "7e67d035-f06d-4a05-962c-b7924c48893a" ), type, org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getOperation() );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Functions" );
+	public final UserField getField() {
+		return this.field;
 	}
 
 	@Override
-	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
-		return method.isFunction();
+	public final org.lgna.project.ast.AbstractType<?, ?, ?> getDeclaringType() {
+		return this.field.getDeclaringType();
+	}
+
+	public final AbstractParameter getVariableLengthParameter() {
+		return null;
+	}
+
+	public final AbstractParameter getKeyedParameter() {
+		return null;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractMethod getGetterOrSetter( org.lgna.project.ast.UserField field ) {
-		return field.getGetter();
+	public final org.lgna.project.annotations.Visibility getVisibility() {
+		return org.lgna.project.annotations.Visibility.PRIME_TIME;
+	}
+
+	@Override
+	public final AccessLevel getAccessLevel() {
+		return AccessLevel.PUBLIC;
+	}
+
+	@Override
+	public final edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+
+	@Override
+	public final boolean isSignatureLocked() {
+		return true;
+	}
+
+	@Override
+	public final boolean isStatic() {
+		return false;
+	}
+
+	@Override
+	public final boolean isAbstract() {
+		return false;
+	}
+
+	@Override
+	public final boolean isFinal() {
+		return false;
+	}
+
+	@Override
+	public final boolean isNative() {
+		return false;
+	}
+
+	@Override
+	public final boolean isSynchronized() {
+		return false;
+	}
+
+	@Override
+	public final boolean isStrictFloatingPoint() {
+		return false;
+	}
+
+	@Override
+	public final AbstractCode getNextLongerInChain() {
+		return null;
+	}
+
+	@Override
+	public final AbstractCode getNextShorterInChain() {
+		return null;
 	}
 }

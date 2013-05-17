@@ -46,8 +46,8 @@ package org.lgna.project.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNode extends Element implements Node {
-	private static final double CURRENT_VERSION = 3.1;
-	private static final double MINIMUM_ACCEPTABLE_VERSION = CURRENT_VERSION;
+	private static final double CURRENT_VERSION = 3.10062;
+	private static final double MINIMUM_ACCEPTABLE_VERSION = 3.1;
 
 	private java.util.UUID id = java.util.UUID.randomUUID();
 	private AbstractNode parent;
@@ -483,6 +483,10 @@ public abstract class AbstractNode extends Element implements Node {
 		} else if( this instanceof JavaMethod ) {
 			JavaMethod methodDeclaredInJava = (JavaMethod)this;
 			rv.appendChild( encodeMethod( xmlDocument, "method", methodDeclaredInJava.getMethodReflectionProxy() ) );
+		} else if( this instanceof AbstractMethodContainedByUserField ) {
+			AbstractMethodContainedByUserField getterOrSetter = (AbstractMethodContainedByUserField)this;
+			UserField field = getterOrSetter.getField();
+			rv.appendChild( encodeValue( field, xmlDocument, set ) );
 		} else if( this instanceof JavaField ) {
 			JavaField fieldDeclaredInJavaWithField = (JavaField)this;
 			rv.appendChild( encodeField( xmlDocument, "field", fieldDeclaredInJavaWithField.getFieldReflectionProxy() ) );
@@ -507,6 +511,10 @@ public abstract class AbstractNode extends Element implements Node {
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
 			xmlIndex.appendChild( xmlDocument.createTextNode( Integer.toString( parameterDeclaredInJavaMethod.getIndex() ) ) );
 			rv.appendChild( xmlIndex );
+		} else if( this instanceof SetterParameter ) {
+			SetterParameter setterParameter = (SetterParameter)this;
+			Setter setter = setterParameter.getCode();
+			rv.appendChild( encodeValue( setter, xmlDocument, set ) );
 		}
 		for( edu.cmu.cs.dennisc.property.Property property : getProperties() ) {
 			rv.appendChild( encodeProperty( xmlDocument, property, map ) );

@@ -40,38 +40,50 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserFunctionsSubComposite extends UserMethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserFunctionsSubComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class SetterParameter extends AbstractParameter {
+	private final Setter setter;
 
-	public static synchronized UserFunctionsSubComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
-		assert type != null;
-		UserFunctionsSubComposite rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new UserFunctionsSubComposite( type );
-			map.put( type, rv );
-		}
-		return rv;
-	}
-
-	private UserFunctionsSubComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "7e67d035-f06d-4a05-962c-b7924c48893a" ), type, org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getOperation() );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Functions" );
+	/* package-private */SetterParameter( Setter setter ) {
+		this.setter = setter;
 	}
 
 	@Override
-	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
-		return method.isFunction();
+	public Setter getCode() {
+		return this.setter;
 	}
 
 	@Override
-	protected org.lgna.project.ast.AbstractMethod getGetterOrSetter( org.lgna.project.ast.UserField field ) {
-		return field.getGetter();
+	public AbstractType<?, ?, ?> getValueType() {
+		return this.setter.getField().getValueType();
+	}
+
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		return this.setter.getField().getName();
+	}
+
+	@Override
+	public boolean isUserAuthored() {
+		return false; //todo?
+	}
+
+	@Override
+	public boolean isVariableLength() {
+		return false;
+	}
+
+	@Override
+	public org.lgna.project.annotations.ValueDetails<?> getDetails() {
+		return null;
 	}
 }

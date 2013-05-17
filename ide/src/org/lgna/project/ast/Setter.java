@@ -40,38 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.member;
+package org.lgna.project.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UserFunctionsSubComposite extends UserMethodsSubComposite {
-	private static java.util.Map<org.lgna.project.ast.NamedUserType, UserFunctionsSubComposite> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+public class Setter extends AbstractMethodContainedByUserField {
+	private final java.util.List<SetterParameter> requiredParameters = java.util.Collections.unmodifiableList( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new SetterParameter( this ) ) );
 
-	public static synchronized UserFunctionsSubComposite getInstance( org.lgna.project.ast.NamedUserType type ) {
-		assert type != null;
-		UserFunctionsSubComposite rv = map.get( type );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new UserFunctionsSubComposite( type );
-			map.put( type, rv );
+	/* package-private */Setter( UserField field ) {
+		super( field );
+	}
+
+	public AbstractType<?, ?, ?> getReturnType() {
+		return JavaType.VOID_TYPE;
+	}
+
+	public java.util.List<? extends AbstractParameter> getRequiredParameters() {
+		return this.requiredParameters;
+	}
+
+	@Override
+	public String getName() {
+		//todo: handle boolean and is
+		String fieldName = this.getField().getName();
+		StringBuilder sb = new StringBuilder();
+		sb.append( "set" );
+		if( fieldName.length() > 0 ) {
+			sb.append( Character.toUpperCase( fieldName.charAt( 0 ) ) );
+			sb.append( fieldName.substring( 1 ) );
 		}
-		return rv;
-	}
-
-	private UserFunctionsSubComposite( org.lgna.project.ast.NamedUserType type ) {
-		super( java.util.UUID.fromString( "7e67d035-f06d-4a05-962c-b7924c48893a" ), type, org.alice.ide.ast.declaration.AddFunctionComposite.getInstance( type ).getOperation() );
-		this.getOuterComposite().getIsExpandedState().setTextForBothTrueAndFalse( "'s Editable Functions" );
-	}
-
-	@Override
-	protected boolean isAcceptable( org.lgna.project.ast.AbstractMethod method ) {
-		return method.isFunction();
-	}
-
-	@Override
-	protected org.lgna.project.ast.AbstractMethod getGetterOrSetter( org.lgna.project.ast.UserField field ) {
-		return field.getGetter();
+		return sb.toString();
 	}
 }
