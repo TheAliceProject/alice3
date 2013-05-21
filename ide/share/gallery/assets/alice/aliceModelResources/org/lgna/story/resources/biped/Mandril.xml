@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<AliceModel creator="Pei Hong Tan" name="Mandril">
+<AliceModel creationYear="2013" creator="Pei Hong Tan" name="Mandril">
     <BoundingBox>
         <Min x="-0.43025001883506775" y="-0.011208800598978996" z="-0.3496716618537903"/>
         <Max x="0.4302518367767334" y="1.4344607591629028" z="0.5084893107414246"/>
