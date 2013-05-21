@@ -74,7 +74,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 	private final TopAndBottomOutfitTabComposite topAndBottomTab = new TopAndBottomOutfitTabComposite();
 	private final HairTabComposite hairTab = new HairTabComposite();
 	private final FaceTabComposite faceTab = new FaceTabComposite();
-	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.TEEN, org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.TODDLER );
+	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.LifeStage> lifeStageState = this.createListSelectionState( this.createKey( "lifeStageState" ), org.lgna.story.resources.sims2.LifeStage.class, edu.cmu.cs.dennisc.toolkit.croquet.codecs.EnumCodec.getInstance( org.lgna.story.resources.sims2.LifeStage.class ), 0, org.lgna.story.resources.sims2.LifeStage.ELDER, org.lgna.story.resources.sims2.LifeStage.ADULT, org.lgna.story.resources.sims2.LifeStage.TEEN, org.lgna.story.resources.sims2.LifeStage.CHILD, org.lgna.story.resources.sims2.LifeStage.TODDLER );
 	private final org.lgna.croquet.ListSelectionState<org.lgna.story.resources.sims2.Gender> genderState = this.createListSelectionStateForEnum( this.createKey( "genderState" ), org.lgna.story.resources.sims2.Gender.class, org.lgna.story.resources.sims2.Gender.getRandom() );
 	private final SkinColorState skinColorState = new SkinColorState();
 	private final org.lgna.croquet.TabSelectionState<org.lgna.croquet.SimpleTabComposite> bodyHeadHairTabState = this.createTabSelectionState( this.createKey( "bodyHeadHairTabState" ), 0, this.bodyTab, this.topAndBottomTab, null, this.hairTab, null, this.faceTab );
@@ -720,7 +720,7 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 					outfit = new org.lgna.story.resources.sims2.FemaleChildTopAndBottomOutfit( (org.lgna.story.resources.sims2.FemaleChildTopPiece)this.getTopPieceState().getValue(), (org.lgna.story.resources.sims2.FemaleChildBottomPiece)this.getBottomPieceState().getValue() );
 				}
 			}
-			if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
+			else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.TEEN ) {
 				if( gender == org.lgna.story.resources.sims2.Gender.MALE ) {
 					outfit = new org.lgna.story.resources.sims2.MaleTeenTopAndBottomOutfit( (org.lgna.story.resources.sims2.MaleTeenTopPiece)this.getTopPieceState().getValue(), (org.lgna.story.resources.sims2.MaleTeenBottomPiece)this.getBottomPieceState().getValue() );
 				}
@@ -734,6 +734,14 @@ public class IngredientsComposite extends org.lgna.croquet.SimpleComposite<org.a
 				}
 				else if( gender == org.lgna.story.resources.sims2.Gender.FEMALE ) {
 					outfit = new org.lgna.story.resources.sims2.FemaleAdultTopAndBottomOutfit( (org.lgna.story.resources.sims2.FemaleAdultTopPiece)this.getTopPieceState().getValue(), (org.lgna.story.resources.sims2.FemaleAdultBottomPiece)this.getBottomPieceState().getValue() );
+				}
+			}
+			else if( lifeStage == org.lgna.story.resources.sims2.LifeStage.ELDER ) {
+				if( gender == org.lgna.story.resources.sims2.Gender.MALE ) {
+					outfit = new org.lgna.story.resources.sims2.MaleElderTopAndBottomOutfit( (org.lgna.story.resources.sims2.MaleElderTopPiece)this.getTopPieceState().getValue(), (org.lgna.story.resources.sims2.MaleElderBottomPiece)this.getBottomPieceState().getValue() );
+				}
+				else if( gender == org.lgna.story.resources.sims2.Gender.FEMALE ) {
+					outfit = new org.lgna.story.resources.sims2.FemaleElderTopAndBottomOutfit( (org.lgna.story.resources.sims2.FemaleElderTopPiece)this.getTopPieceState().getValue(), (org.lgna.story.resources.sims2.FemaleElderBottomPiece)this.getBottomPieceState().getValue() );
 				}
 			}
 		}

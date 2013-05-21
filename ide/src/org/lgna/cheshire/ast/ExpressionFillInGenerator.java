@@ -125,7 +125,7 @@ public class ExpressionFillInGenerator {
 				bufferForCompletionStepSubTransactionHistory[ 0 ] = new org.lgna.croquet.history.TransactionHistory();
 				org.lgna.croquet.history.Transaction subTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( bufferForCompletionStepSubTransactionHistory[ 0 ] );
 				org.lgna.croquet.history.CompletionStep textChangeStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( subTransaction, composite.getValueState(), org.lgna.croquet.triggers.DocumentEventTrigger.createGeneratorInstance(), null );
-				textChangeStep.setEdit( new org.lgna.croquet.edits.StateEdit<String>( textChangeStep, "", value ) );
+				textChangeStep.ACCEPTABLE_HACK_FOR_TUTORIAL_setEdit( new org.lgna.croquet.edits.StateEdit<String>( textChangeStep, "", value ) );
 				org.lgna.croquet.history.Transaction commitTransaction = org.lgna.croquet.history.Transaction.createAndAddToHistory( bufferForCompletionStepSubTransactionHistory[ 0 ] );
 				org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( commitTransaction, composite.getCommitOperation(), org.lgna.croquet.triggers.MouseEventTrigger.createRecoveryInstance(), null );
 			}

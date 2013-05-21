@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <AliceModel creationYear="2013" creator="Pei Hong Tan" name="Bison">
     <BoundingBox>
         <Min x="-0.5472020506858826" y="0.0013227843446657062" z="-1.636842131614685"/>
@@ -12,8 +12,6 @@
     <GroupTags>
         <GroupTag>animals</GroupTag>
     </GroupTags>
-    <ThemeTags>
-        <ThemeTag>southwest</ThemeTag>
-    </ThemeTags>
+    <ThemeTags/>
     <Resource modelName="Bison" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

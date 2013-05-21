@@ -22,7 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
-public enum FemaleAdultHairPGChoppy implements FemaleAdultHair {
+public enum FemaleAdultHairPGChoppy implements FemaleAdultHair, FemaleElderHair {
 	RED,
 	BLACK,
 	BLOND,

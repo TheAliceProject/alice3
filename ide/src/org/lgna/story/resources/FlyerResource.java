@@ -59,6 +59,8 @@ public interface FlyerResource extends JointedModelResource {
 	public static final org.lgna.story.resources.JointId LOWER_LIP = new org.lgna.story.resources.JointId( MOUTH, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_EYE = new org.lgna.story.resources.JointId( HEAD, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId RIGHT_EYE = new org.lgna.story.resources.JointId( HEAD, FlyerResource.class );
+	public static final org.lgna.story.resources.JointId LEFT_EYELID = new org.lgna.story.resources.JointId( HEAD, FlyerResource.class );
+	public static final org.lgna.story.resources.JointId RIGHT_EYELID = new org.lgna.story.resources.JointId( HEAD, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_WING_SHOULDER = new org.lgna.story.resources.JointId( SPINE_UPPER, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_WING_ELBOW = new org.lgna.story.resources.JointId( LEFT_WING_SHOULDER, FlyerResource.class );
 	public static final org.lgna.story.resources.JointId LEFT_WING_WRIST = new org.lgna.story.resources.JointId( LEFT_WING_ELBOW, FlyerResource.class );

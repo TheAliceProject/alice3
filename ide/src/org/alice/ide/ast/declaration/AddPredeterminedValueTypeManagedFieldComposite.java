@@ -46,14 +46,17 @@ package org.alice.ide.ast.declaration;
  * @author Dennis Cosgrove
  */
 public abstract class AddPredeterminedValueTypeManagedFieldComposite extends AddManagedFieldComposite {
-	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, org.lgna.project.ast.AbstractType<?, ?, ?> valueType ) {
+	private final org.lgna.project.ast.JavaType javaValueType;
+	private org.lgna.project.ast.AbstractType<?, ?, ?> type;
+
+	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, org.lgna.project.ast.JavaType javaValueType ) {
 		super( migrationId, new FieldDetailsBuilder()
-				.valueComponentType( ApplicabilityStatus.DISPLAYED, valueType )
+				.valueComponentType( ApplicabilityStatus.DISPLAYED, null )
 				.valueIsArrayType( ApplicabilityStatus.APPLICABLE_BUT_NOT_DISPLAYED, false )
-				.initializer( ApplicabilityStatus.DISPLAYED, org.lgna.project.ast.AstUtilities.createInstanceCreation( valueType ) )
+				.initializer( ApplicabilityStatus.DISPLAYED, null )
 				.build() );
-		//todo: move to localize
-		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( valueType );
+		this.javaValueType = javaValueType;
+		org.lgna.croquet.icon.IconFactory iconFactory = org.alice.stageide.icons.IconFactoryManager.getIconFactoryForType( this.javaValueType );
 		if( ( iconFactory != null ) && ( iconFactory != org.lgna.croquet.icon.EmptyIconFactory.getInstance() ) ) {
 			this.getOperation().setButtonIcon( iconFactory.getIcon( org.lgna.croquet.icon.IconSize.SMALL.getSize() ) );
 		}
@@ -61,5 +64,35 @@ public abstract class AddPredeterminedValueTypeManagedFieldComposite extends Add
 
 	public AddPredeterminedValueTypeManagedFieldComposite( java.util.UUID migrationId, Class<?> valueCls ) {
 		this( migrationId, org.lgna.project.ast.JavaType.getInstance( valueCls ) );
+	}
+
+	protected boolean isUserTypeDesired() {
+		return true;
+	}
+
+	@Override
+	protected void handlePreShowDialog( org.lgna.croquet.history.CompletionStep<?> step ) {
+		if( this.isUserTypeDesired() ) {
+			this.type = org.alice.ide.typemanager.TypeManager.getNamedUserTypeFromSuperType( this.javaValueType );
+		} else {
+			this.type = this.javaValueType;
+		}
+		super.handlePreShowDialog( step );
+	}
+
+	@Override
+	protected void handlePostHideDialog( org.lgna.croquet.history.CompletionStep<?> completionStep ) {
+		super.handlePostHideDialog( completionStep );
+		this.type = null;
+	}
+
+	@Override
+	protected org.lgna.project.ast.AbstractType<?, ?, ?> getValueComponentTypeInitialValue() {
+		return this.type;
+	}
+
+	@Override
+	protected org.lgna.project.ast.Expression getInitializerInitialValue() {
+		return org.lgna.project.ast.AstUtilities.createInstanceCreation( this.type );
 	}
 }

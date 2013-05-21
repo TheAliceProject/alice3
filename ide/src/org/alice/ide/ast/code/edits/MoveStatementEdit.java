@@ -89,7 +89,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		int toDelta = this.getToDelta();
 		this.fromLocation.getBlockStatement().statements.remove( this.fromLocation.getIndex() );
 		this.toLocation.getBlockStatement().statements.add( this.toLocation.getIndex() + toDelta, this.getStatement() );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class MoveStatementEdit extends org.alice.ide.croquet.edits.ast.Statement
 		int toDelta = this.getToDelta();
 		this.toLocation.getBlockStatement().statements.remove( this.toLocation.getIndex() + toDelta );
 		this.fromLocation.getBlockStatement().statements.add( this.fromLocation.getIndex(), this.getStatement() );
-		org.alice.ide.declarationseditor.DeclarationsEditorComposite.getInstance().getTabState().handleAstChangeThatCouldBeOfInterest();
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.fireProjectChangeOfInterestListeners();
 	}
 
 	@Override

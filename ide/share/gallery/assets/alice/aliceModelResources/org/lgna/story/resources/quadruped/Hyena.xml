@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <AliceModel creationYear="2013" creator="Pei Hong Tan" name="Hyena">
     <BoundingBox>
-        <Min x="NaN" y="NaN" z="NaN"/>
-        <Max x="NaN" y="NaN" z="NaN"/>
+        <Min x="-0.2033606618642807" y="0.0019576512277126312" z="-0.7292599081993103"/>
+        <Max x="0.2033606618642807" y="0.9481198787689209" z="0.7893421053886414"/>
     </BoundingBox>
     <Tags>
         <Tag>africa</Tag>
@@ -17,4 +17,5 @@
     <ThemeTags>
         <ThemeTag>africa</ThemeTag>
     </ThemeTags>
+    <Resource modelName="Hyena" resourceName="DEFAULT" textureName="DEFAULT"/>
 </AliceModel>

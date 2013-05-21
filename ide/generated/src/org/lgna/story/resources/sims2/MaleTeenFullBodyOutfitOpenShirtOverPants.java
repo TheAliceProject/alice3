@@ -25,7 +25,6 @@ package org.lgna.story.resources.sims2;
 public enum MaleTeenFullBodyOutfitOpenShirtOverPants implements MaleTeenFullBodyOutfit {
 	BLACK_BLUE_WESTERN,
 	YELLOW_RED_WESTERN,
-	WESTERN_BUMP,
 	WHITE_WESTERN,
 	KHAKI_WHITE,
 	KHAKI_BLUE,

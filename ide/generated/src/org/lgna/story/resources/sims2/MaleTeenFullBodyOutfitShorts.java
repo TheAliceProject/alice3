@@ -33,6 +33,8 @@ public enum MaleTeenFullBodyOutfitShorts implements MaleTeenFullBodyOutfit {
 	AQUA_SILKY,
 	BLUE_SILKY,
 	RED_SILKY,
+	BROWN_WHITE,
+	BROWN_TIKI,
 	FRIED;
 
 }

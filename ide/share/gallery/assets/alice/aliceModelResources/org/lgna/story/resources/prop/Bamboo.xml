@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <AliceModel creationYear="2012" creator="Matt Kline" name="Bamboo">
     <BoundingBox>
         <Min x="-0.8181501030921936" y="-0.00838720053434372" z="-0.7957033514976501"/>
@@ -17,8 +17,8 @@
     </ThemeTags>
     <Resource modelName="Shoot1" resourceName="SHOOT1" textureName="DEFAULT">
         <BoundingBox>
-            <Min x="-0.11100194603204727" y="0.0" z="-0.23665019869804382"/>
-            <Max x="0.31026554107666016" y="2.333094596862793" z="0.20341657102108002"/>
+            <Min x="-0.11100193858146667" y="0.0" z="-0.23665018379688263"/>
+            <Max x="0.31026551127433777" y="2.333094358444214" z="0.20341655611991882"/>
         </BoundingBox>
     </Resource>
     <Resource modelName="Shoot2" resourceName="SHOOT2" textureName="DEFAULT">

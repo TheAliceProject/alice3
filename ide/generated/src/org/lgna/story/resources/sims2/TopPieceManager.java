@@ -31,6 +31,45 @@ public class TopPieceManager extends IngredientManager<TopPiece> {
 	}
 
 	private TopPieceManager() {
+		this.add( FemaleAdultTopPiece.class, 
+				FemaleAdultTopPieceBlousedWaist.class,
+				FemaleAdultTopPieceCowgirlShirt.class,
+				FemaleAdultTopPieceCrewneckCollarShirt.class,
+				FemaleAdultTopPieceHalter.class,
+				FemaleAdultTopPieceMidSleeveTshirt.class,
+				FemaleAdultTopPieceMomShirt.class,
+				FemaleAdultTopPieceNaked.class,
+				FemaleAdultTopPiecePoloShirt.class,
+				FemaleAdultTopPieceSweaterSet.class,
+				FemaleAdultTopPieceTShirt.class,
+				FemaleAdultTopPieceTuckedWaist.class,
+				FemaleAdultTopPieceVNeckLongSleeve.class
+				);
+		this.add( MaleAdultTopPiece.class, 
+				MaleAdultTopPieceCowboyShirt.class,
+				MaleAdultTopPieceJacketTshirtHang.class,
+				MaleAdultTopPieceNaked.class,
+				MaleAdultTopPieceShirtPolo.class,
+				MaleAdultTopPieceShortSleeveCollar.class,
+				MaleAdultTopPieceSweaterHang.class,
+				MaleAdultTopPieceTankTop.class,
+				MaleAdultTopPieceVNeckShortSleeve.class
+				);
+		this.add( MaleElderTopPiece.class, 
+				MaleElderTopPieceDressShirt.class,
+				MaleElderTopPieceNaked.class,
+				MaleElderTopPieceShortSleeveCollar.class,
+				MaleElderTopPieceSweaterVestCollarShirt.class
+				);
+		this.add( FemaleElderTopPiece.class, 
+				FemaleElderTopPieceBlouse.class,
+				FemaleElderTopPieceCowgirlShirt.class,
+				FemaleElderTopPieceFlaredWaist.class,
+				FemaleElderTopPieceNaked.class,
+				FemaleElderTopPiecePoloShirt.class,
+				FemaleElderTopPieceSweaterSet.class,
+				FemaleElderTopPieceTuckedWaist.class
+				);
 		this.add( MaleTeenTopPiece.class, 
 				MaleTeenTopPieceCrewneckShirtOver.class,
 				MaleTeenTopPieceHipJacket.class,
@@ -71,30 +110,6 @@ public class TopPieceManager extends IngredientManager<TopPiece> {
 				ChildTopPieceNaked.class,
 				ChildTopPieceShortSleeve.class,
 				ChildTopPieceShortSleeveCollar.class
-				);
-		this.add( FemaleAdultTopPiece.class, 
-				FemaleAdultTopPieceBlousedWaist.class,
-				FemaleAdultTopPieceCowgirlShirt.class,
-				FemaleAdultTopPieceCrewneckCollarShirt.class,
-				FemaleAdultTopPieceHalter.class,
-				FemaleAdultTopPieceMidSleeveTshirt.class,
-				FemaleAdultTopPieceMomShirt.class,
-				FemaleAdultTopPieceNaked.class,
-				FemaleAdultTopPiecePoloShirt.class,
-				FemaleAdultTopPieceSweaterSet.class,
-				FemaleAdultTopPieceTShirt.class,
-				FemaleAdultTopPieceTuckedWaist.class,
-				FemaleAdultTopPieceVNeckLongSleeve.class
-				);
-		this.add( MaleAdultTopPiece.class, 
-				MaleAdultTopPieceCowboyShirt.class,
-				MaleAdultTopPieceJacketTshirtHang.class,
-				MaleAdultTopPieceNaked.class,
-				MaleAdultTopPieceShirtPolo.class,
-				MaleAdultTopPieceShortSleeveCollar.class,
-				MaleAdultTopPieceSweaterHang.class,
-				MaleAdultTopPieceTankTop.class,
-				MaleAdultTopPieceVNeckShortSleeve.class
 				);
 	}
 

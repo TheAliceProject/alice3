@@ -50,8 +50,15 @@ import org.lgna.project.ast.AbstractMethod;
  * @author Dennis Cosgrove
  */
 public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectionState<DeclarationComposite> {
+	private final org.alice.ide.project.events.ProjectChangeOfInterestListener projectChangeOfInterestListener = new org.alice.ide.project.events.ProjectChangeOfInterestListener() {
+		public void projectChanged() {
+			handleAstChangeThatCouldBeOfInterest();
+		}
+	};
+
 	public DeclarationTabState() {
 		super( org.alice.ide.IDE.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "7b3f95a0-c188-43bf-9089-21ec77c99a69" ), org.alice.ide.croquet.codecs.typeeditor.DeclarationCompositeCodec.SINGLETON );
+		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 	}
 
 	@Override
@@ -176,7 +183,7 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 		}
 	}
 
-	public void handleAstChangeThatCouldBeOfInterest() {
+	private void handleAstChangeThatCouldBeOfInterest() {
 		org.alice.ide.declarationseditor.DeclarationComposite declarationComposite = this.getValue();
 		if( declarationComposite != null ) {
 			org.lgna.croquet.components.View view = declarationComposite.getView();

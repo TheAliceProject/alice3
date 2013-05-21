@@ -22,7 +22,7 @@
  */
 
 package org.lgna.story.resources.sims2;
-public enum FemaleAdultHairHatFirefighter implements FemaleAdultHair {
+public enum FemaleAdultHairHatFirefighter implements FemaleAdultHair, FemaleElderHair {
 	BLOND_RED_HELMET,
 	BLOND_YELLOW_HELMET,
 	RED_RED_HELMET,

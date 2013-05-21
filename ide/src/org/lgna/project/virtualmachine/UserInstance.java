@@ -90,6 +90,9 @@ public class UserInstance {
 	private UserInstance( VirtualMachine vm, NamedUserConstructor constructor, Object[] arguments, java.util.Map<UserField, Object> fieldMap, java.util.Map<Object, UserField> inverseFieldMap ) {
 		this.vm = vm;
 		this.type = constructor.getDeclaringType();
+
+		assert this.type != null : constructor.getId();
+
 		this.fieldMap = fieldMap;
 		this.inverseFieldMap = inverseFieldMap;
 
