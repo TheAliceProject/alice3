@@ -68,6 +68,8 @@ import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.TreeSelectionState;
 import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.ImplementationAccessor;
 
@@ -148,11 +150,27 @@ public class FindComposite extends FrameComposite<FindView> {
 		}
 	};
 
-	@SuppressWarnings( "rawtypes" )
 	public FindComposite() {
 		this( java.util.UUID.fromString( "c454dba4-80ac-4873-b899-67ea3cd726e9" ), null );
 		org.alice.ide.project.ProjectChangeOfInterestManager.SINGLETON.addProjectChangeOfInterestListener( this.projectChangeOfInterestListener );
 		org.alice.ide.project.ProjectDocumentState.getInstance().addValueListener( this.projectDocumentChangeListener );
+		referenceTree.addValueListener( new ValueListener<SearchObjectNode>() {
+
+			public void changing( State<SearchObjectNode> state, SearchObjectNode prevValue, SearchObjectNode nextValue, boolean isAdjusting ) {
+			}
+
+			public void changed( State<SearchObjectNode> state, SearchObjectNode prevValue, SearchObjectNode nextValue, boolean isAdjusting ) {
+				if( shouldINavigate.getValue() && ( nextValue != null ) ) {
+					if( nextValue.getValue() instanceof Expression ) {
+						IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
+						searchResults.getValue().stencilHighlightForReference( (Expression)nextValue.getValue() );
+					} else {
+						IDE.getActiveInstance().selectDeclarationComposite( org.alice.ide.declarationseditor.DeclarationComposite.getInstance( ( (Expression)nextValue.getChildren().get( 0 ).getValue() ).getFirstAncestorAssignableTo( UserMethod.class ) ) );
+						IDE.getActiveInstance().getHighlightStencil().hideIfNecessary();
+					}
+				}
+			}
+		} );
 	}
 
 	private void refresh() {
@@ -162,6 +180,7 @@ public class FindComposite extends FrameComposite<FindView> {
 		}
 	}
 
+	@SuppressWarnings( "rawtypes" )
 	protected FindComposite( UUID fromString, Group group ) {
 		super( fromString, group );
 		searchState.addValueListener( searchStateListener );
@@ -181,6 +200,7 @@ public class FindComposite extends FrameComposite<FindView> {
 		return new FindView( this );
 	}
 
+	@SuppressWarnings( "rawtypes" )
 	@Override
 	public void handlePreActivation() {
 		super.handlePreActivation();
@@ -213,6 +233,7 @@ public class FindComposite extends FrameComposite<FindView> {
 
 	private KeyListener keyListener = new KeyListener() {
 
+		@SuppressWarnings( "rawtypes" )
 		State selected = searchResults;
 		Map<SearchObject<?>, Pair<Integer, Integer>> pairMap = Collections.newHashMap();
 

@@ -42,10 +42,14 @@
  */
 package org.alice.ide.croquet.models.project.views.renderers;
 
+import java.awt.Component;
+
 import javax.swing.JLabel;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.alice.ide.croquet.models.project.SearchObjectNode;
+import org.alice.ide.swing.BasicTreeNodeRenderer;
 import org.alice.ide.x.PreviewAstI18nFactory;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
@@ -53,22 +57,25 @@ import org.lgna.project.ast.UserMethod;
 /**
  * @author Matt May
  */
-public class SearchReferencesTreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.TreeCellRenderer<SearchObjectNode> {
+public class SearchReferencesTreeCellRenderer extends BasicTreeNodeRenderer {
 
 	@Override
-	protected JLabel updateListCellRendererComponent( JLabel rv, JTree tree, SearchObjectNode value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		if( value.getParent() != null ) {
-			if( value.getIsLeaf() ) {
-				Object astValue = value.getValue();
+	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
+		assert rv instanceof DefaultTreeCellRenderer;
+		assert value instanceof SearchObjectNode;
+		SearchObjectNode node = (SearchObjectNode)value;
+		if( node.getParent() != null ) {
+			if( node.getIsLeaf() ) {
+				Object astValue = node.getValue();
 				assert astValue != null;
 				assert astValue instanceof Expression : astValue.getClass();
-				rv.removeAll();
-				rv.add( PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent() );
+				return PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
 			} else {
-				Object astValue = value.getValue();
+				Object astValue = node.getValue();
 				assert astValue instanceof UserMethod;
 				UserMethod uMethod = (UserMethod)astValue;
-				rv.setText( uMethod.name.getValue() + " (" + value.getChildren().size() + ")" );
+				return new JLabel( uMethod.name.getValue() + " (" + node.getChildren().size() + ")" );
 			}
 		}
 		return rv;
