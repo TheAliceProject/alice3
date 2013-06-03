@@ -196,22 +196,33 @@ public class FindContentManager {
 
 	public List<SearchObject<?>> getResultsForString( String nextValue ) {
 		List<SearchObject<?>> rv = Collections.newArrayList();
-		if( nextValue.length() == 0 ) {
+		String check = nextValue;
+		//all these characters break regex
+		check = check.replaceAll( "\\*", ".*" );
+		check = check.replaceAll( "\\(", "" );
+		check = check.replaceAll( "\\)", "" );
+		check = check.replaceAll( "\\[", "" );
+		check = check.replaceAll( "\\]", "" );
+		check = check.replaceAll( "\\{", "" );
+		check = check.replaceAll( "\\}", "" );
+		check = check.replaceAll( "\\\\", "" );
+		if( check.length() == 0 ) {
 			return rv;
 		}
-		String check = nextValue;
-		check = check.replaceAll( "\\*", ".*" );
-		try {
-			Pattern pattern = Pattern.compile( check.toLowerCase() );
-			for( SearchObject<?> o : objectList ) {
-				String name = o.getName();
-				Matcher matcher = pattern.matcher( name.toLowerCase() );
-				if( matcher.find() ) {
-					rv.add( o );
+		while( true ) {
+			try {
+				Pattern pattern = Pattern.compile( check.toLowerCase() );
+				for( SearchObject<?> o : objectList ) {
+					String name = o.getName();
+					Matcher matcher = pattern.matcher( name.toLowerCase() );
+					if( matcher.find() ) {
+						rv.add( o );
+					}
 				}
+				break;
+			} catch( PatternSyntaxException pse ) {
+				throw pse;
 			}
-		} catch( PatternSyntaxException pse ) {
-			throw new RuntimeException( "Regex PatternSyntaxException" );
 		}
 		rv = sortByRelevance( nextValue, rv );
 		return rv;

@@ -58,7 +58,9 @@ import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FindContentMana
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.FindReferencesTreeState;
 import org.alice.ide.croquet.models.project.TreeNodesAndManagers.SearchObject;
 import org.alice.ide.croquet.models.project.views.FindView;
+import org.lgna.croquet.ActionOperation;
 import org.lgna.croquet.BooleanState;
+import org.lgna.croquet.CancelException;
 import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.Group;
 import org.lgna.croquet.ItemCodec;
@@ -68,6 +70,11 @@ import org.lgna.croquet.State.ValueListener;
 import org.lgna.croquet.StringState;
 import org.lgna.croquet.TreeSelectionState;
 import org.lgna.croquet.data.RefreshableListData;
+import org.lgna.croquet.edits.Edit;
+import org.lgna.croquet.history.CompletionStep;
+import org.lgna.project.ast.AbstractDeclaration;
+import org.lgna.project.ast.AbstractMethod;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
@@ -89,6 +96,27 @@ public class FindComposite extends FrameComposite<FindView> {
 	private StringState searchState = createStringState( createKey( "searchState" ) );
 	private BooleanState shouldINavigate = createBooleanState( createKey( "shouldNav" ), true );
 	private boolean isActive;
+	private ActionOperation howToAddOperation = createActionOperation( createKey( "howToAdd" ), new Action() {
+
+		public Edit perform( CompletionStep<?> step, org.lgna.croquet.AbstractComposite.InternalActionOperation source ) throws CancelException {
+			//needs work
+			if( searchResults.getValue() != null ) {
+				//				searchResults.getValue().getSearchObject().
+				AbstractDeclaration searchObject = searchResults.getValue().getSearchObject();
+				System.out.println( searchObject.getClass() );
+				AbstractMethod abstractMethod = searchObject.getFirstAncestorAssignableTo( AbstractMethod.class );
+				System.out.println( abstractMethod );
+				if( searchObject instanceof AbstractMethod ) {
+					AbstractType<?, ?, ?> declaringType = ( (AbstractMethod)searchObject ).getDeclaringType();
+					//					AnonymousConstructorPane.lookup( awtComponent )
+					//					MemberTabComposite.
+					IDE.getActiveInstance().getMethodInvocations( (AbstractMethod)searchObject );
+				}
+			}
+			return null;
+		}
+
+	} );
 	@SuppressWarnings( "rawtypes" )
 	ItemCodec<SearchObject> codec1 = new ItemCodec<SearchObject>() {
 
@@ -327,5 +355,9 @@ public class FindComposite extends FrameComposite<FindView> {
 
 	public TreeExpansionListener getTreeExpansionListener() {
 		return treeListener;
+	}
+
+	public ActionOperation getHowToAddOperation() {
+		return this.howToAddOperation;
 	}
 }

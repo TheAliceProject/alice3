@@ -54,7 +54,7 @@ import org.lgna.croquet.components.BorderPanel;
 import org.lgna.croquet.components.GridPanel;
 import org.lgna.croquet.components.List;
 import org.lgna.croquet.components.ScrollPane;
-import org.lgna.croquet.components.TextArea;
+import org.lgna.croquet.components.TextField;
 import org.lgna.croquet.components.Tree;
 
 import edu.cmu.cs.dennisc.math.GoldenRatio;
@@ -64,7 +64,7 @@ import edu.cmu.cs.dennisc.math.GoldenRatio;
  */
 public class FindView extends BorderPanel {
 
-	final TextArea searchBox;
+	private final TextField searchBox;
 	private InputMap inputMap;
 	private final Object left;
 	private final Object right;
@@ -72,7 +72,7 @@ public class FindView extends BorderPanel {
 
 	public FindView( FindComposite composite ) {
 		super( composite );
-		searchBox = composite.getSearchState().createTextArea();
+		searchBox = composite.getSearchState().createTextField();
 		inputMap = searchBox.getAwtComponent().getInputMap();
 		left = inputMap.get( KeyStroke.getKeyStroke( "LEFT" ) );
 		right = inputMap.get( KeyStroke.getKeyStroke( "RIGHT" ) );
@@ -84,16 +84,12 @@ public class FindView extends BorderPanel {
 		referencesTreeList.setRootVisible( false );
 		searchResultsList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
 		referencesTreeList.setBorder( BorderFactory.createBevelBorder( BevelBorder.LOWERED ) );
-		panel.addComponent( new ScrollPane( searchResultsList ) );
+		BorderPanel bPanel = new BorderPanel();
+		bPanel.addCenterComponent( new ScrollPane( searchResultsList ) );
+		//		bPanel.addPageEndComponent( composite.getHowToAddOperation().createButton() );
+		panel.addComponent( bPanel );
 		searchResultsList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchResultListCellRenderer() );
 		referencesTreeList.setCellRenderer( new org.alice.ide.croquet.models.project.views.renderers.SearchReferencesTreeCellRenderer() );
-		//		resultReferencesList.setCellRenderer( new ListCellRenderer<Expression>() {
-		//
-		//			public Component getListCellRendererComponent( JList<? extends Expression> list, Expression value, int index, boolean isSelected, boolean cellHasFocus ) {
-		//				return PreviewAstI18nFactory.getInstance().createComponent( value ).getAwtComponent();
-		//			}
-		//
-		//		} );
 		panel.addComponent( new ScrollPane( referencesTreeList ) );
 		this.addCenterComponent( panel );
 		searchBox.addKeyListener( composite.getKeyListener() );
