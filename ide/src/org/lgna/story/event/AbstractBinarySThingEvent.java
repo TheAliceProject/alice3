@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
+/**
+ * Copyright (c) 2006-2012, Carnegie Mellon University. All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without 
  * modification, are permitted provided that the following conditions are met:
@@ -42,15 +42,43 @@
  */
 package org.lgna.story.event;
 
+import org.lgna.project.annotations.MethodTemplate;
+import org.lgna.project.annotations.Visibility;
+import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
 
 /**
  * @author Matt May
  */
-public class ProximityEvent extends AbstractBinarySThingEvent {
+public class AbstractBinarySThingEvent extends AbstractEvent {
 
-	public ProximityEvent( SThing a, SThing b ) {
-		super( a, b );
+	private final SThing a;
+	private final SThing b;
+	private final org.lgna.story.SMovableTurnable[] movables;
+
+	public AbstractBinarySThingEvent( SThing a, SThing b ) {
+		this.a = a;
+		this.b = b;
+		movables = new SMovableTurnable[ 2 ];
+		if( a instanceof SMovableTurnable ) {
+			movables[ 0 ] = (SMovableTurnable)a;
+		}
+		if( b instanceof SMovableTurnable ) {
+			movables[ 1 ] = (SMovableTurnable)b;
+		}
 	}
 
+	public SThing getSThingFromSetA() {
+		return a;
+	}
+
+	public SThing getSThingFromSetB() {
+		return b;
+	}
+
+	@Deprecated
+	@MethodTemplate( visibility = Visibility.COMPLETELY_HIDDEN )
+	public org.lgna.story.SMovableTurnable[] getModels() {
+		return movables;
+	}
 }

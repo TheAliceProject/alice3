@@ -49,7 +49,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lgna.story.ImplementationAccessor;
 import org.lgna.story.MultipleEventPolicy;
-import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SThing;
 import org.lgna.story.event.CollisionEndListener;
 import org.lgna.story.event.CollisionEvent;
@@ -102,6 +101,7 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 		Map<SThing, CopyOnWriteArrayList<SThing>> checkMap = new ConcurrentHashMap<SThing, CopyOnWriteArrayList<SThing>>();
 		Map<SThing, Map<SThing, CopyOnWriteArrayList<Object>>> eventMap = new ConcurrentHashMap<SThing, Map<SThing, CopyOnWriteArrayList<Object>>>();
 		Map<SThing, Map<SThing, Boolean>> wereTouchingMap = new ConcurrentHashMap<SThing, Map<SThing, Boolean>>();
+		Map<Object, List<SThing>> listenerToGroupAMap = Collections.newConcurrentHashMap();
 
 		public void check( SThing changedEntity ) {
 			for( SThing m : checkMap.get( changedEntity ) ) {
@@ -111,17 +111,18 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 				}
 				for( Object colList : listenerList ) {
 					if( check( colList, m, changedEntity ) ) {
-						CopyOnWriteArrayList<SThing> models = new CopyOnWriteArrayList<SThing>();
-						if( changedEntity instanceof SMovableTurnable ) {
-							models.add( changedEntity );
-						}
-						if( m instanceof SMovableTurnable ) {
-							models.add( m );
-						}
 						if( colList instanceof CollisionStartListener ) {
-							fireEvent( colList, new StartCollisionEvent( models.toArray( new SMovableTurnable[ 0 ] ) ) );
+							if( listenerToGroupAMap.get( colList ).contains( m ) ) {
+								fireEvent( colList, new StartCollisionEvent( m, changedEntity ) );
+							} else {
+								fireEvent( colList, new StartCollisionEvent( changedEntity, m ) );
+							}
 						} else if( colList instanceof CollisionEndListener ) {
-							fireEvent( colList, new EndCollisionEvent( models.toArray( new SMovableTurnable[ 0 ] ) ) );
+							if( listenerToGroupAMap.get( colList ).contains( m ) ) {
+								fireEvent( colList, new EndCollisionEvent( m, changedEntity ) );
+							} else {
+								fireEvent( colList, new EndCollisionEvent( changedEntity, m ) );
+							}
 						}
 					}
 				}
@@ -142,8 +143,10 @@ public class CollisionHandler extends TransformationChangedHandler<Object, Colli
 		}
 
 		public void register( Object collisionListener, List<SThing> groupOne, List<SThing> groupTwo ) {
+			listenerToGroupAMap.put( collisionListener, groupTwo );
 			for( SThing m : groupOne ) {
 				if( eventMap.get( m ) == null ) {
+
 					eventMap.put( m, new ConcurrentHashMap<SThing, CopyOnWriteArrayList<Object>>() );
 					wereTouchingMap.put( m, new ConcurrentHashMap<SThing, Boolean>() );
 					checkMap.put( m, new CopyOnWriteArrayList<SThing>() );
