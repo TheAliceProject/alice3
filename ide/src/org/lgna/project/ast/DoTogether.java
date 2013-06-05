@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogether extends AbstractStatementWithBody {
+public final class DoTogether extends AbstractStatementWithBody {
 	public DoTogether() {
 	}
 

@@ -46,7 +46,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayLength extends Expression {
+public final class ArrayLength extends Expression {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType<?, ?, ?> getExpressionType() {
@@ -81,6 +81,15 @@ public class ArrayLength extends Expression {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			ArrayLength other = (ArrayLength)o;
+			return this.array.valueContentEquals( other.array );
+		}
+		return false;
 	}
 
 	@Override

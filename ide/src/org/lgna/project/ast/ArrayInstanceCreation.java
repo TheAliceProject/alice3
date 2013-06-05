@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrayInstanceCreation extends Expression {
+public final class ArrayInstanceCreation extends Expression {
 	public DeclarationProperty<AbstractType<?, ?, ?>> arrayType = new DeclarationProperty<AbstractType<?, ?, ?>>( this );
 	public edu.cmu.cs.dennisc.property.ListProperty<Integer> lengths = new edu.cmu.cs.dennisc.property.ListProperty<Integer>( this );
 	public ExpressionListProperty expressions = new ExpressionListProperty( this );
@@ -97,6 +97,19 @@ public class ArrayInstanceCreation extends Expression {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			ArrayInstanceCreation other = (ArrayInstanceCreation)o;
+			if( this.arrayType.valueEquals( other.arrayType ) ) {
+				if( this.lengths.valueEquals( other.lengths ) ) {
+					return this.expressions.valueContentEquals( other.expressions );
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

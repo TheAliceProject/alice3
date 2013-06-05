@@ -138,8 +138,16 @@ public class ExpressionFillInGenerator {
 			if( field.isStatic() ) {
 				fillIn = org.alice.ide.croquet.models.cascade.StaticFieldAccessFillIn.getInstance( field );
 			} else {
-				fillIn = null;
+				org.lgna.project.ast.Expression instanceExpression = fieldAccess.expression.getValue();
+				if( instanceExpression instanceof org.lgna.project.ast.ThisExpression ) {
+					fillIn = org.alice.ide.croquet.models.cascade.ThisFieldAccessFillIn.getInstance( field );
+				} else {
+					// currently, fields should only be accessible statically via a class or from the this expression
+					fillIn = null;
+				}
 			}
+		} else if( expression instanceof org.lgna.project.ast.ThisExpression ) {
+			fillIn = org.alice.ide.croquet.models.cascade.ThisExpressionFillIn.getInstance();
 		} else if( expression instanceof org.lgna.project.ast.ArrayInstanceCreation ) {
 			org.lgna.project.ast.ArrayInstanceCreation arrayInstanceCreation = (org.lgna.project.ast.ArrayInstanceCreation)expression;
 			org.lgna.project.ast.AbstractType<?, ?, ?> arrayType = arrayInstanceCreation.arrayType.getValue();

@@ -65,6 +65,16 @@ public abstract class AbstractNode extends Element implements Node {
 		this.id = id;
 	}
 
+	public boolean contentEquals( Node other ) {
+		if( other != null ) {
+			Class<?> thisCls = this.getClass();
+			Class<?> otherCls = other.getClass();
+			return thisCls.equals( otherCls );
+		} else {
+			return false;
+		}
+	}
+
 	public Node getParent() {
 		return this.parent;
 	}
@@ -317,17 +327,17 @@ public abstract class AbstractNode extends Element implements Node {
 	//		this.crawl( crawler, crawlPolicy );
 	//	}
 
-	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
+	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Map<AbstractDeclaration, Integer> map ) {
 		org.w3c.dom.Element rv;
 		if( value instanceof AbstractNode ) {
 			AbstractNode node = (AbstractNode)value;
-			rv = node.encode( xmlDocument, set );
+			rv = node.encode( xmlDocument, map );
 		} else if( value instanceof java.util.Collection ) {
 			rv = xmlDocument.createElement( "collection" );
 			rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
 			java.util.Collection<?> collection = (java.util.Collection<?>)value;
 			for( Object item : collection ) {
-				rv.appendChild( encodeValue( item, xmlDocument, set ) );
+				rv.appendChild( encodeValue( item, xmlDocument, map ) );
 			}
 			//		} else if( value instanceof org.alice.virtualmachine.Resource ) {
 			//			org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
@@ -354,11 +364,11 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	protected final org.w3c.dom.Element encodeProperty( org.w3c.dom.Document xmlDocument, edu.cmu.cs.dennisc.property.Property property, java.util.Set<AbstractDeclaration> set ) {
+	protected final org.w3c.dom.Element encodeProperty( org.w3c.dom.Document xmlDocument, edu.cmu.cs.dennisc.property.Property property, java.util.Map<AbstractDeclaration, Integer> map ) {
 		org.w3c.dom.Element xmlProperty = xmlDocument.createElement( "property" );
 		xmlProperty.setAttribute( "name", property.getName() );
 		Object value = property.getValue( this );
-		xmlProperty.appendChild( encodeValue( value, xmlDocument, set ) );
+		xmlProperty.appendChild( encodeValue( value, xmlDocument, map ) );
 		return xmlProperty;
 	}
 
@@ -413,21 +423,41 @@ public abstract class AbstractNode extends Element implements Node {
 		return rv;
 	}
 
-	private static int getNotGuaranteedToBeUniqueKey( AbstractDeclaration declaration ) {
-		return System.identityHashCode( declaration );
+	// hashCode not terrible choice for "unique" key.
+	//	private static int getNotGuaranteedToBeUniqueKey( AbstractDeclaration declaration ) {
+	//		return System.identityHashCode( declaration );
+	//	}
+
+	private static int createUniqueKey( AbstractDeclaration declaration, java.util.Map<?, ?> map ) {
+		return map.size() + 1;
 	}
 
-	//todo: reduce visibility?
-	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
+	private static int getUniqueKeyAndPutInEncodeMap( AbstractDeclaration declaration, java.util.Map<AbstractDeclaration, Integer> map ) {
+		int uniqueKey = createUniqueKey( declaration, map );
+		map.put( declaration, uniqueKey );
+		return uniqueKey;
+	}
+
+	private static int getUniqueKeyAndPutInDecodeMap( AbstractDeclaration declaration, java.util.Map<Integer, AbstractDeclaration> map ) {
+		int uniqueKey = createUniqueKey( declaration, map );
+		map.put( uniqueKey, declaration );
+		return uniqueKey;
+	}
+
+	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Map<AbstractDeclaration, Integer> map ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
 		if( this instanceof AbstractDeclaration ) {
 			AbstractDeclaration abstractDeclaration = (AbstractDeclaration)this;
-			int key = getNotGuaranteedToBeUniqueKey( abstractDeclaration );
-			rv.setAttribute( CodecConstants.NOT_GUARANTEED_TO_BE_UNIQUE_KEY_ATTRIBUTE, Integer.toHexString( key ) );
-			if( set.contains( this ) ) {
-				return rv;
+			boolean isDeclarationAlreadyEncoded = map.containsKey( abstractDeclaration );
+			int key;
+			if( isDeclarationAlreadyEncoded ) {
+				key = map.get( abstractDeclaration );
 			} else {
-				set.add( abstractDeclaration );
+				key = getUniqueKeyAndPutInEncodeMap( abstractDeclaration, map );
+			}
+			rv.setAttribute( CodecConstants.UNIQUE_KEY_ATTRIBUTE, Integer.toHexString( key ) );
+			if( isDeclarationAlreadyEncoded ) {
+				return rv;
 			}
 		}
 		//todo
@@ -440,7 +470,7 @@ public abstract class AbstractNode extends Element implements Node {
 			UserArrayType userArrayType = (UserArrayType)this;
 
 			org.w3c.dom.Element xmlLeafType = xmlDocument.createElement( "leafType" );
-			xmlLeafType.appendChild( encodeValue( userArrayType.getLeafType(), xmlDocument, set ) );
+			xmlLeafType.appendChild( encodeValue( userArrayType.getLeafType(), xmlDocument, map ) );
 			rv.appendChild( xmlLeafType );
 
 			org.w3c.dom.Element xmlDimensionCount = xmlDocument.createElement( "dimensionCount" );
@@ -459,12 +489,12 @@ public abstract class AbstractNode extends Element implements Node {
 		} else if( this instanceof AnonymousUserConstructor ) {
 			AnonymousUserConstructor anonymousConstructor = (AnonymousUserConstructor)this;
 			org.w3c.dom.Element xmlType = xmlDocument.createElement( "anonymousType" );
-			xmlType.appendChild( encodeValue( anonymousConstructor.getDeclaringType(), xmlDocument, set ) );
+			xmlType.appendChild( encodeValue( anonymousConstructor.getDeclaringType(), xmlDocument, map ) );
 			rv.appendChild( xmlType );
 		} else if( this instanceof JavaConstructorParameter ) {
 			JavaConstructorParameter parameterDeclaredInJavaConstructor = (JavaConstructorParameter)this;
 			JavaConstructor constructor = parameterDeclaredInJavaConstructor.getCode();
-			rv.appendChild( encodeValue( constructor, xmlDocument, set ) );
+			rv.appendChild( encodeValue( constructor, xmlDocument, map ) );
 
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
 			xmlIndex.appendChild( xmlDocument.createTextNode( Integer.toString( parameterDeclaredInJavaConstructor.getIndex() ) ) );
@@ -472,21 +502,33 @@ public abstract class AbstractNode extends Element implements Node {
 		} else if( this instanceof JavaMethodParameter ) {
 			JavaMethodParameter parameterDeclaredInJavaMethod = (JavaMethodParameter)this;
 			JavaMethod method = parameterDeclaredInJavaMethod.getCode();
-			rv.appendChild( encodeValue( method, xmlDocument, set ) );
+			rv.appendChild( encodeValue( method, xmlDocument, map ) );
 
 			org.w3c.dom.Element xmlIndex = xmlDocument.createElement( "index" );
 			xmlIndex.appendChild( xmlDocument.createTextNode( Integer.toString( parameterDeclaredInJavaMethod.getIndex() ) ) );
 			rv.appendChild( xmlIndex );
 		}
 		for( edu.cmu.cs.dennisc.property.Property property : getProperties() ) {
-			rv.appendChild( encodeProperty( xmlDocument, property, set ) );
+			rv.appendChild( encodeProperty( xmlDocument, property, map ) );
 		}
 		return rv;
 	}
 
+	public static java.util.Map<AbstractDeclaration, Integer> createEncodeMapFromDeclarationSet( java.util.Set<AbstractDeclaration> set ) {
+		java.util.Map<AbstractDeclaration, Integer> map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+		for( AbstractDeclaration declaration : set ) {
+			getUniqueKeyAndPutInEncodeMap( declaration, map );
+		}
+		return map;
+	}
+
+	private org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set<AbstractDeclaration> set ) {
+		return this.encode( xmlDocument, createEncodeMapFromDeclarationSet( set ) );
+	}
+
 	public final org.w3c.dom.Document encode( java.util.Set<AbstractDeclaration> set ) {
 		org.w3c.dom.Document rv = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
-		org.w3c.dom.Element xmlElement = encode( rv, set );
+		org.w3c.dom.Element xmlElement = this.encode( rv, set );
 		xmlElement.setAttribute( "version", Double.toString( CURRENT_VERSION ) );
 		rv.appendChild( xmlElement );
 		return rv;
@@ -567,7 +609,7 @@ public abstract class AbstractNode extends Element implements Node {
 	public static java.util.Map<Integer, AbstractDeclaration> createMapOfDeclarationsThatShouldNotBeCopied( java.util.Set<AbstractDeclaration> set ) {
 		java.util.Map<Integer, AbstractDeclaration> rv = new java.util.HashMap<Integer, AbstractDeclaration>();
 		for( AbstractDeclaration abstractDeclaration : set ) {
-			rv.put( getNotGuaranteedToBeUniqueKey( abstractDeclaration ), abstractDeclaration );
+			getUniqueKeyAndPutInDecodeMap( abstractDeclaration, rv );
 		}
 		return rv;
 	}
@@ -623,60 +665,6 @@ public abstract class AbstractNode extends Element implements Node {
 		return decode( xmlDocument, projectVersion, new java.util.HashMap<Integer, AbstractDeclaration>() );
 	}
 
-	public void assignUUIDs( java.util.Map<Integer, AbstractDeclaration> map ) {
-	}
-
-	//	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {
-	//		sb.append( "name=" );
-	//		sb.append( this.getName() );
-	//		sb.append( ";" );
-	//		sb.append( "@" );
-	//		sb.append( this.hashCode() );
-	//		sb.append( ";" );
-	//		String separator = "";
-	//		for( edu.cmu.cs.dennisc.property.Property< ? > property : getProperties() ) {
-	//			sb.append( separator );
-	//			sb.append( property.getName() );
-	//			sb.append( "=" );
-	//			Object value = property.getValue( this );
-	//			if( value instanceof Node ) {
-	//				Node node = (Node)value;
-	//				if( set.contains( node ) ) {
-	//					sb.append( "referenced@" );
-	//					sb.append( node.hashCode() );
-	//				} else {
-	//					node.append( sb, set );
-	//				}
-	//			} else if( value instanceof java.util.Collection ) {
-	//				java.util.Collection collection = (java.util.Collection)value;
-	//				sb.append( "cls:" );
-	//				sb.append( collection.getClass().getName() );
-	//				sb.append( ";size:" );
-	//				sb.append( collection.size() );
-	//			} else {
-	//				sb.append( value );
-	//			}
-	//			separator = ",";
-	//		}
-	//	}
-
-	//	protected void append( StringBuffer sb, java.util.Set< Node > set ) {
-	//		set.add( this );
-	//		sb.append( this.getClass().getName() );
-	//		sb.append( "[" );
-	//		appendInternal( sb, set );
-	//		sb.append( "]" );
-	//	}
-
-	//	@Override
-	//	public String toString() {
-	//		StringBuffer sb = new StringBuffer();
-	//		append( sb, new java.util.HashSet< Node >() );
-	//		return sb.toString();
-	//	}
-
-	//todo: i18n
-	//protected abstract StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ); 
 	protected StringBuilder appendRepr( StringBuilder rv, java.util.Locale locale ) {
 		rv.append( this.getClass().getSimpleName() );
 		return rv;

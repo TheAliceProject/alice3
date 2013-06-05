@@ -45,7 +45,7 @@ package org.lgna.project.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class BitwiseInfixExpression extends Expression {
+public final class BitwiseInfixExpression extends Expression {
 	public enum Operator {
 		AND() {
 			@Override
@@ -157,6 +157,19 @@ public class BitwiseInfixExpression extends Expression {
 	@Override
 	public AbstractType<?, ?, ?> getType() {
 		return this.expressionType.getValue();
+	}
+
+	@Override
+	public boolean contentEquals( Node o ) {
+		if( super.contentEquals( o ) ) {
+			BitwiseInfixExpression other = (BitwiseInfixExpression)o;
+			if( this.leftOperand.valueContentEquals( other.leftOperand ) ) {
+				if( this.operator.valueEquals( other.operator ) ) {
+					return this.rightOperand.valueContentEquals( other.rightOperand );
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
