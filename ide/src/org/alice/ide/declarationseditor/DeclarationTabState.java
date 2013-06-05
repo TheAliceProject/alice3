@@ -158,11 +158,23 @@ public class DeclarationTabState extends org.lgna.croquet.MutableDataTabSelectio
 	}
 
 	public org.lgna.croquet.Operation getItemSelectionOperationForMethod( org.lgna.project.ast.AbstractMethod method ) {
-		org.lgna.croquet.Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( method ) );
+		final org.lgna.croquet.Operation rv = this.getItemSelectionOperation( CodeComposite.getInstance( method ) );
 		if( method.isProcedure() ) {
 			rv.setSmallIcon( PROCEDURE_ICON );
 		} else {
 			rv.setSmallIcon( FUNCTION_ICON );
+		}
+		if( method instanceof org.lgna.project.ast.UserMethod ) {
+			org.lgna.project.ast.UserMethod userMethod = (org.lgna.project.ast.UserMethod)method;
+			userMethod.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+				public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				}
+
+				public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+					rv.setName( (String)e.getValue() );
+				}
+			} );
+			//todo: release?
 		}
 		return rv;
 	}
