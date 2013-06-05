@@ -66,17 +66,16 @@ public class IkPoser extends SProgram {
 	private final SBiped biped;
 	public final PoserScene scene;
 
-	private PoserSplitComposite composite;
+	protected AbstractPoserSplitComposite composite;
 	private UserType<?> userType;
 
-	public IkPoser( NamedUserType userType, boolean isAnimationDesired ) {
+	public IkPoser( NamedUserType userType ) {
 		//		this.biped = userType.getDeclaredConstructor().;
 		//		Object value = userType.superType.getValue();
 		//		TypeManager.getNamedUserTypeFromSuperType( (JavaType)value );
 		this.biped = deriveBipedFromUserType( userType );
 		scene = new PoserScene( camera, biped );
 		this.userType = userType;
-		composite = new PoserSplitComposite( this, isAnimationDesired );
 	}
 
 	public InternalMenuItemPrepModel getMenuItemPrepModel() {
@@ -117,7 +116,7 @@ public class IkPoser extends SProgram {
 		this.camera.move( MoveDirection.UP, 1 );
 	}
 
-	private PoserSplitComposite getComposite() {
+	private AbstractPoserSplitComposite getComposite() {
 		return composite;
 	}
 
@@ -165,7 +164,13 @@ public class IkPoser extends SProgram {
 		org.lgna.project.virtualmachine.UserInstance userInstance = vm.ENTRY_POINT_createInstance( type, arguments );
 		edu.cmu.cs.dennisc.java.util.logging.Logger.outln( userInstance );
 		userInstance.getJavaInstance( SBiped.class );
-		IkPoser program = new IkPoser( type, SHOULD_I_ANIMATE );
+		IkPoser program;
+		if( SHOULD_I_ANIMATE ) {
+			program = new AnimatorProgram( type );
+		} else {
+			program = new PoserProgram( type );
+		}
+		//		IkPoser program = new IkPoser( type, SHOULD_I_ANIMATE );
 		app.getFrame().setMainComposite( program.getComposite() );
 
 		test.ik.croquet.IsLinearEnabledState.getInstance().setValueTransactionlessly( true );

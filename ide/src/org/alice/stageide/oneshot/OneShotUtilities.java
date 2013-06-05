@@ -42,7 +42,8 @@
  */
 package org.alice.stageide.oneshot;
 
-import org.lgna.ik.poser.IkPoser;
+import org.lgna.ik.poser.AnimatorProgram;
+import org.lgna.ik.poser.PoserProgram;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.story.SBiped;
 
@@ -68,7 +69,8 @@ public class OneShotUtilities {
 				models.add( org.alice.ide.croquet.models.ast.DeleteFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 			}
 			if( field.getValueType().isAssignableTo( SBiped.class ) && ( field.getValueType() instanceof NamedUserType ) ) {
-				models.add( new IkPoser( (NamedUserType)field.getValueType(), false ).getMenuItemPrepModel() );
+				models.add( new PoserProgram( (NamedUserType)field.getValueType() ).getMenuItemPrepModel() );
+				models.add( new AnimatorProgram( (NamedUserType)field.getValueType() ).getMenuItemPrepModel() );
 			}
 			models.add( org.alice.ide.croquet.models.ast.RevertFieldOperation.getInstance( field ).getMenuItemPrepModel() );
 		}

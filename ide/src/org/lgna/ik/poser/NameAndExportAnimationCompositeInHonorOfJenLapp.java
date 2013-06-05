@@ -96,7 +96,7 @@ public class NameAndExportAnimationCompositeInHonorOfJenLapp extends OperationIn
 	@Override
 	protected Edit createEdit( CompletionStep<?> completionStep ) {
 		UserMethod method = parent.createUserMethod( animationName.getValue() );
-		boolean IS_READY_FOR_PRIME_TIME = false;
+		boolean IS_READY_FOR_PRIME_TIME = true;
 		if( IS_READY_FOR_PRIME_TIME ) {
 			UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
 			return new DeclareMethodEdit( completionStep, declaringType, method );

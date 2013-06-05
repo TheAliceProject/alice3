@@ -42,23 +42,28 @@
  */
 package org.lgna.ik.poser;
 
+import java.util.UUID;
+
 import org.lgna.croquet.FrameComposite;
 import org.lgna.croquet.SplitComposite;
 import org.lgna.croquet.components.HorizontalSplitPane;
 import org.lgna.croquet.components.SplitPane;
+import org.lgna.story.MoveDirection;
 
 import test.ik.croquet.SceneComposite;
 
 /**
  * @author Matt May
  */
-public class PoserSplitComposite extends FrameComposite<SplitPane> {
+public class AbstractPoserSplitComposite extends FrameComposite<SplitPane> {
 
 	private SplitComposite splitComposite;
+	private IkPoser program;
 
-	public PoserSplitComposite( IkPoser ikPoser, boolean isAnimationDesired ) {
-		super( java.util.UUID.fromString( "9818db03-7a9b-493c-b186-1ea58d9d49eb" ), null );
-		this.splitComposite = new SplitComposite( null, isAnimationDesired ? new AnimatorControlComposite( ikPoser ) : new PoserControlComposite( ikPoser ), SceneComposite.getInstance() ) {
+	protected AbstractPoserSplitComposite( IkPoser ikPoser, boolean isAnimationDesired, UUID uuid ) {
+		super( uuid, null );
+		this.program = ikPoser;
+		this.splitComposite = new SplitComposite( null, isAnimationDesired ? new AnimatorControlComposite( ikPoser ) : new PoserControlComposite( ikPoser ), test.ik.croquet.SceneComposite.getInstance() ) {
 
 			@Override
 			protected SplitPane createView() {
@@ -70,6 +75,14 @@ public class PoserSplitComposite extends FrameComposite<SplitPane> {
 	@Override
 	protected SplitPane createView() {
 		return new HorizontalSplitPane( splitComposite );
+	}
+
+	@Override
+	public void handlePreActivation() {
+		super.handlePreActivation();
+		SceneComposite.getInstance().getView().initializeInAwtContainer( program );
+		program.getBiped().move( MoveDirection.UP, 1 );
+		program.getBiped().move( MoveDirection.DOWN, 1 );
 	}
 
 }

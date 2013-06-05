@@ -75,7 +75,7 @@ public abstract class AbstractPoserControlComposite<T extends AbstractPoserContr
 	protected BooleanState isUsingIK = createBooleanState( createKey( "isUsingIK" ), true );
 
 	public AbstractPoserControlComposite( IkPoser ikPoser, UUID uid ) {
-		super( java.util.UUID.fromString( "67c1692b-8fca-406a-8be3-267b1796ceb8" ) );
+		super( uid );
 		this.ikPoser = ikPoser;
 		ikPoser.getJointSelectionSheres();
 		PoserScene scene = ikPoser.scene;

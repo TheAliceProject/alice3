@@ -42,19 +42,28 @@
  */
 package org.lgna.ik.poser;
 
+import java.util.List;
+
 import org.alice.ide.ast.ExpressionCreator.CannotCreateExpressionException;
 import org.alice.ide.croquet.edits.ast.DeclareNonGalleryFieldEdit;
 import org.alice.ide.name.validators.FieldNameValidator;
 import org.alice.stageide.ast.ExpressionCreator;
 import org.lgna.croquet.CancelException;
+import org.lgna.croquet.ItemCodec;
+import org.lgna.croquet.ListSelectionState;
 import org.lgna.croquet.OperationInputDialogCoreComposite;
 import org.lgna.croquet.StringState;
+import org.lgna.croquet.data.RefreshableListData;
 import org.lgna.croquet.history.CompletionStep;
 import org.lgna.ik.poser.view.NameYourPoseView;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.JavaType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserType;
+
+import edu.cmu.cs.dennisc.codec.BinaryDecoder;
+import edu.cmu.cs.dennisc.codec.BinaryEncoder;
+import edu.cmu.cs.dennisc.java.util.Collections;
 
 /**
  * @author Matt May
@@ -64,11 +73,42 @@ public class NameYourPoseComposite extends OperationInputDialogCoreComposite<Nam
 	private FieldNameValidator validator;
 	private PoserControlComposite parent;
 	private StringState poseName = createStringState( createKey( "poseName" ) );
+	private RefreshableListData<UserType> data = new RefreshableListData<UserType>( new ItemCodec<UserType>() {
+
+		public Class<UserType> getValueClass() {
+			return null;
+		}
+
+		public UserType decodeValue( BinaryDecoder binaryDecoder ) {
+			return null;
+		}
+
+		public void encodeValue( BinaryEncoder binaryEncoder, UserType value ) {
+		}
+
+		public void appendRepresentation( StringBuilder sb, UserType value ) {
+		}
+
+	} ) {
+
+		@Override
+		protected List<UserType> createValues() {
+			List<UserType> rv = Collections.newArrayList();
+			//			UserType<?> type = ( (UserMember)parent.getIkPoser().getBiped() ).getDeclaringType();
+			//			while( type != null ) {
+			//				rv.add( type );
+			//				type = (UserType<?>)type.getParent();
+			//			}
+			return rv;
+		}
+	};
 
 	public NameYourPoseComposite( PoserControlComposite parent ) {
 		super( java.util.UUID.fromString( "4c5873b3-7c3b-440f-8511-0203fd145c7f" ), null );
 		this.parent = parent;
 	}
+
+	ListSelectionState<UserType> hierarchySelection = createListSelectionState( createKey( "typeHierarchy" ), data, data.getItemCount() - 1 );
 
 	@Override
 	protected NameYourPoseView createView() {
@@ -105,7 +145,7 @@ public class NameYourPoseComposite extends OperationInputDialogCoreComposite<Nam
 	@Override
 	protected DeclareNonGalleryFieldEdit createEdit( CompletionStep<?> completionStep ) {
 		UserField field = createPoseField( poseName.getValue() );
-		boolean IS_READY_FOR_PRIME_TIME = false;
+		boolean IS_READY_FOR_PRIME_TIME = true;
 		if( IS_READY_FOR_PRIME_TIME ) {
 			UserType<?> declaringType = this.parent.getIkPoser().getDeclaringType();
 			return new DeclareNonGalleryFieldEdit( completionStep, declaringType, field );
@@ -130,6 +170,10 @@ public class NameYourPoseComposite extends OperationInputDialogCoreComposite<Nam
 		} catch( CannotCreateExpressionException e ) {
 			throw new CancelException();
 		}
+	}
+
+	public ListSelectionState<UserType> getHierarchySelection() {
+		return this.hierarchySelection;
 	}
 
 }

@@ -60,7 +60,10 @@ public class NameYourPoseView extends MigPanel {
 		sidekickLabel.setAlignmentX( javax.swing.JComponent.RIGHT_ALIGNMENT );
 		sidekickLabel.setAlignmentY( javax.swing.JComponent.CENTER_ALIGNMENT );
 		this.addComponent( sidekickLabel, "align right" );
-		this.addComponent( textField, "growx" );
+		this.addComponent( textField, "growx, wrap" );
+		this.addComponent( composite.getHierarchySelection().getSidekickLabel().createLabel() );
+		//		this.addComponent( composite.getHierarchySelection().createItemDropDown() );
+		this.addComponent( composite.getHierarchySelection().createVerticalDefaultRadioButtons() );
 	}
 
 }
