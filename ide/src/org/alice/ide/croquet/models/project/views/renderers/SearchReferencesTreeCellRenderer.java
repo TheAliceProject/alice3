@@ -40,42 +40,44 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationseditor;
+package org.alice.ide.croquet.models.project.views.renderers;
+
+import java.awt.Component;
+
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
+import org.alice.ide.croquet.models.project.SearchObjectNode;
+import org.alice.ide.swing.BasicTreeNodeRenderer;
+import org.alice.ide.x.PreviewAstI18nFactory;
+import org.lgna.project.ast.Expression;
+import org.lgna.project.ast.UserMethod;
 
 /**
- * @author Dennis Cosgrove
+ * @author Matt May
  */
-public class HighlightFieldOperation extends org.lgna.croquet.ActionOperation {
-	private static edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap<org.lgna.project.ast.UserField, HighlightFieldOperation> map = edu.cmu.cs.dennisc.java.util.Collections.newInitializingIfAbsentHashMap();
+public class SearchReferencesTreeCellRenderer extends BasicTreeNodeRenderer {
 
-	public static synchronized HighlightFieldOperation getInstance( org.lgna.project.ast.UserField field ) {
-		return map.getInitializingIfAbsent( field, new edu.cmu.cs.dennisc.java.util.InitializingIfAbsentMap.Initializer<org.lgna.project.ast.UserField, HighlightFieldOperation>() {
-			public HighlightFieldOperation initialize( org.lgna.project.ast.UserField field ) {
-				return new HighlightFieldOperation( field );
+	@Override
+	public Component getTreeCellRendererComponent( JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, selected, expanded, leaf, row, hasFocus );
+		assert rv instanceof DefaultTreeCellRenderer;
+		assert value instanceof SearchObjectNode;
+		SearchObjectNode node = (SearchObjectNode)value;
+		if( node.getParent() != null ) {
+			if( node.getIsLeaf() ) {
+				Object astValue = node.getValue();
+				assert astValue != null;
+				assert astValue instanceof Expression : astValue.getClass();
+				return PreviewAstI18nFactory.getInstance().createComponent( (Expression)astValue ).getAwtComponent();
+			} else {
+				Object astValue = node.getValue();
+				assert astValue instanceof UserMethod;
+				UserMethod uMethod = (UserMethod)astValue;
+				return new JLabel( uMethod.name.getValue() + " (" + node.getChildren().size() + ")" );
 			}
-		} );
-	}
-
-	private final org.lgna.project.ast.UserField field;
-
-	public HighlightFieldOperation( org.lgna.project.ast.UserField field ) {
-		super( org.lgna.croquet.Application.DOCUMENT_UI_GROUP, java.util.UUID.fromString( "00efc2dd-dab5-4116-9fa2-207d8bfc4025" ) );
-		this.field = field;
-	}
-
-	@Override
-	protected void localize() {
-		super.localize();
-		this.setName( this.field.getName() );
-		this.setSmallIcon( DeclarationTabState.getFieldIcon() );
-	}
-
-	@Override
-	protected void perform( org.lgna.croquet.history.Transaction transaction, org.lgna.croquet.triggers.Trigger trigger ) {
-		org.lgna.croquet.history.CompletionStep<?> completionStep = org.lgna.croquet.history.CompletionStep.createAndAddToTransaction( transaction, this, trigger, null );
-		DeclarationTabState tabState = DeclarationsEditorComposite.getInstance().getTabState();
-		tabState.setValueTransactionlessly( TypeComposite.getInstance( this.field.getDeclaringType() ) );
-		org.alice.ide.IDE.getActiveInstance().getHighlightStencil().showHighlightOverField( this.field, null );
-		completionStep.finish();
+		}
+		return rv;
 	}
 }
