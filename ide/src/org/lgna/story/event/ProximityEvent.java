@@ -42,19 +42,15 @@
  */
 package org.lgna.story.event;
 
+import org.lgna.story.SThing;
+
 /**
  * @author Matt May
  */
-public class ProximityEvent extends AbstractEvent {
+public class ProximityEvent extends AbstractBinarySThingEvent {
 
-	private final org.lgna.story.SMovableTurnable[] entities;
-
-	public ProximityEvent( org.lgna.story.SMovableTurnable... entities ) {
-		this.entities = entities;
-	}
-
-	public org.lgna.story.SMovableTurnable[] getModels() {
-		return entities;
+	public ProximityEvent( SThing a, SThing b ) {
+		super( a, b );
 	}
 
 }
